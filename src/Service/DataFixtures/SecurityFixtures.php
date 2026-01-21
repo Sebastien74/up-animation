@@ -27,14 +27,14 @@ use Twig\Error\SyntaxError;
 #[Autoconfigure(tags: [
     ['name' => SecurityFixtures::class, 'key' => 'security_fixtures'],
 ])]
-class SecurityFixtures
+readonly class SecurityFixtures
 {
     /**
      * SecurityFixtures constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly Environment $templating,
+        private CoreLocatorInterface $coreLocator,
+        private Environment          $templating,
     )
     {
     }

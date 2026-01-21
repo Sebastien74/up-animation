@@ -16,8 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 #[ORM\Table(name: 'seo_model')]
-#[ORM\Index(columns: ['locale'], name: 'idx_seo_model_locale')]
-#[ORM\Index(columns: ['class_name'], name: 'idx_seo_model_class_name')]
+#[ORM\Index(name: 'idx_seo_model_locale', columns: ['locale'])]
+#[ORM\Index(name: 'idx_seo_model_class_name', columns: ['className'])]
 #[ORM\Entity(repositoryClass: ModelRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Model extends BaseInterface

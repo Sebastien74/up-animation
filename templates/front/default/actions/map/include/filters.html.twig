@@ -13,7 +13,7 @@
                         {% set intl = category|intl %}
                         {% set title = intl and intl.title ? intl.title : category.adminName %}
                         {% set categoryIds = categoryIds|merge([category.id]) %}
-                        {% set categoryMarker = category.marker ? category.marker : 'uploads/'~website.uploadDirname~'/marker-blue.svg' %}
+                        {% set categoryMarker = category.marker ? category.marker : 'uploads/'~website.uploadDirname~'/marker-orange.svg' %}
                         <li class="marker-select ps-0 text-white marker-select-{{ category.id }} active overflow-hidden w-100 {% if not map.multiFilters %}cursor{% else %}multiple{% endif %}"
                             data-category="category-{{ category.id }}"
                             data-multiple="{{ map.multiFilters }}">
@@ -64,7 +64,7 @@
                         {% set intl = category|intl %}
                         {% set title = intl and intl.title ? intl.title : category.adminName %}
                         {% set categoryIds = categoryIds|merge([category.id]) %}
-                        {% set categoryMarker = category.marker ? category.marker : 'uploads/'~website.uploadDirname~'/marker-blue.svg' %}
+                        {% set categoryMarker = category.marker ? category.marker : 'uploads/'~website.uploadDirname~'/marker-orange.svg' %}
                         <li class="dropdown-item marker-select marker-select-{{ category.id }} active overflow-hidden w-100 {% if not map.multiFilters %}cursor{% else %}multiple{% endif %}"
                             data-category="category-{{ category.id }}"
                             data-multiple="{{ map.multiFilters }}">

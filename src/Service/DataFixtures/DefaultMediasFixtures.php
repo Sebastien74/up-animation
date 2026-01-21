@@ -21,16 +21,16 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => DefaultMediasFixtures::class, 'key' => 'default_medias_fixtures'],
 ])]
-class DefaultMediasFixtures
+readonly class DefaultMediasFixtures
 {
     /**
      * DefaultMediasFixtures constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly UploadedFileFixtures $uploader,
-        private readonly string $projectDir,
+        private CoreLocatorInterface   $coreLocator,
+        private EntityManagerInterface $entityManager,
+        private UploadedFileFixtures   $uploader,
+        private string                 $projectDir,
     ) {
     }
 
@@ -75,7 +75,7 @@ class DefaultMediasFixtures
     /**
      * To set Media with empty filename.
      */
-    private function setMedia(Website $website, string $name, string $locale, ?User $user = null): MediaEntities\Media
+    private function setMedia(Website $website, string $name, string $locale, ?User $user = null): void
     {
         $media = new MediaEntities\Media();
         $media->setWebsite($website);
@@ -103,8 +103,6 @@ class DefaultMediasFixtures
         if ($user) {
             $relation->setCreatedBy($user);
         }
-
-        return $media;
     }
 
     /**
@@ -113,7 +111,7 @@ class DefaultMediasFixtures
     private function getMedias(): array
     {
         return [
-            'logo' => (object) ['category' => 'logo', 'filename' => 'logo.svg', 'doc' => false],
+            'logo' => (object) ['category' => 'logo', 'filename' => 'logo.png', 'doc' => false],
             'favicon' => (object) ['category' => 'favicon', 'filename' => 'favicon.ico', 'doc' => false],
             'favicon-apple-touch-icon' => (object) ['category' => 'favicon-apple-touch-icon', 'filename' => 'apple-touch-icon.png', 'doc' => false],
             'favicon-16x16' => (object) ['category' => 'favicon-16x16', 'filename' => 'favicon-16x16.png', 'doc' => false],
@@ -125,14 +123,14 @@ class DefaultMediasFixtures
             'mask-icon' => (object) ['category' => 'mask-icon', 'filename' => 'safari-pinned-tab.svg', 'doc' => false],
             'manifest.webmanifest' => (object) ['category' => 'manifest.webmanifest', 'filename' => 'manifest.webmanifest.json', 'doc' => false],
             'share' => (object) ['category' => 'share', 'filename' => 'share.jpg', 'doc' => false],
-            'preloader' => (object) ['category' => 'preloader', 'filename' => 'preloader.svg', 'doc' => false],
-            'footer' => (object) ['category' => 'footer', 'filename' => 'footer-logo.svg', 'doc' => false],
-            'email' => (object) ['category' => 'email', 'filename' => 'email-logo.svg', 'doc' => false],
-            'admin' => (object) ['category' => 'admin', 'filename' => 'admin-logo.svg', 'doc' => false],
+            'preloader' => (object) ['category' => 'preloader', 'filename' => 'preloader.png', 'doc' => false],
+            'footer' => (object) ['category' => 'footer', 'filename' => 'footer-logo.png', 'doc' => false],
+            'email' => (object) ['category' => 'email', 'filename' => 'email-logo.png', 'doc' => false],
+            'admin' => (object) ['category' => 'admin', 'filename' => 'admin-logo.png', 'doc' => false],
             'title-header' => (object) ['category' => 'title-header', 'filename' => 'title-header.jpg', 'doc' => false],
             'placeholder' => (object) ['category' => 'placeholder', 'filename' => 'placeholder.jpg', 'doc' => false],
             'facebook' => (object) ['category' => 'social-network', 'filename' => 'facebook.svg', 'doc' => false],
-            'google-plus' => (object) ['category' => 'social-network', 'filename' => 'google-plus.svg', 'doc' => false],
+            'google' => (object) ['category' => 'social-network', 'filename' => 'google.svg', 'doc' => false],
             'twitter' => (object) ['category' => 'social-network', 'filename' => 'twitter.svg', 'doc' => false],
             'youtube' => (object) ['category' => 'social-network', 'filename' => 'youtube.svg', 'doc' => false],
             'tiktok' => (object) ['category' => 'social-network', 'filename' => 'tiktok.svg', 'doc' => false],

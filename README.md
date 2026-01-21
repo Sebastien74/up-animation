@@ -1,4 +1,4 @@
-# SFCMS 7
+# Up Animation
 
 [![Generic badge](https://img.shields.io/badge/Version-7-purple.svg?style=flat-square&color=rgba(120,5,120))](https://github.com/Sebastien74/SFCMS-7)
 ![Generic badge](https://img.shields.io/badge/PHP-8.3-red.svg?style=flat-square)

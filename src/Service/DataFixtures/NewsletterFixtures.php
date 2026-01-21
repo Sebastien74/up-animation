@@ -22,12 +22,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => NewsletterFixtures::class, 'key' => 'newsletter_fixtures'],
 ])]
-class NewsletterFixtures
+readonly class NewsletterFixtures
 {
     /**
      * NewsletterFixtures constructor.
      */
-    public function __construct(private readonly CoreLocatorInterface $coreLocator)
+    public function __construct(private CoreLocatorInterface $coreLocator)
     {
     }
 

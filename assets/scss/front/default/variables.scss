@@ -98,7 +98,7 @@ $gray-900: #212529 !default;
 
 $white: #fff !default;
 $black: #000 !default;
-$primary: #540b01 !default;
+$primary: #ff7100 !default;
 $secondary: #68312c !default;
 $success: #5d7808 !default;
 $info: #0081ac !default;
@@ -118,7 +118,6 @@ $btn-colors: 'primary', 'secondary';
 $hover-colors: 'primary', 'secondary';
 $theme-colors: (
     'primary': $primary,
-    'secondary': $secondary,
     'success': $success,
     'danger': $danger,
     'light': $light,

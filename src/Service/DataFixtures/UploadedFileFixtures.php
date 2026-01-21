@@ -22,15 +22,15 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => UploadedFileFixtures::class, 'key' => 'uploaded_file_fixtures'],
 ])]
-class UploadedFileFixtures
+readonly class UploadedFileFixtures
 {
     /**
      * UploadedFileFixtures constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly Uploader $uploader,
+        private CoreLocatorInterface   $coreLocator,
+        private EntityManagerInterface $entityManager,
+        private Uploader               $uploader,
     ) {
     }
 

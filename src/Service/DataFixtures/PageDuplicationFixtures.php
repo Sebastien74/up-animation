@@ -21,14 +21,14 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => PageDuplicationFixtures::class, 'key' => 'page_duplication_fixtures'],
 ])]
-class PageDuplicationFixtures
+readonly class PageDuplicationFixtures
 {
     /**
      * MenuFixtures constructor.
      */
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly PageDuplicateManager $duplicateManager,
+        private EntityManagerInterface $entityManager,
+        private PageDuplicateManager   $duplicateManager,
     ) {
     }
 

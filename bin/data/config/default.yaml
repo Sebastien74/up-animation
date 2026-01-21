@@ -1,4 +1,4 @@
-company_name: 'SFCMS 7'
+company_name: 'Up Animations!'
 media_path_duplication: 'default'
 locale: 'fr'
 locales_others: []
@@ -6,14 +6,14 @@ fonts: ['front-default']
 
 domains:
     fr:
-        cms7.local: true
-        cms7.felix-dev-8-2.fr: false
-        www.cms7.felix-dev-8-2.fr: false
+        up-animation.local: true
+        up-animation.abcvd.com: false
+        www.up-animation.abcvd.com: false
 
 apis:
     fr:
         google:
-            ua: null
+            ua: G-FR1EWZK8E0
             tag_manager: null
 
 colors:
@@ -32,7 +32,6 @@ colors:
 active_colors: [
     'white',
     'primary',
-    'secondary',
     'light',
     'alert-success',
     'alert-danger',
@@ -55,16 +54,16 @@ favicons:
 
 information:
     fr:
-        schedules: ""
-        alert: "<ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li></ul>"
+        schedules: "Ouverture : Lun - Sam : 9h à 18h"
+        alert: ""
 
 social_networks:
     fr:
-        twitter: "https://twitter.com"
-        facebook: "https://www.facebook.com"
-        google: null
-        youtube: "https://www.youtube.com"
-        instagram: "https://www.instagram.com"
+        twitter: null
+        facebook: "https://www.facebook.com/upanimations"
+        google: "https://www.google.fr/search?q=UP%27Animations+%26+Magie&ludocid=5906160267737459997&lsig=AB86z5WAo_L594NkQFulqApGDcCe"
+        youtube: null
+        instagram: "https://www.instagram.com/upanimations"
         linkedin: null
         pinterest: null
         tripadvisor: null
@@ -72,24 +71,23 @@ social_networks:
 phones:
     fr:
         0:
-            number: '+33(0)4 50 00 00 00'
-            tag_number: '+33450000000'
+            number: '+33(0)6 63 02 78 10'
+            tag_number: '+33663027810'
             type: 'office'
             zones: ['contact', 'footer', 'email', 'header']
 
 emails:
     fr:
         0:
-            email: "dev@agence-felix.fr"
+            email: "contact@up-animations.fr"
             zones: ['contact', 'footer']
         1: # [ !!!! REQUIRED !!!! ]
             slug: "support"
             email: "support@agence-felix.fr"
             zones: []
-
         2: # [ !!!! REQUIRED !!!! ]
             slug: "no-reply"
-            email: "noreply@agence-felix.fr"
+            email: "contact@up-animations.fr"
             zones: []
 
 addresses:
@@ -111,16 +109,16 @@ addresses:
 
 legals:
     fr:
-        companyName: null
+        companyName: 'Up Animations!'
         companyAddress: null
         companyRepresentativeName: null
         capital: null
         vatNumber: null
         siretNumber: null
-        managerName: null
-        managerEmail: null
-        webmasterName: Agence Félix Création
-        webmasterEmail: support@agence-felix.fr
+        managerName: 'Up Animations!'
+        managerEmail: 'contact@up-animations.fr'
+        webmasterName: 'Up Animations!'
+        webmasterEmail: 'contact@up-animations.fr'
         hostName: null
         hostAddress: null
         protectionOfficerName: null

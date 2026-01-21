@@ -21,12 +21,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => SeoFixtures::class, 'key' => 'seo_fixtures'],
 ])]
-class SeoFixtures
+readonly class SeoFixtures
 {
     /**
      * SeoFixtures constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
     }
 

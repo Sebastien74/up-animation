@@ -86,9 +86,9 @@
                 <a class="navbar-brand d-block p-0" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}" data-toggle="preloader">
                     {{ asset(logo)|file({}, {
                         screensSizes: {
-                            mobile: {width: 138, height: 60},
-                            tablet: {width: 138, height: 60},
-                            desktop: {width: 138, height: 60}
+                            mobile: {width: null, height: 60},
+                            tablet: {width: null, height: 60},
+                            desktop: {width: null, height: 60}
                         },
                         decor: false,
                         title: companyName,

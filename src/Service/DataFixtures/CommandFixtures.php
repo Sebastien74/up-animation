@@ -21,12 +21,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => CommandFixtures::class, 'key' => 'command_fixtures'],
 ])]
-class CommandFixtures
+readonly class CommandFixtures
 {
     /**
      * CommandFixtures constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
     }
 

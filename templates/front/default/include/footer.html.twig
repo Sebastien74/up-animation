@@ -17,9 +17,9 @@
                     <a class="d-inline-block" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}" data-toggle="preloader">
                         {{ asset(logo)|file({}, {
                             screensSizes: {
-                                mobile: {width: 207, height: 90},
-                                tablet: {width: 207, height: 90},
-                                desktop: {width: 207, height: 90}
+                                mobile: {width: null, height: 90},
+                                tablet: {width: null, height: 90},
+                                desktop: {width: null, height: 90}
                             },
                             title: companyName,
                             id: 'main-footer-logo',
