@@ -32,18 +32,8 @@ class SitemapController extends FrontController
         $website = $this->getWebsite();
         $configuration = $website->configuration;
         $websiteTemplate = $configuration->template;
-        $trees = $sitemapService->execute($website->entity, $request->getLocale(), false, true);
-
-        if (!empty($trees['page']['main'])) {
-            foreach ($trees['page']['main'] as $keyPage => $page) {
-                if (!$page['active'] && empty($page['children'])) {
-                    unset($trees['page']['main'][$keyPage]);
-                }
-            }
-        }
-
         return $this->render('front/'.$websiteTemplate.'/actions/sitemap/view.html.twig', [
-            'trees' => $trees,
+            'trees' => $sitemapService->execute($website->entity, $request->getLocale(), false, true),
             'websiteTemplate' => $websiteTemplate,
         ]);
     }

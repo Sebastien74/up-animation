@@ -266,7 +266,6 @@
             {% include 'core/webmaster-alert.html.twig' %}
         {% endif %}
 
-        {% include 'front/'~websiteTemplate~'/include/recaptcha.html.twig' with {configuration: configuration} only %}
         {% include 'front/'~websiteTemplate~'/include/translations.html.twig' only %}
 
         {% if website.api is defined and website.api and not onlyBody %}

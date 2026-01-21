@@ -436,7 +436,7 @@ class SitemapService
      */
     private function getTree(array $groups): array
     {
-        $trees = [];
+        $trees = $entitiesByParent = [];
         foreach ($groups as $group) {
             foreach ($group as $info) {
                 $entity = $info['entity']->entity;
@@ -451,7 +451,12 @@ class SitemapService
                     $info['seo'] = $this->coreLocator->seoService()->execute($info['urlEntity'], $entity, null, true, null, ['disabledLayout' => true, 'disabledCategory' => true, 'disabledCategories' => true, 'disabledMedias' => true]);
                     $position = !empty($trees[$info['interface']['name']][$parent]) ? $this->getPosition($trees[$info['interface']['name']][$parent], $info['entity']->position) : $info['entity']->position;
                     $trees[$info['interface']['name']][$parent][$position] = $info;
+                    $trees[$info['interface']['name']][$parent][$position]['title'] = !empty($info['seo']['titleH1']) ? $info['seo']['titleH1']
+                        : (!empty($info['seo']['breadcrumb']) ? $info['seo']['breadcrumb']
+                            : (!empty($info['seo']['title']) ? $info['seo']['title'] : $info['title']));
+                    $entitiesByParent[$parent][$position] = $trees[$info['interface']['name']][$parent][$position];
                     ksort($trees[$info['interface']['name']][$parent]);
+                    ksort($entitiesByParent[$parent]);
                 }
             }
         }
@@ -459,19 +464,42 @@ class SitemapService
         foreach ($trees as $categoryName => $groups) {
             foreach ($groups as $groupName => $items) {
                 foreach ($items as $name => $value) {
-                    if (is_array($value) && property_exists($value['entity'], 'entity')) {
-                        $children = !empty($groups[$value['entity']->entity->getId()]) ? $groups[$value['entity']->entity->getId()] : [];
-                        $trees[$categoryName][$groupName][$name]['children'] = $children;
-                        if (!empty($children) && empty($trees[$categoryName][$groupName][$name]['url'])) {
-                            $trees[$categoryName][$groupName][$name]['url'] = !empty($children['url']) && is_string($children['url'])
-                                ? $children['url'] : $children[array_key_first($children)]['url'];
-                        }
+                    if (!is_array($value) || !isset($value['entity']->entity)) {
+                        continue;
+                    }
+                    $parentId = $value['entity']->entity->getId();
+                    $children = $this->buildChildren($parentId, $entitiesByParent);
+                    $trees[$categoryName][$groupName][$name]['children'] = $children;
+                    if (!empty($children) && empty($trees[$categoryName][$groupName][$name]['url'])) {
+                        $firstKey = array_key_first($children);
+                        $trees[$categoryName][$groupName][$name]['url'] = $children[$firstKey]['url'] ?? null;
                     }
                 }
             }
         }
 
+        if (!empty($trees['page']['main'])) {
+            foreach ($trees['page']['main'] as $keyPage => $page) {
+                if (!$page['active'] && empty($page['children'])) {
+                    unset($trees['page']['main'][$keyPage]);
+                }
+            }
+        }
+
         return $trees;
+    }
+
+    /**
+     * Build children recursively from entitiesByParent map.
+     */
+    private function buildChildren(int $parentId, array $entitiesByParent): array
+    {
+        $children = $entitiesByParent[$parentId] ?? [];
+        foreach ($children as $k => $child) {
+            $childId = $child['entity']->id; // expected structure
+            $children[$k]['children'] = $this->buildChildren($childId, $entitiesByParent);
+        }
+        return $children;
     }
 
     /**

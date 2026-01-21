@@ -335,9 +335,13 @@ class SeoService implements SeoInterface
             $this->titleH1 = $link && $link->getIntl() ? $link->getIntl()->getTitle() : $this->intl->title;
         }
 
-        if (!$this->titleH1 && method_exists($entity, 'getAdminName')) {
-            $this->titleH1 = $entity->getAdminName();
+        if (!$this->titleH1 && $entity instanceof Layout\Page) {
+            $this->titleH1 = $this->coreLocator->em()->getRepository(Layout\Block::class)->findTitleByForceAndLocalePage($entity, $this->locale, 1, false);
         }
+
+//        if (!$this->titleH1 && method_exists($entity, 'getAdminName')) {
+//            $this->titleH1 = $entity->getAdminName();
+//        }
 
         if ($this->titleH1) {
             $this->titleH1 = str_replace(['<br>', '<br/>'], ' ', $this->titleH1);

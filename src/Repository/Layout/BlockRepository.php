@@ -57,63 +57,62 @@ class BlockRepository extends ServiceEntityRepository
      */
     public function findTitleByForceAndLocalePage(mixed $entity, string $locale, ?int $titleForce = null, bool $all = false): array|string|null
     {
-        if ($entity->getLayout() instanceof Layout) {
+        $blocks = $this->findAllTitlesByForceAndLocale($locale, $titleForce);
+        $layoutId = $entity->getLayout()->getId();
+        $layoutBlocks = !empty($blocks[$layoutId]) ? $blocks[$layoutId] : null;
 
-            $layoutId = $entity->getLayout()->getId();
-            $cacheKey = $layoutId . '-' . $locale . '-' . $titleForce . '-' . ($all ? 'all' : 'one');
-            if (isset($this->cache['title_page'][$cacheKey])) {
-                return $this->cache['title_page'][$cacheKey];
-            }
-
-            /** @var array<Block> $results */
-            $statement = $this->createQueryBuilder('b')
-                ->leftJoin('b.intls', 'i')
-                ->leftJoin('b.col', 'c')
-                ->leftJoin('c.zone', 'z')
-                ->leftJoin('z.layout', 'l')
-                ->andWhere('i.titleForce = :titleForce')
-                ->andWhere('i.title IS NOT NULL')
-                ->andWhere('i.locale = :locale')
-                ->andWhere('l.id = :layoutId')
-                ->setParameter('titleForce', $titleForce)
-                ->setParameter('locale', $locale)
-                ->setParameter('layoutId', $layoutId)
-                ->addSelect('i')
-                ->addSelect('c')
-                ->addSelect('z')
-                ->addSelect('l')
-                ->addOrderBy('b.position', 'ASC')
-                ->addOrderBy('z.position', 'ASC');
-
-            if (!$all) {
-                $statement->setMaxResults(1);
-            }
-
-            $results = $statement->getQuery()->getResult();
-
+        if ($layoutBlocks) {
             if ($all) {
-                return $this->cache['title_page'][$cacheKey] = $results;
+                return $layoutBlocks;
             }
-
-            /** @var Block $result */
-            $result = $results ? $results[0] : null;
-
-            if ($result instanceof Block) {
-                foreach ($result->getIntls() as $intl) {
-                    if ($intl->getLocale() === $locale) {
-                        return $this->cache['title_page'][$cacheKey] = $intl->getTitle();
-                    }
-                }
-            }
-
-            return $this->cache['title_page'][$cacheKey] = null;
+            return !empty($layoutBlocks[0]['title']) ? $layoutBlocks[0]['title'] : null;
         }
 
         return null;
     }
 
     /**
-     * Find block by titleForce, locale & Layout.
+     * Find all blocks with a title.
+     */
+    public function findAllTitlesByForceAndLocale(string $locale, ?int $titleForce = 1): array|string|null
+    {
+        $cacheKey = 'allTitleForce'.$titleForce;
+
+        if (isset($this->cache[$cacheKey][$locale])) {
+            return $this->cache[$cacheKey][$locale];
+        }
+
+        $rows = $this->createQueryBuilder('b')
+            ->select('l.id AS layoutId', 'b.id AS blockId', 'i.title AS title')
+            // vu tes WHERE sur i.*, c'est un INNER JOIN logique
+            ->innerJoin('b.intls', 'i')
+            ->leftJoin('b.col', 'c')
+            ->leftJoin('c.zone', 'z')
+            ->leftJoin('z.layout', 'l')
+            ->andWhere('i.titleForce = :titleForce')
+            ->andWhere('i.title IS NOT NULL')
+            ->andWhere('i.locale = :locale')
+            ->setParameter('titleForce', $titleForce)
+            ->setParameter('locale', $locale)
+            ->addOrderBy('b.position', 'ASC')
+            ->addOrderBy('z.position', 'ASC')
+            ->getQuery()
+            ->getArrayResult();
+
+        $result = [];
+        foreach ($rows as $row) {
+            $layoutId = (int) $row['layoutId'];
+            $result[$layoutId][] = [
+                'blockId' => (int) $row['blockId'],
+                'title' => $row['title'],
+            ];
+        }
+
+        return $this->cache[$cacheKey][$locale] = $result;
+    }
+
+    /**
+     * Find the block by titleForce, locale & Layout.
      */
     public function findTitleByForceAndLocaleLayout(mixed $layout, string $locale, int $titleForce, bool $all = false): mixed
     {
