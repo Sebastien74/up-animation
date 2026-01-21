@@ -1,0 +1,10 @@
+add: 'Ajouter une actualité'
+adminName: 'Nom de l''actualité'
+category: Catégorie
+delete: 'Supprimer l''actualité'
+intl.body: Description
+intl.introduction: Introduction
+intl.title: Titre
+plural: Actualités
+promote: 'Mise en avant'
+singular: Actualité

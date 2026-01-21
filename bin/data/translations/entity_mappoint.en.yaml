@@ -1,0 +1,5 @@
+add: 'Add point'
+adminName: 'Point name'
+category: Category
+plural: Points
+singular: Point

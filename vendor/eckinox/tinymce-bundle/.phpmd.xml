@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 name="Eckinox PHPMD"
+		 xmlns="http://pmd.sf.net/ruleset/1.0.0"
+		 xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
+                     http://pmd.sf.net/ruleset_xml_schema.xsd"
+		 xsi:noNamespaceSchemaLocation="
+                     http://pmd.sf.net/ruleset_xml_schema.xsd">
+	<description>
+		Eckinox's PHPMD Ruleset
+	</description>
+
+	<!-- Import entire rulesets -->
+	<rule ref="rulesets/controversial.xml"/>
+
+	<rule ref="rulesets/unusedcode.xml">
+		<exclude name="UnusedFormalParameter"/>
+	</rule>
+
+	<!-- Import codesize ruleset with common configs for Symfony entities -->
+	<rule ref="rulesets/codesize.xml">
+		<exclude name="CyclomaticComplexity"/>
+		<exclude name="NPathComplexity"/>
+		<exclude name="ExcessiveParameterList"/>
+		<exclude name="ExcessivePublicCount"/>
+		<exclude name="TooManyFields"/>
+		<exclude name="TooManyMethods"/>
+		<exclude name="TooManyPublicMethods"/>
+		<exclude name="ExcessiveClassComplexity"/>
+		<exclude name="ExcessiveMethodLength"/>
+	</rule>
+	<rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
+		<properties>
+			<property name="minimum" value="200"/>
+		</properties>
+	</rule>
+
+	<!-- Import cleancode ruleset with a few allowances -->
+	<rule ref="rulesets/cleancode.xml">
+		<exclude name="IfStatementAssignment"/>
+		<exclude name="BooleanArgumentFlag"/>
+		<exclude name="ElseExpression"/>
+		<exclude name="StaticAccess"/>
+		<exclude name="MissingImport"/>
+	</rule>
+
+	<!-- Import design ruleset with higher CouplingBetweenObjects limit -->
+	<rule ref="rulesets/design.xml">
+		<exclude name="NumberOfChildren"/>
+		<exclude name="CouplingBetweenObjects"/>
+	</rule>
+
+	<!-- Import naming ruleset with common configs for Symfony -->
+	<rule ref="rulesets/naming.xml">
+		<exclude name="LongClassName"/>
+		<exclude name="ShortVariable"/>
+		<exclude name="LongVariable"/>
+		<exclude name="ShortMethodName"/>
+	</rule>
+</ruleset>

@@ -1,0 +1,128 @@
+.active-urls {
+
+    a, > span {
+
+        position: relative;
+        float: left;
+        margin-top: -3px;
+        margin-right: 8px;
+
+        &.unique-locale {
+            margin-top: -6px;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .locale-url-btn {
+
+        width: 20px;
+        height: 100%;
+        display: inline-block;
+        border-radius: 50%;
+
+        img {
+
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            object-fit: cover;
+
+            &.power-off {
+                opacity: .85;
+            }
+        }
+    }
+
+    a.offline, span.disabled {
+        img {
+            filter: grayscale(.9);
+            opacity: .8;
+        }
+    }
+
+    .bubble {
+
+        span {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            transform: scale(.99);
+            bottom: 9px;
+            left: 35%;
+            background-color: $gray-400;
+        }
+
+        &.online span {
+            background-color: $success;
+        }
+    }
+
+    span.disabled {
+        .bubble span {
+            bottom: 2px;
+        }
+    }
+}
+
+table {
+
+    .active-urls.multi-locales {
+
+        margin-top: -10px;
+
+        span.disabled {
+            .bubble span {
+                bottom: -12px;
+            }
+        }
+    }
+}
+
+.dd3-content .active-urls .unique-locale {
+
+    height: 50px;
+
+    img {
+        margin-top: 10px;
+        margin-bottom: 9px;
+    }
+}
+
+.dd3-content .active-urls > *:not(.unique-locale) {
+
+    img {
+        margin-bottom: 0;
+        margin-top: -4px;
+    }
+
+    .bubble span {
+        bottom: 1px;
+    }
+}
+
+table {
+
+    .active-urls {
+
+        display: inline-block;
+        margin-right: 0;
+
+        a, > span {
+
+            margin-top: 3px;
+
+            &.unique-locale {
+                margin-top: -11px;
+            }
+        }
+
+        .bubble span {
+            bottom: -12px;
+        }
+    }
+}

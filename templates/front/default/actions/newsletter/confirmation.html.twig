@@ -1,0 +1,55 @@
+{% extends 'front/'~websiteTemplate~'/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% set seoTitle = 'Newsletter'|trans %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-cms', null, webpack) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-cms', null,  webpack) }}
+{% endblock %}
+
+{% block body %}
+    <div id="newsletter-thanks-container" class="newsletter-thanks-container pt-5 pb-5 text-center bg-light d-flex align-items-center">
+        <div class="row w-100">
+            <div class="col-md-6 col-xl-4 mx-auto mt-5 mb-5 d-flex align-items-center">
+                <div class="form-thanks-card card bg-white form-success-card w-100">
+                    <div class="card-body bg-transparent px-5  text-center px-4 px-md-5">
+                        <div class="body my-4">
+                            {% if 'accept' == status %}
+                                <i class="icon-check-circle text-success size-lg-icon"></i>
+                                <strong class="d-inline-block mb-4 fz-sm d-inline-block w-100">{{ "Inscription confirmée"|trans|raw }}</strong>
+                                <p class="card-text mb-2">{{ "Merci ! Votre inscription à notre newsletter a bien été confirmée."|trans|raw }}</p>
+                                <p class="card-text mb-0">{{ "Vous recevrez bientôt nos dernières actualités dans votre boîte mail."|trans|raw }}</p>
+                            {% elseif 'expired' == status %}
+                                <i class="icon-unlink text-danger size-lg-icon"></i>
+                                <strong class="d-inline-block mb-4 fz-sm d-inline-block w-100">{{ "Lien expiré"|trans|raw }}</strong>
+                                <p class="card-text mb-2">{{ "Désolé, le lien de confirmation a expiré. Pour des raisons de sécurité, les liens de confirmation sont valables pendant 24 heures."|trans|raw }}</p>
+                                <p class="card-text mb-0">{{ "Vous pouvez renouveler votre inscription si vous le souhaitez."|trans|raw }}</p>
+                            {% elseif 'decline' == status %}
+                                <i class="icon-times-circle text-danger size-lg-icon"></i>
+                                <strong class="d-inline-block mb-4 fz-sm d-inline-block w-100">{{ "Inscription annulée"|trans|raw }}</strong>
+                                <p class="card-text mb-2">{{ "Votre demande d’inscription à notre newsletter a été annulée."|trans|raw }}</p>
+                                <p class="card-text mb-0">{{ "Aucune information n’a été enregistrée."|trans|raw }}</p>
+                            {% else %}
+                                <i class="icon-badge-check text-primary size-md-icon"></i>
+                                <strong class="d-inline-block mb-4 fz-sm text-primary d-inline-block w-100">{{ "Confirmez votre inscription"|trans|raw }}</strong>
+                                <p class="card-text mb-3">{{ "Vous avez demandé à recevoir notre newsletter."|trans|raw }}</p>
+                                <p class="card-text mb-3 fw-700">{{ "Pour confirmer votre inscription, cliquez sur le bouton ci-dessous."|trans|raw }}</p>
+                                <a href="{{ path('front_newsletter_confirmation', {'token': email.token, 'status': 'accept'}) }}" class="btn btn-primary mb-3">{{ "Confirmer mon inscription"|trans|raw }}</a>
+                                <hr>
+                                <p class="card-text mb-3">{{ "Si vous n’êtes pas à l’origine de cette demande ou si vous avez changé d’avis, vous pouvez refuser."|trans|raw }}</p>
+                                <a href="{{ path('front_newsletter_confirmation', {'token': email.token, 'status': 'decline'}) }}" class="btn btn-outline-primary mb-3">{{ "Refuser l’inscription"|trans|raw }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

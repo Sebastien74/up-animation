@@ -1,0 +1,168 @@
+{% trans_default_domain 'admin' %}
+
+<div class="modal-wrapper">
+    <div class="modal fade modal-block-configuration layout-modal"
+         id="modal-block-configuration" tabindex="-1" role="dialog"
+         aria-labelledby="modal-block-configuration-{{ interface['name']~'-'~entity.id }}-label" aria-hidden="true">
+        {{ form_start(form, {attr: {
+            novalidate: "novalidate",
+            action: path('admin_block_configuration', {website: websiteId(), block: block.id}),
+            id: 'block-configuration-form',
+            class: 'edit-element-form'
+        }}) }}
+            <div class="modal-dialog modal-dialog-centered modal-xxl" role="document">
+                <div class="modal-content border">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center w-100" id="modal-block-configuration-{{ interface['name']~'-'~entity.id }}-label">{{ 'fal cog'|icon(null, 50, 'dark') }}</h5>
+                        <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                            {{ 'fal times'|icon(20, 20, 'dark') }}
+                        </button>
+                    </div>
+                    <div class="modal-body pe-4 ps-4">
+
+                        <h2 class="main-title text-center fw-bold mb-5">{{ "Configuration du bloc"|trans|raw }}</h2>
+
+                        <ul class="nav nav-tabs config-tabs" id="block-configuration-tab" role="tablist">
+                            <li class="nav-item text-center">
+                                <a class="nav-link active" id="general-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">
+                                    {{ 'fal star'|icon(17, 17, 'me-2') }}{{ "Général"|trans|raw }}
+                                </a>
+                            </li>
+                            {% if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 %}
+                                <li class="nav-item text-center">
+                                    <a class="nav-link" id="animation-tab" data-bs-toggle="tab" href="#animation" role="tab" aria-controls="animation" aria-selected="false">
+                                        {{ 'fal hurricane'|icon(17, 17, 'me-2') }}{{ "Animation / Styles"|trans|raw }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item text-center">
+                                <a class="nav-link" id="fingerprint-tab" data-bs-toggle="tab" href="#fingerprint" role="tab" aria-controls="fingerprint" aria-selected="false">
+                                    {{ 'fal fingerprint'|icon(17, 17, 'me-2') }}{{ "Identifiants"|trans|raw }}
+                                </a>
+                            </li>
+                            <li class="nav-item text-center">
+                                <a class="nav-link" id="screens-tab" data-bs-toggle="tab" href="#screens" role="tab" aria-controls="screens" aria-selected="false">
+                                    {{ 'fal desktop'|icon(17, 17, 'me-2') }}{{ "Écrans"|trans|raw }}
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content config-tabs-content" id="col-configuration-tab-content">
+                            <div class="tab-pane tab-pane-config fade pt-4 pe-4 ps-4 pb-0 bg-light show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        {% include 'admin/core/layout/margins.html.twig' %}
+                                        {% if form.hideLocales is defined %}
+                                            {{ form_row(form.hideLocales) }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-5">
+                                        <h4 class="w-100 text-center mb-3">{{ "Alignement des contenus"|trans }}</h4>
+                                        <div class="row">
+                                            {% include 'admin/core/layout/alignments.html.twig' %}
+                                            {% if form.elementsAlignment is defined %}
+                                                {{ form_row(form.elementsAlignment) }}
+                                            {% endif %}
+                                            {% if form.zIndex is defined %}
+                                                {{ form_row(form.zIndex) }}
+                                            {% endif %}
+                                            {% if form.verticalAlign is defined %}
+                                                {{ form_row(form.verticalAlign) }}
+                                            {% endif %}
+                                            {% if form.endAlign is defined %}
+                                                {{ form_row(form.endAlign) }}
+                                            {% endif %}
+                                        </div>
+                                        <h4 class="w-100 text-center mb-3">{{ "Autres"|trans }}</h4>
+                                        <div class="row">
+                                            {% if form.hide is defined %}
+                                                {{ form_row(form.hide) }}
+                                            {% endif %}
+                                            {% if form.useForThumb is defined %}
+                                                {{ form_row(form.useForThumb) }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 %}
+                                <div class="tab-pane tab-pane-config fade pt-4 pe-4 ps-4 pb-0 bg-light" id="animation" role="tabpanel" aria-labelledby="animation-tab">
+                                    <div class="row">
+                                        <h4 class="text-dark w-100 text-center mb-3">{{ "Animation"|trans }}</h4>
+                                        {{ form_row(form.transition) }}
+                                        {{ form_row(form.delay) }}
+                                        {{ form_row(form.duration) }}
+                                        <h4 class="text-dark w-100 text-center mb-3">{{ "Styles"|trans }}</h4>
+                                        <div class="d-flex justify-content-center">
+                                            {% if form.radius is defined %}
+                                                {{ form_row(form.radius) }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% elseif form.transition is defined %}
+                                <div class="d-none">
+                                    {{ form_row(form.transition) }}
+                                    {{ form_row(form.delay) }}
+                                    {{ form_row(form.duration) }}
+                                </div>
+                            {% endif %}
+                            <div class="tab-pane tab-pane-config fade pt-4 pe-4 ps-4 pb-0 bg-light" id="fingerprint" role="tabpanel" aria-labelledby="fingerprint-tab">
+                                {% include 'admin/core/layout/custom-identifiers.html.twig' %}
+                            </div>
+                            <div class="tab-pane tab-pane-config fade pt-4 pe-4 ps-4 pb-0 bg-light" id="screens" role="tabpanel" aria-labelledby="screens-tab">
+                                <h4 class="text-dark w-100 text-center mb-3">{{ "Cacher"|trans }}</h4>
+                                <div class="row">
+                                    {% if form.hideMobile is defined %}
+                                        {{ form_row(form.hideMobile) }}
+                                    {% endif %}
+                                    {% if form.hideTablet is defined %}
+                                        {{ form_row(form.hideTablet) }}
+                                    {% endif %}
+                                    {% if form.hideMiniPc is defined %}
+                                        {{ form_row(form.hideMiniPc) }}
+                                    {% endif %}
+                                    {% if form.hideDesktop is defined %}
+                                        {{ form_row(form.hideDesktop) }}
+                                    {% endif %}
+                                </div>
+                                <h4 class="text-dark w-100 text-center mb-3">{{ "Autres"|trans }}</h4>
+                                <div class="row">
+                                    {% if form.reverse is defined %}
+                                        {{ form_row(form.reverse) }}
+                                    {% endif %}
+                                </div>
+                                <h4 class="text-dark w-100 text-center mb-3">{{ "Ordres / Tailles du bloc"|trans }}</h4>
+                                <div class="row">
+                                    {% if form.mobilePosition is defined %}
+                                        {{ form_row(form.mobilePosition) }}
+                                    {% endif %}
+                                    {% if form.tabletPosition is defined %}
+                                        {{ form_row(form.tabletPosition) }}
+                                    {% endif %}
+                                    {% if form.miniPcPosition is defined %}
+                                        {{ form_row(form.miniPcPosition) }}
+                                    {% endif %}
+                                    {% if form.mobileSize is defined %}
+                                        {{ form_row(form.mobileSize) }}
+                                    {% endif %}
+                                    {% if form.tabletSize is defined %}
+                                        {{ form_row(form.tabletSize) }}
+                                    {% endif %}
+                                    {% if form.miniPCSize is defined %}
+                                        {{ form_row(form.miniPCSize) }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer px-4">
+                        <div class="col-12">
+                            {{ form_widget(form.save) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>

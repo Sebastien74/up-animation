@@ -1,0 +1,31 @@
+{% trans_default_domain 'admin' %}
+
+<div class="modal fade" id="import-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border refer-preloader text-start pb-5 pt-3">
+            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100">{{ 'fal download'|icon(null, 50, 'dark') }}</h5>
+                <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                    {{ 'fal times'|icon(20, 20, 'dark') }}
+                </button>
+            </div>
+            <div class="modal-body d-flex">
+                <div class="container my-auto ajax-content">
+                    <h2 class="main-title text-center fw-bold mb-5">{{ "Importer vos traductions"|trans }}</h2>
+                    {{ form_start(form, {attr: {
+                        id: 'import-translations-form',
+                        action: path('admin_intls_import', {website: websiteId()}),
+                        novalidate: "novalidate"
+                    }}) }}
+                        {{ form_row(form.files) }}
+                        <div class="w-100 text-center modal-buttons mt-4">
+                            <button class="btn btn-info" data-bs-dismiss="modal">{{ "Annuler"|trans }}</button>
+                            <button type="submit" class="btn btn-info refresh">{{ "Importer"|trans }}</button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

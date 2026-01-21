@@ -1,0 +1,46 @@
+{% trans_default_domain 'front_default' %}
+
+{% set agendaIntl = agenda ? agenda|intl : null %}
+
+<div id="entities-data" data-agenda="{{ agenda.id }}">
+    {% for data in agenda.periods %}
+        <span class="event"
+              data-start="{{ data.publicationStart|date('Y-m-d')~'T'~data.publicationStart|date('H:i:s') }}"
+              data-end="{{ data.publicationEnd|date('Y-m-d')~'T'~data.publicationEnd|date('H:i:s') }}"></span>
+    {% endfor %}
+</div>
+
+<div id="events-days-data" data-agenda="{{ agenda.id }}">
+    {% for day, id in eventsDaysData %}
+        <span class="event"
+              data-id="{{ id }}"
+              data-day="{{ day }}"></span>
+    {% endfor %}
+</div>
+
+<div id="calendar-render-container-{{ agenda.id }}" class="calendar-render-container p-5 bg-light">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card calendar-card bg-white">
+                <div class="card-body p-4">
+                    <div id="calendar-render"></div>
+                </div>
+            </div>
+            {% if agendaIntl.introduction is defined and agendaIntl.introduction|striptags|length > 0 %}
+                <div class="card bg-white d-inline-block mt-4">
+                    <div class="card-body pe-4 ps-4 pt-3 pb-3">
+                        <p class="mb-0">{{ agendaIntl.introduction|raw }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-lg-6">
+            {% set period = period is defined and period ? period : null %}
+            {% include 'front/'~websiteTemplate~'/actions/agenda/include/day-card.html.twig' with {
+                websiteTemplate: websiteTemplate,
+                periodDate: periodDate,
+                period: period
+            } only %}
+        </div>
+    </div>
+</div>

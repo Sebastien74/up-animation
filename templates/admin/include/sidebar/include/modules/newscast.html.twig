@@ -1,0 +1,29 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'newscast'|moduleActive(configuration) %}
+    {% set uri = app.request.uri %}
+    {% set active = '/newscasts/' in uri %}
+    {% set module = 'newscast'|moduleActive(configuration) %}
+    {% set intl = intlsModules['newscast'][app.user.locale] is defined ? intlsModules['newscast'][app.user.locale] : intlsModules['newscast']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['newscast']['entity'].adminName is defined ? intlsModules['newscast']['entity'].adminName : 'Actualités'|trans) %}
+    {% set icon = intlsModules['newscast']['entity'].iconClass is defined and intlsModules['newscast']['entity'].iconClass ? intlsModules['newscast']['entity'].iconClass : '/medias/icons/light/newspaper.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a class="as-arrow{% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+            {{ icon|icon(17, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+        <ul aria-expanded="false" class="collapse{% if pageTag == 'newscasts' %} in{% endif %}">
+            <li>
+                <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" data-toggle="preloader">{{ "Liste des actualités"|trans }}</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_newscastcategory_index', {website: websiteId}) }}"{% if '/newscasts/categories/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des catégories"|trans }}</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_newscastteaser_index', {website: websiteId}) }}"{% if '/newscasts/teasers/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Configuration des teasers"|trans }}</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_newscastlisting_index', {website: websiteId}) }}"{% if '/newscasts/listings/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Configuration des index"|trans }}</a>
+            </li>
+        </ul>
+    </li>
+{% endif %}

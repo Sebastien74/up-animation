@@ -1,0 +1,44 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageTitle = seo.title is defined and seo.title|truncate(40, false)|length > 0 ? "Référencement :"|trans~" "~seo.title|truncate(40) : "Référencement"|trans %}
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-seo', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-seo', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div id="seo-edition">
+        <div class="row ajax-content">
+            <div class="col-md-4 mb-4">
+                <div class="card bg-white p-0">
+                    {% include 'admin/page/seo/include/filter-header.html.twig' %}
+                    <div id="seo-filter-categories" class="card-body pt-0">
+                        {% if entities is defined %}
+                            {% include 'admin/page/seo/include/filter-categories.html.twig' %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 mb-4">
+                <div class="row">
+                    <div id="preview-container" class="col-md-6">
+                        {% include 'admin/page/seo/include/preview.html.twig' %}
+                    </div>
+                    <div id="seo-form-container" class="col-md-6">
+                        {% include 'admin/page/seo/include/edition.html.twig' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

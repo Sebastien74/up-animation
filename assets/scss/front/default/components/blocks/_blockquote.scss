@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+@if ($enable-blockquote) {
+
+    /* -----------------------------------------------------------------
+
+        Copyright  : 2021
+        Created on : 2021-01-07, 4:55 PM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+        FRONT VENDOR BLOCKQUOTE :
+        =========================
+
+    ------------------------------------------------------------------ */
+
+    blockquote {
+        font-size: rem(17px);
+    }
+
+    .blockquote-block {
+
+        i, svg {
+
+            position: absolute;
+            font-size: rem(40px);
+            height: 30px;
+            top: -10px;
+            left: -15px;
+            fill: transparentize($black, .8) !important;
+
+            * {
+                fill: transparentize($black, .8) !important;
+            }
+        }
+
+        p {
+            position: relative;
+            font-style: italic;
+            font-size: rem(20px);
+            line-height: rem(20px);
+        }
+    }
+}

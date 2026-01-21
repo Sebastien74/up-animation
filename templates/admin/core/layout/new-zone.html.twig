@@ -1,0 +1,33 @@
+{% trans_default_domain 'admin' %}
+
+<div class="modal-wrapper">
+    <div id="new-zone-modal" class="modal fade add-zone-modal layout-modal" tabindex="-1" role="dialog" aria-labelledby="new-zone-modal">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content border">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center w-100">{{ 'fal line-height'|icon(62, 50, 'dark') }}
+                    <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                        {{ 'fal times'|icon(20, 20, 'dark') }}
+                    </button>
+                </div>
+                <div class="modal-body pe-5 ps-5">
+                    <div class="mx-auto">
+                        <h3 class="text-dark w-100 text-center fw-bold mb-5">{{ 'Ajouter une ligne'|trans }}</h3>
+                        {{ form_start(form, {attr: {
+                            novalidate: "novalidate",
+                            action: path('admin_zone_new', {website: websiteId(), layout: layout.id}),
+                            id: 'add-zone-form',
+                            class: 'edit-element-form',
+                            'data-scroll-to': '#add-zone-btn',
+                        }}) }}
+                            {{ form_row(form.grid) }}
+                            <div class="w-100 text-center modal-buttons">
+                                {{ form_row(form.save) }}
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

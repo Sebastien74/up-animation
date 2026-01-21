@@ -1,0 +1,26 @@
+{% trans_default_domain 'admin' %}
+
+{% set saveAreaTpl = saveAreaTpl is defined ? saveAreaTpl : null %}
+{% set saveArea = interface.configuration.saveArea is defined ? interface.configuration.saveArea : null %}
+
+<span data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}">
+    <a href="{{ lastRoute() }}"
+       class="btn btn-outline-info-lighten text-info standard"
+       data-toggle="preloader" aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+        {{ 'fas reply'|icon(14, 14, 'info', {icon: true}) }}
+    </a>
+</span>
+
+{% if form.saveBack is defined and saveAreaTpl == saveArea or not saveAreaTpl and form.saveBack is defined %}
+    {{ form_widget(form.saveBack) }}
+{% endif %}
+
+{% if form.save is defined and saveAreaTpl == saveArea or not saveAreaTpl and form.save is defined %}
+    {{ form_widget(form.save) }}
+{% elseif form.save is not defined and form.saveBack is not defined %}
+    <button type="submit" class="btn btn-info standard">{{ 'fal save'|icon(14, 14, 'me-2', {icon: true}) }}{{ "Enregistrer"|trans }}</button>
+{% endif %}
+
+{% if form.saveEdit is defined %}
+    {{ form_widget(form.saveEdit) }}
+{% endif %}

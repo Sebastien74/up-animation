@@ -1,0 +1,6 @@
+add: 'Ajouter une société'
+adminName: 'Société '
+admin_userfront_index: Contacts
+delete: 'Supprimer la société'
+plural: Sociétés
+singular: 'Société '

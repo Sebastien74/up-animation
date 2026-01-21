@@ -1,0 +1,81 @@
+{% macro encore_absolute_link_tags(entry_point, webpack, preload, onload = false) %}
+
+    {% set params = 'admin-' in app.request.uri
+        ? '?isAdmin='~app.session.get('SECURITY_IS_ADMIN')~'&userSecret='~app.session.get('SECURITY_USER_SECRET')~'&token='~admin_app_secret : null %}
+
+    {% set asFont = webpack == 'fonts' %}
+    {% set as = asFont ? 'font' : 'style' %}
+
+    {% for file in encore_entry_css_files(entry_point, webpack) %}
+        {% if asFont %}
+{#            <link rel="preload" href="{{ preload(absolute_url(asset(file)), { as: 'style', importance: 'low' }) }}" as="font">#}
+            <link href="{{ absolute_url(asset(file)) }}" rel="stylesheet" nonce="{{ csp_nonce() }}">
+        {% elseif onload %}
+            <link rel="stylesheet" href="{{ absolute_url(asset(file)) }}"{% if 'print' in file %} media="print"{% endif %} nonce="{{ csp_nonce() }}">
+        {% elseif preload %}
+            <link rel="preload" as="style" href="{{ preload(absolute_url(asset(file)), { as: 'style', importance: 'low' }) }}">
+            <link rel="stylesheet" href="{{ absolute_url(asset(file)) }}"{% if 'print' in file %} media="print"{% endif %}>
+        {% else %}
+            <link href="{{ absolute_url(asset(file))~params }}" rel="stylesheet">
+        {% endif %}
+    {% endfor %}
+
+{% endmacro %}
+
+{% macro encore_absolute_responsive_link_tags(websiteTemplate, webpack, preload, onload) %}
+
+    {% set params = 'admin-' in app.request.uri
+        ? '?isAdmin='~app.session.get('SECURITY_IS_ADMIN')~'&userSecret='~app.session.get('SECURITY_USER_SECRET')~'&token='~admin_app_secret : null %}
+
+    {% if isMobile() %}
+        {% for file in encore_entry_css_files('front-'~websiteTemplate~'-mobile', webpack) %}
+            {% if preload %}
+                <link rel="stylesheet" href="{{ preload(absolute_url(asset(file)), { as: 'style', nopush: true }) }}">
+            {% else %}
+                <link href="{{ absolute_url(asset(file))~params }}" rel="stylesheet">
+            {% endif %}
+        {% endfor %}
+    {% elseif isTablet() %}
+        {% for file in encore_entry_css_files('front-'~websiteTemplate~'-tablet', webpack) %}
+            {% if preload %}
+                <link rel="stylesheet" href="{{ preload(absolute_url(asset(file)), { as: 'style', nopush: true }) }}">
+            {% else %}
+                <link href="{{ absolute_url(asset(file))~params }}" rel="stylesheet">
+            {% endif %}
+        {% endfor %}
+    {% elseif isDesktop() %}
+        {% for file in encore_entry_css_files('front-'~websiteTemplate~'-desktop', webpack) %}
+            {% if preload %}
+                <link rel="stylesheet" href="{{ preload(absolute_url(asset(file)), { as: 'style', nopush: true }) }}">
+            {% else %}
+                <link href="{{ absolute_url(asset(file))~params }}" rel="stylesheet">
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
+
+{% macro entry_js_url(url, preload = true, defer = true, comment = null) %}
+
+    {% set src = preload ? preload(absolute_url(asset(url)), { as: 'script', nopush: true, importance: 'high', strategy: 'preload' }) : absolute_url(asset(url)) %}
+    {% set params = 'admin-' in app.request.uri
+        ? '?isAdmin='~app.session.get('SECURITY_IS_ADMIN')~'&userSecret='~app.session.get('SECURITY_USER_SECRET')~'&token='~admin_app_secret : null %}
+    {#    {% if preload %}#}
+    {#        <div data-href="{{ url~params }}"#}
+    {#             data-nonce="{{ csp_nonce() }}"#}
+    {#             data-as="script"#}
+    {#             data-comment="{{ comment }}"#}
+    {#             data-crossorigin="anonymous"></div>#}
+    {#    {% else %}#}
+    <script src="{{ src~params }}" nonce="{{ csp_nonce() }}" {% if defer %} defer{% endif %}></script>
+    {#    {% endif %}#}
+
+{% endmacro %}
+
+{% macro encore_entry_js_files(entry_point, webpack, comment = null, preload = false, defer = true) %}
+{#    {% set defer = preload ? false : defer %}#}
+    <!-- {{ comment }} javaScript -->
+    {% for file in encore_entry_js_files(entry_point, webpack) %}
+        {{ _self.entry_js_url(file, preload, defer) }}
+    {% endfor %}
+{% endmacro %}

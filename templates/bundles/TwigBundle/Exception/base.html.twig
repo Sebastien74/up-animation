@@ -1,0 +1,46 @@
+{% trans_default_domain 'exception' %}
+
+{% set isPreview = 'preview' in app.request.uri %}
+{% set website = website is not defined or not website ? website() : website %}
+
+{% set template = isPreview ? website().configuration.template : template %}
+{% set websiteTemplate = websiteTemplate is not defined or not websiteTemplate ? website.configuration.template : websiteTemplate %}
+{% set webpack = webpack is not defined or not webpack ? 'front_'~website.configuration.template : webpack %}
+{% set webpack = 'front_'~websiteTemplate|replace({'-': '_'}) %}
+{% set websiteInformation = website.information %}
+{% set information = websiteInformation|intl %}
+{% set companyName = information.title is defined and information.title ? information.title : "Agence Félix"|trans|raw %}
+{% set assetAdmin = not isPreview and template == 'admin' and app.user or not isPreview and '/admin-' in app.request.uri and app.user %}
+
+{% set base = template == 'admin' and not isPreview or '/admin-' in app.request.uri and not isPreview
+    ? 'admin/base.html.twig' : 'front/'~template~'/base.html.twig' %}
+{% extends base %}
+
+{% set errorTitle = "Erreur"|trans|raw~" "~status_code %}
+{% set seoTitle = errorTitle~" | "~companyName %}
+{% block pageTitle %}{{ errorTitle }}{% endblock %}
+{% block title %}{{ errorTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% if assetAdmin %}
+        {{ encore_entry_link_tags('admin-error', null, 'admin') }}
+    {% else %}
+        {{ encore_entry_link_tags('front-'~websiteTemplate~'-error', null, webpack) }}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% if not assetAdmin %}
+        {{ encore_entry_script_tags('front-'~websiteTemplate~'-error', null, webpack, {defer: true, nonce: csp_nonce()}) }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% if template != 'admin' %}
+        {% include 'front/'~template~'/template/error.html.twig' %}
+    {% else %}
+        {% include 'admin/error.html.twig' %}
+    {% endif %}
+{% endblock %}

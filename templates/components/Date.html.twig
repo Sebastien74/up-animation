@@ -1,0 +1,58 @@
+{% trans_default_domain 'front' %}
+
+{% set currentYear = 'now'|date('Y') %}
+
+{% if this.localize.date and not this.localize.between and not this.localize.asHours %}
+    {% set betweenDate = this.localize.date|hourBetweenTwoDates %}
+    {% set newYear = this.localize.date ? this.localize.date|date('Y') : null %}
+    {% set localizeDate = this.localize.date|format_datetime(pattern=this.localize.formatDate, locale=app.request.locale) %}
+    {% set dateStr = betweenDate < 24 and betweenDate and not disabledHours ? 'Il y a %betweenDate%H'|trans({'%betweenDate%': betweenDate})
+        : (this.localize.date ? 'Le %localizeDate%'|trans({'%localizeDate%': localizeDate}) : null) %}
+    {% if currentYear != newYear and betweenDate > 24 and newYear not in dateStr and not disabledHours %}
+        {% set dateStr = dateStr~' '~newYear %}
+    {% endif %}
+    {% if this.strict %}
+        {% set dateStr = localizeDate %}
+    {% endif %}
+    {% if currentYear == newYear and currentYear in dateStr %}
+        {% set dateStr = dateStr|replace({(currentYear): ''})|trim %}
+    {% endif %}
+    <time class="date d-inline-block w-100{% if class %} {{ class }}{% endif %}"
+          datetime="{{ this.localize.date|date('Y-m-d') }}">
+        {{ dateStr|raw }}
+    </time>
+{% elseif this.localize.between %}
+    {% set startEntityYear = this.localize.startDate ? this.localize.startDate|date('Y') : false %}
+    {% set endEntityYear = this.localize.endDate ? this.localize.endDate|date('Y') : false %}
+    {% set yearStart = currentYear != startEntityYear ? ' '~startEntityYear : '' %}
+    {% set yearEnd = currentYear != endEntityYear ? ' '~endEntityYear : '' %}
+    {% if this.localize.startDate and not this.localize.endDate %}
+        <time class="date d-inline-block w-100{% if class %} {{ class }}{% endif %}"
+              datetime="{{ this.localize.date|date('Y-m-d') }}">
+            {{ "Le %date%%year%"|trans({
+                '%date%': this.localize.startDate|format_datetime(pattern=this.localize.formatDate, locale=app.request.locale),
+                '%year%': yearStart,
+            }) }}
+        </time>
+    {% elseif this.localize.startDate and this.localize.endDate %}
+        {% set startMonth = this.localize.startDate|date('m') %}
+        {% set endMonth = this.localize.startDate|date('m') %}
+        {% set startPattern = startMonth == endMonth ? this.localize.formatDate|replace({'m': '', 'M': '', 'Y': ''})|trim : this.localize.formatDate %}
+        {% set endPattern = currentYear == this.localize.endDate|date('Y') ? this.localize.formatDate|replace({'Y': ''})|trim : this.localize.formatDate %}
+        <p class="dates mb-0">{{ 'Du <time datetime="%startTime%">%startDate%</time> au <time datetime="%endTime%">%endDate%%year%</time>'|trans({
+                '%startTime%': this.localize.startDate|date('Y-m-d'),
+                '%startDate%': this.localize.startDate|format_datetime(pattern=startPattern, locale=app.request.locale),
+                '%endTime%': this.localize.endDate|date('Y-m-d'),
+                '%endDate%': this.localize.endDate|format_datetime(pattern=endPattern, locale=app.request.locale),
+                '%year%': yearEnd,
+            })|raw }}</p>
+    {% endif %}
+{% elseif this.localize.asHours %}
+    <time class="hour d-inline-block w-100{% if class %} {{ class }}{% endif %}"
+          datetime="{{ this.localize.date|date('Y-m-d') }}T{{ this.localize.date|date('H:i') }}">
+        {{ "%day% %dayMonth%"|trans({
+            '%day%': this.localize.date|format_datetime(pattern='cccc', locale=app.request.locale),
+            '%dayMonth%': this.localize.date|format_datetime(pattern='dd MMMM', locale=app.request.locale),
+        })|raw }}
+    </time>
+{% endif %}

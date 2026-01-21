@@ -1,0 +1,72 @@
+{% trans_default_domain 'front_default' %}
+
+{% set displayFilters = false %}
+{% set displayPointInfo = true %}
+{% set sidebarSize = 4 %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{#{% if microDataActive %}#}
+{#    {% include 'front/'~websiteTemplate~'/include/microdata-entities.html.twig' with {entities: products, url: url, website: website} only %}#}
+{#{% endif %}#}
+
+<div class="position-relative">
+    {{ macroWebmaster.box({
+        title: "Éditer le listing"|trans([], 'front_webmaster'),
+        role: 'ROLE_CATALOG',
+        toolBoxClass: 'listing-box',
+        path: path('admin_cataloglisting_edit', {website: website.id, cataloglisting: listing.id})
+    }) }}
+    <div class="catalog-map-container map-container position-relative">
+        <div class="row">
+            <div class="loader position-absolute d-flex align-items-center justify-content-center p-4">
+                <span class="spinner-border" role="status"></span>
+            </div>
+            {% if displayPointInfo %}
+                <div class="map-sidebar col-lg-{{ sidebarSize }} bg-primary d-none"></div>
+            {% elseif displayFilters %}
+                {#    {% include 'front/'~websiteTemplate~'/actions/map/include/filters.html.twig' %}#}
+            {% endif %}
+            <div class="map-filter-box p-0 col-lg-{% if displayFilters %}{{ 12 - sidebarSize }}{% else %}12{% endif %}"
+                 data-sidebar-size="{{ sidebarSize }}">
+                {#         data-category-length="{{ categories|length }}">#}
+                <div id="teams-map-{{ listing.slug }}"
+                     class="map-box map-box-catalog"
+                     data-ajax-path="{{ path('front_cataloglisting_index', {url: url.id, filter: filter, ajax: true}) }}"
+                     data-layer=""
+                     data-multiple="0">
+                    <div class="data-map d-none"
+                         data-auto-center="1"
+                         data-zoom="5"
+                         data-min-zoom="5"
+                         data-max-zoom="20"
+                         data-latitude="45.899247"
+                         data-longitude="6.129384"
+                         data-marker-clusters="1"
+                         data-enlarge-txt="{{ "Agrandir le plan"|trans|raw }}"
+                         data-direction-txt="{{ "Itinéraire"|trans|raw }}">
+                        {% for product in products %}
+                            <div class="point"
+                                 data-id="{{ product.id }}"
+                                 data-in-cluster="1"
+                                 data-category=""
+                                 data-marker="{{ asset('uploads/'~website.uploadDirname~'/marker-blue.svg') }}"
+                                 data-marker-width="30"
+                                 data-marker-height="30"
+                                 data-latitude="{{ product.info.address.latitude }}"
+                                 data-longitude="{{ product.info.address.longitude }}">
+                                <div id="point-popup-html-{{ product.id }}"
+                                     data-path="{{ path('front_map_product', {listing: listing.id, product: product.id}) }}"
+                                     class="point-popup-html bg-primary cursor refresh">
+                                    <div class="inner">
+                                        {{ product.intl.title|raw }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+{% trans_default_domain 'front_default' %}
+
+{% macro content(entity, websiteTemplate, titleForce) %}
+    {% set intl = entity.intl %}
+    {% if intl.subTitle %}
+        <h{{ titleForce }} class="title mb-4">{{ intl.subTitle|raw }}</h{{ titleForce }}>
+    {% endif %}
+    {% if intl.introduction %}
+        <p class="introduction fw-700">{{ intl.introduction|raw|nl2br }}</p>
+    {% endif %}
+    {% if intl.body %}
+        {% if entity.entity.largeBullets %}
+            <div class="text-block list-style-check">
+        {% endif %}
+            <div class="body">{{ intl.body|raw }}</div>
+        {% if entity.entity.largeBullets %}
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if intl.link %}
+        {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: intl, style: 'mt-4'} only %}
+    {% endif %}
+{% endmacro %}

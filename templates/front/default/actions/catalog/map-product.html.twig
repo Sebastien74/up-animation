@@ -1,0 +1,8 @@
+{% trans_default_domain 'front_default' %}
+
+<div class="map-product">
+    {% if product.mainMedia %}
+        {{ product.mainMedia|file({}, {width: 150, height: 150, placeholder: true}) }}
+    {% endif %}
+    {{ product.intl.title|raw }}
+</div>

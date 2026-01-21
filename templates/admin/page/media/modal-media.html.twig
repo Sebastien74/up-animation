@@ -1,0 +1,72 @@
+{% trans_default_domain 'admin' %}
+
+{% set disabledFormats = ['webm', 'vtt', 'mp4'] %}
+
+<div id="media-edition-modal"
+     class="modal fade"
+     tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content border refer-preloader text-start pb-3 pt-3">
+            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100">{{ 'fal images'|icon(null, 50, 'dark m-0') }}</h5>
+                <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                    {{ 'fal times'|icon(20, 20, 'dark') }}
+                </button>
+            </div>
+            <div class="modal-body ps-5 pe-5">
+                <div class="ajax-content">
+                    <h2 class="main-title text-dark text-center fw-bold mb-4">{{ "Édition média"|trans }}</h2>
+                    {{ form_start(form, {attr: {
+                        novalidate: "novalidate",
+                        action: path('admin_media_edit', {website: websiteId(), media: entity.id}),
+                        id: 'media-form-'~entity.id}}) }}
+
+                        {% if form.mediaScreens|length > 0 %}
+                            <ul class="nav nav-tabs" id="media-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="desktop-tab" data-bs-toggle="tab" href="#desktop" role="tab" aria-controls="desktop" aria-selected="true">{{ "Ordinateur"|trans }}</a>
+                                </li>
+                                {% for screen in form.mediaScreens|reverse %}
+                                    {% set screenSize = screen.vars.data.screen %}
+                                    {% set label = screenSize == 'tablet' ? 'Tablette'|trans : 'Mobile'|trans %}
+                                    {% if screenSize not in disabledFormats %}
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="{{ screenSize }}-tab" data-bs-toggle="tab" href="#{{ screenSize }}" role="tab" aria-controls="{{ screenSize }}" aria-selected="false">{{ label }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        <div class="tab-content" id="media-tab-content">
+                            <div class="tab-pane fade show active" id="desktop" role="tabpanel" aria-labelledby="desktop-tab">
+                                {% set displayLabel = form.vars.value.mediaScreens is defined ? form.vars.value.mediaScreens|length > 0 : form.mediaScreens|length > 0 %}
+                                {% include 'admin/page/media/media-tab.html.twig' with {media: form, entity: form.vars.data, label: "Ordinateur"|trans, displayLabel: displayLabel} only %}
+                            </div>
+                            {% for screen in form.mediaScreens|reverse %}
+                                {% set data = screen.vars.data %}
+                                {% set screenSize = data.screen %}
+                                {% set label = screenSize == 'tablet' ? 'Tablette'|trans : 'Mobile'|trans %}
+                                {% if screenSize not in disabledFormats %}
+                                    <div class="tab-pane fade" id="{{ screenSize }}" role="tabpanel" aria-labelledby="{{ screenSize }}-tab">
+                                        {% include 'admin/page/media/media-tab.html.twig' with {media: screen, entity: data, label: label|trans, displayLabel: displayLabel} only %}
+                                    </div>
+                                {% else %}
+                                    <div class="d-none">
+                                        {{ form_row(screen) }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="w-100 text-center modal-buttons mt-4">
+                            {{ form_row(form.save) }}
+                        </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

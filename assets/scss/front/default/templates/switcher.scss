@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2024-10-09, 8:55 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    TEMPLATE SWITCHER :
+    ==================
+
+    1 ) Modules
+    2 ) Core import
+    3 ) Core
+
+------------------------------------------------------------------ */
+
+/*--------------------------------------
+   1 ) Modules
+--------------------------------------*/
+
+$enable-form: true;
+$enable-form-preloader: true;
+$enable-thanks-modal: true;
+$enable-alert: true;
+$enable-toast: true;
+$enable-badge: true;
+
+/*-----------------------------------
+   2 ) Core import
+-----------------------------------*/
+
+@import "../vendor";
+
+/*-----------------------------------
+   3 ) Core
+-----------------------------------*/
+
+@import "../utilities/mixins";
+@import "../variables";
+
+/*! purgecss start ignore */
+
+#users-switcher-box {
+    .choices__inner {
+        padding: 7.5px 7.5px;
+    }
+}
+
+/*! purgecss end ignore */

@@ -1,0 +1,21 @@
+{% if form is defined %}
+    {{ form_start(form, {attr: {
+        id: "search-medias-form",
+        class: "d-inline-block",
+        action: path('admin_folders_medias_search', {website: websiteId()}),
+        role: "search",
+        novalidate: "novalidate" }}) }}
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">{{ 'fal search'|icon(14, 14, 'dark') }}</span>
+            </div>
+            {{ form_widget(form.searchMedia) }}
+        </div>
+    {{ form_end(form) }}
+{% endif %}
+
+{% if medias is defined %}
+    <div id="search-results">
+        {% include 'admin/page/media/medias-list.html.twig' %}
+    </div>
+{% endif %}

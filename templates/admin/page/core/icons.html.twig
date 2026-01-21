@@ -1,0 +1,143 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageIcon = 'fal books' %}
+
+{% block title %}{{ "Blibliothèque d'icônes"|trans|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ "Blibliothèque d'icônes"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-icons-library', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-icons-library', null, 'admin', {defer: false}) }}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="card">
+
+        <ul class="nav nav-tabs custom-tab large" role="tablist">
+            {% for libraryName, icons in libraries %}
+                {% if libraryName != 'website' %}
+                    <li class="nav-item">
+                        {% set active = libraryName == library %}
+                        <a href="{{ path("admin_icons", {website: websiteId, library: libraryName}) }}"
+                           class="nav-link{% if active %} active{% endif %}"
+                           data-toggle="preloader">
+                            <span class="d-none d-sm-inline-block">{{ libraryName|capitalize|raw }}</span>
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            <li class="nav-item">
+                {% set active = library == 'website' %}
+                <a href="{{ path("admin_icons", {website: websiteId, library: 'website'}) }}"
+                   class="nav-link{% if active %} active{% endif %}"
+                   data-toggle="preloader">
+                    <span class="d-none d-sm-inline-block">{{ "Icônes du site"|trans|raw }}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="https://www.toptal.com/designers/htmlarrows"
+                   class="nav-link" target="_blank">
+                    <span class="d-none d-sm-inline-block">Symbols</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="https://thenounproject.com"
+                   class="nav-link" target="_blank">
+                    <span class="d-none d-sm-inline-block">Noun Project</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="row m-md-0 bg-white">
+            <div class="col-md-10 my-auto p-md-0">
+                <form role="search" class="icons-search bg-info-darken p-4 mb-0">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text h-100 bg-light">{{ 'fal search'|icon(14, 14, 'dark') }}</span>
+                        </div>
+                        <input placeholder="{{ "Rechercher"|trans }}" class="form-control" type="text">
+                    </div>
+                </form>
+            </div>
+            <div id="add-icon-btn" class="col-md-2 p-md-0 text-center bg-info">
+                <button class="btn btn-info"
+                        data-bs-toggle="collapse"
+                        href="#collapse-add-icons"
+                        role="button"
+                        aria-expanded="false"
+                        aria-controls="collapse-add-icons">
+                    {{ 'fal plus'|icon(25, 25, 'white me-3') }}{{ "Ajouter des icônes"|trans|raw }}
+                </button>
+            </div>
+        </div>
+
+        {% set countryNames = app.request.locale|countryNames %}
+
+        <!-- Tab panes -->
+        <div id="icons-contents" class="tab-content bg-white mb-4" data-librairy="{{ library }}">
+            <div id="tab-pane-{{ library }}" class="tab-pane active">
+                <div class="card-body pb-0">
+                    <div class="collapse" id="collapse-add-icons">
+                        <div class="card card-body bg-light">
+                            {{ render_esi(path('admin_icons_add', {website: websiteId})) }}
+                        </div>
+                    </div>
+                    <div class="row glyphs">
+                        {% for libraryName, icons in libraries %}
+                            {% if libraryName == library %}
+                                {% for icon in icons %}
+                                    {% set inWebsiteIcons = icon.src in websiteIcons %}
+                                    <div class="item col-md-3 col-sm-4 mb-3">
+                                        <div class="d-flex align-items-center bg-hover-active-info-darken icon-wrap{% if inWebsiteIcons %} active{% endif %}">
+                                            <img data-src="{{ asset(icon.src) }}"
+                                                 src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                                 class="img-fluid img-icon me-3 lazy-load{% if libraryName != 'flags' %} icon-hover{% endif %}">
+                                            <div>
+                                                {% set locale = icon.locale is defined and icon.locale ? icon.locale : null %}
+                                                <div class="search-icon">{% if locale and countryNames[locale|upper] is defined %}{{ countryNames[locale|upper] }}{% else %}{{ icon.filename }}{% endif %}</div>
+                                            </div>
+                                            <div class="icon-actions text-info-darken">
+                                                <div class="icon-copy border-info-darken" data-bs-toggle="tooltip" title="{{ "Copier"|trans }}" data-placement="left">
+                                                    <div class="inner h-100">{{ 'fal copy'|icon(20, 20, 'info-darken') }}</div>
+                                                </div>
+                                                {% set status = inWebsiteIcons ? 'true' : 'false' %}
+                                                {% set tooltip = inWebsiteIcons ? "Retirer"|trans : "Ajouter"|trans %}
+                                                <a href="#" class="icon-add bg-active-info-darken border-info-darken d-inline-block w-100{% if inWebsiteIcons %} active{% endif %}"
+                                                   data-path="{{ icon.src|url_encode }}"
+                                                   data-status="{{ status }}"
+                                                   data-add-txt="{{ "Ajouter"|trans }}"
+                                                   data-remove-txt="{{ "Retirer"|trans }}"
+                                                   data-bs-toggle="tooltip" title="{{ tooltip|raw }}" data-placement="left">
+                                                    <div class="inner h-100">
+                                                        {% set checkClass = inWebsiteIcons ? 'info-darken' : 'd-none' %}
+                                                        {{ 'fal check'|icon(20, 20, checkClass) }}
+                                                        {% set addClass = not inWebsiteIcons ? 'info-darken' : 'd-none' %}
+                                                        {{ 'fal plus'|icon(20, 20, addClass) }}
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% else %}
+                            <div class="col-12">
+                                {% include 'admin/include/alert.html.twig' with {alert: "info", message: "Aucune icône enregistrée."|trans} only %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

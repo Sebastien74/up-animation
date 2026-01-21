@@ -1,0 +1,411 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Module : Webmaster
+    Copyright : 2025
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+        1 ) Import
+        2 ) Webmaster buttons toolbar
+        3 ) Webmaster buttons edition
+        4 ) Internal modal errors
+        5 ) Tooltip
+        6 ) Large file container
+------------------------------------------------------------------ */
+
+/*! purgecss start ignore */
+
+/*-----------------------------------
+   1 ) Import
+-----------------------------------*/
+
+@import '../../../lib/fonts/icomoon-webmaster';
+@import "../../front/bootstrap/variables";
+
+$enable-dropdown: true;
+@import "../../front/bootstrap/modules/dropdown";
+
+/*-----------------------------------
+   2 ) Webmaster buttons toolbar
+-----------------------------------*/
+
+$primary: #24252e;
+$primary-darken: shade-color($primary, 20%);
+$success: #01796f;
+$danger: #a82835;
+$white: #fff;
+$black: #000;
+$icon-color: transparentize($white, .2);
+
+html body {
+
+    &.axeptio-active {
+        #webmaster-box {
+            @media only screen and (max-width: 767px) {
+                bottom: 70px !important;
+            }
+        }
+    }
+
+    &:not(.axeptio-active) {
+        #webmaster-box {
+            @media only screen and (max-width: 767px) {
+                bottom: 20px !important;
+            }
+        }
+    }
+
+    .large-file-container {
+        display: flex !important;
+    }
+}
+
+html body #webmaster-box {
+
+    position: fixed !important;
+    left: 20px !important;
+    z-index: 9999 !important;
+    text-align: center !important;
+    transition: all .3s !important;
+
+    @media only screen and (min-width: 768px) {
+
+        &.bottom {
+            bottom: 10% !important;
+        }
+
+        &:not(.bottom) {
+            top: 75px !important;
+        }
+    }
+
+    #webmaster-box-wrapper {
+
+        .dropdown-toggle {
+
+            margin: 0 !important;
+
+            i {
+                transition: all 1s !important;
+                transform: rotate(45deg) !important;
+            }
+
+            &:after {
+                display: none !important;
+            }
+        }
+
+        #webmaster-box-dropdown.show {
+            i {
+                transition: all .7s !important;
+                transform: rotate(270deg) !important;
+            }
+        }
+    }
+
+    .dropdown-menu {
+        border: 0 !important;
+        min-width: initial !important;
+        background-color: transparent !important;
+    }
+
+    .btn {
+
+        width: 50px !important;
+        height: 50px !important;
+        min-width: initial !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        margin-bottom: 12px !important;
+        background-color: $primary !important;
+        border-color: $primary !important;
+        transition: all .3s !important;
+        color: $primary !important;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.46) !important;
+        font-family: unset !important;
+        aspect-ratio: 1 !important;
+
+        &:before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: 99 !important;
+            border-radius: 50% !important;
+            background-color: transparent !important;
+            width: 100% !important;
+        }
+
+        i {
+            font-size: 24px !important;
+            color: $icon-color !important;
+            transition: all .3s !important;
+        }
+
+        &:hover, &:focus {
+
+            background-color: $white !important;
+
+            i {
+                color: $primary !important;
+                transition: all .3s !important;
+            }
+        }
+
+        &:last-child {
+            margin-bottom: 0 !important;
+        }
+    }
+
+    &.as-user-front {
+
+        .btn {
+
+            background-color: $secondary !important;
+            border-color: $secondary !important;
+
+            &.show, &:hover, &:focus, &:active {
+                i {
+                    color: $white !important;
+                    opacity: 1 !important;
+                }
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Webmaster buttons edition
+-----------------------------------*/
+
+html body a.webmaster-link-edit,
+html body .contact-action-container a.webmaster-link-edit,
+html body #content-page #body-page a.webmaster-link-edit,
+html body a.webmaster-link-edit {
+
+    position: absolute !important;
+    border-radius: 50% !important;
+    width: 25px !important;
+    height: 25px !important;
+    transform: scale(.99) !important;
+    line-height: 0 !important;
+    box-shadow: 0 0 3px 0 #c2c2c2 !important;
+    padding: 6px !important;
+    z-index: 7000 !important;
+    text-align: center !important;
+    top: 15px !important;
+    left: 15px !important;
+    font-size: 12px !important;
+    background-color: $success !important;
+    border-color: $success !important;
+    color: $white !important;
+    min-width: initial !important;
+
+    &.listing-box {
+        margin-top: -2.5rem !important;
+    }
+
+    &.success {
+
+        i {
+            font-size: 11px !important;
+            color: $white !important;
+            margin: 0 !important;
+            min-width: initial !important;
+            transition: all .3s ease-in-out !important;
+        }
+
+        &:hover, &:focus {
+
+            background-color: $white !important;
+
+            i {
+                color: $success !important;
+                transition: all .3s ease-in-out !important;
+            }
+        }
+    }
+}
+
+body.editor {
+
+    a.webmaster-link-edit {
+
+        display: inline-block !important;
+        fill: $white !important;
+
+        &:focus * {
+            fill: $white !important;
+        }
+    }
+}
+
+/*-----------------------------------
+   4 ) Internal modal errors
+-----------------------------------*/
+
+body.internal-error-show {
+    overflow: initial !important;
+    padding-right: initial !important;
+}
+
+#internal-error-modal {
+
+    right: 30px !important;
+    font-family: Arial, sans-serif !important;
+    z-index: 9999 !important;
+    width: initial !important;
+    height: initial !important;
+
+    .modal-content {
+        box-shadow: 0 0.5rem 1rem transparentize(#000000, .8) !important;
+        background-color: transparentize(#382113, .8) !important;
+        border-radius: 0 !important;
+    }
+
+    .logo {
+        height: 60px !important;
+        width: auto !important;
+    }
+
+    .btn-close {
+        position: absolute !important;
+        top: 15px !important;
+        right: 15px !important;
+    }
+
+    .modal-dialog {
+        position: fixed !important;
+        right: 30px !important;
+        bottom: 0 !important;
+    }
+}
+
+/*-----------------------------------
+   5 ) Tooltip
+-----------------------------------*/
+
+.webmaster-tooltip {
+    position: absolute !important;
+    z-index: 1080 !important;
+    display: block !important;
+    margin: 0 !important;
+    font-family: var(--bs-font-sans-serif), sans-serif !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    text-align: right !important;
+    text-decoration: none !important;
+    text-shadow: none !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    word-break: normal !important;
+    word-spacing: normal !important;
+    white-space: normal !important;
+    line-break: auto !important;
+    font-size: 0.98438rem !important;
+    word-wrap: break-word !important;
+    opacity: 0 !important;
+}
+
+.webmaster-tooltip.show {
+    opacity: 1 !important;
+}
+
+.webmaster-tooltip .tooltip-arrow {
+    position: absolute !important;
+    display: block !important;
+    width: 0.8rem !important;
+    height: 0.4rem !important;
+}
+
+.webmaster-tooltip .tooltip-arrow::before {
+    position: absolute !important;
+    content: "" !important;
+    border-color: transparent !important;
+    border-style: solid !important;
+}
+
+.webmaster-tooltip {
+
+    &.bs-tooltip-end {
+
+        padding: 0 0.4rem !important;
+
+        .tooltip-arrow {
+
+            left: 0 !important;
+            width: 0.4rem !important;
+            height: 0.8rem !important;
+
+            &::before {
+                right: -1px !important;
+                border-width: 0.4rem 0.4rem 0.4rem 0 !important;
+                border-right-color: $black !important;
+            }
+        }
+    }
+
+    .tooltip-inner {
+        max-width: 200px !important;
+        padding: 0.25rem 0.5rem !important;
+        color: #ffffff !important;
+        text-align: center !important;
+        background-color: $black !important;
+        border-radius: 0.25rem !important;
+        font-size: 13px !important;
+    }
+}
+
+/*-----------------------------------
+   6 ) Large file container
+-----------------------------------*/
+
+.large-file-container {
+
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-height: 100% !important;
+    z-index: 1000 !important;
+    background: transparentize(#000, .7) !important;
+    overflow: hidden !important;
+    font-size: 14px !important;
+
+    .large-file-info {
+
+        display: inline-block !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: translateY(-50%) !important;
+        text-align: center !important;
+
+        small {
+            background: #eee !important;
+            padding: 1rem !important;
+        }
+
+        .text-danger {
+            color: $danger !important;
+        }
+
+        .btn-danger {
+
+            width: 40px !important;
+            height: 40px !important;
+            background-color: $danger !important;
+            border-color: $danger !important;
+
+            i {
+                color: $white !important;
+            }
+        }
+    }
+}
+
+/*! purgecss end ignore */

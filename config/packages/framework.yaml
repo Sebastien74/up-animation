@@ -1,0 +1,51 @@
+framework:
+
+    secret: '%env(APP_SECRET)%'
+    esi: true
+    fragments: { path: /_fragment }
+    csrf_protection: true
+    error_controller: App\Controller\ExceptionController::showAction
+    http_method_override: false
+    http_client:
+        default_options:
+            http_version: '2.0'
+    annotations: false
+    handle_all_throwables: true
+
+    # Enables session support. Note that the session will ONLY be started if you read or write from it.
+    # Remove or comment this section to explicitly disable session support.
+    session:
+        handler_id: 'file://%kernel.project_dir%/var/sessions' # or null
+        cookie_secure: true
+        cookie_samesite: lax # possible values: 'strict', 'lax' and null
+#        storage_factory_id: session.storage.factory.native
+#        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+#        enabled: true
+
+    php_errors:
+        log: true
+
+when@dev:
+    framework:
+        http_cache: false
+
+when@local:
+    framework:
+        http_cache: false
+        disallow_search_engine_index: true #X-Robots-Tag: noindex if true
+        session:
+            storage_factory_id: session.storage.factory.mock_file
+
+when@preprod:
+    framework:
+        disallow_search_engine_index: true #X-Robots-Tag: noindex if true
+
+when@prod:
+    framework:
+        disallow_search_engine_index: false #X-Robots-Tag: noindex if true
+
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file

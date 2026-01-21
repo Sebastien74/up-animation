@@ -1,0 +1,37 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard %}
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% if entities %}
+    <div class="products-teaser-container position-relative">
+        {{ macroWebmaster.box({
+            title: "Éditer le tesaer"|trans([], 'front_webmaster'),
+            role: 'ROLE_CATALOG',
+            path: path('admin_productteaser_edit', {website: website.id, productteaser: teaser.id})
+        }) }}
+        {% if teaserIntl.title %}
+            {% set titleForce = teaserIntl.titleForce ? teaserIntl.titleForce : 2 %}
+            <h{{ titleForce }} class="title mb-4">{{ teaserIntl.title|raw }}</h{{ titleForce }}>
+        {% endif %}
+        <div class="posts row">
+            {% for post in entities %}
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    {{ macroCard.standard({
+                        entity: post,
+                        titleForce: 3,
+                        thumbConfiguration: thumbConfiguration,
+                        thumbPlaceholder: true,
+                        displayThumbnail: true,
+                        showLink: true,
+                        colSize: 4,
+                        webmaster: {
+                            title: "Éditer le produit"|trans([], 'front_webmaster'),
+                            role: 'ROLE_CATALOG',
+                            path: path('admin_catalogproduct_edit', {website: website.id, catalogproduct: post.id})
+                        }}) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,165 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+{% import _self as macro %}
+
+{% macro card(job, websiteTemplate, background = 'white') %}
+    {% set haveFooter = job.place or job.department or job.contract.title %}
+    {% set displayCategory = false %}
+    {% set asDarken = 'primary' == background %}
+    {% set color = asDarken ? 'white' : 'primary' %}
+    <a href="{{ job.url }}" class="card job-card border-0 shadow text-center h-100 bg-{{ background }} px-0 py-5{% if haveFooter %} have-footer{% endif %}">
+        <div class="card-body px-0 mx-5 pt-0 border-0 {% if haveFooter %}pb-0{% else %}pb-0{% endif %}">
+            {% if (displayCategory and job.category.intl.title is defined and job.category.intl.title) or (displayCategory and job.category.icon is defined and job.category.icon)  %}
+                <div class="category-wrap d-flex justify-content-center align-items-center">
+                    {% if job.category.icon is defined and job.category.icon  %}
+                        {{ (job.category.icon)|icon(null, 20, 'white') }}
+                    {% endif %}
+                    {% if job.category.intl.title is defined and job.category.intl.title  %}
+                        {{ job.category.intl.title|raw }}
+                    {% endif %}
+                </div>
+            {% endif %}
+            <strong class="d-inline-block w-100 text-{{ color }} text-uppercase fw-700">{{ job.intl.title|raw }}</strong>
+            {% if job.intl.introduction is defined and job.intl.introduction  %}
+                <div class="introduction mt-4">{{ job.intl.introduction|raw }}</div>
+            {% endif %}
+        </div>
+        {% if haveFooter %}
+            <div class="card-footer px-3 bg-transparent p-0 mt-3 border-0">
+                <div class="d-flex justify-content-center text-center flex-wrap">
+                    {% if job.company %}
+                        <div class="contract d-flex flex-column mt-3 mx-3">
+                            {{ 'fal building'|icon(null, 24, color) }}
+                            <div class="content mt-1">
+                                {{ job.company|raw }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if job.place or job.department %}
+                        <div class="contract d-flex flex-column mt-3 mx-3">
+                            {{ 'fal map-marked-alt'|icon(null, 24, color) }}
+                            <div class="content mt-1">
+                                {% if job.place or job.place %}
+                                    {{ job.place|raw }}
+                                {% endif %}
+                                {% if job.zipCodeSmall or job.zipCodeSmall %}
+                                    ({{ job.zipCodeSmall|raw }})
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if job.contract.title %}
+                        <div class="contract d-flex flex-column mt-3 mx-3">
+                            {{ 'fal file-certificate'|icon(null, 24, color) }}
+                            <div class="content mt-1">
+                                {{ job.contract.title|raw }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if job.diploma %}
+                        <div class="contract d-flex flex-column mt-3 mx-3">
+                            {{ 'fal file-certificate'|icon(null, 24, color) }}
+                            <div class="content mt-1">
+                                {{ job.diploma|raw }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if job.remuneration %}
+                        <div class="contract d-flex flex-column mt-3 mx-3">
+                            {{ 'fal euro-sign'|icon(null, 24, color) }}
+                            <div class="content mt-1">
+                                {{ job.remuneration|raw }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </a>
+{% endmacro %}
+
+<div class="recruitment-index listing-entities-container">
+    {% set noOnlineEntities = filters is empty and entities is empty %}
+    {% if noOnlineEntities %}
+        <div class="row">
+            <div class="col-md-8 col-lg-6 mx-auto">
+                {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {
+                    alert: 'primary',
+                    alertClass: 'no-job-alert',
+                    message: "Aucune offre pour le moment."|trans } only %}
+            </div>
+        </div>
+    {% endif %}
+    {% if entities is not empty %}
+        {% set havePromote = false %}
+        {% set countPromote = 0 %}
+        {% for job in entities %}
+            {% if job.promote %}
+                {% set havePromote = true %}
+                {% set countPromote = countPromote + 1 %}
+            {% endif %}
+        {% endfor %}
+        {% if filters is empty and havePromote and listing.displayPromote %}
+            <div class="promoted-jobs radius mb-lg-5 py-5 px-4 bg-primary">
+                <h3 class="d-md-flex text-center text-md-start px-3 text-white m-0">
+                    <span class="text-uppercase fw-700">{{ "Les offres à la une"|trans|raw }}</span> <br class="d-md-none">
+                    <span class="count-text fw-800 ms-auto text-uppercase text-white d-flex justify-content-center justify-content-md-start align-items-center has-custom-color mt-3 mt-md-0">
+                        <span class="badge bg-white text-primary has-custom-color ms-md-4 me-2">{{ countPromote }}</span>
+                        {% if countPromote > 1 %}{{ "offres"|trans|raw }}{% else %}{{ "offre"|trans|raw }}{% endif %}
+                    </span>
+                </h3>
+                <div class="row d-flex justify-content-center">
+                    {% for job in entities %}
+                        {% if job.promote %}
+                            <div class="item col-12 col-lg-6 col-xl-4 mb-xl-0 pt-4 pb-0 px-3 px-md-4">
+                                {{ macro.card(job, websiteTemplate) }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if listing.displayFilters and not noOnlineEntities %}
+        {% include 'front/'~websiteTemplate~'/actions/vendor/include/entities-filters-form.html.twig' with {
+            form: form,
+            interfaceName: interfaceName,
+            website: website,
+            url: url,
+            filter: filter,
+            filters: filters is defined ? filters : false,
+            allEntities: allEntities,
+            websiteTemplate: websiteTemplate,
+            formLabel: 'Filtrer les offres :'|trans,
+            counter: true,
+            counterInline: true,
+            counterLabel: 'offre trouvée'|trans,
+            counterLabelPlural: 'offres trouvées'|trans,
+            reset: false,
+            mobileForm: false,
+        } only %}
+    {% endif %}
+    {% if entities is not empty %}
+        <div class="row jobs-index d-flex justify-content-center position-relative">
+            {{ macroWebmaster.box({
+                title: "Éditer le listing"|trans([], 'front_webmaster'),
+                role: 'ROLE_RECRUITMENT',
+                toolBoxClass: 'listing-box',
+                path: path('admin_recruitmentlisting_edit', {website: website.id, recruitmentlisting: listing.id})
+            }) }}
+            {% set delay = 200 %}
+            {% for job in entities %}
+                <div class="col-12 col-lg-6 col-xl-4 mb-4 aos px-lg-4" data-aos="fade-right" data-aos-delay="{{ delay }}">
+                    {{ macroWebmaster.box({
+                        'title': "Éditer l'offre"|trans([], 'front_webmaster'),
+                        'role': 'ROLE_RECRUITMENT',
+                        'path': path('admin_recruitmentjob_edit', {'website': website.id, 'recruitmentjob': job.id})
+                    }) }}
+                    {{ macro.card(job, websiteTemplate, 'primary') }}
+                </div>
+                {% set delay = isMobile() ? 200 : delay + 200 %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2025
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    TEMPLATE SECURITY BACK :
+    =======================
+
+    1 ) Modules
+    3 ) Core import
+    4 ) Core
+
+------------------------------------------------------------------ */
+
+/*--------------------------------------
+   1 ) Modules
+--------------------------------------*/
+
+$enable-form: true;
+$enable-form-preloader: true;
+$enable-thanks-modal: true;
+$enable-breadcrumb: true;
+$enable-alert: true;
+$enable-tooltip: true;
+$enable-youtube: true;
+$enable-icon: true;
+$enable-pagination: true;
+$enable-modal: true;
+
+/*-----------------------------------
+   3 ) Core import
+-----------------------------------*/
+
+@import "../vendor";
+
+/*-----------------------------------
+   4 ) Core
+-----------------------------------*/

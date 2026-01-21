@@ -1,0 +1,85 @@
+{% trans_default_domain 'front_default' %}
+
+{% if haveMedia %}
+    {% set col = block.col %}
+    {% set zone = col.zone %}
+    {% set lazyLoad = zone.position != 1 %}
+    {% set animActive = false %}
+    {% set anim = blockTransitions|transitionsAttributes({media: animActive ? 'block-media' : null}) %}
+    {% set fullSize = zone.fullSize %}
+    {% set alignment = block.alignment ? block.alignment : 'start' %}
+    {% set radius = media.radius is defined ? media.radius : false %}
+    {% set pictoPosition = 'top' %}
+    {% set pictoSide = 'end' %}
+    {% if media.pictogram %}
+        {% set style = style~(' have-pictogram have-pictogram-'~pictoPosition~' have-pictogram-'~pictoSide)|trim %}
+    {% endif %}
+    {% set mediaSecondaryPosition = 'bottom' %}
+    {% set mediaSecondarySide = 'start' %}
+    {% if mediaSecondary %}
+        {% set style = (style~' have-media-secondary have-media-secondary-'~mediaSecondaryPosition~' have-media-secondary-'~mediaSecondarySide)|trim %}
+    {% endif %}
+    <div class="media-block position-relative w-100{% if anim.media.class %} {{ anim.media.class|raw }}{% endif %}{% if style %} {{ style }}{% endif %}"
+        {% if anim.media.attr %} {{ anim.media.attr|raw }}{% endif %}>
+        {% if media.pictogram %}
+            <div class="pictogram-container {{ pictoPosition }}-align{% if pictoSide %}-{{ pictoSide }}{% endif %}">
+                <div class="pictogram-wrap rounded-circle d-flex align-items-center justify-content-center shadow-primary position-relative">
+                    {{ asset(media.pictogram)|file({}, {
+                        class: 'pictogram',
+                        width: media.pictogramMaxWidth ? media.pictogramMaxWidth : null,
+                        height: media.pictogramMaxHeight ? media.pictogramMaxHeight : 50,
+                    }) }}
+                </div>
+            </div>
+        {% endif %}
+        {% if mediaSecondary %}
+            <div class="media-secondary-container {{ mediaSecondaryPosition }}-align{% if mediaSecondarySide %}-{{ mediaSecondarySide }}{% endif %}">
+                <div class="media-secondary-wrap">
+                    {% set secondaryWidth = media.pictogramMaxWidth ? media.pictogramMaxWidth : null %}
+                    {% set secondaryHeight = media.pictogramMaxHeight ? media.pictogramMaxHeight : 240 %}
+                    {{ mediaSecondary|file({}, {
+                        class: 'radius-large shadow-primary',
+                        screensSizes: {
+                            mobile: {width: secondaryWidth ? (secondaryHeight / 1.85) : null, height: (secondaryHeight / 1.85)},
+                            tablet: {width: secondaryWidth ? (secondaryHeight / 1.2) : null, height: (secondaryHeight / 1.2)},
+                            desktop: {width: secondaryWidth, height: secondaryHeight}
+                        },
+                    }) }}
+                </div>
+            </div>
+        {% endif %}
+        {% if media.title and (media.titlePosition == 'top' or media.titlePosition == 'bottom') %}
+            <figure role="figure" aria-label="{{ media.title }}" class="d-flex justify-content-{{ alignment }} text-{{ alignment }} m-0">
+        {% endif %}
+                <div class="media-content{% if (media.title or media.introduction) and (media.titlePosition == 'right' or media.titlePosition == 'left') %} have-content-side d-inline-flex align-items-start justify-content-{{ alignment }}{% endif %}">
+                {% if media.title and (media.titlePosition == 'top' or media.titlePosition == 'left') %}
+                    <figcaption class="img-title d-inline-block {% if media.titlePosition == 'left' %}me-3{% else %}mb-3{% endif %} {% if media.titlePosition == 'top' %}w-100{% endif %}">{{ media.title|raw }}</figcaption>
+                {% endif %}
+                {% set mediaWidth = mediaWidth is defined ? mediaWidth : null %}
+                {% set mediaHeight = mediaHeight is defined ? mediaHeight : null %}
+                {% set forceThumb = mediaHeight is not empty or mediaWidth is not empty %}
+                {% if 'file' == media.type %}
+                    {{ media|file({}, {file: true}) }}
+                {% else %}
+                    {{ block|file(thumbConfiguration, {
+                        lazyLoad: lazyLoad,
+                        maxWidth: mediaWidth,
+                        maxHeight: mediaHeight,
+                        forceThumb: forceThumb,
+                        colSize: col.size,
+                        zoneFullSize: fullSize,
+                        parentEntity: block
+                    }) }}
+                {% endif %}
+                {% if media.title and (media.titlePosition == 'bottom' or media.titlePosition == 'right') %}
+                    <figcaption class="img-title d-inline-block {% if media.titlePosition == 'right' %}ms-3{% elseif media.titlePosition == 'bottom' %}w-100 mt-3{% else %}mt-3 ps-2{% endif %}">{{ media.title|raw }}</figcaption>
+                {% endif %}
+                {% if media.introduction %}
+                    <p class="media-introduction fw-100 mb-0 ms-3">{{ media.introduction|raw|nl2br }}</p>
+                {% endif %}
+            </div>
+        {% if media.title and (media.titlePosition == 'top' or media.titlePosition == 'bottom') %}
+            </figure>
+        {% endif %}
+    </div>
+{% endif %}

@@ -1,0 +1,138 @@
+#####################################
+#           Media                  #
+#####################################
+
+App\Entity\Media\Cache:
+    translations:
+        adminName:
+            fr: "Cache (Médias)"
+            en: 'Cache (Medias)'
+        singular:
+            fr: "Cache (Médias)"
+            en: 'Cache (Medias)'
+        plural:
+            fr: "Caches"
+            en: 'Caches'
+        delete:
+            fr: "Supprimer le cache"
+            en: 'Delete cache'
+
+App\Entity\Media\Category:
+    translations:
+        adminName:
+            fr: "Nom de la catégorie (Médias)"
+            en: 'Category name (Medias)'
+        singular:
+            fr: "Catégorie de média (Médias)"
+            en: 'Media category (Médias)'
+        plural:
+            fr: "Catégories de média"
+            en: 'Medias categories'
+        add:
+            fr: 'Ajouter une catégorie'
+            en: 'Add category'
+        delete:
+            fr: "Supprimer la catégorie"
+            en: 'Delete category'
+    columns:
+        - adminName
+
+App\Entity\Media\Folder:
+    translations:
+        singular:
+            fr: 'Dossier'
+            en: 'Folder'
+        plural:
+            fr: 'Dossiers'
+            en: 'Folders'
+        add:
+            fr: 'Ajouter un dossier'
+            en: 'Add folder'
+        delete:
+            fr: "Supprimer le dossier"
+            en: 'Delete folder'
+
+App\Entity\Media\Media:
+    translations:
+        singular:
+            fr: 'Média'
+            en: 'Media'
+        plural:
+            fr: 'Média'
+            en: 'Medias'
+        add:
+            fr: 'Ajouter un média'
+            en: 'Add media'
+        delete:
+            fr: "Supprimer le média"
+            en: 'Delete media'
+
+App\Entity\Media\MediaRelation:
+    translations:
+        singular:
+            fr: 'Média relation'
+            en: 'Media relation'
+        plural:
+            fr: 'Média relations'
+            en: 'Media relations'
+        add:
+            fr: 'Ajouter une relation'
+            en: 'Add relation'
+        delete:
+            fr: "Supprimer la relation"
+            en: 'Delete relation'
+
+App\Entity\Media\Thumb:
+    translations:
+        singular:
+            fr: 'Thumbnail'
+            en: 'Thumbnail'
+        plural:
+            fr: 'Thumbnails'
+            en: 'Thumbnails'
+        add:
+            fr: 'Ajouter un thumbnail'
+            en: 'Add thumbnail'
+        delete:
+            fr: "Supprimer le thumbnail"
+            en: 'Delete thumbnail'
+
+App\Entity\Media\ThumbAction:
+    translations:
+        singular:
+            fr: 'Thumbnail action'
+            en: 'Thumbnail action'
+        plural:
+            fr: 'Thumbnails actions'
+            en: 'Thumbnails actions'
+        add:
+            fr: 'Ajouter une action'
+            en: 'Add action'
+        delete:
+            fr: "Supprimer l'action"
+            en: 'Delete action'
+
+App\Entity\Media\ThumbConfiguration:
+    translations:
+        adminName:
+            fr: 'Thumbnail'
+            en: 'Thumbnail'
+        screen:
+            fr: 'Écran'
+            en: 'Screen'
+        singular:
+            fr: 'Thumbnail configuration'
+            en: 'Thumbnail configuration'
+        plural:
+            fr: 'Thumbnails configurations'
+            en: 'Thumbnails configurations'
+        add:
+            fr: 'Ajouter une configuration'
+            en: 'Add configuration'
+        delete:
+            fr: "Supprimer la configuration"
+            en: 'Delete configuration'
+    columns:
+        - adminName
+        - screen
+        - infos

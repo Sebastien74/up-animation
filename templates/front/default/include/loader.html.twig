@@ -1,0 +1,26 @@
+{% trans_default_domain 'front_default' %}
+
+{% set className = className is defined ? className : null %}
+{% set type = type is defined ? type : 'animated' %}
+{% set icon = icon is defined ? icon : 'fal spinner' %}
+{% set color = color is defined ? color : 'primary' %}
+
+<div class="loader position-absolute d-flex align-items-center justify-content-center p-4{% if className %} {{ className }}{% endif %}">
+    {% if type == 'animated' %}
+        <div class="d-flex justify-content-center">
+            <div id="animated-preloader" class="d-flex">
+                {% for i in 1..6 %}
+                    <div id="item-{{ i }}" class="item-loader{% if not loop.last %} me-2{% endif %}">{{ 'fas circle'|icon(null, 40) }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    {% elseif type == 'spinner-bounce' %}
+        <span class="spinner-border spinner-bounce" role="status"></span>
+    {% elseif type == 'spinner-bounce-icon' %}
+        {{ (icon)|icon(45, 45, 'spinner-bounce '~color) }}
+    {% elseif type == 'spinner-icon' %}
+        {{ (icon)|icon(45, 45, 'spinner '~color) }}
+    {% else %}
+        <span class="spinner-border" role="status"></span>
+    {% endif %}
+</div>

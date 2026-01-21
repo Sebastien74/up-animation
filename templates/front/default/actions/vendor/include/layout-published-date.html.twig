@@ -1,0 +1,21 @@
+{% trans_default_domain 'front_default' %}
+
+{% set interfaceName = interfaceName is defined ? interfaceName : (entity.interfaceName is defined ? entity.interfaceName : null) %}
+{% set date = entity.date is defined and entity.date ? entity.date : null %}
+{% set pastDate = entity.pastDate is defined and entity.pastDate ? entity.date : false %}
+{% set disabledAjaxUpdate = disabledAjaxUpdate is defined ? disabledAjaxUpdate : false %}
+{% set disabledHours = disabledHours is defined ? disabledHours : false %}
+{% if date %}
+    {% set between = 'newscast' == interfaceName and 'event' == entity.asEvent %}
+    {% set class = class is defined ? class : null %}
+    {% set formatDate = category.formatDate is defined and category.formatDate ? category.formatDate
+        : (formatDate is defined ? formatDate : 'dd MMM Y') %}
+    {{ component('Date', {
+        date: date,
+        startDate: entity.dates.startDate is defined ? entity.dates.startDate : null,
+        endDate: entity.dates.endDate is defined ? entity.dates.endDate : null,
+        formatDate: formatDate,
+        class: class,
+        between: between
+    }) }}
+{% endif %}

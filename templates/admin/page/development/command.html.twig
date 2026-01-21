@@ -1,0 +1,21 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% block title %}{{ "Command"|trans|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ "Command"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-development', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div id="command-page">
+        {% include 'admin/include/flashbag.html.twig' %}
+    </div>
+{% endblock %}

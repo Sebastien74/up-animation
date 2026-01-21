@@ -1,0 +1,105 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'front/'~websiteTemplate~'/actions/tab/macro.html.twig' as macro %}
+
+<ul class="nav nav-tabs" id="tab-module-{{ tab.slug }}" role="tablist">
+    {% for tabItem in tabs %}
+        {% set tabContent = tabItem.entity %}
+        <li class="nav-item" role="presentation">
+            <button class="nav-link{% if loop.first %} active{% endif %}" id="nav-tab-module-{{ tab.id~'-'~tabContent.id }}"
+                    data-bs-toggle="tab"
+                    data-bs-target="#tab-pane-{{ tab.id~'-'~tabContent.id }}"
+                    type="button"
+                    role="tab"
+                    aria-controls="tab-pane-tab-pane-{{ tab.id~'-'~tabContent.id }}"
+                    aria-selected="{% if loop.first %}true{% else %}false{% endif %}">
+                {% if tabContent.pictogram %}
+                    <div class="pictogram me-4 d-inline-block">
+                        {{ tabContent.pictogram|icon(null, 65) }}
+                    </div>
+                {% endif %}
+                {% if tabContent.intl.title %}
+                    <div class="d-inline-block">
+                        {{ tabContent.intl.title|raw }}
+                    </div>
+                {% endif %}
+            </button>
+        </li>
+    {% endfor %}
+</ul>
+
+<div class="tab-content" id="tab-module-{{ tab.slug }}-content">
+    {% for tabItem in tabs %}
+        {% set tabContent = tabItem.entity %}
+        <div class="tab-pane fade{% if loop.first %} show active{% endif %}"
+             id="tab-pane-{{ tab.id~'-'~tabContent.id }}"
+             role="tabpanel"
+             aria-labelledby="nav-tab-module-{{ tab.id~'-'~tabContent.id }}"
+             tabindex="0">
+            <div class="row">
+                {% if tabContent.haveMainMedia %}
+                    <div class="col-md-4">
+                        {{ tabContent.mainMedia|file(thumbConfiguration) }}
+                    </div>
+                {% endif %}
+                <div class="col-md-{% if tabContent.haveMainMedia %}8{% else %}12{% endif %}">
+                    {{ macro.content(tabContent, websiteTemplate, 3) }}
+                </div>
+                {% if tabItem.children is not empty %}
+                    <div class="col-12 mt-4">
+                        <div class="nav nav-tabs row" id="tab-module-{{ tab.slug }}" role="tablist">
+                            <div class="col-3">
+                                <ul class="reset d-flex">
+                                    {% for child in tabItem.children %}
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link{% if loop.first %} active{% endif %}" id="nav-tab-module-{{ tab.id~'-'~tabContent.id~'-'~child.id }}"
+                                                    data-bs-toggle="tab"
+                                                    data-bs-target="#tab-pane-{{ tab.id~'-'~tabContent.id~'-'~child.id }}"
+                                                    type="button"
+                                                    role="tab"
+                                                    aria-controls="tab-pane-tab-pane-{{ tab.id~'-'~tabContent.id~'-'~child.id }}"
+                                                    aria-selected="{% if loop.first %}true{% else %}false{% endif %}">
+                                                {% if child.pictogram %}
+                                                    <div class="pictogram me-4 d-inline-block">
+                                                        {{ tabContent.pictogram|icon(null, 65) }}
+                                                    </div>
+                                                {% endif %}
+                                                {% if child.intl.title %}
+                                                    <div class="d-inline-block">
+                                                        {{ child.intl.title|raw }}
+                                                    </div>
+                                                {% endif %}
+                                            </button>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="col-9">
+                                <div class="tab-content" id="v-pills-action-{{ tab.id }}">
+                                    {% set subActive = true %}
+                                    {% for child in tabItem.children %}
+                                        <div class="tab-pane fade{% if subActive %} show active{% endif %}"
+                                             id="tab-pane-{{ tab.id~'-'~tabContent.id~'-'~child.id }}"
+                                             role="tabpanel"
+                                             aria-labelledby="nav-tab-module-{{ tab.id~'-'~tabContent.id~'-'~child.id }}"
+                                             tabindex="0">
+                                            <div class="row">
+                                                {% if child.haveMainMedia %}
+                                                    <div class="col-md-4">{{ child.mainMedia|file(thumbConfiguration) }}</div>
+                                                {% endif %}
+                                                <div class="col-md-{% if child.haveMainMedia %}8{% else %}12{% endif %}">
+                                                    {{ macro.content(child, websiteTemplate, 4) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% set subActive = false %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>

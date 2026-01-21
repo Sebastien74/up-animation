@@ -1,0 +1,29 @@
+{% trans_default_domain 'front_webmaster' %}
+
+{% set userDashboardPageUrl = website.security.frontPageRedirection is defined ? website|intlUrl(website.security.frontPageRedirection) : null %}
+
+<div class="modal fade" id="user-switcher-modal-alert" tabindex="-1" aria-labelledby="user-switcher-modal-alert-label" aria-modal="true" role="dialog" data-modal-timer="1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body border-0 pt-0">
+                <h5 class="modal-title" id="user-switcher-modal-alert-label">
+                    {{ "Vous êtes connecté en tant que"|trans|raw }}
+                    <span class="d-inline-block w-100 mt-4 text-dark">{{ app.user.username }}</span>
+                </h5>
+            </div>
+            {% if userDashboardPageUrl %}
+                <div class="modal-footer justify-content-center border-0">
+                    <a href="{{ path('security_front_profile', {url: userDashboardPageUrl}) }}" class="btn btn-primary" aria-label="{{ "Espace personnel"|trans|striptags }}" data-toggle="preloader">
+                        {{ 'fal user'|icon(null, 17, 'me-1') }}
+                        <span class="d-inline-block">{{ "Espace personnel"|trans|raw }}</span>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{{ removeSession('as_switch_user') }}

@@ -1,0 +1,29 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "https://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="94.7px" height="70.5px"
+	 viewBox="0 0 94.7 70.5" style="enable-background:new 0 0 94.7 70.5;" xml:space="preserve">
+<style>
+	.st0-zoom-white{fill:#FFFFFF;}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="58.5" width="58.4" x="20.8" y="5"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<path class="st0-zoom-white" d="M42.2,49.8c5.3,0,10.3-1.9,14.2-5.4l21.1,21.1l1.7-1.7L58.1,42.6c3.5-3.9,5.4-8.9,5.4-14.2
+	c0-5.7-2.2-11.1-6.3-15.1c-4-4-9.4-6.3-15.1-6.3S31,9.2,27,13.3c-8.3,8.3-8.3,21.9,0,30.2C31.1,47.6,36.5,49.8,42.2,49.8z M28.8,15
+	c3.6-3.6,8.3-5.5,13.4-5.5s9.8,2,13.4,5.5c3.6,3.6,5.5,8.3,5.5,13.4s-2,9.8-5.5,13.4c-3.6,3.6-8.3,5.5-13.4,5.5s-9.8-2-13.4-5.5
+	C21.4,34.4,21.4,22.4,28.8,15z"/>
+<polygon class="st0-zoom-white" points="41,37.8 43.4,37.8 43.4,29.6 51.6,29.6 51.6,27.2 43.4,27.2 43.4,19 41,19 41,27.2 32.8,27.2
+	32.8,29.6 41,29.6 "/>
+</svg>

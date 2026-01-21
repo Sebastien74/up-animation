@@ -1,0 +1,43 @@
+#####################################
+#           Todo                    #
+#####################################
+
+App\Entity\Todo\Task:
+    translations:
+        adminName:
+            fr: "Tâche"
+            en: 'Task'
+        singular:
+            fr: "Tâche"
+            en: 'Task'
+        plural:
+            fr: "Tâches"
+            en: 'Tasks'
+        add:
+            fr: 'Ajouter une tâche'
+            en: 'Add task'
+        delete:
+            fr: "Supprimer la tâche"
+            en: 'Delete task'
+    columns:
+        - adminName
+
+App\Entity\Todo\Todo:
+    translations:
+        adminName:
+            fr: "Liste de tâches"
+            en: 'Tasks list'
+        singular:
+            fr: "Liste de tâches"
+            en: 'Tasks list'
+        plural:
+            fr: "Liste de tâches"
+            en: 'Tasks lists'
+        add:
+            fr: 'Ajouter une liste'
+            en: 'Add list'
+        delete:
+            fr: "Supprimer la list"
+            en: 'Delete lists'
+    columns:
+        - adminName

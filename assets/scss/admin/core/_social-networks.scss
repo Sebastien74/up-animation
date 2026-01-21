@@ -1,0 +1,150 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-10-01, 8:17 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    SOCIAL NETWORKS :
+    ===========================
+
+------------------------------------------------------------------ */
+
+span[addon] {
+
+    height: 38px;
+    min-width: 48px !important;
+    display: flex !important;
+    border: 0 !important;
+    justify-content: center !important;
+
+    svg {
+        fill: $white;
+    }
+}
+
+span[addon="fab facebook-f"] {
+    background-color: $facebook-color;
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fab twitter"] {
+    background-color: $twitter-color;
+    border: 1px solid $twitter-color;
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fab google"] {
+    background-color: $google-color;
+    border: 1px solid $google-color;
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fab youtube"] {
+    background-color: $youtube-color;
+    border: 1px solid $youtube-color;
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fab tiktok"] {
+    background-color: $tiktok-color;
+    border: 1px solid $tiktok-color;
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fab instagram"] {
+    background-color: $instagram-color;
+    border: 1px solid $instagram-color;
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fab linkedin-in"] {
+    background-color: $linkedin-color;
+    border: 1px solid $linkedin-color;
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fab pinterest-p"] {
+    background-color: $pinterest-color;
+    border: 1px solid $pinterest-color;
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fal comments-alt"] {
+    background-color: $forum-color;
+    border: 1px solid $forum-color;
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fab spotify"] {
+    background-color: $spotify-color;
+    border: 1px solid $spotify-color;
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fab apple"] {
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fa waveform-path"] {
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fal music-alt"] {
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 24px;
+}
+
+span[addon="fab tripadvisor"] {
+
+    background-color: $tripadvisor-color;
+    border: 1px solid $tripadvisor-color;
+    color: $white;
+    min-width: 45px;
+    text-align: center;
+    display: inline-block;
+    line-height: 28px;
+    max-height: 38px;
+
+    i, svg {
+        font-size: 17px;
+    }
+}

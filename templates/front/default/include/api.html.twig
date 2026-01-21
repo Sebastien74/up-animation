@@ -1,0 +1,114 @@
+{% trans_default_domain 'front_default' %}
+
+{% macro render(vars) %}
+
+    {% set gdprActive = vars.gdprActive is defined ? vars.gdprActive : false %}
+    {% set axeptioActive = vars.axeptioActive is defined ? vars.axeptioActive : false %}
+
+    {% if vars.searchConsoleKey is defined and vars.searchConsoleKey %}
+        <meta name="google-site-verification" content="{{ vars.searchConsoleKey }}">
+    {% endif %}
+
+    {% if vars.domainVerification is defined and vars.domainVerification %}
+        <meta name="facebook-domain-verification" content="{{ vars.domainVerification }}">
+    {% endif %}
+
+    {% if vars.headScript is defined and vars.headScript|striptags|length > 0 %}
+        {{ headScript|raw }}
+    {% endif %}
+
+    {% if vars.headScriptSeo is defined and vars.headScriptSeo|striptags|length > 0 %}
+        {{ vars.headScriptSeo|raw }}
+    {% endif %}
+
+    {% if vars.topBodyScript is defined and vars.topBodyScript|striptags|length > 0 %}
+        {{ vars.topBodyScript|raw }}
+    {% endif %}
+
+    {% if vars.topBodyScriptSeo is defined and vars.topBodyScriptSeo|striptags|length > 0 %}
+        {{ vars.topBodyScriptSeo|raw }}
+    {% endif %}
+
+    {% if vars.bottomBodyScript is defined and vars.bottomBodyScript|striptags|length > 0 %}
+        {{ vars.bottomBodyScript|raw }}
+    {% endif %}
+
+    {% if vars.bottomBodyScriptSeo is defined and vars.bottomBodyScriptSeo|striptags|length > 0 %}
+        {{ vars.bottomBodyScriptSeo|raw }}
+    {% endif %}
+
+    {% if vars.analyticsUa is defined and vars.analyticsUa and (axeptioActive or not gdprActive) %}
+        <!-- Google tag (gtag.js) -->
+        {% if vars.axeptioId %}
+            <script id="google-analytics-src" nonce="{{ csp_nonce() }}"
+                    data-ua="{{ vars.analyticsUa }}"
+                    data-src="https://www.googletagmanager.com/gtag/js?id={{ vars.analyticsUa }}"
+                    data-custom-script="{{ absolute_url(asset('build/gdpr/google-analytics.js', 'gdpr')) }}"
+                    data-requires-vendor-consent="google_analytics"></script>
+        {% else %}
+            <script async src="https://www.googletagmanager.com/gtag/js?id={{ vars.analyticsUa }}" nonce="{{ csp_nonce() }}"></script>
+            <script nonce="{{ csp_nonce() }}">
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '{{ vars.analyticsUa }}');
+            </script>
+        {% endif %}
+        <!-- End Google tag -->
+    {% endif %}
+
+    {% if vars.tagManagerKey is defined and vars.tagManagerKey and (axeptioActive or not gdprActive) %}
+        <!-- Google Tag Manager -->
+        {% if vars.axeptioId %}
+            <script id="google-tag-manager-src" nonce="{{ csp_nonce() }}"
+                    data-gtm="{{ vars.tagManagerKey }}"
+                    data-custom-script="{{ absolute_url(asset('build/gdpr/google-tag-manager.js', 'gdpr')) }}"
+                    data-requires-vendor-consent="google_analytics"></script>
+        {% else %}
+            <script nonce="{{ csp_nonce() }}">
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','{{ vars.tagManagerKey }}');
+            </script>
+        {% endif %}
+        <!-- End Google Tag Manager -->
+    {% endif %}
+
+    {% if vars.noscriptTagManagerKey is defined and vars.noscriptTagManagerKey and (axeptioActive or not gdprActive) %}
+        <!-- Google Tag Manager (noscript) -->
+        <noscript nonce="{{ csp_nonce() }}"><iframe src="https://www.googletagmanager.com/ns.html?id={{ vars.noscriptTagManagerKey }}"
+                          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    {% endif %}
+
+    {% if vars.pixel is defined and vars.pixel and (axeptioActive or not gdprActive) %}
+        <!-- Facebook Pixel Code -->
+        {% if axeptioId %}
+            <script id="facebook-pixel-src" nonce="{{ csp_nonce() }}"
+                    data-pixel="{{ vars.pixel }}"
+                    data-custom-script="{{ absolute_url(asset('build/gdpr/facebook-pixel.js', 'gdpr')) }}"
+                    data-requires-vendor-consent="facebook_pixel"></script>
+        {% else %}
+            <script nonce="{{ csp_nonce() }}">
+                !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+                    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+                    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+                    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '{{ vars.pixel }}');
+                fbq('set', 'agent', 'gtm', '{{ vars.pixel }}');
+                fbq('track', 'PageView');
+            </script>
+        {% endif %}
+        <!-- End Facebook Pixel Code -->
+    {% endif %}
+
+    {% if vars.noscriptPixel is defined and vars.noscriptPixel and (axeptioActive or not gdprActive) %}
+        <!-- Facebook Pixel Code -->
+        <noscript nonce="{{ csp_nonce() }}"><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={{ vars.noscriptPixel }}&ev=PageView&noscript=1"></noscript>
+        <!-- End Facebook Pixel Code -->
+    {% endif %}
+
+{% endmacro %}

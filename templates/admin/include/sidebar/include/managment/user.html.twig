@@ -1,0 +1,61 @@
+{% trans_default_domain 'admin' %}
+
+{% set uri = app.request.uri %}
+{% set active = '/security/' in uri %}
+
+{% if 'user'|moduleActive(configuration) and not granted('ROLE_USERS_GROUP') and not 'secure-page'|moduleActive(configuration) and not 'user-extension'|moduleActive(configuration) %}
+    {% set module = 'user'|moduleActive(configuration) %}
+    {% set intl = intlsModules['user'][app.user.locale] is defined ? intlsModules['user'][app.user.locale] : intlsModules['user']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['user']['entity'].adminName is defined ? intlsModules['user']['entity'].adminName : 'Utilisateurs'|trans) %}
+    {% set icon = intlsModules['user']['entity'].iconClass is defined and intlsModules['user']['entity'].iconClass ? intlsModules['user']['entity'].iconClass : '/medias/icons/light/users.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a href="{{ path('admin_user_index', {website: websiteId}) }}" data-toggle="preloader">
+            {{ icon|icon(19, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% elseif 'user'|moduleActive(configuration) or granted('ROLE_INTERNAL') %}
+    {% set module = 'user'|moduleActive(configuration) %}
+    {% set intl = intlsModules['user'][app.user.locale] is defined ? intlsModules['user'][app.user.locale] : intlsModules['user']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['user']['entity'].adminName is defined ? intlsModules['user']['entity'].adminName : 'Utilisateurs'|trans) %}
+    {% set icon = intlsModules['user']['entity'].iconClass is defined and intlsModules['user']['entity'].iconClass ? intlsModules['user']['entity'].iconClass : '/medias/icons/light/users.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a class="as-arrow{% if pageTag == 'security' %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+            {{ icon|icon(19, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+        <ul aria-expanded="false" class="collapse{% if pageTag == 'security' %} in{% endif %}">
+            <li>
+                {% set title = 'secure-page'|moduleActive(configuration) ? 'Liste des administrateurs'|trans : 'Liste des utilisateurs'|trans %}
+                <a href="{{ path('admin_user_index', {website: websiteId}) }}"{% if 'security/users/' in requestUri and 'security/users/categories' not in requestUri %} class="active"{% endif %} data-toggle="preloader">{{ title }}</a>
+            </li>
+            {% if 'secure-page'|moduleActive(configuration) %}
+                <li>
+                    <a href="{{ path('admin_userfront_index', {website: websiteId}) }}"{% if 'security/users-front' in requestUri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des utilisateurs front"|trans }}</a>
+                </li>
+            {% endif %}
+            {% if 'secure-page'|moduleActive(configuration) and granted('ROLE_INTERNAL') %}
+                <li>
+                    <a href="{{ path('admin_securityusercategory_index', {website: websiteId}) }}"{% if 'security/categories' in requestUri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des catégories d'utilisateurs"|trans }}</a>
+                </li>
+            {% endif %}
+            {% if granted('ROLE_USERS_GROUP') %}
+                <li>
+                    <a href="{{ path('admin_securitygroup_index', {website: websiteId}) }}"{% if 'security/groups' in requestUri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des groupes"|trans }}</a>
+                </li>
+            {% endif %}
+            {% if granted('ROLE_INTERNAL') %}
+                <li>
+                    <a href="{{ path('admin_securityrole_index', {website: websiteId}) }}"{% if 'security/roles' in requestUri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des rôles"|trans }}</a>
+                </li>
+                <li>
+                    <a href="{{ path('admin_securitycompany_index', {website: websiteId}) }}"{% if 'security/compagnies' in requestUri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des entreprises"|trans }}</a>
+                </li>
+            {% endif %}
+            <li>
+                <a href="{{ path('admin_securitymessage_index', {website: websiteId}) }}"{% if 'security/messages' in requestUri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des messages"|trans }}</a>
+            </li>
+            {% if 'user-extension'|moduleActive(configuration) %}
+                {% include '@cms_user_extension/admin/include/sidebar.html.twig' %}
+            {% endif %}
+        </ul>
+    </li>
+{% endif %}

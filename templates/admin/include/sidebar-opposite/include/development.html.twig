@@ -1,0 +1,57 @@
+{% trans_default_domain 'admin' %}
+
+<li>
+    <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
+        {{ 'fal code'|icon(17, 15, 'white me-2', {icon: true}) }}
+        <span class="hide-menu">{{ "Développement"|trans }}</span>
+    </a>
+    <ul aria-expanded="false" class="collapse bg-info-light">
+        <li>
+            <a href="{{ path('admin_tools') }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Boite à outils"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_phpinfo') }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "PHP info"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_entities_generator', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Générer la configuration des entités"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_command_index', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Tâches planifiées"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a class="swal-link-confirm" href="{{ path('admin_cron_scheluder') }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Exécuter les tâches planifiées"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_dev_import_index', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Importation de données"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_translation_data_fixtures_parser', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Yaml translations fixtures parser"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_dev_test', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Controller de développement"|trans }}</span>
+            </a>
+        </li>
+        {% if 'local' == app.environment %}
+            <li>
+                <a href="{{ path('admin_project_info', {website: websiteId}) }}" data-toggle="preloader">
+                    <span class="hide-menu">{{ "Infos projet"|trans }}</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</li>

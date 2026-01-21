@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Module : Order
+    Copyright : 2024
+    Created on : 2024-10-04, 11:19 AM
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+------------------------------------------------------------------ */
+
+@if not $enable-medias-queries {
+
+    .order-first {
+        order: 1 !important
+    }
+
+    @for $i from 1 through $orders-limit {
+        .order-#{$i} {
+            order: $i !important;
+        }
+    }
+
+    .order-last {
+        order: $orders-limit !important
+    }
+
+    @each $limit, $size in $grid-breakpoints {
+        @include mediaQuery(min-#{$limit}) {
+            .order-#{$limit}-first {
+                order: 1 !important
+            }
+            @for $i from 1 through $orders-limit {
+                .order-#{$limit}-#{$i} {
+                    order: $i !important;
+                }
+            }
+            .order-#{$limit}-last {
+                order: $orders-limit !important
+            }
+        }
+    }
+}

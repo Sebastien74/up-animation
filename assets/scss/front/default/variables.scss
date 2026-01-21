@@ -1,0 +1,1067 @@
+@charset "UTF-8";
+
+/* ------------------------------------------------------------------------------------------
+
+    Module : Variables
+    Copyright : 2024
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    1 ) App modules
+        a - Gdpr
+        b - Layout
+        c - Modules
+    2 ) Mixins
+    3 ) Colors system
+    4 ) Core
+        a - Breakpoints
+        b - Container
+        c - Fonts
+        d - Fonts sizes
+        e - Elements
+        f - Main
+        g - Border radius
+        h - Title header
+        i - Breadcrumb
+        j - Margins
+        k - Icon sizes
+        l - App
+        m - Pagination
+    5 ) Buttons
+    6 ) Cards
+    7 ) Forms
+    8 ) Alerts
+
+------------------------------------------------------------------------------------------ */
+
+/*----------------------------------------------
+   1 ) Modules (others in library.scss)
+----------------------------------------------*/
+
+/*-- a - Gdpr --*/
+
+$enable-gdpr-axeptio: true !default;
+$enable-gdpr-cms: false !default;
+$enable-gdpr-page: false !default;
+
+/*-- b - Layout --*/
+
+$enable-medias-queries: false !default;
+$enable-preloader: false !default;
+$enable-form-preloader: false !default;
+$enable-thanks-modal: false !default;
+$enable-title-header: true !default;
+$enable-scroll-top-btn: true !default;
+$enable-gradient-btn: true !default;
+$enable-media-pictogram: false !default;
+$enable-media-secondary: false !default;
+$enable-browser-ie-alert: false !default;
+$enable-icon: false !default;
+$enable-youtube: false !default;
+$enable-animate-css: false !default;
+$enable-animate-css-animations: (
+) !default;
+
+/*-- c - Modules --*/
+
+$enable-newsletter: false !default;
+$enable-basic-nav: true !default;
+$enable-lateral-nav: false !default;
+$enable-locales-switcher: false !default;
+$enable-faq: false !default;
+$enable-timeline: false !default;
+$enable-search-modal: false !default;
+$enable-carousel-two-columns: true !default;
+$enable-carousel-loader: true !default;
+$enable-recruitment: false !default;
+
+/*-----------------------------------
+   2 ) Mixins
+-----------------------------------*/
+
+@import 'utilities/mixins';
+@import 'rfs/scss';
+
+/*-----------------------------------
+   3 ) Colors system
+-----------------------------------*/
+
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #d7d7d7 !default;
+$gray-500: #adadad !default;
+$gray-600: #6c757d !default;
+$gray-700: #535353 !default;
+$gray-800: #3c3c3c !default;
+$gray-900: #212529 !default;
+
+$white: #fff !default;
+$black: #000 !default;
+$primary: #540b01 !default;
+$secondary: #68312c !default;
+$success: #5d7808 !default;
+$info: #0081ac !default;
+$warning: #f0ad4e !default;
+$danger: #a82835 !default;
+$danger-light: #ee9da5 !default;
+$light: $gray-300 !default;
+$dark: $gray-900 !default;
+$focus-color: #ff9800 !default;
+
+$body-bg: $gray-100 !default;
+$body-color: $dark !default;
+$bullet-list-color: $primary !default;
+
+$default-bootstrap-colors: 'primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark', 'white';
+$btn-colors: 'primary', 'secondary';
+$hover-colors: 'primary', 'secondary';
+$theme-colors: (
+    'primary': $primary,
+    'secondary': $secondary,
+    'success': $success,
+    'danger': $danger,
+    'light': $light,
+    'dark': $dark,
+    'black': $black,
+    'white': $white,
+    'muted': $gray-500,
+) !default;
+
+/*-----------------------------------
+   4 ) Core
+-----------------------------------*/
+
+/*-- a - Breakpoints --*/
+
+$onlyMediaQuery: false;
+$screenBreakpoints: 'disabled';
+
+$xs: 320px;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1400px;
+$xxxl: 1600px;
+
+$grid-breakpoints: (
+    xs: 0,
+    sm: $sm,
+    md: $md,
+    lg: $lg,
+    xl: $xl,
+    xxl: $xxl,
+    xxxl: $xxxl,
+) !default;
+
+/*-- b - Container --*/
+
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1320px,
+    xxxl: 1440px,
+) !default;
+$container-fluid-side-limit: 'xl';
+
+/*-- c - Fonts --*/
+
+/** @doc: https://developer.chrome.com/blog/font-fallbacks */
+/** @tool: To adjust font https://screenspan.net/fallback */
+/** @doc: To find font adjust https://support.envoke.com/en/articles/5760547-fallback-font-rules */
+
+@if not $enable-medias-queries {
+    @font-face {
+        font-family: font-fallback;
+        src: local('Arial');
+        size-adjust: 60.85099821%;
+        ascent-override: 164.3358416%;
+        descent-override: 57.51754455%;
+        line-gap-override: 16.43358416%;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: font-fallback-android;
+        src: local('Roboto');
+        size-adjust: 55.5193474%;
+        ascent-override: 180.1173909%;
+        descent-override: 63.04108683%;
+        line-gap-override: 18.01173909%;
+        font-display: swap;
+    }
+}
+
+$font-primary: 'Roboto', system-ui, -apple-system, font-fallback, font-fallback-android, sans-serif !default;
+$font-light: 'Roboto', system-ui, -apple-system, font-fallback, font-fallback-android, sans-serif !default;
+$font-secondary: 'Roboto', system-ui, -apple-system, font-fallback, font-fallback-android, sans-serif !default;
+$font-title: $font-primary !default;
+$theme-fonts: (
+    'primary': ('font-family': $font-primary, 'line-height': 1),
+    'light': ('font-family': $font-light, 'line-height': 1),
+    'secondary': ('font-family': $font-secondary, 'line-height': 1),
+) !default;
+
+$fonts-weights: (100, 200, 300, 400, 500, 600, 700, 800, 900) !default;
+$font-weight-lighter: lighter !default; /* .font-weight-light */
+$font-weight-light: 300 !default; /* .font-weight-lighter */
+$font-weight-normal: 400 !default; /* .font-weight-normal */
+$font-weight-bold: 700 !default; /* .font-weight-bold */
+$font-weight-bolder: bolder !default; /* .font-weight-bolder */
+
+/*-- d - Fonts sizes --*/
+
+$browser-context: 16;
+
+$font-size-base-pixel: 16px;
+$font-size-base: rem($font-size-base-pixel);
+$font-size-h1: 60px;
+$font-size-h2: 35px;
+$font-size-h3: 25px;
+$font-size-h4: 18px;
+$font-size-h5: 18px;
+$font-size-h6: 18px;
+$font-size-sub-title: $font-size-base;
+$font-size-paragraph: $font-size-base;
+$font-size-news-teaser-control: 30px;
+$font-size-card-title: rem(35px);
+$font-size-small: 80%;
+
+$font-sizes-app: (
+    'xs': ('rfs': true, 'size': 16px, 'line-height': 1.1, 'bulllet-top': 10px),
+    'sm': ('rfs': true, 'size': 32px, 'line-height': 1.1, 'bulllet-top': 10px),
+    'md': ('rfs': true, 'size': 48px, 'line-height': 1.1, 'bulllet-top': 10px),
+    'lg': ('rfs': true, 'size': 64px, 'line-height': 1.1, 'bulllet-top': 10px),
+    'xl': ('rfs': true, 'size': 80px, 'line-height': 1.1, 'bulllet-top': 10px),
+    'xxl': ('rfs': true, 'size': 98px, 'line-height': 1.1, 'bulllet-top': 10px),
+);
+
+$font-sizes-config: (
+    'h1, .h1, .h1 a': ('rfs': true, 'size': $font-size-h1, 'line-height': 1),
+    'h2, .h2, .h2, .h2 a': ('rfs': true, 'size': $font-size-h2, 'line-height': 1),
+    'h3, .h3, .h3 a': ('rfs': true, 'size': $font-size-h3, 'line-height': 1),
+    'h4, .h4, .h4 a': ('rfs': true, 'size': $font-size-h4, 'line-height': 1),
+    'h5, .h5, .h5 a': ('rfs': true, 'size': $font-size-h5, 'line-height': 1),
+    'h6, .h6, .h6 a': ('rfs': true, 'size': $font-size-h6, 'line-height': 1),
+    '.sub-title': ('rfs': true, 'size': $font-size-sub-title, 'line-height': 1),
+    '.sub-title.sub-title-h2': ('rfs': true, 'size': calc(#{$font-size-h2 * .8}), 'line-height': 1),
+    '.sub-title.sub-title-h3': ('rfs': true, 'size': calc(#{$font-size-h3 * .8}), 'line-height': 1),
+    '.sub-title.sub-title-h4': ('rfs': true, 'size': calc(#{$font-size-h4 * .8}), 'line-height': 1),
+    '.sub-title.sub-title-h5': ('rfs': true, 'size': calc(#{$font-size-h5 * .8}), 'line-height': 1),
+    '.sub-title.sub-title-h6': ('rfs': true, 'size': calc(#{$font-size-h6 * .8}), 'line-height': 1),
+    'p, .body, a.link, a.link svg, address span, .open-gdpr-modal.link, .body a, .introduction a, a.phone-link, a.email-link': ('rfs': true, 'size': $font-size-paragraph),
+);
+
+/*-- e - Elements --*/
+
+$elements: () !default;
+$elements: map-merge((
+    'h1, h1 a, .h1, .h1 a': (
+        'properties': (
+            'color': $white,
+            'font-weight': 600,
+            'font-family': $font-title,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    'h2, h2 a, .h2, .h2 a': (
+        'properties': (
+            'color': $body-color,
+            'font-weight': 700,
+            'font-family': $font-title,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    'h3, h3 a, .h3, .h3 a': (
+        'properties': (
+            'color': $body-color,
+            'text-transform': initial,
+            'font-weight': 300,
+            'font-family': $font-title
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    'h4, h4 a, .h4, .h4 a': (
+        'properties': (
+            'color': $body-color,
+            'font-weight': 300,
+            'font-family': $font-title,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    'h5, h5 a, .h5, .h5 a': (
+        'properties': (
+            'color': $body-color,
+            'font-weight': 300,
+            'font-family': $font-title,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    'h6, h6 a, .h6, .h6 a': (
+        'properties': (
+            'color': $body-color,
+            'font-weight': 300,
+            'font-family': $font-title,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $body-color,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    '.sub-title': (
+        'properties': (
+            'color': $body-color,
+            'font-weight': 500,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    'p': (
+        'properties': (
+            'color': $body-color,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    '.body, p': (
+        'properties': (
+            'color': $body-color,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    'a.link, a.link span, a.link svg, .open-gdpr-modal.link, .body a, .introduction a, a.phone-link, a.email-link': (
+        'properties': (
+            'color': $primary,
+            'transition': all .3s ease-in-out,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $primary,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $white,
+            'black': $white,
+            'white': $primary,
+        )
+    ),
+    'a:hover, a:hover .title, a:hover span, a.link:hover, a.link:hover span': (
+        'properties': (
+            'color': $primary,
+            'transition': all .3s ease-in-out,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $primary,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $white,
+            'black': $white,
+            'white': $primary,
+        )
+    ),
+    '.news-category-title': (
+        'properties': (
+            'color': $secondary,
+        ),
+    ),
+    'small': (
+        'properties': (
+            'font-size': ('xs': $font-size-small, 'sm': $font-size-small, 'md': $font-size-small, 'lg': $font-size-small, 'xl': $font-size-small),
+        ),
+    ),
+    'span, small, time, figcaption, strong, i, .caption-title': (
+        'properties': (
+            'color': $body-color,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    'form .form-text': (
+        'properties': (
+            'color': $info,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $info !important,
+            'primary-darken': $info !important,
+            'secondary': $info !important,
+            'success': $info !important,
+            'info': $white !important,
+            'warning': $info !important,
+            'danger': $info !important,
+            'danger-light': $info !important,
+            'light': $info !important,
+            'dark': $info !important,
+            'white': $info !important,
+        )
+    ),
+    'svg-not-initial': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    'img-copyright-svg': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $white,
+            'black': $white,
+            'white': $primary,
+        )
+    ),
+    'link-block': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $white,
+            'black': $white,
+            'white': $primary,
+        )
+    ),
+    'link-block-hover': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $warning,
+            'secondary': $warning,
+            'success': $warning,
+            'info': $white,
+            'warning': $warning,
+            'danger': $warning,
+            'danger-light': $warning,
+            'light': $warning,
+            'dark': $warning,
+            'white': $warning,
+        )
+    ),
+    'carousel-indicator': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $white,
+            'white': $primary,
+        )
+    ),
+    'information-container': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $primary,
+            'info': $white,
+            'warning': $primary,
+            'danger': $white,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $white,
+            'white': $primary,
+        )
+    ),
+    'information-container-hover': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $secondary,
+            'secondary': $white,
+            'success': $white,
+            'info': $secondary,
+            'warning': $white,
+            'danger': $white,
+            'danger-light': $white,
+            'light': $secondary,
+            'dark': $white,
+            'white': $secondary,
+        )
+    ),
+    'bullet': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $primary,
+            'info': $white,
+            'warning': $primary,
+            'danger': $white,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $white,
+            'white': $primary,
+        )
+    ),
+    'form :not(.form-floating) .form-label span.label-wrap': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    'form:not(.floating-form) .form-label, form .file-group .form-label, form .form-check-label': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'white': $body-color,
+        )
+    ),
+    '.asterisk, .invalid-feedback, sup.asterisk': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $danger !important,
+            'secondary': $danger !important,
+            'success': $danger !important,
+            'info': $danger !important,
+            'warning': $danger !important,
+            'danger': $white !important,
+            'danger-light': $danger !important,
+            'light': $danger !important,
+            'dark': $danger !important,
+            'white': $danger !important,
+        )
+    ),
+    '.asterisk-group': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $danger,
+            'secondary': $danger,
+            'success': $danger,
+            'info': $danger,
+            'warning': $danger,
+            'danger': $white,
+            'danger-light': $danger,
+            'light': $danger,
+            'dark': $danger,
+            'white': $danger,
+        )
+    )
+), $elements);
+
+/*-- f - Main --*/
+
+$content-page-full-width: 2000px;
+$content-page-box-width: 1600px;
+$enable-caret: false;
+
+/*-- g - Border radius --*/
+
+$border-radius: 1.5rem !default;
+$border-radius-small: .25rem;
+$border-radius-medium: 35px;
+$border-radius-large: 80px;
+$border-radius-lg: $border-radius;
+$border-radius-sm: $border-radius;
+
+/*-- h - Title header --*/
+
+$title-header-padding: 6rem;
+$title-header-color: $white;
+$title-header-font-size: rem(90px);
+$title-header-sub-font-size: rem(31px);
+$title-header-sub-color: $dark;
+
+/*-- i - Breadcrumb --*/
+
+$breadcrumb-padding-x: 0;
+$breadcrumb-padding-y: 1rem;
+
+$breadcrumb-background-color: transparent;
+
+$breadcrumb-muted-color: $white;
+$breadcrumb-active-color: $white;
+$breadcrumb-divider-color: $white;
+
+$breadcrumb-font-size: rem(15px);
+$breadcrumb-divider-font-size: rem(7px);
+
+/*-- j - Margins ( first key is mediaQuery breakpoint) --*/
+
+@function strip-unit($value) {
+    @return $value / ($value * 0 + 1);
+}
+
+@function rem-to-px($rem, $root-font-size: 16px) {
+    @return strip-unit($rem) * strip-unit($root-font-size);
+}
+
+@function convert-unit($margin, $base-rem, $root-font-size: 16px) {
+    $margin-px: false;
+    @if unit($margin) == 'rem' {
+        $margin-px: rem-to-px($margin, $root-font-size);
+    } @else {
+        $margin-px: strip-unit($margin);
+    }
+    $base-px: rem-to-px($base-rem, $root-font-size);
+    @return $margin-px / $base-px;
+}
+
+$base-rem: rem($font-size-base-pixel + 1px);
+$gutter-x: 1.5rem !default;
+$gutter-y: 1.2rem !default;
+$gutter-x-margin: $gutter-x;
+$gutter-y-margin: $gutter-y;
+
+$sm-gutter-x: strip-unit($gutter-x-margin) / 2;
+$xs-gutter-x: strip-unit($gutter-x-margin) / 3;
+
+$sm-gutter-y: strip-unit($gutter-y-margin) / 2;
+$xs-gutter-y: strip-unit($gutter-y-margin) / 3;
+
+$margins: (
+    'sm': (
+        'x': ('xxl': ('ratio': $sm-gutter-x), 'xl': ('ratio': $sm-gutter-x), 'lg': ('ratio': $sm-gutter-x), 'md': ('ratio': $sm-gutter-x), 'sm': ('ratio': $sm-gutter-x), 'xs': ('ratio': $xs-gutter-x), '0': 0),
+        'y': ('xxl': 60px, 'xl': 60px, 'lg': 45px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
+    ),
+    'md': (
+        'x': ('xxl': 120px, 'xl': 90px, 'lg': 75px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
+        'y': ('xxl': 90px, 'xl': 90px, 'lg': 60px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
+    ),
+    'lg': (
+        'x': ('xxl': 120px, 'xl': 160px, 'lg': 90px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
+        'y': ('xxl': 120px, 'xl': 160px, 'lg': 90px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
+    ),
+    'xl': (
+        'x': ('xxl': 125px, 'xl': 90px, 'lg': 90px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
+        'y': ('xxl': 250px, 'xl': 90px, 'lg': 90px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
+    ),
+    'xxl': (
+        'x': ('xxl': 250px, 'xl': 160px, 'lg': 90px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
+        'y': ('xxl': 250px, 'xl': 160px, 'lg': 90px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
+    ),
+);
+
+$marginsScreens: (
+    'tablet': (
+        'x': ('xxl': 90px, 'xl': 75px, 'lg': 60px, 'md': 45px, 'sm': ('ratio': $sm-gutter-y), 'xs': ('ratio': $xs-gutter-y), '0': 0),
+        'y': ('xxl': 90px, 'xl': 75px, 'lg': 60px, 'md': 45px, 'sm': 30px, 'xs': 1rem, '0': 0),
+    ),
+    'mini-pc': (
+        'x': ('xxl': 90px, 'xl': 75px, 'lg': 60px, 'md': 45px, 'sm': ('ratio': $sm-gutter-y), 'xs': ('ratio': $xs-gutter-y), '0': 0),
+        'y': ('xxl': 90px, 'xl': 75px, 'lg': 60px, 'md': 45px, 'sm': 30px, 'xs': 1rem, '0': 0),
+    ),
+    'mobile': (
+        'x': ('xxl': 90px, 'xl': 75px, 'lg': 60px, 'md': 45px, 'sm': ('ratio': $sm-gutter-y), 'xs': ('ratio': $xs-gutter-y), '0': 0),
+        'y': ('xxl': 90px, 'xl': 75px, 'lg': 60px, 'md': 45px, 'sm': 30px, 'xs': 1rem, '0': 0),
+    )
+);
+
+@function convert-margins-to-ratio($margins, $base-rem) {
+    $margins-converted: ();
+    @each $size, $axes in $margins {
+        $new-axes: ();
+        @each $axis, $values in $axes {
+            $new-values: ();
+            @each $key, $value in $values {
+                @if type-of($value) == 'number' and unit($value) == 'px' {
+                    $value: ('ratio': convert-unit($value, $base-rem));
+                }
+                $new-values: map-merge($new-values, ($key: $value));
+            }
+            $new-axes: map-merge($new-axes, ($axis: $new-values));
+        }
+        $margins-converted: map-merge($margins-converted, ($size: $new-axes));
+    }
+    @return $margins-converted;
+}
+
+$margins: convert-margins-to-ratio($margins, $base-rem);
+$marginsScreens: convert-margins-to-ratio($marginsScreens, $base-rem);
+
+/*-- k - Icon sizes --*/
+
+$icon-sizes: (
+    'xs': #{$browser-context}px,
+    'sm': #{$browser-context * 2}px,
+    'md': #{$browser-context * 3}px,
+    'lg': #{$browser-context * 4}px,
+    'xl': #{$browser-context * 5}px,
+    'xxl': #{$browser-context * 6}px,
+);
+
+/*-- l - App --*/
+
+$orders-limit: 30;
+
+/*-- m - Pagination --*/
+
+$pagination-padding-y: .375rem !default;
+$pagination-padding-x: .75rem !default;
+$pagination-padding-y-sm: .25rem !default;
+$pagination-padding-x-sm: .5rem !default;
+$pagination-padding-y-lg: .75rem !default;
+$pagination-padding-x-lg: 1.5rem !default;
+
+/*-----------------------------------
+   5 ) Buttons
+-----------------------------------*/
+
+$btn-border-width: 1px;
+$btn-border-radius: $border-radius;
+
+$btn-white-space: normal;
+$btn-font-weight: normal;
+$btn-line-height: inherit;
+$btn-font-size: $font-size-base;
+$btn-font-size-md: $btn-font-size;
+$btn-font-size-xs: $btn-font-size;
+
+$btn-transition: .3s;
+
+$btn-padding-top: 1rem;
+$btn-padding-bottom: .9rem;
+$btn-padding-right: 2rem;
+$btn-padding-left: 2rem;
+
+$btn-padding-top-md: 1rem;
+$btn-padding-bottom-md: .9rem;
+$btn-padding-left-md: 2rem;
+$btn-padding-right-md: 2rem;
+
+$btn-padding-top-xs: 1rem;
+$btn-padding-bottom-xs: .9rem;
+$btn-padding-left-xs: 2rem;
+$btn-padding-right-xs: 2rem;
+
+$btn-padding: $btn-padding-top $btn-padding-right $btn-padding-bottom $btn-padding-left;
+$btn-padding-md: $btn-padding-top-md $btn-padding-right-md $btn-padding-bottom-md $btn-padding-left-md;
+$btn-padding-xs: $btn-padding-top-xs $btn-padding-right-xs $btn-padding-bottom-xs $btn-padding-left-xs;
+
+$buttons: (
+    'primary': (
+        'bg': $primary,
+        'color': $white,
+        'bg-hover': $white,
+        'color-hover': $primary,
+        'bg-outline': transparent,
+        'bg-outline-hover': $primary,
+        'color-outline': $primary,
+        'color-outline-hover': $white
+    ),
+    'secondary': (
+        'bg': $secondary,
+        'color': $white,
+        'bg-hover': $white,
+        'color-hover': $secondary,
+        'bg-outline': transparent,
+        'bg-outline-hover': $secondary,
+        'color-outline': $secondary,
+        'color-outline-hover': $white
+    ),
+    'success': (
+        'bg': $success,
+        'color': $white,
+        'bg-hover': $white,
+        'color-hover': $success,
+        'bg-outline': transparent,
+        'bg-outline-hover': $success,
+        'color-outline': $success,
+        'color-outline-hover': $white
+    ),
+    'info': (
+        'bg': $info,
+        'color': $white,
+        'bg-hover': $white,
+        'color-hover': $info,
+        'bg-outline': transparent,
+        'bg-outline-hover': $info,
+        'color-outline': $info,
+        'color-outline-hover': $white
+    ),
+    'warning': (
+        'bg': $warning,
+        'color': $white,
+        'bg-hover': $white,
+        'color-hover': $warning,
+        'bg-outline': transparent,
+        'bg-outline-hover': $warning,
+        'color-outline': $warning,
+        'color-outline-hover': $white
+    ),
+    'danger': (
+        'bg': $danger,
+        'color': $white,
+        'bg-hover': $white,
+        'color-hover': $danger,
+        'bg-outline': transparent,
+        'bg-outline-hover': $danger,
+        'color-outline': $danger,
+        'color-outline-hover': $black
+    ),
+    'danger-light': (
+        'bg': $danger-light,
+        'color': $white,
+        'bg-hover': $white,
+        'color-hover': $danger-light,
+        'bg-outline': transparent,
+        'bg-outline-hover': $danger-light,
+        'color-outline': $danger-light,
+        'color-outline-hover': $black
+    ),
+    'light': (
+        'bg': $light,
+        'color': $black,
+        'bg-hover': $black,
+        'border-hover': $black,
+        'color-hover': $light,
+        'bg-outline': transparent,
+        'bg-outline-hover': $light,
+        'color-outline': $black,
+        'color-outline-hover': $black
+    ),
+    'dark': (
+        'bg': $dark,
+        'color': $white,
+        'bg-hover': $white,
+        'color-hover': $dark,
+        'bg-outline': transparent,
+        'bg-outline-hover': $dark,
+        'color-outline': $dark,
+        'color-outline-hover': $white
+    ),
+    'black': (
+        'bg': $black,
+        'color': $white,
+        'bg-hover': $white,
+        'color-hover': $black,
+        'bg-outline': transparent,
+        'bg-outline-hover': $black,
+        'color-outline': $black,
+        'color-outline-hover': $white
+    ),
+    'white': (
+        'bg': $white,
+        'color': $primary,
+        'bg-hover': $primary,
+        'border': $white,
+        'border-hover': $white,
+        'color-hover': $white,
+        'bg-outline': transparent,
+        'bg-outline-hover': $white,
+        'color-outline': $white,
+        'color-outline-hover': $primary,
+        'border-outline-hover': $primary
+    ),
+);
+
+/*-----------------------------------
+   6 ) Cards
+-----------------------------------*/
+
+$card-border-color: transparentize($black, 1);
+$card-border-radius: 0;
+$card-border-width: 0;
+
+/*-----------------------------------
+   7 ) Forms
+-----------------------------------*/
+
+$shadow-color: #000;
+$input-floating-as-open: true;
+$mc-calendar-theme-color: $primary;
+$textarea-height: 200px;
+$input-height: 50px;
+$input-label-color: $primary;
+$input-label-font-weight: 700;
+$input-background: $gray-200;
+$input-color: $black;
+$invalid-feedback-color: $danger;
+$input-border-radius: .375rem;
+$input-border-radius: $input-border-radius $input-border-radius $input-border-radius $input-border-radius;
+$input-border-width: 1px;
+$input-border-color: $primary;
+$input-focus-border-color: $input-border-color;
+$input-line-height: 1.8;
+$input-font-size: $font-size-base;
+$input-font-weight: 400;
+$input-padding-x: 1rem;
+$input-padding-y: 0;
+$custom-file-height: 38px;
+$custom-control-cursor: pointer;
+$placeholder-color: $gray-600;
+$placeholder-font-weight: 400;
+$placeholder-font-size: 12px;
+$form-group-margin: 1rem;
+$form-check-input-checked-bg-color: $primary;
+$form-check-input-checked-border-color: $primary;
+$form-check-input-focus-box-shadow: none;
+$form-file-button-bg: $primary;
+$form-file-button-color: $white;
+$form-file-button-hover-bg: $white;
+$form-file-button-hover-color: $primary;
+
+/*-----------------------------------
+   8 ) Alerts
+-----------------------------------*/
+
+$alert-font-size: 14px;
+$alert-border-radius: 0;
+$alert-border-width: 1px;
+$alert-colors: () !default;
+$alert-colors: map-merge((
+    'primary': ('bg': $white, 'color': $primary, 'border': $primary, 'color-icon': $white, 'bg-icon': $primary, 'font-size': $font-size-base),
+    'secondary': ('bg': $white, 'color': $secondary, 'border': $secondary, 'color-icon': $white, 'bg-icon': $secondary, 'font-size': $font-size-base),
+    'success': ('bg': $white, 'color': $success, 'border': $success, 'color-icon': $white, 'bg-icon': $success, 'font-size': $font-size-base),
+    'info': ('bg': $white, 'color': $info, 'border': $info, 'color-icon': $white, 'bg-icon': $info, 'font-size': $font-size-base),
+    'warning': ('bg': $white, 'color': $warning, 'border': $warning, 'color-icon': $white, 'bg-icon': $warning, 'font-size': $font-size-base),
+    'danger': ('bg': $white, 'color': $danger, 'border': $danger, 'color-icon': $white, 'bg-icon': $danger, 'font-size': $font-size-base),
+    'danger-light': ('bg': $white, 'color': $danger-light, 'border': $danger-light, 'color-icon': $white, 'bg-icon': $danger-light, 'font-size': $font-size-base),
+    'light': ('bg': $white, 'color': $black, 'border': $light, 'color-icon': $black, 'bg-icon': $light, 'font-size': $font-size-base),
+    'dark': ('bg': $white, 'color': $dark, 'border': $dark, 'color-icon': $white, 'bg-icon': $dark, 'font-size': $font-size-base),
+    'black': ('bg': $black, 'color': $white, 'border': $black, 'color-icon': $white, 'bg-icon': $black, 'font-size': $font-size-base),
+    'white': ('bg': $white, 'color': $dark, 'border': $dark, 'color-icon': $white, 'bg-icon': $dark, 'font-size': $font-size-base),
+), $alert-colors);

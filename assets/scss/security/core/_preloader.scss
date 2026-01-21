@@ -1,0 +1,135 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-07, 10:25 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    SECURITY PRELOADER :
+    ====================
+
+------------------------------------------------------------------ */
+
+#main-preloader {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 100000;
+    background-color: $preloader-bg;
+
+    img {
+        width: auto;
+        max-height: 150px;
+        max-width: 400px;
+        filter: brightness(0) invert(1);
+    }
+}
+
+#fountainG {
+    position: relative;
+    width: 234px;
+    height: 28px;
+    margin: auto;
+}
+
+.fountainG {
+    position: absolute;
+    top: 0;
+    background-color: $primary;
+    width: 28px;
+    height: 28px;
+    animation-name: bounce_fountainG;
+    animation-duration: 1.105s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    transform: scale(.3);
+    border-radius: 19px;
+}
+
+#fountainG_1 {
+    left: 0;
+    animation-delay: 0.446s;
+}
+
+#fountainG_2 {
+    left: 29px;
+    animation-delay: 0.5525s;
+}
+
+#fountainG_3 {
+    left: 58px;
+    animation-delay: 0.659s;
+}
+
+#fountainG_4 {
+    left: 88px;
+    animation-delay: 0.7755s;
+}
+
+#fountainG_5 {
+    left: 117px;
+    animation-delay: 0.882s;
+}
+
+#fountainG_6 {
+    left: 146px;
+    animation-delay: 0.9985s;
+}
+
+#fountainG_7 {
+    left: 175px;
+    animation-delay: 1.105s;
+}
+
+#fountainG_8 {
+    left: 205px;
+    animation-delay: 1.2115s;
+}
+
+@keyframes bounce_fountainG {
+
+    0% {
+        transform: scale(1);
+        background-color: $primary;
+    }
+
+    100% {
+        transform: scale(.3);
+        background-color: rgb(255, 255, 255);
+    }
+}
+
+.base-theme {
+
+    $theme-color: $primary;
+
+    #main-preloader {
+
+        background-color: $theme-color;
+
+        img {
+            min-height: 100px;
+        }
+
+        .fountainG {
+            background-color: $theme-color;
+            animation-name: bounce_fountainG_base_theme;
+        }
+    }
+
+    @keyframes bounce_fountainG_base_theme {
+
+        0% {
+            transform: scale(1);
+            background-color: $theme-color;
+        }
+
+        100% {
+            transform: scale(.3);
+            background-color: rgb(255, 255, 255);
+        }
+    }
+}

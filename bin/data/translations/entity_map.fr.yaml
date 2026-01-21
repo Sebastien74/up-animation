@@ -1,0 +1,6 @@
+add: 'Ajouter une carte'
+adminName: 'Nom de la carte'
+admin_mappoint_index: Points
+isDefault: Principale
+plural: Cartes
+singular: Carte

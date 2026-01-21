@@ -1,0 +1,67 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set name = 'singular'|trans([], domain.name) and 'singular'|trans([], domain.name) != 'singular'
+    ? 'singular'|trans([], domain.name) : domain.adminName  %}
+{% set pageIcon = 'fal globe' %}
+
+{% block title %}{{ "Contenus :"|trans~' '~name|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ "Contenus :"|trans~' '~name }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-translation', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-translation', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {% set allLocales = website().configuration.allLocales %}
+
+    <div id="entities-index" class="card">
+
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-8 my-auto">
+                    {% if searchForm %}
+                        {% include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} %}
+                    {% endif %}
+                </div>
+                <div class="col-md-4 text-end my-auto">
+                    <span data-toggle="preloader">
+                        <a href="{{ lastRoute() }}" class="btn btn-white text-info"
+                           data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
+                           aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                            {{ 'fas reply'|icon(14, 14, 'info') }}
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div id="result" class="position-relative">
+            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only %}
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th class="align-middle keys-td">{{ "Clé du contenu"|trans }}</th>
+                        <th class="align-middle forms-td">{% if allLocales|length > 1 %}{{ "Langues"|trans }}{% else %}{{ "Texte"|trans }}{% endif %}</th>
+                        <th class="align-middle actions-td text-center">{{ "Actions"|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for unit in pagination %}
+                        {{ render_esi(path('admin_translationunit_edit', {website: websiteId(), translationunit: unit.id} )) }}
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include 'admin/core/include/pagination.html.twig' %}
+        </div>
+    </div>
+
+{% endblock %}

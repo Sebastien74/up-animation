@@ -1,0 +1,218 @@
+#####################################
+#          Functional               #
+#####################################
+
+functional:
+
+    PHP:
+        service: ""
+        active: true
+        intls:
+            fr:
+                introduction: ""
+                body: ""
+                link: ""
+
+#####################################
+#          Display                  #
+#####################################
+
+display:
+
+    Calaméo:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de visualiser des magazines interactifs Calameo."
+                body: ""
+                link: "https://support.calameo.com/hc/fr/articles/205481178-Cookies"
+
+    Youtube:
+        service: "player"
+        active: true
+        intls:
+            fr:
+                introduction: "Permet de voir des vidéos Youtube."
+                body: ""
+                link: "https://policies.google.com/technologies/cookies"
+
+    Dailymotion:
+        service: "player"
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de voir des vidéos Dailymotion."
+                body: ""
+                link: "https://faq.dailymotion.com/hc/fr/articles/360001375827-Dailymotion-et-les-cookies"
+
+    Vimeo:
+        service: "player"
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de voir des vidéos Vimeo."
+                body: ""
+                link: "https://vimeo.com/cookie_policy"
+
+    Iframe:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de voir du contenu externe à notre site."
+                body: ""
+                link: ""
+
+    Tawk.to:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de voir le module de discussion en ligne."
+                body: ""
+                link: "https://www.tawk.to/privacy-policy/"
+
+    Typekit:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet d’afficher les bonnes polices sur notre site internet."
+                body: ""
+                link: "https://www.adobe.com/privacy/policies/adobe-fonts.html"
+
+    Forum:
+        service: ""
+        active: false
+        anonymize: false
+        intls:
+            fr:
+                introduction: "Permet de poster dans le forum."
+                body: ""
+                link: ""
+        cookies:
+            forum: forum # name: slug
+
+#####################################
+#         Audience                  #
+#####################################
+
+audience:
+
+    Google AdWords:
+        service: ""
+        active: false
+        anonymize: true
+        intls:
+            fr:
+                introduction: "Permet d’afficher des campagnes publicitaires."
+                body: ""
+                link: "https://support.google.com/google-ads/answer/2407785?hl=fr"
+
+    Google Analytics:
+        service: ""
+        active: false
+        anonymize: true
+        intls:
+            fr:
+                introduction: "Permet de réaliser des statistiques d’utilisation de notre site."
+                body: ""
+                link: "https://policies.google.com/technologies/types?hl=fr"
+
+    Google Maps:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de visualiser des cartes Google Maps."
+                body: ""
+                link: "https://policies.google.com/technologies/cookies?hl=fr"
+
+    Google Tag Manager:
+        service: ""
+        active: true
+        anonymize: true
+        intls:
+            fr:
+                introduction: "Permet l’ajout de tags d’analyse et marketing."
+                body: ""
+                link: "https://policies.google.com/technologies/cookies?hl=fr"
+
+    Facebook Pixel:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet d’analyser nos campagnes publicitaires Facebook."
+                body: ""
+                link: "https://fr-fr.facebook.com/policies/cookies/"
+
+#####################################
+#           Social                  #
+#####################################
+
+social:
+
+    Facebook:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de visualiser du contenu provenant de Facebook."
+                body: ""
+                link: "https://fr-fr.facebook.com/policies/cookies/"
+
+    Twitter:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de visualiser du contenu provenant de Twitter."
+                body: ""
+                link: "https://help.twitter.com/fr/rules-and-policies/twitter-cookies"
+
+    Google +:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de visualiser du contenu provenant de Google +."
+                body: ""
+                link: "https://policies.google.com/technologies/cookies?hl=fr"
+
+    AddThis:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de partager des éléments de notre site sur divers réseaux."
+                body: ""
+                link: "https://www.addthis.com/academy/what-are-http-cookies/"
+
+    Linkedin:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de visualiser du contenu provenant de LinkedIn."
+                body: ""
+                link: "https://www.linkedin.com/legal/cookie-policy?_l=fr_FR"
+
+    Pinterest:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de visualiser du contenu provenant de Pinterest."
+                body: ""
+                link: "https://policy.pinterest.com/fr/cookies"
+
+    ShareThis:
+        service: ""
+        active: false
+        intls:
+            fr:
+                introduction: "Permet de partager des éléments de notre site sur divers réseaux."
+                body: ""
+                link: "https://sharethis.com/fr/privacy/"

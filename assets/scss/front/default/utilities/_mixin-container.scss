@@ -1,0 +1,110 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2022
+    Created on : 2022-08-04, 12:50 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    MIXIN CONTAINER :
+    ================
+
+------------------------------------------------------------------ */
+
+@function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
+    $min: map-get($breakpoints, $name);
+    @return if($min != 0, $min, null);
+}
+
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+    $min: breakpoint-min($name, $breakpoints);
+    @if $min{
+        @media (min-width: #{$min}) {
+            @content;
+        }
+    } @else {
+        @content;
+    }
+}
+
+@mixin make-container-fluid-left-right($gutter: $grid-gutter-width) {
+    padding-right: $gutter / 2;
+    padding-left: $gutter / 2;
+}
+
+@mixin make-container-fluid-left($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints) {
+    $limit: false;
+    @each $breakpoint, $container-max-width in $max-widths {
+        @if ($breakpoint == $container-fluid-side-limit) {
+            $limit: true;
+        }
+        @if ($limit) {
+            @include media-breakpoint-up($breakpoint, $breakpoints) {
+                margin-right: calc((100% - #{$container-max-width}) / 2);
+                width: calc(100% - ((100% - #{$container-max-width}) / 2));
+            }
+        }
+    }
+}
+
+@mixin make-container-fluid-right($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints) {
+    $limit: false;
+    @each $breakpoint, $container-max-width in $max-widths {
+        @if ($breakpoint == $container-fluid-side-limit) {
+            $limit: true;
+        }
+        @if ($limit) {
+            @include media-breakpoint-up($breakpoint, $breakpoints) {
+                margin-left: calc((100% - #{$container-max-width}) / 2);
+                width: calc(100% - ((100% - #{$container-max-width}) / 2));
+            }
+        }
+    }
+}
+
+.container-fluid-left {
+    @include make-container-fluid-left-right();
+    @include make-container-fluid-left();
+}
+
+//.layout-zone.as-fluid-right {
+//    padding-top: 0 !important;
+//    padding-bottom: 0 !important;
+//}
+
+.container-fluid-right {
+
+    @include make-container-fluid-left-right();
+    @include make-container-fluid-right();
+
+    padding-right: 0 !important;
+    overflow: hidden;
+
+    > .row-container {
+
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+
+        @include mediaQuery(max-lg) {
+
+            padding-right: 0 !important;
+
+            .media-col {
+                margin-left: -.75rem;
+                flex: 0 0 calc(100% + .75rem);
+                width: calc(100% + .75rem);
+                max-width: initial;
+            }
+        }
+
+        > .row {
+            margin-right: 0 !important;
+            margin-left: 0 !important;
+        }
+
+        .layout-col:last-child {
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+        }
+    }
+}

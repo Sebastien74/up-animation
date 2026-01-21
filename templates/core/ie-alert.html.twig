@@ -1,0 +1,37 @@
+{% trans_default_domain 'ie_alert' %}
+
+<!-- #ie-alert -->
+<div id="browser-ie-alert">
+    <div class="inner text-center">
+        <div class="container">
+            <h1 class="mb-4 mb-md-5">{{ "Votre navigateur<br>n'est pas pris en charge"|trans|raw }}</h1>
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <p class="lead">{{ "La version d'Internet Explorer que vous utilisez est obsolète et ne permet pas d'afficher ce site correctement."|trans|raw }}</p>
+                    <p class="lead">{{ "Téléchargez l'un des navigateurs suivants pour continuer :"|trans|raw }}</p>
+                    <div class="row mt-4 mt-md-5">
+                        <div class="col-md-4">
+                            <a href="{{ "https://www.microsoft.com/fr-fr/windows/microsoft-edge"|trans|raw }}" rel="noopener noreferrer">
+                                <img src="{{ asset('build/vendor/images/edge.png', 'vendor') }}" class="img-fluid mb-2" height="80" width="80">
+                                <h2>{{ "Microsoft Edge"|trans|raw }}</h2>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{{ "https://www.google.fr/chrome/"|trans|raw }}" rel="noopener noreferrer">
+                                <img src="{{ asset('build/vendor/images/chrome.png', 'vendor') }}" class="img-fluid mb-2" height="80" width="80">
+                                <h2>{{ "Google Chrome"|trans|raw }}</h2>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{{ "https://www.mozilla.org/fr/firefox/new/"|trans|raw }}" rel="noopener noreferrer">
+                                <img src="{{ asset('build/vendor/images/firefox.png', 'vendor') }}" class="img-fluid mb-2" height="80" width="80">
+                                <h2>{{ "Firefox"|trans|raw }}</h2>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- \#ie-alert -->

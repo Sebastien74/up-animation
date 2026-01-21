@@ -1,0 +1,141 @@
+@charset "UTF-8";
+
+@if ($enable-form) {
+
+    /* -----------------------------------------------------------------
+
+        Created on : 2019-11-11, 6:31 AM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+        FRONT LAYOUT RECAPTCHA :
+        =======================
+
+        1 ) Breakpoints
+        3 ) Core
+
+    ------------------------------------------------------------------ */
+
+    /*-----------------------------------
+       1 ) Breakpoints
+    -----------------------------------*/
+
+    $xs: 320px;
+    $sm: 576px;
+    $md: 768px;
+    $lg: 992px;
+    $xl: 1200px;
+    $xxl: 1400px;
+    $xxxl: 1600px;
+
+    /*-----------------------------------
+       3 ) Core
+    -----------------------------------*/
+
+    #recaptcha {
+
+        width: 250px;
+        height: 65px;
+        overflow: hidden;
+        display: inline-block;
+        box-shadow: 0 0 8px 0 rgba(0,0,0,0.2);
+        border-radius: .25rem;
+        position: fixed;
+        bottom: 100px;
+        z-index: 2000;
+        right: -185px;
+        transition: all .5s ease-in-out;
+        font-family: Arial, Helvetica, sans-serif;
+
+        &.active {
+            transition: all .5s ease-in-out;
+            right: 5px;
+        }
+
+        .logo, .content {
+            float: left;
+            height: 65px;
+        }
+
+        .logo {
+
+            padding: 7px;
+            font-size: 35px;
+            line-height: 25px;
+            width: 65px;
+            background-color: #fff;
+            cursor: pointer;
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .content {
+
+            width: 185px;
+            padding: 14px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            background-color: #067093;
+            color: #fff;
+            text-align: center;
+            position: relative;
+
+            a {
+                color: #fff;
+                font-size: 10px;
+            }
+
+            .vertical-align {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                right: 0;
+                transform: translateY(-50%);
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @include mediaQuery(max-md) {
+
+            bottom: 15px;
+            height: 55px;
+            width: 230px;
+            right: initial;
+            left: -175px;
+
+            &.active {
+                left: 5px;
+            }
+
+            .logo {
+
+                width: 55px;
+                height: 55px;
+                float: right;
+
+                svg {
+                    width: 41px;
+                    height: 41px;
+                }
+            }
+
+            .content {
+
+                height: 55px;
+                padding: 12px 15px;
+                width: 175px;
+
+                .float-left:first-child {
+                    margin-top: -2px;
+                }
+
+                .float-left:last-child {
+                    margin-top: -5px;
+                }
+            }
+        }
+    }
+}

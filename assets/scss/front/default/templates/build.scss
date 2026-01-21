@@ -1,0 +1,362 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2023
+    Created on : 2023-12-08, 9:12 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    TEMPLATE BUILD :
+    ===============
+
+    1 ) Variables
+    2 ) Modules
+    3 ) Core import
+    4 ) Core
+    5 ) Basic diagonals
+    6 ) Theme diagonals
+    7 ) Theme squares
+    8 ) Theme circles
+    9 ) Theme felix
+    10 ) Theme white
+    11 ) Theme beige
+    12 ) Custom diagonals
+
+------------------------------------------------------------------ */
+
+/*--------------------------------------
+   1 ) Variables
+--------------------------------------*/
+
+$felix-primary: #7f1300;
+$felix-secondary: #f4a262;
+
+$white-primary: #599fd3;
+$white-secondary: #ff7e90;
+
+$beige-primary: #404052;
+$beige-secondary: #eddbc3;
+$beige-ternary: #1890be;
+
+/*--------------------------------------
+   2 ) Modules
+--------------------------------------*/
+
+/*-----------------------------------
+   3 ) Core import
+-----------------------------------*/
+
+@import "../vendor";
+
+/*! purgecss start ignore */
+
+/*-----------------------------------
+   4 ) Core
+-----------------------------------*/
+
+#content-build {
+
+    background-color: $primary;
+
+    #header {
+
+        img {
+            max-height: 200px;
+            min-height: 80px;
+            width: auto;
+        }
+
+        h1 {
+            @include rfs(30px);
+            font-weight: 700;
+            font-family: $font-primary;
+            color: $primary;
+        }
+    }
+
+    .column {
+
+        color: $dark;
+        min-height: 100dvh;
+
+        .card-body {
+            position: relative;
+        }
+
+        &.left {
+
+            background-color: $white;
+            border: 0 solid transparent;
+            border-radius: 0;
+            z-index: 99;
+
+            @include mediaQuery(max-sm) {
+                padding-left: 1.5rem !important;
+                padding-right: 1.5rem !important;
+            }
+
+            .networks {
+
+                svg {
+
+                    transition: fill .5s ease-in-out !important;
+
+                    &:hover, &:focus, &:active {
+                        transition: fill .5s ease-in-out !important;
+                        fill: $primary;
+                    }
+                }
+            }
+
+            #support-info *:not(strong) {
+                font-size: 14px;
+            }
+
+            #support-info strong {
+                font-size: 17px;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   5 ) Basic diagonals
+-----------------------------------*/
+
+#basic-theme {
+
+}
+
+/*-----------------------------------
+   6 ) Theme diagonals
+-----------------------------------*/
+
+#diagonals-theme {
+
+    .column {
+
+        &.right {
+
+            background: $primary;
+
+            .inner {
+                background: url("../../../../medias/images/front/default/build/background-diagonals.png") no-repeat center center;
+                background-size: cover !important;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   7 ) Theme squares
+-----------------------------------*/
+
+#squares-theme {
+
+    .column {
+
+        &.right {
+
+            background: $primary;
+
+            .inner {
+                background: url("../../../../medias/images/front/default/build/background-squares.png") no-repeat center center;
+                background-size: cover !important;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   8 ) Theme circles
+-----------------------------------*/
+
+#circles-theme {
+
+    .column {
+
+        &.right {
+
+            background: $primary;
+
+            .inner {
+                background: url("../../../../medias/images/front/default/build/background-circles.png") no-repeat center center;
+                background-size: cover !important;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   9 ) Theme felix
+-----------------------------------*/
+
+#felix-theme {
+
+    background-color: $white;
+
+    #header {
+        h1 {
+            color: $white;
+            @include rfs(40px);
+        }
+    }
+
+    .column {
+
+        &.left {
+
+            background-color: $felix-primary !important;
+
+            .networks {
+
+                strong {
+                    color: $white;
+                }
+
+                svg, svg * {
+
+                    fill: $felix-secondary;
+
+                    &:hover, &:focus, &:active {
+                        fill: $white;
+                    }
+                }
+            }
+
+            address * {
+                color: transparentize($white, .3);
+            }
+
+            .email-link, .phone-link {
+
+                color: $felix-secondary;
+
+                .label {
+                    color: $white !important;
+                }
+            }
+        }
+
+        &.right .inner {
+            background: $felix-secondary url("../../../../medias/images/front/default/build/background-diagonals.png") no-repeat center center;
+            background-size: cover !important;
+        }
+    }
+}
+
+/*-----------------------------------
+   10 ) Theme white
+-----------------------------------*/
+
+#white-theme {
+
+    background-color: $white;
+
+    #header {
+        h1 {
+            color: $white-primary;
+        }
+    }
+
+    .column {
+
+        &.left {
+
+            .networks {
+
+                svg {
+
+                    fill: $white-secondary;
+
+                    &:hover, &:focus, &:active {
+                        fill: $white-primary;
+                    }
+                }
+            }
+        }
+
+        &.right .inner {
+            background: url("../../../../medias/images/front/default/build/background-white.jpg") no-repeat center center;
+            background-size: contain !important;
+        }
+    }
+}
+
+/*-----------------------------------
+   11 ) Theme beige
+-----------------------------------*/
+
+#beige-theme {
+
+    background-color: $beige-secondary;
+
+    #header {
+        h1 {
+            color: $beige-primary;
+        }
+    }
+
+    .column {
+
+        &.left {
+
+            .networks {
+
+                svg {
+
+                    fill: $beige-ternary;
+
+                    &:hover, &:focus, &:active {
+                        fill: $beige-secondary;
+                    }
+                }
+            }
+        }
+
+        &.right .inner {
+            background: url("../../../../medias/images/front/default/build/background-beige.jpg") no-repeat center center;
+            background-size: contain !important;
+        }
+    }
+}
+
+/*-----------------------------------
+   12 ) Custom diagonals
+-----------------------------------*/
+
+#custom-theme {
+
+    background-color: $primary;
+
+    #header {
+        h1 {
+            color: $primary;
+        }
+    }
+
+    .column {
+
+        &.left {
+
+            .networks {
+
+                svg {
+
+                    fill: $primary;
+
+                    &:hover, &:focus, &:active {
+                        fill: $secondary;
+                    }
+                }
+            }
+        }
+
+        &.right .inner {
+            //background: url("../../../../medias/images/front/default/custom-build.jpg") no-repeat center right;
+            background-size: cover !important;
+        }
+    }
+}
+
+/*! purgecss end ignore */

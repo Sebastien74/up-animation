@@ -1,0 +1,35 @@
+{% if configFields is defined and configFields %}
+    <div class="col-12">
+        <div id="collapseForm" class="collapse collapse-configuration">
+            <div class="card-body pb-0 border bg-light mb-4 radius">
+                <div class="row">
+                    {% for field in form.children %}
+                        {% if field.vars.name == 'urls' %}
+                            {% include 'admin/core/form/urls.html.twig' with {urls: form.urls, displaySeo: true} %}
+                            {% set configFields = configFields|unset('urls') %}
+                        {% elseif field.vars.name == 'intls' and configFieldsIntls %}
+                            {% include 'admin/core/form/intls-config.html.twig' with {intls: form.intls, configFieldsIntls: configFieldsIntls} %}
+                            {% for intl in form.intls %}
+                                {% for field in intl.children %}
+                                    {% if field.vars.name in configFields %}
+                                        {% set configFields = configFields|unset(field.vars.name) %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% elseif field.vars.name == 'mediaRelation' and 'mediaRelation' in configFields %}
+                            <div class="col-12">
+                                {% include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: field.vars.value.id, classname: classname} %}
+                                {{ form_row(form.mediaRelation.media.uploadedFile) }}
+                            </div>
+                            {% set configFields = configFields|unset('mediaRelation') %}
+                        {% elseif field.vars.name == 'mediaRelations' and 'mediaRelations' in configFields %}
+                            {% include 'admin/core/form/media-relations-uniq.html.twig' with {mediaRelations: form.mediaRelations} %}
+                            {% set configFields = configFields|unset('mediaRelations') %}
+                        {% endif %}
+                    {% endfor %}
+                    {% include 'admin/core/form/fields-config.html.twig' with {form: form} %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

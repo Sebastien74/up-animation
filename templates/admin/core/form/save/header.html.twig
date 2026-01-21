@@ -1,0 +1,25 @@
+{% trans_default_domain 'admin' %}
+
+{% if interface.configuration.saveArea is not defined
+    or interface.configuration.saveArea != 'bottom'
+    or configFields is defined and configFields %}
+    <div class="card-header save-top">
+        <div class="row">
+            <div class="col-sm-6 text-center text-md-start mb-3 mb-md-0">
+                {% if configFields is defined and configFields %}
+                    <button class="btn btn-outline-info-lighten d-inline-flex align-items-center collapsed standard"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            href="#collapseForm"
+                            aria-expanded="false"
+                            aria-controls="collapseForm">
+                        {{ 'fal cog'|icon(14, 14, 'me-2', {icon: true}) }}{{ "Configuration"|trans }}
+                    </button>
+                {% endif %}
+            </div>
+            <div class="col-sm-6 text-center text-md-end">
+                {% include 'admin/core/form/save/base.html.twig' with {saveAreaTpl: 'header'} %}
+            </div>
+        </div>
+    </div>
+{% endif %}

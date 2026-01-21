@@ -1,0 +1,50 @@
+{% set website = website is defined and website ? website : website() %}
+
+{% extends 'front/'~website.configuration.template~'/actions/security/back/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% block metaTitle %}{{ title|trans|htmlEntities }}{% endblock %}
+{% block metaRobots %}noindex{% endblock %}
+
+{% set pageTitle = title %}
+
+{% block content %}
+    <div id="security-request-view" class="bg-light pt-lg pb-lg">
+        <div class="container-fluid">
+            <div class="container-fluid">
+                <div class="row w-100">
+                    <div class="col-md-6 col-xl-4 mx-auto d-flex align-items-center">
+                        <div class="card bg-white form-success-card w-100 shadow">
+                            <div class="card-body bg-transparent px-5 text-center px-4 px-md-5">
+                                <div class="body my-4">
+                                    <i class="icon-shield-alt text-primary size-md-icon"></i>
+                                    <strong class="d-inline-block mb-4 fz-sm text-primary d-inline-block w-100">{{ title|trans|raw }}</strong>
+                                    {% if 'remove' == type or 'remove-confirm' == type %}
+                                        <p>{{ "Vous avez soumis une demande de suppression votre compte."|trans|raw }}</p>
+                                        {% if 'remove' == type %}
+                                            <p>{{ "Un email de confirmation vous a été envoyé à votre adresse actuelle. Pour des raisons de sécurité, la suppression ne sera effective tant que vous ne l'aurez pas validée depuis ce message."|trans|raw }}</p>
+                                            <div class="mb-4"><i class="icon-mailbox size-sm-icon text-primary"></i><p>{{ "Si vous n’avez pas reçu le mail, pensez à vérifier votre dossier «Spam» ou «Courrier indésirable»."|trans|raw }}</p></div>
+                                        {% endif %}
+                                        <div>
+                                            <i class="icon-ban size-sm-icon text-danger"></i>
+                                            <p class="mb-0">
+                                                {{ "Vous pouvez <a href='%resetLink%' class='fw-700'>annuler la demande de modification</a> si vous ne souhaitez plus supprimer votre compte ou si vous n'êtes pas à l'origine de cette demande."|trans({
+                                                    '%resetLink%': path('security_front_clear_user_remove_request', {token: user.tokenRemoveRequest|url_encode})
+                                                })|raw }}
+                                            </p>
+                                        </div>
+                                        {% if 'remove-confirm' == type %}
+                                            <hr class="mb-4">
+                                            <a href="{{ path('security_front_user_remove_request', {token: user.tokenRemoveRequest|url_encode, status: 'confirm'}) }}" class="btn btn-danger">{{ "Je confirme la suppression"|trans|raw }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

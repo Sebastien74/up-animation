@@ -1,0 +1,299 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-09-13, 10:14 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    LIBRARY :
+    ========
+
+    1 ) Variables
+    2 ) Core
+    3 ) Remove cache
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Variables
+-----------------------------------*/
+
+@import '../variables';
+
+/*-----------------------------------
+   2 ) Core
+-----------------------------------*/
+
+#media-library-page {
+
+    #medias-preloader {
+        z-index: 5000 !important;
+        border-radius: var(--bs-border-radius);
+    }
+
+    .dd3-content {
+
+        overflow: hidden;
+
+        .btn-edit {
+
+            background-color: transparent;
+            border-color: transparent;
+            color: $dark;
+
+            i {
+                color: $dark;
+            }
+        }
+
+        .dd3-content-right {
+
+            min-width: 135px;
+            max-height: 40px;
+
+            .btn-circle-wrap:first-child a {
+                padding: 0 !important;
+                width: auto;
+                height: auto;
+                margin-right: .25rem;
+            }
+
+            &.no-deletable {
+                .btn:last-child {
+                    margin-right: 0 !important;
+                }
+            }
+        }
+
+        .delete-pack-control {
+            margin-left: 30px;
+        }
+    }
+
+    #medias-card {
+
+        .card-header {
+            border-top-right-radius: $card-border-radius;
+            border-top-left-radius: $card-border-radius;
+            font-weight: 500 !important;
+        }
+    }
+
+    #medias-results {
+
+        .file {
+
+            &.active .check-pack-media-label {
+                box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5) !important;
+                border-radius: var(--bs-border-radius);
+            }
+
+            .btn {
+
+                width: 25px;
+                height: 25px;
+                transition: all .2s;
+                padding: 0;
+                line-height: 24px;
+                text-align: center;
+                position: absolute;
+                border-radius: 0;
+                bottom: 11px;
+                display: none;
+
+                i {
+                    font-size: 10px;
+                }
+
+                //&.check-pack-media-btn {
+                //    top: 3px;
+                //    left: 3px;
+                //    width: calc(100% - 6px);
+                //    height: calc(100% - 6px);
+                //    border-radius: var(--bs-border-radius);
+                //    background-color: rgba(0, 0, 0, 0.5);
+                //    cursor: pointer;
+                //    z-index: -1;
+                //}
+
+                &.open-media-crop {
+
+                    left: 11px;
+                    border-bottom-left-radius: $card-border-radius;
+                    border-top-right-radius: $card-border-radius / 2;
+
+                    i {
+                        font-size: 12px;
+                    }
+                }
+
+                &.media-compress-restore {
+                    top: 11px;
+                    left: 11px;
+                    border-top-left-radius: $card-border-radius;
+                    border-bottom-right-radius: $card-border-radius / 2;
+                }
+
+                &.open-media-edit {
+                    right: 11px;
+                    border-bottom-right-radius: $card-border-radius;
+                    border-top-left-radius: $card-border-radius / 2;
+                }
+            }
+
+            &:hover {
+
+                .btn.open-media-crop, .btn.open-media-edit, .btn.media-compress-restore {
+                    display: inline-block !important;
+                    transition: all .2s;
+                }
+
+                .btn.media-compress-restore.d-none {
+                    display: none !important;
+                }
+            }
+
+            &.active {
+
+                .file-data:before,
+                .file-data:after {
+                    content: '';
+                    position: absolute;
+                    top: 3px;
+                    left: 3px;
+                    width: calc(100% - 6px);
+                    height: calc(100% - 6px);
+                    border-radius: var(--bs-border-radius);
+                    cursor: pointer;
+                    z-index: 2;
+                }
+
+                .file-data:before {
+                    background: rgba(0, 0, 0, 0.5);
+                }
+
+                .file-data:after {
+                    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 512 512"><!-- Font Awesome Pro 5.15.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><defs><style>.fa-secondary{opacity:.4}</style></defs><path d="M504.5 144.42L264.75 385.5 192 312.59l240.11-241a25.49 25.49 0 0 1 36.06-.14l.14.14L504.5 108a25.86 25.86 0 0 1 0 36.42z" class="fa-secondary"/><path d="M264.67 385.59l-54.57 54.87a25.5 25.5 0 0 1-36.06.14l-.14-.14L7.5 273.1a25.84 25.84 0 0 1 0-36.41l36.2-36.41a25.49 25.49 0 0 1 36-.17l.16.17z" class="fa-primary"/></svg>') no-repeat center center;
+                    background-size: 20px;
+                }
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   2 ) Modal edition
+-----------------------------------*/
+
+#media-edition-modal {
+
+    .card-subtitle {
+        display: none !important;
+    }
+
+    #media-tab-content {
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        #desktop {
+            .dropify-clear {
+                display: none !important;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Remove cache
+-----------------------------------*/
+
+#end-process-wrap {
+
+    position: relative;
+    min-height: 150px;
+    border: 1px solid $gray-300;
+    background-color: $white;
+    overflow: hidden;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+    border-radius: var(--bs-border-radius);
+
+    .refresh-container {
+
+        position: initial;
+
+        .refresh-bloc {
+
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 7;
+            background-color: rgba(255, 255, 255, 0);
+
+            .inner {
+
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+    }
+}
+
+@-webkit-keyframes MOVE-BG {
+    from {
+        -webkit-transform: translateX(0);
+    }
+    to {
+        -webkit-transform: translateX(46px);
+    }
+}
+
+@keyframes MOVE-BG {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(46px);
+    }
+}
+
+.bg-stripe {
+
+    position: absolute;
+    top: 0;
+    left: -150px;
+    bottom: 0;
+    width: 150%;
+
+    background: -webkit-repeating-linear-gradient(
+            145deg,
+            #f8e9db 1px,
+            #fff5ed 2px,
+            #fff5ed 11px,
+            #f8e9db 12px,
+            #f8e9db 20px
+    ) !important;
+    background: repeating-linear-gradient(
+            -55deg,
+            #f8e9db 1px,
+            #fff5ed 2px,
+            #fff5ed 11px,
+            #f8e9db 12px,
+            #f8e9db 20px
+    ) !important;
+
+    -webkit-animation-name: MOVE-BG !important;
+    -webkit-animation-duration: .6s !important;
+    -webkit-animation-timing-function: linear !important;
+    -webkit-animation-iteration-count: infinite !important;
+
+    animation-name: MOVE-BG !important;
+    animation-duration: .6s !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
+}

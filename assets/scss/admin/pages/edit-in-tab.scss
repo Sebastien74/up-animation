@@ -1,0 +1,369 @@
+@charset "UTF-8";
+
+/* --------------------------------------------------------
+
+    Created on : 2020-01-28, 10:15 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    ADMIN CATALOG :
+    ==============
+
+-------------------------------------------------------- */
+
+@import '../variables';
+
+.values-collection {
+
+    .prototype-block {
+        padding: 1rem !important;
+    }
+
+    strong {
+        font-weight: 700;
+        letter-spacing: .02rem;
+    }
+}
+
+#entity-edition {
+
+    .ui-state-highlight {
+        border-radius: var(--bs-border-radius);
+        background-color: rgba(0, 0, 0, 0.05) !important;
+        border-color: transparent !important;
+        margin-bottom: 15px;
+    }
+
+    .ui-feature, .ui-video, .ui-link {
+        background-color: #fff;
+        margin-bottom: 15px;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .1);
+        border-radius: var(--bs-border-radius);
+    }
+
+    .handle-feature {
+
+        text-align: center;
+        cursor: grabbing;
+        position: relative;
+        margin-right: 30px;
+        float: left;
+
+        &:after {
+            content: "";
+            position: absolute;
+            right: -14px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+        }
+    }
+}
+
+#videos-sortable,
+#links-sortable {
+
+    .side {
+        top: -15px;
+        right: 0;
+        bottom: 0;
+        background: $gray-200;
+        width: 40px;
+        border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
+        padding-top: 10px;
+
+        .btn {
+            background-color: $gray-200 !important;
+            border: 0 !important;
+        }
+    }
+
+    .ui-video, .ui-link {
+        padding-top: 15px;
+        padding-left: 5px;
+    }
+
+    .item-video, .item-link {
+        margin-right: 45px !important;
+        width: calc(100% - 45px);
+    }
+}
+
+#features-sortable, #product_values-collection {
+
+    .prototype-block {
+        padding: .75rem .25rem .75rem !important;
+    }
+
+    .form-control, .ts-control input, .form-select {
+
+        background-color: $white !important;
+        color: $gray-900;
+        font-size: 12px;
+
+        &::placeholder {
+            color: $gray-500 !important;
+            font-size: 12px;
+        }
+    }
+
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        font-weight: 400 !important;
+        font-size: 12px !important;
+        color: $gray-500 !important;
+    }
+
+    .swal-product-value {
+        margin-right: .5rem !important;
+    }
+
+    .sa-warning, .swal-product-value {
+        padding: 0 !important;
+        background-color: transparent !important;
+        border: 0 !important;
+        width: initial !important;
+        height: initial !important;
+    }
+
+    .plugin-clear_button .clear-button {
+        display: inline-block;
+        position: absolute;
+        top: 19px;
+        right: 1.5rem;
+        background: url(../../../medias/images/admin/close-circle.svg) no-repeat !important;
+        background-size: 15px 15px !important;
+        width: 15px !important;
+        height: 15px !important;
+        color: transparent;
+    }
+
+    .ts-wrapper.form-select {
+
+        background-image: none !important;
+        height: 40px;
+
+        &::after {
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            top: 17px;
+            right: 0.5rem;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+        }
+
+        &:not(.dropdown-active)::after {
+            border-top: 5px solid #888888;
+        }
+
+        &.dropdown-active::after {
+            border-bottom: 5px solid #888888;
+        }
+    }
+
+    .value-group {
+
+        width: 350px;
+
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            font-size: 12px !important;
+            top: -1px !important;
+            position: relative !important;
+            color: $gray-500 !important;;
+        }
+
+        .select2-container--default .select2-selection--single {
+            height: 40px !important;
+        }
+
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            line-height: 40px !important;
+            font-size: 12px !important;
+        }
+
+        .select2-selection__arrow {
+            height: initial !important;
+            top: 2px !important;
+            bottom: 2px !important;
+            right: 0 !important;
+            background: $white !important;
+            border-radius: .25rem !important;
+        }
+
+        .select2-results__option--selectable {
+            line-height: 1.5rem !important;
+        }
+    }
+
+    .feature-group {
+
+        .select2-container--default .select2-selection--single {
+            height: 40px;
+        }
+
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            height: 40px;
+        }
+    }
+
+    .select2-group.selected .select2-container .select2-selection--single .select2-selection__rendered,
+    .select2-container.selected .select2-selection--single .select2-selection__rendered {
+        color: $gray-900 !important;
+    }
+
+    .name-group {
+        .form-control {
+            min-height: 40px;
+        }
+    }
+}
+
+#features-sortable {
+
+    .ui-feature {
+        h5 {
+            border-radius: var(--bs-border-radius) var(--bs-border-radius) 0 0;
+            padding: 17px;
+        }
+    }
+
+    .form-control, .form-select {
+
+        background-color: $white !important;
+        color: $gray-900;
+
+        &::placeholder {
+            color: $gray-900;
+        }
+    }
+
+    .feature-values-sortable {
+
+        padding: 15px;
+
+        .invalid-feedback {
+            line-height: 1 !important;
+        }
+
+        .custom-control-label::before,
+        .custom-control-label::after {
+            top: 17px !important;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        .feature-col {
+            flex: 0 0 16%;
+            width: 16%;
+            line-height: 1.2;
+        }
+
+        .value-col {
+            flex: 0 0 16%;
+            width: 16%;
+            line-height: 1.2;
+        }
+
+        .edit-col {
+            margin-top: -1px;
+            flex: 0 0 20%;
+            width: 20%;
+        }
+
+        .ui-value {
+
+            border-radius: var(--bs-border-radius);
+            margin-bottom: 10px;
+            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+            overflow: initial;
+            min-height: 60px;
+
+            .value-info {
+                font-size: 10px;
+                font-weight: 300;
+            }
+
+            &:not(.bg-gray):not(.bg-gray-600) {
+                background-color: #fff;
+            }
+
+            &.bg-gray {
+                background-color: $gray-200;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .handle-value {
+
+                cursor: grab;
+
+                &.dragging {
+                    cursor: grabbing;
+                }
+
+                &:not(.handle-circle) {
+
+                    height: 57px;
+                    width: 50px;
+                    line-height: 57px;
+                    text-align: center;
+                    cursor: grabbing;
+                    position: relative;
+                    margin-right: 30px;
+                    float: left;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        right: 0;
+                        top: 15px;
+                        bottom: 15px;
+                        width: 1px;
+                        background-color: $gray-800;
+                    }
+                }
+
+                &.handle-circle {
+
+                    display: inline-flex !important;
+                    flex: 0 0 30px;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: $border-radius;
+                    background-color: $info;
+                    margin: 0 1.25rem 0 1rem;
+                    align-items: center;
+                    justify-content: center;
+
+                    &.as-default {
+                        border: 1px solid $info-light !important;
+                    }
+
+                    svg {
+                        fill: $white !important;
+                    }
+                }
+            }
+
+            .ui-value-row {
+
+                &.as-draggable {
+                    width: calc(100% - 80px);
+                }
+
+                &:not(.as-draggable) {
+                    width: 100%;
+                }
+
+                &.not-editable {
+                    line-height: 40px;
+                }
+            }
+        }
+    }
+}

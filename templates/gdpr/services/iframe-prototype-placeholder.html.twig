@@ -1,0 +1,14 @@
+{% trans_default_domain 'gdpr' %}
+
+{% extends "gdpr/services/base-placeholder.html.twig" %}
+
+{% set service = 'iframe' %}
+{% set code = code is defined ? code : 'iframe' %}
+{% set image = asset(image, 'gdpr') %}
+{% set image_title = 'iframe'|capitalize %}
+{% set message = "Pour afficher l'iframe vous devez activer les cookies."|trans|raw %}
+{% if 'elfsight' in code %}
+    {% set message = "Pour afficher le social wall vous devez activer les cookies."|trans|raw %}
+{% elseif 'gmaps' in code %}
+    {% set message = "Pour afficher la carte vous devez activer les cookies."|trans|raw %}
+{% endif %}

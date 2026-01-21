@@ -1,0 +1,40 @@
+{% trans_default_domain 'admin' %}
+
+<div id="edition-container" class="card">
+
+    <h5 class="card-title card-header mb-0">{{ 'fal code'|icon(null, 18, 'info-darken me-2') }}{{ "Balises métas"|trans }}</h5>
+
+    <div class="card-body">
+
+        {{ form_start(form, {attr: {
+            id: 'seo-form-'~entity.id,
+            novalidate: "novalidate"
+        }}) }}
+
+            <div class="row">
+                {{ form_row(form.metaTitle) }}
+                {{ form_row(form.metaTitleSecond) }}
+                {{ form_row(form.metaDescription) }}
+                {{ form_row(form.footerDescription) }}
+                {{ form_row(form.noAfterDash) }}
+            </div>
+
+            <div class="row m-0">
+                <div class="col-md-8 ps-0"><button class="autocomplete btn btn-info w-100 mb-3">{{ "Saisie automatique"|trans }}</button></div>
+                <div class="col-md-4 pe-0"><button class="resetautocomplete btn btn-secondary w-100 mb-3">{{ "Réinitialiser"|trans }}</button></div>
+            </div>
+
+            <div class="row">
+                {{ form_row(form.metaOgTitle) }}
+                {{ form_row(form.metaOgDescription) }}
+            </div>
+
+            <div class="form-group text-end mb-0">
+                <button type="submit" id="submit-seo" class="btn btn-info w-100">{{ "Enregistrer"|trans }}</button>
+            </div>
+
+        {{ form_end(form) }}
+
+    </div>
+
+</div>

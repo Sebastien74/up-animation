@@ -1,0 +1,45 @@
+{% set slideType = 'thumbnails' %}
+
+{% if entity.medias|length > 0 %}
+    {% if 'thumbnails' == slideType %}
+        {% include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
+            medias: entity.medias,
+            thumbConfiguration: thumbConfigurationView,
+            arrowsSide: 'side',
+            arrowsColor: 'blur',
+            arrowsAsBtn: true,
+            slider: {
+                effect: 'fade',
+                thumbnails: true,
+                pause: true,
+                control: true,
+                autoplay: false,
+                indicators: false,
+                progress: false,
+                popup: false,
+                offsetDesktop: 0,
+                offsetMiniPC: 0,
+                offsetTablet: 0,
+                offsetMobile: 0,
+                arrowAlignment: 'side',
+                intervalDuration: 2000,
+                itemsPerSlide: 1,
+                itemsPerSlideMiniPC: 1,
+                itemsPerSlideTablet: 1,
+                itemsPerSlideMobile: 1,
+            }
+        } %}
+    {% else %}
+        {% include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
+            arrows: true,
+            autoplay: true,
+            popup: true,
+            class: class is defined ? class : 'text-center',
+            mainMediaInHeader: entity.mainMediaInHeader,
+            thumbConfiguration: thumbConfigurationView,
+            medias: entity.medias,
+            maxWidth: null,
+            maxHeight: 475,
+        } %}
+    {% endif %}
+{% endif %}

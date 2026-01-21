@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+/*==============================================================
+widget-chart-page product review
+ ============================================================== */
+
+.product-review {
+    margin: 0;
+    padding: 25px;
+    li {
+        display: block;
+        padding: 20px 0;
+        list-style: none;
+        .font,
+        span {
+            display: inline-block;
+            margin-left: 10px;
+        }
+    }
+}
+
+.social-profile {
+    text-align: center;
+    background: rgba(7, 10, 43, 0.8);
+}

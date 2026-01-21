@@ -1,0 +1,18 @@
+{% trans_default_domain 'admin' %}
+
+{{ form_start(form, {attr: {
+    id: "link-form",
+    novalidate: "novalidate",
+    action: path('admin_link_new', {website: websiteId(), menu: menu, entitylocale: entitylocale})
+}}) }}
+    <div id="link-form-content" class="row">
+        {% include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only %}
+        {% if form.save is defined %}
+            {{ form_row(form.save) }}
+        {% else %}
+            <div class="form-group px-4">
+                <button id="link_save" type="submit" class="btn btn-info w-100">{{ "Ajouter au menu"|trans }}</button>
+            </div>
+        {% endif %}
+    </div>
+{{ form_end(form) }}

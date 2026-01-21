@@ -1,0 +1,42 @@
+{% trans_default_domain 'admin' %}
+
+{% if configFields is defined and configFields %}
+
+    {% set count = configFields|length %}
+    {% for configField in configFields %}
+        {% if form[configField] is defined %}
+            {% if configField != 'intls' %}
+                {% set attrGroup = form[configField].vars.attr.group is defined ? form[configField].vars.attr.group : null %}
+                {% set attrGroup = form[configField].vars.attr['data-group'] is defined ? form[configField].vars.attr['data-group'] : attrGroup %}
+                {% if 'd-none' in attrGroup %}
+                    {% set count = count - 1 %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+    {% if count > 1 %}
+        <div class="col-12">
+            <h4 class="card-subtitle mb-4">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}</h4>
+        </div>
+    {% endif %}
+
+    {% set haveIntl = false %}
+
+    {% for configField in configFields %}
+        {% if form[configField] is defined %}
+            {% if configField != 'intls' %}
+                {% set groupClass = form[configField].vars.attr.group is defined and form[configField].vars.attr.group ? form[configField].vars.attr.group : 'col-12' %}
+                {% set groupClass = form[configField].vars.attr['data-group'] is defined ? form[configField].vars.attr['data-group'] : groupClass %}
+                {% if 'time' in form[configField].vars.block_prefixes %}
+                    <div class="form-group {{ groupClass }}">
+                {% endif %}
+                    {{ form_row(form[configField]) }}
+                {% if 'time' in form[configField].vars.block_prefixes %}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+{% endif %}

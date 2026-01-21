@@ -1,0 +1,23 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set customTemplate = 'front/'~websiteTemplate~'/actions/newsletter/template/'~campaign.slug~'.html.twig' %}
+{% set customTemplateExist = (customTemplate)|fileExist %}
+{% set template = customTemplateExist
+    ? 'front/'~websiteTemplate~'/actions/newsletter/template/'~campaign.slug~'.html.twig'
+    : 'front/'~websiteTemplate~'/actions/newsletter/template/default.html.twig' %}
+{% set intl = campaign|intl %}
+{% set intro = intl ? intl.introduction : null %}
+{% set modalMessage = intl and intl.placeholder ? intl.placeholder : "Merci pour votre inscription !!"|trans %}
+{% set modalId = "newsletter-thanks-modal-"~campaign.id %}
+{% set extrenal = "newsletter-thanks-modal-"~campaign.id %}
+
+<div id="newsletter-form-container-{{ campaign.slug }}" class="newsletter-form-container keep-form-module position-relative bg-primary pt-3 pb-4 pt-md-5 pb-md-5{% if campaign.recaptcha %} recaptcha-referer{% endif %}">
+    {{ macroWebmaster.box({
+        title: "Éditer la campagne"|trans([], 'front_webmaster'),
+        role: 'ROLE_NEWSLETTER',
+        path: path('admin_campaign_edit', {website: website.id, campaign: campaign.id})
+    }) }}
+    {% include template %}
+</div>

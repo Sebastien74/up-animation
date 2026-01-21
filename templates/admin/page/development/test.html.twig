@@ -1,0 +1,22 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% block title %}{{ "Controller de développement"|trans|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ "Controller de développement"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-development', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-development', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <a href="{{ path('admin_dev_test', {website: websiteId}) }}" class="btn btn-success position-relative" data-toggle="preloader">{{ "Relancer le controller"|trans }}</a>
+
+{% endblock %}

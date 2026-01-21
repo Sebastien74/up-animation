@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+{% set currentLocale = null %}
+{% if locale is defined %}
+    {% set currentLocale = locale %}
+{% elseif app.request %}
+    {% set currentLocale = app.request.locale %}
+{% endif %}
+
+<html xmlns="http://www.w3.org/1999/xhtml"{% if currentLocale %} lang="{{ currentLocale }}"{% endif %}>
+
+    <head>
+
+        {% trans_default_domain 'email' %}
+
+        {% set host = null %}
+        {% if schemeAndHttpHost is defined %}
+            {% set host = schemeAndHttpHost %}
+        {% elseif app.request.getSchemeAndHttpHost() is defined %}
+            {% set host = app.request.getSchemeAndHttpHost() %}
+        {% endif %}
+
+        {% set website = website is defined ? website : website() %}
+        {% set logos = website.logos is defined ? website.logos : null %}
+        {% set logo = logos.email is defined and logos.email ? asset(logos.email)
+            : (logos.logo is defined and logos.logo ? asset(logos.logo) : asset('build/vendor/images/felix-logo.svg', 'vendor')) %}
+        {% set infos = website.information is defined ? website.information : null %}
+        {% set companyName = infos.companyName is defined and infos.companyName ? infos.companyName : null %}
+        {% set emails = infos.emails is defined ? infos.emails : [] %}
+        {% set phones = infos.phones is defined ? infos.phones : [] %}
+        {% set addresses = infos.addresses is defined ? infos.addresses : [] %}
+        {% set isText = isText is defined ? isText : false %}
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>{% block metaTitle %}{{ "Nouveau message site Internet"|trans({}, 'email', currentLocale)|raw }}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <meta name="x-apple-disable-message-reformatting" content="" />
+
+        {% if not isText %}
+            {% block stylesheets %}
+                {% include 'core/email/style.html.twig' %}
+            {% endblock %}
+        {% endif %}
+
+    </head>
+
+    <body style="background-color: #e9ecef;">
+
+        <div class="preheader" style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0;">
+            {% block preheader %}{% endblock %}
+        </div>
+
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+            {% if logo and host and email is defined %}
+                <tr>
+                    <td align="center" bgcolor="#e9ecef">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                            <tr>
+                                <td align="center" valign="top" style="padding: 36px 24px;">
+                                    <a href="{{ host }}" target="_blank" style="display: inline-block;">
+                                        <img src="{{ email.image('@images/'~logo) }}"
+                                             alt="Logo" border="0" height="150"
+                                             style="display: block; max-width: 400px; max-height: 150px; min-height: 100px;">
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            {% endif %}
+
+            <tr>
+                <td align="center" bgcolor="#e9ecef"{% if not host %} style="padding-top: 60px;"{% endif %}>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                        <tr>
+                            <td align="center" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
+                                <h1 style="margin: 0; font-size: 32px; font-weight: 600; letter-spacing: -1px; line-height: 40px;">
+                                    {% block title %}{% endblock %}
+                                </h1>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td align="center" bgcolor="#e9ecef">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                        {% block body %}{% endblock %}
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td align="center" bgcolor="#e9ecef" style="padding: 24px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                        <tr>
+                            <td align="center" bgcolor="#e9ecef"
+                                style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
+                                <p style="margin: 0;">{% block info %}{% endblock %}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" bgcolor="#e9ecef"
+                                style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
+                                {% if addresses %}
+                                    <p style="margin: 0;">
+                                        {% for address in addresses %}
+                                            {% if address.name %}{{ address.name|raw }}{% endif %}
+                                            {% if address.address %} - {% endif %}
+                                            {% if address.address %}{{ address.address|raw }}{% endif %}
+                                            {% if address.zipCode %}{{ address.zipCode|raw }}{% endif %}
+                                            {% if address.city %} - {% endif %}
+                                            {% if address.city %}{{ address.city|raw }}{% endif %}
+                                            {% if address.department %} - {% endif %}
+                                            {% if address.department %}{{ address.department|raw }}{% endif %}
+                                            {% if address.region %} - {% endif %}
+                                            {% if address.region %}{{ address.region|raw }}{% endif %}
+                                            {% if address.country %} - {% endif %}
+                                            {% if address.country %}{{ address.country|countryName|raw }}{% endif %}
+                                            {% if not loop.last %} <br> {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                {% endif %}
+                                {% if emails %}
+                                    {% set alreadyDisplay = [] %}
+                                    <p style="margin: 3px 0 0;">
+                                        {% for email in emails %}
+                                            {% if email.email not in alreadyDisplay %}
+                                                <a href="mailto:{{ email.email }}" style="text-decoration: none;">{{ email.email }}</a>
+                                            {% endif %}
+                                            {% if not loop.last %} <br> {% endif %}
+                                            {% set alreadyDisplay = alreadyDisplay|merge([email.email]) %}
+                                        {% endfor %}
+                                    </p>
+                                {% endif %}
+                                {% if phones %}
+                                    <p style="margin: 3px 0 0;">
+                                        {% set alreadyDisplay = [] %}
+                                        {% for phone in phones %}
+                                            {% if phone.tagNumber not in alreadyDisplay %}
+                                                <a href="tel:{{ phone.tagNumber }}" style="text-decoration: none;">{{ phone.number }}</a>
+                                            {% endif %}
+                                            {% if not loop.last %} <br> {% endif %}
+                                            {% set alreadyDisplay = alreadyDisplay|merge([phone.tagNumber]) %}
+                                        {% endfor %}
+                                    </p>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+        </table>
+    </body>
+</html>

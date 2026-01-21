@@ -1,0 +1,19 @@
+{% if entities is not empty %}
+    <div id="index-products">
+        {% include 'front/'~websiteTemplate~'/actions/catalog/results.html.twig' with {
+            'listing': teaser,
+            'products': entities,
+            'titleForce': 3,
+        } %}
+    </div>
+    {% set firstEntity = entities|first %}
+    {% set urlIndex = firstEntity.urlIndex is defined ? firstEntity.urlIndex :null %}
+    {% set catalogSlug = firstEntity.catalog.slug is defined ? firstEntity.catalog.slug : false %}
+    {% if urlIndex %}
+        {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+            intl: {link: path('front_index', {url: urlIndex})},
+            linkStyle: 'btn btn-white',
+            linkLabel: 'Voir tout'|trans,
+        } %}
+    {% endif %}
+{% endif %}

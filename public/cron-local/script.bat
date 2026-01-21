@@ -1,0 +1,1 @@
+"E:\wamp\bin\php\php7.4.0\php.exe" -f "E:\wamp\www\cms4\public\cron.php"

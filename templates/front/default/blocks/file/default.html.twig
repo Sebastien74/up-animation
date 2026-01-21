@@ -1,0 +1,19 @@
+{% trans_default_domain 'front_default' %}
+
+{% set downloadable = downloadable is defined ? downloadable : true %}
+{% set label = label is defined ? label : (media.intl.linkLabel is defined and media.intl.linkLabel ? media.intl.linkLabel : media.media.filename) %}
+{% set extension = media.extension is defined and media.extension ? media.extension : (thumbnails.extension is defined ? thumbnails.extension : null) %}
+
+<div class="file">
+    <a href="{{ absolute_url(asset(media.path)) }}"
+       class="{{ media.intl.linkStyle }} file d-inline-flex align-items-center"
+       title="{{ media.media.filename }}"
+        {% if downloadable %} download="{{ media.media.filename|urlize(true) }}"{% endif %}
+        {% if media.intl.linkBlank %} target="_blank"{% endif %}>
+        {% if extension %}
+            {{ 'front'|fileIcon(extension, 'me-2')|raw }}
+        {% endif %}
+        {{ label|unescape|raw }}
+    </a>
+    {% if downloadable %} <small class="info text-italic ms-2 d-inline-block w-100">({{ extension|upper~' - '~ media.fileInfo.formatBytes}})</small>{% endif %}
+</div>

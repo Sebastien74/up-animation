@@ -1,0 +1,19 @@
+{% trans_default_domain 'admin' %}
+
+<div class="right-sidebar">
+    <div class="slimscrollright">
+        <div class="rpanel-title">{{ "Webmaster"|trans }}<span>{{ 'fal times'|icon(20, 20, 'white right-side-toggle') }}</span></div>
+        <nav class="sidebar-nav">
+            <ul id="sidebarnav-opposite">
+                {% include 'admin/include/sidebar-opposite/include/configuration.html.twig' %}
+                {% include 'admin/include/sidebar-opposite/include/development.html.twig' %}
+                {% include 'admin/include/sidebar-opposite/include/logs.html.twig' %}
+                {% include 'admin/include/sidebar-opposite/include/cache.html.twig' %}
+                {% include 'admin/include/sidebar-opposite/include/assets.html.twig' %}
+                {% include 'admin/include/sidebar-opposite/include/doctrine.html.twig' %}
+                {% include 'admin/include/sidebar-opposite/include/js-routing.html.twig' %}
+                {% include 'admin/include/sidebar-opposite/include/debug.html.twig' %}
+            </ul>
+        </nav>
+    </div>
+</div>

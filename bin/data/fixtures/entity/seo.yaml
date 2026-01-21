@@ -1,0 +1,122 @@
+#####################################
+#           Seo                     #
+#####################################
+
+App\Entity\Seo\FormSuccess:
+    translations:
+        singular:
+            fr: 'Tracking formulaires'
+            en: 'Forms tracking'
+
+App\Entity\Seo\Metadata:
+    translations:
+        singular:
+            fr: 'Métadonnées'
+            en: 'Metadata'
+        plural:
+            fr: 'Métadonnées'
+            en: 'Metadata'
+        add:
+            fr: 'Ajouter un modèle'
+            en: 'Add model'
+        delete:
+            fr: "Supprimer le modèle"
+            en: 'Delete model'
+
+App\Entity\Seo\Model:
+    translations:
+        singular:
+            fr: 'Modèle de référencement'
+            en: 'SEO model'
+        plural:
+            fr: 'Modèles de référencement'
+            en: 'SEO models'
+        add:
+            fr: 'Ajouter un modèle'
+            en: 'Add model'
+        delete:
+            fr: "Supprimer le modèle"
+            en: 'Delete model'
+
+App\Entity\Seo\NotFoundUrl:
+    translations:
+        singular:
+            fr: 'URL non trouvée'
+            en: 'Not found URL'
+        plural:
+            fr: 'URL non trouvées'
+            en: 'Not founds URL'
+        add:
+            fr: 'Ajouter une URL'
+            en: 'Add URL'
+        delete:
+            fr: "Supprimer l'URL"
+            en: 'Delete URL'
+
+App\Entity\Seo\SeoConfiguration:
+    translations:
+        singular:
+            fr: 'ConfigurationModel du référencement'
+            en: 'SEO configuration'
+        plural:
+            fr: 'Configurations du référencement'
+            en: 'SEO configurations'
+        add:
+            fr: 'Ajouter une configuration'
+            en: 'Add configuration'
+        delete:
+            fr: "Supprimer la configuration"
+            en: 'Delete configuration'
+
+App\Entity\Seo\Redirection:
+    orderBy: id
+    orderSort: DESC
+    adminLimit: 15
+    exports: [ 'locale', 'new', 'old' ]
+    translations:
+        singular:
+            fr: 'Redirection'
+            en: 'Redirection'
+        plural:
+            fr: 'Redirections'
+            en: 'Redirections'
+        add:
+            fr: 'Ajouter une redirection'
+            en: 'Add redirection'
+        delete:
+            fr: "Supprimer la redirection"
+            en: 'Delete redirection'
+    searchFields:
+        - locale
+        - old
+        - new
+
+App\Entity\Seo\Seo:
+    translations:
+        singular:
+            fr: 'Référencement'
+            en: 'SEO'
+        plural:
+            fr: 'Référencements'
+            en: 'SEO'
+        add:
+            fr: 'Ajouter un référencement'
+            en: 'Add SEO'
+        delete:
+            fr: "Supprimer le référencement"
+            en: 'Delete SEO'
+
+App\Entity\Seo\Url:
+    translations:
+        singular:
+            fr: 'URL'
+            en: 'URL'
+        plural:
+            fr: 'URLS'
+            en: 'URLS'
+        add:
+            fr: 'Ajouter une URL'
+            en: 'Add URL'
+        delete:
+            fr: "Supprimer l'URL"
+            en: 'Delete URL'

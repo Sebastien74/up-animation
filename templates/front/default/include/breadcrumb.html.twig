@@ -1,0 +1,58 @@
+{% trans_default_domain 'front_default' %}
+
+{% if breadcrumbs|length > 0 %}
+    {% set website = website is defined and website ? website : website() %}
+    {% set websiteTemplate = website.configuration.template %}
+    {% set microDataActive = microDataActive is defined ? microDataActive : website.seoConfiguration.microData %}
+    {% set background = background is defined and background ? background : 'transparent' %}
+    {% set class = class is defined ? class : null %}
+    {% set paddingLeft = paddingLeft is defined and paddingLeft ? paddingLeft : 'pe-0' %}
+    {% set paddingRight = paddingRight is defined and paddingRight ? paddingRight : 'ps-0' %}
+    {% set paddings = paddingLeft~' '~paddingRight %}
+    {% if microDataActive %}
+        <ol id="breadcrumb" class="breadcrumb d-flex w-100 mb-0 {{ paddings }} bg-{{ background }} justify-content-start{% if class %} {{ class }}{% endif %}"
+            itemscope itemtype="https://schema.org/BreadcrumbList">
+            {% for item in breadcrumbs %}
+                {% set haveUrl = item.url is defined and item.url %}
+                <li itemprop="itemListElement" itemscope
+                    itemtype="https://schema.org/ListItem"
+                    class="breadcrumb-item lh-1 d-inline-flex align-items-center item-{{ loop.index }}{% if itemClass is defined and itemClass|length %} {{ itemClass }}{% endif %}">
+                    {% if haveUrl %}
+                        <a itemprop="item"
+                           itemscope
+                           itemtype="https://schema.org/WebPage"
+                           itemid="{{ absolute_url(item.url) }}"
+                           href="{{ absolute_url(item.url) }}"
+                           class="text-white d-inline-flex"
+                           data-position="{{ loop.index }}"
+                           data-toggle="preloader">
+                    {% endif %}
+                            <span itemprop="name" class="text-white d-inline-block{% if loop.last %} active{% endif %}" aria-label="{{ item.title|striptags }}">
+                                {{ item.title|truncate(30) }}
+                            </span>
+                    {% if haveUrl %}
+                        </a>
+                    {% endif %}
+                    <meta itemprop="position" content="{{ loop.index }}">
+                    {% if not loop.last %} <i class="icon-chevron-right text-white separator position-relative"></i>{% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+    {% else %}
+        <ol id="breadcrumb" class="breadcrumb d-flex w-100 mb-0 {{ paddings }} bg-{{ background }} justify-content-start{% if class %} {{ class }}{% endif %}">
+            {% for item in breadcrumbs %}
+                {% set haveUrl = item.url is defined and item.url %}
+                <li class="breadcrumb-item lh-1 d-inline-flex align-items-center{% if itemClass is defined and itemClass|length %} {{ itemClass }}{% endif %}">
+                    {% if haveUrl %}
+                        <a href="{{ absolute_url(item.url) }}" data-toggle="preloader">
+                    {% endif %}
+                            <span class="{% if loop.last %} active{% else %}text-white{% endif %}">{{ item.title|truncate(30) }}</span>
+                    {% if haveUrl %}
+                        </a>
+                    {% endif %}
+                    {% if not loop.last %} <i class="icon-chevron-right text-white separator position-relative"></i>{% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+{% endif %}

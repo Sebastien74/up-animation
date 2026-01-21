@@ -1,0 +1,28 @@
+{% trans_default_domain 'admin' %}
+
+<h4 class="card-subtitle mb-3">{{ 'fal copy'|icon(null, 14, 'info-darken me-2') }}{{ "Pages"|trans }}</h4>
+
+{% include 'admin/page/information/social-network.html.twig' with {socialsNetworks: form.website.information.socialNetworks} %}
+
+<h4 class="card-subtitle mb-3">{{ 'fal share-alt'|icon(null, 14, 'info-darken me-2') }}{{ "Partage"|trans }}</h4>
+<div class="row">
+    {{ form_row(form.website.api.addThis) }}
+</div>
+
+<h4 class="card-subtitle mb-3">
+    <div class="row">
+        <div class="col-md-6 d-flex align-items-center">
+            {{ 'fab instagram'|icon( null, 14, 'info-darken me-2') }}{{ "Instagram"|trans }}
+        </div>
+        <div class="col-md-6 text-end">
+            <a href="https://www.instagram.com/accounts/login/?force_authentication=1&enable_fb_login=1&platform_app_id=&next=/oauth/authorize/%3Fclient_id%3D1677ed07ddd54db0a70f14f9b1435579%26redirect_uri%3Dhttp%3A//instagram.pixelunion.net%26response_type%3Dtoken%26hl%3Den"
+               class="text-italic text-small text-info-darken" target="_blank">
+                {{ "Générer le token"|trans }}
+            </a>
+        </div>
+    </div>
+</h4>
+
+<div class="row row-neg">
+    {{ form_row(form.website.api.instagram) }}
+</div>

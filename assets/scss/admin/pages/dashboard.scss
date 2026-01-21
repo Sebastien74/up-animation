@@ -1,0 +1,161 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-09-26, 5:32 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    DASHBOARD :
+    ==========
+
+    1 ) Import
+    2 ) Core
+    3 ) Search section
+    4 ) Responsive
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Import
+-----------------------------------*/
+
+@import "../../vendor/mixin/media-queries";
+@import '../variables';
+
+/*-----------------------------------
+   2 ) Core
+-----------------------------------*/
+
+#dashboard {
+
+    .header {
+
+        h1 {
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+        }
+
+        p {
+            font-size: 13px;
+            font-weight: 400;
+        }
+    }
+
+    #saying {
+
+        ul {
+            font-size: 12px;
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+    }
+
+    .body {
+
+        a.shadow-item {
+            height: 145px !important;
+        }
+
+        .entitled {
+            font-weight: 400;
+            font-size: 15px;
+        }
+
+        .left {
+
+            &.internal {
+                border-right: 1px solid #ced4da;
+            }
+        }
+
+        .right {
+
+            i {
+                font-size: 16px;
+            }
+
+            .count {
+                font-size: 50px;
+                font-weight: 600;
+                margin-bottom: .4rem;
+                line-height: 1;
+            }
+
+            ul {
+
+                .small-count {
+
+                    font-size: 17px;
+                    position: relative;
+                    margin-right: 10px;
+
+                    > span {
+
+                        width: 15px;
+                        height: 15px;
+                        border-radius: 50%;
+                        transform: scale(.99);
+
+                        img {
+                            width: 15px;
+                            height: 15px;
+                            margin-top: -3px;
+                            border-radius: 50%;
+                            transform: scale(.99);
+                        }
+                    }
+
+                    .seo-count {
+                        position: relative;
+                    }
+
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+
+        .title.shadow-item {
+            font-weight: 500 !important;
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Search section
+-----------------------------------*/
+
+#stats-search {
+
+    thead {
+        font-size: 14px;
+    }
+
+    tbody {
+        font-size: 12px;
+    }
+
+    b {
+        font-weight: 500;
+    }
+
+    .card-footer:last-child {
+        border-bottom-left-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+    }
+}
+
+/*-----------------------------------
+   4 ) Responsive
+-----------------------------------*/
+
+@include mediaQuery(max-lg) {
+
+    #dashboard {
+        .body .left.internal {
+            border-right: none;
+        }
+    }
+}

@@ -1,0 +1,61 @@
+{% trans_default_domain 'front_default' %}
+
+{% set masterRequest = masterRequest() %}
+{% set requestUri = masterRequest.pathInfo|trim('/', 'left') %}
+{% set haveFields = formFilters.children|length > 0 or (listing.searchCategories == 'links' and categories|length > 0) or (not listing.combineFieldsText and listing.searchText) %}
+
+{% if listing.display != 'disable' and haveFields %}
+    <div id="search-products-filters-container">
+        {% if not listing.combineFieldsText and listing.searchText %}
+            <div id="search-text-container" class=" w-100 mb-4">
+                {{ form_start(formText, {attr: {id: "search-text-form", 'data-component': 'webpack-form'}}) }}
+                <div class="group d-inline-flex">
+                    {{ form_widget(formText.text) }}
+                </div>
+                {{ form_end(formText) }}
+            </div>
+        {% endif %}
+        {% if formFilters.children|length > 0 or (listing.searchCategories == 'links' and categories|length > 0) %}
+        <div id="search-fields-container" class="mb-4 position-relative">
+            {% endif %}
+            {% if formFilters.children|length > 0 %}
+                {{ form_start(formFilters, {attr: {
+                    id: "search-filter-form",
+                    'data-component': 'webpack-form'
+                }}) }}
+                <div class="row">
+                    {% set catalogsExisting = false %}
+                    {% for field in formFilters.children %}
+                        {% if field.vars.name == 'catalogs' %}
+                            {% set catalogsExisting = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set featuresKey = catalogsExisting ? 3 : 2 %}
+                    {% for field in formFilters.children %}
+                        <div class="group group-{{ field.vars.name }} col-lg-4">
+                            {{ form_row(formFilters[field.vars.name]) }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {{ form_end(formFilters) }}
+            {% endif %}
+            {% if listing.searchCategories == 'links' and categories|length > 0 %}
+                <ul>
+                    <li>
+                        <a href="{{ path('front_index', {url: requestUri}) }}">{{ "Voir tout les produits"|trans|raw }}</a>
+                    </li>
+                    {% for category in categories %}
+                        {% set categoryIntl = category|intl %}
+                        <li>
+                            <a href="{{ path('front_index', {url: requestUri, category: category.slug}) }}">
+                                {% if categoryIntl.title is defined and categoryIntl.title %}{{ categoryIntl.title }}{% else %}{{ category.adminName }}{% endif %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if formFilters.children|length > 0 or (listing.searchCategories == 'links' and categories|length > 0) %}
+        </div>
+        {% endif %}
+    </div>
+{% endif %}

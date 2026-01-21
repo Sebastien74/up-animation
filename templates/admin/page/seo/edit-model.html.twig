@@ -1,0 +1,42 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageTitle = "Référencement : Modèles"|trans %}
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-seo', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-seo', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card p-0">
+                {% include 'admin/page/seo/include/filter-header.html.twig' %}
+                <div class="card-body pt-0">
+                    {% include 'admin/page/seo/include/filter-categories.html.twig' %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 mb-4">
+            <div class="row">
+                <div id="preview-container" class="col-md-6">
+                    {% include 'admin/page/seo/include/fields-model.html.twig' %}
+                </div>
+                <div id="seo-form-container" class="col-md-6">
+                    {% include 'admin/page/seo/include/edition-model.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+@charset "UTF-8";
+
+/* ------------------------------------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2019-08-15, 4:10 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT VENDOR :
+    ==============
+
+    1 ) Variables
+    2 ) Main
+    3 ) Mixin & each
+    4 ) Layout
+    5 ) Components
+    6 ) Browsers alert
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Variables
+-----------------------------------*/
+
+@import 'functions';
+@import 'variables';
+@import 'variables-bootstrap';
+
+@if $enable-basic-nav {
+    $enable-dropdown: true;
+}
+
+@if $enable-newsletter {
+    $enable-form: true;
+}
+
+@if $enable-search-modal {
+    $enable-form: true;
+}
+
+@if $enable-modal {
+    $enable-button-close: true;
+}
+
+/*-----------------------------------
+   2 ) Main
+-----------------------------------*/
+
+@import '../bootstrap/variables';
+@import '../bootstrap/bootstrap';
+
+/*-----------------------------------
+   3 ) Mixin & each
+-----------------------------------*/
+
+/*! purgecss start ignore */
+@import 'utilities/functions';
+@import 'utilities/mixins';
+@import 'utilities/mixin-svg';
+@import 'utilities/mixin-column';
+@import 'utilities/each';
+@import 'utilities/mixin-margin-screens';
+@include appMarginsScreens($marginsScreens);
+/*! purgecss end ignore */
+
+/*-----------------------------------
+   4 ) Layout
+-----------------------------------*/
+
+@import 'layout/animations';
+@import 'layout/preloader';
+@import 'layout/navigation';
+@import 'layout/breadcrumb';
+@import 'layout/elements';
+@import 'layout/text';
+@import 'layout/footer';
+@import 'layout/layout';
+@import 'layout/accessibility';
+
+/*-----------------------------------
+   5 ) Components
+-----------------------------------*/
+
+@import 'components/vendor';
+@import 'gdpr';
+
+/*-----------------------------------
+   6 ) Browsers alert
+-----------------------------------*/
+
+@import '../../vendor/components/browsers';

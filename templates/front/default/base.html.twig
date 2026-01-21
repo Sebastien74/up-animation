@@ -1,0 +1,318 @@
+<!doctype html>
+
+{% set templateName = templateName is defined ? templateName : 'cms' %}
+{% set website = website is defined ? website : website() %}
+{% set cacheClearDate = website.cacheClearDate is defined and website.cacheClearDate ? website.cacheClearDate|date('Y-m-d') : null %}
+{% set configuration = configuration is defined ? configuration : website.configuration %}
+{% set websiteTemplate = configuration.template %}
+{% set webpack = 'front_'~websiteTemplate|replace({'-': '_'}) %}
+{% set isDebug = isDebug() ? "1" : "0" %}
+{% set onlyBody = (onlyBody is defined and onlyBody) or (website.security.frontCustomTemplate is defined and website.security.frontCustomTemplate and 'security-back' == templateName) %}
+
+<html lang="{{ app.request.locale }}"
+      dir="{{ readingDirection(app.request.locale) }}"
+      data-debug="{{ isDebug }}"
+      data-cache="{{ cacheClearDate }}"
+      data-nonce="{{ csp_nonce() }}">
+
+    {% set trans_domain = 'front_default' %}
+    {% trans_default_domain 'front_default' %}
+
+    {% import 'front/'~websiteTemplate~'/include/api.html.twig' as macroApi %}
+
+    {% set entity = entity is defined ? entity : null %}
+    {% set gdprActive = 'gdpr'|moduleActive(configuration) ? 1 : 0 %}
+    {% set isUserBack = isUserBack is defined ? isUserBack : false %}
+    {% set microDataActive = microDataActive is defined ? microDataActive : website.seoConfiguration.microData %}
+    {% set information = website.information %}
+    {% set infoIntl = information.intl %}
+    {% set companyName = infoIntl.title is defined and infoIntl.title ? infoIntl.title : "Agence Félix"|trans|raw %}
+    {% set api = website.api is defined ? website.api : null %}
+    {% set urlId = seo.url.id is defined ? seo.url.id : null %}
+    {% set bodyBg = configuration.backgroundColor is defined ? configuration.backgroundColor : null %}
+    {% set pageBg = entity.backgroundColor is defined and entity.backgroundColor ? entity.backgroundColor : null %}
+    {% set intlMedia = intlMedia is defined and interfaceName is defined and intlMedia.media.filename is defined and interfaceName == 'page' ? intlMedia : null %}
+    {% set thumbConfiguration = intlMedia and thumbConfiguration is defined ? thumbConfiguration : {} %}
+    {% set bgImgStyle = intlMedia ? intlMedia.mediaRelation|file(thumbConfiguration, {style: true}) : null %}
+    {% set networks = logos['social-networks'] is defined and logos['social-networks'] ? logos['social-networks'] : null %}
+    {% set phones = information.phones is defined and information.phones|length > 0 ? information.phones : [] %}
+    {% set emails = information.emails is defined and information.emails|length > 0 ? information.emails : [] %}
+    {% set isUserFront = app.user|isUserFront %}
+    {% set websiteAlertmessage = information.alerts is defined and information.alerts is not empty ? information.alerts : false %}
+    {% set websiteAlertHideMode = infoIntl.linkBlank is defined ? infoIntl.linkBlank : true %}
+    {% set websiteAlertAlreadyShow = websiteAlertHideMode and app.session.get('front_website_alert_show') is defined and app.session.get('front_website_alert_show') %}
+    {% set websiteAlertIsActive = infoIntl.active is defined and infoIntl.active and websiteAlertmessage and not websiteAlertAlreadyShow %}
+    {% set haveInternalError = granted('ROLE_INTERNAL') and app.request.session.get('config_error') %}
+    {% set stickyColClass = entity.haveStickyCol is defined and entity.haveStickyCol ? ' body-sticky-col'
+        : (entityModel.haveStickyCol is defined and entityModel.haveStickyCol ? ' body-sticky-col' : null) %}
+    {% set customBodyClass = customBodyClass is defined ? customBodyClass~stickyColClass : stickyColClass %}
+    {% set axeptioId = website.api.custom.axeptioId is defined ? website.api.custom.axeptioId : null %}
+    {% set axeptioCookie = website.api.custom.axeptioCookieVersion is defined ? website.api.custom.axeptioCookieVersion : null %}
+    {% set axeptioExternal = website.api.custom.axeptioExternal is defined ? website.api.custom.axeptioExternal : null %}
+    {% set axeptioActive = axeptioId or axeptioExternal %}
+    {% set matomoId = website.api.custom.matomoId is defined ? website.api.custom.matomoId : null %}
+    {% set matomoUrl = website.api.custom.matomoUrl is defined ? website.api.custom.matomoUrl : null %}
+    {% set pageClass = entity.catalog.slug is defined ? 'body-'~entity.catalog.slug : (entity.slug is defined ? 'body-'~entity.slug : null) %}
+    {% set pageSlug = pageClass ? pageClass~'-page' : null %}
+    {% set asAccessibility = app.request.cookies.get('USER_ACCESSIBILITY') %}
+
+    <head>
+{#        <link rel="preconnect" href="https://fonts.googleapis.com">#}
+{#        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>#}
+{#        <link rel="dns-prefetch" href="https://fonts.googleapis.com">#}
+{#        <link rel="dns-prefetch" href="https://fonts.gstatic.com">#}
+{#        <link rel="dns-prefetch" href="https://www.googletagmanager.com">#}
+{#        <link rel="dns-prefetch" href="https://www.google-analytics.com">#}
+{#        <link rel="dns-prefetch" href="https://connect.facebook.net">#}
+        {% if matomoUrl %}
+            <link rel="preconnect" href="{{ matomoUrl }}">
+            <link rel="dns-prefetch" href="{{ matomoUrl }}">
+        {% endif %}
+        {% if axeptioId %}
+            <link rel="preconnect" href="https://api.axept.io">
+            <link rel="dns-prefetch" href="https://api.axept.io">
+        {% endif %}
+
+        <!-- Metas -->
+        <meta charset="{{ configuration.charset }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="include_timeout" content="1">
+
+        {% if seo is defined %}
+            {% include 'front/'~websiteTemplate~'/include/seo.html.twig' with {
+                website: website,
+                configuration: configuration,
+                seo: seo,
+                seoTitle: seoTitle is defined ? seoTitle : null,
+                logos: website.logos,
+                companyName: companyName} only %}
+        {% else %}
+            {% set haveAfterDash = not website.seoConfiguration.disableAfterDash %}
+            {% set metaTitle = block('metaTitle') is defined ? block('metaTitle') : (seoTitle is defined ? seoTitle : null) %}
+            {% set metaTitle = metaTitle and haveAfterDash ? metaTitle~' - '~companyName : (not metaTitle and haveAfterDash ? companyName : metaTitle) %}
+            {% set metaDescription = block('metaDescription') is defined ? block('metaDescription') : '' %}
+            {% set metaRobots = block('metaRobots') is defined ? block('metaRobots') : 'index' %}
+            {% set metaCanonical = block('metaCanonical') is defined ? block('metaCanonical') : app.request.uri %}
+            {% set ogImage = block('ogImage') is defined ? block('ogImage') : null %}
+            <title>{{ metaTitle|htmlEntities }}</title>
+            <meta name="description" content="{{ metaDescription|htmlEntities }}">
+            <meta name="robots" content="{{ metaRobots }}">
+            <link rel="canonical" href="{{ metaCanonical }}">
+            <meta property="og:locale" content="{{ app.request.locale }}">
+            <meta property="og:title" content="{{ metaTitle|htmlEntities }}">
+            <meta property="og:description" content="{{ metaDescription|htmlEntities }}">
+            <meta property="og:url" content="{{ metaDescription|htmlEntities }}">
+            <meta property="og:type" content="website">
+            {% if ogImage %}
+                <meta property="og:image" content="{{ ogImage }}">
+            {% endif %}
+        {% endif %}
+
+{#        {% include 'core/csp.html.twig' with {} only %}#}
+
+        {{ macroApi.render({
+            gdprActive: gdprActive,
+            axeptioActive: axeptioActive,
+            searchConsoleKey: website.api.google.searchConsoleKey is defined ? website.api.google.searchConsoleKey : null,
+            domainVerification: website.api.facebook.domainVerification is defined ? website.api.facebook.domainVerification : null
+        }) }}
+
+        {% if website.logos is defined %}
+            {% include 'core/favicon.html.twig' with {website: website, logos: website.logos, microDataActive: microDataActive} only %}
+        {% endif %}
+
+        {% if microDataActive %}
+            {% include 'front/'~websiteTemplate~'/include/microdata.html.twig' with {
+                microdata: seo.microdata is defined ? seo.microdata : (microdata is defined ? microdata : null),
+                disableMicrodata: disableMicrodata is defined and disableMicrodata,
+                networks: networks
+            } only %}
+        {% endif %}
+        {% block microData %}{% endblock %}
+
+        <!-- Main Stylesheets -->
+        {% block stylesheets %}{% endblock %}
+
+        <!-- Fonts -->
+        <link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" rel="preload" as="style" class="preload-css" nonce="{{ csp_nonce() }}">
+
+        <!-- Stylesheets -->
+        {{ encore_entry_link_tags('front-'~websiteTemplate~'-vendor-mobile', null, webpack, {media: 'screen and (max-width: 575px)', nonce: csp_nonce()}) }}
+        {{ encore_entry_link_tags('front-'~websiteTemplate~'-vendor-desktop', null, webpack, {media: 'screen and (min-width: 576px)', nonce: csp_nonce()}) }}
+        {% if axeptioExternal or axeptioId %}
+            <link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-gdpr.css', webpack) }}" rel="preload" as="style" class="preload-css" nonce="{{ csp_nonce() }}">
+        {% endif %}
+        <link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-print.css', webpack) }}" rel="preload" media="print" as="style" class="preload-css" nonce="{{ csp_nonce() }}">
+        {% if app.debug %}
+            {{ encore_entry_link_tags('debug', null, 'vendor', {nonce: csp_nonce()}) }}
+        {% endif %}
+
+        <!-- Preload JS -->
+        {% for filename, configFile in {'vendor': {importance: 'high'}} %}
+            <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~filename~'.js', webpack), {as: 'script', importance: configFile.importance, nonce: csp_nonce()}) }}" as="script" fetchpriority="{{ configFile.importance }}">
+        {% endfor %}
+
+        {% if preloadFiles.images is defined %}
+            {% for preloadFile in preloadFiles.images %}
+                <link rel="preload" fetchpriority="high" as="image" href="{{ preloadFile }}" nonce="{{ csp_nonce() }}" type="image/{{ preloadFile|split('.')|last }}">
+            {% endfor %}
+        {% endif %}
+
+        {{ macroApi.render({
+            gdprActive: gdprActive,
+            axeptioId: axeptioId,
+            axeptioActive: axeptioActive,
+            analyticsUa: website.api.google.analyticsUa is defined ? website.api.google.analyticsUa : null,
+            tagManagerKey: website.api.google.tagManagerKey is defined ? website.api.google.tagManagerKey : null,
+            pixel: website.api.facebook.pixel is defined ? website.api.facebook.pixel : null,
+            headScript: website.api.custom.headScript is defined ? website.api.custom.headScript : null,
+            headScriptSeo: website.api.custom.headScriptSeo is defined ? website.api.custom.headScriptSeo : null
+        }) }}
+
+        <noscript nonce="{{ csp_nonce() }}">
+            <div class="alert-no-script bg-primary py-3"><div class="container"><p class="mb-0 text-center fw-700">{{ "Activez JavaScript pour charger plus de contenu interactif."|trans|raw }}</p></div></div>
+            {{ encore_entry_link_tags('front-'~websiteTemplate~'-noscript', null, webpack) }}
+        </noscript>
+
+    </head>
+
+    <body id="{{ templateName }}-body" tabindex="-1"
+          class="{{ bodyClasses(configuration, customBodyClass, entity) }}{% if websiteAlertIsActive %} alert-active{% endif %}{% if bodyBg %} {{ bodyBg }}{% endif %}{% if haveInternalError %} internal-error-show{% endif %}{% if axeptioActive %} axeptio-active{% endif %}{% if asAccessibility %} as-accessibility{% endif %} back-row-toggle splat-toggle"
+          data-id="{{ website.id }}"{% if isUserBack %} data-userback="{{ isUserBack }}"{% endif %}
+          data-gdpr="{{ gdprActive }}"
+          data-axeptio-external="{{ axeptioExternal }}"
+          data-axeptio-cookie="{{ axeptioCookie }}"
+          data-axeptio="{{ axeptioId }}"
+          data-matomo-id="{{ matomoId }}"
+          data-matomo-url="{{ matomoUrl }}">
+
+        <a href="#body-page" class="skip-link btn btn-black">{{ "Aller au contenu principal"|trans|striptags }}</a>
+        <a href="#footer" class="skip-link btn btn-black">{{ "Aller au pied de page"|trans|striptags }}</a>
+
+        {{ macroApi.render({
+            gdprActive: gdprActive,
+            axeptioActive: axeptioActive,
+            noscriptTagManagerKey: website.api.google.tagManagerKey is defined ? website.api.google.tagManagerKey : null,
+            noscriptPixel: website.api.facebook.pixel is defined ? website.api.facebook.pixel : null,
+            topBodyScript: website.api.custom.topBodyScript is defined ? website.api.custom.topBodyScript : null,
+            topBodyScriptSeo: website.api.custom.topBodyScriptSeo is defined ? website.api.custom.topBodyScriptSeo : null
+        }) }}
+
+        {% if websiteAlertIsActive and not onlyBody %}
+            {% include 'front/'~websiteTemplate~'/include/website-alert.html.twig' with {
+                information: information,
+                websiteTemplate: websiteTemplate,
+                websiteAlertmessage: websiteAlertmessage
+            } only %}
+        {% endif %}
+
+        {% if mainMenus.main.arguments is defined and mainMenus.main.arguments and not onlyBody %}
+            {% set menuArgs = mainMenus.main.arguments|merge({
+                currentClassname: interface.classname is defined ? interface.classname : null,
+                currentEntityId: entity.id is defined ? entity.id : null,
+                infoIntl: infoIntl,
+                information: information,
+                logos: website.logos,
+                emails: information.zones.emails.header is defined and information.zones.emails.header is not empty ? information.zones.emails.header : false,
+                phones: information.zones.phones.header is defined and information.zones.phones.header is not empty ? information.zones.phones.header : false,
+                pageBg: pageBg,
+                mainPages: mainPages,
+                microDataActive: microDataActive,
+                seo: seo is defined ? seo : null}) %}
+            {% include mainMenus.main.arguments.template with menuArgs only %}
+        {% endif %}
+
+        {% if configuration.preloader %}
+            {% include 'front/'~websiteTemplate~'/include/preloader.html.twig' with {logos: website.logos, companyName: companyName} only %}
+        {% endif %}
+
+        <div id="content-page"{% if not configuration.fullWidth or pageBg or pageSlug %} class="{% if not configuration.fullWidth %}content-page-box{% endif %}{% if pageBg %} {{ pageBg }}{% endif %}{% if pageSlug %} {{ pageSlug }}{% endif %}"{% endif %}>
+
+            {% if app.session.get('as_switch_user') %}
+                {% include 'core/switcher-modal.html.twig' with {website: website} only %}
+            {% endif %}
+
+            <main id="body-page" role="main" class="position-relative{% if pageClass %} {{ pageClass }}{% endif %}"{% if bgImgStyle %} style="{{ bgImgStyle }}"{% endif %}>
+                {% block body %}{% endblock %}
+            </main>
+
+            {% if 'newsletter'|moduleActive(configuration) and not onlyBody %}
+                {{ render_esi(path('front_newsletter_view', {filter: 'main', website: website.id} )) }}
+            {% endif %}
+
+            {% if not onlyBody %}
+                {% include 'front/'~websiteTemplate~'/include/footer.html.twig' with {
+                    websiteTemplate: websiteTemplate,
+                    configuration: configuration,
+                    information: information,
+                    website: website,
+                    urlId: urlId,
+                    logos: website.logos,
+                    axeptioActive: axeptioActive,
+                    mainMenus: mainMenus,
+                    mainPages: mainPages,
+                    companyName: companyName,
+                    seo: seo is defined ? seo : null} only %}
+            {% endif %}
+
+        </div>
+
+        {% if 'search'|moduleActive(configuration) and not onlyBody %}
+            {{ render_esi(path('front_search_view', {filter: 'main', modal: true, website: website.id} )) }}
+        {% endif %}
+
+        {% if haveInternalError and not onlyBody %}
+            {% include 'core/webmaster-alert.html.twig' %}
+        {% endif %}
+
+        {% include 'front/'~websiteTemplate~'/include/recaptcha.html.twig' with {configuration: configuration} only %}
+        {% include 'front/'~websiteTemplate~'/include/translations.html.twig' only %}
+
+        {% if website.api is defined and website.api and not onlyBody %}
+            {{ website.api|addThis(webpack) }}
+            {{ website.api|tawkTo }}
+        {% endif %}
+
+        {% if configuration.scrollTopBtn and not onlyBody %}
+            {% include 'front/'~websiteTemplate~'/include/scroll-top-btn.html.twig' with {website: website, websiteTemplate: websiteTemplate} only %}
+        {% endif %}
+
+        {{ component('WebmasterBox', {
+            interfaceName: interfaceName is defined ? interfaceName : null,
+            entityId: entity.id is defined ? entity.id : null,
+            entity: entity is defined ? entity : null,
+            url: url is defined ? url : null,
+        }) }}
+        {% include 'core/data-path.html.twig' only %}
+
+        <!-- JavaScripts -->
+        {% block javascripts %}
+            {{ encore_entry_script_tags('front-'~websiteTemplate~'-vendor', null, webpack, {defer: true, type: 'module', nonce: csp_nonce()}) }}
+            {% if axeptioExternal or axeptioId %}
+                {{ encore_entry_script_tags('front-'~websiteTemplate~'-gdpr', null, webpack, {async: true, nonce: csp_nonce()}) }}
+            {% endif %}
+            {% if matomoId %}
+                {{ encore_entry_script_tags('front-'~websiteTemplate~'-matomo', null, webpack, {async: true, nonce: csp_nonce()}) }}
+            {% endif %}
+            {{ jsRouting() }}
+        {% endblock %}
+
+        {% if not isDesktop() and configuration.progressiveWebApp and 'APP_ENV_NAME'|getEnv != 'local' and not onlyBody %}
+            {% include 'front/'~websiteTemplate~'/include/service-worker.html.twig' with {website: website, logos: website.logos, companyName: companyName} only %}
+        {% endif %}
+
+        {% if isUserFront(app.user) and not app.user.confirmEmail and not onlyBody %}
+            {% include 'front/'~websiteTemplate~'/include/user-front-alert.html.twig' with {user: app.user} only %}
+        {% endif %}
+
+        {{ macroApi.render({
+            gdprActive: gdprActive,
+            axeptioActive: axeptioActive,
+            bottomBodyScript: website.api.custom.bottomBodyScript is defined ? website.api.custom.bottomBodyScript : null,
+            bottomBodyScriptSeo: website.api.custom.bottomBodyScriptSeo is defined ? website.api.custom.bottomBodyScriptSeo : null
+        }) }}
+
+    </body>
+
+</html>

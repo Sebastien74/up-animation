@@ -1,0 +1,50 @@
+{% trans_default_domain 'admin' %}
+
+<div class="card">
+    <h4 class="card-title card-header">{{ 'fab css3-alt'|icon(null, 18, 'info-darken me-2') }}{{ "Classes personnalisées"|trans }}</h4>
+    <div class="card-body pb-0">
+
+        {% import _self as macro %}
+
+        {% macro cssclasses_prototype(cssClass) %}
+
+            {% set isNew = cssClass.vars.data.id is defined and cssClass.vars.data.id ? false : true %}
+            {% set entityId = isNew ? uniqId() : cssClass.vars.data.id %}
+
+            <div class="prototype prototype-block p-3">
+                <div class="row">
+                    {{ form_row(cssClass.name) }}
+                    {{ form_row(cssClass.description) }}
+                </div>
+                {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                    isNew: cssClass.vars.data.id is defined and cssClass.vars.data.id ? false : true,
+                    entityId: isNew ? uniqId() : cssClass.vars.data.id,
+                    interfaceName: 'cssclass'
+                } %}
+            </div>
+
+        {% endmacro %}
+
+        <div id="cssclasses-collection"
+             data-index="{{ form.cssClasses|length }}"
+             class="collection"
+             data-prototype="{{ macro.cssclasses_prototype(form.cssClasses.vars.prototype)|e('html_attr') }}">
+            {% for cssClass in form.cssClasses %}
+                {{ macro.cssclasses_prototype(cssClass) }}
+            {% else %}
+                {% include 'admin/include/alert.html.twig' with {alert: "info", message: "Auncune classe personnalisée enregistrée."|trans} only %}
+            {% endfor %}
+        </div>
+
+        <div class="w-100 text-end mt-4 mb-4">
+            <button role="button" class="add-collection btn btn-success standard"
+                    data-type="table"
+                    data-collection-target="append"
+                    data-target="#cssclasses-collection">
+                {{ 'fal plus'|icon(11, 15, 'white me-2') }}{{ "Ajouter une classe"|trans }}
+            </button>
+        </div>
+
+    </div>
+</div>
+

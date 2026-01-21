@@ -1,0 +1,44 @@
+{% extends 'front/'~websiteTemplate~'/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% set seoTitle = 'Newsletter'|trans %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-cms', null, webpack) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-cms', null,  webpack) }}
+{% endblock %}
+
+{% block body %}
+    <div id="newsletter-thanks-container" class="newsletter-thanks-container pt-5 pb-5 text-center bg-light d-flex align-items-center">
+        <div class="row w-100">
+            <div class="col-md-6 col-xl-4 mx-auto mt-5 mb-5 d-flex align-items-center">
+                <div class="form-thanks-card card bg-white form-success-card w-100">
+                    <div class="card-body bg-transparent pt-4 pt-lg-5 pb-4 text-center px-4 px-md-5">
+                        <div class="body mb-3">
+                            <i class="icon-thumbs-up text-primary size-xl-icon mb-4 d-inline-block"></i>
+                            {% if campaign.intl.placeholder %}
+                                {{ campaign.intl.placeholder|raw }}
+                            {% else %}
+                                <p class="mb-2"><strong>{{ "Merci pour votre inscription à notre newsletter !"|trans|raw }}</strong></p>
+                                <p class="mb-2">{{ "Un e-mail de confirmation vient de vous être envoyé."|trans|raw }}</p>
+                                <p class="mb-2">{{ "Merci de vérifier votre boîte de réception et de cliquer sur le lien pour finaliser votre inscription."|trans|raw }}</p>
+                                <p class="mb-0">{{ "Si vous ne recevez pas cet e-mail d’ici quelques minutes, pensez à vérifier votre dossier de courriers indésirables ou spams."|trans|raw }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent text-center px-4 pt-0 pb-4 pb-lg-5 border-0">
+                        <a href="{{ path('front_index') }}" class="btn btn-primary d-inline-flex" data-toggle="preloader">
+                            {{ "Retourner à la page d'accueil"|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

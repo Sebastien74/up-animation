@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2020
+    Created on : 2020-03-09, 10:59 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT MIXIN MARGIN :
+    ===================
+
+------------------------------------------------------------------ */
+
+@mixin appMargins($configs, $marginsBreakpoints) {
+
+    @each $breakpoint, $config in $configs {
+
+        $exist: false;
+        $media-query-limit: false;
+        @each $break, $limit in $marginsBreakpoints {
+            @if $breakpoint == $break {
+                $exist: true;
+                $media-query-limit: $limit;
+            }
+        }
+
+        @if $exist and $media-query-limit {
+
+            @include mediaQuery(#{$media-query-limit}) {
+
+                @each $axisSize, $size in map-get($config, "y") {
+
+                    $ratio: false;
+                    @if type-of($size) == 'map' {
+                        $ratio: map-get($size, 'ratio');
+                        $size: calc(var(--bs-gutter-y-margin) * #{$ratio});
+                    }
+
+                    .mt-#{$axisSize} {
+                        margin-top: $size;
+                    }
+                    .mb-#{$axisSize} {
+                        margin-bottom: $size;
+                    }
+                    .mt-#{$axisSize}-neg {
+                        margin-top: calc(-1 * #{$size});
+                    }
+                    .mb-#{$axisSize}-neg {
+                        margin-bottom: calc(-1 * #{$size});
+                    }
+                    .pt-#{$axisSize} {
+                        padding-top: $size;
+                    }
+                    .pb-#{$axisSize} {
+                        padding-bottom: $size;
+                    }
+                }
+
+                @each $axisSize, $size in map-get($config, "x") {
+
+                    $ratio: false;
+                    @if type-of($size) == 'map' {
+                        $ratio: map-get($size, 'ratio');
+                        $size: calc(var(--bs-gutter-x-margin) * #{$ratio});
+                    }
+
+                    .ms-#{$axisSize} {
+                        margin-left: $size;
+                    }
+                    .me-#{$axisSize} {
+                        margin-right: $size;
+                    }
+                    .ms-#{$axisSize}-neg {
+                        margin-left: calc(-1 * #{$size});
+                    }
+                    .me-#{$axisSize}-neg {
+                        margin-right: calc(-1 * #{$size});
+                    }
+                    .ps-#{$axisSize} {
+                        padding-left: $size;
+                    }
+                    .pe-#{$axisSize} {
+                        padding-right: $size;
+                    }
+                }
+            }
+        }
+    }
+}

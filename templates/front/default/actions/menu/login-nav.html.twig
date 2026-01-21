@@ -1,0 +1,27 @@
+{% trans_default_domain 'front_default' %}
+
+{% set haveRegistration = website.security.frontRegistration %}
+{% set logoutPath = is_granted('IS_IMPERSONATOR') ? path('front_index', {_switch_user: '_exit'}) : path('app_logout') %}
+
+<div id="login-nav" class="navbar-nav mx-auto ms-{{ expand }}-auto me-{{ expand }}-0 mt-4 mt-{{ expand }}-0 text-center">
+    {% if not isUserFront(app.user) %}
+        <a href="{{ path('security_front_forms') }}" class="ms-{{ expand }}-4 mb-3 mb-{{ expand }}-0 btn btn-outline-primary d-flex align-items-center" aria-label="{{ 'Connectez-vous'|trans|striptags }}" data-toggle="preloader">
+            {{ 'fal sign-in'|icon(null, 17, 'me-2', {decor: true}) }} {{ "Connectez-vous"|trans|raw }}
+        </a>
+        {% if haveRegistration %}
+            <a href="{{ path('security_front_forms') }}" class="btn btn-primary ms-{{ expand }}-4 d-flex align-items-center" aria-label="{{ 'Inscrivez-vous'|trans|striptags }}" data-toggle="preloader">
+                {{ 'fal feather'|icon(null, 17, 'me-2', {decor: true}) }}
+                {{ "Inscrivez-vous"|trans|raw }}
+            </a>
+        {% endif %}
+    {% else %}
+        <a href="{{ logoutPath }}" class="btn btn-primary ms-{{ expand }}-4 mb-3 mb-{{ expand }}-0 d-flex align-items-center" aria-label="{{ 'Déconnectez-vous'|trans|striptags }}" data-toggle="preloader">
+            {{ 'fal power-off'|icon(null, 17, 'me-2', {decor: true}) }} {{ "Déconnectez-vous"|trans|raw }}
+        </a>
+        {% if website.securityDashboardUrl %}
+            <a href="{{ website.securityDashboardUrl }}" class="btn btn-outline-primary d-flex align-items-center ms-{{ expand }}-4" aria-label="{{ "Espace personnel"|trans|striptags }}" data-toggle="preloader">
+                {{ 'fal user'|icon(null, 17, 'me-2', {decor: true}) }} {{ "Espace personnel"|trans|raw }}
+            </a>
+        {% endif %}
+    {% endif %}
+</div>

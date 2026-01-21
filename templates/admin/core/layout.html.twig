@@ -1,0 +1,33 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageTitle = "Mise en page :"|trans~" "~entity.adminName %}
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+{% block bodyClass %}layout-body-edition{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% set haveCustomLayout = entity.customLayout is defined and entity.customLayout %}
+    {% set haveTooHeavyFiles = tooHeavyFiles is defined and tooHeavyFiles|length > 0 and disabledMedias is not defined %}
+    {% set haveSeoAlert = (haveH1.error is defined and haveH1.error)
+        or ((seoAlert.noTitle is defined or seoAlert.noDescription is defined) and (seoAlert.noTitle is not empty or seoAlert.noDescription is not empty))
+        or (mediasAlert is defined and mediasAlert is not empty) %}
+    {% include 'admin/core/form/edit-form-base.html.twig' %}
+    {% include 'admin/include/alerts.html.twig' %}
+    {% set layout = entity.layout is defined and entity.layout ? entity.layout : null %}
+    {% set infill = entity.infill is defined and entity.infill %}
+    {% if not infill and (layout and interface.name == 'page' or layout and granted('ROLE_LAYOUT_'~interface.name|upper)) %}
+        <div id="layout-grid" class="mb-4">
+            {% include 'admin/core/layout/zones.html.twig' %}
+        </div>
+    {% endif %}
+{% endblock %}

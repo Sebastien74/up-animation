@@ -1,0 +1,31 @@
+{% trans_default_domain 'admin' %}
+
+{% if tooHeavyFiles is defined and tooHeavyFiles|length > 0 and disabledMedias is not defined %}
+    {% set allLocales = allLocales is defined ? allLocales : website.configuration.allLocales %}
+    {% set asMultiLocales = allLocales|length > 1 %}
+    {% set optimMessage = "Des fichiers trop volumineux auront un <b class='fw-700'>impact négatif</b> sur les <b class='fw-700'>performances</b> et le <b class='fw-700'>référencement</b> de votre site Internet. Le poid recommandé est de 200Ko maximum."|trans %}
+    {% set message = tooHeavyFiles|length == 1 ? "Le fichier ci-dessous devrait être optimsé :"|trans : "Les fichiers ci-dessous devraient être optimsés :"|trans %}
+    {% set message = message~'<ul class="m-0 ps-4">' %}
+    {% for filename, files in tooHeavyFiles %}
+        {% for entityId, alert in files %}
+            {% set link = 'block' == alert.interfaceName and 'admin_block_edit' != masterRequest().get('_route')
+                ? path('admin_block_edit', {website: websiteId(), col: alert.entity.col.id, interfaceName: interface.name, interfaceEntity: entity.id, block: alert.entity.id}) : null %}
+            {% set message = message~'<li class="my-1"><span class="d-flex align-items-center">' %}
+            {% if link %}
+                {% set message = message~"<a href='"~link~"' class='text-warning text-underline'>" %}
+            {% endif %}
+            {% set message = message~'<i>'~alert.filename~'</i>' %}
+            {% if link %}
+                {% set message = message~"</a>" %}
+            {% endif %}
+            {% set message = message~" <b class='fw-800 mx-1'>"~alert.bytes~"</b> > 500k" %}
+            {% for locale in alert.locales %}
+                {% set flag = asMultiLocales ? '<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="'~asset('/medias/icons/flags/'~locale~'.svg')~'" class="img-fluid lazy-load flag ms-2" height="14" width="19">' : '' %}
+                {% set message = message~flag %}
+            {% endfor %}
+            {% set message = message~"</li>" %}
+        {% endfor %}
+    {% endfor %}
+    {% set message = message~"</ul>"~optimMessage %}
+    {% include 'admin/include/alert.html.twig' with {alert: "warning", badge: "OPTIM / SEO", display: "alert", size: "small", message: message} only %}
+{% endif %}

@@ -1,0 +1,28 @@
+{% extends 'core/email/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% set confirmLink = token is defined ? absolute_url(path('security_front_confirmation', {token: token|url_encode, _locale: app.request.locale})) : '%confirmLink%' %}
+
+{% block metaTitle %}{{ "Finalisez votre inscription sur notre site"|trans|htmlEntities }}{% endblock %}
+
+{% block preheader %}{% endblock %}
+
+{% block info %}
+    {{ "Cet e-mail vous a été envoyé, car nous avons reçu une demande d'inscription."|trans }}
+{% endblock %}
+
+{% block body %}
+    <tr>
+        <td id="content-fixtures" align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+            {% set message = "<p>Bonjour,</p><p>Vous avez demandé à créer un compte sur notre site.</p>
+                <p>Pour finaliser votre inscription et activer votre compte, veuillez confirmer votre adresse e-mail en cliquant sur le lien ci-dessous :</p>
+                <p><a href='%confirmLink%'><strong>Confirmer mon inscription</strong></a></p>
+                <p>Ce lien est valable pendant 24 heures. Passé ce délai, vous devrez effectuer une nouvelle demande d'inscription.</p>
+                <p>Si vous n’êtes pas à l’origine de cette demande, vous pouvez ignorer cet e-mail. Aucune action ne sera entreprise sans votre confirmation.</p>
+                <p>Merci et à bientôt.</p>"|trans({'%confirmLink%': confirmLink})
+            %}
+            {{ message|raw }}
+        </td>
+    </tr>
+{% endblock %}

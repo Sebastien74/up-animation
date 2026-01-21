@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2021
+    Created on : 2021-10-07, 02:37 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT EACH FONT SIZES :
+    =====================
+
+------------------------------------------------------------------ */
+
+/*! purgecss start ignore */
+
+@each $code, $config in $font-sizes-app {
+    .fz-#{$code}, .fz-#{$code} * {
+        @if (map-get($config, 'rfs') == true) {
+            @include rfs(map-get($config, 'size') !important);
+            @if (map-get($config, 'line-height')) {
+                @include rfs(map-get($config, 'line-height') !important, line-height);
+            }
+        } @else {
+            font-size: map-get($config, "size");
+            @if (map-get($config, "line-height")) {
+                line-height: map-get($config, 'line-height') !important;
+            }
+        }
+    }
+}
+
+@each $element, $config in $font-sizes-config {
+    #{$element} {
+        @if (map-get($config, 'rfs') == true) {
+            @include rfs(map-get($config, "size"));
+            @if (map-get($config, 'line-height')) {
+                @include rfs(map-get($config, 'line-height'), line-height);
+            }
+        } @else {
+            font-size: map-get($config, 'size');
+        }
+    }
+}
+
+/*! purgecss end ignore */

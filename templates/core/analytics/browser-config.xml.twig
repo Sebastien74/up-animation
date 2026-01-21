@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+    <msapplication>
+        <tile>
+            {% set logos = website|logos %}
+            {% if logos['mstile-150x150'] is defined and logos['mstile-150x150'] %}
+                <square150x150logo src="{{ absolute_url(asset(logos['mstile-150x150'])) }}"/>
+            {% endif %}
+            {% set color = 'favicon'|color(website, 'browserconfig') %}
+            {% if color and color.color != 'browserconfig' %}
+                <TileColor>{{ color.color }}</TileColor>
+            {% endif %}
+        </tile>
+    </msapplication>
+</browserconfig>

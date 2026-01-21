@@ -1,0 +1,13 @@
+{% trans_default_domain 'security_cms' %}
+
+{% set website = website is defined ? website : website() %}
+
+<div class="form-group mb-0">
+    <input type="text" id="field_ho" name="field_ho" required="required" placeholder="{{ "Saisissez une valeur"|trans|striptags }}" class="form-field-none field_ho form-control">
+</div>
+
+<div class="form-group mb-0">
+    <input type="text" id="ho_entitled" name="field_ho_entitled" required="required" placeholder="{{ "Saisissez un intitulé"|trans|striptags }}" class="form-field-none form-control">
+</div>
+
+<div class="form-data" data-id="{{ website.security.securityKey }}" data-website="{{ websiteId() }}"></div>

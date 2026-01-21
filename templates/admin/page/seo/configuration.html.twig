@@ -1,0 +1,68 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageTitle = "Configuration"|trans %}
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
+        <div id="edit-form-{{ interface.name }}" class="card radius-top">
+            <div class="card-body radius-top p-0">
+                <ul class="nav nav-tabs custom-tab large radius-top" role="tablist">
+                    <li class="nav-item">
+                        <a id="nav-seo-tab" class="nav-link active" data-bs-toggle="tab" href="#seo" role="tab" aria-selected="true">
+                            {{ 'fal chart-line'|icon(null, 17, 'dark me-sm-2') }}
+                            <span class="d-none d-sm-inline-block">{{ 'Référencement'|trans }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="nav-social-tab" class="nav-link" data-bs-toggle="tab" href="#social" role="tab" aria-selected="false">
+                            {{ 'fal share-alt'|icon(null, 17, 'dark me-sm-2') }}
+                            <span class="d-none d-sm-inline-block">{{ 'Réseaux sociaux'|trans }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        {% set sitemap = defaultLocale|domain~"/sitemap.xml?preview=true" %}
+                        <a href="{{ sitemap }}" target="_blank" class="nav-link">
+                            {{ 'fal sitemap'|icon(null, 17, 'dark me-sm-2') }}
+                            <span class="d-none d-sm-inline-block">{{ 'sitemap.xml'|trans }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        {% set robots = defaultLocale|domain~"/robots.txt?preview=true" %}
+                        <a href="{{ robots }}" target="_blank" class="nav-link">
+                            {{ 'fal robot'|icon(null, 17, 'dark me-sm-2') }}
+                            <span class="d-none d-sm-inline-block">{{ 'robots.txt'|trans }}</span>
+                        </a>
+                    </li>
+{#                    <li class="nav-item right bg-dark">#}
+{#                        <a href="{{ path('admin_clear_front_cache', {website: websiteId()}) }}" class="nav-link text-white swal-delete-link">#}
+{#                            {{ 'fad broom'|icon(null, 17, 'white me-sm-2 mt-1') }}{{ "Supprimer le cache"|trans }}#}
+{#                        </a>#}
+{#                    </li>#}
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane me-4 ms-4 pt-4 active" id="seo" role="tabpanel" aria-labelledby="nav-seo-tab">
+                        {% include 'admin/page/seo/include/configuration.html.twig' %}
+                    </div>
+                    <div class="tab-pane me-4 ms-4 pt-4" id="social" role="tabpanel" aria-labelledby="nav-social-tab">
+                        {% include 'admin/page/seo/include/social-network.html.twig' with {socialsNetworks: form.website.information.socialNetworks} %}
+                    </div>
+                </div>
+                {% include 'admin/core/form/save/footer-only.html.twig' %}
+            </div>
+        </div>
+    {{ form_end(form) }}
+
+{% endblock %}

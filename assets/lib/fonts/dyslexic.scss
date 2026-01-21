@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+/* --------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2024-03-11, 1:30 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT FONTS OPEN DYSLEXIC :
+    ==========================
+
+-------------------------------------------------------- */
+
+@import "../../scss/vendor/mixin/fonts";
+
+$fontFamily: "Opendyslexic";
+$fonts: (
+    'Opendyslexic-Bold': ('weight': bold, 'style': normal),
+    'Opendyslexic-BoldItalic': ('weight': bold, 'style': italic),
+    'Opendyslexic-Regular': ('weight': normal, 'style': normal),
+    'Opendyslexic-Italic': ('weight': normal, 'style': italic),
+);
+@include font-face($fontFamily, $fonts, null, woff2);
+
+$fontFamily: "Opendyslexicalta";
+$fonts: (
+    'Opendyslexicalta-Bold': ('weight': bold, 'style': normal),
+    'Opendyslexicalta-BoldItalic': ('weight': bold, 'style': italic),
+    'Opendyslexicalta-Regular': ('weight': normal, 'style': normal),
+    'Opendyslexicalta-Italic': ('weight': normal, 'style': italic),
+);
+@include font-face($fontFamily, $fonts, null, woff2);
+
+$fontFamily: "Opendyslexicmono";
+$fonts: (
+    'Opendyslexicmono-Regular': ('weight': normal, 'style': normal),
+);
+@include font-face($fontFamily, $fonts, null, woff2);

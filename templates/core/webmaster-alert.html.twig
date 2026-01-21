@@ -1,0 +1,20 @@
+{% trans_default_domain 'front_webmaster' %}
+
+<div id="internal-error-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog bg-white" role="document">
+        <div class="modal-content text-center border-0">
+            <div class="modal-body p-4">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}"></button>
+                <a class="d-inline-block mb-3" href="{{ app.request.getSchemeAndHttpHost() }}" data-toggle="preloader" aria-label="{{ "Accueil"|trans|striptags }}">
+                    <img data-src="{{ asset('build/vendor/images/felix-logo.svg', 'vendor') }}"
+                         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                         class="logo img-fluid lazy-load"
+                         alt="Logo"
+                         width="90"
+                         height="60">
+                </a>
+                <p class="m-0 text-bold">{{ app.request.session.get('config_error')|raw }}</p>
+            </div>
+        </div>
+    </div>
+</div>

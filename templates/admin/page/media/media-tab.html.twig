@@ -1,0 +1,94 @@
+{% trans_default_domain 'admin' %}
+
+<div class="row pt-4">
+
+    <div class="col-md-5">
+
+        <div class="position-relative">
+            {{ form_row(media.uploadedFile) }}
+            <a class="tinypng-btn btn btn-dark"
+               href="https://tinypng.com/" target="_blank">
+                {{ 'fal file-archive'|icon(null, 24) }}
+            </a>
+        </div>
+
+        {% set info = website()|fileInfo(entity.filename) %}
+
+        <div class="card bg-light">
+            <div class="card-body radius">
+                <h5 class="file-info-title text-dark text-italic">{{ "Informations"|trans }}</h5>
+                <ul class="reset text-italic text-dark">
+                    {% if info.width is defined and info.width and info.height is defined and info.height %}
+                        <li>
+                            <small>
+                                <strong>{{ "Taille originale (lxh) :"|trans}}</strong> {{ info.width }}px X {{ info.height }}px
+                            </small>
+                        </li>
+                    {% endif %}
+                    {% if info.formatBytes is defined and info.formatBytes %}
+                        <li>
+                            <small>
+                                <strong>{{ "Poids original :"|trans}}</strong> {{ info.formatBytes }}
+                            </small>
+                        </li>
+                    {% endif %}
+                    {% if info.mime is defined and info.mime %}
+                        <li>
+                            <small>
+                                <strong>{{ "MimeType :"|trans}}</strong> {{ info.mime }}
+                            </small>
+                        </li>
+                    {% endif %}
+                    {% if info.extension is defined and info.extension %}
+                        <li>
+                            <small>
+                                <strong>{{ "Extension :"|trans}}</strong> {{ info.extension }}
+                            </small>
+                        </li>
+                    {% endif %}
+                    {% if info.path is defined and info.path %}
+                        <li>
+                            <small class="refer-copy">
+                                <strong>{{ "URL :"|trans}}</strong>
+                                <span class="to-copy">{{ app.request.getSchemeAndHttpHost()~info.path }}</span>
+                                <div class="row mt-2">
+                                    <div class="col-md-6">
+                                        <span class="btn btn-xs btn-outline-secondary copy-link cursor d-inline-block w-100"
+                                              data-bs-toggle="tooltip" title="{{ "Copier l'URL"|trans }}">
+                                            {{ 'fal copy'|icon(null, 10, 'dark') }}
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="{{ app.request.getSchemeAndHttpHost()~info.path }}" download="{{ info.filename }}" class="btn btn-xs btn-outline-secondary d-inline-block w-100"
+                                           data-bs-toggle="tooltip" title="{{ "Télécharger"|trans }}">
+                                            {{ 'fal upload'|icon(null, 10, 'dark') }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </small>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-7">
+        <div class="row">
+            {% if displayLabel %}
+                <div class="col-12">
+                    <h3 class="text-dark mb-3">{{ label }}</h3>
+                </div>
+            {% endif %}
+            <div class="col-md-12">{{ form_row(media.name) }}</div>
+            <div class="col-md-6">{{ form_row(media.copyright) }}</div>
+            <div class="col-md-6">{{ form_row(media.quality) }}</div>
+        </div>
+        {{ form_row(media.notContractual) }}
+        {% if media.intls is defined %}
+            {% include 'admin/core/form/intls.html.twig' with {intls: media.intls} %}
+        {% endif %}
+    </div>
+
+</div>

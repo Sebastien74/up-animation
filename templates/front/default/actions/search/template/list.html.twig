@@ -1,0 +1,5 @@
+{% trans_default_domain 'front_default' %}
+
+{% for result in entityResults %}
+    {% include 'front/'~websiteTemplate~'/actions/search/include/result.html.twig' %}
+{% endfor %}

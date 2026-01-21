@@ -1,0 +1,65 @@
+{% trans_default_domain 'admin' %}
+
+<li>
+    <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
+        {{ 'fal cog'|icon(15, 15, 'white me-2', {icon: true}) }}
+        <span class="hide-menu">{{ "Configuration"|trans }}</span>
+    </a>
+    <ul aria-expanded="false" class="collapse bg-info-light">
+        <li>
+            <a href="{{ path('admin_site_edit', {website: websiteId, site: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Site courant"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_website_style', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Élements de site"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_site_index', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Liste des sites"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_thumbconfiguration_index', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Thumbnails"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_grid_index', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Grilles"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_entity_index', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Entités"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_blocktype_index', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Types de blocs"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_module_index', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Modules"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_action_index', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Actions de modules"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_layoutconfiguration_index', {website: websiteId}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Mises en page"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_icons', {website: websiteId, library: 'app'}) }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Blibliothèque d'icônes"|trans }}</span>
+            </a>
+        </li>
+    </ul>
+</li>

@@ -1,0 +1,142 @@
+{% trans_default_domain 'admin' %}
+
+{% set website = website() %}
+{% set configuration = website.configuration %}
+{% set defaultLocale = configuration.locale %}
+{% set allLocales = configuration.allLocales %}
+{% set disableTitle = disableTitle is defined or form.children.intls.vars.attr.disableTitle is defined and form.children.intls.vars.attr.disableTitle %}
+{% set disableFields = disableFields is defined ? disableFields : [] %}
+{% set enabledFields = enabledFields is defined ? enabledFields : [] %}
+
+{% if not disableTitle %}
+    <div class="col-12">
+        <h4 class="card-subtitle mb-4">
+            {{ 'fal align-center'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Descriptions"|trans }}{% else %}{{ "Description"|trans }}{% endif %}
+        </h4>
+    </div>
+{% endif %}
+
+{% if allLocales|length > 1 %}
+    <div class="locales-tab-container">
+{% endif %}
+
+    {% set tabUniqId = uniqId() %}
+
+    {% if allLocales|length > 1 %}
+        <ul class="nav nav-tabs w-100" role="tablist">
+            {% for intl in intls %}
+                {% set locale = intl.vars.value.locale %}
+                <li class="nav-item{% if locale not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
+                    {% set localesMatches = locale|split('_') %}
+                    {% set subLocaleLabel = localesMatches|length > 1 ? languageName(locale, app.user.locale) : null %}
+                    {% set linkActive = locale == defaultLocale %}
+                    <a class="nav-link d-flex align-items-center{% if linkActive %} active{% endif %}" data-bs-toggle="tab"
+                       id="intl-{{ locale~tabUniqId }}-tab"
+                       aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}"
+                       href="#intl-tab-{{ locale~tabUniqId }}" role="tab">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                        {% if subLocaleLabel %}<span class="ms-2">{{ subLocaleLabel|raw }}</span>{% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if allLocales|length > 1 %}
+        <div class="tab-content tab-content-border w-100">
+    {% endif %}
+
+        {% for intl in intls %}
+
+            {% set locale = intl.vars.value.locale %}
+
+            {% if allLocales|length > 1 %}
+                <div id="intl-tab-{{ locale~tabUniqId }}" class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}" role="tabpanel" aria-labelledby="intl-{{ locale~tabUniqId }}-tab">
+                    <div class="p-20 pb-0">
+                        <div class="row">
+            {% endif %}
+
+                {% for field in intl.children %}
+                    {% if configFields is not defined or field.vars.name not in configsFieldsSet %}
+                        {% if allLocales|length == 1 and locale != configuration.locale %}
+                            <div class="d-none">
+                        {% endif %}
+
+                        {% if disableTitleVideo is not defined and field.vars.name == "video" and disableVideoTitle is not defined %}
+                            <div class="col-12">
+                                <h4 class="card-subtitle mb-4">{{ 'fal video'|icon(null, 14, 'info-darken me-2') }}{{ "Vidéo"|trans }}</h4>
+                            </div>
+                        {% endif %}
+
+                        {% set attrGroup = field.vars.attr.group is defined and field.vars.attr.group ? field.vars.attr.group : null %}
+                        {% set attrGroup = field.vars.attr['data-group'] is defined and field.vars.attr['data-group'] ? field.vars.attr['data-group'] : attrGroup %}
+                        {% if disableTitleLink is not defined and attrGroup and "add-title" in attrGroup and "target" in field.vars.name %}
+                            <div class="col-12">
+                                <h4 class="card-subtitle mb-4">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
+                            </div>
+                        {% endif %}
+
+                            {% set entityToEdit = entity.action is defined and entity.action ? entity.action.entity|find(field.vars.value) : null %}
+                            {% set entityInterfaceName = entityToEdit.interface.name is defined and entityToEdit.interface.name ? entityToEdit.interface.name : null %}
+                            {% set entityModule = entityToEdit.interface.module is defined and entityToEdit.interface.module ? entityToEdit.interface.module : entityInterfaceName %}
+                            {% set isActionFilter = field.vars.name == 'actionFilter' %}
+                            {% set displayTemplates = intl[field.vars.name].vars.attr.displayTemplates is defined ? intl[field.vars.name].vars.attr.displayTemplates : false %}
+                            {% set actionFilterButton = isActionFilter
+                                and field.vars.value is defined
+                                and field.vars.value
+                                and routeExist('admin_'~entityToEdit.interface.name~'_edit')
+                                and entityToEdit
+                                and entityModule
+                                and entityModule|moduleActive(configuration) %}
+
+                            {% if actionFilterButton or displayTemplates %}
+                                <div class="col-md-{% if displayTemplates and actionFilterButton and allLocales|length == 1 %}5{% elseif displayTemplates and actionFilterButton and allLocales|length > 1 %}10{% elseif displayTemplates %}10{% else %}12{% endif %}">
+                            {% endif %}
+
+                                {% set fieldRender = (disableFields is empty and enabledFields is empty)
+                                    or (disableFields is not empty and enabledFields is empty and field.vars.name not in disableFields)
+                                    or (enabledFields is not empty and disableFields is empty and field.vars.name in enabledFields)
+                                %}
+                                {% if fieldRender %}
+                                    {{ form_row(intl[field.vars.name]) }}
+                                {% endif %}
+
+                            {% if actionFilterButton or displayTemplates %}
+                                </div>
+                                {% if actionFilterButton %}
+                                    <div class="col-md-2 align-self-end">
+                                        <div class="form-group">
+                                            {% set pathArgs = {website: websiteId(), (entityInterfaceName): entityToEdit.id} %}
+                                            {% if entityInterfaceName in ['table'] %}
+                                                {% set pathArgs = pathArgs|merge({entitylocale: website().configuration.locale}) %}
+                                            {% endif %}
+                                            <a href="{{ path('admin_'~entityInterfaceName~'_edit', pathArgs) }}"
+                                               data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}" class="btn btn-info w-100">
+                                                {{ 'fas pencil-alt'|icon(null, 14, 'me-2') }}{{ "Éditer"|trans }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+
+                        {% if allLocales|length == 1 and locale != configuration.locale %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            {% if allLocales|length > 1 %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        {% endfor %}
+
+    {% if allLocales|length > 1 %}
+        </div>
+    {% endif %}
+
+{% if allLocales|length > 1 %}
+    </div>
+{% endif %}

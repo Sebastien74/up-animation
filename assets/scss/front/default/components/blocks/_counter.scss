@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2022
+    Created on : 2022-09-02, 10:05 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT COUNTER BLOCK :
+    ====================
+
+------------------------------------------------------------------ */
+
+.counter-block {
+
+    .content {
+
+        font-size: 38px;
+
+        sup {
+            font-size: 15px;
+            top: -1.1em;
+        }
+    }
+}

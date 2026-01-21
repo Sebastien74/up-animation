@@ -1,0 +1,187 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-10-28, 5:03 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    TABLE :
+    =======
+
+    1 ) Variables
+    2 ) Core
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Variables
+-----------------------------------*/
+
+@import '../variables';
+
+/*-----------------------------------
+   2 ) Core
+-----------------------------------*/
+
+#table-module-edition {
+
+    th {
+        .actions {
+            margin-bottom: -6px;
+        }
+    }
+
+    tbody tr.even,
+    tbody tr.odd {
+
+        background: transparent !important;
+
+        .row {
+            .form-group:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    > :not(caption) > * > * {
+        box-shadow: none !important;
+    }
+
+    tr.odd td.edition {
+        background: #dde0e3 !important;
+    }
+
+    .btn {
+
+        border-color: $info !important;
+        background: $info !important;
+
+        svg, i {
+            color: $info-light !important;
+            fill: $info-light !important;
+        }
+    }
+
+    tr {
+        td.actions {
+            span {
+                height: 35px;
+                display: inline-flex;
+                margin-bottom: 4px;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+}
+
+.table {
+
+    border: 0 !important;
+
+    tr {
+
+        th:last-child, td:last-child {
+            border: 0 !important;
+        }
+
+        th:last-child {
+            padding: 0;
+        }
+    }
+
+    tbody tr.odd {
+        background: $gray-300 !important;
+    }
+
+    tbody tr.even {
+        background: $gray-100 !important;
+    }
+
+    .disabled {
+        cursor: not-allowed;
+    }
+
+    .actions {
+
+        .inner {
+
+            display: inline-block;
+            border-top-right-radius: $card-border-radius;
+
+            i, svg {
+
+                font-size: 15px;
+
+                &.fa-save {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+
+    tr th {
+
+        border-top: 0 !important;
+
+        &:last-child {
+            background-color: $body-bg;
+        }
+
+        .actions {
+
+            display: inline-block;
+            width: 100%;
+
+            .inner {
+
+                padding: 5px 10px;
+                border-top-left-radius: $card-border-radius;
+
+                i, svg {
+
+                    font-size: 15px;
+
+                    &.fa-save {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+
+        .intls-row {
+            padding: .8rem 1rem 1rem;
+        }
+    }
+
+    tbody tr {
+
+        .edition {
+
+            vertical-align: middle !important;
+
+            .col-md-2.form-group {
+                min-width: 85px !important;
+                width: 85px;
+                flex: 0 0 85px;
+            }
+
+            .col-md-10.form-group {
+                min-width: calc(100% - 85px);
+                width: calc(100% - 85px);
+                flex: 0 0 calc(100% - 85px);
+            }
+        }
+
+        .actions {
+
+            padding: 0;
+            width: 45px;
+
+            .inner {
+                padding: 7px 5px;
+                border-bottom-right-radius: $card-border-radius;
+            }
+        }
+    }
+}

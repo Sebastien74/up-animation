@@ -1,0 +1,94 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set title = "Entreprise"|trans~' '~entity.name %}
+{% block title %}{{ title|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ title }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
+        <div id="edit-form-{{ interface.name }}" class="card">
+            {% include 'admin/core/form/save/header.html.twig' %}
+            <div class="card-body pb-0">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h4 class="card-title card-subtitle">{{ "fal envelope"|icon(null, 14, 'info-darken me-2') }}{{ "Information"|trans }}</h4>
+                        <div class="row">
+                            {% if form.name is defined %}
+                                {{ form_row(form.name) }}
+                            {% endif %}
+                            {% if form.locale is defined %}
+                                {{ form_row(form.locale) }}
+                            {% endif %}
+                        </div>
+                        <h4 class="card-title card-subtitle">{{ "fal at"|icon(null, 14, 'info-darken me-2') }}{{ "Contact"|trans }}</h4>
+                        <div class="row">
+                            {% if form.email is defined %}
+                                {{ form_row(form.email) }}
+                            {% endif %}
+                            {% if form.contactLastName is defined %}
+                                {{ form_row(form.contactLastName) }}
+                            {% endif %}
+                            {% if form.contactFirstName is defined %}
+                                {{ form_row(form.contactFirstName) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="card-title card-subtitle">{{ 'fal image'|icon(null, 14, 'info-darken me-2') }}{{ "Logo"|trans }}</h4>
+                        <div class="row">
+                            {% if form.file is defined %}
+                                {{ form_row(form.file) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <h4 class="card-title card-subtitle">{{ "fal map-marker-alt"|icon(null, 14, 'info-darken me-2') }}{{ "Adresse"|trans }}</h4>
+                        <div class="row">
+                            {% if form.address.name is defined %}
+                                {{ form_row(form.address.name) }}
+                            {% endif %}
+                            {% if form.address.latitude is defined %}
+                                {{ form_row(form.address.latitude) }}
+                            {% endif %}
+                            {% if form.address.longitude is defined %}
+                                {{ form_row(form.address.longitude) }}
+                            {% endif %}
+                            {% if form.address.address is defined %}
+                                {{ form_row(form.address.address) }}
+                            {% endif %}
+                            {% if form.address.zipCode is defined %}
+                                {{ form_row(form.address.zipCode) }}
+                            {% endif %}
+                            {% if form.address.city is defined %}
+                                {{ form_row(form.address.city) }}
+                            {% endif %}
+                            {% if form.address.department is defined %}
+                                {{ form_row(form.address.department) }}
+                            {% endif %}
+                            {% if form.address.country is defined %}
+                                {{ form_row(form.address.country) }}
+                            {% endif %}
+                            {% if form.address.googleMapUrl is defined %}
+                                {{ form_row(form.address.googleMapUrl) }}
+                            {% endif %}
+                            {% if form.address.googleMapDirectionUrl is defined %}
+                                {{ form_row(form.address.googleMapDirectionUrl) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% include 'admin/core/form/save/footer.html.twig' %}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

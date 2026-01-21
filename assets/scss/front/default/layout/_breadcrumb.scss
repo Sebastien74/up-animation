@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+@if ($enable-breadcrumb) {
+
+    /* -----------------------------------------------------------------
+    
+        Copyright  : 2020
+        Created on : 2020-11-11, 6:37 PM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    
+        FRONT BREADCRUMB LAYOUT :
+        =========================
+    
+    ------------------------------------------------------------------ */
+
+    .breadcrumb {
+
+        border-radius: 0;
+
+        .breadcrumb-item + .breadcrumb-item {
+            padding-left: 0;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            display: none;
+        }
+
+        @include mediaQuery(min-md) {
+
+            .separator {
+                top: 2px;
+                margin: 0 8px 0 9px;
+                font-size: 10px;
+            }
+
+            li {
+                a, a span, span {
+                    line-height: 1;
+                    font-size: 14px;
+                }
+            }
+        }
+
+        @include mediaQuery(max-md) {
+
+            .separator {
+                top: 1px;
+                margin: 0 8px 0 9px;
+                font-size: 9px;
+            }
+
+            li {
+                a, a span, span {
+                    font-size: 12px;
+                    line-height: 1.7;
+                }
+            }
+        }
+    }
+}

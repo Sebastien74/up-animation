@@ -1,0 +1,65 @@
+#####################################
+#           Agenda                  #
+#####################################
+
+App\Entity\Module\Agenda\Agenda:
+    mediaMulti: true
+    translations:
+        adminName:
+            fr: "Agenda"
+            en: 'Agenda name'
+        singular:
+            fr: "Agenda"
+            en: 'Agenda'
+        plural:
+            fr: "Agendas"
+            en: 'Agendas'
+        add:
+            fr: 'Ajouter un agenda'
+            en: 'Add agenda'
+        delete:
+            fr: "Supprimer l'agenda"
+            en: 'Delete agenda'
+    columns:
+        - adminName
+
+App\Entity\Module\Agenda\Information:
+    translations:
+        adminName:
+            fr: "Informations (Module agenda)"
+            en: 'Informations (Module agenda)'
+        singular:
+            fr: "Information"
+            en: 'Information'
+        plural:
+            fr: "Informations"
+            en: 'Information'
+        add:
+            fr: 'Ajouter des informations'
+            en: 'Add information'
+        delete:
+            fr: "Supprimer les informations"
+            en: 'Delete information'
+    columns:
+        - adminName
+
+App\Entity\Module\Agenda\Period:
+    dataTable: true
+    translations:
+        adminName:
+            fr: "Période (Module agenda)"
+            en: 'Period (Module agenda)'
+        singular:
+            fr: "Période"
+            en: 'Period'
+        plural:
+            fr: "Périodes"
+            en: 'Periods'
+        add:
+            fr: 'Ajouter une période'
+            en: 'Add period'
+        delete:
+            fr: "Supprimer la période"
+            en: 'Delete period'
+    columns:
+        - adminName

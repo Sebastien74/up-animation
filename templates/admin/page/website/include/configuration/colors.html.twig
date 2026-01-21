@@ -1,0 +1,95 @@
+{% trans_default_domain 'admin' %}
+
+{% import _self as macro %}
+
+{% macro color_prototype(color) %}
+
+    {% set isNew = color.vars.data.id is defined and color.vars.data.id ? false : true %}
+    {% set entityId = isNew ? uniqId() : color.vars.data.id %}
+    {% set deletable = isNew ? true : color.vars.data.deletable %}
+
+    <div class="prototype col-md-6 col-lg-3">
+        <div class="card">
+            <div class="card-body pb-0">
+                <div class="row">
+                    {{ form_row(color.adminName) }}
+                    {{ form_row(color.color) }}
+                    {{ form_row(color.category) }}
+                    {% if deletable %}
+                        {{ form_row(color.slug) }}
+                    {% else %}
+                        <div class="form-group col-12">
+                            {{ form_label(color.slug) }}
+                            {{ color.vars.data.slug }}
+                        </div>
+                        <div class="d-none">
+                            {{ form_widget(color.slug) }}
+                        </div>
+                    {% endif %}
+                    {{ form_row(color.active) }}
+                </div>
+            </div>
+            {% if deletable %}
+                {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                    isNew: color.vars.data.id is defined and color.vars.data.id ? false : true,
+                    entityId: isNew ? uniqId() : color.vars.data.id,
+                    interfaceName: 'color'
+                } %}
+            {% else %}
+                <a class="btn btn-transparent delete-disabled" data-bs-toggle="tooltip" title="{{ "Suppression impossible"|trans }}">
+                    {{ 'fas trash'|icon(null, 14, 'dark') }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+{% endmacro %}
+
+<div id="colors-collection"
+     data-index="{{form.colors|length}}"
+     class="collection accordion row m-0"
+     data-prototype="{{ macro.color_prototype(form.colors.vars.prototype)|e('html_attr') }}">
+    {% set first = true %}
+    {% set category = null %}
+    {% for color in form.colors %}
+        {% if color.vars.value.category != category %}
+            {% set category = color.vars.value.category %}
+            {% if not first %}
+                </div>
+            {% endif %}
+            <h4 class="card-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-{{ category }}" aria-expanded="false" aria-controls="collapse-{{ category }}">
+                {% set label = category|trans|capitalize %}
+                {% if category == 'background' %}
+                    {{ 'fal eye-dropper'|icon(null, 14, 'info-darken me-2') }}{% set label = 'Couleurs de fond'|trans %}
+                {% elseif category == 'button' %}
+                    {{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{% set label = 'Boutons'|trans %}
+                {% elseif category == 'color' %}
+                    {{ 'fal tint'|icon(null, 14, 'info-darken me-2') }}{% set label = 'Couleurs'|trans %}
+                {% elseif category == 'alert' %}
+                    {{ 'fal exclamation-triangle'|icon(null, 14, 'info-darken me-2') }}{% set label = 'Alertes'|trans %}
+                {% elseif category == 'favicon' %}
+                    {{ 'fab ravelry'|icon(null, 14, 'info-darken me-2') }}{% set label = 'Favicons'|trans %}
+                {% endif %}
+                {% if category %}{{ label }}{% endif %}
+                {{ 'far chevron-down'|icon(null, 14, 'info-darken float-end mt-1') }}
+            </h4>
+            <div id="collapse-{{ category }}" class="collapse row" aria-labelledby="heading{{ category }}" data-parent="#colors-collection">
+            {% if first %}
+                {% set first = false %}
+            {% endif %}
+        {% endif %}
+        {{ macro.color_prototype(color) }}
+        {% if loop.last %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div class="w-100 text-end mt-4 mb-4">
+    <button role="button" class="add-collection btn btn-success standard"
+            data-type="table"
+            data-collection-target="append"
+            data-target="#colors-collection">
+        {{ 'fal plus'|icon(11, 15, 'white me-2') }}{{ "Ajouter une couleur"|trans }}
+    </button>
+</div>

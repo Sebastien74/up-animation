@@ -1,0 +1,59 @@
+{% trans_default_domain 'admin' %}
+
+<div id="index-reorder-data">
+
+    <div id="success-card" class="d-none">
+        <div class="card mt-5 d-flex p-4">
+            <div class="mx-auto text-center">
+                {{ 'fal check-circle'|icon(50, 50, 'info') }} <span class="d-inline-block w-100 mt-3">
+                    {{ "Tri des médias dans les dossiers effectué avec succès !"|trans|raw }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+{#    {% set count = folders|length %}#}
+    {% set name = data|first.media.filename is defined ? data|first.media.filename : null %}
+    <div id="progress-card" class="card mt-5">
+        <div class="card-body">
+            <h6 class="title d-flex align-items-center">{{ "Tri en cours"|trans|raw }}</h6>
+            <div class="progress">
+                <div id="progress-bar" class="progress-bar progress-bar-striped bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small class="counter d-inline-flex w-100 mt-2">
+                <span class="count" data-count="{{ count }}" data-progress="1">0</span>/{{ count }} <span class="name text-italic ms-3">{{ name }}</span>
+            </small>
+        </div>
+    </div>
+
+    <ul id="medias-to-reorder" class="d-none"
+        data-items-length="{{ data|length }}"
+        data-folders-length="{{ folders|length }}">
+        {% for item in data %}
+{#            {% if loop.index <= count %}#}
+                {% set path = path('admin_media_reorder_process', {
+                    website: website.id,
+                    media: item.media.id,
+                    entityId: item.entity.id,
+                    folderName: item.name|url_encode,
+                    classname: item.classname|url_encode
+                }) %}
+                <li class="item to-reorder"
+                    data-path="{{ path }}"
+                    data-name="{{ item.media.filename }}"><a href="{{ path }}">{{ item.entity.adminName }}</a></li>
+{#            {% endif %}#}
+        {% endfor %}
+        {% for folder in folders %}
+{#            {% if loop.index <= count %}#}
+                {% set path = path('admin_media_clear_empty_folder', {
+                    website: website.id,
+                    folder: folder.id,
+                }) %}
+                <li class="item to-reorder"
+                    data-path="{{ path }}"
+                    data-name="{{ 'Verification du dossier '~folder.adminName }}"><a href="{{ path }}">{{ folder.adminName }}</a></li>
+{#            {% endif %}#}
+        {% endfor %}
+    </ul>
+
+</div>

@@ -1,0 +1,246 @@
+{% trans_default_domain 'admin' %}
+
+{% set displayTitleCard = displayTitleCard is defined ? displayTitleCard : true %}
+{% set configuration = website().configuration %}
+{% set defaultLocale = configuration.locale %}
+{% set allLocales = configuration.allLocales %}
+
+{% if displayTitleCard %}
+    <div class="col-12">
+        <h4 class="card-subtitle mb-4">
+            {{ 'fal photo-video'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Médias"|trans }}{% else %}{{ "Média"|trans }}{% endif %}
+        </h4>
+    </div>
+{% endif %}
+
+{% if allLocales|length > 1 %}
+    <div class="col-12">
+        <ul id="media-relations-tabs" class="nav nav-tabs w-100" role="tablist">
+            {% for localeName, mediaRelationsTab in mediaRelationsTabs %}
+                <li class="nav-item{% if localeName not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ languageName(localeName, app.user.locale) }}">
+                    <a class="nav-link{% if localeName == defaultLocale %} active{% endif %}" data-bs-toggle="tab"
+                       id="media-relation-{{ localeName }}-tab"
+                       aria-selected="{% if localeName == defaultLocale %}true{% else %}false{% endif %}"
+                       href="#media-relations-tab-{{ localeName }}" role="tab">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                             data-src="{{ asset('/medias/icons/flags/'~localeName~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{% if allLocales|length > 1 %}
+    <div class="col-12 mb-4">
+        <div id="media-relations-tabs-content" class="tab-content tab-content-border w-100 media-relations-tab">
+{% endif %}
+
+    {% for localeName, mediaRelationsTab in mediaRelationsTabs %}
+
+        {% if allLocales|length == 1 and localeName != configuration.locale %}
+            <div class="d-none">
+        {% endif %}
+
+        {% if allLocales|length > 1 %}
+            <div id="media-relations-tab-{{ localeName }}" class="tab-pane fade{% if localeName == defaultLocale %} show active{% endif %}" role="tabpanel" aria-labelledby="media-relation-{{ localeName }}-tab">
+                <div class="p-20 pb-0">
+                    <div class="row">
+        {% endif %}
+
+            {% set localesMediaRelations = [] %}
+            {% set secondaryMediaRelation = null %}
+            {% for mediaRelationTab in mediaRelationsTab %}
+                {% for mediaRelation in mediaRelations %}
+                    {% set mediaRelationId = mediaRelation.vars.value.id %}
+                    {% if mediaRelationTab.id == mediaRelationId %}
+                        {% set localesMediaRelations = localesMediaRelations|merge([mediaRelation]) %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+
+            {% for mediaRelation in localesMediaRelations %}
+
+                {% set colSize = loop.index == 1 ? 7 : 5 %}
+                {% set colLabel = loop.index == 1 ? "Image principale"|trans : "Image secondaire"|trans %}
+
+                <div class="col-md-{{ colSize }} media-col-{{ loop.index }}">
+
+                    <h6 class="section-title radius fw-500 mb-4 py-">{{ colLabel|raw }}</h6>
+
+                    {% set mediaRelationId = mediaRelation.vars.value.id %}
+
+                    {% set parameters = {
+                        type: 'single',
+                        mediaRelationId: mediaRelation.vars.value.id,
+                        classname: classname|url_encode,
+                        entityId: entity.id,
+                        btnId: "#open-modal-"~mediaRelation.vars.value.id,
+                    }|json_encode %}
+                    <span class="open-modal-medias-wrap btn btn-outline-info-darken w-100 mb-3 single">
+                        <span id="open-modal-{{ mediaRelation.vars.value.id }}"
+                              class="open-modal-medias d-inline-block"
+                              data-options="{{ parameters }}">
+                            {{ 'fal photo-video'|icon(null, 14, 'me-2') }}{{ "Choisir dans la bibliothèque"|trans }}
+                        </span>
+                        <a href="https://tinypng.com/"
+                           target="_blank" class="optimize-media-btn btn btn-dark"
+                           data-bs-toggle="tooltip"
+                           title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
+                            {{ 'fal file-archive'|icon(null, 16) }}
+                        </a>
+                    </span>
+
+                    {{ form_row(mediaRelation.media.uploadedFile) }}
+
+                    {% if mediaRelation.intl.targetLink is defined %}
+                        <button class="btn btn-outline-info-darken collapsed w-100 mb-3"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                href="#collapse-link-{{ mediaRelationId }}"
+                                aria-expanded="false">
+                            {{ 'fal link'|icon(null, 14, 'me-2') }}{{ "Lien"|trans }}
+                        </button>
+                    {% endif %}
+
+                    <div class="main-wrap">
+
+                        {% if mediaRelation.intl.targetLink is defined %}
+                            <div class="col-12">
+                                <div id="collapse-link-{{ mediaRelationId }}" class="collapse">
+                                    <div class="card-body pb-0 border bg-light mb-4 radius">
+                                        <div class="row">
+                                            {% if mediaRelation.intl.targetStyle is defined %}
+                                                {{ form_row(mediaRelation.intl.targetStyle) }}
+                                            {% endif %}
+                                            {% if mediaRelation.intl.targetLink is defined %}
+                                                {{ form_row(mediaRelation.intl.targetLink) }}
+                                            {% endif %}
+                                            {% if mediaRelation.intl.targetPage is defined %}
+                                                {{ form_row(mediaRelation.intl.targetPage) }}
+                                            {% endif %}
+                                            {% if mediaRelation.intl.targetLabel is defined %}
+                                                {{ form_row(mediaRelation.intl.targetLabel) }}
+                                            {% endif %}
+                                            {% if mediaRelation.intl.newTab is defined %}
+                                                <div class="form-group col-md-6">{{ form_widget(mediaRelation.intl.newTab) }}</div>
+                                            {% endif %}
+                                            {% if mediaRelation.intl.externalLink is defined %}
+                                                <div class="form-group col-md-6">{{ form_widget(mediaRelation.intl.externalLink) }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <button class="btn btn-outline-info-darken collapsed w-100 mb-3"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                href="#collapse-configuration-{{ mediaRelationId }}"
+                                aria-expanded="false">
+                            {{ 'fal cog'|icon(null, 14, 'me-2') }}{{ "Configuration / Contenu"|trans }}
+                        </button>
+
+                        <div class="col-12">
+                            <div id="collapse-configuration-{{ mediaRelationId }}" class="collapse">
+                                <div class="card-body pb-0 border bg-light mb-4 radius">
+                                    <div class="row">
+
+                                        {% if mediaRelation.maxWidth is defined or mediaRelation.maxHeight is defined %}
+                                            <div class="row">
+                                                {% include 'admin/core/form/medias-sizes.html.twig' with {form: mediaRelation} only %}
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="row">
+                                            {% if mediaRelation.intl.title is defined %}
+                                                {{ form_row(mediaRelation.intl.title) }}
+                                            {% endif %}
+                                            {% if mediaRelation.intl.placeholder is defined %}
+                                                {% set haveMedia = mediaRelation.vars.value.media.filename is defined and mediaRelation.vars.value.media.filename %}
+                                                {% set haveAlt = mediaRelation.intl.vars.value.placeholder is defined and mediaRelation.intl.vars.value.placeholder|striptags|length > 0 %}
+                                                {{ form_row(mediaRelation.intl.placeholder, {attr: {'data-help': haveMedia and not haveAlt ? 'no-alt' : false}}) }}
+                                            {% endif %}
+                                            {% if mediaRelation.intl.introduction is defined %}
+                                                {{ form_row(mediaRelation.intl.introduction) }}
+                                            {% endif %}
+                                            {% if mediaRelation.intl.body is defined %}
+                                                {{ form_row(mediaRelation.intl.body) }}
+                                            {% endif %}
+                                        </div>
+
+                                        {% if mediaRelation.media.copyright is defined or mediaRelation.media.titlePosition is defined %}
+                                            <div class="row">
+                                        {% endif %}
+                                            {% set groupSize = mediaRelation.media.copyright is defined and mediaRelation.media.titlePosition is defined ? 6 : 12 %}
+                                            {% if mediaRelation.categorySlug is defined %}
+                                                {{ form_row(mediaRelation.categorySlug) }}
+                                            {% endif %}
+                                            {% if mediaRelation.media.copyright is defined %}
+                                                <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.media.copyright) }}</div>
+                                            {% endif %}
+                                            {% if mediaRelation.media.titlePosition is defined %}
+                                                <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.media.titlePosition) }}</div>
+                                            {% endif %}
+                                            {% if mediaRelation.pictogram is defined %}
+                                                <div class="col-md-{% if mediaRelation.pictogramMaxWidth is defined %}12{% else %}{{ groupSize }}{% endif %}">{{ form_row(mediaRelation.pictogram) }}</div>
+                                            {% endif %}
+                                            {% if mediaRelation.pictogramMaxWidth is defined %}
+                                                <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxWidth) }}</div>
+                                            {% endif %}
+                                            {% if mediaRelation.pictogramMaxHeight is defined %}
+                                                <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxHeight) }}</div>
+                                            {% endif %}
+                                        {% if mediaRelation.media.copyright is defined or mediaRelation.media.titlePosition is defined %}
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="row">
+                                            {% if mediaRelation.downloadable is defined %}
+                                                <div class="col-md-6">{{ form_row(mediaRelation.downloadable) }}</div>
+                                            {% endif %}
+                                            {% if mediaRelation.popup is defined %}
+                                                <div class="col-md-6">{{ form_row(mediaRelation.popup) }}</div>
+                                            {% endif %}
+                                            {% if mediaRelation.main is defined %}
+                                                <div class="col-md-6">{{ form_row(mediaRelation.main) }}</div>
+                                            {% endif %}
+                                            {% if mediaRelation.media.notContractual is defined %}
+                                                <div class="col-md-6">{{ form_row(mediaRelation.media.notContractual) }}</div>
+                                            {% endif %}
+                                            {% if mediaRelation.media.hideHover is defined %}
+                                                <div class="col-md-6">{{ form_row(mediaRelation.media.hideHover) }}</div>
+                                            {% endif %}
+                                            {% if mediaRelation.header is defined %}
+                                                <div class="col-md-6">{{ form_row(mediaRelation.header) }}</div>
+                                            {% endif %}
+                                            {% if mediaRelation.radius is defined %}
+                                                <div class="col-md-6">{{ form_row(mediaRelation.radius) }}</div>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        {% if allLocales|length > 1 %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if allLocales|length == 1 and localeName != configuration.locale %}
+            </div>
+        {% endif %}
+
+    {% endfor %}
+
+{% if allLocales|length > 1 %}
+        </div>
+    </div>
+{% endif %}

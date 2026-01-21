@@ -1,0 +1,28 @@
+{% trans_default_domain 'front_default' %}
+
+<div id="user-front-dashboard" class="row">
+    {% if user.userRequest.id is defined or user.tokenRemoveRequest %}
+        <div class="col-lg-5 mt-5">
+            <div class="card bg-white w-100 shadow">
+                <div class="card-body bg-transparent px-5 text-center px-4 px-md-5">
+                    <div class="body my-4">
+                        <i class="icon-shield-alt text-primary size-md-icon"></i>
+                        {% if user.userRequest.id is defined %}
+                            <strong class="d-inline-block mb-4 fz-sm text-primary d-inline-block w-100">{{ "Vous avez une demande de modification de vos données personnelles en attente de confirmation"|trans|raw }}</strong>
+                            <a href="{{ path('security_front_profile_edit') }}" class="btn btn-primary">{{ "Accéder au profile"|trans|raw }}</a>
+                        {% elseif user.tokenRemoveRequest %}
+                            <strong class="d-inline-block mb-4 fz-sm text-primary d-inline-block w-100">{{ "Vous avez une demande de suppression de votre compte"|trans|raw }}</strong>
+                            <p>{{ "Un email de confirmation vous a été envoyé à votre adresse actuelle. Pour des raisons de sécurité, la suppression ne sera effective tant que vous ne l'aurez pas validée depuis ce message."|trans|raw }}</p>
+                            <p>{{ "Si vous n’avez pas reçu le mail, pensez à vérifier votre dossier «Spam» ou «Courrier indésirable»."|trans|raw }}</p>
+                            <p class="mb-0">
+                                {{ "Vous pouvez <a href='%resetLink%' class='fw-700'>annuler la demande de suppression</a> si vous ne souhaitez plus la valider ou si vous n'êtes pas à l'origine de cette demande."|trans({
+                                    '%resetLink%': path('security_front_clear_user_remove_request', {token: user.tokenRemoveRequest|url_encode})
+                                })|raw }}
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>

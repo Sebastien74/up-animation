@@ -1,0 +1,124 @@
+{% if thumbs %}
+
+    {% set mediaQueries = {
+        0: {
+            media: '(max-width: 575px)',
+            thumbSizes: [618],
+        },
+        1: {
+            media: '(min-width: 576px) and (max-width: 991px)',
+            thumbSizes: [991],
+        },
+        2: {
+            media: '(min-width: 992px)',
+            thumbSizes: [1920],
+        }
+    } %}
+
+    {% set dataSource = thumbnails.dataSource is defined and thumbnails.dataSource ? thumbnails.dataSource : originalSrc %}
+    {% set haveLargeAlert = false %}
+    {% set haveLargeFile = not inAdmin and thumbnails.largeFilename is defined and thumbnails.largeFilename and '.svg' not in originalSrc %}
+    {% set priority = priority is not empty ? priority : (lazyLoad ? 'low': 'high') %}
+
+    {% if haveLargeAlert and haveLargeFile and granted('ROLE_ADMIN') %}
+        <div class="large-file-container position-absolute h-100 w-100 d-none">
+            {% set modalId = 'modal-alert-image'~uniqId() %}
+            {% set largeArguments = {
+                modalId: modalId,
+                largeFilename: thumbnails.largeFilename,
+                largeFileSize: thumbnails.largeFileSize,
+                largeFileWidth: thumbnails.largeFileWidth,
+                largeFileHeight: thumbnails.largeFileHeight,
+                maxSizeLimit: thumbnails.maxSizeLimit,
+                maxWidthLimit: thumbnails.maxWidthLimit,
+                maxHeightLimit: thumbnails.maxHeightLimit,
+                width: thumbnails.maxWidth,
+                height: thumbnails.maxHeight} %}
+            {% include 'core/alert-image.html.twig' with largeArguments %}
+        </div>
+    {% endif %}
+
+    {% if haveLightBox and originalSrc %}
+        <a href="{{ originalSrc }}" class="glightbox"{% if popupGallery %} data-gallery="popup-gallery-{{ popupGallery }}"{% endif %}>
+    {% endif %}
+        {% set sourceSize = null %}
+        {% set defaultThumb = null %}
+        {% if '.svg' in originalSrc %}
+            {% set src = thumbnails.dataSource %}
+            {% set lazyFile = lazyFile != src ? lazyFile : 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' %}
+            <img {% if lazyLoad %}data-{% endif %}src="{{ asset(src) }}"
+                 {% if lazyLoad and lazyFile is defined and lazyFile %}src="{{ lazyFile }}"{% endif %}
+                 {% if 'width' not in attributes and infos.width %} width="{{ infos.width }}"{% endif %}
+                 {% if 'height' not in attributes and infos.height %} height="{{ infos.height }}"{% endif %}
+                 {% if attributes %} {{ attributes|raw }}{% endif %}
+                 fetchpriority="{% if lazyLoad %}low{% else %}high{% endif %}"
+                {% if infos.width or infos.height %} style="{% if infos.height %} max-height: {{ infos.height }}px;{% endif %}{% if infos.width %} width: {{ infos.width }}px;{% endif %}"{% endif %}>
+        {% else %}
+            {% set pictureClass = thumbnails['pictureClass'] is defined and thumbnails['pictureClass'] ? thumbnails['pictureClass'] : null %}
+            <picture class="img-fluid {% if not inAdmin %}d-block{% endif %}{% if not inAdmin and lazyLoad %} loader-image-wrapper lazy-picture loading{% endif %}{% if pictureClass %} {{ pictureClass }}{% endif %}">
+                {% for key, config in mediaQueries %}
+                    {% set width = '' %}
+                    {% set height = '' %}
+                    {% set sources = '' %}
+                    {% set extension = null %}
+                    {% for size in config.thumbSizes %}
+                        {% set sourcesToDisplay = null %}
+                        {% set defaultThumb = thumbs[size] is defined and thumbs[size] ? thumbs[size] : null %}
+                        {% if defaultThumb %}
+                            {% set sourceSize = size %}
+                            {% set sourcesToDisplay = asset(defaultThumb) %}
+                            {% set sources = sources~' '~sourcesToDisplay~' 1x,' %}
+                            {% set sizes = thumbnails.thumbs[size].cropInfos is defined ? thumbnails.thumbs[size].cropInfos : null %}
+                            {% set width = sizes.width is defined ? sizes.width : size %}
+                            {% set height = sizes.height is defined ? sizes.height : 'auto' %}
+                        {% endif %}
+                        {% if defaultThumb and not dataSource %}
+                            {% set dataSource = defaultThumb %}
+                        {% endif %}
+                        {% set retinaSize = size * 2 %}
+                        {% set retinaThumb = thumbs[retinaSize] is defined and thumbs[retinaSize] ? thumbs[retinaSize] : null %}
+                        {% if retinaThumb %}
+                            {% set retinaSourcesToDisplay = asset(retinaThumb) %}
+                            {% if retinaSourcesToDisplay != sourcesToDisplay %}
+                                {% set sources = sources~' '~retinaSourcesToDisplay~' 2x,' %}
+                            {% endif %}
+                        {% endif %}
+                        {% set setExtension = defaultThumb|split('.')|last %}
+                        {% set setExtension = 'filter' not in setExtension ? setExtension : null %}
+                        {% if not extension %}
+                            {% set extension = setExtension %}
+                        {% elseif extension and setExtension != extension %}
+                            {% set extension = null %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set sources = sources|trim %}
+                    {% set sources = sources|trim(',', 'right') %}
+                    {% set lazyFileSrc = lazyFile is defined and lazyFile ? lazyFile : "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" %}
+                    {% if sources %}
+                        <source {% if lazyLoad %}data-{% endif %}srcset="{{ sources }}"
+{#                                srcset="{{ lazyFileSrc }}"#}
+                                media="{{ config.media }}" data-size="{{ config.thumbSizes|first }}"
+                                width="{{ width }}" height="{{ height }}"
+                                {% if extension %}type="image/{{ extension }}"{% endif %}>
+                    {% endif %}
+                {% endfor %}
+{#                {% set src = lazyLoad ? lazyFileSvg : (thumbs[618] is defined and isMobile() ? thumbs[618] : dataSource) %}#}
+{#                {% set lazyLoad = not lazyLoad and isMobile() ? true : lazyLoad %}#}
+{#                {% set priority = lazyLoad ? 'low' : priority %}#}
+                {% set src = lazyLoad ? lazyFileSvg : dataSource %}
+                {% set dataSrc = dataSource %}
+                <img src="{{ asset(src) }}" data-src="{{ dataSrc }}"
+                    {% if lazyLoad %} data-sizes="auto"{% endif %}
+                    {% if 'width' not in attributes and infos.width %} width="{{ infos.width }}"{% endif %}
+                    {% if 'height' not in attributes and infos.width %} height="{{ infos.height }}"{% endif %}
+                    {% if attributes %} {{ attributes|raw }}{% endif %}
+                    {% if priority != 'high' and lazyLoad %} loading="lazy"{% elseif priority != 'high' %} loading="eager"{% else %} decoding="async" loading="eager"{% endif %}
+                     fetchpriority="{{ priority }}">
+            </picture>
+        {% endif %}
+
+    {% if haveLightBox and originalSrc %}
+        </a>
+    {% endif %}
+
+{% endif %}

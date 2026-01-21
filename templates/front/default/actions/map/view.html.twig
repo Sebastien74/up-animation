@@ -1,0 +1,29 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set zone = block.col.zone %}
+{% set displayFilters = map.displayFilters and categories|length > 1 %}
+{% set displayPointsList = map.displayPointsList and map.points|length > 0 %}
+
+{% set customTemplate = 'front/'~websiteTemplate~'/actions/map/template/'~map.slug~'.html.twig' %}
+{% set customTemplateExist = (customTemplate)|fileExist %}
+{% set template = customTemplateExist ? 'front/'~websiteTemplate~'/actions/map/template/'~map.slug~'.html.twig'
+    : 'front/'~websiteTemplate~'/actions/map/template/default.html.twig' %}
+
+<div id="map-container-{{ map.slug }}" class="map-container position-relative">
+    {{ macroWebmaster.box({
+        title: "Éditer la carte"|trans([], 'front_webmaster'),
+        role: 'ROLE_MAP',
+        path: path('admin_mappoint_index', {website: website.id, map: map.id})
+    }) }}
+    {% include template with {
+        websiteTemplate: websiteTemplate,
+        displayPointsList: displayPointsList,
+        displayFilters: displayFilters,
+        points: points,
+        categories: categories,
+        map: map,
+        website: website,
+    } only %}
+</div>

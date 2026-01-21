@@ -1,0 +1,217 @@
+@charset "UTF-8";
+
+/* ------------------------------------------------------------------------------------------
+
+    Module : Recruitment
+    Copyright : 2024
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+------------------------------------------------------------------------------------------ */
+
+@if $enable-recruitment {
+
+    .promoted-jobs {
+
+        border: 1px solid $gray-400;
+
+        @include mediaQuery(min-lg) {
+            margin-right: .75rem;
+            margin-left: .75rem;
+        }
+
+        .badge {
+            border-radius: 2rem;
+            display: inline-block;
+            font-size: .75em;
+            font-weight: 700;
+            line-height: 1;
+            padding: .35em .65em;
+            text-align: center;
+            white-space: nowrap;
+        }
+    }
+
+    .recruitment-index {
+
+        @include mediaQuery(max-lg) {
+            .search-filters-container {
+                > .container {
+                    padding: 0 !important;
+                }
+            }
+        }
+
+        .choices__inner {
+            overflow: initial;
+        }
+
+        .filters-container-counter-inline {
+
+            border-radius: 50px !important;
+
+            .entities-filters-form {
+
+                > .inner {
+                    width: 100%;
+                }
+
+                .reset-entities-filters {
+                    border-radius: 6rem !important;
+                    transform: scale(.99) !important;
+                }
+
+                @include mediaQuery(min-lg) {
+
+                    .choices {
+                        min-width: initial !important;
+                        flex: 0 0 29.5%;
+                    }
+
+                    .reset-select-wrap {
+
+                        min-width: initial !important;
+                        flex: 0 0 29.5%;
+
+                        .choices {
+                            display: flex;
+                            flex: 0 0 100%;
+                        }
+                    }
+                }
+
+                .choices__inner {
+                    border-radius: 6rem !important;
+                    transform: scale(.99) !important;
+                }
+            }
+
+            @include mediaQuery(between-lg-xl) {
+
+                .entities-filters-form {
+                    padding-right: 1rem !important;
+                    padding-left: 1rem !important;
+                }
+
+                .form-filter-label, .entities-count, form {
+                    flex: 0 0 100%;
+                    justify-content: center !important;
+                }
+
+                .form-filter-label {
+                    margin-top: 1.5rem !important;
+                }
+
+                .entities-count {
+                    margin-bottom: 1.5rem !important;
+                }
+
+                form {
+                    padding: 1rem 0 !important;
+                }
+            }
+
+            @include mediaQuery(min-xl) {
+
+                .form-filter-label, .entities-count {
+                    flex: 0 0 20%;
+                    height: 85px;
+                }
+
+                form {
+                    flex: 0 0 60%;
+                    padding: 1rem 0 !important;
+                }
+            }
+        }
+    }
+
+    .job-card {
+
+        transition: all .3s ease-in-out;
+
+        &.have-footer .card-body {
+            border-bottom: 1px solid $primary;
+        }
+
+        @include mediaQuery(min-lg) {
+            &:hover {
+                transition: all .3s ease-in-out;
+                transform: scale(1.030);
+            }
+        }
+    }
+
+    #form-job {
+
+        > div {
+            border-radius: 1.35rem;
+        }
+
+        .title {
+            font-size: 18px;
+        }
+    }
+
+    #job-content {
+
+        .title {
+            border-bottom: 1px solid $primary;
+        }
+
+        .back-share-content {
+
+            border-top: 1px solid $primary;
+
+            .icon-chevron-circle-left {
+                font-size: 22px;
+            }
+
+            .back-link {
+
+                * {
+                    transition: all .3s ease-in-out;
+                }
+
+                @include mediaQuery(min-lg) {
+                    &:hover {
+                        * {
+                            color: $primary;
+                            transition: all .3s ease-in-out;
+                        }
+                    }
+                }
+
+                span {
+                    font-size: 14px;
+                }
+            }
+
+            .share {
+
+                a {
+
+                    height: 25px;
+                    width: 25px;
+
+                    svg {
+                        transition: all .3s ease-in-out;
+                    }
+
+                    @include mediaQuery(min-lg) {
+                        &:hover {
+                            svg {
+                                fill: $primary;
+                                transition: all .3s ease-in-out;
+                            }
+                        }
+                    }
+                }
+
+                span {
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}

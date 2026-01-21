@@ -1,0 +1,54 @@
+{% trans_default_domain 'admin' %}
+
+{% if allLocales|length > 1 %}
+    <div class="locales-tab-container">
+{% endif %}
+    {% if allLocales|length > 1 %}
+        <ul class="nav nav-tabs w-100" id="google-tab" role="tablist">
+            {% for intl in googleIntls %}
+                {% set locale = intl.vars.value.locale %}
+                <li class="nav-item">
+                    <a class="nav-link{% if locale == defaultLocale %} active{% endif %}"
+                       id="social-{{ locale }}-tab"
+                       data-bs-toggle="tab"
+                       href="#google-tab-{{ locale }}"
+                       role="tab"
+                       aria-controls="google-tab-{{ locale }}"
+                       aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if allLocales|length > 1 %}
+        <div class="tab-content tab-content-border w-100" id="google-tab-content">
+    {% endif %}
+        {% for intl in googleIntls %}
+            {% set locale = intl.vars.value.locale %}
+            {% if allLocales|length > 1 %}
+                <div class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}" id="google-tab-{{ locale }}" role="tabpanel" aria-labelledby="social-{{ locale }}-tab">
+                    <div class="p-20 pb-0">
+                        <div class="row">
+            {% endif %}
+                {% for field in intl.children %}
+                    {% if locale not in allLocales %}
+                        <div class="d-none">
+                    {% endif %}
+                        {{ form_row(intl[field.vars.name]) }}
+                    {% if locale not in allLocales %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% if allLocales|length > 1 %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% if allLocales|length > 1 %}
+        </div>
+    {% endif %}
+{% if allLocales|length > 1 %}
+    </div>
+{% endif %}

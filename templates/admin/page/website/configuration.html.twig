@@ -1,0 +1,101 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageTitle = "Élements de site"|trans %}
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-icons-library', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form, {attr: {id: "website-elements-form", novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
+
+        <div class="card">
+
+            <ul class="nav nav-tabs custom-tab large w-100" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="media-tab" data-bs-toggle="tab" href="#media" role="tab" aria-controls="media" aria-selected="true">
+                        {{ 'fal photo-video'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Médias"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="social-tab" data-bs-toggle="tab" href="#social" role="tab" aria-controls="social" aria-selected="false">
+                        {{ 'fal share-alt'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Réseaux sociaux"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="color-tab" data-bs-toggle="tab" href="#color" role="tab" aria-controls="color" aria-selected="false">
+                        {{ 'fal palette'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Couleurs"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="icon-css-classes" data-bs-toggle="tab" href="#css-classes" role="tab" aria-controls="css-classes" aria-selected="false">
+                        {{ 'fal paint-brush'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Classes personnalisées / Style"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="icon-tab" data-bs-toggle="tab" href="#icon" role="tab" aria-controls="icon" aria-selected="false">
+                        {{ 'fal books'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Librairies"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="icon-tab" data-bs-toggle="tab" href="#others" role="tab" aria-controls="icon" aria-selected="false">
+                        {{ 'fal cog'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Autres"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://realfavicongenerator.net/" target="_blank" role="tab" aria-selected="false">
+                        {{ 'fad atom-alt'|icon(null, 17, 'dark me-sm-2') }}<span class="d-none d-sm-inline-block">{{ "Générateur de favicons"|trans }}</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content bg-white">
+                <div class="tab-pane fade show active" id="media" role="tabpanel" aria-labelledby="media-tab">
+                    <div class="card-body pb-0">
+                        {% include 'admin/page/website/include/configuration/medias.html.twig' %}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="social" role="tabpanel" aria-labelledby="social-tab">
+                    <div class="card-body pb-0">
+                        {% include 'admin/page/website/include/configuration/social-network.html.twig' %}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="color" role="tabpanel" aria-labelledby="color-tab">
+                    <div class="card-body pb-0">
+                        {% include 'admin/page/website/include/configuration/colors.html.twig' %}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="css-classes" role="tabpanel" aria-labelledby="css-classes-tab">
+                    <div class="card-body pb-0">
+                        {% include 'admin/page/website/include/configuration/style.html.twig' %}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="icon" role="tabpanel" aria-labelledby="icon-tab">
+                    <div class="card-body pb-0">
+                        {% include 'admin/page/website/include/configuration/libraries.html.twig' %}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="others" role="tabpanel" aria-labelledby="icon-tab">
+                    <div class="card-body pb-0">
+                        {% include 'admin/page/website/include/configuration/others.html.twig' %}
+                    </div>
+                </div>
+            </div>
+
+            {% include 'admin/core/form/save/footer-only.html.twig' %}
+
+        </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}

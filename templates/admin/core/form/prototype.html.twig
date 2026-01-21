@@ -1,0 +1,110 @@
+{% trans_default_domain 'admin' %}
+
+{% import _self as macro %}
+
+{% set prototypeOptions = field.vars.form.vars.errors.form.config.attributes.prototype.config.options is defined
+    ? field.vars.form.vars.errors.form.config.attributes.prototype.config.options : [] %}
+{% set disableTitle = disableTitle is defined or prototypeOptions['attr']['disableTitle'] is defined and prototypeOptions['attr']['disableTitle'] %}
+{% set excluded = excluded is defined ? excluded : [] %}
+
+{% if prototypeOptions['custom_widget'] is defined and prototypeOptions['custom_widget']  %}
+
+    {{ form_widget(form[field.vars.name]) }}
+
+{% elseif field.vars.prototype is defined and form[field.vars.name] is defined %}
+
+    {% macro field_prototype(property, prototypeGroup, prototypePosition, excluded) %}
+        {% set entity = property.vars.data is defined ? property.vars.data : null %}
+        {% set isNew = entity.id is defined and entity.id ? false : true %}
+        {% set entityId = isNew ? uniqId() : entity.id %}
+        {% set interfaceName = property.vars.errors.form.config.dataClass|interfaceName %}
+        {% set deletableProperty = property.vars.attr.deletable is not defined or property.vars.attr.deletable is defined and property.vars.attr.deletable != false %}
+        {% if prototypeGroup %}
+            <div class="{{ prototypeGroup }} mb-4 prototype prototype-block-group">
+        {% endif %}
+            <div class="prototype-block p-3 {% if prototypeGroup %}h-100{% else %}prototype mb-4{% endif %}">
+                <div class="row">
+                    {% include 'admin/core/form/edit-fields-base.html.twig' with {form: property, excludes: excluded} only %}
+                    {% if prototypePosition %}
+                        {% include 'admin/include/handle-item-collection.html.twig' with {isNew: isNew} %}
+                    {% endif %}
+                    {% if deletableProperty and entity.deletable is not defined or deletableProperty and entity.deletable is defined and entity.deletable %}
+                        {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                            isNew: property.vars.data.id is defined and property.vars.data.id ? false : true,
+                            entityId: isNew ? uniqId() : property.vars.data.id,
+                            interfaceName: interfaceName
+                        } %}
+                    {% elseif deletableProperty %}
+                        <span class="btn btn-white delete-disabled" data-bs-toggle="tooltip" title="{{ "Donnée requise"|trans|striptags }}">
+                            {{ 'fas trash'|icon(null, 14, 'dark') }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        {% if prototypeGroup %}
+            </div>
+        {% endif %}
+    {% endmacro %}
+
+    {% if not disableTitle %}
+        {% set entity = form.vars.data is defined ? form.vars.data : null %}
+        <div class="col-12">
+            <h4 class="card-subtitle mb-4">
+                {% if prototypeOptions['attr']['icon'] is defined and prototypeOptions['attr']['icon'] %}
+                    {{ prototypeOptions['attr']['icon']|icon(null, 14, 'info-darken me-2') }}
+                {% else %}
+                    {{ 'fal list-ul'|icon(14, 14, 'info-darken me-2') }}
+                {% endif %}
+                {% if prototypeOptions['attr']['caption'] is defined and prototypeOptions['attr']['caption'] %}
+                    {{ prototypeOptions['attr']['caption'] }}
+                {% elseif prototypeOptions['legend'] is defined and prototypeOptions['legend'] %}
+                    {{ prototypeOptions['legend'] }}
+                {% else %}
+                    {{ 'Collection'|trans }}
+                {% endif %}
+                {% if prototypeOptions['legend_property'] is defined and prototypeOptions['legend_property'] and entity and attribute(entity, prototypeOptions['legend_property']) %}
+                     : {{ attribute(entity, prototypeOptions['legend_property']) }}
+                {% endif %}
+            </h4>
+        </div>
+    {% endif %}
+
+    {% set prototypeGroup = prototypeOptions['attr']['group'] is defined and prototypeOptions['attr']['group'] ? prototypeOptions['attr']['group'] : null %}
+    {% set prototypePosition = prototypeOptions.prototypePosition is defined and prototypeOptions.prototypePosition %}
+    {% set displayBtn = (prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] != false) or prototypeOptions['attr']['button'] is not defined %}
+
+    <div id="{{ field.vars.id }}_collection"
+         data-index="{{ form[field.vars.name]|length }}"
+         class="collection{% if prototypePosition %} prototype-sortable{% endif %}{% if not displayBtn %} no-shadow{% endif %} {% if prototypeGroup %}row w-100 m-0{% else %}col-12{% endif %}"
+         data-prototype="{{ macro.field_prototype(field.vars.prototype, prototypeGroup)|e('html_attr') }}">
+        {% include 'admin/include/stripe-preloader.html.twig' %}
+        {% for property in form[field.vars.name] %}
+            {{ macro.field_prototype(property, prototypeGroup, prototypePosition, excluded) }}
+        {% endfor %}
+    </div>
+
+    {% if displayBtn %}
+        <div class="col-12 text-end mb-4">
+            <button role="button" class="add-collection standard btn {% if fullBtn is defined %}full-prototype-btn w-100{% else %}btn-success{% endif %}"
+                    data-collection-target="append"
+                    data-target="#{{ field.vars.id }}_collection">
+                {% if fullBtn is defined %}
+                    <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
+                         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                         class="img-fluid rounded-add-img lazy-load"
+                         width="20" height="20" alt="{{ 'Ajouter'|trans|striptags }}" /><br>
+                {% else %}
+                    {{ 'fal plus'|icon(11, 15, 'white me-2') }}
+                {% endif %}
+                <span class="d-inline-block">
+                    {% if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] %}
+                        {{ prototypeOptions['attr']['button'] }}
+                    {% else %}
+                        {{ 'Ajouter'|trans }}
+                    {% endif %}
+                </span>
+            </button>
+        </div>
+    {% endif %}
+
+{% endif %}

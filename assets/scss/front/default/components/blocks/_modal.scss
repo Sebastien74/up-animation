@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+@if $enable-modal {
+
+    /* -----------------------------------------------------------------
+
+        Copyright  : 2021
+        Created on : 2021-01-07, 5:15 PM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+        FRONT VENDOR MODAL :
+        ====================
+
+    ------------------------------------------------------------------ */
+
+    .modal {
+
+        z-index: 99999;
+
+        .btn-close {
+            box-shadow: none;
+            top: 20px;
+            right: 15px;
+        }
+    }
+
+    /* purgecss start ignore */
+
+    .basicLightbox {
+
+        .modal {
+            background-color: transparentize($black, .1);
+        }
+
+        .modal-dialog {
+            img {
+                max-height: 85vh;
+            }
+        }
+
+        small {
+            color: $gray-600;
+        }
+    }
+
+    /*! purgecss end ignore */
+}

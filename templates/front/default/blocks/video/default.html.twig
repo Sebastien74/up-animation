@@ -1,0 +1,115 @@
+{% trans_default_domain 'front_default' %}
+
+{% set formatsVideo = ['mp4', 'm4v', 'vtt', 'webm'] %}
+{% set website = website is defined ? website : website() %}
+{% set controls = controls is defined ? controls : (block.controls is defined ? block.controls : false) %}
+{% set btnControls = btnControls is defined ? btnControls : true %}
+{% set soundControl = block.soundControls is defined ? block.soundControls : false %}
+{% set playInHover = playInHover is defined ? playInHover : (block.playInHover is defined ? block.playInHover : false) %}
+{% set autoplay = autoplay is defined ? autoplay : (block.autoplay is defined ? block.autoplay : false) %}
+{% set intlVideo = intl.video is defined ? intl.video : null %}
+{% set intlMedia = media is defined ? media : null %}
+{% set title = intlMedia.title is defined and intlMedia.title ? intlMedia.title : false %}
+{% set body = intlMedia.body is defined and intlMedia.body ? intlMedia.body : false %}
+{% set haveContent = title or body %}
+{% set link = intl.link is defined and intl.link ? intl.link : null %}
+{% set videoId = block.col.zone.customId is defined and block.col.zone.customId ? block.col.zone.customId : block.id %}
+{% set isMain = 'main-video' in videoId %}
+{% set havePoster = media.media.filename is defined and media.media.filename %}
+{% set thumbConfiguration = thumbConfiguration is defined ? thumbConfiguration : {} %}
+{% set radius = block.radius is defined ? block.radius : false %}
+
+{% if intlVideo %}
+    <div id="video-{{ videoId }}" class="video-block{% if radius %} radius{% endif %}">
+        {{ intlVideo|video(media, {thumbConfiguration: thumbConfiguration}) }}
+    </div>
+{% elseif intlMedia.media is defined and intlMedia.media %}
+    {% set haveVideo = false %}
+    {% for video in intlMedia.media.mediaScreens %}
+        {% if video.filename is defined and video.filename %}
+            {% set haveVideo = true %}
+        {% endif %}
+    {% endfor %}
+    {% if haveVideo %}
+        <div id="video-{{ videoId }}" class="video-block-html position-relative w-100{% if radius %} radius{% endif %}">
+            <div class="video-container position-relative w-100">
+                {% set poster = havePoster ? intlMedia|file(thumbConfiguration, {path: true}) : null %}
+                {% if (havePoster and not isMain) or (havePoster and isMain and not isMobile()) %}
+                    <div class="overlay-video w-100 h-100 position-absolute">
+                        {{ intlMedia|file(thumbConfiguration, {
+                            btnLink: false,
+                            popupGallery: false,
+                            fullPopup: false,
+                            placeholder: true,
+                            lazyLoad: true,
+                            title: "Poster"|trans,
+                            class: 'w-100' }) }}
+                    </div>
+                {% endif %}
+                {% if isMain and isMobile() %}
+                    {{ intlMedia|file(thumbConfiguration, {
+                        btnLink: false,
+                        popupGallery: false,
+                        fullPopup: false,
+                        placeholder: true,
+                        lazyLoad: true,
+                        title: "Poster"|trans,
+                        class: 'w-100' }) }}
+                {% else %}
+                    {% set haveTrack = false %}
+                    {% for video in intlMedia.media.mediaScreens %}
+                        {% if video.filename is defined and video.filename and video.screen in formatsVideo and video.screen == 'vtt' %}
+                            {% set haveTrack = true %}
+                        {% endif %}
+                    {% endfor %}
+                    <video id="video-{{ block.id }}" data-elements-to-hide=""
+                        {% if title %} aria-label="{{ title }}"{% endif %}
+                           class="html-video video-fluid lazy-video w-100{% if autoplay %} autoplay playing{% endif %}{% if playInHover %} play-in-hover{% endif %}"
+                           preload="none" inert
+                        {% if autoplay or playInHover %} muted loop playsinline{% if not playInHover %} autoplay{% endif %}{% endif %}
+                        {% if controls %} controls{% endif %}>
+                        {% for video in intlMedia.media.mediaScreens %}
+                            {% if video.filename is defined and video.filename and video.screen in formatsVideo and video.screen != 'vtt' %}
+                                <source src="" data-src="{{ asset('uploads/'~website.uploadDirname~'/'~video.filename) }}" type="video/{{ video.screen }}">
+                            {% endif %}
+                        {% endfor %}
+                        {% for video in intlMedia.media.mediaScreens %}
+                            {% if video.filename is defined and video.filename and video.screen in formatsVideo and video.screen == 'vtt' %}
+                                <track src="" data-src="{{ asset('uploads/'~website.uploadDirname~'/'~video.filename) }}" kind="subtitles" srclang="{{ app.request.locale }}" label="{{ app.request.locale|languageName|capitalize }}">
+                            {% endif %}
+                        {% endfor %}
+                    </video>
+                    {% if haveContent %}
+                        <details>
+                            {% if title %}
+                                <summary>{{ title }}</summary>
+                            {% endif %}
+                            {% if body %}
+                                <p>{{ body|raw }}</p>
+                            {% endif %}
+                        </details>
+                    {% endif %}
+                {% endif %}
+                {% if btnControls %}
+                    <div class="player-control-wrap player-control-play-wrap control-play vertical-align{% if autoplay %} d-none{% endif %}">
+                        <span class="player-control control-play-btn d-inline-flex justify-content-center align-items-center cursor"></span>
+                        <span class="player-control control-play-btn hover d-inline-flex justify-content-center align-items-center cursor position-absolute"></span>
+                    </div>
+                    <div class="player-control-wrap control-pause position-absolute text-end{% if not autoplay %} d-none{% endif %}">
+                        <span class="player-control control-pause-btn btn btn-primary btn-circle p-0 d-inline-flex justify-content-center align-items-center position-relative">
+                            <i class="icon-pause"></i>
+                        </span>
+                    </div>
+                {% endif %}
+                {% if soundControl %}
+                    <button data-play-btn="{{ asset('build/front/'~websiteTemplate~'/images/volume.svg', 'front_default') }}"
+                            data-pause-btn="{{ asset('build/front/'~websiteTemplate~'/images/volume-mute.svg', 'front_default') }}"
+                            class="position-absolute d-inline-block sound-control btn btn-primary p-0">
+                        <span class="play">{{ 'fal volume'|icon(24, 25) }}</span>
+                        <span class="pause d-none">{{ 'fal volume-slash'|icon(24, 25) }}</span>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endif %}

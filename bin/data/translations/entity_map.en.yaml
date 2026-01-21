@@ -1,0 +1,6 @@
+add: 'Add map'
+adminName: 'Map name'
+admin_mappoint_index: Points
+isDefault: Main
+plural: Maps
+singular: Map

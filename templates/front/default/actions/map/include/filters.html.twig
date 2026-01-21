@@ -1,0 +1,125 @@
+{% trans_default_domain 'front_default' %}
+
+{% set mapPointsGroupByCategories = displayPointsList ? map|mapPointsGroupByCategories : null %}
+
+{% if displayFilters and isDesktop() %}
+    <div class="col-lg-4 bg-dark filters-container">
+        <div class="filters-list-wrap p-0 pt-5 pb-5 ps-3 pe-3 ps-xl-4 pe-xl-4 vertical-align-lg">
+            <h2 class="text-white title mb-5 text-start">{{ "Filtrez la carte"|trans|raw }}</h2>
+            <ul class="markers-select-list reset">
+                {% set categoryIds = {} %}
+                {% for category in categories %}
+                    {% if category.id not in categoryIds %}
+                        {% set intl = category|intl %}
+                        {% set title = intl and intl.title ? intl.title : category.adminName %}
+                        {% set categoryIds = categoryIds|merge([category.id]) %}
+                        {% set categoryMarker = category.marker ? category.marker : 'uploads/'~website.uploadDirname~'/marker-blue.svg' %}
+                        <li class="marker-select ps-0 text-white marker-select-{{ category.id }} active overflow-hidden w-100 {% if not map.multiFilters %}cursor{% else %}multiple{% endif %}"
+                            data-category="category-{{ category.id }}"
+                            data-multiple="{{ map.multiFilters }}">
+                            <div class="category-label d-flex align-items-center">
+                                {% if map.multiFilters %}
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" id="map-filter-{{ category.id }}" name="map_filter_{{ category.id }}" required="required" class="map-filter-checkbox custom-control-input d-none" checked>
+                                        <label class="cursor custom-control-label required d-flex align-items-center" for="map-filter-{{ category.id }}">
+                                            <span class="me-3">{{ asset(categoryMarker)|file({}, {width: 40, height: 40, title: title}) }}</span>
+                                            <span>{{ title|raw }}</span>
+                                        </label>
+                                    </div>
+                                {% else %}
+                                    <span class="me-2">{{ asset(categoryMarker)|file({}, {width: 40, height: 40, title: title}) }}</span>
+                                    <span class="category-name">{{ title|raw }}</span>
+                                {% endif %}
+                            </div>
+                            {% if displayPointsList and mapPointsGroupByCategories[category.id] is defined %}
+                                <ul class="associated-points-list mt-3 d-none">
+                                    {% for point in mapPointsGroupByCategories[category.id] %}
+                                        {% set intl = point|intl %}
+                                        {% set title = intl and point.title is defined ? point.title : point.adminName %}
+                                        <li class="map-point-filter cursor active" data-id="{{ point.id }}" data-category="{{ category.id }}">{{ title|raw }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <span class="d-inline-block w-100 reset-filter text-primary cursor d-none mt-4">{{ "Réinitialiser les filtres"|trans|raw }}</span>
+        </div>
+    </div>
+{% elseif displayFilters and not isDesktop() %}
+    <div class="col-12 mb-4">
+        <div class="dropdown container show">
+            <a class="rounded-btn btn btn-primary dropdown-toggle w-100"
+               href="#"
+               role="button"
+               id="dropdown-map-{{ map.id }}"
+               data-bs-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false">{{ "Filtrez la carte"|trans|raw }}</a>
+            <ul class="dropdown-menu dropdown-initial radius pt-3 pb-3 mt-4 mb-4" aria-labelledby="dropdown-map-{{ map.id }}">
+                {% set categoryIds = {} %}
+                {% for category in categories %}
+                    {% if category.id not in categoryIds %}
+                        {% set intl = category|intl %}
+                        {% set title = intl and intl.title ? intl.title : category.adminName %}
+                        {% set categoryIds = categoryIds|merge([category.id]) %}
+                        {% set categoryMarker = category.marker ? category.marker : 'uploads/'~website.uploadDirname~'/marker-blue.svg' %}
+                        <li class="dropdown-item marker-select marker-select-{{ category.id }} active overflow-hidden w-100 {% if not map.multiFilters %}cursor{% else %}multiple{% endif %}"
+                            data-category="category-{{ category.id }}"
+                            data-multiple="{{ map.multiFilters }}">
+                            {% if map.multiFilters %}
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" id="map-filter-{{ category.id }}" name="map_filter_{{ category.id }}" required="required" class="map-filter-checkbox custom-control-input" checked>
+                                    <label class="cursor custom-control-label required" for="map-filter-{{ category.id }}">
+                                        <span class="float-start me-2">{{ asset(categoryMarker)|file({}, {width: 40, height: 40, title: title}) }}</span>
+                                        <span class="float-start">{{ title|raw }}</span>
+                                    </label>
+                                </div>
+                            {% else %}
+                                <div class="d-inline-block content">
+                                    <span class="float-start me-2">{{ asset(categoryMarker)|file({}, {width: 40, height: 40, title: title}) }}</span>
+                                    <span class="float-start">{{ title|raw }}</span>
+                                </div>
+                            {% endif %}
+                            {% if displayPointsList and mapPointsGroupByCategories[category.id] is defined %}
+                                <ul class="associated-points-list mt-3 mb-3 p-3 d-none">
+                                    {% for point in mapPointsGroupByCategories[category.id] %}
+                                        {% set intl = point|intl %}
+                                        {% set title = intl and point.title is defined ? point.title : point.adminName %}
+                                        <li class="map-point-filter cursor active{% if not loop.last %} mb-2{% endif %}" data-id="{{ point.id }}" data-category="{{ category.id }}">{{ title|raw }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <span class="d-inline-block w-100 text-primary reset-filter cursor d-none">{{ "Réinitialiser les filtres"|trans|raw }}</span>
+        </div>
+    </div>
+{% endif %}
+
+{% if displayPointsList and not displayFilters and mapPointsGroupByCategories|length > 0 %}
+    <ul class="associated-points-list">
+        {% if categories|length > 0 %}
+            {% set categoryIds = {} %}
+            {% for category in categories %}
+                {% if category.id not in categoryIds %}
+                    {% set categoryIds = categoryIds|merge([category.id]) %}
+                    {% for point in mapPointsGroupByCategories[category.id] %}
+                        {% set intl = point|intl %}
+                        {% set title = intl and point.title is defined ? point.title : point.adminName %}
+                        <li class="map-point-filter cursor active{% if not loop.last %} mb-2{% endif %}" data-id="{{ point.id }}" data-category="{{ category.id }}">{{ title|raw }}</li>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            {% for point in mapPointsGroupByCategories %}
+                {% set intl = point|intl %}
+                {% set title = intl and point.title is defined ? point.title : point.adminName %}
+                <li class="map-point-filter cursor active{% if not loop.last %} mb-2{% endif %}" data-id="{{ point.id }}" data-category="">{{ title|raw }}</li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+{% endif %}

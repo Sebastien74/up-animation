@@ -1,0 +1,38 @@
+{% trans_default_domain 'admin' %}
+
+<div id="index-import-data">
+
+    <div id="success-card" class="d-none">
+        <div class="card mt-5 d-flex p-4">
+            <div class="mx-auto text-center">
+                {{ 'fal check-circle'|icon(50, 50, 'info') }} <span class="d-inline-block w-100 mt-3">{{ "Import terminé avec succès !"|trans|raw }}</span>
+            </div>
+        </div>
+    </div>
+
+    {% set count = entities|length %}
+    {#    {% set count = 30 %}#}
+    {% set name = entities[0][property_name] is defined ? entities[0][property_name]|striptags : null %}
+    <div id="progress-card" class="card mt-5">
+        <div class="card-body">
+            <h6 class="title d-flex align-items-center">{{ "Importation en cours"|trans|raw }}</h6>
+            <div class="progress">
+                <div id="progress-bar" class="progress-bar progress-bar-striped bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small class="counter d-inline-flex w-100 mt-2">
+                <span class="count" data-count="{{ count }}" data-progress="1">0</span>/{{ count }} <span class="name text-italic ms-3">{{ name }}</span>
+            </small>
+        </div>
+    </div>
+
+    <ul id="entities-to-import" class="d-none">
+        {% for entity in entities %}
+            {#            {% if loop.index <= count %}#}
+            <li class="item to-import"
+                data-path="{{ path(route, {website: website.id, id: entity.id, version: version, classname: classname, tables: tables}) }}"
+                data-name="{{ entity[property_name]|striptags }}">{{ entity.id }}</li>
+            {#            {% endif %}#}
+        {% endfor %}
+    </ul>
+
+</div>

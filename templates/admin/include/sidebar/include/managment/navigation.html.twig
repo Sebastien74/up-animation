@@ -1,0 +1,14 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'navigation'|moduleActive(configuration) or granted('ROLE_INTERNAL') %}
+    {% set uri = app.request.uri %}
+    {% set module = 'navigation'|moduleActive(configuration) %}
+    {% set intl = intlsModules['navigation'][app.user.locale] is defined ? intlsModules['navigation'][app.user.locale] : intlsModules['navigation']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['navigation']['entity'].adminName is defined ? intlsModules['navigation']['entity'].adminName : 'Navigations'|trans) %}
+    {% set icon = intlsModules['navigation']['entity'].iconClass is defined and intlsModules['navigation']['entity'].iconClass ? intlsModules['navigation']['entity'].iconClass : '/medias/icons/light/bars.svg' %}
+    <li{% if '/menus/' in uri %} class="active"{% endif %}>
+        <a href="{{ path('admin_menu_index', {website: websiteId}) }}" data-toggle="preloader">
+            {{ icon|icon(13, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% endif %}

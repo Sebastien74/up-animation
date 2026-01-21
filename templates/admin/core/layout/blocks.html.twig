@@ -1,0 +1,149 @@
+{% trans_default_domain 'admin' %}
+
+{% set displayAdminName = ['form'] %}
+{% set website = website is defined ? website : website() %}
+{% set defaultLocale = website.configuration.locale %}
+
+{% if zone.cols|length > 0 %}
+    <ul id="block-sortable-{{ col.id }}" class="block-sortable reset ui-sortable row">
+        {% for block in col.blocks %}
+            <li class="block col-md-{{ block.size }}{% if block.hide %} block-hidden{% endif %}{% if block.useForThumb %} use-for-thumb{% endif %}"
+                id="block-{{ block.id }}"
+                data-size-class="col-md-{{ block.size }}"
+                data-col="{{ col.id }}"
+                data-id="{{ block.id }}"
+                data-position="{{ block.position }}">
+                <div class="block-resizable position-relative">
+                    <div class="row block-row">
+                        <div class="col-6 my-auto">
+
+                            {% set title = block.blockType.adminName is defined ? block.blockType.adminName : null %}
+                            {% set icon = block.blockType.iconClass is defined ? block.blockType.iconClass : null %}
+                            {% set blockTypeCode = block.blockType.slug is defined ? block.blockType.slug : null %}
+                            {% set intl = block|intl(defaultLocale) %}
+                            {% set mediaRelation = block|mainMedia(defaultLocale) %}
+                            {% set haveMedia = mediaRelation and mediaRelation.media and mediaRelation.media.filename %}
+
+                            <div class="infos-block me-1 d-inline-flex align-items-center {% if haveMedia %} mt-1{% endif %}">
+
+                                {% if block.blockType and block.blockType.slug == 'core-action' %}
+                                    {% set title = block.action.adminName is defined ? block.action.adminName : null %}
+                                    {% set icon = block.action.iconClass is defined ? block.action.iconClass : null %}
+                                {% endif %}
+
+                                {% set filename = mediaRelation.media.filename is defined and mediaRelation.media.filename ? mediaRelation.media.filename : null %}
+                                {% set asMediaWarning = tooHeavyFiles[filename][block.id] is defined or mediasAlert[filename][block.id] is defined %}
+
+                                {% if icon %}
+                                    <span data-bs-toggle="tooltip" title="{{ title|striptags }}">
+                                        {% set iconColor = asMediaWarning ? 'warning' : 'info' %}
+                                        {% set icon = asMediaWarning ? icon|replace({'fal ': 'far '}) : icon %}
+                                        {{ icon|icon(null, 16, iconColor~' me-2') }}
+                                    </span>
+                                {% endif %}
+
+                                {% if title %}
+                                    <span class="block-title{% if asMediaWarning %} text-warning fw-700{% endif %}">{{ title|trans }}</span>
+                                {% endif %}
+
+                                {% if (blockTypeCode == 'title' or blockTypeCode == 'title-header') %}
+                                    {% if intl.titleForce is defined and intl.titleForce %}
+                                        <span class="title-info text-info ms-1 me-1">H{{ intl.titleForce }}</span>
+                                    {% endif %}
+                                    {% if intl.title is defined and intl.title %}
+                                        <small class="info-text italic ms-1">{{ intl.title|truncate(35, false) }}</small>
+                                    {% endif %}
+                                {% elseif interface.name in displayAdminName %}
+                                    <small class="info-text italic ms-2">{{ block.adminName|truncate(35, false) }}</small>
+                                {% elseif 'layout-catalog-features' == blockTypeCode %}
+                                    {% set featureId = block.data.featureId is defined ? block.data.featureId : false %}
+                                    {% if featureId %}
+                                        <small class="info-text italic ms-2">{{ featureId|blockFeatureName }}</small>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if intl.introduction is defined and intl.introduction or intl.body is defined and intl.body %}
+                                    {% set description = intl.body|striptags|length > 0 ? intl.body : intl.introduction %}
+                                    <small class="info-text italic ms-2">{{ description|truncate(35, false) }}</small>
+                                {% elseif intl.targetLabel is defined and intl.targetLabel %}
+                                    <small class="info-text italic ms-2">{{ intl.targetLabel|truncate(35, false) }}</small>
+                                {% endif %}
+
+                                {% if haveMedia %}
+                                    <a href="{{ asset(mediaRelation|file({}, {path: true})) }}" class="glightbox d-inline-block text-center ms-2">
+                                        {{ mediaRelation|file({}, {width: 17, height: 17}) }}
+                                    </a>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="col-6 btn-block-group text-end my-auto">
+
+                            {% if 'edit'|moduleActive(configuration) %}
+                                <span data-path="{{ path('admin_block_configuration', {website: websiteId(), block: block.id}) }}"
+                                      class="item edit-layout-element-btn cursor">
+                                    <span data-bs-toggle="tooltip"
+                                          title="{{ "Configuration"|trans|striptags }}"
+                                          class="btn btn-action"><i class="icm-cog-reg"></i></span>
+                                </span>
+                            {% endif %}
+
+                            {% if 'edit'|moduleActive(configuration) %}
+                                <span class="item background-block-item background-item d-inline-block">
+                                    {% set color = 'background'|color(website, block.backgroundColor) %}
+                                    {% set hexa = color.color is defined and color.color ? color.color : block.hexadecimalCode %}
+                                    <span class="color-info-bulle"{% if hexa %} style="background-color: {{ hexa }}" {% endif %}></span>
+                                    <span class="btn btn-action edit-layout-element-btn btn-palette cursor"
+                                          data-path="{{ path('admin_block_background', {website: website.id, block: block.id}) }}"
+                                          data-bs-toggle="tooltip"
+                                          title="{{ "Couleur de fond"|trans|striptags }}">
+                                        <i class="icm-palette"></i>
+                                    </span>
+                                </span>
+                            {% endif %}
+
+                            {% if (block.blockType and block.blockType.editable) or (block.blockType and block.blockType.category == 'form') %}
+                                {% if 'edit'|moduleActive(configuration) and (block.blockType.category != 'layout' and block.blockType.slug != 'core-action' or block.blockType.slug == 'core-action' and block.action.entity is defined and block.action.entity) %}
+                                    <span data-toggle="preloader">
+                                        <a href="{{ path('admin_block_edit', {website: websiteId(), col: col.id, interfaceName: interface.name, interfaceEntity: entity.id, block: block.id}) }}"
+                                           data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}"
+                                           class="btn btn-action">
+                                            <i class="icm-pencil-alt"></i>
+                                        </a>
+                                    </span>
+                                {% endif %}
+                            {% endif %}
+
+                            {% if 'delete'|moduleActive(configuration) %}
+                                <span href="{{ path('admin_block_delete', {website: websiteId(), col: col.id, block: block.id}) }}"
+                                      data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
+                                      data-target="#block-{{ block.id }}"
+                                      data-type="stay"
+                                      class="btn btn-action swal-delete-link cursor">
+                                    <i class="icm-trash"></i>
+                                </span>
+                            {% endif %}
+
+                            {% if block.hide %}
+                                <span class="item btn btn-action"
+                                      data-bs-toggle="tooltip"
+                                      data-placement="right" title="{{ "Bloc désactivée"|trans|striptags }}">
+                                    <i class="icm-ban text-danger"></i>
+                                </span>
+                            {% endif %}
+
+                            {% if 'edit'|moduleActive(configuration) %}
+                                <span class="item handle-block grabbable btn btn-action"
+                                      data-bs-toggle="tooltip" title="{{ "Déplacer"|trans|striptags }}">
+                                    <i class="icm-arrows-alt"></i>
+                                </span>
+                            {% endif %}
+
+                        </div>
+                        <span class="btn-resize btn-resize-block btn-white btn-xs btn-circle"><i class="icm-arrow-from-right"></i></span>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

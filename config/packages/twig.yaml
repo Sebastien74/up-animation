@@ -1,0 +1,35 @@
+services:
+    Symfony\WebpackEncoreBundle\Twig\EntryFilesTwigExtension:
+        alias: 'webpack_encore.twig_entry_files_extension'
+
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes:
+        - 'core/form/admin_fields.html.twig'
+        - 'core/form/security_fields.html.twig'
+        - 'core/form/bootstrap_5_layout.html.twig'
+        - 'core/form/front_calendar_slot_date.html.twig'
+        - 'core/form/front_sub_categories_catalog_filter.html.twig'
+        - 'core/form/product_values_field.html.twig'
+        - 'core/form/videos_field.html.twig'
+        - 'core/form/datalist_field.html.twig'
+        - '@SpiriitFormFilter/Form/form_div_layout.html.twig'
+    globals:
+        admin_app_secret: '%env(APP_SECRET)%'
+    paths:
+        # point this wherever your images live
+        '%kernel.project_dir%/public': images
+
+when@dev:
+    twig:
+        cache: false
+
+when@local:
+    twig:
+        cache: false
+
+when@test:
+    twig:
+        strict_variables: true

@@ -1,0 +1,90 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-09-25, 10:12 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    CORE CARD :
+    ===========================
+
+    1 ) WebsiteModel
+    2 ) Edition
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) WebsiteModel
+-----------------------------------*/
+
+.default-media-card {
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    h4 {
+        font-weight: bold;
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+}
+
+.section-title {
+    padding: .75rem 1.25rem;
+    background: $gray-400;
+}
+
+/*-----------------------------------
+   2 ) Edition
+-----------------------------------*/
+
+.card-footer {
+    background-color: $info-darken;
+    border-top: 0 solid transparent;
+    padding: .75rem 1.25rem;
+}
+
+.card {
+
+    .card-header:first-child {
+        border-top-left-radius: var(--bs-border-radius);
+        border-top-right-radius: var(--bs-border-radius);
+    }
+
+    .card-header.save-top {
+        border-top-right-radius: $card-border-radius;
+        border-top-left-radius: $card-border-radius;
+    }
+
+    .card-footer.save-bottom {
+        border-bottom-right-radius: $card-border-radius;
+        border-bottom-left-radius: $card-border-radius;
+    }
+
+    .card-header svg.info-darken {
+        fill: #ecd9e9 !important;
+        float: left;
+        margin-top: 2px;
+    }
+
+    .card-footer:last-child {
+        border-bottom-left-radius: var(--bs-border-radius);
+        border-bottom-right-radius: var(--bs-border-radius);
+    }
+}
+
+.card-footer .btn-outline-dark,
+.card-header .btn-outline-dark {
+
+    border-color: $white;
+    color: $white !important;
+
+    svg, svg * {
+        fill: $white;
+    }
+
+    &:hover {
+        background-color: $gray-800;
+    }
+}

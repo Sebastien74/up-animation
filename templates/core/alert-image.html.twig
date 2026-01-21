@@ -1,0 +1,16 @@
+<div class="large-file-info mx-3">
+    <small class="text-italic d-inline-block text-center text-dark">
+        <span class="text-danger text-bold d-inline-block w-100 mb-2">{{ "Image trop volumieuse :"|trans|raw }}</span>
+        <div class="w-100 fw-300 text-dark">{{"Nom de l'image :"|trans|raw~' '~largeFilename }}</div>
+        {% if largeFileSize %}
+            <div class="w-100 fw-300 text-dark">{{'Poid :'|trans|raw~' '~largeFileSize|formatBytes~' > '~maxSizeLimit|formatBytes(0) }}</div>
+        {% endif %}
+        {% if largeFileWidth %}
+            <div class="w-100 fw-300 text-dark">{{'Largeur :'|trans|raw~' '~largeFileWidth~'px > '~maxWidthLimit~'px' }}</div>
+        {% endif %}
+        {% if largeFileHeight %}
+            <div class="w-100 fw-300 text-dark">{{'Hauteur :'|trans|raw~' '~largeFileHeight~'px > '~maxHeightLimit~'px' }}</div>
+        {% endif %}
+        <div class="w-100 fw-300 mt-2 text-dark">{{ "Cela peut causer un fort ralentissement sur votre site et rendre impossible le crop de cette image"|trans|raw }}</div>
+    </small>
+</div>

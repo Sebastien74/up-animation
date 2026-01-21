@@ -1,0 +1,58 @@
+{% trans_default_domain 'front_default' %}
+
+{% set mediaKey = -1 %}
+{% set videoKey = -1 %}
+{% set layout = layout is defined and layout ? layout : (entity.layout is defined and entity.layout ? entity.layout : null) %}
+{% set layoutRelations = layout|layoutRelations %}
+{% set seoUrl = seo.url is defined ? seo.url : null %}
+{% set isIndex = interface is defined and interface.name == 'page' and entity.asIndex %}
+{% set transitions = transitions is defined ? transitions|json_encode : null %}
+{% set zones = layout.zones is defined ? layout.zones : [] %}
+{% set mainBlockCategories = ['content', 'core', 'global'] %}
+{% set interfaceName = interfaceName is defined ? interfaceName : (interface.name is defined ? interface.name : null) %}
+
+{% for zone in zones %}
+    {% if asLayout is defined and asLayout %}
+        {% for col in zone.cols %}
+            {% for block in col.blocks %}
+                {% set blockType = block.blockType is defined and block.blockType ? block.blockType : null %}
+                {% set blockCategory = blockType.category is defined and blockType.category ? blockType.category : null %}
+                {% set blockSlug = blockType.slug is defined and blockType.slug ? blockType.slug : null %}
+                {% if blockCategory not in mainBlockCategories and blockSlug == 'layout-image' %}
+                    {% set mediaKey = mediaKey + 1 %}
+                {% endif %}
+                {% if blockCategory not in mainBlockCategories and blockSlug == 'layout-video' %}
+                    {% set videoKey = videoKey + 1 %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    {% if interfaceName == 'page' %}
+        {% include 'front/'~websiteTemplate~'/include/zone.html.twig' with {
+            website: website,
+            configuration: configuration,
+            websiteTemplate: websiteTemplate is defined ? websiteTemplate : null,
+            modules: modules is defined ? modules : null,
+            templateName: templateName is defined ? templateName : null,
+            thumbConfiguration: thumbConfiguration is defined ? thumbConfiguration : {},
+            url: url is defined ? url : null,
+            interface: interface is defined ? interface : null,
+            interfaceName: interfaceName is defined ? interfaceName : null,
+            entity: entity is defined ? entity : null,
+            screen: screen is defined and screen ? screen : screen(),
+            seo: seo is defined ? seo : null,
+            seoUrl: seoUrl,
+            isIndex: isIndex,
+            transitions: transitions,
+            layout: layout,
+            zone: zone,
+            zones: zones,
+            layoutRelations: layoutRelations,
+            mediaKey: mediaKey,
+            videoKey: videoKey,
+            mainBlockCategories: mainBlockCategories,
+        } only %}
+    {% else %}
+        {% include 'front/'~websiteTemplate~'/include/zone.html.twig' %}
+    {% endif %}
+{% endfor %}

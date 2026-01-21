@@ -1,0 +1,39 @@
+{% trans_default_domain 'admin' %}
+
+<div class="modal-wrapper">
+    <div class="modal fade modal-background-layout layout-modal"
+         id="modal-background" tabindex="-1" role="dialog"
+         aria-labelledby="modal-background-{{ interface['name']~'-'~entity.id }}-label" aria-hidden="true">
+        {{ form_start(form, {attr: {
+            id: "background-form",
+            action: path("admin_"~interface.name~"_background", {website: websiteId(), (interface['name']): entity.id}),
+            class: 'edit-element-form h-100'
+        }}) }}
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content border">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center w-100" id="modal-background-{{ interface['name']~'-'~entity.id }}-label">{{ 'far palette'|icon(null, 50, 'dark') }}</h5>
+                        <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                            {{ 'fal times'|icon(20, 20, 'dark') }}
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_widget(form.backgroundColor) }}
+                        {% if form.hexadecimalCode is defined %}
+                            {{ form_row(form.hexadecimalCode) }}
+                        {% endif %}
+                        {% if form.backgroundFullSize is defined %}
+                            {{ form_row(form.backgroundFullSize) }}
+                        {% endif %}
+                        {% if form.backgroundFullHeight is defined %}
+                            {{ form_row(form.backgroundFullHeight) }}
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        {{ form_widget(form.save) }}
+                    </div>
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>

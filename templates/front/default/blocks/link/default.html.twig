@@ -1,0 +1,87 @@
+{% trans_default_domain 'front_default' %}
+
+{% import _self as macro %}
+
+{% set link = link is defined ? link : (intl.link is defined ? intl.link : null) %}
+{% set uriInfos = intl.link is defined ? intl.link|uriInfos : null %}
+{% set samePage = uriInfos and uriInfos.samePage %}
+{% set ctaBg = ctaBg is defined and ctaBg ? ctaBg : (block.backgroundColorType is defined ? block.backgroundColorType : 'bg-primary') %}
+{% set iconCustom = icon is defined ? icon : (icon is defined ? icon : null) %}
+{% set iconCustomSize = iconSize is defined and iconSize ? iconSize : 'md' %}
+{% set iconCustomColor = iconColor is defined and iconColor ? iconColor : (block.color is defined ? block.color : false) %}
+{% set iconCustomWidth = iconCustomWidth is defined and iconCustomWidth ? iconCustomWidth : 17 %}
+{% set iconCustomHeight = iconCustomHeight is defined and iconCustomHeight ? iconCustomHeight : 17 %}
+{% set iconCustomPosition = iconCustomPosition is defined and iconCustomPosition ? iconCustomPosition : 'start' %}
+{% set trackClass = entity.id is defined ? ' link-track-'~entity.id : '' %}
+{% set style = style is defined ? style : false %}
+{% set linkStyle = linkStyle is defined ? linkStyle : (intl.linkStyle is defined ? intl.linkStyle : 'link') %}
+{% set linkBlank = linkBlank is defined ? linkBlank : (intl.linkBlank is defined ? intl.linkBlank : false) %}
+{% set linkExternal = linkExternal is defined ? linkExternal : (intl.linkExternal is defined ? intl.linkExternal : false) %}
+{% set linkLabel = linkLabel is defined and linkLabel ? linkLabel : (intl.linkLabel is defined and intl.linkLabel ? intl.linkLabel : 'En savoir +'|trans) %}
+{% set linkContent = linkContent is defined ? linkContent : (intl.linkContent is defined ? intl.linkContent : false) %}
+{% set linkIsEmail = linkIsEmail is defined ? linkIsEmail : (intl.linkIsEmail is defined ? intl.linkIsEmail : false) %}
+{% set linkIsPhone = linkIsPhone is defined ? linkIsPhone : (intl.linkIsPhone is defined ? intl.linkIsPhone : false) %}
+{% set linkAsButton = linkAsButton is defined ? linkAsButton : 'btn' in linkStyle %}
+
+{% macro icon(iconCustom, iconCustomSize, iconCustomColor, iconCustomWidth, iconCustomHeight, iconCustomPosition) %}
+    {% set class = iconCustomPosition == 'start' ? 'me-3' : '' %}
+    {% if 'icon-' in iconCustom %}
+        <i class="{{ iconCustom }} {{ class }}"></i>
+    {% elseif iconCustom and 'medias' in iconCustom %}
+        {{ iconCustom|icon(null, null, class~" icon-"~iconCustomSize~" "~iconCustomColor) }}
+    {% elseif iconCustom %}
+        {{ iconCustom|icon(iconCustomWidth, iconCustomHeight, class) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage) %}
+    {% set iconClass = linkAsButton ? 'chevron-right ms-2 as-btn' : 'chevron-right' %}
+    <a {% if samePage %}data-href{% else %}href{% endif %}="{{ link }}"
+       class="{{ linkStyle }} d-inline-flex align-items-center{% if samePage %} scroll-link{% endif %}{{ trackClass }}"
+        {% if linkBlank %} target="_blank"{% endif %}
+        {% if samePage %} data-target="#{{ uriInfos.anchor }}"{% endif %}
+        {% if linkExternal %} rel="noopener noreferrer"{% endif %}>
+        <span class="initial">{{ linkLabel|unescape|raw }}</span>{% if linkAsButton %} <i class="icon-{{ iconClass }}"></i>{% endif %}
+    </a>
+{% endmacro %}
+
+{% if link %}
+    <div class="link-block {% if style %} {{ style }}{% endif %}">
+        {% if linkIsEmail is defined and linkIsEmail %}
+            <div class="{{ style }}">
+                {{ link|email(website, {only_href: true}) }}
+            </div>
+        {% elseif linkIsPhone is defined and linkIsPhone %}
+            <div class="{{ style }}">
+                {{ link|phone(website, {only_href: true}) }}
+            </div>
+        {% elseif 'cta' in linkStyle and linkContent %}
+            {% set background = linkStyle|replace({'cta-': ''}) is not empty ? 'bg-'~linkStyle|replace({'cta-': ''}) : 'bg-primary' %}
+            {% set linkStyle = block.backgroundColorType is defined and block.backgroundColorType ? 'btn '~block.backgroundColorType : 'btn btn-outline-white' %}
+            {% set linkAsButton = 'btn' in linkStyle %}
+            <div class="cta-content-wrap py-3 px-3 d-inline-flex flex-wrap align-items-center justify-content-center{% if background %} {{ background }}{% endif %}">
+                <strong class="content-link d-inline-flex align-items-center justify-content-center text-center fw-600 body mx-4 my-2">
+                    {{ macro.icon(iconCustom, iconCustomSize, iconCustomColor, iconCustomWidth, iconCustomHeight, iconCustomPosition) }}
+                    {{ linkContent|raw }}
+                </strong>
+                <div class="my-2 mx-4 flex-grow-1 justify-content-center d-inline-flex align-items-center link-wrap">
+                    {{ macro.link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage) }}
+                </div>
+            </div>
+        {% elseif 'cta' in linkStyle %}
+            {% set background = linkStyle|replace({'cta-': ''}) is not empty ? 'bg-'~linkStyle|replace({'cta-': ''}) : null %}
+            <a {% if samePage %}data-href{% else %}href{% endif %}="{{ link }}"
+               class="{{ linkStyle }}{% if samePage %} scroll-link{% endif %}{% if not linkContent and background %} {{ background }}{% endif %} d-inline-block{{ trackClass }}"
+                {% if linkBlank %} target="_blank"{% endif %}
+                {% if samePage %} data-target="#{{ uriInfos.anchor }}"{% endif %}
+                {% if linkExternal %} rel="noopener noreferrer"{% endif %}>
+                {{ linkLabel|unescape|raw }} <i class="icon-chevron-right"></i>
+            </a>
+        {% else %}
+            {{ macro.link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage) }}
+        {% endif %}
+        {% if script is defined and script %}
+            {{ script|raw }}
+        {% endif %}
+    </div>
+{% endif %}

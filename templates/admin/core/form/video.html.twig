@@ -1,0 +1,84 @@
+{% trans_default_domain 'admin' %}
+
+{% import _self as macro %}
+
+{% set configuration = website().configuration %}
+{% set defaultLocale = configuration.locale %}
+{% set allLocales = configuration.allLocales %}
+
+{% macro card(entity, class, field, entityTypeId, screen) %}
+    {% set formatsVideo = ['poster', 'mp4', 'm4v', 'vtt', 'webm'] %}
+    {% set forVideo = screen in formatsVideo %}
+    <div class="col-md-3 screen-card{% if not forVideo %} d-none{% endif %}">
+        {% set parameters = {
+            type: 'single',
+            (entityTypeId): entity.id,
+            classname: class|url_encode,
+            entityId: entity.id,
+            btnId: "#open-modal-"~entity.id,
+        }|json_encode %}
+        <span class="open-modal-medias-wrap btn btn-outline-info-darken w-100 mb-3 single">
+            <span id="open-modal-{{ entity.id }}"
+                  class="open-modal-medias d-inline-block"
+                  data-options="{{ parameters }}">
+                {{ 'fal photo-video'|icon(null, 14, 'me-2') }}{{ "Choisir dans la bibliothèque"|trans }}
+            </span>
+            <a href="https://tinypng.com/"
+               target="_blank" class="optimize-media-btn btn btn-dark"
+               data-bs-toggle="tooltip"
+               title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
+                {{ 'fal file-archive'|icon(null, 16) }}
+            </a>
+        </span>
+        {{ form_row(field) }}
+        <h4 class="text-center text-uppercase screen-title mb-3">{{ screen }}{% if 'vtt' == screen %} {{ '(Sous-titres)'|trans|raw }}{% endif %}</h4>
+    </div>
+{% endmacro %}
+
+<div class="ajax-content">
+    {{ form_start(form, {attr: {
+        novalidate: "novalidate",
+        action: path('admin_mediarelation_edit', {website: websiteId(), mediarelation: entity.id, entityNamespace: entityNamespace, referEntityId: referEntityId, screen: screen}),
+        id: 'form-'~entity.id }}) }}
+        <h4 class="card-subtitle mb-4">{{ 'fal video'|icon(null, 14, 'info-darken me-2') }}{{ "Vidéo"|trans }}</h4>
+        <div class="row">
+            {{ macro.card(entity, 'App\\Entity\\Media\\MediaRelation', form.media.uploadedFile, 'mediaRelationId', entity.media.screen) }}
+            {% for mediaScreen in form.media.mediaScreens %}
+                {{ macro.card(mediaScreen.vars.data, 'App\\Entity\\Media\\Media', mediaScreen.uploadedFile, 'mediaId', mediaScreen.vars.data.screen) }}
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <h4 class="card-subtitle mb-4">{{ 'fal align-center'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Descriptions"|trans }}{% else %}{{ "Description"|trans }}{% endif %}</h4>
+                <div class="row">
+                    {% set fieldNames = ['titleForce', 'title', 'subTitle', 'pictogram', 'introduction', 'body'] %}
+                    {% for fieldName in fieldNames %}
+                        {% if form.intl[fieldName] is defined %}
+                            {{ form_row(form.intl[fieldName]) }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-5">
+                <h4 class="card-subtitle mb-4">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
+                <div class="row">
+                    {% set fieldNames = ['video', 'targetLink', 'targetPage', 'targetLabel', 'targetStyle'] %}
+                    {% for fieldName in fieldNames %}
+                        {% if form.intl[fieldName] is defined %}
+                            {{ form_row(form.intl[fieldName]) }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    {% set fieldNames = ['newTab', 'externalLink'] %}
+                    {% for fieldName in fieldNames %}
+                        {% if form.intl[fieldName] is defined %}
+                            {{ form_row(form.intl[fieldName]) }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {{ form_row(form.save) }}
+            </div>
+        </div>
+    {{ form_end(form) }}
+</div>

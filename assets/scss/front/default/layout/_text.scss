@@ -1,0 +1,133 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2019-11-12, 2:32 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT TEXT LAYOUT :
+    ===================
+
+    1 ) List
+    2 ) Alignment
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Core
+-----------------------------------*/
+
+.break-words {
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.body p:last-child {
+    margin-bottom: 0;
+}
+
+.text-underline {
+    text-decoration: underline !important;
+}
+
+.text-italic, .italic {
+    font-style: italic !important;
+}
+
+.text-normal {
+    font-style: normal !important;
+}
+
+.text-initial {
+    text-transform: initial !important;
+}
+
+.text-small {
+    font-size: rem(12px);
+}
+
+.text-bold, .bold, b, strong {
+    font-weight: 700;
+}
+
+/*-----------------------------------
+   2 ) Alignment
+-----------------------------------*/
+
+.layout-zone {
+
+    &.text-center {
+
+        * {
+            text-align: center;
+        }
+    }
+
+    .text-vertical {
+
+        position: absolute;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        z-index: 999;
+        top: 0;
+        bottom: 0;
+
+        .rotate {
+            position: absolute;
+            transform: rotate(180deg);
+        }
+
+        &.right {
+            right: 0;
+        }
+
+        &.left {
+            left: 80px;
+        }
+
+        &.top .rotate {
+            top: 60px;
+        }
+
+        &.center .rotate {
+            top: 50%;
+            transform: rotate(180deg) translateY(50%);
+        }
+
+        &.bottom .rotate {
+            bottom: 60px;
+        }
+    }
+}
+
+.layout-col {
+
+    &.text-center {
+
+        * {
+            text-align: center !important;
+        }
+
+        > .row {
+            justify-content: center !important;
+        }
+
+        .layout-block {
+            display: inline-block;
+        }
+    }
+
+    &.text-right * {
+        text-align: right !important;
+    }
+
+    &.text-left * {
+        text-align: left !important;
+    }
+}

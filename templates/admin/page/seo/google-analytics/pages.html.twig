@@ -1,0 +1,25 @@
+{% extends 'admin/page/seo/google-analytics/base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block page %}
+
+    <div class="card">
+        <div class="card-title card-header">
+            {{"Nombre de pages vues par jour"|trans}} <small class="text-muted-grey text-italic">{{"(30 derniers jours)"|trans}}</small>
+        </div>
+        <div class="card-body">
+            <div id="pages-chart"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title card-header">
+            {{"Nombre de pages vues par jour"|trans}} <small class="text-muted-grey text-italic">{{"(30 derniers jours)"|trans}}</small>
+        </div>
+        <div class="card-body">
+            <div id="pages-tab-chart"></div>
+        </div>
+    </div>
+
+{% endblock %}

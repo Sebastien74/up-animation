@@ -1,0 +1,10 @@
+add: 'Add news'
+adminName: 'News name'
+category: Category
+delete: 'Delete news'
+intl.body: Description
+intl.introduction: Introduction
+intl.title: Title
+plural: News
+promote: Promote
+singular: News

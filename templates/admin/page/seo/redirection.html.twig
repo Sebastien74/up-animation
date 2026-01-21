@@ -1,0 +1,120 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% block title %}{{ "Redirections"|trans|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ "Redirections"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ render_esi(path('admin_redirection_import', {website: websiteId()} )) }}
+
+    {{ form_start(form, {attr: {novalidate: "novalidate", id: 'seo-form-redirection'}}) }}
+
+        <div class="card">
+
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="{{ asset('build/admin/docs/redirections.xlsx') }}" class="btn btn-outline-info-lighten me-1 standard" download="redirection.xlsx">
+                            {{ 'fal upload'|icon(null, 14, 'me-2 info-lighten') }}{{ "Télécharger le modèle XLS"|trans }}
+                        </a>
+                        <span class="btn btn-outline-info-lighten standard me-1 cursor" data-bs-toggle="modal" data-bs-target="#import-modal">
+                            {{ 'fal download'|icon(null, 14, 'me-2') }}{{ "Importer"|trans }}
+                        </span>
+                        {{ render_esi(path('admin_redirection_export', {website: website.id} )) }}
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <button type="submit" class="btn-info btn standard me-1">{{ 'fal save'|icon(14, 14, 'me-2', {icon: true}) }}{{ "Enregistrer"|trans }}</button>
+                        <button role="button" class="add-collection btn btn-success standard"
+                                data-type="table"
+                                data-collection-target="prepend"
+                                data-target="#redirections-collection">
+                            {{ 'fal plus'|icon(11, 15, 'white me-2') }}{{ "Ajouter une redirection"|trans }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {% import _self as macro %}
+
+            {% set configuration = website().configuration %}
+            {% set defaultLocale = configuration.locale %}
+            {% set allLocales = configuration.allLocales %}
+
+            {% macro redirection_prototype(redirection) %}
+
+                {% set allLocales = website().configuration.allLocales %}
+                {% set isNew = redirection.vars.data.id is defined and redirection.vars.data.id ? false : true %}
+                {% set entityId = redirection.vars.data.id is defined and redirection.vars.data.id ? redirection.vars.data.id : redirection.vars.id %}
+                {% set locale = redirection.vars.data.locale is defined and redirection.vars.data.locale ? redirection.vars.data.locale : null %}
+
+                <tr id="refer-col-domain-{{ entityId }}" class="prototype">
+                    <td class="col-locale{% if allLocales|length <= 1 %} d-none{% endif %}">
+                        <span class="d-none">{{ locale }}</span>
+                        {{ form_widget(redirection.locale) }}
+                    </td>
+                    <td class="align-middle">
+                        {{ form_widget(redirection.old) }}
+                        {{ form_errors(redirection.old) }}
+                    </td>
+                    <td class="align-middle">
+                        {{ form_widget(redirection.new) }}
+                        {{ form_errors(redirection.new) }}
+                    </td>
+                    <td class="align-middle text-end actions">
+                        {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                            isNew: redirection.vars.data.id is defined and redirection.vars.data.id ? false : true,
+                            entityId: isNew ? uniqId() : redirection.vars.data.id,
+                            interfaceName: 'redirection'
+                        } %}
+                        <div class="custom-control custom-checkbox delete-input-index-wrap d-none">
+                            <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ entityId }}"
+                                   data-path="{{ path('admin_redirection_delete', {website: websiteId(), redirection: entityId}) }}">
+                            <label class="custom-control-label" for="delete-input-{{ entityId }}"></label>
+                        </div>
+                    </td>
+                </tr>
+
+            {% endmacro %}
+
+            <table class="table editable-table table-bordered table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th class="col-locale{% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans }}</th>
+                        <th>{{ "URL"|trans }} <small class="text-info ms-1">({{ "Ancienne URI / URL"|trans }})</small></th>
+                        <th class="text-start">{{ "Nouvelle URL"|trans }} <small class="text-info ms-1">({{ "Avec protocol"|trans }})</small></th>
+                        <th class="text-end">
+                            <div class="delete-index-all-wrap custom-control custom-checkbox float-end ms-3 d-none" data-toggle="tooltip"
+                                 title="{{ "Tout cocher"|trans|striptags }}"
+                                 data-checked="{{ "Tout cocher"|trans|striptags }}"
+                                 data-unchecked="{{ "Tout décocher"|trans|striptags }}">
+                                <input type="checkbox" class="custom-control-input delete-index-all" id="delete-index-all">
+                                <label class="custom-control-label" for="delete-index-all"></label>
+                            </div>
+                            {{ "Actions"|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="redirections-collection" data-index="{{ form.redirections|length }}" class="collection" data-prototype="{{ macro.redirection_prototype(form.redirections.vars.prototype)|e('html_attr') }}">
+                    {% for redirection in form.redirections %}
+                        {{ macro.redirection_prototype(redirection) }}
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+    {{ form_end(form) }}
+
+    {{ render_esi(path('admin_redirection_index', {website: website.id})) }}
+
+{% endblock %}

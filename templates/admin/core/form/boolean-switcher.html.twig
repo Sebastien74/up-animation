@@ -1,0 +1,15 @@
+{% set classname = interface.classname is defined and interface.classname ? interface.classname : null %}
+{% set property = property is defined and property ? property : null %}
+
+{% if classname %}
+    <form id="form-switcher-status-{{ entity.id }}" method="POST" action="{{ path('admin_switch_boolean', {website: website.id, classname: classname|url_encode, entityId: entity.id, property: property}) }}">
+        <div class="form-check form-check-inline form-switch mb-0 me-0">
+            <input type="checkbox"
+                   id="switcher-status-{{ property }}-{{ entity.id }}"
+                   name="status"
+                   class="form-check-input cursor entity-switcher-status"
+                   value="{{ fieldValue }}" {% if fieldValue %} checked="checked"{% endif %}>
+            <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="switcher-status-{{ property }}-{{ entity.id }}"></label>
+        </div>
+    </form>
+{% endif %}

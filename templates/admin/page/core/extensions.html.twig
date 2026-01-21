@@ -1,0 +1,102 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageIcon = 'fal list' %}
+{% set pageTitle = "Nos extensions"|trans %}
+
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-extensions', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <div id="extensions-cards" class="row">
+
+        {% for extension in extensions %}
+
+            {% set entity = extension.entity %}
+
+            {% if granted('ROLE_INTERNAL') and entity.inAdvert or not extension.active and entity.inAdvert %}
+
+                {% set intl = entity|intl(app.request.locale, true) %}
+                {% set icon = entity.iconClass ? entity.iconClass : 'fal plus-square' %}
+                {% set title = intl.title is defined and intl.title|striptags|length > 0 ? intl.title : entity.adminName %}
+                {% set subTitle = intl.subTitle is defined and intl.subTitle|striptags|length > 0 ? intl.subTitle : null %}
+                {% set introduction = intl.introduction is defined and intl.introduction|striptags|length > 0 ? intl.introduction : null %}
+                {% set body = intl.body is defined and intl.body|striptags|length > 0 ? intl.body : null %}
+
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body{% if extension.active %} active{% endif %}">
+                            {% if 'medias' in icon %}
+                                <img data-src="{{ asset(icon) }}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="icon img-fluid lazy-load" height="40" alt="{{ title|striptags }}">
+                            {% else %}
+                                {{ icon|icon(null, 40) }}
+                            {% endif %}
+                            <span class="show-more position-absolute btn btn-dark text-center p-0 cursor"
+                                  data-bs-toggle="tooltip"
+                                  title="{{ "En savoir plus"|trans|striptags }}">
+                                <span data-bs-toggle="modal"
+                                      data-bs-target="#modal-extension-{{ loop.index }}"
+                                      class="d-inline-block w-100 h-100"
+                                      role="button"
+                                      aria-expanded="false"
+                                      aria-controls="collapse-extension-{{ loop.index }}">
+                                    {{ 'fal plus'|icon(10, 10) }}
+                                </span>
+                            </span>
+                            <h5 class="title text-uppercase mt-3">{{ title|raw }}</h5>
+                        </div>
+                        {% if granted('ROLE_INTERNAL') and entity.id %}
+                            <a href="{{ path('admin_module_edit', {website: website.id, module: entity.id}) }}"
+                               class="btn btn-info btn-circle btn-edit position-absolute" data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
+                                {{ 'fal pencil'|icon(10, 10) }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modal-extension-{{ loop.index }}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                        <div class="modal-content border refer-preloader text-start pb-5 pt-3">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-center w-100">
+                                    <img data-src="{{ asset(icon) }}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="icon img-fluid lazy-load" height="40" alt="{{ title|striptags }}">
+                                </h5>
+                                <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                                    {{ 'fal times'|icon(20, 20, 'dark') }}
+                                </button>
+                            </div>
+                            <div class="modal-body pe-4 ps-4 text-center">
+                                <div class="container my-auto">
+                                    <h2 class="main-title text-dark text-center fw-bold mb-5">{{ title|raw }}</h2>
+                                    {% if subTitle %}
+                                        <h6 class="subtitle mt-3">{{ subTitle|raw }}</h6>
+                                    {% endif %}
+                                    {% if introduction %}
+                                        <p class="introduction bold mt-3">{{ introduction|raw }}</p>
+                                    {% endif %}
+                                    {% if body %}
+                                        <div class="body mt-3">{{ body|raw }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
+    </div>
+
+{% endblock %}

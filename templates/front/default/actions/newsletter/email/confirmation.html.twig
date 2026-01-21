@@ -1,0 +1,20 @@
+{% extends 'core/email/base.html.twig' %}
+
+{% trans_default_domain 'email' %}
+
+{% block body %}
+    <tr>
+        <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+            {% if message %}
+                {{ message|replace({'%confirmationLink%': absolute_url(confirmationLink)})|raw }}
+            {% else %}
+                <p>Bonjour,</p>
+                <p>Vous avez demand&eacute; &agrave; recevoir notre newsletter.<br>Pour finaliser votre inscription et commencer &agrave; recevoir nos actualit&eacute;s, veuillez confirmer votre adresse e-mail en cliquant sur le lien ci-dessous :</p>
+                <p><strong><a href="{{ confirmationLink }}">Confirmer mon inscription</a></strong></p>
+                <p>Ce lien est valable pendant 24 heures. Pass&eacute; ce d&eacute;lai, vous devrez effectuer une nouvelle demande d'inscription.</p>
+                <p>Si vous n&rsquo;&ecirc;tes pas &agrave; l&rsquo;origine de cette demande, vous pouvez ignorer cet e-mail. Aucune action ne sera entreprise sans votre confirmation.</p>
+                <p>Merci et &agrave; bient&ocirc;t,<br>L&rsquo;&eacute;quipe de [Nom de votre site].</p>
+            {% endif %}
+        </td>
+    </tr>
+{% endblock %}

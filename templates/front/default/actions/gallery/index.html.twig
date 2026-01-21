@@ -1,0 +1,73 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set categories = allEntities|indexGalleryCategories %}
+{% set images = allEntities|indexGalleryMedias %}
+{% set popup = listing.popup is defined ? listing.popup : true %}
+{% set imgClass = popup ? 'img-gallery-'~listing.id : null %}
+
+<div id="listing-gallery-container-{{ listing.slug }}" class="listing-gallery-container masonry-wrap">
+
+    {{ macroWebmaster.box({
+        title: "Éditer l'index"|trans([], 'front_webmaster'),
+        role: 'ROLE_GALLERY',
+        path: path('admin_gallerylisting_edit', {website: listing.website.id, gallerylisting: listing.id})
+    }) }}
+
+    {% if categories|length > 1 %}
+        <div class="masonry-filters d-md-flex justify-content-center">
+            {% for category in categories %}
+                {% set categoryIntl = category|intl %}
+                {% set categoryTitle = categoryIntl.title is defined and categoryIntl.title ? categoryIntl.title : (category.adminName is defined and category.adminName ? category.adminName : null) %}
+                {% if categoryTitle  %}
+                    <strong class="filter col text-center justify-content-center p-3 d-flex align-items-center text-white fw-300 cursor bg-secondary"
+                            data-filter="{{ category.slug|striptags }}">
+                        {{ categoryTitle|striptags|raw }}
+                    </strong>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="listing-gallery-medias row masonry-container position-relative mt-4 mt-md-5{% if not isMobile() %} masonry{% endif %}">
+        {% for image in images %}
+            {% set media = image.mediaRelation %}
+            {% set category = image.category %}
+            {% if media.locale == app.request.locale %}
+                <div class="grid-item col-sm-6 col-md-4 pb-4"
+                     data-category="{{ category.slug }}">
+                    <div class="media-wrap">
+                        {{ media|file({}, {popupGallery: popup, activeLazy: true, class: imgClass}) }}
+                    </div>
+    {#                {% set intlMedia = media.intl %}#}
+    {#                {% if intlMedia %}#}
+    {#                    {% set mediaTitle = intlMedia.title %}#}
+    {#                    {% set mediaTitleForce = intlMedia.titleForce ? intlMedia.titleForce : null %}#}
+    {#                    {% set mediaIntro = intlMedia.introduction %}#}
+    {#                    {% set mediaBody = intlMedia.body %}#}
+    {#                    {% if mediaTitle|striptags|length > 0 or mediaIntro|striptags|length > 0 or mediaBody|striptags|length > 0 %}#}
+    {#                        <div class="card-body p-0">#}
+    {#                            {% if mediaTitleForce and mediaTitle|striptags|length > 0 %}#}
+    {#                                <h{{ mediaTitleForce }} class="title mt-2 mb-0 fw-200 ff-primary d-inline-block text-italic w-100 text-gray-darken">#}
+    {#                                    {{ mediaTitle|unescape|raw }}#}
+    {#                                </h{{ mediaTitleForce }}>#}
+    {#                            {% elseif mediaTitle|striptags|length > 0 %}#}
+    {#                                <strong class="title mt-2 mb-0 fw-200 ff-primary d-inline-block text-italic w-100 text-gray-darken">#}
+    {#                                    {{ mediaTitle|unescape|raw }}#}
+    {#                                </strong>#}
+    {#                            {% endif %}#}
+    {#                            {% if mediaIntro|striptags|length > 0 %}#}
+    {#                                <p class="card-text introduction text-bold">{{ mediaIntro|unescape|raw }}</p>#}
+    {#                            {% endif %}#}
+    {#                            {% if mediaIntro|striptags|length > 0 %}#}
+    {#                                <div class="card-text body">{{ mediaBody|unescape|raw }}</div>#}
+    {#                            {% endif %}#}
+    {#                        </div>#}
+    {#                    {% endif %}#}
+    {#                {% endif %}#}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

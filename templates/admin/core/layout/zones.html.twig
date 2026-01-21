@@ -1,0 +1,151 @@
+{% trans_default_domain 'admin' %}
+
+{% if layout %}
+
+    {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'layout-preloader', full: true} only %}
+
+    <ul id="zones-sortable" class="reset">
+        {% for zone in layout.zones %}
+            <li class="zone{% if zone.hide %} hide-zone{% endif %}" id="zone-{{ zone.id }}" data-id="{{ zone.id }}" data-position="{{ zone.position }}">
+                <div class="zone-sidebar">
+
+                    {% if 'edit'|moduleActive(configuration) %}
+                        <span class="item handle-zone grabbable btn btn-action"
+                              data-bs-toggle="tooltip"
+                              data-placement="right" title="{{ "Déplacer"|trans|striptags }}">
+                            <i class="icm-arrows-alt"></i>
+                        </span>
+                    {% endif %}
+
+                    {% if zone.hide %}
+                        <span class="item btn btn-action"
+                          data-bs-toggle="tooltip"
+                          data-placement="right" title="{{ "Zone désactivée"|trans|striptags }}">
+                            <i class="icm-ban text-danger"></i>
+                        </span>
+                    {% endif %}
+
+                    {% if 'edit'|moduleActive(configuration) and interface.resize is defined and interface.resize %}
+                        {% set sizeAction = zone.fullSize ? "Rétrécir"|trans : "Étendre"|trans %}
+                        {% set size = zone.fullSize ? 'true' : 'false' %}
+                        <span data-bs-toggle="tooltip" title="{{ sizeAction|striptags }}" data-placement="right" class="item">
+                            <a class="btn zone-resize cursor btn-action"
+                               data-zone="{{ zone.id }}"
+                               data-size="{{ size }}"
+                               data-compress="{{ "Étendre"|trans }}"
+                               data-expand="{{ "Rétrécir"|trans }}">
+                                <span class="icon-wrap{% if zone.fullSize %} d-none{% endif %}">
+                                    <i class="icm-expand-arrows-alt"></i>
+                                </span>
+                                <span class="icon-wrap{% if not zone.fullSize %} d-none{% endif %}">
+                                    <i class="icm-compress-arrows-alt"></i>
+                                </span>
+                            </a>
+                        </span>
+                    {% endif %}
+
+                    {% if 'edit'|moduleActive(configuration) %}
+                        {% set mediaRelation = zone.mediaRelations is defined ? zone.mediaRelations|intl(website().configuration.locale) : null %}
+                        <span class="item" data-toggle="preloader">
+                            <a href="{{ path('admin_zone_edit', {website: websiteId(), layout: layout.id, zone: zone.id, interfaceName: interface.name, interfaceEntity: entity.id}) }}"
+                               class="btn position-relative btn-action"
+                               data-bs-toggle="tooltip"
+                               data-placement="right"
+                               title="{{ "Image de fond"|trans|striptags }}">
+                                {% if mediaRelation and mediaRelation.media and mediaRelation.media.filename %}
+                                    <span style="background: url({{ asset(mediaRelation|file({}, {path: true})) }})" class="image-info-bulle"></span>
+                                {% endif %}
+                                <i class="icm-image"></i>
+                            </a>
+                        </span>
+                    {% endif %}
+
+                    {% if 'edit'|moduleActive(configuration) %}
+                        <span class="item background-item">
+                            {% set color = 'background'|color(website, zone.backgroundColor) %}
+                            {% set hexa = color.color is defined and color.color ? color.color : zone.hexadecimalCode %}
+                            <span class="color-info-bulle"{% if hexa %} style="background-color: {{ hexa }}" {% endif %}></span>
+                            <span class="btn edit-layout-element-btn btn-palette cursor btn-action"
+                               data-path="{{ path('admin_zone_background', {website: websiteId(), zone: zone.id}) }}"
+                               data-bs-toggle="tooltip"
+                               data-placement="right"
+                               title="{{ "Couleur de fond"|trans|striptags }}">
+                                <i class="icm-palette"></i>
+                            </span>
+                        </span>
+                    {% endif %}
+
+                    {% if 'edit'|moduleActive(configuration) and interface.resize is defined and interface.resize %}
+                        {% set isStandardize = zone.standardizeElements %}
+                        {% set standardizeAction = isStandardize ? "Largeur par défaut des colonnes"|trans : "Uniformiser la largeur des colonnes"|trans %}
+                        {% set standardize = isStandardize ? 'true' : 'false' %}
+                        <span data-bs-toggle="tooltip" title="{{ standardizeAction|striptags }}" data-placement="right" class="item">
+                            <a class="btn zone-cols-standardize cursor btn-action"
+                               data-zone="{{ zone.id }}"
+                               data-standardize="{{ standardize }}"
+                               data-cols-default="{{ "Largeur par défaut des colonnes"|trans }}"
+                               data-cols-standardize="{{ "Uniformiser la largeur des colonnes"|trans }}">
+                                <span class="icon-wrap{% if isStandardize %} d-none{% endif %}">
+                                    <i class="icm-indent"></i>
+                                </span>
+                                <span class="icon-wrap{% if not isStandardize %} d-none{% endif %}">
+                                    <i class="icm-outdent"></i>
+                                </span>
+                            </a>
+                        </span>
+                    {% endif %}
+
+                    {% if 'edit'|moduleActive(configuration) %}
+                        <span class="item">
+                            <span class="btn duplicate-btn cursor btn-action"
+                                  data-path="{{ path('admin_zone_duplicate', {website: websiteId(), zone: zone.id, refresh: true, template: 'layout'}) }}"
+                                  data-preloader="#layout-preloader"
+                                  data-bs-toggle="tooltip"
+                                  data-placement="right"
+                                  title="{{ "Dupliquer"|trans|striptags }}">
+                                <i class="icm-copy"></i>
+                            </span>
+                        </span>
+                    {% endif %}
+
+                    {% if 'edit'|moduleActive(configuration) %}
+                        <span data-bs-toggle="tooltip"
+                              data-placement="right"
+                              title="{{ "Configuration"|trans|striptags }}"
+                              data-path="{{ path('admin_zone_configuration', {website: websiteId(), zone: zone.id}) }}"
+                              class="item edit-layout-element-btn btn-action">
+                            <button class="btn"><i class="icm-cog-reg"></i></button>
+                        </span>
+                    {% endif %}
+
+                    {% if 'delete'|moduleActive(configuration) %}
+                        <span href="{{ path('admin_zone_delete', {website: websiteId(), layout: layout.id, zone: zone.id}) }}"
+                           data-bs-toggle="tooltip" data-placement="right" title="{{ "Supprimer"|trans|striptags }}"
+                           data-target="#zone-{{ zone.id }}"
+                           data-type="stay"
+                           class="btn swal-delete-link cursor btn-action">
+                            <i class="icm-trash"></i>
+                        </span>
+                    {% endif %}
+
+                </div>
+
+                {% include 'admin/core/layout/cols.html.twig' %}
+
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if 'edit'|moduleActive(configuration) and layout.id is defined and layout.id %}
+        <button id="add-zone-btn"
+                class="btn edit-layout-element-btn w-100"
+                data-path="{{ path('admin_zone_new', {website: websiteId(), layout: layout.id}) }}">
+            <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
+                 src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                 class="img-fluid rounded-add-img lazy-load"
+                 width="20" height="20" alt="{{ 'Ajouter'|trans|striptags }}" /><br>
+            {{ 'Ajouter une ligne'|trans }}
+        </button>
+    {% endif %}
+
+{% endif %}

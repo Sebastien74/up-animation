@@ -1,0 +1,12 @@
+{% trans_default_domain 'front_default' %}
+
+{% if contact %}
+    <div class="form-success-card card bg-light form-success-card alert">
+        <div class="card-body pb-4 text-center">
+            {{ 'fas check'|icon(null, 60, 'primary') }}
+            <div class="body mt-4 mb-0">{{ message|raw }}</div>
+        </div>
+    </div>
+{% else %}
+    <a href="{{ path('front_index') }}" class="btn btn-primary" data-toggle="preloader">{{ "Retourner à la page d'accueil"|trans|raw }}</a>
+{% endif %}

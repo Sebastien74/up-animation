@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2023
+    Created on : 2023-04-18, 8:40 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT EACH HOVER :
+    =================
+
+------------------------------------------------------------------ */
+
+@each $suffix, $color in $theme-colors {
+
+    @if index($hover-colors, $suffix) {
+
+        .hover-#{$suffix},
+        .hover-underline-#{$suffix} {
+
+            transition: all .2s ease-in-out;
+
+            &:hover {
+                transition: all .2s ease-in-out;
+                color: $color !important;
+            }
+        }
+
+        .hover-underline-#{$suffix}:hover {
+            color: $color !important;
+            text-decoration: underline !important;
+        }
+
+        .hover-svg-#{$suffix} {
+
+            transition: all .2s ease-in-out;
+
+            &:hover, &:hover * {
+                transition: all .2s ease-in-out;
+                fill: $color !important;
+            }
+        }
+    }
+}

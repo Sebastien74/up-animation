@@ -1,0 +1,2740 @@
+@if not $enable-medias-queries {
+
+    @if $enable-display-number {
+        @each $display, $font-size in $display-font-sizes {
+            .display-#{$display} {
+                font-size: $font-size;
+                line-height: 1.2
+            }
+        }
+    }
+
+    @if $enable-fixed-top {
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030
+        }
+    }
+
+    @if $enable-fixed-bottom {
+        .fixed-bottom {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1030
+        }
+    }
+
+    @if $enable-sticky-top {
+        .sticky-top {
+            position: sticky;
+            top: 0;
+            z-index: 1020
+        }
+    }
+
+    @if $enable-sticky-bottom {
+        .sticky-bottom {
+            position: sticky;
+            bottom: 0;
+            z-index: 1020
+        }
+    }
+
+    @if $enable-stack {
+        .hstack {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            align-self: stretch
+        }
+        .vstack {
+            display: flex;
+            flex: 1 1 auto;
+            flex-direction: column;
+            align-self: stretch
+        }
+    }
+
+    @if $enable-visually {
+        .visually-hidden, .visually-hidden-focusable:not(:focus):not(:focus-within) {
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            white-space: nowrap !important;
+            border: 0 !important
+        }
+        .visually-hidden-focusable:not(:focus):not(:focus-within):not(caption), .visually-hidden:not(caption) {
+            position: absolute !important
+        }
+    }
+
+    @if $enable-stretched-link {
+        .stretched-link::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            content: ""
+        }
+    }
+
+    @if $enable-text-truncate {
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+    }
+
+    @if $enable-text-vr {
+        .vr {
+            display: inline-block;
+            align-self: stretch;
+            width: var(--bs-border-width);
+            min-height: 1em;
+            background-color: currentcolor;
+            opacity: .25
+        }
+    }
+
+    @if $enable-align-baseline {
+        .align-baseline {
+            vertical-align: baseline !important
+        }
+    }
+
+    @if $enable-align-top {
+        .align-top {
+            vertical-align: top !important
+        }
+    }
+
+    @if $enable-align-middle {
+        .align-middle {
+            vertical-align: middle !important
+        }
+    }
+
+    @if $enable-align-bottom {
+        .align-bottom {
+            vertical-align: bottom !important
+        }
+    }
+
+    @if $enable-align-text-bottom {
+        .align-text-bottom {
+            vertical-align: text-bottom !important
+        }
+    }
+
+    @if $enable-align-text-top {
+        .align-text-top {
+            vertical-align: text-top !important
+        }
+    }
+
+    @if $enable-float-start {
+        .float-start {
+            float: left !important
+        }
+    }
+
+    @if $enable-float-end {
+        .float-end {
+            float: right !important
+        }
+    }
+
+    @if $enable-float-none {
+        .float-none {
+            float: none !important
+        }
+    }
+
+    @if $enable-object-fit-contain {
+        .object-fit-contain {
+            -o-object-fit: contain !important;
+            object-fit: contain !important
+        }
+    }
+
+    @if $enable-object-fit-cover {
+        .object-fit-cover {
+            -o-object-fit: cover !important;
+            object-fit: cover !important
+        }
+    }
+
+    @if $enable-object-fit-fill {
+        .object-fit-fill {
+            -o-object-fit: fill !important;
+            object-fit: fill !important
+        }
+    }
+
+    @if $enable-object-fit-scale {
+        .object-fit-scale {
+            -o-object-fit: scale-down !important;
+            object-fit: scale-down !important
+        }
+    }
+
+    @if $enable-object-fit-none {
+        .object-fit-none {
+            -o-object-fit: none !important;
+            object-fit: none !important
+        }
+    }
+
+    @if $enable-overflow-auto {
+        .overflow-auto {
+            overflow: auto !important
+        }
+    }
+
+    @if $enable-overflow-hidden {
+        .overflow-hidden {
+            overflow: hidden !important
+        }
+    }
+
+    @if $enable-overflow-visible {
+        .overflow-visible {
+            overflow: visible !important
+        }
+    }
+
+    @if $enable-overflow-scroll {
+        .overflow-scroll {
+            overflow: scroll !important
+        }
+    }
+
+    @if $enable-overflow-x-auto {
+        .overflow-x-auto {
+            overflow-x: auto !important
+        }
+    }
+
+    @if $enable-overflow-x-hidden {
+        .overflow-x-hidden {
+            overflow-x: hidden !important
+        }
+    }
+
+    @if $enable-overflow-x-visible {
+        .overflow-x-visible {
+            overflow-x: visible !important
+        }
+    }
+
+    @if $enable-overflow-x-scroll {
+        .overflow-x-scroll {
+            overflow-x: scroll !important
+        }
+    }
+
+    @if $enable-overflow-y-auto {
+        .overflow-y-auto {
+            overflow-y: auto !important
+        }
+    }
+
+    @if $enable-overflow-y-hidden {
+        .overflow-y-hidden {
+            overflow-y: hidden !important
+        }
+    }
+
+    @if $enable-overflow-y-visible {
+        .overflow-y-visible {
+            overflow-y: visible !important
+        }
+    }
+
+    @if $enable-overflow-y-scroll {
+        .overflow-y-scroll {
+            overflow-y: scroll !important
+        }
+    }
+
+    @if $enable-d-inline {
+        .d-inline {
+            display: inline !important
+        }
+    }
+
+    @if $enable-d-inline-block {
+        .d-inline-block {
+            display: inline-block !important
+        }
+    }
+
+    @if $enable-d-block {
+        .d-block {
+            display: block !important
+        }
+    }
+
+    @if $enable-d-grid {
+        .d-grid {
+            display: grid !important
+        }
+    }
+
+    @if $enable-d-inline-grid {
+        .d-inline-grid {
+            display: inline-grid !important
+        }
+    }
+
+    @if $enable-d-table {
+        .d-table {
+            display: table !important
+        }
+    }
+
+    @if $enable-d-table-row {
+        .d-table-row {
+            display: table-row !important
+        }
+    }
+
+    @if $enable-d-table-cell {
+        .d-table-cell {
+            display: table-cell !important
+        }
+    }
+
+    @if $enable-d-flex {
+        .d-flex {
+            display: flex !important
+        }
+    }
+
+    @if $enable-d-inline-flex {
+        .d-inline-flex {
+            display: inline-flex !important
+        }
+    }
+
+    @if $enable-d-none {
+        .d-none {
+            display: none !important
+        }
+    }
+
+    @if $enable-position-static {
+        .position-static {
+            position: static !important
+        }
+    }
+
+    @if $enable-position-relative {
+        .position-relative {
+            position: relative !important
+        }
+    }
+
+    @if $enable-position-absolute {
+        .position-absolute {
+            position: absolute !important
+        }
+    }
+
+    @if $enable-position-fixed {
+        .position-fixed {
+            position: fixed !important
+        }
+    }
+
+    @if $enable-position-sticky {
+        .position-sticky {
+            position: sticky !important
+        }
+    }
+
+    @if $enable-top-0 {
+        .top-0 {
+            top: 0 !important
+        }
+    }
+
+    @if $enable-top-50 {
+        .top-50 {
+            top: 50% !important
+        }
+    }
+
+    @if $enable-top-100 {
+        .top-100 {
+            top: 100% !important
+        }
+    }
+
+    @if $enable-bottom-0 {
+        .bottom-0 {
+            bottom: 0 !important
+        }
+    }
+
+    @if $enable-bottom-50 {
+        .bottom-50 {
+            bottom: 50% !important
+        }
+    }
+
+    @if $enable-bottom-100 {
+        .bottom-100 {
+            bottom: 100% !important
+        }
+    }
+
+    @if $enable-start-0 {
+        .start-0 {
+            left: 0 !important
+        }
+    }
+
+    @if $enable-start-50 {
+        .start-50 {
+            left: 50% !important
+        }
+    }
+
+    @if $enable-start-100 {
+        .start-100 {
+            left: 100% !important
+        }
+    }
+
+    @if $enable-end-0 {
+        .end-0 {
+            right: 0 !important
+        }
+    }
+
+    @if $enable-end-50 {
+        .end-50 {
+            right: 50% !important
+        }
+    }
+
+    @if $enable-end-100 {
+        .end-100 {
+            right: 100% !important
+        }
+    }
+
+    @if $enable-translate-middle {
+        .translate-middle {
+            transform: translate(-50%, -50%) !important
+        }
+    }
+
+    @if $enable-translate-middle-x {
+        .translate-middle-x {
+            transform: translateX(-50%) !important
+        }
+    }
+
+    @if $enable-translate-middle-y {
+        .translate-middle-y {
+            transform: translateY(-50%) !important
+        }
+    }
+
+    @if $enable-w-25 {
+        .w-25 {
+            width: 25% !important
+        }
+    }
+
+    @if $enable-w-50 {
+        .w-50 {
+            width: 50% !important
+        }
+    }
+
+    @if $enable-w-75 {
+        .w-75 {
+            width: 75% !important
+        }
+    }
+
+    @if $enable-w-100 {
+        .w-100 {
+            width: 100% !important
+        }
+    }
+
+    @if $enable-text-w-auto {
+        .w-auto {
+            width: auto !important
+        }
+    }
+
+    @if $enable-mw-100 {
+        .mw-100 {
+            max-width: 100% !important
+        }
+    }
+
+    @if $enable-vw-100 {
+        .vw-100 {
+            width: 100vw !important
+        }
+    }
+
+    @if $enable-min-vw-100 {
+        .min-vw-100 {
+            min-width: 100vw !important
+        }
+    }
+
+    @if $enable-h-25 {
+        .h-25 {
+            height: 25% !important
+        }
+    }
+
+    @if $enable-h-50 {
+        .h-50 {
+            height: 50% !important
+        }
+    }
+
+    @if $enable-h-75 {
+        .h-75 {
+            height: 75% !important
+        }
+    }
+
+    @if $enable-h-100 {
+        .h-100 {
+            height: 100% !important
+        }
+    }
+
+    @if $enable-h-auto {
+        .h-auto {
+            height: auto !important
+        }
+    }
+
+    @if $enable-mh-100 {
+        .mh-100 {
+            max-height: 100% !important
+        }
+    }
+
+    @if $enable-vh-100 {
+        .vh-100 {
+            height: 100dvh !important
+        }
+    }
+
+    @if $enable-min-vh-100 {
+        .min-vh-100 {
+            min-height: 100dvh !important
+        }
+    }
+
+    @if $enable-flex-fill {
+        .flex-fill {
+            flex: 1 1 auto !important
+        }
+    }
+
+    @if $enable-flex-row {
+        .flex-row {
+            flex-direction: row !important
+        }
+    }
+
+    @if $enable-flex-column {
+        .flex-column {
+            flex-direction: column !important
+        }
+    }
+
+    @if $enable-flex-row-reverse {
+        .flex-row-reverse {
+            flex-direction: row-reverse !important
+        }
+    }
+
+    @if $enable-flex-column-reverse {
+        .flex-column-reverse {
+            flex-direction: column-reverse !important
+        }
+    }
+
+    @if $enable-flex-grow-0 {
+        .flex-grow-0 {
+            flex-grow: 0 !important
+        }
+    }
+
+    @if $enable-flex-grow-1 {
+        .flex-grow-1 {
+            flex-grow: 1 !important
+        }
+    }
+
+    @if $enable-flex-shrink-0 {
+        .flex-shrink-0 {
+            flex-shrink: 0 !important
+        }
+    }
+
+    @if $enable-flex-shrink-1 {
+        .flex-shrink-1 {
+            flex-shrink: 1 !important
+        }
+    }
+
+    @if $enable-flex-wrap {
+        .flex-wrap {
+            flex-wrap: wrap !important
+        }
+    }
+
+    @if $enable-flex-nowrap {
+        .flex-nowrap {
+            flex-wrap: nowrap !important
+        }
+    }
+
+    @if $enable-flex-wrap-reverse {
+        .flex-wrap-reverse {
+            flex-wrap: wrap-reverse !important
+        }
+    }
+
+    @if $enable-justify-content-start {
+        .justify-content-start {
+            justify-content: flex-start !important
+        }
+    }
+
+    @if $enable-justify-content-end {
+        .justify-content-end {
+            justify-content: flex-end !important
+        }
+    }
+
+    @if $enable-justify-content-center {
+        .justify-content-center {
+            justify-content: center !important
+        }
+    }
+
+    @if $enable-justify-content-between {
+        .justify-content-between {
+            justify-content: space-between !important
+        }
+    }
+
+    @if $enable-justify-content-around {
+        .justify-content-around {
+            justify-content: space-around !important
+        }
+    }
+
+    @if $enable-justify-content-evenly {
+        .justify-content-evenly {
+            justify-content: space-evenly !important
+        }
+    }
+
+    @if $enable-align-items-start {
+        .align-items-start {
+            align-items: flex-start !important
+        }
+    }
+
+    @if $enable-align-items-end {
+        .align-items-end {
+            align-items: flex-end !important
+        }
+    }
+
+    @if $enable-align-items-center {
+        .align-items-center {
+            align-items: center !important
+        }
+    }
+
+    @if $enable-align-items-baseline {
+        .align-items-baseline {
+            align-items: baseline !important
+        }
+    }
+
+    @if $enable-align-items-stretch {
+        .align-items-stretch {
+            align-items: stretch !important
+        }
+    }
+
+    @if $enable-align-content-start {
+        .align-content-start {
+            align-content: flex-start !important
+        }
+    }
+
+    @if $enable-align-content-end {
+        .align-content-end {
+            align-content: flex-end !important
+        }
+    }
+
+    @if $enable-align-content-center {
+        .align-content-center {
+            align-content: center !important
+        }
+    }
+
+    @if $enable-align-content-between {
+        .align-content-between {
+            align-content: space-between !important
+        }
+    }
+
+    @if $enable-align-content-around {
+        .align-content-around {
+            align-content: space-around !important
+        }
+    }
+
+    @if $enable-align-content-stretch {
+        .align-content-stretch {
+            align-content: stretch !important
+        }
+    }
+
+    @if $enable-align-self-auto {
+        .align-self-auto {
+            align-self: auto !important
+        }
+    }
+
+    @if $enable-align-self-start {
+        .align-self-start {
+            align-self: flex-start !important
+        }
+    }
+
+    @if $enable-align-self-end {
+        .align-self-end {
+            align-self: flex-end !important
+        }
+    }
+
+    @if $enable-align-self-center {
+        .align-self-center {
+            align-self: center !important
+        }
+    }
+
+    @if $enable-align-self-baseline {
+        .align-self-baseline {
+            align-self: baseline !important
+        }
+    }
+
+    @if $enable-align-self-stretch {
+        .align-self-stretch {
+            align-self: stretch !important
+        }
+    }
+
+    @if $enable-lh-1 {
+        .lh-1 {
+            line-height: 1 !important
+        }
+    }
+
+    @if $enable-lh-sm {
+        .lh-sm {
+            line-height: 1.25 !important
+        }
+    }
+
+    @if $enable-lh-base {
+        .lh-base {
+            line-height: 1.5 !important
+        }
+    }
+
+    @if $enable-lh-lg {
+        .lh-lg {
+            line-height: 2 !important
+        }
+    }
+
+    @if $enable-text-start {
+        .text-start {
+            text-align: left !important
+        }
+    }
+
+    @if $enable-text-end {
+        .text-end {
+            text-align: right !important
+        }
+    }
+
+    @if $enable-text-center {
+        .text-center {
+            text-align: center !important
+        }
+    }
+
+    @if $enable-text-decoration-none {
+        .text-decoration-none {
+            text-decoration: none !important
+        }
+    }
+
+    @if $enable-text-decoration-underline {
+        .text-decoration-underline {
+            text-decoration: underline !important
+        }
+    }
+
+    @if $enable-text-decoration-line-through {
+        .text-decoration-line-through {
+            text-decoration: line-through !important
+        }
+    }
+
+    @if $enable-text-lowercase {
+        .text-lowercase {
+            text-transform: lowercase !important
+        }
+    }
+
+    @if $enable-text-uppercase {
+        .text-uppercase {
+            text-transform: uppercase !important
+        }
+    }
+
+    @if $enable-text-capitalize {
+        .text-capitalize {
+            text-transform: capitalize !important
+        }
+    }
+
+    @if $enable-text-wrap {
+        .text-wrap {
+            white-space: normal !important
+        }
+    }
+
+    @if $enable-text-nowrap {
+        .text-nowrap {
+            white-space: nowrap !important
+        }
+    }
+
+    @if $enable-text-break {
+        .text-break {
+            word-wrap: break-word !important;
+            word-break: break-word !important
+        }
+    }
+
+    @if $enable-visible {
+        .visible {
+            visibility: visible !important
+        }
+    }
+
+    @if $enable-invisible {
+        .invisible {
+            visibility: hidden !important
+        }
+    }
+
+    @if $enable-z-n1 {
+        .z-n1 {
+            z-index: -1 !important
+        }
+    }
+
+    @if $enable-z-0 {
+        .z-0 {
+            z-index: 0 !important
+        }
+    }
+
+    @if $enable-z-1 {
+        .z-1 {
+            z-index: 1 !important
+        }
+    }
+
+    @if $enable-z-2 {
+        .z-2 {
+            z-index: 2 !important
+        }
+    }
+
+    @if $enable-z-3 {
+        .z-3 {
+            z-index: 3 !important
+        }
+    }
+
+    @if $enable-display-number {
+        @each $display, $font-size in $display-font-sizes {
+            .display-#{$display} {
+                @include font-size($font-size);
+            }
+        }
+    }
+
+    @media (min-width: 576px) {
+
+        @if $enable-sticky-top {
+            .sticky-sm-top {
+                position: sticky;
+                top: 0;
+                z-index: 1020
+            }
+        }
+
+        @if $enable-sticky-bottom {
+            .sticky-sm-bottom {
+                position: sticky;
+                bottom: 0;
+                z-index: 1020
+            }
+        }
+
+        @if $enable-float-start {
+            .float-sm-start {
+                float: left !important
+            }
+        }
+
+        @if $enable-float-end {
+            .float-sm-end {
+                float: right !important
+            }
+        }
+
+        @if $enable-float-none {
+            .float-sm-none {
+                float: none !important
+            }
+        }
+
+        @if $enable-object-fit-contain {
+            .object-fit-sm-contain {
+                -o-object-fit: contain !important;
+                object-fit: contain !important
+            }
+        }
+
+        @if $enable-object-fit-cover {
+            .object-fit-sm-cover {
+                -o-object-fit: cover !important;
+                object-fit: cover !important
+            }
+        }
+
+        @if $enable-object-fit-fill {
+            .object-fit-sm-fill {
+                -o-object-fit: fill !important;
+                object-fit: fill !important
+            }
+        }
+
+        @if $enable-object-fit-scale {
+            .object-fit-sm-scale {
+                -o-object-fit: scale-down !important;
+                object-fit: scale-down !important
+            }
+        }
+
+        @if $enable-object-fit-none {
+            .object-fit-sm-none {
+                -o-object-fit: none !important;
+                object-fit: none !important
+            }
+        }
+
+        @if $enable-d-inline {
+            .d-sm-inline {
+                display: inline !important
+            }
+        }
+
+        @if $enable-d-inline-block {
+            .d-sm-inline-block {
+                display: inline-block !important
+            }
+        }
+
+        @if $enable-d-block {
+            .d-sm-block {
+                display: block !important
+            }
+        }
+
+        @if $enable-d-grid {
+            .d-sm-grid {
+                display: grid !important
+            }
+        }
+
+        @if $enable-d-inline-grid {
+            .d-sm-inline-grid {
+                display: inline-grid !important
+            }
+        }
+
+        @if $enable-d-table {
+            .d-sm-table {
+                display: table !important
+            }
+        }
+
+        @if $enable-d-table-row {
+            .d-sm-table-row {
+                display: table-row !important
+            }
+        }
+
+        @if $enable-d-table-cell {
+            .d-sm-table-cell {
+                display: table-cell !important
+            }
+        }
+
+        @if $enable-d-flex {
+            .d-sm-flex {
+                display: flex !important
+            }
+        }
+
+        @if $enable-d-inline-flex {
+            .d-sm-inline-flex {
+                display: inline-flex !important
+            }
+        }
+
+        @if $enable-d-none {
+            .d-sm-none {
+                display: none !important
+            }
+        }
+
+        @if $enable-flex-fill {
+            .flex-sm-fill {
+                flex: 1 1 auto !important
+            }
+        }
+
+        @if $enable-flex-row {
+            .flex-sm-row {
+                flex-direction: row !important
+            }
+        }
+
+        @if $enable-flex-column {
+            .flex-sm-column {
+                flex-direction: column !important
+            }
+        }
+
+        @if $enable-flex-row-reverse {
+            .flex-sm-row-reverse {
+                flex-direction: row-reverse !important
+            }
+        }
+
+        @if $enable-flex-column-reverse {
+            .flex-sm-column-reverse {
+                flex-direction: column-reverse !important
+            }
+        }
+
+        @if $enable-flex-grow-0 {
+            .flex-sm-grow-0 {
+                flex-grow: 0 !important
+            }
+        }
+
+        @if $enable-flex-grow-1 {
+            .flex-sm-grow-1 {
+                flex-grow: 1 !important
+            }
+        }
+
+        @if $enable-flex-shrink-0 {
+            .flex-sm-shrink-0 {
+                flex-shrink: 0 !important
+            }
+        }
+
+        @if $enable-flex-shrink-1 {
+            .flex-sm-shrink-1 {
+                flex-shrink: 1 !important
+            }
+        }
+
+        @if $enable-flex-wrap {
+            .flex-sm-wrap {
+                flex-wrap: wrap !important
+            }
+        }
+
+        @if $enable-flex-nowrap {
+            .flex-sm-nowrap {
+                flex-wrap: nowrap !important
+            }
+        }
+
+        @if $enable-flex-wrap-reverse {
+            .flex-sm-wrap-reverse {
+                flex-wrap: wrap-reverse !important
+            }
+        }
+
+        @if $enable-justify-content-start {
+            .justify-content-sm-start {
+                justify-content: flex-start !important
+            }
+        }
+
+        @if $enable-justify-content-end {
+            .justify-content-sm-end {
+                justify-content: flex-end !important
+            }
+        }
+
+        @if $enable-justify-content-center {
+            .justify-content-sm-center {
+                justify-content: center !important
+            }
+        }
+
+        @if $enable-justify-content-between {
+            .justify-content-sm-between {
+                justify-content: space-between !important
+            }
+        }
+
+        @if $enable-justify-content-around {
+            .justify-content-sm-around {
+                justify-content: space-around !important
+            }
+        }
+
+        @if $enable-justify-content-evenly {
+            .justify-content-sm-evenly {
+                justify-content: space-evenly !important
+            }
+        }
+
+        @if $enable-align-items-start {
+            .align-items-sm-start {
+                align-items: flex-start !important
+            }
+        }
+
+        @if $enable-align-items-end {
+            .align-items-sm-end {
+                align-items: flex-end !important
+            }
+        }
+
+        @if $enable-align-items-center {
+            .align-items-sm-center {
+                align-items: center !important
+            }
+        }
+
+        @if $enable-align-items-baseline {
+            .align-items-sm-baseline {
+                align-items: baseline !important
+            }
+        }
+
+        @if $enable-align-items-stretch {
+            .align-items-sm-stretch {
+                align-items: stretch !important
+            }
+        }
+
+        @if $enable-align-content-start {
+            .align-content-sm-start {
+                align-content: flex-start !important
+            }
+        }
+
+        @if $enable-align-content-end {
+            .align-content-sm-end {
+                align-content: flex-end !important
+            }
+        }
+
+        @if $enable-align-content-center {
+            .align-content-sm-center {
+                align-content: center !important
+            }
+        }
+
+        @if $enable-align-content-between {
+            .align-content-sm-between {
+                align-content: space-between !important
+            }
+        }
+
+        @if $enable-align-content-around {
+            .align-content-sm-around {
+                align-content: space-around !important
+            }
+        }
+
+        @if $enable-align-content-stretch {
+            .align-content-sm-stretch {
+                align-content: stretch !important
+            }
+        }
+
+        @if $enable-align-self-auto {
+            .align-self-sm-auto {
+                align-self: auto !important
+            }
+        }
+
+        @if $enable-align-self-start {
+            .align-self-sm-start {
+                align-self: flex-start !important
+            }
+        }
+
+        @if $enable-align-self-end {
+            .align-self-sm-end {
+                align-self: flex-end !important
+            }
+        }
+
+        @if $enable-align-self-center {
+            .align-self-sm-center {
+                align-self: center !important
+            }
+        }
+
+        @if $enable-align-self-baseline {
+            .align-self-sm-baseline {
+                align-self: baseline !important
+            }
+        }
+
+        @if $enable-align-self-stretch {
+            .align-self-sm-stretch {
+                align-self: stretch !important
+            }
+        }
+
+        @if $enable-text-start {
+            .text-sm-start {
+                text-align: left !important
+            }
+        }
+
+        @if $enable-text-end {
+            .text-sm-end {
+                text-align: right !important
+            }
+        }
+
+        @if $enable-text-center {
+            .text-sm-center {
+                text-align: center !important
+            }
+        }
+    }
+
+    @media (min-width: 768px) {
+
+        @if $enable-sticky-top {
+            .sticky-md-top {
+                position: sticky;
+                top: 0;
+                z-index: 1020
+            }
+        }
+
+        @if $enable-sticky-bottom {
+            .sticky-md-bottom {
+                position: sticky;
+                bottom: 0;
+                z-index: 1020
+            }
+        }
+
+        @if $enable-float-start {
+            .float-md-start {
+                float: left !important
+            }
+        }
+
+        @if $enable-float-end {
+            .float-md-end {
+                float: right !important
+            }
+        }
+
+        @if $enable-float-none {
+            .float-md-none {
+                float: none !important
+            }
+        }
+
+        @if $enable-object-fit-contain {
+            .object-fit-md-contain {
+                -o-object-fit: contain !important;
+                object-fit: contain !important
+            }
+        }
+
+        @if $enable-object-fit-cover {
+            .object-fit-md-cover {
+                -o-object-fit: cover !important;
+                object-fit: cover !important
+            }
+        }
+
+        @if $enable-object-fit-fill {
+            .object-fit-md-fill {
+                -o-object-fit: fill !important;
+                object-fit: fill !important
+            }
+        }
+
+        @if $enable-object-fit-scale {
+            .object-fit-md-scale {
+                -o-object-fit: scale-down !important;
+                object-fit: scale-down !important
+            }
+        }
+
+        @if $enable-object-fit-none {
+            .object-fit-md-none {
+                -o-object-fit: none !important;
+                object-fit: none !important
+            }
+        }
+
+        @if $enable-d-inline {
+            .d-md-inline {
+                display: inline !important
+            }
+        }
+
+        @if $enable-d-inline-block {
+            .d-md-inline-block {
+                display: inline-block !important
+            }
+        }
+
+        @if $enable-d-block {
+            .d-md-block {
+                display: block !important
+            }
+        }
+
+        @if $enable-d-grid {
+            .d-md-grid {
+                display: grid !important
+            }
+        }
+
+        @if $enable-d-inline-grid {
+            .d-md-inline-grid {
+                display: inline-grid !important
+            }
+        }
+
+        @if $enable-d-table {
+            .d-md-table {
+                display: table !important
+            }
+        }
+
+        @if $enable-d-table-row {
+            .d-md-table-row {
+                display: table-row !important
+            }
+        }
+
+        @if $enable-d-table-cell {
+            .d-md-table-cell {
+                display: table-cell !important
+            }
+        }
+
+        @if $enable-d-flex {
+            .d-md-flex {
+                display: flex !important
+            }
+        }
+
+        @if $enable-d-inline-flex {
+            .d-md-inline-flex {
+                display: inline-flex !important
+            }
+        }
+
+        @if $enable-d-none {
+            .d-md-none {
+                display: none !important
+            }
+        }
+
+        @if $enable-flex-fill {
+            .flex-md-fill {
+                flex: 1 1 auto !important
+            }
+        }
+
+        @if $enable-flex-row {
+            .flex-md-row {
+                flex-direction: row !important
+            }
+        }
+
+        @if $enable-flex-column {
+            .flex-md-column {
+                flex-direction: column !important
+            }
+        }
+
+        @if $enable-flex-row-reverse {
+            .flex-md-row-reverse {
+                flex-direction: row-reverse !important
+            }
+        }
+
+        @if $enable-flex-column-reverse {
+            .flex-md-column-reverse {
+                flex-direction: column-reverse !important
+            }
+        }
+
+        @if $enable-flex-grow-0 {
+            .flex-md-grow-0 {
+                flex-grow: 0 !important
+            }
+        }
+
+        @if $enable-flex-grow-1 {
+            .flex-md-grow-1 {
+                flex-grow: 1 !important
+            }
+        }
+
+        @if $enable-flex-shrink-0 {
+            .flex-md-shrink-0 {
+                flex-shrink: 0 !important
+            }
+        }
+
+        @if $enable-flex-shrink-1 {
+            .flex-md-shrink-1 {
+                flex-shrink: 1 !important
+            }
+        }
+
+        @if $enable-flex-wrap {
+            .flex-md-wrap {
+                flex-wrap: wrap !important
+            }
+        }
+
+        @if $enable-flex-nowrap {
+            .flex-md-nowrap {
+                flex-wrap: nowrap !important
+            }
+        }
+
+        @if $enable-flex-wrap-reverse {
+            .flex-md-wrap-reverse {
+                flex-wrap: wrap-reverse !important
+            }
+        }
+
+        @if $enable-justify-content-start {
+            .justify-content-md-start {
+                justify-content: flex-start !important
+            }
+        }
+
+        @if $enable-justify-content-end {
+            .justify-content-md-end {
+                justify-content: flex-end !important
+            }
+        }
+
+        @if $enable-justify-content-center {
+            .justify-content-md-center {
+                justify-content: center !important
+            }
+        }
+
+        @if $enable-justify-content-between {
+            .justify-content-md-between {
+                justify-content: space-between !important
+            }
+        }
+
+        @if $enable-justify-content-around {
+            .justify-content-md-around {
+                justify-content: space-around !important
+            }
+        }
+
+        @if $enable-justify-content-evenly {
+            .justify-content-md-evenly {
+                justify-content: space-evenly !important
+            }
+        }
+
+        @if $enable-align-items-start {
+            .align-items-md-start {
+                align-items: flex-start !important
+            }
+        }
+
+        @if $enable-align-items-end {
+            .align-items-md-end {
+                align-items: flex-end !important
+            }
+        }
+
+        @if $enable-align-items-center {
+            .align-items-md-center {
+                align-items: center !important
+            }
+        }
+
+        @if $enable-align-items-baseline {
+            .align-items-md-baseline {
+                align-items: baseline !important
+            }
+        }
+
+        @if $enable-align-items-stretch {
+            .align-items-md-stretch {
+                align-items: stretch !important
+            }
+        }
+
+        @if $enable-align-content-start {
+            .align-content-md-start {
+                align-content: flex-start !important
+            }
+        }
+
+        @if $enable-align-content-end {
+            .align-content-md-end {
+                align-content: flex-end !important
+            }
+        }
+
+        @if $enable-align-content-center {
+            .align-content-md-center {
+                align-content: center !important
+            }
+        }
+
+        @if $enable-align-content-between {
+            .align-content-md-between {
+                align-content: space-between !important
+            }
+        }
+
+        @if $enable-align-content-around {
+            .align-content-md-around {
+                align-content: space-around !important
+            }
+        }
+
+        @if $enable-align-content-stretch {
+            .align-content-md-stretch {
+                align-content: stretch !important
+            }
+        }
+
+        @if $enable-align-self-auto {
+            .align-self-md-auto {
+                align-self: auto !important
+            }
+        }
+
+        @if $enable-align-self-start {
+            .align-self-md-start {
+                align-self: flex-start !important
+            }
+        }
+
+        @if $enable-align-self-end {
+            .align-self-md-end {
+                align-self: flex-end !important
+            }
+        }
+
+        @if $enable-align-self-center {
+            .align-self-md-center {
+                align-self: center !important
+            }
+        }
+
+        @if $enable-align-self-baseline {
+            .align-self-md-baseline {
+                align-self: baseline !important
+            }
+        }
+
+        @if $enable-align-self-stretch {
+            .align-self-md-stretch {
+                align-self: stretch !important
+            }
+        }
+
+        @if $enable-text-start {
+            .text-md-start {
+                text-align: left !important
+            }
+        }
+
+        @if $enable-text-end {
+            .text-md-end {
+                text-align: right !important
+            }
+        }
+
+        @if $enable-text-center {
+            .text-md-center {
+                text-align: center !important
+            }
+        }
+    }
+
+    @media (min-width: 992px) {
+
+        @if $enable-sticky-top {
+            .sticky-lg-top {
+                position: sticky;
+                top: 0;
+                z-index: 1020
+            }
+        }
+
+        @if $enable-sticky-bottom {
+            .sticky-lg-bottom {
+                position: sticky;
+                bottom: 0;
+                z-index: 1020
+            }
+        }
+
+        @if $enable-float-start {
+            .float-lg-start {
+                float: left !important
+            }
+        }
+
+        @if $enable-float-end {
+            .float-lg-end {
+                float: right !important
+            }
+        }
+
+        @if $enable-float-none {
+            .float-lg-none {
+                float: none !important
+            }
+        }
+
+        @if $enable-object-fit-contain {
+            .object-fit-lg-contain {
+                -o-object-fit: contain !important;
+                object-fit: contain !important
+            }
+        }
+
+        @if $enable-object-fit-cover {
+            .object-fit-lg-cover {
+                -o-object-fit: cover !important;
+                object-fit: cover !important
+            }
+        }
+
+        @if $enable-object-fit-fill {
+            .object-fit-lg-fill {
+                -o-object-fit: fill !important;
+                object-fit: fill !important
+            }
+        }
+
+        @if $enable-object-fit-scale {
+            .object-fit-lg-scale {
+                -o-object-fit: scale-down !important;
+                object-fit: scale-down !important
+            }
+        }
+
+        @if $enable-object-fit-none {
+            .object-fit-lg-none {
+                -o-object-fit: none !important;
+                object-fit: none !important
+            }
+        }
+
+        @if $enable-d-inline {
+            .d-lg-inline {
+                display: inline !important
+            }
+        }
+
+        @if $enable-d-inline-block {
+            .d-lg-inline-block {
+                display: inline-block !important
+            }
+        }
+
+        @if $enable-d-block {
+            .d-lg-block {
+                display: block !important
+            }
+        }
+
+        @if $enable-d-grid {
+            .d-lg-grid {
+                display: grid !important
+            }
+        }
+
+        @if $enable-d-inline-grid {
+            .d-lg-inline-grid {
+                display: inline-grid !important
+            }
+        }
+
+        @if $enable-d-table {
+            .d-lg-table {
+                display: table !important
+            }
+        }
+
+        @if $enable-d-table-row {
+            .d-lg-table-row {
+                display: table-row !important
+            }
+        }
+
+        @if $enable-d-table-cell {
+            .d-lg-table-cell {
+                display: table-cell !important
+            }
+        }
+
+        @if $enable-d-flex {
+            .d-lg-flex {
+                display: flex !important
+            }
+        }
+
+        @if $enable-d-inline-flex {
+            .d-lg-inline-flex {
+                display: inline-flex !important
+            }
+        }
+
+        @if $enable-d-none {
+            .d-lg-none {
+                display: none !important
+            }
+        }
+
+        @if $enable-flex-fill {
+            .flex-lg-fill {
+                flex: 1 1 auto !important
+            }
+        }
+
+        @if $enable-flex-row {
+            .flex-lg-row {
+                flex-direction: row !important
+            }
+        }
+
+        @if $enable-flex-column {
+            .flex-lg-column {
+                flex-direction: column !important
+            }
+        }
+
+        @if $enable-text-vr {
+            .flex-lg-row-reverse {
+                flex-direction: row-reverse !important
+            }
+        }
+
+        @if $enable-flex-row-reverse {
+            .flex-lg-column-reverse {
+                flex-direction: column-reverse !important
+            }
+        }
+
+        @if $enable-flex-grow-0 {
+            .flex-lg-grow-0 {
+                flex-grow: 0 !important
+            }
+        }
+
+        @if $enable-flex-grow-1 {
+            .flex-lg-grow-1 {
+                flex-grow: 1 !important
+            }
+        }
+
+        @if $enable-flex-shrink-0 {
+            .flex-lg-shrink-0 {
+                flex-shrink: 0 !important
+            }
+        }
+
+        @if $enable-flex-shrink-1 {
+            .flex-lg-shrink-1 {
+                flex-shrink: 1 !important
+            }
+        }
+
+        @if $enable-flex-wrap {
+            .flex-lg-wrap {
+                flex-wrap: wrap !important
+            }
+        }
+
+        @if $enable-flex-nowrap {
+            .flex-lg-nowrap {
+                flex-wrap: nowrap !important
+            }
+        }
+
+        @if $enable-flex-wrap-reverse {
+            .flex-lg-wrap-reverse {
+                flex-wrap: wrap-reverse !important
+            }
+        }
+
+        @if $enable-justify-content-start {
+            .justify-content-lg-start {
+                justify-content: flex-start !important
+            }
+        }
+
+        @if $enable-justify-content-end {
+            .justify-content-lg-end {
+                justify-content: flex-end !important
+            }
+        }
+
+        @if $enable-justify-content-center {
+            .justify-content-lg-center {
+                justify-content: center !important
+            }
+        }
+
+        @if $enable-justify-content-between {
+            .justify-content-lg-between {
+                justify-content: space-between !important
+            }
+        }
+
+        @if $enable-justify-content-around {
+            .justify-content-lg-around {
+                justify-content: space-around !important
+            }
+        }
+
+        @if $enable-justify-content-evenly {
+            .justify-content-lg-evenly {
+                justify-content: space-evenly !important
+            }
+        }
+
+        @if $enable-align-items-start {
+            .align-items-lg-start {
+                align-items: flex-start !important
+            }
+        }
+
+        @if $enable-align-items-end {
+            .align-items-lg-end {
+                align-items: flex-end !important
+            }
+        }
+
+        @if $enable-align-items-center {
+            .align-items-lg-center {
+                align-items: center !important
+            }
+        }
+
+        @if $enable-align-items-baseline {
+            .align-items-lg-baseline {
+                align-items: baseline !important
+            }
+        }
+
+        @if $enable-align-items-stretch {
+            .align-items-lg-stretch {
+                align-items: stretch !important
+            }
+        }
+
+        @if $enable-align-content-start {
+            .align-content-lg-start {
+                align-content: flex-start !important
+            }
+        }
+
+        @if $enable-align-content-end {
+            .align-content-lg-end {
+                align-content: flex-end !important
+            }
+        }
+
+        @if $enable-align-content-center {
+            .align-content-lg-center {
+                align-content: center !important
+            }
+        }
+
+        @if $enable-align-content-between {
+            .align-content-lg-between {
+                align-content: space-between !important
+            }
+        }
+
+        @if $enable-align-content-around {
+            .align-content-lg-around {
+                align-content: space-around !important
+            }
+        }
+
+        @if $enable-align-content-stretch {
+            .align-content-lg-stretch {
+                align-content: stretch !important
+            }
+        }
+
+        @if $enable-align-self-auto {
+            .align-self-lg-auto {
+                align-self: auto !important
+            }
+        }
+
+        @if $enable-align-self-start {
+            .align-self-lg-start {
+                align-self: flex-start !important
+            }
+        }
+
+        @if $enable-align-self-end {
+            .align-self-lg-end {
+                align-self: flex-end !important
+            }
+        }
+
+        @if $enable-align-self-center {
+            .align-self-lg-center {
+                align-self: center !important
+            }
+        }
+
+        @if $enable-align-self-baseline {
+            .align-self-lg-baseline {
+                align-self: baseline !important
+            }
+        }
+
+        @if $enable-align-self-stretch {
+            .align-self-lg-stretch {
+                align-self: stretch !important
+            }
+        }
+
+        @if $enable-text-start {
+            .text-lg-start {
+                text-align: left !important
+            }
+        }
+
+        @if $enable-text-end {
+            .text-lg-end {
+                text-align: right !important
+            }
+        }
+
+        @if $enable-text-center {
+            .text-lg-center {
+                text-align: center !important
+            }
+        }
+
+    }
+
+    @media (min-width: 1200px) {
+
+        @if $enable-sticky-top {
+            .sticky-xl-top {
+                position: sticky;
+                top: 0;
+                z-index: 1020
+            }
+        }
+
+        @if $enable-sticky-bottom {
+            .sticky-xl-bottom {
+                position: sticky;
+                bottom: 0;
+                z-index: 1020
+            }
+        }
+
+        @if $enable-float-start {
+            .float-xl-start {
+                float: left !important
+            }
+        }
+
+        @if $enable-float-end {
+            .float-xl-end {
+                float: right !important
+            }
+        }
+
+        @if $enable-float-none {
+            .float-xl-none {
+                float: none !important
+            }
+        }
+
+        @if $enable-object-fit-contain {
+            .object-fit-xl-contain {
+                -o-object-fit: contain !important;
+                object-fit: contain !important
+            }
+        }
+
+        @if $enable-object-fit-cover {
+            .object-fit-xl-cover {
+                -o-object-fit: cover !important;
+                object-fit: cover !important
+            }
+        }
+
+        @if $enable-object-fit-fill {
+            .object-fit-xl-fill {
+                -o-object-fit: fill !important;
+                object-fit: fill !important
+            }
+        }
+
+        @if $enable-object-fit-scale {
+            .object-fit-xl-scale {
+                -o-object-fit: scale-down !important;
+                object-fit: scale-down !important
+            }
+        }
+
+        @if $enable-object-fit-none {
+            .object-fit-xl-none {
+                -o-object-fit: none !important;
+                object-fit: none !important
+            }
+        }
+
+        @if $enable-d-inline {
+            .d-xl-inline {
+                display: inline !important
+            }
+        }
+
+        @if $enable-d-inline-block {
+            .d-xl-inline-block {
+                display: inline-block !important
+            }
+        }
+
+        @if $enable-d-block {
+            .d-xl-block {
+                display: block !important
+            }
+        }
+
+        @if $enable-d-grid {
+            .d-xl-grid {
+                display: grid !important
+            }
+        }
+
+        @if $enable-d-inline-grid {
+            .d-xl-inline-grid {
+                display: inline-grid !important
+            }
+        }
+
+        @if $enable-d-table {
+            .d-xl-table {
+                display: table !important
+            }
+        }
+
+        @if $enable-d-table-row {
+            .d-xl-table-row {
+                display: table-row !important
+            }
+        }
+
+        @if $enable-d-table-cell {
+            .d-xl-table-cell {
+                display: table-cell !important
+            }
+        }
+
+        @if $enable-d-flex {
+            .d-xl-flex {
+                display: flex !important
+            }
+        }
+
+        @if $enable-d-inline-flex {
+            .d-xl-inline-flex {
+                display: inline-flex !important
+            }
+        }
+
+        @if $enable-d-none {
+            .d-xl-none {
+                display: none !important
+            }
+        }
+
+        @if $enable-flex-fill {
+            .flex-xl-fill {
+                flex: 1 1 auto !important
+            }
+        }
+
+        @if $enable-flex-row {
+            .flex-xl-row {
+                flex-direction: row !important
+            }
+        }
+
+        @if $enable-flex-column {
+            .flex-xl-column {
+                flex-direction: column !important
+            }
+        }
+
+        @if $enable-flex-row-reverse {
+            .flex-xl-row-reverse {
+                flex-direction: row-reverse !important
+            }
+        }
+
+        @if $enable-flex-column-reverse {
+            .flex-xl-column-reverse {
+                flex-direction: column-reverse !important
+            }
+        }
+
+        @if $enable-flex-grow-0 {
+            .flex-xl-grow-0 {
+                flex-grow: 0 !important
+            }
+        }
+
+        @if $enable-flex-grow-1 {
+            .flex-xl-grow-1 {
+                flex-grow: 1 !important
+            }
+        }
+
+        @if $enable-flex-shrink-0 {
+            .flex-xl-shrink-0 {
+                flex-shrink: 0 !important
+            }
+        }
+
+        @if $enable-flex-shrink-1 {
+            .flex-xl-shrink-1 {
+                flex-shrink: 1 !important
+            }
+        }
+
+        @if $enable-flex-wrap {
+            .flex-xl-wrap {
+                flex-wrap: wrap !important
+            }
+        }
+
+        @if $enable-flex-nowrap {
+            .flex-xl-nowrap {
+                flex-wrap: nowrap !important
+            }
+        }
+
+        @if $enable-flex-wrap-reverse {
+            .flex-xl-wrap-reverse {
+                flex-wrap: wrap-reverse !important
+            }
+        }
+
+        @if $enable-justify-content-start {
+            .justify-content-xl-start {
+                justify-content: flex-start !important
+            }
+        }
+
+        @if $enable-justify-content-end {
+            .justify-content-xl-end {
+                justify-content: flex-end !important
+            }
+        }
+
+        @if $enable-justify-content-center {
+            .justify-content-xl-center {
+                justify-content: center !important
+            }
+        }
+
+        @if $enable-justify-content-between {
+            .justify-content-xl-between {
+                justify-content: space-between !important
+            }
+        }
+
+        @if $enable-justify-content-around {
+            .justify-content-xl-around {
+                justify-content: space-around !important
+            }
+        }
+
+        @if $enable-justify-content-evenly {
+            .justify-content-xl-evenly {
+                justify-content: space-evenly !important
+            }
+        }
+
+        @if $enable-align-items-start {
+            .align-items-xl-start {
+                align-items: flex-start !important
+            }
+        }
+
+        @if $enable-align-items-end {
+            .align-items-xl-end {
+                align-items: flex-end !important
+            }
+        }
+
+        @if $enable-align-items-center {
+            .align-items-xl-center {
+                align-items: center !important
+            }
+        }
+
+        @if $enable-align-items-baseline {
+            .align-items-xl-baseline {
+                align-items: baseline !important
+            }
+        }
+
+        @if $enable-align-items-stretch {
+            .align-items-xl-stretch {
+                align-items: stretch !important
+            }
+        }
+
+        @if $enable-align-content-start {
+            .align-content-xl-start {
+                align-content: flex-start !important
+            }
+        }
+
+        @if $enable-align-content-end {
+            .align-content-xl-end {
+                align-content: flex-end !important
+            }
+        }
+
+        @if $enable-align-content-center {
+            .align-content-xl-center {
+                align-content: center !important
+            }
+        }
+
+        @if $enable-align-content-between {
+            .align-content-xl-between {
+                align-content: space-between !important
+            }
+        }
+
+        @if $enable-align-content-around {
+            .align-content-xl-around {
+                align-content: space-around !important
+            }
+        }
+
+        @if $enable-align-content-stretch {
+            .align-content-xl-stretch {
+                align-content: stretch !important
+            }
+        }
+
+        @if $enable-align-self-auto {
+            .align-self-xl-auto {
+                align-self: auto !important
+            }
+        }
+
+        @if $enable-align-self-start {
+            .align-self-xl-start {
+                align-self: flex-start !important
+            }
+        }
+
+        @if $enable-align-self-end {
+            .align-self-xl-end {
+                align-self: flex-end !important
+            }
+        }
+
+        @if $enable-align-self-center {
+            .align-self-xl-center {
+                align-self: center !important
+            }
+        }
+
+        @if $enable-align-self-baseline {
+            .align-self-xl-baseline {
+                align-self: baseline !important
+            }
+        }
+
+        @if $enable-align-self-stretch {
+            .align-self-xl-stretch {
+                align-self: stretch !important
+            }
+        }
+
+        @if $enable-text-start {
+            .text-xl-start {
+                text-align: left !important
+            }
+        }
+
+        @if $enable-text-end {
+            .text-xl-end {
+                text-align: right !important
+            }
+        }
+
+        @if $enable-text-center {
+            .text-xl-center {
+                text-align: center !important
+            }
+        }
+    }
+
+    @media (min-width: 1400px) {
+
+        @if $enable-sticky-top {
+            .sticky-xxl-top {
+                position: sticky;
+                top: 0;
+                z-index: 1020
+            }
+        }
+
+        @if $enable-sticky-bottom {
+            .sticky-xxl-bottom {
+                position: sticky;
+                bottom: 0;
+                z-index: 1020
+            }
+        }
+
+        @if $enable-float-start {
+            .float-xxl-start {
+                float: left !important
+            }
+        }
+
+        @if $enable-float-end {
+            .float-xxl-end {
+                float: right !important
+            }
+        }
+
+        @if $enable-float-none {
+            .float-xxl-none {
+                float: none !important
+            }
+        }
+
+        @if $enable-object-fit-contain {
+            .object-fit-xxl-contain {
+                -o-object-fit: contain !important;
+                object-fit: contain !important
+            }
+        }
+
+        @if $enable-object-fit-cover {
+            .object-fit-xxl-cover {
+                -o-object-fit: cover !important;
+                object-fit: cover !important
+            }
+        }
+
+        @if $enable-object-fit-fill {
+            .object-fit-xxl-fill {
+                -o-object-fit: fill !important;
+                object-fit: fill !important
+            }
+        }
+
+        @if $enable-object-fit-scale {
+            .object-fit-xxl-scale {
+                -o-object-fit: scale-down !important;
+                object-fit: scale-down !important
+            }
+        }
+
+        @if $enable-object-fit-none {
+            .object-fit-xxl-none {
+                -o-object-fit: none !important;
+                object-fit: none !important
+            }
+        }
+
+        @if $enable-d-inline {
+            .d-xxl-inline {
+                display: inline !important
+            }
+        }
+
+        @if $enable-d-inline-block {
+            .d-xxl-inline-block {
+                display: inline-block !important
+            }
+        }
+
+        @if $enable-d-block {
+            .d-xxl-block {
+                display: block !important
+            }
+        }
+
+        @if $enable-d-grid {
+            .d-xxl-grid {
+                display: grid !important
+            }
+        }
+
+        @if $enable-d-inline-grid {
+            .d-xxl-inline-grid {
+                display: inline-grid !important
+            }
+        }
+
+        @if $enable-d-table {
+            .d-xxl-table {
+                display: table !important
+            }
+        }
+
+        @if $enable-d-table-row {
+            .d-xxl-table-row {
+                display: table-row !important
+            }
+        }
+
+        @if $enable-d-table-cell {
+            .d-xxl-table-cell {
+                display: table-cell !important
+            }
+        }
+
+        @if $enable-d-flex {
+            .d-xxl-flex {
+                display: flex !important
+            }
+        }
+
+        @if $enable-d-inline-flex {
+            .d-xxl-inline-flex {
+                display: inline-flex !important
+            }
+        }
+
+        @if $enable-d-none {
+            .d-xxl-none {
+                display: none !important
+            }
+        }
+
+        @if $enable-flex-fill {
+            .flex-xxl-fill {
+                flex: 1 1 auto !important
+            }
+        }
+
+        @if $enable-flex-row {
+            .flex-xxl-row {
+                flex-direction: row !important
+            }
+        }
+
+        @if $enable-flex-column {
+            .flex-xxl-column {
+                flex-direction: column !important
+            }
+        }
+
+        @if $enable-flex-row-reverse {
+            .flex-xxl-row-reverse {
+                flex-direction: row-reverse !important
+            }
+        }
+
+        @if $enable-flex-column-reverse {
+            .flex-xxl-column-reverse {
+                flex-direction: column-reverse !important
+            }
+        }
+
+        @if $enable-flex-grow-0 {
+            .flex-xxl-grow-0 {
+                flex-grow: 0 !important
+            }
+        }
+
+        @if $enable-flex-grow-1 {
+            .flex-xxl-grow-1 {
+                flex-grow: 1 !important
+            }
+        }
+
+        @if $enable-flex-shrink-0 {
+            .flex-xxl-shrink-0 {
+                flex-shrink: 0 !important
+            }
+        }
+
+        @if $enable-flex-shrink-1 {
+            .flex-xxl-shrink-1 {
+                flex-shrink: 1 !important
+            }
+        }
+
+        @if $enable-flex-wrap {
+            .flex-xxl-wrap {
+                flex-wrap: wrap !important
+            }
+        }
+
+        @if $enable-flex-nowrap {
+            .flex-xxl-nowrap {
+                flex-wrap: nowrap !important
+            }
+        }
+
+        @if $enable-flex-wrap-reverse {
+            .flex-xxl-wrap-reverse {
+                flex-wrap: wrap-reverse !important
+            }
+        }
+
+        @if $enable-justify-content-start {
+            .justify-content-xxl-start {
+                justify-content: flex-start !important
+            }
+        }
+
+        @if $enable-justify-content-end {
+            .justify-content-xxl-end {
+                justify-content: flex-end !important
+            }
+        }
+
+        @if $enable-justify-content-center {
+            .justify-content-xxl-center {
+                justify-content: center !important
+            }
+        }
+
+        @if $enable-justify-content-between {
+            .justify-content-xxl-between {
+                justify-content: space-between !important
+            }
+        }
+
+        @if $enable-justify-content-around {
+            .justify-content-xxl-around {
+                justify-content: space-around !important
+            }
+        }
+
+        @if $enable-justify-content-evenly {
+            .justify-content-xxl-evenly {
+                justify-content: space-evenly !important
+            }
+        }
+
+        @if $enable-align-items-start {
+            .align-items-xxl-start {
+                align-items: flex-start !important
+            }
+        }
+
+        @if $enable-align-items-end {
+            .align-items-xxl-end {
+                align-items: flex-end !important
+            }
+        }
+
+        @if $enable-align-items-center {
+            .align-items-xxl-center {
+                align-items: center !important
+            }
+        }
+
+        @if $enable-align-items-baseline {
+            .align-items-xxl-baseline {
+                align-items: baseline !important
+            }
+        }
+
+        @if $enable-align-items-stretch {
+            .align-items-xxl-stretch {
+                align-items: stretch !important
+            }
+        }
+
+        @if $enable-align-content-start {
+            .align-content-xxl-start {
+                align-content: flex-start !important
+            }
+        }
+
+        @if $enable-align-content-end {
+            .align-content-xxl-end {
+                align-content: flex-end !important
+            }
+        }
+
+        @if $enable-align-content-center {
+            .align-content-xxl-center {
+                align-content: center !important
+            }
+        }
+
+        @if $enable-align-content-between {
+            .align-content-xxl-between {
+                align-content: space-between !important
+            }
+        }
+
+        @if $enable-align-content-around {
+            .align-content-xxl-around {
+                align-content: space-around !important
+            }
+        }
+
+        @if $enable-align-content-stretch {
+            .align-content-xxl-stretch {
+                align-content: stretch !important
+            }
+        }
+
+        @if $enable-align-self-auto {
+            .align-self-xxl-auto {
+                align-self: auto !important
+            }
+        }
+
+        @if $enable-align-self-start {
+            .align-self-xxl-start {
+                align-self: flex-start !important
+            }
+        }
+
+        @if $enable-align-self-end {
+            .align-self-xxl-end {
+                align-self: flex-end !important
+            }
+        }
+
+        @if $enable-align-self-center {
+            .align-self-xxl-center {
+                align-self: center !important
+            }
+        }
+
+        @if $enable-align-self-baseline {
+            .align-self-xxl-baseline {
+                align-self: baseline !important
+            }
+        }
+
+        @if $enable-align-self-stretch {
+            .align-self-xxl-stretch {
+                align-self: stretch !important
+            }
+        }
+
+        @if $enable-text-start {
+            .text-xxl-start {
+                text-align: left !important
+            }
+        }
+
+        @if $enable-text-end {
+            .text-xxl-end {
+                text-align: right !important
+            }
+        }
+
+        @if $enable-text-center {
+            .text-xxl-center {
+                text-align: center !important
+            }
+        }
+    }
+}

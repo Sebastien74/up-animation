@@ -1,0 +1,25 @@
+{% trans_default_domain 'admin' %}
+
+<li>
+    <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
+        {{ 'fal database'|icon(13, 15, 'white me-2', {icon: true}) }}
+        <span class="hide-menu">{{ "Doctrine"|trans }}</span>
+    </a>
+    <ul aria-expanded="false" class="collapse bg-info-light">
+        <li>
+            <a href="{{ path('doctrine_schema_update') }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "MAJ de la base de donnée"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('doctrine_clear_cache_result') }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Vider le cache des résultats"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('doctrine_schema_validate') }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Vérification du schéma"|trans }}</span>
+            </a>
+        </li>
+    </ul>
+</li>

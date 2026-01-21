@@ -1,0 +1,15 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'table'|moduleActive(configuration) %}
+    {% set uri = app.request.uri %}
+    {% set active = '/tables/' in uri %}
+    {% set module = 'table'|moduleActive(configuration) %}
+    {% set intl = intlsModules['table'][app.user.locale] is defined ? intlsModules['table'][app.user.locale] : intlsModules['table']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['table']['entity'].adminName is defined ? intlsModules['table']['entity'].adminName : "Tableaux"|trans) %}
+    {% set icon = intlsModules['table']['entity'].iconClass is defined and intlsModules['table']['entity'].iconClass ? intlsModules['table']['entity'].iconClass : '/medias/icons/light/table.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a href="{{ path('admin_table_index', {website: websiteId}) }}" data-toggle="preloader">
+            {{ icon|icon(15, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% endif %}

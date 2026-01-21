@@ -1,0 +1,98 @@
+{% trans_default_domain 'admin' %}
+
+{% set allLocales = allLocales is defined ? allLocales : website.configuration.allLocales %}
+{% set asMultiLocales = allLocales|length > 1 %}
+
+{% if haveH1.error is defined and haveH1.error %}
+    {% set haveH1 = haveH1|unset('error') %}
+    {% set noTitle = [] %}
+    {% set moreThanOne = [] %}
+    {% for locale, existing in haveH1 %}
+        {% if not existing %}
+            {% set noTitle = noTitle|merge([locale]) %}
+        {% endif %}
+        {% if existing > 1 %}
+            {% set moreThanOne = moreThanOne|merge([locale]) %}
+        {% endif %}
+    {% endfor %}
+    {% set message = '<ul class="m-0 reset">' %}
+    {% if noTitle is not empty %}
+        {% set message = '<li class="d-flex align-items-center my-1">' %}
+        {% set message = message~"La page ne contient pas de <strong class='ms-1 fw-700'>titre H1</strong>."|trans|raw %}
+        {% if asMultiLocales %}
+            {% for locale in noTitle %}
+                {% set flag = '<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="'~asset('/medias/icons/flags/'~locale~'.svg')~'" class="img-fluid lazy-load flag ms-2" height="14" width="19">' %}
+                {% set message = message~flag %}
+            {% endfor %}
+        {% endif %}
+        {% set message = message~'</li>' %}
+    {% endif %}
+    {% if moreThanOne is not empty %}
+        {% set message = message~'<li class="d-flex align-items-center my-1">' %}
+        {% set message = message~"La page dépasse le nombre recommandé de <strong class='ms-1 fw-700'>titres H1</strong>."|trans|raw %}
+        {% if asMultiLocales %}
+            {% for locale in moreThanOne %}
+                {% set flag = '<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="'~asset('/medias/icons/flags/'~locale~'.svg')~'" class="img-fluid lazy-load flag ms-2" height="14" width="19">' %}
+                {% set message = message~flag %}
+            {% endfor %}
+        {% endif %}
+        {% set message = message~'</li>' %}
+    {% endif %}
+    {% set message = message~'</ul>' %}
+    {% include 'admin/include/alert.html.twig' with {alert: 'error', badge: "SEO", display: 'alert', size: 'small', message: message } only %}
+{% endif %}
+
+{% if (seoAlert.noTitle is defined or seoAlert.noDescription is defined) and (seoAlert.noTitle is not empty or seoAlert.noDescription is not empty) %}
+    {% set message = "Vous n'avez pas renseigné toutes vos balises :"|trans %}
+    {% set message = message~'<ul class="m-0 ps-4">' %}
+    {% if seoAlert.noTitle is not empty %}
+        {% set message = message~'<li class="my-1"><span class="d-flex align-items-center">' %}
+        {% set message = message~"Balise Méta titre manquante."|trans|raw %}
+        {% if asMultiLocales %}
+            {% for locale in seoAlert.noTitle %}
+                {% set flag = '<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="'~asset('/medias/icons/flags/'~locale~'.svg')~'" class="img-fluid lazy-load flag ms-2" height="14" width="19">' %}
+                {% set message = message~flag %}
+            {% endfor %}
+        {% endif %}
+        {% set message = message~'</span></li>' %}
+    {% endif %}
+    {% if seoAlert.noDescription is not empty %}
+        {% set message = message~'<li class="my-1"><span class="d-flex align-items-center">' %}
+        {% set message = message~"Balise Méta description manquante."|trans|raw %}
+        {% if asMultiLocales %}
+            {% for locale in seoAlert.noDescription %}
+                {% set flag = '<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="'~asset('/medias/icons/flags/'~locale~'.svg')~'" class="img-fluid lazy-load flag ms-2" height="14" width="19">' %}
+                {% set message = message~flag %}
+            {% endfor %}
+        {% endif %}
+        {% set message = message~'</span></li>' %}
+    {% endif %}
+    {% set message = message~'</ul>' %}
+    {% include 'admin/include/alert.html.twig' with {alert: "warning", badge: "SEO", display: "alert", size: "small", message: message} only %}
+{% endif %}
+
+{% if mediasAlert is defined and mediasAlert is not empty %}
+    {% set message = "Vous n'avez pas renseigné toutes les balises titres de vos images :"|trans %}
+    {% set message = message~'<ul class="m-0 ps-4">' %}
+    {% for filename, files in mediasAlert %}
+        {% for entityId, alert in files %}
+            {% set link = 'admin_block_edit' != masterRequest().get('_route') and alert.block is defined
+                ? path('admin_block_edit', {website: websiteId(), col: alert.block.col.id, interfaceName: interface.name, interfaceEntity: entity.id, block: alert.block.id}) : null %}
+            {% set message = message~'<li class="my-1"><span class="d-flex align-items-center">' %}
+            {% if link %}
+                {% set message = message~"<a href='"~link~"' class='text-warning text-underline'>" %}
+            {% endif %}
+            {% set message = message~'<i>'~filename~'</i>' %}
+            {% if link %}
+                {% set message = message~"</a>" %}
+            {% endif %}
+            {% for locale in alert.locales %}
+                {% set flag = asMultiLocales ? '<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="'~asset('/medias/icons/flags/'~locale~'.svg')~'" class="img-fluid lazy-load flag ms-2" height="14" width="19">' : '' %}
+                {% set message = message~flag %}
+            {% endfor %}
+            {% set message = message~'</span></li>' %}
+        {% endfor %}
+    {% endfor %}
+    {% set message = message~'</ul>' %}
+    {% include 'admin/include/alert.html.twig' with {alert: "warning", badge: "SEO", display: "alert", size: "small", message: message} only %}
+{% endif %}

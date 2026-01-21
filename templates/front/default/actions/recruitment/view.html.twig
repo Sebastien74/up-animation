@@ -1,0 +1,186 @@
+{% extends 'front/' ~ websiteTemplate ~ '/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% import 'front/' ~ websiteTemplate ~ '/include/macros/microdata.html.twig' as microdata %}
+{% import _self as macro %}
+
+{% block microData %}
+    {{ microdata.view(entity.mainMedia, seo) }}
+{% endblock %}
+
+{#{% import 'core/src-macro.html.twig' as resources %}#}
+
+{#{% set seoTitle = seo.title is defined and seo.title ? seo.title : entity.title %}#}
+{#{% set parentPageUrl = website|i18nUrl(page, app.request.locale, true) %}#}
+{#{% set parentPagePath = parentPageUrl ? path('front_index', {'url': parentPageUrl.code}) : null %}#}
+{#{% set parentPageSeo = parentPageUrl ? parentPageUrl|seo(page, app.request.locale, true) %}#}
+{#{% set parentPageTitle = parentPageSeo.breadcrumb is defined and parentPageSeo.breadcrumb#}
+{#    ? parentPageSeo.breadcrumb : (parentPageSeo.titleH1 is defined and parentPageSeo.titleH1 ? parentPageSeo.titleH1: "Nos offres d'emplo"|trans) %}#}
+
+{#{% set contract = entity.contract %}#}
+{#{% set contractI18n = contract|i18n %}#}
+{#{% set contractTitle = contractI18n.title is defined and contractI18n.title ? contractI18n.title : (contract.adminName is defined ? contract.adminName : null) %}#}
+
+{#{% block microData %}#}
+{#    {% include 'front/' ~ websiteTemplate ~ '/include/microdata-entity.html.twig' with {#}
+{#        'seo': seo,#}
+{#        'website': website,#}
+{#        'entity': entity,#}
+{#        'haveMainMedia': null,#}
+{#        'i18nMainMedia': null#}
+{#    } only %}#}
+{#{% endblock %}#}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-cms', null, webpack) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-cms', null,  webpack) }}
+{% endblock %}
+
+{% block body %}
+
+    {#    {% macro breadcrumbLink(url, position, title, divider) %}#}
+    {#        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"#}
+    {#            class="breadcrumb-item d-inline-flex align-items-center">#}
+    {#            {% if divider %}#}
+    {#            <a itemprop="item" itemscope itemtype="https://schema.org/WebPage"#}
+    {#               itemid="{{ url }}" href="{{ url }}" data-position="{{ position }}" data-toggle="preloader">#}
+    {#                {% endif %}#}
+    {#                <span itemprop="name" class="text-secondary text-uppercase{% if not divider %} active fw-700"{% endif %}" aria-label="{{ title|striptags }}">{{ title|striptags }}</span>#}
+    {#                {% if divider %}#}
+    {#            </a>#}
+    {#            {% endif %}#}
+    {#            <meta itemprop="position" content="{{ position }}">#}
+    {#            {% if divider %}#}
+    {#                <i class="icon-chevron-right separator"></i>#}
+    {#            {% endif %}#}
+    {#        </li>#}
+    {#    {% endmacro %}#}
+
+    {#    <div class="breadcrumb-wrap px-2 px-md-0">#}
+    {#        <div class="container">#}
+    {#            <div class="row">#}
+    {#                <div class="col-12">#}
+    {#                    <ol id="breadcrumb" class="breadcrumb d-inline-flex mb-0 ps-0 initial bg-transparent justify-content-start"#}
+    {#                        itemscope itemtype="https://schema.org/BreadcrumbList">#}
+    {#                        {{ _self.breadcrumbLink(app.request.schemeAndHttpHost, 1, 'Accueil'|trans, true) }}#}
+    {#                        {% if parentPagePath %}#}
+    {#                            {{ _self.breadcrumbLink(parentPagePath, 2, parentPageTitle, true) }}#}
+    {#                        {% endif %}#}
+    {#                        {% set breadcrumbTitle = seo.breadcrumb is defined and seo.breadcrumb#}
+    {#                            ? seo.breadcrumb : (seo.titleH1 is defined and seo.titleH1 ? seo.titleH1: entity.title) %}#}
+    {#                        {{ _self.breadcrumbLink(app.request.uri, 4, breadcrumbTitle, false) }}#}
+    {#                    </ol>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    {% macro linksSocial() %}
+        <a class="d-block me-1" href="https://www.linkedin.com/sharing/share-offsite/?url={{ app.request.uri }}" rel="noreferrer noopener" target="_blank">
+            {{ "cms linkedin"|icon(25, 25) }}
+        </a>
+        <a class="d-block me-1" href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" rel="noreferrer noopener" target="_blank">
+            {{ "cms facebook"|icon(25, 25) }}
+        </a>
+        <a class="d-block" href="https://twitter.com/intent/tweet?url={{ app.request.uri }}" rel="noreferrer noopener" target="_blank">
+            {{ "cms twitter"|icon(25, 25) }}
+        </a>
+    {% endmacro %}
+
+    {% if entity.intl.title %}
+        {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+            block: entity,
+            customMedia: entity.mainMediaInHeader ? entity.headerMedia : null,
+            fullSize: true,
+            page: page,
+            pageTitle: entity.intl.title,
+            template: websiteTemplate,
+            thumbConfiguration: thumbConfigurationHeader } %}
+    {% endif %}
+
+    <div class="job-view-container position-relative container pt-lg pb-lg">
+        <div id="job-content-wrap" class="row aos position-relative" data-aos="fade-right">
+            <div id="job-content" class="col-lg-6 col-xxl-5">
+                <div id="job-info" class="px-3">
+                    {% if entity.contract.title %}
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Type de contrat :"|trans|raw }}</strong> {{ entity.contract.title|raw }}</p>
+                    {% endif %}
+                    {% if entity.date %}
+                        {% set date = entity.date|isDateTime ? entity.date|format_datetime(pattern='MM/Y', locale=app.request.locale)|capitalize : entity.date %}
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Disponibilité :"|trans|raw }}</strong> {{  date }}</p>
+                    {% endif %}
+                    {% if entity.duration %}
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Durée du contrat :"|trans|raw }}</strong> {{ entity.duration|raw  }}</p>
+                    {% endif %}
+                    {% if entity.company %}
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Entreprise :"|trans|raw }}</strong> {{ entity.company|raw }}</p>
+                    {% endif %}
+                    {% if entity.place %}
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Localité :"|trans|raw }}</strong> {{ entity.place|raw }}{% if entity.department %} ({{ entity.department }}){% endif %}</p>
+                    {% endif %}
+                    {% if entity.diploma %}
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Diplôme :"|trans|raw }}</strong> {{ entity.diploma|raw }}</p>
+                    {% endif %}
+                    {% if entity.drivingLicence %}
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Permis de conduire :"|trans|raw }}</strong> {{ entity.drivingLicence|raw }}</p>
+                    {% endif %}
+                    {% if entity.remuneration %}
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Rémunération :"|trans|raw }}</strong> {{ entity.remuneration|raw }}</p>
+                    {% endif %}
+                </div>
+                <div class="content px-3">
+                    {% if entity.introduction %}
+                        <div class="mt-4">
+                            <div class="introduction text-primary">{{ entity.introduction|raw }}</div>
+                        </div>
+                    {% endif %}
+                    {% if entity.body %}
+                        <div class="mt-4 content-wrap">
+                            <strong class="section-title d-inline-block w-100 text-primary mb-3">{{ "Description du poste :"|trans|raw }}</strong>
+                            <div class="body">{{ entity.body|raw }}</div>
+                        </div>
+                    {% endif %}
+                    {% if entity.profil %}
+                        <div class="mt-4 content-wrap">
+                            <strong class="section-title d-inline-block w-100 text-primary mb-3">{{ "Profil recherché :"|trans|raw }}</strong>
+                            <div class="body">{{ entity.profil|raw }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="back-share-content d-flex align-items-center justify-content-between mx-3 mt-4 pt-4">
+                    <div class="left">
+                        {% if pageUrl %}
+                            <a href="{{ path('front_index', {'url': pageUrl}) }}" class="back-link d-flex align-items-center justify-content-start">
+                                <i class="icon-chevron-circle-left"></i>
+                                <span class="ms-2">{{ 'Retour aux offres'|trans }}</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="right">
+                        <div class="share d-flex align-items-center justify-content-end">
+                            <span class="me-2">{{ 'Partager sur :'|trans|raw }}</span>
+                            {{ macro.linksSocial() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="form-job" class="col-lg-6 col-xxl-5 mt-5 mt-lg-0 ms-auto">
+                <div class="py-5 px-sm-4 bg-primary m-0">
+                    <div class="text-center">
+                        <div class="pencil text-center w-100">{{ "cms pencil-write"|icon(35, 35, 'white mb-2') }}</div>
+                        <h2 class="title text-center text-uppercase fw-700 d-inline-block w-100 mb-4">{{ "Postuler à ce poste"|trans|raw }}</h2>
+                    </div>
+                    {% set form = entity.form ? entity.form.slug : 'recruitment' %}
+                    {{ render_esi(path('front_form_view', {'filter': form, 'website': website.id, 'url': url.id} )) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

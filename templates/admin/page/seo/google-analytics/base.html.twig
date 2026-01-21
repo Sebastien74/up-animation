@@ -1,0 +1,131 @@
+{% extends 'admin/base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageTitle = "Google Analytics:"|trans~" "~page|trans|capitalize %}
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% set tabs = {
+    general: {
+        title: "Général"|trans,
+        icon: "fal rss"
+    },
+    localization: {
+        title: "Localisation"|trans,
+        icon: "fal map-marked-alt"
+    },
+    pages: {
+        title: "Pages"|trans,
+        icon: "fal copy"
+    },
+    search: {
+        title: "Recherche"|trans,
+        icon: "fal search"
+    },
+    parameters: {
+        title: "Paramétrages"|trans,
+        icon: "fal cog"
+    }
+} %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-google-analytics', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-google-analytics', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {% set configuration = website.configuration %}
+    {% set allLocales = configuration.allLocales %}
+    {% set asMultiLocales = allLocales|length > 1 %}
+
+    <div class="card">
+
+        <ul class="nav nav-tabs custom-tab large" role="tablist">
+            {% for tabId, config in tabs %}
+                <li class="nav-item">
+                    {% if not loop.last %}
+                        {% set active = tabId == app.request.get('page') %}
+                        {% set color = active ? 'white' : 'dark' %}
+                        <a href="{{ path('admin_google_analytics', {website: websiteId, page: tabId, locale: locale}) }}"
+                           class="nav-link{% if tabId == app.request.get('page') %} active{% endif %}" data-toggle="preloader">
+                            {{ config.icon|icon(17, 17 ,color~' me-sm-2') }}
+                            <span class="d-none d-sm-inline-block">{{ config.title }}</span>
+                        </a>
+                    {% else %}
+                        <a href="#" id="google-params" class="nav-link d-none" data-bs-toggle="modal" data-bs-target="#google-modal-dev">
+                            {{ config.icon|icon(null, 17 ,color~' me-sm-2') }}
+                            <span class="d-none d-sm-inline-block">{{ config.title }}</span>
+                        </a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            <li id="google-auth" class="nav-item raw{% if asMultiLocales %} multi-locales{% endif %}">
+                <a class="col-12 my-auto">
+                    <div id="embed-api-auth-container" class="me-4"></div>
+                </a>
+            </li>
+            {% if asMultiLocales %}
+                <li id="google-locales-switcher" class="nav-item">
+                    <div class="btn-group" role="group">
+                        <button id="locales-dropdown" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                 data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}"
+                                 class="img-fluid lazy-load me-2" height="14" width="19">{{ locale|languageName }}
+                        </button>
+                        <div id="locales-dropdown-select" class="dropdown-menu" aria-labelledby="locales-dropdown">
+                            {% for websiteLocale in allLocales %}
+                                {% if websiteLocale != locale %}
+                                    <a class="dropdown-item" href="{{ path('admin_google_analytics', {website: websiteId(), page: 'general', locale: websiteLocale}) }}" data-toggle="preloader">
+                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                             data-src="{{ asset('/medias/icons/flags/'~websiteLocale~'.svg') }}"
+                                             class="img-fluid lazy-load me-2" height="14" width="19">{{ websiteLocale|languageName }}
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+
+        <div class="card-body pb-0">
+
+            <div id="google-data-js"
+                 data-client-id="{{ website.api.google.clientId }}"
+                 data-duration="{{ website.api.google.analyticsStatsDuration }}"
+                 data-account-id="{{ website.api.google.analyticsAccountId }}"></div>
+
+            {% if website.api.google.clientId %}
+                {% block page %}{% endblock %}
+            {% else %}
+                {% include 'admin/include/alert.html.twig' with {alert: "danger", message: "Vous devez configurer l'API Google"|trans} only %}
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="google-modal-dev">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">{{"Comptes Google Analytics"|trans}}</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">{{ 'fal times'|icon(20, 20, 'dark') }}</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div id="view-selector-container"></div>
+                    <span id="gaIdResultContainer"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

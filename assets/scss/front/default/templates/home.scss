@@ -1,0 +1,55 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2024-10-09, 8:55 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    TEMPLATE HOME :
+    ===============
+
+    1 ) Modules
+    2 ) Core import
+    3 ) Main carousel
+
+------------------------------------------------------------------ */
+
+/*--------------------------------------
+   1 ) Modules
+--------------------------------------*/
+
+$enable-card: true;
+$enable-form: false;
+$enable-title-header: false;
+$enable-breadcrumb: false;
+
+/*-----------------------------------
+   2 ) Core import
+-----------------------------------*/
+
+@import "../vendor";
+
+/*-----------------------------------
+   3 ) Main carousel
+-----------------------------------*/
+
+.carousel-main-home {
+
+    img, .right, .left {
+
+        @include mediaQuery(min-lg) {
+            height: 500px !important;
+        }
+
+        @include mediaQuery(between-md-lg) {
+            height: 550px !important;
+        }
+
+        @include mediaQuery(max-md) {
+            height: 634px !important;
+        }
+
+        object-fit: cover;
+    }
+}

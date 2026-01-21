@@ -1,0 +1,196 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2024-10-09, 8:55 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    TEMPLATE ERROR :
+    ================
+
+    1 ) Modules
+    3 ) Core import
+    4 ) Core
+
+------------------------------------------------------------------ */
+
+/*--------------------------------------
+   1 ) Modules
+--------------------------------------*/
+
+$enable-alert: true;
+
+/*-----------------------------------
+   2 ) Core import
+-----------------------------------*/
+
+@import "../vendor";
+
+/*-----------------------------------
+   3 ) Core
+-----------------------------------*/
+
+.flash-bag-container {
+
+    @include mediaQuery(max-md) {
+        padding-top: 5rem;
+    }
+
+    @include mediaQuery(min-md) {
+        padding-top: 9rem;
+    }
+}
+
+#exception-block {
+
+    background-color: $white;
+    background-size: cover;
+    padding-top: 5rem;
+    padding-bottom: 7rem;
+    position: relative;
+    min-height: calc(100dvh - 70px - 169px);
+
+    &:before {
+        position: absolute;
+        content: '';
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: transparentize($primary, .2);
+    }
+
+    #sitemap {
+        margin-bottom: 0;
+        padding: 45px 0;
+    }
+
+    .back-to-home i {
+        font-size: rem(12px);
+    }
+}
+
+#errorStatus {
+
+    position: relative;
+    min-height: 450px;
+
+    .errorStatus {
+        position: absolute;
+        left: 50%;
+        top: 58%;
+        transform: translate(-50%, -50%);
+    }
+
+    .message {
+        font-size: 19px;
+        font-weight: 300;
+        line-height: 1.2 !important;
+    }
+}
+
+.errorStatus {
+
+    width: 100%;
+    padding-left: 160px;
+    line-height: 1.1;
+
+    @include mediaQuery(max-lg) {
+        max-width: 560px;
+    }
+
+    @include mediaQuery(min-lg) {
+        max-width: 700px;
+    }
+
+    h1, .h1 {
+
+        font-family: $font-secondary;
+        font-size: rem(140px);
+        line-height: rem(130px);
+        font-weight: 900 !important;
+        margin-bottom: 10px;
+        color: $primary !important;
+        text-transform: uppercase;
+
+        @include mediaQuery(min-lg) {
+            margin-top: -1rem;
+        }
+    }
+
+    h2, .h2 {
+
+        font-family: $font-secondary;
+        font-size: rem(35px);
+        font-weight: 400;
+        margin: 0;
+        color: transparentize($white, .2) !important;
+        text-transform: uppercase;
+
+        @include mediaQuery(min-lg) {
+            &:not(.h1) {
+                margin-left: 2rem;
+            }
+        }
+    }
+
+    p {
+
+        font-weight: 300;
+        line-height: 1.3rem;
+        color: transparentize($white, .4) !important;
+
+        @include mediaQuery(min-lg) {
+            margin-left: 4rem;
+        }
+    }
+}
+
+#exception-sitemap {
+
+    h2.title {
+        font-size: rem(32px);
+    }
+
+    margin-bottom: 60px;
+}
+
+@include mediaQuery(max-md) {
+
+    #exception-block {
+        min-height: initial !important;
+    }
+
+    #errorStatus {
+
+        min-height: initial;
+        padding: 45px 0 45px 0;
+
+        .errorStatus {
+
+            position: initial;
+            left: initial;
+            top: initial;
+            transform: initial;
+            max-width: 100%;
+            width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+            text-align: center;
+
+            .errorStatus-code {
+                display: none !important;
+            }
+
+            h1 {
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+
+            .btn {
+                padding: 1rem;
+            }
+        }
+    }
+}

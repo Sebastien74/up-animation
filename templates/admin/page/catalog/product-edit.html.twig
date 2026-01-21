@@ -1,0 +1,90 @@
+{% extends "admin/page/catalog/product.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set isProduct = true %}
+
+{% block entityForm %}
+
+    {% set configsSet = [] %}
+
+    {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-entity'}}) }}
+        <div class="tab-content pb-2">
+            {% for tabId, config in tabs %}
+                <div class="tab-pane pt-4 pe-4 ps-4{% if activeTab == tabId or not activeTab and loop.first and isProduct %} active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab">
+                    <div class="row">
+                        {% for field in form.children %}
+                            {% if tabId not in configsSet %}
+                                {% if tabId == 'intls' %}
+                                    {{ form_row(form.adminName) }}
+                                    {% if form.intls is defined %}
+                                        {% include 'admin/core/form/intls.html.twig' with {intls: form.intls, disableFields: ['associatedWords']} %}
+                                    {% endif %}
+                                    {% set configsSet = configsSet|merge(['intls']) %}
+                                {% elseif tabId == 'features' and field.vars.name == 'values' %}
+                                    {% include 'admin/core/form/prototype.html.twig' with {fullBtn: true} %}
+                                {% elseif tabId == 'configuration' %}
+                                    <div class="col-12">
+                                        <h4 class="card-subtitle mb-4">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}</h4>
+                                    </div>
+                                    {% if form.catalog is defined %}
+                                        {{ form_row(form.catalog) }}
+                                    {% endif %}
+                                    {% if form.mainCategory is defined %}
+                                        {{ form_row(form.mainCategory) }}
+                                    {% endif %}
+                                    {% if form.categories is defined %}
+                                        {{ form_row(form.categories) }}
+                                    {% endif %}
+                                    {% if form.subCategories is defined %}
+                                        {{ form_row(form.subCategories) }}
+                                    {% endif %}
+                                    {{ form_row(form.promote) }}
+                                    {% if form.customLayout is defined %}
+                                        {{ form_row(form.customLayout) }}
+                                    {% endif %}
+                                    {% if form.startDate is defined and form.endDate is defined %}
+                                        <div class="col-12">
+                                            <h4 class="card-subtitle mb-4">{{ 'fal calendar'|icon(null, 14, 'info-darken me-2') }}{{ "Dates"|trans }}</h4>
+                                        </div>
+                                        {{ form_row(form.startDate) }}
+                                        {{ form_row(form.endDate) }}
+                                    {% endif %}
+                                    <div class="col-12">
+                                        <h4 class="card-subtitle mb-4">{{ 'fal calendar'|icon(null, 14, 'info-darken me-2') }}{{ "Dates de publication"|trans }}</h4>
+                                    </div>
+                                    {{ form_row(form.publicationStart) }}
+                                    {{ form_row(form.publicationEnd) }}
+                                    {% if form.intls is defined %}
+                                        {% include 'admin/core/form/intls-config.html.twig' with {intls: form.intls} %}
+                                    {% endif %}
+                                    {% set configsSet = configsSet|merge(['configuration']) %}
+                                {% elseif tabId == 'informations' and field.vars.name == 'information' %}
+                                    {% include 'admin/core/form/edit-fields-base.html.twig' with {
+                                        form: field
+                                    } only %}
+                                {% elseif tabId == 'lots' and field.vars.name == 'lots' %}
+                                    {% include 'admin/core/form/prototype.html.twig' with {field: form[field.vars.name], fullBtn: true} %}
+                                {% elseif tabId == 'seo' %}
+                                    {% include 'admin/core/form/urls.html.twig' with {
+                                        form: form,
+                                        displaySeo: true,
+                                        urls: form.urls,
+                                        classname: interface.classname
+                                    } %}
+                                    {% set configsSet = configsSet|merge(['seo']) %}
+                                    {% if form.intls is defined and form.intls|first.associatedWords is defined %}
+                                        {% include 'admin/core/form/intls.html.twig' with {intls: form.intls, enabledFields: ['associatedWords']} %}
+                                    {% endif %}
+                                {% elseif tabId == 'products' and field.vars.name == 'products'%}
+                                    {{ form_row(form[field.vars.name]) }}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {{ form_end(form) }}
+
+{% endblock %}

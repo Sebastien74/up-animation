@@ -1,0 +1,91 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Form\Model\Security\Front;
+
+use App\Entity\Security\Profile;
+use App\Form\Validator\UniqUserEmail;
+use App\Form\Validator\UniqUserLogin;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * RegistrationFormModel.
+ *
+ * Set UserFront security asserts form attributes for registration
+ *
+ * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
+ */
+class RegistrationFormModel
+{
+    #[Assert\NotBlank(['message' => "Veuillez saisir un nom d'utilisateur."])]
+    #[UniqUserLogin]
+    protected ?string $login = null;
+
+    #[Assert\NotBlank(['message' => 'Veuillez choisir une langue.'])]
+    protected ?string $locale;
+
+    #[Assert\NotBlank(['message' => 'Veuillez saisir un email.'])]
+    #[Assert\Email]
+    #[UniqUserEmail]
+    protected ?string $email = null;
+
+    #[Assert\NotBlank(['message' => 'Veuillez saisir votre nom.'])]
+    protected ?string $lastName = null;
+
+    #[Assert\NotBlank(['message' => 'Veuillez saisir votre prénom.'])]
+    protected ?string $firstName = null;
+
+    #[Assert\NotBlank(['message' => 'Veuillez saisir un mot de passe.'])]
+    #[Assert\Regex([
+        'message' => 'Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule.',
+        'pattern' => '/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}/',
+    ])]
+    protected ?string $plainPassword = null;
+
+    #[Assert\IsTrue(['message' => 'Vous devez accepter les conditions générales.'])]
+    protected bool $agreeTerms = false;
+
+    #[Assert\Valid]
+    protected ?Profile $profile = null;
+
+    public function getLogin(): ?string
+    {
+        return $this->login;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function getAgreeTerms(): bool
+    {
+        return $this->agreeTerms;
+    }
+
+    public function getProfile(): ?Profile
+    {
+        return $this->profile;
+    }
+}

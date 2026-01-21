@@ -1,0 +1,59 @@
+{% trans_default_domain 'admin' %}
+
+<div class="row">
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <h4 class="card-title card-header">{{ 'fal router'|icon(null, 18, 'info-darken me-2') }}{{ "Modules"|trans }}</h4>
+            <div role="search" class="card-body pb-0">
+                <div class="row">
+                    <div class="d-inline-block w-100 mb-3">
+                        <div class="search-in-list input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">{{ 'fal search'|icon(14, 14, 'dark') }}</span>
+                            </div>
+                            {{ form_widget(form.configuration.modulesSearch) }}
+                        </div>
+                    </div>
+                    <div class="w-100">
+                        {% include 'admin/include/alert.html.twig' with {
+                            alert: "info",
+                            display: "alert",
+                            message: "Pensez à ajouter les modules actifs a vos configurations de mise en page."|trans} only %}
+                    </div>
+                </div>
+                <div class="row m-0">
+                    {{ form_row(form.configuration.modules) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <h4 class="card-title card-header">{{ 'fal album-collection'|icon(null, 18, 'info-darken me-2') }}{{ "Types de blocs"|trans }}</h4>
+            <div role="search" class="card-body pb-0">
+                <div class="row">
+                    <div class="d-inline-block w-100 mb-3">
+                        <div class="search-in-list input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">{{ 'fal search'|icon(14, 14, 'dark') }}</span>
+                            </div>
+                            {{ form_widget(form.configuration.blockTypeSearch) }}
+                        </div>
+                    </div>
+                    <div class="w-100">
+                        {% include 'admin/include/alert.html.twig' with {
+                            alert: "info",
+                            display: "alert",
+                            message: "Pensez à ajouter les blocs actifs a vos configurations de mise en page."|trans} only %}
+                    </div>
+                </div>
+                <div class="row m-0">
+                    {{ form_row(form.configuration.blockTypes) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

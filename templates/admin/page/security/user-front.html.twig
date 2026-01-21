@@ -1,0 +1,74 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set title = "Utilisateur"|trans~' '~entity.login %}
+{% block title %}{{ title|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ title }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
+
+        <div id="edit-form-{{ interface.name }}" class="card small-dropify">
+
+            {% include 'admin/core/form/save/header.html.twig' %}
+
+            <div class="card-body pb-0">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h4 class="card-title card-subtitle">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}</h4>
+                        <div class="row">
+                            {% if form.login is defined %}
+                                {{ form_row(form.login) }}
+                            {% endif %}
+                            {% if form.email is defined %}
+                                {{ form_row(form.email) }}
+                            {% endif %}
+                            {% if form.lastName is defined %}
+                                {{ form_row(form.lastName) }}
+                            {% endif %}
+                            {% if form.firstName is defined %}
+                                {{ form_row(form.firstName) }}
+                            {% endif %}
+                            {% if form.group is defined %}
+                                {{ form_row(form.group) }}
+                            {% endif %}
+                            {% if form.locale is defined %}
+                                {{ form_row(form.locale) }}
+                            {% endif %}
+                            {% if form.company is defined %}
+                                {{ form_row(form.company) }}
+                            {% endif %}
+                            {% if form.active is defined %}
+                                {{ form_row(form.active) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="card-title card-subtitle">{{ 'fal image'|icon(null, 14, 'info-darken me-2') }}{{ "Image de profil"|trans }}</h4>
+                        <div class="row">
+                            {% if form.file is defined %}
+                                {{ form_row(form.file) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% include 'admin/core/form/save/footer.html.twig' %}
+
+        </div>
+    {{ form_end(form) }}
+
+    {{ render_esi(path('admin_userfront_password', {website: websiteId(), userfront: entity.id} )) }}
+
+{% endblock %}

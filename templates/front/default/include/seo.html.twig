@@ -1,0 +1,64 @@
+{% trans_default_domain 'front_default' %}
+
+{% set seoActive = configuration.seoStatus %}
+
+{% if seo %}
+
+    <title>
+        {% if not seoActive %}[{{ 'SEO Désactivé'|trans }}] {% endif %}
+        {% if seoTitle is defined and seoTitle %}{{ seoTitle|htmlEntities }}{% elseif seo.fullTitle is defined and seo.fullTitle %}{{ seo.fullTitle|htmlEntities }}{% endif %}
+    </title>
+
+    {% if seo.description is defined and seo.description %}
+        <meta name="description" content="{{ seo.description|htmlEntities }}">
+    {% endif %}
+
+    {% if seo.author is defined and seo.author %}
+        <meta name="author" content="{{ seo.author|striptags }}">
+    {% endif %}
+
+    {% if seo.index is defined %}
+        <meta name="robots" content="{{ seo.index }}">
+    {% endif %}
+
+    {% if seo.canonical is defined %}
+        <!-- Canonical -->
+        <link rel="canonical" href="{{ seo.canonical }}">
+    {% endif %}
+
+    {% if seo.localesAlternate is defined and seo.localesAlternate|length > 1 %}
+        <!-- Alternates links -->
+        {% for localeAlternate, alternate in seo.localesAlternate %}
+            <link rel="alternate" hreflang="{{ localeAlternate }}" href="{{ alternate }}">
+        {% endfor %}
+    {% endif %}
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="{{ companyName|striptags }}">
+    <meta property="og:locale" content="{{ app.request.locale }}">
+    {% if seo.ogFullTitle is defined %}
+        <meta property="og:title" content="{% if seo.ogFullTitle %}{{ seo.ogFullTitle|htmlEntities }}{% endif %}">
+    {% endif %}
+    {% if seo.ogDescription is defined %}
+        <meta property="og:description" content="{{ seo.ogDescription|htmlEntities }}">
+    {% endif %}
+    {% if seo.canonical is defined %}
+        <meta property="og:url" content="{{ seo.canonical }}">
+    {% endif %}
+    <meta property="og:type" content="website">
+
+    {% set ogImage = seo.ogImage is defined ? seo.ogImage : null %}
+    {% set ogImage = not ogImage and logos.share is defined and logos.share ? logos.share : ogImage %}
+    {% set ogImage = ogImage and app.request.getSchemeAndHttpHost() not in ogImage ? app.request.getSchemeAndHttpHost()~ogImage : ogImage %}
+
+    {% if ogImage %}
+        <meta property="og:image" content="{{ ogImage }}">
+    {% endif %}
+
+{% else %}
+
+    <!-- Metas -->
+    <title>[{{ 'SEO Désactivé'|trans|striptags~'] '~companyName }}</title>
+    <meta name="robots" content="noIndex">
+
+{% endif %}

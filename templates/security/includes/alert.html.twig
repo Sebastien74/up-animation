@@ -1,0 +1,31 @@
+{% trans_default_domain 'admin' %}
+
+{% trans_default_domain 'security_cms' %}
+
+{% set icons = {
+    success: 'far check',
+    info: 'fas info',
+    warning: 'fas exclamation',
+    danger: 'far exclamation-triangle',
+    error_form: 'far exclamation-triangle',
+    error: 'far exclamation-triangle',
+    undefined: 'fas info',
+} %}
+
+{% set alert = alert is defined ? alert : "info" %}
+{% set alert = "error" in alert  ? "danger" : alert %}
+{% set icon = icons[alert] is defined ? icons[alert] : icons['undefined'] %}
+
+<!-- .alert -->
+<div class="ribbon-vwrapper alert alert-{{ alert }}">
+    <div class="ribbon ribbon-bookmark ribbon-vertical-l ribbon-{{ alert }}">
+        {{ icon|icon(null, 14) }}
+    </div>
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+    {% if message is defined %}
+        {{ message|raw }}
+    {% else %}
+        {{ "Que se passe-t-il ?"|trans|raw }}
+    {% endif %}
+</div>
+<!-- /.alert -->

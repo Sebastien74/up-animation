@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-12-11, 12:13 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    USER PROFILE :
+    ==============
+
+    1 ) Imports
+    2 ) Main
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Imports
+-----------------------------------*/
+
+@import '../variables';
+
+/*-----------------------------------
+   2 ) Main
+-----------------------------------*/
+
+#user-profile-card {
+    
+    .img-user-container {
+        
+        border: 1px solid $gray-300;
+        border-radius: 0.25rem;
+        
+        #user-avatar {
+            border-top-left-radius: 0.25rem;
+        }
+        
+        #user-picture {
+            height: 200px;
+        }
+    }
+    
+    h1 {
+        
+        small {
+            font-size: 14px;
+        }
+        
+        #edit-user-btn {
+            font-size: 18px;
+        }
+    }
+    
+    h2 {
+        
+        font-size: 18px;
+        
+        svg {
+            float: left;
+            margin-top: 3px;
+        }
+    }
+
+    .img-locale {
+        margin-top: -3px;
+    }
+}

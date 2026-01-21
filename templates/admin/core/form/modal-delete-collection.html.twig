@@ -1,0 +1,18 @@
+{% trans_default_domain 'admin' %}
+
+{% set website = website() %}
+{% set btnColor = btnColor is defined ? btnColor : 'info' %}
+{% set arguments = {website: website.id, (interfaceName): entityId} %}
+{% if masterField is defined and masterRequest().get(masterField) %}
+    {% set arguments = arguments|merge({(masterField): masterRequest().get(masterField)}) %}
+{% endif %}
+
+{% if entityId and 'delete'|moduleActive(website.configuration) and ('admin_'~interfaceName~'_delete')|routeExist %}
+    <a class="btn btn-white sa-warning swal-delete-link"
+       href="{% if not isNew %}{{ path('admin_'~interfaceName~'_delete', arguments) }}{% endif %}"
+       data-bs-toggle="tooltip"
+       title="{{ "Supprimer"|trans|striptags }}"
+       data-type="collection">
+        {{ 'fas trash'|icon(14, 14, btnColor) }}
+    </a>
+{% endif %}

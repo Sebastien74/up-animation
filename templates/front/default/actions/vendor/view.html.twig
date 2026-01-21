@@ -1,0 +1,51 @@
+{% extends 'front/'~websiteTemplate~'/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% import 'front/'~websiteTemplate~'/include/macros/microdata.html.twig' as microdata %}
+
+{% set template = layout ? 'front/'~websiteTemplate~'/actions/vendor/layout.html.twig'
+    : 'front/'~websiteTemplate~'/actions/vendor/include/default-view.html.twig' %}
+{% set assetFile = 'newscast' in interfaceName ? 'newscast' : 'cms' %}
+{% set category = category is defined ? category : (entity.category is defined ? entity.category : null) %}
+{% set categorySlug = category.slug is defined ? category.slug : null %}
+{% set interfaceName = interfaceName ? interfaceName : null %}
+
+{% block microData %}
+    {{ microdata.view(entity.mainMedia, seo) }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~assetFile, null, webpack) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~assetFile~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~assetFile, null, webpack, {defer: true, nonce: csp_nonce()}) }}
+{% endblock %}
+
+{% block body %}
+    {% set class = interfaceName~'-view-container view-container position-relative remove-unused-block template-page' %}
+    {% if 'newscast' in interfaceName %}
+        <article class="{{ class }}">
+    {% else %}
+        <div class="{{ class }}">
+    {% endif %}
+        {% if layout %}
+            {% include 'front/'~websiteTemplate~'/layout.html.twig' with {
+                entity: entity,
+                entityLayout: entity,
+                category: category,
+                layout: layout,
+                asLayout: true } %}
+        {% else %}
+            {% include template %}
+        {% endif %}
+    {% if 'newscast' in interfaceName %}
+        </div>
+    {% else %}
+        </article>
+    {% endif %}
+{% endblock %}

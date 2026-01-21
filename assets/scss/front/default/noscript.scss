@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+/* ------------------------------------------------------------------------------------------
+
+    Module : No script
+    Copyright : 2025
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+------------------------------------------------------------------------------------------ */
+
+[data-simplebar] {
+    overflow: auto;
+}
+
+#preloader .no-js {
+    font-size: rem(25px);
+}
+
+.lazy-video, .img.lazy-load, picture.lazy-picture, .slider-progress-container {
+    display: none !important;
+}
+
+.splide__list {
+
+    display: inline-flex !important;
+    flex-wrap: wrap !important;
+
+    li {
+        margin-bottom: 1.5rem;
+    }
+}
+
+.newscast-teaser-vertical .nav-pills {
+
+    .category-wrap {
+        flex: 0 0 20%;
+    }
+
+    .content {
+        flex: 0 0 80%;
+    }
+}
+
+.purecounter {
+
+    position: relative !important;
+
+    .value-text-noscript {
+        display: none !important;
+    }
+
+    &::before {
+        content: attr(data-purecounter-end);
+        position: relative;
+        text-align: center;
+        font-weight: 800;
+        color: currentColor;
+        white-space: nowrap;
+    }
+}

@@ -1,0 +1,24 @@
+{% set website = website is defined ? website ? website() %}
+{% set configuration = website.configuration %}
+{% set anonymousTheme = not configuration.adminTheme %}
+{% set logo = anonymousTheme ? 'captcha.svg' : 'felix-captcha.svg' %}
+
+<div id="recaptcha"{% if anonymousTheme %} class="anonymous"{% endif %}>
+    <span class="logo cursor">
+        {{ asset('build/vendor/images/'~logo, 'vendor')|file({}, {width: 50, height: 50, title: 'Recaptcha', only_html: true, lazy: false}) }}
+    </span>
+    <div class="content">
+        <div class="row h-100">
+            <div class="col-12 my-auto">
+                <div class="w-100 float-start">
+                    <span class="d-inline-block w-100">CAPTCHA protection</span>
+                </div>
+                {% if not anonymousTheme %}
+                    <div class="w-100 float-start">
+                        <a href="https://www.felix-creation.fr/" target="_blank" rel="noopener noreferrer">Agence Félix</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageTitle = "Configuration des entités"|trans %}
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
+        <div id="edit-form-{{ interface.name }}" class="card">
+            {% include 'admin/core/form/save/header.html.twig' %}
+            <div class="card-body pb-0">
+                <h4 class="card-subtitle mb-4">{{ 'fal cog'|icon(null, 18, 'info-darken me-2') }}{{ "Configuration de l'entité"|trans }}</h4>
+                <div class="row">
+                    {{ form_row(form.adminName) }}
+                    {{ form_row(form.className) }}
+                    {{ form_row(form.entityId) }}
+                    {{ form_row(form.card) }}
+                    {{ form_row(form.mediaMulti) }}
+                    {{ form_row(form.uniqueLocale) }}
+                    {{ form_row(form.inFieldConfiguration) }}
+                </div>
+                <h4 class="card-subtitle mb-4">{{ 'fal list-ul'|icon(null, 18, 'info-darken me-2') }}{{ "Configuration des index"|trans }}</h4>
+                <div class="row">
+                    {{ form_row(form.columns) }}
+                    {{ form_row(form.searchFields) }}
+                    {{ form_row(form.exports) }}
+                    {{ form_row(form.searchFilters) }}
+                    {{ form_row(form.orderBy) }}
+                    {{ form_row(form.orderSort) }}
+                    {{ form_row(form.adminLimit) }}
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4 class="card-subtitle mb-4">{{ 'fal pencil-alt'|icon(null, 18, 'info-darken me-2') }}{{ "Configuration de l'édition"|trans }}</h4>
+                        <div class="row">
+                            {{ form_row(form.saveArea) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="card-subtitle mb-4">{{ 'fal eye'|icon(null, 18, 'info-darken me-2') }}{{ "Configuration de la visualisation"|trans }}</h4>
+                        <div class="row">
+                            {{ form_row(form.showView) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% include 'admin/core/form/save/footer.html.twig' %}
+        </div>
+    {{ form_end(form) }}
+
+{% endblock %}

@@ -1,0 +1,40 @@
+@if ($enable-faq) {
+
+@charset "UTF-8";
+
+    /* -----------------------------------------------------------------
+    
+        Copyright  : 2022
+        Created on : 2022-01-15, 1:15 PM
+        Author     : Sébastien FOURNIER <contact@sebastien-fournier.com>
+    
+        FAQ :
+        ====
+    
+    ------------------------------------------------------------------ */
+
+    .faq-accordion {
+
+        button {
+
+            position: relative;
+            font-size: 14px;
+            border-radius: 35px;
+
+            .anim-wrap {
+                width: 40px;
+                height: 40px;
+            }
+
+            svg.anim, i.anim {
+                transform: rotate(0deg);
+                transition: all .3s ease-in-out;
+            }
+
+            &.collapsed svg.anim, &.collapsed i.anim {
+                transition: all .3s ease-in-out;
+                transform: rotate(180deg);
+            }
+        }
+    }
+}

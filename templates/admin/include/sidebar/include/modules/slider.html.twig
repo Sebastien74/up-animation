@@ -1,0 +1,15 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'slider'|moduleActive(configuration) %}
+    {% set uri = app.request.uri %}
+    {% set active = '/sliders/' in uri %}
+    {% set module = 'slider'|moduleActive(configuration) %}
+    {% set intl = intlsModules['slider'][app.user.locale] is defined ? intlsModules['slider'][app.user.locale] : intlsModules['slider']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['slider']['entity'].adminName is defined ? intlsModules['slider']['entity'].adminName : 'Carrousels'|trans) %}
+    {% set icon = intlsModules['slider']['entity'].iconClass is defined and intlsModules['slider']['entity'].iconClass ? intlsModules['slider']['entity'].iconClass : '/medias/icons/light/images.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a href="{{ path('admin_slider_index', {website: websiteId}) }}" data-toggle="preloader">
+            {{ icon|icon(17, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% endif %}

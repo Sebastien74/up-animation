@@ -1,0 +1,96 @@
+{% trans_default_domain 'front_default' %}
+
+{% set media = media is defined ? media : ( mediaRelation.media is defined ? mediaRelation.media : null) %}
+{% set uploadDirname = media.website.uploadDirname is defined ? media.website.uploadDirname : website().uploadDirname %}
+{% set class = iconsClass is defined ? iconsClass : null %}
+{% set popupGallery = popupGallery is defined and popupGallery ? popupGallery : null %}
+{% set popupClass = popupGallery and imgClass is defined and imgClass ? 'glightbox '~imgClass : 'glightbox' %}
+{% set onlyLink = onlyLink is defined and onlyLink %}
+{% set parentEntity = parentEntity is defined and parentEntity ? parentEntity : media %}
+{% set intlEntity = parentEntity|intl %}
+{% set downloadable = downloadable is defined ? downloadable : (mediaRelation.downloadable is defined ? mediaRelation.downloadable : false) %}
+{% set filepathDesktop = filepathDesktop is defined ? filepathDesktop : (media.path is defined ? media.path : null) %}
+{% set filepathDesktop = media.media.category is defined and media.media.category == 'cms-component' ? media.media.filename : filepathDesktop %}
+{% set originalSrc = originalSrc is defined and originalSrc ? originalSrc : filepathDesktop %}
+{% set asDownloadable = downloadable and filepathDesktop %}
+{% set popup = popup is defined ? popup : (mediaRelation.popup is defined ? mediaRelation.popup : false) %}
+{% set asPopup = popup or popupGallery %}
+{% set title = intl.title is defined and intl.title ? intl.title : (media.media.filename is defined and media.media.filename ? media.media.filename : null) %}
+{% set author = desktop.attr.author is defined ? desktop.attr.author : (media.media.copyright is defined ? media.media.copyright : null) %}
+
+{% set targetLink = targetLink is defined and targetLink ? targetLink : (imageLinkUrl is defined ? imageLinkUrl : null) %}
+{% set externalLink = intlEntity.externalLink is defined and intlEntity.externalLink ? intlEntity.externalLink : (mediaRelation.intl.externalLink is defined ? mediaRelation.intl.externalLink : false) %}
+{% set targetBlank = targetBlank is defined and targetBlank ? targetBlank
+    : (intlEntity.newTab is defined and intlEntity.newTab ? intlEntity.newTab
+    : (mediaRelation.intl.newTab is defined ? mediaRelation.intl.newTab : false)) %}
+{% set targetLabel = intl.targetLabel is defined and intl.targetLabel ? intl.targetLabel : "En savoir plus"|trans %}
+
+{% set imageLink = imageLink is defined ? imageLink : (intlEntity ? intlEntity|intlLink : null ) %}
+{% if not targetLink and imageLink.link is defined and imageLink.link %}
+    {% set targetLink = imageLink.link %}
+    {% set targetBlank = imageLink.targetBlank %}
+{% endif %}
+
+{% set haveLink = onlyLink or targetLink %}
+{% set countLink = 0 %}
+{% if asDownloadable and originalSrc %}
+    {% set countLink = countLink + 1 %}
+{% endif %}
+{% if asPopup and originalSrc %}
+    {% set countLink = countLink + 1 %}
+{% endif %}
+{% if haveLink %}
+    {% set countLink = countLink + 1 %}
+{% endif %}
+{% set onlyOne = countLink == 1 %}
+
+<div class="img-hover-buttons-wrap position-relative overflow-hidden{% if media.radius %} radius{% endif %}{% if onlyOne %} only-one{% endif %}">
+    {% block media %}{% endblock %}
+    <div class="position-absolute inner d-flex align-items-center justify-content-center{% if class %} {{ class }}{% endif %}{% if onlyOne %} only-one{% endif %}">
+        <div class="links-wrap text-center">
+            {% if asDownloadable and originalSrc %}
+                <a href="{{ absolute_url(originalSrc) }}"
+                   class="item d-inline-block"
+                   download="{{ title|urlize(true) }}"
+                   target="_self"
+                   title="{{ title }}">
+                    <div class="wrap d-inline-flex align-items-center justify-content-center px-2">
+                        <div class="d-inline-flex flex-column">
+                            <i class="icon-download text-white"></i>
+                            <strong class="label fw-500 text-white mt-2">{{ "Télécharger"|trans }}</strong>
+                            <small class="info text-italic text-white d-inline-block w-100">({{ extension|upper~' - '~ media.fileInfo.formatBytes}})</small>
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+            {% set popupPath = desktopMedia.path is defined and desktopMedia.path ? desktopMedia.path : filepathDesktop %}
+            {% if asPopup and originalSrc %}
+                <a href="{{ absolute_url(originalSrc) }}"
+                   title="{{ title }}{% if author %} &#64;{{ author }}{% endif %}"
+                   data-title="{{ title }}{% if author %} &#64;{{ author }}{% endif %}"
+                   class="item d-inline-block{% if popupClass %} {{ popupClass }}{% endif %}"
+                   {% if popupGallery %} data-gallery="popup-gallery-{{ popupGallery }}"{% endif %}>
+                    <div class="wrap d-inline-flex align-items-center justify-content-center px-2">
+                        <div class="d-inline-flex flex-column">
+                            <i class="icon-search text-white"></i>
+                            <strong class="label fw-500 text-white mt-2">{{ "Agrandir"|trans }}</strong>
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+            {% if haveLink %}
+                {% set title = mediaRelation.intl.targetLabel is defined and mediaRelation.intl.targetLabel ? mediaRelation.intl.targetLabel : null %}
+                {% set element = onlyLink ? "span" : "a" %}
+                <{{ element }} class="link-box item d-inline-block"{% if not onlyLink %} href="{{ targetLink }}"{% if targetBlank %} target="_blank"{% else %}{% endif %}{% if externalLink %} rel="noopener noreferrer"{% endif %}{% endif %}>
+                    <div class="wrap d-inline-flex align-items-center justify-content-center px-2">
+                        <div class="d-inline-flex flex-column">
+                            <i class="icon-plus-circle text-white"></i>
+                            <strong class="label fw-500 text-white mt-2">{{ targetLabel|raw }}</strong>
+                        </div>
+                    </div>
+                </{{ element }}>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% block mediaInfo %}{% endblock %}

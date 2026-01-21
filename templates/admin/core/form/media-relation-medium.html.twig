@@ -1,0 +1,112 @@
+{% trans_default_domain 'admin' %}
+
+{% set configuration = website().configuration %}
+{% set defaultLocale = configuration.locale %}
+{% set allLocales = configuration.allLocales %}
+{% set entityNamespace = entityNamespace is defined ? entityNamespace : null %}
+{% set customOptions = customOptions is defined ? customOptions : null %}
+{% set intlCardTitle = intlCardTitle is defined ? intlCardTitle : true %}
+{% set linkCardTitle = linkCardTitle is defined ? linkCardTitle : true %}
+
+{{ form_start(form, {attr: {
+    novalidate: "novalidate",
+    action: path('admin_mediarelation_edit', {
+        website: websiteId(), mediarelation: entity.id, entityNamespace: entityNamespace, referEntityId: referEntityId, formOptions: customOptions
+    }),
+    id: 'form-'~entity.id }}) }}
+
+    <div class="ajax-content">
+        <div class="row">
+            <div class="col-12">
+                {% include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: entity.id, classname: class} %}
+                {% if form.media.uploadedFile is defined %}
+                    {{ form_row(form.media.uploadedFile) }}
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                {% if intlCardTitle %}
+                    <h4 class="card-subtitle mb-4">{{ 'fal align-center'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Descriptions"|trans }}{% else %}{{ "Description"|trans }}{% endif %}</h4>
+                {% endif %}
+                <div class="row">
+                    {% if form.intl.title is defined %}
+                        {{ form_row(form.intl.title) }}
+                    {% endif %}
+                    {% if form.intl.placeholder is defined %}
+                        {% set haveMedia = form.media.vars.value.filename is defined and form.media.vars.value.filename %}
+                        {% set haveAlt = form.intl.vars.value.placeholder is defined and form.intl.vars.value.placeholder|striptags|length > 0 %}
+                        {{ form_row(form.intl.placeholder, {attr: {'data-help': haveMedia and not haveAlt ? 'no-alt' : false}}) }}
+                    {% endif %}
+                    <div class="col-md-4">
+                        {% if form.media.copyright is defined %}
+                            {{ form_row(form.media.copyright) }}
+                        {% endif %}
+                    </div>
+                    {% if form.intl.body is defined %}
+                        {{ form_row(form.intl.body) }}
+                    {% endif %}
+                </div>
+                {% if linkCardTitle %}
+                    <h4 class="card-subtitle mb-4">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
+                {% endif %}
+                <div class="row">
+                    {% if form.intl.targetLink is defined %}
+                        {{ form_row(form.intl.targetLink) }}
+                    {% endif %}
+                    {% if form.intl.targetPage is defined %}
+                        {{ form_row(form.intl.targetPage) }}
+                    {% endif %}
+                    {% if form.intl.targetLabel is defined %}
+                        {{ form_row(form.intl.targetLabel) }}
+                    {% endif %}
+                    {% if form.intl.targetStyle is defined %}
+                        {{ form_row(form.intl.targetStyle) }}
+                    {% endif %}
+                    {% if form.intl.newTab is defined %}
+                        {{ form_row(form.intl.newTab) }}
+                    {% endif %}
+                    {% if form.intl.externalLink is defined %}
+                        {{ form_row(form.intl.externalLink) }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-4 d-inline-flex flex-column">
+                <div class="row">
+                    {% if form.media.categories is defined %}
+                        <div class="col-12">{{ form_row(form.media.categories) }}</div>
+                    {% endif %}
+                    {% if form.media.cityCategory is defined %}
+                        <div class="col-12">{{ form_row(form.media.cityCategory) }}</div>
+                    {% endif %}
+                    {% include 'admin/core/form/medias-sizes.html.twig' with {form: form} only %}
+                    {% if form.downloadable is defined %}
+                        <div class="col-md-6">{{ form_row(form.downloadable) }}</div>
+                    {% endif %}
+                    {% if form.popup is defined %}
+                        <div class="col-md-6">{{ form_row(form.popup) }}</div>
+                    {% endif %}
+                    {% if form.main is defined %}
+                        <div class="col-md-6">{{ form_row(form.main) }}</div>
+                    {% endif %}
+                    {% if form.header is defined %}
+                        <div class="col-md-6">{{ form_row(form.header) }}</div>
+                    {% endif %}
+                    {% if form.radius is defined %}
+                        <div class="col-md-6">{{ form_row(form.radius) }}</div>
+                    {% endif %}
+                    {% if form.media.hideHover is defined %}
+                        <div class="col-md-6">{{ form_row(form.media.hideHover) }}</div>
+                    {% endif %}
+                    {% if form.media.notContractual is defined %}
+                        <div class="col-md-6">{{ form_row(form.media.notContractual) }}</div>
+                    {% endif %}
+                </div>
+                <div class="mt-auto">
+                    {% if form.save is defined %}
+                        {{ form_row(form.save) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{ form_end(form) }}

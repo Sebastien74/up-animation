@@ -1,0 +1,190 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-09-30, 10:47 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    DEVELOPMENT :
+    ============
+
+    1 ) Variables
+    2 ) Logs
+    3 ) Commands
+    4 ) Project info
+    5 ) Phpinfo
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Variables
+-----------------------------------*/
+
+@import '../variables';
+
+/*-----------------------------------
+   2 ) Logs
+-----------------------------------*/
+
+#log-page {
+    .log-card {
+        .card-body {
+            font-size: 12px;
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Commands
+-----------------------------------*/
+
+#command-page .console_log_container {
+    height: 75vh;
+}
+
+/*-----------------------------------
+   4 ) Project info
+-----------------------------------*/
+
+#files-sizes-ifo-list, #files-sizes-ifo-list ul {
+    list-style-type: none;
+}
+
+/*-----------------------------------
+   5 ) Phpinfo
+-----------------------------------*/
+
+#phpinfo-container {
+
+    $php-dark-grey: #333;
+    $php-dark-blue: #4F5B93;
+    $php-medium-blue: #8892BF;
+    $php-light-blue: #E2E4EF;
+    $php-accent-purple: #793862;
+
+    background: $php-dark-grey;
+    color: $php-light-blue;
+
+    pre {
+        margin: 0;
+        font-family: monospace;
+    }
+
+    a:link {
+        color: #009;
+        text-decoration: none;
+        background-color: #fff;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    table {
+        border-collapse: collapse;
+        border: 0;
+        width: 934px;
+        box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .center table {
+        margin: 1em auto;
+        text-align: left;
+    }
+
+    .center th {
+        text-align: center !important;
+    }
+
+    td, th {
+        border: 1px solid #666;
+        font-size: 75%;
+        vertical-align: baseline;
+        padding: 4px 5px;
+    }
+
+    th {
+        position: sticky;
+        top: 0;
+        background: inherit;
+    }
+
+    h1 {
+        font-size: 150%;
+    }
+
+    h2 {
+        font-size: 125%;
+    }
+
+    h2 a:link, h2 a:visited {
+        color: inherit;
+        background: inherit;
+    }
+
+    .p {
+        text-align: left;
+    }
+
+    .e {
+        background-color: #ccf;
+        width: 300px;
+        font-weight: bold;
+    }
+
+    .h {
+        background-color: #99c;
+        font-weight: bold;
+    }
+
+    .v {
+        background-color: #ddd;
+        max-width: 300px;
+        overflow-x: auto;
+        word-wrap: break-word;
+    }
+
+    .v i {
+        color: #999;
+    }
+
+    img {
+        float: right;
+        border: 0;
+    }
+
+    hr {
+        width: 934px;
+        background-color: #ccc;
+        border: 0;
+        height: 1px;
+    }
+
+    .h td, td.e, th {
+        border-color: #606A90
+    }
+
+    td {
+        border-color: #505153
+    }
+
+    .e {
+        background-color: #404A77
+    }
+
+    .h {
+        background-color: $php-dark-blue
+    }
+
+    .v {
+        background-color: $php-dark-grey
+    }
+
+    hr {
+        background-color: #505153
+    }
+}

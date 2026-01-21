@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2019-08-15, 9:04 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT VENDOR COMPONENTS :
+    =========================
+
+------------------------------------------------------------------ */
+
+@import "page";
+@import "carousel";
+@import "dropdown";
+@import "table";
+@import "badge";
+@import "button";
+@import "news-teaser";
+@import "pagination";
+@import "faq";
+@import "search";
+
+@import "blocks/card";
+@import "blocks/media";
+@import "blocks/modal";
+@import "blocks/video";
+@import "blocks/counter";
+
+@import "form/newsletter";
+@import "form/form";
+@import "form/thanks-modal";
+@import 'form/recaptcha';

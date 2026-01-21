@@ -1,0 +1,146 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set transDomain = interface.name is defined and interface.name
+    ? 'entity_'~interface.name : null %}
+
+{% if pageTitle is not defined or pageTitle is defined and not pageTitle  %}
+    {% set title = 'singular'|trans([], transDomain) and 'singular'|trans([], transDomain) != 'singular'
+        ? 'singular'|trans([], transDomain) : 'Édition'|trans~" "~interface.name  %}
+    {% set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title %}
+{% endif %}
+
+{% set activeTab = masterRequest().get('tab') ? masterRequest().get('tab') : 'description' %}
+
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~interface.name}}) }}
+
+        <div class="card">
+
+            <ul class="nav nav-tabs custom-tab large w-100" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link{% if activeTab == 'description' %} active{% endif %}" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">
+                        {{ 'fal align-center'|icon(15, 17, 'dark me-sm-2') }}<span>{{ "Descriptions"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{% if activeTab == 'phones' %} active{% endif %}" id="phones-tab" data-bs-toggle="tab" href="#phones" role="tab" aria-controls="phones" aria-selected="false">
+                        {{ 'fal phone'|icon(17, 17, 'dark me-sm-2') }}<span>{{ "Numéros de téléphone"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{% if activeTab == 'emails' %} active{% endif %}" id="emails-tab" data-bs-toggle="tab" href="#emails" role="tab" aria-controls="emails" aria-selected="false">
+                        {{ 'fal at'|icon(17, 17, 'dark me-sm-2') }}<span>{{ "E-mails"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{% if activeTab == 'addresses' %} active{% endif %}" id="addresses-tab" data-bs-toggle="tab" href="#addresses" role="tab" aria-controls="addresses" aria-selected="false">
+                        {{ 'fal map-marked-alt'|icon(19, 17, 'dark me-sm-2') }}<span>{{ "Adresses"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{% if activeTab == 'networks' %} active{% endif %}" id="networks-tab" data-bs-toggle="tab" href="#networks" role="tab" aria-controls="networks" aria-selected="false">
+                        {{ 'fal rss'|icon(15, 17, 'dark me-sm-2') }}<span>{{ "Réseaux sociaux"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link{% if activeTab == 'legal-notice' %} active{% endif %}" id="legal-notice-tab" data-bs-toggle="tab" href="#legal-notice" role="tab" aria-controls="legal-notice" aria-selected="false">
+                        {{ 'fal balance-scale-start'|icon(21, 17, 'dark me-sm-2') }}<span>{{ "Mentions légales"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item right">
+                    <a class="nav-link text-white bg-info save">
+                        {{ 'fal globe-stand'|icon(15, 17, 'white me-sm-2 mt-1') }}<span>{{ "Votre IP :"|trans }} <span class="badge badge-white d-inline-block ms-2 pe-3 ps-3 pt-1 pb-1 ip-badge">{{ currentIP() }}</span></span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade{% if activeTab == 'description' %} show active{% endif %}" id="description" role="tabpanel" aria-labelledby="description-tab">
+                    <div class="card-body pb-0">
+                        <div class="row">
+                            {% include 'admin/core/form/edit-fields-base.html.twig' with {
+                                excludes: ['phones', 'emails', 'addresses', 'socialNetworks', 'legals', 'save'],
+                                form: form,
+                                entity: entity,
+                                classname: interface.classname
+                            } only %}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade{% if activeTab == 'phones' %} show active{% endif %}" id="phones" role="tabpanel" aria-labelledby="phones-tab">
+                    <div class="card-body pb-0">
+                        <div class="row">
+                            {% include 'admin/core/form/edit-fields-base.html.twig' with {
+                                excludes: ['intls', 'emails', 'addresses', 'socialNetworks', 'legals', 'save'],
+                                form: form,
+                                entity: entity,
+                                classname: interface.classname
+                            } only %}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade{% if activeTab == 'emails' %} show active{% endif %}" id="emails" role="tabpanel" aria-labelledby="emails-tab">
+                    <div class="card-body pb-0">
+                        <div class="row">
+                            {% include 'admin/core/form/edit-fields-base.html.twig' with {
+                                excludes: ['intls', 'phones', 'addresses', 'socialNetworks', 'legals', 'save'],
+                                form: form,
+                                entity: entity,
+                                classname: interface.classname
+                            } only %}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade{% if activeTab == 'addresses' %} show active{% endif %}" id="addresses" role="tabpanel" aria-labelledby="addresses-tab">
+                    <div class="card-body pb-0">
+                        <div class="row">
+                            {% include 'admin/core/form/edit-fields-base.html.twig' with {
+                                excludes: ['intls', 'phones', 'socialNetworks', 'emails', 'legals', 'save'],
+                                form: form,
+                                entity: entity,
+                                classname: interface.classname
+                            } only %}
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade{% if activeTab == 'networks' %} show active{% endif %}" id="networks" role="tabpanel" aria-labelledby="networks-tab">
+                    <div class="card-body pb-0">
+                        {% include 'admin/page/information/social-network.html.twig' with {socialsNetworks: form.socialNetworks} %}
+                    </div>
+                </div>
+                <div class="tab-pane fade{% if activeTab == 'legal-notice' %} show active{% endif %}" id="legal-notice" role="tabpanel" aria-labelledby="legal-notice-tab">
+                    <div class="card-body pb-0">
+                        <div class="row">
+                            {% include 'admin/core/form/edit-fields-base.html.twig' with {
+                                excludes: ['intls', 'phones', 'emails', 'addresses', 'socialNetworks', 'save'],
+                                form: form,
+                                entity: entity,
+                                classname: interface.classname
+                            } only %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% include 'admin/core/form/save/footer-only.html.twig' %}
+
+        </div>
+
+    {{ form_end(form) }}
+
+
+{% endblock %}

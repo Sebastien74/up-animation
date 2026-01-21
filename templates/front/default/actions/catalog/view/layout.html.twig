@@ -1,0 +1,276 @@
+{% trans_default_domain 'front_default' %}
+
+{% set blockType = block.blockType is defined and block.blockType ? block.blockType.slug : null %}
+
+{% if blockType == 'layout-title-header' and entity.intl.title %}
+
+    {% set displayMainMedia = false %}
+    {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+        block: entity,
+        intlMedia: displayMainMedia ? intlMainMedia : null,
+        titleForce: 1,
+        fullSize: true,
+        page: page,
+        pageTitle: entity.intl.title,
+        template: websiteTemplate,
+        thumbConfiguration: thumbConfigurationHeader} %}
+
+{% elseif blockType == 'layout-title' and entity.intl.title %}
+
+    <h{{ entity.intl.titleForce }} class="title mt-4 mb-4">{{ entity.intl.title|raw }}</h{{ entity.intl.titleForce }}>
+
+{% elseif blockType == 'layout-published-date' and entity.date %}
+
+    {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-published-date.html.twig' with {entity: entity} only %}
+
+{% elseif blockType == 'layout-intro' and entity.intl.introduction %}
+
+    <p class="introduction text-bold">{{ entity.intl.introduction|raw }}</p>
+
+{% elseif blockType == 'layout-body' and entity.intl.body %}
+
+    <div class="body">{{ entity.intl.body|raw }}</div>
+
+{% elseif blockType == 'layout-video' and entity.mainVideo %}
+
+    {% include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {media: entity.mainVideo} %}
+
+{% elseif blockType == 'layout-gallery' and entity.medias|length > 0 %}
+
+    {% include 'front/'~websiteTemplate~'/include/gallery.html.twig' with {gallery: entity, slug: 'product'} %}
+
+{% elseif blockType == 'layout-slider' and entity.medias|length > 0 %}
+
+    {% set slideType = 'thumbnails' %}
+
+    <div class="mt-4 mt-lg-0">
+        {% if 'thumbnails' == slideType %}
+            {% include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
+                medias: entity.medias,
+                thumbConfiguration: thumbConfigurationView,
+                arrowsSide: 'side',
+                arrowsColor: 'blur',
+                arrowsAsBtn: true,
+                slider: {
+                    effect: 'fade',
+                    thumbnails: true,
+                    pause: true,
+                    control: true,
+                    autoplay: false,
+                    indicators: false,
+                    progress: false,
+                    popup: false,
+                    offsetDesktop: 0,
+                    offsetMiniPC: 0,
+                    offsetTablet: 0,
+                    offsetMobile: 0,
+                    arrowAlignment: 'side',
+                    intervalDuration: 2000,
+                    itemsPerSlide: 1,
+                    itemsPerSlideMiniPC: 1,
+                    itemsPerSlideTablet: 1,
+                    itemsPerSlideMobile: 1,
+                }
+            } %}
+        {% else %}
+            {% include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
+                sliderSlug: 'product',
+                websiteTemplate: websiteTemplate,
+                entity: entity,
+                medias: entity.medias,
+                interfaceName: interfaceName,
+                mainMediaInHeader: entity.mainMediaInHeader,
+                disabledTitleForce: true,
+                class: false,
+                fade: true,
+                popup: true,
+                arrows: true,
+                thumbConfiguration: thumbConfigurationView,
+                screensSizes: {
+                    mobile: {width: null, height: 238},
+                    tablet: {width: null, height: 375},
+                    desktop: {width: null, height: 375}
+                },
+            } only %}
+        {% endif %}
+    </div>
+
+{% elseif blockType == 'layout-link' and entity.intl.link %}
+
+    {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: entity.intl} %}
+
+{% elseif blockType == 'layout-image' and entity.mainMedia %}
+
+    <div class="image">{{ entity.mainMedia|file(thumbConfiguration) }}</div>
+
+{% elseif blockType == 'layout-catalog-lots-table' %}
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>{{ "Lot N°"|trans|raw }}</th>
+                    <th>{{ "Type"|trans|raw }}</th>
+                    <th>{{ "Surface"|trans|raw }}</th>
+                    <th>{{ "Surface balcon / terrasse"|trans|raw }}</th>
+                    <th>{{ "Prix (€)"|trans|raw }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lot in entity.entity.lots %}
+                    <tr>
+                        {% set reference = "n/c"|trans %}
+                        {% if lot.reference %}
+                            {% set reference = lot.reference %}
+                        {% endif %}
+                        <td data-title="{{ "Lot N°"|trans|raw~" "~reference }}">
+                            {{ reference|raw  }}
+                        </td>
+                        {% set type = "n/c"|trans %}
+                        {% if lot.type %}
+                            {% set type = lot.type %}
+                        {% endif %}
+                        <td data-title="{{ "Type :"|trans|raw~" "~type }}">
+                            {{ type|raw  }}
+                        </td>
+                        {% set surface = "n/c"|trans %}
+                        {% if lot.surface %}
+                            {% set surface = lot.surface %}
+                            {% if 'm²' not in surface %}
+                                {% set surface = surface~"m²" %}
+                            {% endif %}
+                        {% endif %}
+                        <td data-title="{{ "Surface :"|trans|raw~" "~surface }}">
+                            {{ surface|raw }}
+                        </td>
+                        {% set balconySurface = "n/c"|trans %}
+                        {% if lot.balconySurface %}
+                            {% set balconySurface = lot.balconySurface %}
+                            {% if 'm²' not in balconySurface %}
+                                {% set balconySurface = balconySurface~"m²" %}
+                            {% endif %}
+                        {% endif %}
+                        <td data-title="{{ "Surface balcon / terrasse :"|trans|raw~" "~balconySurface }}">
+                            {{ balconySurface|raw }}
+                        </td>
+                        {% set sold = "n/c"|trans %}
+                        {% if lot.sold %}
+                            {% set sold = "Vendu"|trans %}
+                        {% elseif lot.price > 0 %}
+                            {% set sold = lot.price|format_currency('EUR', {rounding_mode: 'ceiling', fraction_digit: 0}) %}
+                        {% endif %}
+                        <td data-title="{{ "Prix (€) :"|trans|raw~" "~sold }}">
+                            {{ sold|raw  }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% elseif blockType == 'layout-contact' %}
+
+    {% include 'front/'~websiteTemplate~'/actions/information/view.html.twig' with {website: website} only %}
+
+{% elseif blockType == 'layout-catalog-features' and entity.values['byFeaturesSlugs'] is defined and entity.values['byFeaturesSlugs'] is not empty  %}
+
+    {% set featureId = block.data.featureId is defined ? block.data.featureId : null %}
+    {% set feature = entity.values.featuresByIds[featureId] is defined ? entity.values.featuresByIds[featureId] : [] %}
+    {% set featureSlug = feature.slug is defined ? feature.slug : null %}
+    {% set values = entity.values.byFeaturesIds[featureId] is defined ? entity.values.byFeaturesIds[featureId] : [] %}
+
+    {% if values is not empty %}
+        <h2 class="title fw-600 mb-5">{{ feature.intl.title|raw }}</h2>
+        <ul>
+            {% for value in values %}
+                <li>{{ value.value.intl.title|striptags }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% elseif blockType == 'layout-map' and entity.entity.informations[0].addresses[0] is defined %}
+
+    {% set information = entity.entity.informations[0] %}
+    {% set address = information.addresses[0] %}
+    {% set zoom = address.zoom ? address.zoom : 11 %}
+    {% set minZoom = address.minZoom ? address.minZoom : 5 %}
+    {% set maxZoom = address.maxZoom ? address.maxZoom : 20 %}
+
+    {% if address.latitude and address.longitude %}
+        <div class="map-container">
+            <div id="product-map-{{ entity.id }}" class="map-box" data-layer="" data-multiple="">
+                <div class="data-map d-none"
+                     data-zoom="{{ zoom }}"
+                     data-min-zoom="{{ minZoom }}"
+                     data-max-zoom="{{ maxZoom }}"
+                     data-latitude="{{ address.latitude }}"
+                     data-longitude="{{ address.longitude }}"
+                     data-marker-clusters=""
+                     data-enlarge-txt="{{ "Agrandir le plan"|trans|raw }}"
+                     data-direction-txt="{{ "Itinéraire"|trans|raw }}">
+                    <div class="point"
+                         data-id="3"
+                         data-category="category"
+                         data-marker="{{ asset('uploads/'~website.uploadDirname~'/marker-blue.svg')}}"
+                         data-marker-width="30" data-marker-height="30"
+                         data-latitude="{{ address.latitude }}"
+                         data-longitude="{{ address.longitude }}"
+                         data-media=""
+                         data-title=""
+                         data-body=""
+                         data-link=""
+                         data-link-label="{{ "En savoir plus"|trans|raw }}"
+                         data-link-label-icon="{{ "En savoir plus"|trans|raw }}"
+                         data-link-target=""
+                         data-name="{{ entity.intl.link }}"
+                         data-address="{{ address.address|unescape|raw }}"
+                         data-zip-code="{{ address.zipCode|unescape|raw }}"
+                         data-city="{{ address.city|unescape|raw }}"
+                         data-department="{{ address.department|unescape|raw }}"
+                         data-region="{{ address.region|unescape|raw }}"
+                         data-country="{{ address.country|countryName }}"
+                         data-google-map-url="{{ address.googleMapUrl }}"
+                         data-google-map-direction-url="{{ address.googleMapDirectionUrl }}">
+                        {% for phone in information.phones %}
+                            <div class="phone" data-number="{{ phone.number }}" data-href="{{ phone.tagNumber }}"></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% elseif blockType == 'layout-back-button' %}
+
+    {% set pageUrl = pageUrl is defined ? pageUrl : null %}
+    {% if pageUrl %}
+        {% set btnLabel = entity.catalog.intl.linkLabel is defined and entity.catalog.intl.linkLabel
+            ? entity.catalog.intl.linkLabel : "Retourner à la liste des produits"|trans %}
+        <a href="{{ path('front_index', {url: pageUrl}) }}" class="link" data-toggle="preloader">
+            <i class="icon-chevron-left me-2"></i>{{ btnLabel }}
+        </a>
+    {% endif %}
+
+{% elseif blockType == 'layout-associated-entities' %}
+
+    {% set display = layout.associatedEntitiesDisplay is defined and layout.associatedEntitiesDisplay ? layout.associatedEntitiesDisplay : 'slider' %}
+    {% set catalogSlug = entity.catalog.slug is defined ? entity.catalog.slug : null %}
+    {% set disabledTitle = false %}
+
+    <div class="associated-entities-container w-100{% if associatedEntities.list is empty %} empty-associated-entities{% endif %}">
+        {% if associatedEntities.list is empty %}
+            <p class="mb-0">{{ "Aucun produit associés."|trans|raw }}</p>
+        {% elseif 'slider' == display %}
+            {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-slider.html.twig' %}
+        {% elseif 'list' == display %}
+            {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-list.html.twig' %}
+        {% else %}
+            {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-cards.html.twig' %}
+        {% endif %}
+    </div>
+
+{% elseif blockType == 'layout-share' %}
+
+    {% include 'front/'~websiteTemplate~'/blocks/share/default.html.twig' %}
+
+{% endif %}

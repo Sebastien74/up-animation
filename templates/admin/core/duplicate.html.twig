@@ -1,0 +1,77 @@
+{% trans_default_domain 'admin' %}
+
+{% if template == 'layout' or interface.masterField is defined and interface.masterField == 'layout' %}
+
+    <div class="modal-wrapper">
+        <div class="modal fade modal-duplicate-small layout-modal"
+             id="modal-background" tabindex="-1" role="dialog"
+             aria-labelledby="modal-duplicate-{{ interface['name']~'-'~entity.id }}-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                {{ form_start(form, { attr: {
+                    novalidate: "novalidate",
+                    id: "duplicate-form",
+                    class: "w-100",
+                    action: path('admin_'~interface.name~'_duplicate', {website: websiteId(), (interface.name): entity.id})
+                }}) }}
+                    <div class="modal-content border refer-preloader">
+                        {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
+                        <div class="modal-header">
+                            <h5 class="modal-title text-center w-100" id="modal-duplicate-{{ interface['name']~'-'~entity.id }}-label">{{ 'far copy'|icon(null, 50, 'dark') }}</h5>
+                            <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                                {{ 'fal times'|icon(20, 20, 'dark') }}
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="ajax-content ajax-html">
+                                <h2 class="main-title text-center fw-bold mb-5">{{ "Dupliquer"|trans|raw }}</h2>
+                                {% include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only %}
+                            </div>
+                        </div>
+                        <div class="modal-footer pt-0">
+                            <button type="submit" class="btn btn-info w-100 ajax-post remove-modal{% if refresh %} refresh{% endif %}">
+                                {{ "Enregistrer"|trans }}
+                            </button>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% else %}
+
+    <div class="modal-wrapper">
+        <div class="modal fade duplicate-modal" id="duplicate-modal" tabindex="-1"
+             role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content border refer-preloader text-start pb-5 pt-3">
+                    {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center w-100">{{ 'far copy'|icon(null, 50, 'dark') }}</h5>
+                        <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                            {{ 'fal times'|icon(20, 20, 'dark') }}
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex">
+                        <div class="container my-auto ajax-content ajax-html">
+                            <h2 class="main-title text-center fw-bold mb-5">{{ "Dupliquer"|trans }}</h2>
+                            {{ form_start(form, { attr: {
+                                novalidate: "novalidate",
+                                id: "duplicate-form",
+                                action: path('admin_'~interface.name~'_duplicate', {website: websiteId(), (interface.name): entity.id})
+                            }}) }}
+                                <div class="row">
+                                    {% include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only %}
+                                </div>
+                                <div class="w-100 text-center modal-buttons mt-4">
+                                    <button type="submit" class="btn btn-info ajax-post remove-modal{% if refresh %} refresh{% endif %}">{{ "Dupliquer"|trans }}</button>
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endif %}

@@ -1,0 +1,29 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'portfolio'|moduleActive(configuration) %}
+    {% set uri = app.request.uri %}
+    {% set active = '/portfolios/' in uri %}
+    {% set module = 'portfolio'|moduleActive(configuration) %}
+    {% set intl = intlsModules['portfolio'][app.user.locale] is defined ? intlsModules['portfolio'][app.user.locale] : intlsModules['portfolio']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['portfolio']['entity'].adminName is defined ? intlsModules['portfolio']['entity'].adminName : 'Moteurs de recherche'|trans) %}
+    {% set icon = intlsModules['portfolio']['entity'].iconClass is defined and intlsModules['portfolio']['entity'].iconClass ? intlsModules['portfolio']['entity'].iconClass : '/medias/icons/light/search.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a class="as-arrow{% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+            {{ icon|icon(17, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+        <ul aria-expanded="false" class="collapse{% if pageTag == 'portfolios' %} in{% endif %}">
+            <li>
+                <a href="{{ path('admin_portfoliocard_index', {website: websiteId}) }}"{% if '/portfolios/cards/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des fiches"|trans }}</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_portfoliolisting_index', {website: websiteId}) }}" data-toggle="preloader">{{ "Liste des portfolios"|trans }}</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_portfoliocategory_index', {website: websiteId}) }}"{% if '/portfolios/categories/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des catégories"|trans }}</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_portfolioteaser_index', {website: websiteId}) }}"{% if '/portfolios/teasers/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Configuration des teasers"|trans }}</a>
+            </li>
+        </ul>
+    </li>
+{% endif %}

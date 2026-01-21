@@ -1,0 +1,13 @@
+active: Activé
+add: 'Ajouter un utilisateur'
+agreeTerms: 'A accépté les conditions générales'
+agreesTermsAt: 'Conditions générales accéptées le'
+email: Email
+firstname: Prénom
+lastLogin: 'Dernière connexion le'
+lastname: Nom
+locale: Langue
+login: Identifiant
+plural: 'Utilisateurs (Front)'
+roles: Roles
+singular: 'Utilisateur (Front)'

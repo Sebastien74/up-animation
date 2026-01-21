@@ -1,0 +1,12 @@
+{% trans_default_domain 'front_default' %}
+
+{% set interfaceName = interfaceName is defined ? interfaceName : null %}
+{% set blockType = block.blockType is defined and block.blockType ? block.blockType.slug : null %}
+{% set intl = intl is defined and intl ? intl : (entityLayout.intl is defined ? entityLayout.intl : null) %}
+{% set entity = masterEntity is defined ? masterEntity : entityLayout %}
+{% set entityTemplate = interfaceName ? 'front/'~websiteTemplate~'/actions/'~interfaceName~'/layout/'~blockType~'.html.twig' %}
+{% set template = (entityTemplate)|fileExist ? entityTemplate : 'front/'~websiteTemplate~'/actions/vendor/include/'~blockType~'.html.twig' %}
+
+{% if blockType and intl %}
+    {% include template %}
+{% endif %}

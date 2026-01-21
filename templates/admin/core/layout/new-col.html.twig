@@ -1,0 +1,33 @@
+{% trans_default_domain 'admin' %}
+
+<div class="modal-wrapper">
+    <div id="col-modal-add" class="modal fade add-zone-modal layout-modal" tabindex="-1" role="dialog" aria-labelledby="col-modal-{{ zone.id }}">
+        <div class="modal-dialog modal-dialog-centered text-center modal-lg" role="document">
+            <div class="modal-content border">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center w-100">{{ 'fal columns'|icon(50, 50, 'dark') }}</h5>
+                    <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                        {{ 'fal times'|icon(20, 20, 'dark') }}
+                    </button>
+                </div>
+                <div class="modal-body pe-5 ps-5">
+                    <div class="mx-auto">
+                        <h2 class="text-dark w-100 text-center fw-bold mb-5">{{ 'Ajouter une colonne'|trans }}</h2>
+                        {{ form_start(form, {attr: {
+                            novalidate: "novalidate",
+                            action: path('admin_col_new', {website: websiteId(), zone: zone.id}),
+                            id: 'col-form-'~zone.id,
+                            class: 'edit-element-form',
+                            'data-scroll-to': '#add-col-btn-'~zone.id,
+                        }}) }}
+                            {{ form_row(form.size) }}
+                            <div class="w-100 text-center modal-buttons">
+                                {{ form_row(form.save) }}
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

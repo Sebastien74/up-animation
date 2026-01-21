@@ -1,0 +1,33 @@
+/* ------------------------------------------------------------------------------------------
+
+    Module : Print
+    Copyright : 2024
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+------------------------------------------------------------------------------------------ */
+
+body {
+    counter-reset: chapternum figurenum;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 18pt;
+}
+
+h1 {
+    counter-reset: figurenum;
+}
+
+h1, h2, h3, h4, h5 {
+    page-break-after: avoid;
+}
+
+svg, footer, a.link, img, button, #webmaster-box, .btn, nav, #main-navigation {
+    display: none !important;
+}
+
+table, figure {
+    page-break-inside: avoid;
+}
+
+@import '../bootstrap/layout/print';

@@ -1,0 +1,6 @@
+{% trans_default_domain 'admin' %}
+
+{% set modalId = notfoundUrl.id %}
+{% set formAction = path('admin_notfoundurl_redirection', {website: websiteId(), notfoundUrl: notfoundUrl.id}) %}
+
+{% include 'admin/core/new.html.twig' %}

@@ -1,0 +1,182 @@
+{% trans_default_domain 'front_default' %}
+
+<!-- TO CHECK IF MACRO IS NOT EMPTY macro.name|trim is not empty -->
+
+{% macro standard(vars) %}
+
+    {% set card = vars.card is defined ? vars.card : 'div' %}
+    {% set entity = vars.entity is defined ? vars.entity : null %}
+    {% set class = vars.class is defined and vars.class ? vars.class : null %}
+    {% set truncate = vars.truncate is defined ? vars.truncate : 150 %}
+    {% set disabledSubTitle = vars.disabledSubTitle is defined ? vars.disabledSubTitle : false %}
+    {% set disabledIntro = vars.disabledIntro is defined ? vars.disabledIntro : false %}
+    {% set disabledBody = vars.disabledBody is defined ? vars.disabledBody : false %}
+    {% set website = vars.website is defined ? vars.website : website() %}
+    {% set websiteTemplate = vars.websiteTemplate is defined ? vars.websiteTemplate : website.configuration.template %}
+    {% set intl = vars.intl is defined ? vars.intl : (entity.intlCard is defined ? vars.entity.intlCard : (entity.intl is defined ? entity.intl : null)) %}
+    {% set media = vars.media is defined ? vars.media : (intl.mainMedia is defined ? intl.mainMedia : null) %}
+    {% set mediaWidth = vars.mediaWidth is defined and vars.mediaWidth and vars.mediaWidth > 0 ? vars.mediaWidth : null  %}
+    {% set mediaHeight = vars.mediaHeight is defined and vars.mediaHeight and vars.mediaHeight > 0 ? vars.mediaHeight : null  %}
+    {% set pictogram = vars.pictogram is defined ? vars.pictogram : (media.pictogram is defined ? media.pictogram : null) %}
+    {% set thumbConfiguration = vars.thumbConfiguration is defined and vars.thumbConfiguration ? vars.thumbConfiguration : {} %}
+    {% set showThumbnail = displayThumbnail is defined ? displayThumbnail : true %}
+    {% set targetLink = vars.targetLink is defined and vars.targetLink ? vars.targetLink : (entity.url is defined ? entity.url : (vars.intl.link is defined ? vars.intl.link : null)) %}
+    {% set newTab = vars.newTab is defined ? vars.newTab : (intl.linkBlank is defined ? intl.linkBlank : null) %}
+    {% set externalLink = vars.externalLink is defined ? vars.externalLink : (intl.linkExternal is defined ? intl.linkExternal : null) %}
+    {% set showLink = vars.showLink is defined ? vars.showLink : false %}
+    {% set title = vars.title is defined ? vars.title : (intl.title is defined ? intl.title : null) %}
+    {% set titleForce = vars.titleForce is defined ? vars.titleForce : (intl.titleForce is defined ? intl.titleForce : 3) %}
+    {% set subTitle = vars.subTitle is defined ? vars.subTitle : (intl.subTitle is defined ? intl.subTitle : null) %}
+    {% set showDate = vars.showDate is defined ? vars.showDate : false %}
+    {% set date = vars.date is defined ? vars.date : (entity.date is defined ? entity.date : null) %}
+    {% set showCategory = vars.showCategory is defined ? vars.showCategory : false %}
+    {% set intro = vars.introduction is defined ? vars.introduction : (intl.introduction is defined ? intl.introduction : null) %}
+    {% set body = vars.body is defined ? vars.body : (intl.body is defined ? intl.body : null) %}
+    {% set author = vars.author is defined ? vars.author : (intl.author is defined ? intl.author : null) %}
+    {% set isInBox = vars.isInBox is defined ? vars.isInBox : targetLink is not empty %}
+    {% set thumbPlaceholder = vars.thumbPlaceholder is defined and vars.thumbPlaceholder %}
+    {% set colSize = vars.colSize is defined and vars.colSize ? vars.colSize : null %}
+    {% set fullSize = vars.fullSize is defined and vars.fullSize %}
+    {% set mediaClass = vars.mediaClass is defined ? vars.mediaClass : null %}
+    {% set background = entity.backgroundColorType is defined and entity.backgroundColorType ? entity.backgroundColorType : 'bg-transparent' %}
+    {% set background = entity.backgroundColor is defined and entity.backgroundColor ? entity.backgroundColor : (vars.backgroundColor is defined and vars.backgroundColor ? vars.backgroundColor : background) %}
+    {% set paddingX = 'transparent' in background ? 'px-0' : 'px-4' %}
+    {% set haveBg = background and 'transparent' not in background %}
+    {% set displayMedia = media and showThumbnail %}
+
+    <{{ card }} class="card-block bg-transparent card h-100 border-0 {% if targetLink %} have-link{% endif %}{% if class %} {{ class }}{% endif %}{% if haveBg %} have-bg{% endif %}">
+        {% if vars.webmaster is defined %}
+            {% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+            {{ macroWebmaster.box(vars.webmaster) }}
+        {% endif %}
+        {% if displayMedia %}
+            <div class="card-header bg-transparent border-0 p-0">
+                {% set haveSize = mediaWidth > 0 and mediaHeight > 0 %}
+                {% if thumbConfiguration and not haveSize %}
+                    {{ media|file(thumbConfiguration, {parentEntity: entity, targetLink: targetLink, isInBox: isInBox, placeholder: thumbPlaceholder, class: mediaClass}) }}
+                {% else %}
+                    {{ media|file(thumbConfiguration, {maxWidth: mediaWidth, maxHeight: mediaHeight, colSize: colSize, zoneFullSize: fullSize, parentEntity: entity, targetLink: targetLink, isInBox: isInBox, placeholder: thumbPlaceholder, class: mediaClass}) }}
+                {% endif %}
+            </div>
+        {% endif %}
+        <div class="card-body border-0 pt-{% if displayMedia %}4{% else %}0 no-media{% endif %} {{ paddingX~' '~background }} {% if showLink and targetLink %}pb-0{% else %}pb-4{% endif %}{% if showLink and targetLink %} have-link{% endif %}{% if showLink and targetLink %} have-link{% endif %}">
+            {% if title %}
+                {% if targetLink %}
+                    <a href="{{ targetLink }}" class="d-inline-block w-100"
+                    {% if newTab %} target="_blank"{% else %} data-toggle="preloader"{% endif %}
+                    {% if externalLink %} rel="noopener noreferrer"{% endif %}>
+                {% endif %}
+                    <h{{ titleForce }} class="title text-bold mb-3">{{ title|unescape|raw }}</h{{ titleForce }}>
+                {% if targetLink %}
+                    </a>
+                {% endif %}
+            {% endif %}
+            {% if not disabledSubTitle and subTitle %}
+                <strong class="card-sub-title text-uppercase">{{ subTitle|unescape|raw }}</strong>
+            {% endif %}
+            {% if disabledContent is not defined %}
+                {% if showDate and date %}
+                    {% set formatDate = vars.formatDate is defined ? vars.formatDate : 'dd MMM Y' %}
+                    {% set betweenDates = vars.betweenDates is defined ? vars.betweenDates : false %}
+                    {{ component('Date', {
+                        date: date,
+                        formatDate: formatDate,
+                        startDate: entity.dates.startDate is defined ? entity.dates.startDate : null,
+                        endDate: entity.dates.endDate is defined ? entity.dates.endDate : null,
+                        between: betweenDates
+                    }) }}
+                {% endif %}
+                {% if showCategory %}
+                    {% set category = entity.category %}
+                    {% if category and category.intl.title %}
+                        <h{{ titleForce + 1 }} class="news-category-title">{{ category.intl.title|raw }}</h{{ titleForce + 1 }}>
+                    {% endif %}
+                {% endif %}
+                <div class="text-block">
+                    {% if not disabledIntro and intro %}
+                        <p class="card-text introduction mt-2 text-bold">{{ intro|truncate(truncate) }}</p>
+                    {% endif %}
+                    {% if not disabledBody and not intro and body and truncate %}
+                        <p class="card-text body mt-2">{{ body|truncate(truncate) }}</p>
+                    {% endif %}
+                    {% if not disabledBody and not intro and body and not truncate %}
+                        <div class="card-text body mt-2">{{ body|raw }}</div>
+                    {% endif %}
+                    {% if author %}
+                        <p class="card-text author text-italic mt-2">{{ "Publié par"|trans|raw }} {{ author|raw }}</p>
+                    {% endif %}
+                    {% if pictogram %}
+                        <div class="pictogram-wrap w-100 text-center mt-4">
+                            {{ asset(pictogram)|file({}, {
+                                class: 'pictogram position-relative',
+                                width: null,
+                                height: 120,
+                            }) }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        {% if showLink and targetLink %}
+            {% set showLinkLabel = vars.showLinkLabel is defined ? vars.showLinkLabel : (intl.linkLabel is defined and intl.linkLabel ? intl.linkLabel : "En savoir plus"|trans) %}
+            {% set linkStyle = vars.linkStyle is defined ? vars.linkStyle : (intl.linkStyle is defined and intl.linkStyle ? intl.linkStyle : 'btn btn-primary') %}
+            <div class="card-footer border-0 {{ paddingX~' '~background }} pb-{% if haveBg %}4{% else %}0{% endif %}">
+                {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                    link: targetLink,
+                    intl: intl,
+                    linkBlank: newTab,
+                    linkExternal: externalLink,
+                    linkLabel: showLinkLabel,
+                    linkStyle: linkStyle,
+                    style: 'mt-3',
+                } %}
+            </div>
+        {% endif %}
+    </{{ card }}>
+{% endmacro %}
+
+{% macro eventCard(entity, websiteTemplate = 'default') %}
+    {% set color = entity.pastDate ? 'black' : 'white' %}
+    <a href="{{ entity.url }}" class="card-event w-100 d-inline-flex flex-column radius px-4 p-4 h-100 position-relative bg-{% if entity.pastDate %}light{% else %}primary{% endif %}">
+        <div class="top">
+            {% if entity.dates.startDate or entity.pastDate %}
+                <div class="row">
+                    {% if entity.dates.startDate %}
+                        <div class="col-10">
+                            {% set dateClass = 'text-uppercase ff-secondary text-start fw-700 d-inline-block w-100 ' %}
+                            {% set dateClass = entity.pastDate ? dateClass~'text-primary' : dateClass~'text-warning' %}
+                            {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-published-date.html.twig' with {
+                                formatDate: 'dd MMM Y',
+                                entity: entity,
+                                disabledAjaxUpdate: true,
+                                disabledHours: true,
+                                class: dateClass,
+                            } only %}
+                        </div>
+                    {% endif %}
+                    {% if entity.pastDate %}
+                        <div class="col-2{% if entity.dates.startDate %} d-flex justify-content-end{% endif %}">
+                            <span class="past-badge d-inline-block ms-auto badge bg-primary text-white">{{ "Passé"|trans|raw }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+            {% if entity.intl.title %}
+                <div class="row">
+                    <div class="col-10">
+                        <h3 class="title text-{{ color }} ff-primary fw-800 text-uppercase mb-0">{{ entity.intl.title|raw }}</h3>
+                    </div>
+                </div>
+            {% endif %}
+            {% if entity.entity.city %}
+                <span class="city text-{{ color }} text-uppercase text-italic fw-300 d-inline-block w-100">{{ entity.entity.city|raw }}</span>
+            {% endif %}
+        </div>
+        {% if entity.intl.introduction %}
+            <div class="bottom mt-auto overflow-hidden position-relative">
+                <p class="intro mb-0 text-{{ color }} mt-4">{{ entity.intl.introduction|striptags }}</p>
+                <span class="show-more position-absolute text-{{ color }} mt-0 pb-1">{{ "En savoir +"|trans }}</span>
+            </div>
+        {% endif %}
+    </a>
+{% endmacro %}

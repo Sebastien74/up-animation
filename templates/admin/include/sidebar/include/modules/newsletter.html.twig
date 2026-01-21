@@ -1,0 +1,15 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'newsletter'|moduleActive(configuration) %}
+    {% set uri = app.request.uri %}
+    {% set active = '/newsletters/' in uri %}
+    {% set module = 'newsletter'|moduleActive(configuration) %}
+    {% set intl = intlsModules['newsletter'][app.user.locale] is defined ? intlsModules['newsletter'][app.user.locale] : intlsModules['newsletter']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['newsletter']['entity'].adminName is defined ? intlsModules['newsletter']['entity'].adminName : 'Newsletters'|trans) %}
+    {% set icon = intlsModules['newsletter']['entity'].iconClass is defined and intlsModules['newsletter']['entity'].iconClass ? intlsModules['newsletter']['entity'].iconClass : '/medias/icons/light/typewriter.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a href="{{ path('admin_campaign_index', { website: websiteId }) }}" data-toggle="preloader">
+            {{ icon|icon(17, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% endif %}

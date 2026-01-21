@@ -1,0 +1,166 @@
+{% trans_default_domain 'admin' %}
+
+<div id="edition-container" class="card">
+
+    <h5 class="card-title card-header mb-0">{{ 'fal code'|icon(null, 18, 'info-darken me-2') }}{{ "Balises métas"|trans }}</h5>
+
+    <div class="card-body">
+
+        {% if granted('ROLE_AI') %}
+            {% set apiIntls = website.entity.api.custom.intls is defined ? website.entity.api.custom.intls : false %}
+            {% set siteId = false %}
+            {% for apiIntl in apiIntls %}
+                {% if apiIntl.locale == app.request.locale %}
+                    {% set siteId = apiIntl.aiFelixSiteId %}
+                {% endif %}
+            {% endfor %}
+            <div class="mb-2 text-white btn w-100 py-2 ai-button btn-chatgpt px-0 py-0"
+                 data-felix-api="{{ path('ai_api_run',
+                     {
+                         'tool': 2,
+                         'site': siteId,
+                         'locale': entitylocale,
+                         'urlPath': seo.canonical|striptags,
+                         'url': seo.url.id,
+                     }) }}">
+                <span class="ai-icon">{{ 'cms ai'|icon(null, null, null, [], '#ffffff') }}</span>
+                <span class="d-none spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                <span class="ms-1">{{ 'Remplir le SEO'|trans|raw }}</span>
+            </div>
+        {% endif %}
+
+        {{ form_start(form, {attr: {
+            id: 'seo-form-'~entity.id,
+            novalidate: "novalidate"
+        }}) }}
+
+            <div class="row">
+                {{ form_row(form.metaTitle) }}
+                {{ form_row(form.metaDescription) }}
+                {{ form_row(form.metaCanonical) }}
+                {{ form_row(form.url.asIndex) }}
+                {{ form_row(form.url.hideInSitemap) }}
+            </div>
+
+            <div class="form-group col-12 ribbon-wrapper m-0">
+                <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
+                     href="#collapse-open-graph" role="button" aria-expanded="false">
+                    {{ 'far share-alt'|icon(null, 13, 'white me-3') }}{{ "Open graph tags"|trans }}
+                </div>
+            </div>
+
+            <div class="collapse col-12 collapseOG" id="collapse-open-graph">
+                <div class="row pt-3">
+                    <div class="col-md-8">
+                        <button class="autocomplete btn btn-info w-100 mb-3">{{ "Saisie automatique"|trans }}</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="resetautocomplete btn btn-secondary w-100 mb-3">{{ "Réinitialiser"|trans }}</button>
+                    </div>
+                    <div class="row pt-3">
+                        {{ form_row(form.metaOgTitle) }}
+                        {{ form_row(form.metaOgDescription) }}
+                        {{ form_row(form.metaOgTwitterCard) }}
+                        {{ form_row(form.metaOgTwitterHandle) }}
+                        <div class="col-12">
+                            {% include 'admin/page/media/modal-btn.html.twig' with {classname: class} %}
+                            {{ form_row(form.mediaRelation.media.uploadedFile) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-12 ribbon-wrapper m-0">
+                <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
+                     href="#collapse-url" role="button" aria-expanded="false">
+                    {{ 'far link'|icon(null, 13, 'white me-3') }}{{ "URL"|trans }}
+                </div>
+            </div>
+
+            <div class="collapse" id="collapse-url">
+                <div class="row pt-3">
+                    {{ form_row(form.url.code) }}
+                    {{ form_row(form.url.online) }}
+                    {% if form.url.indexPage is defined %}
+                        {{ form_row(form.url.indexPage) }}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group col-12 ribbon-wrapper m-0">
+                <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
+                     href="#collapse-options" role="button" aria-expanded="false">
+                    {{ 'far plus-circle'|icon(null, 13, 'white me-3') }}{{ "Options"|trans }}
+                </div>
+            </div>
+
+            <div class="collapse col-12" id="collapse-options">
+                <div class="row pt-3">
+                    {{ form_row(form.metaTitleSecond) }}
+                    {{ form_row(form.author) }}
+                    {{ form_row(form.footerDescription) }}
+                    {{ form_row(form.breadcrumbTitle) }}
+                    {{ form_row(form.noAfterDash) }}
+                </div>
+            </div>
+
+            {% if website.seoConfiguration.microData %}
+
+                <div class="form-group col-12 ribbon-wrapper m-0">
+                    <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
+                         href="#collapse-microdata" role="button" aria-expanded="false">
+                        {{ 'far server'|icon(null, 13, 'white me-3') }}{{ "Microdata"|trans }}
+                    </div>
+                </div>
+
+                <div class="collapse col-12" id="collapse-microdata">
+                    <div class="row pt-3">
+                        {{ form_row(form.authorType) }}
+                        {{ form_row(form.metadata) }}
+                    </div>
+                </div>
+
+            {% endif %}
+
+            {% if granted('ROLE_AI') %}
+
+                <div class="form-group col-12 ribbon-wrapper m-0">
+                    <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
+                         href="#collapse-analyze" role="button" aria-expanded="false">
+                        {{ 'fal robot'|icon(null, 13, 'white me-3') }}{{ "Analyse de la page"|trans }}
+                    </div>
+                </div>
+
+                <div class="collapse col-12" id="collapse-analyze">
+                    <div class="row pt-3">
+                        <div class="mb-2 text-white btn w-100 py-2 ai-button btn-chatgpt px-0 py-0"
+                             data-container-result="#result-api-3"
+                             data-felix-api="{{ path('ai_api_run',
+                                 {
+                                     'tool': 3,
+                                     'site': siteId,
+                                     'locale': entitylocale,
+                                     'urlPath': seo.canonical|striptags,
+                                     'url': seo.url.id,
+                                 }) }}">
+                            <span class="ai-icon">{{ 'cms ai'|icon(null, null, null, [], '#ffffff') }}</span>
+                            <span class="d-none spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                            <span class="ms-1">{{ "J'analyse ma page"|trans|raw }}</span>
+                        </div>
+
+                        <div id="result-api-3">
+
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="form-group text-end mb-0 mt-3">
+                <button type="submit" id="submit-seo" class="btn btn-info w-100">{{ "Enregistrer"|trans }}</button>
+            </div>
+
+        {{ form_end(form) }}
+
+    </div>
+
+</div>

@@ -1,0 +1,325 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-07, 10:27:46 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    THEME SETTING :
+    ===========================
+
+    1 ) Fixed - Sidebar
+    2 ) Fixed - Header
+    3 ) Boxed
+    4 ) Single Column
+    5 ) Mini sidebar
+    6) Logo center
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Fixed - Sidebar
+-----------------------------------*/
+
+.fixed-sidebar {
+
+    .left-sidebar, .navbar-header {
+        position: fixed;
+    }
+
+    .navbar-collapse {
+        margin-left: 220px;
+    }
+
+    &.mini-sidebar {
+        .navbar-collapse, .footer {
+            margin-left: 70px;
+        }
+    }
+}
+
+@media(max-width: 767px) {
+
+    .fixed-sidebar.mini-sidebar {
+
+        .navbar-header {
+            position: relative;
+        }
+
+        .navbar-collapse {
+            margin-left: 0;
+        }
+    }
+}
+
+/*-----------------------------------
+   2 ) Fixed - Header
+-----------------------------------*/
+
+.fixed-header {
+    .topbar {
+        position: fixed;
+        width: 275px;
+    }
+}
+
+.fixed-layout {
+
+    .left-sidebar, .topbar {
+        position: fixed;
+    }
+
+    .topbar {
+        width: 100%;
+    }
+}
+
+/*-----------------------------------
+   3 ) Boxed
+-----------------------------------*/
+
+.boxed #main-wrapper {
+
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.1);
+
+    .sidebar-footer {
+        position: absolute;
+    }
+
+    .topbar {
+        max-width: 1300px;
+    }
+
+    .footer {
+        display: none;
+    }
+}
+
+/*-----------------------------------
+   4 ) Single Column
+-----------------------------------*/
+
+.single-column {
+    .left-sidebar {
+        display: none;
+    }
+
+    .page-wrapper {
+        margin-left: 0 !important;
+    }
+}
+
+/*-----------------------------------
+   5 ) Mini sidebar
+-----------------------------------*/
+
+.show-menu {
+    display: none !important;
+}
+
+.mini-sidebar {
+
+    .sidebar-nav #sidebarnav {
+
+        & > li > a {
+            padding: 15px 15px 15px 17px !important;
+        }
+
+        svg.show-menu, i.show-menu {
+            display: inline-block !important;
+            margin-right: 15px;
+        }
+    }
+
+    #websites_selector {
+        display: none !important;
+    }
+}
+
+.sidebar-nav {
+    .badge {
+        line-height: 100%;
+        padding: 5px 4px 3px 4px;
+    }
+}
+
+@media(min-width: 768px) {
+
+    .mini-sidebar {
+
+        .top-navbar {
+            .navbar-header {
+                width: 70px;
+                text-align: center;
+                flex-shrink: 0;
+                padding-left: 0;
+            }
+        }
+
+        .page-wrapper, .footer {
+            margin-left: 70px;
+        }
+
+        /*Sidebar*/
+        .left-sidebar {
+            width: 70px;
+        }
+
+        .sidebar-nav .user-pro {
+
+            background: $info-darken;
+            background-image: none;
+
+            > a {
+                padding: 15px 15px;
+            }
+
+            a {
+                color: $white;
+            }
+
+            .in {
+                margin-top: 15px;
+                background-color: $info-darken !important;
+            }
+        }
+
+        .scroll-sidebar {
+
+            padding-bottom: 0;
+            position: absolute;
+            height: calc(100vh - 70px);
+
+            .u-dropdown {
+                display: none;
+            }
+        }
+
+        .sidebar-nav {
+
+            background: transparent;
+
+            #sidebarnav {
+
+                li {
+                    position: relative;
+                }
+
+                > li > ul {
+                    position: absolute;
+                    left: 70px;
+                    top: 46px;
+                    width: 220px;
+                    padding-bottom: 10px;
+                    z-index: 1001;
+                    background: $info;
+                    display: none;
+                    padding-left: 1px;
+                }
+
+                > li:hover > ul {
+                    height: auto !important;
+                    overflow: auto;
+                }
+
+                > li > a {
+                    width: 70px;
+                    padding: 15px 15px 15px 25px;
+                }
+
+                .user-pro > a {
+                    padding-left: 18px;
+                }
+
+                > li:hover > a {
+
+                    width: 290px;
+                    background-color: $info;
+
+                    .hide-menu {
+                        display: inline-block;
+                    }
+
+                    .label {
+                        display: none;
+                    }
+                }
+
+                > li:hover > ul, > li:hover > ul.collapse {
+                    display: block;
+                }
+
+                > li > a.as-arrow:after, .hide-menu, .nav-small-cap, .sidebar-footer, .user-profile .profile-text, > .label {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+@include mediaQuery(max-md) {
+
+    .mini-sidebar {
+
+        .left-sidebar,
+        .sidebar-footer {
+            left: -275px;
+        }
+
+        &.show-sidebar {
+            .left-sidebar,
+            .sidebar-footer {
+                left: 0;
+            }
+        }
+    }
+
+    .left-sidebar {
+        margin-top: 60px;
+        height: calc(100% - 60px);
+    }
+}
+
+@include mediaQuery(max-sm) {
+
+    .mini-sidebar {
+        .left-sidebar {
+            left: -100%;
+        }
+    }
+
+    .left-sidebar {
+
+        width: 100%;
+
+        .sidebar-nav ul li {
+
+            i, svg {
+                font-size: 17px;
+                margin-top: 3px;
+            }
+
+            a {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   6) Logo center
+-----------------------------------*/
+
+.logo-center {
+    .top-navbar {
+        .navbar-header {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+        }
+    }
+}

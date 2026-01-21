@@ -1,0 +1,4 @@
+{% trans_default_domain 'admin' %}
+
+<h4 class="card-subtitle mb-3">{{ 'fal copy'|icon(null, 18, 'info-darken me-2') }}{{ "Pages"|trans }}</h4>
+{% include 'admin/page/information/social-network.html.twig' with {socialsNetworks: form.website.information.socialNetworks} %}

@@ -1,0 +1,86 @@
+{% trans_default_domain 'front_default' %}
+
+{% set displayMicrodata = true %}
+{% set items = lastEntity is defined and lastEntity ? [lastEntity] : [] %}
+{% set items = items|merge(entities) %}
+{% set filters = ['microdata_1x1', 'microdata_4x3', 'microdata_16x9'] %}
+{% set images = [] %}
+{% for entity in items %}
+    {% if entity.mainMedia %}
+        {% set displayMedia = entity.mainMedia.extension is defined and entity.mainMedia.extension not in ['.svg', '.gif', '.mp3'] %}
+        {% if displayMedia %}
+            {% for filter in filters %}
+                {% set microdataFilter = entity.mainMedia|file({}, {beforeRender: true, path: true, filter: filter}) %}
+                {% if microdataFilter.path is defined and microdataFilter.path %}
+                    {% set images = images|merge([{filter: filter, entityId: entity.id, path: microdataFilter.path}]) %}
+                {% elseif microdataFilter.html is defined and microdataFilter.html %}
+                    {{ microdataFilter.html|raw }}
+                    {% set displayMicrodata = false %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% if displayMicrodata %}
+    <!-- Microdata -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": [
+        {% for entity in items %}
+            {% set seo = entity.urlEntity|seo(entity, true) %}
+{#            {% set entityMedia = entity.mainMedia is defined and entity.mainMedia ? entity.mainMedia : null %}#}
+{#            {% set categoryMedia = entity.category.mainMedia is defined ? entity.category.mainMedia : null %}#}
+{#            {% set intlMainMedia = entityMedia ? entityMedia : categoryMedia %}#}
+{#            {% set mediaPath = intlMainMedia|file({}, {path: true, forceThumb: true, noCache: true}) %}#}
+{#            {% set displayMedia = entity.mainMedia.extension is defined and entity.mainMedia.extension not in ['.svg', '.gif', '.mp3'] %}#}
+{#            {% set microImgs = [] %}#}
+{#            {% for image in images %}#}
+{#                {% if entity.id == image.entityId %}#}
+{#                    {% set microImgs = microImgs|merge({(image.filter): image.path}) %}#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#            {#}
+{#                "@type": "ListItem",#}
+{#                "position": "{{ loop.index }}",#}
+{#                "item": {#}
+{#                    "@type": "Article",#}
+{#                    "name": "{{ seo.title }}",#}
+{#                    "mainEntityOfPage": {#}
+{#                        "@type": "WebPage",#}
+{#                        "@id": "{{ entity.url }}"#}
+{#                    },#}
+{#                    "url": "{{ entity.url }}",#}
+{#                    "headline": "{{ seo.title }}",#}
+{#                    {% if displayMedia and microImgs is not empty %}#}
+{#                    "image": [#}
+{#                        {% for filter, path in microImgs %}#}
+{#                        "{{ path }}"{% if not loop.last %},{% endif %}#}
+{#                        {% endfor %}#}
+{#                    ],#}
+{#                    {% endif %}#}
+{#                    "author": {#}
+{#                        "@type": "{{ seo.microdata.authorType }}",#}
+{#                        "name": "{{ seo.microdata.author }}",#}
+{#                        "url": "{{ app.request.getSchemeAndHttpHost() }}"#}
+{#                    },#}
+{#                    {% if seo.publishedDate %}"datePublished": "{{ seo.publishedDate|date('Y-m-d H:i:s P') }}",{% endif %}#}
+{#                    {% if seo.updatedAt %}"dateModified": "{{ seo.updatedAt|date('Y-m-d H:i:s P') }}",{% endif %}#}
+{#                    {% if seo.description %}"description": "{{ seo.description }}",{% endif %}#}
+{#                    {% if seo.keywords %}"keywords": "{{ seo.keywords }}",{% endif %}#}
+{#                    "publisher": {#}
+{#                        "@type": "{{ seo.microdata.companyType }}",#}
+{#                        "name": "{{ seo.microdata.companyName }}",#}
+{#                        "logo": {#}
+{#                            "@type": "ImageObject",#}
+{#                            "url": "{{ seo.microdata.companyLogo }}"#}
+{#                        }#}
+{#                    }#}
+{#                }#}
+            }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]}
+</script>
+{% endif %}

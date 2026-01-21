@@ -1,0 +1,99 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard %}
+
+{% set displayFormFilters = listing.displayFilters is defined ? listing.displayFilters : false %}
+
+{% if lastEntity %}
+    {% include 'front/'~websiteTemplate~'/actions/newscast/index/first-news-block.html.twig' with {
+        website: website,
+        websiteTemplate: websiteTemplate,
+        lastEntity: lastEntity,
+        thumbConfigurationFirst: thumbConfigurationFirst,
+        displayFormFilters: displayFormFilters,
+    } only %}
+{% endif %}
+
+{% if entities is defined and entities %}
+
+    {% set asListing = listing is defined %}
+    {% set asEvent = asEvent is defined ? asEvent : false %}
+    {% set formatDate = asListing ? listing.formatDate : null %}
+    {% set hideDate = asListing ? listing.hideDate : false %}
+    {% set displayCategory = asListing ? listing.displayCategory : null %}
+    {% set pageNum = app.request.get('page') ? app.request.get('page') : 1 %}
+    {% set ajaxPath = path('front_newscast_index', {website: website.id, url: url.id, filter: filter}) %}
+    {% set asEvent = asEvent is defined ? asEvent : false %}
+
+    <div id="scroll-wrapper"
+         data-scroll-active="{{ scrollInfinite }}"
+         data-page="{{ pageNum }}"
+         data-max="{{ maxPage }}"
+         data-href="{{ ajaxPath }}"
+         class="news-index-container container position-relative pagination-ajax-wrap {% if entities|length > 0 %} pt-4 pb-3 pt-md-5 pb-md-4{% endif %}">
+
+        {% include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader'} only %}
+
+        <div id="results" class="results row row-container">
+            {% for entity in entities %}
+                {% if not lastEntity or entity.id != lastEntity.id %}
+                    {% set entityEvent = entity.pastDate ? true : asEvent %}
+                    <div class="col-md-6 col-xl-4 mb-5 item">
+                        {% if entityEvent %}
+                            {{ macroCard.eventCard(entity) }}
+                        {% else %}
+                            {{ macroCard.standard({
+                                card: 'article',
+                                entity: entity,
+                                thumbConfiguration: thumbConfiguration,
+                                thumbPlaceholder: true,
+                                displayThumbnail: asListing ? listing.displayThumbnail : null,
+                                formatDate: asListing ? listing.formatDate : 'dd/MM/Y',
+                                betweenDates: entity.asEvent,
+                                showDate: asListing and not hideDate or not asListing and not entity.category.hideDate,
+                                showCategory: asListing and displayCategory or not asListing and entity.category.displayCategory,
+                                showLink: true,
+                                linkStyle: 'btn btn-primary',
+                                colSize: 4,
+                                webmaster: {
+                                    title: "Éditer l'actualité"|trans([], 'front_webmaster'),
+                                    role: 'ROLE_NEWSCAST',
+                                    path: path('admin_newscast_edit', {website: listing.website.id, newscast: entity.id})
+                                }}) }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% else %}
+                {% if not lastEntity %}
+                    <div class="col-12 pt-4 pb-3 pt-md-5 pb-md-4 d-flex">
+                        {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', display: 'star', alertClass: 'mx-auto', message: "Aucune publication pour le moment."|trans} only %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if scrollInfinite or showMoreBtn %}
+            <div id="scroller-loader" class="w-100 mt-5 d-none text-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden sr-only">{{ "Chargement..."|trans }}</span>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if showMoreBtn and maxPage > 1 %}
+            <div id="show-more-wrap" class="w-100 pb-5 text-center mt-5">
+                <button type="button" id="show-more-index-btn" class="btn btn-secondary">{{ "Voir plus"|trans|raw }}</button>
+            </div>
+        {% endif %}
+
+        {% if maxPage > 1 %}
+            <div class="pagination-container row mx-0 mt-3">
+                <div class="col-12 d-flex justify-content-end">
+                    {{ knp_pagination_render(entities, 'core/pagination.html.twig', [], {class: 'ajax-pagination'}) }}
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endif %}

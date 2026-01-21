@@ -1,0 +1,82 @@
+{% import _self as macro %}
+
+{% set amp = false %}
+{% set website = website is defined and website ? website : website() %}
+{% set configuration = website.configuration %}
+{% set websiteTemplate = configuration.template %}
+{% set infos = thumbnails['infos'] is defined ? thumbnails['infos'] : [] %}
+{% set intl = infos.mediaRelationIntl is defined and infos.mediaRelationIntl ? infos.mediaRelationIntl : null %}
+{% set imageIntl = media.intl is defined ? media.intl : null %}
+{% set imageLinkUrl = not disableLink and imageIntl.link is defined and imageIntl.link is not empty ? imageIntl.link : (targetLink is defined and targetLink ? targetLink : null) %}
+{% set imageLinkBlank = targetBlank is defined and targetBlank ? targetBlank : imageIntl.linkBlank is defined and imageIntl.linkBlank %}
+{% set imageLinkExternal = externalLink is defined and externalLink ? externalLink : imageIntl.linkExternal is defined and imageIntl.linkExternal %}
+{% set titlePosition = mediaRelation.media.titlePosition is defined ? mediaRelation.media.titlePosition : 'bottom' %}
+{% set imageTitle = infos.intlTitle is defined and infos.intlTitle and mediaRelation ? infos.intlTitle : null %}
+{% set displayTitle = imageTitle is not empty and titlePosition == 'in-box' %}
+{% set lazyLoad = lazyLoad is defined ? lazyLoad : true %}
+{% set isInBox = not inAdmin and (inBox or popupGallery) and not btnLink %}
+{% set thumbs = thumbnails['files'] is defined and thumbnails['files'] ? thumbnails['files'] : [] %}
+{% set lazyFile = thumbnails['lazyFile'] is defined and thumbnails['lazyFile'] ? thumbnails['lazyFile'] : (thumbnails['file'] is defined and thumbnails['file'] ? thumbnails['file'] : 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==') %}
+{% set attributes = infos['attr'] is defined and infos['attr'] ? infos['attr'] : null %}
+{% set dataUri = thumbnails['dataUri'] is defined and thumbnails['dataUri'] ? thumbnails['dataUri'] : null %}
+{% set popupGallery = popupGallery is defined and popupGallery ? popupGallery : null %}
+{% set mediaAuthor = infos.author is defined and infos.author ? infos.author : null  %}
+{% set notContractual = infos.notContractual is defined and infos.notContractual ? infos.notContractual : null  %}
+{% set haveInfos = not inAdmin and (mediaAuthor or displayTitle or notContractual) %}
+{% set haveLightBox = fullPopup and popupGallery and not isInBox %}
+{% set originalSrc = thumbnails.originalSrc is defined ? thumbnails.originalSrc : null %}
+
+{% extends isInBox ? 'front/'~configuration.template~'/include/img-hover.html.twig' : 'core/image-block.html.twig' %}
+
+{% macro info(displayTitle, imageTitle, mediaAuthor, notContractual) %}
+    <div class="infos-img w-100">
+        <div class="d-flex align-items-start flex-wrap">
+            {% if mediaAuthor %}
+                <small class="img-copyright text-italic d-inline-flex align-items-center{% if mediaAuthor %} ms-3{% endif %}">
+                    <i class="icon-copyright position-relative me-1"></i><span>{{ mediaAuthor|trans|raw }}</span>
+                </small>
+            {% endif %}
+            {% if notContractual %}
+                <small class="img-not-contractual text-italic{% if mediaAuthor %} ms-auto{% endif %}">{{ 'Image non contractuelle'|trans({}, 'front')|raw }}</small>
+            {% endif %}
+        </div>
+        {% if displayTitle %}
+            <span class="img-title d-inline-block text-uppercase w-100">{{ imageTitle|raw }}</span>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% block media %}
+    {% if not inAdmin and not isInBox and imageLinkUrl and not btnLink and not disableLink %}
+        <a href="{{ imageLinkUrl }}"{% if imageLinkBlank %} target="_blank"{% endif %}{% if imageLinkExternal %} rel="noopener noreferrer"{% endif %}>
+    {% endif %}
+        {% include 'core/image.html.twig' with {
+            website: website,
+            configuration: website,
+            haveLightBox: haveLightBox,
+            popupGallery: popupGallery,
+            originalSrc: originalSrc,
+            thumbnails: thumbnails,
+            thumbs: thumbs,
+            lazyLoad: lazyLoad,
+            lazyFile: thumbnails['lazyFileSvg'] is defined ? thumbnails['lazyFileSvg'] : lazyFile,
+            lazyFileSvg: thumbnails['lazyFileSvg'] is defined ? thumbnails['lazyFileSvg'] : lazyFile,
+            dataUri: dataUri,
+            infos: infos,
+            attributes: attributes,
+            priority: priority,
+            inAdmin: inAdmin
+        } only %}
+    {% if not inAdmin and not isInBox and imageLinkUrl and not btnLink and not disableLink %}
+        </a>
+    {% endif %}
+    {% if haveInfos and titlePosition == 'in-box' %}
+        {{ macro.info(displayTitle, imageTitle, mediaAuthor, notContractual) }}
+    {% endif %}
+{% endblock %}
+
+{% block mediaInfo %}
+    {% if haveInfos %}
+        {{ macro.info(displayTitle, imageTitle, mediaAuthor, notContractual) }}
+    {% endif %}
+{% endblock %}

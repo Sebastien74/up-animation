@@ -1,0 +1,132 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set customTemplate = 'front/'~websiteTemplate~'/actions/faq/template/'~faq.slug~'.html.twig' %}
+{% set customTemplateExist = (customTemplate)|fileExist %}
+{% set template = customTemplateExist ? 'front/'~websiteTemplate~'/actions/faq/template/'~faq.slug~'.html.twig'
+    : 'front/'~websiteTemplate~'/actions/faq/template/default.html.twig' %}
+
+{% if faq.microdata is not empty %}
+<!-- Microdata -->
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+        {% for item in faq.microdata %}
+            {% set answer = item.intl.body ? item.intl.body : item.intl.introduction %}
+            {
+                "@type": "Question",
+                "name": "{{ item.intl.title|htmlEntities|raw }}",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "{{ answer|htmlEntities|raw }}"
+                }
+            }{% if not loop.last %},{% endif %}
+        {% endfor %}
+        ]
+    }
+</script>
+{% endif %}
+
+<div id="faq-container-{{ faq.slug }}" class="faq-container position-relative">
+    {{ macroWebmaster.box({
+        title: "Éditer la FAQ"|trans([], 'front_webmaster'),
+        role: 'ROLE_FAQ',
+        path: path('admin_faqquestion_index', {website: website.id, faq: faq.id})
+    }) }}
+    {% if faq.intl.title or faq.intl.link %}
+        <div class="row">
+            {% if faq.intl.title %}
+                <div class="col-lg-6">
+                    {% include 'front/'~websiteTemplate~'/blocks/title/default.html.twig' with {
+                        block: faq,
+                        intl: faq.intl,
+                        style: 'mb-5 pb-lg-4',
+                    } %}
+                </div>
+            {% endif %}
+            {% if faq.intl.link %}
+                <div class="col-lg-{% if faq.intl.title %}6{% else %}12{% endif %} d-flex align-items-end justify-content-lg-end">
+                    {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                        block: faq,
+                        intl: faq.intl,
+                        style: 'mb-5',
+                    } %}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if faq.haveMainMedia %}
+        <div class="faq-media-content-container">
+            <div class="row">
+                <div class="col-lg-6">
+    {% endif %}
+
+    {% set accordionId = uniqId() %}
+        <div id="accordion-{{ accordionId }}" class="faq-accordion">
+            {% for question in faq.questions %}
+                {% if question.intl.introduction or question.intl.body or (question.mainMedia.filename is defined and question.mainMedia.filename) %}
+                    <div class="text-start{% if not loop.last %} mb-4{% endif %}">
+                        <div class="accordion-header w-100" role="heading" aria-level="3">
+                            <button class="ff-primary text-start cursor bg-white d-inline-flex w-100 align-items-center py-2 px-4 border-0" id="heading-{{ loop.index~"-"~accordionId }}"
+                                 data-bs-toggle="collapse"
+                                 data-bs-target="#collapse-{{ loop.index~"-"~accordionId }}"
+                                 aria-expanded="true"
+                                 aria-controls="collapse-{{ loop.index~"-"~accordionId }}">
+                                <span class="d-inline-block text-black me-4 fw-700">{{ question.intl.title|raw }}</span>
+                                <span class="anim-wrap d-flex align-items-center justify-content-center ms-auto">
+                                    <i class="icon-arrow-up anim ms-auto"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="collapse-{{ loop.index~"-"~accordionId }}"
+                             class="collapse{% if question.open %} show{% endif %}"
+                             aria-labelledby="heading-{{ loop.index~"-"~accordionId }}"
+                             data-parent="#accordion-{{ accordionId }}">
+                            <div class="ps-4 px-5 pb-0 pt-4">
+                                <div class="content">
+                                    {% if question.pictogram %}
+                                        <div class="pictogram d-inline-block">
+                                            {{ asset(question.pictogram)|file({}, {
+                                                screensSizes: {
+                                                    mobile: {width: null, height: 100},
+                                                    tablet: {width: null, height: 100},
+                                                    desktop: {width: null, height: 100}
+                                                },
+                                            }) }}
+                                        </div>
+                                    {% endif %}
+                                    {% if question.intl.introduction %}
+                                        <p class="introduction text-bold">{{ question.intl.introduction|raw }}</p>
+                                    {% endif %}
+                                    {% if  question.intl.body %}
+                                        <div class="body">{{ question.intl.body|raw }}</div>
+                                    {% endif %}
+                                    {% if question.mainMedia %}
+                                        <div class="mt-4">
+                                            {{ question.mainMedia|file(thumbConfiguration) }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    {% if faq.haveMainMedia %}
+                </div>
+                <div class="media-faq-wrap col-lg-6 ps-lg-5 mt-5 mt-lg-0">
+                    {{ faq.mainMedia|file({}, {
+
+                    }) }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+</div>

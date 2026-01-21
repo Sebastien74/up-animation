@@ -1,0 +1,29 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'recruitment'|moduleActive(configuration) %}
+    {% set uri = app.request.uri %}
+    {% set active = '/recruitment/' in uri %}
+    {% set module = 'recruitment'|moduleActive(configuration) %}
+    {% set intl = intlsModules['recruitment'][app.user.locale] is defined ? intlsModules['recruitment'][app.user.locale] : intlsModules['recruitment']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['recruitment']['entity'].adminName is defined ? intlsModules['recruitment']['entity'].adminName : 'Recrutements'|trans) %}
+    {% set icon = intlsModules['recruitment']['entity'].iconClass is defined and intlsModules['recruitment']['entity'].iconClass ? intlsModules['recruitment']['entity'].iconClass : '/medias/icons/light/file-certificate.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a class="as-arrow{% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+            {{ icon|icon(17, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+        <ul aria-expanded="false" class="collapse{% if pageTag == 'recruitment' %} in{% endif %}">
+            <li>
+                <a href="{{ path('admin_recruitmentjob_index', {"website": websiteId}) }}" data-toggle="preloader">{{ "Liste des offres"|trans }}</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_recruitmentcontract_index', {"website": websiteId}) }}"{% if '/recruitment/contracts/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des types de contrat"|trans }}</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_recruitmentcategory_index', {"website": websiteId}) }}"{% if '/recruitment/categories/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des domaines de compétence"|trans }}</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_recruitmentlisting_index', {"website": websiteId}) }}"{% if '/recruitment/listings/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Configuration des index"|trans }}</a>
+            </li>
+        </ul>
+    </li>
+{% endif %}

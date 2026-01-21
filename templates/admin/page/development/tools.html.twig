@@ -1,0 +1,71 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% block title %}{{ "Boite à outils"|trans|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ "Boite à outils"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-development', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <h4 class="card-title card-header">{{ 'fal crosshairs'|icon(null, 18, 'info-darken me-2') }}{{ "Cache"|trans }}</h4>
+                <div class="card-body">
+                    <a href="{{ path('cache_clear', {rename: true}) }}" class="btn btn-outline-info-darken mb-3 w-100" data-toggle="preloader">{{ "Vider le cache principal"|trans }}</a>
+                    <a href="{{ path('cache_clear_html') }}" class="btn btn-outline-info-darken mb-3 w-100" data-toggle="preloader">{{ "Vider le cache HTML"|trans }}</a>
+                    <a href="{{ path('doctrine_clear_cache_result') }}" class="btn btn-outline-info-darken mb-3 w-100" data-toggle="preloader">{{ "Vider le cache Doctrine"|trans }}</a>
+                    <a href="{{ path('cache_liip_clear') }}" class="btn btn-outline-info-darken mb-3 w-100" data-toggle="preloader">{{ "Vider les médias"|trans }}</a>
+                    <a href="{{ path('admin_translation_cache_clear', {website: websiteId()}) }}" class="btn btn-outline-info-darken mb-3 w-100" data-toggle="preloader">{{ "Vider les traductions"|trans }}</a>
+                    <a href="{{ path('admin_clear_sessions') }}" class="btn btn-outline-info-darken w-100" data-toggle="preloader">{{ "Vider les sessions"|trans }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <h4 class="card-title card-header">{{ 'fal file-code'|icon(null, 18, 'info-darken me-2') }}{{ "Assets"|trans }}</h4>
+                <div class="card-body">
+                    <a href="{{ path('assets_install') }}" class="btn btn-outline-info-darken w-100" data-toggle="preloader">{{ "Installer"|trans }}</a>
+                </div>
+                <h4 class="card-title card-header no-radius">{{ 'fal sign-out-alt'|icon(null, 18, 'info-darken me-2') }}{{ "Logs"|trans }}</h4>
+                <div class="card-body">
+                    <a href="{{ path('admin_log_clear') }}" class="btn btn-outline-info-darken swal-delete-link w-100">{{ "Supprimer"|trans }}</a>
+                </div>
+                <h4 class="card-title card-header no-radius">{{ 'fal file-alt'|icon(null, 18, 'info-darken me-2') }}{{ "Fichiers"|trans }}</h4>
+                <div class="card-body">
+                    <a class="btn btn-outline-info-darken w-100 cursor" data-bs-toggle="modal" data-bs-target="#files-urlizer-modal">{{ "Urlizer"|trans }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <h4 class="card-title card-header">{{ 'fal link'|icon(null, 18, 'info-darken me-2') }}{{ "Routing JS"|trans }}</h4>
+                <div class="card-body">
+                    <a href="{{ path('js_routing_dump') }}" class="btn btn-outline-info-darken w-100 mb-3" data-toggle="preloader">{{ "Générer les routes"|trans }}</a>
+                    <a href="{{ path('js_routing_debug') }}" class="btn btn-outline-info-darken w-100" data-toggle="preloader">{{ "Debug"|trans }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <h4 class="card-title card-header">{{ 'fal database'|icon(null, 18, 'info-darken me-2') }}{{ "Doctrine"|trans }}</h4>
+                <div class="card-body">
+                    <a href="{{ path('doctrine_schema_update') }}" class="btn btn-outline-info-darken w-100 mb-3" data-toggle="preloader">{{ "MAJ de la base de donnée"|trans }}</a>
+                    <a href="{{ path('doctrine_schema_validate') }}" class="btn btn-outline-info-darken w-100 mb-3" data-toggle="preloader">{{ "Vérification du schéma"|trans }}</a>
+                    {% if websiteId() %}
+                        <a href="{{ path('admin_entities_generator', {website: websiteId()}) }}" class="btn btn-outline-info-darken w-100">{{ "Générer la configuration des entités"|trans }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {{ render(controller('App\\Controller\\Admin\\Development\\ToolController::fileRename' )) }}
+    </div>
+{% endblock %}

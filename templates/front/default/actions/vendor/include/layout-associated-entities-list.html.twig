@@ -1,0 +1,55 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard %}
+
+{% set entities = associatedEntities.list %}
+
+{% if entities|length > 0 %}
+    {% set displayIndexLInk = true %}
+    {% set disabledTitle = disabledTitle is defined ? disabledTitle : false %}
+    {% set listingTitle = listingTitle is defined and listingTitle ? listingTitle : "Découvrez également"|trans %}
+    {% set listingSlug = category.slug is defined ? category.slug : null %}
+    <section class="associated-entities{% if entities is empty %} empty-associated-entities{% endif %}">
+        {% if not disabledTitle %}
+            <div class="title-block w-100 mb-5">
+                <h2 class="title">{{ listingTitle|raw }}</h2>
+            </div>
+        {% endif %}
+        <div class="row">
+            {% for entity in entities %}
+                <div class="col-md-4 mb-5 mb-md-0 position-relative">
+                    {{ macroCard.standard({
+                        website: website,
+                        entity: entity,
+                        indexPage: associatedEntities.indexPages,
+                        titleForce: 4,
+                        thumbConfiguration: associatedEntitiesThumbConfiguration,
+                        listingSlug: listingSlug,
+                        class: 'bg-white',
+                        showLinkLabel: entity.category.intl.help is defined and entity.category.intl.help ? entity.category.intl.help : 'Lire la suite'|trans,
+                        showLink: true,
+                        showDate: interfaceName is defined and 'newscast' == interfaceName,
+                        colSize: 4,
+                        background: 'bg-white',
+                        webmaster: {
+                            title: "Éditer"|trans([], 'front_webmaster'),
+                            role: 'ROLE_ADMIN',
+                            path: path('admin_'~interfaceName~'_edit', {website: website.id, (interfaceName): entity.id})
+                        }}) }}
+                </div>
+            {% endfor %}
+        </div>
+        {% if not displayIndexLInk and pageUrl %}
+            {% set btnLabel = entity.category.intl.placeholder is defined and entity.category.intl.placeholder ? entity.category.intl.placeholder : "Toutes les publications"|trans %}
+            <div class="d-flex justify-content-center mt-5">
+                {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                    intl: {
+                        link: path('front_index', {url: pageUrl}),
+                        linkStyle: 'btn btn-primary',
+                        linkLabel: btnLabel,
+                    }
+                } %}
+            </div>
+        {% endif %}
+    </section>
+{% endif %}

@@ -1,0 +1,63 @@
+{% trans_default_domain 'admin' %}
+
+{% set locale = form.vars.value.locale is defined ? form.vars.value.locale : 'fr' %}
+{% set displayTitle = form.maxWidth.vars.attr.displayTitle is defined ? form.maxWidth.vars.attr.displayTitle : false %}
+{% set tabSize = form.maxWidth.vars.attr.tabSize is defined ? form.maxWidth.vars.attr.tabSize : 12 %}
+{% set displayTabs = form.maxWidth is defined or form.maxHeight is defined
+    or form.tabletMaxWidth is defined or form.tabletMaxHeight is defined
+    or form.mobileMaxWidth is defined or form.mobileMaxHeight is defined %}
+
+{% set tabs = {
+    desktop: {title: "Ordinateur"|trans},
+    tablet: {title: "Tablette"|trans},
+    mobile: {title: "Mobile"|trans}}
+%}
+
+{% if displayTabs %}
+    <div class="col-12 col-md-{{ tabSize }}">
+        {% if displayTitle %}
+            <h4 class="card-subtitle mb-4">{{ 'fas expand'|icon(null, 14, 'info-darken me-2') }}{{ "Taille du médias"|trans }}</h4>
+        {% endif %}
+        <ul class="nav nav-tabs custom-tab" role="tablist">
+            {% for tabId, config in tabs %}
+                <li class="nav-item col p-0 text-center">
+                    <a id="nav-{{ tabId }}-tab-{{ locale }}" class="nav-link{% if loop.first %} active{% endif %}"
+                       aria-controls="tab-screen-{{ tabId }}-{{ locale }}"
+                       data-bs-toggle="tab" href="#tab-screen-{{ tabId }}-{{ locale }}" role="tab" aria-selected="{{ loop.first }}">
+                        <span class="d-none d-sm-inline-block">{{ config.title }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content pt-4">
+            {% for tabId, config in tabs %}
+                <div class="tab-pane w-100{% if loop.first %} active{% endif %}" id="tab-screen-{{ tabId }}-{{ locale }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab-{{ locale }}">
+                    <div class="row">
+                        {% if tabId == 'desktop' %}
+                            {% if form.maxWidth is defined %}
+                                {{ form_row(form.maxWidth) }}
+                            {% endif %}
+                            {% if form.maxHeight is defined %}
+                                {{ form_row(form.maxHeight) }}
+                            {% endif %}
+                        {% elseif tabId == 'tablet' %}
+                            {% if form.tabletMaxWidth is defined %}
+                                {{ form_row(form.tabletMaxWidth) }}
+                            {% endif %}
+                            {% if form.tabletMaxHeight is defined %}
+                                {{ form_row(form.tabletMaxHeight) }}
+                            {% endif %}
+                        {% elseif tabId == 'mobile' %}
+                            {% if form.mobileMaxWidth is defined %}
+                                {{ form_row(form.mobileMaxWidth) }}
+                            {% endif %}
+                            {% if form.mobileMaxHeight is defined %}
+                                {{ form_row(form.mobileMaxHeight) }}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

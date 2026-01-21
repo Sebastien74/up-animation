@@ -1,0 +1,69 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% if medias %}
+    {% set isHomePage = isHomePage is defined ? isHomePage : false %}
+    {% set arrowsAsBtn = arrowsAsBtn is defined ? arrowsAsBtn : false %}
+    {% set arrowsSide = arrowsSide is defined ? arrowsSide : false %}
+    {% set arrowsColor = arrowsColor is defined ? arrowsColor : false %}
+    {% set logo = website.logos.logo is defined ? website.logos.logo : null %}
+    {% set companyName = website.information.companyName is defined ? website.information.companyName : null %}
+    {% set isMainHome = slider.slug == 'main-home' %}
+    {% set popup = slider.popup is defined and slider.popup ? true : null %}
+    {% set colSize = block.col.size is defined ? block.col.size : null %}
+    {% set count = medias|length %}
+    {% set displayArrows = count > 1 and slider.control %}
+    {% set displayLoader = count > 1 and slider.progress %}
+    {% set displayIndicators = (count > 1 and slider.indicators) or displayLoader %}
+    {% set displayArrows = count > 1 and slider.control %}
+    {% set autoplay = slider.autoplay %}
+    {% set pauseOnHover = slider.pause %}
+    {% set fileSizes = thumbConfiguration is empty and slider.standardizeMedia ? mediasSize(slider, 'height', 'less') : null %}
+    {% set zone = block.col.zone is defined ? block.col.zone : null %}
+    {% set selectedTemplate = 'front/'~websiteTemplate~'/actions/slider/template/'~slider.template~'.html.twig' %}
+    {% set selectedTemplate = 'two-columns-text-right' == slider.template ? 'front/'~websiteTemplate~'/actions/slider/template/two-columns.html.twig' : selectedTemplate %}
+    {% set customTemplate = 'front/'~websiteTemplate~'/actions/slider/template/'~slider.slug~'.html.twig' %}
+    {% set customTemplateExist = (customTemplate)|fileExist %}
+    {% set template = customTemplateExist ? 'front/'~websiteTemplate~'/actions/slider/template/'~slider.slug~'.html.twig'
+        : ((selectedTemplate)|fileExist ? selectedTemplate : 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig') %}
+    <div id="slider-container-{{ slider.slug }}" class="slider-container-{{ slider.slug }} slider-container{% if slider.popup %} popup-gallery{% endif %}{% if isHomePage %} is-home-page{% endif %}">
+        {{ macroWebmaster.box({
+            title: "Éditer le carrousel"|trans([], 'front_webmaster'),
+            role: 'ROLE_SLIDER',
+            path: slider.id ? path('admin_slider_edit', {website: website.id, slider: slider.id}) : null
+        }) }}
+        {% set templateArguments = {
+            logo: logo,
+            website: website,
+            websiteTemplate: websiteTemplate,
+            companyName: companyName,
+            alwaysLazy: true,
+            slider: slider,
+            sliderSlug: slider.slug~'-'~uniqId(),
+            medias: medias,
+            fileSizes: fileSizes,
+            thumbConfiguration: thumbConfiguration,
+            block: block,
+            isMainHome: isMainHome,
+            isHomePage: isHomePage,
+            popup: popup,
+            autoplay: autoplay,
+            pauseOnHover: pauseOnHover,
+            colSize: colSize,
+            displayIndicators: displayIndicators,
+            displayLoader: displayLoader,
+            displayArrows: displayArrows,
+            arrowsAsBtn: arrowsAsBtn,
+            arrowsSide: arrowsSide,
+            arrowsColor: arrowsColor,
+            zone: zone,
+            isFirstZone: zone.position is defined and zone.position == 1,
+        } %}
+        {% if slider.itemsPerSlide > 1 and not customTemplateExist %}
+            {% include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with templateArguments only %}
+        {% else %}
+            {% include template with templateArguments only %}
+        {% endif %}
+    </div>
+{% endif %}

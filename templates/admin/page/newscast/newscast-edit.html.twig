@@ -1,0 +1,74 @@
+{% extends "admin/page/newscast/newscast.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set isNewscast = true %}
+
+{% block entityForm %}
+
+    {% set configsSet = [] %}
+
+    {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-entity'}}) }}
+        <div class="tab-content pb-2">
+            {% for tabId, config in tabs %}
+                <div class="tab-pane pt-4 pe-4 ps-4{% if activeTab == tabId or not activeTab and loop.first and isNewscast %} active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab">
+                    <div class="row">
+                        {% for field in form.children %}
+                            {% if tabId not in configsSet %}
+                                {% if tabId == 'intls' %}
+                                    {{ form_row(form.adminName) }}
+                                    {% if form.category is defined %}
+                                        {{ form_row(form.category) }}
+                                    {% endif %}
+                                    {% include 'admin/core/form/intls.html.twig' with {intls: form.intls} %}
+                                    {% set configsSet = configsSet|merge(['intls']) %}
+                                {% elseif tabId == 'features' and field.vars.name == 'values' %}
+                                    {% include 'admin/core/form/prototype.html.twig' with {fullBtn: true} %}
+                                {% elseif tabId == 'configuration' %}
+                                    <div class="col-12">
+                                        <h4 class="card-subtitle mb-4">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}</h4>
+                                    </div>
+                                    {% if form.publicationStart is defined %}
+                                        {{ form_row(form.publicationStart) }}
+                                    {% endif %}
+                                    {% if form.publicationEnd is defined %}
+                                        {{ form_row(form.publicationEnd) }}
+                                    {% endif %}
+                                    {% if form.startDate is defined %}
+                                        {{ form_row(form.startDate) }}
+                                    {% endif %}
+                                    {% if form.endDate is defined %}
+                                        {{ form_row(form.endDate) }}
+                                    {% endif %}
+                                    {% if form.city is defined %}
+                                        {{ form_row(form.city) }}
+                                    {% endif %}
+                                    {% if form.author is defined %}
+                                        {{ form_row(form.author) }}
+                                    {% endif %}
+                                    {% if form.promote is defined %}
+                                        {{ form_row(form.promote) }}
+                                    {% endif %}
+                                    {% if form.customLayout is defined %}
+                                        {{ form_row(form.customLayout) }}
+                                    {% endif %}
+                                    {% include 'admin/core/form/intls-config.html.twig' with {intls: form.intls} %}
+                                    {% set configsSet = configsSet|merge(['configuration']) %}
+                                {% elseif tabId == 'seo' %}
+                                    {% include 'admin/core/form/urls.html.twig' with {
+                                        form: form,
+                                        displaySeo: true,
+                                        urls: form.urls,
+                                        classname: interface.classname
+                                    } %}
+                                    {% set configsSet = configsSet|merge(['seo']) %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {{ form_end(form) }}
+
+{% endblock %}

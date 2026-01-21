@@ -1,0 +1,108 @@
+@if ($enable-table) {
+
+@charset "UTF-8";
+
+    /* -----------------------------------------------------------------
+
+        Copyright  : 2021
+        Created on : 2021-07-13, 12:05 PM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+        FRONT TABLE COMPONENTS :
+        =======================
+
+    ------------------------------------------------------------------ */
+
+    .table {
+        width: auto;
+    }
+
+    .table > :not(caption) > * > * {
+        padding: 0.5rem 1.5rem !important;
+    }
+
+    @include mediaQuery(max-lg) {
+
+        .table-responsive.body-table {
+            tr {
+                &:first-child {
+                    display: none !important;
+                }
+            }
+        }
+
+        .table-responsive table,
+        .table-responsive tbody,
+        .table-responsive td,
+        .table-responsive th,
+        .table-responsive thead,
+        .table-responsive tr {
+            display: block !important;
+            width: 100% !important;
+        }
+
+        .table-responsive thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px
+        }
+
+        .table-responsive {
+
+            tr {
+
+                border: 1px solid $gray-300;
+
+                td {
+
+                    border: none;
+                    border-bottom: 1px solid $gray-300;
+                    position: relative;
+                    white-space: normal;
+                    text-align: left;
+                    font-size: rem(14px);
+                    padding: 1rem;
+
+                    .content {
+                        margin-top: 3.5rem;
+                    }
+                }
+            }
+
+            &:not(.disabled) {
+
+                tr {
+
+                    td {
+
+                        &::before {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            padding: 1rem;
+                            white-space: nowrap;
+                            text-align: left;
+                            font-weight: 700;
+                            content: attr(data-title);
+                            background-color: $gray-400;
+                            color: $gray-600;
+                        }
+                    }
+                }
+            }
+
+            .table[data-bg="bg-primary"] {
+                tr td::before {
+                    background-color: $primary;
+                }
+            }
+
+            .table[data-color="text-secondary"] {
+                tr td::before {
+                    color: $secondary;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,294 @@
+#####################################
+#           Form                    #
+#####################################
+
+App\Entity\Module\Form\Form:
+    translations:
+        singular:
+            fr: 'Formulaire'
+            en: 'Form'
+        plural:
+            fr: 'Formulaires'
+            en: 'Forms'
+        add:
+            fr: 'Ajouter un formulaire'
+            en: 'Add form'
+        delete:
+            fr: "Supprimer le formulaire"
+            en: 'Delete form'
+        adminName:
+            fr: 'Nom du formulaire'
+            en: 'Form name'
+        admin_formcontact_index:
+            fr: 'Contacts'
+            en: 'Contacts'
+    columns:
+        - adminName
+
+App\Entity\Module\Form\Calendar:
+    translations:
+        adminName:
+            fr: 'Nom du calendrier'
+            en: 'Calendar name'
+        singular:
+            fr: 'Calendrier (Module calendrier)'
+            en: 'Calendar (Module calendar)'
+        plural:
+            fr: 'Calendriers'
+            en: 'Calendars'
+        add:
+            fr: 'Ajouter un calendrier'
+            en: 'Add calendar'
+        delete:
+            fr: "Supprimer le calendrier"
+            en: 'Delete calendar'
+    columns:
+        - adminName
+
+App\Entity\Module\Form\CalendarAppointment:
+    translations:
+        adminName:
+            fr: 'Rendez-vous'
+            en: 'Appointment'
+        singular:
+            fr: 'Rendez-vous (Module calendrier)'
+            en: 'Appointment (Module calendar)'
+        plural:
+            fr: 'Rendez-vous'
+            en: 'Appointments'
+        add:
+            fr: 'Ajouter un rendez-vous'
+            en: 'Add appointment'
+        delete:
+            fr: "Supprimer le rendez-vous"
+            en: 'Delete appointment'
+        'contactForm.email':
+            fr: 'Email'
+            en: 'E-mail'
+        'contactForm.phone':
+            fr: 'Téléphone'
+            en: 'Phone'
+        'formcalendar.adminName':
+            fr: 'Calendrier'
+            en: 'Calendar'
+        appointmentDate:
+            fr: 'Date'
+            en: 'Date'
+    orderBy: appointmentDate
+    orderSort: DESC
+    exports: [ 'contactForm.email', 'contactForm.phone', 'appointmentDate' ]
+    columns:
+        - contactForm.email
+        - contactForm.phone
+        - formcalendar.adminName
+        - appointmentDate
+    searchFields:
+        - contactForm.email
+        - contactForm.phone
+        - formcalendar.adminName
+        - appointmentDate
+    show:
+        - id
+        - contactForm.email
+        - contactForm.phone
+        - formcalendar.adminName
+        - appointmentDate
+
+App\Entity\Module\Form\CalendarSchedule:
+    translations:
+        adminName:
+            fr: 'Horaires (Module calendrier)'
+            en: 'Schedules (Module calendrier)'
+        singular:
+            fr: 'Horaire (Module calendrier)'
+            en: 'Schedule (Module calendar)'
+        plural:
+            fr: 'Horaires'
+            en: 'Schedules'
+        add:
+            fr: 'Ajouter des horaires'
+            en: 'Add schedules'
+        delete:
+            fr: "Supprimer les horaires"
+            en: 'Delete schedules'
+
+App\Entity\Module\Form\ContactForm:
+    translations:
+        singular:
+            fr: 'Contact (formulaire)'
+            en: 'Contact (form)'
+        plural:
+            fr: 'Contacts'
+            en: 'Contacts'
+        add:
+            fr: 'Ajouter un contact'
+            en: 'Add contact'
+        delete:
+            fr: "Supprimer le contact"
+            en: 'Delete contact'
+        email:
+            fr: 'E-mail'
+            en: 'E-mail'
+        phone:
+            fr: 'Téléphone'
+            en: 'Phone'
+        createdAt:
+            fr: 'Envoyé le'
+            en: 'Send on'
+        appointment:
+            fr: 'Rendez-vous'
+            en: 'Appointment'
+        contactValues:
+            fr: 'Message'
+            en: 'Message'
+        'calendar.adminName':
+            fr: 'Calendrier'
+            en: 'Calendar'
+    exports: ['contactValues', 'createdAt']
+    orderBy: createdAt
+    orderSort: DESC
+    columns:
+        - email
+        - phone
+        - infos
+    show:
+        - email
+        - phone
+        - createdAt
+        - contactValues
+        - contactValues.label
+        - contactValues.value
+
+App\Entity\Module\Form\CalendarException:
+    translations:
+        adminName:
+            fr: "Commentaire"
+            en: 'Exception'
+        singular:
+            fr: "Exception (formulaire)"
+            en: 'Exception (formulaire)'
+        plural:
+            fr: 'Exception'
+            en: 'Exceptions'
+        add:
+            fr: 'Ajouter une exception'
+            en: 'Add exception'
+        delete:
+            fr: "Supprimer l'exception"
+            en: 'Delete exception'
+
+App\Entity\Module\Form\CalendarTimeRange:
+    translations:
+        adminName:
+            fr: "Créneau horaire"
+            en: 'Time range'
+        singular:
+            fr: "Créneau horaire (formulaire)"
+            en: 'Time range (formulaire)'
+        plural:
+            fr: 'Créneaux horairex'
+            en: 'Times ranges'
+        add:
+            fr: 'Ajouter un créneau'
+            en: 'Add time range'
+        delete:
+            fr: "Supprimer le créneau"
+            en: 'Delete time range'
+
+App\Entity\Module\Form\ContactStepForm:
+    translations:
+        singular:
+            fr: 'Contact (formulaire à étapes)'
+            en: 'Contact (Steps form)'
+        plural:
+            fr: 'Contacts'
+            en: 'Contacts'
+        add:
+            fr: 'Ajouter un contact'
+            en: 'Add contact'
+        delete:
+            fr: "Supprimer le contact"
+            en: 'Delete contact'
+        email:
+            fr: 'E-mail'
+            en: 'E-mail'
+        createdAt:
+            fr: 'Envoyé le'
+            en: 'Send on'
+        contactValues:
+            fr: 'Message'
+            en: 'Message'
+    exports: ['email', 'phone', 'contactValues']
+    orderBy: createdAt
+    orderSort: DESC
+    columns:
+        - email
+        - infos
+    show:
+        - email
+        - createdAt
+        - contactValues
+        - contactValues.label
+        - contactValues.value
+
+App\Entity\Module\Form\Configuration:
+    translations:
+        adminName:
+            fr: 'ConfigurationModel formulaire'
+            en: 'Form configuration'
+        singular:
+            fr: 'ConfigurationModel formulaire'
+            en: 'Form configuration'
+        plural:
+            fr: 'Configurations formulaires'
+            en: 'Forms configurations'
+
+App\Entity\Module\Form\ContactValue:
+    translations:
+        singular:
+            fr: 'Contact valeur'
+            en: 'Contact value'
+        plural:
+            fr: 'Contacts valeurs'
+            en: 'Contacts values'
+
+App\Entity\Module\Form\Field:
+    translations:
+        singular:
+            fr: 'Champs de formulaire'
+            en: 'Form field'
+        plural:
+            fr: 'Champs de formulaire'
+            en: 'Form fields'
+        add:
+            fr: 'Ajouter un champs'
+            en: 'Add field'
+        delete:
+            fr: "Supprimer le champs"
+            en: 'Delete field'
+
+App\Entity\Module\Form\StepForm:
+    translations:
+        singular:
+            fr: 'Formulaire à étapes'
+            en: 'Steps form'
+        plural:
+            fr: 'Formulaires à étapes'
+            en: 'Steps forms'
+        add:
+            fr: 'Ajouter un formulaire'
+            en: 'Add form'
+        delete:
+            fr: "Supprimer le formulaire"
+            en: 'Delete form'
+        adminName:
+            fr: 'Nom du formulaire'
+            en: 'Form name'
+        admin_form_index:
+            fr: 'Formulaires'
+            en: 'Forms'
+        admin_formcontact_index:
+            fr: 'Contacts'
+            en: 'Contacts'
+    columns:
+        - adminName

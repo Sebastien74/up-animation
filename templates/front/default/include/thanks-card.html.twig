@@ -1,0 +1,12 @@
+{% trans_default_domain 'front_default' %}
+
+<div id="form-success-container" class="form-success-container bg-warning-light text-center pt-5 pb-4 pb-md-5 ps-5 pe-5 row d-flex justify-content-center">
+    <div class="form-success-card card form-success-card bg-white alert mt-5 pb-4 pt-4 pb-md-5 pt-md-5 col-md-8 col-xl-5 col-xxl-4">
+        <div class="card-body pb-4 text-center">
+            {{ 'fas check'|icon(null, 60, 'success') }}
+            {% set message = message is defined and message ? message : 'Merci pour votre message !' %}
+            <div class="body mt-4 mb-0">{{ message|raw }}</div>
+            <a href="{{ path('front_index') }}" class="btn btn-primary mt-5" data-toggle="preloader">{{ "Retourner à la page d'accueil"|trans }}</a>
+        </div>
+    </div>
+</div>

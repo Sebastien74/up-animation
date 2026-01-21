@@ -1,0 +1,101 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set configFields = ['urls', 'publicationStart', 'publicationEnd'] %}
+{% set configsFieldsSet = configFields %}
+{% set haveCustomLayout = entity.customLayout is defined and entity.customLayout %}
+{% set transDomain = interface.name is defined and interface.name
+    ? 'entity_'~interface.name : null %}
+
+{% if pageTitle is not defined or pageTitle is defined and not pageTitle  %}
+    {% set title = 'singular'|trans([], transDomain) and 'singular'|trans([], transDomain) != 'singular'
+        ? 'singular'|trans([], transDomain) : 'Édition'|trans~" "~interface.name  %}
+    {% set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title %}
+{% endif %}
+
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle|unescape|raw }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-edit-in-tab', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-edit-in-tab', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% set tabs = {
+    intls: {
+        title: "Description"|trans,
+        icon: "fal align-center"
+    },
+    configuration: {
+        title: "Configuration"|trans,
+        icon: "fal cog"
+    },
+    seo: {
+        title: "Référencement"|trans,
+        icon: "fal chart-line"
+    }}
+%}
+
+{% block body %}
+
+    {% set isMainEntity = 'medias' not in app.request.uri %}
+
+    {% include 'admin/include/alerts.html.twig' %}
+
+    <div id="entity-edition" class="card{% if isMainEntity %} is-entity{% endif %}">
+        <div class="card-body p-0 bottom-radius top-radius">
+
+            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'entity-preloader', full: true, progress: 'hide', preloaderClass: 'progress-fixed'} only %}
+
+            <ul class="nav nav-tabs custom-tab large" role="tablist">
+                {% for tabId, config in tabs %}
+                    <li class="nav-item">
+                        <a {% if not isMainEntity %}href="{{ path('admin_newscast_edit', {website: websiteId, newscast: entity.id, tab: tabId} ) }}"{% endif %}
+                           id="nav-{{ tabId }}-tab" class="nav-link{% if activeTab == tabId or not activeTab and loop.first and isMainEntity %} active{% endif %}"
+                            {% if isMainEntity %}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}"{% else %} data-toggle="preloader"{% endif %}>
+                            {{ config.icon|icon(17, 17, 'me-sm-2') }}
+                            <span class="d-none d-sm-inline-block">{{ config.title }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+                <li class="nav-item">
+                    <a href="{{ path('admin_newscast_medias', {website: websiteId, newscast: entity.id} ) }}"
+                       id="medias-path"
+                       class="nav-link{% if not isMainEntity %} active{% endif %}">
+                        {{ 'fal photo-video'|icon(null, 17, 'me-sm-2') }}
+                        <span class="d-none d-sm-inline-block">{{ "Médias"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item d-inline-flex right">
+                    <a href="{{ path('admin_newscast_index', {website: website.id}) }}"
+                       class="back-link d-inline-flex align-items-center nav-link btn btn-info py-2 px-4 text-white">
+                        {{ 'fal reply'|icon(16, 17, 'white me-2') }}<span>{{ "Retourner à la liste"|trans|raw }}</span>
+                    </a>
+                    {% if isMainEntity %}
+                        <span id="save-entity" class="nav-link save bg-info cursor text-white">
+                            {{ 'fal save'|icon(16, 17, 'white me-2') }}<span>{{ "Enregistrer"|trans }}</span>
+                        </span>
+                    {% endif %}
+                </li>
+            </ul>
+
+            {% block entityForm %}{% endblock %}
+
+        </div>
+    </div>
+
+    <div id="entity-translations"
+         data-swal-entity-title="{{ "Pensez à enregistrer vos modifications"|trans }}"
+         data-swal-entity-text=""
+         data-swal-entity-cancel-text="{{ "Annuler"|trans }}"
+         data-swal-media-confirm-text="{{ "Aller aux médias"|trans }}"
+         data-swal-value-confirm-text="{{ "Éditer la valeur"|trans }}">
+    </div>
+
+{% endblock %}

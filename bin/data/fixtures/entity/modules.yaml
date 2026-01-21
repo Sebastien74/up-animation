@@ -1,0 +1,361 @@
+#####################################
+#           Contact                 #
+#####################################
+
+App\Entity\Module\Contact\Contact:
+    translations:
+        singular:
+            fr: 'Informations de contact (action)'
+            en: 'Contact info'
+        plural:
+            fr: 'Informations de contact'
+            en: 'Contact info'
+        add:
+            fr: 'Ajouter des informations'
+            en: 'Add information'
+        adminName:
+            fr: 'Intitulé'
+            en: 'Entitled'
+        delete:
+            fr: "Supprimer les informations"
+            en: 'Delete information'
+    columns:
+        - adminName
+
+#####################################
+#             Map                   #
+#####################################
+
+App\Entity\Module\Map\Address:
+    translations:
+        singular:
+            fr: 'Adresse'
+            en: 'Address'
+        plural:
+            fr: 'Adresses'
+            en: 'Addresses'
+        add:
+            fr: 'Ajouter une adresse'
+            en: 'Add address'
+        delete:
+            fr: "Supprimer l'adresse"
+            en: 'Delete address'
+        adminName:
+            fr: "Intitulé de l'adresse"
+            en: 'Address entitled'
+    columns:
+        - adminName
+
+App\Entity\Module\Map\Category:
+    translations:
+        singular:
+            fr: 'Catégorie de points'
+            en: 'Points category'
+        plural:
+            fr: 'Catégories'
+            en: 'Categories'
+        add:
+            fr: 'Ajouter une catégorie'
+            en: 'Add category'
+        delete:
+            fr: "Supprimer la catégorie"
+            en: 'Delete category'
+        adminName:
+            fr: 'Nom de la catégorie'
+            en: 'Category name'
+    columns:
+        - adminName
+        - infos
+
+App\Entity\Module\Map\Map:
+    translations:
+        singular:
+            fr: 'Carte'
+            en: 'Map'
+        plural:
+            fr: 'Cartes'
+            en: 'Maps'
+        add:
+            fr: 'Ajouter une carte'
+            en: 'Add map'
+        delete:
+            fr: "Supprimer la carte"
+            en: 'Delete map'
+        adminName:
+            fr: 'Nom de la carte'
+            en: 'Map name'
+        isDefault:
+            fr: "Principale"
+            en: 'Main'
+        categories:
+            fr: "Catégories"
+            en: 'Categories'
+        admin_mappoint_index:
+            fr: "Points"
+            en: 'Points'
+    columns:
+        - adminName
+        - isDefault
+        - infos
+
+App\Entity\Module\Map\Point:
+    translations:
+        singular:
+            fr: 'Point'
+            en: 'Point'
+        plural:
+            fr: 'Points'
+            en: 'Points'
+        add:
+            fr: 'Ajouter un point'
+            en: 'Add point'
+        delete:
+            fr: "Supprimer le point"
+            en: 'Delete point'
+        adminName:
+            fr: 'Nom du point'
+            en: 'Point name'
+        category:
+            fr: "Catégorie"
+            en: 'Category'
+    columns:
+        - adminName
+        - category
+        - infos
+
+App\Entity\Module\Map\Phone:
+    translations:
+        singular:
+            fr: 'Téléphone (Module carte)'
+            en: 'Phone (Module carte)'
+        plural:
+            fr: 'Téléphones (Module carte)'
+            en: 'Phones (Module carte)'
+        add:
+            fr: 'Ajouter un numéro'
+            en: 'Add phone number'
+        delete:
+            fr: "Supprimer le numéro"
+            en: 'Delete phone number'
+
+#####################################
+#           Newsletter              #
+#####################################
+
+App\Entity\Module\Newsletter\Campaign:
+    translations:
+        adminName:
+            fr: 'Nom de la campagne'
+            en: 'Campaign name'
+        singular:
+            fr: 'Campagne de newsletter'
+            en: 'Newsletter Campaign'
+        plural:
+            fr: 'Campagnes de newsletters'
+            en: 'Newsletters Campaigns'
+        add:
+            fr: 'Ajouter une campagne'
+            en: 'Add campaign'
+        delete:
+            fr: "Supprimer la campagne"
+            en: 'Delete campaign'
+        admin_newsletteremail_index:
+            fr: 'Emails'
+            en: 'Emails'
+    columns:
+        - adminName
+        - infos
+
+App\Entity\Module\Newsletter\Email:
+    translations:
+        adminName:
+            fr: 'Email'
+            en: 'Email'
+        singular:
+            fr: 'Email'
+            en: 'Email'
+        plural:
+            fr: 'Emails'
+            en: 'Emails'
+        add:
+            fr: 'Ajouter un email'
+            en: 'Add email'
+        delete:
+            fr: "Supprimer la email"
+            en: 'Delete email'
+        email:
+            fr: 'Email'
+            en: 'Email'
+        locale:
+            fr: 'Langue'
+            en: 'Language'
+    exports: ['email']
+    columns:
+        - email
+        - locale
+
+#####################################
+#             Search                #
+#####################################
+
+App\Entity\Module\Search\Search:
+    translations:
+        singular:
+            fr: 'Moteur de recherche'
+            en: 'Search engine'
+        plural:
+            fr: 'Moteurs de recherche'
+            en: 'Search engines'
+        add:
+            fr: 'Ajouter un moteur'
+            en: 'Add search engine'
+        delete:
+            fr: "Supprimer le moteur"
+            en: 'Delete search engine'
+        adminName:
+            fr: 'Nom du moteur de recherche'
+            en: 'Search engine name'
+    columns:
+        - adminName
+
+App\Entity\Module\Search\SearchValue:
+    translations:
+        singular:
+            fr: 'Valeur de recherche'
+            en: 'Search value'
+        plural:
+            fr: 'Valeurs de recherche'
+            en: 'Search values'
+        delete:
+            fr: "Supprimer la valeur"
+            en: 'Delete value'
+
+#####################################
+#             Slider                #
+#####################################
+
+App\Entity\Module\Slider\Slider:
+    mediaMulti: true
+    translations:
+        singular:
+            fr: 'Carrousel'
+            en: 'Slider'
+        plural:
+            fr: 'Carrousels'
+            en: 'Sliders'
+        add:
+            fr: 'Ajouter un carrousel'
+            en: 'Add slider'
+        delete:
+            fr: "Supprimer le carrousel"
+            en: 'Delete slider'
+        adminName:
+            fr: 'Nom du carrousel'
+            en: 'Slider name'
+    columns:
+        - media
+        - adminName
+        - infos
+
+#####################################
+#             Tab                   #
+#####################################
+
+App\Entity\Module\Tab\Content:
+    adminLimit: 2
+    translations:
+        singular:
+            fr: "Onglet"
+            en: 'Tab'
+        plural:
+            fr: "Onglets"
+            en: 'Tabs'
+        add:
+            fr: "Ajouter un onglet"
+            en: 'Add tab'
+        delete:
+            fr: "Supprimer l'onglet"
+            en: 'Delete tab'
+        adminName:
+            fr: "Intitulé de l'onglets"
+            en: 'Tab entitled'
+
+App\Entity\Module\Tab\Tab:
+    translations:
+        singular:
+            fr: "Groupe d'onglets"
+            en: 'Tabs group'
+        plural:
+            fr: "Groupes d'onglets"
+            en: 'Tabs groups'
+        add:
+            fr: "Ajouter un groupe d'onglets"
+            en: 'Add tab group'
+        delete:
+            fr: "Supprimer le groupe d'onglets"
+            en: 'Delete tab group'
+        adminName:
+            fr: "Nom du groupe d'onglets"
+            en: 'Tab group name'
+        admin_tabcontent_tree:
+            fr: "Contenus"
+            en: 'Contents'
+    columns:
+        - adminName
+        - infos
+
+#####################################
+#             Table                 #
+#####################################
+
+App\Entity\Module\Table\Table:
+    uniqueLocale: true
+    translations:
+        singular:
+            fr: 'Tableau'
+            en: 'Table'
+        plural:
+            fr: 'Tableaux'
+            en: 'Tables'
+        add:
+            fr: 'Ajouter un tableau'
+            en: 'Add table'
+        delete:
+            fr: "Supprimer le tableau"
+            en: 'Delete table'
+        adminName:
+            fr: 'Nom du tableau'
+            en: 'Table name'
+    columns:
+        - adminName
+        - infos
+
+App\Entity\Module\Table\Cell:
+    translations:
+        singular:
+            fr: 'Cellule'
+            en: 'Cell'
+        plural:
+            fr: 'Cellules'
+            en: 'Cells'
+        add:
+            fr: 'Ajouter une cellule'
+            en: 'Add cell'
+        delete:
+            fr: "Supprimer la cellule"
+            en: 'Delete cell'
+
+App\Entity\Module\Table\Col:
+    translations:
+        singular:
+            fr: 'Colonne'
+            en: 'Column'
+        plural:
+            fr: 'Colonnes'
+            en: 'Columns'
+        add:
+            fr: 'Ajouter une colonne'
+            en: 'Add column'
+        delete:
+            fr: "Supprimer la colonne"
+            en: 'Delete column'

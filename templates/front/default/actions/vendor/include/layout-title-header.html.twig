@@ -1,0 +1,17 @@
+{% trans_default_domain 'front_default' %}
+
+{% if entity.intl.title %}
+    {% set pageTitle = entity.intl.title is defined ? entity.intl.title : (pageTitle is defined ? pageTitle : null) %}
+    {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+        block: entity,
+        customMedia: entity.mainMediaInHeader ? entity.headerMedia : null,
+        fullSize: true,
+        page: page,
+        pageTitle: pageTitle,
+        intl: entity.intl,
+        titleForce: 1,
+        template: websiteTemplate,
+        interfaceName: interfaceName,
+        thumbConfiguration: thumbConfigurationHeader
+    } %}
+{% endif %}

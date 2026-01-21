@@ -1,0 +1,118 @@
+{% trans_default_domain 'gdpr' %}
+
+{% set cookiesInit = cookies()|length > 0 %}
+{% set cookiesPageUrl = website|intlUrl(cookiesPage) %}
+
+<div class="layout-zone bg-secondary">
+    <div class="div container">
+        <div class="carousel bg-secondary">
+            <div class="carousel-item">
+                <img src="" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- #gdpr-modal -->
+<div class="modal fade" id="gdpr-modal" tabindex="-1" role="dialog" aria-labelledby="gdpr-modal" aria-hidden="true">
+    {% if cookiesInit %}
+        <button type="button" class="btn-close p-0" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}"></button>
+    {% endif %}
+    <div class="modal-dialog modal-dialog-centered gdpr-management" role="document">
+        <div class="modal-content">
+            <!-- #gdpr-main -->
+            <div id="gdpr-main" class="switch-block">
+                <div class="modal-header">
+                    <div class="text-center w-100">
+                        {{ asset('build/gdpr/images/cookie-main.svg', 'gdpr')|file({}, {width: 120, height: 100, title: "Cookies"|trans}) }}
+                    </div>
+                </div>
+                <div class="modal-body text-center pt-5 pe-5 ps-5 pb-4" data-simplebar>
+                    <h5 class="modal-title mb-4 mt-3 fw-bold">{{ "Politique relative aux cookies"|trans|raw }}</h5>
+                    <p class="text-muted mb-0">{{ "Ce site utilise des cookies afin d’améliorer votre expérience et optimiser notre site et ses services. Les cookies sont des fichiers textes qui sont déposés sur votre ordinateur. Certains d’entre eux sont indispensables au bon fonctionnement du site, d’autres analysent la façon dont vous utilisez le site. <br><b>Afin de poursuivre la navigation sur notre site, vous devez accepter ou refuser l’utilisation des cookies.</b>"|trans|raw }}</p>
+                </div>
+                <div class="modal-footer p-0">
+                    <ul class="reset row w-100">
+                        <li class="col p-0">
+                            <button type="button" id="gdpr-all-disallowed" class="btn w-100 no-radius p-3 fw-bold">{{ "Je refuse"|trans|raw }}</button>
+                        </li>
+                        <li class="col p-0">
+                            <button type="button" class="btn w-100 no-radius p-3 fw-bold border switch" data-target="gdpr-choices">{{ "Personnaliser"|trans|raw }}</button>
+                        </li>
+                        <li class="col p-0">
+                            <button type="button" id="gdpr-all-allowed" class="btn w-100 no-radius p-3 fw-bold">{{ "J’accepte"|trans|raw }}</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- \#gdpr-main -->
+            <!-- #gdpr-choices -->
+            <div id="gdpr-choices" class="switch-block d-none">
+                <div class="modal-header">
+                    <div class="text-center w-100">
+                        {{ asset('build/gdpr/images/cookie-choices.svg', 'gdpr')|file({}, {width: 98, height: 100, title: "Cookies"|trans}) }}
+                    </div>
+                </div>
+                <!-- .modal-body -->
+                <div class="modal-body text-center pt-5 pb-3 ps-4 pe-4" data-simplebar>
+                    <h5 class="modal-title mb-4 mt-3 fw-bold">{{ "Paramétrage des cookies"|trans|raw }}</h5>
+                    <form action="{{ path('front_gdpr_scripts', {_format: 'json'}) }}" id="gdpr-form-acceptation" method="GET">
+                        <ul id="list-groups" class="reset text-start">
+                            {% for category in categories %}
+                                {% for group in category.gdprgroups %}
+                                    {% if category.slug != "functional" %}
+                                        {% set intl = intl(group) %}
+                                        <li>
+                                            <div class="row m-0">
+                                                <div class="col-2 text-center">
+                                                    {{ asset('build/gdpr/images/'~group.slug~'-gdpr.svg', 'gdpr')|file({}, {width: null, height: 20, title: group.adminName}) }}
+                                                </div>
+                                                <div class="col-8">
+                                                    <b>{{ group.adminName|unescape|raw }}</b>
+                                                    {% set urlGroup = intl.targetLink is defined and intl.targetLink ? intl.targetLink : path('front_index', {url: cookiesPageUrl})~"#cookies-infos" %}
+                                                    <span class="d-inline-block ms-2" data-bs-toggle="tooltip" title="{{ "En savoir plus"|trans|striptags }}">
+                                                        <a href="{{ urlGroup }}" {% if intl.targetLink is defined and intl.targetLink %}rel="noreferrer noopener" target="_blank" {% endif %}
+                                                           class="info-link cookies-more-wrap"
+                                                           data-toggle="preloader">{{ 'fas info-circle'|icon(null, 20) }}</a>
+                                                    </span>
+                                                    <br>
+                                                    <div class="text-muted mb-0 group-description">{{ intl.introduction|unescape|raw }}</div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="material-switch float-right">
+                                                        <input id="gdpr-{{ group.slug }}"
+                                                               type="checkbox"
+                                                               class="cookie-group-checkbox"
+                                                               data-service="{{ group.service }}"
+                                                               data-code="{{ group.slug }}"{% if cookie(group.slug) %} checked{% endif %} />
+                                                        <label for="gdpr-{{ group.slug }}" class="label-primary"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </form>
+                </div>
+                <!-- \.modal-body -->
+                <!-- .modal-footer -->
+                <div class="modal-footer p-0">
+                    <ul class="reset row w-100">
+                        <li class="col p-0">
+                            <button type="button" class="btn w-100 no-radius p-3 fw-bold switch" data-target="gdpr-main">{{ "Retour"|trans|raw }}</button>
+                        </li>
+                        <li class="col p-0">
+                            <button type="button" id="gdpr-choices-validate" class="gdpr-choices-validate btn w-100 no-radius p-3 fw-bold">{{ "Valider"|trans|raw }}</button>
+                        </li>
+                    </ul>
+                </div>
+                <!-- \.modal-footer -->
+            </div>
+            <!-- \#gdpr-choices -->
+        </div>
+    </div>
+</div>
+<!-- \#gdpr-modal -->

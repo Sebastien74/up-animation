@@ -1,0 +1,111 @@
+{% trans_default_domain 'admin' %}
+
+{% set schemeAndHost = defaultLocale|domain(website) %}
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <h4 class="card-title card-header">{{ 'fal cog'|icon(null, 18, 'info-darken me-2') }}{{ "Global"|trans }}</h4>
+            <div class="card-body">
+                <div class="row">
+                    {{ form_row(form.adminName) }}
+                    {{ form_row(form.configuration.charset) }}
+                    {{ form_row(form.configuration.cacheExpiration) }}
+                    {{ form_row(form.configuration.gdprFrequency) }}
+                    {{ form_row(form.configuration.backgroundColor) }}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h4 class="card-title card-header">{{ 'fal copy'|icon(null, 18, 'info-darken me-2') }}{{ "Pages"|trans }}</h4>
+            <div class="card-body">
+                <ul class="reset">
+                    <li><a href="{{ schemeAndHost~"/check.php" }}" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fal shield-check'|icon(null, 14) }}</span>{{ 'Recommandations'|trans }}</a></li>
+                    <li><a href="https://validator.schema.org/" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fal shield-check'|icon(null, 14) }}</span>{{ 'validator.schema.org'|trans }}</a></li>
+                    <li><a href="https://www.serpworx.com/check-security-headers?url={{ app.request.schemeAndHttpHost }}" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fal shield-check'|icon(null, 14) }}</span>{{ 'Check security headers'|trans }}</a></li>
+                    <li><a href="{{ schemeAndHost~"/phpinfo.php" }}" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fab php'|icon(null, 14) }}</span>{{ 'phpinfo.php'|trans }}</a></li>
+                    <li><a href="{{ schemeAndHost~"/sitemap.xml?preview=true" }}" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fal sitemap'|icon(null, 14) }}</span>{{ 'sitemap.xml'|trans }}</a></li>
+                    <li><a href="{{ schemeAndHost~"/robots.txt?preview=true" }}" target="_blank"><span class="icon-wrap me-2 text-dark">{{ 'fal robot'|icon(null, 14) }}</span>{{ 'robots.txt'|trans }}</a></li>
+                    <li><a href="/_error/404" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'far unlink'|icon(null, 14) }}</span>{{ "Page 404"|trans }}</a></li>
+                    <li><a href="https://prompt.agence-felix.fr/security/login" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fal alien'|icon(null, 14) }}</span>{{ "Prompt AI"|trans }}</a></li>
+                    {% if not website.configuration.onlineStatus %}
+                        {% set domain = app.user.locale is defined ? app.user.locale|domain() : null %}
+                        {% set scheme = not domain ? path('front_index') : domain %}
+                        <li><a href="{{ scheme }}?disabled_ips=true" target="_blank"><span class="icon-wrap me-2 text-dark">{{ 'fal tools'|icon(null, 14) }}</span>{{ "Vérifier la page de maintenance sans les IPS autorisées"|trans }}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <h4 class="card-title card-header">{{ 'fal flag'|icon(null, 18, 'info-darken me-2') }}{{ "Statuts"|trans }}</h4>
+            <div class="card-body pb-0">
+                <div class="row">
+                    {{ form_row(form.configuration.onlineStatus) }}
+                    {{ form_row(form.configuration.asDefault) }}
+                    {{ form_row(form.configuration.seoStatus) }}
+                    {{ form_row(form.configuration.accessibilityStatus) }}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h4 class="card-title card-header">{{ 'fal cube'|icon(null, 18, 'info-darken me-2') }}{{ "Éléments"|trans }}</h4>
+            <div class="card-body pb-0">
+                <div class="row">
+                    {{ form_row(form.configuration.fullWidth) }}
+                    {{ form_row(form.configuration.preloader) }}
+                    {{ form_row(form.configuration.scrollTopBtn) }}
+                    {{ form_row(form.configuration.breadcrumb) }}
+                    {{ form_row(form.configuration.subNavigation) }}
+                    {{ form_row(form.configuration.progressiveWebApp) }}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h4 class="card-title card-header">{{ 'fal tools'|icon(null, 18, 'info-darken me-2') }}{{ "Administration"|trans }}</h4>
+            <div class="card-body pb-0">
+                <div class="row">
+                    {{ form_row(form.configuration.adminAdvertising) }}
+                    {{ form_row(form.configuration.collapsedAdminTrees) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <h4 class="card-title card-header">{{ 'fal globe'|icon(null, 18, 'info-darken me-2') }}{{ "Internationalisation"|trans }}</h4>
+            <div class="card-body pb-0">
+                <div class="row">
+                    {{ form_row(form.configuration.locale) }}
+                    {{ form_row(form.configuration.locales) }}
+                    {{ form_row(form.configuration.onlineLocales) }}
+                    {{ form_row(form.configuration.transDomains) }}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h4 class="card-title card-header">{{ 'fal photo-video'|icon(null, 18, 'info-darken me-2') }}{{ "Médias"|trans }}</h4>
+            <div class="card-body pb-0">
+                <div class="row">
+                    {{ form_row(form.configuration.mediasSecondary) }}
+                    {{ form_row(form.configuration.duplicateMediasStatus) }}
+                    {{ form_row(form.configuration.mediasCategoriesStatus) }}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h4 class="card-title card-header">{{ 'fal burn'|icon(null, 18, 'info-darken me-2') }}{{ "Audit"|trans }}</h4>
+            <div class="card-body">
+                <ul class="reset">
+                    <li><a href="https://gtmetrix.com" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fal tachometer-alt-slowest'|icon(null, 14) }}</span>{{ 'GTmetrix'|trans }}</a></li>
+                    <li><a href="https://web.dev/measure/" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fal tachometer-alt-slowest'|icon(null, 14) }}</span>{{ 'Measure web.dev'|trans }}</a></li>
+                    <li><a href="https://validator.w3.org" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fal file-code'|icon(null, 14) }}</span>{{ 'W3C Validation'|trans }}</a></li>
+                    <li><a href="https://developers.google.com/search/reference/overview" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fal chart-line'|icon(null, 14) }}</span>{{ 'Microdata'|trans }}</a></li>
+                    <li><a href="https://search.google.com/test/rich-results" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fal chart-line'|icon(null, 14) }}</span>{{ 'Microdata Validator'|trans }}</a></li>
+                    <li><a href="https://search.google.com/structured-data/testing-tool?utm_campaign=devsite&utm_medium=jsonld&utm_source=paywalled-content" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark">{{ 'fal chart-line'|icon(null, 14) }}</span>{{ 'Microdata tests'|trans }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+{% trans_default_domain 'admin' %}
+
+{% set informationId = website.information.id %}
+
+{% if informationId and 'information'|moduleActive(configuration) or informationId and granted('ROLE_INTERNAL') %}
+    {% set module = 'information'|moduleActive(configuration) %}
+    {% set intl = intlsModules['information'][app.user.locale] is defined ? intlsModules['information'][app.user.locale] : intlsModules['information']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['information']['entity'].adminName is defined ? intlsModules['information']['entity'].adminName : 'Informations'|trans) %}
+    {% set icon = intlsModules['information']['entity'].iconClass is defined and intlsModules['information']['entity'].iconClass ? intlsModules['information']['entity'].iconClass : '/medias/icons/light/info.svg' %}
+    <li>
+        <a href="{{ path('admin_information_edit', {website: websiteId, information: website.information.id}) }}" data-toggle="preloader">
+            {{ icon|icon(15, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% endif %}

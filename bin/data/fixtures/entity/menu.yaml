@@ -1,0 +1,35 @@
+#####################################
+#           Menu                    #
+#####################################
+
+App\Entity\Module\Menu\Menu:
+    uniqueLocale: true
+    translations:
+        singular:
+            fr: 'Navigation'
+            en: 'Navigation'
+        plural:
+            fr: 'Navigations'
+            en: 'Navigations'
+        add:
+            fr: 'Ajouter un menu'
+            en: 'Add navigation'
+        delete:
+            fr: "Supprimer le menu"
+            en: 'Delete navigation'
+
+App\Entity\Module\Menu\Link:
+    uniqueLocale: true
+    translations:
+        singular:
+            fr: 'Lien'
+            en: 'Link'
+        plural:
+            fr: 'Liens'
+            en: 'Links'
+        add:
+            fr: 'Ajouter un lien'
+            en: 'Add link'
+        delete:
+            fr: "Supprimer le lien"
+            en: 'Delete link'

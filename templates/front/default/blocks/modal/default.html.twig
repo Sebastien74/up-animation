@@ -1,0 +1,47 @@
+{% trans_default_domain 'front_default' %}
+
+{% if haveContent %}
+    <div class="modal-block w-100">
+        {% if not block.timer %}
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-block-{{ block.id }}">
+                {{ intl.placeholder|raw }}
+            </button>
+        {% endif %}
+        <div id="modal-block-{{ id }}"
+             class="modal fade"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="modal-block-{{ id }}-label"
+             aria-hidden="true"
+             data-id="{{ block.id }}"
+             {% if block.width %} data-cookie-delay="{{ block.width }}" data-cookie-name="{{ 'popup-cookie-'~block.id~'-'~app.request.locale }}"{% endif %}
+             {% if block.timer %} data-modal-timer="{{ block.timer * 1000 }}"{% endif %}>
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-white">
+                    <div class="modal-header border-0 d-inline-block">
+                        {% if intl.title %}
+                            <h{{ intl.titleForce }} class="modal-title title d-inline-block w-100" id="modal-block-{{ id }}-label">{{ intl.title|raw }}</h{{ intl.titleForce }}>
+                        {% endif %}
+                        {% if intl.subTitle %}
+                            <h{{ intl.subTitleForce }} class="modal-sub-title sub-title d-inline-block w-100 sub-title-h{{ intl.titleForce }}">{{ intl.subTitle }}</h{{ intl.subTitleForce }}>
+                        {% endif %}
+                        <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}"></button>
+                    </div>
+                    <div class="modal-body border-0 pt-0">
+                        {% if haveMedia %}
+                            <div class="media-container mb-4">
+                                {{ media|file(thumbConfiguration) }}
+                            </div>
+                        {% endif %}
+                        {% if intl.introduction %}
+                            <p class="text-bold introduction">{{ intl.introduction|raw }}</p>
+                        {% endif %}
+                        {% if intl.body %}
+                            <div class="body">{{ intl.body|raw }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

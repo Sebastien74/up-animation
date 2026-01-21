@@ -1,0 +1,45 @@
+{% trans_default_domain 'front_default' %}
+
+<div class="modal fade" id="requireHTTPS" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="requireHTTPSLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body pt-5 pb-5 ps-4 pe-4">
+                <div class="w-100 mb-5">
+                    {{ logos['android-chrome-144x144']|file({}, {
+                        quality: 72,
+                        width: 120,
+                        height: 120,
+                        title: companyName,
+                        id: 'service-worker-logo-large',
+                        class: 'force-size border',
+                        only_html: false,
+                        lazyLoad: true}) }}
+                </div>
+                {{ "Cette page doit être diffusée via HTTPS. <br> <a>Recharger cette page via HTTPS.</a>"|trans|raw }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pwa-installer-container" class="d-none position-fixed">
+    <div class="d-flex justify-content-center">
+        <div id="pwa-installer-btn-container" class="bg-white p-3">
+            <button id="pwa-installer-btn" class="float-start">
+                <span class="float-start me-3">
+                    {{ asset(logos['android-chrome-144x144'])|file({}, {
+                        quality: 72,
+                        width: 38,
+                        height: 38,
+                        title: companyName,
+                        id: 'service-worker-logo-small',
+                        class: 'force-size border',
+                        only_html: false,
+                        lazyLoad: true}) }}</span>
+                <span class="float-start">{{ "Installer l'application"|trans|raw }} <br> {{ companyName|striptags }}</span>
+            </button>
+            <span id="pwa-installer-close" class="float-start cursor ms-5">{{ 'fal times'|icon(null, 38) }}</span>
+        </div>
+    </div>
+</div>
+
+<script src="{{ asset('service-worker/script.js') }}" defer></script>

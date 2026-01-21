@@ -1,0 +1,43 @@
+{% trans_default_domain 'admin' %}
+
+{% if entity.infill is not defined or not entity.infill %}
+    <span class="active-urls me-5{% if allLocales|length > 1 %} multi-locales{% endif %}">
+        {% for configLocale in allLocales %}
+            {% set exist = false %}
+            {% set multiLocales = allLocales|length > 1 %}
+            {% set icon = multiLocales ? '/medias/icons/flags/'~configLocale~'.svg' : '/medias/icons/solid/power-off.svg' %}
+            {% for url in entity.urls %}
+                {% if url.locale == configLocale and url.code
+                    or url.locale == configLocale and url.online
+                    or url.locale == configLocale and entity.asIndex is defined and entity.asIndex %}
+                    {% set status = url.online and url.code ? 'online' : 'offline' %}
+                    {% set status = url.online and entity.asIndex is defined and entity.asIndex ? 'online' : status %}
+                    {% set classname = interface.classname is defined ? interface.classname : null %}
+                    <a href="{{ path("admin_url_status", {website: websiteId(), url: url.id, classname: classname|url_encode, entityId: entity.id}) }}"
+                       class="{{ status }} text-center{% if not multiLocales %} unique-locale{% endif %}"
+                       data-icon="{{ icon }}">
+                        <span class="locale-url-btn">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                 data-src="{{ icon }}"
+                                 data-bs-toggle="tooltip" title="{{ languageName(configLocale, app.user.locale) }}"
+                                 class="img-fluid lazy-load{% if not multiLocales %} power-off{% endif %}"
+                                 alt="{{ icon }}" height="20" width="20">
+                        </span>
+                        <span class="w-100 bubble {{ status }}" data-status="{{ status }}"><span></span></span>
+                    </a>
+                    {% set exist = true %}
+                {% endif %}
+            {% endfor %}
+            {% if not exist %}
+                <span class="locale-url-btn disabled text-center{% if not multiLocales %} unique-locale{% endif %}">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                         data-bs-toggle="tooltip" title="{{ languageName(configLocale, app.user.locale)~" : "~"URL non générée"|trans|striptags }}"
+                         data-src="{{ asset('/medias/icons/flags/'~configLocale~'.svg') }}"
+                         class="img-fluid lazy-load disabled"
+                         alt="{{ configLocale }}" height="20" width="20">
+                    <span class="w-100 bubble"><span></span></span>
+                </span>
+            {% endif %}
+        {% endfor %}
+    </span>
+{% endif %}

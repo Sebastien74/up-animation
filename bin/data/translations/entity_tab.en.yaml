@@ -1,0 +1,5 @@
+add: 'Add tab group'
+adminName: 'Tab group name'
+admin_tabcontent_tree: Contents
+plural: 'Tabs groups'
+singular: 'Tabs group'

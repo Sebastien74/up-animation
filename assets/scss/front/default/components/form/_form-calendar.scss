@@ -1,0 +1,166 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2020
+    Created on : 2020-10-27, 11:28 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT FORM CALENDAR COMPONENT :
+    ==============================
+
+    1 ) Import
+    2 ) Calendar selector
+    3 ) Core
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Import
+-----------------------------------*/
+
+@import "../../variables";
+
+/*-----------------------------------
+   2 ) Calendar selector
+-----------------------------------*/
+
+#select2-calendars-selector-results {
+    max-height: 400px;
+    text-align: center;
+}
+
+#calendars-selector-group {
+
+    .select2-selection {
+        text-align: center;
+        height: 40px;
+        padding: 0;
+    }
+
+    #select2-calendars-selector-container {
+        line-height: 39px;
+    }
+
+    .select2-selection__arrow {
+        height: 40px;
+    }
+}
+
+/*-----------------------------------
+   3 ) Core
+-----------------------------------*/
+
+$active: #007bff;
+
+.form-calendar-container {
+
+    .card-loader, .card-disabled {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: transparentize($white, .3);
+        z-index: 10;
+    }
+
+    .title {
+        font-size: rem(16px);
+        text-align: center;
+    }
+
+    .form-calendar-card {
+
+        border: 1px solid transparentize($primary, .8);
+
+        .card-header {
+            font-size: rem(12px);
+            background-color: $primary;
+            color: $white;
+        }
+
+        .card-body {
+
+            max-height: 350px;
+
+            .btn-available {
+
+                border: 1px solid $primary;
+                background-color: $primary;
+                color: $white;
+                cursor: pointer;
+
+                &.active {
+                    border: 1px solid $active;
+                    background-color: $active;
+                    color: $white;
+                    font-weight: 700;
+                    box-shadow: 0 0 10px 0 transparentize($dark, .54);
+                }
+
+                &:hover {
+                    font-weight: 700;
+                }
+            }
+
+            .btn-later {
+                background-color: transparentize($primary, .5);
+                color: $white;
+                cursor: not-allowed;
+            }
+
+            .btn-unavailable {
+                background-color: $light;
+                cursor: initial;
+            }
+
+            .btn-block-slot {
+                padding: 0.5rem 0.5rem;
+                height: 42px;
+            }
+        }
+
+        .card-footer {
+
+            .caption {
+
+                padding: 10px 20px;
+                font-size: rem(11px);
+
+                svg {
+
+                    margin-top: 2px;
+
+                    &.available {
+                        fill: $primary !important;
+                    }
+
+                    &.later {
+                        fill: transparentize($primary, .5) !important;
+                    }
+
+                    &.unavailable {
+                        fill: $light !important;
+                    }
+                }
+            }
+
+            .controls {
+                padding: 10px 20px 10px 20px;
+                background-color: transparentize($primary, .8);
+            }
+        }
+    }
+
+    .btn {
+        a.disabled {
+            opacity: .3;
+        }
+    }
+
+    #calendar-error .alert {
+        margin-bottom: 0;
+        margin-top: 1rem;
+    }
+}

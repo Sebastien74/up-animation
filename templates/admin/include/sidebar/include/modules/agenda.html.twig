@@ -1,0 +1,23 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'agenda'|moduleActive(configuration) %}
+    {% set uri = app.request.uri %}
+    {% set active = '/agendas/' in uri %}
+    {% set module = 'agenda'|moduleActive(configuration) %}
+    {% set intl = intlsModules['agenda'][app.user.locale] is defined ? intlsModules['agenda'][app.user.locale] : intlsModules['agenda']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['agenda']['entity'].adminName is defined ? intlsModules['agenda']['entity'].adminName : 'Agendas'|trans) %}
+    {% set icon = intlsModules['agenda']['entity'].iconClass is defined and intlsModules['agenda']['entity'].iconClass ? intlsModules['agenda']['entity'].iconClass : '/medias/icons/light/calendar-alt.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a class="as-arrow{% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+            {{ icon|icon(13, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+        <ul aria-expanded="false" class="collapse{% if pageTag == 'agendas' %} in{% endif %}">
+            <li>
+                <a href="{{ path('admin_agenda_index', {website: websiteId}) }}" data-toggle="preloader">{{ "Liste des agendas"|trans }}</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_agendainformation_index', {website: websiteId}) }}"{% if '/agendas/informations/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des informations"|trans }}</a>
+            </li>
+        </ul>
+    </li>
+{% endif %}

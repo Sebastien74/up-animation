@@ -1,0 +1,30 @@
+{
+    "banner": {
+        "title": "Bannières publicitaires",
+        "body": "Module permettant de créer et afficher des bannières publicitaires et récupérer des statistiques du nombre de vues et de clicks.",
+        "icon": "/medias/icons/light/images.svg"
+    },
+    "faq": {
+        "title": "FAQ",
+        "body": "Module permettant de créer une ou plusieurs foires aux questions, dans lesquelles se trouveront des questions. Ces questions se composeront du titre de la question, et d'une réponse à la question sous format texte.",
+        "bodyEn": "Module allowing you to create one or more frequently asked questions, in which questions will be found. These questions will consist of the title of the question, and an answer to the question in text format.",
+        "icon": "/medias/icons/light/question.svg"
+    },
+    "forum": {
+        "title": "Forums",
+        "body": "Module permettant de créer et afficher des bannières publicitaires et récupérer des statistiques du nombre de vues et de clicks.",
+        "bodyEn": "Module allowing you to create and display stories and display publication forms on the front.",
+        "icon": "/medias/icons/light/book-open.svg"
+    },
+    "making": {
+        "title": "Réalisations",
+        "body": "Module permettant de créer une ou plusieurs réalisations. Chaque réalisation comportera des photos de l'avant, et de l'après, afin de mettre en avant vos qualités et votre savoir-faire.",
+        "bodyEn": "Module allowing you to create one or more achievements. Each creation will include before and after photos, in order to highlight your qualities and your know-how.",
+        "icon": "/medias/icons/light/book-open.svg"
+    },
+    "story": {
+        "title": "Stories",
+        "body": "Module permettant de créer et afficher des bannières publicitaires et récupérer des statistiques du nombre de vues et de clicks.",
+        "icon": "/medias/icons/light/book-open.svg"
+    }
+}

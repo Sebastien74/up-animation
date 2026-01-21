@@ -1,0 +1,11 @@
+{% extends "admin/page/catalog/product.html.twig" %}
+
+{% block entityForm %}
+    {% set class = interface.classname %}
+    <div class="tab-content">
+        <div class="tab-pane me-4 ms-4 active" id="medias" role="tabpanel" aria-labelledby="nav-medias-tab">
+            {{ render_esi(path('admin_medias_uploader', {website: website.id, entityNamespace: class|url_encode, entityId: entity.id})) }}
+            {% include 'admin/core/include/medias-sortable.html.twig' %}
+        </div>
+    </div>
+{% endblock %}

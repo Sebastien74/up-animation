@@ -1,0 +1,86 @@
+{% trans_default_domain 'admin' %}
+
+<h4 class="card-subtitle mb-3">
+    <span class="row">
+        <span class="col-md-6 my-auto">{{ 'fal code'|icon(null, 14, 'info-darken me-2') }}{{ "Meta"|trans }}</span>
+    </span>
+</h4>
+<div class="row">
+    {% include 'admin/core/form/intls.html.twig' with { intls: form.intls, disableTitle: true} %}
+    {{ form_row(form.microData) }}
+    {{ form_row(form.disableAfterDash) }}
+</div>
+
+<h4 class="card-subtitle mb-3">{{ 'fal chart-line'|icon(null, 14, 'info-darken me-2') }}{{ "Google Analytics"|trans }}</h4>
+<div class="row">
+    {% include 'admin/page/api/google-intls.html.twig' with {googleIntls: form.website.api.google.intls} %}
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h4 class="card-subtitle mb-3">{{ 'fal chart-line'|icon(null, 14, 'info-darken me-2') }}{{ "Matomo"|trans }}</h4>
+        <div class="row">
+            {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: ['matomoId', 'matomoUrl']} %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4 class="card-subtitle mb-3">{{ 'fal chart-line'|icon(null, 14, 'info-darken me-2') }}{{ "Axeptio"|trans }}</h4>
+        <div class="row">
+            {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: ['axeptioId', 'axeptioCookieVersion', 'axeptioExternal']} %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4 class="card-subtitle mb-3">{{ 'fab facebook-square'|icon( null, 14, 'info-darken me-2') }}{{ "Facebook"|trans }}</h4>
+        <div class="row">
+            {% include 'admin/page/api/facebook-intls.html.twig' with {facebookIntls: form.website.api.facebook.intls} %}
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <a href="https://prompt.agence-felix.fr/v1/doc" target="_blank">
+            <h4 class="card-subtitle mb-3">{{ 'fal chart-line'|icon(null, 14, 'info-darken me-2') }}{{ "API Felix AI"|trans }}</h4>
+        </a>
+        <div class="row">
+            {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: ['aiFelixSiteId']} %}
+{#            {% if granted('ROLE_AI') %}#}
+{#                <div class="col-12 mb-4">#}
+{#                    <div class="me-2 text-white btn py-2 ai-button btn-chatgpt px-3 handle-loader"#}
+{#                         data-felix-api="#}
+{#                                {{ path('ai_generate_embedding', {#}
+{#                             'tool': 8,#}
+{#                         }) }}">#}
+{#                        {{ 'cms ai'|icon(null, null, null, [], '#ffffff') }}#}
+{#                        {{ 'Générer les clés de recherche'|trans|raw }}#}
+{#                    </div>#}
+{#                    <a href="{{ path('ai_api_remove_embeddings', {'locale': app.request.locale}) }}" class="me-2 text-white btn py-2 ai-button px-3 handle-loader">#}
+{#                        {{ 'cms ai'|icon(null, null, null, [], '#ffffff') }}#}
+{#                        {{ 'Supprimer les clés de recherche'|trans|raw }}#}
+{#                    </a>#}
+{#                </div>#}
+{#            {% endif %}#}
+        </div>
+    </div>
+</div>
+
+<h4 class="card-subtitle mb-3">{{ 'fal plus-circle'|icon(null, 14, 'info-darken me-2') }}{{ "Autres"|trans }}</h4>
+<div class="row">
+    {% set customOthers = [] %}
+    {% for customField in form.website.api.custom.intls %}
+        {% for field in customField.children %}
+            {% if 'matomo' not in field.vars.name and 'aiFelixSiteId' not in field.vars.name and 'keywords' not in field.vars.name and 'axeptio' not in field.vars.name %}
+                {% set customOthers = customOthers|merge([field.vars.name]) %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: customOthers} %}
+</div>
+
+{% set configurationActive = 'google-analytics'|moduleActive(configuration) %}
+
+{% if configurationActive %}
+    <h4 class="card-subtitle mb-3">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}</h4>
+{% endif %}
+
+<div class="{% if configurationActive %}row{% else %}d-none{% endif %}">
+    {{ form_row(form.disabledIps) }}
+</div>

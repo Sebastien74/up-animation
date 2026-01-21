@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2019-11-16, 7:24 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT EACH TEXT :
+    =================
+
+------------------------------------------------------------------ */
+
+@each $suffix, $color in $theme-colors {
+    .text-#{$suffix}, .body.text-#{$suffix} *:not(a) {
+        @if not index($default-bootstrap-colors, $suffix) {
+            color: $color;
+        }
+        fill: $color;
+    }
+}

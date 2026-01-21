@@ -1,0 +1,21 @@
+{% trans_default_domain 'security_cms' %}
+
+<!-- #users-switcher-box -->
+<div id="users-switcher-box" class="card">
+    <div class="card-body">
+        <span id="users-switcher-close">
+            {{ 'fal times'|icon(14, 14) }}
+        </span>
+        <label for="users-switcher-select">{{ "Changer d'utilisateur"|trans|raw }}</label>
+        <select id="users-switcher-select">
+            <option value="">{{ "Séléctionnez un utilisateur"|trans|raw }}</option>
+            {% for user in users %}
+                {% set login = 'SECURITY_ADMIN_LOGIN_TYPE'|getEnv == 'login' ? user.login : user.email %}
+                {% set path = inAdmin ? path('admin_dashboard', {website: website.id, _switch_user: login}) : path('front_index', {_switch_user: login})  %}
+                {% set text = user.username ? user.username : user.email  %}
+                <option value="{{ path }}">{{ text }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<!-- /#users-switcher-box -->

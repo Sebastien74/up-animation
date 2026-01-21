@@ -1,0 +1,109 @@
+{% set excludes = ['save', 'saveEdit', 'saveBack'] %}
+{% if excludesFields is defined and excludesFields %}
+    {% set excludes = excludes|merge(excludesFields) %}
+{% endif %}
+{% set configFieldsBase = ['urls', 'publicationStart', 'publicationEnd', 'subTitlePosition'] %}
+{% set configFields = {} %}
+{% set configFieldsIntls = false %}
+{% set templateConfig = templateConfig is defined and templateConfig|fileExist ? templateConfig : 'admin/core/form/edit-configuration-collapse.html.twig' %}
+
+{% for field in form.children %}
+    {% if field.vars.attr['data-config'] is defined and field.vars.attr['data-config'] or field.vars.name in configFieldsBase %}
+        {% set configFields = configFields|merge({(field.vars.name): field.vars.name}) %}
+    {% endif %}
+    {% if field.vars.name == 'intls' %}
+        {% for fieldIntls in form.intls %}
+            {% for fieldIntl in fieldIntls.children %}
+                {% set isDisabled = field.vars.attr['data-config'] is defined and not field.vars.attr['data-config'] %}
+                {% if not isDisabled %}
+                    {% if fieldIntl.vars.name in configFieldsBase or field.vars.attr['data-config'] is defined and field.vars.attr['data-config'] %}
+                        {% set configFields = configFields|merge({(fieldIntl.vars.name): fieldIntl.vars.name}) %}
+                        {% set configFieldsIntls = true %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+{% endfor %}
+
+{% for configField in configFields %}
+    {% set disabled = form[configField].vars.attr['data-config'] is defined and not form[configField].vars.attr['data-config'] %}
+    {% if disabled %}
+        {% set configFields = configFields|filter((v, k) => k != configField) %}
+    {% endif %}
+{% endfor %}
+
+{% set configsFieldsSet = configFields %}
+
+{% set multiMedia = interface.configuration.mediaMulti is defined
+    and interface.configuration.mediaMulti
+    and entity.mediaRelations is defined
+    and class is defined and class
+    and entity.id is defined and entity.id %}
+
+{% set displayUploader = multiMedia and not haveCustomLayout %}
+{% set hideRadius = interface.configuration.saveArea is not defined or interface.configuration.saveArea != 'bottom' or configFields is defined and configFields %}
+
+{{ form_start(form, {attr: {
+    novalidate: "novalidate",
+    action: app.request.uri,
+    class: displayUploader ? 'master-dropzone-form position-relative' : 'master-form position-relative',
+    id: 'form-'~entity.id }}) }}
+
+    <div id="edit-form-{{ interface.name }}" class="card refer-preloader">
+        {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only %}
+        {% include 'admin/core/form/save/header.html.twig' %}
+        <div class="card-body pb-0{% if not hideRadius %} top-radius{% endif %}">
+            <div class="row">
+                {% include templateConfig with {
+                    form: form,
+                    configFields: configFields,
+                    entity: entity,
+                    classname: interface.classname,
+                    configsFieldsSet: configsFieldsSet,
+                    interface: interface,
+                    configFieldsIntls: configFieldsIntls
+                } only %}
+                {% if ('admin/page/edit/'~interface.name~'.html.twig')|fileExist %}
+                    {% include 'admin/page/edit/'~interface.name~'.html.twig' with {
+                        form: form,
+                        excludes: excludes,
+                        configFields: configFields,
+                        configsFieldsSet: configsFieldsSet,
+                        entity: entity,
+                        classname: interface.classname
+                    } only %}
+                {% else %}
+                    {% include 'admin/core/form/edit-fields-base.html.twig' with {
+                        website: website is defined ? website : website(),
+                        mediaRelationsTabs: mediaRelationsTabs is defined ? mediaRelationsTabs : null,
+                        excludes: excludes,
+                        form: form,
+                        configFields: configFields,
+                        configsFieldsSet: configsFieldsSet,
+                        entity: entity,
+                        interfaceName: interface.name,
+                        classname: interface.classname
+                    } only %}
+                {% endif %}
+                {% if innerCustomized is defined %}{{ innerCustomized }}{% endif %}
+            </div>
+        </div>
+        {% include 'admin/core/form/save/footer.html.twig' %}
+    </div>
+
+    {% if outerCustomized is defined %}{{ outerCustomized }}{% endif %}
+
+    {% for field in form.children %}
+        {% set vars = field.vars %}
+        {% if vars.name == 'mediaRelations' and vars.attr['disable-multiple'] is defined and vars.attr['disable-multiple'] %}
+            {% set displayUploader = false %}
+        {% endif %}
+    {% endfor %}
+
+{{ form_end(form) }}
+
+{% if displayUploader %}
+    {{ render_esi(path('admin_medias_uploader', {website: websiteId(), entityNamespace: class|url_encode, entityId: entity.id})) }}
+    {% include 'admin/core/include/medias-sortable.html.twig' %}
+{% endif %}

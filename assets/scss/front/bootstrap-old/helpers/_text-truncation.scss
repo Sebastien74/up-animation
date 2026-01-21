@@ -1,0 +1,9 @@
+@if $bootstrap-text-truncation {
+    //
+    // Text truncation
+    //
+
+    .text-truncate {
+        @include text-truncate();
+    }
+}

@@ -1,0 +1,192 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageIcon = 'fal globe' %}
+
+{% block title %}{{ "Groupes de traductions"|trans|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ "Groupes de traductions"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-translation', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-translation', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {% set toExtract = pagination.getTotalItemCount is defined and pagination.getTotalItemCount == 0 and not app.request.get('index_search')
+        or pagination|length == 0 and not app.request.get('index_search') %}
+    {% set allLocales = interface.website.configuration.allLocales %}
+    {% set defaultLocale = interface.website.configuration.locale %}
+    {% set stats = domains|transStats %}
+
+    {% if granted('ROLE_INTERNAL') %}
+
+        <ul id="domains-tabs" class="nav nav-tabs custom-tab w-100 bg-info-light shadow-light border-0 radius mb-4 text-center overflow-hidden" role="tablist">
+            <li class="nav-item{% if toExtract %} w-50 bold{% endif %}">
+                <a class="translation-extract-btn text-center nav-link cursor text-info no-radius" data-domain="only_front">
+                    {{ 'fad sync-alt'|icon(null, 17, "info me-sm-2") }}<span>{{ "Extraire le front"|trans }}</span>
+                </a>
+            </li>
+            <li class="nav-item{% if toExtract %} w-50 bold{% endif %}">
+                <a class="translation-extract-btn text-center nav-link cursor text-info no-radius" data-domain="all">
+                    {{ 'fad sync-alt'|icon(null, 17, "info me-sm-2") }}<span>{{ "Extraire tout"|trans }}</span>
+                </a>
+            </li>
+            {% if not toExtract %}
+                <li class="nav-item">
+                    <a href="{{ path('admin_intls_export', { website: websiteId }) }}" class="text-center nav-link no-radius">
+                        {{ 'fad upload'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Exporter les traductions"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="text-center nav-link no-radius" data-bs-toggle="modal" data-bs-target="#import-modal">
+                        {{ 'fad download'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Importer les traductions"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link no-radius" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}" data-toggle="preloader">
+                        {{ 'fad broom'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Vider le cache"|trans }}</span>
+                    </a>
+                </li>
+                <li class="nav-item right as-button no-radius">
+                    {{ render_esi(path("admin_translation_new", {website: websiteId()})) }}
+                </li>
+            {% endif %}
+        </ul>
+
+        {{ render_esi(path('admin_intls_import', {website: websiteId()} )) }}
+
+    {% endif %}
+
+    {% include 'admin/page/translation/generator.html.twig' %}
+
+    {% if not toExtract %}
+
+        <div id="translations-domains-index" class="card d-inline-block w-100">
+
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8 my-auto">
+                        {% if searchForm %}
+                            {% include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} %}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4 my-auto d-flex justify-content-end">
+                        {% set domainsPath = app.request.get('domains') ? path('admin_translationdomain_index', {website: website.id})
+                            : path('admin_translationdomain_index', {website: website.id, domains: 'admin'}) %}
+                        {% set domainslabel = app.request.get('domains') ? "Traductions front"|trans : "Traductions admin"|trans %}
+                        <a href="{{ domainsPath }}" class="btn btn-info d-flex align-items-center">
+                            {{ 'fas eye'|icon(null, 17, 'me-2') }}<span>{{ domainslabel|raw }}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="result" class="position-relative">
+
+                {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only %}
+
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th class="align-middle">{{ "Groupe"|trans }}</th>
+                            {% for transLocale in allLocales %}
+                                <th class="align-middle">
+                                    {% if allLocales|length > 1 %}
+                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
+                                             data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
+                                             class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">
+                                    {% endif %}
+                                    {% if stats[transLocale] is defined %}
+                                        <strong class="d-inline-block">{{ stats[transLocale]['words'] }} {{ "mots"|trans }}</strong>
+                                    {% endif %}
+                                </th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entity in pagination %}
+                            {% set name = 'singular'|trans([], entity.name) and 'singular'|trans([], entity.name) != 'singular'
+                                ? 'singular'|trans([], entity.name) : entity.adminName  %}
+                            {% if name != '_undefined' %}
+                                <tr class="{% if loop.index is even %}even{% else %}odd{% endif %}">
+                                    <td class="align-middle">
+                                        <div class="row">
+                                            <div class="col-7 my-auto">
+                                                {{ name }}
+                                                {% if granted('ROLE_INTERNAL') %}
+                                                    {% if entity.forTranslator %}
+                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{ "Pour le traducteur"|trans|striptags }}">{{ 'far globe'|icon(null, 14, 'info ms-2') }}</span>
+                                                    {% endif %}
+                                                    {% if entity.extract %}
+                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{ "À exporter"|trans|striptags }}">{{ 'far upload'|icon(16, 14, 'info ms-2') }}</span>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-5 text-end">
+                                                {% if granted('ROLE_INTERNAL') %}
+                                                    <span data-bs-toggle="tooltip" title="{{ "Éditer le groupe"|trans|striptags }}">
+                                                        <a href="{{ path('admin_translationdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
+                                                           class="btn btn-info btn-circle btn-sm"
+                                                           data-toggle="preloader">
+                                                            {{ 'fas pencil-alt'|icon(null, 14, '', {icon: true}) }}
+                                                        </a>
+                                                    </span>
+                                                    <span data-bs-toggle="tooltip" title="{{ "Extraire"|trans|striptags }}">
+                                                        <a class="translation-extract-btn btn btn-outline-info btn-circle btn-sm cursor" data-larges="1" data-domain="{{ entity.name }}">
+                                                            {{ 'far retweet-alt'|icon(null, 14) }}
+                                                        </a>
+                                                    </span>
+                                                {% endif %}
+                                                <span data-bs-toggle="tooltip" title="{{ "Éditer les contenus"|trans|striptags }}">
+                                                    <a href="{{ path('admin_translationsdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
+                                                       class="btn btn-outline-info btn-circle btn-sm"
+                                                       data-toggle="preloader">
+                                                        {{ 'far list-ul'|icon(null, 14) }}
+                                                    </a>
+                                                </span>
+                                                {% if granted('ROLE_INTERNAL') %}
+                                                    <span data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
+                                                        <a class="btn btn-outline-info btn-circle btn-sm cursor sa-warning swal-delete-link"
+                                                           href="{{ path('admin_translationsdomain_delete', {website: websiteId(), translationdomain: entity.id}) }}">
+                                                            {{ 'fas trash'|icon(null, 14) }}
+                                                        </a>
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    {% for transLocale in interface.website.configuration.allLocales %}
+                                        <td class="align-middle">
+                                            {% if stats[entity.name]['units'][transLocale] is defined %}
+                                                <h5>{{ stats[entity.name]['units'][transLocale] }}/{{ stats[entity.name]['units']['count'][transLocale] }} <small class="d-inline-block"> - {{ stats[entity.name][transLocale]['words'] }} {{ 'mots'|trans }}</small></h5>
+                                                <div class="progress">
+                                                    {% set percent = stats[entity.name]['units'][transLocale]|percent(stats[entity.name]['units']['count'][transLocale]) %}
+                                                    {% set color = percent < 100 ? 'danger' : 'success' %}
+                                                    <div class="progress-bar progress-bar-striped bg-{{ color }} wow animated progress-animated" style="width: {{ percent }}%; height:6px;" role="progressbar"></div>
+                                                </div>
+                                            {% else %}
+                                                <span class="badge bg-warning">{{ "Vous devez regénérer les traductions !"|trans }}</span>
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% include 'admin/core/include/pagination.html.twig' %}
+
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

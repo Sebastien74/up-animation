@@ -1,0 +1,437 @@
+#####################################
+#           Layout                  #
+#####################################
+
+App\Entity\Layout\Page:
+    translations:
+        singular:
+            fr: 'Page'
+            en: 'Page'
+        plural:
+            fr: 'Pages'
+            en: 'Pages'
+        add:
+            fr: 'Ajouter une page'
+            en: 'Add page'
+        delete:
+            fr: "Supprimer la page"
+            en: 'Delete page'
+
+App\Entity\Layout\Action:
+    translations:
+        singular:
+            fr: 'Action'
+            en: 'Action'
+        plural:
+            fr: 'Actions'
+            en: 'Actions'
+        add:
+            fr: 'Ajouter une action'
+            en: 'Add action'
+        slider-view:
+            fr: 'Carrousel'
+            en: 'Carousel'
+        gallery-view:
+            fr: 'Galerie'
+            en: 'Gallery'
+        form-view:
+            fr: 'Formulaire'
+            en: 'Form'
+        form-success:
+            fr: 'Formulaire page de succès'
+            en: 'Success page form'
+        form-step:
+            fr: 'Formulaire à étapes'
+            en: 'Steps form'
+        newscast-index:
+            fr: 'Liste des actualités'
+            en: 'News list'
+        newscast-index-categories:
+            fr: 'Liste des actualités filtrées par catégorie'
+            en: 'List of news filtered by category'
+        newscast-teaser:
+            fr: "Teaser d'actualité"
+            en: 'Teaser news'
+        making-teaser:
+            fr: "Teaser de réalisations"
+            en: 'Making teaser'
+        making-index:
+            fr: "Liste des réalisations"
+            en: 'Making list'
+        portfolio-teaser:
+            fr: "Teaser de portfolios"
+            en: 'Portfolios teaser'
+        portfolio-index:
+            fr: "Liste des portfolios"
+            en: 'Portfolios list'
+        catalog-teaser:
+            fr: "Teaser de produits"
+            en: 'Products teaser'
+        catalog-index:
+            fr: "Liste des produits"
+            en: 'Products list'
+        menu-view:
+            fr: "Menu"
+            en: 'Navigation'
+        sitemap-view:
+            fr: "Sitemap"
+            en: 'Sitemap'
+        table-view:
+            fr: "Tableau"
+            en: 'Table'
+        faq-view:
+            fr: "FAQ"
+            en: 'FAQ'
+        map-view:
+            fr: "Carte"
+            en: 'Map'
+        tab-view:
+            fr: "Groupe d'onglets"
+            en: 'Tabs'
+        information-view:
+            fr: "Informations de contact"
+            en: 'Contact information'
+        contact-information-view:
+            fr: "Informations de contact"
+            en: 'Contact information'
+        search-view:
+            fr: "Moteur de recherche"
+            en: 'Search engine'
+        search-result-view:
+            fr: "Moteur de recherche & résultats"
+            en: 'Search engine and results'
+        newsletter-campaign-view:
+            fr: "Formulaire d'inscription à la newsletter"
+            en: 'Newsletter subscription form'
+        agenda-view:
+            fr: "Agenda"
+            en: 'Agenda'
+        timeline-view:
+            fr: "Chronologie"
+            en: 'Timeline'
+        active:
+            fr: "Activée"
+            en: 'Active'
+    columns:
+        - adminName
+        - active
+
+App\Entity\Layout\ActionI18n:
+    translations:
+        singular:
+            fr: 'Action I18n'
+            en: 'Action I18n'
+        plural:
+            fr: 'Actions I18n'
+            en: 'Actions I18n'
+        add:
+            fr: 'Ajouter une action I18n'
+            en: 'Add action I18n'
+        delete:
+            fr: "Supprimer l'action"
+            en: 'Delete action'
+    columns:
+        - adminName
+
+App\Entity\Layout\Block:
+    translations:
+        singular:
+            fr: 'Bloc'
+            en: 'Block'
+        plural:
+            fr: 'Blocs'
+            en: 'Blocks'
+        add:
+            fr: 'Ajouter un bloc'
+            en: 'Add block'
+        delete:
+            fr: "Supprimer le bloc"
+            en: 'Delete block'
+
+App\Entity\Layout\BlockType:
+    translations:
+        singular:
+            fr: 'Type de bloc'
+            en: 'Block type'
+        plural:
+            fr: 'Types de bloc'
+            en: 'Block types'
+        add:
+            fr: 'Ajouter un type de bloc'
+            en: 'Add block type'
+        delete:
+            fr: "Supprimer le type de bloc"
+            en: 'Delete block type'
+        form-text:
+            fr: 'Texte (form)'
+            en: 'Text (form)'
+        form-textarea:
+            fr: 'Zone de texte (form)'
+            en: 'Textarea (form)'
+        form-choice-type:
+            fr: 'Sélecteur (form)'
+            en: 'Choice (form)'
+        form-email:
+            fr: 'Email (form)'
+            en: 'Email (form)'
+        form-phone:
+            fr: 'Téléphone (form)'
+            en: 'Phone (form)'
+        form-zip-code:
+            fr: 'Code postal (form)'
+            en: 'Zip code (form)'
+        form-date:
+            fr: 'Date (form)'
+            en: 'Date (form)'
+        form-submit:
+            fr: 'Bouton de soumission (form)'
+            en: 'Submit button (form)'
+        form-file:
+            fr: 'Fichier (form)'
+            en: 'File (form)'
+        form-emails:
+            fr: 'Groupe de mails (form)'
+            en: 'Emails group (form)'
+        form-hour:
+            fr: 'Heure (form)'
+            en: 'Hour (form)'
+        form-integer:
+            fr: 'Nombre (form)'
+            en: 'Number (form)'
+        form-country:
+            fr: 'Pays (form)'
+            en: 'Country (form)'
+        form-language:
+            fr: 'Langues (form)'
+            en: 'Languages (form)'
+        form-password:
+            fr: 'Mot de passe (form)'
+            en: 'Password (form)'
+        form-url:
+            fr: 'URL (form)'
+            en: 'URL (form)'
+        form-hidden:
+            fr: 'Caché (form)'
+            en: 'Hidden (form)'
+        layout-title-header:
+            fr: 'Entête (layout)'
+            en: 'Heading (form)'
+        layout-title:
+            fr: 'Titre (layout)'
+            en: 'Title (form)'
+        layout-body:
+            fr: 'Texte (layout)'
+            en: 'Text (layout)'
+        layout-intro:
+            fr: 'Introduction (layout)'
+            en: 'Introduction (layout)'
+        layout-image:
+            fr: 'Média (layout)'
+            en: 'Media (layout)'
+        layout-gallery:
+            fr: 'Galerie (layout)'
+            en: 'Gallery (layout)'
+        layout-slider:
+            fr: 'Carrousel (layout)'
+            en: 'Slider (layout)'
+        layout-video:
+            fr: 'Vidéo (layout)'
+            en: 'Video (layout)'
+        layout-back-button:
+            fr: 'Bouton de retour (layout)'
+            en: 'Go back button (layout)'
+        layout-link:
+            fr: 'Lien (layout)'
+            en: 'Link (layout)'
+        layout-share:
+            fr: 'Boutons de partage (layout)'
+            en: 'Share buttons(layout)'
+        core-action:
+            fr: 'Action'
+            en: 'Action'
+        title:
+            fr: 'Titre'
+            en: 'Title'
+        text:
+            fr: 'Texte'
+            en: 'Text'
+        media:
+            fr: 'Média'
+            en: 'Media'
+        link:
+            fr: 'Lien'
+            en: 'Link'
+        title-header:
+            fr: 'Entête'
+            en: 'Heading'
+        video:
+            fr: 'Vidéo'
+            en: 'Video'
+        card:
+            fr: 'Mini fiche'
+            en: 'Card'
+        blockquote:
+            fr: 'Citation'
+            en: 'Blockquote'
+        collapse:
+            fr: 'Collapse'
+            en: 'Collapse'
+        modal:
+            fr: 'Modal'
+            en: 'Modal'
+        alert:
+            fr: 'Alerte'
+            en: 'Alert'
+        icon:
+            fr: 'Icône'
+            en: 'Icon'
+        action:
+            fr: 'Module'
+            en: 'Module'
+        separator:
+            fr: 'Séparateur'
+            en: 'Separator'
+        widget:
+            fr: 'Widget'
+            en: 'Widget'
+        share:
+            fr: 'Boutons de partages'
+            en: 'Share buttons(layout)'
+    columns:
+        - adminName
+
+App\Entity\Layout\Col:
+    translations:
+        singular:
+            fr: 'Colonne'
+            en: 'Column'
+        plural:
+            fr: 'Colonnes'
+            en: 'Columns'
+        add:
+            fr: 'Ajouter une colonne'
+            en: 'Add column'
+        delete:
+            fr: "Supprimer la colonne"
+            en: 'Delete column'
+
+App\Entity\Layout\CssClass:
+    translations:
+        singular:
+            fr: 'Classe'
+            en: 'Class'
+        plural:
+            fr: 'Classes'
+            en: 'Classes'
+        add:
+            fr: 'Ajouter une classe'
+            en: 'Add class'
+        delete:
+            fr: "Supprimer la classe"
+            en: 'Delete class'
+
+App\Entity\Layout\FieldConfiguration:
+    translations:
+        singular:
+            fr: 'ConfigurationModel de champs formulaire'
+            en: 'Form field configuration'
+        plural:
+            fr: 'Configurations de champs formulaire'
+            en: 'Form field configurations'
+        add:
+            fr: 'Ajouter une configuration'
+            en: 'Add configuration'
+        delete:
+            fr: "Supprimer la configuration"
+            en: 'Delete configuration'
+
+App\Entity\Layout\FieldValue:
+    translations:
+        singular:
+            fr: 'Valeur de champs formulaire'
+            en: 'Form field value'
+        plural:
+            fr: 'Valeurs de champs formulaire'
+            en: 'Form field values'
+        add:
+            fr: 'Ajouter une valeur'
+            en: 'Add value'
+        delete:
+            fr: "Supprimer la valeur"
+            en: 'Delete value'
+
+App\Entity\Layout\Grid:
+    translations:
+        singular:
+            fr: 'Grille'
+            en: 'Grid'
+        plural:
+            fr: 'Grilles'
+            en: 'Grids'
+        add:
+            fr: 'Ajouter une grille'
+            en: 'Add grid'
+        delete:
+            fr: "Supprimer la grille"
+            en: 'Delete grid'
+
+App\Entity\Layout\GridCol:
+    translations:
+        singular:
+            fr: 'Colonne'
+            en: 'Column'
+        plural:
+            fr: 'Colonnes'
+            en: 'Columns'
+        add:
+            fr: 'Ajouter une colonne'
+            en: 'Add column'
+        delete:
+            fr: "Supprimer la colonne"
+            en: 'Delete column'
+
+App\Entity\Layout\Layout:
+    translations:
+        singular:
+            fr: 'Mise en page'
+            en: 'Layout'
+        plural:
+            fr: 'Mises en page'
+            en: 'Layouts'
+        add:
+            fr: 'Ajouter une mise en page'
+            en: 'Add layout'
+        delete:
+            fr: "Supprimer la mise en page"
+            en: 'Delete layout'
+
+App\Entity\Layout\LayoutConfiguration:
+    orderBy: position
+    translations:
+        singular:
+            fr: 'ConfigurationModel de mise en page'
+            en: 'Layout configuration'
+        plural:
+            fr: 'Configurations de mise en page'
+            en: 'Layouts configuration'
+        add:
+            fr: 'Ajouter une configuration'
+            en: 'Add configuration'
+        delete:
+            fr: "Supprimer la configuration"
+            en: 'Delete configuration'
+
+App\Entity\Layout\Zone:
+    translations:
+        singular:
+            fr: 'Zone'
+            en: 'Zone'
+        plural:
+            fr: 'Zones'
+            en: 'Zones'
+        add:
+            fr: 'Ajouter une ligne'
+            en: 'Add row'
+        delete:
+            fr: "Supprimer la ligne"
+            en: 'Delete row'

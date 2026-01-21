@@ -1,0 +1,48 @@
+/*! purgecss start ignore */
+
+/* -----------------------------------------------------------------
+    Module : Marquee
+    Copyright : 2025
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+------------------------------------------------------------------ */
+
+@import "../../../front/default/variables";
+@import "../../../vendor/mixin/media-queries";
+
+.marquee {
+
+    overflow: hidden;
+    width: 100%;
+
+    .marquee-inner {
+
+        display: flex;
+        flex-wrap: nowrap;
+        will-change: transform;
+
+        .marquee-content {
+
+            display: flex;
+            white-space: nowrap;
+
+            .marquee-item {
+
+                flex: 1 0 auto;
+
+                img {
+
+                    &:not(.lazyloaded) {
+                        max-width: initial;
+                        height: initial;
+                    }
+                }
+            }
+        }
+    }
+
+    &:hover .marquee-inner {
+        animation-play-state: paused !important;
+    }
+}
+
+/*! purgecss end ignore */

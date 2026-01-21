@@ -1,0 +1,8 @@
+fos_js_routing:
+    cache_control:
+        # All are optional, defaults shown
+        public: false   # can be true (public) or false (private)
+        maxage: 2592000    # integer value, e.g. 300
+        smaxage: 2592000   # integer value, e.g. 300
+        expires: "30 days"   # anything that can be fed to "new \DateTime($expires)", e.g. "5 minutes"
+        vary: []        # string or array, e.g. "Cookie" or [ Cookie, Accept ]

@@ -1,0 +1,91 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-07, 9:39 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    MIXIN FONTS :
+    ============
+
+    1 ) String Replace
+    2 ) Font Face
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) String Replace
+-----------------------------------*/
+
+@function str-replace($string, $search, $replace: "") {
+
+    $index: str-index($string, $search);
+
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+
+    @return $string;
+}
+
+/*-----------------------------------
+   2 ) Font Face
+-----------------------------------*/
+
+@mixin font-face($fontName, $fonts, $serif: sans-serif, $extensions: eot woff2 woff ttf svg) {
+
+    .ff-#{to-lower-case(#{$fontName})} {
+        @if $serif != null {
+            font-family: quote($fontName), $serif;
+        } @else {
+            font-family: quote($fontName);
+        }
+    }
+
+    @each $fontSrc, $config in $fonts {
+
+        $src: null;
+
+        $extensionModels: (
+            eot: "?",
+            svg: "#" + str-replace($fontSrc, " ", "_")
+        );
+
+        $formats: (
+            otf: "opentype",
+            ttf: "truetype"
+        );
+
+        $style: normal;
+        @if $config != null and map-has-key($config, 'style') {
+            $style: map-get($config, "style");
+        }
+
+        $weight: 400;
+        @if $config != null and map-has-key($config, 'weight') {
+            $weight: map-get($config, "weight");
+        }
+
+        @each $extension in $extensions {
+            $extensionModel: if(map-has-key($extensionModels, $extension), $extension + map-get($extensionModels, $extension), $extension);
+            $format: if(map-has-key($formats, $extension), map-get($formats, $extension), $extension);
+            $src: append($src, url(quote("../../../lib/fonts/" + $fontName + '/' + $fontSrc + "." + $extensionModel)) format(quote($format)), comma);
+        }
+
+        @font-face {
+
+            font-family: $fontName;
+
+            @if $style != null {
+                font-style: $style;
+            }
+
+            @if $weight != null {
+                font-weight: $weight;
+            }
+
+            src: $src;
+            font-display: swap;
+        }
+    }
+}

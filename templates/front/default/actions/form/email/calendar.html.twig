@@ -1,0 +1,17 @@
+{% extends 'core/email/base.html.twig' %}
+
+{% trans_default_domain 'email' %}
+
+{% block body %}
+    <tr>
+        <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+            <p>{{ "Votre RDV aura lieu le "|trans~" "~appointmentDate|format_datetime(pattern='EEEE d MMMM YYYY à HH:mm', locale=app.request.locale)|capitalize }}</p>
+            {% if calendarIntl.confirmation|striptags|length > 0 %}
+                {{ calendarIntl.confirmation|raw }}
+            {% endif %}
+            {% if formIntl.confirmation|striptags|length > 0 %}
+                {{ formIntl.confirmation|raw }}
+            {% endif %}
+        </td>
+    </tr>
+{% endblock %}

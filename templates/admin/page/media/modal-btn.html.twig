@@ -1,0 +1,57 @@
+{% trans_default_domain 'admin' %}
+
+{% set haveAddVideo = haveAddVideo is defined ? haveAddVideo : false %}
+{% set entityId = entityId is defined ? entityId : entity.id %}
+{% set uploadType = uploadType is defined ? uploadType : 'single' %}
+{% set mediaRelationId = mediaRelationId is defined ? mediaRelationId : null %}
+{% if entity.mediaRelation is defined and entity.mediaRelation and entity.mediaRelation.id %}
+    {% set mediaRelationId = entity.mediaRelation.id %}
+{% endif %}
+{% set btnId = mediaRelationId ? mediaRelationId : entityId %}
+{% set classname = classname is defined and classname ? classname : (interface.classname is defined and interface.classname ? interface.classname : null) %}
+
+{% if classname is defined %}
+
+    {% set parameters = {
+        type: uploadType is defined ? uploadType : 'single',
+        property: mediaProperty is defined ? mediaProperty : null,
+        mediaRelationId: mediaRelationId,
+        classname: classname|url_encode,
+        entityId: entityId,
+        btnId: "#open-modal-"~btnId,
+    }|json_encode %}
+
+    {% if uploadType == 'multiple' %}
+
+        <span class="open-modal-medias-wrap btn btn-outline-info-darken w-100 mb-3 {{ uploadType }}{% if haveAddVideo %} have-video-btn{% endif %}">
+            <div class="open-modal-medias-container">
+                <span id="open-modal-{{ btnId }}" class="open-modal-medias d-inline-block" data-options="{{ parameters }}">
+                    {{ 'fal photo-video'|icon(null, 50, 'photo-video') }}<br>{{ "Choisir dans la bibliothèque"|trans }}
+                </span>
+                <a href="https://tinypng.com/"
+                   target="_blank" class="optimize-media-btn btn btn-dark"
+                   data-bs-toggle="tooltip"
+                   title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
+                    {{ 'fal file-archive'|icon(null, 24) }}
+                </a>
+            </div>
+        </span>
+
+    {% else %}
+
+        <span class="open-modal-medias-wrap btn btn-outline-info-darken w-100 mb-3 {{ uploadType }}">
+            <span id="open-modal-{{ btnId }}" class="open-modal-medias d-inline-block" data-options="{{ parameters }}">
+                {{ 'fal photo-video'|icon(null, 14, 'me-2') }}
+                {{ "Choisir dans la bibliothèque"|trans }}
+            </span>
+            <a href="https://tinypng.com/"
+               target="_blank" class="optimize-media-btn btn btn-dark"
+               data-bs-toggle="tooltip"
+               title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
+                {{ 'fal file-archive'|icon(null, 22) }}
+            </a>
+        </span>
+
+    {% endif %}
+
+{% endif %}

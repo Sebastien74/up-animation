@@ -1,0 +1,5 @@
+add: 'Ajouter un statut'
+adminName: 'Statut '
+delete: 'Supprimer le statut'
+plural: Statuts
+singular: 'Statut '

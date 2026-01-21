@@ -1,0 +1,5 @@
+add: 'Add customer'
+adminName: 'Customer '
+delete: 'Delete customer'
+plural: Customers
+singular: 'Customer '

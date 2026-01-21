@@ -1,0 +1,78 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set dashed = dashed is defined ? dashed : isFooter %}
+{% set alwaysHorizontal = alwaysHorizontal is defined ? alwaysHorizontal : not entity.vertical %}
+{% set isHorizontal = isHorizontal or alwaysHorizontal %}
+{% set links = tree.main is defined ? tree.main : [] %}
+{% set accessibilityActive = website.configuration.accessibilityStatus %}
+{% set gdprActive = 'gdpr'|moduleActive(configuration) or axeptioActive %}
+{% set alignment = 'me-auto' == alignment ? 'start' : ('ms-auto' == alignment ? 'end' : 'center') %}
+
+<nav class="menu-container position-relative d-flex{% if not isVertical %} justify-content-center justify-content-md-{{ alignment }}{% endif %}"
+     aria-label="{{ "Liens utiles"|trans|striptags }}">
+    {{ macroWebmaster.box({
+        title: "Éditer le menu"|trans([], 'front_webmaster'),
+        role: 'ROLE_NAVIGATION',
+        path: path('admin_menu_edit', {website: website.id, menu: id, entitylocale: app.request.locale})
+    }) }}
+    <ul id="footer-menu-{{ slug }}" class="reset {% if alwaysHorizontal %}d-flex flex-wrap justify-content-center{% else %}d-inline-block{% endif %}{% if isHorizontal and not alwaysHorizontal %} d-md-flex{% endif %}">
+        {% for link in links %}
+            {% if link.title and link.online %}
+                {% set linkClass = link.class~' text-white link position-relative' %}
+                {% set linkClass = isVertical ? linkClass~' d-inline-block mb-3' : linkClass %}
+                <li id="item-{{ link.id }}" class="{% if isHorizontal %}mb-2 mb-md-0 d-flex align-items-center justify-content-center{% endif %}">
+                    {% if link.link %}
+                        <a href="{{ link.link }}"
+                           id="{{ link.id }}"
+                           {% if link.linkBlank %} target="_blank"{% else %} data-toggle="preloader"{% endif %}
+                           {% if link.dataAnchor %} data-anchor="{{ link.dataAnchor }}"{% endif %}
+                           class="{{ linkClass }}"
+                           {% if link.linkExternal %} rel="noopener noreferrer"{% endif %}>
+                    {% endif %}
+                        {{ link.title|unescape|raw }}
+                    {% if link.link %}
+                        </a>
+                    {% endif %}
+                    {% if isHorizontal and not loop.last and dashed %}
+                        <span class="dashed text-white ms-2 me-2{% if not alwaysHorizontal %} d-none d-md-block{% endif %}">-</span>
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+        {% if isFooter %}
+            {% if accessibilityActive %}
+                {% set asAccessibility = app.request.cookies.get('USER_ACCESSIBILITY') %}
+                {% set accessibilityParam = asAccessibility ? 'user_accessibility_initial' : 'user_accessibility' %}
+                {% set accessibilityLabel = asAccessibility ? "Désactiver le mode accessibilité"|trans : "Activer le mode accessibilité"|trans %}
+                <li id="item-footer-accessibility" class="mb-2 mb-md-0{% if isHorizontal %} d-flex align-items-center justify-content-center{% endif %}">
+                    {% if isHorizontal and dashed %}
+                        <span class="dashed text-white ms-2 me-2{% if not alwaysHorizontal %} d-none d-md-block{% endif %}">-</span>
+                    {% endif %}
+                    <a href="{{ '?'~accessibilityParam~'=true' }}" class="text-white link{% if isVertical %} d-inline-block mb-2{% endif %}">{{ accessibilityLabel|raw }}</a>
+                </li>
+            {% endif %}
+            {% if gdprActive %}
+                <li id="item-footer-gdpr" class="mb-2 mb-md-0{% if isHorizontal %} d-flex align-items-center justify-content-center{% endif %}">
+                    {% if isHorizontal and dashed %}
+                        <span class="dashed text-white ms-2 me-2{% if not alwaysHorizontal %} d-none d-md-block{% endif %}">-</span>
+                    {% endif %}
+                    {% if axeptioActive is defined and axeptioActive %}
+                        <a href="javascript:openAxeptioCookies()" class="text-white link{% if isVertical %} d-inline-block mb-2{% endif %}" rel="nofollow">{{ "Gestion des Cookies"|trans|raw }}</a>
+                    {% else %}
+                        <span class="open-gdpr-modal cursor text-white link{% if isVertical %} d-inline-block mb-2{% endif %}">{{ "Gestion des Cookies"|trans|raw }}</span>
+                    {% endif %}
+                </li>
+            {% endif %}
+            {% if not anonymousTheme %}
+                <li id="item-footer-created-by" class="mb-2 mb-md-0{% if isHorizontal %} d-flex align-items-center justify-content-center{% endif %}">
+                    {% if isHorizontal and dashed %}
+                        <span class="dashed text-white ms-2 me-2{% if not alwaysHorizontal %} d-none d-md-block{% endif %}">-</span>
+                    {% endif %}
+                    <a href="{{ "https://www.felix-creation.fr"|trans }}" class="text-white link{% if isVertical %} d-inline-block mb-2{% endif %}" target="_blank" rel="noopener noreferrer">{{ "Réalisation : Agence Félix"|trans|raw }}</a>
+                </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</nav>

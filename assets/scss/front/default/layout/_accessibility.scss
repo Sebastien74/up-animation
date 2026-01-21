@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+/* ------------------------------------------------------------------------------------------
+
+    Module : Accessibility
+    Copyright : 2025
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+------------------------------------------------------------------------------------------ */
+
+.skip-link {
+
+    position: fixed !important;
+    top: -1000px;
+    left: -1000px;
+    z-index: 3000 !important;
+    text-decoration: none !important;
+    font-weight: bold !important;
+
+    &.focused-el {
+        top: 7rem !important;
+        left: 1rem !important;
+    }
+}

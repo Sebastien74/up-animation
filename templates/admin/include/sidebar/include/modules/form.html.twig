@@ -1,0 +1,37 @@
+{% trans_default_domain 'admin' %}
+
+{% set uri = app.request.uri %}
+{% set active = '/forms/' in uri %}
+{% set formActive = '/forms/layout/' in uri or 'forms/contacts' in uri  %}
+
+{% if 'form'|moduleActive(configuration) and 'steps-form'|moduleActive(configuration) %}
+    {% set module = 'form'|moduleActive(configuration) %}
+    {% set intl = intlsModules['form'][app.user.locale] is defined ? intlsModules['form'][app.user.locale] : intlsModules['form']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['form']['entity'].adminName is defined ? intlsModules['form']['entity'].adminName : 'Formulaires'|trans) %}
+    {% set icon = intlsModules['form']['entity'].iconClass is defined and intlsModules['form']['entity'].iconClass ? intlsModules['form']['entity'].iconClass : '/medias/icons/brand/wpforms.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a class="as-arrow{% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+            {{ icon|icon(13, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+        <ul aria-expanded="false" class="collapse{% if active %} in{% endif %}">
+            <li>
+                <a href="{{ path('admin_form_index', {website: websiteId}) }}" {% if formActive %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des formulaires"|trans }}</a>
+            </li>
+            <li>
+                <a href="{{ path('admin_stepform_index', {website: websiteId}) }}" {% if '/steps/forms/' in uri %} class="active"{% endif %} data-toggle="preloader">
+                    {{ "Liste des formulaires à étapes"|trans }}
+                </a>
+            </li>
+        </ul>
+    </li>
+{% elseif 'form'|moduleActive(configuration) %}
+    {% set module = 'form'|moduleActive(configuration) %}
+    {% set intl = intlsModules['form'][app.user.locale] is defined ? intlsModules['form'][app.user.locale] : intlsModules['form']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['form']['entity'].adminName is defined ? intlsModules['form']['entity'].adminName : 'Formulaires'|trans) %}
+    {% set icon = intlsModules['form']['entity'].iconClass is defined and intlsModules['form']['entity'].iconClass ? intlsModules['form']['entity'].iconClass : '/medias/icons/brand/wpforms.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a href="{{ path('admin_form_index', {website: websiteId}) }}" data-toggle="preloader">
+            {{ icon|icon(13, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% endif %}

@@ -1,0 +1,127 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-27, 07:14:30 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    NESTABLE MEDIAS :
+    ================
+
+------------------------------------------------------------------ */
+
+#medias-sortable-container {
+
+    #main-preloader {
+        left: 9px;
+        right: 9px;
+        bottom: -1px;
+    }
+
+    .locales-tab-container {
+        margin-bottom: 0 !important;
+    }
+
+    .sortable-item {
+
+        margin-bottom: .5rem;
+        border-radius: $card-border-radius;
+        border: 1px solid $white;
+        background: $white;
+        color: $dark;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .title-block {
+
+            line-height: 50px;
+
+            img, .img-loader {
+
+                border-radius: 3px;
+                height: 30px;
+                width: 30px;
+
+                .spinner-border {
+                    height: 10px;
+                    width: 10px;
+                    border-width: 1px;
+                }
+            }
+
+            .file-icon {
+                height: 30px;
+                width: 30px;
+                text-align: center;
+                font-size: 14px;
+                line-height: 30px;
+                border-radius: 3px;
+                max-height: 30px;
+                background-color: $gray-200;
+            }
+        }
+
+        .tooltip-categories {
+            max-height: 30px;
+            line-height: 30px;
+        }
+
+        .handle-item {
+
+            position: relative;
+            min-height: 50px;
+            width: 50px;
+            margin: 0 20px 0 0;
+            padding: 0;
+
+            &:after {
+                content: "";
+                position: absolute;
+                right: 0;
+                top: 14px;
+                bottom: 11px;
+                width: 1px;
+                background-color: $dark;
+            }
+
+            i, svg {
+                font-size: 14px;
+                margin-top: 19px;
+                float: left;
+                margin-left: 16px;
+            }
+        }
+
+        .btn-circle {
+            width: 35px;
+            height: 35px;
+            padding: 5px 0 0 0;
+        }
+
+        .delete-pack-control {
+
+            margin-left: 25px;
+            margin-right: 5px;
+
+            .custom-control-label::before,
+            .custom-control-label::after {
+                top: 5px;
+            }
+        }
+    }
+
+    .parent-preloader {
+        > .card-body {
+            padding: 1rem 1.25rem;
+        }
+    }
+
+    .ui-state-highlight {
+        background-color: $gray-400;
+        border: 1px solid $gray-400;
+        border-radius: $card-border-radius;
+    }
+}

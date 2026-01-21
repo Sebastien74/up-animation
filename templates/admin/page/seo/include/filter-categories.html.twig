@@ -1,0 +1,89 @@
+{% trans_default_domain 'admin' %}
+
+{% set currentCategory = currentCategory is not defined or not currentCategory ? 'page' : currentCategory %}
+
+<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+    {% for category, item in entities %}
+        {% set label = item['main'][1].classname is defined ? item['main'][1].classname : (item[0].classname is defined ? item[0].classname : null) %}
+        <a id="v-pills-{{ category }}-tab"
+           class="nav-link{% if currentCategory == category %} active{% endif %}"
+           data-bs-toggle="pill"
+           href="#v-pills-{{ category }}"
+           role="tab"
+           aria-controls="v-pills-{{ category }}"
+           aria-selected="false">
+            {% set entityDomain = 'entity_'~category %}
+            {% set label = 'plural'|trans([], entityDomain) and 'plural'|trans([], entityDomain) != 'plural'
+                ? 'plural'|trans([], entityDomain) : label  %}
+            {{ label }}
+        </a>
+    {% endfor %}
+    {% if models is defined %}
+        <a id="v-pills-models-tab"
+           class="nav-link{% if currentCategory == 'models' %} active{% endif %}"
+           data-bs-toggle="pill"
+           href="#v-pills-models"
+           role="tab"
+           aria-controls="v-pills-models"
+           aria-selected="false">{{ "Modèles"|trans }}</a>
+    {% endif %}
+</div>
+
+<hr>
+
+<div class="tab-content" id="v-pills-tab-tree">
+
+    {% for category, item in entities %}
+        <div class="tab-pane fade no-border{% if currentCategory == category %} show active{% endif %}" id="v-pills-{{ category }}" role="tabpanel" aria-labelledby="v-pills-{{ category }}-tab">
+            <form role="search" class="seo-search d-inline-block w-100 mb-3">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text h-100 bg-light">{{ 'fal search'|icon(14, 14, 'dark') }}</span>
+                    </div>
+                    <input placeholder="{{ "Rechercher"|trans }}" class="form-control" type="text" data-target=".entities-list">
+                </div>
+            </form>
+            <ul class="entities-list tree-list">
+                {% set items = item['main'] is defined ? item['main'] : item %}
+                {% for itemEntity in items %}
+                    {% include 'admin/page/seo/include/link-element.html.twig' with {config: itemEntity, tree: item, currentUrl: currentUrl, entitylocale: entitylocale} only %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+
+    {% set isModel = currentCategory == 'models' %}
+
+    {% if models is defined %}
+        <div class="tab-pane fade no-border{% if isModel %} show active{% endif %}" id="v-pills-models" role="tabpanel" aria-labelledby="v-pills-models-tab">
+            <form role="search" class="seo-search d-inline-block w-100 mb-3">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text h-100 bg-light">{{ 'fal search'|icon(14, 14, 'dark') }}</span>
+                    </div>
+                    <input placeholder="{{ "Rechercher"|trans }}" class="form-control" type="text" data-target=".models-list">
+                </div>
+            </form>
+            <ul class="models-list tree-list mb-0">
+                {% for model in models %}
+                    <li class="item">
+                        <span class="item-link text-info">
+                            <a href="{{ path('admin_seo_model_edit', {website: websiteId(), model: model.id, entitylocale: entitylocale}) }}"
+                               class="link-item{% if isModel and entity.id == model.id %} active bold{% endif %}" data-toggle="preloader">
+                                {% set modelInterface = model.className|interface %}
+                                {% set entityDomain = 'entity_'~modelInterface.name %}
+                                {% set label = 'plural'|trans([], entityDomain) and 'plural'|trans([], entityDomain) != 'plural'
+                                    ? 'plural'|trans([], entityDomain) : model.className  %}
+                                {% if model.adminName %}
+                                    {% set label = label~" ("~model.adminName~")" %}
+                                {% endif %}
+                                {{ label|raw }}
+                            </a>
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+</div>

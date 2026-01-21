@@ -1,0 +1,37 @@
+{% trans_default_domain 'front_webmaster' %}
+
+<div class="edit-trans-block position-relative">
+    <span id="edit-trans-content-{{ id }}" class="d-inline-block result">{{ content }}</span>
+    <div id="edit-trans-btn-modal-{{ id }}" class="btn btn-primary edit-trans-btn-modal text-center position-absolute" data-bs-toggle="modal" data-bs-target="trans-edit-modal-{{ id }}">
+        <span data-bs-toggle="tooltip" title="{{ "Éditer le texte"|trans|striptags }}">
+            {{ 'fad pen-nib'|icon(30, 30) }}
+        </span>
+    </div>
+    <div class="modal edit-trans-modal fade" id="trans-edit-modal-{{ id }}" tabindex="-1" role="dialog" aria-labelledby="trans-edit-modal-{{ id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <span class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|striptags }}">
+                    {{ 'fal times'|icon(20, 20) }}
+                </span>
+                <div class="modal-body">
+                    <section id="trans-edit-form-{{ id }}" class="trans-edit-form">
+                        <section id="{{ id }}" action="{{ formAction }}" method="POST">
+                            <div class="input-group trans-edit-input-group" data-children-count="1">
+                                <input type="text" name="content" class="form-control" value="{{ content }}" />
+                                <input type="hidden" name="domain" value="{{ domain }}">
+                                <input type="hidden" name="key_name" value="{{ key_name }}">
+                                <input type="hidden" name="locale" value="{{ locale }}">
+                                <div class="input-group-append">
+                                    <span class="btn trans-edit-save h-100" data-result="edit-trans-content-{{ id }}">
+                                        {{ 'fal save'|icon(null, 20, 'mt-0') }}
+                                        <div class="spinner-border d-none" role="status"></div>
+                                    </span>
+                                </div>
+                            </div>
+                        </section>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

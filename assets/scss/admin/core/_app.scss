@@ -1,0 +1,423 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-07, 8:33 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    APP :
+    ===========================
+
+    1 ) For all pages
+    2 ) Breadcrumb and page title
+    3 ) Tree list
+    4 ) Footer
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) For all pages
+-----------------------------------*/
+
+html body {
+
+    font-family: $font-family;
+
+    .bg-theme {
+        background-color: $theme-color;
+    }
+}
+
+* {
+    outline: none !important;
+}
+
+.opacity-50 {
+    opacity: .5;
+}
+
+#main-wrapper {
+    width: 100%;
+    overflow: hidden;
+    background: $info;
+    background: linear-gradient($body-shadow, #fff);
+}
+
+.page-wrapper {
+    background: transparent;
+    position: relative;
+}
+
+.container-fluid {
+    padding: 0 25px;
+}
+
+.cursor {
+    cursor: pointer !important;
+}
+
+.bold {
+    font-weight: bold !important;
+}
+
+.text-underline {
+    text-decoration: underline;
+}
+
+.no-radius {
+    border-radius: 0 !important;
+}
+
+.fit-cover {
+    object-fit: cover;
+    object-position: 50% 50%;
+    height: 100%;
+}
+
+.img-white {
+    filter: brightness(0) invert(1);
+}
+
+svg.info {
+    fill: $info;
+}
+
+svg.info-darken {
+    fill: $info-darken;
+}
+
+svg.white {
+    fill: $white;
+}
+
+svg.success {
+    fill: $success;
+}
+
+svg.danger {
+    fill: $danger;
+}
+
+svg.dark {
+    fill: $dark;
+}
+
+svg.muted {
+    fill: $gray-600;
+}
+
+svg.light {
+    fill: $gray-300;
+}
+
+svg.transparent {
+    fill: transparent;
+}
+
+svg.dark-50 {
+    fill: $dark;
+    opacity: .5;
+}
+
+svg.fa-3x {
+    height: 40px;
+}
+
+.btn-outline-dark.active svg {
+    fill: $white;
+}
+
+.text-italic {
+    font-style: italic !important;
+}
+
+.text-small {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.text-normal {
+    font-weight: 400;
+}
+
+.text-semi-bold {
+    font-weight: 600;
+}
+
+.text-info-darken {
+    color: $info-darken;
+}
+
+a {
+    color: $theme-color;
+}
+
+a.link {
+    &:hover,
+    &:focus {
+        color: $theme-color;
+    }
+}
+
+ul.list-style-none {
+
+    margin: 0;
+    padding: 0;
+
+    li {
+        a {
+            &:hover {
+                color: $theme-color;
+            }
+        }
+    }
+}
+
+.btn-info-darken,
+.badge-info-darken {
+    background-color: $info-darken;
+}
+
+.btn-info {
+    background-color: $info;
+}
+
+.btn-dark {
+    background-color: $gray-900;
+}
+
+.btn-outline-info-lighten {
+
+    svg, i {
+        fill: $info-lighten;
+        color: $info-lighten;
+    }
+
+    &.active, &:hover, &:focus {
+
+        background-color: $info-light;
+        color: $info !important;
+
+        svg, i {
+            fill: $info !important;
+            color: $info !important;
+        }
+    }
+}
+
+.btn-dark,
+.btn-info {
+    svg, i {
+        fill: $white;
+        color: $white;
+    }
+}
+
+body .ribbon-vwrapper {
+    border-radius: var(--bs-border-radius);
+    box-shadow: 0 0 11px 0 rgba(0, 0, 0, 0.33);
+}
+
+.i-square {
+    width: 20px !important;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    color: $white;
+    background-color: $info-darken;
+    border-radius: 3px;
+    font-size: 10px;
+}
+
+#locales-dropdown {
+
+    padding: .5rem 1rem;
+    border-color: rgba(0, 0, 0, .2);
+
+    img {
+        float: left;
+        margin-top: 4px;
+    }
+}
+
+.vertical-align {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+img {
+    color: transparent;
+}
+
+.bg-info-darken {
+    background-color: $info-darken;
+    color: $white;
+}
+
+span.icon-wrap {
+    width: 20px;
+    height: 17px;
+    display: inline-block;
+    text-align: center;
+}
+
+.fa-spin {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.fa-flip-horizontal {
+    transform: scaleX(-1);
+}
+
+/*-----------------------------------
+   2 ) Breadcrumb and page title
+-----------------------------------*/
+
+.page-titles {
+
+    background: $info-light;
+    box-shadow: $shadow;
+    margin: 0 -25px 25px -25px;
+    position: relative;
+    z-index: 999;
+
+    h4 {
+
+        margin-bottom: 0;
+
+        span {
+            margin-left: 10px;
+            color: $gray-500;
+        }
+    }
+
+    i.fa-cog, svg.fa-cog {
+        font-size: 16px;
+    }
+
+    .breadcrumb {
+
+        padding: 0;
+        margin: 0;
+        background: transparent;
+        font-size: 12px;
+
+        li {
+
+            a {
+                color: $body-color;
+            }
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "\e649";
+            font-family: themify;
+            color: $gray-400;
+            font-size: 11px;
+        }
+
+        .breadcrumb-item.active {
+            color: $theme-color;
+            font-weight: 500;
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Tree list
+-----------------------------------*/
+
+.tree-list {
+
+    padding-left: 15px;
+    list-style-type: none;
+
+    li {
+        a {
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+    }
+
+    .nested {
+
+        display: none;
+        padding-left: 30px;
+        list-style-type: none;
+
+        &.active {
+            display: block;
+        }
+    }
+}
+
+/*-----------------------------------
+   4 ) Footer
+-----------------------------------*/
+
+.footer {
+    bottom: 0;
+    color: $body-color;
+    left: 0;
+    padding: 17px 15px;
+    right: 0;
+    border-top: 1px solid $border-color;
+    background: $white;
+}
+
+
+@-webkit-keyframes MOVE-BG {
+    from {
+        -webkit-transform: translateX(0);
+    }
+    to {
+        -webkit-transform: translateX(46px);
+    }
+}
+
+@keyframes MOVE-BG {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(46px);
+    }
+}
+
+.bg-stripe-loader {
+
+    position: absolute;
+    top: 0;
+    left: -150px;
+    bottom: 0;
+    width: 150%;
+
+    background: repeating-linear-gradient(
+        -55deg,
+        #eee 1px,
+        #e2e2e2 2px,
+        #e2e2e2 11px,
+        #eee 12px,
+        #eee 20px
+    ) !important;
+
+    animation-name: MOVE-BG !important;
+    animation-duration: .6s !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
+}

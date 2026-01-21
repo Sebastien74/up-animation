@@ -1,0 +1,15 @@
+{% trans_default_domain 'admin' %}
+
+<li>
+    <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
+        {{ 'fal file-code'|icon(12, 15, 'white me-2', {icon: true}) }}
+        <span class="hide-menu">{{ "Assets"|trans }}</span>
+    </a>
+    <ul aria-expanded="false" class="collapse bg-info-light">
+        <li>
+            <a href="{{ path('assets_install') }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Installer"|trans }}</span>
+            </a>
+        </li>
+    </ul>
+</li>

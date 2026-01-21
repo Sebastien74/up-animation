@@ -1,0 +1,29 @@
+{% trans_default_domain 'admin' %}
+
+<div class="mb-4 pe-2 ps-2">
+    <div id="columns-headers" class="row text-center mb-3">
+        <div class="col my-auto text-normal">{{ "Position"|trans|raw }}</div>
+        <div class="col my-auto text-normal">{{ "Ordre sur mobile"|trans|raw }}</div>
+        <div class="col my-auto text-normal">{{ "Ordre sur tablette"|trans|raw }}</div>
+        <div class="col my-auto text-normal">{{ "Ordre sur mini PC"|trans|raw }}</div>
+        <div class="col my-auto text-normal">{{ "Taille sur mobile"|trans|raw }}</div>
+        <div class="col my-auto text-normal">{{ "Taille sur tablette"|trans|raw }}</div>
+        <div class="col my-auto text-normal">{{ "Taille sur mini PC"|trans|raw }}</div>
+        <div class="col my-auto text-normal">{{ "Alignement des contenus"|trans|raw }}</div>
+    </div>
+    {% if cols is defined %}
+        {% for col in cols %}
+            {% set colPosition = col.vars.data.position is defined ? col.vars.data.position : (col.vars.value.position ? col.vars.value.position : null) %}
+            <div class="row{% if not loop.last %} mb-2{% endif %}">
+                <div class="col text-center my-auto">{{ colPosition }}</div>
+                <div class="col my-auto">{{ form_widget(col.mobilePosition) }}</div>
+                <div class="col my-auto">{{ form_widget(col.tabletPosition) }}</div>
+                <div class="col my-auto">{{ form_widget(col.miniPcPosition) }}</div>
+                <div class="col my-auto">{{ form_widget(col.mobileSize) }}</div>
+                <div class="col my-auto">{{ form_widget(col.tabletSize) }}</div>
+                <div class="col my-auto">{{ form_widget(col.miniPCSize) }}</div>
+                <div class="col my-auto">{{ form_widget(col.alignment) }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>

@@ -1,0 +1,48 @@
+action: Module
+add: 'Ajouter un type de bloc'
+alert: Alerte
+blockquote: Citation
+card: 'Mini fiche'
+collapse: Collapse
+core-action: Action
+form-choice-type: 'Sélecteur (form)'
+form-country: 'Pays (form)'
+form-date: 'Date (form)'
+form-email: 'Email (form)'
+form-emails: 'Groupe de mails (form)'
+form-file: 'Fichier (form)'
+form-hidden: 'Caché (form)'
+form-hour: 'Heure (form)'
+form-integer: 'Nombre (form)'
+form-language: 'Langues (form)'
+form-password: 'Mot de passe (form)'
+form-phone: 'Téléphone (form)'
+form-submit: 'Bouton de soumission (form)'
+form-text: 'Texte (form)'
+form-textarea: 'Zone de texte (form)'
+form-url: 'URL (form)'
+form-zip-code: 'Code postal (form)'
+icon: Icône
+layout-back-button: 'Bouton de retour (layout)'
+layout-body: 'Texte (layout)'
+layout-gallery: 'Galerie (layout)'
+layout-image: 'Média (layout)'
+layout-intro: 'Introduction (layout)'
+layout-link: 'Lien (layout)'
+layout-share: 'Boutons de partage (layout)'
+layout-slider: 'Carrousel (layout)'
+layout-title: 'Titre (layout)'
+layout-title-header: 'Entête (layout)'
+layout-video: 'Vidéo (layout)'
+link: Lien
+media: Média
+modal: Modal
+plural: 'Types de bloc'
+separator: Séparateur
+share: 'Boutons de partages'
+singular: 'Type de bloc'
+text: Text
+title: Titre
+title-header: Entête
+video: Vidéo
+widget: Widget

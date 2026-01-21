@@ -1,0 +1,19 @@
+{% set activeSelector = false %}
+{% set protocol = app.request.isSecure ? 'https' : 'http' %}
+
+<div id="websites-selector" class="dropdown d-inline-block">
+    <a class="dropdown-toggle" href="#" role="button" id="dropdown-websites-selector" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ currentWebsite.adminName }}<i class="icon-chevron-down text-dark ms-3"></i>
+    </a>
+    <ul class="dropdown-menu w-100 bg-success" aria-labelledby="dropdown-websites-selector">
+        {% for website in websites %}
+            {% if website.active and website.id != currentWebsite.id and not website.configuration.asDefault %}
+                {% for domain in website.configuration.domains %}
+                    {% if domain.locale == app.request.locale and domain.asDefault %}
+                        <li><a class="dropdown-item text-white" href="{{ protocol~'://'~domain.name }}">{{ website.adminName }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

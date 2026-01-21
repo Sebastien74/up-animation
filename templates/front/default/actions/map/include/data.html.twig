@@ -1,0 +1,48 @@
+{% trans_default_domain 'front_default' %}
+
+<div class="data-map d-none"
+     data-auto-center="{{ map.autoCenter }}"
+     data-force-zoom="{{ map.forceZoom }}"
+     data-zoom="{{ map.zoom }}"
+     data-min-zoom="{{ map.minZoom }}"
+     data-max-zoom="{{ map.maxZoom }}"
+     data-latitude="{{ map.latitude }}"
+     data-longitude="{{ map.longitude }}"
+     data-marker-clusters="{{ map.markerClusters }}"
+     data-enlarge-txt="{{ "Agrandir le plan"|trans|raw }}"
+     data-direction-txt="{{ "Itinéraire"|trans|raw }}"
+     data-popup-hover="{{ map.popupHover }}"
+     data-countries-geometry="{{ map.countriesGeometry }}"
+     data-departments-geometry="{{ map.departmentsGeometry }}">
+    {% for point in points %}
+        {% if point.entity.address %}
+            {% set mediaPath = point.mainMedia|file({}, {path: true}) %}
+            {% if point.categories|length > 0 %}
+                {% for category in point.categories %}
+                    {% include 'front/'~websiteTemplate~'/actions/map/include/point.html.twig' with {
+                        point: point,
+                        category: category,
+                        marker: category.entity.marker,
+                        address: point.entity.address,
+                        intl: point.intl,
+                        mediaPath: mediaPath,
+                        website: website,
+                        websiteTemplate: websiteTemplate,
+                        dataCategory: 'category-'~category.id
+                    } only %}
+                {% endfor %}
+            {% else %}
+                {% include 'front/'~websiteTemplate~'/actions/map/include/point.html.twig' with {
+                    point: point,
+                    marker: point.entity.marker,
+                    address: point.entity.address,
+                    intl: point.intl,
+                    mediaPath: mediaPath,
+                    website: website,
+                    websiteTemplate: websiteTemplate,
+                    dataCategory: 'category'
+                } only %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</div>

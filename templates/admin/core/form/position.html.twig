@@ -1,0 +1,41 @@
+{% trans_default_domain 'admin' %}
+
+{% set args = {website: websiteId(), (interface['name']): entity.id} %}
+{% if interface.masterField is defined and interface.masterField != 'configuration' and interface.masterField != 'website' %}
+    {% set args = args|merge({(interface.masterField): interface.masterFieldId}) %}
+{% endif %}
+{% set args = ('admin_'~interface['name']~'_position')|routeArgs(interface.entity, args) %}
+
+{% if not ajaxView %}
+    <span class="btn btn-outline-info position" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-position-{{ entity.id }}">
+            {{ entity.position }}
+        </a>
+    </span>
+{% endif %}
+
+{{ form_start(form, {attr: {id: "modal-position-form-"~entity.id, class: 'mb-0',action: path("admin_"~interface.name~"_position", args)}}) }}
+    <div class="modal fade modal-position{% if ajaxView %} d-block show{% endif %}" id="modal-position-{{ entity.id }}" tabindex="-1" role="dialog"
+         aria-labelledby="modal-position-{{ entity.id }}-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content border">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center w-100">{{ 'fal sort-numeric-down-alt'|icon(null, 50, 'dark') }}</h5>
+                    <button class="btn-close btn-dismiss" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">{{ 'fal times'|icon(20, 20, 'dark') }}</button>
+                </div>
+                <div class="modal-body">
+                    <h2 class="main-title text-center fw-bold mb-4">{{ "Modifier la position"|trans|raw }}</h2>
+                    <div class="row">
+                        <div class="col-md-4 offset-md-4">
+                            {{ form_widget(form.position) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100 text-center modal-buttons mt-4 mb-4">
+                    <span class="btn-dismiss btn btn-secondary" data-bs-dismiss="modal">{{ "Annuler"|trans }}</span>
+                    {{ form_widget(form.save) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}

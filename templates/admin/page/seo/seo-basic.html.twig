@@ -1,0 +1,119 @@
+{% trans_default_domain 'admin' %}
+
+{% set website = website() %}
+{% set configuration = website().configuration %}
+{% set defaultLocale = configuration.locale %}
+{% set allLocales = configuration.allLocales %}
+
+{% set haveFields = false %}
+{% for url in form.urls %}
+    {% set haveFields = url.seo.metaTitle is defined or url.seo.metaDescription is defined %}
+{% endfor %}
+
+{% if haveFields %}
+
+    <div class="col-12">
+        <h4 class="card-subtitle mb-4">
+            {{ 'fal code'|icon(null, 14, 'info-darken me-2') }}{{ "Référencement"|trans }}
+        </h4>
+    </div>
+
+    {% if allLocales|length > 1 %}
+        <div class="locales-tab-container">
+    {% endif %}
+
+    {% if allLocales|length > 1 %}
+        <ul class="nav nav-tabs w-100" role="tablist">
+            {% for url in form.urls %}
+                {% set locale = url.vars.value.locale %}
+                <li class="nav-item{% if locale not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip"
+                    title="{{ languageName(locale, app.user.locale) }}">
+                    <a class="nav-link{% if locale == defaultLocale %} active{% endif %}" data-bs-toggle="tab"
+                       id="seo-basic-{{ locale }}-tab"
+                       aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}"
+                       href="#seo-basic-tab-{{ locale }}" role="tab">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                             data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load"
+                             height="14" width="19">
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if allLocales|length > 1 %}
+        <div class="tab-content tab-content-border w-100 seo-basic-tab">
+    {% endif %}
+        {% for url in form.urls %}
+
+            {% set locale = url.vars.value.locale %}
+            {% if allLocales|length == 1 and locale != configuration.locale %}
+                <div class="d-none">
+            {% endif %}
+            {% if allLocales|length > 1 %}
+                <div id="seo-basic-tab-{{ locale }}"
+                     class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}" role="tabpanel"
+                     aria-labelledby="seo-basic-{{ locale }}-tab">
+                    <div class="p-20 pb-0">
+                        <div class="row">
+            {% endif %}
+
+                {% if granted('ROLE_AI') %}
+                    {% if entity.urls is defined %}
+                        {% set apiIntls = website.entity.api.custom.intls is defined ? website.entity.api.custom.intls : false %}
+                        {% set siteId = false %}
+                        {% for apiIntl in apiIntls %}
+                            {% if apiIntl.locale == app.request.locale %}
+                                {% set siteId = apiIntl.aiFelixSiteId %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for url in entity.urls %}
+                            {% if locale == url.locale %}
+                                <div class="col-12">
+                                    <div class="mb-2 text-white btn w-100 py-2 ai-button btn-chatgpt px-0 py-0"
+                                         data-felix-api="{{ path('ai_api_run',
+                                             {
+                                                 'tool': 2,
+                                                 'site': siteId,
+                                                 'locale': locale,
+                                                 'url': url.id,
+                                                 'entityId': entity.id,
+                                                 'class': classname is defined ? classname : null,
+                                             }) }}">
+                                        <span class="ai-icon">{{ 'cms ai'|icon(null, null, null, [], '#ffffff') }}</span>
+                                        <span class="d-none spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                        <span class="ms-1">{{ 'Remplir le SEO'|trans|raw }}</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+
+                {% if url.seo.metaTitle is defined %}
+                    {{ form_row(url.seo.metaTitle) }}
+                {% endif %}
+                {% if url.seo.metaDescription is defined %}
+                    {{ form_row(url.seo.metaDescription) }}
+                {% endif %}
+                {% if seoModels[locale] is defined %}
+                    <div class="col-12">
+                        {% include 'admin/include/alert.html.twig' with {alert: "info", badge: null, display: "alert", message: 'Un modèle existe.'} only %}
+                    </div>
+                {% endif %}
+            {% if allLocales|length > 1 %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if allLocales|length == 1 and locale != configuration.locale %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% if allLocales|length > 1 %}
+            </div>
+        {% endif %}
+    {% if allLocales|length > 1 %}
+        </div>
+    {% endif %}
+{% endif %}

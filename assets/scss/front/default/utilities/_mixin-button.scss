@@ -1,0 +1,326 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2019-08-15, 4:25 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    MIXIN BUTTON :
+    =============
+
+------------------------------------------------------------------ */
+
+@mixin button($suffix, $config, $screens) {
+
+    @if $enable-gradient-btn {
+
+        body .btn.btn-gradient-#{$suffix} {
+
+            $color: map-get($config, 'bg');
+            $g-offset: 52;
+            $r: red($color);
+            $g: green($color);
+            $b: blue($color);
+            $colorRgbOrigin: rgb($r, $g, $b);
+            $g2: if($g + $g-offset > 255, 255, if($g + $g-offset < 0, 0, $g + $g-offset));
+            $colorGradientRgb: rgb($r, $g2, $b);
+
+            color: map-get($config, 'color') !important;
+            * {
+                color: map-get($config, 'color') !important;
+            }
+
+            @if map-has-key($config, 'svg-color') {
+                svg:not(.initial), i:not(.initial) {
+                    fill: map-get($config, 'svg-color') !important;
+                    color: map-get($config, 'svg-color') !important;
+                    * {
+                        fill: map-get($config, 'svg-color') !important;
+                    }
+                }
+            } @else if map-has-key($config, 'color') {
+                svg:not(.initial), i:not(.initial) {
+                    fill: map-get($config, 'color') !important;
+                    color: map-get($config, 'color') !important;
+                    * {
+                        fill: map-get($config, 'color') !important;
+                    }
+                }
+            }
+
+            &::before {
+                background-image: linear-gradient(50deg, #{$colorRgbOrigin} 0%, #{$colorGradientRgb} 100%);
+            }
+
+            &::after {
+                background-image: linear-gradient(50deg, #{$colorGradientRgb} 0%, #{$colorRgbOrigin} 100%);
+            }
+        }
+    }
+
+    body .btn.btn-#{$suffix} {
+
+        @if map-has-key($config, 'bg') {
+            background-color: map-get($config, 'bg');
+        }
+
+        @if map-has-key($config, 'border') {
+            border-color: map-get($config, "border") !important;
+        } @else if map-has-key($config, 'bg') {
+            border-color: map-get($config, 'bg') !important;
+        }
+
+        @if map-has-key($config, 'color') {
+            color: map-get($config, 'color');
+            * {
+                color: map-get($config, 'color') !important;
+            }
+        }
+
+        @if map-has-key($config, 'svg-color') {
+            svg:not(.initial), i:not(.initial) {
+                fill: map-get($config, 'svg-color') !important;
+                color: map-get($config, 'svg-color') !important;
+                * {
+                    fill: map-get($config, 'svg-color') !important;
+                }
+            }
+        } @else if map-has-key($config, 'color') {
+            svg:not(.initial), i:not(.initial) {
+                fill: map-get($config, 'color') !important;
+                color: map-get($config, 'color') !important;
+                * {
+                    fill: map-get($config, 'color') !important;
+                }
+            }
+        }
+
+        @include mediaQuery(min-lg) {
+
+            &:hover,
+            &:focus,
+            &:active,
+            &.active {
+
+                @if map-has-key($config, 'bg-hover') {
+                    background-color: map-get($config, "bg-hover");
+                }
+
+                @if map-has-key($config, 'border-hover') {
+                    border-color: map-get($config, "border-hover");
+                }
+
+                @if map-has-key($config, 'color-hover') {
+                    color: map-get($config, 'color-hover') !important;
+                    * {
+                        color: map-get($config, 'color-hover') !important;
+                    }
+                }
+
+                @if map-has-key($config, 'svg-color-hover') {
+                    svg:not(.initial), i:not(.initial) {
+                        fill: map-get($config, 'svg-color-hover') !important;
+                        color: map-get($config, 'svg-color-hover') !important;
+                        * {
+                            fill: map-get($config, 'svg-color-hover') !important;
+                        }
+                    }
+                } @else if map-has-key($config, 'color-hover') {
+                    svg:not(.initial), i:not(.initial) {
+                        fill: map-get($config, 'color-hover') !important;
+                        color: map-get($config, 'color-hover') !important;
+                        * {
+                            fill: map-get($config, 'color-hover') !important;
+                        }
+                    }
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+
+                &:hover {
+
+                    transform: none;
+                    box-shadow: none;
+                    transition: none;
+
+                    @if map-has-key($config, 'bg') {
+                        background-color: map-get($config, 'bg') !important;
+                    }
+
+                    @if map-has-key($config, 'color') {
+                        fill: map-get($config, 'color') !important;
+                        color: map-get($config, 'color') !important;
+                        svg:not(.initial), i:not(.initial) {
+                            fill: map-get($config, 'color') !important;
+                            color: map-get($config, 'color') !important;
+                            * {
+                                fill: map-get($config, 'color') !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        @if map-has-key($config, 'bg-hover') and (index($screens, 'desktop') or index($screens, 'all')) {
+            @include mediaQuery(min-lg) {
+                &:not(.basic):before {
+                    background-color: map-get($config, "bg-hover");
+                }
+            }
+        }
+    }
+
+    body .btn.btn-outline-#{$suffix} {
+
+        @if map-has-key($config, 'bg-outline') {
+            background-color: map-get($config, "bg-outline");
+        } @else if map-has-key($config, 'color') {
+            background-color: transparent;
+        }
+
+        @if map-has-key($config, 'border-outline') {
+            border-color: map-get($config, "border-outline") !important;
+        } @else if map-has-key($config, 'bg') {
+            border-color: map-get($config, 'bg') !important;
+        }
+
+        @if map-has-key($config, 'color-outline') {
+            color: map-get($config, 'color-outline');
+            * {
+                color: map-get($config, 'color-outline');
+            }
+        } @else if map-has-key($config, 'bg') {
+            color: map-get($config, 'bg');
+            * {
+                color: map-get($config, 'bg');
+            }
+        }
+
+        @if map-has-key($config, 'svg-color-outline') {
+            svg:not(.initial), i:not(.initial) {
+                fill: map-get($config, "svg-color-outline") !important;
+                color: map-get($config, "svg-color-outline") !important;
+                * {
+                    fill: map-get($config, "svg-color-outline") !important;
+                }
+            }
+        } @else if map-has-key($config, 'color-outline') {
+            svg:not(.initial), i:not(.initial) {
+                fill: map-get($config, 'color-outline') !important;
+                color: map-get($config, 'color-outline') !important;
+                * {
+                    fill: map-get($config, 'color-outline') !important;
+                }
+            }
+        } @else if map-has-key($config, 'bg') {
+            svg:not(.initial), i:not(.initial) {
+                fill: map-get($config, 'bg') !important;
+                color: map-get($config, 'bg') !important;
+                * {
+                    fill: map-get($config, 'bg') !important;
+                }
+            }
+        }
+
+        @include mediaQuery(min-lg) {
+
+            &:hover,
+            &:focus,
+            &:active,
+            &.active {
+
+                transition-duration: .5s;
+
+                @if map-has-key($config, 'color-outline-hover') {
+                    color: map-get($config, 'color-outline-hover') !important;
+                    * {
+                        color: map-get($config, 'color-outline-hover') !important;
+                    }
+                }
+
+                @if map-has-key($config, 'svg-color-outline-hover') {
+                    svg:not(.initial), i:not(.initial) {
+                        fill: map-get($config, 'svg-color-outline-hover') !important;
+                        color: map-get($config, 'svg-color-outline-hover') !important;
+                        * {
+                            fill: map-get($config, 'svg-color-outline-hover') !important;
+                        }
+                    }
+                } @else if map-has-key($config, 'color-outline-hover') {
+                    svg:not(.initial), i:not(.initial) {
+                        fill: map-get($config, 'color-outline-hover') !important;
+                        color: map-get($config, 'color-outline-hover') !important;
+                        * {
+                            fill: map-get($config, 'color-outline-hover') !important;
+                        }
+                    }
+                }
+
+                @if map-has-key($config, 'bg-outline-hover') {
+                    background-color: map-get($config, 'bg-outline-hover');
+                } @else if map-has-key($config, 'color-outline') {
+                    background-color: map-get($config, 'color-outline');
+                } @else if map-has-key($config, 'bg') {
+                    background-color: map-get($config, 'bg');
+                }
+
+                @if map-has-key($config, 'border-outline-hover') {
+                    border-color: map-get($config, 'border-outline-hover');
+                }
+
+                @if map-has-key($config, 'bg-outline-hover') {
+
+                    @if index($screens, 'desktop') {
+                        @include mediaQuery(min-lg) {
+                            &:not(.basic)::before {
+                                background-color: map-get($config, 'bg-outline-hover') !important;
+                            }
+                        }
+                    }
+
+                    @if index($screens, 'mobile') or index($screens, 'tablet') or index($screens, 'all') {
+                        @include mediaQuery(max-lg) {
+                            @if map-has-key($config, 'bg') {
+                                color: map-get($config, 'bg') !important;
+                                fill: map-get($config, 'bg') !important;
+                                * {
+                                    color: map-get($config, 'bg') !important;
+                                    fill: map-get($config, 'bg') !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+
+                &:hover {
+
+                    transform: none;
+                    box-shadow: none;
+                    transition: none;
+
+                    @if map-has-key($config, 'bg-outline') {
+                        background-color: map-get($config, 'bg-outline') !important;
+                    }
+
+                    @if map-has-key($config, 'color-outline') {
+                        fill: map-get($config, 'color-outline') !important;
+                        color: map-get($config, 'color-outline') !important;
+                        svg:not(.initial), i:not(.initial) {
+                            fill: map-get($config, 'color-outline') !important;
+                            color: map-get($config, 'color-outline') !important;
+                            * {
+                                fill: map-get($config, 'color-outline') !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

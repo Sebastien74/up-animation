@@ -1,0 +1,35 @@
+{% trans_default_domain 'admin' %}
+
+{% set allowedRoles = [
+    'ROLE_PAGE',
+    'ROLE_USERS',
+    'ROLE_INFORMATION',
+    'ROLE_MEDIA',
+    'ROLE_NAVIGATION',
+    'ROLE_SEO',
+    'ROLE_TRANSLATION'
+] %}
+
+{% set allowedManagment = false %}
+{% for allowedRole in allowedRoles %}
+    {% if granted(allowedRole) %}
+        {% set allowedManagment = true %}
+    {% endif %}
+{% endfor %}
+
+{% if allowedManagment %}
+    <li>
+        <a class="as-arrow bigger{% if mainActive %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+            {{ 'fal desktop'|icon(null, 15, 'white show-menu') }}<span class="hide-menu">{{ "Gestion du site"|trans }}</span>
+        </a>
+        <ul aria-expanded="true" class="collapse{% if mainActive %} in{% endif %}">
+            {% include 'admin/include/sidebar/include/managment/page.html.twig' %}
+            {% include 'admin/include/sidebar/include/managment/medias.html.twig' %}
+            {% include 'admin/include/sidebar/include/managment/navigation.html.twig' %}
+            {% include 'admin/include/sidebar/include/managment/translation.html.twig' %}
+            {% include 'admin/include/sidebar/include/managment/seo.html.twig' %}
+            {% include 'admin/include/sidebar/include/managment/user.html.twig' %}
+            {% include 'admin/include/sidebar/include/managment/information.html.twig' %}
+        </ul>
+    </li>
+{% endif %}

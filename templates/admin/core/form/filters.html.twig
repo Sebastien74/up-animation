@@ -1,0 +1,42 @@
+{% trans_default_domain 'admin' %}
+
+<button class="btn btn-dark float-start me-2" data-bs-toggle="modal" data-bs-target="#filters-modal">{{ 'fal filter'|icon(null, 14, 'me-2') }}{{ "Filtrer"|trans }}</button>
+
+<div class="modal-wrapper float-start">
+    <div class="modal fade" id="filters-modal" tabindex="-1"
+         role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content border refer-preloader text-start pb-5 pt-3">
+                {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
+                <div class="modal-header">
+                    <h5 class="modal-title text-center w-100">{{ 'fal filter'|icon(null, 50, 'dark') }}</h5>
+                    <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                        {{ 'fal times'|icon(20, 20, 'dark') }}
+                    </button>
+                </div>
+                <div class="modal-body d-flex">
+                    <div class="container my-auto ajax-content">
+                        <h2 class="main-title text-center fw-bold mb-5">{{ "Filtrer"|trans }}</h2>
+                        {{ form_start(searchFiltersForm, { attr: {
+                            novalidate: "novalidate",
+                            id: "filters-form",
+                            action: path('admin_'~interface.name~'_index', args)
+                        }}) }}
+                            <div class="row">
+                                {% include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only %}
+                            </div>
+                            <div class="w-100 text-center modal-buttons mt-4">
+                                {% if '?filter' in app.request.uri %}
+                                    <a href="{{ path('admin_'~interface.name~'_index', args) }}" class="btn btn-info" data-toggle="preloader">
+                                        {{ "Réinitialiser"|trans }}
+                                    </a>
+                                {% endif %}
+                                <button type="submit" class="btn btn-info">{{ "Filtrer"|trans }}</button>
+                            </div>
+                        {{ form_end(searchFiltersForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+action: Module
+add: 'Add block type'
+alert: Alert
+blockquote: Blockquote
+card: Card
+collapse: Collapse
+core-action: Action
+form-choice-type: 'Choice (form)'
+form-country: 'Country (form)'
+form-date: 'Date (form)'
+form-email: 'Email (form)'
+form-emails: 'Emails group (form)'
+form-file: 'File (form)'
+form-hidden: 'Hidden (form)'
+form-hour: 'Hour (form)'
+form-integer: 'Number (form)'
+form-language: 'Languages (form)'
+form-password: 'Password (form)'
+form-phone: 'Phone (form)'
+form-submit: 'Submit button (form)'
+form-text: 'Text (form)'
+form-textarea: 'Textarea (form)'
+form-url: 'URL (form)'
+form-zip-code: 'Zip code (form)'
+icon: Icon
+layout-back-button: 'Go back button (layout)'
+layout-body: 'Text (layout)'
+layout-gallery: 'Gallery (layout)'
+layout-image: 'Media (layout)'
+layout-intro: 'Introduction (layout)'
+layout-link: 'Link (layout)'
+layout-share: 'Share buttons(layout)'
+layout-slider: 'Slider (layout)'
+layout-title: 'Title (form)'
+layout-title-header: 'Heading (form)'
+layout-video: 'Video (layout)'
+link: Link
+media: Media
+modal: Modal
+plural: 'Block types'
+separator: Separator
+share: 'Share buttons(layout)'
+singular: 'Block type'
+text: Text
+title: Title
+title-header: Heading
+video: Video
+widget: Widget

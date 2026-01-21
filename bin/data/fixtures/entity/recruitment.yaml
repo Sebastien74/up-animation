@@ -1,0 +1,95 @@
+#####################################
+#           Recruitment             #
+#####################################
+
+App\Entity\Module\Recruitment\Category:
+    translations:
+        adminName:
+            fr: "Domaine de compétence (Module recrutement)"
+            en: 'Area of expertise (Module recruitment)'
+        singular:
+            fr: "Domaine de compétence"
+            en: 'Area of expertise'
+        plural:
+            fr: "Domaines de compétence"
+            en: 'Areas of expertise'
+        add:
+            fr: 'Ajouter un domaine'
+            en: 'Add area'
+        delete:
+            fr: "Supprimer le domaine"
+            en: 'Delete area'
+    columns:
+        - adminName
+
+App\Entity\Module\Recruitment\Contract:
+    translations:
+        adminName:
+            fr: "Type de contrat (Module recrutement)"
+            en: 'Contract name (Module recruitment)'
+        singular:
+            fr: "Type de contrat"
+            en: 'Contract type'
+        plural:
+            fr: "Types de contrats"
+            en: 'Contracts types'
+        add:
+            fr: 'Ajouter un type'
+            en: 'Add type'
+        delete:
+            fr: "Supprimer le type"
+            en: 'Delete type'
+    columns:
+        - adminName
+
+App\Entity\Module\Recruitment\Job:
+    card: true
+    orderBy: publicationStart
+    orderSort: DESC
+    translations:
+        adminName:
+            fr: "Nom de l'offre"
+            en: 'Offer name'
+        singular:
+            fr: 'Offre'
+            en: 'Offer'
+        plural:
+            fr: 'Offres'
+            en: 'Offers'
+        add:
+            fr: 'Ajouter une offre'
+            en: 'Add offer'
+        delete:
+            fr: "Supprimer l'offre"
+            en: 'Delete offer'
+        contract:
+            fr: "Type de contrat"
+            en: 'Contract type'
+        category:
+            fr: "Domaine de compétence"
+            en: 'Area of expertise'
+        promote:
+            fr: "Mise en avant"
+            en: 'Promote'
+    columns:
+        - adminName
+        - contract
+        - category
+        - promote
+        - publicationStart
+        - publicationEnd
+
+App\Entity\Module\Recruitment\Listing:
+    translations:
+        singular:
+            fr: "Index (Module recrutement)"
+            en: 'Index (Module recruitment)'
+        plural:
+            fr: 'Indexes'
+            en: 'Indexes'
+        add:
+            fr: 'Ajouter un index'
+            en: 'Add index'
+        delete:
+            fr: "Supprimer l'index"
+            en: 'Delete index'

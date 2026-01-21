@@ -1,0 +1,68 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% if lastEntity %}
+    <article class="first-news-block bg-light position-relative text-center text-lg-start">
+        <div class="container position-relative {% if not displayFormFilters %}py-5{% else %} pb-5 pt-lg-5{% endif %}">
+            {{ macroWebmaster.box({
+                title: "Éditer l'actualité"|trans([], 'front_webmaster'),
+                role: 'ROLE_NEWSCAST',
+                path: path('admin_newscast_edit', {website: website.id, newscast: lastEntity.id})
+            }) }}
+            <div class="row">
+                {% if lastEntity.intl.title %}
+                    <div class="col-12 d-lg-none">
+                        <a href="{{ lastEntity.url }}" class="link-title">
+                            <h2 class="title text-uppercase d-inline-block">{{ lastEntity.intl.title|raw }}</h2>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if lastEntity.mainMedia %}
+                    <div class="col-lg-5 mb-4 mb-md-5 mb-lg-auto">
+                        {{ lastEntity.mainMedia|file(thumbConfigurationFirst, {
+                            targetLink: lastEntity.url,
+                            placeholder: true,
+                            isInBox: false,
+                            class: '',
+                        }) }}
+                    </div>
+                {% endif %}
+                <div class="col-lg-7{% if lastEntity.mainMedia %} ps-lg-5{% endif %}">
+                    {% if lastEntity.intl.title %}
+                        <a href="{{ lastEntity.url }}" class="link-title d-none d-lg-inline-block">
+                            <h2 class="title text-uppercase d-inline-block">{{ lastEntity.intl.title|raw }}</h2>
+                        </a>
+                    {% endif %}
+                    {% if lastEntity.category and lastEntity.showCategory and lastEntity.category.intl.title is defined and lastEntity.category.intl.title %}
+                        <strong class="news-category-title">{{ lastEntity.category.intl.title|raw }}</strong>
+                    {% endif %}
+                    {% if lastEntity.intl.subTitle %}
+                        <strong class="sub-title mb-3 d-inline-block w-100">{{ lastEntity.intl.subTitle|raw }}</strong>
+                    {% endif %}
+                    {% if (lastEntity.category and not lastEntity.showDate) or not lastEntity.category %}
+                        {% set formatDate = lastEntity.category ? lastEntity.category.formatDate : 'dd MMM Y' %}
+                        {{ component('Date', {
+                            date: lastEntity.date,
+                            startDate: lastEntity.dates.startDate,
+                            endDate: lastEntity.dates.endDate,
+                            formatDate: formatDate,
+                            between: lastEntity.asEvent
+                        }) }}
+                    {% endif %}
+                    <div class="col-xl-10">
+                        {% if lastEntity.intl.introduction %}
+                            <p class="introduction">{{ lastEntity.intl.introduction|truncate(150) }}</p>
+                        {% endif %}
+                        {% if lastEntity.intl.body %}
+                            <p class="introduction">{{ lastEntity.intl.body|truncate(150) }}</p>
+                        {% endif %}
+                        {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                            intl: {'link': lastEntity.url, linkStyle: 'btn btn-outline-primary mt-4'}
+                        } %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+{% endif %}

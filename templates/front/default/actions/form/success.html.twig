@@ -1,0 +1,13 @@
+{% trans_default_domain 'front_default' %}
+
+{% if form %}
+    {% set websiteTemplate = websiteTemplate is defined and websiteTemplate ? websiteTemplate : website().configuration.template %}
+    {% set customTemplate = 'front/'~websiteTemplate~'/actions/form/success/'~form.slug~'.html.twig' %}
+    {% set customTemplateExist = (customTemplate)|fileExist %}
+    {% set template = customTemplateExist ? customTemplate : 'front/'~websiteTemplate~'/actions/form/success/default.html.twig' %}
+    {% set intl = form|intl %}
+    {% set message = intl and intl.placeholder ? intl.placeholder : "Merci pour votre message !!"|trans|raw %}
+    <div id="form-success-container-{{ form.slug }}" class="form-success-container mt-5 mb-5 text-center">
+        {% include template %}
+    </div>
+{% endif %}

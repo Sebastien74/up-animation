@@ -1,0 +1,93 @@
+#####################################
+#           ApiModel                     #
+#####################################
+
+App\Entity\Api\Api:
+    translations:
+        singular:
+            fr: 'API'
+            en: 'API'
+        plural:
+            fr: 'API'
+            en: 'API'
+        add:
+            fr: 'Ajouter une API'
+            en: 'Add API'
+        delete:
+            fr: "Supprimer l'API"
+            en: 'Delete API'
+
+App\Entity\Api\Custom:
+    translations:
+        singular:
+            fr: 'API personnalisée'
+            en: 'API personalized'
+        plural:
+            fr: 'API personnalisées'
+            en: 'API personalized'
+        add:
+            fr: 'Ajouter une API'
+            en: 'Add API'
+        delete:
+            fr: "Supprimer l'API"
+            en: 'Delete API'
+
+App\Entity\Api\Facebook:
+    translations:
+        singular:
+            fr: 'Facebook'
+            en: 'Facebook'
+        plural:
+            fr: 'Facebook'
+            en: 'Facebook'
+        add:
+            fr: 'Ajouter une api Facebook'
+            en: 'Add Facebook api'
+        delete:
+            fr: "Supprimer Facebook"
+            en: 'Delete Facebook'
+
+App\Entity\Api\Google:
+    translations:
+        singular:
+            fr: 'Google'
+            en: 'Google'
+        plural:
+            fr: 'Google'
+            en: 'Google'
+        add:
+            fr: 'Ajouter une api Google'
+            en: 'Add Google api'
+        delete:
+            fr: "Supprimer Google"
+            en: 'Delete Google'
+
+App\Entity\Api\GoogleI18n:
+    translations:
+        singular:
+            fr: 'Google I18n'
+            en: 'Google I18n'
+        plural:
+            fr: 'Google I18n'
+            en: 'Google I18n'
+        add:
+            fr: 'Ajouter une tranduction'
+            en: 'Add translation'
+        delete:
+            fr: "Supprimer la tranduction"
+            en: 'Delete translation'
+
+App\Entity\Api\Instagram:
+    translations:
+        singular:
+            fr: 'Instagram'
+            en: 'Instagram'
+        plural:
+            fr: 'Instagram'
+            en: 'Instagram'
+        add:
+            fr: 'Ajouter une api Instagram'
+            en: 'Add Instagram api'
+        delete:
+            fr: "Supprimer Instagram"
+            en: 'Delete Instagram'

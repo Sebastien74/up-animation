@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2019-08-15, 9:04 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT UTILITIES :
+    ================
+
+------------------------------------------------------------------ */
+
+/*! purgecss start ignore */
+@import "each-element";
+@include each-elements($elements);
+@import "each-font";
+@import "each-text";
+@import "each-background";
+@import "each-icon";
+@import "each-font-sizes";
+@import "each-hover";
+@import "mixin-container";
+@import "../../../vendor/mixin/font-weight";
+
+@each $suffix, $color in $theme-colors {
+    @include svg($suffix, $color);
+}
+
+/*! purgecss end ignore */
+
+@each $suffix, $color in $theme-colors {
+    *.text-#{$suffix} {
+        color: $color !important;
+    }
+}
+
+@include fontsWeights($fonts-weights);

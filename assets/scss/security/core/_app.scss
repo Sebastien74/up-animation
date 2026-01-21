@@ -1,0 +1,204 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-02-05, 2:56 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    SECURITY APP :
+    =============
+
+    1 ) Core
+    2 ) Contact infos
+    3 ) Base theme
+    4 ) Responsive
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Core
+-----------------------------------*/
+
+body {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 15px;
+    overflow-x: hidden;
+    background-color: $bg-body;
+    min-height: 100dvh;
+}
+
+* {
+    outline: none !important;
+}
+
+.text-italic {
+    font-style: italic !important;
+}
+
+.alert .btn-close {
+    display: none !important;
+}
+
+svg.dark {
+    fill: $gray-800;
+}
+
+svg.primary {
+    fill: $link-color;
+}
+
+ul.reset {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none !important;
+    color: $link-color;
+}
+
+.login-register {
+
+    padding: 0;
+    margin-top: 0;
+    min-height: 100vh;
+    width: calc(100% - 400px);
+
+    #bg-container {
+        position: fixed;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        background-position: center center !important;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: calc(100% - 400px);
+    }
+
+    &:after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: calc(100% - 400px);
+        background-color: transparentize($primary, .5);
+    }
+
+    .btn {
+        font-weight: 300;
+        border-radius: 0;
+    }
+
+    .login-box {
+
+        width: 400px;
+        margin: 0 auto;
+        background-color: $white;
+        min-height: 100%;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        height: 100%;
+        box-shadow: -3px 0 5px 0 rgba(0, 0, 0, 0.1);
+
+        #logo {
+
+            max-height: 130px;
+            max-width: 85%;
+            width: auto;
+            fill: $primary;
+
+            * {
+                fill: $primary;
+            }
+        }
+
+        #contact-info {
+            a, a i {
+                font-size: 12px;
+            }
+        }
+    }
+
+    .alert {
+        margin-top: 1.25rem;
+        font-size: 14px;
+    }
+}
+
+#recaptcha {
+    bottom: 65px !important;
+}
+
+
+/*-----------------------------------
+   2 ) Contact infos
+-----------------------------------*/
+
+#contact-info {
+
+    background-color: transparentize($bg-body, .8) !important;
+
+    ul li {
+        line-height: 18px;
+    }
+}
+
+/*-----------------------------------
+   3 ) Base theme
+-----------------------------------*/
+
+.base-theme {
+
+    $theme-color: $primary;
+
+    .header {
+        #logo {
+            min-height: 100px;
+        }
+    }
+
+    .btn-info,
+    .form-check-input:checked {
+        background-color: $theme-color;
+        border-color: $theme-color;
+    }
+
+    .form-material .form-control,
+    .form-material .form-control.focus,
+    .form-material .form-control:focus {
+        background-image: linear-gradient($theme-color, $theme-color), linear-gradient(#e9ecef, #e9ecef);
+    }
+}
+
+/*-----------------------------------
+   4 ) Responsive
+-----------------------------------*/
+
+@media(max-width: 991px) {
+
+    body .login-sidebar {
+
+        width: 100% !important;
+
+        #content {
+            min-height: calc(100vh - 190px);
+        }
+
+        .login-box {
+
+            position: relative !important;
+            z-index: 2;
+            width: 100%;
+            max-width: 100%;
+            min-height: 100vh;
+            left: 0;
+            right: 0;
+            display: inline-block;
+            margin: 0;
+        }
+    }
+}

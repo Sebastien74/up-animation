@@ -1,0 +1,12 @@
+{% trans_default_domain 'front_default' %}
+
+<div id="main-preloader" class="front-preloader bg-primary">
+    <div class="vertical-align">
+        {% if logos.preloader is defined and logos.preloader %}
+            {{ asset(logos.preloader)|file({}, {width: null, height: 300, title: companyName, class: 'img-fluid', lazyLoad: false}) }}
+        {% endif %}
+        <noscript>
+            <strong class="no-js text-white d-inline-block w-100">{{ "Pour vister ce site vous devez activer le JavaScript !!"|trans }}</strong>
+        </noscript>
+    </div>
+</div>

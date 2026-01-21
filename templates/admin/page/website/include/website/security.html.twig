@@ -1,0 +1,31 @@
+{% trans_default_domain 'admin' %}
+
+<h4 class="card-subtitle mb-3">{{ 'fal cog'|icon(null, 18, 'info-darken me-2') }}{{ "Configuration"|trans }}</h4>
+<div class="row">
+    {{ form_row(form.security.headerData) }}
+    {{ form_row(form.security.secureWebsite) }}
+    {{ form_row(form.security.resetPasswordsByGroup) }}
+</div>
+
+<h4 class="card-subtitle mb-3">{{ 'fal network-wired'|icon(null, 18, 'info-darken me-2') }}{{ "Administrateurs"|trans }}</h4>
+<div class="row">
+    {{ form_row(form.security.adminRegistration) }}
+    {{ form_row(form.security.adminRegistrationValidation) }}
+    {{ form_row(form.security.adminPasswordSecurity) }}
+    {{ form_row(form.security.adminPasswordDelay) }}
+</div>
+
+{% if form.security.frontRegistration is defined %}
+    <h4 class="card-subtitle mb-3">{{ 'fal desktop'|icon(null, 18, 'info-darken me-2') }}{{ "Utilisateurs front"|trans }}</h4>
+    <div class="row">
+        {{ form_row(form.security.frontRegistration) }}
+        {{ form_row(form.security.frontRegistrationValidation) }}
+        {{ form_row(form.security.frontEmailConfirmation) }}
+        {{ form_row(form.security.frontPasswordSecurity) }}
+        {{ form_row(form.security.frontEmailWebmaster) }}
+        {{ form_row(form.security.frontCustomTemplate) }}
+        {{ form_row(form.security.frontPageRedirection) }}
+        {{ form_row(form.security.frontPasswordDelay) }}
+        {{ form_row(form.security.frontRegistrationFields) }}
+    </div>
+{% endif %}

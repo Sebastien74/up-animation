@@ -1,0 +1,40 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "https://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="76px" height="76.7px"
+	 viewBox="0 0 76 76.7" style="enable-background:new 0 0 76 76.7;" xml:space="preserve">
+<style>
+	.st0-hand-key{fill:#A4B806;}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="68.1" width="67.8" x="16.9" y="37.9"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<path d="M17.3,46.9c1.1-1.2,2.3-2.6,3.8-4.1c2.5-2.6,6.2-4.3,9.5-4.3h12.8H48c0,0,0,0,0,0c0,0,0,0,0.1,0c3,0,5.5,2.1,6.2,4.9
+		c2.5-2.7,4.8-5.2,6.8-7.5c2.6-3,6.4-3.3,9.2-1.1c2.8,2.1,3.4,5.8,1,8.6c-0.4,0.5-5.3,6.6-7.1,8.8c-1.8,2.1-3.5,4-5.1,5.5
+		c-3.5,3.4-6.6,5.3-9.3,5.3c-9.9,0-17.6,0-23.1,0l0.4,0.7c0.6,1,0.2,2.2-0.7,2.7l-7.8,4.5c-1,0.6-2.2,0.2-2.7-0.7L5.1,51.9
+		c-0.6-1-0.2-2.2,0.7-2.7l7.8-4.5c1-0.6,2.2-0.2,2.7,0.7L17.3,46.9z M18.9,49.7l5.9,10.3h24.9c1.7,0,4.2-1.5,7.2-4.4
+		c1.5-1.5,3.1-3.2,4.9-5.3c1.8-2.1,6.6-8.2,7.1-8.8c1.2-1.5,0.9-3.2-0.5-4.3c-1.5-1.2-3.5-1-5.1,0.7c-2.8,3.2-6.2,6.9-10.2,11.1
+		c-1.2,1.5-3.1,2.5-5.2,2.5H38c-0.8,0-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5h10c1,0,1.9-0.4,2.6-1.1c0-0.1,0.1-0.1,0.1-0.2
+		c0.5-0.6,0.8-1.4,0.8-2.2c0-1.9-1.6-3.5-3.5-3.5H37.5h-7c-2.5,0-5.4,1.4-7.3,3.4C21.5,46.7,20,48.3,18.9,49.7z M17.7,67.7l6.1-3.5
+		l-9.5-16.5l-6.1,3.5L17.7,67.7z"/>
+</g>
+<g>
+	<path class="st0-hand-key" d="M55.4,7.8c-2.6-4.5-8.5-6.1-13-3.5c-2.8,1.6-4.5,4.4-4.7,7.4l-11.5,6.6L24,25.9l8.3,2.1l1.5-3.6l4.1,0.3
+		l1.2-3.3l3.1,0.4l1-0.6c2.7,1.2,6,1.2,8.7-0.4C56.5,18.1,58,12.3,55.4,7.8z M50.4,18.2c-2.4,1.4-5.2,1.1-7.2-0.4l-1.6,1l-1.9-0.2
+		c0,0,0,0,0,0l-2.5-0.3l-1.2,3.4l-4-0.3l-1.3,3.2l-2.8-0.7l1-3.5l8.9-5.2l3-1.8c-0.3-2.5,0.9-5.1,3.2-6.5C47,5.1,51,6.2,52.8,9.3
+		C54.6,12.4,53.5,16.4,50.4,18.2z"/>
+	<path class="st0-hand-key" d="M47.7,9.4c-1.2,0.7-1.6,2.2-0.9,3.4c0.7,1.2,2.2,1.6,3.4,0.9s1.6-2.2,0.9-3.4C50.4,9.1,48.9,8.7,47.7,9.4z"/>
+</g>
+</svg>

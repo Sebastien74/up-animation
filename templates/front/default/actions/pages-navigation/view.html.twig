@@ -1,0 +1,50 @@
+{% trans_default_domain 'front_default' %}
+
+{% if subNavigation is defined and subNavigation is not empty %}
+    <div class="splide no-arrows d-flex justify-content-center pages-navigation"
+         data-lenght="{{ subNavigation|length }}"
+         data-items="{{ subNavigation|length }}"
+         data-items-medium-pc="{{ subNavigation|length }}"
+         data-items-mini-pc="{{ subNavigation|length }}"
+         data-items-tablet="1"
+         data-items-mobile="1"
+         data-fade="fade"
+         data-scroll="1"
+         data-pause="0"
+         data-autoplay="0"
+         data-arrows="0"
+         data-dots="0"
+         data-offset="50"
+         data-offset-medium-pc="50"
+         data-offset-mini-pc="50"
+         data-offset-tablet="150"
+         data-offset-mobile="150"
+         data-focus="center"
+         data-focus-medium-pc="center"
+         data-focus-mini-pc="center"
+         data-focus-tablet="center"
+         data-focus-mobile="center"
+         data-interval="1500">
+        <div class="splide__track">
+            <ul class="splide__list">
+                {% for page in subNavigation %}
+                    {% set media = page.mainMedia %}
+                    {% if media %}
+                        <li class="splide__slide">
+                            <a href="{{ page.url }}" class="item-page text-center d-inline-block mx-4">
+                                {{ media|file({}, {
+                                    notInBox: true,
+                                    maxHeight: 200,
+                                    popupGallery: false,
+                                    fullPopup: false }) }}
+                                {% if media.intl.title %}
+                                    <h3 class="title mt-4 fw-800 text-black text-uppercase">{{ media.intl.title|raw }}</h3>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}

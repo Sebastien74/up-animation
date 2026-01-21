@@ -1,0 +1,28 @@
+{% trans_default_domain 'front_default' %}
+
+{% set appointment = contact.appointment is defined and contact.appointment ? contact.appointment : null %}
+{% set calendar = appointment.formcalendar is defined ? appointment.formcalendar : null %}
+{% set intl = calendar|intl %}
+{% set calendarTitle = intl.title is defined and intl.title ? intl.title : (calendar.adminName is defined ? calendar.adminName : null) %}
+
+<div id="form-calendar-container-{{ form.id }}"
+     class="form-calendar-container position-relative"
+     data-component="form-calendar">
+    <div class="row form-calendar-ajax-content">
+        <div class="col-lg-6 mx-auto">
+            <div class="card form-calendar-success">
+                <div class="card-body pb-4 text-center">
+                    {{ 'fas check'|icon(null, 60, 'primary') }}
+                    <p class="m-0 mt-4 mb-3">{{ "Votre rendez-vous à été enregistré avec succès."|trans|raw }}</p>
+                    {% if appointment.appointmentDate is defined and appointment.appointmentDate %}
+                        <p class="text-bold mb-0">{{ "Date :"|trans|raw }} {{ appointment.appointmentDate|format_datetime(pattern="cccc d MMMM Y 'à' HH:mm"|trans, locale=app.request.locale) }}</p>
+                    {% endif %}
+                    {% if calendarTitle %}
+                        <p class="text-bold">{{ "Calendrier :"|trans|raw }} {{ calendarTitle|raw }}</p>
+                    {% endif %}
+                    <p class="m-0 mt-4">{{ "Un e-mail de confirmation vous a été envoyé."|trans|raw }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

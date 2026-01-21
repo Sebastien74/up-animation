@@ -1,0 +1,59 @@
+{% trans_default_domain 'admin' %}
+
+<div class="card">
+    <h4 class="card-title card-header">{{ 'fal shield-alt'|icon(null, 18, 'info-darken me-2') }}{{ "Recaptcha"|trans }}</h4>
+    <div class="card-body pb-0">
+        <div class="row">
+            {{ form_row(form.api.securitySecretKey) }}
+            {{ form_row(form.api.securitySecretIv) }}
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h4 class="card-title card-header">
+        <div class="row">
+            <div class="col-md-6">
+                {{ 'fab google'|icon(null, 18, 'info-darken me-2') }}{{ "Google"|trans }}
+            </div>
+        </div>
+    </h4>
+    <div class="card-body pb-0">
+        <div class="row">
+            {% include 'admin/page/api/google-intls.html.twig' with {googleIntls: form.api.google.intls} %}
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h4 class="card-title card-header">
+        <div class="row">
+            <div class="col-md-6">
+                {{ 'fab instagram'|icon(null, 18, 'info-darken me-2') }}{{ "Instagram"|trans }}
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="https://www.instagram.com/accounts/login/?force_authentication=1&enable_fb_login=1&platform_app_id=&next=/oauth/authorize/%3Fclient_id%3D1677ed07ddd54db0a70f14f9b1435579%26redirect_uri%3Dhttp%3A//instagram.pixelunion.net%26response_type%3Dtoken%26hl%3Den"
+                   class="text-italic text-small text-info-darken"
+                   target="_blank">
+                    {{ "Générer le token"|trans }}
+                </a>
+            </div>
+        </div>
+    </h4>
+    <div class="card-body pb-0">
+        <div class="row">
+            {{ form_row(form.api.instagram) }}
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h4 class="card-title card-header">{{ 'fal plus-circle'|icon(null, 18, 'info-darken me-2') }}{{ "Autres"|trans }}</h4>
+    <div class="card-body pb-0">
+        <div class="row">
+            {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.api.custom.intls} %}
+            {{ form_row(form.api.addThis) }}
+            {{ form_row(form.api.tawkToId) }}
+        </div>
+    </div>
+</div>

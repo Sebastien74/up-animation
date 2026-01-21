@@ -1,0 +1,12 @@
+{% trans_default_domain 'front_default' %}
+
+{% set websiteTemplate = websiteTemplate is defined and websiteTemplate ? websiteTemplate : website.configuration.template %}
+<div class="alert-block w-100">
+    {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {
+        alert: color is defined ? color : block.backgroundColorType,
+        customIcon: block.icon,
+        alertClass: 'mb-0',
+        alignment: alignment is defined ? alignment : null,
+        message: intl.introduction is defined ? intl.introduction : null,
+    } only %}
+</div>

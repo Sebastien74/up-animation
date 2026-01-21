@@ -1,0 +1,18 @@
+{% trans_default_domain 'admin' %}
+
+<div class="w-100 mb-3">
+    {% include 'admin/include/intl-selector.html.twig' with {route: 'admin_table_edit', args: { table: entity.id }} %}
+    <a id="table-add-col"
+       class="btn btn-success standard" href="{{ path('admin_tablecol_add', {website: website.id, table: entity.id}) }}"
+       data-toggle="preloader">
+        {{ 'fal plus'|icon(null, 15, 'me-2 white') }}{{ "Ajouter une colonne"|trans}}
+    </a>
+    {% if table.head is defined %}
+        <a id="table-add-row"
+           class="btn btn-success standard"
+           href="{{ path('admin_tablecell_add', {website: website.id, table: entity.id}) }}"
+           data-toggle="preloader">
+            {{ 'fal plus'|icon(null, 15, 'me-2 white') }}{{ "Ajouter une ligne"|trans}}
+        </a>
+    {% endif %}
+</div>

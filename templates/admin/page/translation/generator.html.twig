@@ -1,0 +1,38 @@
+{% trans_default_domain 'admin' %}
+
+{% set allLocales = website().configuration.allLocales %}
+{% set firstLocale = '' %}
+
+<ul id="translation-generator-locales" class="d-none">
+    {% for locale in allLocales %}
+        {% if loop.first %}
+            {% set firstLocale = locale %}
+        {% endif %}
+        <li data-locale="{{ locale }}" class="undo"></li>
+    {% endfor %}
+</ul>
+
+<div id="translation-generator" class="mb-4 d-none">
+    <div class="bg-stripe"></div>
+    <div class="refresh-container">
+        <div class="refresh-bloc text-center">
+            <div class="inner">
+                <h4 class="extraction-title">
+                    {% if allLocales|length > 1 %}
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                             data-src="{{ asset('/medias/icons/flags/'~firstLocale~'.svg') }}"
+                             data-bs-toggle="tooltip" title="{{ languageName(firstLocale, app.user.locale) }}"
+                             class="img-fluid lazy-load me-1" height="20" width="27">
+                    {% endif %}
+                    {{ "Extraction des traductions en cours..."|trans }}
+                </h4>
+                <h4 class="yaml-title d-none">{{ "Génération des fichiers yaml en cours..."|trans }}</h4>
+                <h4 class="cache-title d-none">{{ "Suppression du cache en cours..."|trans }}</h4>
+                <h4 class="cache-generate-title d-none">{{ "Regénération du cache en cours..."|trans }}</h4>
+            </div>
+        </div>
+    </div>
+    <div id="refresh-content"></div>
+</div>
+
+<div id="progress-block"></div>

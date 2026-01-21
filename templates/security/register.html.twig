@@ -1,0 +1,42 @@
+{% extends "security/base.html.twig" %}
+
+{% trans_default_domain 'security_cms' %}
+
+{% block title %}{{ "Inscrivez-vous"|trans|htmlEntities }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% include "security/includes/flashbag.html.twig" %}
+    {% if app.user %}
+        {% include 'security/includes/alert.html.twig' with {alert: 'info', message: "Vous êtes déjà connecté."} only %}
+        <div class="form-group text-center mt-3">
+            <a href="{{ app.request.getSchemeAndHttpHost() }}" class="text-dark d-inline-block mt-2 preloader">
+                {{ 'fas reply'|icon(null, 16, 'dark me-2') }}{{ 'Retourner sur le site'|trans|raw }}
+            </a>
+        </div>
+    {% else %}
+        {{ form_start(form, {attr: {id: "user-register-form", novalidate: "novalidate", class: "form-horizontal form-material security"}}) }}
+            <div class="row">
+                {% for field in form.children %}
+                    {{ form_row(form[field.vars.name]) }}
+                    {% if field.vars.name == 'plainPassword' %}
+                        {% include "core/password-checker.html.twig" %}
+                        <small class="form-group col-12 form-text text-muted mt-0 mb-3">
+                            {{ "Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule."|trans|raw }}
+                        </small>
+                    {% endif %}
+                {% endfor %}
+                {% include "security/includes/recaptcha-fields.html.twig" %}
+            </div>
+            <div class="form-group text-center">
+                <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{ "S'inscrire"|trans|raw }}</button>
+                <a href="{{ path("security_login", {_locale: app.request.locale}) }}" class="text-dark d-inline-block mt-2" data-toggle="preloader">
+                    {{ 'fas reply'|icon(null, 17, 'dark me-2') }}{{ 'Retourner à la page de connexion'|trans|raw }}
+                </a>
+            </div>
+        {{ form_end(form) }}
+    {% endif %}
+{% endblock %}

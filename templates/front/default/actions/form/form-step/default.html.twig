@@ -1,0 +1,76 @@
+{% trans_default_domain 'front_default' %}
+
+{% if dispalyForm %}
+
+    <div class="steps mb-4">
+        <ul class="reset" role="tablist">
+            {% for stepform in entity.forms %}
+                <li role="tab" class="step-tab{% if loop.first %} done{% endif %}" data-step="{{ loop.index }}">
+                    <a id="steps-uid-0-t-0" class="step-wrap">
+                        <span class="step">{{ loop.index }}</span>
+                        {% set intl = stepform|intl %}
+                        {% if intl and intl.title is defined and intl.title %}
+                            <span class="d-none d-lg-inline-block step-title">{{ intl.title }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="form-ajax-container">
+
+        {% include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'send d-none'} only %}
+
+        {{ form_start(form, {attr: {
+            novalidate: "novalidate",
+            class: formClass,
+            action: path('front_formstep_view', {website: website.id, url: url.id, filter: filter}),
+            id: "form-"~entity.id,
+            'data-id': entity.id,
+            'data-redirection': urlRedirection,
+            'data-modal': modalId
+        }}) }}
+
+            {% include "front/"~websiteTemplate~"/include/recaptcha-fields.html.twig" with {form: form, entity: entity.configuration} only %}
+
+            {% for stepform in entity.forms %}
+                <div class="step-form-container {% if not loop.first %}d-none{% endif %}" data-step="{{ loop.index }}">
+                    {% include 'front/'~websiteTemplate~'/layout.html.twig' with {entity: stepform} %}
+                    <div class="row m-0">
+                        <div class="col-md-6 text-center text-md-start">
+                            {% if not loop.first %}
+                                <span class="btn btn-primary btn-previous" data-previous="{{ loop.index - 1 }}">{{ "Précédent"|trans|raw }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 text-center text-md-end">
+                            <button type="submit" class="btn btn-primary {% if loop.last %} last{% endif %}"
+                                    data-step="{{ loop.index }}"
+                                    data-next="{{ loop.index + 1 }}"
+                                    data-advancement="{% if loop.index == entity.forms|length %}finished{% else %}steps{% endif %}">
+                                {% if not loop.last %}{{ "Suivant"|trans|raw }}{% else %}{{ "Envoyer"|trans|raw }}{% endif %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        {{ form_end(form) }}
+
+        <div class="col-12">
+            {% set messageSuccess = messages['success_form'][0] is defined ? messages['success_form'][0] : null %}
+            {% set messageError = messages['error_form'][0] is defined ? messages['error_form'][0] : null %}
+            {% if messageSuccess or messageError %}
+                {% set alert = messageSuccess ? "success" : "error" %}
+                {% set message = messageSuccess ? messageSuccess : messageError %}
+                {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: alert, message: message} only %}
+            {% endif %}
+        </div>
+
+    </div>
+
+{% else %}
+
+    {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Inscriptions terminées !!"|trans} only %}
+
+{% endif %}

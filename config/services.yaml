@@ -1,0 +1,138 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+# config/services.yaml
+
+parameters:
+    .container.dumper.inline_factories: true
+
+services:
+
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $projectDir: '%projectDir%'
+            $logDir: '%logDir%'
+            $cacheDir: '%cacheDir%'
+            $prefix: '%prefix%'
+            $isDebug: '%isDebug%'
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    App\Routing\ExtraLoader:
+        tags: [routing.loader]
+
+    App\Controller\ExceptionController:
+        public: true
+
+    #####################################
+    #           Listener                #
+    #####################################
+
+    App\EventListener\RequestListener:
+        lazy: true
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    App\EventListener\ExceptionListener:
+        lazy: true
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    #####################################
+    #           Subscriber              #
+    #####################################
+
+    App\EventSubscriber\LocaleSubscriber:
+        lazy: true
+        arguments:
+            $defaultLocale: '%kernel.default_locale%'
+        tags:
+            - { name: kernel.event_subscriber, priority: 20 }
+
+    App\EventSubscriber\SecurityPolicySubscriber:
+        lazy: true
+        tags:
+            - { name: kernel.event_subscriber, priority: 20 }
+
+    #####################################
+    #         Translation               #
+    #####################################
+
+    App\Service\Translation\Loader:
+        arguments:
+            $translationRepository: '@App\Repository\Translation\TranslationRepository'
+            $websiteRepository: '@App\Repository\Core\WebsiteRepository'
+            $requestStack: '@request_stack'
+        tags:
+            - { name: translation.loader, alias: db, priority: 20 }
+
+    #####################################
+    #         Form extensions           #
+    #####################################
+
+    form.type.datalist_type:
+        lazy: true
+        class: App\Form\Widget\DatalistType
+        tags:
+            -  { name: form.type, alias: datalist }
+
+    App\Form\Extension\CheckboxExtension:
+        lazy: true
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\CheckboxType }
+
+    App\Form\Extension\ChoiceExtension:
+        lazy: true
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ChoiceType }
+
+    App\Form\Extension\RadioExtension:
+        lazy: true
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\RadioType }
+
+    App\Form\Extension\TextareaEditorExtension:
+        lazy: true
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\TextareaType }
+
+    App\Form\Extension\TextareaSizeExtension:
+        lazy: true
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\TextareaType }
+
+    App\Form\Extension\TextExtension:
+        lazy: true
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\TextType }
+
+    App\Form\Extension\MainExtension:
+        lazy: true
+        tags:
+            - { name: form.type_extension}
+
+    mmi.dbal.mysql_platform:
+        class: App\Service\Doctrine\MySqlPlatform
+
+when@dev:
+    services:
+        Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
+
+when@local:
+    services:
+        Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'

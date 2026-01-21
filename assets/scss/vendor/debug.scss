@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2025
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    WEBMASTER DUMPER :
+    =================
+
+------------------------------------------------------------------ */
+
+/*! purgecss start ignore */
+
+html body pre.sf-dump {
+
+    .sf-dump-private, .sf-dump-protected, .sf-dump-public, .sf-dump-toggle * {
+        color: #FFFFFF !important;
+    }
+
+    .sf-dump-key, .sf-dump-str, .sf-dump-str-expand, .sf-dump-str-collapse, .sf-dump-str-expand {
+        color: #56DB3A !important;
+    }
+
+    .sf-dump-ref, .sf-dump-ref, .sf-dump-ref span {
+        color: #A0A0A0 !important;
+    }
+
+    .sf-dump-note, .sf-dump-num, .sf-dump-index {
+        color: #1299DA !important;
+    }
+
+    .sf-dump-const, .sf-dump-ellipsis-note {
+        color: #FF8400 !important;
+    }
+
+    .sf-dump-meta {
+        color: #B729D9 !important;
+    }
+}
+
+/*! purgecss end ignore */

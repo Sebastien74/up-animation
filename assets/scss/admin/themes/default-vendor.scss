@@ -1,0 +1,218 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2020-11-21, 10:20:46 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    CLOUDS THEME :
+    =============
+
+    1 ) Core Imports
+    2 ) Core
+        a - Color
+        b - Typography
+        c - Card
+        d - Modal
+        e - Link
+    3 ) Custom
+    4 ) Import Vendor
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Core Imports
+-----------------------------------*/
+
+@import "../variables";
+
+/*-----------------------------------
+   2 ) Core
+-----------------------------------*/
+
+/*-- a - Color --*/
+
+$white: #fff !global;
+$gray-50: #f9fafa !global;
+$gray-100: #f4f6f7 !global;
+$gray-200: #e9ecef !global;
+$gray-300: #dee2e6 !global;
+$gray-400: #ced4da !global;
+$gray-500: #adb5bd !global;
+$gray-600: #6c757d !global;
+$gray-700: #4F5467 !global;
+$gray-800: #343a40 !global;
+$gray-900: #212529 !global;
+$black: #000 !global;
+$dark: $gray-800 !global;
+
+$body-bg: $gray-100 !global;
+$theme-color: #24252e !global;
+$body-shadow: transparentize($theme-color, .8) !global;
+$theme-color-alt: $theme-color !global;
+$info-darken: $theme-color !global;
+$info-darken-dark: #1a1b21 !global;
+$info-darken-light: #30323d;
+$info: #383a45 !global;
+$info-light: $gray-200 !global;
+$info-lighten: $info-light !global;
+$info-lighten-light: $info-lighten !global;
+$danger: #bd2130 !global;
+$danger-light: #e46571 !global;
+$sidebar: $white !global;
+$sidebar-alt: #f9f9f9 !global;
+$sidebar-text: #8d97ad !global;
+$sidebar-icons: #787f91 !global;
+$right-sidebar-bg: $info-darken-dark !global;
+
+$blue: $info !global;
+$indigo: #6610f2 !global;
+$purple: #ab8ce4 !global;
+$pink: #e83e8c !global;
+$red: #dc3545 !global;
+$orange: #fb9678 !global;
+$yellow: #ff671b !global;
+$green: #01796f !global;
+$teal: #20c997 !global;
+$cyan: $info !global;
+$primary: #fb9678 !global;
+$text-muted: $gray-600 !global;
+
+$colors: (
+    blue: $blue,
+    indigo: $indigo,
+    purple: $purple,
+    pink: $pink,
+    red: $red,
+    orange: $orange,
+    yellow: $yellow,
+    green: $green,
+    teal: $teal,
+    cyan: $cyan,
+    white: $white,
+    gray: $gray-600,
+    gray-dark: $gray-800
+);
+
+$theme-colors: (
+    primary: $orange,
+    secondary: $gray-100,
+    success: $green,
+    info: $blue,
+    info-lighten: $info-lighten,
+    info-darken: $info-darken,
+    info-darken-dark: $info-darken-dark,
+    warning: $yellow,
+    danger: $red,
+    lighten: $gray-50,
+    light: $gray-100,
+    cyan: $cyan,
+    dark: $gray-800,
+    purple: $purple,
+    white: $white
+);
+
+$alert-colors: () !global;
+$alert-colors: map-merge((
+    "primary": ('bg': $white, 'color': $primary, 'border': $primary, 'icon-color': $white, 'icon-bg': $primary, 'font-size': $font-size-base),
+    "secondary": ('bg': $white, 'color': $secondary, 'border': $secondary, 'icon-color': $white, 'icon-bg': $secondary, 'font-size': $font-size-base),
+    "success": ('bg': $white, 'color': $success, 'border': $success, 'icon-color': $white, 'icon-bg': $success, 'font-size': $font-size-base),
+    "info": ('bg': $white, 'color': $info, 'border': $info, 'icon-color': $white, 'icon-bg': $info, 'font-size': $font-size-base),
+    "warning": ('bg': $white, 'color': $warning, 'border': $warning, 'icon-color': $white, 'icon-bg': $warning, 'font-size': $font-size-base),
+    "danger": ('bg': $white, 'color': $danger, 'border': $danger, 'icon-color': $white, 'icon-bg': $danger, 'font-size': $font-size-base),
+    "danger-light": ('bg': $white, 'color': $danger-light, 'border': $danger-light, 'icon-color': $white, 'icon-bg': $danger-light, 'font-size': $font-size-base),
+    "light": ('bg': $white, 'color': $light, 'border': $light, 'icon-color': $white, 'icon-bg': $light, 'font-size': $font-size-base),
+    "dark": ('bg': $white, 'color': $dark, 'border': $dark, 'icon-color': $white, 'icon-bg': $dark, 'font-size': $font-size-base),
+    "black": ('bg': $black, 'color': $white, 'border': $black, 'icon-color': $white, 'icon-bg': $black, 'font-size': $font-size-base),
+    "white": ('bg': $white, 'color': $dark, 'border': $dark, 'icon-color': $white, 'icon-bg': $dark, 'font-size': $font-size-base),
+), $alert-colors);
+
+:root {
+    --fc-button-bg-color: $info-darken-dark;
+}
+
+/*-- a - Typography --*/
+
+$font-family: 'Poppins', sans-serif !default;
+$font-family-sans-serif: $font-family !global;
+$headings-font-family: $font-family !global;
+
+/*-- b - Card --*/
+
+$card-cap-bg: $theme-color !global;
+$card-cap-color: $info-light !global;
+$card-cap-btn-outline: $white !global;
+$card-cap-bg-subtitle: $theme-color !global;
+$card-cap-color-subtitle: $info-light !global;
+
+/*-- c - Modal --*/
+
+$modal-border-color: $theme-color !global;
+$modal-border-btn: $theme-color !global;
+
+/*-- d - Link --*/
+
+$link-hover-color: $theme-color !global;
+$nav-pills-link-active-color: $white !global;
+$nav-pills-link-active-bg: $theme-color !global;
+$nav-link-color: $theme-color !global;
+$pagination-color: $theme-color !global;
+$pagination-hover-color: $theme-color !global;
+$pagination-active-bg: $info !global;
+$pagination-active-border-color: $info !global;
+$dropdown-link-active-bg: $theme-color !global;
+$dropdown-link-active-color: $white !global;
+
+/*-----------------------------------
+   3 ) Custom
+-----------------------------------*/
+
+#index-search-form {
+
+    ::placeholder {
+        color: $white;
+        opacity: .7;
+    }
+
+    :-ms-input-placeholder {
+        color: $white;
+        opacity: .7;
+    }
+
+    ::-ms-input-placeholder {
+        color: $white;
+        opacity: .7;
+    }
+
+    #index_search_search {
+        color: $white;
+    }
+
+    #index-search-submit svg {
+        fill: $white;
+    }
+}
+
+.card-subtitle {
+    .custom-control-label::before {
+        border-color: $info-light !important;
+    }
+}
+
+.paging_simple_numbers a {
+    border-color: transparentize($info, .5) !important;
+}
+
+.paging_simple_numbers a.current {
+    background-color: $info !important;
+}
+
+.badge-danger {
+    background-color: $danger !important;
+}
+
+/*-----------------------------------
+   4 ) Import Vendor
+-----------------------------------*/
+
+@import '../vendor';

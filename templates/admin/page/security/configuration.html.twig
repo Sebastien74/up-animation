@@ -1,0 +1,38 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set title = "Configuration utilisateurs"|trans %}
+{% block title %}{{ title|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ title }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
+        <div id="edit-form-{{ interface.name }}" class="card">
+            {% include 'admin/core/form/save/header.html.twig' %}
+            <div class="card-body pb-0">
+                <h4 class="card-subtitle mb-3">{{ "fal network-wired"|icon(null, 14, 'info-darken me-2') }}{{ "Administrateurs"|trans }}</h4>
+                <div class="row">
+                    {{ form_row(form.adminRegistration) }}
+                    {{ form_row(form.adminRegistrationValidation) }}
+                </div>
+                {% if form.frontRegistration is defined %}
+                    <h4 class="card-subtitle mb-3">{{ "fal desktop"|icon(null, 14, 'info-darken me-2') }}{{ "Front"|trans }}</h4>
+                    <div class="row">
+                        {{ form_row(form.frontRegistration) }}
+                        {{ form_row(form.frontRegistrationValidation) }}
+                    </div>
+                {% endif %}
+            </div>
+            {% include 'admin/core/form/save/footer.html.twig' %}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

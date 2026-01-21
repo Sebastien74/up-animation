@@ -1,0 +1,207 @@
+{% trans_default_domain 'front_default' %}
+
+{% import _self as macro %}
+
+{% set linkFullSize = false %}
+{% set isFirstZone = zone.position is defined and zone.position == 1 %}
+{% set fade = slider.effect == 'fade' ? 'fade' : 'loop' %}
+{% set arrows = slider.control and medias|length > 1 %}
+{% if slider.itemsPerSlide > 1 %}
+    {% set fade = 'loop' %}
+{% endif %}
+{% set currentZone = block.col.zone is defined ? block.col.zone : null %}
+{% set currentZoneBg = currentZone.backgroundColor is defined and currentZone.backgroundColor
+    ? currentZone.backgroundColor : (currentZone.customClass is defined ? currentZone.customClass : null) %}
+{% set grayColor = 'bg-primary' == currentZoneBg or 'bg-video' == currentZoneBg %}
+
+{% macro arrowsPrev(asBtn, color, alignement = false) %}
+    {% set buttons = ['previous', 'next'] %}
+    {% set btnClasses = asBtn ? 'btn-circle btn btn-'~color : '' %}
+    {% set btnClasses = 'vertical' in alignement ? 'btn-vertical '~btnClasses : btnClasses %}
+    {% set icon = asBtn ? 'chevron' : 'arrow' %}
+    {% set iconClasses = not asBtn ? 'text-'~color : '' %}
+    <button class="btn-arrow btn-prev cursor me-2{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'previous' not in buttons %} d-none{% endif %}" aria-label="{{ "Précédent"|trans }}" tabindex="-1">
+        <i class="icon-{{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+    </button>
+{% endmacro %}
+
+{% macro arrowsNext(asBtn, color, alignement = false) %}
+    {% set buttons = ['previous', 'next'] %}
+    {% set btnClasses = asBtn ? 'btn-circle btn btn-'~color : '' %}
+    {% set btnClasses = 'vertical' in alignement ? 'btn-vertical '~btnClasses : btnClasses %}
+    {% set icon = asBtn ? 'chevron' : 'arrow' %}
+    {% set iconClasses = not asBtn ? 'text-'~color : '' %}
+    <button class="btn-arrow btn-next cursor ms-2{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'next' not in buttons %} d-none{% endif %}" aria-label="{{ "Suivant"|trans }}" tabindex="-1">
+        <i class="icon-{{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+    </button>
+{% endmacro %}
+
+{% macro arrows(slider, side, color, asBtn, position) %}
+    {% import _self as macro %}
+    {% set website = slider.website is defined ? slider.website : website() %}
+    {% set configuration = website.configuration is defined ? website.configuration : false %}
+    {% set accessibility = configuration.accessibilityStatus is defined ? configuration.accessibilityStatus : true %}
+    {% set iconClasses = not asBtn ? 'text-'~color : '' %}
+    {% set btnClasses = asBtn ? 'btn-circle btn btn-'~color : '' %}
+    <div class="arrows-wrap d-flex justify-content-{{ side }} {% if 'top' == position %}mb-5{% else %}mt-5{% endif %}{% if 'end' == side %} me-4 me-md-5{% endif %}{% if asBtn %} as-btn{% endif %}">
+        {{ macro.arrowsPrev(asBtn, color) }}
+        {% if slider.autoplay and accessibility %}
+            <button class="btn-arrow btn-pause cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{ "Pause"|trans }}" tabindex="-1">
+                <i class="icon-pause{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            </button>
+            <button class="btn-arrow btn-play d-none cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{ "Play"|trans }}" tabindex="-1">
+                <i class="icon-play{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            </button>
+        {% endif %}
+        {{ macro.arrowsNext(asBtn, color) }}
+    </div>
+{% endmacro %}
+
+<div class="splide-container">
+    <div class="splide{% if not arrows %} no-arrows{% endif %}{% if slider.thumbnails %} with-thumbnails{% endif %}"
+         data-lenght="{{ medias|length }}"
+         data-items="{{ slider.itemsPerSlide }}"
+         data-items-medium-pc="{{ slider.itemsPerSlideMiniPC ? slider.itemsPerSlideMiniPC : 3 }}"
+         data-items-mini-pc="{{ slider.itemsPerSlideMiniPC ? slider.itemsPerSlideMiniPC : 3 }}"
+         data-items-tablet="{{ slider.itemsPerSlideTablet ? slider.itemsPerSlideTablet : 2 }}"
+         data-items-mobile="{{ slider.itemsPerSlideMobile ? slider.itemsPerSlideMobile : 1 }}"
+         data-fade="{{ fade ? 1 : 0 }}"
+         data-scroll="{{ slider.itemsPerSlide ? slider.itemsPerSlide : 1 }}"
+         data-pause="{{ slider.pause }}"
+         data-autoplay="{{ slider.autoplay }}"
+         data-arrows="{{ slider.control and medias|length > 1 ? 1 : 0 }}"
+         data-dots="{{ slider.indicators and medias|length > 1 ? 1 : 0  }}"
+         data-offset="{{ slider.offsetDesktop }}"
+         data-offset-medium-pc="{{ slider.offsetMiniPC }}"
+         data-offset-mini-pc="{{ slider.offsetMiniPC }}"
+         data-offset-tablet="{{ slider.offsetTablet }}"
+         data-offset-mobile="{{ slider.offsetMobile }}"
+         data-interval="{{ slider.intervalDuration }}">
+        <div class="splide__track">
+            {% if arrows and 'side' in slider.arrowAlignment %}
+                {{ macro.arrowsPrev(arrowsAsBtn, arrowsColor, 'vertical-center') }}
+            {% endif %}
+            {% if arrows and 'top' in slider.arrowAlignment %}
+                {{ macro.arrows(arrowsSide, arrowsColor, arrowsAsBtn, 'top') }}
+            {% endif %}
+            <ul class="splide__list{% if medias|length < slider.itemsPerSlide %} d-lg-flex justify-content-lg-center{% endif %}">
+                {% set isFirst = true %}
+                {% for media in medias %}
+                    {% set intlMedia = media.intl %}
+                    {% set mediaType = (media.media.screen is defined and media.media.screen == 'poster')
+                        or (media.intl.video is defined and media.intl.video) ? 'video' : 'image' %}
+                    {% set display = (mediaType == 'video' and media.videoLink is defined and media.videoLink is not empty) or (media.media.filename is defined and media.media.filename) %}
+                    {% if display %}
+                        <li class="splide__slide">
+                            <div class="content{% if slider.itemsPerSlide > 1 %} me-4 me-md-5{% endif %}">
+                                {% if linkFullSize and media.intl.link %}
+                                    <a href="{{ media.intl.link }}" class="d-inline-block slider-link"
+                                        {% if media.intl.linkBlank %} target="_blank"{% endif %}
+                                        {% if media.intl.linkExternal %} rel="noopener noreferrer"{% endif %}>
+                                {% endif %}
+                                {% if mediaType == 'video' %}
+                                    {% include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {
+                                        block: media,
+                                        thumbConfiguration: thumbConfiguration,
+                                        disableTitle: true,
+                                        disableLink: true,
+                                        intlMedia: media
+                                    } only %}
+                                {% else %}
+                                    {{ media|file(thumbConfiguration, {
+                                        class: 'radius-medium',
+                                        disableLink: true,
+                                        notInBox: true,
+                                        maxWidth: fileSizes.width is defined ? fileSizes.width : null,
+                                        maxHeight: fileSizes.height is defined ? fileSizes.height : null,
+                                        popupGallery: slider.popup,
+                                        fullPopup: slider.popup,
+                                        colSize: colSize is defined ? colSize : null
+                                    }) }}
+                                {% endif %}
+                                {% if media.intl.title or media.intl.body or media.intl.introduction %}
+                                    <div class="content d-flex mt-4 pt-3">
+                                        {% if media.pictogram %}
+                                            <div class="pictogram-wrap">
+                                                {{ asset(media.pictogram)|file({}, {class: 'pictogram', width: 40, height: 40}) }}
+                                            </div>
+                                        {% endif %}
+                                        <div class="inner">
+                                            {% if media.intl.title %}
+                                                <h{{ media.intl.titleForce }} class="title fw-600">{{ media.intl.title|raw }}</h{{ media.intl.titleForce }}>
+                                            {% endif %}
+                                            {% if media.intl.introduction %}
+                                                <p class="introduction text-warning">{{ media.intl.introduction|raw|nl2br }}</p>
+                                            {% endif %}
+                                            {% if media.intl.body %}
+                                                <div class="body text-gray-600">{{ media.intl.body|raw }}</div>
+                                            {% endif %}
+                                            {% if not linkFullSize and link %}
+                                                {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                                    block: media,
+                                                    intl: media.intl,
+                                                    linkLabel: intlMedia.linkLabel ? intlMedia.linkLabel : 'En savoir +'|trans,
+                                                    style: 'mt-4 slider-link',
+                                                } only %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if linkFullSize and media.intl.link %}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% set isFirst = false %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {% if arrows and 'bottom' in slider.arrowAlignment %}
+                {{ macro.arrows(slider, arrowsSide, arrowsColor, arrowsAsBtn, slider.arrowAlignment) }}
+            {% endif %}
+            {% if arrows and 'side' in slider.arrowAlignment %}
+                {{ macro.arrowsNext(arrowsAsBtn, arrowsColor, 'vertical-center') }}
+            {% endif %}
+        </div>
+        {% if slider.thumbnails and medias|length > 1 %}
+            <div class="splide thumbnails-slider mt-3">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        {% for media in medias %}
+                            <li class="splide__slide">
+                                {{ media|file({}, {
+                                    screensSizes: {
+                                        mobile: {width: 80, height: 80},
+                                        tablet: {width: 80, height: 80},
+                                        desktop: {width: 80, height: 80}
+                                    },
+                                    class: 'radius',
+                                    disableLink: true,
+                                    notInBox: false,
+                                    maxWidth: null,
+                                    maxHeight: null,
+                                    popupGallery: false,
+                                    fullPopup: false,
+                                }) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+        {% if slider.progress %}
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="slider-progress-container d-flex justify-content-start align-items-center w-100 mt-5">
+                        <div class="slider-progress w-100">
+                            <div class="slider-progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <button class="btn btn-primary splide-restart mt-4 d-none" aria-label="{{ "Relancer le carrousel"|trans|striptags }}">
+            {{ "Relancer le carrousel"|trans|striptags }}
+        </button>
+    </div>
+</div>

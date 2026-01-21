@@ -1,0 +1,59 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+<div class="search-container">
+    {{ macroWebmaster.box({
+        title: "Éditer le moteur de recherche"|trans([], 'front_webmaster'),
+        role: 'ROLE_SEARCH_ENGINE',
+        path: path('admin_search_edit', {website: website.id, search: search.id})
+    }) }}
+    {% if resultsPage and form %}
+        {% if modal %}
+            <div class="modal fade content-modal" id="search-modal-{{ search.slug }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body pt-5 pb-5 p-md-5">
+                            <div role="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|striptags }}">
+                                {{ "cms close-modal"|icon(40, 40, 'initial-color') }}
+                            </div>
+                            {% if resultsPage %}
+                                {{ form_start(form, {attr: {
+                                    class: "search-engine-form",
+                                    novalidate: "novalidate",
+                                    "data-component": "webpack-form"}}) }}
+                                    <div class="input-group p-0">
+                                        <label for="search" class="fw-600 mb-4 text-center w-100">{{ "Rercherchez"|trans|raw }}</label>
+                                        {{ form_widget(form.search) }}
+                                        <button type="submit" id="search-engine-submit" class="input-group-text cursor">
+                                            {{ 'far search'|icon(20, 20, 'search') }}
+                                        </button>
+                                    </div>
+                                {{ form_end(form) }}
+                            {% else %}
+                                {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Aucune page de résultats configurée pour ce moteur de recherche !!"|trans} only %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            {{ form_start(form, {attr: {
+                class: "search-engine-form",
+                novalidate: "novalidate",
+                "data-component": "webpack-form" }}) }}
+                <div class="input-group p-0">
+                    <label for="search" class="fw-600 mb-4 text-center w-100 d-none">{{ "Rercherchez"|trans|raw }}</label>
+                    {{ form_widget(form.search) }}
+                    <button type="submit" id="search-engine-submit" class="input-group-text bg-warning cursor p-0 d-inline-flex justify-content-center align-items-center">
+                        {{ 'far search'|icon(20, 20, 'search') }}
+                    </button>
+                </div>
+            {{ form_end(form) }}
+        {% endif %}
+    {% elseif not resultsPage %}
+        {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Aucune page de résultats configurée pour ce moteur de recherche !!"|trans} only %}
+    {% elseif form or btn %}
+        <div id="btn-search-{{ search.slug }}" class="cursor" data-bs-toggle="modal" data-bs-target="#search-modal-{{ search.slug }}">{{ 'far search'|icon(20, 20, 'primary') }}</div>
+    {% endif %}
+</div>

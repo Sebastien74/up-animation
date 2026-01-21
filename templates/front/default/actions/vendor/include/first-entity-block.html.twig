@@ -1,0 +1,90 @@
+{#{% trans_default_domain 'front_default' %}#}
+
+{#{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}#}
+
+{#{% set layout = lastEntity.layout %}#}
+{#{% set asCustomLayout = lastEntity.customLayout is defined and lastEntity.customLayout#}
+{#    and layout.zones is defined and layout.zones|length > 0 %}#}
+{#{% set intl = asCustomLayout ? layout|layoutBlockType('text')|intl : lastEntity|intl %}#}
+
+{#{% if intl and url.code %}#}
+
+{#    {% set title = asCustomLayout ? layout|mainLayoutTitle : intl.title %}#}
+{#    {% set subTitle = intl.subTitle %}#}
+{#    {% set titleForce = 2 %}#}
+{#    {% set intro = intl.introduction %}#}
+{#    {% set body = intl.body %}#}
+{#    {% set mediaRelation = asCustomLayout ? layout|layoutBlockType('media')|mainMedia : lastEntity|mainMedia %}#}
+{#    {% set haveMedia = mediaRelation.media.filename is defined and mediaRelation.media.filename %}#}
+
+{#    <div class="first-{{ interfaceName }}-block bg-secondary">#}
+
+{#        <div class="container pt-4 pt-lg-5 pb-0 pb-lg-5 position-relative">#}
+
+{#            {{ macroWebmaster.box({#}
+{#                title: "Éditer l'entité"|trans([], 'front_webmaster'),#}
+{#                role: 'ROLE_'~interfaceName|upper,#}
+{#                path: path('admin_'~interfaceName~'_edit', {website: lastEntity.website.id, (interfaceName): lastEntity.id})#}
+{#            }) }}#}
+
+{#            <div class="row">#}
+
+{#                {% if haveMedia %}#}
+{#                    <div class="col-md-5">#}
+{#                        {{ mediaRelation|file(thumbConfigurationFirst, {#}
+{#                            targetLink: path('front_'~interfaceName~'_view', {pageUrl: url.code, url: website|intlUrl(lastEntity)}),#}
+{#                            isInBox: true#}
+{#                        }) }}#}
+{#                    </div>#}
+{#                {% endif %}#}
+
+{#                <div class="{% if haveMedia %}col-md-7 pt-4 pt-lg-5 pb-4 pb-lg-5 ps-lg-5 pe-lg-5{% else %}col-12 pt-5 pb-5{% endif %} my-auto">#}
+
+{#                    {% if title|striptags|length > 0 %}#}
+{#                        <a href="{{ path('front_'~interfaceName~'_view', {pageUrl: url.code, url: website|intlUrl(lastEntity)}) }}" data-toggle="preloader">#}
+{#                            <h{{ titleForce }} class="title text-white">{{ title|unescape|raw }}</h{{ titleForce }}>#}
+{#                        </a>#}
+{#                    {% endif %}#}
+
+{#                    {% if lastEntity.category and lastEntity.category.displayCategory %}#}
+{#                        {% set intlCategory = lastEntity.category|intl %}#}
+{#                        {% if intlCategory and intlCategory.title %}#}
+{#                            {% set titleCategory = intl.title %}#}
+{#                            <h{{ titleForce + 1 }} class="news-category-title">{{ intlCategory.title|unescape|raw }}</h{{ titleForce + 1 }}>#}
+{#                        {% endif %}#}
+{#                    {% endif %}#}
+
+{#                    {% if subTitle|striptags|length > 0 %}#}
+{#                        <strong class="sub-title mb-3 d-inline-block w-100">{{ subTitle|raw }}</strong>#}
+{#                    {% endif %}#}
+
+{#                    {% if lastEntity.category and not lastEntity.category.hideDate or not lastEntity.category %}#}
+{#                        <small class="date mb-4 d-inline-block w-100">#}
+{#                            {% set format = lastEntity.category ? lastEntity.category.formatDate : 'dd/MM/Y' %}#}
+{#                            {{ lastEntity.publicationStart|format_datetime(pattern=format, locale=app.request.locale) }}#}
+{#                        </small>#}
+{#                    {% endif %}#}
+
+{#                    {% if intro|striptags|length > 0 %}#}
+{#                        <p class="introduction text-white">{{ intro|truncate(150) }}</p>#}
+{#                    {% endif %}#}
+
+{#                    {% if intro|striptags|length == 0 and body|striptags|length > 0 %}#}
+{#                        <p class="introduction text-white">{{ body|truncate(150) }}</p>#}
+{#                    {% endif %}#}
+
+{#                    <div class="w-100 mt-4">#}
+{#                        <a href="{{ path('front_'~interfaceName~'_view', {pageUrl: url.code, url: website|intlUrl(lastEntity)}) }}" class="btn btn-outline-white" data-toggle="preloader">#}
+{#                            {{ "En savoir plus"|trans }}<i class="icon-chevron-right ms-2"></i>#}
+{#                        </a>#}
+{#                    </div>#}
+
+{#                </div>#}
+
+{#            </div>#}
+
+{#        </div>#}
+
+{#    </div>#}
+
+{#{% endif %}#}

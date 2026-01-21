@@ -1,0 +1,19 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% if tab.tabs is not empty %}
+    <div class="tab-container position-relative">
+        {{ macroWebmaster.box({
+            title: "Éditer le groupe d'onglets"|trans([], 'front_webmaster'),
+            role: 'ROLE_TAB',
+            path: path('admin_tabcontent_tree', {website: website.id, tab: tab.id})
+        }) }}
+        {% include 'front/'~websiteTemplate~'/actions/tab/include/'~tab.template~'.html.twig' with {
+            tab: tab,
+            tabs: tab.tabs,
+            websiteTemplate: websiteTemplate,
+            thumbConfiguration: thumbConfiguration,
+        } only %}
+    </div>
+{% endif %}

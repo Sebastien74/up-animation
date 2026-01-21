@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="https://www.w3.org/1999/xhtml">
+
+    <head>
+
+        {% trans_default_domain 'email' %}
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <!--[if !mso]><!-->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!--<![endif]-->
+        <title>{% block metaTitle %}{{ "Nouveau message site Internet"|trans|raw }}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        {% set host = null %}
+        {% if schemeAndHttpHost is defined %}
+            {% set host = schemeAndHttpHost %}
+        {% elseif app.request %}
+            {% set host = app.request.getSchemeAndHttpHost() %}
+        {% endif %}
+        {% set isText = isText is defined ? isText : false %}
+
+        {% if not isText %}
+            {% block stylesheets %}
+                {% include 'core/email/style.html.twig' %}
+            {% endblock %}
+        {% endif %}
+
+    </head>
+
+    <body style="background-color: #e9ecef;">
+
+        <!-- .preheader -->
+        <div class="preheader" style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0;">
+            {% block preheader %}{% endblock %}
+        </div>
+        <!-- /.preheader -->
+
+        <!-- body -->
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+            {% if email is defined %}
+                <!-- logo -->
+                <tr>
+                    <td align="center" bgcolor="#e9ecef">
+                        <!--[if (gte mso 9)|(IE)]>
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                            <tr>
+                                <td align="center" valign="top" width="600">
+                        <![endif]-->
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                            <tr>
+                                <td align="center" valign="top" style="padding: 36px 24px;">
+                                    <a href="https://www.felix-creation.fr/" target="_blank" style="display: inline-block;">
+                                        <img src="{{ email.image('@images/medias/felix-logo.svg') }}"
+                                             alt="Logo" border="0" height="150"
+                                             style="display: block; max-width: 400px; max-height: 150px; min-height: 100px;">
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        <!--[if (gte mso 9)|(IE)]>
+                                </td>
+                            </tr>
+                        </table>
+                        <![endif]-->
+                    </td>
+                </tr>
+                <!-- end logo -->
+            {% endif %}
+
+            <!-- start hero -->
+            <tr>
+                <td align="center" bgcolor="#e9ecef">
+                    <!--[if (gte mso 9)|(IE)]>
+                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                        <tr>
+                            <td align="center" valign="top" width="600">
+                    <![endif]-->
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                        <tr>
+                            <td align="center" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
+                                <h1 style="margin: 0; font-size: 32px; font-weight: 600; letter-spacing: -1px; line-height: 40px;">
+                                    {% block title %}{% endblock %}
+                                </h1>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--[if (gte mso 9)|(IE)]>
+                            </td>
+                        </tr>
+                    </table>
+                    <![endif]-->
+                </td>
+            </tr>
+            <!-- end hero -->
+
+            <!-- start copy block -->
+            <tr>
+                <td align="center" bgcolor="#e9ecef">
+                    <!--[if (gte mso 9)|(IE)]>
+                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                        <tr>
+                            <td align="center" valign="top" width="600">
+                    <![endif]-->
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                            {% block body %}{% endblock %}
+                        </table>
+                    <!--[if (gte mso 9)|(IE)]>
+                            </td>
+                        </tr>
+                    </table>
+                    <![endif]-->
+                </td>
+            </tr>
+            <!-- end copy block -->
+
+            <!-- start footer -->
+            <tr>
+                <td align="center" bgcolor="#e9ecef" style="padding: 24px;">
+                    <!--[if (gte mso 9)|(IE)]>
+                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                        <tr>
+                            <td align="center" valign="top" width="600">
+                    <![endif]-->
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+
+                            <!-- start permission -->
+                            <tr>
+                                <td align="center" bgcolor="#e9ecef"
+                                    style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
+                                    <p style="margin: 0;">{% block info %}{% endblock %}</p>
+                                </td>
+                            </tr>
+                            <!-- end permission -->
+
+                            <!-- start unsubscribe -->
+                            <tr>
+                                <td align="center" bgcolor="#e9ecef" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
+                                    <p style="margin: 0;">4BIS Avenue du Pont de Tasset, 74960 Cran-Gevrier / Annecy</p>
+                                    <p style="margin: 3px 0 0;">
+                                        <a href="mailto:support@agence-felix.fr" style="text-decoration: none;">support@agence-felix.fr</a>
+                                    </p>
+                                    <p style="margin: 3px 0 0;">
+                                        <a href="tel:+33450671855" style="text-decoration: none;">+33(0)4 50 67 18 55</a>
+                                    </p>
+                                    <p class="copyright" style="margin: 30px 0 0;">{{ "E-mail généré par"|trans|raw }} <a href="https://www.felix-creation.fr/" target="_blank" style="text-decoration: none;">{{ "Agence Félix"|trans }}</a> &copy; {{ "now"|date("Y") }}</p>
+                                </td>
+                            </tr>
+                            <!-- end unsubscribe -->
+
+                        </table>
+                    <!--[if (gte mso 9)|(IE)]>
+                            </td>
+                        </tr>
+                    </table>
+                    <![endif]-->
+                </td>
+            </tr>
+            <!-- end footer -->
+
+        </table>
+        <!-- end body -->
+
+    </body>
+</html>

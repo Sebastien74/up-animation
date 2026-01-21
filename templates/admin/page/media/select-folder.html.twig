@@ -1,0 +1,37 @@
+{% trans_default_domain 'admin' %}
+
+{% if form is defined %}
+
+    {{ form_start(form, {attr: {
+        id: "select-folder-form",
+        class: "d-inline-block",
+        action: path('admin_folder_select', {website: websiteId()}),
+        novalidate: "novalidate"}}) }}
+        <div id="select-folder" class="modal fade text-start" tabindex="-1" role="dialog" aria-labelledby="select-folder">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border pb-4">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center w-100">{{ 'fal share-square'|icon(null, 50, 'dark') }}</h5>
+                        <button class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                            {{ 'fal times'|icon(20, 20, 'dark') }}
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="main-title text-dark text-center fw-bold mb-4">{{ "Sélectionnez un dossier de destination"|trans }}</h5>
+                        {% for field in form.children %}
+                            {% if field.vars.name != 'save' and field.vars.name != 'saveEdit' %}
+                                {{ form_row(form[field.vars.name]) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="w-100 text-center modal-buttons mt-4">
+                        {% if form.save is defined %}
+                            {{ form_widget(form.save) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{ form_end(form) }}
+
+{% endif %}

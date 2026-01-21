@@ -1,0 +1,64 @@
+{% trans_default_domain 'admin' %}
+
+<div id="translation-progress" class="card">
+
+    {% set allLocales = website().configuration.allLocales %}
+    {% set total = 0 %}
+
+    {% for domain, locales in translations %}
+        {% if domain != '_undefined' %}
+            {% for locale, localeTranslations in locales %}
+                {% set total = total + localeTranslations|length %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+    <h4 class="text-center mb-1">{{ "Synchronisation de la base de données"|trans|replace({'__': ''}) }}</h4>
+    <b class="italic mb-3 w-100 text-center d-inline-block">
+        <span id="main-counter" data-count="0" data-total="{{ total }}">0</span>/{{ total }} {{ "clés de traductions"|trans|replace({'__': ''}) }}
+    </b>
+
+    <div class="row m-0">
+        {% for domain, locales in translations %}
+            {% if domain != '_undefined' %}
+                {% set isFirst = true %}
+                {% for locale, localeTranslations in locales %}
+                    {% if locale in allLocales %}
+                        <div class="{% if not multiCols %}col-12{% else %}col-md-6 col-lg-4 col-xl-3{% endif %}">
+                            <div class="progress-bloc mb-3" data-progress-href="#progress-{{ loop.index~"-"~locale }}">
+                                <strong class="w-100 d-inline-block mb-1">
+                                    {% if allLocales|length > 1 %}
+                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                             data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}"
+                                             class="img-fluid lazy-load me-1" height="14" width="16">
+                                    {% endif %}
+                                    {{ domain|trans }}
+                                    <small class="italic">
+                                        <span class="counter">0</span>/{{ localeTranslations|length }}
+                                    </small>
+                                </strong>
+                                <ul id="domain-{{ domain~"-"~locale }}"
+                                    data-count="{{ localeTranslations|length }}"
+                                    data-progress="0"
+                                    class="translation-list reset undo"
+                                    data-locale="{{ locale }}">
+                                    {% for keyName, content in localeTranslations %}
+                                        {% set path = path('admin_translation_generate', {website: websiteId(), locale: locale, domain: domain|url_encode, keyName: keyName|url_encode, content: content|url_encode}) %}
+                                        <li class="translation d-none undo" data-index="{{ loop.index }}" data-href="{{ path }}">
+{#                                            <a href="{{ path }}">{{ path }}</a>#}
+                                        </li>
+                                    {% endfor %}
+                                    {% set isFirst = false %}
+                                </ul>
+                                <div id="progress-{{ loop.index~"-"~locale }}" class="progress">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </div>
+
+</div>

@@ -1,0 +1,133 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-10-09, 8:55 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    ERROR :
+    ======
+
+------------------------------------------------------------------ */
+
+@import '../variables';
+
+#exception-block {
+
+    #sitemap {
+        margin-bottom: 0;
+        padding: 45px 0;
+    }
+
+    .back-to-home i {
+        font-size: 12px;
+    }
+}
+
+#errorStatus {
+
+    position: relative;
+    min-height: 450px;
+    background-color: transparent;
+
+    .errorStatus {
+        position: absolute;
+        left: 50%;
+        top: 58%;
+        transform: translate(-50%, -50%);
+    }
+
+    h2 {
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .h1 {
+        font-size: 40px;
+        font-weight: 900;
+        color: $info-darken !important;
+        line-height: 1;
+    }
+
+    p:not(.text-danger) {
+        color: $info-darken !important;
+    }
+
+    .btn {
+        border: $border-radius !important;
+        color: $white !important;
+    }
+}
+
+.errorStatus {
+
+    max-width: 560px;
+    width: 100%;
+    padding-left: 160px;
+    line-height: 1.1;
+
+    .errorStatus-code {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: inline-block;
+        width: 140px;
+        height: 140px;
+        background-image: url('../../../medias/images/admin/emoji.svg');
+        background-size: cover;
+
+        &:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: scale(2.4);
+            border-radius: 50%;
+            background-color: #f8f9fa;
+            z-index: -1;
+        }
+    }
+}
+
+#sitemap {
+
+    margin-bottom: 60px;
+
+    .block-sitemap-view, ul {
+        margin-bottom: 0 !important;
+    }
+}
+
+#exception-sitemap .site-map-container {
+    padding-top: 2rem !important;
+}
+
+@media only screen and (max-width: 767px) {
+
+    #exception-block {
+        min-height: initial !important;
+    }
+
+    #errorStatus {
+        min-height: initial;
+        padding: 45px 0;
+    }
+
+    .errorStatus .errorStatus-code {
+        width: 100px;
+        height: 100px;
+        position: initial;
+    }
+
+    #errorStatus .errorStatus {
+        position: initial;
+        left: initial;
+        top: initial;
+        transform: initial;
+        max-width: 100%;
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+        text-align: center;
+    }
+}

@@ -1,0 +1,74 @@
+{% trans_default_domain 'admin' %}
+
+{% set domain = entitylocale|domain %}
+{% set scheme = not domain ? "Non configuré"|trans : domain %}
+
+<div id="google-preview"
+     class="card"
+     data-title="{{ seo.title|striptags }}"
+     data-description="{{ seo.description|striptags }}"
+     data-og-title="{{ seo.ogFullTitle|striptags }}"
+     data-og-description="{{ seo.ogDescription|striptags }}"
+     data-scheme="{{ scheme }}"
+     data-canonical-pattern="{{ seo.canonicalPattern }}"
+     data-canonical="{{ seo.canonical }}"
+     data-dash="{{ seo.afterDash|striptags }}"
+     data-dash-active="{{ seo.haveAfterDash }}">
+
+    <h5 class="card-title card-header mb-0">{{ 'fab google'|icon(17, 17, 'info-darken me-2') }}{{ "Aperçu Google"|trans }}</h5>
+
+    <div class="card-body">
+        <div class="seo-title mb-0 ellipsis">
+            <span class="title">{{ seo.title }}</span>
+            <span class="title-dash">{% if seo.title|striptags|length > 0 %} - {% endif %}{% if seo.afterDash %}{{ seo.afterDash }}{% endif %}</span>
+        </div>
+        <div class="canonical ellipsis">
+            <span class="seo-canonical">{{ seo.canonical }}</span>
+        </div>
+        <div class="seo-description ellipsis">
+            {{ seo.description }}
+        </div>
+    </div>
+
+</div>
+
+{% set ogImage = seo.ogImage ? seo.ogImage : null %}
+{% set ogImage = not ogImage and logos.share is defined and logos.share ? logos.share : ogImage %}
+{% set ogImage = ogImage and app.request.getSchemeAndHttpHost() not in ogImage ? app.request.getSchemeAndHttpHost()~ogImage : ogImage %}
+
+<div id="highlight-preview" class="card">
+    <h5 class="card-title card-header mb-0">{{ 'fal code'|icon(null, 18, 'info-darken me-2') }}{{ "Métas"|trans }}</h5>
+    <section id="highlight-metas" class="language-markup">
+<pre>&lt;!-- Metas --/>
+<code class="highlight highlight-title">&lt;title>{{ seo.title|striptags }}{% if seo.title|striptags|length > 0 %} - {{ seo.afterDash }}{% endif %}{% if seo.afterDash %}{{ seo.afterDash }}{% endif %}&lt;/title></code>
+<code class="highlight highlight-description">&lt;meta name="description" content="{{ seo.description|striptags }}" /></code>
+{% if seo.author %}
+<code class="highlight highlight-author">&lt;meta name="author" content="{{ seo.author|striptags }}" /></code>
+{% endif %}
+<code class="highlight highlight-index">&lt;meta name="robots" content="{{ seo.index }}" /></code>
+{% if website.api.google.searchConsoleKey is defined and website.api.google.searchConsoleKey %}
+<meta name="google-site-verification" content="{{ website.api.google.searchConsoleKey }}" />
+{% endif %}
+
+&lt;!-- Canonical --/>
+<code class="highlight highlight-canonical">&lt;link rel="canonical" href="{{ seo.canonical|striptags }}" /></code>
+{% if seo.localesAlternate|length > 1 %}
+
+&lt;!--  Alternates links --/>
+{% for localeAlternate, alternate in seo.localesAlternate %}
+<code class="highlight highlight-alternate">&lt;link rel="alternate" hreflang="{{ localeAlternate }}" href="{{ alternate }}" /></code>
+{% endfor %}
+{% endif %}
+
+&lt;!-- Open Graph --/>
+<code class="highlight">&lt;meta property="og:locale" content="{{ seo.locale }}" /></code>
+<code class="highlight highlight-og-title">&lt;meta property="og:title" content="{{ seo.ogFullTitle|striptags }}" /></code>
+<code class="highlight highlight-og-description">&lt;meta property="og:description" content="{{ seo.ogDescription|striptags }}" /></code>
+<code class="highlight highlight-og-url">&lt;meta property="og:url" content="{{ seo.canonical }}" /></code>
+<code class="highlight">&lt;meta property="og:type" content="{{ seo.ogType }}" /></code>
+{% if ogImage %}
+<code class="highlight">&lt;meta property="og:image" content="{{ ogImage }}" /></code></pre>
+{% endif %}
+
+    </section>
+</div>

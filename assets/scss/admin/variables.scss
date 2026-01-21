@@ -1,0 +1,331 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-07, 10:30:10 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    VARIABLES :
+    ===========================
+
+    1 ) Theme Colors
+        a - Main
+        b - Card
+        c - Modal
+        d - Link
+        e - Social networks
+    2 ) Theme global
+    3 ) Bootstrap
+        a - Options
+        b - Body
+        c - Typography
+        d - Breadcrumbs
+        e - Cards
+        f - Dropdowns
+        g - Buttons
+        h - Progress bars
+        i - Tables
+        j - Components
+        k - Forms
+        l - Borders
+        m - Tabs
+    4 ) Bootstrap import
+    5 ) Breakpoints
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Theme Colors
+-----------------------------------*/
+
+/*-- a - Main --*/
+
+$white: #fff !global;
+$gray-50: #f9fafa !global;
+$gray-100: #f4f6f7 !global;
+$gray-200: #e9ecef !global;
+$gray-300: #dee2e6 !global;
+$gray-400: #ced4da !global;
+$gray-500: #adb5bd !global;
+$gray-600: #6c757d !global;
+$gray-700: #4F5467 !global;
+$gray-800: #343a40 !global;
+$gray-900: #212529 !global;
+$black: #000 !global;
+$dark: $gray-800 !global;
+
+$body-bg: $gray-100 !global;
+$theme-color: #24252e !global;
+$body-shadow: transparentize($theme-color, .8) !global;
+$theme-color-alt: $theme-color !global;
+$info-darken: $theme-color !global;
+$info-darken-dark: #1a1b21 !global;
+$info-darken-light: #30323d;
+$info: #383a45 !global;
+$info-light: $gray-200 !global;
+$info-lighten: $info-light !global;
+$info-lighten-light: $info-lighten !global;
+$danger: #bd2130 !global;
+$danger-light: #e46571 !global;
+$sidebar: $white !global;
+$sidebar-alt: #f9f9f9 !global;
+$sidebar-text: #8d97ad !global;
+$sidebar-icons: #787f91 !global;
+$right-sidebar-bg: $info-darken-dark !global;
+
+$blue: $theme-color !default;
+$indigo: #6610f2 !default;
+$purple: #ab8ce4 !default;
+$pink: #e83e8c !default;
+$red: #dc3545 !default;
+$orange: #fb9678 !default;
+$yellow: #ff671b !default;
+$green: #09B884 !default;
+$teal: #20c997 !default;
+$cyan: $theme-color !default;
+$primary: #fb9678 !default;
+$text-muted: $gray-600 !default;
+
+$colors: (
+    blue: $blue,
+    indigo: $indigo,
+    purple: $purple,
+    pink: $pink,
+    red: $red,
+    orange: $orange,
+    yellow: $yellow,
+    green: $green,
+    teal: $teal,
+    cyan: $cyan,
+    white: $white,
+    gray: $gray-600,
+    gray-dark: $gray-800
+);
+
+$theme-colors: (
+    primary: $orange,
+    secondary: $gray-100,
+    success: $green,
+    info: $blue,
+    warning: $yellow,
+    danger: $red,
+    light: $gray-100,
+    cyan: $cyan,
+    dark: $gray-800,
+    purple: $purple,
+    white: $white
+);
+
+/*-- b - Card --*/
+
+$card-cap-bg: $info-light;
+$card-cap-color: $info-darken;
+$card-cap-btn-outline: $gray-800;
+$card-cap-bg-subtitle: $info-light;
+$card-cap-color-subtitle: $info-darken;
+
+/*-- c - Modal --*/
+
+$modal-border-color: $info;
+$modal-border-btn: $theme-color;
+
+/*-- d - Link --*/
+
+$link-hover-color: $info-darken;
+$nav-pills-link-active-color: $white;
+$nav-pills-link-active-bg: $info-darken;
+$nav-link-color: $info-darken;
+
+/*-- e - Social networks --*/
+
+$facebook-color: #4267B2;
+$twitter-color: #1DA1F2;
+$google-color: #dd4b39;
+$google-plus-color: #dd4b39;
+$youtube-color: #bb0000;
+$instagram-color: #CC38A6;
+$linkedin-color: #006699;
+$pinterest-color: #BD081C;
+$tripadvisor-color: #01B089;
+$forum-color: #333;
+$spotify-color: #85bf3f;
+$dribble-color: #ea4c89;
+$dropbox-color: #007ee5;
+$flickr-color: #ff0084;
+$tumblr-color: #32506d;
+$skype-color: #00aff0;
+$github-color: #171515;
+$tiktok-color: #171515;
+
+/*-----------------------------------
+   2 ) Theme global
+-----------------------------------*/
+
+$shadow: 0 1px 4px 0 rgba(0, 0, 0, .1);
+$lft: left;
+$rgt: right;
+
+/*-----------------------------------
+   3 ) Bootstrap
+-----------------------------------*/
+
+/*-- a - Options --*/
+
+$enable-caret: true !default;
+$enable-rounded: true !default;
+$enable-shadows: false !default;
+$enable-gradients: false !default;
+$enable-transitions: true !default;
+$enable-hover-media-query: false !default;
+$enable-grid-classes: true !default;
+$enable-print-styles: true !default;
+
+/*-- b - Body --*/
+
+$body-bg: #edf1f5;
+$body-color: $gray-900 !default;
+$grid-gutter-width: 20px !default;
+
+/*-- c - Typography --*/
+
+$font-size-base: 0.875rem;
+$font-family: 'Poppins', sans-serif !default;
+$font-family-sans-serif: $font-family !default;
+
+$font-weight-light: 300 !default;
+$font-weight-normal: 400 !default;
+$font-weight-bold: 700 !default;
+
+$h1-font-size: 36px !default;
+$h2-font-size: 30px !default;
+$h3-font-size: 24px !default;
+$h4-font-size: 18px !default;
+$h5-font-size: 16px !default;
+$h6-font-size: 14px !default;
+
+$headings-margin-bottom: (1rem / 2) !default;
+$headings-font-family: $font-family !default;
+$headings-font-weight: 300 !default;
+$headings-color: inherit !default;
+
+/*-- d - Breadcrumbs --*/
+
+$breadcrumb-bg: #fff;
+$breadcrumb-margin-bottom: 1.5rem;
+
+/*-- e - Cards --*/
+
+$card-border-width: 0 !default;
+$card-border-color: transparent !default;
+$card-border-radius: var(--bs-border-radius) !default;
+$card-spacer-y: 1.25rem !default;
+$card-spacer-x : 1.25rem !default;
+
+/*-- f - Dropdowns --*/
+
+$dropdown-item-padding-y: .65rem !default;
+$dropdown-border-color: $gray-200;
+$dropdown-divider-bg: $gray-100;
+
+/*-- g - Buttons --*/
+
+$btn-secondary-border: $gray-300;
+
+/*-- h - Progress bars --*/
+
+$progress-bg: $gray-100;
+
+/*-- i - Tables --*/
+
+$table-bg-accent: $gray-100;
+$table-bg-hover: $gray-100;
+$table-hover-bg: $gray-100 !default;
+$table-cell-padding: 1rem !default;
+$table-bg-level: -10 !default;
+$table-bg-level2: 1 !default;
+$table-bg-level3: -5 !default;
+
+/*-- j - Components --*/
+
+$component-active-color: $white !default;
+$component-active-bg: $theme-color !default;
+$badge-pill-padding-x: .2em !default;
+$badge-pill-padding-y: 1em !default;
+
+/*-- k - Forms --*/
+
+$input-group-addon-bg: $gray-100;
+$input-border-color: $gray-200;
+$input-group-addon-border-color: $gray-200;
+$input-btn-focus-color: rgba(0, 0, 0, .25) !default;
+$input-focus-border-color: rgba(0, 0, 0, 0.1) !default;
+$custom-control-indicator-active-bg: rgba(0, 0, 0, 35%) !default;
+$input-btn-focus-box-shadow: transparent !default;
+$custom-select-focus-box-shadow: transparent !default;
+$form-switch-padding-start: 1.5rem;
+
+/*-- l - Borders --*/
+
+$border-width: 1px !default;
+$border-color: $gray-200 !default;
+
+$border-radius: .25rem !default;
+$border-radius-lg: .3rem !default;
+$border-radius-sm: .2rem !default;
+
+/*-- m - Tabs --*/
+$nav-tabs-link-active-bg: $white !default;
+$nav-tabs-link-active-border-color: $info !default;
+
+/*-----------------------------------
+   4 ) Bootstrap import
+-----------------------------------*/
+
+@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "themes/variables";
+@import "bootstrap/mixins";
+
+/*-----------------------------------
+   5 ) Breakpoints
+-----------------------------------*/
+
+$xs: 0;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1400px;
+$xxxl: 1600px;
+
+$grid-breakpoints: (
+    xs: $xs,
+    sm: $sm,
+    md: $md,
+    lg: $lg,
+    xl: $xl,
+    xxl: $xxl
+) !default;
+
+$container-max-widths: (
+    sm: $sm,
+    md: $md,
+    lg: $lg,
+    xl: $xl,
+    xxl: $xxl
+) !default;
+
+$alert-colors: () !default;
+$alert-colors: map-merge((
+    "primary": ('bg': $white, 'color': $primary, 'border': $primary, 'icon-color': $white, 'icon-bg': $primary, 'font-size': $font-size-base),
+    "secondary": ('bg': $white, 'color': $secondary, 'border': $secondary, 'icon-color': $white, 'icon-bg': $secondary, 'font-size': $font-size-base),
+    "success": ('bg': $white, 'color': $success, 'border': $success, 'icon-color': $white, 'icon-bg': $success, 'font-size': $font-size-base),
+    "info": ('bg': $white, 'color': $info, 'border': $info, 'icon-color': $white, 'icon-bg': $info, 'font-size': $font-size-base),
+    "warning": ('bg': $white, 'color': $warning, 'border': $warning, 'icon-color': $white, 'icon-bg': $warning, 'font-size': $font-size-base),
+    "danger": ('bg': $white, 'color': $danger, 'border': $danger, 'icon-color': $white, 'icon-bg': $danger, 'font-size': $font-size-base),
+    "danger-light": ('bg': $white, 'color': $danger-light, 'border': $danger-light, 'icon-color': $white, 'icon-bg': $danger-light, 'font-size': $font-size-base),
+    "light": ('bg': $white, 'color': $light, 'border': $light, 'icon-color': $white, 'icon-bg': $light, 'font-size': $font-size-base),
+    "dark": ('bg': $white, 'color': $dark, 'border': $dark, 'icon-color': $white, 'icon-bg': $dark, 'font-size': $font-size-base),
+    "black": ('bg': $black, 'color': $white, 'border': $black, 'icon-color': $white, 'icon-bg': $black, 'font-size': $font-size-base),
+    "white": ('bg': $white, 'color': $dark, 'border': $dark, 'icon-color': $white, 'icon-bg': $dark, 'font-size': $font-size-base),
+), $alert-colors);

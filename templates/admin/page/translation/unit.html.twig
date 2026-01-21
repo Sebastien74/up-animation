@@ -1,0 +1,77 @@
+{% trans_default_domain 'admin' %}
+
+{% set allLocales = interface.website.configuration.allLocales %}
+
+<tr id="entity-row-{{ entity.id }}">
+
+    {{ form_start(form, {attr: {
+        novalidate: "novalidate",
+        action: path('admin_translationunit_edit', {website: websiteId(), translationunit: entity.id}),
+        id: 'unit-form-'~entity.id
+    }}) }}
+
+        {% if displayDomain is defined and displayDomain %}
+            <td class="align-middle keys-td">{{ entity.domain.adminName }}</td>
+        {% endif %}
+
+        <td class="align-middle keys-td">{{ entity.keyName }}</td>
+
+        <td class="align-middle forms-td{% if allLocales|length > 1 %} locales-groups{% endif %}">
+            {% for transLocale in allLocales %}
+                {% set exist = false %}
+                {% for translation in form.translations %}
+                    {% if transLocale == translation.vars.data.locale %}
+                        {% set exist = true %}
+                        {% set isEmpty = translation.vars.data.content|striptags|length == 0 %}
+                        <div class="form-group mb-0{% if isEmpty %} empty{% endif %}">
+                            <span class="d-none">{{ translation.vars.value.content }}</span>
+                            <div class="translation-form-group position-relative{% if allLocales|length > 1 %} locales-group{% endif %}">
+                                {% if allLocales|length > 1 %}
+                                    <span class="d-inline-flex justify-content-center align-items-center addon position-absolute">
+                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                             data-src="{{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
+                                             data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
+                                             class="img-fluid lazy-load" height="14" width="19">
+                                    </span>
+                                {% endif %}
+                                {{ form_widget(translation.content) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% if not exist %}
+                    <span class="badge badge-warning w-100{% if not loop.last %} mb-3{% endif %}">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                             data-src="{{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
+                             data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
+                             class="img-fluid lazy-load me-1" height="10" width="14">
+                        {{ "Vous devez regénérer les traductions du domaine"|trans|striptags~' "'~entity.domain.adminName~'"' }}
+                        {{ "ou"|trans|raw }} <a href="{{ path('admin_translationunit_regenerate', {website: websiteId(), translationUnit: entity.id}) }}" class="text-white text-underline" data-toggle="preloader">{{'regénérer la clé de traduction'|trans|raw }}</a>
+                    </span>
+                {% endif %}
+            {% endfor %}
+        </td>
+
+        <td class="align-middle text-center actions-td">
+            <div class="d-flex align-items-center justify-content-end">
+                <button class="btn btn-sm btn-info save-row-trans"
+                        data-form-id="unit-form-{{ entity.id }}">
+                    {{ 'far save'|icon(20, 20, 'save-svg') }}
+                    {{ 'fad spinner-third'|icon(20, 20, 'fa-spin d-none spinner-svg') }}
+                </button>
+                {% if 'delete'|moduleActive(configuration) %}
+                    <a href="{{ path('admin_translationunit_delete', {website: websiteId(), translationunit: entity.id}) }}"
+                       data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
+                       data-target="#entity-row-{{ entity.id }}"
+                       class="text-dark swal-delete-link">
+                        {{ 'fas trash'|icon(null, 14, 'dark ms-3') }}
+                    </a>
+                {% endif %}
+                <div class="d-none">{{ form_rest(form) }}</div>
+            </div>
+        </td>
+
+    {{ form_end(form) }}
+
+</tr>
+

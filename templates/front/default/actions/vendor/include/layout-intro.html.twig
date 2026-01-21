@@ -1,0 +1,5 @@
+{% trans_default_domain 'front_default' %}
+
+{% if entity.intl.introduction %}
+    <p class="introduction text-bold">{{ entity.intl.introduction|raw|nl2br }}</p>
+{% endif %}

@@ -1,0 +1,14 @@
+{% trans_default_domain 'admin' %}
+
+{{ form_start(form, {attr: {id: 'index-search-form', class: 'form-material d-inline-block mb-0', novalidate: 'novalidate', action: masterRequest().uri}}) }}
+    <div id="index-search-block" class="row">
+        <div class="form-group ps-2 mb-0 position-relative">
+            {{ form_widget(form.search) }}
+            <button id="index-search-submit" type="submit"
+                  class="btn btn-outline-secondary cursor h-100 position-absolute"
+                  data-bs-toggle="tooltip" title="{{ "Rechercher"|trans|striptags }}">
+                {{ 'fal search'|icon(14, 14, 'dark') }}
+            </button>
+        </div>
+    </div>
+{{ form_end(form) }}

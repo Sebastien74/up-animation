@@ -1,0 +1,79 @@
+/*-----------------------------------
+   1 ) Material Datetimepicker
+-----------------------------------*/
+
+.dtp {
+
+    > .dtp-content {
+
+        > .dtp-date-view > header.dtp-header {
+            background: $theme-color;
+        }
+    }
+
+    div {
+
+        &.dtp-date, &.dtp-time {
+            background: $theme-color;
+        }
+    }
+
+    table.dtp-picker-days tr > {
+        td > a.selected {
+            background: $theme-color;
+        }
+    }
+}
+
+.dtp-picker-year {
+    .year-picker-item {
+        &.active, &:hover {
+            color: $theme-color;
+        }
+    }
+}
+
+.dtp-picker-datetime {
+
+    .dtp-select-hour[fill="#8BC34A"],
+    .dtp-select-minute[fill="#8BC34A"] {
+        fill: $theme-color !important;
+    }
+
+    .hour-hand[stroke="#8BC34A"],
+    .minute-hand[stroke="#8BC34A"] {
+        stroke: $theme-color !important;
+    }
+}
+
+/*-----------------------------------
+   1 ) Agenda
+-----------------------------------*/
+
+.fc .fc-toolbar.fc-header-toolbar {
+    background: $info-darken;
+}
+
+.fc-daygrid-day {
+    &:hover {
+        background-color: $theme-color !important;
+        color: $white;
+    }
+}
+
+.fc-h-event, .fc-event {
+    border: 1px solid $info-darken !important;
+    background-color: $info-darken !important;
+}
+
+/*-----------------------------------
+   1 ) Catalog
+-----------------------------------*/
+
+#product-edition {
+    .handle-feature {
+        &:after {
+            background-color: $info-darken;
+        }
+    }
+}

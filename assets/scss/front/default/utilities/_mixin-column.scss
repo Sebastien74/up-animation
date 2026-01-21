@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+@import "../../bootstrap/mixins/breakpoints";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2019-08-15, 4:25 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    MIXIN COLUMNS :
+    ==============
+
+------------------------------------------------------------------ */
+
+@if $enable-card-columns {
+
+    /*! purgecss start ignore */
+
+    $grid-columns: (
+        1: ("xs": 1, "sm": 1, "md": 1, "lg": 1, "xl": 1, "xxl": 1),
+        2: ("xs": 1, "sm": 1, "md": 2, "lg": 2, "xl": 2, "xxl": 2),
+        3: ("xs": 1, "sm": 1, "md": 2, "lg": 3, "xl": 3, "xxl": 3),
+        4: ("xs": 1, "sm": 1, "md": 1, "lg": 4, "xl": 4, "xxl": 4)
+    );
+
+    @each $size, $columns in $grid-columns {
+
+        .card-columns.column-#{$size} {
+
+            @each $screen, $column in $columns {
+
+                $min: breakpoint-min($screen, $grid-breakpoints);
+                $next: breakpoint-next($screen, $grid-breakpoints);
+                $max: breakpoint-max($next);
+
+                $width: percentage(1 / $column);
+
+                .grid-item {
+                    @if $min != null and $max != null {
+                        @media (min-width: $min) and (max-width: $max) {
+                            width: $width;
+                        }
+                    } @else if $max == null {
+                        @include media-breakpoint-up($screen, $grid-breakpoints) {
+                            width: $width;
+                        }
+                    } @else if $min == null {
+                        @include media-breakpoint-down($next, $grid-breakpoints) {
+                            width: $width;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /*! purgecss end ignore */
+}

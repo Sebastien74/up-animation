@@ -1,0 +1,167 @@
+@charset "UTF-8";
+
+/* ------------------------------------------------------------------------------------------
+
+    Module : Dyslexic
+    Copyright : 2024
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    1 ) Fonts
+    2 ) Variables
+    3 ) Main
+
+------------------------------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Fonts
+-----------------------------------*/
+
+@import "../../../../lib/fonts/dyslexic";
+@import "../../../../../node_modules/rfs/scss";
+
+/*-----------------------------------
+   2 ) Variables
+-----------------------------------*/
+
+$dyslexic: true;
+
+$white: #ffffff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #d7d7d7 !default;
+$gray-500: #adadad !default;
+$gray-600: #6c757d !default;
+$gray-700: #535353 !default;
+$gray-800: #3c3c3c !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+$primary: #540b01 !default;
+$secondary: #68312c !default;
+$success: #5d7808 !default;
+$info: #0081ac !default;
+$warning: #f0ad4e !default;
+$danger: #a82835 !default;
+$danger-light: #ee9da5 !default;
+$light: $gray-300 !default;
+$dark: $gray-900 !default;
+
+$default-bootstrap-colors: '' !default;
+$btn-colors: 'primary', 'secondary';
+$hover-colors: 'primary', 'secondary';
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "warning": $warning,
+    "success": $success,
+    "danger": $danger,
+    "info": $info,
+    "light": $light,
+    "gray-400": $gray-400,
+    "gray-500": $gray-500,
+    "dark": $dark,
+    "black": $black,
+    "white": $white,
+) !default;
+
+$font-primary: 'Opendyslexicalta';
+$font-light: 'Opendyslexicalta';
+$font-secondary: 'Opendyslexicalta';
+
+@import "../variables";
+@import "../variables-bootstrap";
+
+/*-----------------------------------
+   3 ) Main
+-----------------------------------*/
+
+html body.as-accessibility {
+
+    *:not(i), .ff-primary:not(i), .ff-secondary:not(i) {
+        font-family: $font-primary !important;
+        line-height: 1.2 !important;
+    }
+
+    .ff-secondary {
+        text-transform: uppercase !important;
+        line-height: 1.2 !important;
+    }
+
+    h1 {
+        font-weight: 700 !important;
+        @include rfs(75px !important);
+        line-height: 1.2 !important;
+        text-transform: uppercase !important;
+    }
+
+    h2 {
+        font-weight: 700 !important;
+        @include rfs(60px !important);
+        text-transform: uppercase !important;
+    }
+
+    #carousel-home-slider .carousel-caption .caption-title {
+        @include rfs(50px !important);
+        font-weight: bold;
+        line-height: 1.2 !important;
+        text-transform: uppercase !important;
+    }
+
+    #carousel-home-slider .carousel-caption .teams-names .team-name {
+        @include rfs(35px !important);
+        font-weight: bold !important;
+        line-height: 1.2 !important;
+        text-transform: uppercase !important;
+    }
+
+    #carousel-home-slider .carousel-indicators [data-bs-target] .card-large .title {
+        font-size: 16px !important;
+        line-height: 1.2 !important;
+        text-transform: uppercase !important;
+    }
+
+    .matchs-teaser .card .scores, .matchs-teaser .card .team-name {
+        font-size: 30px !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        text-transform: uppercase !important;
+    }
+
+    @each $suffix, $color in $theme-colors {
+        .bg-#{$suffix} {
+            background-color: $color !important;
+            @each $suffix, $color in $theme-colors {
+                *.text-#{$suffix},
+                a.link.text-#{$suffix},
+                .open-gdpr-modal.link.text-#{$suffix},
+                .body a.text-#{$suffix},
+                .introduction a.text-#{$suffix},
+                a.phone-link.text-#{$suffix},
+                a.email-link.text-#{$suffix} {
+                    color: $color !important;
+                }
+            }
+        }
+    }
+
+    @each $suffix, $color in $theme-colors {
+        *.text-#{$suffix} {
+            color: $color !important;
+        }
+    }
+
+    @import "../utilities/each-background";
+    @import "../utilities/mixin-button";
+    @import "../utilities/mixin-svg";
+
+    $screensButton: 'all';
+    @each $suffix, $config in $buttons {
+        @include button($suffix, $config, $screensButton);
+    }
+
+    @each $suffix, $color in $theme-colors {
+        @include svg($suffix, $color);
+    }
+}

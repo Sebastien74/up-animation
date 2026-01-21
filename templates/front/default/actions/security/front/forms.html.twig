@@ -1,0 +1,124 @@
+{% extends 'front/'~website.configuration.template~'/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% block metaTitle %}{{ "Connectez-vous"|trans|htmlEntities }}{% endblock %}
+{% block metaRobots %}{{ "noindex" }}{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
+
+    {% if 'facebookConnect' in security.frontRegistrationFields %}
+        <script>
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+            let body = document.body;
+            let fbLoginBtn = document.getElementById('fb-login-btn')
+
+            if (fbLoginBtn) {
+
+                fbLoginBtn.onclick = function (event) {
+                    console.log(document.getElementById('fb-login'))
+                    document.getElementById('fb-login').dispatchEvent(new Event('click'))
+                    event.preventDefault()
+                }
+
+                window.fbAsyncInit = function () {
+
+                    FB.init({
+                        appId: '1399120140488211',
+                        cookie: true,
+                        xfbml: true,
+                        version: 'v11.0'
+                    })
+
+                    FB.AppEvents.logPageView()
+
+                    FB.Event.subscribe('auth.statusChange', function (response) {
+                        statusChangeCallback(response)
+                    })
+
+                    FB.getLoginStatus(function (response) {
+                        statusChangeCallback(response)
+                    })
+
+                    // FB.login(function (response) {
+                    //     statusChangeCallback(response)
+                    // }, {scope: 'email,public_profile'});
+
+                    function statusChangeCallback(response) {
+                        if (response.status === 'connected') {
+                            let xHttp = new XMLHttpRequest()
+                            xHttp.open("POST", '/cms/front/api/facebook/login/' + response.authResponse.accessToken, true)
+                            xHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+                            xHttp.send()
+                            xHttp.onload = function (e) {
+                                if (this.readyState === 4 && this.status === 200) {
+                                    let response = JSON.parse(this.response)
+                                    let responseFields = response.fields
+                                    if(responseFields) {
+                                        let registrationForm = document.getElementById('user-registration-form')
+                                        if(registrationForm) {
+                                            let formFields = registrationForm.getElementsByClassName('form-control')
+                                            let loginField = registrationForm.getElementsByClassName('form-control')
+                                            for (const property in responseFields) {
+                                                for (let i = 0; i < formFields.length; i++) {
+                                                    let formField = formFields[i]
+                                                    if(formField.classList.contains(property)) {
+                                                        formField.value = responseFields[property]
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else if (response.status === 'not_authorized') {
+                            // The user is logged in on Facebook, but has not authorized your app
+                        } else {
+                            // The user is not logged in on Facebook
+                        }
+                    }
+                }
+            }
+        </script>
+    {% endif %}
+
+{% endblock %}
+
+{% block body %}
+    {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+        pageTitle: "Connectez-vous"|trans,
+        thumbConfiguration: thumbConfigurationHeader
+    } %}
+    {% set frontRegistration = website.security.frontRegistration %}
+    <div class="container mt-5 mb-5">
+        <div class="row d-flex">
+            <div class="col-lg-{% if frontRegistration %}5{% else %}4{% endif %}{% if not frontRegistration %} mx-auto{% endif %}">
+                {{ render_esi(path('security_front_login', {view: 'form'})) }}
+            </div>
+            {% if frontRegistration %}
+                <div class="col-lg-7 mt-5 mt-lg-0">
+                    {{ render_esi(path('security_front_register', {view: 'form'})) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% trans_default_domain 'exception' %}
+
+{% set status_code = status_code is defined ? status_code : 'Erreur'|trans %}
+
+<h2 class="h1 ff-primary">{{ status_code|raw }}</h2>
+
+{% if status_code == 404 %}
+    <h2 class="mb-3 ff-primary">{{ "Oups! Page non trouvée."|trans|raw }}</h2>
+    <p class="message">{{ "Désolé, la page que vous recherchez n'existe pas, a été supprimée, son nom a été modifié ou est temporairement indisponible."|trans|raw }}</p>
+{% elseif status_code == 401 %}
+    <h2 class="mb-3 ff-primary">{{ "Oups! Accès refusé."|trans|raw }}</h2>
+    <p class="message">{{ "Vous n'avez pas accès à cette page."|trans|raw }}</p>
+{% elseif status_code == 403 %}
+    <h2 class="mb-3 ff-primary">{{ "Accès refusé !!!"|trans|raw }}</h2>
+    {% if granted('ROLE_INTERNAL') %}
+        <p class="text-danger fw-300 message">{{ exception.message }}</p>
+    {% endif %}
+{% else %}
+    <h2 class="mb-3 ff-primary">{{ "Oups! Une erreur interne est survenue."|trans|raw }}</h2>
+    {% if granted('ROLE_INTERNAL') and exception.message is defined %}
+        <p class="text-danger fw-300 message">{{ exception.message }}</p>
+    {% endif %}
+{% endif %}

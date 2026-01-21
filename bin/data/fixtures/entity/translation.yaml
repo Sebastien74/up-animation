@@ -1,0 +1,74 @@
+#####################################
+#           Translation             #
+#####################################
+
+App\Entity\Translation\i18n:
+    translations:
+        singular:
+            fr: 'Traduction i18n'
+            en: 'Translation i18n'
+        plural:
+            fr: 'Traductions i18n'
+            en: 'Translations i18n'
+        add:
+            fr: 'Ajouter une traduction'
+            en: 'Add translation'
+        delete:
+            fr: "Supprimer la traduction"
+            en: 'Delete translation'
+
+App\Entity\Translation\Translation:
+    orderBy: adminName
+    orderSort: ASC
+    translations:
+        singular:
+            fr: 'Traduction'
+            en: 'Translation'
+        plural:
+            fr: 'Traductions'
+            en: 'Translations'
+        add:
+            fr: 'Ajouter une traduction'
+            en: 'Add translation'
+        delete:
+            fr: "Supprimer la traduction"
+            en: 'Delete translation'
+
+App\Entity\Translation\TranslationDomain:
+    orderBy: adminName
+    orderSort: ASC
+    adminLimit: 10
+    translations:
+        singular:
+            fr: 'Traduction domain'
+            en: 'Translation domain'
+        plural:
+            fr: 'Traductions domain'
+            en: 'Translations domain'
+        add:
+            fr: 'Ajouter un domain de traduction'
+            en: 'Add translation domain'
+        delete:
+            fr: "Supprimer le domain de traduction"
+            en: 'Delete translation domain'
+
+App\Entity\Translation\TranslationUnit:
+    orderBy: adminName
+    orderSort: ASC
+    adminLimit: 15
+    translations:
+        singular:
+            fr: 'Traduction unit'
+            en: 'Translation unit'
+        plural:
+            fr: 'Traductions unit'
+            en: 'Translations unit'
+        add:
+            fr: 'Ajouter une clé traduction'
+            en: 'Add translation key'
+        delete:
+            fr: "Supprimer la clé de traduction"
+            en: 'Delete translation key'
+    searchFields:
+        - keyname
+        - translations.content

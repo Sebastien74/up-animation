@@ -1,0 +1,395 @@
+#####################################
+#          Blocks Types             #
+#####################################
+
+blocks_types:
+    title:
+        advert: true
+        fr:
+            title: "Titre"
+            placeholder: "Titre"
+            subTitle: ""
+            introduction: ""
+            body: ""
+    text:
+        advert: true
+        fr:
+            title: "Texte"
+            placeholder: "Texte"
+            subTitle: ""
+            introduction: ""
+            body: ""
+    media:
+        advert: true
+        fr:
+            title: "Média"
+            placeholder: "Média"
+            subTitle: ""
+            introduction: ""
+            body: "Espace permettant de gérer tous les médias se trouvant sur votre site. Possibilité d'éditer les médias, ou de les classer par dossiers."
+    link:
+        advert: true
+        fr:
+            title: "Lien"
+            placeholder: "Lien"
+            subTitle: ""
+            introduction: ""
+            body: ""
+    title-header:
+        advert: true
+        fr:
+            title: "En-tête"
+            placeholder: "En-tête"
+            subTitle: ""
+            introduction: ""
+            body: "L'en-tête est le premier élément a afficher sur une page de contenu, qui vous permet d'introduire votre page à l'aide d'un titre mis en forme d'une manière particulière."
+    video:
+        advert: true
+        fr:
+            title: "Vidéo"
+            placeholder: "Vidéo"
+            subTitle: ""
+            introduction: ""
+            body: "Bloc permettant d'ajouter une vidéo sur vos pages. Possibilité de mettre un lien YouTube ou Viméo, ou de mettre une vidéo hébergée sur l'hébergement du site."
+    card:
+        advert: true
+        fr:
+            title: "Mini fiche"
+            placeholder: "Mini fiche"
+            subTitle: ""
+            introduction: ""
+            body: "Bloc permettant de créer une mise en page sous forme de fiche avec une image, un titre et une description."
+    blockquote:
+        advert: true
+        fr:
+            title: "Citation"
+            placeholder: "Citation"
+            subTitle: ""
+            introduction: ""
+            body: "Bloc permettant d'ajouter un texte qui s'affichera sous forme de citation."
+    collapse:
+        advert: true
+        fr:
+            title: "Collapse"
+            placeholder: "Collapse"
+            subTitle: ""
+            introduction: ""
+            body: "Bloc permettant d'afficher un titre, qui au clic affiche en dessous plus d'informations au format texte."
+    modal:
+        advert: true
+        fr:
+            title: "Modal"
+            placeholder: "Modal"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant d'afficher une pop-up sur votre site internet. Cette dernière peut être activée au chargement de la page, ou au clic sur un élément de votre site."
+    alert:
+        advert: true
+        fr:
+            title: "Alerte"
+            placeholder: "Alerte"
+            subTitle: ""
+            introduction: ""
+            body: "Permet d'afficher un message d'alerte sur votre site. Ce message est personnalisable via un éditeur de texte afin de mettre en relief certains mots (gras, couleurs, …). Vous pouvez activer ou désactiver ce message à votre guise."
+    icon:
+        advert: true
+        fr:
+            title: "Icône"
+            placeholder: "Icône"
+            subTitle: ""
+            introduction: ""
+            body: "Bloc permettant d'ajouter une icône pré-définie dans le site sur votre page."
+    separator:
+        advert: true
+        fr:
+            title: "Séparateur"
+            placeholder: "Séparateur"
+            subTitle: ""
+            introduction: ""
+            body: "Bloc permettant d'ajouter un espace entre vos divers blocs. Calculé en pixels."
+    widget:
+        advert: true
+        fr:
+            title: "Widget"
+            placeholder: "Widget"
+            subTitle: ""
+            introduction: ""
+            body: "Bloc permettant d'ajouter des widgets externe au site internet via un système de script ou de iframe."
+    share:
+        advert: true
+        fr:
+            title: "Boutons de partages"
+            placeholder: "Boutons de partages"
+            subTitle: ""
+            introduction: ""
+            body: "Permet d'afficher sur vos pages un bloc de partage afin de partager cette dernière, et ce sur les plateformes Facebook, Twitter, Pinterest, LinkedIn et par email."
+    counter:
+        advert: true
+        fr:
+            title: "Compteur"
+            placeholder: "Compteur"
+            subTitle: ""
+            introduction: ""
+            body: "Permet d'afficher une animation de chiffre. Selon le chiffre défini en back-office, cela affiche sur le site une animation de compteur qui montera jusqu'au chiffre défini."
+
+#####################################
+#           Modules                 #
+#####################################
+
+modules:
+    pages:
+        advert: true
+        fr:
+            title: "Pages"
+            placeholder: "Pages"
+            subTitle: ""
+            introduction: ""
+            body: "Espace permettant de visualiser toutes les pages existantes sur votre site internet. Possibilité d'édition de vos pages grâce à un système de lignes, de colonnes et de blocs."
+    google-analytics:
+        advert: false
+        fr:
+            title: "Google analytics"
+            placeholder: "Google analytics"
+            subTitle: ""
+            introduction: ""
+            body: ""
+    analytics-customer:
+        advert: false
+        fr:
+            title: "Analytics"
+            placeholder: "Analytics"
+            subTitle: ""
+            introduction: ""
+            body: ""
+    analytics-internal:
+        advert: false
+        fr:
+            title: "Analytics"
+            placeholder: "Analytics"
+            subTitle: ""
+            introduction: ""
+            body: ""
+    information:
+        advert: true
+        fr:
+            title: "Informations"
+            placeholder: "Informations"
+            subTitle: ""
+            introduction: ""
+            body: "Espace permettant de remplir les informations vous concernant (adresse, e-mail, téléphone, …)."
+    form:
+        advert: true
+        fr:
+            title: "Formulaires"
+            placeholder: "Formulaires"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant de créer un ou plusieurs formulaires. Chaque formulaire sera éditable sous forme de colonnes, de lignes et de blocs afin de composer un formulaire selon ses besoins. Possibilité de choisir le réceptionneur du message ainsi que l'envoyeur."
+    form-calendar:
+        advert: true
+        fr:
+            title: "Calendrier de formulaire"
+            placeholder: "Calendrier de formulaire"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant de créer un ou plusieurs calendriers liés à un formulaire. Chaque calendrier permet à l'utilisateur de choisir un créneau pour un rendez-vous, une réservation, … en remplissant des informations dans le formulaire."
+    steps-form:
+        advert: true
+        fr:
+            title: "Formulaires à étapes"
+            placeholder: "Formulaires à étapes"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant de créer un ou plusieurs formulaires. Chaque formulaire sera composé de plusieurs étapes, dans lesquelles se trouveront des formulaires différents (ex : étape identité, étape demande …)"
+    gallery:
+        advert: true
+        fr:
+            title: "Galeries"
+            placeholder: "Galeries"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant de créer une ou plusieurs galeries photos, dans lesquelles se trouvent une ou plusieurs images."
+    medias:
+        advert: true
+        fr:
+            title: "Médias"
+            placeholder: "Médias"
+            subTitle: ""
+            introduction: ""
+            body: ""
+    newscast:
+        advert: true
+        fr:
+            title: "Actualités"
+            placeholder: "Actualités"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant de créer plusieurs actualités, toutes catégorisables. Chaque actualité pourra être composée d'un titre, d'une introduction, d'une description, d'une image mise en avant, d'images secondaires, d'une vidéo et d'un lien"
+    navigation:
+        advert: true
+        fr:
+            title: "Navigations"
+            placeholder: "Navigations"
+            subTitle: ""
+            introduction: ""
+            body: "Espace permettant de gérer les divers menus se trouvant sur votre site internet."
+    newsletter:
+        advert: true
+        fr:
+            title: "Newsletters"
+            placeholder: "Newsletters"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant d'agréger les emails de toutes les personnes ayant rempli le champs newsletter dans votre site. Possibilité d'exporter ces contacts en format CSV, ou de connecter ce champs a votre compte Mailchimp."
+    table:
+        advert: true
+        fr:
+            title: "Tableaux"
+            placeholder: "Tableaux"
+            subTitle: ""
+            introduction: ""
+            body: ""
+    sitemap:
+        advert: true
+        fr:
+            title: "Plan de site"
+            placeholder: "Plan de site"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant d'afficher les pages se trouvant sur votre site et leur arborescence."
+    map:
+        advert: true
+        fr:
+            title: "Cartes"
+            placeholder: "Cartes"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant de créer une ou plusieurs cartes, dans lesquelles se trouvent un ou plusieurs points. Ces points seront définis par une latitude et une longitude, et pourront être agrémentés d'un nom, d'une description, d'une image, d'une catégorie, d'un pictogramme (défini en amont) et de liens."
+    tab:
+        advert: true
+        fr:
+            title: "Groupes d'onglets"
+            placeholder: "Groupes d'onglets"
+            subTitle: ""
+            introduction: ""
+            body: "Bloc permettant d'afficher plusieurs titres brefs côte à côté. Au clic sur un titre, cela affiche toute la description de ce dernier sous format texte."
+    search:
+        advert: true
+        fr:
+            title: "Moteurs de recherche"
+            placeholder: "Moteurs de recherche"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant d'ajouter un moteur de recherche à votre site internet."
+    gdpr:
+        advert: true
+        fr:
+            title: "RGPD"
+            placeholder: "RGPD"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant de mettre votre site partiellement en conformité avec la RGPD. Vous restez responsable de la gestion des données."
+    seo:
+        advert: true
+        fr:
+            title: "Référencement"
+            placeholder: "Référencement"
+            subTitle: ""
+            introduction: ""
+            body: "Espace permettant de gérer le référencement de votre site internet. Possibilité de modifier les meta, OG et redirections 301."
+    slider:
+        advert: true
+        fr:
+            title: "Carrousels"
+            placeholder: "Carrousels"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant de créer un ou plusieurs carrousels, dans lesquels se trouvent une ou plusieurs images. Ces carrousels peuvent être personnalisés selon vos demandes auprès de Félix (affichage de flèches, lecture automatique, durée de lecture, …)."
+    portfolio:
+        advert: true
+        fr:
+            title: "Portfolios"
+            placeholder: "Portfolios"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant d'ajouter un ou plusieurs portfolio afin d'afficher ses réalisations. Chaque réalisation pourra être composée d'un titre, d'une introduction, d'une description, d'une image mise en avant, d'images secondaires, d'une vidéo et d'un lien."
+    agenda:
+        advert: true
+        fr:
+            title: "Agendas"
+            placeholder: "Agendas"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant de créer un ou plusieurs agendas, dans lesquels se trouvent des évènements. Chaque événement pourra être défini par une date de début, une date de fin, et pourra se composer d'informations supplémentaires."
+    catalog:
+        advert: true
+        fr:
+            title: "Catalogues"
+            placeholder: "Catalogues"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant de créer un ou plusieurs catalogues, dans lesquels se trouvent plusieurs produits. Ces produits peuvent être agrémentés de caractéristiques (ex : taille d'un tee-shirt, nombre de personne dans une recette, …). Ces dernières peuvent permettre un filtrage personnalisé sur votre site."
+    timeline:
+        advert: true
+        fr:
+            title: "Chronologies"
+            placeholder: "Chronologies"
+            subTitle: ""
+            introduction: ""
+            body: "Module permettant de créer une ou plusieurs chronologies, composées de plusieurs étapes. Chaque étape se composera d'un titre et d'une introduction."
+    contact-information:
+        advert: true
+        fr:
+            title: "Informations de contact"
+            placeholder: "Informations de contact"
+            subTitle: ""
+            introduction: ""
+            body: "Bloc permettant d'afficher les informations de contacts remplies dans le bloc informations."
+    translation:
+        advert: true
+        fr:
+            title: "Traductions"
+            placeholder: "Traductions"
+            subTitle: ""
+            introduction: ""
+            body: "Espace permettant de modifier tous les textes se trouvant sur le site internet, hors du contenu des pages."
+    user:
+        advert: true
+        fr:
+            title: "Utilisateurs"
+            placeholder: "Utilisateurs"
+            subTitle: ""
+            introduction: ""
+            body: "Espace permettant de gérer les utilisateurs du site internet, et leurs droits d'accès."
+    customs-actions:
+        advert: false
+        fr:
+            title: "Actions personnalisées"
+            placeholder: "Actions personnalisées"
+            subTitle: ""
+            introduction: ""
+            body: ""
+    secure-page:
+        advert: true
+        fr:
+            title: "Pages sécurisées"
+            placeholder: "Pages sécurisées"
+            subTitle: ""
+            introduction: ""
+            body: "Fonctionnalité permettant de resteindre l'accès à certaines de vos pages sur le site, à l'aide d'un identifiant et d'un mot de passe."
+    secure-module:
+        advert: false
+        fr:
+            title: "Modules sécurisé"
+            placeholder: "Modules sécurisé"
+            subTitle: ""
+            introduction: ""
+            body: ""
+    edit:
+        advert: false
+        fr:
+            title: "Édition générale"
+            placeholder: "Édition générale"
+            subTitle: ""
+            introduction: ""
+            body: ""

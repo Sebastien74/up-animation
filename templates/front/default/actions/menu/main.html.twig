@@ -1,0 +1,150 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+{% import _self as macro %}
+
+{% set displayHomePage = true %}
+{% set isHome = (seo.entity.asIndex is defined and seo.entity.asIndex) or (app.request.requestUri == '/') or (not app.request.requestUri) %}
+{% set logo = logos.logo is defined and logos.logo ? logos.logo : null %}
+{% set networks = logos['social-networks'] is defined and logos['social-networks'] ? logos['social-networks'] : null %}
+{% set haveEmails = infos.emails.header is defined and infos.emails.header|length > 0 %}
+{% set havePhones = infos.phones.header is defined and infos.phones.header|length > 0 %}
+{% set companyName = informationIntl.title is defined and informationIntl.title ? informationIntl.title : "Agence Félix"|trans|raw %}
+{% set haveLogin = 'secure-page'|moduleActive(configuration) %}
+{% set links = tree.main is defined ? tree.main : [] %}
+{% set compagnyNameElement = (seo.titleH1 is defined and not seo.titleH1 or seo.titleH1 is not defined) ? 'h1' : 'strong' %}
+{% if seo.card is defined and seo.card %}
+    {% set compagnyNameElement = 'strong' %}
+{% endif %}
+{% set contactPageUrl = mainPages.contact.code is defined ? mainPages.contact.code : null %}
+
+{% macro element(link, tree, microDataActive, expand, dropdownHover, dropdownItem, isLast) %}
+    {% if link.online is defined and link.online %}
+        {% set path = link.link %}
+        {% set element = link.link ? 'a' : 'div' %}
+        {% if not link.link and link.children %}
+            {% set element = 'a' %}
+            {% set child = link.children|first %}
+            {% set path = child.link %}
+        {% endif %}
+        {% set pushMicroData = microDataActive and link.level == 1 and not link.linkExternal and not link.children %}
+        <li class="nav-item d-flex align-items-center justify-content-center level-{{ link.level }}{% if link.children %} dropdown{% if link.level >= 2 %} dropdown-submenu{% endif %}{% endif %}{% if link.media %} item-logo{% endif %} text-center text-{{ expand }}-start{% if link.active %} active{% endif %}{% if link.level == 1 and not isLast %} me-{{ expand }}-4{% endif %}"
+            {% if pushMicroData %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"{% endif %}>
+            {% set linkClass = link.class~' nav-link '~expand~' link-level-'~link.level %}
+            {% set linkClass = link.children ? linkClass~' as-dropdown-toggle dropdown-toggle' : linkClass %}
+            {% set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass %}
+            {% set linkClass = 1 == link.level ? linkClass~' text-initial' : linkClass %}
+            {% set linkClass = link.active ? linkClass~' active text-primary' : linkClass~' active text-white' %}
+            <{% if 'a' == element %}a{% else %}div{% endif %} class="{{ linkClass }} text-center"{% if link.dataAnchor %} data-anchor="{{ link.dataAnchor }}"{% endif %}
+                href="{% if path %}{{ path }}{% else %}javascript:void(0){% endif %}"{% if link.children and not dropdownHover %} id="navbar-link-{{ link.id }}"{% endif %}
+                {% if link.children and not dropdownHover %} role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% elseif link.linkBlank %} target="_blank"{% else %} data-toggle="preloader"{% endif %}
+                {% if link.linkExternal %} rel="noopener noreferrer"{% endif %}
+                {% if pushMicroData %} itemprop="url"{% endif %}>
+                {% if link.media.haveMedia is defined and link.media.haveMedia %}
+                    {{ link.media|file }}
+                    <span class="d-lg-none"{% if pushMicroData %} itemprop="name"{% endif %}>{{ link.title|unescape|raw }}</span>
+                {% else %}
+                    {% if pushMicroData %}<span itemprop="name">{% endif %}{{ link.title|unescape|raw }}{% if pushMicroData %}</span>{% endif %}
+                {% endif %}
+                {% if link.children %}
+                    <span class="caret position-absolute ms-2{% if dropdownHover %} dropdown-toggle{% endif %}"
+                        {% if dropdownHover %} id="navbar-link-{{ link.id }}" aria-label="{{ "Voir plus"|trans|striptags }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% endif %}>
+                        {% set icon = link.level == 1 ? 'down' : 'right' %}
+                        <i class="icon-arrow-{{ icon }} position-relative" aria-label="{{ "Voir plus"|trans|striptags }}"></i>
+                    </span>
+                {% endif %}
+            </{% if 'a' == element %}a{% else %}div{% endif %}>
+            {% if link.children %}
+                <div class="dropdown-menu dropdown-menu-level-{{ link.level }}" aria-labelledby="navbar-link-{{ link.id }}" data-bs-popper="static">
+                    <div class="dropdown-back mb-3 fw-600 nav-link text-primary text-center dropdown-item d-lg-none" aria-hidden="true">
+                        <i class="icon-arrow-left text-primary me-3" aria-hidden="true"></i>
+                        <span class="label-back text-warning position-relative fw-500 me-3">{{ link.title|unescape|raw }}</span>
+                    </div>
+                    <ul class="reset">
+                        {% for subLink in link.children %}
+                            {{ macro.element(subLink, tree, microDataActive, expand, dropdownHover, true, loop.last) }}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </li>
+    {% endif %}
+{% endmacro %}
+
+<div id="menu-container-{{ slug }}" class="menu-container w-100 {% if fixedOnScroll or alwaysFixed %} as-sticky sticky-top{% else %}position-relative{% endif %}{% if alwaysFixed %} always-sticky{% endif %} {{ dropdownClass }}"
+     data-expand="{{ expand }}"
+     tabindex="0">
+    {{ macroWebmaster.box({
+        title: "Éditer le menu"|trans([], 'front_webmaster'),
+        role: 'ROLE_NAVIGATION',
+        path: path('admin_menu_edit', {website: website.id, menu: id, entitylocale: app.request.locale})
+    }) }}
+    <header id="main-navigation" class="navbar navbar-expand-{{ expand }} bg-white pe-2 ps-2 pe-{{ expand }}-0 ps-{{ expand }}-0 pt-{{ expand }}-4 pb-{{ expand }}-4">
+        <div class="{{ size }}{% if size == 'container-fluid' %} pe-sm-5 ps-sm-5{% endif %}">
+            {% if logo %}
+                <{% if 'h1' == compagnyNameElement %}h1{% else %}strong{% endif %} class="d-none" aria-hidden="true">{{ companyName|striptags }}</{% if 'h1' == compagnyNameElement %}h1{% else %}strong{% endif %}>
+                <a class="navbar-brand d-block p-0" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}" data-toggle="preloader">
+                    {{ asset(logo)|file({}, {
+                        screensSizes: {
+                            mobile: {width: 138, height: 60},
+                            tablet: {width: 138, height: 60},
+                            desktop: {width: 138, height: 60}
+                        },
+                        decor: false,
+                        title: companyName,
+                        class: 'force-size logo initial-color',
+                        only_html: false,
+                        lazyLoad: false,
+                        priority: 'high'
+                    }) }}
+                </a>
+            {% endif %}
+            <button class="navbar-toggler bg-transparent d-flex d-{{ expand }}-none flex-column"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#main-navigation-nav"
+                    aria-controls="main-navigation-nav"
+                    aria-expanded="false"
+                    aria-label="{{ "Menu"|trans|raw }}">
+                <span class="nav-toggler-icon" aria-label="{{ "Menu"|trans|striptags }}">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+                <span class="label text-black d-inline-block mt-2 lh-1">{{ "Menu"|trans|raw }}</span>
+            </button>
+            <div id="main-navigation-nav" class="collapse navbar-collapse">
+                <nav class="inner d-{{ expand }}-flex align-center w-100" role="navigation" aria-label="{{ "Navigation principale"|trans|striptags }}">
+                    {% set class = 'mx-auto' == alignment ? 'px-3' : 'ps-'~expand~'-5' %}
+                    <ul class="navbar-nav {% if haveLogin %}w-100{% else %}{{ alignment }}{% endif %} pt-4 pb-4 pt-{{ expand }}-0 pb-{{ expand }}-0 {{ class }}">
+                        {% if displayHomePage %}
+                            <li class="nav-item d-flex align-items-center justify-content-center level-1 text-center d-{{ expand }}-none{% if indexActive %} active{% endif %}"
+                                {% if microDataActive %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"{% endif %}>
+                                <a href="{{ path('front_index') }}" class="nav-link link-level-1 text-primary{% if indexActive %} active{% endif %}"
+                                    {% if microDataActive %} itemprop="url"{% endif %} data-toggle="preloader">
+                                    {% if microDataActive %}<span itemprop="name">{% endif %}{{ "Accueil"|trans|raw }}{% if microDataActive %}</span>{% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for link in links %}
+                            {{ macro.element(link, tree, microDataActive, expand, dropdownHover, false, loop.last) }}
+                        {% endfor %}
+                    </ul>
+                    {% if haveLogin %}
+                        {% include 'front/'~websiteTemplate~'/actions/menu/login-nav.html.twig' with {
+                            website: website,
+                            expand: expand,
+                            haveLogin: haveLogin,
+                            microDataActive: microDataActive,
+                        } only %}
+                    {% endif %}
+                    {% if multiLingues %}
+                        {{ render_esi(path('front_locales_switcher', {class: 'ms-auto'|url_encode, classname: currentClassname|url_encode, entityId: currentEntityId} )) }}
+                    {% endif %}
+                    {% if 'search'|moduleActive(configuration) %}
+                        {{ render_esi(path('front_search_view', {filter: 'main', button: true, website: website.id} )) }}
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </header>
+</div>

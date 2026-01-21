@@ -1,0 +1,144 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-13, 03:22:46 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FORM :
+    =====
+
+    1 ) Bootstrap
+    2 ) Material
+    3 ) Select2
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Bootstrap
+-----------------------------------*/
+
+select:not([multiple]) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-position: right 50%;
+    background-repeat: no-repeat;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=);
+    padding-right: 1.5rem;
+    cursor: pointer;
+}
+
+.custom-file-label {
+
+    cursor: pointer;
+    z-index: 3 !important;
+
+    &::after {
+        display: none !important;
+    }
+}
+
+.custom-file {
+    .addon {
+        top: 0;
+        right: 0;
+        z-index: 5;
+        cursor: pointer;
+        color: #404d5b;
+        background-color: #f8f9fa;
+        border-left: 1px solid #dde1e6;
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+    }
+}
+
+/*-----------------------------------
+   2 ) Material
+-----------------------------------*/
+
+.material-switch > input[type="checkbox"] {
+    display: none;
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0;
+    position: relative;
+    width: 40px;
+}
+
+.material-switch > label::before {
+    background: rgb(0, 0, 0);
+    border-radius: 15px;
+    height: 20px;
+    content: '';
+    margin-top: -10px;
+    position: absolute;
+    opacity: 0.3;
+    transition: all .4s ease-in-out;
+    width: 40px;
+}
+
+.material-switch > label::after {
+    background: rgb(255, 255, 255) !important;
+    border-radius: 16px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    width: 24px;
+    left: -4px;
+    margin-top: -8px;
+    position: absolute;
+    top: -4px;
+    transition: all .3s ease-in-out;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 2px;
+    padding-right: 2px;
+    color: #b2b2b2;
+}
+
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: #dddddd;
+    opacity: 1;
+}
+
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
+    padding-right: 0;
+}
+
+/*-----------------------------------
+   3 ) Select2
+-----------------------------------*/
+
+.select-2-background-wrap {
+
+    height: 38px !important;
+    width: 100% !important;
+
+    .select-2-background {
+        height: 22px !important;
+        display: inline-block !important;
+        width: 100% !important;
+        background-size: contain !important;
+        background-repeat: no-repeat !important;
+        margin: 0 auto !important;
+        text-align: center !important;
+        background-position: center !important;
+        margin-top: 5px !important;
+    }
+}
+
+.select2-selection--single {
+    .select-2-background-wrap {
+        .select-2-background {
+            margin-top: -1px !important;
+        }
+    }
+}

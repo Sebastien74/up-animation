@@ -1,0 +1,99 @@
+{% if configuration is defined %}
+
+    {% import _self as macro %}
+
+    {% macro dropdown(activeLocale, locales, routes, microDataActive, flags, class, currentFlag, fullName) %}
+        <div class="dropdown switcher{% if class %} {{ class }}{% endif %}">
+            <a class="dropdown-toggle d-flex align-items-center justify-content-center" aria-label="{{ "Langues"|trans|striptags }}"
+               href="#" role="button" id="locales-switcher" data-bs-toggle="dropdown" aria-expanded="false">
+                {% if flags %}
+                    {{ ('flags '~activeLocale~'-round')|icon(25, 25, 'me-1 me-xl-2', {title: activeLocale|languageName}) }}
+                    <span class="d-none d-xl-inline-block">{{ activeLocale|capitalize }}</span>
+                {% else %}
+                    {% set name = fullName ? activeLocale|languageName(activeLocale)|capitalize : activeLocale|upper %}
+                    {{ name }}
+                {% endif %}<i class="icon-chevron-down ms-1 position-relative"></i>
+            </a>
+            <ul class="dropdown-menu bg-transparent p-0 border-0 no-min-width" aria-labelledby="locales-switcher">
+                {% for locale in locales %}
+                    {% if routes[locale] is defined and locale != activeLocale %}
+                        <li class="pt-2 bg-transparent"{% if microDataActive %} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language"{% endif %}>
+                            {% set languageName = locale|languageName(locale) %}
+                            {% if microDataActive %}
+                                <span itemprop="name" class="d-none">{{ languageName }}</span>
+                            {% endif %}
+                            <a class="dropdown-item p-0" href="{{ routes[locale] }}"
+                               aria-label="{{ languageName }}"
+                               hreflang="{{ locale }}" lang="{{ locale }}">
+                                {% if flags %}
+                                    {{ ('flags '~locale~'-round')|icon(25, 25, null, {title: languageName}) }}
+                                {% else %}
+                                    {% set name = fullName ? locale|languageName(locale)|capitalize : locale|upper %}
+                                    {{ name }}
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endmacro %}
+
+    {% macro inline(activeLocale, locales, routes, microDataActive, count, flags, class, currentFlag, fullName) %}
+        {% set displayCount = 0 %}
+        <ul class="navbar-nav locales-switcher align-items-center justify-content-center{% if 'd-' not in class %} d-inline-flex{% endif %}{% if class %} {{ class }}{% endif %}">
+            {% for locale in locales %}
+                {% set displayFlag = currentFlag or (app.request.locale != locale) %}
+                {% set active = locale == app.request.locale %}
+                {% if displayFlag and routes[locale] is defined %}
+                    <li class="d-inline-flex {% if active %}active-locale{% else %}inactive{% endif %}" data-toggle="preloader"
+                        {% if microDataActive %} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language"{% endif %}>
+                        {% set languageName = locale|languageName(locale) %}
+                        {% if microDataActive %}
+                            <span itemprop="name" class="d-none">{{ languageName }}</span>
+                        {% endif %}
+                        <a href="{{ routes[locale] }}" class="{% if active %}active-locale{% else %}inactive{% endif %} ms-2"
+                           aria-label="{{ languageName }}"
+                           hreflang="{{ locale }}" lang="{{ locale }}">
+                            {% if flags %}
+                                {{ ('flags '~locale~'-round')|icon(25, 25, null, {title: languageName}) }}
+                            {% else %}
+                                {% set name = fullName ? locale|languageName(locale)|capitalize : locale|upper %}
+                                {{ name }}
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endmacro %}
+
+    {% set activeLocale = app.request.locale %}
+    {% set microDataActive = microDataActive is defined ? microDataActive : currentWebsite.seoConfiguration.microData %}
+    {% set count = 0 %}
+    {% set locales = [] %}
+    {% if asMulti %}
+        {% for website in websites %}
+            {% for locale in website.configuration.onlineLocales %}
+                {% if routes[locale] is defined %}
+                    {% set count = count + 1 %}
+                    {% set locales = locales|merge([locale]) %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        {% for locale in configuration.onlineLocales %}
+            {% if routes[locale] is defined %}
+                {% set count = count + 1 %}
+                {% set locales = locales|merge([locale]) %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if count > 1 %}
+        {% if inline %}
+            {{ macro.inline(activeLocale, locales, routes, microDataActive, count, flags, class, currentFlag, fullName) }}
+        {% else %}
+            {{ macro.dropdown(activeLocale, locales, routes, microDataActive, flags, class, currentFlag, fullName) }}
+        {% endif %}
+    {% endif %}
+{% endif %}

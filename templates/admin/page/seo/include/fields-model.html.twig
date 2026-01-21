@@ -1,0 +1,43 @@
+{% trans_default_domain 'admin' %}
+
+<div class="card mb-3">
+    <h5 class="card-title card-header mb-0">{{ 'fal database'|icon(null, 18, 'info-darken me-2') }}{{ "Champs"|trans }}</h5>
+    <div class="card-body">
+        {% if keywords %}
+            {% for title, metadatas in keywords %}
+                {% if not haveCaption %}
+                    <h4>{{ title|capitalize }}</h4>
+                {% endif %}
+                <div {% if not loop.last %}class="mb-3"{% endif %}>
+                    {% for metadata in metadatas %}
+                        <div class="item btn btn-outline-secondary mb-1">
+                            <div class="d-flex align-items-center refer-copy">
+                                <div class="to-copy">[{{ metadata }}]</div>
+                                <div class="copy-link border-dark cursor ms-2" data-bs-toggle="tooltip" title="{{ "Copier"|trans|striptags }}">
+                                    <div class="inner h-100">{{ "far copy"|icon(null, 11, 'dark') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+{% if haveCaption and labels %}
+    <div class="card mb-3">
+        <h5 class="card-title card-header mb-0">{{ 'fal list-ul'|icon(null, 18, 'info-darken me-2') }}{{ "Légende"|trans }}</h5>
+        <div class="card-body">
+            <ul class="reset">
+                {% for title, metadatas in keywords %}
+                    {% for metadata in metadatas %}
+                        {% if labels[metadata] is defined %}
+                            <li><strong>[{{ metadata }}]</strong> : {{ labels[metadata] }}</li>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}

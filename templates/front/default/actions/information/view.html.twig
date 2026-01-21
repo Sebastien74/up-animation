@@ -1,0 +1,45 @@
+{% trans_default_domain 'front_default' %}
+
+{% set infos = website.infoZones is defined ? website.infoZones : [] %}
+{% set haveAddress = infos.addresses.contact is defined and infos.addresses.contact|length > 0 %}
+{% set haveEmails = infos.emails.contact is defined and infos.emails.contact|length > 0 %}
+{% set havePhones = infos.phones.contact is defined and infos.phones.contact|length > 0 %}
+{% set parentBackgroundColor = block.backgroundColor is defined and block.backgroundColor %}
+{% set displayBg = not parentBackgroundColor %}
+
+{% if haveEmails or havePhones or haveAddress %}
+    <div class="information-container">
+        <div class="card {% if displayBg %}bg-light{% else %}bg-transparent{% endif %}">
+            <div class="card-body py-4 px-4 px-lg-5">
+                {% if haveEmails or havePhones %}
+                    <div class="contact-information{% if haveAddress %} mb-4{% endif %}">
+                        <strong class="title d-inline-block fw-700 mb-3">{{ 'Contact'|trans|raw }}</strong>
+                        {% if haveEmails or havePhones %}
+                            <ul class="reset contacts">
+                                {% if haveEmails %}
+                                    {% for email in infos.emails.contact %}
+                                        <li>{{ email.email|email(website, {icon: false, only_href: true}) }}</li>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if havePhones %}
+                                    {% for phone in infos.phones.contact %}
+                                        <li>{{ phone|phone(website, {icon: false, only_href: true}) }}</li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if haveAddress %}
+                    <div class="address-information">
+                        {% set entitled = infos.addresses.contact|length > 1 ? 'Adresses'|trans|raw : 'Adresse'|trans|raw %}
+                        <strong class="title d-inline-block fw-700 mb-3">{{ entitled }}</strong>
+                        {% for address in infos.addresses.contact %}
+                            {{ address|address(website, 'contact') }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}

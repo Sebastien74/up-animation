@@ -1,0 +1,36 @@
+{% extends 'core/email/base.html.twig' %}
+
+{% trans_default_domain 'email' %}
+
+{% block body %}
+    <tr>
+        <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+            {% for fieldKey, field in fields %}
+                {% set label = field.label ? field.label : fieldKey %}
+                {% set display = true %}
+                {% if not field.value|isArray and not field.value %}
+                    {% set display = false %}
+                {% endif %}
+                {% if not isUploadedFile(field.value) and display %}
+                    <p style="font-size: 14px;">
+                        <strong>{{ label|raw }} :</strong>
+                        {% if field.value|isArray and field.value|length == 1 %}
+                            {% include 'core/data-formater.html.twig' with {dataValue: field.value[0]} %}
+                        {% elseif field.value|isArray %}
+                            {% for value in field.value %}
+                                {% include 'core/data-formater.html.twig' with {dataValue: value} %}
+                            {% endfor %}
+                        {% else %}
+                            {% include 'core/data-formater.html.twig' with {dataValue: field.value} %}
+                        {% endif %}
+                    </p>
+                {% endif %}
+            {% endfor %}
+            {% if attachments is defined and attachments|length > 0 %}
+                <p style="font-size: 14px;">
+                    <strong>{{ "Pièces jointes"|trans }} :</strong>  {{ attachments|length }}
+                </p>
+            {% endif %}
+        </td>
+    </tr>
+{% endblock %}

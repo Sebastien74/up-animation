@@ -1,0 +1,323 @@
+{% trans_default_domain 'admin' %}
+
+{% set interfaceName = interfaceName is defined ? interfaceName : (interface.name is defined ? interface.name : false) %}
+{% set displayTitleCard = displayTitleCard is defined ? displayTitleCard : true %}
+{% set libraryBtnPosition = libraryBtnPosition is defined ? libraryBtnPosition : 'top' %}
+{% set onlyMedia = children.media.children.uploadedFile.vars.attr.onlyMedia is defined ? children.media.children.uploadedFile.vars.attr.onlyMedia : false %}
+{% set configuration = website().configuration %}
+{% set defaultLocale = configuration.locale %}
+{% set allLocales = configuration.allLocales %}
+{% set videoFormats = ['webm', 'vtt', 'mp4'] %}
+
+{% if displayTitleCard %}
+    <div class="col-12">
+        <h4 class="card-subtitle mb-4 media-subtitle">
+            {{ 'fal photo-video'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Médias"|trans }}{% else %}{{ "Média"|trans }}{% endif %}
+        </h4>
+    </div>
+{% endif %}
+
+{% if allLocales|length > 1 %}
+    <div class="locales-tab-container">
+{% endif %}
+
+{% if allLocales|length > 1 %}
+    {% set localesDisplay = [] %}
+    <ul id="media-relations-tabs" class="nav nav-tabs w-100" role="tablist">
+        {% for mediaRelation in mediaRelations %}
+            {% set locale = mediaRelation.vars.value.locale %}
+            {% if locale not in localesDisplay %}
+                <li class="nav-item{% if locale not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
+                    <a class="nav-link{% if locale == defaultLocale %} active{% endif %}" data-bs-toggle="tab"
+                       id="media-relation-{{ locale }}-tab"
+                       aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}"
+                       href="#media-relations-tab-{{ locale }}" role="tab">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                    </a>
+                </li>
+            {% endif %}
+            {% set localesDisplay = localesDisplay|merge([locale]) %}
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if allLocales|length > 1 %}
+    <div id="media-relations-tabs-content" class="tab-content tab-content-border w-100 media-relations-tab">
+{% endif %}
+
+    {% set localesDisplay = [] %}
+
+    {% for mediaRelation in mediaRelations %}
+
+        {% set locale = mediaRelation.vars.value.locale %}
+        {% set mediaRelationId = mediaRelation.vars.value.id %}
+        {% set onlyMedia = mediaRelation.media.uploadedFile.vars.attr.onlyMedia is defined and mediaRelation.media.uploadedFile.vars.attr.onlyMedia %}
+        {% set asMediaScreen = onlyMedia and mediaRelation.media.mediaScreens is defined %}
+        {% set screenSize = mediaRelation.vars.data.media.screen is defined ? mediaRelation.vars.data.media.screen : null %}
+
+        {% if( allLocales|length == 1 and locale != configuration.locale) or (locale in localesDisplay) %}
+            <div class="d-none">
+        {% endif %}
+
+        {% if allLocales|length > 1 %}
+            <div id="media-relations-tab-{{ locale }}" class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}" role="tabpanel" aria-labelledby="media-relation-{{ locale }}-tab">
+                <div class="p-20 pb-0">
+                    <div class="row">
+        {% endif %}
+
+            {% if asMediaScreen %}
+                <div class="col-md-3 screen-card">
+                    {% set parameters = {
+                        type: 'single',
+                        mediaRelationId: mediaRelation.vars.value.id,
+                        classname: classname|url_encode,
+                        entityId: entity.id,
+                        btnId: "#open-modal-"~mediaRelation.vars.value.id,
+                    }|json_encode %}
+                    <span class="open-modal-medias-wrap btn btn-outline-info-darken w-100 mb-3 single">
+                        <span id="open-modal-{{ mediaRelation.vars.value.id }}"
+                              class="open-modal-medias d-inline-block"
+                              data-options="{{ parameters }}">
+                            {{ 'fal photo-video'|icon(null, 14, 'me-2') }}{{ "Choisir dans la bibliothèque"|trans }}
+                        </span>
+                        <a href="https://tinypng.com/"
+                           target="_blank" class="optimize-media-btn btn btn-dark"
+                           data-bs-toggle="tooltip"
+                           title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
+                            {{ 'fal file-archive'|icon(null, 16) }}
+                        </a>
+                    </span>
+            {% else %}
+                <div class="col-md-{% if onlyMedia %}12{% else %}7{% endif %}">
+                    {% if libraryBtnPosition == 'top' %}
+                        {% include 'admin/page/media/modal-btn.html.twig' %}
+                    {% endif %}
+            {% endif %}
+
+                {{ form_row(mediaRelation.media.uploadedFile) }}
+
+                {% set asCollapse = onlyMedia and mediaRelation.intl.title is defined and onlyMedia and mediaRelation.intl.introduction is defined %}
+                {% if asCollapse %}
+                    <button class="btn btn-info-darken d-inline-flex align-items-center justify-content-center collapsed w-100 mb-3"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            href="#collapseSubNavigation"
+                            aria-expanded="false"
+                            aria-controls="collapseSubNavigation">
+                        {{ 'fal text'|icon(14, 14, 'me-2 white') }}{{ "Contenus navigation"|trans }}
+                    </button>
+                    <div id="collapseSubNavigation" class="collapse">
+                {% endif %}
+                {% if onlyMedia and mediaRelation.intl.title is defined %}
+                    {{ form_row(mediaRelation.intl.title) }}
+                {% endif %}
+                {% if onlyMedia and mediaRelation.intl.introduction is defined %}
+                    {{ form_row(mediaRelation.intl.introduction) }}
+                {% endif %}
+                {% if onlyMedia and mediaRelation.intl.targetLabel is defined %}
+                    {{ form_row(mediaRelation.intl.targetLabel) }}
+                {% endif %}
+                {% if asCollapse %}
+                    </div>
+                {% endif %}
+
+                {% if mediaRelation.intl.targetLink is defined %}
+                    <div class="card-body pb-0 border bg-light mb-4 radius">
+                        <h4 class="card-subtitle mb-4 w-100">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
+                        <div class="row">
+                            {% if mediaRelation.intl.targetStyle is defined %}
+                                {{ form_row(mediaRelation.intl.targetStyle) }}
+                            {% endif %}
+                            {% if mediaRelation.intl.targetLink is defined %}
+                                {{ form_row(mediaRelation.intl.targetLink) }}
+                            {% endif %}
+                            {% if mediaRelation.intl.targetPage is defined %}
+                                {{ form_row(mediaRelation.intl.targetPage) }}
+                            {% endif %}
+                            {% if mediaRelation.intl.targetLabel is defined %}
+                                {{ form_row(mediaRelation.intl.targetLabel) }}
+                            {% endif %}
+                            {% if mediaRelation.intl.newTab is defined %}
+                                <div class="form-group col-md-4">{{ form_widget(mediaRelation.intl.newTab) }}</div>
+                            {% endif %}
+                            {% if mediaRelation.intl.externalLink is defined %}
+                                <div class="form-group col-md-4">{{ form_widget(mediaRelation.intl.externalLink) }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="row">
+                    {% if mediaRelation.category is defined %}
+                        {{ form_row(mediaRelation.category) }}
+                    {% endif %}
+                    {% if interfaceName is defined and 'block' == interfaceName and entity.blockType.slug is defined and 'card' == entity.blockType.slug %}
+                        {% if mediaRelation.pictogram is defined %}
+                            {{ form_row(mediaRelation.pictogram) }}
+                        {% endif %}
+                    {% endif %}
+                    {% if onlyMedia %}
+                        {% include 'admin/core/form/medias-sizes.html.twig' with {form: mediaRelation} only %}
+                    {% endif %}
+                </div>
+
+                {% if asMediaScreen and mediaRelation.media.vars.value.screen is defined %}
+                    <h4 class="text-center text-uppercase screen-title mb-3">{{ mediaRelation.media.vars.value.screen }}{% if 'vtt' == mediaRelation.media.vars.value.screen %} {{ '(Sous-titres)'|trans|raw }}{% endif %}</h4>
+                {% endif %}
+
+            {% if asMediaScreen %}
+                </div>
+                {% for screen in mediaRelation.media.mediaScreens %}
+                    {% set displayScreen = screenSize != 'poster' or screenSize == 'poster' and screen.vars.value.screen in videoFormats ? '' : ' d-none' %}
+                    <div class="col-md-3 screen-card{{ displayScreen }}">
+                        {% set parameters = {
+                            type: 'single',
+                            classname: 'App\\Entity\\Media\\Media'|url_encode,
+                            mediaId: screen.vars.value.id,
+                            entityId: screen.vars.value.id,
+                            btnId: "#open-screen-modal-"~screen.vars.value.id,
+                        }|json_encode %}
+                        <span class="open-modal-medias-wrap btn btn-outline-info-darken w-100 mb-3 single">
+                            <span id="open-screen-modal-{{ screen.vars.value.id }}"
+                                  class="open-modal-medias d-inline-block"
+                                  data-options="{{ parameters }}">
+                                {{ 'fal photo-video'|icon(null, 14, 'me-2') }}{{ "Choisir dans la bibliothèque"|trans }}
+                            </span>
+                            <a href="https://tinypng.com/"
+                               target="_blank" class="optimize-media-btn btn btn-dark"
+                               data-bs-toggle="tooltip"
+                               title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
+                                {{ 'fal file-archive'|icon(null, 16) }}
+                            </a>
+                        </span>
+                        {{ form_row(screen.uploadedFile) }}
+                        <h4 class="text-center text-uppercase screen-title mb-3">{{ screen.vars.value.screen }}{% if 'vtt' == screen.vars.value.screen %} {{ '(Sous-titres)'|trans|raw }}{% endif %}</h4>
+                    </div>
+                {% endfor %}
+            {% else %}
+                    {% if libraryBtnPosition == 'bottom' %}
+                        {% include 'admin/page/media/modal-btn.html.twig' %}
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if not onlyMedia %}
+                {% if screenSize is not defined or screenSize is defined and screenSize != 'poster' %}
+
+                    <div class="col-md-5{% if not granted('ROLE_INTERNAL') %} my-auto{% endif %}">
+
+                        {% if mediaRelation.maxWidth is defined or mediaRelation.maxHeight is defined %}
+                            <div class="row">
+                                {% include 'admin/core/form/medias-sizes.html.twig' with {form: mediaRelation} only %}
+                            </div>
+                        {% endif %}
+
+                        {% if mediaRelation.intl.pictogram is defined %}
+                            {{ form_row(mediaRelation.intl.pictogram) }}
+                        {% endif %}
+
+                        {% if mediaRelation.intl.title is defined or mediaRelation.intl.introduction is defined %}
+                            <div class="row">
+                                {% if mediaRelation.intl.titleForce is defined %}
+                                    {{ form_row(mediaRelation.intl.titleForce) }}
+                                {% endif %}
+                                {% if mediaRelation.intl.title is defined %}
+                                    {{ form_row(mediaRelation.intl.title) }}
+                                {% endif %}
+                                {% if mediaRelation.intl.placeholder is defined %}
+                                    {% set haveMedia = mediaRelation.media.vars.value.filename is defined and mediaRelation.media.vars.value.filename %}
+                                    {% set haveAlt = mediaRelation.intl.vars.value.placeholder is defined and mediaRelation.intl.vars.value.placeholder|striptags|length > 0 %}
+                                    {{ form_row(mediaRelation.intl.placeholder, {attr: {'data-help': haveMedia and not haveAlt ? 'no-alt' : false}}) }}
+                                {% endif %}
+                                {% if mediaRelation.intl.introduction is defined %}
+                                    {{ form_row(mediaRelation.intl.introduction) }}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        {% if mediaRelation.media.copyright is defined or mediaRelation.media.titlePosition is defined or mediaRelation.pictogram is defined %}
+                            <div class="row">
+                        {% endif %}
+
+                            {% set groupSize = mediaRelation.media.copyright is defined and mediaRelation.media.titlePosition is defined ? 6 : 12 %}
+
+                            {% if mediaRelation.media.copyright is defined %}
+                                <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.media.copyright) }}</div>
+                            {% endif %}
+
+                            {% if mediaRelation.media.titlePosition is defined %}
+                                <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.media.titlePosition) }}</div>
+                            {% endif %}
+
+                            {% if mediaRelation.pictogram is defined %}
+                                <div class="col-md-{% if mediaRelation.pictogramMaxWidth is defined %}12{% else %}{{ groupSize }}{% endif %}">{{ form_row(mediaRelation.pictogram) }}</div>
+                            {% endif %}
+                            {% if mediaRelation.pictogramMaxWidth is defined %}
+                                <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxWidth) }}</div>
+                            {% endif %}
+                            {% if mediaRelation.pictogramMaxHeight is defined %}
+                                <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxHeight) }}</div>
+                            {% endif %}
+
+                        {% if mediaRelation.media.copyright is defined or mediaRelation.media.titlePosition is defined %}
+                            </div>
+                        {% endif %}
+
+                        <div class="row">
+                            {% if mediaRelation.downloadable is defined %}
+                                <div class="col-md-6">{{ form_row(mediaRelation.downloadable) }}</div>
+                            {% endif %}
+                            {% if mediaRelation.popup is defined %}
+                                <div class="col-md-6">{{ form_row(mediaRelation.popup) }}</div>
+                            {% endif %}
+                            {% if mediaRelation.main is defined %}
+                                <div class="col-md-6">{{ form_row(mediaRelation.main) }}</div>
+                            {% endif %}
+                            {% if mediaRelation.header is defined %}
+                                <div class="col-md-6">{{ form_row(mediaRelation.header) }}</div>
+                            {% endif %}
+                            {% if mediaRelation.media.notContractual is defined %}
+                                <div class="col-md-6">{{ form_row(mediaRelation.media.notContractual) }}</div>
+                            {% endif %}
+                            {% if mediaRelation.media.hideHover is defined %}
+                                <div class="col-md-6">{{ form_row(mediaRelation.media.hideHover) }}</div>
+                            {% endif %}
+                            {% if mediaRelation.radius is defined %}
+                                <div class="col-md-6">{{ form_row(mediaRelation.radius) }}</div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                {% endif %}
+            {% endif %}
+
+            {% if mediaRelation.title is defined %}
+                {{ form_row(mediaRelation.title) }}
+            {% endif %}
+
+            {% if mediaRelation.body is defined %}
+                {{ form_row(mediaRelation.body) }}
+            {% endif %}
+
+        {% if allLocales|length > 1 %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if (allLocales|length == 1 and locale != configuration.locale) or (locale in localesDisplay) %}
+            </div>
+        {% endif %}
+
+        {% set localesDisplay = localesDisplay|merge([locale]) %}
+
+    {% endfor %}
+
+{% if allLocales|length > 1 %}
+    </div>
+{% endif %}
+
+{% if allLocales|length > 1 %}
+    </div>
+{% endif %}

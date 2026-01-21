@@ -1,0 +1,510 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-09-13, 10:14 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    LIBRARY :
+    ===========================
+
+    1 ) Core
+    2 ) Upload Modal
+    3 ) Modal Edition
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Core
+-----------------------------------*/
+
+#media-library-page {
+    .file-data-wrap {
+        border: 1px solid $gray-200;
+        border-radius: $card-border-radius;
+    }
+}
+
+#medias-results {
+
+    .file {
+
+        width: 105px;
+        height: 105px;
+        padding: 10px;
+        position: relative;
+
+        .file-data-wrap {
+
+            position: relative;
+
+            .file-data {
+                cursor: pointer;
+                padding: 0;
+                transition: all .1s;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+
+            .spinner-parent {
+
+                background-color: rgba(0, 0, 0, .05);
+                position: relative;
+                display: inline-block;
+                border-radius: $card-border-radius;
+                text-align: center;
+                width: 100%;
+
+                .wrap {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 100%;
+                }
+
+                .img-loader-wrap {
+
+                    display: flex;
+                    justify-content: center;
+
+                    .spinner-border {
+                        height: 25px;
+                        width: 25px;
+                        border-width: 2px;
+                    }
+                }
+
+                img {
+                    border-radius: $card-border-radius;
+                    position: relative;
+                    height: 76px;
+                    width: 76px;
+                    object-fit: cover;
+                    object-position: 50% 50%;
+                }
+            }
+
+            .loader-media, .check-media {
+
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.6);
+                border-radius: $card-border-radius;
+
+                svg {
+                    fill: rgba(255, 255, 255, .7);
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    transform: translateY(-50%);
+                    width: 100%;
+                    font-size: 20px;
+                }
+            }
+
+            .loader-media {
+                svg {
+                    margin-top: -9px;
+                }
+            }
+        }
+
+        &.svg-extension .file-data-wrap .spinner-parent img {
+            height: 50px;
+            width: initial;
+            max-width: 100%;
+        }
+    }
+}
+
+/*-----------------------------------
+   2 ) Upload Modal
+-----------------------------------*/
+
+.open-modal-medias-wrap {
+
+    display: flex;
+
+    &.multiple {
+
+        border: 2px dashed rgba(0, 0, 0, .2) !important;
+        background-color: $white;
+        cursor: pointer;
+
+        &:hover {
+
+            background-color: $dark;
+
+            a {
+                background-color: $white;
+                color: $dark;
+            }
+        }
+
+        .open-modal-medias-container {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        @include mediaQuery(min-md) {
+            .open-modal-medias {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                bottom: 0;
+            }
+        }
+
+        svg {
+            margin-bottom: 15px;
+        }
+
+        .optimize-media-btn {
+            svg {
+                fill: $white;
+            }
+        }
+
+        &:hover {
+            .optimize-media-btn {
+                svg {
+                    fill: $dark !important;
+                }
+            }
+        }
+
+        a {
+
+            position: absolute;
+            top: 0;
+            right: -6px;
+
+            svg {
+                margin-bottom: 0 !important;
+                font-size: 1.5rem;
+            }
+        }
+
+        &:not(.have-video-btn) {
+
+            height: 100%;
+
+            .open-modal-medias-container {
+                height: 100%;
+            }
+
+            svg.photo-video {
+                margin-top: 30%;
+            }
+        }
+    }
+}
+
+#add-medias-col {
+
+    &.have-video-btn {
+        #add-video-btn {
+            height: 40px;
+        }
+    }
+
+    .open-modal-medias-wrap.have-video-btn {
+
+        height: calc(100% - 3.5rem);
+
+        svg.photo-video {
+            margin-top: 20%;
+        }
+    }
+}
+
+span.open-modal-medias-wrap.single {
+
+    padding: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .open-modal-medias {
+        width: calc(100% - 45px);
+        cursor: pointer;
+    }
+
+    .optimize-media-btn {
+
+        float: right;
+        color: $white;
+        width: 30px;
+        height: 30px;
+        border-color: $white;
+        border-radius: 0.25rem;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+
+        svg {
+            fill: $white;
+            height: 16px;
+        }
+
+        &:hover {
+
+            background-color: $white;
+            border-radius: 0.25rem;
+
+            svg {
+                fill: $dark !important;
+            }
+        }
+    }
+}
+
+#search-medias-form {
+    .input-group-text {
+        height: 100%;
+        background-color: #f2f6f9;
+    }
+}
+
+#medias-library-modal {
+
+    #search-medias-form {
+
+        min-width: 300px;
+        max-width: 40%;
+        margin-bottom: 15px;
+
+        .input-group,
+        .form-control {
+            height: 45px;
+        }
+    }
+
+    .file-data-wrap .wrap {
+        .btn {
+            display: none !important;
+        }
+    }
+
+    .btn-edit {
+        display: none;
+    }
+
+    #folders-col {
+        margin-top: -1.5rem;
+    }
+
+    #folders-col, #medias-results {
+        padding-top: 1.5rem;
+        max-height: 50vh;
+        overflow: auto;
+    }
+
+    #medias-results {
+        padding-bottom: 1.5rem;
+    }
+
+    #medias-results {
+        border-radius: var(--bs-border-radius);
+        background-color: $gray-300 !important;
+    }
+
+    form[role="search"] .input-group-prepend .input-group-text {
+        background-color: $body-bg;
+    }
+
+    #root-btn-wrap {
+
+        span {
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            line-height: 36px;
+            border: 0;
+            border-radius: $card-border-radius 0 0 $card-border-radius;
+            width: 50px;
+            background-color: transparent !important;
+            color: $gray-800 !important;
+            z-index: 99;
+
+            &:hover {
+
+                background-color: transparent !important;
+                color: $gray-800 !important;
+
+                svg {
+                    fill: $gray-800 !important;
+                }
+            }
+
+            &:after {
+                content: "";
+                position: absolute;
+                right: 0;
+                top: 13px;
+                bottom: 0;
+                width: 1px;
+                height: 20px;
+                background-color: #343a40;
+            }
+        }
+    }
+
+    #root-btn {
+        border-radius: var(--bs-border-radius);
+        padding: 12px 15px;
+        background-color: #eee !important;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+        border: 0;
+    }
+
+    .dd3-content {
+        background-color: #eee !important;
+        border: 0;
+        padding: 5px 15px 5px 15px;
+    }
+
+    .dd3-handle {
+        display: none;
+    }
+
+    .nestable-list-container {
+
+        > .dd-list > .dd-item {
+            background-color: transparent;
+        }
+
+        .delete-pack-control {
+            display: none !important;
+        }
+    }
+
+    #medias-results {
+
+        .ribbon-vwrapper {
+            margin-top: 10px;
+        }
+
+        .card-subtitle {
+            display: none;
+        }
+    }
+
+    #search-results {
+        margin-top: -3rem;
+    }
+
+    .file {
+
+        .btn {
+            display: none !important;
+        }
+
+        .file-data {
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0) !important;
+            transition: all .1s !important;
+            padding: 3px !important;
+        }
+
+        &.active {
+
+            .file-data {
+
+                box-shadow: 0 0 10px 0 rgba(0, 0, 0, .8) !important;
+                transition: all .1s;
+                border-radius: $card-border-radius;
+                background: white;
+
+                .check-media {
+
+                    display: inline-block !important;
+
+                    i {
+                        transform: initial !important;
+                    }
+                }
+            }
+        }
+    }
+
+    #save-file-library {
+        padding: 10px 45px;
+        font-size: 16px;
+    }
+
+    .refer-copy-wrap {
+
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        opacity: 0;
+        transition: all .3s ease-in-out;
+        border-radius: $card-border-radius;
+        background-color: transparentize($info, .5);
+
+        .copy-link {
+            border-radius: $card-border-radius;
+        }
+
+        &:hover {
+            opacity: 1;
+            transition: all .3s ease-in-out;
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Modal Edition
+-----------------------------------*/
+
+#media-edition-modal {
+
+    .modal-content.border .modal-body .nav-link.active {
+        box-shadow: none !important;
+        background-color: $info-darken-dark !important;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    .tinypng-btn {
+
+        position: absolute;
+        z-index: 99;
+        bottom: 11px;
+        right: 17px;
+        transition: all .3s ease-in-out;
+
+        &:hover {
+
+            background-color: $white;
+            transition: all .3s ease-in-out;
+
+            i, svg {
+                color: $dark;
+                fill: $dark;
+            }
+        }
+
+        i, svg {
+            font-size: 1.5rem;
+        }
+    }
+}

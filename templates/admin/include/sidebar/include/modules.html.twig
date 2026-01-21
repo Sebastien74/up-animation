@@ -1,0 +1,51 @@
+{% trans_default_domain 'admin' %}
+
+{% set managementModules = [
+    'analytics-customer',
+    'analytics-internal',
+    'css',
+    'delete',
+    'edit',
+    'gdpr',
+    'google-analytics',
+    'information',
+    'medias',
+    'pages',
+    'secure-page',
+    'seo',
+    'translation',
+    'navigation',
+    'user'
+] %}
+{% set displayModules = false %}
+{% for moduleCode, status in website.configuration.modules %}
+    {% if moduleCode not in managementModules and moduleCode|moduleActive(configuration) %}
+        {% set displayModules = true %}
+    {% endif %}
+{% endfor %}
+
+{% if displayModules %}
+    <li>
+        <a class="as-arrow bigger{% if moduleActive %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+            {{ 'fal bookmark'|icon(null, 15, 'white show-menu') }}<span class="hide-menu">{{ "Modules"|trans }}</span>
+        </a>
+        <ul aria-expanded="false" class="collapse{% if moduleActive %} in{% endif %}">
+            {% include 'admin/include/sidebar/include/modules/catalog.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/agenda.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/portfolio.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/timeline.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/newscast.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/contact.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/slider.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/map.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/form.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/gallery.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/newsletter.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/table.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/tab.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/search.html.twig' %}
+			{% include 'admin/include/sidebar/include/modules/faq.html.twig' %}
+            {% include 'admin/include/sidebar/include/modules/recruitment.html.twig' %}
+		</ul>
+    </li>
+{% endif %}

@@ -1,0 +1,93 @@
+{% set generateThumbs = generateThumbs is defined and generateThumbs %}
+{% set onlyHx = onlyHx is defined and onlyHx %}
+{% set activeIsGeneratedLoader = false %}
+{% set options = options|merge({inAdmin: inAdmin}) %}
+
+{% set mediaQueries = {
+    0: {
+        media: '(max-width: 575px)',
+        thumbSizes: [618],
+    },
+    1: {
+        media: '(min-width: 576px) and (max-width: 991px)',
+        thumbSizes: [991],
+    },
+    2: {
+        media: '(min-width: 992px)',
+        thumbSizes: [1920],
+    }
+} %}
+
+{% set args = {} %}
+{% if onlyHx or (generateThumbs or onlyLazy) %}
+    {% if entity %}
+        {% set args = {classname: getClass(entity)|url_encode, id: entity.id, loaderFilename: loaderFilename|url_encode}|merge(options) %}
+        {% for key, value in args %}
+            {% if isObject(value) %}
+                {% set args = args|unset(key) %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endif %}
+
+{% if onlyHx %}
+    {{ render_hinclude(controller('App\\Controller\\Front\\FrontController::mediaLoader', args), {
+        default: '',
+        attributes: {evaljs: 'true', class: 'hx-include-media-loader only-hx'}
+    })|raw }}
+{% elseif generateThumbs or display %}
+    {% set extension = extension is defined ? extension : '' %}
+    <div class="img-loader-wrap position-relative{% if radiusClass %} {{ radiusClass }}{% endif %} {% if not display %}d-none{% elseif not 'svg' in extension %}d-inline-flex flex-column{% endif %}{% if generateThumbs or (onlyLazy and activeIsGeneratedLoader) %} generating{% endif %}">
+        {% if generateThumbs or onlyLazy %}
+            {% set spinnerColor = spinnerColor is defined ? spinnerColor : 'primary' %}
+            {% set class = class is defined ? class : '' %}
+            {% if generateThumbs %}
+                <div class="img-loader overflow-hidden d-flex align-items-center justify-content-center position-relative{% if not display %} d-none{% endif %}{% if radiusClass %} {{ radiusClass }}{% endif %}" style="max-width: {{ width }}px; max-height: {{ height }}px;">
+                    {% if inAdmin and 'preview' not in app.request.uri %}
+                        <div class="spinner-wrap position-absolute">
+                            <div class="spinner-border text-{{ spinnerColor }}" role="status"></div>
+                        </div>
+                    {% endif %}
+                    <div class="inner position-relative overflow-hidden{% if radius %} {{ radiusClass }}{% endif %}" style="background-image: url({{ absolute_url(asset(loaderSrc)) }});">
+                        <img src="{{ loaderSvgSrc }}" alt="SVG Loader" class="img-fluid force-size{% if class %} {{ class }}{% endif %}" width="{{ width }}">
+                    </div>
+                </div>
+            {% endif %}
+            {% if generateThumbs or (onlyLazy and activeIsGeneratedLoader) %}
+                {% if not generateThumbs %}
+                    {% set class = class is defined ? class : '' %}
+                    <picture class="d-inline-block picture-loader position-relative picture-{{ extension }}">
+                        {% for key, config in mediaQueries %}
+                            {% for size in config.thumbSizes %}
+                                {% set source = lazyFiles[size] is defined and lazyFiles[size] ? lazyFiles[size] : null %}
+                                {% set sizes = thumbs[size].cropInfos is defined ? thumbs[size].cropInfos : null %}
+                                {% set width = sizes.width is defined ? sizes.width : size %}
+                                {% set height = sizes.height is defined ? sizes.height : 'auto' %}
+                                {% if source %}
+                                    <source data-srcset="{{ source.src }}"
+                                            media="{{ config.media }}"
+                                            data-size="{{ config.thumbSizes|first }}"
+                                            width="{{ width }}" height="{{ height }}"
+                                            type="image/{{ source.extension }}">
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        <img src="{{ loaderSvgSrc }}" class="img-fluid img-blur lazy-load img-{{ extension }} {{ class }}"
+                             alt="{{ alt }}" title="{{ title }}" width="{{ width }}" height="{{ height }}">
+                    </picture>
+                {% endif %}
+                {% if entity %}
+                    {% set class = generateThumbs ? ' generating' : '' %}
+                    {{ render_hinclude(controller('App\\Controller\\Front\\FrontController::mediaLoader', args), {
+                        default: '',
+                        attributes: {evaljs: 'true', class: 'hx-include-media-loader '~ class}
+                    })|raw }}
+                {% endif %}
+            {% elseif display %}
+                {{ media|thumb(thumbConfiguration, options) }}
+            {% endif %}
+        {% elseif display %}
+            {{ media|thumb(thumbConfiguration, options) }}
+        {% endif %}
+    </div>
+{% endif %}

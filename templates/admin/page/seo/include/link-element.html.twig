@@ -1,0 +1,26 @@
+{% trans_default_domain 'admin' %}
+
+{% set entity = config.entity %}
+{% set children = tree[entity.id] is defined and tree['main'] is defined ? tree[entity.id] : [] %}
+{% set url = config.url %}
+
+{% if not url.archived %}
+    <li class="item{% if url == currentUrl %} active{% endif %}">
+        <span class="item-link text-info">
+            <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: entitylocale, url: url.id}) }}"
+               class="link-item{% if url == currentUrl %} active bold{% endif %}" data-toggle="preloader">
+                {{ entity.adminName|truncate(60, false) }}
+            </a>
+            {% if children %}
+                {{ 'fal caret-down'|icon(null, 14, 'info cursor ms-3 caret') }}
+            {% endif %}
+        </span>
+        {% if children %}
+            <ul class="nested">
+                {% for child in children %}
+                    {% include 'admin/page/seo/include/link-element.html.twig' with {config: child, tree: tree, currentUrl: currentUrl, entitylocale: entitylocale} only %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endif %}

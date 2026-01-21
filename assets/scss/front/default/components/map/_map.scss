@@ -1,0 +1,212 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-11-11, 10:38 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT MAP COMPONENT :
+    ====================
+
+    1 ) Imports
+    2 ) Core
+        a - Main
+        b - Popup
+        c - Filters
+        d - Points list
+
+------------------------------------------------------------------ */
+
+/*! purgecss start ignore */
+
+/*-----------------------------------
+   1 ) Imports
+-----------------------------------*/
+
+@import "../../variables";
+@import 'leaflet';
+@import 'MarkerCluster';
+@import 'MarkerCluster.Default';
+
+/*-----------------------------------
+   2 ) Core
+-----------------------------------*/
+
+.map-container {
+
+    /*-- a - Main --*/
+
+    .map-box {
+
+        height: 450px;
+        position: relative;
+        z-index: 1;
+
+        &.focused-el {
+            border: 5px solid $focus-color !important;
+            outline: none !important;
+        }
+    }
+
+    .loader {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: transparentize($gray-600, .5);
+        z-index: 9;
+    }
+
+    /*-- b - Popup --*/
+
+    .leaflet-container a.leaflet-popup-close-button {
+
+        top: 10px;
+        right: 10px;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 1px solid $primary;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        font-size: 17px;
+        font-weight: 300;
+        color: transparent;
+        background-color: $primary;
+        transition: all .3s ease-in-out;
+
+        &:after {
+            font-family: 'icomoon', serif;
+            content: "\e936";
+            color: $white;
+            transition: all .3s ease-in-out;
+        }
+
+        &:hover {
+
+            color: transparent;
+            background-color: $white;
+            transition: all .3s ease-in-out;
+
+            &:after {
+                color: $primary;
+                transition: all .3s ease-in-out;
+            }
+        }
+    }
+
+    .leaflet-popup-content-wrapper {
+        border-radius: 10px;
+        padding: 0;
+    }
+
+    .leaflet-popup-content {
+        margin: 0;
+        min-width: 330px !important;
+    }
+
+    .place-card {
+
+        font-family: $font-primary;
+        max-width: 350px;
+
+        img {
+            max-height: 250px;
+            width: 100%;
+            object-fit: cover;
+            object-position: 50% 50%;
+        }
+
+        .card-body .name {
+            font-size: 1rem;
+        }
+
+        .card-body *:not(.name) {
+            font-size: 13px;
+        }
+
+        .card-footer i {
+            font-size: 30px;
+        }
+
+        .btn {
+
+            padding: .7rem 1.5rem 0.6rem 1.5rem;
+
+            i {
+                font-size: 10px;
+            }
+        }
+
+        .phone-link {
+
+            color: $primary;
+            transition: all .3s ease-in-out;
+
+            &:hover {
+                color: $info;
+                transition: all .3s ease-in-out;
+            }
+        }
+    }
+
+    /*-- c - Filters --*/
+
+    .map-filter-box {
+        .map-box {
+            height: 600px;
+            box-shadow: 0 0 35px 0 rgba(0, 0, 0, 0.15);
+        }
+    }
+
+    .filters-container {
+
+        ul {
+
+            li.marker-select {
+
+                padding: 10px 15px;
+                position: relative;
+                opacity: .5;
+
+                .category-name {
+                    line-height: 1;
+                }
+
+                &.active {
+                    opacity: 1;
+                }
+
+                span:first-child {
+
+                    display: inline-block;
+                    width: 60px;
+                    text-align: center;
+
+                    img {
+                        max-height: 30px;
+                        width: initial !important;
+                    }
+                }
+            }
+        }
+    }
+
+    /*-- d - Points list --*/
+
+    .associated-points-list {
+
+        .map-point-filter {
+
+            opacity: .5;
+
+            &.active {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+/*! purgecss end ignore */

@@ -1,0 +1,53 @@
+{% trans_default_domain 'front_default' %}
+
+{% if not form.isRendered() %}
+    <div class="content">
+        {{ form_start(form, {
+            attr: {
+                id: "newsletter-form-"~campaign.id,
+                class: campaign.recaptcha ? 'security newsletter-form' : 'newsletter-form',
+                action: path('front_newsletter_view', {filter: campaign.slug, website: website.id}),
+                novalidate: "novalidate",
+                'data-modal': "#"~modalId
+            }}) }}
+            {% include 'front/'~websiteTemplate~'/include/recaptcha-fields.html.twig' with {entity: campaign} %}
+            <div class="container">
+                <div class="row">
+                    <label class="col-lg-4 col-xl-3 pt-0 pb-2 pb-lg-0 my-auto col-form-label text-center text-md-center text-lg-start text-uppercase form-control-label required" for="front_newsletter_email">
+                        <span class="label-name text-white">{{ "S'inscrire à la newsletter"|trans }}</span>
+                    </label>
+                    <div class="refer-group col-lg-8 col-xl-9">
+                        <div id="newsletter-fields" class="row">
+                            <div class="col-md-8 p-md-0">{{ form_widget(form.email) }}</div>
+                            <div class="btn-container col-md-4 mt-3 mt-md-0 ps-md-0">
+                                <button aria-label="{{ "Je m'inscris"|trans|raw }}" class="newsletter-submit newsletter-track w-100 btn btn-white ps-2 pe-2">
+                                    {{ 'fas sign-in-alt'|icon(17, 17) }}
+                                    <span class="spinner-border d-none" role="status"></span>
+                                    <span class="ms-2">{{ "Je m'inscris"|trans }}</span>
+                                </button>
+                            </div>
+                        </div>
+                        {{ form_errors(form.email) }}
+                        {% for type, flashes in app.session.flashbag.all %}
+                            {% for flash in flashes %}
+                                <span class="{% if 'error' in type %}invalid{% else %}valid{% endif %}-feedback d-block">
+                                    <span class="mb-0 d-block">
+                                        <span class="form-{% if 'error' in type %}error{% else %}success{% endif %}-message">{{ flash|raw }}</span>
+                                    </span>
+                                </span>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <div class="col-12">
+                        {% if intro|striptags|length > 0 %}
+                            <p class="introduction text-white m-0 mt-4 text-center">{{ intro|unescape|raw|nl2br }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% if campaign.recaptcha %}
+                <div class="form-data" data-id="{{ campaign.securityKey }}" data-website="{{ websiteId() }}"></div>
+            {% endif %}
+        {{ form_end(form) }}
+    </div>
+{% endif %}

@@ -1,0 +1,128 @@
+company_name: 'SFCMS 7'
+media_path_duplication: 'default'
+locale: 'fr'
+locales_others: []
+fonts: ['front-default']
+
+domains:
+    fr:
+        cms7.local: true
+        cms7.felix-dev-8-2.fr: false
+        www.cms7.felix-dev-8-2.fr: false
+
+apis:
+    fr:
+        google:
+            ua: null
+            tag_manager: null
+
+colors:
+    white: "#ffffff"
+    primary: "#540b01"
+    secondary: "#68312c"
+    success: "#5d7808"
+    info: "#0081ac"
+    warning: "#f0ad4e"
+    danger: "#a82835"
+    danger-light: "#ee9da5"
+    light: "#dee2e6"
+    dark: "#212529"
+    link: "#540b01"
+
+active_colors: [
+    'white',
+    'primary',
+    'secondary',
+    'light',
+    'alert-success',
+    'alert-danger',
+    'alert-warning',
+    'alert-info',
+    'mask-icon',
+    'msapplication-TileColor',
+    'theme-color',
+    'webmanifest-theme',
+    'webmanifest-background',
+    'browserconfig' ]
+
+favicons:
+    mask-icon: "#540b01"
+    msapplication-TileColor: "#540b01"
+    theme-color: "#ffffff"
+    webmanifest-theme: "#ffffff"
+    webmanifest-background: "#ffffff"
+    browserconfig: "#540b01"
+
+information:
+    fr:
+        schedules: ""
+        alert: "<ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li></ul>"
+
+social_networks:
+    fr:
+        twitter: "https://twitter.com"
+        facebook: "https://www.facebook.com"
+        google: null
+        youtube: "https://www.youtube.com"
+        instagram: "https://www.instagram.com"
+        linkedin: null
+        pinterest: null
+        tripadvisor: null
+
+phones:
+    fr:
+        0:
+            number: '+33(0)4 50 00 00 00'
+            tag_number: '+33450000000'
+            type: 'office'
+            zones: ['contact', 'footer', 'email', 'header']
+
+emails:
+    fr:
+        0:
+            email: "dev@agence-felix.fr"
+            zones: ['contact', 'footer']
+        1: # [ !!!! REQUIRED !!!! ]
+            slug: "support"
+            email: "support@agence-felix.fr"
+            zones: []
+
+        2: # [ !!!! REQUIRED !!!! ]
+            slug: "no-reply"
+            email: "noreply@agence-felix.fr"
+            zones: []
+
+addresses:
+    fr:
+        0:
+            name: 'Agence Félix'
+            latitude: '45.899247'
+            longitude: '6.129384'
+            address: '4BIS Avenue du Pont de Tasset'
+            zipcode: '74960'
+            city: 'Cran-Gevrier / Annecy'
+            region: 'Rhône-Alpes'
+            department: 'Haute-Savoie'
+            country: 'FR'
+            zones: ['contact', 'footer', 'email', 'maintenance']
+            schedule: null
+            googleMapUrl: 'https://maps.app.goo.gl/9X2M5H3VHtUi4wNh9'
+            googleMapDirectionUrl: null
+
+legals:
+    fr:
+        companyName: null
+        companyAddress: null
+        companyRepresentativeName: null
+        capital: null
+        vatNumber: null
+        siretNumber: null
+        managerName: null
+        managerEmail: null
+        webmasterName: Agence Félix Création
+        webmasterEmail: support@agence-felix.fr
+        hostName: null
+        hostAddress: null
+        protectionOfficerName: null
+        protectionOfficerEmail: null
+        protectionOfficerAddress: null

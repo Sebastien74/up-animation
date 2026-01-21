@@ -1,0 +1,96 @@
+{% trans_default_domain 'front_default' %}
+
+{% set groupByCatalog = true %}
+{% set catalogsGroups = [] %}
+{% set inMainCatalog = [] %}
+{% set products = trees['catalogproduct'] is defined ? trees['catalogproduct'] : [] %}
+{% for groupName, url in products %}
+    {% set entity = url.entity %}
+    {% set entityCatalog = entity.entity.catalog is defined ? entity.entity.catalog : null %}
+    {% set catalogIntl = entityCatalog|intl %}
+    {% set catalogTitle = catalogIntl.title is defined ? catalogIntl.title : (entityCatalog.adminName is defined ? entityCatalog.adminName : null) %}
+    {% set slugCatalog = entityCatalog.slug is defined and entityCatalog.slug not in inMainCatalog ? entityCatalog.slug : 'catalogproduct' %}
+    {% set slugCatalog = catalogTitle and slugCatalog not in inMainCatalog ? catalogTitle : slugCatalog %}
+    {% if not attribute(catalogsGroups, slugCatalog) is defined %}
+        {% set catalogsGroups = catalogsGroups|merge({(slugCatalog): [url]}) %}
+    {% else %}
+        {% set data = attribute(catalogsGroups, slugCatalog) %}
+        {% set data = data|merge([url]) %}
+        {% set catalogsGroups = catalogsGroups|merge({(slugCatalog): data}) %}
+    {% endif %}
+{% endfor %}
+
+{% set categories = {
+    'page' : {title: "Pages"|trans, 'disableTitle' : false},
+    'newscast' : {title: "Actualités"|trans, 'disableTitle' : false},
+    'catalogproduct' : {title: "Produits"|trans, 'disableTitle' : groupByCatalog, entities: catalogsGroups},
+    'recruitmentjob' : {title: "Nos offres d'emplois"|trans, 'disableTitle' : false, entities: catalogsGroups},
+} %}
+
+{% import _self as macro %}
+
+{% macro element(url, websiteTemplate, interfaceName, trees) %}
+    {% set title = url.entity.intlCard.title is defined and url.entity.intlCard.title ? url.entity.intlCard.title : (url.title is defined and url.title ? url.title : (url.isIndex is defined and url.isIndex ? 'Accueil'|trans|raw : null)) %}
+    {% if title and not url.active %}
+        {% set children = trees[interfaceName][url.entityId] is defined and trees[interfaceName][url.entityId] is not empty ? trees[interfaceName][url.entityId]
+            : (url.children is defined and url.children is not empty ? url.children : []) %}
+        {% set display = not url.isInfill or (url.isInfill and children is not empty) %}
+        {% if display %}
+            <li>
+                {% if url.url and not url.isInfill %}
+                    <a href="{{ url.url }}" title="{{ title|striptags|raw }}" class="mb-2 d-inline-block" data-toggle="preloader">{{ title|striptags|raw }}</a>
+                {% else %}
+                    <div title="{{ title|striptags|raw }}" class="mb-2 d-inline-block">{{ title|striptags|raw }}</div>
+                {% endif %}
+                {% if children is not empty %}
+                    <ul class="ps-3">
+                        {% for child in children %}
+                            {{ macro.element(child, websiteTemplate, interfaceName, trees) }}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endif %}
+    {% else %}
+{#        {{ dump(url) }}#}
+    {% endif %}
+{% endmacro %}
+
+<div class="site-map-container position-relative">
+    {% for interfaceName, group in trees %}
+        {% set title = categories[interfaceName].title is defined ? categories[interfaceName].title : interfaceName %}
+        {% set disableTitle = categories[interfaceName].disableTitle is defined ? categories[interfaceName].disableTitle : false %}
+        {% if title and not disableTitle %}
+            <h2 class="title mb-3{%if not loop.first %} mt-4{%endif%}">{{ title }}</h2>
+        {% endif %}
+        <ul class="ps-3">
+            {% set groupsBy = [] %}
+            {% for groupName, urls in group %}
+                {% if interfaceName == 'catalogproduct' and groupByCatalog %}
+                    {% set groupsBy = catalogsGroups %}
+                {% elseif groupName != 'main' and urls.entity is defined and urls.url is defined %}
+                    {% set title = urls.entity.intlCard.title is defined and urls.entity.intlCard.title ? urls.entity.intlCard.title : (urls.title is defined ? urls.title : null) %}
+                    {% if title %}
+                        <li><a href="{{ urls.url }}" class="mb-2 d-inline-block" title="{{ title|striptags|raw }}" data-toggle="preloader">{{ title|striptags|raw }}</a></li>
+                    {% endif %}
+                {% elseif groupName == 'main' %}
+                    {% set entities = group.main is defined ? group.main : [] %}
+                    {% for entity in entities %}
+                        {{ macro.element(entity, websiteTemplate, interfaceName, trees) }}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% if groupsBy|length > 0 %}
+            {% for groupSlug, urlsGroup in groupsBy %}
+                {% set title = categories[groupSlug].title is defined ? categories[groupSlug].title : groupSlug %}
+                <h2 class="title mb-3 mt-4">{{ title }}</h2>
+                <ul class="ps-3 mb-0">
+                    {% for url in urlsGroup %}
+                        {{ macro.element(url, websiteTemplate, interfaceName, trees) }}
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+</div>

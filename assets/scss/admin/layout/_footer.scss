@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+.footer {
+
+    picture {
+        display: inline-block !important;
+    }
+
+    img {
+        max-height: 25px;
+    }
+
+    @include mediaQuery(max-sm) {
+        background: #eee;
+    }
+}

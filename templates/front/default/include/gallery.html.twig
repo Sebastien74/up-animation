@@ -1,0 +1,51 @@
+{% trans_default_domain 'front_default' %}
+
+{% set medias = medias is defined ? medias : (entity.medias is defined ? entity.medias : {}) %}
+{% set thumbConfiguration = thumbConfiguration is defined ? thumbConfiguration : {} %}
+{% set mediaWidth = not thumbConfiguration and mediaWidth is defined ? mediaWidth : null %}
+{% set mediaHeight = not thumbConfiguration and mediaHeight is defined ? mediaHeight : null %}
+{% set nbrColumn = nbrColumn is defined ? nbrColumn : 3 %}
+{% set colSize = 12 / nbrColumn %}
+{% set popup = entity.popup is defined ? entity.popup : true %}
+{% set slug = slug is defined ? slug : (entity.slug is defined ? entity.slug : 'slug') %}
+{% set imgClass = popup ? 'img-gallery-'~entity.id : null %}
+
+{% if medias|length > 0 %}
+    <div class="masonry-wrap">
+        <div id="gallery-{{ slug~'-'~entity.id }}"
+             class="row position-relative {% if popup %} popup-gallery{% endif %}{% if not isMobile() %} masonry{% endif %}"
+             data-masonry='{"percentPosition": true }' data-component="masonry">
+            {% for media in medias %}
+                <div class="grid-item col-sm-6 col-md-6 col-lg-{{ colSize }} pb-4 text-center">
+                    <div class="media-wrap radius overflow-hidden">
+                        {{ media|file(thumbConfiguration, {
+                            popupGallery: popup and not media.hideHover,
+                            maxWidth: mediaWidth,
+                            maxHeight: mediaHeight,
+                            class: imgClass,
+                            activeLazy: true,
+                            colSize: colSize }) }}
+                    </div>
+                    {% set intlMedia = media.intl %}
+                    {% if intlMedia %}
+                        {% if intlMedia.title or intlMedia.introduction or intlMedia.body %}
+                            <div class="card-body p-0">
+                                {% if intlMedia.title %}
+                                    <h{{ intlMedia.titleForce }} class="title mt-2 mb-0 fw-200 ff-primary d-inline-block text-italic w-100 text-gray-darken}}">
+                                        {{ intlMedia.title|unescape|raw }}
+                                    </h{{ intlMedia.titleForce }}>
+                                {% endif %}
+                                {% if intlMedia.introduction %}
+                                    <p class="card-text introduction text-bold">{{ intlMedia.introduction|raw }}</p>
+                                {% endif %}
+                                {% if intlMedia.body %}
+                                    <div class="card-text body">{{ intlMedia.body|unescape|raw }}</div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

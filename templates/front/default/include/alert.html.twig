@@ -1,0 +1,43 @@
+{% trans_default_domain 'front_default' %}
+
+{% set icons = {
+    success: 'far check-circle',
+    info: 'fas info',
+    warning: 'fas exclamation',
+    danger: 'far exclamation-triangle',
+    error_form: 'far exclamation-triangle',
+    error: 'far exclamation-triangle',
+    undefined: 'fas info',
+} %}
+
+{% set websiteTemplate = websiteTemplate is defined ? websiteTemplate : website().configuration.template %}
+{% set alertClass = alertClass is defined and alertClass ? alertClass : null %}
+{% set fullWith = 'w-100' in alertClass %}
+{% set alignment = alignment is defined and alignment ? alignment : "text-start" %}
+{% set alert = alert is defined and alert ? alert|replace({'alert-': '', 'error_form': 'danger'}) : "info" %}
+{% set alert = alert == "error" ? "danger" : alert %}
+{% set asCustomIcon = customIcon is defined and customIcon %}
+{% set icon = asCustomIcon ? customIcon : (icons[alert] is defined ? icons[alert] : icons['undefined']) %}
+{% set display = display is defined and display ? display : 'alert' %}
+
+{% if 'alert' == display %}
+    <div class="alert alert-{{ alert }} d-flex p-0 {{ alignment }}{% if alertClass %} {{ alertClass }}{% endif %}">
+        <div class="icon d-flex align-items-center justify-content-center position-relative initial">{{ icon|icon(25, 25) }}</div>
+        <div class="message d-inline-flex align-items-center flex-shrink-1 px-4 py-3 initial{% if fullWith %} w-100{% endif %}">
+            {% set message = message is defined and message ? message : "Que se passe-t-il ?"|trans %}
+            <div class="inner">{{ message|unescape|raw }}</div>
+        </div>
+    </div>
+{% elseif 'toast' == display %}
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast toast-alert fade show border-0 bg-{{ alert }}" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header d-flex border-0 no-radius py-3 px-3">
+                <div class="inner d-flex align-items-center initial pe-3">
+                    {{ icon|icon(null, 17, alert~' me-2') }}
+                    {{ message|unescape|raw }}
+                </div>
+                <button type="button" class="btn-close ms-auto initial" data-bs-dismiss="toast" aria-label="{{ 'Fermer'|trans }}"></button>
+            </div>
+        </div>
+    </div>
+{% endif %}

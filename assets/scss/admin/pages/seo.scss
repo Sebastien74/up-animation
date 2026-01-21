@@ -1,0 +1,116 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-09-02, 3:40 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    SEO :
+    ====
+
+    1 ) Variables
+    2 ) Preview
+    3 ) Edition
+    4 ) Archived URLS
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Variables
+-----------------------------------*/
+
+@import '../variables';
+
+/*-----------------------------------
+   2 ) Preview
+-----------------------------------*/
+
+#google-preview {
+
+    .seo-title {
+        color: #1a0dab;
+        font-size: 18px;
+        font-weight: 400;
+        font-family: Arial, sans-serif;
+    }
+
+    .canonical {
+        font-size: 14px;
+        color: #006621;
+        font-style: normal;
+        line-height: 17px;
+        margin-bottom: 5px;
+    }
+
+    .description {
+        color: #545454;
+        font-size: small;
+        line-height: 1.4;
+        font-family: arial,sans-serif;
+    }
+}
+
+#highlight-preview {
+
+    #highlight-metas {
+
+        .language-markup {
+            margin: 0;
+            border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius);
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Edition
+-----------------------------------*/
+
+#seo-filter-categories {
+    #v-pills-tab-tree {
+        a.active, a:hover {
+            font-weight: bold;
+            transition: all .3s;
+        }
+    }
+}
+
+#edition-container {
+
+    .meta-og-description,
+    .meta-description {
+        min-height: 150px;
+    }
+
+    .ribbon-wrapper .ribbon {
+        min-width: 250px;
+        left: -30px;
+        margin-bottom: 0;
+    }
+}
+
+.copy-link {
+    font-size: 11px !important;
+    width: 23px;
+    height: 20px;
+    line-height: 15px;
+    padding: 0;
+    background: #fff;
+    border: 1px solid $white;
+    border-radius: .25rem;
+}
+
+#seo-form-container {
+    .ribbon-wrapper {
+        padding: 30px 15px 15px 15px;
+    }
+}
+
+/*-----------------------------------
+   4 ) Archived URLS
+-----------------------------------*/
+
+.urls-archived-card {
+    .delete-input-index-wrap {
+        top: -1px;
+    }
+}

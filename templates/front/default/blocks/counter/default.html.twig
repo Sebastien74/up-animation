@@ -1,0 +1,42 @@
+{% trans_default_domain 'front_default' %}
+
+{% set haveContent = intl.title or intl.slug or intl.placeholder %}
+
+{% if haveContent %}
+    {% set noMarginChars = ['%'] %}
+    {% set suffixHaveMargin = intl.slug|striptags not in noMarginChars %}
+    {% set style = style ? style~' initial' : 'initial' %}
+    {% set fullWidth = fullWidth is defined ? fullWidth : true %}
+    {% set colorInText = colorInText is defined ? colorInText : false %}
+    <div class="counter-block d-flex justify-content-center text-center{% if fullWidth %} w-100{% endif %}">
+        <div class="mb-4 mb-md-0">
+            {% if icon %}
+                {% include 'front/'~websiteTemplate~'/blocks/icon/default.html.twig' with {
+                    block: block,
+                    class: 'mb-3'
+                } only %}
+            {% endif %}
+            <div class="content d-flex w-100 justify-content-center">
+                {% if intl.placeholder %}
+                    <span class="fw-700 {{ style }}{% if intl.title %} me-2{% endif %}">{{ intl.placeholder|raw }}</span>
+                {% endif %}
+                {% set count = intl.title|striptags|length > 0 ? intl.title : false %}
+                {% if count %}
+                    <span id="counter-block-{{ block.id }}"
+                          class="counter-animation fw-700 {{ style }}"
+                          data-component="counter"
+                          data-counter-start="0"
+                          data-counter-end="{{ count }}"
+                          data-counter-time="2000"
+                          data-counter-delay="80"><span class="value-text-noscript {{ style }}">0</span></span>
+                {% endif %}
+                {% if intl.slug %}
+                    <span class="fw-700 {{ style }}{% if suffixHaveMargin and intl.title %} ms-2{% endif %}">{{ intl.slug|raw }}</span>
+                {% endif %}
+            </div>
+            {% if intl.body %}
+                <div class="body{% if colorInText %} {{ style }}{% endif %}">{{ intl.body|replace({'<p>': '<p class="initial-color fw-300">'})|raw }}</div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

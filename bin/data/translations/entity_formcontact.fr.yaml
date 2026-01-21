@@ -1,0 +1,7 @@
+add: 'Ajouter un contact'
+contactValues: Message
+createdAt: 'Envoyé le'
+email: E-mail
+phone: Téléphone
+plural: Contacts
+singular: Contact

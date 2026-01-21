@@ -1,0 +1,6 @@
+add: 'Ajouter un contact'
+contactValues: Message
+createdAt: 'Envoyé le'
+email: E-mail
+plural: Contacts
+singular: 'Contact (formulaire à étapes)'

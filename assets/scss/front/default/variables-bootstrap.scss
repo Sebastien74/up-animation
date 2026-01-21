@@ -1,0 +1,376 @@
+/* ------------------------------------------------------------------------------------------
+
+    Module : Bootstrap variables
+    Copyright : 2024
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    1 ) Core
+    2 ) Variables
+
+------------------------------------------------------------------------------------------ */
+
+$enable-medias-queries: false !default;
+
+/** Color system */
+
+$contrasts: (
+    100: 80%,
+    200: 60%,
+    300: 40%,
+    400: 20%,
+    500: 100%,
+    600: 20%,
+    700: 40%,
+    800: 60%,
+    900: 80%
+);
+
+$opacities: (
+    0: 1,
+    10: .90,
+    25: .75,
+    50: .5,
+    75: .25,
+    100: 0,
+);
+
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+$blue: #0d6efd !default;
+$red: #dc3545 !default;
+$yellow: #ffc107 !default;
+$green: #198754 !default;
+$cyan: #0dcaf0 !default;
+
+$primary: $blue !default;
+$secondary: $gray-600 !default;
+$success: $green !default;
+$info: $cyan !default;
+$warning: $yellow !default;
+$danger: $red !default;
+$light: $gray-100 !default;
+$dark: $gray-900 !default;
+
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark
+) !default;
+
+$min-contrast-ratio: 4.5 !default;
+$color-contrast-dark: $black !default;
+$color-contrast-light: $white !default;
+$body-tertiary-bg: $gray-100 !default;
+$body-emphasis-color-dark: $white !default;
+
+/** Theme */
+
+$prefix: bs-;
+
+$enable-smooth-scroll: true !default;
+$enable-dark-mode: true !default;
+$enable-important-utilities: true !default;
+$link-shade-percentage: 20% !default;
+
+$orders-limit: 12 !default;
+
+$font-size-root: null !default;
+$body-font-weight: 400 !default;
+$body-line-height: 1.5 !default;
+
+$title-font-weight: 700 !default;
+$title-line-height: 1.2 !default;
+$title-margin-bottom: 1.5rem !default;
+$enable-titles-font-size: false !default;
+
+$border-width: 1px !default;
+$border-translucent: rgba(255, 255, 255, 0.15) !default;
+$border-radius: 0.25rem !default;
+
+$box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !default;
+
+$display-font-sizes: (
+    1: 5rem,
+    2: 4.5rem,
+    3: 4rem,
+    4: 3.5rem,
+    5: 3rem,
+    6: 2.5rem
+) !default;
+
+/** Colors */
+
+$enable-opacity: true !default;
+$enable-opacity-color: false !default;
+$enable-body-color: false !default;
+$enable-lighten-color: false !default;
+$enable-emphasis-color: false !default;
+$enable-emphasis-color: false !default;
+$enable-darken-color: false !default;
+$enable-link-color: false !default;
+$enable-focus-ring-color: false !default;
+
+/** Backgrounds */
+
+$enable-opacity-bg: false !default;
+$enable-gradient-bg: false !default;
+$enable-text-bg: false !default;
+$enable-body-bg: false !default;
+
+/** Display */
+
+$enable-display-number: false !default;
+$enable-fixed-top: true !default;
+$enable-fixed-bottom: false !default;
+$enable-sticky-top: true !default;
+$enable-sticky-bottom: false !default;
+$enable-stack: false !default;
+$enable-visually: true !default;
+$enable-stretched-link: false !default;
+$enable-text-truncate: false !default;
+$enable-text-vr: false !default;
+
+$enable-align-baseline: false !default;
+$enable-align-top: false !default;
+$enable-align-middle: false !default;
+$enable-align-bottom: false !default;
+$enable-align-text-bottom: false !default;
+$enable-align-text-top: false !default;
+
+$enable-float-start: false !default;
+$enable-float-end: false !default;
+$enable-float-none: false !default;
+
+$enable-object-fit-contain: false !default;
+$enable-object-fit-cover: false !default;
+$enable-object-fit-fill: false !default;
+$enable-object-fit-scale: false !default;
+$enable-object-fit-none: false !default;
+
+$enable-overflow-auto: false !default;
+$enable-overflow-hidden: true !default;
+$enable-overflow-visible: false !default;
+$enable-overflow-scroll: false !default;
+$enable-overflow-x-auto: false !default;
+$enable-overflow-x-hidden: false !default;
+$enable-overflow-x-visible: false !default;
+$enable-overflow-x-scroll: false !default;
+$enable-overflow-y-auto: false !default;
+$enable-overflow-y-hidden: false !default;
+$enable-overflow-y-visible: false !default;
+$enable-overflow-y-scroll: false !default;
+
+$enable-d-inline: false !default;
+$enable-d-inline-block: true !default;
+$enable-d-block: true !default;
+$enable-d-grid: false !default;
+$enable-d-inline-grid: false !default;
+$enable-d-table: false !default;
+$enable-d-table-row: false !default;
+$enable-d-table-cell: false !default;
+$enable-d-flex: true !default;
+$enable-d-inline-flex: true !default;
+$enable-d-none: true !default;
+
+$enable-position-static: false !default;
+$enable-position-relative: true !default;
+$enable-position-absolute: true !default;
+$enable-position-fixed: true !default;
+$enable-position-sticky: true !default;
+
+$enable-top-0: false !default;
+$enable-top-50: false !default;
+$enable-top-100: false !default;
+$enable-bottom-0: false !default;
+$enable-bottom-50: false !default;
+$enable-bottom-100: false !default;
+$enable-start: false !default;
+$enable-start-0: false !default;
+$enable-start-50: false !default;
+$enable-start-100: false !default;
+$enable-end-0: false !default;
+$enable-end-50: false !default;
+$enable-end-100: false !default;
+
+$enable-translate-middle: false !default;
+$enable-translate-middle-x: false !default;
+$enable-translate-middle-y: false !default;
+
+$enable-w-25: false !default;
+$enable-w-50: false !default;
+$enable-w-75: false !default;
+$enable-w-100: true !default;
+$enable-text-w-auto: false !default;
+$enable-mw-100: false !default;
+$enable-vw-100: false !default;
+$enable-min-vw-100: false !default;
+
+$enable-h-25: false !default;
+$enable-h-50: false !default;
+$enable-h-75: false !default;
+$enable-h-100: true !default;
+$enable-h-auto: false !default;
+$enable-mh-100: false !default;
+$enable-vh-100: false !default;
+$enable-min-vh-100: false !default;
+
+$enable-flex-fill: false !default;
+$enable-flex-row: true !default;
+$enable-flex-column: true !default;
+$enable-flex-row-reverse: true !default;
+$enable-flex-column-reverse: false !default;
+$enable-flex-grow-0: true !default;
+$enable-flex-grow-1: true !default;
+$enable-flex-shrink-0: true !default;
+$enable-flex-shrink-1: true !default;
+$enable-flex-wrap: true !default;
+$enable-flex-nowrap: true !default;
+$enable-flex-wrap-reverse: true !default;
+
+$enable-justify-content-start: true !default;
+$enable-justify-content-end: true !default;
+$enable-justify-content-center: true !default;
+$enable-justify-content-between: true !default;
+$enable-justify-content-around: true !default;
+$enable-justify-content-evenly: true !default;
+
+$enable-align-items-start: true !default;
+$enable-align-items-end: true !default;
+$enable-align-items-center: true !default;
+$enable-align-items-baseline: false !default;
+$enable-align-items-stretch: false !default;
+
+$enable-align-content-start: true !default;
+$enable-align-content-end: true !default;
+$enable-align-content-center: true !default;
+$enable-align-content-between: true !default;
+$enable-align-content-around: true !default;
+$enable-align-content-stretch: false !default;
+
+$enable-align-self-auto: false !default;
+$enable-align-self-start: false !default;
+$enable-align-self-end: false !default;
+$enable-align-self-center: false !default;
+$enable-align-self-baseline: false !default;
+$enable-align-self-stretch: false !default;
+
+$enable-lh-1: true !default;
+$enable-lh-sm: false !default;
+$enable-lh-base: false !default;
+$enable-lh-lg: false !default;
+
+$enable-text-start: true !default;
+$enable-text-end: true !default;
+$enable-text-center: true !default;
+
+$enable-text-decoration-none: false !default;
+$enable-text-decoration-underline: false !default;
+$enable-text-decoration-line-through: false !default;
+$enable-text-lowercase: false !default;
+$enable-text-uppercase: true !default;
+$enable-text-capitalize: false !default;
+$enable-text-wrap: false !default;
+$enable-text-nowrap: false !default;
+$enable-text-break: false !default;
+
+$enable-visible: false !default;
+$enable-invisible: false !default;
+
+$enable-z-n1: false !default;
+$enable-z-0-n1: false !default;
+$enable-z-0: false !default;
+$enable-z-1: false !default;
+$enable-z-2: false !default;
+$enable-z-3: false !default;
+
+/** Layout */
+
+$enable-row-cols: false !default;
+$enable-offset: false !default;
+$enable-gutter: false !default;
+$enable-gap: false !default;
+$enable-row-gap: false !default;
+$enable-column-gap: false !default;
+
+/** Elements */
+
+$enable-blockquote: false !default;
+$enable-lead: false !default;
+$enable-initialism: false !default;
+$enable-fade: true !default;
+$enable-focus-ring: false !default;
+$enable-icon: false !default;
+$enable-shadow: false !default;
+$enable-font-family: false !default;
+$enable-font-size: false !default;
+$enable-font-weight: false !default;
+$enable-font-styles: false !default;
+$enable-clearfix: false !default;
+$enable-figure: false !default;
+$enable-img-thumbnail: false !default;
+$enable-navbar-toggle-style: false !default;
+
+/** Modules */
+
+$enable-navbar: true !default;
+$enable-breadcrumb: true !default;
+$enable-carousel: true !default;
+$enable-accordion: false !default;
+$enable-alert: false !default;
+$enable-badge: false !default;
+$enable-card: true !default;
+$enable-card-group: false !default;
+$enable-card-img: false !default;
+$enable-card-columns: true !default;
+$enable-border: false !default;
+$enable-button: true !default;
+$enable-button-outline: true !default;
+$enable-button-check: false !default;
+$enable-button-link: false !default;
+$enable-button-toolbar: false !default;
+$enable-button-group: false !default;
+$enable-button-close: false !default;
+$enable-link: false !default;
+$enable-dropdown: false !default;
+$enable-dropdown-dark: false !default;
+$enable-dropdown-up: false !default;
+$enable-dropdown-menu-start: false !default;
+$enable-dropdown-menu-end: false !default;
+$enable-dropdown-start: false !default;
+$enable-dropdown-end: false !default;
+$enable-dropdown-toggle-split: false !default;
+$enable-collapse: true !default;
+$enable-form: false !default;
+$enable-img-drop: false !default;
+$enable-list: false !default;
+$enable-modal: false !default;
+$enable-nav: false !default;
+$enable-pagination: false !default;
+$enable-placeholder: false !default;
+$enable-popover: false !default;
+$enable-progress: false !default;
+$enable-ratio: false !default;
+$enable-rounded: false !default;
+$enable-spinner: true !default;
+$enable-table: false !default;
+$enable-toast: false !default;
+$enable-tooltip: false !default;
+$enable-user: false !default;
+$enable-code: false !default;
+$enable-off-canvas: false !default;

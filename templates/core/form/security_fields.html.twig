@@ -1,0 +1,97 @@
+{% trans_default_domain 'security' %}
+
+{% block _user_group_widget %}
+
+    {% set currentUserRoles = app.user.roles %}
+    {% set website = website() %}
+    {% set allLocales = website.configuration.allLocales %}
+
+    <select id="{{ id }}"
+            name="{{ full_name }}"
+            {% if required %}required="required"{% endif %}
+            class="form-control{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+
+        <option value="">{{ "Sélectionnez" }}</option>
+
+        {% for choice in choices %}
+
+            {% set display = true %}
+            {% for role in choice.data.roles %}
+                {% if allLocales|length > 1 and 'translation'|moduleActive(website.configuration) and role.name == 'ROLE_TRANSLATOR' and granted('ROLE_TRANSLATION') %}
+                    {% set display = true %}
+                {% elseif role.name not in currentUserRoles %}
+                    {% set display = false %}
+                {% endif %}
+            {% endfor %}
+
+            {% set display = granted('ROLE_INTERNAL') ? true : display %}
+
+            {% if display %}
+                <option value="{{ choice.value }}"{% if value == choice.value %} selected="selected"{% endif %}>{{ choice.label }}</option>
+            {% endif %}
+        {% endfor %}
+
+    </select>
+
+{% endblock %}
+
+{% block _group_roles_widget %}
+
+    <select id="{{ id }}" name="{{ full_name }}" required="required" class="select-2 form-control" multiple>
+        {% for choice in choices %}
+            {% set data = choice.data %}
+            {% if granted('ROLE_INTERNAL') or granted(data.name) %}
+                <option value="{{ choice.value }}"{% if choice.value in value %} selected="selected"{% endif %}>{{ choice.label }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+{% endblock %}
+
+{% block _user_file_widget %}
+
+    {% set picture = form.parent.vars.value.picture is defined ? form.parent.vars.value.picture %}
+    {% set fileDirname = picture.dirname is defined ? picture.dirname : null %}
+    {% set fileId = picture.id is defined ? picture.id : null %}
+
+    <input type="file"
+           id="{{ id }}"
+           name="{{ full_name }}"
+           {% if attr.accept is defined %}accept="{{ attr.accept }}"{% endif %}
+           data-default-file="{{ fileDirname }}"
+            {% if fileId %}data-delete-url="{{ path('admin_userpicture_delete', {website: websiteId(), picture: fileId}) }}"{% endif %}
+           class="dropify custom-file-input">
+
+{% endblock %}
+
+{% block _user_front_file_widget %}
+
+    {% set picture = form.parent.vars.value.picture is defined ? form.parent.vars.value.picture %}
+    {% set fileDirname = picture.dirname is defined ? picture.dirname : null %}
+    {% set fileId = picture.id is defined ? picture.id : null %}
+
+    <input type="file"
+           id="{{ id }}"
+           name="{{ full_name }}"
+           {% if attr.accept is defined %}accept="{{ attr.accept }}"{% endif %}
+           data-default-file="{{ fileDirname }}"
+            {% if fileId %}data-delete-url="{{ path('admin_userpicture_delete', {website: websiteId(), picture: fileId}) }}"{% endif %}
+           class="dropify custom-file-input">
+
+{% endblock %}
+
+{% block _company_file_widget %}
+
+    {% set logo = form.parent.vars.value.logo is defined ? form.parent.vars.value.logo %}
+    {% set fileDirname = logo.dirname is defined ? logo.dirname : null %}
+    {% set fileId = logo.id is defined ? logo.id : null %}
+
+    <input type="file"
+           id="{{ id }}"
+           name="{{ full_name }}"
+           {% if attr.accept is defined %}accept="{{ attr.accept }}"{% endif %}
+           data-default-file="{{ fileDirname }}"
+            {% if fileId %}data-delete-url="{{ path('admin_logo_delete', {website: websiteId(), logo: fileId}) }}"{% endif %}
+           class="dropify custom-file-input">
+
+{% endblock %}

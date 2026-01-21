@@ -1,0 +1,193 @@
+#####################################
+#           Core                    #
+#####################################
+
+App\Entity\Core\Configuration:
+    translations:
+        singular:
+            fr: 'ConfigurationModel'
+            en: 'ConfigurationModel'
+        plural:
+            fr: 'ConfigurationModel'
+            en: 'Configurations'
+        add:
+            fr: 'Ajouter une configuration'
+            en: 'Add configuration'
+        delete:
+            fr: "Supprimer la configuration"
+            en: 'Delete configuration'
+
+App\Entity\Core\Color:
+    translations:
+        singular:
+            fr: 'Couleur'
+            en: 'Color'
+        plural:
+            fr: 'Couleurs'
+            en: 'Colors'
+        add:
+            fr: 'Ajouter une couleur'
+            en: 'Add color'
+        delete:
+            fr: "Supprimer la couleur"
+            en: 'Delete color'
+
+App\Entity\Core\Domain:
+    translations:
+        singular:
+            fr: 'Nom de domaine'
+            en: 'DomainModel name'
+        plural:
+            fr: 'Noms de Domaine'
+            en: 'DomainModel names'
+        add:
+            fr: 'Ajouter un nom domaine'
+            en: 'Add domain name'
+        delete:
+            fr: "Supprimer le nom domaine"
+            en: 'Delete domain name'
+
+App\Entity\Core\Entity:
+    translations:
+        adminName:
+            fr: 'Entité'
+            en: 'Entity'
+        singular:
+            fr: 'Entité'
+            en: 'Entity'
+        plural:
+            fr: 'Entités'
+            en: 'Entities'
+        add:
+            fr: 'Ajouter une configuration'
+            en: 'Add configuration'
+        delete:
+            fr: "Supprimer la configuration"
+            en: 'Delete configuration'
+    columns:
+        - adminName
+
+App\Entity\Core\Icon:
+    translations:
+        singular:
+            fr: 'Icône'
+            en: 'Icon'
+        plural:
+            fr: 'Icônes'
+            en: 'Icons'
+        add:
+            fr: 'Ajouter une icône'
+            en: 'Add icon'
+        delete:
+            fr: "Supprimer l'icône"
+            en: 'Delete icon'
+
+App\Entity\Core\Log:
+    translations:
+        singular:
+            fr: 'Log'
+            en: 'Log'
+        plural:
+            fr: 'Logs'
+            en: 'Logs'
+
+App\Entity\Core\Module:
+    translations:
+        singular:
+            fr: 'Module'
+            en: 'Module'
+        plural:
+            fr: 'Modules'
+            en: 'Modules'
+        add:
+            fr: 'Ajouter un module'
+            en: 'Add module'
+        delete:
+            fr: "Supprimer le module"
+            en: 'Delete module'
+    columns:
+        - adminName
+
+App\Entity\Core\ScheduledCommand:
+    translations:
+        singular:
+            fr: 'Tâche planifiée'
+            en: 'Scheduled task'
+        plural:
+            fr: 'Tâches planifiées'
+            en: 'Scheduled tasks'
+        add:
+            fr: 'Ajouter une tâche'
+            en: 'Add task'
+        delete:
+            fr: "Supprimer la tâche"
+            en: 'Delete task'
+        adminName:
+            fr: 'Tâche'
+            en: 'Task'
+        locked:
+            fr: 'Bloqué suite erreur'
+            en: 'Lock after error'
+        active:
+            fr: 'Activé'
+            en: 'Active'
+    columns:
+        - adminName
+        - locked
+        - active
+
+App\Entity\Core\Security:
+    translations:
+        singular:
+            fr: 'Securité'
+            en: 'Security'
+    columns:
+        - adminName
+        - website.position
+
+App\Entity\Core\Transition:
+    translations:
+        singular:
+            fr: 'Transition'
+            en: 'Transition'
+        plural:
+            fr: 'Transitions'
+            en: 'Transitions'
+        add:
+            fr: 'Ajouter une transition'
+            en: 'Add transition'
+        delete:
+            fr: "Supprimer la transition"
+            en: 'Delete transition'
+        adminName:
+            fr: 'Transition'
+            en: 'Transition'
+
+App\Entity\Core\Website:
+    dataTable: false
+    translations:
+        singular:
+            fr: 'Site'
+            en: 'WebsiteModel'
+        plural:
+            fr: 'Sites'
+            en: 'Websites'
+        add:
+            fr: 'Ajouter un site'
+            en: 'Add website'
+        delete:
+            fr: "Supprimer le site"
+            en: 'Delete website'
+        active:
+            fr: 'Activer'
+            en: 'Active'
+        adminName:
+            fr: 'Intitulé'
+            en: 'Untitled'
+        configuration.locale:
+            fr: 'Langue'
+            en: 'Language'
+    columns:
+        - adminName
+        - active
+        - configuration.locale

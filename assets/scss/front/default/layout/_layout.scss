@@ -1,0 +1,512 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2020
+    Created on : 2020-10-30, 8:38 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT LAYOUT :
+    ==============
+
+    1 ) Core
+    2 ) Responsive / Prefers
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Core
+-----------------------------------*/
+
+* {
+    outline: none !important;
+}
+
+body {
+
+    &.overflow-hidden {
+        overflow: hidden !important;
+    }
+
+    &.no-backdrop {
+
+        overflow: initial !important;
+        padding-right: initial !important;
+
+        .modal-backdrop {
+            display: none !important;
+        }
+    }
+
+    span[style] *:not([style*="color"]) {
+        color: inherit !important;
+    }
+
+    span[style] *:not([style*="font-family"]) {
+        font-family: inherit !important;
+    }
+
+    &:focus {
+        outline: none !important;
+    }
+
+    @include mediaQuery(max-lg) {
+        h2 {
+            br {
+                display: none !important;
+            }
+        }
+    }
+}
+
+a {
+
+    text-decoration: none;
+    transition: all .3s ease-in-out;
+
+    &:hover, &:focus, &:active {
+        transition: all .3s ease-in-out;
+    }
+}
+
+/*! purgecss start ignore */
+
+$z-indexes: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000;
+@each $z-index in $z-indexes {
+    .z-index-#{$z-index} {
+        z-index: $z-index !important;
+        position: relative !important;
+    }
+}
+
+.shadow-box {
+
+    position: relative;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 500;
+    }
+
+    &.shadow-left:before, &.shadow-right:before {
+        background-repeat: repeat-y !important;
+        background-size: 50% 1px !important;
+    }
+
+    &.shadow-top:before, &.shadow-bottom:before {
+        background-repeat: repeat-x !important;
+        background-size: 1px 80% !important;
+        background-position: bottom;
+    }
+
+    &.shadow-right:before {
+        transform: scaleX(-1);
+    }
+
+    &.shadow-top:before {
+        transform: rotate(180deg);
+        background-position: bottom;
+    }
+
+    @include mediaQuery(max-lg) {
+
+        &.shadow-left-mobile:before, &.shadow-right-mobile:before {
+            background-repeat: repeat-y !important;
+            background-size: 50% 1px !important;
+        }
+
+        &.shadow-top-mobile:before, &.shadow-bottom-mobile:before {
+            background-repeat: repeat-x !important;
+            background-size: 1px 80% !important;
+            background-position: bottom;
+        }
+
+        &.shadow-right-mobile:before {
+            transform: scaleX(-1);
+        }
+
+        &.shadow-top-mobile:before {
+            transform: rotate(180deg);
+            background-position: bottom;
+        }
+    }
+}
+
+@each $suffix, $color in $theme-colors {
+
+    /* Attributes for svg stretchable: width="100%" height="auto" preserveAspectRatio="none" */
+
+    $svg-shadow-left-right: svg-to-data-url('<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="17.5" preserveAspectRatio="none" viewBox="0 0 658 17.5"><defs><linearGradient id="shadow-x" x1="0" y1="0" x2="658" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})"/><stop offset="1" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})" stop-opacity="0"/></linearGradient></defs><rect fill="url(%23shadow-x)" width="658" height="17.5"/></svg>');
+    $svg-shadow-left-right-mobile: svg-to-data-url('<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="17.5" preserveAspectRatio="none" viewBox="0 0 658 17.5"><defs><linearGradient id="shadow-x" x1="0" y1="0" x2="658" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})"/><stop offset="1" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})" stop-opacity="0"/></linearGradient></defs><rect fill="url(%23shadow-x)" width="658" height="17.5"/></svg>');
+    $svg-shadow-top-bottom: svg-to-data-url('<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="17.5" preserveAspectRatio="none" viewBox="0 0 658 17.5"><defs><linearGradient id="shadow-y" x1="0" y1="0" x2="0" y2="17.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})" stop-opacity="0"/><stop offset="1" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})"/></linearGradient></defs><rect fill="url(%23shadow-y)" width="658" height="17.5"/></svg>');
+    $svg-shadow-top-bottom-mobile: svg-to-data-url('<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="17.5" preserveAspectRatio="none" viewBox="0 0 658 17.5"><defs><linearGradient id="shadow-y" x1="0" y1="0" x2="0" y2="17.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})"/><stop offset="1" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})" stop-opacity="0"/></linearGradient></defs><rect fill="url(%23shadow-y)" width="658" height="17.5"/></svg>');
+
+    .zone-shadow-right-#{$suffix},
+    .col-shadow-right-#{$suffix},
+    .block-shadow-right-#{$suffix},
+    .zone-shadow-left-#{$suffix},
+    .col-shadow-left-#{$suffix},
+    .block-shadow-left-#{$suffix} {
+        &:before {
+            background: url($svg-shadow-left-right);
+        }
+    }
+
+    .zone-shadow-top-#{$suffix},
+    .col-shadow-top-#{$suffix},
+    .block-shadow-top-#{$suffix},
+    .zone-shadow-bottom-#{$suffix},
+    .col-shadow-bottom-#{$suffix},
+    .block-shadow-bottom-#{$suffix} {
+        &:before {
+            background: url($svg-shadow-top-bottom);
+        }
+    }
+
+    @include mediaQuery(max-lg) {
+
+        .zone-shadow-right-#{$suffix}-mobile,
+        .col-shadow-right-#{$suffix}-mobile,
+        .block-shadow-right-#{$suffix}-mobile,
+        .zone-shadow-left-#{$suffix}-mobile,
+        .col-shadow-left-#{$suffix}-mobile,
+        .block-shadow-left-#{$suffix}-mobile {
+            &:before {
+                background: url($svg-shadow-left-right-mobile);
+            }
+        }
+
+        .zone-shadow-top-#{$suffix}-mobile,
+        .col-shadow-top-#{$suffix}-mobile,
+        .block-shadow-top-#{$suffix}-mobile,
+        .zone-shadow-bottom-#{$suffix}-mobile,
+        .col-shadow-bottom-#{$suffix}-mobile,
+        .block-shadow-bottom-#{$suffix}-mobile {
+            &:before {
+                background: url($svg-shadow-top-bottom-mobile);
+            }
+        }
+    }
+}
+
+.turbo-progress-bar {
+    background-color: $primary !important;
+}
+
+.flip {
+    transform: scaleX(-1) !important;
+}
+
+.focused-el:not(.splide) {
+    outline: 2px solid $focus-color !important;
+    outline-offset: 2px !important;
+}
+
+*.col-image-full-size,
+*.block-image-full-size,
+*.zone-image-full-size {
+
+    .media-block,
+    .media-block .media-content,
+    .media-block .img-loader-wrap,
+    .media-block .img-loader-wrap picture,
+    .media-block .img-loader-wrap picture img {
+        height: 100%;
+    }
+
+    .media-block .img-loader-wrap picture img {
+        object-fit: cover;
+        object-position: center center;
+    }
+}
+
+/*! purgecss end ignore */
+
+iframe {
+    border: none
+}
+
+img {
+
+    //content-visibility: auto;
+
+    &.img-svg {
+        max-width: 100%;
+    }
+
+    &.aspect-ratio {
+        aspect-ratio: 16 / 9;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    &:before {
+        display: none;
+    }
+
+    &.img-png, &.img-jpg, &.img-jpeg, &.img-gif {
+        &:not(.force-size) {
+            height: auto;
+        }
+    }
+
+    &.img-svg:not(.force-size) {
+        width: inherit;
+    }
+}
+
+picture {
+
+    .spinner-wrap {
+
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 5;
+
+        .spinner-border {
+            border: 0.25em solid transparentize($dark, .5);
+        }
+    }
+}
+
+*[data-background] {
+    background-size: 100% !important;
+    background-repeat: no-repeat !important;
+}
+
+#content-page {
+
+    background-color: $body-bg;
+    max-width: $content-page-full-width;
+    margin: 0 auto;
+
+    &.content-page-box {
+        max-width: $content-page-box-width;
+        margin: 0 auto;
+    }
+
+    .negative-margin {
+        z-index: 999;
+    }
+
+    .bg-fixed {
+        background-attachment: fixed !important;
+    }
+
+    svg {
+        overflow: initial !important;
+    }
+}
+
+.layout-zone {
+
+    &.standardize-medias {
+        img {
+            width: 100% !important;
+            max-height: initial !important;
+        }
+    }
+
+    &.layout-zone-navigation {
+        z-index: 1500;
+    }
+
+    &.parallax {
+
+        overflow: hidden;
+
+        .parlx-children {
+
+            top: 0;
+
+            img {
+                object-fit: cover !important;
+                background-position: 50% 50%;
+                width: 100vw;
+                min-height: 110vh !important;
+            }
+        }
+    }
+}
+
+.layout-block {
+
+    &.d-flex {
+
+        .layout-block-content {
+
+            &.flex-grow {
+
+                flex-grow: 1;
+
+                img.img-svg {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    .zone-container {
+        padding: 0;
+    }
+
+    .separator-block.radius > div {
+        border-radius: 35px !important;
+    }
+}
+
+.col-full-size {
+    > .row:first-child,
+    > .row:first-child .layout-block-content,
+    > .row:first-child .loader-image-wrapper,
+    > .row:first-child .media-block picture,
+    > .row:first-child .media-block img,
+    > .row:first-child .media-block {
+        height: 100% !important;
+        object-fit: cover;
+    }
+}
+
+.layout-zone {
+    &.have-bg-img {
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+    }
+}
+
+.bg-col,
+.layout-col {
+
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+
+    > .row {
+        max-width: 100%;
+    }
+
+    @include mediaQuery(min-lg) {
+
+        &.col-sticky {
+
+            position: relative;
+            top: 0;
+            z-index: 100;
+
+            &.justify-content-lg-start,
+            &.justify-content-lg-center,
+            &.justify-content-lg-end,
+            &.justify-content-start,
+            &.justify-content-center,
+            &.justify-content-end {
+                align-items: baseline;
+            }
+
+            > *:first-child {
+                height: initial !important;
+                position: sticky;
+                top: 135px;
+                z-index: 1;
+            }
+        }
+    }
+
+    &.vertical-align-lg {
+        margin-right: 0;
+        margin-left: 0;
+    }
+}
+
+form .layout-col .layout-block-content {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
+.edit-trans-block {
+
+    .edit-trans-btn-modal {
+        width: 25px !important;
+        height: 25px !important;
+    }
+
+    .trans-edit-form .trans-edit-input-group {
+        display: none;
+    }
+}
+
+#requireHTTPS.show {
+
+    display: block;
+    background: rgba(0, 0, 0, .7);
+
+    * {
+        text-align: center !important;
+    }
+}
+
+#pwa-installer-container {
+
+    z-index: 9999;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+
+    #pwa-installer-btn-container {
+
+        max-width: 320px;
+        max-height: 73px;
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, .50);
+
+        button {
+            border: 0;
+            background: transparent;
+            font-size: 13px;
+        }
+    }
+}
+
+body #content-page #user-switcher-modal-alert {
+
+    .modal-title {
+
+        font-size: 17px !important;
+        color: #333 !important;
+
+        span {
+            font-size: 14px !important;
+        }
+    }
+}
+
+/*-----------------------------------
+   2 ) Responsive / Prefers
+-----------------------------------*/
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+@include mediaQuery(max-sm) {
+
+}
+
+@include mediaQuery(max-lg) {
+
+}
+
+@include mediaQuery(min-lg) {
+
+    #content-page.content-page-box {
+        box-shadow: 0 0 15px -3px transparentize($black, .7);
+    }
+}

@@ -1,0 +1,6 @@
+framework:
+    cache:
+        pools:
+            doctrine.query_cache_pool:
+                adapter: cache.adapter.filesystem
+                default_lifetime: 3600  # You can adjust this as needed

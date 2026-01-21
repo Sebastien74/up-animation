@@ -1,0 +1,123 @@
+#####################################
+#           Information             #
+#####################################
+
+App\Entity\Information\Address:
+    translations:
+        singular:
+            fr: 'Adresse'
+            en: 'Address'
+        plural:
+            fr: 'Adresses'
+            en: 'Addresses'
+        add:
+            fr: 'Ajouter une adresse'
+            en: 'Add address'
+        delete:
+            fr: "Supprimer l'adresse"
+            en: 'Delete address'
+
+App\Entity\Information\Email:
+    translations:
+        singular:
+            fr: 'Email'
+            en: 'Information'
+        plural:
+            fr: 'Email'
+            en: 'Email'
+        add:
+            fr: 'Ajouter un email'
+            en: 'Add email'
+        delete:
+            fr: "Supprimer l'email"
+            en: 'Delete email'
+
+App\Entity\Information\Information:
+    translations:
+        singular:
+            fr: 'Information'
+            en: 'Information'
+        plural:
+            fr: 'Informations'
+            en: 'Informations'
+        add:
+            fr: 'Ajouter des informations'
+            en: 'Add information'
+        delete:
+            fr: "Supprimer les informations"
+            en: 'Delete information'
+
+App\Entity\Information\ScheduleDay:
+    translations:
+        singular:
+            fr: 'Jour des horaires'
+            en: 'Schedule day'
+        plural:
+            fr: 'Jours des horaires'
+            en: 'Schedule days'
+        add:
+            fr: 'Ajouter une journée'
+            en: 'Add day'
+        delete:
+            fr: "Supprimer la journée"
+            en: 'Delete day'
+
+App\Entity\Information\ScheduleOccurrence:
+    translations:
+        singular:
+            fr: 'Occurrence des horaires'
+            en: 'Schedule occurrence'
+        plural:
+            fr: 'Occurrences des horaires'
+            en: 'Schedule occurrences'
+        add:
+            fr: 'Ajouter une occurrence'
+            en: 'Add occurrence'
+        delete:
+            fr: "Supprimer la occurrence"
+            en: 'Delete occurrence'
+
+App\Entity\Information\Legal:
+    translations:
+        singular:
+            fr: 'Mentions légales'
+            en: 'Legal Notice'
+        plural:
+            fr: 'Mentions légales'
+            en: 'Legal Notice'
+        add:
+            fr: 'Ajouter des mentions légales'
+            en: 'Add legal notice'
+        delete:
+            fr: "Supprimer les mentions légales"
+            en: 'Delete legal notice'
+
+App\Entity\Information\Phone:
+    translations:
+        singular:
+            fr: 'Téléphone'
+            en: 'Phone'
+        plural:
+            fr: 'Téléphones'
+            en: 'Phones'
+        add:
+            fr: 'Ajouter un numéro'
+            en: 'Add phone number'
+        delete:
+            fr: "Supprimer le numéro"
+            en: 'Delete phone number'
+
+App\Entity\Information\SocialNetwork:
+    translations:
+        singular:
+            fr: 'Réseau social'
+            en: 'Social network'
+        plural:
+            fr: 'Réseaux sociaux'
+            en: 'Social networks'
+        add:
+            fr: 'Ajouter un réseau social'
+            en: 'Add social network'
+        delete:
+            fr: "Supprimer le réseau social"
+            en: 'Delete social network'

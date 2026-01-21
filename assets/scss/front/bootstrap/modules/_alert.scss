@@ -1,0 +1,122 @@
+@if $enable-alert and not $enable-medias-queries {
+
+    .alert {
+
+        --bs-alert-bg: transparent;
+        --bs-alert-icon-bg: var(--bs-alert-border-color);
+        --bs-alert-padding-x: 1rem;
+        --bs-alert-padding-y: 1rem;
+        --bs-alert-margin-bottom: 1rem;
+        --bs-alert-color: inherit;
+        --bs-alert-icon-color: #fff;
+        --bs-alert-border-width: #{$alert-border-width};
+        --bs-alert-border-color: #000;
+        --bs-alert-border: var(--bs-alert-border-width) solid var(--bs-alert-border-color);
+        --bs-alert-border-radius: #{$alert-border-radius};
+        --bs-alert-link-color: inherit;
+        --bs-alert-font-size: #{$alert-font-size};
+        position: relative;
+        padding: var(--bs-alert-padding-y) var(--bs-alert-padding-x);
+        margin-bottom: var(--bs-alert-margin-bottom);
+        background-color: transparent;
+        border-radius: var(--bs-alert-border-radius);
+
+        a {
+            color: $primary !important
+        }
+
+        .icon {
+
+            flex: 0 0 60px;
+            background: var(--bs-alert-icon-bg);
+            border-top-left-radius: var(--bs-alert-border-radius);
+            border-bottom-left-radius: var(--bs-alert-border-radius);
+
+            &::after {
+                transform: rotate(45deg);
+                display: block;
+                content: '';
+                width: 10px;
+                height: 10px;
+                border: 1px solid var(--bs-alert-border-color);
+                border-top-color: var(--bs-alert-border-color);
+                border-right-color: var(--bs-alert-border-color);
+                border-bottom-color: var(--bs-alert-border-color);
+                border-left-color: var(--bs-alert-border-color);
+                position: absolute;
+                border-left: 0;
+                border-left-color: currentcolor;
+                border-bottom: 0;
+                border-bottom-color: currentcolor;
+                top: 50%;
+                right: -5px;
+                margin-top: -5px;
+                background: $white;
+            }
+
+            svg {
+                fill: var(--bs-alert-icon-color);
+            }
+
+            &:after {
+                border-color: var(--bs-alert-border-color);
+                background: var(--bs-alert-icon-bg);
+            }
+        }
+
+        .message {
+
+            border-left: 0;
+            border-top-right-radius: var(--bs-alert-border-radius);
+            border-bottom-right-radius: var(--bs-alert-border-radius);
+            font-size: var(--bs-alert-font-size);
+            border: var(--bs-alert-border);
+            border-left: 0;
+            background-color: var(--bs-alert-bg);
+            color: var(--bs-alert-color) !important;
+            line-height: 1;
+
+            .inner *:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .alert-heading {
+        color: inherit
+    }
+
+    .alert-link {
+        font-weight: 700;
+        color: var(--bs-alert-link-color)
+    }
+
+    .alert-dismissible {
+        padding-right: 3rem
+    }
+
+    .alert-dismissible .btn-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 2;
+        padding: 1.25rem 1rem
+    }
+
+    @each $name, $color in $alert-colors {
+
+        .alert-#{$name} {
+
+            --bs-alert-color: #{map-get($color, "color")};
+            --bs-alert-bg: #{map-get($color, "bg")};
+            --bs-alert-border-color: #{map-get($color, "border")};
+            --bs-alert-link-color: #{map-get($color, "color")};
+            --bs-alert-icon-color: #{map-get($color, "color-icon")};
+
+            svg, i {
+                color: #{map-get($color, "icon-color")};
+                fill: #{map-get($color, "icon-color")};
+            }
+        }
+    }
+}

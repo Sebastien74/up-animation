@@ -1,0 +1,60 @@
+{% extends 'admin/page/seo/google-analytics/base.html.twig' %}
+
+{% trans_default_domain 'admin' %}
+
+{% block page %}
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-title card-header">
+                    {{"Types de visiteurs"|trans}} <small class="text-muted-grey text-italic">{{"(30 derniers jours)"|trans}}</small>
+                </div>
+                <div class="card-body">
+                    <div id="new-users-chart"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-title card-header">
+                    {{"Tailles d'écrans utilisées"|trans}} <small class="text-muted-grey text-italic">{{"(30 derniers jours)"|trans}}</small>
+                </div>
+                <div class="card-body">
+                    <div id="size-chart"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card">
+        <div class="card-title card-header">
+            {{"Taux de rebond par jour"|trans}} <small class="text-muted-grey text-italic">{{"(30 derniers jours)"|trans}}</small>
+        </div>
+        <div class="card-body">
+            <div id="rebound-chart"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title card-header">
+            {{"Sessions"|trans}} <small class="text-muted-grey text-italic">{{"(30 derniers jours)"|trans}}</small>
+        </div>
+        <div class="card-body">
+            <div id="sessions-chart"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title card-header">
+            {{"Durée moyenne d'une session en seconde"|trans}} <small class="text-muted-grey text-italic">{{"(30 derniers jours)"|trans}}</small>
+        </div>
+        <div class="card-body">
+            <div id="duration-chart"></div>
+        </div>
+    </div>
+
+{% endblock %}

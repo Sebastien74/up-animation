@@ -1,0 +1,16 @@
+@function str-replace-svg($string, $search, $replace: "") {
+    $index: str-index($string, $search);
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace-svg(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+    @return $string;
+}
+
+@function svg-to-data-url($svg) {
+    $svg: str-replace-svg($svg, "#", "%23");
+    $svg: str-replace-svg($svg, "<", "%3C");
+    $svg: str-replace-svg($svg, ">", "%3E");
+    $svg: str-replace-svg($svg, "\"", "%22");
+    $svg: str-replace-svg($svg, " ", "%20");
+    @return "data:image/svg+xml," + $svg;
+}

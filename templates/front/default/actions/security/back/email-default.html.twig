@@ -1,0 +1,19 @@
+{% extends 'core/email/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% block metaTitle %}{{ subject|htmlEntities }}{% endblock %}
+
+{% block preheader %}{% endblock %}
+
+{% block info %}{% endblock %}
+
+{% block body %}
+    {% if message %}
+        <tr>
+            <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                {{ message|raw }}
+            </td>
+        </tr>
+    {% endif %}
+{% endblock %}

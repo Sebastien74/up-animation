@@ -1,0 +1,30 @@
+{% extends 'front/'~website.configuration.template~'/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% block metaTitle %}{{ "Connectez-vous"|trans|htmlEntities }}{% endblock %}
+{% block metaRobots %}noindex{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
+{% endblock %}
+
+{% block body %}
+    {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+        pageTitle: "Connectez-vous"|trans|raw,
+        thumbConfiguration: thumbConfigurationHeader
+    } %}
+    <div class="container mt-5 mb-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-4">
+                {% include 'front/'~websiteTemplate~'/actions/security/front/login-form.html.twig' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

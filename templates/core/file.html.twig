@@ -1,0 +1,15 @@
+{% set intl = mediaRelation.intl is defined and mediaRelation.intl ? mediaRelation.intl : null %}
+
+<div class="file">
+    <a href="{{ asset(desktop.path) }}"
+       title="{{ desktop.attr.title|striptags }}"
+       alt="{{ desktop.attr.title|striptags }}"
+       {% if downloadable %} download="{{ desktop.attr.title|striptags }}"{% endif %}>
+        {{ 'front'|fileIcon(extension)|icon(null, 16, 'me-2') }}
+        {% if not inAdmin and intl.targetLabel is defined and intl.targetLabel|striptags|length > 0 %}
+            {{ intl.targetLabel|unescape|raw }}
+        {% else %}
+            {{ desktop.attr.title }}
+        {% endif %}
+    </a>
+</div>

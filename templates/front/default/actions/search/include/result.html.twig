@@ -1,0 +1,28 @@
+{% trans_default_domain 'front_default' %}
+
+{% set entity = result.entity %}
+{% set interfaceName = result.interfaceName %}
+{% set title = result.snippets.title is defined ? result.snippets.title : (entity.intl.title is defined ? entity.intl.title : false) %}
+{% set body = result.snippets.body is defined ? result.snippets.body : (result.snippets.introduction is defined ? entity.intl.introduction : false) %}
+
+<div class="col-md-3 result item mt-4">
+    <a href="{{ asset(result.url) }}" class="inner d-inline-block bg-gray-200 px-4 py-3 h-100 w-100"
+        {% if entity.filename is defined and entity.filename %} target="_blank" download="{{ entity.filename }}"{% endif %}>
+        {% if entity.filename is defined and entity.filename %}
+            {% set filename = result.snippets is defined and result.snippets ? result.snippets : entity.filename %}
+            <div class="file d-flex align-items-center">{{ 'front'|fileIcon(entity.extension)|icon(null, 17, 'me-2 float-start file-btn-icon') }}{{ filename|raw }}</div>
+        {% else %}
+            {% if title %}
+                <h3 class="title mb-2">{{ title|raw }}</h3>
+            {% endif %}
+            {% if body %}
+                <small class="body d-inline-block w-100 text-italic fw-300">{{ body|raw }}</small>
+            {% endif %}
+            {% if result.snippets.relations is defined %}
+                {% for relation in result.snippets.relations %}
+                    <small class="body d-inline-block w-100 text-italic fw-300{% if not loop.last %} mb-1{% endif %}">{{ relation|raw }}</small>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    </a>
+</div>

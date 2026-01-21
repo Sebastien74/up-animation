@@ -1,0 +1,355 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-09-22, 10:32 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    TRANSLATION :
+    ============
+
+    1 ) Core
+    2 ) Generator
+    3 ) Index Domains
+    4 ) Edit Domains
+    5 ) Progress
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Core
+-----------------------------------*/
+
+@import "../../vendor/mixin/media-queries";
+@import '../variables';
+
+.badge.bg-warning {
+    font-weight: 500 !important;
+    padding: 5px 15px !important;
+}
+
+#domains-tabs {
+    a.nav-link {
+        border: none !important;
+    }
+}
+
+table {
+
+    td.locales-groups {
+
+        .form-group {
+
+            margin-bottom: 15px !important;
+
+            &:last-child {
+                margin-bottom: 0 !important;
+            }
+        }
+
+        .form-control-success {
+            border-color: $success !important;
+        }
+
+        .translation-form-group {
+
+            .addon {
+
+                width: 38px;
+                height: 38px;
+                background: $gray-100;
+                text-align: center;
+                line-height: 38px;
+                border: 1px solid $gray-400;
+                border-top-left-radius: .25rem;
+                border-bottom-left-radius: .25rem;
+
+                img {
+                    margin-top: -3px;
+                }
+            }
+
+            .form-control {
+                width: calc(100% - 38px);
+                margin-left: 38px;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+    }
+}
+
+@include mediaQuery(min-md) {
+
+    table {
+
+        .keys-td {
+            max-width: calc(40% - 110px);
+            width: calc(40% - 110px) !important;
+        }
+
+        .forms-td {
+            max-width: 60%;
+            width: 60% !important;
+        }
+
+        .actions-td {
+            max-width: 110px;
+            width: 110px !important;
+        }
+
+        .form-group .form-control {
+            border-color: $gray-200;
+        }
+
+        .form-group.empty {
+
+            .addon:not(.bg-success) {
+                border-color: $warning !important;
+                background-color: $warning !important;
+            }
+
+            .form-control:not(.form-control-success) {
+                border-color: $warning;
+            }
+        }
+    }
+}
+/*-----------------------------------
+   2 ) Generator
+-----------------------------------*/
+
+#translation-generator {
+
+    position: relative;
+    min-height: 250px;
+    border: 1px solid $gray-300;
+    background-color: $white;
+    overflow: hidden;
+
+    .refresh-container {
+
+        position: initial;
+
+        .refresh-bloc {
+
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 7;
+            background-color: rgba(255, 255, 255, 0);
+
+            .extraction-title img {
+                margin-top: -5px;
+            }
+
+            .inner {
+
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+
+                i {
+                    font-size: 20px;
+                    color: rgba(0, 0, 0, 0.7);
+                }
+            }
+        }
+    }
+
+    .progress-bloc {
+
+        background-color: #eee;
+        padding: 10px 15px;
+
+        strong {
+            font-size: 12px;
+        }
+
+        .progress {
+            height: 6px;
+            border-radius: 0;
+        }
+    }
+
+    #translation-progress {
+        padding: 30px 30px 15px 30px;
+    }
+}
+
+@keyframes MOVE-BG {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(46px);
+    }
+}
+
+.bg-stripe {
+
+    position: absolute;
+    top: 0;
+    left: -150px;
+    bottom: 0;
+    width: 150%;
+
+    background: -webkit-repeating-linear-gradient(
+                    145deg,
+                    #f8e9db 1px,
+                    #fff5ed 2px,
+                    #fff5ed 11px,
+                    #f8e9db 12px,
+                    #f8e9db 20px
+    ) !important;
+    background: repeating-linear-gradient(
+                    -55deg,
+                    #f8e9db 1px,
+                    #fff5ed 2px,
+                    #fff5ed 11px,
+                    #f8e9db 12px,
+                    #f8e9db 20px
+    ) !important;
+
+    -webkit-animation-name: MOVE-BG !important;
+    -webkit-animation-duration: .6s !important;
+    -webkit-animation-timing-function: linear !important;
+    -webkit-animation-iteration-count: infinite !important;
+
+    animation-name: MOVE-BG !important;
+    animation-duration: .6s !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
+}
+
+/*-----------------------------------
+   3 ) Index Domains
+-----------------------------------*/
+
+.custom-tab {
+    i, svg {
+        font-size: 17px;
+    }
+}
+
+#translations-domains-index {
+
+    .card-header {
+        border-top-left-radius: var(--bs-border-radius);
+        border-top-right-radius: var(--bs-border-radius);
+    }
+
+    table {
+
+        tbody tr td {
+
+            .progress {
+
+                background-color: $gray-400 !important;
+
+                .progress-bar {
+                    height: 100% !important;
+                }
+            }
+
+            .btn {
+
+                line-height: 19px;
+
+                i:before {
+                    font-size: 13px;
+                }
+            }
+        }
+
+        @include mediaQuery(min-md) {
+            tr {
+                th:first-child, td:first-child {
+                    max-width: 500px;
+                    width: 500px;
+                }
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   4 ) Edit Domains
+-----------------------------------*/
+
+#translations-domains {
+
+    background-color: $info-lighten;
+
+    .btn-back {
+        left: 1rem;
+        top: 1rem;
+    }
+
+    .dt-container {
+        padding-bottom: 1rem;
+    }
+
+    div.dt-container div.dt-search {
+        position: relative;
+        top: .75rem;
+        right: 1rem;
+    }
+
+    div.dt-container div.dt-info {
+        padding-top: 1.25rem;
+        margin-left: 1rem;
+    }
+
+    .dt-paging.paging_full_numbers {
+        margin-top: 1rem !important;
+        margin-right: 1rem;
+    }
+
+    .save-row-trans {
+
+        width: 35px;
+        height: 35px;
+        padding: 0;
+        position: relative;
+
+        i, svg {
+
+            position: absolute;
+            font-size: 20px;
+            top: 7px;
+            left: 7px;
+
+            &.fa-save {
+                left: 8px;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   4 ) Progress
+-----------------------------------*/
+
+#translation-progress {
+
+    padding: 30px 30px 15px 30px;
+
+    .progress-bloc {
+
+        background-color: #eee;
+        padding: 10px 15px;
+
+        strong {
+            font-size: 12px;
+        }
+
+        .progress {
+            height: 6px;
+            border-radius: 0;
+        }
+    }
+}

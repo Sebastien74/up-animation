@@ -1,0 +1,21 @@
+{% set website = website is defined and website ? website : website() %}
+
+{% extends 'front/'~website.configuration.template~'/actions/security/back/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% block metaTitle %}{{ "Tableau de bord"|trans|htmlEntities }}{% endblock %}
+{% block metaRobots %}noindex{% endblock %}
+
+{% set pageTitle = "Tableau de bord"|trans %}
+{% set breadcrumbs = [
+    {title: pageTitle},
+] %}
+
+{% block content %}
+    <div id="dashboard-view" class="bg-light pb-lg">
+        <div class="container pt-lg">
+            {% include "front/"~websiteTemplate~"/actions/security/back/dashboard.html.twig" %}
+        </div>
+    </div>
+{% endblock %}

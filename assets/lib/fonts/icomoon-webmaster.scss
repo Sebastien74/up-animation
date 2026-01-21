@@ -1,0 +1,59 @@
+@font-face {
+    font-family: 'webmastericomoon';
+    src: url('./Icomoonwebmaster/icomoon.eot?ncz9sa');
+    src: url('./Icomoonwebmaster/icomoon.eot?ncz9sa#iefix') format('embedded-opentype'),
+    url('./Icomoonwebmaster/icomoon.ttf?ncz9sa') format('truetype'),
+    url('./Icomoonwebmaster/icomoon.woff?ncz9sa') format('woff'),
+    url('./Icomoonwebmaster/icomoon.svg?ncz9sa#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="icw-"], [class*=" icw-"] {
+    font-family: 'webmastericomoon', serif !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icw-briefcase:before {
+    content: "\e900";
+}
+
+.icw-chart-line:before {
+    content: "\e901";
+}
+
+.icw-eye:before {
+    content: "\e902";
+}
+
+.icw-pencil-alt:before {
+    content: "\e903";
+}
+
+.icw-power-off:before {
+    content: "\e904";
+}
+
+.icw-repeat:before {
+    content: "\e905";
+}
+
+.icw-tachometer-alt:before {
+    content: "\e906";
+}
+
+.icw-times:before {
+    content: "\e907";
+}
+
+.icw-users:before {
+    content: "\e908";
+}

@@ -1,0 +1,47 @@
+{% set class = options.class is defined ? options.class : false %}
+
+{% set displayPhones = options.displayPhones is defined ? options.displayPhones : true %}
+{% set phones = address.phones is defined and address.phones is not empty and displayPhones ? address.phones : false %}
+
+{% set displayEmails = options.displayEmails is defined ? options.displayEmails : true %}
+{% set emails = address.emails is defined and address.emails is not empty and displayEmails ? address.emails : [] %}
+
+{% if address.name or address.address or address.zipCode or address.city or address.department or address.region or address.country or phones or emails %}
+    <address class="address{% if class %} {{ class }}{% endif %}">
+        {% if address.name is defined and address.name %}
+            <strong class="name d-inline-block w-100 mb-2">{{ address.name|raw }}</strong>
+        {% endif %}
+        {% if address.address is defined and address.address %}
+            <div class="address">{{ address.address|raw }}</div>
+        {% endif %}
+        {% if address.zipCode is defined and address.zipCode %}
+            <span class="zip-code">{{ address.zipCode }}</span>
+        {% endif %}
+        {% if address.city is defined and address.city %}
+            <span class="dash"> - </span>
+            <span class="city">{{ address.city }}</span>
+        {% endif %}
+        {% if address.department is defined and address.department %}
+            <br>
+            <span class="department">{{ address.department }}</span>
+        {% endif %}
+        {% if address.region is defined and address.region %}
+            <span class="dash"> - </span>
+            <span class="region">{{ address.region }}</span>
+        {% endif %}
+        {% if address.country is defined and address.country %}
+            <span class="dash"> - </span>
+            <span class="country">{{ address.country|countryName }}</span>
+        {% endif %}
+        {% if phones or emails %}
+            <ul class="reset">
+                {% for email in emails %}
+                    <li>{{ email.email|email(website, {icon: false}) }}</li>
+                {% endfor %}
+                {% for phone in phones %}
+                    <li>{{ phone|phone(website, {icon: false}) }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </address>
+{% endif %}

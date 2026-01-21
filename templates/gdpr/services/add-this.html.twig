@@ -1,0 +1,17 @@
+{% if api.addThis %}
+    {% set website = website is defined and website ? website : website() %}
+    {% set axeptioId = website.api.custom.axeptioId is defined ? website.api.custom.axeptioId : null %}
+    {% set gdprActive = 'gdpr'|moduleActive(website.configuration) or axeptioId %}
+    {% set cookies = cookies() %}
+    {% set addThisActive = (cookies['addthis'] is defined and cookies['addthis']) or not gdprActive %}
+    <div class="gdpr-addthis-wrap"
+         data-code="addthis"
+         data-prototype="{{ prototype|e('html_attr') }}"
+         data-prototype-placeholder="{{ prototype_placeholder|e('html_attr') }}">
+        {% if addThisActive %}
+            {{ prototype|raw }}
+        {% else %}
+            {{ prototype_placeholder|raw }}
+        {% endif %}
+    </div>
+{% endif %}

@@ -1,0 +1,24 @@
+{% trans_default_domain 'admin' %}
+
+{% for alert, flashes in app.session.flashbag.all %}
+    {% for flash in flashes %}
+        {% if alert == 'command' %}
+            <div id="coresphere_consolebundle_console" class="console mb-3">
+                <div class="console_info_bar">
+                    {{ "Working directory"|trans }} : <strong id="dirname">{{ flash.dirname }}</strong>
+                    <span class="float-end cursor close-console">{{ 'fas times'|icon(13, 13, 'white') }}</span>
+                </div>
+                <div class="console_log_container">
+                    <ol class="console_log">
+                        <li>
+                            <div id="command" class="console_log_input console_ok">{{ flash.command|raw }}</div>
+                            <div id="output" class="console_log_output">{{ flash.output|raw }}</div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        {% else %}
+            {% include 'admin/include/alert.html.twig' with {alert: alert, message: flash} only %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}

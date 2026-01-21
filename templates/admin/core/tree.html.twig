@@ -1,0 +1,74 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set title = "Arborescence"|trans %}
+{% block title %}{{ title|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ title }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {% set args = {website: websiteId()} %}
+    {% if interface.masterField is defined and interface.masterField != 'configuration' and interface.masterField != 'website' %}
+        {% set args = args|merge({(interface.masterField): interface.masterFieldId}) %}
+    {% endif %}
+
+    {% set website = website is defined and website ? website : website() %}
+    {% set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
+        ? configuration.entity.collapsedAdminTrees : website.configuration.entity.collapsedAdminTrees %}
+
+    <div id="tree-page" class="position-relative">
+        <div id="tree-page-header" class="row mb-3">
+            <div class="col-12 my-auto text-sm-end">
+                <div class="float-sm-end">
+                    {% if 'delete'|moduleActive(configuration) %}
+                        <button id="delete-pack-btn" class="btn btn-danger d-none standard"
+                                data-bs-toggle="tooltip" data-placement="left" title="{{ "Supprimer"|trans|striptags }}" aria-label="{{ "Supprimer"|trans|striptags }}">
+                            {{ 'fas trash'|icon(10, 13, 'white') }}
+                        </button>
+                    {% endif %}
+                    <span id="nestable-expand-all" class="btn btn-outline-info-darken standard cursor me-2{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
+                        {{ 'fal arrow-alt-to-bottom'|icon(11, 14, 'dark') }}
+                    </span>
+                    <span id="nestable-collapse-all" class="btn btn-dark standard cursor me-2{% if collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
+                        {{ 'fal arrow-alt-to-top'|icon(11, 14, 'white') }}
+                    </span>
+                    <span data-toggle="preloader">
+                        <a href="{{ lastRoute() }}" class="btn btn-white text-info standard"
+                           data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
+                           aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                            {{ 'fas reply'|icon(14, 14, 'info') }}
+                        </a>
+                    </span>
+                    {% if routeExist('admin_'~interface['name']~'_new') and 'edit'|moduleActive(configuration) %}
+{#                        <a href="{{ path('admin_'~interface['name']~'_new', args) }}">Go</a>#}
+                        {{ render_esi(path('admin_'~interface['name']~'_new', args)) }}
+                    {% endif %}
+                </div>
+                <form role="search" class="pages-search d-none d-sm-inline-block me-3 float-end">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">{{ 'fal search'|icon(14, 14, 'dark') }}</span>
+                        </div>
+                        <input placeholder="{{ "Rechercher"|trans }}" class="form-control" type="text">
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if interface.entity.urls is defined and archivedCount is defined and archivedCount %}
+            {% set archivedLink = '<a href="'~path('admin_archive_index', {website: websiteId()})~'">Cliquez ici</a> pour voir.' %}
+            {% set archivedMessage = archivedCount > 1 ? "Vous avez %count% URLS archivées. Pensez a faire des redirections si nécessaire et à supprimer les URLS définitevement."|trans({'%count%': archivedCount})
+                : "Vous avez une URL archivée. Pensez a faire une redirection si nécessaire et à supprimer l'URL définitevement."|trans({'%count%': archivedCount}) %}
+            {% include 'admin/include/alert.html.twig' with {alert: 'warning', display: 'alert', message: archivedMessage~' '~archivedLink, class: 'fw-400' } only %}
+        {% endif %}
+        {% include 'admin/core/include/nestable.html.twig' %}
+    </div>
+{% endblock %}

@@ -1,0 +1,88 @@
+@if ($enable-card) {
+
+@charset "UTF-8";
+
+    /* -----------------------------------------------------------------
+
+        Copyright  : 2021
+        Created on : 2021-08-13, 10:08 AM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+        FRONT CARD BLOCK :
+        ==================
+
+    ------------------------------------------------------------------ */
+
+    .card {
+
+        .card-header {
+            picture, picture img, .img-hover-buttons-wrap, .img-loader-wrap {
+                border-top-left-radius: $border-radius-small;
+                border-top-right-radius: $border-radius-small;
+                width: 100%;
+                object-fit: cover;
+            }
+        }
+
+        &:not(.have-bg) {
+            .card-header {
+                picture img, .img-hover-buttons-wrap {
+                    border-bottom-left-radius: $border-radius-small;
+                    border-bottom-right-radius: $border-radius-small;
+                }
+            }
+        }
+
+        &.have-bg {
+
+            &:not(.have-link) {
+                .card-body {
+                    border-bottom-left-radius: $border-radius-small;
+                    border-bottom-right-radius: $border-radius-small;
+                }
+            }
+
+            &.have-link {
+                .card-footer {
+                    border-bottom-left-radius: $border-radius-small;
+                    border-bottom-right-radius: $border-radius-small;
+                }
+            }
+        }
+
+        .card-footer {
+            margin-top: -1px;
+        }
+    }
+
+    body #body-page .card-block .card {
+
+        .text-block {
+
+            max-width: 80%;
+
+            * {
+                font-size: 14px !important;
+            }
+
+            ul:not(.no-dots):not(.nav):not(.dropdown-menu):not(.reset):not(.splide__list):not(.splide__pagination):not(.pagination):not(.carousel-indicators) {
+
+                padding-left: .75rem !important;
+
+                li:before {
+                    margin-left: -.75rem !important;
+                    top: 8px !important;
+                    width: 5px !important;
+                    height: 5px !important;
+                    background-color: $gray-600 !important;
+                }
+            }
+        }
+
+        .link-block {
+            a, a span {
+                font-size: 14px !important;
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{% trans_default_domain 'admin' %}
+
+<h5 class="card-title card-header mb-3 large">
+    <div class="row">
+        <div class="col-sm-6 my-auto">{{ 'fal search'|icon(null, 18, 'info-darken me-2') }}{{ "Filtres"|trans }}</div>
+        <div class="col-sm-6">
+            <div class="float-end">
+                {% include 'admin/include/intl-selector.html.twig' with {route: 'admin_seo_edit'} %}
+            </div>
+        </div>
+    </div>
+</h5>

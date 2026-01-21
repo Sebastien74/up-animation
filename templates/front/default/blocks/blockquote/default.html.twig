@@ -1,0 +1,15 @@
+{% trans_default_domain 'front_default' %}
+
+{% if haveContent %}
+    {% if intl.introduction %}
+        <figure class="blockquote-block w-100 m-0">
+            <blockquote class="blockquote position-relative"{% if intl.link %} cite="{{ intl.link }}"{% endif %}>
+                {{ 'fal quote-right'|icon(40, 40, null, {decor: true}) }}
+                <p class="mb-0{% if style %} {{ style }}{% endif %}">{{ intl.introduction|raw }}</p>
+            </blockquote>
+            {% if intl.placeholder %}
+                <figcaption class="blockquote-footer"><cite title="{{ intl.placeholder|striptags }}">{{ placeholder|unescape|raw }}</cite></figcaption>
+            {% endif %}
+        </figure>
+    {% endif %}
+{% endif %}

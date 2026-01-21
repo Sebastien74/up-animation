@@ -1,0 +1,249 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2025
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT SEARCH FILTERS :
+    =====================
+
+------------------------------------------------------------------ */
+
+@import "../../variables";
+
+.search-filters-container {
+
+    position: relative;
+    z-index: 1000;
+
+    @include mediaQuery(max-lg) {
+
+        &.mobile {
+
+            .dropdown {
+
+                .dropdown-toggle {
+
+                    background-color: $primary !important;
+                    color: $white !important;
+
+                    svg, i {
+                        fill: $primary !important;
+                        color: $primary !important;
+                    }
+
+                    &::after {
+                        margin-top: 5px;
+                        margin-left: 7px;
+                    }
+                }
+            }
+        }
+    }
+
+    .entities-filters-form {
+
+        .choices {
+
+            overflow: initial;
+            text-align: center;
+
+            @include mediaQuery(min-lg) {
+                min-width: 250px;
+                margin: 0 1rem;
+            }
+
+            .choices__inner {
+                background-repeat: no-repeat !important;
+                background-position-x: 95% !important;
+                background-position-y: 11px !important;
+                background-size: 25px !important;
+                box-shadow: none !important;
+                padding-left: 1rem !important;
+            }
+
+            &:not(.is-focused) {
+                .choices__inner {
+                    background-image: url(../../../../../medias/images/front/default/arrow-circle-down-primary.svg) !important;
+                }
+            }
+
+            &.is-focused {
+                .choices__inner {
+                    background-image: url(../../../../../medias/images/front/default/arrow-circle-up-primary.svg) !important;
+                }
+            }
+        }
+
+        .choices__button {
+            display: none;
+        }
+
+        .reset-select-wrap .choices__button {
+            display: inline-block;
+            position: absolute;
+            top: -8px;
+            left: -9px;
+            background: url(../../../../../medias/images/front/default/close-circle.svg) no-repeat;
+            background-size: 20px 20px !important;
+            width: 20px !important;
+            height: 20px !important;
+            cursor: pointer;
+        }
+    }
+
+    .filters-container-counter-inline {
+        border: 1px solid $gray-500;
+        border-radius: $border-radius;
+    }
+}
+
+//@import "../../variables";
+//
+//.search-filters-container {
+//
+//    border-bottom: 2px solid $primary;
+//
+//    @include mediaQuery(max-lg) {
+//
+//        &.mobile {
+//
+//            .btn {
+//                box-shadow: none !important;
+//            }
+//
+//            .dropdown-wrap:not(.with-search-text ){
+//
+//                flex: 0 0 100%;
+//
+//                .dropdown-menu {
+//                    width: 100%;
+//                }
+//            }
+//
+//            .dropdown-wrap.with-search-text {
+//
+//                flex: 0 0 calc(100% - 72px);
+//
+//                .dropdown-menu {
+//                    width: calc(100% + 72px);
+//                }
+//            }
+//
+//            .search-text-wrap {
+//
+//                flex: 0 0 72px;
+//                height: 72px;
+//
+//                .input-group-text {
+//                    padding-right: 0;
+//                }
+//            }
+//        }
+//    }
+//
+//    @include mediaQuery(between-lg-xl) {
+//        > .container {
+//            max-width: 97%;
+//        }
+//    }
+//
+//    .loader {
+//        border-radius: 0;
+//    }
+//
+//    .inner {
+//
+//        select.form-select {
+//
+//            border-width: 0 !important;
+//            color: $black !important;
+//            cursor: pointer;
+//            text-transform: uppercase;
+//            font-weight: 700;
+//            text-align: center;
+//
+//            @include mediaQuery(max-lg) {
+//                &:not(:last-child) {
+//                    margin-bottom: 1rem;
+//                }
+//            }
+//
+//            @include mediaQuery(min-lg) {
+//
+//                &:first-child {
+//                    margin-right: .5rem;
+//                }
+//
+//                &:last-child {
+//                    margin-left: .5rem;
+//                }
+//
+//                &:not(:first-child):not(:last-child) {
+//                    margin: 0 .5rem;
+//                }
+//            }
+//        }
+//
+//        select option {
+//
+//            &:not(:first-child) {
+//                font-weight: 500;
+//                text-transform: initial;
+//                text-align: center;
+//            }
+//
+//            &:first-child {
+//                text-transform: uppercase;
+//                font-weight: 700;
+//            }
+//        }
+//    }
+//
+//    .search-text-wrap {
+//
+//        flex: 0 0 20%;
+//
+//        .search-engine-form {
+//
+//            label {
+//                display: none;
+//            }
+//
+//            input.form-control {
+//                background-color: transparent !important;
+//                border-radius: 0 !important;
+//                border-top: 0;
+//                border-left: 0;
+//                border-right: 0;
+//                border-bottom: 2px solid $primary !important;
+//                height: 35px !important;
+//                line-height: 1 !important;
+//                min-height: initial !important;
+//                padding-left: 0 !important;
+//            }
+//
+//            .form-control::placeholder, input[type=search]::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+//                font-size: 13px;
+//            }
+//
+//            .form-control:-ms-input-placeholder, input[type=search]:-ms-input-placeholder { /* Internet Explorer 10-11 */
+//                font-size: 13px;
+//            }
+//
+//            .form-control::-ms-input-placeholder, input[type=search]::-ms-input-placeholder { /* Microsoft Edge */
+//                font-size: 13px;
+//            }
+//
+//            .form-control:placeholder-shown, input[type=search]:placeholder-shown {
+//                font-size: 13px;
+//            }
+//
+//            .input-group-text {
+//                background-color: transparent;
+//                border: 0;
+//            }
+//        }
+//    }
+//}

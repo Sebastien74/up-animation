@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2024-10-09, 8:55 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    TEMPLATE CMS :
+    ==============
+
+    1 ) Modules
+    3 ) Core import
+    4 ) Core
+
+------------------------------------------------------------------ */
+
+/*--------------------------------------
+   1 ) Modules
+--------------------------------------*/
+
+$enable-form: true;
+$enable-form-preloader: true;
+$enable-thanks-modal: true;
+$enable-breadcrumb: true;
+$enable-faq: true;
+$enable-alert: true;
+$enable-youtube: true;
+$enable-icon: true;
+$enable-pagination: true;
+
+/*-----------------------------------
+   3 ) Core import
+-----------------------------------*/
+
+@import "../vendor";
+@import "../components/information";
+
+/*-----------------------------------
+   4 ) Core
+-----------------------------------*/

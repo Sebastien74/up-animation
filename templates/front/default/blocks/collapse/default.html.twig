@@ -1,0 +1,24 @@
+{% trans_default_domain 'front_default' %}
+
+{% if haveContent %}
+    <div class="collapse-block w-100">
+        {% set btnStyle = intl.linkStyle and 'btn' in intl.linkStyle ? intl.linkStyle : 'btn btn-primary' %}
+        <button class="{{ btnStyle }}" role="button" data-bs-toggle="collapse" data-bs-target="#collapse-block-{{ block.id }}" aria-expanded="false" aria-controls="collapse-block-{{ block.id }}">
+            {% set label = intl.placeholder ? intl.placeholder : "Afficher plus"|trans %}
+            {{ intl.placeholder|raw }}
+        </button>
+        <div class="collapse bg-transparent" id="collapse-block-{{ block.id }}">
+            <div class="py-4">
+                {% if intl.title %}
+                    <h{{ intl.titleForce }} class="title">{{ intl.title|raw }}</h{{ intl.titleForce }}>
+                {% endif %}
+                {% if intl.introduction %}
+                    <p class="card-text introduction text-bold">{{ intl.introduction|raw }}</p>
+                {% endif %}
+                {% if intl.body %}
+                    <p class="card-text body">{{ intl.body|raw }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}

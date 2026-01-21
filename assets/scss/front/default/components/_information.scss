@@ -1,0 +1,74 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2021
+    Created on : 2021-09-05, 6:25 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT INFORMATION COMPONENTS :
+    =============================
+
+------------------------------------------------------------------ */
+
+body .information-container {
+
+    .title {
+        font-size: rem(25px);
+        line-height: rem(25px);
+    }
+
+    *:not(.title) {
+        font-size: 1rem !important;
+        line-height: 1.2 !important;
+    }
+
+    ul {
+        a:hover {
+            transition: all .3s ease-in-out;
+            color: $primary !important;
+        }
+    }
+
+    svg {
+        height: 18px;
+        width: auto;
+        fill: $primary !important;
+    }
+
+    ul li:not(:last-child){
+        margin-bottom: .5rem !important;
+    }
+
+    .address-information {
+
+        address  {
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            ul {
+                margin-top: 1rem !important;
+            }
+        }
+    }
+
+    $infoColors: map-get($elements, 'information-container');
+    @if map-has-key($infoColors, 'colors-in-backgrounds') {
+        @each $color-name, $color in map-get($infoColors, 'colors-in-backgrounds') {
+            .bg-#{$color-name} a, .bg-#{$color-name} a span {
+                color: #{$color} !important;
+            }
+        }
+    }
+
+    $infoColorsHover: map-get($elements, 'information-container-hover');
+    @if map-has-key($infoColorsHover, 'colors-in-backgrounds') {
+        @each $color-name, $color in map-get($infoColorsHover, 'colors-in-backgrounds') {
+            .bg-#{$color-name} a:hover, .bg-#{$color-name} a:hover span {
+                color: #{$color} !important;
+            }
+        }
+    }
+}

@@ -1,0 +1,172 @@
+{% trans_default_domain 'front_default' %}
+
+<h2>Definitions</h2>
+<p>
+    <b>Customer&nbsp;:</b> Any professional, legal or natural person whose legal capacity has been recognized under articles 1123 and seq. of the Civil Code, visiting the website under the application of present legal notice.<br>
+    <b>Prestations and services&nbsp;:</b> <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> puts at customers’ disposal&nbsp;:
+</p>
+<p><b>Content&nbsp;:</b> all constitutive elements of the information presented on the website, and particularly texts - images -videos.</p>
+<p><b>Customer’s information&nbsp;:</b> Hereafter referred to as “information” and corresponding to all personal data that may be held by <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> for the management of your account, the management of the customer relationship and for analysis and statistics purposes.</p>
+<p><b>User&nbsp;:</b> Web user visiting or using the aforementioned website.</p>
+<p><b>Personal Information&nbsp;:</b> « Information that allows, in any form, directly or indirectly, the identification of the natural persons to whom it applies » (Article 4 of Law No. 78-17 of 6 January 1978).</p>
+<p>The terms "personal data", "data subject", "processor" and "sensitive data" have the meaning defined by the General Data Protection Regulation (GDPR: no. 2016-679)</p>
+<h2 class="my-4 d-inline-block w-100">1. Website presentation.</h2>
+<p>In accordance with Article 6 of Law No. 2004-575 of 21 June 2004 on trust in the digital economy, users of the <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> website are informed of the identity of the various stakeholders involved in its implementation and monitoring:</p>
+<p>
+    <strong>Owner</strong>&nbsp;:
+    {% if companyName %}{{ companyName|raw }}{% else %}<span class="text-danger bold">Raison sociale</span>{% endif %}
+    {% if capital %} au capital de {{ capital|raw }}{% endif %}
+    {% if vatNumber %} - Numéro de TVA: {{ vatNumber|raw }}{% endif %}
+    {% if siretNumber %} - Numéro de SIRET: {{ siretNumber|raw }}{% endif %}
+    {% if companyAddress %} - {{ companyAddress|raw }}{% endif %}
+    <br>
+    <strong>Publication manager</strong>&nbsp;:
+    {% if managerName %}{{ managerName|raw }}{% else %}<span class="text-danger bold">Publication manager’s name</span>{% endif %}
+    {% if managerEmail %}{% if managerName %} - {% endif %}{{ managerEmail|raw }}{% else %}<span class="text-danger bold">Publication manager’s email address</span>{% endif %}
+    <br>
+    The publication manager is a natural or legal person.<br>
+    <strong>Webmaster</strong>&nbsp;:
+    {% if webmasterName %}{{ webmasterName|raw }}{% else %}<span class="text-danger bold">Nom du Webmaster</span>{% endif %}
+    {% if webmasterEmail %}{% if webmasterName %} - {% endif %}{{ webmasterEmail|raw }}{% endif %}
+    <br>
+    <strong>Host provider</strong>&nbsp;:
+    {% if hostName %}{{ hostName|raw }}{% else %}<span class="text-danger bold">Host name</span>{% endif %}<br>
+    {% if hostAddress %}{{ hostAddress|raw }}{% else %}<span class="text-danger bold">Host address</span>{% endif %}
+    <br>
+    <strong>Data protection officer</strong>&nbsp;:
+    {% if protectionOfficerName %}{{ protectionOfficerName|raw }}{% else %}<span class="text-danger bold">Data protection officer’s name</span>{% endif %}
+    {% if protectionOfficerEmail %}{% if protectionOfficerName %} - {% endif %}{{ protectionOfficerEmail|raw }}{% else %}<span class="text-danger bold">Data protection officer’s email address</span>{% endif %}
+    <br>
+</p>
+<h2 class="my-4 d-inline-block w-100">2. General using conditions of the website and the services offered.</h2>
+<p>This website is a work of the mind protected by the dispositions of the Intellectual Property Code and applicable International Regulations. The Customer may not, in any way, reuse, assign or operate on its own behalf all or part of the elements or works of the website.</p>
+<p>Use of <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> implies full acceptance of the following terms and conditions of use. These Terms of Use may be modified or supplemented at any time, so users of <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> are invited to consult them on a regular basis.</p>
+<p>This website is normally accessible to users at any time. However, an interruption due to technical maintenance can be decided by <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>, who will then endeavour to inform users beforehand of the dates and times of the intervention.
+    The website <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> is updated regularly by <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> responsible. In the same way, the legal notices can be modified at any time: they are nevertheless binding on the user who is invited to refer to them as often as possible in order to read them.
+</p>
+<h2 class="my-4 d-inline-block w-100">3. Description of the provided services.</h2>
+<p>The website <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> is intended to provide information on all the company’s activities.
+    <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> strives to provide as accurate information as possible on <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> However, it shall not be held responsible for any omissions, inaccuracies or deficiencies in the update, whether on its own account or on account of the third-party partners who provide it with this information.
+</p>
+<p>All information provided on <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> is indicative and might change. The information on <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>  is not exhaustive. Any information given is subject to changes ever since its publication online.</p>
+<h2 class="my-4 d-inline-block w-100">4. Contractual limitations on technical datas.</h2>
+<p>The website uses JavaScript technology. It shall not be held responsible for any material damages related to the use of the site. In addition, the user of the site accepts to access the site using a recent, virus-free material and with an updated browser of the latest generation <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> is hosted by a service provider in the territory of the European Union in accordance with the provisions of the General Data Protection Regulation (GDPR: no. 2016-679).
+</p>
+<p>The objective is to provide a benefit that ensures the best rate of accessibility. The host ensures the continuity of its service 24 hours a day, every day of the year. It reserves the right, however, to interrupt the hosting service for the shortest possible periods, in particular for the purpose of maintenance and improvement of its infrastructure, failure of its infrastructure or if the Services and Services generate traffic deemed abnormal.</p>
+<p> <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> and the host shall not be held responsible in case of malfunction of the Internet, telephone lines or related computer and telephony equipment.</p>
+<h2 class="my-4 d-inline-block w-100">5. Intellectual property and counterfeiting.</h2>
+<p> <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> is the owner of the intellectual property rights and holds the rights to use all the elements accessible on the website, including texts, images, graphics, logos, videos, icons and sounds. Any reproduction, representation, modification, publication, adaptation of all or part of the elements of the site, whatever the means or the process used, is prohibited, unless prior written authorization from: <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>.
+</p>
+<p>Any unauthorized use of the site or any of the elements it contains will be considered as constituting an infringement and prosecuted in accordance with the provisions of articles L.335-2 et seq. of the Code de Propriété Intellectuelle.</p>
+<h2 class="my-4 d-inline-block w-100">6. Limitations of Liability.</h2>
+<p> <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> acts as the site editor. <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> is responsible for the quality and veracity of the Content it publishes.</p>
+<p> <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> cannot be held responsible for any direct or indirect damage caused to the user’s material, when accessing the <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>, and resulting either from the use of equipment that does not meet the specifications indicated in point 4, or from the appearance of a bug or incompatibility.</p>
+<p> <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> may also not be held liable for indirect damages (such as loss of market or loss of opportunity) resulting from the use of <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>.
+    Interactive spaces (possibility to ask questions in the contact area) are available to users. <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> reserves the right to delete, without prior notice, any content deposited in this space that would contravene the legislation applicable in France, in particular the data protection provisions. If applicable, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> also reserves the right to challenge the civil and/or criminal liability of the user.
+</p>
+<h2 class="my-4 d-inline-block w-100">7. Management of personal data.</h2>
+<p>The Customer is informed of the regulations concerning marketing communication, the law of 21 June 2014 for trust in the Digital Economy, the Data Protection Act of 06 August 2004 and the General Regulation on Data Protection (GDPR: no. 2016-679).</p>
+<h3 class="mt-1 mb-3 d-inline-block w-100">7.1 Persons responsible for the collection of personal data</h3>
+<p>For Personal Data collected in the context of the creation of the User’s personal account and his navigation on the Site, the person responsible for the processing of Personal Data is: COMPANY. <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> is represented by {% if companyRepresentativeName %}{{ companyRepresentativeName|raw }}{% else %}<span class="text-danger bold">Nom du représentant légal de l’entreprise</span>{% endif %}, its legal representative</p>
+<p>As the controller of the data it collects, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> undertakes to respect.</p>
+<h3 class="mt-1 mb-3 d-inline-block w-100">7.2 Purpose of the data collected</h3>
+<p> <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> may process some or all of the data:</p>
+<ul>
+    <li>to enable navigation on the Website and the management and traceability of services and services ordered by the user: login and use data of the Website, billing, order history, etc.</li>
+    <li>to prevent and combat computer fraud (spamming, hacking, etc.): computer equipment used for browsing, IP address, password (hashed)</li>
+    <li>to improve navigation on the Site: login and usage data</li>
+    <li>to conduct optional satisfaction surveys on <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>&nbsp; email address</li>
+    <li>to carry out communication campaigns (sms, mail): phone number, email address</li>
+</ul>
+<p> <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> does not market your personal data, which is therefore only used by necessity or for statistical and analytical purposes.</p>
+<h3 class="mt-1 mb-3 d-inline-block w-100">7.3 Right of access, rectification and opposition</h3>
+<p>In accordance with current European regulations, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> Users have the following rights:</p>
+<ul>
+    <li>right of access (Article 15 GDPR) and rectification (Article 16 GDPR), updating, completeness of Users' data, right to lock in or delete personal Users' data (Article 17 GDPR), where they are inaccurate, incomplete, equivocal, outdated, or for which collection, use, disclosure or retention is prohibited</li>
+    <li>right to withdraw consent at any time (Article 13-2c GDPR)</li>
+    <li>right to limit the processing of Users' data (Article 18 GDPR)</li>
+    <li>right to define the fate of the Users' data after their death and to choose to whom <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> must communicate (or not) its data to a third party that they have previously designated
+       As soon as <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> becomes aware of the death of a User and in the absence of instructions from it, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> undertakes to destroy its data, unless their retention is necessary for evidentiary purposes or to meet a legal obligation.</li>
+</ul>
+<p>If the User wishes to know how <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> uses his Personal Data, request to rectify them or oppose their processing, the User may contact <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> in writing at the following address: {% if managerEmail %}{{ managerEmail }}{% else %} <span class="text-danger bold">Manager email</span>{% endif %}</p>
+<p>COMPANY – DPO,
+{% if protectionOfficerName %}{{ protectionOfficerName|raw }}{% else %}<span class="text-danger bold">Nom du délégué à la protection des données</span>{% endif %}
+{% if protectionOfficerAddress %}{% if protectionOfficerName %} <br> {% endif %}{{ protectionOfficerAddress|raw }}{% endif %}</p>
+<p>In this case, the User must indicate the Personal Data that he would like <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> to correct, update or delete, identifying himself precisely with a copy of an identity document (identity card or passport).</p>
+<p>
+    Requests for deletion of Personal Data will be subject to the obligations imposed on <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> by law, in particular as regards the preservation or archiving of documents. Finally, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> Users may lodge a complaint with the supervisory authorities, in particular the CNIL (<a
+        href="https://www.cnil.fr/en/plaintes" aria-label="CNIL">https://www.cnil.fr/en/plaintes</a>).
+</p>
+<h3 class="mt-1 mb-3 d-inline-block w-100">7.4 Non-communication of personal data</h3>
+<p>
+    <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> does not process, host or transfer the Information collected on its Customers to a country outside the European Union or recognized as “inadequate” by the European Commission without first informing the customer. However, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> remains free to choose its technical and commercial subcontractors on the condition that it provides sufficient guarantees with regard to the requirements of the General Data Protection Regulation (GDPR: no. 2016-679).
+</p>
+<p>
+    <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> agrees to take all necessary precautions to preserve the security of the Information and in particular that it is not communicated to unauthorized persons.However, if an incident affecting the integrity or confidentiality of the Customer’s Information is brought to the attention of <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>, the latter shall promptly inform the Customer and inform him of the corrective measures taken. In addition, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> does not collect any “sensitive data”.
+</p>
+<p>
+    The User’s Personal Data may be processed by subsidiaries of <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> and subcontractors (service providers), exclusively in order to achieve the purposes of this policy.
+</p>
+<p>
+    Within the limits of their respective responsibilities and for the purposes mentioned above, the main persons likely to have access to the data of the Users of <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> are mainly the agents of our customer service.
+</p>
+
+<h3 class="mt-1 mb-3 d-inline-block w-100">7.5 Types of data collected</h3>
+<p>For users of a Site <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>, we collect the following data which are essential for the operation of the service and which will be kept for a maximum period of 9 months after the end of the contractual relationship.<br>What data is collected</p>
+<p> <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> also collects information to improve the user experience and offer contextualized advice:<br>Data to improve user experience and provide contextualized advice</p>
+<p>This data is kept for a maximum period of 9 months after the end of the contractual relationship</p>
+<h2 class="my-4 d-inline-block w-100">8. Incident Notification</h2>
+<p>Whatever efforts are made, no method of transmission over the Internet and no method of electronic storage is completely secure. We cannot therefore guarantee absolute security. If we became aware of a security breach, we would notify the affected users so that they could take appropriate action. Our incident notification procedures take into account our legal obligations, whether at national or European level. We are committed to fully informing our customers of all matters relating to the security of their account and to providing them with all the information necessary to help them comply with their own regulatory reporting obligations</p>
+<p>
+    No personal information of the user of the site <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>is published without the user’s knowledge, exchanged, transferred, assigned or sold on any medium to third parties. Only the hypothesis of the acquisition of <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> and its rights would allow the transmission of said information to the prospective purchaser who would in turn be bound by the same obligation to preserve and modify the data vis-à-vis the user of the site <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>.
+</p>
+<h3 class="mt-1 mb-3 d-inline-block w-100">Security</h3>
+<p>
+    To ensure the security and confidentiality of Personal Data and Personal Health Data, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> uses networks protected by standard devices such as firewalls, pseudonymisation, encryption and passwords.
+</p>
+<p>
+    When processing Personal Data, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> shall take all reasonable measures to protect it from loss, misuse, unauthorized access, disclosure, alteration or destruction.
+</p>
+<h2 class="my-4 d-inline-block w-100">9. Hypertext and cookies</h2>
+<h3 class="mt-1 mb-3 d-inline-block w-100">9.1. « COOKIES »</h3>
+<p>
+    A "cookie" is a small information file sent to the User’s browser and stored within the User’s terminal (e.g.: computer, smartphone), (hereinafter "Cookies"). This file includes information such as the User’s domain name, the User’s Internet service provider, the User’s operating system, and the date and time of access. Under no circumstances may Cookies damage the User’s terminal.
+</p>
+<p>
+    <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> may process the User’s information about his visit to the Site, such as the pages visited, the searches carried out. This information enables <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> to improve the content of the Site and the User’s navigation.
+</p>
+<p>
+    As Cookies facilitate the navigation and/or the provision of services offered by the Site, the User may configure his browser to allow him to decide whether or not to accept them so that Cookies are stored in the terminal or, on the contrary, they should be rejected, either systematically or according to their issuer. The User may also configure his browser software so that the acceptance or refusal of Cookies is offered to him from time to time, before a Cookie is likely to be saved in his terminal. <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> informs the User that, in this case, not all the features of its navigation software may be available.
+</p>
+<p>
+    If the User refuses the storage of Cookies in his terminal or his browser, or if the User deletes those registered there, the User is informed that his navigation and his experience on the Site may be limited.This could also be the case when <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> or one of its service providers cannot recognise, for technical compatibility purposes, the type of browser used by the terminal, the language and display settings or the country from which the terminal appears to be connected to the Internet.
+</p>
+<p>
+    If applicable, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> declines all responsibility for the consequences related to the degraded functioning of the Site and any services offered by <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>, resulting (i) from the refusal of Cookies by the User (ii) the impossibility for <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> to save or consult the Cookies necessary for their operation due to the choice of the User. For the management of Cookies and the User’s choices, the configuration of each browser is different. It is described in the browser’s help menu, which will allow you to know how the User can change his wishes regarding Cookies.
+</p>
+<p>
+    At any time, the User may choose to express and modify his wishes regarding Cookies. <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> may also use the services of external service providers to help collect and process the information described in this section.
+</p>
+<p>
+    Finally, by clicking on the icons dedicated to social networks Twitter, Facebook, Linkedin and Google Plus on the Site ofhttps://alpex-cartier.felix-dev.com or its mobile application and if the User has accepted the deposit of cookies by continuing to browse the Website or the mobile application of <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>, Twitter, Facebook, Linkedin and Google Plus may also place cookies on your devices (computer, tablet, mobile phone).
+</p>
+<p>
+    These types of cookies are stored on your devices only with your consent, by continuing to browse the Website or the mobile application of <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>. At any time, the User may nevertheless withdraw his consent to <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> deposit this type of cookies.
+</p>
+<h3 class="mt-1 mb-3 d-inline-block w-100">Article 9.2. INTERNET TAGS</h3>
+<p>
+    <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> may occasionally use Internet tags (also called “tags”, or action tags, one-pixel GIFs, transparent GIFs, invisible GIFs, and one-on-one GIFs) and deploy them through a web analytics partner that may be located (and thus store the corresponding information, including the User’s IP address) in a foreign country.
+</p>
+<p>
+    These tags are placed both in online advertisements allowing users to access the Site, and on the various pages of it.
+</p>
+<p>
+    This technology allows <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> to evaluate visitor responses to the Site and the effectiveness of its actions (for example, the number of times a page is opened and the information accessed), as well as the use of this Site by the User.
+</p>
+<p>
+    The external service provider may collect information on visitors to the Site and other Internet sites through these tags, compile reports on the activity of the Site for the attention of <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>, and provide other services relating to the use of it and the Internet.
+</p>
+<h2 class="my-4 d-inline-block w-100">10. Applicable law and jurisdiction.</h2>
+<p>
+    Any dispute relating to the use of <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> is subject to French law. Apart from cases where the law does not permit it, exclusive jurisdiction shall be conferred on the competent courts of the City of the Court of Jurisdiction in the event of a dispute.
+</p>

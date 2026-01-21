@@ -1,0 +1,13 @@
+active: Active
+add: 'Add user'
+agreeTerms: 'Accepted general conditions'
+agreesTermsAt: 'General conditions accepted at'
+email: Email
+firstname: Lirstname
+lastLogin: 'Last login at'
+lastname: Name
+locale: Language
+login: Login
+plural: Users
+roles: Roles
+singular: User

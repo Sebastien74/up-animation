@@ -1,0 +1,35 @@
+{% extends 'front/'~website.configuration.template~'/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% block metaTitle %}{{ "Connectez-vous"|trans|htmlEntities }}{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
+{% endblock %}
+
+{% block body %}
+    {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+        pageTitle: "Connectez-vous"|trans,
+        thumbConfiguration: thumbConfigurationHeader
+    } %}
+    {% if granted('ROLE_ALLOWED_TO_SWITCH') %}
+        <div class="container mt-5 mb-5">
+            <div class="row d-flex">
+                <div class="col-lg-6 mx-auto">
+                    <div class="card form-container small-radius shadow">
+                        <div class="card-body form-ajax-container p-4">
+                            {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Vous êtes déjà connecté en tant qu'administrateur. Veuillez utiliser le commutateur pour vous connecter en tant qu'un autre utilisateur."|trans} only %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% trans_default_domain 'admin' %}
+
+{% if not form %}
+
+    {% set args = {website: websiteId(), export: true} %}
+    {% if interface.masterField is defined and interface.masterField != 'configuration' and interface.masterField != 'website' %}
+        {% set args = args|merge({(interface.masterField): interface.masterFieldId}) %}
+    {% endif %}
+    {% set haveParentMasterField = interface.parentMasterField is defined and interface.parentMasterField and interface.parentMasterFieldId is defined and interface.parentMasterFieldId %}
+    {% if haveParentMasterField %}
+        {% set args = args|merge({(interface.parentMasterField): interface.parentMasterFieldId}) %}
+    {% endif %}
+    {% if interface.configuration.uniqueLocale is defined and interface.configuration.uniqueLocale %}
+        {% set args = args|merge({entitylocale: interface.website.configuration.locale}) %}
+    {% endif %}
+
+    <a href="{{ path('admin_'~interface['name']~'_export', args) }}" class="btn btn-info standard">{{ 'fal upload'|icon(14, 14, 'white me-2') }}{{ "Exporter"|trans }}</a>
+
+{% else %}
+
+    <button class="btn btn-dark standard" data-bs-toggle="modal" data-bs-target="#export-modal">{{ 'fal upload'|icon(14, 14, 'white me-2') }}{{ "Exporter"|trans }}</button>
+
+    <div class="modal-wrapper float-start">
+        <div class="modal fade" id="export-modal" tabindex="-1"
+             role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content border refer-preloader text-start pb-5 pt-3">
+                    {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only %}
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center w-100">{{ 'fal upload'|icon(50, 50, 'dark') }}</h5>
+                        <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                            {{ 'fal times'|icon(20, 20, 'dark') }}
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex">
+                        <div class="container my-auto ajax-content">
+                            <h2 class="main-title text-center fw-bold mb-5">{{ "Exporter"|trans }}</h2>
+                            {{ form_start(form, { attr: {
+                                novalidate: "novalidate",
+                                id: "export-form",
+                                action: path('admin_'~interface.name~'_export', {website: websiteId()})
+                            }}) }}
+                                <div class="row">
+                                    {% include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only %}
+                                </div>
+                                <div class="w-100 text-center modal-buttons">
+                                    <button type="submit" class="btn btn-info standard">{{ "Exporter"|trans }}</button>
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endif %}

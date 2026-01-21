@@ -1,0 +1,10 @@
+{% trans_default_domain 'front_default' %}
+
+{% set alertClass = alertClass is defined ? alertClass : false %}
+{% set websiteTemplate = websiteTemplate is defined ? websiteTemplate : website().configuration.template %}
+
+{% for alert, flashes in app.session.flashbag.all %}
+    {% for flash in flashes %}
+        {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: alert, alertClass: alertClass, message: flash} only %}
+    {% endfor %}
+{% endfor %}

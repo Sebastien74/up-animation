@@ -1,0 +1,49 @@
+{% trans_default_domain 'admin' %}
+
+{% set icons = {
+    success: 'far check',
+    info: 'fas info',
+    warning: 'fas exclamation',
+    danger: 'far exclamation-triangle',
+    error_form: 'far exclamation-triangle',
+    error: 'far exclamation-triangle',
+    undefined: 'fas info',
+} %}
+
+{% set class = class is defined ? class : null %}
+{% set display = display is defined ? display : "toast" %}
+{% set alert = alert is defined ? alert : "info" %}
+{% set alert = alert == "error" ? "danger" : alert %}
+{% set icon = icons[alert] is defined ? icons[alert] : icons['undefined'] %}
+{% set size = size is defined ? size : null %}
+{% set badge = badge is defined ? badge : null %}
+
+{% if 'alert' == display %}
+    <div class="alert alert-{{ alert }} position-relative d-flex p-0 {% if class %} {{ class }}{% endif %}">
+        <div class="icon d-flex align-items-center justify-content-center position-relative">{{ icon|icon(null, 22) }}</div>
+        <div class="message px-4 py-3 w-100">
+            {% if 'small' == size %}<small class="d-inline-block">{% endif %}{{ message|raw }}{% if 'small' == size %}</small>{% endif %}
+            {% if badge %}
+                <div class="position-absolute fw-700 badge bg-{{ alert }}">{{ badge|raw }}</div>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast toast-alert fade show border-0 bg-{{ alert }}" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header d-flex border-0 no-radius py-3 px-3">
+                <div class="inner d-flex align-items-center">
+                    {{ icon|icon(null, 17, alert~' me-2') }}
+                    <div class="message">
+                        {% if message is defined %}
+                            {{ message|raw }}
+                        {% else %}
+                            {{ "Que se passe-t-il ?"|trans }}
+                        {% endif %}
+                    </div>
+                </div>
+                <button type="button" class="btn-close ms-3" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+{% endif %}

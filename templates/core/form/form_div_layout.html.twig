@@ -1,0 +1,604 @@
+{# Widgets #}
+
+{%- block form_widget -%}
+    {% if compound %}
+        {{- block('form_widget_compound') -}}
+    {% else %}
+        {{- block('form_widget_simple') -}}
+    {% endif %}
+{%- endblock form_widget -%}
+
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    {%- if type == 'range' or type == 'color' -%}
+        {# Attribute "required" is not supported #}
+        {%- set required = false -%}
+    {%- endif -%}
+    {% set addonSide = attr.addon is defined and attr.side is defined and attr.side ? attr.side : 'left' %}
+    {% set addonWidth = attr.addonWidth is defined and attr.addonWidth ? attr.addonWidth : null %}
+    {% set addonHeight = attr.addonHeight is defined and attr.addonHeight ? attr.addonHeight : 18 %}
+    {% set haveAddon = attr.addon is defined and attr.addon %}
+    {% set asEmoji = attr.class is defined and 'emoji-input' in attr.class %}
+    {% set asFileBtn = attr['data-type'] is defined and 'as-btn' in attr['data-type'] %}
+    {% if haveAddon %}
+        <div class="input-group">
+        {% if addonSide == 'left' %}
+            <span class="input-group-text addon" addon="{{ attr.addon }}">{{ attr.addon|icon(addonWidth, addonHeight) }}</span>
+        {% endif %}
+    {% endif %}
+    {% if asEmoji %}
+        <div class="input-group">
+    {% endif %}
+    {% if type is defined and type == 'file' %}
+        <div class="position-relative file-wrap-group{% if asFileBtn %} d-flex align-items-center{% endif %}">
+            {% if asFileBtn and label %}
+                <div class="label-help d-flex flex-column py-2 ps-4 pe-3 w-100">
+                    <label for="{{ id }}" class="form-label cursor mb-0{% if required %} required{% endif %}">{{ label|raw }}&nbsp;{% if required %}&nbsp;<sup class="text-danger asterisk">*</sup>{% endif %}</label>
+                    <div class="preview w-100 d-none"></div>
+                    {% if help %}
+                        <label for="{{ id }}" class="form-text mb-0 help-text cursor file-btn-help-text">{{ help|raw }}</label>
+                    {% endif %}
+                </div>
+            {% endif %}
+    {% endif %}
+    {%- if type is defined and type == 'password' -%}
+        <div class="input-group">
+    {%- endif -%}
+    {% if value|isDateTime %}
+        {% set formatDate = app.request.locale|formatDate %}
+        {% set value = value|date(formatDate.inputDate) %}
+    {% endif %}
+        <input type="{{ type }}" {{ block('widget_attributes') }}{% if value is not empty %} value="{{ value }}"{% endif %}>
+    {% if type is defined and type == 'password' %}
+            <span class="input-group-text show-password">
+                <span class="show-icon">{{ 'fad eye'|icon(null, 14) }}</span>
+                <span class="hide-icon d-none">{{ 'fad eye-slash'|icon(null, 14) }}</span>
+            </span>
+        </div>
+    {% endif %}
+    {% if asEmoji %}
+        {% set modalId = 'emoji-modal-'~uniqId() %}
+            <span class="input-group-text addon bg-info cursor" data-bs-toggle="modal" data-bs-target="#{{ modalId }}">{{ 'fal plus'|icon(17, 17, 'white') }}</span>
+        </div>
+        <div class="modal emoji-modal fade" id="{{ modalId }}" tabindex="-1" aria-labelledby="{{ modalId }}-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body d-flex justify-content-center p-0">
+                        <button type="button" class="btn-close d-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="emoji-picker position-relative"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if haveAddon %}
+    {% if addonSide == 'right' %}
+        <span class="input-group-text addon" addon="{{ attr.addon }}">{{ attr.addon|icon(addonWidth, addonHeight) }}</span>
+    {% endif %}
+    </div>
+    {% endif %}
+    {% if type is defined and type == 'file' %}
+            {% if asFileBtn %}
+                {% set btnColor = attr['data-color'] is defined and attr['data-color'] ? attr['data-color'] : 'primary' %}
+                {% set btnLabel = attr['data-label'] is defined and attr['data-label'] ? attr['data-label'] : 'Parcourir'|trans %}
+                <div class="d-inline-flex ps-3 ms-auto align-items-center">
+                    <span class="clear-wrap d-none align-items-center justify-content-center btn btn-outline-{{ btnColor }} p-0 me-2">{{ 'fal times'|icon(20, 20, 'cursor clear') }}</span>
+                    <label for="{{ id }}" class="d-flex align-items-center justify-content-center">
+                        <svg class="initial input-file-upload-svg cursor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82 82" xmlns:xlink="http://www.w3.org/1999/xlink" width="82px" height="82px">
+                            <path fill-rule="evenodd" fill="rgb(127, 19, 0)" d="M41.000,-0.000 C63.644,-0.000 82.000,18.356 82.000,40.1000 C82.000,63.644 63.644,82.000 41.000,82.000 C18.356,82.000 -0.000,63.644 -0.000,40.1000 C-0.000,18.356 18.356,-0.000 41.000,-0.000 Z"/>
+                            <path fill-rule="evenodd" fill="rgb(255, 255, 255)" d="M64.081,38.727 L64.081,35.887 C64.081,32.920 61.706,30.514 58.776,30.514 L41.710,30.514 C41.134,30.518 40.606,30.191 40.346,29.670 L38.997,26.922 C38.226,25.358 36.647,24.371 34.920,24.374 L23.917,24.374 C20.987,24.374 18.612,26.780 18.612,29.747 L18.612,58.913 C18.605,59.046 18.605,59.179 18.612,59.312 C18.683,60.243 18.985,61.141 19.491,61.922 C20.484,63.409 22.144,64.296 23.917,64.286 L55.745,64.286 C57.918,64.299 59.875,62.957 60.671,60.908 L66.733,45.558 C67.787,42.929 66.620,39.925 64.081,38.727 ZM60.292,37.422 L29.979,37.422 C27.508,37.421 25.283,38.939 24.356,41.260 L22.401,46.233 L22.401,29.747 C22.401,28.899 23.080,28.212 23.917,28.212 L34.920,28.212 C35.211,28.207 35.478,28.375 35.602,28.641 L36.966,31.389 C37.859,33.214 39.700,34.364 41.710,34.352 L58.776,34.352 C59.613,34.352 60.292,35.039 60.292,35.887 L60.292,37.422 Z"/>
+                            <path fill-rule="evenodd" fill="rgb(248, 161, 102)" d="M49.561,12.089 C52.970,12.089 55.733,14.852 55.733,18.260 C55.733,21.669 52.970,24.432 49.561,24.432 C46.153,24.432 43.390,21.669 43.390,18.260 C43.390,14.852 46.153,12.089 49.561,12.089 Z"/>
+                        </svg>
+                    </label>
+                </div>
+            {% else %}
+                <span class="clear-wrap position-absolute d-none cursor">{{ 'fal times'|icon(16, 16, 'cursor clear') }}</span>
+            {% endif %}
+        </div>
+    {% endif %}
+{%- endblock form_widget_simple -%}
+
+{%- block form_widget_compound -%}
+    {%- set inAdmin = inAdmin() -%}
+    {%- set compound_attributes = block('widget_container_attributes') -%}
+    {% if inAdmin and 'intl' == name %}
+        {%- set compound_attributes = 'class=' not in compound_attributes ? compound_attributes~' class="row compound-group"' -%}
+    {% else %}
+        {%- set compound_attributes = 'class=' not in compound_attributes ? compound_attributes~' class="row m-0 compound-group"' -%}
+    {% endif %}
+    <div {{ compound_attributes|raw }}>
+        {%- if form is rootform -%}
+            {{ form_errors(form) }}
+        {%- endif -%}
+        {{- block('form_rows') -}}
+        {{- form_rest(form) -}}
+    </div>
+{%- endblock form_widget_compound -%}
+
+{%- block collection_widget -%}
+    {% if prototype is defined and not prototype.rendered %}
+        {%- set attr = attr|merge({'data-prototype': form_row(prototype) }) -%}
+    {% endif %}
+    {{- block('form_widget') -}}
+{%- endblock collection_widget -%}
+
+{%- block textarea_widget -%}
+    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+{%- endblock textarea_widget -%}
+
+{%- block choice_widget -%}
+    {% if expanded %}
+        {{- block('choice_widget_expanded') -}}
+    {% else %}
+        {{- block('choice_widget_collapsed') -}}
+    {% endif %}
+{%- endblock choice_widget -%}
+
+{%- block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for child in form %}
+            {{- form_widget(child) -}}
+            {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
+{%- block choice_widget_collapsed -%}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
+        {% set required = false %}
+    {%- endif -%}
+    {% set havePlaceholder = placeholder is defined and placeholder|striptags|length > 0 %}
+    {%- if attr['reset-btn'] is defined and attr['reset-btn'] and data is defined and data is not empty and choices|length > 0 and havePlaceholder -%}
+        <div class="reset-select-wrap position-relative">
+            {%- if attr['data-display'] is defined and 'classic' == attr['data-display'] -%}
+                <span class="position-absolute clear cursor d-flex align-items-center justify-content-center"></span>
+            {%- endif -%}
+    {%- endif -%}
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {%- if placeholder is not none -%}
+            <option value=""{% if placeholder_attr|default({}) %}{% with { attr: placeholder_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder|raw : placeholder|trans({}, translation_domain))|raw }}</option>
+        {%- endif -%}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {% set render_preferred_choices = true %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {%- set render_preferred_choices = false -%}
+        {{- block('choice_widget_options') -}}
+    </select>
+    {%- if attr['reset-btn'] is defined and attr['reset-btn'] and data is defined and data is not empty and choices|length > 0 and havePlaceholder -%}
+        </div>
+    {%- endif -%}
+{%- endblock choice_widget_collapsed -%}
+
+{%- block choice_widget_options -%}
+    {% for group_label, choice in options %}
+        {%- if choice is iterable -%}
+            <optgroup label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
+                {% set options = choice %}
+                {{- block('choice_widget_options') -}}
+            </optgroup>
+        {%- else -%}
+            {% set choice = choice.data.value is defined and '@' in choice.data.value ? choice.data : choice %}
+            <option value="{{ choice.value }}"{% if choice.attr %}{% with { attr: choice.attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if not render_preferred_choices|default(false) and choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label|raw : choice.label|trans(choice.labelTranslationParameters, choice_translation_domain)|raw }}</option>
+        {%- endif -%}
+    {% endfor %}
+{%- endblock choice_widget_options -%}
+
+{%- block checkbox_widget -%}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
+{%- endblock checkbox_widget -%}
+
+{%- block radio_widget -%}
+    <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
+{%- endblock radio_widget -%}
+
+{%- block datetime_widget -%}
+    {% if widget == 'single_text' %}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- form_errors(form.date) -}}
+            {{- form_errors(form.time) -}}
+            {{- form_widget(form.date) -}}
+            {{- form_widget(form.time) -}}
+        </div>
+    {%- endif -%}
+{%- endblock datetime_widget -%}
+
+{%- block date_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{ block('form_widget_simple') }}
+    {%- else -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- date_pattern|replace({
+                '{{ year }}':  form_widget(form.year),
+                '{{ month }}': form_widget(form.month),
+                '{{ day }}':   form_widget(form.day),
+            })|raw -}}
+        </div>
+    {%- endif -%}
+{%- endblock date_widget -%}
+
+{%- block time_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{ block('form_widget_simple') }}
+    {%- else -%}
+        {%- set vars = widget == 'text' ? { 'attr': { 'size': 1 }} : {} -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{ form_widget(form.hour, vars) }}{% if with_minutes %}:{{ form_widget(form.minute, vars) }}{% endif %}{% if with_seconds %}:{{ form_widget(form.second, vars) }}{% endif %}
+        </div>
+    {%- endif -%}
+{%- endblock time_widget -%}
+
+{%- block dateinterval_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- form_errors(form) -}}
+            <table class="{{ table_class|default('') }}" role="presentation">
+                <thead>
+                <tr>
+                    {%- if with_years %}<th>{{ form_label(form.years) }}</th>{% endif -%}
+                    {%- if with_months %}<th>{{ form_label(form.months) }}</th>{% endif -%}
+                    {%- if with_weeks %}<th>{{ form_label(form.weeks) }}</th>{% endif -%}
+                    {%- if with_days %}<th>{{ form_label(form.days) }}</th>{% endif -%}
+                    {%- if with_hours %}<th>{{ form_label(form.hours) }}</th>{% endif -%}
+                    {%- if with_minutes %}<th>{{ form_label(form.minutes) }}</th>{% endif -%}
+                    {%- if with_seconds %}<th>{{ form_label(form.seconds) }}</th>{% endif -%}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {%- if with_years %}<td>{{ form_widget(form.years) }}</td>{% endif -%}
+                    {%- if with_months %}<td>{{ form_widget(form.months) }}</td>{% endif -%}
+                    {%- if with_weeks %}<td>{{ form_widget(form.weeks) }}</td>{% endif -%}
+                    {%- if with_days %}<td>{{ form_widget(form.days) }}</td>{% endif -%}
+                    {%- if with_hours %}<td>{{ form_widget(form.hours) }}</td>{% endif -%}
+                    {%- if with_minutes %}<td>{{ form_widget(form.minutes) }}</td>{% endif -%}
+                    {%- if with_seconds %}<td>{{ form_widget(form.seconds) }}</td>{% endif -%}
+                </tr>
+                </tbody>
+            </table>
+            {%- if with_invert %}{{ form_widget(form.invert) }}{% endif -%}
+        </div>
+    {%- endif -%}
+{%- endblock dateinterval_widget -%}
+
+{%- block number_widget -%}
+    {# type="number" doesn't work with floats in localized formats #}
+    {%- set type = type|default('text') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock number_widget -%}
+
+{%- block integer_widget -%}
+    {%- set type = type|default('number') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock integer_widget -%}
+
+{%- block money_widget -%}
+    {{ money_pattern|form_encode_currency(block('form_widget_simple')) }}
+{%- endblock money_widget -%}
+
+{%- block url_widget -%}
+    {%- set type = type|default('url') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock url_widget -%}
+
+{%- block search_widget -%}
+    {%- set type = type|default('search') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock search_widget -%}
+
+{%- block percent_widget -%}
+    {%- set type = type|default('text') -%}
+    {{ block('form_widget_simple') }}{% if symbol %} {{ symbol|default('%') }}{% endif %}
+{%- endblock percent_widget -%}
+
+{%- block password_widget -%}
+    {%- set type = type|default('password') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock password_widget -%}
+
+{%- block hidden_widget -%}
+    {%- set type = type|default('hidden') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock hidden_widget -%}
+
+{%- block email_widget -%}
+    {%- set type = type|default('email') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock email_widget -%}
+
+{%- block range_widget -%}
+    {% set type = type|default('range') %}
+    {{- block('form_widget_simple') -}}
+{%- endblock range_widget %}
+
+{%- block button_widget -%}
+    {%- if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- elseif label is not same as(false) -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    {% set icon = attr['data-icon'] is defined and attr['data-icon'] ? attr['data-icon'] : null %}
+    {% set iconSide = attr['data-icon-side'] is defined and attr['data-icon-side'] ? attr['data-icon-side'] : 'right' %}
+    {% set iconSize = attr['data-icon-size'] is defined and attr['data-icon-size'] ? attr['data-icon-size'] : 17 %}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
+        {% if icon and 'left' == iconSide %}
+            {{ icon|icon(null, iconSize, 'me-2', {icon: 'admin-' in app.request.uri}) }}
+        {% endif %}
+        {%- if translation_domain is same as(false) -%}
+            {%- if label_html is same as(false) -%}
+                {{- label -}}
+            {%- else -%}
+                {{- label|raw -}}
+            {%- endif -%}
+        {%- else -%}
+            {%- if label_html is same as(false) -%}
+                {{- label|trans(label_translation_parameters, translation_domain) -}}
+            {%- else -%}
+                {{- label|trans(label_translation_parameters, translation_domain)|raw -}}
+            {%- endif -%}
+        {%- endif -%}
+        {% if icon and 'right' == iconSide %}
+            {{ icon|icon(null, iconSize, 'ms-2') }}
+        {% endif %}
+    </button>
+{%- endblock button_widget -%}
+
+{%- block submit_widget -%}
+    {%- set type = type|default('submit') -%}
+    {{ block('button_widget') }}
+{%- endblock submit_widget -%}
+
+{%- block reset_widget -%}
+    {%- set type = type|default('reset') -%}
+    {{ block('button_widget') }}
+{%- endblock reset_widget -%}
+
+{%- block tel_widget -%}
+    {%- set type = type|default('tel') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock tel_widget -%}
+
+{%- block color_widget -%}
+    {%- set type = type|default('color') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock color_widget -%}
+
+{%- block week_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{ block('form_widget_simple') }}
+    {%- else -%}
+        {%- set vars = widget == 'text' ? {attr: {size: 1}} : {} -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{ form_widget(form.year, vars) }}-{{ form_widget(form.week, vars) }}
+        </div>
+    {%- endif -%}
+{%- endblock week_widget -%}
+
+{# Labels #}
+
+{%- block form_label -%}
+    {% if label is not same as(false) -%}
+        {% if not compound -%}
+            {% set label_attr = label_attr|merge({for: id}) %}
+        {%- endif -%}
+        {% if required -%}
+            {% set label_attr = label_attr|merge({class: (label_attr.class|default('')~' required')|trim}) %}
+        {%- endif -%}
+        <{{ element|default('label') }}{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
+        {{- block('form_label_content') -}}
+        </{{ element|default('label') }}>
+    {%- endif -%}
+{%- endblock form_label -%}
+
+{%- block form_label_content -%}
+    {%- if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    {%- if translation_domain is same as(false) -%}
+        {%- if label_html is same as(false) -%}
+            {{- label -}}
+        {%- else -%}
+            {{- label|raw -}}
+        {%- endif -%}
+    {%- else -%}
+        {%- if required -%}
+            {%- set label = label~'&nbsp;<sup class="text-danger asterisk">*</sup>' -%}
+            {%- if not inAdmin() -%}
+                {%- set label = '<span class="label-wrap">'~label~'</span>' -%}
+            {%- endif -%}
+        {%- endif -%}
+        {% if name is defined and name == "adminName" %}
+            {% set showInfo = attr['data-disabled-help'] is not defined or attr['data-disabled-help'] is defined and not attr['data-disabled-help'] %}
+            {% if showInfo %}
+                {%- set label = label~' <small class="text-muted text-italic"> '~"(Visible uniquement dans le back office)"|trans({}, 'admin')|raw~'</small>' -%}
+            {% endif %}
+        {% endif %}
+        {%- if label_html is same as(false) -%}
+            {{- label|trans(label_translation_parameters, translation_domain)|raw -}}
+        {%- else -%}
+            {{- label|trans(label_translation_parameters, translation_domain)|raw -}}
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock form_label_content -%}
+
+{%- block button_label -%}{%- endblock -%}
+
+{# Help #}
+
+{% block form_help -%}
+    {%- if help is not empty -%}
+        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('')~' help-text')|trim}) -%}
+        <{{ element|default('div') }} id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
+        {{- block('form_help_content') -}}
+        </{{ element|default('div') }}>
+    {%- endif -%}
+{%- endblock form_help %}
+
+{% block form_help_content -%}
+    {%- if translation_domain is same as(false) -%}
+        {%- if help_html is same as(false) -%}
+            {{- help|raw -}}
+        {%- else -%}
+            {{- help|raw -}}
+        {%- endif -%}
+    {%- else -%}
+        {%- if help_html is same as(false) -%}
+            {{- help|trans(help_translation_parameters, translation_domain)|raw -}}
+        {%- else -%}
+            {{- help|trans(help_translation_parameters, translation_domain)|raw -}}
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock form_help_content %}
+
+{# Rows #}
+
+{%- block repeated_row -%}
+    {#
+    No need to render the errors here, as all errors are mapped
+    to the first child (see RepeatedTypeValidatorExtension).
+    #}
+    {{- block('form_rows') -}}
+{%- endblock repeated_row -%}
+
+{%- block form_row -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id~"_help"}} -%}
+    {%- endif -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_label(form) -}}
+        {{- form_errors(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_help(form) -}}
+    </div>
+{%- endblock form_row -%}
+
+{%- block button_row -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock button_row -%}
+
+{%- block hidden_row -%}
+    {{ form_widget(form) }}
+{%- endblock hidden_row -%}
+
+{# Misc #}
+
+{%- block form -%}
+    {{ form_start(form) }}
+    {{- form_widget(form) -}}
+    {{ form_end(form) }}
+{%- endblock form -%}
+
+{%- block form_start -%}
+    {%- do form.setMethodRendered() -%}
+    {% set method = method|upper %}
+    {%- if method in ["GET", "POST"] -%}
+        {% set form_method = method %}
+    {%- else -%}
+        {% set form_method = "POST" %}
+    {%- endif -%}
+<form{% if name != '' %} name="{{ name }}"{% endif %} method="{{ form_method|lower }}"{% if action != '' %} action="{{ action }}"{% endif %}{{ block('attributes') }}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {%- if form_method != method -%}
+        <input type="hidden" name="_method" value="{{ method }}">
+    {%- endif -%}
+    {%- endblock form_start -%}
+
+    {%- block form_end -%}
+    {%- if not render_rest is defined or render_rest -%}
+        {{ form_rest(form) }}
+    {%- endif -%}
+</form>
+{%- endblock form_end -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <ul>
+            {%- for error in errors -%}
+                <li>{{ error.message }}</li>
+            {%- endfor -%}
+        </ul>
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{%- block form_rest -%}
+    {% for child in form -%}
+        {% if not child.rendered %}
+            {{- form_row(child) -}}
+        {% endif %}
+    {%- endfor -%}
+
+    {% if not form.methodRendered and form is rootform %}
+        {%- do form.setMethodRendered() -%}
+        {% set method = method|upper %}
+        {%- if method in ["GET", "POST"] -%}
+            {% set form_method = method %}
+        {%- else -%}
+            {% set form_method = "POST" %}
+        {%- endif -%}
+
+        {%- if form_method != method -%}
+            <input type="hidden" name="_method" value="{{ method }}">
+        {%- endif -%}
+    {% endif -%}
+{% endblock form_rest %}
+
+{# Support #}
+
+{%- block form_rows -%}
+    {% for child in form|filter(child => not child.rendered) %}
+        {{- form_row(child) -}}
+    {% endfor %}
+{%- endblock form_rows -%}
+
+{%- block widget_attributes -%}
+    id="{{ id }}" name="{{ full_name }}"
+    {%- if disabled %} disabled="disabled"{% endif -%}
+    {%- if required %} required="required"{% endif -%}
+    {{ block('attributes') }}
+{%- endblock widget_attributes -%}
+
+{%- block widget_container_attributes -%}
+    {%- if id is not empty %}id="{{ id }}"{% endif -%}
+    {{ block('attributes') }}
+{%- endblock widget_container_attributes -%}
+
+{%- block button_attributes -%}
+    id="{{ id }}" name="{{ full_name }}"{% if disabled %} disabled="disabled"{% endif -%}
+    {{ block('attributes') }}
+{%- endblock button_attributes -%}
+
+{% block attributes -%}
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ translation_domain is same as(false) or attrvalue is null ? attrvalue : attrvalue|trans(attr_translation_parameters, translation_domain) }}"
+        {%- elseif attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) and not attrvalue|isArray -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock attributes -%}

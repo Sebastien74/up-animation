@@ -1,0 +1,17 @@
+add: 'Add action'
+faq-view: FAQ
+form-view: Form
+gallery-view: Gallery
+map-view: Map
+menu-view: Navigation
+news-index: 'News list'
+news-index-categories: 'List of news filtered by category'
+news-teaser: 'Teaser news'
+newsletter-campaign-view: 'Newsletter subscription form'
+plural: Actions
+search-view: 'Search engine'
+singular: Action
+sitemap-view: Sitemap
+slider-view: Carousel
+tab-view: Tabs
+table-view: Table

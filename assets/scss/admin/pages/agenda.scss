@@ -1,0 +1,123 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-09-30, 10:47 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    AGENDA :
+    ===========
+
+------------------------------------------------------------------ */
+
+#agenda-calendar-edition {
+
+    .card-header {
+
+        border-top-right-radius: var(--bs-border-radius);
+        border-top-left-radius: var(--bs-border-radius);
+        padding: 20px;
+
+        h4 {
+            font-size: 24px;
+        }
+    }
+}
+
+#modal-event-agenda {
+
+    .modal-header .btn-close {
+        background: transparent;
+        position: absolute;
+        right: 30px;
+        top: 25px;
+    }
+
+    .btn-info {
+        padding: 0.375rem 5rem;
+    }
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+
+    margin-bottom: 0 !important;
+    padding: 15px !important;
+    color: #fff;
+
+    .fc-toolbar-title {
+        font-weight: 300;
+    }
+
+    button {
+        background-color: var(--fc-button-bg-color);
+        border-color: transparentize(white, .2);
+    }
+}
+
+.fc-daygrid-day {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+#period_publicationStart_time_hour,
+#period_publicationStart_time_minute,
+#period_publicationStart .sr-only,
+#period_publicationEnd_time_hour,
+#period_publicationEnd_time_minute,
+#period_publicationEnd .sr-only {
+    display: none;
+}
+
+#period_publicationStart,
+#period_publicationEnd {
+    select {
+        width: 33%;
+    }
+}
+
+.fc-h-event, .fc-event {
+    cursor: pointer !important;
+    padding: 5px 5px !important;
+}
+
+.fc-daygrid-event-dot {
+    display: none !important;
+}
+
+.fc-direction-ltr .fc-daygrid-event .fc-event-time {
+    font-weight: 700;
+}
+
+th.fc-col-header-cell {
+    color: #212529;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 20px;
+    padding: 7px 0 !important;
+    text-transform: uppercase;
+    background: #e9ecef;
+}
+
+.fc-day-today {
+    background: #d4e7f5 !important;
+}
+
+.fc-day-past {
+
+    opacity: .3;
+    background-color: #ececec;
+
+    &:hover {
+        background-color: #c8cfd7 !important
+    }
+}
+
+.fc-liquid-hack td, .fc-liquid-hack th {
+    position: initial !important;
+}
+
+.fc .fc-daygrid-day-number {
+    padding: 10px 15px !important;
+    display: inline-block !important;
+}

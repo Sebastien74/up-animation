@@ -1,0 +1,243 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set website = website is defined ? website : website() %}
+{% set intlMediaZone = layoutRelations['zones']['medias'][zone.id] is defined ? layoutRelations['zones']['medias'][zone.id] : {} %}
+{% set intlZone = layoutRelations['zones']['intls'][zone.id] is defined ? layoutRelations['zones']['intls'][zone.id] : null %}
+{% set bgParallax = zone.backgroundParallax %}
+{% set zoneHaveFile = intlMediaZone.media.filename is defined and intlMediaZone.media.filename %}
+{% set bgImgZone = zoneHaveFile and bgParallax ? intlMediaZone : null %}
+{% set bgImgStyle = (zoneHaveFile and not bgParallax) or zone.hexadecimalCode ? intlMediaZone|file({}, {style: true, entity: zone, placeholder: false}) : null %}
+{% set colsGrids = zone.grid %}
+{% set haveTitleHeader = false %}
+{% set fullSize = zone.fullSize %}
+{% set zoneClasses = zoneClasses(zone) %}
+{% set zoneId = zone.customId ? zone.customId : zone.id %}
+{% set zoneEffects = zone|effectsAttrs %}
+{% set mainBlockCategories = mainBlockCategories is defined ? mainBlockCategories : ['content', 'core', 'global'] %}
+{% set interfaceName = interfaceName is defined ? interfaceName : (entity is defined ? interfaceName(entity) : null) %}
+{% set zoneBgFullSize = zone.backgroundFullSize %}
+{% set zoneContainerBg = not zoneBgFullSize and zone.backgroundColor != ('' and 'transparent') ? zone.backgroundColor : null %}
+{% set zoneMarginsAndPaddings = margins(zone)~paddings(zone) %}
+{% set sectionEl = 'no-title' in zoneClasses or not zone.asSection ? 'div' : 'section' %}
+{% set zoneHide = zone.hide or app.request.locale in zone.hideLocales %}
+
+{#{% if 'my-custom-class' in zoneClasses and not bgImgZone and not bgImgStyle %}#}
+{#    {% set bgImgStyle = asset('build/front/'~websiteTemplate~'/images/my-custom-img.jpg', 'front_default')|file({}, {#}
+{#        style: true,#}
+{#        entity: zone,#}
+{#        mobile: asset('build/front/'~websiteTemplate~'/images/my-custom-img-mobile.jpg', 'front_default'),#}
+{#        tablet: asset('build/front/'~websiteTemplate~'/images/my-custom-img-tablet.jpg', 'front_default'),#}
+{#        placeholder: false }) %}#}
+{#{% endif %}#}
+
+{#{% if 'video-bg' in zoneClasses %}#}
+{#    <video aria-hidden="true" tabindex="-1" autoplay loop muted playsinline class="video-background">#}
+{#        <source src="{{ asset('build/front/'~websiteTemplate~'/movies/video-bg.mp4', 'front_default') }}" type="video/mp4">#}
+{#        <source src="{{ asset('build/front/'~websiteTemplate~'/movies/video-bg.webm', 'front_default') }}" type="video/webm">#}
+{#        {{ "Votre navigateur ne supporte pas les vidéos HTML5."|trans|raw }}#}
+{#    </video>#}
+{#{% endif %}#}
+
+{% if not zoneHide %}
+
+    {% set zoneClass = entity is defined and not fullSize and entity.interface.resize
+        or forceContainer is defined and forceContainer ? 'container' : 'container-fluid' %}
+    {% set zoneClass = zone.colToRight ? 'container-fluid-right' : zoneClass %}
+    {% set asFluidRight = zone.colToRight %}
+
+    <{{ sectionEl }} id="{% if not zone.idAsAnchor %}zone-{% endif %}{{ zoneId|urlize }}"{% if bgImgStyle %} data-style="{{ bgImgStyle }}"{% endif %}
+        class="layout-zone {{ zoneClasses }}{% if zoneBgFullSize %} {{ zoneMarginsAndPaddings }}{% endif %}{% if bgImgZone or bgImgStyle %} have-bg-img{% endif %}{% if bgParallax %} parallax position-relative{% endif %}"
+        {% if zoneEffects %} {{ zoneEffects|raw }}{% endif %} tabindex="-1">
+
+        {% if bgImgZone and bgParallax %}
+            <div class="parlx-children position-absolute">
+                {{ bgImgZone|file({}, {class: 'parallax-img'}) }}
+            </div>
+        {% endif %}
+
+        {% set bgColorHexa = zone.hexadecimalCode and not zone.backgroundColor ? zone.hexadecimalCode : false %}
+
+        <div class="zone-container position-relative {{ zoneClass }}{% if not zoneBgFullSize %} {{ zoneContainerBg~zoneMarginsAndPaddings }}{% endif %}"
+            {% if bgColorHexa %} style="background: {{ bgColorHexa }};" data-hexadecimal="{{ bgColorHexa }}"{% endif %} tabindex="-1">
+
+            {% if not fullSize and zone.containerSize %}
+                <div class="custom-container row">
+                    <div class="col-md-{{ zone.containerSize }} mx-auto">
+            {% endif %}
+
+            {% if intlZone.title is defined and intlZone.title|striptags|length > 0 %}
+                {% set titlePosition = 'right' in zone.titlePosition ? 'right' : 'left' %}
+                {% if 'top' in zone.titlePosition %}
+                    {% set titlePosition = titlePosition~' top' %}
+                {% elseif 'center' in zone.titlePosition %}
+                    {% set titlePosition = titlePosition~' center' %}
+                {% elseif 'bottom' in zone.titlePosition %}
+                    {% set titlePosition = titlePosition~' bottom' %}
+                {% endif %}
+                <div class="text-vertical{% if zone.titlePosition %} {{ titlePosition }}{% endif %}">
+                    <strong class="title-zone text-initial m-0 rotate">{{ intlZone.title }}</strong>
+                </div>
+            {% endif %}
+
+            <div class="row{% if not fullSize and interfaceName != 'form' %} row-container{% endif %}{% if zone.centerCol %} d-flex justify-content-center{% endif %}">
+
+                {% set previousHaveMarginBottom = false %}
+                {% set firstCol = true %}
+
+                {% for col in zone.cols %}
+
+{#                    {% set hideCol = isDesktop() and col.hideDesktop ? true : (isTablet() and col.hideTablet ? true : (isMobile() and col.hideMobile ? true : false)) %}#}
+                    {% set hideCol = col.hide %}
+                    {% set hideCol = hideCol or app.request.locale in col.hideLocales %}
+                    {% set blocks = col.blocks %}
+
+                    {% if blocks and not hideCol %}
+
+                        {% set colId = col.customId ? col.customId : col.id %}
+                        {% set innerColBackground = not col.backgroundFullSize and col.backgroundColor != (null and 'transparent') ? col.backgroundColor : null %}
+                        {% set orientationPadding = innerColBackground ? 'horizontal' : null %}
+                        {% set align = col.verticalAlign %}
+                        {% set grid = colsGrids[col.id] is defined ? colsGrids[col.id] : '12' %}
+                        {% set colClasses = col|colClasses(zone, grid) %}
+                        {% set colEffects = col|effectsAttrs %}
+                        {% set colPaddings = not col.backgroundFullHeight and col.backgroundFullSize ? ' p-0' : (col.backgroundFullHeight ? paddings(col, orientationPadding) : '') %}
+                        {% set colMargins = margins(col) %}
+{#                        {% set colMargins = not firstCol and not previousHaveMarginBottom and 'mt-' not in colMargins ? colMargins~' mt-5 mt-lg-0'|trim : colMargins %}#}
+                        {% set firstCol = false %}
+                        {% set previousHaveMarginBottom = 'mb-' in colMargins %}
+                        {% set bgColorHexa = col.hexadecimalCode and not col.backgroundColor and col.backgroundFullSize ? col.hexadecimalCode : false %}
+                        {% set bgColorHexaInnerZone = col.hexadecimalCode and not col.backgroundColor and not col.backgroundFullSize ? col.hexadecimalCode : false %}
+                        {% set colSpaces = colMargins~colPaddings %}
+                        {% set colAlignment = col.elementsAlignment|replace({'justify-content': 'justify-content-lg'}) %}
+                        {% set alignEnd = 'justify-content' in colAlignment and 'end' in colAlignment %}
+
+                        {% set isColMedia = false %}
+                        {% if blocks|length == 1 %}
+                            {% for block in blocks %}
+                                {% set blockType = block.blockType is defined and block.blockType ? block.blockType : null %}
+                                {% set blockSlug = blockType.slug is defined and blockType.slug ? blockType.slug : null %}
+                                {% set isColMedia = 'media' == blockSlug %}
+                            {% endfor %}
+                        {% endif %}
+
+                        <div id="layout-col-{{ colId }}" class="layout-col {{ colClasses }} {{ colSpaces }}{% if isColMedia %} media-col{% endif %}{% if colAlignment %} {{ colAlignment }}{% endif %}"
+                             data-position="{{ col.position }}"
+                            {% if colEffects %} {{ colEffects|raw }}{% endif %}
+                            {% if bgColorHexa %} style="background: {{ bgColorHexa }};" data-hexadecimal="{{ bgColorHexa }}"{% endif %}>
+
+                            {% if align %}
+                                <div class="col-12 p-0 my-auto">
+                            {% endif %}
+
+                            {% if not col.backgroundFullHeight %}
+                                <div class="{{ paddings(col) }}{% if col.backgroundColor %} {{ col.backgroundColor }}{% endif %}">
+                            {% endif %}
+
+                                <div class="{% if not innerColBackground and not bgColorHexaInnerZone %}row{% if interfaceName != 'form' %} m-0{% endif %}{% if blocks|length == 1 and blocks|first.backgroundFullHeight %} h-100{% endif %}{% else %}h-100{% endif %}{% if colAlignment %} {{ colAlignment }}{% endif %}{% if alignEnd %} w-100{% endif %}">
+
+                                    {% if innerColBackground or bgColorHexaInnerZone %}
+                                        {% set colPaddings = paddings(col, 'vertical') %}
+                                        <div class="h-100 px-0{% if blocks|length >= 2 %} row m-0{% endif %} {{ colPaddings }}{% if innerColBackground %} {{ innerColBackground }}{% endif %}{% if col.elementsAlignment %} {{ col.elementsAlignment }}{% endif %}"
+                                             {% if bgColorHexaInnerZone %} style="background: {{ bgColorHexaInnerZone }};" data-hexadecimal="{{ bgColorHexaInnerZone }}"{% endif %}>
+                                    {% endif %}
+
+                                    {% for block in blocks %}
+
+                                        {% set blockHide = block.hide or app.request.locale in block.hideLocales %}
+
+                                        {% if not blockHide %}
+
+                                            {% set blockId = block.customId ? block.customId : block.id %}
+                                            {% set blockClasses = block|blockClasses(col, colClasses) %}
+                                            {% set blockClasses = blockClasses~' '~block|blockAlignment %}
+                                            {% set isIndex = interface.name is defined and interface.name == 'page' and entity.asIndex %}
+                                            {% set pageBg = pageBg is defined ? pageBg : null %}
+                                            {% set blockTransition = block.transition %}
+                                            {% set blockEffects = block|effectsAttrs %}
+                                            {% set innerBlockBackground = not block.backgroundFullSize and block.backgroundColor != (null and 'transparent') ? block.backgroundColor : null %}
+                                            {% set bgColorHexaZone = block.hexadecimalCode and not block.backgroundColor and block.backgroundFullSize ? block.hexadecimalCode : false %}
+                                            {% set bgColorHexaInner = block.hexadecimalCode and not block.backgroundColor and not block.backgroundFullSize ? block.hexadecimalCode : false %}
+                                            {% set blockType = block.blockType is defined and block.blockType ? block.blockType : null %}
+                                            {% set blockCategory = blockType.category is defined and blockType.category ? blockType.category : null %}
+                                            {% set blockSlug = blockType.slug is defined and blockType.slug ? blockType.slug : null %}
+                                            {% set bgFullHeight = (block.backgroundFullHeight) or (blocks|length == 1 and innerBlockBackground) %}
+                                            {% set innerBgPaddings = not block.backgroundFullSize and (bgColorHexaZone or 'bg-' in innerBlockBackground) ? block|paddings|trim : false %}
+
+                                            <div id="layout-block-{{ blockId }}" class="layout-block position-relative {{ blockClasses }}" {% if blockEffects %} {{ blockEffects|raw }}{% endif %}
+                                                 {% if bgColorHexaZone %} style="background: {{ bgColorHexaZone }};" data-hexadecimal="{{ bgColorHexaZone }}"{% endif %}>
+                                                <div class="layout-block-content {{ margins(block) }}{% if bgFullHeight and 'align-items-end' not in blockClasses and 'zones-navigation' != blockSlug %} h-100{% endif %}">
+                                                    {% if innerBlockBackground or bgColorHexaInner %}
+                                                        <div class="{% if innerBlockBackground %}{{ innerBlockBackground }}{% endif %}{% if innerBgPaddings %} {{ innerBgPaddings }}{% endif %}{% if bgFullHeight and 'align-items-end' not in blockClasses %} h-100{% endif %}{% if block.radius %} radius{% endif %}"
+                                                            {% if bgColorHexaInner %} style="background: {{ bgColorHexaInner }};" data-hexadecimal="{{ bgColorHexaInner }}"{% endif %}>
+                                                    {% endif %}
+                                                        {% if block.blockType.slug is defined and block.blockType.slug == 'core-action' %}
+                                                            {% set action = block.action %}
+                                                            {% set actionIntls = block|intlAction %}
+                                                            {% set actionFilter = actionIntls ? actionIntls.actionFilter : null %}
+                                                            {% if action and action.controller %}
+                                                                {{ render_esi(controller( action.controller~'::'~action.action, {
+                                                                    block: block.id,
+                                                                    url: seo is defined ? seo.url.id : null,
+                                                                    filter: actionFilter,
+                                                                    isIndex: isIndex,
+                                                                    pageBg: pageBg
+                                                                } )) }}
+                                                            {% endif %}
+                                                        {% elseif asLayout is defined and asLayout and blockCategory not in mainBlockCategories and template is defined %}
+                                                            {% include template %}
+                                                        {% else %}
+                                                            {% if granted('ROLE_ADMIN') and disabledEditTools is not defined and interface is defined and interface.name is defined %}
+                                                                {{ macroWebmaster.box({
+                                                                    title: "Éditer le bloc"|trans([], 'front_webmaster'),
+                                                                    role: 'ROLE_EDIT',
+                                                                    path: path('admin_block_edit', {website: website.id, col: col.id, interfaceName: interface.name, interfaceEntity: entity.id, block: block.id})
+                                                                }) }}
+                                                            {% endif %}
+                                                            {% if block.blockType.slug is defined and block.blockType.slug == "title-header" %}
+                                                                {% set haveTitleHeader = true %}
+                                                            {% endif %}
+                                                            {{ renderBlock(_context)|raw }}
+                                                        {% endif %}
+                                                    {% if innerBlockBackground or bgColorHexaInner %}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                    {% if innerColBackground or bgColorHexaInnerZone %}
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+
+                            {% if not col.backgroundFullHeight %}
+                                </div>
+                            {% endif %}
+
+                            {% if align %}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+
+            {% if not fullSize and zone.containerSize %}
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+
+    </{{ sectionEl }}>
+
+{% endif %}

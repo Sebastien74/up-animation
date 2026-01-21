@@ -1,0 +1,12 @@
+parameters:
+    protocol: '%env(APP_PROTOCOL)%'
+    env(SECURE_SCHEME): '%env(APP_PROTOCOL)%'
+    security_token: '%env(SECURITY_TOKEN)%'
+    prefix: '%env(DATABASE_PREFIX)%'
+    locale: '%env(APP_LOCALE)%'
+    projectDir: '%kernel.project_dir%'
+    logDir: '%kernel.logs_dir%'
+    cacheDir: '%kernel.cache_dir%'
+    debugMode: '%env(APP_DEBUG)%'
+    isDebug: '%kernel.debug%'
+    debug.container.dump: false

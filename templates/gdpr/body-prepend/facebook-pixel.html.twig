@@ -1,0 +1,4 @@
+{% set website = website is defined and website ? website : website() %}
+{% if website.api.facebook.pixel is defined and website.api.facebook.pixel %}
+    <noscript><img height="1" width="1" src="https://www.facebook.com/tr?id={{ website.api.facebook.pixel }}&ev=PageView&noscript=1" /></noscript>
+{% endif %}

@@ -1,0 +1,27 @@
+{% trans_default_domain 'front_default' %}
+
+{% set logo = website.logo is defined and website.logo ? website.logo : null %}
+{% set companyName = website.companyName is defined and website.companyName ? website.companyName : null %}
+{% set modalId = modalId is defined ? modalId : 'thanks-modal' %}
+{% set modalMessage = modalMessage is defined and modalMessage|striptags|length > 0 ? modalMessage|unescape|raw : "Merci !!"|trans|raw %}
+{% set formSuccess = (app.request.session.get('form_success') and app.request.session.get('form_success') == modalId) or (formSuccess is defined and formSuccess) %}
+
+<div id="{{ modalId }}" class="modal thanks-modal{% if formSuccess %} show{% endif %}" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-body">
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}"></button>
+                {% if logo %}
+                    <a class="d-inline-block mb-4" href="{{ app.request.getSchemeAndHttpHost() }}" data-toggle="preloader">
+                        {{ asset(logo)|file({}, {noFluid: true, class: 'modal-logo', width: null, height: 100 }) }}
+                    </a>
+                {% endif %}
+                <p class="m-0 text-bold text-black">{{ modalMessage|raw }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if formSuccess %}
+    {{ removeSession('form_success') }}
+{% endif %}

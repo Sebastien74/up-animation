@@ -1,0 +1,160 @@
+@charset "UTF-8";
+
+@if $enable-form-preloader {
+
+    $limit: 6;
+    $size: 25;
+
+    .loader {
+
+        position: absolute;
+        z-index: 100;
+        background-color: transparentize($white, .2);
+        border-radius: $border-radius;
+
+        &:not(.strict-size):not(.full-screen) {
+            top: -.75rem;
+            left: -.75rem;
+            right: -.75rem;
+            bottom: -.75rem;
+        }
+
+        /*! purgecss start ignore */
+
+        &.strict-size, &.full-screen {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        &.full-screen {
+            position: fixed !important;
+            z-index: 9999;
+        }
+
+        /*! purgecss end ignore */
+    }
+
+    @each $suffix, $color in $theme-colors {
+        .bg-#{$suffix} .loader {
+            background-color: transparentize($color, .2);
+        }
+    }
+
+    #animated-preloader {
+
+        position: relative;
+
+        .item-loader {
+
+            width: #{$size}px;
+            height: #{$size}px;
+            animation-name: bounce_item;
+            animation-duration: 2.5s;
+            animation-iteration-count: infinite;
+            animation-direction: normal;
+            transform: scale(.5);
+            opacity: .1;
+            border-radius: 19px;
+
+            svg, svg * {
+                width: 35px !important;
+                height: 35px !important;
+                fill: $primary;
+            }
+        }
+
+        $delay: 0.450;
+        @for $i from 1 through $limit {
+            #item-#{$i} {
+                left: ($size * $i) - $size;
+                animation-delay: #{$delay}s;
+                $delay: $delay + 0.100;
+            }
+        }
+    }
+
+    @each $suffix, $color in $theme-colors {
+        .bg-#{$suffix} {
+            #animated-preloader {
+                .item-loader {
+                    svg, svg * {
+                        fill: darken-color($color, 10);
+                    }
+                }
+            }
+        }
+    }
+
+    @keyframes bounce_item {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(.5);
+            opacity: .1;
+        }
+    }
+}
+
+@if $enable-preloader {
+
+    /* -----------------------------------------------------------------
+
+        Copyright  : 2020
+        Created on : 2020-12-07, 6:44 AM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+        FIRST PRELOADER :
+        ================
+
+    ------------------------------------------------------------------ */
+
+    #main-preloader {
+
+        position: fixed;
+        height: 100%;
+        top: 0;
+        left: 0;
+        width: 100%;
+        bottom: 0;
+        overflow: hidden;
+        z-index: 100030;
+        transition: all 1s;
+
+        &.disappear {
+            transition: all 1s;
+            left: -100%;
+        }
+
+        .vertical-align {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            text-align: center;
+        }
+
+        img, svg {
+            height: 300px;
+            min-width: 200px;
+            animation: preloader 3s infinite;
+        }
+    }
+
+    @keyframes preloader {
+        from {
+            transform: scale(0.25);
+        }
+        50% {
+            transform: scale(0.5);
+        }
+        to {
+            transform: scale(0.25);
+        }
+    }
+}

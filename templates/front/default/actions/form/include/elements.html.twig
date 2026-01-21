@@ -1,0 +1,41 @@
+{% trans_default_domain 'front_default' %}
+
+{% if form['field_'~block.id] is defined %}
+    {% set field = form['field_'~block.id] %}
+    {% set isInvalid = messages['field_'~block.id~'_message'][0] is defined %}
+    {% set class = field.vars.attr.class is defined ? field.vars.attr.class : null %}
+    {% set groupClass = field.vars.attr.group is defined and field.vars.attr.group
+        ? field.vars.attr.group : (field.vars.attr['data-group'] is defined and field.vars.attr['data-group'] ? field.vars.attr['data-group'] : null) %}
+    {% set groupClass = 'btn' in class and 'justify-content-end' in block.elementsAlignment ? groupClass~'d-flex align-items-center' : groupClass %}
+    {% set value = messages['field_'~block.id~'_value'][0] is defined ? messages['field_'~block.id~'_value'][0] : null %}
+    <div class="form-group{% if isInvalid %} is-invalid{% endif %}{% if groupClass %} {{ groupClass }}{% endif %}">
+        {% if 'btn' in class and 'justify-content-end' in block.elementsAlignment %}
+            <small class="text-italic asterisk-group me-3 mb-3"><sup class="text-danger asterisk">*</sup>&nbsp;{{ "Champs obligatoires"|trans|raw }}</small>
+        {% endif %}
+        {% if isInvalid and not formConfiguration.ajax or messages['field_'~block.id~'_message_uploaded_file'][0] is defined %}
+            <span class="invalid-feedback d-block">
+                <span class="d-block">
+                    <span class="form-error-message initial-color">
+                        {% if messages['field_'~block.id~'_message_uploaded_file'][0] is defined %}
+                            {{ messages['field_'~block.id~'_message_uploaded_file'][0]|trans|raw }}
+                        {% else %}
+                            {{ messages['field_'~block.id~'_message'][0]|trans|raw }}
+                        {% endif %}
+                    </span>
+                </span>
+            </span>
+            {{ form_row(field, {value: value, attr: {class: 'is-invalid'}}) }}
+        {% elseif value %}
+            {{ form_row(field, {value: value}) }}
+        {% else %}
+            {% set fieldId = field.vars.attr.id is defined and field.vars.attr.id ? field.vars.attr.id : field.vars.id %}
+            {{ form_row(field, {id: fieldId}) }}
+            {% if block.fieldConfiguration.script is defined and block.fieldConfiguration.script %}
+                {{ block.fieldConfiguration.script|raw }}
+            {% endif %}
+        {% endif %}
+        {% if 'btn' in class and not 'justify-content-end' in block.elementsAlignment %}
+            <small class="text-italic asterisk-group"><sup class="text-danger asterisk">*</sup>&nbsp;{{ "Champs obligatoires"|trans|raw }}</small>
+        {% endif %}
+    </div>
+{% endif %}

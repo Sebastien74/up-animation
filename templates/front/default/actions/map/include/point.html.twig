@@ -1,0 +1,105 @@
+{% trans_default_domain 'front_default' %}
+
+{% if not point.entity.hide and address.latitude and address.longitude %}
+
+    {% set category = category is defined ? category : null %}
+    {% set markerWidth = category ? category.markerWidth : 30 %}
+    {% set markerHeight = category ? category.markerHeight : 30 %}
+    {% set marker = marker ? marker : 'uploads/'~website.uploadDirname~'/marker-green.svg' %}
+    {% set linkAsBtn = 'btn' in point.intl.linkStyle %}
+    {% set haveAddress = address.name|striptags|length > 0 %}
+    {% set havePhones = point.entity.phones|length > 0 %}
+    {% set haveContent = point.intl.title or point.intl.body %}
+    {% set haveLinks = point.intl.link or address.googleMapUrl or address.googleMapDirectionUrl %}
+    {% set title = intl.title ? intl.title : null %}
+
+    <div class="point{% if point.zones is not empty %} map-point-zone{% endif %}"
+         data-id="{{ point.id }}"
+         data-in-cluster="1"
+         data-category="{{ dataCategory }}"
+         data-marker="{{ asset(marker) }}"
+         data-marker-width="{{ markerWidth }}"
+         data-marker-height="{{ markerHeight }}"
+         data-latitude="{{ address.latitude }}"
+         data-longitude="{{ address.longitude }}"
+         data-zones="{{ point.zones|json_encode }}"
+         data-geo-json="{{ point.geoJson ? asset(point.geoJson) : false }}"
+         data-media="{{ mediaPath }}"
+         data-title="{{ title ? title|raw|json_encode|e('html_attr') : null }}"
+         data-body="{{ intl.body ? intl.body|raw|json_encode|e('html_attr') : null }}"
+         data-link="{{ point.intl.link ? point.intl.link|unescape|raw : null }}"
+         data-link-label="{{ point.intl.linkLabel ? point.intl.linkLabel|unescape|raw : 'En savoir plus'|trans|raw }}"
+         data-link-label-icon="{{ 'En savoir plus'|trans|raw }}"
+         data-link-target="{{ point.intl.linkBlank }}"
+         data-link-external="{{ point.intl.linkExternal }}"
+         data-link-style="{{ point.intl.linkStyle }}"
+         data-link-as-btn="{{ linkAsBtn }}"
+         data-name="{{ address.name|unescape|raw }}"
+         data-address="{{ address.address|unescape|raw }}"
+         data-zip-code="{{ address.zipCode|unescape|raw }}"
+         data-city="{{ address.city|unescape|raw }}"
+         data-department="{{ address.department|unescape|raw }}"
+         data-region="{{ address.region|unescape|raw }}"
+         data-country="{{ address.country|countryName }}"
+         data-google-map-url="{{ address.googleMapUrl }}"
+         data-google-map-direction-url="{{ address.googleMapDirectionUrl }}">
+        {% if havePhones %}
+            {% for phone in point.entity.phones %}
+                <div class="phone" data-number="{{ phone.number }}" data-href="{{ phone.tagNumber }}"></div>
+            {% endfor %}
+        {% endif %}
+        {% if mediaPath or haveContent or haveAddress or havePhones %}
+            <div class="point-popup-html card place-card border-0">
+                {% if mediaPath %}
+                    <div class="card-header p-0">
+                        {{ asset(mediaPath)|file({}, {title: title}) }}
+                    </div>
+                {% endif %}
+                {% if haveContent or haveAddress or havePhones %}
+                    <div class="card-body pt-4 px-4 pb-1">
+                        {% if intl.title %}
+                            <strong class="place-name d-inline-block w-100 text-primary fw-700 mb-3">{{ intl.title|raw }}</strong>
+                        {% endif %}
+                        {% if intl.body %}
+                            <div class="body text-dark mb-3">{{ intl.body|raw }}</div>
+                        {% endif %}
+                        {% if haveAddress %}
+                            {{ address|address(website, 'contact') }}
+                        {% endif %}
+                        {% if havePhones %}
+                            <div class="phones mb-3">
+                                {% for phone in point.entity.phones %}
+                                    <div class="w-100">{{ phone|phone(website, {icon: false}) }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if haveLinks %}
+                    <div class="card-footer bg-transparent pt-0 pb-4 px-4">
+                        {% if address.googleMapDirectionUrl %}
+                            <a href="{{ address.googleMapDirectionUrl }}" target="_blank" rel="noopener noreferrer">
+                                <i class="icon-directions text-primary me-2"></i>
+                            </a>
+                        {% endif %}
+                        {% if address.googleMapUrl %}
+                            <a href="{{ address.googleMapUrl }}" target="_blank" rel="noopener noreferrer">
+                                <i class="icon-expand-arrows-alt text-primary me-2"></i>
+                            </a>
+                        {% endif %}
+                        {% if linkAsBtn and point.intl.link %}
+                            <div class="link-wrap mt-3 w-100">
+                                {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: intl} %}
+                            </div>
+                        {% elseif point.intl.link %}
+                            <a href="{{ point.intl.link }}"{% if point.intl.linkBlank %} target="_blank"{% endif %}{% if point.intl.linkExternal %} rel="noopener noreferrer"{% endif %}>
+                                <i class="icon-external-link-alt text-primary me-2"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+{% endif %}

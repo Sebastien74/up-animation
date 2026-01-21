@@ -1,0 +1,68 @@
+{% trans_default_domain 'gdpr' %}
+
+{% set website = website is defined and website ? website : website() %}
+{% set axeptioId = website.api.custom.axeptioId is defined ? website.api.custom.axeptioId : null %}
+{% set axeptioExternal = website.api.custom.axeptioExternal is defined ? website.api.custom.axeptioExternal : null %}
+
+{% if size is defined and size == 'small-fixed' %}
+
+    <button class="btn btn-dark active-gdpr-cookie small-fixed"
+            role="button"
+            title="{{ label_btn|unescape|raw }}"
+            data-placement="left"
+            data-toggle="tooltip"
+            {% if reload is defined %}data-reload="{{ reload }}"{% endif %}
+            data-code="{{ code }}"
+            data-service="{{ service }}">
+        {% set label_btn = label_btn is defined ? label_btn : 'Activer'|trans|raw %}
+        <img data-src="{{ image }}"
+             src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+             alt="{{ image_title|striptags }}"
+             title="{{ image_title|striptags }}"
+             height="30" width="auto"
+             class="lazy-load img-fluid" />
+    </button>
+
+{% else %}
+
+    {% set service = service is defined ? service : code~"-service" %}
+
+    <div class="gdpr-activation-placeholder placeholder-{{ service }} text-center card mb-0 mx-auto">
+        <div class="card-header bg-primary">
+            {% set sizes = {
+                youtube: {width: 43, height: 30},
+                'apps-elfsight': {width: 35, height: 35},
+            } %}
+            {% set width = sizes[code].width is defined ? sizes[code].width : 'auto' %}
+            {% set height = sizes[code].height is defined ? sizes[code].height : 30 %}
+            <div class="img-wrap bg-white d-inline-flex align-items-center justify-content-center position-relative">
+                <img data-src="{{ image }}"
+                     src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     data-toggle="tooltip"
+                     alt="{{ image_title|striptags }}"
+                     title="{{ image_title|striptags }}"
+                     width="{{ width }}" height="{{ height }}"
+                     class="lazy-load img-fluid" />
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="gdpr-activation-block">
+                <span class="info w-100 mb-4 d-inline-block px-4">{{ message }}</span>
+                <button class="btn btn-dark mx-auto active-gdpr-cookie mb-3" role="button"
+                        {% if axeptioId or axeptioExternal %}onclick="window.axeptioSDK.requestConsent('{{ code }}')"{% endif %}
+                        {% if reload is defined %}data-reload="{{ reload }}" data-toggle="preloader"{% endif %}
+                        data-code="{{ code }}"
+                        data-service="{{ service }}">
+                    {% set label_btn = label_btn is defined ? label_btn : 'Activer'|trans|raw %}
+                    {{ label_btn|unescape|raw }}
+                </button>
+                {% if not axeptioId and not axeptioExternal %}
+                    <div class="w-100">
+                        <span class="open-gdpr-modal text-primary link">{{ 'En savoir plus'|trans|raw }}</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endif %}

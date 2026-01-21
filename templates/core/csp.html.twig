@@ -1,0 +1,24 @@
+<script nonce="{{ csp_nonce('script') }}">
+    (function () {
+        if (!window.trustedTypes || !trustedTypes.createPolicy) return;
+        try {
+            trustedTypes.createPolicy('default', {
+                // Autorise seulement les scripts de la même origine
+                createScriptURL: function (u) {
+                    const url = new URL(u, document.baseURI);
+                    if (url.origin !== location.origin) {
+                        throw new TypeError('TrustedScriptURL refusé: origine tierce');
+                    }
+                    return url.toString(); // le navigateur l’enveloppe en TrustedScriptURL
+                },
+                // OPTIONNEL mais utile si des libs créent du HTML (DOMParser/innerHTML)
+                // Nécessite DOMPurify chargé avant (sinon supprime cette méthode).
+                createHTML: function (s) {
+                    return window.DOMPurify
+                        ? DOMPurify.sanitize(s, { RETURN_TRUSTED_TYPE: true })
+                        : s; // si tu n’as pas de HTML dynamiques, tu peux aussi ne pas définir createHTML
+                }
+            });
+        } catch (e) { /* allow-duplicates */ }
+    })();
+</script>

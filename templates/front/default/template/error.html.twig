@@ -1,0 +1,42 @@
+{% trans_default_domain 'front_default' %}
+
+{% set displaySitemap = false %}
+{% set websiteTemplate = websiteTemplate is defined and websiteTemplate ? websiteTemplate : website().configuration.template %}
+
+<div id="content-exception" class="template-page col-lg-12">
+    {% if app.request.session.get('alert_error') %}
+        <div class="flash-bag-container bg-primary pb-5">
+            <div class="container">
+                <div class="row row-container">
+                    <div class="col-lg-8 col-xl-6 mx-auto">
+                        {% include "front/"~websiteTemplate~"/include/flashbag.html.twig" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ removeSession('alert_error') }}
+    {% endif %}
+    <section id="exception-block"{% if displaySitemap %} class="mb-5"{% endif %}>
+        <div id="errorStatus">
+            <div class="errorStatus">
+                <div class="errorStatus-code"></div>
+                {% include 'bundles/TwigBundle/Exception/messages.html.twig' %}
+                <a href="{{ path('front_index') }}" class="btn btn-outline-white d-inline-flex mt-4 back-to-home">
+                    {{ "Retourner sur la page d'accueil"|trans|raw }}
+                </a>
+            </div>
+        </div>
+    </section>
+    {% if displaySitemap %}
+        <section id="exception-sitemap" class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="title mb-0">{{ "Plan de site"|trans|raw }}</h2>
+                    <div class="mt-4 mb-4 mt-lg-5 mb-lg-5">
+                        {{ render_esi(path('front_sitemap_view', { website: websiteId() } )) }}
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+</div>

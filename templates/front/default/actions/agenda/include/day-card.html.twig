@@ -1,0 +1,30 @@
+{% trans_default_domain 'front_default' %}
+
+<div id="agenda-info-card" class="card info-card bg-white">
+    <div class="card-body pt-4 pb-4 pe-5 ps-5">
+        <div id="agenda-card-preloader" class="position-absolute text-center d-none">
+            <div class="vertical-align">
+                <span class="spinner-border" role="status"></span>
+            </div>
+        </div>
+        {% set havePeriod = period is defined and period %}
+        {% set agenda = havePeriod ? period.agenda : null %}
+        {% set agendaIntl = agenda ? agenda|intl : null %}
+        {% set information = havePeriod and period.information ? period.information|intl : null %}
+        <div class="ajax-content content mt-3 mb-3">
+            <h3 class="title text-primary mt-0 mb-4">{{ periodDate|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</h3>
+            <ul class="reset">
+                {% if information.body is defined and information.body|striptags|length > 0 %}
+                    <li class="overflow-hidden d-inline-block mt-3">
+                        <div class="left float-start">
+                            {{ 'fal info'|icon(30, 30) }}
+                        </div>
+                        <div class="right float-start">
+                            <span class="info">{{ information.body|raw }}</span>
+                        </div>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>

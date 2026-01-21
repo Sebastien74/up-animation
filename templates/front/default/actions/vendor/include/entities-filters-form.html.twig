@@ -1,0 +1,144 @@
+{% trans_default_domain 'front_default' %}
+
+{% set labels = labels is defined ? labels : false %}
+{% set labels = (form.children|length == 1 and form.children|first.vars.attr['display-label'] is defined and form.children|first.vars.attr['display-label']) or labels %}
+{% set formLabel = formLabel is defined ? formLabel : false %}
+{% set reset = reset is defined and filters is defined and filters is not empty ? reset : false %}
+{% set counter = counter is defined ? counter : true %}
+{% set counterInline = counterInline is defined and counter ? counterInline : false %}
+{% set formAction = formAction is defined ? formAction : path('front_'~interfaceName~'_index', {website: website.id, url: url.id, filter: filter}) %}
+{% set searchAction = searchAction is defined ? searchAction : null %}
+{% set disabledUrl = disabledUrl is defined ? disabledUrl : false %}
+{% set inContainer = inContainer is defined ? inContainer : true %}
+{% set mobileForm = mobileForm is defined ? mobileForm : true %}
+{% set alignment = alignment is defined ? alignment : 'center' %}
+
+{% import _self as macro %}
+
+{% macro field(field) %}
+    {% set placeholder = placeholder is defined ? placeholder : field.vars.name %}
+    {% set attr = field.vars.attr is defined ? field.vars.attr : [] %}
+    {% set data = field.vars.data.id is defined ? field.vars.data.id : (field.vars.data is defined ? field.vars.data : null) %}
+    {% set class = attr.class is defined ? attr.class~' form-select' : 'form-select' %}
+    {% set dataAttr = '' %}
+    {% for dataset, value in attr %}
+        {% if 'data-' in dataset %}
+            {% set dataAttr = dataAttr~' '~dataset~'="'~value~'"' %}
+        {% endif %}
+    {% endfor %}
+    <label for="{{ field.vars.id }}" class="d-none">{{ placeholder }}</label>
+    <select id="{{ field.vars.id }}" name="{{ field.vars.name }}" aria-label="{{ placeholder }}" class="{{ class }}"{{ dataAttr|trim|raw }}>
+        {% if field.vars.placeholder %}
+            <option value="">{{ placeholder }}</option>
+        {% endif %}
+        {% for choice in field.vars.choices %}
+            <option value="{{ choice.value }}"{% if data == choice.value %} selected{% endif %}>{{ choice.label }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+{% macro form(form, formAction, formId, labels, reset, disabledUrl, counterInline, alignment) %}
+    {% set class = not counterInline ? 'entities-filters-form d-lg-flex justify-content-'~alignment : 'entities-filters-form d-lg-flex' %}
+    {% set class = not counterInline ? class~' w-100' : class %}
+    {% if not counterInline %}{% endif %}
+    {{ form_start(form, {attr: {
+        novalidate: "novalidate",
+        action: formAction,
+        id: formId,
+        class: class,
+        "data-component": "webpack-form",
+        "data-disabled-url": disabledUrl,
+    }}) }}
+        <div class="inner d-lg-flex align-items-center">
+            {% if reset %}
+                <div class="d-flex align-items-end justify-content-lg-end me-4">
+                    <span class="reset-entities-filters cursor text-lg-end cursor btn btn-primary">{{ "Réinitialiser"|trans|raw }}</span>
+                </div>
+            {% endif %}
+            {% for field in form.children %}
+                {% if not field.isRendered() %}
+                    {% if labels %}
+                        {{ form_label(field) }}
+                    {% endif %}
+                    {{ form_widget(field) }}
+                {% else %}
+                    {{ macro.field(field) }}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {{ form_end(form) }}
+{% endmacro %}
+
+<div class="search-filters-container position-relative bg-transparent py-4 w-100{% if mobileForm %} d-none d-lg-inline-block{% endif %}{% if counterInline %} mb-3 mb-lg-5{% endif %}">
+    {% include 'front/'~websiteTemplate~'/include/loader.html.twig' with {
+        size: 'container',
+        className: 'search-filters-container strict-size',
+    } only %}
+    <div class="d-flex align-items-center{% if inContainer %} container{% endif %}{% if not counterInline %} justify-content-{{ alignment }}{% endif %}">
+        {% if counterInline %}
+            <div class="filters-container-counter-inline bg-white d-lg-flex flex-wrap px-4 px-lg-0 py-4 py-lg-0 align-items-center justify-content-{{ alignment }} w-100">
+        {% endif %}
+        {% if formLabel %}
+            <div class="form-filter-label text-primary mb-4 mb-lg-0 fw-700 px-3 d-flex align-items-center text-center justify-content-{{ alignment }} text-lg-end justify-content-lg-end">{{ formLabel|raw }}</div>
+        {% endif %}
+        {{ macro.form(form, formAction, 'entities-filters-form', labels, reset, disabledUrl, counterInline, alignment) }}
+        {% if searchAction %}
+            <div class="search-text-wrap d-flex align-items-center ps-5">
+                {{ render_esi(path('front_search_view', {filter: searchAction.slug, modal: false, website: website.id} )) }}
+            </div>
+        {% endif %}
+        {% if counterInline %}
+                <div class="entities-count px-3 d-flex align-items-center mt-4 mt-lg-0 text-center justify-content-{{ alignment }} fw-700">
+                    {% set count = allEntities|length %}
+                    {% set label = count > 1 and counterLabelPlural is defined ? counterLabelPlural : (counterLabel is defined ? counterLabel : null) %}
+                    {% set label = label ? label : (count > 1 ? "Résultats"|trans : "Résultat"|trans) %}
+                    {{ count~" "~label|raw }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if mobileForm %}
+    <div class="search-filters-container mobile d-flex d-lg-none position-relative{% if counterInline %} my-4{% endif %}">
+        {% include 'front/'~websiteTemplate~'/include/loader.html.twig' with {
+            size: 'container',
+            className: 'search-filters-container strict-size',
+        } only %}
+        <div class="dropdown-wrap w-100{% if searchAction %} with-search-text{% endif %}">
+            <div class="dropdown h-100 w-100">
+                <button class="btn btn-primary text-start py-4 px-4 no-radius border-0 dropdown-toggle d-flex justify-content-center align-items-center w-100 h-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ 'fal sliders-h'|icon(null, 17, 'me-2') }}{{ "Filtrer"|trans|raw }}
+                </button>
+                <div class="dropdown-menu no-radius border-0 bg-white py-4 w-100">
+                    <div class="container">
+                        {{ macro.form(form, formAction, 'entities-filters-form-mobile', labels, reset, disabledUrl, counterInline) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if searchAction %}
+            <div class="search-text-wrap d-flex align-items-center">
+                <button class="btn btn-light p-2 d-flex align-items-center justify-content-center no-radius border-0 dropdown-toggle w-100 h-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ 'far search'|icon(20, 20, 'search') }}
+                </button>
+                <div class="dropdown-menu no-radius border-0 bg-white py-4 px-4 w-100">
+                    {{ render_esi(path('front_search_view', {filter: searchAction.slug, modal: false, website: website.id} )) }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if not counterInline %}
+    {% set count = allEntities|length %}
+    <div id="result-counter" class="text-white fw-600 d-flex align-items-center p-0{% if not counter %} d-none{% endif %}">
+        {% if count == 0 %}
+            {{ "Aucun résultat."|trans|raw }}
+        {% elseif count == 1 %}
+            <span class="count me-3 bg-white text-primary fw-600 d-flex align-items-center justify-content-center">{{ count }}</span><span class="message">{{ "résultat trouvé"|trans|raw }}</span>
+        {% else %}
+            <span class="count me-3 bg-white text-primary fw-600 d-flex align-items-center justify-content-center">{{ count }}</span><span class="message">{{ "résultats trouvés"|trans|raw }}</span>
+        {% endif %}
+    </div>
+{% endif %}

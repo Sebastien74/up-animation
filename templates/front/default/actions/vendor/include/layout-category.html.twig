@@ -1,0 +1,12 @@
+{% trans_default_domain 'front_default' %}
+
+{% set categories = entity.category is defined ? [entity.category] : (entity.categories is defined ? entity.categories : []) %}
+{% if categories %}
+    <ul class="block-categories reset">
+        {% for category in categories %}
+            {% if category.intl.title %}
+                <li class="badge badge-primary fw-100">{{ category.intl.title|raw }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

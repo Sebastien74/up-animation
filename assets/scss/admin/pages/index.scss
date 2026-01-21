@@ -1,0 +1,177 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-07, 10:27:46 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    INDEX :
+    ======
+
+------------------------------------------------------------------ */
+
+#entities-index {
+
+    table {
+
+        font-size: 14px;
+        font-weight: 300;
+
+        th.as-media,
+        td.as-media {
+            max-width: 65px;
+            padding: 0 .75rem;
+            text-align: left;
+        }
+    }
+
+    .card-header {
+        border-top-left-radius: $card-border-radius;
+        border-top-right-radius: $card-border-radius;
+    }
+
+    .modal {
+        .btn:not(.bootstrap-touchspin-down):not(.bootstrap-touchspin-up) {
+            height: auto;
+            justify-content: center;
+        }
+    }
+
+    .card-footer {
+
+        border-bottom-right-radius: $card-border-radius;
+        border-bottom-left-radius: $card-border-radius;
+
+        ul.pagination {
+            margin-bottom: 0;
+        }
+    }
+
+    &.no-export {
+        .dataTables_filter {
+            margin-bottom: 20px;
+        }
+    }
+
+    .empty-table {
+        border-bottom-right-radius: $card-border-radius !important;
+        border-bottom-left-radius: $card-border-radius !important;
+    }
+
+    .btn.position {
+
+        padding: .25rem;
+        height: 38px;
+        min-width: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        a {
+
+            height: initial !important;
+
+            &:hover {
+                color: $white;
+            }
+        }
+    }
+
+    .btn-show i,
+    .btn-show svg {
+        font-size: 18px;
+    }
+
+    .btn-info.btn-circle {
+        width: 35px;
+        height: 35px;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-position {
+        .select2 {
+            width: 100% !important;
+        }
+    }
+
+    table {
+
+        &.no-pagination {
+
+            border-bottom-right-radius: $card-border-radius !important;
+            border-bottom-left-radius: $card-border-radius !important;
+
+            tbody tr:last-child {
+
+                border-bottom-right-radius: $card-border-radius !important;
+                border-bottom-left-radius: $card-border-radius !important;
+
+                td:nth-child(2) {
+                    border-bottom-left-radius: $card-border-radius !important;
+                }
+
+                td:last-child {
+                    border-bottom-right-radius: $card-border-radius !important;
+                }
+            }
+        }
+
+        tbody {
+
+            td {
+
+                .badge-info-darken {
+                    min-width: 23px;
+                    height: 23px;
+                    line-height: 20px;
+                }
+
+                .infos-list {
+
+                    li {
+                        line-height: 12px;
+                    }
+
+                    small {
+                        font-size: 9px;
+                    }
+                }
+            }
+
+            tr td .img-loader,
+            tr td > .image-popup img,
+            tr td > .glightbox img {
+
+                border-radius: 3px;
+                height: 30px;
+                width: 30px !important;
+                object-fit: cover;
+
+                .spinner-border {
+                    height: 10px;
+                    width: 10px;
+                    border-width: 1px;
+                }
+            }
+        }
+    }
+
+    .div.dataTables_wrapper div.dataTables_info {
+        display: none;
+    }
+
+    div.dataTables_wrapper div.dataTables_paginate {
+        margin-top: 23px !important;
+    }
+
+    .paging_simple_numbers a {
+        border-color: transparentize($info, .5);
+    }
+
+    .paging_simple_numbers a.current {
+        background-color: $info;
+    }
+}

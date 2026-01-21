@@ -1,0 +1,40 @@
+{% trans_default_domain 'admin' %}
+
+{% set activeSelector = false %}
+
+{% if activeSelector and websites|length > 1 and websites|length <= 5 or not activeSelector %}
+    <ul class="pt-0 pb-0">
+        <li>
+            <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
+                {{ 'fal chart-network'|icon(21, 17, 'white me-2') }}{{ "Sites"|trans }}
+            </a>
+            <ul aria-expanded="false" class="collapse">
+                {% for website in websites %}
+                    {% if website.active or granted('ROLE_INTERNAL') %}
+                        <li>
+                            <a href="{{ path('admin_dashboard', {website: website.id}) }}" data-toggle="preloader">
+                                {{ website.adminName }}
+                                {% if not website.active %}
+                                    <span class="website-ban position-absolute text-dark" data-bs-toggle="tooltip" title="{{ "Site désactivé"|trans|raw }}">
+                                        {{ 'fas ban'|icon(15, 15, 'dark') }}
+                                    </span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+{% elseif websites|length > 5 %}
+    {{ form_start(form, {attr: {
+        id: "websites-selector-form",
+        "data-id": websiteId(),
+        class: "row ms-2",
+        action: path('admin_site_selector', {website: websiteId()}
+    )}}) }}
+        <div class="row col-12">
+            {{ form_row(form.websites) }}
+        </div>
+    {{ form_end(form) }}
+{% endif %}

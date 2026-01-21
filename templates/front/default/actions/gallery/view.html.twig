@@ -1,0 +1,15 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set customTemplate = 'front/'~websiteTemplate~'/actions/gallery/template/'~gallery.slug~'.html.twig' %}
+{% set customTemplateExist = (customTemplate)|fileExist %}
+
+<div id="slider-container-{{ gallery.slug }}" class="gallery-container position-relative">
+    {{ macroWebmaster.box({
+        title: "Éditer la galerie"|trans([], 'front_webmaster'),
+        role: 'ROLE_GALLERY',
+        path: path('admin_gallery_edit', {website: website.id, gallery: gallery.id})
+    }) }}
+    {% include 'front/'~websiteTemplate~'/include/gallery.html.twig' with {entity: gallery, slug: 'gallery', nbrColumn: gallery.entity.nbrColumn, thumbConfiguration: thumbConfiguration} %}
+</div>

@@ -1,0 +1,54 @@
+{% extends 'front/'~website.configuration.template~'/base.html.twig' %}
+
+{% block metaTitle %}{{ "Maintenance"|trans|htmlEntities }}{% endblock %}
+{% block metaRobots %}noindex{% endblock %}
+
+{% set onlyBody = true %}
+{% set infos = website.information %}
+{% set theme = configuration.buildTheme is defined ? configuration.buildTheme : 'white' %}
+{% set layout = entity.layout is defined ? entity.layout : null %}
+{% set zones = layout.zones is defined ? layout.zones : [] %}
+{% set addresses = infos.zones.addresses.maintenance is defined and infos.zones.addresses.maintenance|length > 0 ? infos.zones.addresses.maintenance : [] %}
+{% set phones = infos.zones.phones.maintenance is defined and infos.zones.phones.maintenance|length > 0 ? infos.zones.phones.maintenance : [] %}
+{% set emails = infos.zones.emails.maintenance is defined and infos.zones.emails.maintenance|length > 0 ? infos.zones.emails.maintenance : [] %}
+{% set logoPath = logos['build-logo'] is defined and logos['build-logo'] and 'placeholder' not in logos['build-logo']
+    ? logos['build-logo'] : (logos.logo is defined and logos.logo ? logos.logo : asset('medias/felix-logo.svg')) %}
+{% set logoPath = theme == 'felix' ? asset('medias/felix-logo-white-peach.svg') : logoPath %}
+{% set backgroundPath = logos['build-bg'] is defined and logos['build-bg'] and 'placeholder' not in logos['build-bg'] ? logos['build-bg'] : null %}
+{% set colorMaintenance = 'background'|color(website, 'bg-maintenance') %}
+{% set colorPrimary = 'background'|color(website, 'bg-primary') %}
+{% set color = colorMaintenance.color is defined and colorMaintenance.color ? colorMaintenance.color : (colorPrimary.color is defined ? colorPrimary.color : "#410c2c") %}
+
+{% trans_default_domain 'front_default' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName, null, webpack) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {defer: true, nonce: csp_nonce()}) }}
+{% endblock %}
+
+{% block body %}
+    <div id="content-{{ templateName }}" class="template-page">
+        {% if zones is empty %}
+            {% include 'front/'~websiteTemplate~'/template/include/build-base.html.twig' with {
+                website: website,
+                theme: configuration.buildTheme is defined ? configuration.buildTheme : 'white',
+                logoPath: logoPath,
+                backgroundPath: backgroundPath,
+                companyName: companyName,
+                networks: networks,
+                addresses: addresses,
+                phones: phones,
+                havePhones: phones|length > 0,
+                emails: emails,
+                haveEmails: emails|length > 0,
+            } only %}
+        {% else %}
+            {% include 'front/'~websiteTemplate~'/layout.html.twig' %}
+        {% endif %}
+    </div>
+{% endblock %}

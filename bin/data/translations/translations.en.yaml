@@ -1,0 +1,348 @@
+'(*) champs obligatoires': '<span>*</span> Mandatory fields'
+'(30 derniers jours)': '(30 last days)'
+'(Visible uniquement dans le back office)': '(Visible into the back office only)'
+'+33 (0)6 58 80 52 92': '+33 (0)4 85 21 31 11'
+'1. Connectez-vous au back-office :': '1. Log in to the back office:'
+'1. Demande de devis': '1. Quotation request'
+'13 millions d''€': '€13 million'
+'14 derniers jours': '14 last days'
+'180 derniers jours': '180 last days'
+'2. Cliquez sur le lien de téléchargement :': '2. Click on the download link:'
+'2. Devis en 24h <br><span>(48h si outillage)</span>': '2. Quotation 24h max <br><span>(48h if tooling)</span>'
+'28 derniers jours': '28 last days'
+'3. Le fichier se télécharge automatiquement': '3. The file downloads automatically'
+'3. Livraison Express <br><span>Suivi de vos pièces à chaque étape</span>': '3. Express delivery <br><span>Tracking your parts at each stage</span>'
+'30 derniers jours': '30 last days'
+'4 filiales': '4 subsidiaries'
+'7 derniers jours': '7 last days'
+'90 derniers jours': '90 last days'
+"<li>Fiches matières</li>\n                                                                    <li>Plan 2D contenant les tolérances</li>\n                                                                    <li>Etc...</li>": '<li>Material datasheet</li>                                                                     <li>PDF drawing with tolerances</li>                                                                     <li>Etc.</li>'
+"<li>STEP <span>Recommandé</span></li>\n                                                                    <li>IGES</li>\n                                                                    <li>STL</li>": '<li>STEP <span>Recommended</span></li>                                                                     <li>IGES</li>                                                                     <li>STL</li> <li>XT</li>'
+"<li>STEP <span>Recommandé</span></li>\n                                                                    <li>IGES</li>\n                                                                    <li>XT</li>": '<li>STEP <span>Recommended</span></li>                                                                     <li>IGES</li>                                                                     <li>XT</li>'
+'<span>**</span> Sans informations et fichier 2D cette pièce sera réalisée avec un ébavurage standard': '<span>**</span> Without information and 2D file, this part will be quote with standard deburring'
+'<span>*</span> Champs obligatoires': '<span>*</span> Mandatory fields'
+'<span>Prototypage</span> <br> <span>Pré</span> / <span>Petites Séries</span> <br> Plastique & Métal': '<span class="prototypage">Prototyping</span> <br> <span>Pre</span> / <span>Low-Volume</span><br><span>Production</span> <br> Plastic & Metal'
+'A activer uniquement si le site est en production': 'To activate only if the website is in progress'
+Accueil: 'Home page'
+'Accès refusé.': 'Access denied'
+'Accéder au site': 'Access to the website'
+'Actif ?': 'Active ?'
+'Actions de modules': 'Modules actions'
+Activer: Activate
+'Activer ?': 'Enable ?'
+'Activer le compte ?': 'Activate account ?'
+Actualités: News
+Adresse: Address
+'Adresse email': 'Email address'
+'Afficher le rapport': 'View report'
+'Agence Félix': 'Injected by Félix'
+'Ajouter .pdf du devis': 'Add quotation pdf'
+'Ajouter au menu': 'Add to menu'
+'Ajouter aux chefs de projets ?': 'Add to project managers ?'
+'Ajouter des e-mails': 'Add emails'
+'Ajouter fichiers 3D *': 'Add 3D files *'
+'Ajouter fichiers utiles': 'Add other useful files'
+'Ajouter le logo': 'Add logo'
+'Ajouter les photos des pièces': 'Add part pictures'
+'Ajouter un e-mail': 'Add email'
+'Ajouter un numéro': 'Add a number'
+'Ajouter une pièce': 'Add a part'
+'Ajoutez vos fichiers techniques :': 'Add your technical files'
+Annuler: Cancel
+'Aspect des pièces': 'Parts appearance'
+'Attention : Si vous n''êtes pas connecté, vous serez automatiquement redirigé vers la page d''accueil.': 'Warning: If you are not logged in, you will be automatically redirected to the home page.'
+'Aucun client': 'No customer'
+'Aucun contact': 'No contact'
+'Aucun devis téléchargé.': 'No downloaded quotation.'
+'Aucun rapport téléchargé.': 'No downloaded report.'
+'Aucun résultat': 'No result'
+'Aucune donnée': 'No data'
+'Aucune donnée disponible': 'No data available'
+'Aucune entité trouvée.': 'No founded company.'
+'Aucune quotation': 'No quotation'
+'Aujourd''hui': Today
+'Autre-Vos pièces': 'Your parts'
+'Autres langues': 'Other languages'
+'Bienvenu dans votre nouvel espace client. Pour des raisons de sécurité et afin de répondre à la législation RGPD, vous devez modifier votre mot de passe pour accéder à vos informations.': 'Welcome to your new customer space. For security reasons and meeting the RGPD legislation, you have to modify your password to access to your information.'
+'Bienvenue !!': 'Welcome !'
+'Bienvenue dans votre interface client.': 'Welcome to your customer space.'
+Bonjour: Hello
+'Bouton de retour haut de page': 'Back buttun to the top page'
+Boutons: Buttums
+'Brut, poli, sablé, etc...': 'Rough, polished, sandblasted, etc.'
+'Ce site utilise des cookies afin d’améliorer votre expérience et optimiser notre site et ses services. Les cookies sont des fichiers textes qui sont déposés sur votre ordinateur. Certains d’entre eux sont indispensables au bon fonctionnement du site, d’autres analysent la façon dont vous utilisez le site. <br><b>Afin de poursuivre la navigation sur notre site, vous devez accepter ou refuser l’utilisation des cookies.</b>': 'This website uses cookies to improve your experience and to optimize our website and its services. Cookies are text files that are placed on your computer. Some are vital to the correct functioning of the website, others analyze the way in which you use the website. In order to continue browsing our website, you must accept or refuse the use of cookies.'
+'Cet e-mail vous a été envoyé, car nous avons reçu une demande de modification de mot de passe pour votre compte.': 'We sent you this email because we received a password modification request for your customer space.'
+'Changer d''utilisateur': 'Switch user'
+'Chef de projet': 'Project manager'
+'Chef de projets': 'Project manager'
+'Chefs de projet': 'Project manager'
+'Choisir une de nos technologies': 'Choose one of our technologies'
+Clients: Customers
+'Cliquez sur le bouton ci-dessous pour le modifier. Si vous n''êtes pas à l''origine de cette demande, vous pouvez supprimer cet e-mail en toute sécurité. La validité de ce lien est de 2 heures.': 'Click on the botton below to modify it. If you are not the initiator of this request you can safely delete this email. The validity period of this link is 2 hours.'
+'Cocher pour supprimer': 'Check to delete'
+'Code postal': 'Zip code'
+'Commande n°': 'Order n°'
+Commandes: Orders
+'Composé de 4 filiales en': '4 subsidiaries in'
+'Confirmation du mot de passe': 'Password confirmation'
+Connectez-vous: 'Log in'
+'Connexion à votre espace client': 'Log in to your customer space'
+'Contact client': 'Customer contact'
+Copier: Copy
+Corps: Body
+'Créé avec succès !!': 'Successfully created !!'
+'Créé le': 'Created on'
+'Créé par': 'Created by'
+'Date de création': 'Creation date'
+'Date de livraison': 'Delivery date'
+'Date de mise production': 'Manufacturing date'
+'Demande de devis': 'Request a quotation'
+'Demande de devis : Autres technologies': 'Quotation request'
+'Demande de devis : Injection plastique / Fonderie': 'Quotation request:  Plastic injection / Die casting'
+'Demander votre devis': 'Request a quotation'
+'Dernière connexion': 'Last connection'
+Devis: Quotation
+'Devis (.pdf)': 'Quotation (.pdf)'
+'Devis 24h/48h si outillage': 'Quotation 24h / 48h max'
+'Duplication sous vide': 'Vacuum casting'
+'Durée de vie du moule': 'Mold lifespan'
+'Délai de production': 'Lead time'
+'Désolé, la page que vous recherchez n''existe pas, a été supprimée, son nom a été modifié ou est temporairement indisponible.': 'The requested page does not exist'
+E-mail: Email
+'EC International Group Sarl - China Office': 'EC Prototypes Asia Ltd.'
+'Ecoparc de Madrid<br>4 Allée Jules Verne<br>74150 Rumilly - France<br>Tel: +33 4 85 21 31 10': 'Ecoparc de Madrid<br>4 Allée Jules Verne<br>74150 Rumilly – France<br>Tel.: +33 (0)4 85 21 31 10'
+'Effectuer un nouveau devis ›': 'Create a new quotation ›'
+'Email d''envoie': 'Shipment email'
+'En savoir plus': 'Read more'
+Enregistrer: Save
+'Enregistrer et retourner à la liste': 'Save and back to list'
+'Enregistrer et éditer': 'Save and edit'
+'Enregistrer les contacts ?': 'Save contacts'
+Entreprise: Company
+'Entrez votre adresse email et vous recevrez un lien par email vous permettant de changer votre mot de passe.': 'Fill in your email address. You will receive by email a link which will allow you to update your password.'
+'Envoi de fichiers': 'Send your files'
+'Envoie de mail': Emailing
+Envoyer: Send
+'Envoyer le devis': 'Send quotation'
+'Envoyer par email ›': 'Send by email ›'
+'Envoyer un mail': 'Send an email'
+'Envoyer un mail de réinitialisation de mot de passe': 'Send an email to reboot password'
+'Envoyer via Wetransfer ›': 'Send via Wetransfer ›'
+Erreur: Error
+'Erreur de sécurité !! Essayez en rechargeant la page.': 'Safety error ! Please try to reload the page'
+'Espace client': 'Customer space'
+'Etape suivante ›': 'Next step ›'
+Filiale(s): 'Subsidiary (ies)'
+Filtrer: Filter
+'Finaliser ma demande': 'Finalize my request ›'
+Finition: Finish
+'Finition, état de surface, référence DME, etc': 'Finishing, surface condition, DME reference, etc.'
+Finitions: Finishing
+Fonderie: 'Die casting'
+'Forcer le status ?': 'Force status?'
+'Formulaire demande de devis ›': 'Quotation request form ›'
+'Gestion des Cookies': 'Managing cookies'
+'Gestion des clients': 'Customer management'
+'Gestion des emails': 'Email management'
+'Gestion des statuts': 'Status management'
+'Gestion du site': 'WebsiteModel management'
+Groupe: Group
+'Générer un mot de passe': 'Generate password'
+Identifiant: Login
+Identité: Identity
+'Image de profil': 'Profile picture'
+Images: Pictures
+'Impression 3D': '3D printing'
+Infos: News
+Injection: 'Injection molding'
+'Injecté par Félix': 'By Félix'
+Inscrivez-vous: Register
+Intitulé: Entitled
+'Je refuse': 'I refuse'
+J’accepte: 'I accept'
+Langue: Language
+'Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule.': 'The password must be at least 8 characters long, contain at least one number, one uppercase and one lowercase.'
+'Les mots de passe sont différents': 'Passwords are different'
+'Lire la suite': 'Find out more'
+'Liste des chefs de projets': 'Project manager list'
+'Liste des contacts': 'Contact list'
+'Liste des devis': 'Quotations list'
+'Liste des sociétés': 'Company list'
+'Livraison <br/> prévue': 'Delivery <br/> scheduled'
+'Livraisons en retard': 'Delayed delivery'
+'Livraisons prévues aujourd''hui': 'Scheduled delivery on today'
+'Livraisons prévues demain': 'Scheduled delivery on tomorrow'
+Livré: Delivered
+'L’injection plastique / fonderie ›': 'Plastic injection / Die casting ›'
+Mail: 'Email address'
+Maquettes: Mock-ups
+'Matière souhaitée': 'Desired material'
+'Maximum de pièces injectables': 'Maximum number of injectable parts'
+'Merci !': 'Thank you!'
+'Merci pour inscription. Votre compte dois être validé par l''administrateur.': 'Thank you for your register. Your account has to be validated by the admin.'
+'Merci pour inscription. Vous pouvez vous connecter.': 'Thank you for your register. You can connect yourself.'
+'Merci votre demande a bien été reçue<br> Vous recevrez votre devis sous 24h (48h si outillage)': 'Thank you. Your request has been received.<br> You will receive your quotation within 24 to 48 hours'
+'Mettre la quotation en stand-by': 'Put the quotation in stand-by'
+'Modidication de votre mote de passe': 'Modification of your password'
+'Modification de votre mot de passe.': 'Modification of your password.'
+'Modification du mot de passe': 'Password modification'
+'Modifier mon mot de passe': 'Modify my password'
+'Modifié le': 'Updated on'
+'Modifié par': 'Updated by'
+'Mot de passe': Password
+'Mot de passe oublié ?': 'Password forgotten ?'
+'No temporary folder was configured in php.ini.': 'No temporary folder was configured in php.ini, or the configured folder does not exist.'
+Nom: 'Last name'
+'Nom & prénom': 'Last name & first name'
+'Nom d''utilisateur': 'User name'
+'Nom de famille': 'Last name'
+'Nom de l''entreprise': 'Company name'
+'Nom fichier': 'File name'
+'Non disponible': 'Not available'
+'Non renseigné <br> lors du lancement': 'Not documented <br/> at the order'
+'Nos autres technologies ›': 'Our other technologies ›'
+'Nous suivre sur': 'Follow us on'
+'Numéro CDE': 'Order number'
+'Numéro de devis': 'Quotation number'
+'Numéro de tracking (autres)': 'Tracking number (other)'
+'Numéro de tracking DHL': 'DHL tracking number'
+'Numéro de tracking DHL 2': 'DHL tracking number 2'
+'Numéro de tracking TNT': 'TNT tracking number'
+'Numéro de tracking TNT 2': 'TNT tracking number 2'
+'Numéro de téléphone': 'Phone number'
+'Numéro du devis': 'Quotation number'
+'Numéros de tracking': 'Tracking numbers'
+'N° CDE <br/> Client': 'N° order <br/> Customer'
+'N° d''offre <br/> de prix': 'Quotation N° <br/>'
+'N° de tracking DHL': 'DHL tracking N°'
+'N° de tracking TNT': 'TNT tracking N°'
+'Oui, mettre en stand-by !': 'Yes, put on stand-by!'
+'Oui, supprimer !': 'Yes, delete!'
+'Oups! Page non trouvée.': Error
+'Paramétrage des cookies': Cookies
+'Peinture, anodisation, etc...': 'Painting, anodizing, etc.'
+Personnaliser: Customize
+'Pièce n°': 'Part no.'
+Pièces: Part
+'Politique relative aux cookies': 'Cookie preferences'
+'Pour afficher la vidéo, vous devez activer les cookies.': 'To view this content, you must enable YouTube cookies.'
+'Procédure de téléchargement du fichier :': 'File download procedure:'
+Prénom: 'First name'
+'Quantité de pièces': 'Quantity of parts'
+'Quotation en stand-by': 'Quotation in stand-by'
+Rapport: Report
+'Rapport <br/> dimensionnel': 'Additional <br/> files'
+'Rapport dimensionnel': 'Additional files'
+Rechercher: 'Look for'
+'Rechercher une adresse': 'Look for an address'
+Rechercher...: 'Look for...'
+Remarques: Comments
+'Remis en main propre': 'Delivered by hand'
+Retard: Delay
+'Retard de': 'Delay of'
+Retour: Back
+'Retourner sur le site': 'Back to website'
+'Retourner à la page d''accueil': 'Return to homepage'
+'Retourner à la page de connexion': 'Back to log in page'
+'Retourner à la page précédente': 'Return to the previous page'
+'Room 1318, Zhongzheng SOHO, No.200 Dongmenzhong Road, Changan Town Dongguan（523851), Guangdong, China<br>Tel: +86 138 2233 4725': 'Room 102, Building A1, No. 2 Xinghui Road, Songshan Lake Park, Dongguan city, Guangdong Province, China<br>Tel.: +86 138 2233 4725'
+'Références de l''offre': 'Quotation references'
+'S''inscrire': Register
+'Saisissez le mot de passe': 'Fill in password'
+'Saisissez un e-mail': 'Fill in email'
+'Saisissez un email': 'Fill in email'
+'Saisissez un identifiant': 'Fill in your username'
+'Saisissez un intitulé': 'Enter entitled'
+'Saisissez un nom': 'Fill in last name'
+'Saisissez un nom d''utilisateur': 'Fill in username'
+'Saisissez un nom et un prénom': 'Fill in last name & first name'
+'Saisissez un nombre de jours': 'Fill in day number'
+'Saisissez un numéro': 'Fill in number'
+'Saisissez un numéro de téléphone': 'Fill in phone number'
+'Saisissez un prénom': 'Fill in first name'
+'Saisissez votre e-mail': 'Fill in your e-mail'
+'Saisissez votre nom': 'Fill in your last name'
+'Saisissez votre prénom': 'Fill in your first name'
+'Sant Cugat Trade Center,<br>Av. Corts Catalanes, 5-7,<br>Oficina A17,<br>08173 Barcelona - Spain<br>Tel: +34 6 38 20 15 15': 'Sant Cugat Trade Center,<br>Av. Catalan Corts, 5-7,<br>Oficina A17,<br>08173 Barcelona – Spain<br>Tel.: +34 (0)6 38 20 15 15'
+'Se connecter': 'Log in'
+'Se connecter en tant que': 'Login as'
+'Se rappeler de moi': 'Remember me'
+'Se rappler de moi': 'Remember me'
+'Si cela ne fonctionne pas, copiez et collez le lien suivant dans votre navigateur :': 'If it does not work, copy and paste the below link in your browser:'
+'Simplifiez-vous la vie, envoyez-nous vos demandes en ligne': 'Make your life easier, send us your requests online'
+Société: Company
+Sociétés: Company
+Statut: Status
+'Suivi de vos commandes': 'Monitor your orders'
+Sujet: Subject
+Supprimer: Delete
+'Supprimer l''entreprise': 'Delete company'
+'Supprimer la quotation': 'Delete quotation'
+'Supprimer le contact': 'Delete contact'
+'Supprimer les images': 'Delete pictures'
+Sélectionnez: Select
+'Séléctionnez un fichier': 'Select a file'
+'Séléctionnez un utilisateur': 'Select a user'
+'Séléctionnez une image': 'Select a picture'
+'Séléctionnez une ou plusieurs filiales': 'Select one or more subsidiaries'
+'Séléctionnez une ou plusieurs sites': 'Select one or more site'
+Technologie: Technology
+'Temps restant <br/> de fabrication': 'Remaining <br/> manufacturing time'
+'Tous secteurs': 'All industrial'
+'Tout afficher': 'Display all'
+'Transférez vos Fichier 3D': 'Transfer your 3D files'
+'Télécharger les fichiers (Uniquement disponible par EC International France)': 'Download the files (Only available for EC International France)'
+Tôlerie: 'Metal pressing'
+'Usinage CNC': 'CNC machining'
+Utilisateur: User
+Valider: Confirm
+'Via Roma, 29 <br>10023 Chieri (TO) - Italy <br>Téléphone : +39 333 5485 211<br>Téléphone : +39 011 942 33 60<br>Fax : +39 011 200 921': 'Via Roma, 29 <br>10023 Chieri (TO) – Italy <br>Tel: +39 011 942 33 60'
+Ville: Town/City
+'Visuel <br/> Pièce': 'Parts <br/> Pictures'
+'Voir la commande': 'See order'
+'Voir la fiche de': 'See details of'
+'Voir les commandes': 'See orders'
+'Vos besoins concernent': 'You requirement in terms of'
+'Vos informations de contact': 'Your contact information'
+'Votre compte n''est pas activé.': 'Your account is not activated.'
+'Votre demande de devis': 'Your quotation request'
+'Votre demande est déjà prête ?': 'Is your request already finalized?'
+'Votre mot de passe a expiré, vous devez le réinitialiser.': 'Your password has expired, you have to reset it.'
+'Votre mot de passe a été modifié avec succès.': 'Your password has been successfully modify.'
+'Vous êtes déjà connecté comme administrateur. Pour changer d''utilisateur, veuillez sélectionner un compte dans le commutateur.': 'You are already connected as an admin. To switch user, select an account in the changeover switch.'
+'a été renommé car un fichier du même nom existait déja.': 'have been renamed because a file with a same name already existed'
+automobile: Automotive
+aéronautique: Aeronautic
+'dans le monde': 'around the world'
+'de chiffre d''affaires': 'in turnover'
+divers: Diverse
+'header-<span>Prototypage</span> <br> <span>Pré</span> & <span>Petites Séries</span> <br> Plastique & Métal': '<span class="prototypage">Prototyping</span> <br> <span>Pre</span> / <span>Low-Volume</span><br><span>Production</span> <br> Plastic &amp; Metal'
+'header-Demander votre devis': 'Request a quotation'
+'header-Espace client': 'Customer account'
+home-duplication-linkcode: vacuum-casting
+home-extrusion-linkcode: extrusion
+home-finitions-linkcode: finishing-and-treatments
+home-fonderie-linkcode: die-casting
+home-impression-linkcode: 3d-printing
+home-injection-linkcode: injection-molding
+home-maquettes-linkcode: display-prototypes
+home-tolerie-linkcode: metal-pressing
+home-usinage-linkcode: cnc-machining
+industrie: Industrial
+industriels: sectors
+'injection-Vos pièces': 'Your injected parts'
+jour: day
+jours: days
+loisirs: Leisure<br>Activities
+militaire: Military
+médical: Medical
+'prototypes par an': 'prototypes per year'
+transporteur: carrier
+'vous avez oublié votre mot de passe ?': 'You forgot your password ?'
+'Éditer l''entreprise': 'Edit company'
+'Éditer la quotation': 'Edit quotation'
+'Éditer le contact': 'Edit status'
+État: Status
+'État de surface': 'Surface condition'
+'Êtes-vous sûr ?': 'Are you sure ?'
+'équipement <br>electrique': Electrical<br>equipment

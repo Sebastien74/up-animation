@@ -1,0 +1,233 @@
+{% trans_default_domain 'front_default' %}
+
+{% import _self as macro %}
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% macro mediaRelation(entity, thumbConfiguration) %}
+    {{ entity.mainMedia|file(thumbConfiguration, {
+        btnLink: false,
+        targetLink: entity.intl.link is defined ? entity.intl.link : false,
+        placeholder: false,
+        popupGallery: false,
+        fullPopup: false,
+        placeholder: true,
+        lazyLoad: true,
+        class: 'w-100'
+    }) }}
+{% endmacro %}
+
+{% macro arrows(website, autoplay, side, color, asBtn, position, classes = false) %}
+    {% set buttons = ['previous', 'next'] %}
+    {% set configuration = website.configuration is defined ? website.configuration : false %}
+    {% set accessibility = configuration.accessibilityStatus is defined ? configuration.accessibilityStatus : true %}
+    {% set iconClasses = not asBtn ? 'text-'~color : '' %}
+    {% set icon = asBtn ? 'chevron' : 'arrow' %}
+    {% set btnClasses = asBtn ? 'btn-circle btn btn-'~color : '' %}
+    <div class="arrows-wrap d-flex justify-content-{{ side }} {% if 'top' == position %}mb-5{% else %}mt-5{% endif %}{% if 'end' == side %} me-4 me-md-5{% endif %}{% if asBtn %} as-btn{% endif %}{% if classes %} {{ classes }}{% endif %}">
+        <button class="btn-arrow btn-prev cursor me-2{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'previous' not in buttons %} d-none{% endif %}" aria-label="{{ "Précédent"|trans }}" tabindex="-1">
+            <i class="icon-{{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+        </button>
+        {% if autoplay and accessibility %}
+            <button class="btn-arrow btn-pause cursor mx-1{% if btnClasses %} {{ btnClasses }}{% endif %}" aria-label="{{ "Pause"|trans }}" tabindex="-1">
+                <i class="icon-pause{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            </button>
+            <button class="btn-arrow btn-play d-none cursor mx-1{% if btnClasses %} {{ btnClasses }}{% endif %}" aria-label="{{ "Play"|trans }}" tabindex="-1">
+                <i class="icon-play{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            </button>
+        {% endif %}
+        <button class="btn-arrow btn-next cursor ms-2{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'next' not in buttons %} d-none{% endif %}" aria-label="{{ "Suivant"|trans }}" tabindex="-1">
+            <i class="icon-{{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+        </button>
+    </div>
+{% endmacro %}
+
+{% macro body(entity) %}
+    {% if entity.intl %}
+        {% if entity.showTitle %}
+            <h3 class="title mb-4"><a href="{{ entity.url }}" class="title-link fw-600">{{ entity.intl.title|raw }}</a></h3>
+        {% endif %}
+        {% if entity.showSubTitle %}
+            <h4 class="sub-title mb-4">{{ entity.intl.subTitle|raw }}</h4>
+        {% endif %}
+        {% if entity.showCategory %}
+            <strong class="category d-inline-block mb-4">{{ entity.category.intl.title|raw }}</strong>
+        {% endif %}
+        {% if entity.showDate %}
+            <span class="date mb-3 d-inline-block w-100">{{ entity.date|format_datetime(pattern=entity.category.formatDate, locale=app.request.locale)|capitalize }}</span>
+        {% endif %}
+        {% if entity.showIntro %}
+            <p class="introduction text-bold mt-3">{{ entity.intl.introduction|truncate(200) }}</p>
+        {% endif %}
+        {% if entity.showBody %}
+            <p class="body mt-3">{{ entity.intl.body|truncate(200) }}</p>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+{% macro showLink(websiteTemplate, entity) %}
+    {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: {link: entity.url}} %}
+{% endmacro %}
+
+{% macro showAll(websiteTemplate, entities, asMulti) %}
+    {% if entities[0].urlIndex is defined and entities[0].urlIndex and entities|length > 0 %}
+        <div class="w-100 text-center mt-5">
+            {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                intl: {
+                    link: path('front_index', {url: entities[0].urlIndex}),
+                    linkStyle: 'btn btn-outline-primary',
+                    linkLabel: "Voir toutes nos actualités"|trans,
+                }
+            } %}
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro single(websiteTemplate, autoplay, teaser, entity, loopIndex, entities, thumbConfiguration) %}
+    <li class="splide__slide col-12 p-0{% if loopIndex > teaser.itemsPerSlide %} d-none{% endif %}">
+        <div class="card bg-light d-inline-block border-0 h-100 w-100">
+            {% if entity.showImage %}
+                <div class="card-header bg-transparent p-0 border-0 text-center">
+                    {{ macro.mediaRelation(entity, thumbConfiguration) }}
+                </div>
+            {% endif %}
+            <div class="card-body bg-white px-4 border-0 pt-4">
+                {{ macro.body(entity) }}
+            </div>
+            <div class="card-footer bg-white px-4 border-0 pt-0 pb-4">
+                <div class="row">
+                    <div class="col-md-6 d-flex align-items-center">
+                        {% if entity.showLinkCard %}
+                            {{ macro.showLink(websiteTemplate, entity) }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-md-end align-items-center">
+                        {{ macro.arrows(entity, autoplay, 'end', 'primary', true, 'bottom') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+{% endmacro %}
+
+{% macro multi(websiteTemplate, autoplay, promoteFirst, colSizeFirst, teaser, entity, loopIndex, entities, thumbConfiguration, arrows = false) %}
+    {% set isMobile = isMobile() %}
+    {% set isFirst = loopIndex == 1 %}
+    {% set colSizeNext = promoteFirst ? (100 - colSizeFirst) / (teaser.itemsPerSlide - 1) : null %}
+    {% set colSizeNext = isMobile ? 100 : (isTablet() ? 40 : colSizeNext) %}
+    {% set colSize = promoteFirst and not isFirst ? colSizeNext : (promoteFirst ? colSizeFirst : null) %}
+    {% if isMobile %}
+        {% set colSize = 100 %}
+    {% endif %}
+    <li class="splide__slide ps-0 pe-0 ps-md-0 pe-md-4 {% if isMobile %}col-12{% else %}col{% if not promoteFirst %}-md-4{% endif %}{% endif %}{% if loopIndex > teaser.itemsPerSlide %} d-none{% endif %}{% if isFirst %} is-first{% endif %}"
+        {% if colSizeNext %}data-size-next="{{ colSizeNext }}%"{% endif %}
+        {% if colSize %}style="width: {{ colSize }}%"{% endif %}>
+        {{ macroWebmaster.box({
+            title: "Éditer l'actualité"|trans([], 'front_webmaster'),
+            role: 'ROLE_NEWSCAST',
+            path: path('admin_newscast_edit', {website: teaser.website.id, newscast: entity.id})
+        }) }}
+        <div class="card bg-transparent d-inline-block border-0 w-100">
+            {% if entity.showImage %}
+                <div class="card-header bg-transparent p-0 border-0">
+                    {{ macro.mediaRelation(entity, thumbConfiguration) }}
+                </div>
+            {% endif %}
+            <div class="card-body bg-transparent p-0 border-0 pt-4">
+                {{ macro.body(entity) }}
+            </div>
+            {% if entity.showLinkCard %}
+                <div class="card-footer bg-transparent p-0 border-0 pt-3">
+                    {{ macro.showLink(websiteTemplate, entity) }}
+                    {% set arrowsClasses = loopIndex != 2 ? 'mt-4 mt-md-5 d-md-none' : 'mt-4 mt-md-5' %}
+                    {% if arrows %}
+                        {{ macro.arrows(entity, autoplay, 'end', 'primary ', true, 'bottom', arrowsClasses) }}
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </li>
+{% endmacro %}
+
+{% set containerClasses = asMulti ? 'col-12' : 'col-md-10 offset-md-1 mb-md-neg' %}
+{% set colSizeFirst = isDesktop() ? 50 : (isTablet() ? 60 : 100) %}
+{% set displayFormFilters = teaser.displayFilters is defined ? teaser.displayFilters : false %}
+
+{% if entities|length > 0 %}
+    {% if 'teaser-title' in teaser.fields and intl.title %}
+        <h{{ intl.titleForce }} class="title text-center mb-5 pb-4">{{ intl.title|raw }}</h{{ intl.titleForce }}>
+    {% endif %}
+    <div class="row listing-entities-container">
+        {{ macroWebmaster.box({
+            title: "Éditer le teaser"|trans([], 'front_webmaster'),
+            role: 'ROLE_NEWSCAST',
+            toolBoxClass: 'listing-box',
+            path: path('admin_newscastteaser_edit', {website: website.id, newscastteaser: teaser.id})
+        }) }}
+        {% if displayFormFilters %}
+            <div class="filters-container py-md-2">
+                {% include 'front/'~websiteTemplate~'/actions/vendor/include/entities-filters-form.html.twig' with {
+                    form: form,
+                    interfaceName: interfaceName,
+                    website: website,
+                    url: url,
+                    filter: filter,
+                    filters: filters is defined ? filters : false,
+                    allEntities: allEntities,
+                    websiteTemplate: websiteTemplate,
+                    counter: false,
+                    inContainer: false,
+                    disabledUrl: true,
+                    formAction: formAction,
+                } only %}
+            </div>
+        {% endif %}
+        {% set autoplay = 1 %}
+        <div class="{{ containerClasses }}">
+            <div id="newscast-teaser-{{ teaser.slug }}" class="newscast-teaser splide length-{{ entities|length }}"
+                 data-items="{{ teaser.itemsPerSlide }}"
+                 data-lenght="{{ entities|length }}"
+                 data-items-medium-pc="3"
+                 data-items-mini-pc="3"
+                 data-items-tablet="2"
+                 data-items-mobile="1"
+                 data-fade="loop"
+                 data-scroll="1"
+                 data-pause="1"
+                 data-autoplay="{{ autoplay }}"
+                 data-arrows="1"
+                 data-dots="0"
+                 data-gap="2rem"
+                 data-counter="0"
+                 data-interval="2500">
+                <div class="splide__track">
+                    {% if entities|length >= teaser.itemsPerSlide %}
+                        {{ macro.arrows(teaser, autoplay, 'end', 'primary', true, 'top') }}
+                    {% endif %}
+                    <ul class="splide__list{% if not asMulti %} w-100{% endif %}">
+                        {% for entity in entities %}
+                            {% if asMulti %}
+                                {{ macro.multi(websiteTemplate, autoplay, promoteFirst, colSizeFirst, teaser, entity, loop.index, entities, thumbConfiguration) }}
+                            {% else %}
+                                {{ macro.single(websiteTemplate, autoplay, teaser, entity, loop.index, entities, thumbConfiguration) }}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% if teaser.progress and entities|length >= teaser.itemsPerSlide %}
+                    <div class="row">
+                        <div class="col-11 col-md-9">
+                            <div class="slider-progress-container d-flex justify-content-start align-items-center w-100 mt-5">
+                                <div class="slider-progress w-100">
+                                    <div class="slider-progress-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% if 'index-link' in teaser.fields %}
+        {{ macro.showAll(websiteTemplate, entities, asMulti) }}
+    {% endif %}
+{% endif %}

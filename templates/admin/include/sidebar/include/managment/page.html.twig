@@ -1,0 +1,14 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'pages'|moduleActive(configuration) or granted('ROLE_INTERNAL') %}
+    {% set uri = app.request.uri %}
+    {% set module = 'pages'|moduleActive(configuration) %}
+    {% set intl = intlsModules['pages'][app.user.locale] is defined ? intlsModules['pages'][app.user.locale] : intlsModules['pages']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['pages']['entity'].adminName is defined ? intlsModules['pages']['entity'].adminName : 'Pages'|trans) %}
+    {% set icon = intlsModules['pages']['entity'].iconClass is defined and intlsModules['pages']['entity'].iconClass ? intlsModules['pages']['entity'].iconClass : '/medias/icons/light/network-wired.svg' %}
+    <li{% if '/page' in uri %} class="active"{% endif %}>
+        <a href="{{ path('admin_page_tree', {website: websiteId}) }}" data-toggle="preloader">
+            {{ icon|icon(19, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% endif %}

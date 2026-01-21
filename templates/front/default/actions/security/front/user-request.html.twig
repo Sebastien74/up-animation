@@ -1,0 +1,48 @@
+{% extends 'front/'~website.configuration.template~'/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% block metaTitle %}{{ "Confirmation de modifications"|trans|htmlEntities }}{% endblock %}
+{% block metaRobots %}noindex{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
+{% endblock %}
+
+{% block body %}
+    <div class="py-5 text-center d-flex align-items-center">
+        <div class="row w-100">
+            <div class="col-md-6 col-xl-4 mx-auto mt-5 mb-5 d-flex align-items-center">
+                <div class="form-thanks-card card bg-white form-success-card w-100 small-radius shadow">
+                    <div class="card-body bg-transparent px-5  text-center px-4 px-md-5">
+                        <div class="body my-4">
+                            <i class="icon-check-circle text-success size-lg-icon"></i>
+                            {% if 'clear' == type %}
+                                <strong class="d-inline-block mb-4 fz-sm d-inline-block w-100">{{ "Annulation confirmée"|trans|raw }}</strong>
+                                <p class="card-text mb-4">{{ "Aucune modification de vos données personnelles n’a été effectuée"|trans|raw }}</p>
+                            {% elseif 'confirm' == type %}
+                                <strong class="d-inline-block mb-4 fz-sm d-inline-block w-100">{{ "Modification confirmée"|trans|raw }}</strong>
+                                <p class="card-text mb-4">{{ "La mise à jour de vos données personnelles a été effectuée"|trans|raw }}</p>
+                            {% elseif 'clear-remove' == type %}
+                                <strong class="d-inline-block mb-4 fz-sm d-inline-block w-100">{{ "Annulation confirmée"|trans|raw }}</strong>
+                                <p class="card-text mb-4">{{ "La demande de suppression de compte a été annulée"|trans|raw }}</p>
+                            {% elseif 'remove-user' == type %}
+                                <strong class="d-inline-block mb-4 fz-sm d-inline-block w-100">{{ "Suppression confirmée"|trans|raw }}</strong>
+                                <p class="card-text mb-4">{{ "La suppression de compte a été éffectuée"|trans|raw }}</p>
+                            {% endif %}
+                            {% if type != 'remove-user' %}
+                                <p class="card-text mb-0"><a href="{{ absolute_url(path('security_front_login')) }}" class="btn btn-primary">{{ "Retourner dans mon espace personnel"|trans|raw }}</a></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

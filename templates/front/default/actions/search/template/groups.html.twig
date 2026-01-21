@@ -1,0 +1,40 @@
+{% trans_default_domain 'front_default' %}
+
+<div class="accordion" id="search-accordion-results-{{ search.id }}">
+
+    {% for categoryName, categoryResults in entityResults %}
+
+        {% set count = counts[categoryName|lower] is defined ? counts[categoryName|lower] : null %}
+
+        {% set entitled = categoryName %}
+        {% if categoryName == 'newscast' %}
+            {% set entitled = count > 1 ? 'Actualités'|trans|raw : 'Actualité'|trans|raw %}
+        {% elseif categoryName == 'page' %}
+            {% set entitled = count > 1 ? 'Pages'|trans|raw : 'Page'|trans|raw %}
+        {% endif %}
+
+        <div class="bg-primary px-3 py-2 {% if not loop.first %} mt-4{% endif %}" id="search-heading-{{ loop.index }}">
+            <h3 class="title w-100 mb-0">
+                <button class="cursor d-flex align-items-center justify-content-between w-100"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#search-collapse-{{ loop.index }}"
+                      aria-expanded="{% if loop.first %}true{% else %}false{% endif %}"
+                      aria-controls="search-collapse-{{ loop.index }}">
+                    <strong class="count badge badge-white fw-300 me-3">{{ count }}</strong>
+                    {{ entitled }}<i class="icon-chevron-down"></i>
+                </button>
+            </h3>
+        </div>
+
+        <div id="search-collapse-{{ loop.index }}"
+             class="collapse{% if loop.first %} show{% endif %}"
+             aria-labelledby="search-heading-{{ loop.index }}"
+             data-bs-parent="#search-accordion-results-{{ search.id }}">
+                {% for keyname, result in categoryResults %}
+                    {% include 'front/'~websiteTemplate~'/actions/search/include/result.html.twig' %}
+                {% endfor %}
+        </div>
+
+    {% endfor %}
+
+</div>

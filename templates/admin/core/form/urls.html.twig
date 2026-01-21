@@ -1,0 +1,105 @@
+{% trans_default_domain 'admin' %}
+
+{% set configuration = website().configuration %}
+{% set defaultLocale = configuration.locale %}
+{% set allLocales = configuration.allLocales %}
+{% set displaySeo = displaySeo is defined and displaySeo %}
+
+{% if not form.vars.value.id %}
+
+    {% for url in urls %}
+        {% for field in url.children %}
+            {% if field.vars.name != 'code' %}
+                <div class="d-none">
+            {% endif %}
+                {{ form_row(url[field.vars.name]) }}
+            {% if field.vars.name != 'code' %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+{% else %}
+
+    <div class="col-12">
+        <h4 class="card-subtitle mb-4">
+            {{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "URLS"|trans }}{% else %}{{ "URL"|trans }}{% endif %}
+        </h4>
+        {% for url in urls %}
+            {% set locale = url.vars.value.locale %}
+            {% set urlId = url.vars.value.id %}
+            <div class="row m-0{% if locale not in allLocales %} d-none{% endif %}">
+                <div class="col-sm-7">
+                    <div class="row form-group url-edit-group">
+                        <div class="col-sm-10">
+                            <div class="row d-flex w-initial">
+                                <label class="my-auto">
+                                    {% set domain = app.request.locale|domain %}
+                                    <small class="url-style{% if not domain %} text-danger{% endif %}">
+                                        {% if not domain %}
+                                            {{ "Non configuré"|trans }}
+                                        {% else %}
+                                            {{ domain|trim('/', 'right')~"/" }}
+                                        {% endif %}
+                                    </small>
+                                </label>
+                                {% set urlId = url.vars.value.id is defined and url.vars.value.id ? url.vars.value.id : null %}
+                                <div class="col input-group{% if allLocales|length == 1 %} unique-locale{% endif %}" data-url-id="{{ urlId }}">
+                                    {{ form_widget(url.code) }}
+                                    {% if allLocales|length > 1 %}
+                                        <div class="input-group-append">
+                                            <span class="input-group-text h-100" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
+                                                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                                            </span>
+                                        </div>
+                                    {% endif %}
+                                    {{ form_errors(url.code) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 my-auto">
+                            <small class="form-text text-info cursor generate-code d-flex align-items-center"
+                                   data-url-id="{{ urlId }}"
+                                   data-classname="{{ classname|url_encode }}"
+                                   data-entity-id="{{ entity.id }}">
+                                {{ 'far sync'|icon(null, 11, 'info me-1', {icon: true}) }}{{ "Générer l'url"|trans([], 'admin') }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-3">{{ form_widget(url.online) }}</div>
+                        <div class="col-sm-5 text-center">{{ form_widget(url.hideInSitemap) }}</div>
+                        <div class="col-sm-4 text-end">
+                            {% set path = interface is defined and urlId and routeExist('front_'~interface.name~'_preview') ? path('front_'~interface.name~'_preview', {website: websiteId(), url: urlId}) : '' %}
+                            {% set title = path ? "Prévisualisation"|trans : "Vous devez génrerer une URL"|trans %}
+                            {% if interface is defined and not routeExist('front_'~interface.name~'_preview') %}
+                                {% set title = "Prévisualisation indisponible"|trans %}
+                            {% endif %}
+                            {% set btn = path ? "btn-outline-info-darken standard" : "btn-outline-disabled standard" %}
+                            <a href="{{ path }}"
+                               data-bs-toggle="tooltip"
+                               title="{{ title }}"
+                               class="btn {{ btn }}"
+                               target="_blank">{{ 'fas eye'|icon(null, 14, 'dark', {icon: true}) }}
+                            </a>
+                            <span data-toggle="preloader">
+                                <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: locale, url: urlId}) }}"
+                                   data-bs-toggle="tooltip" title="{{ "Référencement avancé"|trans }}"
+                                   class="btn btn-outline-info-darken standard">
+                                    {{ 'fas chart-line'|icon(null, 14, 'dark', {icon: true}) }}
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if displaySeo %}
+        {% include 'admin/page/seo/seo-basic.html.twig' with {urls: form.urls} %}
+    {% endif %}
+
+{% endif %}

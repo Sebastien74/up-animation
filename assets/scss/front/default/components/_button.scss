@@ -1,0 +1,179 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2020
+    Created on : 2020-11-11, 6:37 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT BUTTONS COMPONENTS :
+    =========================
+
+------------------------------------------------------------------ */
+
+.btn.btn-circle:not(.d-none) {
+    display: inline-flex !important;
+}
+
+.btn.btn-circle {
+
+    border-radius: 50% !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 !important;
+    transition: all .3s ease-in-out !important;
+    aspect-ratio: 1 !important;
+    width: 45px !important;
+    height: 45px !important;
+    flex: 0 0 45px !important;
+
+    i {
+        font-size: 1rem !important;
+        font-weight: 300 !important;
+    }
+}
+
+.btn:not(.basic):not(.btn-blur) {
+
+    box-shadow: none !important;
+    overflow: hidden;
+    text-align: center;
+    text-decoration: none;
+    justify-content: center;
+    position: relative;
+    z-index: 0;
+    max-width: 100%;
+    white-space: initial;
+    box-sizing: border-box;
+    border-width: $btn-border-width !important;
+    border-style: solid;
+    font-size: 16px;
+
+    span {
+        font-size: 16px;
+    }
+
+    &:not(.btn-circle) {
+
+        display: inline-block;
+        border-radius: $btn-border-radius;
+        line-height: 1rem;
+        font-weight: 600;
+        white-space: normal;
+        min-width: 175px;
+
+        i {
+            font-size: 15px;
+        }
+
+        @include mediaQuery(max-md) {
+            padding: $btn-padding-xs;
+            font-size: $btn-font-size-xs;
+        }
+
+        @include mediaQuery(between-md-lg) {
+            padding: $btn-padding-md;
+            font-size: $btn-font-size-md;
+        }
+    }
+
+    @include mediaQuery(min-lg) {
+
+        &:not(.btn-circle) {
+            padding: $btn-padding;
+            font-size: $btn-font-size;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+
+            &:not(.btn-gradient) {
+
+                &:before {
+                    position: absolute;
+                    content: "";
+                    background: $white;
+                    transition-duration: .3s;
+                    z-index: -1;
+                    top: 0;
+                    right: auto;
+                    bottom: auto;
+                    left: 0;
+                    width: 0;
+                    height: 100%;
+                    opacity: 1;
+                    border-radius: $btn-border-radius;
+                }
+
+                &:hover,
+                &:focus,
+                &:active,
+                &.active {
+                    &:before {
+                        width: 100%;
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@if $enable-gradient-btn {
+
+    body .btn.btn-gradient {
+
+        position: relative;
+        overflow: hidden;
+        border: none !important;
+        z-index: 0;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: -1;
+            transition: opacity .5s ease-in-out;
+        }
+
+        &::before {
+            opacity: 1;
+        }
+
+        &::after {
+            opacity: 0;
+        }
+
+        &:hover::after {
+            opacity: 1;
+        }
+
+        &:hover::before {
+            opacity: 0;
+        }
+    }
+}
+
+.btn-blur {
+
+    border-radius: 50%;
+    border: none !important;
+    background: rgba(120, 130, 95, .35);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
+
+    i {
+        color: $white !important;
+    }
+
+    &:before {
+        display: none !important;
+    }
+
+    &:hover, &:active, &:focus {
+        transform: scale(1.02);
+        background: rgba(120, 130, 95, .42);
+    }
+}

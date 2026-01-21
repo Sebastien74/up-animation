@@ -1,0 +1,26 @@
+framework:
+    messenger:
+        transports:
+            async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    use_notify: true
+                    check_delayed_interval: 60000
+#                    table_name: '%env(MESSENGER_TABLE_NAME)%'  # Utilisez votre propre nom de table
+                retry_strategy:
+                    max_retries: 3
+                    delay: 1000
+                    multiplier: 2
+                    max_delay: 10000
+
+            # Transport pour les messages échoués
+            failed:
+                dsn: 'doctrine://default?queue_name=failed'  # Utilise Doctrine pour stocker les messages échoués dans une table
+                options:
+                    queue_name: failed   # Nom de la file pour les messages échoués
+
+            # Transport synchrone
+            sync: 'sync://'
+        failure_transport: failed
+        routing:
+            App\Message\SendEmail: async

@@ -1,0 +1,5 @@
+add: 'Add order'
+adminName: 'Order '
+delete: 'Delete order'
+plural: Orders
+singular: 'Order '

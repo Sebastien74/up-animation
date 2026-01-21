@@ -1,0 +1,51 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% block title %}{{ "Redimensionner"|trans|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ "Redimensionner"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-medias-cropper', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-medias-cropper', null,  'admin') }}
+    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+            integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div id="medias-croppers-index" class="card">
+        <h4 class="card-header mb-0">
+            <div class="row">
+                <div class="col-md-8 my-auto">{{ 'fal image'|icon(null, 18, 'info-darken me-2') }}{{ media.filename }}</div>
+                <div class="col-md-4 text-end">
+                    <span data-toggle="preloader">
+                        <a href="{{ path('admin_medias_library', {website: websiteId}) }}"
+                           class="btn btn-white text-info"
+                           data-bs-toggle="tooltip" title="{{ "Retourner aux médias"|trans|striptags }}">
+                            {{ 'fas reply'|icon(14, 14, 'info') }}
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </h4>
+        <div class="card-body pb-2">
+            <div class="row" data-masonry='{"percentPosition": true }'>
+                {% for thumb in thumbs %}
+                    <div class="col-sm-6 col-lg-4 mb-3">
+                        {{ render_esi(path('admin_media_cropper', {media: media.id, thumbConfiguration: thumb.id, website: website.id} )) }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% if not thumbs %}
+                <div class="w-100 mb-4">
+                    {% include 'admin/include/alert.html.twig' with {display: "alert", alert: "info", message: "Cette image n'est pas utilisée ou paramétrée pour le redimensionnement."|trans} only %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

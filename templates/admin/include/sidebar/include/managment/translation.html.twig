@@ -1,0 +1,41 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'translation'|moduleActive(configuration) or granted('ROLE_INTERNAL') %}
+    {% set uri = app.request.uri %}
+    {% set transDomains = website.configuration.entity.transDomains ? website.configuration.entity.transDomains : [] %}
+    {% set active = '/translations/' in uri %}
+    {% set module = 'translation'|moduleActive(configuration) %}
+    {% set intl = intlsModules['translation'][app.user.locale] is defined ? intlsModules['translation'][app.user.locale] : intlsModules['translation']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['translation']['entity'].adminName is defined ? intlsModules['translation']['entity'].adminName : 'Traductions'|trans) %}
+    {% set icon = intlsModules['translation']['entity'].iconClass is defined and intlsModules['translation']['entity'].iconClass ? intlsModules['translation']['entity'].iconClass : '/medias/icons/light/globe-stand.svg' %}
+    {% if granted('ROLE_INTERNAL') %}
+        <li{% if active %} class="active"{% endif %}>
+            <a class="as-arrow{% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+                {{ icon|icon(15, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+            </a>
+            <ul aria-expanded="false" class="collapse{% if active %} in{% endif %}">
+                <li class="pt-3 pe-3 d-inline-block w-100">
+                    {% include 'admin/page/translation/translation-search.html.twig' %}
+                </li>
+                {% for transDomain in transDomains %}
+                    <li><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}" data-toggle="preloader">{{ transDomain.adminName }}</a></li>
+                {% endfor %}
+                <li><a href="{{ path('admin_translationdomain_index', {website: websiteId}) }}" data-toggle="preloader">{{ "Groupes de traductions"|trans }}</a></li>
+            </ul>
+        </li>
+    {% else %}
+        <li{% if '/translations/' in uri %} class="active"{% endif %}>
+            <a class="as-arrow{% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="{% if active %}true{% else %}false{% endif %}">
+                {{ icon|icon(15, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+            </a>
+            <ul aria-expanded="false" class="collapse{% if active %} in{% endif %}{% if transDomains|length == 0 %} pb-3{% endif %}">
+                <li class="pt-3 pe-3 d-inline-block w-100">
+                    {% include 'admin/page/translation/translation-search.html.twig' %}
+                </li>
+                {% for transDomain in transDomains %}
+                    <li><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}" data-toggle="preloader">{{ transDomain.adminName }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
+{% endif %}

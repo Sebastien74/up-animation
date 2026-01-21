@@ -1,0 +1,103 @@
+@if ($enable-pagination) {
+
+@charset "UTF-8";
+
+    /* -----------------------------------------------------------------
+
+        Copyright  : 2024
+        Created on : 2024-01-09, 2:08 PM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+        FRONT PAGINATION COMPONENTS :
+        =============================
+
+    ------------------------------------------------------------------ */
+
+    .pagination-counter {
+
+        @include mediaQuery(min-md) {
+            font-size: 16px;
+        }
+
+        @include mediaQuery(max-md) {
+            font-size: 14px;
+        }
+    }
+
+    .pagination-nav {
+
+        max-width: 100%;
+
+        .pagination {
+
+            li {
+
+                padding-left: 0 !important;
+
+                &:before {
+                    display: none;
+                }
+
+                &:not(:last-child) {
+                    padding-right: .75rem !important;
+                }
+
+                a {
+                    border: 0;
+                }
+
+                .page-link {
+
+                    font-size: 14px;
+                    color: $black;
+                    border: 0 !important;
+                    box-shadow: none !important;
+                    font-weight: 700;
+                    padding: 0 !important;
+                    background-color: transparent !important;
+
+                    @include mediaQuery(max-md) {
+                        padding: $pagination-padding-y $pagination-padding-y;
+                    }
+
+                    &:hover {
+                        color: $primary;
+                    }
+                }
+
+                &:first-child > .page-link,
+                &:last-child > .page-link {
+                    text-transform: uppercase;
+                    color: $black;
+                }
+
+                &.active > .page-link {
+                    color: $primary;
+                }
+
+                &:not(.disabled) > .page-link {
+                    > svg {
+                        fill: $primary;
+                    }
+                }
+
+                &.disabled {
+                    display: none !important; // Keep for RGAA
+                    //> .page-link {
+                    //    color: $gray-500;
+                    //
+                    //    > svg {
+                    //        fill: $gray-500;
+                    //    }
+                    //}
+                }
+
+                @include mediaQuery(max-md) {
+                    &:nth-last-child(2) {
+                        display: none !important;
+                    }
+                }
+            }
+        }
+    }
+}

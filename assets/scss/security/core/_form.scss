@@ -1,0 +1,150 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-02-05, 2:58 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    SECURITY FORM :
+    ===============
+
+------------------------------------------------------------------ */
+
+input.material:-webkit-autofill,
+input.material:-webkit-autofill:hover,
+input.material:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    box-shadow: 0 0 0 1000px white inset !important;
+}
+
+html body form .form-field-none {
+    position: absolute;
+    left: -1000%;
+}
+
+button[type="submit"] {
+    border-radius: 0;
+}
+
+#strength-wrap {
+
+    .progress {
+        height: 6px;
+        border-radius: 0;
+    }
+
+    #strength-text {
+        font-size: 12px;
+    }
+}
+
+.form-material .form-group {
+    overflow: hidden;
+}
+
+.checkbox-group {
+    overflow: initial !important;
+}
+
+.filled-group {
+
+    border-bottom: 1px $gray-200 solid;
+
+    .input-group-text.show-password::after {
+        display: none !important;
+    }
+}
+
+.input-group {
+
+    .input-group-text.show-password {
+
+        border: 0;
+        background-color: transparent;
+        border-radius: 0;
+        cursor: pointer;
+        position: relative;
+
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: 1px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #e9ecef;
+        }
+    }
+}
+
+.form-material .form-control {
+    background-color: rgba(0, 0, 0, 0);
+    background-position: center bottom, center calc(100% - 1px);
+    background-repeat: no-repeat;
+    background-size: 0 2px, 100% 1px;
+    padding: 0;
+    transition: background 0s ease-out 0s;
+}
+
+.form-material .form-control,
+.form-material .form-control.focus,
+.form-material .form-control:focus {
+    background-image: linear-gradient($primary, $primary), linear-gradient($gray-200, $gray-200);
+    border: 0 none;
+    border-radius: 0;
+    box-shadow: none;
+    float: none;
+}
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
+    background-image: linear-gradient($danger, $danger), linear-gradient($gray-200, $gray-200) !important;
+    background-size: 100% 2px, 100% 1px;
+    outline: 0 none;
+    transition-duration: .3s;
+}
+
+.form-material .form-control.focus,
+.form-material .form-control:focus {
+    background-size: 100% 2px, 100% 1px;
+    outline: 0 none;
+    transition-duration: .3s;
+}
+
+.form-control-line .form-group {
+    overflow: hidden;
+}
+
+.custom-control-label {
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 22px;
+}
+
+.form-control-line .form-control {
+
+    border: 0;
+    border-radius: 0;
+    padding-left: 0;
+    border-bottom: 1px solid $gray-200;
+
+    &:focus {
+        border-bottom: 1px solid $primary;
+    }
+}
+
+form {
+
+    .form-group.is-invalid {
+        margin-bottom: .3rem !important;
+    }
+
+    .invalid-feedback {
+
+        font-size: 11px;
+
+        .badge {
+            display: none;
+        }
+    }
+}

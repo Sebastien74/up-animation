@@ -1,0 +1,43 @@
+#####################################
+#           Timeline                #
+#####################################
+
+App\Entity\Module\Timeline\Timeline:
+    translations:
+        adminName:
+            fr: "Chronologie"
+            en: 'Timeline name'
+        singular:
+            fr: "Chronologie"
+            en: 'Timeline'
+        plural:
+            fr: "Chronologies"
+            en: 'Timelines'
+        add:
+            fr: 'Ajouter une chronologie'
+            en: 'Add timeline'
+        delete:
+            fr: "Supprimer la chronologie"
+            en: 'Delete timeline'
+    columns:
+        - adminName
+
+App\Entity\Module\Timeline\Step:
+    translations:
+        adminName:
+            fr: "Étape (Module timeline)"
+            en: 'Step (Module timeline)'
+        singular:
+            fr: "Étape"
+            en: 'Step'
+        plural:
+            fr: "Étapes"
+            en: 'Steps'
+        add:
+            fr: 'Ajouter une étape'
+            en: 'Add step'
+        delete:
+            fr: "Supprimer l'étape"
+            en: 'Delete step'
+    columns:
+        - adminName

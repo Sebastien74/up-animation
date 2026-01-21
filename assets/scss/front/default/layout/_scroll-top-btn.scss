@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+@if $enable-scroll-top-btn {
+
+    /* -----------------------------------------------------------------
+
+        Copyright  : 2020
+        Created on : 2020-05-29, 1:01 PM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+        FRONT SCROLL TOP BUTTON LAYOUT :
+        ================================
+
+    ------------------------------------------------------------------ */
+
+    #scroll-top-btn {
+
+        @include mediaQuery(max-lg) {
+            display: none !important;
+        }
+
+        @include mediaQuery(min-lg) {
+
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            transition: all .5s ease-in-out;
+            opacity: 0;
+            visibility: hidden;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            line-height: 30px;
+            border: 1px solid $white;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.46) !important;
+            overflow: hidden !important;
+            z-index: 999;
+
+            svg, i {
+                fill: $white;
+                color: $white;
+                margin-top: -3px;
+            }
+
+            &.show {
+                opacity: 1;
+                visibility: visible;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            &:hover svg,
+            &:focus svg,
+            &:active svg,
+            &.active svg,
+            &:hover i,
+            &:focus i,
+            &:active i,
+            &.active i {
+                fill: $primary;
+                color: $primary;
+            }
+        }
+    }
+}

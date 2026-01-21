@@ -1,0 +1,140 @@
+{% extends "admin/core/edit.html.twig" %}
+
+{% set websiteId = websiteId() %}
+{% set excludesFields = ['cols'] %}
+
+{% trans_default_domain 'admin' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-table', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-table', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% set outerCustomized %}
+
+    {% set table = entity|table(entitylocale) %}
+
+    {% include 'admin/page/table/actions.html.twig' %}
+
+    <table id="table-module-edition" class="table-edit table-bordered table table-striped mb-0 mb-4">
+        <thead class="bg-transparent">
+            {% for col in form.cols %}
+                <th class="align-middle p-0 bg-transparent">
+                    <div class="actions bg-transparent">
+                        <div class="inner float-end bg-info-darken">
+                            {% if not loop.first %}
+                                <span class="active btn" data-toggle="preloader">
+                                    <a href="{{ path('admin_tablecol_position', {website: websiteId, table: entity.id, col: col.vars.data.id, type: "down"}) }}"
+                                       data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">{{ 'fas chevron-left'|icon(10, 16, 'dark') }}
+                                    </a>
+                                </span>
+                            {% else %}
+                                <span class="disabled btn">{{ 'fas chevron-left'|icon(10, 16, 'dark-50') }}</span>
+                            {% endif %}
+                            {% if not loop.last %}
+                                {% set iconColor = loop.last ? 'dark-50' : 'dark' %}
+                                <span class="active btn" data-toggle="preloader">
+                                    <a href="{{ path('admin_tablecol_position', {website: websiteId, table: entity.id, col: col.vars.data.id, type: "up"}) }}"
+                                       data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">{{ 'fas chevron-right'|icon(10, 16, iconColor) }}
+                                    </a>
+                                </span>
+                            {% else %}
+                                <span class="disabled btn">{{ 'fas chevron-right'|icon(10, 16, 'dark-50') }}</span>
+                            {% endif %}
+                            <span data-bs-toggle="tooltip" title="{{ "Enregistrer"|trans|striptags }}">
+                                <button type="submit" class="btn" data-toggle="preloader">{{ 'far save'|icon(16, 18, 'dark') }}</button>
+                            </span>
+                            <a href="{{ path('admin_tablecol_delete', {website: website.id, table: entity.id, col: col.vars.data.id}) }}"
+                               data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
+                               class="swal-delete-link btn">{{ 'fas trash'|icon(null, 15, 'dark') }}
+                            </a>
+                        </div>
+                    </div>
+                    {% if col.intls is defined %}
+                        {% for intl in col.intls %}
+                            {% set intlLocale = intl.vars.data.locale %}
+                            <div class="row m-0 bg-info-darken intls-row{% if intlLocale != entitylocale %} d-none{% endif %}">
+                                <div class="col-md-4">{{ form_widget(intl.titleForce) }}</div>
+                                <div class="col-md-8">{{ form_widget(intl.title) }}</div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </th>
+            {% endfor %}
+            <th class="bg-transparent"></th>
+        </thead>
+        <tbody>
+            {% if table.body is defined %}
+                {% for rows in table.body %}
+                    <tr id="cells-row-{{ loop.index }}" class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
+                        {% for row in rows %}
+                            <td class="edition">
+                                {% for col in form.cols %}
+                                    {% for cell in col.cells %}
+                                        {% if cell.vars.data.id == row.cell.id %}
+                                            {% for intl in cell.intls %}
+                                                {% set intlLocale = intl.vars.data.locale %}
+                                                <div class="row{% if intlLocale != entitylocale %} d-none{% endif %}">
+                                                    {% if intl.titleForce is defined %}
+                                                        <div class="col-md-2 form-group">{{ form_widget(intl.titleForce) }}</div>
+                                                    {% endif %}
+                                                    {% if intl.title is defined %}
+                                                        <div class="col-md-{% if intl.titleForce is defined %}10{% else %}12{% endif %} form-group">{{ form_widget(intl.title) }}</div>
+                                                    {% endif %}
+                                                    {% if intl.introduction is defined %}
+                                                        <div class="col-12 form-group"> {{ form_widget(intl.introduction) }}</div>
+                                                    {% endif %}
+                                                    {% if intl.body is defined %}
+                                                        <div class="col-12">{{ form_widget(intl.body) }}</div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                        <td class="actions bg-body text-center bg-transparent">
+                            <div class="inner bg-info-darken">
+                                <span {% if not loop.first %} data-toggle="preloader"{% endif %}>
+                                    {% if not loop.first %}
+                                        <a href="{{ path('admin_tablecell_position', {website: websiteId, table: entity.id, position: loop.index, type: "up"}) }}"
+                                           class="btn" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">{{ 'fas chevron-up'|icon(15, 16, 'dark') }}
+                                        </a>
+                                    {% else %}
+                                        <span class="btn disabled">{{ 'fas chevron-up'|icon(15, 16, 'dark-50') }}</span>
+                                    {% endif %}
+                                </span>
+                                <span {% if not loop.last %} data-toggle="preloader"{% endif %}>
+                                        {% if not loop.last %}
+                                            <a href="{{ path('admin_tablecell_position', {website: websiteId, table: entity.id, position: loop.index, type: "down"}) }}"
+                                               class="btn" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">{{ 'fas chevron-down'|icon(15, 16, 'dark') }}
+                                            </a>
+                                        {% else %}
+                                            <span class="btn disabled" >{{ 'fas chevron-down'|icon(15, 16, 'dark-50') }}</span>
+                                        {% endif %}
+                                    </span>
+                                <span data-bs-toggle="tooltip" title="{{ "Enregistrer"|trans|striptags }}">
+                                        <button type="submit" class="btn" data-toggle="preloader">{{ 'far save'|icon(16, 18, 'dark') }}</button>
+                                    </span>
+                                <a href="{{ path("admin_tablecell_delete", {website: websiteId, table: entity.id, position: loop.index}) }}"
+                                   data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
+                                   class="btn swal-delete-link">
+                                    {{ 'fas trash'|icon(null, 15, 'dark') }}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+
+    {% include 'admin/page/table/actions.html.twig' %}
+
+{% endset %}

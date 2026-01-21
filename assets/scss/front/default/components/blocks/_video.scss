@@ -1,0 +1,207 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2021-03-15, 5:11 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT VIDEOS COMPONENTS :
+    =========================
+
+------------------------------------------------------------------ */
+
+.video-fluid, .body iframe {
+    max-width: 100%;
+    max-height: 100dvh;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+.video-container {
+    max-height: 100dvh;
+    overflow: hidden;
+}
+
+.html-video {
+    display: block !important;
+    //display: inline-block!important;
+    //vertical-align: top;
+}
+
+.video-block, .video-block-html {
+
+    .player-control-play-wrap {
+
+        .player-control {
+
+            transition: clip-path .2s ease-in-out;
+            height: 60px;
+            width: 60px;
+
+            &:not(.hover) {
+                clip-path: circle(50% at 50% 50%);
+                background: url('data:image/svg+xml,<%3Fxml version="1.0" encoding="UTF-8"%3F><svg fill="%23#{str-slice(#{ $white }, 2)}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.27 122.27"><g><path d="M61.13,0c16.88,0,32.16,6.84,43.23,17.91,11.06,11.06,17.91,26.35,17.91,43.23s-6.84,32.16-17.91,43.23c-11.06,11.06-26.35,17.91-43.23,17.91s-32.16-6.84-43.23-17.91C6.84,93.3,0,78.01,0,61.13S6.84,28.97,17.91,17.9C28.97,6.84,44.25,0,61.13,0h0ZM89.38,63.66c.44-.25.83-.61,1.1-1.09.8-1.39.32-3.16-1.07-3.96l-21.01-12.13-20.77-11.99c-.48-.34-1.06-.54-1.69-.54-1.61,0-2.91,1.3-2.91,2.91v48.52h.01c0,.49.12.99.39,1.44.8,1.39,2.57,1.87,3.96,1.07l21.01-12.13,20.98-12.11Z"/></g></svg>');
+            }
+
+            &.hover {
+                left: 0;
+                clip-path: circle(0% at 50% 50%);
+                background: url('data:image/svg+xml,<%3Fxml version="1.0" encoding="UTF-8"%3F><svg fill="%23#{str-slice(#{ $primary }, 2)}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.27 122.27"><g><path d="M61.13,0c16.88,0,32.16,6.84,43.23,17.91,11.06,11.06,17.91,26.35,17.91,43.23s-6.84,32.16-17.91,43.23c-11.06,11.06-26.35,17.91-43.23,17.91s-32.16-6.84-43.23-17.91C6.84,93.3,0,78.01,0,61.13S6.84,28.97,17.91,17.9C28.97,6.84,44.25,0,61.13,0h0ZM89.38,63.66c.44-.25.83-.61,1.1-1.09.8-1.39.32-3.16-1.07-3.96l-21.01-12.13-20.77-11.99c-.48-.34-1.06-.54-1.69-.54-1.61,0-2.91,1.3-2.91,2.91v48.52h.01c0,.49.12.99.39,1.44.8,1.39,2.57,1.87,3.96,1.07l21.01-12.13,20.98-12.11Z"/></g></svg>');
+            }
+        }
+
+        &:hover .player-control {
+
+            transition: clip-path .2s ease-in-out;
+
+            &:not(.hover) {
+                clip-path: circle(0% at 50% 50%);
+            }
+
+            &.hover {
+                clip-path: circle(50% at 50% 50%);
+            }
+        }
+    }
+}
+
+.video-block-html {
+
+    max-height: 100dvh;
+    position: relative;
+    overflow: hidden;
+
+    .player-control-wrap {
+
+        z-index: 150;
+
+        &.control-pause {
+            top: 1rem;
+            right: 1rem;
+        }
+    }
+
+    .overlay-video {
+
+        z-index: 100;
+        opacity: 1;
+        transition: all .3s ease-in-out;
+
+        img, picture {
+            height: 100%;
+            width: 100%;
+        }
+
+        img {
+            object-fit: cover;
+            max-height: initial !important;
+        }
+
+        &.hide-overlay {
+            z-index: 0;
+            opacity: 0;
+            width: 0 !important;
+            height: 0 !important;
+            transition: opacity 3s ease-in-out, width 1s, height 1s;
+        }
+    }
+
+    .control-pause-btn {
+        height: 40px;
+        width: 40px;
+        transition: all .3s ease-in-out;
+    }
+
+    .sound-control {
+        height: 40px;
+        width: 40px;
+        opacity: 0;
+        top: 4rem;
+        right: 1rem;
+        transition: all .3s ease-in-out;
+    }
+
+    .hide-on-hover {
+        opacity: 1;
+        transition: all .3s ease-in-out;
+    }
+
+    .vertical-align-bottom {
+        bottom: 1.5rem;
+    }
+
+    &:hover {
+
+        .sound-control {
+            opacity: 1;
+            transition: all .3s ease-in-out;
+        }
+
+        .hide-on-hover {
+            opacity: 0;
+            transition: all .3s ease-in-out;
+        }
+    }
+}
+
+@if ($enable-youtube) {
+
+    $player-color: $primary;
+
+    .block-video, .block-video iframe {
+        max-width: 100%;
+    }
+
+    .video-block.radius {
+        picture > img, .embed-youtube {
+            border-radius: $border-radius-small;
+        }
+    }
+
+    .embed-youtube:not(.novideo) {
+        background-color: #000;
+        padding-top: 56.25%;
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .embed-youtube img {
+        width: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0.7;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .embed-youtube .embed-youtube-play {
+        z-index: 1;
+    }
+
+    .embed-youtube img,
+    .embed-youtube .embed-youtube-play {
+        cursor: pointer;
+    }
+
+    .embed-youtube img,
+    .embed-youtube iframe,
+    .embed-youtube .embed-youtube-play {
+        position: absolute;
+    }
+
+    .embed-youtube .embed-youtube-play {
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+    }
+
+    .embed-youtube iframe {
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+}

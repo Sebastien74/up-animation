@@ -1,0 +1,352 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-15, 17:27:15 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    SIDEBAR :
+    ===========================
+
+    1 ) Main sidebar
+    2 ) Use profile section
+    3 ) Sidebar navigation
+    4 ) Sidebar website info
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Main sidebar
+-----------------------------------*/
+
+.left-sidebar {
+    position: absolute;
+    width: 275px;
+    height: 100%;
+    top: 0;
+    z-index: 20;
+    background: $info-darken;
+    box-shadow: $shadow;
+}
+
+.sidebar-nav #sidebar-websites-selector {
+    a {
+        font-size: 12px !important;
+    }
+}
+
+/*-----------------------------------
+   2 ) Use profile section
+-----------------------------------*/
+
+.sidebar-nav  {
+
+    .user-pro {
+
+        margin-top: 0;
+        margin-bottom: 0;
+        background-color: $info-darken !important;
+
+        a {
+
+            font-size: 14px !important;
+            color: $white;
+            padding: 10px 15px 10px 15px;
+
+            i, svg {
+                float: left;
+                margin-top: 2px;
+                font-size: 17px;
+                width: 30px !important;
+                text-align: center;
+            }
+
+            &.text-danger {
+
+                color: $danger-light !important;
+
+                i, svg {
+                    color: $danger-light !important;
+                }
+            }
+
+            img {
+                max-height: 50px;
+                max-width: 50px;
+                margin-right: 10px;
+                width: initial;
+            }
+
+            .cms-name {
+
+                margin-top: 3px;
+
+                .cms-version {
+                    font-size: 10px;
+                    opacity: .7;
+                }
+            }
+
+            .website-ban {
+                font-size: 15px;
+            }
+        }
+
+        > ul {
+            padding: 15px 0 15px 15px;
+        }
+
+        #dashboard-btn {
+            border-left: 3px solid $info;
+            background: $info-darken-dark;
+        }
+    }
+
+    .in-build-info a {
+        line-height: 1;
+    }
+}
+
+.mini-sidebar {
+
+    .sidebar-nav .user-pro {
+
+        a {
+            padding: 9px 15px 10px 13px;
+
+            img {
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Sidebar navigation
+-----------------------------------*/
+
+.scroll-sidebar {
+
+    height: calc(100% - 27px);
+    position: relative;
+
+    &.ps .ps__scrollbar-y-rail {
+        left: 2px;
+        right: auto;
+        background: none;
+        width: 6px;
+        /* If using `left`, there shouldn't be a `right`. */
+    }
+}
+
+.collapse.in {
+    display: block !important;
+}
+
+.sidebar-nav {
+
+    padding: 0 0 0 0;
+
+    ul {
+
+        margin: 0;
+        padding: 0;
+
+        > li > ul > li.active {
+            background-color: transparentize($white, .9);
+        }
+
+        li {
+
+            list-style: none;
+
+            a {
+
+                color: $info-light;
+                padding: 10px 35px 10px 15px;
+                display: block;
+                align-items: center;
+                font-size: 13px;
+                font-weight: 400;
+
+                i, svg {
+                    float: left;
+                    margin-top: 2px;
+                    font-size: 15px;
+                    width: 30px !important;
+                    text-align: center;
+                    color: $white;
+                }
+
+                &.active,
+                &:hover {
+                    color: $white;
+                }
+
+                &.active {
+                    font-weight: 500;
+                    color: $white;
+                }
+            }
+
+            ul {
+
+                li a {
+
+                    padding: 10px 35px 10px 25px;
+
+                    i, svg {
+                        float: left;
+                        width: 30px;
+                        text-align: center;
+                        display: inline-block;
+                        color: $white;
+                        font-size: 15px;
+                    }
+                }
+
+                ul {
+
+                    padding-left: 15px;
+                    background-color: $info;
+
+                    &.in {
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                    }
+
+                    a {
+
+                        color: $info-light !important;
+
+                        &.active {
+                            color: $info-light !important;
+                        }
+                    }
+                }
+            }
+
+            &.nav-small-cap {
+                font-size: 12px;
+                margin-bottom: 0;
+                padding: 30px 14px 14px 0;
+                color: $white;
+                font-weight: 500;
+            }
+
+            &.nav-devider {
+                height: 1px;
+                background: $border-color;
+                display: block;
+                margin: 15px 0;
+            }
+        }
+    }
+
+    > ul > li > a {
+
+        border-left: 3px solid transparent;
+
+        .badge {
+            float: right;
+        }
+    }
+
+    > ul > li {
+
+        &.active > a {
+
+            color: $white;
+            font-weight: 500;
+            border-left: 3px solid $info-darken-dark;
+
+            i {
+                color: $white;
+            }
+        }
+    }
+
+    .waves-effect {
+        transition: none;
+        -webkit-transition: none;
+        -o-transition: none;
+    }
+}
+
+.left-sidebar ul li ul li a {
+    padding: 10px 30px 10px 15px;
+}
+
+.sidebar-nav .as-arrow {
+
+    position: relative;
+
+    &::after {
+        position: absolute;
+        content: '';
+        width: 7px;
+        height: 7px;
+        border-width: 1px 0 0 1px;
+        border-style: solid;
+        border-color: $white;
+        right: 20px;
+        transform: rotate(135deg) translate(0, -50%);
+        -webkit-transform-origin: top;
+        transform-origin: top;
+        top: 19px;
+        -webkit-transition: all .3s ease-out;
+        -o-transition: all .3s ease-out;
+        transition: all .3s ease-out;
+    }
+
+    &.bigger {
+
+        font-size: 16px;
+        color: $info-light !important;
+        background: $info-darken-dark;
+        padding: 1rem;
+        font-weight: 600 !important;
+
+        &::after {
+            border-color: $info-light !important;
+            top: 50% !important;
+        }
+    }
+}
+
+.sidebar-nav {
+
+    a.as-arrow.sub-nav-arrow {
+
+        &.active {
+            background-color: transparentize($info, .8);
+        }
+
+        &::after {
+            border-color: $info;
+        }
+    }
+
+    ul.sub-nav {
+        background-color: transparentize($info, .9);
+    }
+}
+
+.sidebar-nav li > .as-arrow.active::after,
+.sidebar-nav .as-arrow[aria-expanded="true"]::after {
+    top: 42%;
+    width: 7px;
+    transform: rotate(-135deg) translate(0, -50%);
+}
+
+/*-----------------------------------
+   4 ) Sidebar website info
+-----------------------------------*/
+
+.left-sidebar {
+    .sidebar-website-info {
+        border-left: 3px solid $white;
+        background: $info-darken-dark;
+        font-size: 13px;
+    }
+}

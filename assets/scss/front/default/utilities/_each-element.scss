@@ -1,0 +1,131 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2019-11-16, 7:23 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT EACH ELEMENTS :
+    =====================
+
+------------------------------------------------------------------ */
+
+@function explode($string, $delimiter) {
+    $result: ();
+    @if $delimiter == "" {
+        @for $i from 1 through str-length($string) {
+            $result: append($result, str-slice($string, $i, $i));
+        }
+        @return $result;
+    }
+    $exploding: true;
+    @while $exploding {
+        $d-index: str-index($string, $delimiter);
+        @if $d-index {
+            @if $d-index > 1 {
+                $result: append($result, str-slice($string, 1, $d-index - 1));
+                $string: str-slice($string, $d-index + str-length($delimiter));
+            } @else if $d-index == 1 {
+                $string: str-slice($string, 1, $d-index + str-length($delimiter));
+            } @else {
+                $result: append($result, $string);
+                $exploding: false;
+            }
+        } @else {
+            $result: append($result, $string);
+            $exploding: false;
+        }
+    }
+    @return $result;
+}
+
+@function str-trim($string) {
+    @if (str-slice($string, 1, 1) == ' ') {
+        @return str-trim(str-slice($string, 2));
+    } @else if (str-slice($string, str-length($string), -1) == ' ') {
+        @return str-trim(str-slice($string, 1, -2));
+    } @else {
+        @return $string;
+    }
+}
+
+@mixin each-elements($elements) {
+
+    $commonValues: ();
+
+    @each $element, $config in $elements {
+
+        @if map-has-key($config, "colors-in-backgrounds") and not map-has-key($config, "excluded") {
+
+            @each $color-name, $color in map-get($config, 'colors-in-backgrounds') {
+                $matches: explode($element, ',');
+                @each $match in $matches {
+                    $match: str-trim($match);
+                    $pushPropertyBg: '';
+                    @if str-index($match, "not(.initial)") {
+                        $pushPropertyBg: '.bg-' + $color-name + ' ' + $match + ':not(.btn)';
+                    } @else {
+                        $pushPropertyBg: '.bg-' + $color-name + ' ' + $match + ':not(.initial):not(.btn)';
+                    }
+                    .bg-#{$color-name} #{$match}:not(.initial) {
+                        @each $commonValue in $commonValues {
+                            @each $commonProperty, $commonProperties in $commonValue {
+                                @each $subCommonProperty, $subCommonElements in $commonProperties {
+                                    $elProperty: '';
+                                    @if str-index($match, "not(.initial)") {
+                                        $elProperty: ', .bg-' + $color-name + ' ' + $match + ':not(.btn)';
+                                    } @else {
+                                        $elProperty: ', .bg-' + $color-name + ' ' + $match + ':not(.initial):not(.btn)';
+                                    }
+                                    @if ($commonProperty == $color and $subCommonProperty == 'color') {
+                                        $pushPropertyBg: $subCommonElements + $elProperty;
+                                        $commonValues: remove($commonValues, $commonValue);
+                                    }
+                                }
+                            }
+                        }
+                        $commonValues: append($commonValues, ($color: ('color': $pushPropertyBg)));
+                    }
+                }
+            }
+        }
+
+        @if map-has-key($config, "properties") {
+            #{$element} {
+                @each $property, $value in map-get($config, 'properties') {
+                    @if type-of($value) == 'map' {
+                        @each $screenSize, $sizeValue in $value {
+                            @include mediaQuery(min-#{$screenSize}) {
+                                #{$property}: $sizeValue;
+                            }
+                        }
+                    } @else {
+                        $pushProperty: $element;
+                        @each $commonValue in $commonValues {
+                            @each $commonProperty, $commonProperties in $commonValue {
+                                @each $subCommonProperty, $subCommonElements in $commonProperties {
+                                    @if ($commonProperty == $value and $subCommonProperty == $property) {
+                                        $pushProperty: $subCommonElements + ', ' + $element;
+                                        $commonValues: remove($commonValues, $commonValue);
+                                    }
+                                }
+                            }
+                        }
+                        $commonValues: append($commonValues, ($value: ($property: $pushProperty)));
+                    }
+                }
+            }
+        }
+    }
+
+    @each $commonValue in $commonValues {
+        @each $value, $properties in $commonValue {
+            @each $property, $elements in $properties {
+                #{$elements} {
+                    #{$property}: $value;
+                }
+            }
+        }
+    }
+}

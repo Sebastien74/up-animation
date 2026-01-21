@@ -1,0 +1,74 @@
+{% trans_default_domain 'admin' %}
+
+{% set asCopy = asCopy is defined ? asCopy : false %}
+
+<div id="medias-library-modal"
+     class="modal fade"
+     data-type="{{ type }}"
+     tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xxl" role="document">
+        <div class="modal-content border refer-preloader text-start pb-5 pt-3">
+            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
+            <div class="d-none">
+                {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'medias-preloader', full: true} only %}
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100">{{ 'fal images'|icon(56, 50) }}</h5>
+                <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                    {{ 'fal times'|icon(20, 20, 'dark') }}
+                </button>
+            </div>
+            <div class="modal-body d-flex">
+                <div class="container-fluid my-auto">
+                    <h2 class="main-title text-center fw-bold mb-5">{{ "Choisir dans la bibliothèque"|trans }}</h2>
+                    <div class="row text-center mx-auto d-flex justify-content-center mb-4">
+                        {% include 'admin/page/media/search.html.twig' with {form: form} only %}
+                    </div>
+                    <div class="row">
+                        <div id="folders-col" class="col-md-4 pe-md-4">
+                            <div id="root-btn-wrap" class="position-relative">
+                                {% set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
+                                    ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees %}
+                                <span id="nestable-expand-all" class="btn btn-outline-info-darken cursor{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
+                                    {{ 'fal arrow-alt-to-bottom'|icon(null, 16, 'dark') }}
+                                </span>
+                                <span id="nestable-collapse-all" class="btn btn-dark cursor{% if collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
+                                    {{ 'fal arrow-alt-to-top'|icon(null, 16, 'dark') }}
+                                </span>
+                                <a href="{{ path('admin_medias_library', {website: websiteId()}) }}"
+                                   id="root-btn"
+                                   class="ajax-get-refresh btn btn-white text-info w-100 text-center"
+                                   data-target="#medias-results"
+                                   data-target-loader="#medias-preloader">
+                                    {{ 'fas eye'|icon(null, 14, 'info me-2') }}{{ "Racine"|trans }}
+                                </a>
+                            </div>
+                            {% include 'admin/core/include/nestable.html.twig' with {
+                                routenameInterface: "folder",
+                                customTitle: 'Afficher les médias'|trans,
+                                customIcon: 'icm-eye',
+                                customClass: 'ajax-get-refresh',
+                                customBtn: 'info',
+                                targetLoader: '#medias-preloader',
+                                targetAjax: '#medias-results',
+                                customRoute: 'admin_medias_library',
+                                customRole: 'ROLE_EDIT'
+                            } %}
+                        </div>
+                        <div class="col-md-8 position-relative">
+                            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'library-preloader', full: false} only %}
+                            {% include 'admin/page/media/medias-list.html.twig' %}
+                            {% if not asCopy %}
+                                <div class="w-100 text-center mt-4 pt-2">
+                                    <button id="save-file-library" class="btn btn-info" data-type="{{ type }}" data-options="{{ options|json_encode }}">
+                                        {{ "Ajouter"|trans }}
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

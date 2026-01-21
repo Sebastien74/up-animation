@@ -1,0 +1,10 @@
+{% trans_default_domain 'admin' %}
+
+{% if entity.actions|length > 0 %}
+    <strong><small>{{ "Type d'écran :"|trans|raw }} {{ entity.screen }}</small></strong>
+    <ul class="infos-list reset text-italic">
+        {% for action in entity.actions %}
+            <li><small>- {{ action.adminName }}</small></li>
+        {% endfor %}
+    </ul>
+{% endif %}

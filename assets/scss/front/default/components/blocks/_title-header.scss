@@ -1,0 +1,103 @@
+@charset "UTF-8";
+
+@if ($enable-title-header) {
+    
+    /* -----------------------------------------------------------------
+    
+        Copyright  : 2020
+        Created on : 2020-10-23, 10:38 AM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    
+        FRONT VENDOR TITLE HEADER BLOCK :
+        ================================
+    
+    ------------------------------------------------------------------ */
+
+    $height-large-xs: 350px;
+    $height-large-md: 400px;
+    $height-large-lg: calc(50dvh - 85px);
+
+    $height-xs: 300px;
+    $height-md: 350px;
+    $height-lg: 300px;
+
+    .title-header-block {
+
+        overflow: hidden;
+
+        &.as-large {
+
+            @include mediaQuery(max-md) {
+                min-height: $height-large-xs;
+            }
+
+            @include mediaQuery(between-md-lg) {
+                min-height: $height-large-md;
+            }
+
+            @include mediaQuery(min-lg) {
+                min-height: $height-large-lg;
+            }
+        }
+
+        &:not(.as-large) {
+
+            @include mediaQuery(max-md) {
+                min-height: $height-xs;
+            }
+
+            @include mediaQuery(between-md-lg) {
+                min-height: $height-md;
+            }
+
+            @include mediaQuery(min-lg) {
+                min-height: $height-lg;
+            }
+        }
+        
+        .media-content {
+            
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+
+            .img-loader-wrap,
+            .img-loader-wrap .img-loader,
+            .img-loader-wrap .img-loader .inner {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: initial !important;
+                max-height: initial !important;
+            }
+
+            img, picture {
+                object-fit: cover;
+                object-position: 50% 50%;
+                position: relative;
+                z-index: 1;
+                height: 100%;
+                width: 100%;
+                max-height: initial !important;
+            }
+        }
+        
+        .title-content {
+            z-index: 100;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 50;
+            width: 100%;
+            background-repeat: repeat-x !important;
+            background-size: 1px 80% !important;
+            background-position: bottom !important;
+            background: url("data:image/svg+xml;charset=utf-8,%3Csvg width='auto' height='100%25' preserveAspectRatio='none' version='1.1' viewBox='0 0 17.5 658' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cstyle%3E .st0 { fill: url(%23shadow-y); } %3C/style%3E%3ClinearGradient id='shadow-y' x1='-320.2' y1='330.7' x2='337.8' y2='330.7' gradientTransform='translate(0 659.7) scale(1 -1)' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%23#{str-slice(#{$primary}, 2)}'/%3E%3Cstop offset='1' stop-color='%23#{str-slice(#{$primary}, 2)}' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='transparent'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%3E%3Crect class='st0' x='-320.2' y='320.2' width='658' height='17.5' transform='translate(-320.3 337.7) rotate(-90)'/%3E%3C/g%3E%3C/svg%3E");
+        }
+    }
+}

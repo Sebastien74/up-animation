@@ -1,0 +1,523 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2021
+    Created on : 2021-06-9, 1:37 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT CAROUSEL COMPONENTS :
+    ==========================
+
+    1 ) Boostrap
+        a - Core
+    2 ) Boostrap two columns
+    3 ) Splide
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Boostrap
+-----------------------------------*/
+
+/*-- a - Core --*/
+
+.carousel-inner {
+
+    .carousel-caption:not(.vertical-align) {
+        right: 0;
+        left: 0;
+        top: 0;
+    }
+
+    .carousel-caption {
+
+        .caption-title {
+            font-size: rem(30px);
+            line-height: rem(30px);
+        }
+
+        .carousel-control-pause,
+        .carousel-control-play,
+        .carousel-control-prev,
+        .carousel-control-next {
+
+            opacity: 1;
+
+            &:not(.btn) {
+                width: initial;
+            }
+        }
+    }
+
+    @if ($enable-youtube) {
+        .embed-youtube {
+            img {
+                top: 0;
+            }
+        }
+    }
+}
+
+.carousel {
+
+    .controls, .carousel-controls {
+
+        .carousel-control-pause,
+        .carousel-control-play,
+        .carousel-control-prev,
+        .carousel-control-next {
+
+            opacity: 1;
+
+            &:not(.btn) {
+
+                width: auto;
+
+                i {
+                    font-size: 30px;
+                }
+            }
+        }
+    }
+
+    .carousel-indicators:not(.as-loader) {
+
+        li {
+
+            background-color: $primary;
+            border-radius: 99px;
+            border: 0;
+            width: 15px;
+            height: 15px;
+            aspect-ratio: 1;
+            transition: all .3s ease-in-out !important;
+
+            &.active {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: all .3s ease-in-out !important;
+                width: 2.5rem !important;
+            }
+        }
+    }
+
+    $indicatorsColors: map-get($elements, 'carousel-indicator');
+    @if map-has-key($indicatorsColors, "colors-in-backgrounds") {
+        @each $color-name, $color in map-get($indicatorsColors, 'colors-in-backgrounds') {
+            .bg-#{$color-name} {
+                .carousel-indicators:not(.as-loader) {
+                    li {
+                        background-color: $color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@if $enable-carousel-loader {
+
+    .carousel-indicators.as-loader {
+
+        [data-bs-target] {
+            list-style-type: none;
+            opacity: 1 !important;
+            overflow: hidden;
+            width: 110px;
+            height: 5px;
+            border-radius: $border-radius-small;
+            background-clip: initial;
+            border: 0 !important;
+        }
+
+        &.white [data-bs-target] {
+
+            background-color: transparentize($white, 0.5);
+
+            span.loader {
+                background: $white;
+            }
+        }
+
+        &.primary [data-bs-target] {
+
+            background-color: transparentize($primary, 0.5);
+
+            span.loader {
+                background: $primary;
+            }
+        }
+
+        [data-bs-target] span.loader {
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+            border-radius: $border-radius-small;
+        }
+
+        [data-bs-target] .loader.height {
+            top: initial;
+            width: 10px;
+            height: 0;
+            max-height: 100%;
+            transition: height .0001s ease;
+            transform: rotate(360deg);
+        }
+
+        [data-bs-target] .loader.width {
+            height: 3px;
+            width: 0;
+            max-width: 100%;
+            transition: width .0001s ease;
+        }
+    }
+}
+
+/*-----------------------------------
+   2 ) Boostrap two columns
+-----------------------------------*/
+
+@if $enable-carousel-two-columns {
+
+    div[data-component="carousel-bootstrap"].two-columns {
+
+        //.img-wrap, .img-loader-wrap {
+        //    width: 100%;
+        //}
+
+        .caption-title {
+            line-height: 1.5;
+        }
+
+        .btn-gradient {
+            padding: 1rem 2rem;
+        }
+
+        .pictogram-wrap {
+
+            z-index: 10;
+
+            @include mediaQuery(max-xl) {
+                img {
+                    height: 200px !important;
+                    width: inherit !important;
+                }
+            }
+
+            @include mediaQuery(max-lg) {
+                position: initial;
+                transform: initial;
+            }
+        }
+
+        @include mediaQuery(max-lg) {
+            .content-col {
+                .inner {
+                    max-width: 95%;
+                }
+            }
+        }
+
+        .carousel-content {
+
+            z-index: 15;
+
+            @include mediaQuery(min-lg) {
+                max-width: 80%;
+            }
+        }
+
+        .img-wrap {
+
+            picture {
+                height: 100%;
+                width: 100%;
+            }
+
+            img {
+                max-height: initial !important;
+                height: 100% !important;
+                width: 100% !important;
+                object-fit: cover;
+            }
+        }
+
+        //.carousel-indicators [data-bs-target] {
+        //
+        //    background-color: $white;
+        //    border: 1px solid $white;
+        //    border-radius: 50%;
+        //    width: 10px;
+        //    height: 10px;
+        //    opacity: 1;
+        //    z-index: 10;
+        //
+        //    &.active {
+        //        background-color: $black;
+        //        border: 1px solid $secondary;
+        //    }
+        //}
+
+        .carousel-indicators {
+
+            bottom: 20px;
+            left: initial;
+
+            @include mediaQuery(min-lg) {
+                right: 30px;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Splide
+-----------------------------------*/
+
+/*! purgecss start ignore */
+
+@include mediaQuery(max-md) {
+
+    .splide.not-mobile {
+
+        visibility: visible !important;
+
+        .splide__list {
+            display: initial !important;
+        }
+    }
+}
+
+@include mediaQuery(min-md) {
+
+    .splide.not-desktop {
+
+        visibility: visible !important;
+
+        .splide__list {
+            display: initial !important;
+        }
+    }
+}
+
+@include mediaQuery(min-lg) {
+
+    .splide .slider-link {
+
+        .title, .body *, img {
+            transition: all .3s ease-in-out;
+        }
+
+        > .img-loader-wrap {
+            border-radius: $border-radius-small;
+            overflow: hidden;
+        }
+
+        &:hover {
+
+            .title, .body *, img {
+                transition: all .3s ease-in-out;
+            }
+
+            .title {
+                color: $primary !important;
+            }
+
+            .body * {
+                color: $white !important;
+            }
+
+            > .img-loader-wrap img {
+                transform: scale(1.03);
+            }
+        }
+    }
+}
+
+.slider-container .splide {
+
+    .splide__pagination {
+
+        position: relative !important;
+        bottom: -1.5rem !important;
+
+        li {
+            display: inline-flex !important;
+        }
+
+        button {
+            transition: all .3s ease-in-out !important;
+            width: .75rem;
+            height: .75rem;
+            border-radius: 99px;
+            transform: initial !important;
+        }
+
+        button.is-active {
+            width: 2.5rem !important;
+            transition: all .3s ease-in-out !important;
+            opacity: 1 !important;
+            transform: initial !important;
+            background-color: $primary !important;
+        }
+    }
+
+    .arrows-wrap {
+
+        &.disabled {
+            display: none !important;
+        }
+
+        &:not(.as-btn) i {
+
+            font-size: 30px;
+            font-weight: 600;
+            transition: all .3s ease-in-out;
+
+            &:hover {
+                color: $primary !important;
+                transition: all .3s ease-in-out;
+            }
+        }
+    }
+
+    .splide__track {
+
+        position: relative;
+
+        .splide__slide {
+            transform: scale(1);
+        }
+
+        .title {
+            @include rfs(23px);
+        }
+    }
+}
+
+.slider-container:not(.is-home-page) {
+
+    .splide__track {
+
+        padding-top: 1.5rem;
+
+        @include mediaQuery(max-md) {
+            margin-left: -1.5rem !important;
+        }
+
+        @include mediaQuery(min-md) {
+            margin-left: -3rem !important;
+        }
+
+        .title {
+            @include rfs(26px);
+        }
+    }
+}
+
+.splide__list {
+    list-style: none !important;
+}
+
+.splide__sr {
+    display: none !important;
+}
+
+.splide {
+
+    .pictogram-wrap {
+
+        flex: 0 0 45px;
+        position: relative;
+        top: -.65rem;
+
+        img {
+            height: auto !important;
+            width: 100%;
+        }
+    }
+
+    .img-loader-wrap img {
+        border-radius: $border-radius-small;
+    }
+
+    .btn-vertical {
+
+        position: absolute !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        z-index: 300 !important;
+
+        &.btn-prev {
+            left: 1rem !important;
+        }
+
+        &.btn-next {
+            right: 1rem !important;
+        }
+    }
+
+    .slider-progress-container {
+
+        .slider-progress {
+
+            background: transparentize($black, .85);
+            height: 10px;
+            width: 80%;
+            border-radius: 35px;
+
+            .slider-progress-bar {
+                background: transparentize($white, .2);
+                transition: width 400ms ease;
+                width: 0;
+                height: 100%;
+                border-radius: 35px;
+            }
+        }
+    }
+
+    @include mediaQuery(max-md) {
+        .body * {
+            font-size: 15px;
+        }
+    }
+}
+
+.zone-video-bg, .bg-primary {
+
+    .slider-progress {
+
+        background: transparentize($white, .7) !important;
+
+        .slider-progress-bar {
+            background: transparentize($white, .3) !important;
+        }
+    }
+}
+
+/*! purgecss end ignore */
+
+/*-----------------------------------
+   4 ) Marquee
+-----------------------------------*/
+
+//.marquee-content {
+//
+//    .marquee-item {
+//
+//        img {
+//
+//            @include mediaQuery(max-md) {
+//                max-height: 25px;
+//                max-width: 100px;
+//            }
+//
+//            @include mediaQuery(min-md) {
+//                max-height: 35px;
+//                max-width: 150px;
+//            }
+//        }
+//    }
+//}

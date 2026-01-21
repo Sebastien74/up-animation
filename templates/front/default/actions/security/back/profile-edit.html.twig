@@ -1,0 +1,134 @@
+{% set website = website is defined and website ? website : website() %}
+
+{% extends 'front/'~website.configuration.template~'/actions/security/back/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% block metaTitle %}{{ "Mon profil"|trans|htmlEntities }}{% endblock %}
+{% block metaRobots %}noindex{% endblock %}
+
+{% set pageTitle = "Mon profil"|trans %}
+{% set backLink = path('security_front_profile') %}
+{% set breadcrumbs = [
+    {title: "Tableau de bord"|trans, url: path('security_front_dashboard')},
+    {title: pageTitle|trans, url: path('security_front_profile')},
+    {title: "Édition"|trans},
+] %}
+
+{% block content %}
+
+    <div class="form-container position-relative bg-light pt-lg pb-lg">
+        {% if form %}
+            <div class="form-ajax-container">
+                {% include 'front/'~websiteTemplate~'/include/loader.html.twig' only %}
+                <div class="container">
+                    {{ form_start(form, {attr: {
+                        novalidate: "novalidate",
+                        id: "user-front-form",
+                        class: "form-ajax",
+                        action: path('security_front_profile_edit', {ajax: true}),
+                        'data-reset': 0,
+                        'data-component': "webpack-form",
+                    }}) }}
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    {% if form.profile.gender is defined %}
+                                        {{ form_row(form.profile.gender) }}
+                                    {% endif %}
+                                    {% if form.lastName is defined %}
+                                        {{ form_row(form.lastName) }}
+                                    {% endif %}
+                                    {% if form.firstName is defined %}
+                                        {{ form_row(form.firstName) }}
+                                    {% endif %}
+                                    {% if form.login is defined %}
+                                        {{ form_row(form.login) }}
+                                    {% endif %}
+                                    {% if form.email is defined %}
+                                        {{ form_row(form.email) }}
+                                    {% endif %}
+                                </div>
+                                {% if 'SECURITY_FRONT_ADDRESSES'|getEnv %}
+                                    <h3 class="mb-4 mt-4">{{ "Adresse de livraison"|trans }}</h3>
+                                    <div class="row">
+                                        {% for address in form.profile.addresses %}
+                                            {% if address.vars.data.slug == 'basic' %}
+                                                {{ form_row(address) }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    {% if 'SECURITY_FRONT_ADDRESSES'|getEnv == 'full' %}
+                                        <h3 class="mb-4 mt-4">{{ "Adresse de facturation"|trans }}</h3>
+                                        <div class="row">
+                                            {% for address in form.profile.addresses %}
+                                                {% if address.vars.data.slug == 'billing' %}
+                                                    {{ form_row(address) }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                {% if form.profile.gender is defined %}
+                                    {{ form_row(form.file) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% include "front/"~websiteTemplate~"/include/flashbag.html.twig" %}
+                        <button type="submit" class="btn btn-primary mt-3"><i class="icon-save me-2"></i>{{ "Enregistrer"|trans|raw }}</button>
+                    {{ form_end(form) }}
+
+                    <a href="{{ path('security_front_password_request') }}" class="btn btn-success d-inline-flex align-center me-3"><i class="icon-lock-alt me-2"></i>{{ "Modifier mon mot de passe"|trans|raw }}</a>
+                    <div class="btn btn-danger d-inline-flex align-center" data-bs-toggle="modal" data-bs-target="#delete-account-modal"><i class="icon-trash-alt me-2"></i>{{ "Supprimer mon compte"|trans|raw }}</div>
+                    <div class="modal fade" id="delete-account-modal" tabindex="-1" aria-labelledby="delete-account-modal-label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-body text-center pt-4 px-5">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <i class="icon-shield-alt text-primary size-md-icon"></i>
+                                    <strong class="d-inline-block mb-4 fz-sm text-primary d-inline-block w-100">{{ "Suppression de compte"|trans|raw }}</strong>
+                                    <p class="text-center">{{ "Vous êtes sur le point de demander la suppression de votre compte. Par mesure de sécurité, un email de confirmation vous sera envoyé."|trans|raw }}</p>
+                                    <p class="text-center mb-0">{{ "Aucune donnée ne sera supprimée tant que vous n’aurez pas confirmé cette action via le lien reçu."|trans|raw }}</p>
+                                </div>
+                                <div class="modal-footer justify-content-center border-0 pb-4">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Annuler'|trans|raw }}</button>
+                                    <a href="{{ path('security_front_profile_remove_request') }}" type="button" class="btn btn-primary">{{ 'Confirmer'|trans|raw }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        {% else %}
+            <div class="container-fluid">
+                <div class="row w-100">
+                    <div class="col-md-6 col-xl-4 mx-auto d-flex align-items-center">
+                        <div class="card bg-white form-success-card w-100 shadow">
+                            <div class="card-body bg-transparent px-5 text-center px-4 px-md-5">
+                                <div class="body my-4">
+                                    <i class="icon-shield-alt text-primary size-md-icon"></i>
+                                    <strong class="d-inline-block mb-4 fz-sm text-primary d-inline-block w-100">{{ "Modification en attente de confirmation"|trans|raw }}</strong>
+                                    <p>{{ "Vous avez récemment soumis une demande de modification de vos informations."|trans|raw }}</p>
+                                    <p>{{ "Un email de confirmation vous a été envoyé à votre adresse actuelle. Pour des raisons de sécurité, ces modifications ne seront pas appliquées tant que vous ne les aurez pas validées depuis ce message."|trans|raw }}</p>
+                                    <p class="mb-4">{{ "<strong>Le formulaire est temporairement désactivé</strong> en attendant votre confirmation."|trans|raw }}</p>
+                                    <div class="mb-4"><i class="icon-mailbox size-sm-icon text-primary"></i><p>{{ "Si vous n’avez pas reçu le mail, pensez à vérifier votre dossier «Spam» ou «Courrier indésirable»."|trans|raw }}</p></div>
+                                    <div>
+                                        <i class="icon-ban size-sm-icon text-danger"></i>
+                                        <p class="mb-0">
+                                            {{ "Vous pouvez <a href='%resetLink%' class='fw-700'>annuler la demande de modification</a> si vous ne souhaitez plus la valider ou si vous n'êtes pas à l'origine de cette demande."|trans({
+                                                '%resetLink%': path('security_front_clear_user_request', {token: userRequest.token|url_encode})
+                                            })|raw }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

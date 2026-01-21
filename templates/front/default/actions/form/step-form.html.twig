@@ -1,0 +1,41 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set customTemplate = 'front/'~websiteTemplate~'/actions/form/form-step/'~entity.slug~'.html.twig' %}
+{% set customTemplateExist = (customTemplate)|fileExist %}
+{% set formTemplate = customTemplateExist
+    ? 'front/'~websiteTemplate~'/actions/form/form-step/'~entity.slug~'.html.twig'
+    : 'front/'~websiteTemplate~'/actions/form/form-step/default.html.twig' %}
+
+{% set asLayout = true %}
+{% set template = 'front/'~websiteTemplate~'/actions/form/include/elements.html.twig' %}
+{% set messages = app.session.flashbag.all %}
+{% set modalId = "form-thanks-modal-"~entity.id %}
+{% set contactsLength = entity.contacts|length %}
+{% set maxShipments = formConfiguration.maxShipments %}
+{% set urlRedirectionIntl = website.entity|intlUrl(formConfiguration.pageRedirection) %}
+{% set urlRedirection = urlRedirectionIntl ? path('front_index', {url: urlRedirectionIntl}) : null %}
+{% set publicationEnd = formConfiguration.publicationEnd ? formConfiguration.publicationEnd : null %}
+{% set inDeltaDate = not publicationEnd or 'now'|datetime <= publicationEnd %}
+{% set dispalyForm = not maxShipments and inDeltaDate or contactsLength < maxShipments and inDeltaDate  %}
+
+{% set formClass = 'step-form-ajax' %}
+{% if formConfiguration.recaptcha %}
+    {% set formClass = formClass~' security' %}
+{% endif %}
+
+<div id="steps-form-container-{{ entity.slug }}" class="steps-form-container keep-form-module form-wizard position-relative{% if formConfiguration.recaptcha %} recaptcha-referer{% endif %}">
+    {{ macroWebmaster.box({
+        title: "Éditer le formulaire"|trans([], 'front_webmaster'),
+        role: 'ROLE_FORM',
+        path: path('admin_form_index', {website: website.id, stepform: entity.id})
+    }) }}
+    {% include formTemplate %}
+</div>
+
+{% if formConfiguration.thanksModal %}
+    {% set intl = entity|intl %}
+    {% set modalMessage = intl ? intl.placeholder : "Merci pour votre message !!"|trans|raw %}
+    {% include 'front/'~websiteTemplate~'/include/thanks-modal.html.twig' %}
+{% endif %}

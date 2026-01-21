@@ -1,0 +1,5 @@
+add: 'Ajouter une campagne'
+adminName: 'Nom de la campagne'
+admin_newsletteremail_index: Emails
+plural: 'Campagnes de newsletters'
+singular: 'Campagne de newsletter'

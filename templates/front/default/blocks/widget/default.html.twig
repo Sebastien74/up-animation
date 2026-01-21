@@ -1,0 +1,32 @@
+{% trans_default_domain 'front_default' %}
+
+{% set gdprArgs = gdprArguments() %}
+{% set gdprActive = gdprArgs.gdprActive or slug is not empty or block.controls %}
+{% set asSocialWall = 'elfsight' in slug or 'elfsight' in intl.introduction %}
+{% set code = slug ? slug : (asSocialWall ? 'apps-elfsight' : 'iframe') %}
+
+<div class="widget-block{% if asSocialWall %} social-wall{% endif %}">
+    {% if asSocialWall %}
+        {% set content = intl.introduction|htmlEntities(false) %}
+        {% set split = content|split('</script>') %}
+        {% set element = split[0] is defined and 'script' not in split[0] ? split[0]|trim : null %}
+        {% if not element %}
+            {% set split = content|split('</div>') %}
+            {% set element = split[0] is defined and split[0] ? split[0]|trim~'</div>' : null %}
+        {% endif %}
+        {% if element %}
+            {% set html = '<div class="social-wall-wrap" data-debug="1" data-src="https://static.elfsight.com/p/platform.js" data-elfsight-app-lazy data-element="'~element|replace({'"': "'"})|e('html_attr')~'"></div>' %}
+            {% if not gdprActive %}
+                {{ html|raw }}
+            {% else %}
+                {{ html|iframe({code: code}) }}
+            {% endif %}
+        {% endif %}
+    {% else %}
+        {% if gdprActive %}
+            {{ intl.introduction|iframe({code: code}) }}
+        {% else %}
+            {{ intl.introduction|raw }}
+        {% endif %}
+    {% endif %}
+</div>

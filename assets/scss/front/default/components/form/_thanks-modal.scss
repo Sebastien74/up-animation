@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+@if ($enable-thanks-modal) {
+
+    /* -----------------------------------------------------------------
+    
+        Copyright  : 2024
+        Created on : 2019-11-12, 7:01 AM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    
+        FRONT THANKS MODAL COMPONENT :
+        =============================
+        
+    ------------------------------------------------------------------ */
+
+    body .thanks-modal {
+
+        background-color: transparentize($black, .8);
+
+        .modal-content {
+
+            background-color: $gray-100;
+            border: none;
+
+            .modal-body {
+
+                padding: 3rem;
+
+                .btn-close {
+
+                    position: fixed;
+                    top: 1.5rem;
+                    right: 1.5rem;
+                    color: transparentize($white, .8);
+
+                    svg {
+                        width: 25px;
+                        height: 25px;
+                    }
+                }
+
+                picture img {
+                    max-height: 100px !important;
+                    max-width: 250px !important;
+                    min-height: 75px !important;
+                }
+
+                p {
+                    color: $dark !important;
+                }
+            }
+        }
+    }
+}

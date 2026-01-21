@@ -1,0 +1,3 @@
+spiriit_form_filter:
+    listeners:
+        doctrine_orm: true

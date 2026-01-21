@@ -1,0 +1,67 @@
+#admin-body {
+
+    > .toast-container:first-child {
+        top: 1.5rem !important;
+    }
+
+    > .toast-container:nth-child(2) {
+        top: 5.5rem !important;
+    }
+
+    > .toast-container:nth-child(3) {
+        top: 9.5rem !important;
+    }
+}
+
+.toast {
+
+    &.bottom-right {
+        bottom: 1rem;
+        right: 1rem;
+    }
+
+    &.top-right {
+        top: 6rem;
+        right: 2rem;
+    }
+}
+
+.toast-container {
+
+    right: 1.5rem !important;
+
+    .toast {
+        width: auto !important;
+        border-radius: 0;
+    }
+
+    .toast-header {
+
+        color: #fff;
+        border-left: 4px solid transparentize($white, .5) !important;
+
+        svg {
+            fill: rgba(255, 255 ,255, .5);
+        }
+    }
+
+    .btn-close {
+        filter: brightness(0) invert(1);
+    }
+
+    .bg-info .toast-header {
+        color: $info-darken !important;
+    }
+
+    .bg-success .toast-header {
+        background-color: $green !important;
+    }
+
+    .bg-danger .toast-header {
+        background-color: $red !important;
+    }
+
+    .bg-warning .toast-header {
+        background-color: $yellow !important;
+    }
+}

@@ -1,0 +1,137 @@
+{% trans_default_domain 'admin' %}
+
+<h4 class="text-dark w-100 text-center mb-3 position-relative">
+    {{ "Marges"|trans }}
+    {% if interface.name is defined and 'zone' == interface.name %}
+        <span class="reset-margins bg-info h-100 position-absolute text-white d-inline-flex justify-content-center align-items-center cursor"
+              data-post-form="0"
+              data-type="stay"
+              data-target=".layout-modal"
+              href="{{ path('admin_zone_reset_margins', {
+                  website: website.id,
+                  zone: entity.id,
+              }) }}"
+              aria-label="{{ "Réinitialiser les marges"|trans|striptags }}"
+              title="{{ "Réinitialiser les marges"|trans|striptags }}">
+            <i class="icm-sync"></i>
+        </span>
+    {% endif %}
+</h4>
+
+{% set tabs = {
+    desktop: {
+        title: "Ordinateur"|trans
+    },
+    miniPc: {
+        title: "Mini PC"|trans,
+        field: "MiniPc"
+    },
+    tablet: {
+        title: "Tablette"|trans
+    },
+    mobile: {
+        title: "Mobile"|trans
+    }}
+%}
+
+<ul class="nav nav-tabs custom-tab" role="tablist">
+    {% for tabId, config in tabs %}
+        <li class="nav-item">
+            <a id="nav-{{ tabId }}-tab-margin" class="nav-link{% if loop.first %} active{% endif %}"
+               data-bs-toggle="tab"
+               data-bs-target="#{{ tabId }}-margin"
+               aria-controls="{{ tabId }}-margin"
+               type="button"
+               role="tab"
+               aria-selected="{% if loop.first %}true{% else %}false{% endif %}">
+                <span class="d-none d-sm-inline-block">{{ config.title }}</span>
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+<div id="margins-management-block" class="tab-content pt-4">
+    {% for tabId, config in tabs %}
+        {% set suffix = tabId == 'desktop' ? '' : (config.field is defined ? config.field : tabId|capitalize) %}
+        <div class="tab-pane fade text-center w-100 mb-4{% if loop.first %} active show{% endif %}" id="{{ tabId }}-margin" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab-margin">
+            <div class="margin-dashed d-inline-block mx-auto position-relative">
+                <small class="margin-info position-absolute">{{ "Marge extérieure"|trans }}</small>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="item mx-auto m-2">
+                            {% if form['marginTop'~suffix] is defined %}
+                                {{ form_widget(form['marginTop'~suffix]) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="row m-0">
+                            <div class="col-2 my-auto">
+                                <div class="item m-auto m-2">
+                                    {% if form['marginLeft'~suffix] is defined %}
+                                        {{ form_widget(form['marginLeft'~suffix]) }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-8 element-margin">
+                                <small class="margin-info position-absolute">{{ "Marge intérieure"|trans }}</small>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="item mx-auto m-2">
+                                            {% if form['paddingTop'~suffix] is defined %}
+                                                {{ form_widget(form['paddingTop'~suffix]) }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-3 my-auto">
+                                                <div class="item m-auto m-2">
+                                                    {% if form['paddingLeft'~suffix] is defined %}
+                                                        {{ form_widget(form['paddingLeft'~suffix]) }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-6 padding-dashed p-3">{{ 'fad align-center'|icon(14, 14, 'dark') }}</div>
+                                            <div class="col-3 my-auto">
+                                                <div class="item m-auto m-2">
+                                                    {% if form['paddingRight'~suffix] is defined %}
+                                                        {{ form_widget(form['paddingRight'~suffix]) }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="item mx-auto m-2">
+                                            {% if form['paddingBottom'~suffix] is defined %}
+                                                {{ form_widget(form['paddingBottom'~suffix]) }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2 my-auto">
+                                <div class="item m-auto m-2">
+                                    {% if form['marginRight'~suffix] is defined %}
+                                        {{ form_widget(form['marginRight'~suffix]) }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="item mx-auto m-2">
+                            {% if form['marginBottom'~suffix] is defined %}
+                                {{ form_widget(form['marginBottom'~suffix]) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <small class="margins-infos mt-2 d-inline-block w-100">
+                {{ "<b>null :</b> Valeur par défaut - <b>0 :</b> Aucune - <b>XS :</b> Très petite - <b>S :</b> Petite - <b>M :</b> Moyenne - <b>L :</b> Large - <b>XL :</b> Très large - <b>XXL :</b> Extra large - <b>N* :</b> Négatif"|trans|raw }}
+            </small>
+        </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,29 @@
+{% trans_default_domain 'admin' %}
+
+{% if interface.configuration.saveArea is not defined
+    or interface.configuration.saveArea != 'top'
+    or configsFieldsSet is defined and configsFieldsSet %}
+    <div class="card-footer text-center text-md-end save-bottom">
+        {% set submitFields = ['save', 'saveBack', 'saveEdit'] %}
+        {% if interface.configuration.saveArea == 'bottom' %}
+            {% include 'admin/core/form/save/base.html.twig' %}
+        {% elseif interface.configuration.saveArea == 'both' %}
+            <span data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}">
+                <a href="{{ lastRoute() }}" class="btn btn-white text-info standard standard" data-toggle="preloader" aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                    {{ 'fas reply'|icon(14, 14, 'info') }}
+                </a>
+            </span>
+            {% if form.save is defined or form.saveBack is defined or form.saveEdit is defined %}
+                {% for field in form.children %}
+                    {% if field.vars.name in submitFields %}
+                        <button type="submit"
+                                name="{{ field.vars.full_name }}"
+                                class="btn standard{% if field.vars.attr.class is defined and field.vars.attr.class%} {{ field.vars.attr.class }}{% endif %}">
+                            {{ 'fal save'|icon(14, 14, 'me-2', {icon: true}) }}{{ field.vars.label }}
+                        </button>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    </div>
+{% endif %}

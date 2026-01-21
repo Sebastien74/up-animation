@@ -1,0 +1,62 @@
+#####################################
+#           GDPR                    #
+#####################################
+
+App\Entity\Gdpr\Category:
+    translations:
+        singular:
+            fr: 'Catégorie de Cookies'
+            en: 'Cookies category'
+        plural:
+            fr: 'Categories de Cookies'
+            en: 'Cookies categories'
+        breadcrumb:
+            fr: "Catégories"
+            en: 'Categories'
+        add:
+            fr: 'Ajouter une catégorie'
+            en: 'Add category'
+        delete:
+            fr: "Supprimer la catégorie"
+            en: 'Delete category'
+        admin_gdprgroup_index:
+            fr: 'Groupes'
+            en: 'Groups'
+    columns:
+        - adminName
+
+App\Entity\Gdpr\Cookie:
+    translations:
+        singular:
+            fr: 'Cookie'
+            en: 'Cookie'
+        plural:
+            fr: 'Cookies'
+            en: 'Cookies'
+        add:
+            fr: 'Ajouter un cookie'
+            en: 'Add cookie'
+        delete:
+            fr: "Supprimer le cookie"
+            en: 'Delete cookie'
+
+App\Entity\Gdpr\Group:
+    translations:
+        singular:
+            fr: 'Groupe de Cookies'
+            en: 'Cookies group'
+        plural:
+            fr: 'Groupes de Cookies'
+            en: 'Cookies groups'
+        add:
+            fr: 'Ajouter un groupe'
+            en: 'Add group'
+        delete:
+            fr: "Supprimer le groupe"
+            en: 'Delete group'
+        active:
+            fr: 'Activé'
+            en: 'Active'
+    columns:
+        - adminName
+        - active

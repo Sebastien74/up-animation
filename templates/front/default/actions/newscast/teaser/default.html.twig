@@ -1,0 +1,103 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set displayFormFilters = teaser.displayFilters is defined ? teaser.displayFilters : false %}
+
+{% if entities|length > 0 %}
+    {% if 'teaser-title' in teaser.fields and intl.title %}
+        <h{{ intl.titleForce }} class="title text-center mb-5 pb-4">{{ intl.title|raw }}</h{{ intl.titleForce }}>
+    {% endif %}
+    <div class="default-teaser row m-0 listing-entities-container">
+        {{ macroWebmaster.box({
+            title: "Éditer le teaser"|trans([], 'front_webmaster'),
+            role: 'ROLE_NEWSCAST',
+            toolBoxClass: 'listing-box',
+            path: path('admin_newscastteaser_edit', {website: website.id, newscastteaser: teaser.id})
+        }) }}
+        {% if displayFormFilters %}
+            <div class="filters-container py-md-2">
+                {% include 'front/'~websiteTemplate~'/actions/vendor/include/entities-filters-form.html.twig' with {
+                    form: form,
+                    interfaceName: interfaceName,
+                    website: website,
+                    url: url,
+                    filter: filter,
+                    filters: filters is defined ? filters : false,
+                    allEntities: allEntities,
+                    websiteTemplate: websiteTemplate,
+                    counter: false,
+                    inContainer: false,
+                    disabledUrl: true,
+                    formAction: formAction,
+                } only %}
+            </div>
+        {% endif %}
+        {% set screen = isMobile() ? 'xs' : (isTablet() ? 'md' : 'lg') %}
+        {% set defaultColSize = entities|length > 0 ? (100 / entities|length) : 100 %}
+        {% set colSize = screen == 'xs' ? 100 : (screen == 'md' ? 50 : defaultColSize) %}
+        {% for entity in entities %}
+            <div class="col mb-4" style="width: {{ colSize }}%">
+                <div class="card bg-transparent d-inline-block border-0 d-flex flex-column h-100">
+                    {{ macroWebmaster.box({
+                        title: "Éditer l'actualité"|trans([], 'front_webmaster'),
+                        role: 'ROLE_NEWSCAST',
+                        path: path('admin_newscast_edit', {website: website.id, newscast: entity.id})
+                    }) }}
+                    {% if entity.showImage %}
+                        <div class="card-header bg-transparent p-0 border-0 text-center">
+                            {{ entity.mainMedia|file(thumbConfiguration, {
+                                btnLink: false,
+                                targetLink: entity.intl.link,
+                                placeholder: false,
+                                popupGallery: false,
+                                fullPopup: false,
+                                placeholder: true,
+                                lazyLoad: true,
+                                class: 'w-100'
+                            }) }}
+                        </div>
+                    {% endif %}
+                    <div class="card-body bg-transparent p-0 border-0 pt-4">
+                        {% if entity.showTitle %}
+                            <h3 class="title mb-4"><a href="{{ entity.url }}" class="title-link">{{ entity.intl.title|raw }}</a></h3>
+                        {% endif %}
+                        {% if entity.showSubTitle %}
+                            <h4 class="sub-title mb-4">{{ entity.intl.subTitle|raw }}</h4>
+                        {% endif %}
+                        {% if entity.showCategory %}
+                            <strong class="category d-inline-block mb-4">{{ entity.category.intl.title|raw }}</strong>
+                        {% endif %}
+                        {% if entity.showDate %}
+                            <span class="date mb-3 d-inline-block w-100">{{ entity.date|format_datetime(pattern=entity.category.formatDate, locale=app.request.locale)|capitalize }}</span>
+                        {% endif %}
+                        {% if entity.showIntro %}
+                            <p class="introduction text-bold mt-3">{{ entity.intl.introduction|truncate(200) }}</p>
+                        {% endif %}
+                        {% if entity.showBody %}
+                            <p class="body mt-3">{{ entity.intl.body|truncate(200) }}</p>
+                        {% endif %}
+                    </div>
+                    {% if entity.showLinkCard %}
+                        <div class="card-footer bg-transparent p-0 border-0 pt-3">
+                            {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                intl: {link: entity.url}
+                            } %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        {% if 'index-link' in teaser.fields and entities[0].urlIndex is defined and entities[0].urlIndex and entities|length > 0 %}
+            <div class="w-100 text-center mt-5">
+                {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                    intl: {
+                        link: path('front_index', {url: entities[0].urlIndex}),
+                        linkStyle: 'btn btn-outline-primary',
+                        linkLabel: "Voir toutes nos actualités"|trans,
+                    }
+                } %}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

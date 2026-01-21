@@ -1,0 +1,29 @@
+{% trans_default_domain 'admin' %}
+
+<div class="bg-light p-4 mb-4 card">
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="border-bottom mb-3 pb-2">{{ "Documentations"|trans }}</h4>
+            <ul class="reset">
+                <li><a href="https://varin6.github.io/Hover-Buttons" target="_blank">Hover Buttons</a></li>
+                <li><a href="https://tympanus.net/Development/HoverEffectIdeas/index2.html" target="_blank">Hover Effect Ideas</a></li>
+                <li><a href="https://michalsnik.github.io/aos/" target="_blank">Aos animations</a></li>
+                <li><a href="https://github.com/alexfoxy/lax.js" target="_blank">Lax animations</a></li>
+                <li><a href="https://github.com/T00rk/bootstrap-material-datetimepicker" target="_blank">Timepicker</a></li>
+                <li><a href="https://www.npmjs.com/package/fullib-js" target="_blank">Fullib JS</a></li>
+                <li><a href="{{ path('admin_icons', {website: websiteId, library: 'app'}) }}">{{ "Blibliothèque d'icônes"|trans }}</a></li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h4 class="border-bottom mb-3 pb-2">{{ "Outils"|trans }}</h4>
+            <ul class="reset">
+                <li><a href="https://nux.net/secret" target="_blank">{{ "Générateur de clés secrètes Symfony"|trans }}</a></li>
+                <li><a href="https://tinypng.com" target="_blank">{{ "Compression d'images"|trans }}</a></li>
+                <li><a href="https://transfonter.org/" target="_blank">{{ "Convertisseur de polices"|trans }}</a></li>
+                <li><a href="https://app.contrast-finder.org/result.html?foreground=%23fff&background=%230081ac&ratio=4.5&isBackgroundTested=false&algo=Rgb&lang=fr" target="_blank">{{ "Contrast Finder"|trans }}</a></li>
+                <li><a href="https://www.instagram.com/accounts/login/?force_authentication=1&enable_fb_login=1&platform_app_id=&next=/oauth/authorize/%3Fclient_id%3D1677ed07ddd54db0a70f14f9b1435579%26redirect_uri%3Dhttp%3A//instagram.pixelunion.net%26response_type%3Dtoken%26hl%3Den" target="_blank">{{ "Token Instagram"|trans }}</a></li>
+                <li><a href="https://manifest-validator.appspot.com/" target="_blank">{{ "Web Manifest Validator"|trans }}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

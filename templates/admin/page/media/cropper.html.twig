@@ -1,0 +1,172 @@
+{% trans_default_domain 'admin' %}
+
+<div class="card crop-card mb-0">
+    <div class="card-body media-body text-center">
+        {{ media|file({desktop: thumbConfiguration}, {asMedia: true, lazyLoad: false, forceThumb: true}) }}
+    </div>
+    <h5 class="card-title no-radius mb-0 bg-info-light p-3">
+        {{ "Taille"|trans }} :
+        {% if configuration.width != "" and configuration.height != "" %}
+            {{ configuration.width }}px X {{ configuration.height }}px <small class="italic ms-2">{{ "(l x h)"|trans }}</small>
+        {% elseif configuration.width != "" and configuration.height == "" %}
+            {{ configuration.width }}px X {{ "Indéterminée"|trans }} <small class="italic ms-2">{{ "(l x h)"|trans }}</small>
+        {% elseif configuration.width == "" and configuration.height != "" %}
+            {{ "Indéterminée"|trans }} X {{ configuration.height }}px <small class="italic ms-2">{{ "(l x h)"|trans }}</small>
+        {% elseif configuration.height == "" and configuration.width != "" %}
+            {{ configuration.width }}px X {{ "Indéterminée"|trans }}px <small class="italic ms-2">{{ "(l x h)"|trans }}</small>
+        {% elseif configuration.width == "" and configuration.height == "" %}
+            {{ "Indéterminée"|trans }}
+        {% endif  %}
+    </h5>
+    <div class="card-body info-body border bg-light">
+        <strong>{{ "Utilisé dans :"|trans }}</strong>
+        <ul>
+            {% for action in configuration.actions %}
+                <li>{{ action.adminName }}</li>
+            {% endfor  %}
+        </ul>
+        <div class="row">
+            <div class="col-md-{% if thumb.id %}10{% else %}12{% endif %}">
+                <button class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#crop-modal-{{ configuration.id }}">
+                    {{ 'fas crop-alt'|icon(14, 14, 'white me-2') }}{{ "Redimensionner"|trans }}
+                </button>
+            </div>
+            {% if thumb.id %}
+                <div class="col-md-2">
+                    <span class="d-inline-block w-100" data-bs-toggle="tooltip" title="{{ "Réinitialiser"|trans }}">
+                        <a href="{{ path('admin_thumb_delete', {website: websiteId(), thumb: thumb.id}) }}" class="btn btn-info w-100 swal-delete-link">
+                            {{ 'fas retweet'|icon(null, 16, 'white') }}
+                        </a>
+                    </span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div id="crop-modal-{{ configuration.id }}"
+     class="modal fade crop-modal"
+     tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content border refer-preloader text-start pb-5 pt-3">
+            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
+            <div class="modal-header">
+                <h5 class="modal-title text-center w-100">{{ 'fal crop-alt'|icon(null, 50, 'dark m-0') }}</h5>
+                <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                    {{ 'fal times'|icon(20, 20, 'dark') }}
+                </button>
+            </div>
+            <div class="modal-body d-flex">
+                <div class="container my-auto ajax-content">
+                    <h2 class="main-title text-dark text-center fw-bold mb-4">{{ "Redimensionner"|trans }}</h2>
+                    {{ form_start(form, {attr: {
+                        id: "cropForm"~media.id,
+                        novalidate: "novalidate",
+                        action: path("admin_media_cropper", {
+                            website: websiteId(),
+                            media: media.id,
+                            thumbConfiguration: configuration.id
+                        })}}) }}
+
+                        {% set fileInfo = website()|fileInfo(media.filename) %}
+
+                        <div class="cropper-wrap"
+                             data-width="{{ thumb.width }}"
+                             data-height="{{ thumb.height }}">
+                            <div class="img-container"><img src="{{ asset(fileInfo.path) }}" class="image img-fluid" alt="{{ "Image"|trans|striptags }}" /></div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-6 docs-buttons d-flex align-items-end">
+                                    <div class="btn-group me-2">
+                                        <span class="btn btn-secondary btn-outline cursor zoom-in" data-bs-toggle="tooltip" title="{{ "Zoomer"|trans }}">
+                                            <span class="docs-tooltip">
+                                                {{ 'fal search-plus'|icon(null, 14) }}
+                                            </span>
+                                        </span>
+                                        <span class="btn btn-secondary btn-outline cursor zoom-out" data-bs-toggle="tooltip" title="{{ "Dézoomer"|trans }}">
+                                            <span class="docs-tooltip">
+                                                {{ 'fal search-minus'|icon(null, 14) }}
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="btn-group me-2">
+                                        <span class="btn btn-secondary btn-outline cursor move-start" data-bs-toggle="tooltip" title="{{ "Décaler l'image à gauche"|trans }}">
+                                            <span class="docs-tooltip">
+                                                {{ 'fal arrow-left'|icon(null, 14) }}
+                                            </span>
+                                        </span>
+                                        <span class="btn btn-secondary btn-outline cursor move-end" data-bs-toggle="tooltip" title="{{ "Décaler l'image à droite"|trans }}">
+                                            <span class="docs-tooltip">
+                                                {{ 'fal arrow-right'|icon(null, 14) }}
+                                            </span>
+                                        </span>
+                                        <span class="btn btn-secondary btn-outline cursor move-up" data-bs-toggle="tooltip" title="{{ "Monter l'image"|trans }}">
+                                            <span class="docs-tooltip">
+                                                {{ 'fal arrow-up'|icon(null, 14) }}
+                                            </span>
+                                        </span>
+                                        <span class="btn btn-secondary btn-outline cursor move-down" data-bs-toggle="tooltip" title="{{ "Descendre l'image"|trans }}">
+                                            <span class="docs-tooltip">
+                                                {{ 'fal arrow-down'|icon(null, 14) }}
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="btn-group me-2">
+                                            <span class="btn btn-secondary btn-outline cursor rotate-start" data-bs-toggle="tooltip" title="{{ "Retourner l'image vers la gauche"|trans }}">
+                                            <span class="docs-tooltip">
+                                                {{ 'fal redo'|icon(null, 14, 'fa-flip-horizontal') }}
+                                            </span>
+                                        </span>
+                                        <span class="btn btn-secondary btn-outline cursor rotate-end" data-bs-toggle="tooltip" title="{{ "Retourner l'image vers la droite"|trans }}">
+                                            <span class="docs-tooltip">
+                                                {{ 'fal redo'|icon(null, 14) }}
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="btn-group">
+                                        <span data-scale="-1" class="btn btn-secondary btn-outline cursor flip-horizontal" data-bs-toggle="tooltip" title="{{ "Inverser l'image"|trans }}">
+                                            <span class="docs-tooltip">
+                                                {{ 'fal arrows-h'|icon(null, 14) }}
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="docs-data col-md-6 my-auto">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                {% for field in form.children %}
+                                                    {% if field.vars.name != 'save' and field.vars.name != 'saveEdit' %}
+                                                        {{ form_row(form[field.vars.name]) }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% if isInfinite %}
+                                            <div class="col-md-2 d-flex align-items-end">
+                                                <span class="btn btn-outline-white cursor refresh-cropper-sizes w-100" data-bs-toggle="tooltip" title="{{ "Rafraichir"|trans }}">
+                                                    {{ 'fal sync'|icon(null, 14, 'dark') }}
+                                                </span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+{#                                {% if isInfinite %}#}
+{#                                    <div class="col-md-6 offset-md-6">#}
+{#                                        <small class="form-text">{{ "Un ratio peut être recalculé"|trans|raw }}</small>#}
+{#                                    </div>#}
+{#                                {% endif %}#}
+                            </div>
+
+                        </div>
+
+                        <div class="w-100 text-center modal-buttons mt-4">
+                            {{ form_row(form.save) }}
+                        </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+{% trans_default_domain 'front_default' %}
+
+{% set disableMicrodata = disableMicrodata is defined and disableMicrodata %}
+
+{% if microdata is defined and microdata and not disableMicrodata %}
+    {% set address = microdata.address %}
+    {% set haveContact = microdata.email or microdata.phone %}
+    <!-- Microdata -->
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "{{ microdata.companyType }}",
+        "name": "{{ microdata.name|striptags|raw }}",
+        "url": "{{ microdata.url }}",
+        "logo": "{{ microdata.companyLogo }}",
+        {% if microdata.image %}"image": "{{ microdata.image }}",{% endif %}
+        {% if networks is not empty %}
+        "sameAs" : [{% for network in networks %}"{{ network.link }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+        {% endif %}
+        {% if microdata.description %}"description": "{{ microdata.description|striptags|raw }}"{% if haveContact or address %},{% endif %}{% endif %}
+        {% if microdata.email or microdata.phone %}
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Service",
+            {% if microdata.email %}"email": "{{ microdata.email }}"{% if microdata.phone %},{% endif %}{% endif %}
+            {% if microdata.phone %}"telephone": "{{ microdata.phone }}"{% endif %}
+        }{% if address %},{% endif %}
+        {% endif %}
+        {% if address %}
+        "address": {
+            "@type": "PostalAddress",
+            {% if address.address %}"streetAddress": "{{ address.address }}"{% if address.city or address.country or address.region or address.zipCode %},{% endif %}{% endif %}
+            {% if address.city %}"addressLocality": "{{ address.city }}"{% if address.country or address.region or address.zipCode %},{% endif %}{% endif %}
+            {% if address.country %}"addressCountry": "{{ address.country }}"{% if address.region or address.zipCode %},{% endif %}{% endif %}
+            {% if address.region %}"addressRegion": "{{ address.region }}"{% if address.zipCode %},{% endif %}{% endif %}
+            {% if address.zipCode %}"postalCode": "{{ address.zipCode }}"{% endif %}
+        }
+        {% endif %}
+        }
+    </script>
+    {% if microdata.script is defined and microdata.script %}
+        <!-- Microdata script -->
+        <script type="application/ld+json">
+            {{ microdata.script|raw }}
+        </script>
+    {% endif %}
+{% endif %}

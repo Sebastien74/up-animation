@@ -1,0 +1,92 @@
+#####################################
+#           Portfolio               #
+#####################################
+
+App\Entity\Module\Portfolio\Category:
+    card: true
+    translations:
+        adminName:
+            fr: "Nom de la catégorie (Module portfolio)"
+            en: 'Category name (Module portfolio)'
+        singular:
+            fr: "Catégorie de portfolio"
+            en: 'Portfolio category'
+        plural:
+            fr: "Catégories de portfolios"
+            en: 'Portfolio categories'
+        add:
+            fr: 'Ajouter une catégorie'
+            en: 'Add category'
+        delete:
+            fr: "Supprimer la catégorie"
+            en: 'Delete category'
+    columns:
+        - adminName
+
+App\Entity\Module\Portfolio\Card:
+    mediaMulti: true
+    card: true
+    translations:
+        adminName:
+            fr: "Nom de la fiche (Module portfolio)"
+            en: 'Card name (Module portfolio)'
+        singular:
+            fr: "Fiche portfolio"
+            en: 'Portfolio ard'
+        plural:
+            fr: "Fiches"
+            en: 'Cards'
+        add:
+            fr: 'Ajouter une fiche'
+            en: 'Add cards'
+        delete:
+            fr: "Supprimer la fiche"
+            en: 'Delete cards'
+        media:
+            fr: 'Image'
+            en: 'Image'
+        promote:
+            fr: "Mise en avant"
+            en: 'Promote'
+    columns:
+        - media
+        - adminName
+        - promote
+
+App\Entity\Module\Portfolio\Listing:
+    translations:
+        adminName:
+            fr: "Nom du portfolio"
+            en: 'Portfolio name'
+        singular:
+            fr: 'Portfolio'
+            en: 'Portfolio'
+        plural:
+            fr: 'Portfolios'
+            en: 'Portfolios'
+        add:
+            fr: 'Ajouter un portfolio'
+            en: 'Add portfolio'
+        delete:
+            fr: "Supprimer le portfolio"
+            en: 'Delete portfolio'
+    columns:
+        - adminName
+
+App\Entity\Module\Portfolio\Teaser:
+    translations:
+        adminName:
+            fr: 'Nom du teaser (Module portfolio)'
+            en: 'Teaser name (Module portfolio)'
+        singular:
+            fr: 'Teaser (Module portfolio)'
+            en: 'Teaser (Module portfolio)'
+        plural:
+            fr: 'Teasers'
+            en: 'Teasers'
+        add:
+            fr: 'Ajouter un teaser'
+            en: 'Add teaser'
+        delete:
+            fr: "Supprimer le teaser"
+            en: 'Delete teaser'

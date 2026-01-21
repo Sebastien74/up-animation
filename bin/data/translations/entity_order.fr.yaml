@@ -1,0 +1,5 @@
+add: 'Ajouter une commande'
+adminName: 'Commande '
+delete: 'Supprimer la commande'
+plural: Commandes
+singular: 'Commande '

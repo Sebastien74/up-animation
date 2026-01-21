@@ -1,0 +1,10 @@
+{% trans_default_domain 'admin' %}
+
+<div class="inner pb-2">
+    <h4 class="card-subtitle mb-3">{{ 'fal users-cog'|icon(null, 18, 'info-darken me-2') }}{{ "Administration"|trans }}</h4>
+    {{ form_widget(form.configuration.adminTheme) }}
+    <h4 class="card-subtitle mb-3 mt-1">{{ 'fal desktop'|icon(null, 18, 'info-darken me-2') }}{{ "Site"|trans }}</h4>
+    {{ form_widget(form.configuration.template) }}
+    <h4 class="card-subtitle mb-3 mt-1">{{ 'fal tools'|icon(null, 18, 'info-darken me-2') }}{{ "Maintenance"|trans }}</h4>
+    {{ form_widget(form.configuration.buildTheme) }}
+</div>

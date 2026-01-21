@@ -1,0 +1,119 @@
+{% trans_default_domain 'admin' %}
+
+{% set allLocales = website().configuration.allLocales %}
+{% set defaultLocale = website().configuration.locale %}
+{% set mediaCaregories = {
+    'favicon': "Favicon"|trans,
+    'logo': "Logo principal"|trans,
+    'logo-secondary': "Logo secondaire"|trans,
+    'admin': "Logo administration"|trans,
+    'footer': "Logo de pied de page"|trans,
+    'email': "Logo corps emails"|trans,
+    'title-header': "Entête par défault"|trans,
+    'security-front-logo': "Logo Front back"|trans,
+    'security-logo': "Logo de connexion"|trans,
+    'security-bg': "Background de connexion"|trans,
+    'build-logo': "Logo page maintenance"|trans,
+    'build-bg': "Background page maintenance"|trans,
+    'google-plus': "Google +"|trans,
+    'share': "Partage (OG)"|trans,
+    'user-condition': "Conditions générales utilisateur"|trans
+} %}
+
+{% set categories = {
+    ('Logos'|trans): ['logo', 'logo-secondary', 'preloader', 'footer', 'admin', 'email'],
+    ('Images par défaults'|trans): ['placeholder', 'title-header', 'share'],
+    ('Favicons'|trans): ['favicon', 'favicon-16x16', 'favicon-32x32', 'favicon-apple-touch-icon', 'manifest', 'mask-icon', 'mstile-150x150', 'android-chrome-144x144', 'android-chrome-192x192', 'android-chrome-512x512'],
+    ('Réseaux sociaux'|trans): ['instagram', 'facebook', 'pinterest', 'youtube', 'tiktok', 'linkedin', 'twitter', 'tripadvisor', 'google-plus'],
+    ('Sécurité'|trans): ['security-front-logo', 'security-logo', 'security-bg'],
+    ('Maintenance'|trans): ['build-logo', 'build-bg'],
+    ('Fichers'|trans): ['user-condition'],
+} %}
+
+{% set customCategory = [] %}
+{% for mediaRelationForm in form.mediaRelations %}
+    {% set mediaRelation = mediaRelationForm.vars.data is defined and mediaRelationForm.vars.data ? mediaRelationForm.vars.data : null %}
+    {% if mediaRelation.category is defined and mediaRelation.category %}
+        {% set existingCategory = false %}
+        {% set mediaCategory = mediaRelation.category %}
+        {% for categoryTitle, categorySlugs in categories %}
+            {% for categorySlug in categorySlugs %}
+                {% if categorySlug == mediaCategory %}
+                    {% set existingCategory = true %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        {% if not existingCategory and mediaCategory not in customCategory %}
+            {% set customCategory = customCategory|merge([mediaCategory]) %}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% if customCategory %}
+    {% set categories = categories|merge({('Personnalisé'|trans): customCategory}) %}
+{% endif %}
+
+{% set formLocale = masterRequest().get('form_locale') ? masterRequest().get('form_locale') : website.configuration.locale %}
+
+{% if allLocales|length > 1 %}
+    <ul class="nav nav-tabs w-100" role="tablist">
+        {% for localeConfig in allLocales %}
+            <li class="nav-item" data-bs-toggle="tooltip" title="{{ languageName(localeConfig, app.user.locale) }}">
+                <a class="nav-link{% if localeConfig == formLocale %} active{% endif %}"
+                   id="media-relation-{{ localeConfig }}-tab"
+                   aria-selected="{% if localeConfig == formLocale %}true{% else %}false{% endif %}"
+                   href="{{ path('admin_website_style', {website: website.id, form_locale: localeConfig}) }}" role="tab">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~localeConfig~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if allLocales|length > 1 %}
+    <div class="tab-content tab-content-border w-100 media-relations-tab mb-4">
+{% endif %}
+
+    {% for localeConfig in allLocales %}
+        <div id="mediaRelation-tab-{{ localeConfig }}"
+             class="tab-pane fade{% if localeConfig == formLocale %} show active{% endif %}"
+             role="tabpanel" aria-labelledby="media-relation-{{ localeConfig }}-tab">
+            {% if allLocales|length > 1 %}
+                <div class="p-20 pb-0">
+            {% endif %}
+                <div class="row">
+                    {% for categoryTitle, categorySlugs in categories %}
+                        {% for categorySlug in categorySlugs %}
+                            {% for mediaRelation in form.mediaRelations %}
+                                {% set locale = mediaRelation.vars.value.locale %}
+                                {% set category = mediaRelation.vars.value.categorySlug %}
+                                {% set mediaCaregory = mediaCaregories[category] is defined ? mediaCaregories[category] : category|capitalize %}
+                                {% if locale == localeConfig and category == categorySlug %}
+                                    <div class="col-md-6 col-lg-3{% if category == 'webmanifest' %} d-none{% endif %}">
+                                        <div class="card default-media-card">
+                                            <div class="card-body text-center pb-0">
+                                                {{ form_row(mediaRelation.media.uploadedFile) }}
+                                                <h4 class="text-center">{{ mediaCaregory }}</h4>
+                                                {% include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: mediaRelation.vars.data.id, classname: class} %}
+                                                <div class="row">
+                                                    {{ form_row(mediaRelation.active) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% if allLocales|length > 1 %}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+{% if allLocales|length > 1 %}
+    </div>
+{% endif %}
+
+<div class="d-none">{{ form_rest(form.mediaRelations) }}</div>

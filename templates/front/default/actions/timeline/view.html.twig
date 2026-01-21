@@ -1,0 +1,36 @@
+{% trans_default_domain 'front_default' %}
+
+{% set steps = timeline.steps %}
+{% set displayNumbers = timeline.displayNumbers %}
+
+{% if steps|length > 0 %}
+    <div id="timeline-container-{{ timeline.slug }}" class="timeline-container{% if displayNumbers %} display-number{% endif %}">
+        <ol class="step-list">
+            {% for step in steps %}
+                {% set intl = step|intl %}
+                {% set title = intl.title is defined and intl.title|striptags|length > 0 ? intl.title : null %}
+                {% set introduction = intl.introduction is defined and intl.introduction|striptags|length > 0 ? intl.introduction : null %}
+                {% set intlMedia = step|intlMedia %}
+                <li class="step-list-item {% if loop.index is odd %}odd{% else %}even{% endif %}">
+                    <div class="step-list-item-inner">
+                        <div class="content">
+                            <div class="body">
+                                {% if title %}
+                                    <h2>{{ title }}</h2>
+                                {% endif %}
+                                {% if introduction %}
+                                    <p>{{ introduction }}</p>
+                                {% endif %}
+                            </div>
+                            {% if intlMedia %}
+                                <div class="icon">
+                                    {{ intlMedia|file(thumbConfiguration, {maxWidth: 80, maxHeight: 80}) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+            {% endfor%}
+        </ol>
+    </div>
+{% endif %}

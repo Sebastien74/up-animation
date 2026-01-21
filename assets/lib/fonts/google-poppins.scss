@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+/* --------------------------------------------------------
+
+    Copyright  : 2019
+    Created on : 2019-10-31, 1:26 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT FONTS POPPINS :
+    ====================
+
+-------------------------------------------------------- */
+
+@import "../../scss/vendor/mixin/fonts";
+
+$local: true;
+$swap: true;
+$fontFamily: 'Poppins', sans-serif;
+
+@if ($local) {
+
+    $fonts: (
+        'Poppins-Thin': ('weight': 100, 'style': normal),
+        'Poppins-ThinItalic': ('weight': 100, 'style': italic),
+        'Poppins-ExtraLight': ('weight': 200, 'style': normal),
+        'Poppins-ExtraLightItalic': ('weight': 200, 'style': italic),
+        'Poppins-Light': ('weight': 300, 'style': normal),
+        'Poppins-LightItalic': ('weight': 300, 'style': italic),
+        'Poppins-Regular': ('weight': 400, 'style': normal),
+        'Poppins-Italic': ('weight': 400, 'style': italic),
+        'Poppins-Medium': ('weight': 500, 'style': normal),
+        'Poppins-MediumItalic': ('weight': 500, 'style': italic),
+        'Poppins-SemiBold': ('weight': 600, 'style': normal),
+        'Poppins-SemiBoldItalic': ('weight': 600, 'style': italic),
+        'Poppins-Bold': ('weight': 700, 'style': normal),
+        'Poppins-BoldItalic': ('weight': 700, 'style': italic),
+        'Poppins-ExtraBold': ('weight': 800, 'style': normal),
+        'Poppins-ExtraBoldItalic': ('weight': 800, 'style': italic),
+        'Poppins-Black': ('weight': 900, 'style': normal),
+        'Poppins-BlackItalic': ('weight': 900, 'style': italic),
+    );
+
+    @include font-face("Poppins", $fonts, sans-serif, woff2);
+
+} @else if ($swap) {
+
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+} @else {
+
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=optional");
+
+}

@@ -1,0 +1,60 @@
+{% trans_default_domain 'admin' %}
+
+{% set website = website is defined ? website : website() %}
+{% set isMultiWebsite = isMultiWebsite() %}
+
+<li class="user-pro{% if not isMultiWebsite %} pb-3{% endif %}">
+
+    <span data-toggle="preloader">
+        <a href="{{ path('admin_dashboard', {website: websiteId()}) }}"
+           id="dashboard-btn" class="overflow-hidden d-flex"
+           data-bs-toggle="tooltip"
+           data-placement="right"
+           title="{{ "Tableau de bord"|trans|striptags }}">
+            {% if customAdmin is defined and not customAdmin %}
+                {{ asset('medias/icons/brands/cloudversify.svg')|file({}, {width: 50, height: 50, class: 'img-white float-start', title: "Tableau de bord"|trans}) }}
+            {% elseif logos.admin is defined and logos.admin and 'placeholder' not in logos.admin %}
+                {{ asset(logos.admin)|file({}, {width: 50, height: 30, class: 'float-start', title: "Tableau de bord"|trans}) }}
+            {% else %}
+                {{ asset('medias/icons/brands/cloudversify.svg')|file({}, {width: 50, height: 50, class: 'img-white float-start', title: "Tableau de bord"|trans}) }}
+            {% endif %}
+            <span class="cms-name hide-menu float-start d-none d-xl-inline-block">
+                {% set cmsName = customAdmin is defined and not customAdmin ? "Administration"|trans : "Agence Félix CMS"|trans %}
+                {{ cmsName|raw }}
+                <br>
+                <small class="cms-version text-italic float-start">{{ "Symfony"|trans|raw }} {{ symfonyVersion() }} - {{ "CMS 7.3"|trans|raw }} - {{ "PHP"|trans|raw }} {{ phpversion() }}</small>
+            </span>
+        </a>
+    </span>
+
+    <ul class="pb-0">
+        {% set domain = app.user.locale is defined ? app.user.locale|domain() : null %}
+        {% set scheme = not domain ? path('front_index') : domain %}
+        <li><a href="{{ scheme }}" target="_blank">{{ 'far desktop'|icon(19, 17, 'white me-2') }}{{ "Accéder au site"|trans }}</a></li>
+        {% if customAdmin %}
+            <li><a href="{{ path('admin_support', {website: website.id}) }}" data-toggle="preloader">{{ 'fas user-headset'|icon(19, 17, 'white me-2') }}{{ "Support"|trans }}</a></li>
+        {% endif %}
+        {% if website.configuration.entity.adminAdvertising or granted('ROLE_INTERNAL') %}
+            <li><a href="{{ path('admin_advertising', {website: website.id}) }}" data-toggle="preloader">{{ 'fal plus-square'|icon(15, 17, 'white me-2') }}{{ "Nos extensions"|trans }}</a></li>
+        {% endif %}
+        <li><a href="{{ path('app_logout') }}" class="d-md-none text-danger" data-toggle="preloader">{{ 'fas power-off'|icon(17, 17, 'danger me-2') }}{{ "Déconnexion"|trans }}</a></li>
+    </ul>
+
+    {% if isMultiWebsite and app.user %}
+        {{ render_esi(path('admin_site_selector', {website: websiteId()})) }}
+        <span class="sidebar-website-info text-white d-inline-block w-100 ps-3 pt-2 pe-2 pb-2 mt-3">
+            {{ 'fas pen-fancy'|icon(14, 14, 'white me-2') }} {{ website.adminName }}
+        </span>
+    {% endif %}
+
+</li>
+
+{% if not configuration.onlineStatus %}
+    {% set domain = app.user.locale is defined ? app.user.locale|domain() : null %}
+    {% set scheme = not domain ? path('front_index') : domain %}
+    <li class="in-build-info bg-info-light">
+        <a href="{{ scheme }}?disabled_ips=true" target="_blank" class="d-flex align-items-center text-info">
+            {{ 'fas exclamation-triangle'|icon(14, 14, 'info me-1') }}{{ "Site en maintenance"|trans|raw }}
+        </a>
+    </li>
+{% endif %}

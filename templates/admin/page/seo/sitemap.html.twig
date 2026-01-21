@@ -1,0 +1,44 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageIcon = 'fal sitemap' %}
+{% set pageTitle = "Sitemap"|trans %}
+
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-seo', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-seo', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<pre class="mb-4"><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="https://www.w3.org/1999/xhtml"&gt;
+{% for mainLocale, localesGroups in xml %}
+{% if mainLocale == defaultLocal %}
+{% for key, urlsGroups in localesGroups %}
+    &lt;url&gt;
+{% for locale, url in urlsGroups%}
+{% if loop.first %}
+        &lt;loc>{{ url.url }}&lt;/loc&gt;
+{% if url.update is defined and url.update %}
+        &lt;lastmod&gt;{{ url.update|date('Y-m-d') }}&lt;/lastmod&gt;
+{% endif %}
+{% else %}
+        &lt;xhtml:link rel="alternate" hreflang="{{ locale }}" href="{{ url.url }}" /&gt;
+{% endif %}
+{% endfor %}
+    &lt;/url&gt;
+{% endfor %}
+{% endif %}
+{% endfor %}
+&lt;/urlset&gt;</code>
+</pre>
+{% endblock %}

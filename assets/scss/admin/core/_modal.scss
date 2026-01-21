@@ -1,0 +1,155 @@
+.basicLightbox {
+
+    .modal {
+        background-color: transparentize($black, .1);
+    }
+
+    .modal-dialog {
+        img {
+            max-height: 85vh;
+        }
+    }
+
+    small {
+        color: $gray-600;
+    }
+}
+
+.border-modal, .modal-content.border {
+    
+    border-radius: var(--bs-border-radius) !important;
+    border: 3px solid $modal-border-color !important;
+    background-color: $info-lighten-light;
+
+    button.btn-close {
+
+        background: transparent;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        height: initial !important;
+        
+        img {
+            height: 20px;
+        }
+    }
+    
+    .modal-header {
+        
+        border-bottom: 0;
+        
+        .modal-title {
+            
+            color: $dark;
+            font-size: 1rem;
+            
+            i {
+                font-size: 50px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                display: inline-block;
+            }
+            
+            img {
+                max-height: 50px;
+            }
+        }
+    }
+    
+    .modal-body {
+        
+        padding-top: 0;
+        padding-bottom: 0;
+        
+        h4 {
+            font-weight: 400;
+            background-color: #eef1f6;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: var(--bs-border-radius);
+        }
+        
+        label:not(.btn) {
+            color: $dark;
+        }
+        
+        .nav-link {
+            
+            color: $dark;
+            border: 0;
+            
+            &:hover {
+                background-color: $gray-100;
+            }
+            
+            svg {
+                fill: $dark;
+            }
+            
+            &.active {
+                
+                color: $white !important;
+                background-color: $info;
+                box-shadow: 0 0 11px 0 rgba(0, 0, 0, 0.33);
+                
+                svg {
+                    fill: $white;
+                }
+            }
+        }
+        
+        .tab-pane .nav-link:hover {
+            background-color: $gray-200;
+        }
+        
+        .main-title {
+            color: $dark;
+        }
+        
+        .custom-file .addon {
+            border: 1px solid #dde1e6;
+        }
+        
+        .select2-results__option,
+        .select2-results__option[aria-selected="true"],
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: 14px;
+            font-weight: initial;
+        }
+        
+        .select2-selection--multiple .select2-search--inline .select2-search__field {
+            padding: 6px 0 7px;
+            margin-top: 0;
+        }
+        
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            margin-bottom: 2px;
+        }
+        
+        .btn-outline-dark {
+            
+            border-color: $dark;
+            color: $dark !important;
+            
+            &.active, &:hover {
+                color: $white !important;
+            }
+        }
+    }
+    
+    .modal-footer {
+        
+        border-top: 0;
+        
+        .btn {
+            background-color: $modal-border-btn;
+            border-color: $modal-border-btn;
+        }
+    }
+}
+
+.modal-buttons {
+    .form-group {
+        display: inline-block;
+    }
+}

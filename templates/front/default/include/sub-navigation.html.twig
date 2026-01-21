@@ -1,0 +1,51 @@
+{% trans_default_domain 'front_default' %}
+
+{% if website.configuration.subNavigation %}
+    {% set pages = page|subNavigation %}
+    {% set subNavigationLevel = pages.items is defined and pages.items|length > 0 ? pages.items[0].level : null %}
+    {% set currentLevel = page.level is defined ? page.level : null %}
+    {% if pages.items is defined and ((subNavigationLevel != currentLevel and pages|length > 0)
+        or (subNavigationLevel == currentLevel and pages|length > 1)) %}
+        <div class="sub-navigation-container py-lg-4 bg-light">
+            {% set currentTitle = "Afficher les pages associées"|trans %}
+            {% for page in pages.items|merge([pages.currentPage]) %}
+                {% if page.title and page.url %}
+                    {% if page.active %}
+                        {% set currentTitle = page.title %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            <div class="dropdown dropdown-container d-lg-none">
+                <a class="btn btn-primary dropdown-toggle w-100"
+                   href="#"
+                   role="button"
+                   id="dropdown-sub-navigation"
+                   data-bs-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false">{{ currentTitle }}<br><small class="text-italic">{{ "Afficher les pages associées"|trans|raw }}</small></a>
+                <div class="dropdown-menu bg-secondary pt-3 pb-3 text-center" aria-labelledby="dropdown-sub-navigation">
+                    {% for page in pages.items %}
+                        {% if page.url and page.title != currentTitle %}
+                            <a class="dropdown-item text-white" href="{{ page.url }}"
+                               data-toggle="preloader">
+                                {{ page.title }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <nav class="nav justify-content-center d-none d-lg-flex">
+                {% for page in pages.items %}
+                    {% if page.title and page.url %}
+                        <a href="{{ page.url }}" class="nav-link text-bold d-flex align-items-center
+                           {% if not page.active %}text-dark{% endif %}
+                           {% if page.active %} active-item rounded-btn btn btn-primary mx-2{% else %} link{% endif %}"
+                            data-toggle="preloader">
+                            {{ page.title|striptags }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </nav>
+        </div>
+    {% endif %}
+{% endif %}

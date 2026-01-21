@@ -1,0 +1,260 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-07, 10:27:46 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    GLOBAL :
+    ===========================
+
+    1 ) Core
+    2 ) Background
+    3 ) Popup
+    4 ) Border
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Core
+-----------------------------------*/
+
+.row.w-initial > * {
+    width: initial;
+}
+
+.row-neg {
+    margin-left: -1.25rem;
+    margin-right: -1.25rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+.shadow-item {
+    box-shadow: 0 2px 4px rgba(15, 34, 58, 0.12);
+    border-radius: $border-radius;
+    background-color: $info-light;
+}
+
+a.shadow-item {
+
+    transition: all .4s;
+
+    &:hover {
+        transform: translateY(calc(1.5rem * -.15));
+        box-shadow: 0 5px 10px rgba(30,32,37,.12);
+        transition: all .4s;
+    }
+}
+
+.badge-white {
+    background-color: $white;
+    color: $theme-color;
+}
+
+.badge-info {
+    background-color: $theme-color;
+    color: $white;
+}
+
+.shadow-light {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05) !important;
+}
+
+.text-info-light {
+    color: $info-light !important;
+}
+
+tr.bg-info-darken > th {
+    background-color: $info-darken !important;
+}
+
+#users-switcher-box {
+    .card-body {
+        background-color: $info-darken !important;
+        border-radius: var(--bs-border-radius);
+    }
+}
+
+.btn-close:focus {
+    box-shadow: none !important;
+}
+
+.img-loader {
+
+    z-index: 10;
+
+    .inner {
+        filter: blur(3px);
+        background-size: cover !important;
+        background-position: center !important;
+    }
+
+    .spinner-wrap {
+        z-index: 20;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+    }
+}
+
+#accordion-alerts  {
+    .alerts-wrap {
+        .alert:last-child {
+            margin-bottom: 0 !important;
+        }
+    }
+}
+
+.alert  {
+
+    border: 0;
+    border-radius: $border-radius;
+    background-color: transparent;
+
+    .btn-close {
+        background: none;
+        position: absolute;
+        right: 12px;
+        top: 7px;
+    }
+
+    img:not(.flag) {
+        height: 20px;
+    }
+
+    .badge {
+        border-radius: $border-radius;
+        right: 1rem;
+        padding: .3rem .4rem .25rem;
+    }
+
+    small {
+        font-size: .8em;
+    }
+
+    .icon {
+
+        flex: 0 0 60px;
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+
+        img {
+            filter: brightness(0) invert(1);
+        }
+
+        &::after {
+            transform: rotate(45deg);
+            display: block;
+            content: '';
+            width: 10px;
+            height: 10px;
+            border: 1px solid $gray-400;
+            border-top-color: $gray-400;
+            border-right-color: $gray-400;
+            border-bottom-color: $gray-400;
+            border-left-color: $gray-400;
+            position: absolute;
+            border-left: 0;
+            border-left-color: currentcolor;
+            border-bottom: 0;
+            border-bottom-color: currentcolor;
+            top: 50%;
+            right: -5px;
+            margin-top: -5px;
+            background: $white;
+        }
+    }
+
+    .message {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+    }
+}
+
+@each $suffix, $config in $alert-colors {
+
+    .alert-#{$suffix} {
+
+        color: map-get($config, 'color') !important;
+        font-size: map-get($config, 'font-size');
+
+        .icon {
+
+            background: map-get($config, 'icon-bg');
+
+            svg {
+                fill: map-get($config, 'icon-color');
+            }
+
+            &:after {
+                border-color: map-get($config, 'border');
+                background: map-get($config, 'icon-bg');
+            }
+        }
+
+        .message {
+            background-color: map-get($config, 'bg');
+            border: 1px solid map-get($config, 'border');
+            border-left: 0;
+        }
+    }
+}
+
+.pagination {
+    margin-bottom: 0;
+}
+
+/*-----------------------------------
+   1 ) Background
+-----------------------------------*/
+
+.bg-info-light {
+    background-color: $info-light;
+    color: $info-darken;
+}
+
+.bg-info-darken {
+    background-color: $info-darken;
+}
+
+.bg-gray-600 {
+    background-color: $gray-600 !important;
+}
+
+.bg-body {
+    background-color: $body-bg;
+}
+
+.bg-hover-info-darken:hover,
+.bg-active-info-darken.active,
+.bg-hover-active-info-darken:hover,
+.bg-hover-active-info-darken.active {
+
+    background-color: $info-darken !important;
+    border: 1px solid $info-darken !important;
+    color: $white;
+
+    svg {
+        fill: $white;
+    }
+}
+
+/*-----------------------------------
+   3 ) Popup
+-----------------------------------*/
+
+img.mfp-img {
+    min-width: 80px;
+}
+
+/*-----------------------------------
+   4 ) Border
+-----------------------------------*/
+
+.border-info-darken {
+    border: 1px solid $info-darken;
+}

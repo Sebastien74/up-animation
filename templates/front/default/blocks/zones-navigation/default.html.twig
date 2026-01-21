@@ -1,0 +1,42 @@
+{% trans_default_domain 'front_default' %}
+
+{% set navigation = layout|zonesNavigation %}
+{% set pageTitle = null %}
+{% for media in page.entity.mediaRelations %}
+    {% if media.locale == app.request.locale %}
+        {% set pageTitle = media.intl.title is defined ? media.intl.title : null %}
+    {% endif %}
+{% endfor %}
+
+{% if navigation is not empty %}
+    {% set currentTitle = null %}
+    <div class="zones-navigation">
+        <div class="container-fluid bg-white d-none d-lg-inline-flex justify-content-center align-items-center py-3 px-5">
+            {% if pageTitle %}
+                <span class="current-page-title d-inline-flex align-items-center text-secondary fw-600">{{ pageTitle|striptags }}<i class="icon-chevron-right position-relative text-secondary ms-3"></i></span>
+            {% endif %}
+            {% for zone in navigation %}
+                {% set zoneId = zone.entity.customId is defined and zone.entity.customId ? 'zone-'~zone.entity.customId : 'zone-'~zone.id %}
+                {% if loop.first %}
+                    {% set currentTitle = zone.intl.title %}
+                {% endif %}
+                <a href="{{ masterRequest().requestUri~'#'~zoneId }}" class="item text-{% if loop.first %}secondary{% else %}light{% endif %} fw-600 mx-lg-2 mx-xl-3" data-section="{{ zoneId }}">{{ zone.intl.title|striptags }}</a>
+            {% endfor %}
+        </div>
+        <div class="dropdown dropdown-container w-100 d-lg-none px-0">
+            <span class="btn btn-primary dropdown-toggle d-flex justify-content-center align-items-center w-100"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"><span class="dropdown-label">{{ currentTitle }}</span>{{ 'fal chevron-down'|icon(null, 17, 'ms-3') }}</span>
+            <div class="dropdown-menu bg-beige py-4 text-center radius">
+                {% for zone in navigation %}
+                    {% set zoneId = zone.entity.customId is defined and zone.entity.customId ? 'zone-'~zone.entity.customId : 'zone-'~zone.id %}
+                    <a href="{{ masterRequest().requestUri~'#'~zoneId }}" class="dropdown-item item text-primary" data-section="{{ zoneId }}">
+                        {{ zone.intl.title|striptags }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,44 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set customTemplate = 'front/'~websiteTemplate~'/actions/form/form/'~entity.slug~'.html.twig' %}
+{% set customTemplateExist = (customTemplate)|fileExist %}
+{% set formTemplate = customTemplateExist ? customTemplate : 'front/'~websiteTemplate~'/actions/form/form/default.html.twig' %}
+
+{% set asLayout = true %}
+{% set template = 'front/'~websiteTemplate~'/actions/form/include/elements.html.twig' %}
+{% set messages = app.session.flashbag.all %}
+{% set modalId = "form-thanks-modal-"~entity.id %}
+{% set contactsLength = entity.contacts|length %}
+{% set maxShipments = formConfiguration.maxShipments %}
+{% set urlRedirection = pageRedirectionUrl %}
+{% set publicationEnd = formConfiguration.publicationEnd ? formConfiguration.publicationEnd : null %}
+{% set inDeltaDate = not publicationEnd or 'now'|datetime <= publicationEnd %}
+{% set dispalyForm = not maxShipments and inDeltaDate or contactsLength < maxShipments and inDeltaDate  %}
+
+{% set formClass = 'form' %}
+{% if formConfiguration.ajax %}
+    {% set formClass = 'form-ajax' %}
+{% endif %}
+{% if formConfiguration.recaptcha %}
+    {% set formClass = formClass~' security' %}
+{% endif %}
+{% if formConfiguration.floatingLabels %}
+    {% set formClass = formClass~' floating-form' %}
+{% endif %}
+
+<div id="form-container-{{ entity.slug }}" class="form-container keep-form-module position-relative{% if formConfiguration.recaptcha %} recaptcha-referer{% endif %}">
+    {{ macroWebmaster.box({
+        title: "Éditer le formulaire"|trans([], 'front_webmaster'),
+        role: 'ROLE_FORM',
+        path: path('admin_form_layout', {website: website.id, form: entity.id})
+    }) }}
+    {% include formTemplate %}
+</div>
+
+{% if formConfiguration.thanksModal %}
+    {% set intl = entity|intl %}
+    {% set modalMessage = intl ? intl.placeholder : "Merci pour votre message !!"|trans|raw %}
+    {% include 'front/'~websiteTemplate~'/include/thanks-modal.html.twig' %}
+{% endif %}

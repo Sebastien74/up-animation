@@ -1,0 +1,30 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard %}
+
+{% set maxPage = maxPage is defined ? maxPage : 1 %}
+{% set pageNum = pageNum is defined ? pageNum : 1 %}
+
+<div id="results" class="results row row-container m-0 listing-{{ listing.slug }}" data-page="{{ pageNum }}" data-max="{{ maxPage }}">
+    {% for product in products %}
+        <div class="col-md-6 col-lg-4 item mb-5 position-relative">
+            {{ macroCard.standard({
+                entity: product,
+                intl: product.intl,
+                titleForce: 3,
+                thumbConfiguration: thumbConfiguration,
+                thumbPlaceholder: true,
+                displayThumbnail: true,
+                showLink: true,
+                colSize: 4,
+                linkStyle: 'btn btn-primary',
+                showLinkLabel: product.catalog.intl.help is defined and product.catalog.intl.help ? product.catalog.intl.help : "Découvrir"|trans,
+                mediaClass: '',
+                webmaster: {
+                    title: "Éditer le produit"|trans([], 'front_webmaster'),
+                    role: 'ROLE_CATALOG',
+                    path: path('admin_catalogproduct_edit', {website: website.id, catalogproduct: product.id})
+                }}) }}
+        </div>
+    {% endfor %}
+</div>

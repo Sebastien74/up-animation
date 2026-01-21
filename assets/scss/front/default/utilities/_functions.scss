@@ -1,0 +1,76 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2022
+    Created on : 2022-11-6, 7:01 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FUNCTIONS :
+    ==========
+
+------------------------------------------------------------------ */
+
+@function filter-elements($els, $elements) {
+    $pushEls: ();
+    @each $element, $config in $elements {
+        $inEls: false;
+        @each $el in $els  {
+            @if str-index($element, $el) {
+                $inEls: true;
+            }
+        }
+        @if $inEls {
+            $newConfig: ();
+            @each $key, $value in $config {
+                @if $key != 'excluded' {
+                    $newConfig: map-merge($newConfig, ($key: $value));
+                }
+            }
+            $pushEls: map-merge($pushEls, ($element: $newConfig));
+        }
+    }
+    @return $pushEls;
+}
+
+@function lighten-color($color, $percentage) {
+    @return lighten($color, $percentage);
+}
+
+@function darken-color($color, $percentage) {
+    @return darken($color, $percentage);
+}
+
+// Tint a color: mix a color with white
+@function tint-color($color, $weight) {
+    @return mix(white, $color, $weight);
+}
+
+// Shade a color: mix a color with black
+@function shade-color($color, $weight) {
+    @return mix(black, $color, $weight);
+}
+
+@function str-replace($string, $search, $replace: "") {
+    $index: str-index($string, $search);
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+    @return $string;
+}
+
+@function remove($list, $value, $recursive: false) {
+    $result: ();
+    @for $i from 1 through length($list) {
+        @if type-of(nth($list, $i)) == list and $recursive {
+            $result: append($result, remove(nth($list, $i), $value, $recursive));
+        } @else if nth($list, $i) != $value {
+            $result: append($result, nth($list, $i));
+        }
+    }
+    @return $result;
+}
+
+@function toRGB($value) {
+    @return red($value), green($value), blue($value);
+}

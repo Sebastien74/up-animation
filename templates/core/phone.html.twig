@@ -1,0 +1,42 @@
+{% trans_default_domain 'front' %}
+
+{% set phoneTrack = website.api.facebook.phoneTrack is defined ? website.api.facebook.phoneTrack : false %}
+{% set microDataActive = website.seoConfiguration.microData %}
+{% set asBtn = options.btn is defined or (options.class is defined and 'btn' in options.class) %}
+{% set btnClasses = asBtn and options.btn is defined ? " btn btn-"~options.btn : '' %}
+{% set btnClasses = options.class is defined ? btnClasses~' '~options.class : btnClasses %}
+{% set itemprop = phone.type == 'fixe' or phone.type == 'mobile' ? "telephone" : (phone.type == 'fax' ? 'faxNumber' : null) %}
+{% set label = phone.type == 'fixe' or phone.type == 'office' or phone.type == 'mobile' ? "Tel :"|trans : (phone.type == 'fax' ? "Fax :"|trans : null) %}
+{% set labelHTML = '' %}
+{% set fontawesome = options.icon is defined and 'fa-' in options.icon %}
+{% set iconWidth = options.icon_width is defined ? options.icon_width : 14 %}
+{% set iconHeight = options.icon_height is defined ? options.icon_height : 14 %}
+{% set tagNumber = only_href and phone.tagNumber ? phone.tagNumber : (phone.tagNumber ? phone.tagNumber|encrypt(website) : null) %}
+{% if not tagNumber %}
+    {% set tagNumber = only_href and phone.number ? phone.number : (phone.number ? phone.number|encrypt(website) : null) %}
+{% endif %}
+{% set href = only_href ? 'tel:'~tagNumber : '#' %}
+
+<div class="phone-link-wrap d-inline-flex align-items-center">
+    {% if icon %}
+        <span class="wrap-icon-link d-flex align-items-center me-2"><i class="icon-phone-alt"></i></span>
+    {% elseif entitled %}
+        <span class="label fw-600 me-1">{{ label|raw }}</span>
+    {% endif %}
+    <a href="{{ href }}"{% if not only_href %} data-tel="{{ phone.tagNumber|encrypt(website) }}"{% endif %}
+       class="phone-link position-relative{% if not only_href %} loading{% endif %}{% if phoneTrack %} fb-phone-track{% endif %} {% if isMobile() %}as-mobile{% else %}as-desktop{% endif %}{{ btnClasses }}"
+       aria-label="{{ "Téléphone"|trans|striptags }}"
+        {% if not only_href %}data-text="{{ phone.number|encrypt(website) }}"{% endif %}
+       data-id="{{ website.id }}"{% if microDataActive and itemprop %} itemscope="itemscope" itemtype="https://schema.org/Organization"{% endif %}>
+        {% if options.text is defined %}
+            {{ options.text|raw }}
+        {% elseif only_href %}
+            <span class="number">{{ phone.number }}</span>
+        {% else %}
+            <span class="phone-text d-inline-block"{% if microDataActive and itemprop %} itemprop="{{ itemprop }}"{% endif %}>
+            <div class="spinner-border me-1" role="status"></div>
+            {{ "Chargement du numéro de téléphone"|trans|raw }}
+        </span>
+        {% endif %}
+    </a>
+</div>

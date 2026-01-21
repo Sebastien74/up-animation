@@ -1,0 +1,329 @@
+'(*) champs obligatoires': '<span>*</span> Campos obligatorios'
+'(30 derniers jours)': '(Últimos 30 días)'
+'+33 (0)6 58 80 52 92': '+34 626 417 785'
+'1. Connectez-vous au back-office :': '1. Inicie sesión en el back office:'
+'1. Demande de devis': '1. Solicitar presupuesto'
+'13 millions d''€': '13 mill. de €'
+'14 derniers jours': 'Últimos 14 días'
+'180 derniers jours': 'Útlimos 180 días'
+'2. Cliquez sur le lien de téléchargement :': '2. Haga clic en el enlace de descarga:'
+'2. Devis en 24h <br><span>(48h si outillage)</span>': '2. Presupuesto en 24h <br><span>(48h si se requieren útiles)</span>'
+'28 derniers jours': 'Últimos 28 días'
+'3. Le fichier se télécharge automatiquement': '3. El archivo se descarga automáticamente'
+'3. Livraison Express <br><span>Suivi de vos pièces à chaque étape</span>': '3. Entrega Express <br><span>Seguimiento de las piezas en cada etapa</span>'
+'30 derniers jours': 'Últimos 30 días'
+'7 derniers jours': 'Últimos 7 días'
+'90 derniers jours': 'Últimos 90 días'
+"<li>Fiches matières</li>\n                                                                    <li>Plan 2D contenant les tolérances</li>\n                                                                    <li>Etc...</li>": '<li>Fichas de materiales</li>                                                                     <li>Plano PDF con las tolerancias</li>                                                                     <li>Etc.</li>'
+"<li>STEP <span>Recommandé</span></li>\n                                                                    <li>IGES</li>\n                                                                    <li>STL</li>": '<li>STEP <span>Recomendado</span></li>                                                                     <li>IGES</li>                                                                     <li>STL</li> <li>XT</li>'
+"<li>STEP <span>Recommandé</span></li>\n                                                                    <li>IGES</li>\n                                                                    <li>XT</li>": '<li>STEP <span>Recomendado</span></li>                                                                     <li>IGES <span>Recomendado</span></li>                                                                     <li>XT</li>'
+'<span>**</span> Sans informations et fichier 2D cette pièce sera réalisée avec un ébavurage standard': '<span>**</span> Sin información y plano 2D, esta pieza se cotizará con acabado desbarbado estándar.'
+'<span>*</span> Champs obligatoires': '<span>*</span> Campos obligatorios'
+'<span>Prototypage</span> <br> <span>Pré</span> / <span>Petites Séries</span> <br> Plastique & Métal': '<span class="prototypage">Prototipado</span> <br> <span>Preseries</span> /  <span>Tiradas cortas</span> <br> Plástico y metal'
+'A PHP extension caused the upload to fail.': 'Una extensión de PHP hizo que la subida fallara.'
+'A activer uniquement si le site est en production': 'A activar únicament si la web está en producción'
+'Account has expired.': 'La cuenta ha expirado.'
+'Account is disabled.': 'La cuenta está deshabilitada.'
+'Account is locked.': 'La cuenta está bloqueada.'
+Accueil: Home
+'Accès refusé.': 'Acceso denegado'
+Activer: Activar
+Actualités: Noticias
+Adresse: Dirección
+'Adresse email': 'Dirección de correo electrónico'
+'Afficher le rapport': 'Mostrar el informe'
+'Agence Félix': 'Web diseñada por Félix'
+'Ajouter fichiers 3D *': 'Añadir archivos 3D*'
+'Ajouter fichiers utiles': 'Añadir archivos útiles'
+'Ajouter une pièce': 'Añadir una pieza'
+'Ajoutez vos fichiers techniques :': 'Añadir documentos técnicos'
+'An authentication exception occurred.': 'Ocurrió un error de autenticación.'
+'An empty file is not allowed.': 'No está permitido un archivo vacío.'
+'Aspect des pièces': 'Aspecto de las piezas'
+'Attention : Si vous n''êtes pas connecté, vous serez automatiquement redirigé vers la page d''accueil.': 'Advertencia: si no ha iniciado sesión, se le redirigirá automáticamente a la página de inicio.'
+'Aucune donnée disponible': 'Datos no disponibles'
+'Authentication credentials could not be found.': 'No se encontraron las credenciales de autenticación.'
+'Authentication request could not be processed due to a system problem.': 'La solicitud de autenticación no se pudo procesar debido a un problema del sistema.'
+'Autre-Vos pièces': 'Sus piezas'
+'Bienvenu dans votre nouvel espace client. Pour des raisons de sécurité et afin de répondre à la législation RGPD, vous devez modifier votre mot de passe pour accéder à vos informations.': 'Bienvenido a nuestro nuevo Espacio de cliente. Por razones de seguridad y cumpliendo con la legislación de RGPD, necesita modificar su contraseña para acceder a su información.'
+'Bienvenue dans votre interface client.': 'Bienvenido a su interfaz de cliente.'
+Bonjour: Hola
+'Brut, poli, sablé, etc...': 'Bruto, pulido, arenado, etc.'
+'Cannot write temporary file to disk.': 'No se pudo escribir el archivo temporal en el disco.'
+'Ce site utilise des cookies afin d’améliorer votre expérience et optimiser notre site et ses services. Les cookies sont des fichiers textes qui sont déposés sur votre ordinateur. Certains d’entre eux sont indispensables au bon fonctionnement du site, d’autres analysent la façon dont vous utilisez le site. <br><b>Afin de poursuivre la navigation sur notre site, vous devez accepter ou refuser l’utilisation des cookies.</b>': 'Esta web utiliza cookies para mejorar la experiencia y optimizar su uso y los servicios ofrecidos. Las cookies son pequeños archivos de texto que se instalan en su ordenador. Algunas de estas cookies son esenciales para que la web funcione adecuadamente y otras analizan la manera que la que utiliza la web. Para poder seguir navegando es necesario aceptar o rechazar las cookies.'
+'Cet e-mail vous a été envoyé, car nous avons reçu une demande de modification de mot de passe pour votre compte.': 'Este correo se ha enviado, porque recibimos una solicitud de modificación de contraseña para su cuenta.'
+'Changer d''utilisateur': 'Cambiar de usuario'
+'Choisir une de nos technologies': 'Elegir una de nuestras tecnologías'
+'Cliquez sur le bouton ci-dessous pour le modifier. Si vous n''êtes pas à l''origine de cette demande, vous pouvez supprimer cet e-mail en toute sécurité. La validité de ce lien est de 2 heures.': 'Haga clic en el botón de abajo para modificarla. Si no es el autor de esta solicitud, puede suprimir este correo con toda seguridad. La validez de este enlace es de 2 horas'
+'Code postal': 'Código postal'
+'Composé de 4 filiales en': '4 filiales en'
+'Confirmation du mot de passe': 'Confirmación de contraseña'
+Connectez-vous: Contectarse
+'Connexion à votre espace client': 'Conexión a su espacio de cliente'
+Contacts: Contactos
+'Cookie has already been used by someone else.': 'La cookie ya ha sido usada por otra persona.'
+'Credentials have expired.': 'Las credenciales han expirado.'
+'Demande de devis': 'Solicitar presupuesto'
+'Demande de devis : Autres technologies': 'Solicitar presupuesto'
+'Demande de devis : Injection plastique / Fonderie': 'Solicitar presupuesto:  Inyección plástico / Fundición'
+'Demander votre devis': 'Solicite presupuesto'
+'Devis 24h/48h si outillage': 'Presupuesto en 24h / 48h'
+Document: Documento
+'Duplication sous vide': 'Coladas al vacío'
+'Durée de vie du moule': 'Vida útil del molde'
+'Désolé, la page que vous recherchez n''existe pas, a été supprimée, son nom a été modifié ou est temporairement indisponible.': 'La página no existe'
+'EC International Group Sarl - China Office': 'EC Prototypes Asia Ltd.'
+'Each element of this collection should satisfy its own set of constraints.': 'Cada elemento de esta colección debería satisfacer su propio conjunto de restricciones.'
+'Ecoparc de Madrid<br>4 Allée Jules Verne<br>74150 Rumilly - France<br>Tel: +33 4 85 21 31 10': 'Ecoparc de Madrid<br>4 Allée Jules Verne<br>74150 Rumilly (Francia)<br>Tel.: +33 4 85 21 31 10'
+'Effectuer un nouveau devis ›': 'Solicitar un nuevo presupuesto ›'
+'En savoir plus': 'Más información'
+Enregistrer: Guardar
+Entreprise: Empresa
+'Entrez votre adresse email et vous recevrez un lien par email vous permettant de changer votre mot de passe.': 'Escriba su Dirección de email. Recibirá un correo con un enlace que le permitirá actualizar su contraseña.'
+'Envoi de fichiers': 'Enviar archivos'
+Envoyer: Enviar
+'Envoyer par email ›': 'Enviar por email ›'
+'Envoyer via Wetransfer ›': 'Enviar via Wetransfer ›'
+Erreur: Error
+'Erreur de sécurité !! Essayez en rechargeant la page.': '¡Error de seguridad! Por favor, pruebe a recargar la página.'
+'Espace client': 'Espacio de cliente'
+'Etape suivante ›': 'Siguiente paso ›'
+Extrusion: Extrusión
+'Finaliser ma demande': 'Terminar mi solicitud ›'
+Finition: Acabado
+'Finition, état de surface, référence DME, etc': 'Acabado, estado de la superficie, DME, etc.'
+Finitions: Acabados
+Fonderie: Fundición
+'Formulaire demande de devis ›': 'Formulario solicitud de presupuesto ›'
+France.: Francia.
+'Gestion des Cookies': 'Gestión de las cookies'
+Identifiant: 'Nombre de usuario'
+Identité: Identidad
+'Impression 3D': 'Impresión 3D'
+Injection: Inyección
+'Injecté par Félix': 'Web diseñada por Félix'
+Inscrivez-vous: Regístrese
+'Invalid CSRF token.': 'Token CSRF no válido.'
+'Invalid card number.': 'Número de tarjeta inválido.'
+'Invalid credentials.': 'Credenciales no válidas.'
+Italy.: Italia.
+'Je refuse': Rechazar
+J’accepte: Aceptar
+'Les mots de passe sont différents': 'Las contraseñas son diferentes'
+'Lire la suite': 'Leer más'
+'Livraison <br/> prévue': 'Entrega <br/> planificada'
+Livré: Entregado
+'L’injection plastique / fonderie ›': 'Inyección plástico/ fundición ›'
+Mail: E-mail
+Maquettes: Maquetas
+'Matière souhaitée': 'Material deseado'
+'Maximum de pièces injectables': 'Máximo de piezas inyectables'
+'Merci !': ¡Gracias!
+'Merci pour inscription. Votre compte dois être validé par l''administrateur.': 'Gracias por registrarse. Su cuenta debe ser validada por el administrador.'
+'Merci pour inscription. Vous pouvez vous connecter.': 'Gracias por su registro. Usted se puede conectar.'
+'Merci votre demande a bien été reçue<br> Vous recevrez votre devis sous 24h (48h si outillage)': 'Gracias, hemos recibido su solicitud<br> Recibirá el presupuesto en 24 h (48 h si requiere utillaje)'
+'Modidication de votre mote de passe': 'Modificación de su contraseña'
+'Modification de votre mot de passe.': 'Modificación de su contraseña.'
+'Modification du mot de passe': 'Modificación de la contraseña'
+'Modifier mon mot de passe': 'Modificar mi contraseña'
+'Mot de passe': Contraseña
+'Mot de passe oublié ?': '¿Ha olvidado la contraseña?'
+'No authentication provider found to support the authentication token.': 'No se encontró un proveedor de autenticación que soporte el token de autenticación.'
+'No file was uploaded.': 'Ningún archivo fue subido.'
+'No session available, it either timed out or cookies are not enabled.': 'No hay ninguna sesión disponible, ha expirado o las cookies no están habilitados.'
+'No temporary folder was configured in php.ini.': 'Ninguna carpeta temporal fue configurada en php.ini.'
+'No token could be found.': 'No se encontró ningún token.'
+Nom: Nombre
+'Nom d''utilisateur': 'Nombre de Usuario'
+'Nom fichier': Archivo
+'Non disponible': 'No disponible'
+'Non renseigné <br> lors du lancement': 'No especificado <br/> en el lanzamiento'
+'Nos autres technologies ›': 'Nuestras otras tecnologías ›'
+'Not privileged to request the resource.': 'No tiene privilegios para solicitar el recurso.'
+'Nous suivre sur': 'Síguenos en'
+'Numéro de téléphone': 'Número de teléfono'
+'N° CDE <br/> Client': 'Nº pedido <br/> Cliente'
+'N° d''offre <br/> de prix': 'Nº de oferta <br/>'
+'N° de tracking TNT': 'N° de tracking MRW'
+'One or more of the given values is invalid.': 'Uno o más de los valores indicados no son válidos.'
+'Oups! Page non trouvée.': Error
+'Paramétrage des cookies': Cookies
+'Peinture, anodisation, etc...': 'Pintura, anodización, etc.'
+Personnaliser: Personalizar
+'Pièce n°': 'Pieza nº'
+Pièces: Pieza
+'Politique relative aux cookies': 'Preferencias relativas a las cookies'
+'Pour afficher la vidéo, vous devez activer les cookies.': 'Para visualizar este contenido, debe activar las cookies de Youtube.'
+'Procédure de téléchargement du fichier :': 'Procedimiento de descarga de archivos:'
+Prénom: Apellidos
+'Quantité de pièces': 'Cantidad de piezas'
+'Rapport <br/> dimensionnel': 'Archivos <br/> adicionales'
+'Rapport dimensionnel': 'Archivos adicionales'
+Rechercher: Buscar
+Rechercher...: Buscar...
+Remarques: Comentarios
+'Remis en main propre': 'Entregado en mano'
+'Retard de': 'Retraso de'
+Retour: Atrás
+'Retourner sur le site': 'Back to website'
+'Retourner à la page d''accueil': 'Volver a la página de inicio'
+'Retourner à la page de connexion': 'Volver a la página de conexión'
+'Room 1318, Zhongzheng SOHO, No.200 Dongmenzhong Road, Changan Town Dongguan（523851), Guangdong, China<br>Tel: +86 138 2233 4725': 'Room 102, Building A1, No. 2 Xinghui Road, Songshan Lake Park, Dongguan city, Guangdong Province, China<br>Tel.: +86 138 2233 4725'
+'S''inscrire': Registrarse
+'Saisissez le mot de passe': 'Introduzca la contraseña'
+'Saisissez un email': 'Introduzca un e-mail'
+'Saisissez un identifiant': 'Introduzca un nombre de usuario'
+'Saisissez votre e-mail': 'Introduzca su e-mail'
+'Saisissez votre nom': 'Introduzca su nombre'
+'Saisissez votre prénom': 'Introduzca sus apellidos'
+'Sant Cugat Trade Center,<br>Av. Corts Catalanes, 5-7,<br>Oficina A17,<br>08173 Barcelona - Spain<br>Tel: +34 6 38 20 15 15': 'Sant Cugat Trade Center,<br>Av. Corts Catalanes, 5-7,<br>Oficina A17,<br>08173 Barcelon<br>Tel.: +34 6 38 20 15 15'
+'Se connecter': Conectarse
+'Se rappeler de moi': Recordarme
+'Se rappler de moi': Recordarme
+'Si cela ne fonctionne pas, copiez et collez le lien suivant dans votre navigateur :': 'Si esto no funciona, copie y pegue la siguiente dirección en su navegador:'
+'Simplifiez-vous la vie, envoyez-nous vos demandes en ligne': 'No se complique, mándenos una solicitud online'
+Spain.: España.
+'Suivi de vos commandes': 'Seguimiento de sus pedidos'
+'Séléctionnez un utilisateur': 'Seleccione un usuario'
+Technologie: Tecnología
+'Temps restant <br/> de fabrication': 'Tiempo restante <br/> de fabricación'
+'The CSRF token is invalid. Please try to resubmit the form.': 'El token CSRF no es válido. Por favor, pruebe a enviar nuevamente el formulario.'
+'The file could not be found.': 'No se pudo encontrar el archivo.'
+'The file could not be uploaded.': 'No se pudo subir el archivo.'
+'The file is not readable.': 'No se puede leer el archivo.'
+'The file is too large ({{ size }} {{ suffix }}). Allowed maximum size is {{ limit }} {{ suffix }}.': 'El archivo es demasiado grande ({{ size }} {{ suffix }}). El tamaño máximo permitido es {{ limit }} {{ suffix }}.'
+'The file is too large.': 'El archivo es demasiado grande.'
+'The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}.': 'El archivo es demasiado grande. El tamaño máximo permitido es {{ limit }} {{ suffix }}.'
+'The file was only partially uploaded.': 'El archivo fue sólo subido parcialmente.'
+'The host could not be resolved.': 'No se puede resolver el host.'
+'The image height is too big ({{ height }}px). Allowed maximum height is {{ max_height }}px.': 'La altura de la imagen es demasiado grande ({{ height }}px). La altura máxima permitida es de {{ max_height }}px.'
+'The image height is too small ({{ height }}px). Minimum height expected is {{ min_height }}px.': 'La altura de la imagen es demasiado pequeña ({{ height }}px). La altura mínima requerida es de {{ min_height }}px.'
+'The image is landscape oriented ({{ width }}x{{ height }}px). Landscape oriented images are not allowed.': 'La imagen está orientada horizontalmente ({{ width }}x{{ height }}px). Las imágenes orientadas horizontalmente no están permitidas.'
+'The image is portrait oriented ({{ width }}x{{ height }}px). Portrait oriented images are not allowed.': 'La imagen está orientada verticalmente ({{ width }}x{{ height }}px). Las imágenes orientadas verticalmente no están permitidas.'
+'The image is square ({{ width }}x{{ height }}px). Square images are not allowed.': 'La imagen es cuadrada ({{ width }}x{{ height }}px). Las imágenes cuadradas no están permitidas.'
+'The image ratio is too big ({{ ratio }}). Allowed maximum ratio is {{ max_ratio }}.': 'La proporción de la imagen es demasiado grande ({{ ratio }}). La máxima proporción permitida es {{ max_ratio }}.'
+'The image ratio is too small ({{ ratio }}). Minimum ratio expected is {{ min_ratio }}.': 'La proporción de la imagen es demasiado pequeña ({{ ratio }}). La mínima proporción permitida es {{ min_ratio }}.'
+'The image width is too big ({{ width }}px). Allowed maximum width is {{ max_width }}px.': 'El ancho de la imagen es demasiado grande ({{ width }}px). El ancho máximo permitido es de {{ max_width }}px.'
+'The image width is too small ({{ width }}px). Minimum width expected is {{ min_width }}px.': 'El ancho de la imagen es demasiado pequeño ({{ width }}px). El ancho mínimo requerido es {{ min_width }}px.'
+'The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}.': 'El tipo mime del archivo no es válido ({{ type }}). Los tipos mime válidos son {{ types }}.'
+'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'El número de elementos en esta colección debería ser múltiplo de {{ compared_value }}.'
+'The size of the image could not be detected.': 'No se pudo determinar el tamaño de la imagen.'
+'The two values should be equal.': 'Los dos valores deberían ser iguales.'
+'The uploaded file was too large. Please try to upload a smaller file.': 'El archivo subido es demasiado grande. Por favor, suba un archivo más pequeño.'
+'The value you selected is not a valid choice.': 'El valor seleccionado no es una opción válida.'
+'This Business Identifier Code (BIC) is not associated with IBAN {{ iban }}.': 'Este Código de Identificación Bancaria (BIC) no está asociado con el IBAN {{ iban }}.'
+'This collection should contain exactly {{ limit }} element.|This collection should contain exactly {{ limit }} elements.': 'Esta colección debe contener exactamente {{ limit }} elemento.|Esta colección debe contener exactamente {{ limit }} elementos.'
+'This collection should contain only unique elements.': 'Esta colección debería tener exclusivamente elementos únicos.'
+'This collection should contain {{ limit }} element or less.|This collection should contain {{ limit }} elements or less.': 'Esta colección debe contener {{ limit }} elemento o menos.|Esta colección debe contener {{ limit }} elementos o menos.'
+'This collection should contain {{ limit }} element or more.|This collection should contain {{ limit }} elements or more.': 'Esta colección debe contener {{ limit }} elemento o más.|Esta colección debe contener {{ limit }} elementos o más.'
+'This field is missing.': 'Este campo está desaparecido.'
+'This field was not expected.': 'Este campo no se esperaba.'
+'This file is not a valid image.': 'El archivo no es una imagen válida.'
+'This form should not contain extra fields.': 'Este formulario no debería contener campos adicionales.'
+'This is not a valid Business Identifier Code (BIC).': 'No es un Código de Identificación Bancaria (BIC) válido.'
+'This is not a valid IP address.': 'Esto no es una dirección IP válida.'
+'This is not a valid International Bank Account Number (IBAN).': 'Esto no es un International Bank Account Number (IBAN) válido.'
+'This is not a valid UUID.': 'Este valor no es un UUID válido.'
+'This password has been leaked in a data breach, it must not be used. Please use another password.': 'Esta contraseña no se puede utilizar porque está incluida en un listado de contraseñas públicas obtenido gracias a fallos de seguridad de otros sitios y aplicaciones. Por favor utilice otra contraseña.'
+'This value does not match the expected {{ charset }} charset.': 'La codificación de caracteres para este valor debería ser {{ charset }}.'
+'This value is already used.': 'Este valor ya se ha utilizado.'
+'This value is neither a valid ISBN-10 nor a valid ISBN-13.': 'Este valor no es ni un ISBN-10 válido ni un ISBN-13 válido.'
+'This value is not a valid ISBN-10.': 'Este valor no es un ISBN-10 válido.'
+'This value is not a valid ISBN-13.': 'Este valor no es un ISBN-13 válido.'
+'This value is not a valid ISSN.': 'Este valor no es un ISSN válido.'
+'This value is not a valid URL.': 'Este valor no es una URL válida.'
+'This value is not a valid country.': 'Este valor no es un país válido.'
+'This value is not a valid currency.': 'Este valor no es una divisa válida.'
+'This value is not a valid date.': 'Este valor no es una fecha válida.'
+'This value is not a valid datetime.': 'Este valor no es una fecha y hora válidas.'
+'This value is not a valid email address.': 'Este valor no es una dirección de email válida.'
+'This value is not a valid hostname.': 'Este valor no es un nombre de host válido.'
+'This value is not a valid language.': 'Este valor no es un idioma válido.'
+'This value is not a valid locale.': 'Este valor no es una localización válida.'
+'This value is not a valid time.': 'Este valor no es una hora válida.'
+'This value is not a valid timezone.': 'Este valor no es una zona horaria válida.'
+'This value is not valid.': 'Este valor no es válido.'
+'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.': 'Este valor es demasiado largo. Debería tener {{ limit }} carácter o menos.|Este valor es demasiado largo. Debería tener {{ limit }} caracteres o menos.'
+'This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.': 'Este valor es demasiado corto. Debería tener {{ limit }} carácter o más.|Este valor es demasiado corto. Debería tener {{ limit }} caracteres o más.'
+'This value should be a multiple of {{ compared_value }}.': 'Este valor debería ser múltiplo de {{ compared_value }}.'
+'This value should be a valid number.': 'Este valor debería ser un número válido.'
+'This value should be between {{ min }} and {{ max }}.': 'Este valor debe estar entre {{ min }} y {{ max }}.'
+'This value should be blank.': 'Este valor debería estar vacío.'
+'This value should be either negative or zero.': 'Este valor debería ser negativo o igual a cero.'
+'This value should be either positive or zero.': 'Este valor debería ser positivo o igual a cero.'
+'This value should be equal to {{ compared_value }}.': 'Este valor debería ser igual que {{ compared_value }}.'
+'This value should be false.': 'Este valor debería ser falso.'
+'This value should be greater than or equal to {{ compared_value }}.': 'Este valor debería ser mayor o igual que {{ compared_value }}.'
+'This value should be greater than {{ compared_value }}.': 'Este valor debería ser mayor que {{ compared_value }}.'
+'This value should be identical to {{ compared_value_type }} {{ compared_value }}.': 'Este valor debería ser idéntico a {{ compared_value_type }} {{ compared_value }}.'
+'This value should be less than or equal to {{ compared_value }}.': 'Este valor debería ser menor o igual que {{ compared_value }}.'
+'This value should be less than {{ compared_value }}.': 'Este valor debería ser menor que {{ compared_value }}.'
+'This value should be negative.': 'Este valor debería ser negativo.'
+'This value should be null.': 'Este valor debería ser nulo.'
+'This value should be of type {{ type }}.': 'Este valor debería ser de tipo {{ type }}.'
+'This value should be positive.': 'Este valor debería ser positivo.'
+'This value should be the user''s current password.': 'Este valor debería ser la contraseña actual del usuario.'
+'This value should be true.': 'Este valor debería ser verdadero.'
+'This value should be valid JSON.': 'Este valor debería ser un JSON válido.'
+'This value should be {{ limit }} or less.': 'Este valor debería ser {{ limit }} o menos.'
+'This value should be {{ limit }} or more.': 'Este valor debería ser {{ limit }} o más.'
+'This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.': 'Este valor debería tener exactamente {{ limit }} carácter.|Este valor debería tener exactamente {{ limit }} caracteres.'
+'This value should not be blank.': 'Este valor no debería estar vacío.'
+'This value should not be equal to {{ compared_value }}.': 'Este valor debería ser distinto de {{ compared_value }}.'
+'This value should not be identical to {{ compared_value_type }} {{ compared_value }}.': 'Este valor no debería ser idéntico a {{ compared_value_type }} {{ compared_value }}.'
+'This value should not be null.': 'Este valor no debería ser nulo.'
+'This value should satisfy at least one of the following constraints:': 'Este valor debería satisfacer al menos una de las siguientes restricciones:'
+'Tous secteurs': 'Todos sectores'
+'Transférez vos Fichier 3D': 'Transfiera sus Archivos 3D'
+'Télécharger les fichiers (Uniquement disponible par EC International France)': 'Descargar archivos (Disponible exclusivamente a través de EC International)'
+Tôlerie: Estampación
+'Unsupported card type or invalid card number.': 'Tipo de tarjeta no soportado o número de tarjeta inválido.'
+'Username could not be found.': 'No se encontró el nombre de usuario.'
+'Usinage CNC': 'Mecanizado CNC'
+Valider: Validar
+'Via Roma, 29 <br>10023 Chieri (TO) - Italy <br>Téléphone : +39 333 5485 211<br>Téléphone : +39 011 942 33 60<br>Fax : +39 011 200 921': 'Via Roma, 29 <br>10023 Chieri (TO), Italia <br>Tel: +39 011 942 33 60'
+Ville: Ciudad
+'Visuel <br/> Pièce': 'Pieza <br/> Visual'
+'Vos besoins concernent': '¿Qué necesita?'
+'Vos informations de contact': 'Información de contacto'
+'Votre compte n''est pas activé.': 'Su cuenta no se ha activado.'
+'Votre demande de devis': 'Su solicitud de presupuesto'
+'Votre demande est déjà prête ?': '¿Está lista su solicitud?'
+'Votre mot de passe a expiré, vous devez le réinitialiser.': 'Su contraseña ha expirado, debe reiniciarla.'
+'Votre mot de passe a été modifié avec succès.': 'Su contraseña se ha modificado correctamente.'
+'Vous êtes déjà connecté comme administrateur. Pour changer d''utilisateur, veuillez sélectionner un compte dans le commutateur.': 'Usted ya está conectado como administrador. Para cambiar de usuario, seleccione otro en la página de selección'
+'You must select at least {{ limit }} choice.|You must select at least {{ limit }} choices.': 'Debe seleccionar al menos {{ limit }} opción.|Debe seleccionar al menos {{ limit }} opciones.'
+'You must select at most {{ limit }} choice.|You must select at most {{ limit }} choices.': 'Debe seleccionar como máximo {{ limit }} opción.|Debe seleccionar como máximo {{ limit }} opciones.'
+'a été renommé car un fichier du même nom existait déja.': 'se ha renombrado debido a que ya existe un fichero con el mismo nombre'
+automobile: Automoción
+aéronautique: Aeronaútica
+'dans le monde': 'en el mundo'
+'de chiffre d''affaires': 'de volumen de negocios'
+divers: Varios
+ec-international@ec-international.fr: proyectos@ec-international.es
+'header-<span>Prototypage</span> <br> <span>Pré</span> & <span>Petites Séries</span> <br> Plastique & Métal': '<span class="prototypage">Prototipado</span> <br> <span>Preseries</span> /  <span>Tiradas cortas</span> <br> Plástico y metal'
+'header-Demander votre devis': 'Solicite presupuesto'
+'header-Espace client': 'Espacio cliente'
+home-duplication-linkcode: coladas-al-vacio
+home-extrusion-linkcode: extrusion
+home-finitions-linkcode: acabados-y-tratamientos
+home-fonderie-linkcode: fundicion
+home-impression-linkcode: impresion-3d
+home-injection-linkcode: moldes-de-inyeccion
+home-maquettes-linkcode: modelos-para-presentacion
+home-tolerie-linkcode: estampacion
+home-usinage-linkcode: mecanizado-cnc
+industrie: Industrial
+industriels: industriales
+'injection-Vos pièces': 'Sus piezas'
+jour: día
+jours: días
+loisirs: Ocio
+menu: menú
+militaire: Militar
+médical: Médico
+'prototypes par an': 'prototipos al año'
+'vous avez oublié votre mot de passe ?': '¿ha olvidado su contraseña?'
+État: Estado
+'État de surface': 'Estado de la superficie'
+'équipement <br>electrique': Equipamiento<br>eléctrico

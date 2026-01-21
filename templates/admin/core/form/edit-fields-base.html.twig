@@ -1,0 +1,112 @@
+{% trans_default_domain 'admin' %}
+
+{% if excludes is not defined %}
+    {% set excludes = ['save', 'saveEdit', 'saveBack', 'saveAdd', '_token'] %}
+{% endif %}
+{% set interfaceName = interfaceName is defined ? interfaceName : false %}
+{% set excludes = excludes is defined and excludes|isArray ? excludes|merge(['_token']) : [] %}
+{% set mediaSizesFields = ['maxWidth', 'maxHeight', 'tabletMaxWidth', 'tabletMaxHeight', 'mobileMaxWidth', 'mobileMaxHeight'] %}
+{% set mediaSizesFieldsCount = 0 %}
+{% for mediaSizesField in mediaSizesFields %}
+    {% if form[mediaSizesField] is defined %}
+        {% set mediaSizesFieldsCount = mediaSizesFieldsCount + 1 %}
+    {% endif %}
+{% endfor %}
+{% set displayMediaSizes = mediaSizesFieldsCount == mediaSizesFields|length %}
+
+{% if 'map' == interfaceName %}
+    <div class="col-12">
+        <a href="https://www.openstreetmap.org" class="mb-3 mt-2 btn btn-info-darken standard" target="_blank">{{ 'fal search'|icon(14, 14, 'me-2 white') }}{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
+    </div>
+{% endif %}
+
+{% for field in form.children %}
+
+    {% set notExcluded = field.vars.name not in excludes %}
+    {% set formSubTitle = field.vars.attr.subtitle is defined ? field.vars.attr.subtitle : null %}
+
+    {% if notExcluded %}
+        {% if configsFieldsSet is not defined or field.vars.name not in configsFieldsSet %}
+            {% if formSubTitle %}
+                {% set formSubTitleIcon = field.vars.attr.subtitleIcon is defined ? field.vars.attr.subtitleIcon : 'cog' %}
+                <div class="col-12">
+                    <h4 class="card-subtitle mb-4">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ formSubTitle|raw }}</h4>
+                </div>
+            {% elseif field.vars.name == 'address' %}
+                <div class="col-12">
+                    <h4 class="card-subtitle mb-2">{{ 'fal map-marked-alt'|icon(null, 14, 'info-darken me-2') }}{{ "Adresse"|trans }}</h4>
+                    <a href="https://www.openstreetmap.org" class="mb-4 mt-2 btn btn-info-darken standard" target="_blank">{{ 'fal search'|icon(14, 14, 'me-2 white') }}{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
+                </div>
+            {% elseif field.vars.name == 'schedule' %}
+                <div class="col-12">
+                    <h4 class="card-subtitle mb-4">{{ 'fal plus-circle'|icon(null, 14, 'info-darken me-2') }}{{ "Compléments"|trans }}</h4>
+                </div>
+            {% elseif field.vars.name == 'geoJson' %}
+                <div class="col-12">
+                    <h4 class="card-subtitle mb-4">{{ 'fal map-marked-alt'|icon(null, 14, 'info-darken me-2') }}{{ "Geojson file"|trans }}</h4>
+                </div>
+            {% elseif field.vars.name == 'icon' and form.vars.name is defined and form.vars.name == 'link' %}
+                <div class="col-12">
+                    <h4 class="card-subtitle mb-4">{{ 'fal plus-circle'|icon(null, 14, 'info-darken me-2') }}{{ "Icône"|trans }}</h4>
+                </div>
+            {% endif %}
+            {% if mediaSizesFieldsCount and field.vars.name == 'maxWidth' %}
+                {% include 'admin/core/form/medias-sizes.html.twig' with {form: form} only %}
+                {% set configsFieldsSet = configsFieldsSet|merge(mediaSizesFields) %}
+            {% elseif field.vars.name == 'intls' %}
+                {% include 'admin/core/form/intls.html.twig' with {intls: form.intls} %}
+            {% elseif field.vars.name == 'actionIntls' %}
+                {% include 'admin/core/form/intls.html.twig' with {intls: form.actionIntls, disableTitle: true} %}
+            {% elseif field.vars.name == 'urls' and asNews is defined %}
+                {% include 'admin/core/form/urls.html.twig' with {urls: form.urls} %}
+            {% elseif field.vars.name == 'mediaRelations' %}
+                {% set asSecondary = interfaceName is defined and 'block' == interfaceName and  'media' == entity.blockType.slug %}
+                {% if asSecondary and website is defined and website.configuration.mediasSecondary %}
+                    {% include 'admin/core/form/media-relations-secondary.html.twig' with {mediaRelations: form.mediaRelations} %}
+                {% else %}
+                    {% include 'admin/core/form/media-relations-uniq.html.twig' with {mediaRelations: form.mediaRelations} %}
+                {% endif %}
+            {% elseif field.vars.name == 'mediaRelation' %}
+                <div class="col-12">
+                    {% include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: field.vars.value.id, classname: classname} %}
+                    {{ form_row(form.mediaRelation.media.uploadedFile) }}
+                </div>
+            {% elseif field.vars.prototype is defined and field.vars.prototype %}
+                {% include 'admin/core/form/prototype.html.twig' %}
+            {% elseif field.vars.value|instanceof("Doctrine\\ORM\\PersistentCollection") %}
+                {% for fieldCol in form[field.vars.name] %}
+                    {% for field in fieldCol.children %}
+                        {{ form_row(fieldCol[field.vars.name]) }}
+                    {% endfor %}
+                {% endfor %}
+            {% elseif field.vars.value|isArray and 'datetime' not in field.vars.block_prefixes
+                and field.vars.value|isArray and 'time' not in field.vars.block_prefixes
+                and field.vars.value|isArray and 'date' not in field.vars.block_prefixes %}
+                {% if field.vars.multiple is defined and field.vars.multiple %}
+                    {{ form_row(form[field.vars.name]) }}
+                {% else %}
+                    {% for fieldCol in form[field.vars.name] %}
+                        {{ form_row(fieldCol) }}
+                    {% endfor %}
+                {% endif %}
+            {% elseif field.vars.name not in excludes or field.vars.attr.force is defined and field.vars.attr.force %}
+                {% set groupClass = field.vars.attr.group is defined and field.vars.attr.group ? field.vars.attr.group : 'col-12' %}
+                {% set groupClass = field.vars.attr['data-group'] is defined and field.vars.attr['data-group'] ? field.vars.attr['data-group'] : groupClass %}
+                {% if 'time' in field.vars.block_prefixes %}
+                    <div class="form-group {{ groupClass }}">
+                {% endif %}
+                    {% set hide = field.vars.attr['data-hide-not-new'] is defined and field.vars.attr['data-hide-not-new'] and field.parent.vars.value.id is defined and field.parent.vars.value.id %}
+                    {% if hide %}
+                        <div class="d-none">
+                    {% endif %}
+                        {{ form_row(form[field.vars.name]) }}
+                    {% if hide %}
+                        </div>
+                    {% endif %}
+                {% if 'time' in field.vars.block_prefixes %}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endfor %}

@@ -1,0 +1,50 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% block title %}{{ "Infos projet"|trans|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ "Infos projet"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-development', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="card">
+        <h4 class="card-title card-header">{{ 'fal exclamation-circle'|icon(null, 18, 'info-darken me-2') }}{{ "Infos"|trans }}</h4>
+        <table class="table table-striped mb-0">
+            <tr>
+                <td>{{ 'Poids total'|trans|raw }}</td>
+                <td>{{ totalSize|formatBytes() }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'Nombre de fichiers'|trans|raw }}</td>
+                <td>{{ filesCount|number_format(0, ',', ' ') }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <ul id="files-sizes-ifo-list">
+        {% for directory, size in directoriesSizes %}
+            <li class="mt-3">
+                {{ 'fal folder-open'|icon(null, 18, 'me-2') }}{{ directory }} : {{ size|formatBytes() }}
+                {% if subDirectoriesSizes[directory] is defined %}
+                    <ul>
+                        {% for subDirectory, subSize in subDirectoriesSizes[directory] %}
+                            <li>
+                                {{ 'fal folder'|icon(null, 18, 'me-2') }}{{ directory~'/'~subDirectory }} : {{ subSize|formatBytes() }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

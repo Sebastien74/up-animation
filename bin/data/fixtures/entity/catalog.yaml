@@ -1,0 +1,276 @@
+#####################################
+#           Catalog                 #
+#####################################
+
+App\Entity\Module\Catalog\Catalog:
+    card: true
+    translations:
+        adminName:
+            fr: 'Catalogue'
+            en: 'Catalog'
+        promote:
+            fr: "Mise en avant"
+            en: 'Promote'
+        singular:
+            fr: 'Catalogue'
+            en: 'Catalog'
+        plural:
+            fr: 'Catalogues'
+            en: 'Catalogs'
+        add:
+            fr: 'Ajouter un catalogue'
+            en: 'Add catalog'
+        delete:
+            fr: "Supprimer le catalogue"
+            en: 'Delete catalog'
+
+App\Entity\Module\Catalog\Category:
+    translations:
+        adminName:
+            fr: 'Catégorie (Module catalogue)'
+            en: 'Category (Module catalog)'
+        singular:
+            fr: "Catégorie de catalogue"
+            en: 'Catalog category'
+        plural:
+            fr: 'Catégories'
+            en: 'Categories'
+        promote:
+            fr: "Mise en avant"
+            en: 'Promote'
+        add:
+            fr: 'Ajouter une catégorie'
+            en: 'Add category'
+        delete:
+            fr: "Supprimer la catégorie"
+            en: 'Delete category'
+
+App\Entity\Module\Catalog\SubCategory:
+    translations:
+        adminName:
+            fr: 'Sous-catégorie (Module catalogue)'
+            en: 'Sub-category (Module catalog)'
+        singular:
+            fr: "Sous-catégorie de catalogue"
+            en: 'Catalog sub-category'
+        plural:
+            fr: 'Sous-catégories'
+            en: 'Sub-categories'
+        promote:
+            fr: "Mise en avant"
+            en: 'Promote'
+        add:
+            fr: 'Ajouter une sous-catégorie'
+            en: 'Add sub-category'
+        delete:
+            fr: "Supprimer la sous-catégorie"
+            en: 'Delete sub-category'
+
+App\Entity\Module\Catalog\Feature:
+    translations:
+        adminName:
+            fr: 'Caractéristique (Module catalogue)'
+            en: 'Feature (Module catalog)'
+        singular:
+            fr: 'Caractéristique'
+            en: 'Feature'
+        plural:
+            fr: 'Caractéristiques'
+            en: 'Features'
+        add:
+            fr: 'Ajouter une caractéristique'
+            en: 'Add feature'
+        delete:
+            fr: "Supprimer la caractéristique"
+            en: 'Delete feature'
+        'catalogs.adminName':
+            fr: "Catalogues"
+            en: 'Catalogs'
+    columns:
+        - media
+        - adminName
+        - catalogs.adminName
+
+App\Entity\Module\Catalog\FeatureValueProduct:
+    translations:
+        adminName:
+            fr: 'Valeur de caractéristique produit (Module catalogue)'
+            en: 'Feature value product (Module catalog)'
+        singular:
+            fr: 'Valeur de caractéristique produit'
+            en: 'Feature value product'
+        plural:
+            fr: 'Valeurs de caractéristique produit'
+            en: 'Feature values product'
+        add:
+            fr: 'Ajouter une valeur'
+            en: 'Add value'
+        delete:
+            fr: "Supprimer la valeur"
+            en: 'Delete value'
+
+App\Entity\Module\Catalog\FeatureValue:
+    translations:
+        adminName:
+            fr: 'Valeur de caractéristique (Module catalogue)'
+            en: 'Feature value (Module catalog)'
+        singular:
+            fr: 'Valeur de caractéristique'
+            en: 'Feature value'
+        plural:
+            fr: 'Valeurs de caractéristique'
+            en: 'Feature values'
+        add:
+            fr: 'Ajouter une valeur'
+            en: 'Add value'
+        delete:
+            fr: "Supprimer la valeur"
+            en: 'Delete value'
+        'catalogfeature.adminName':
+            fr: "Caractéristique"
+            en: 'Feature'
+        'catalogs.adminName':
+            fr: "Catalogues"
+            en: 'Catalogs'
+    columns:
+        - media
+        - adminName
+        - catalogfeature.adminName
+        - catalogs.adminName
+
+App\Entity\Module\Catalog\Listing:
+    translations:
+        adminName:
+            fr: 'Liste de produits (Module catalogue)'
+            en: 'Products list (Module catalog)'
+        singular:
+            fr: 'Liste de produits'
+            en: 'Products list'
+        plural:
+            fr: 'Liste de produits'
+            en: 'Products lists'
+        add:
+            fr: 'Ajouter une liste'
+            en: 'Add list'
+        delete:
+            fr: "Supprimer la liste"
+            en: 'Delete list'
+
+App\Entity\Module\Catalog\ListingFeatureValue:
+    translations:
+        adminName:
+            fr: 'Valeur de caractéristique liste (Module catalogue)'
+            en: 'Feature value list (Module catalog)'
+        singular:
+            fr: 'Valeur de caractéristique liste'
+            en: 'Feature value list'
+        plural:
+            fr: 'Valeurs de caractéristique liste'
+            en: 'Feature values list'
+        add:
+            fr: 'Ajouter une liste'
+            en: 'Add value'
+        delete:
+            fr: "Supprimer la liste"
+            en: 'Delete list'
+
+App\Entity\Module\Catalog\Lot:
+    translations:
+        adminName:
+            fr: 'Lot (Module catalogue)'
+            en: 'Lot (Module catalog)'
+        singular:
+            fr: 'Lot'
+            en: 'Lot'
+        plural:
+            fr: 'Lots'
+            en: 'Lots'
+        add:
+            fr: 'Ajouter un lot'
+            en: 'Add lot'
+        delete:
+            fr: "Supprimer le lot"
+            en: 'Delete lot'
+
+App\Entity\Module\Catalog\Product:
+    mediaMulti: true
+    card: true
+    translations:
+        adminName:
+            fr: 'Produit (Module catalogue)'
+            en: 'Product (Module catalog)'
+        singular:
+            fr: 'Produit'
+            en: 'Product'
+        plural:
+            fr: 'Produits'
+            en: 'Products'
+        add:
+            fr: 'Ajouter un produit'
+            en: 'Add product'
+        delete:
+            fr: "Supprimer le produit"
+            en: 'Delete product'
+        categories:
+            fr: 'Catégories'
+            en: 'Categories'
+        count:
+            fr: 'Valeurs'
+            en: 'Values'
+        promote:
+            fr: 'En avant'
+            en: 'Promote'
+    columns:
+        - media
+        - adminName
+        - promote
+        - mainCategory
+        - categories
+        - publicationStart
+        - publicationEnd
+    exports: ['id']
+
+App\Entity\Module\Catalog\Teaser:
+    translations:
+        adminName:
+            fr: 'Nom du teaser (Module catalogue)'
+            en: 'Teaser name (Module catalog)'
+        singular:
+            fr: 'Teaser (Module catalogue)'
+            en: 'Teaser (Module catalog)'
+        plural:
+            fr: 'Teasers'
+            en: 'Teasers'
+        add:
+            fr: 'Ajouter un teaser'
+            en: 'Add teaser'
+        delete:
+            fr: "Supprimer le teaser"
+            en: 'Delete teaser'
+        categories:
+            fr: 'Catégories'
+            en: 'Categories'
+        catalogs:
+            fr: 'Catalogues'
+            en: 'Catalogs'
+    columns:
+        - adminName
+        - categories
+
+App\Entity\Module\Catalog\Video:
+    translations:
+        adminName:
+            fr: 'Vidéo (Module catalogue)'
+            en: 'Video (Module catalog)'
+        singular:
+            fr: 'Vidéo'
+            en: 'Video'
+        plural:
+            fr: 'Vidéos'
+            en: 'Videos'
+        add:
+            fr: 'Ajouter une vidéo'
+            en: 'Add video'
+        delete:
+            fr: "Supprimer la vidéo"
+            en: 'Delete video'

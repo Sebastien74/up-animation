@@ -1,0 +1,64 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'security_cms' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-user-profile', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-user-profile', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div id="user-profile-card" class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="img-user-container d-inline-block">
+                        {% set src = user.picture.path is defined and user.picture.path ? user.picture.path : '/medias/placeholder.jpg' %}
+                        <img src="{{ asset(src) }}" id="user-picture" class="img-fluid" height="200" width="auto" />
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <h1 class="mb-4">
+                        {{ user.username }} <small class="text-italic">{{ user.login }}</small>
+                        <a href="{{ path('admin_user_edit', {website: websiteId(), user: user.id}) }}"
+                           data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}"
+                           id="edit-user-btn" class="float-end text-dark">{{ 'fal pen-alt'|icon(null, 18, 'dark') }}
+                        </a>
+                    </h1>
+                    <div class="row">
+                        <div class="{% if granted('ROLE_INTERNAL') %}col-md-5{% else %}col-12{% endif %}">
+                            <h2 class="pb-2 mb-3 border-bottom">{{ 'fal info'|icon(null, 18, 'dark me-2') }}{{ "Information"|trans }}</h2>
+                            <p><strong class="me-2">{{ "Dernière connexion :"|trans }}</strong> {{ user.lastLogin|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</p>
+                            <p>
+                                <strong class="me-2">{{ "Langue :"|trans }}</strong>
+                                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                     data-src="{{ asset('/medias/icons/flags/'~user.locale~'.svg') }}" class="img-fluid img-locale lazy-load me-2" height="14" width="19">
+                                {{ user.locale|languageName }}
+                            </p>
+                            <p><strong class="me-2">{{ "Email :"|trans }}</strong> <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+
+                            {% if granted('ROLE_INTERNAL') %}
+                                <p><strong class="me-2">{{ "Groupe :"|trans }}</strong> {{ user.group.adminName }}</p>
+                            {% endif %}
+                        </div>
+                        {% if granted('ROLE_INTERNAL') %}
+                            <div class="col-md-7">
+                                <h2 class="pb-2 mb-3 border-bottom">{{ 'fal user-tag'|icon(null, 18, 'dark me-2') }}{{ "Rôles"|trans }}</h2>
+                                <div class="row">
+                                    {% for role in user.group.roles %}
+                                        <div class="col-md-6">{{ role.adminName }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

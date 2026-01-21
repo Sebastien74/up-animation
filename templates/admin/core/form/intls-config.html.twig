@@ -1,0 +1,93 @@
+{% trans_default_domain 'admin' %}
+
+{% set configuration = website().configuration %}
+{% set defaultLocale = configuration.locale %}
+{% set allLocales = configuration.allLocales %}
+
+{% if configFieldsIntls is defined and configFieldsIntls %}
+
+    <div class="col-12">
+        <h4 class="card-subtitle mb-4">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration des contenus"|trans }}</h4>
+    </div>
+
+    {% if allLocales|length > 1 %}
+        <div class="locales-tab-container">
+    {% endif %}
+
+        {% if allLocales|length > 1 %}
+            <ul class="nav nav-tabs w-100" role="tablist">
+                {% for intl in intls %}
+                    {% set locale = intl.vars.value.locale %}
+                    {% if locale in allLocales %}
+                        {% set localesMatches = locale|split('_') %}
+                        {% set subLocaleLabel = localesMatches|length > 1 ? languageName(locale, app.user.locale) : null %}
+                        {% set linkActive = locale == defaultLocale %}
+                        <li class="nav-item" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
+                            <a class="nav-link{% if linkActive %} active{% endif %}" data-bs-toggle="tab"
+                               id="intl-config-{{ locale }}-tab"
+                               aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}"
+                               href="#intl-config-tab-{{ locale }}" role="tab">
+                                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                     data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                                {% if subLocaleLabel %}<span class="ms-2">{{ subLocaleLabel|raw }}</span>{% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if allLocales|length > 1 %}
+            <div class="tab-content tab-content-border w-100">
+        {% endif %}
+
+            {% set isConfigIntls = intls.vars['attr']['data-config'] is defined and intls.vars['attr']['data-config'] %}
+
+            {% for intl in intls %}
+
+                {% set locale = intl.vars.value.locale %}
+
+                {% if allLocales|length > 1 %}
+                    <div id="intl-config-tab-{{ locale }}"
+                         class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}"
+                         role="tabpanel"
+                         aria-labelledby="intl-config-{{ locale }}-tab">
+                        <div class="p-20 pb-0">
+                            <div class="row">
+                {% endif %}
+
+                    {% for field in intl.children %}
+                        {% if field.vars.name not in configFields and isConfigIntls %}
+                            {{ form_row(intl[field.vars.name]) }}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for field in intl.children %}
+                        {% if field.vars.name in configFields %}
+                            {% if allLocales|length == 1 and locale != configuration.locale %}
+                                <div class="d-none">
+                            {% endif %}
+                                    {{ form_row(intl[field.vars.name]) }}
+                            {% if allLocales|length == 1 and locale != configuration.locale %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+                {% if allLocales|length > 1 %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+
+        {% if allLocales|length > 1 %}
+            </div>
+        {% endif %}
+
+    {% if allLocales|length > 1 %}
+        </div>
+    {% endif %}
+
+{% endif %}

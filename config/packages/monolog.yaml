@@ -1,0 +1,130 @@
+monolog:
+    channels:
+        - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+        - cache_helper
+
+when@dev:
+    monolog:
+        handlers:
+            main:
+                type: rotating_file
+                max_files: 3
+                path: '%kernel.logs_dir%/%kernel.environment%.main.log'
+                level: debug
+                channels: ["!event", '!security']
+            cache_helper:
+                type: stream
+                max_files: 3
+                path: "%kernel.logs_dir%/cache-helper.log"
+                level: debug
+                channels: ["cache_helper"]
+            console:
+                type: console
+                max_files: 3
+                process_psr_3_messages: false
+                channels: ["!event", "!doctrine", "!console"]
+            security:
+                type: rotating_file
+                max_files: 3
+                path: '%kernel.logs_dir%/%kernel.environment%.security.log'
+                level: debug
+                channels: security
+            error:
+                type: rotating_file
+                max_files: 3
+                path: '%kernel.logs_dir%/%kernel.environment%.error.log'
+                level: critical
+                channels: ['!security']
+
+
+when@test:
+    monolog:
+        handlers:
+            main:
+                type: fingers_crossed
+                action_level: error
+                handler: nested
+                excluded_http_codes: [404, 405]
+                channels: ["!event"]
+            nested:
+                type: stream
+                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                level: debug
+
+when@local:
+    monolog:
+        handlers:
+            deprecation:
+                type: stream
+                max_files: 3
+                path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
+            deprecation_filter:
+                type: filter
+                max_files: 3
+                handler: deprecation
+                max_level: info
+                channels: ["php"]
+
+when@prod:
+    monolog:
+        handlers:
+
+            main:
+                type: fingers_crossed
+                max_files: 3
+                action_level: error
+                handler: nested
+                excluded_http_codes: [404, 405]
+            nested:
+                type: rotating_file
+                max_files: 3
+                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                level: debug
+            console:
+                type: console
+                process_psr_3_messages: false
+                channels: ["!event", "!doctrine"]
+
+            #####################################
+            #           Security                #
+            #####################################
+
+            security:
+                type: rotating_file
+                max_files: 3
+                path: '%kernel.logs_dir%/%kernel.environment%.security.log'
+                level: info
+                channels: security
+
+            #####################################
+            #           Critical                #
+            #####################################
+
+            main_critical:
+                type: fingers_crossed
+                action_level: critical
+                handler: grouped_critical
+            grouped_critical:
+                type: group
+                members: [streamed_critical, buffered_critical]
+            streamed_critical:
+                type: rotating_file
+                max_files: 3
+                path: '%kernel.logs_dir%/%kernel.environment%.critical.log'
+                level: info
+
+            #####################################
+            #           Mailer                  #
+            #####################################
+
+            buffered_critical:
+                type: deduplication
+                handler: symfony_mailer_critical
+            symfony_mailer_critical:
+                type: symfony_mailer
+                from_email: 'dev@agence-felix.fr'
+                to_email: ['dev@agence-felix.fr']
+                subject: 'An Error Occurred! %%message%%'
+                level: critical
+                formatter:  monolog.formatter.html
+                content_type: text/html

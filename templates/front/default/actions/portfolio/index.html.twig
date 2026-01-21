@@ -1,0 +1,18 @@
+{% trans_default_domain 'front_default' %}
+
+{% if entities %}
+
+    {% set pageUrl = url.code %}
+
+    {% for entity in entities %}
+
+        {% set categoryUrl = entity.categories.count > 0 ? website|intlUrl(entity.categories[0]) : null %}
+        {% if categoryUrl %}
+            <a href="{{ path('front_portfoliocategory_view', {pageUrl: pageUrl, url: categoryUrl}) }}">
+                {{ entity.adminNAme }}
+            </a>
+        {% endif %}
+
+    {% endfor %}
+
+{% endif %}

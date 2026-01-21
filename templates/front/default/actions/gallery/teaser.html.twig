@@ -1,0 +1,42 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set zone = block.col.zone %}
+{% set defaultTemplate = 'front/'~websiteTemplate~'/actions/gallery/teaser/template/default.html.twig' %}
+{% set blockTemplate = block.template ? 'front/'~websiteTemplate~'/actions/gallery/teaser/template/'~block.template~'.html.twig' : defaultTemplate %}
+{% set sliderTemplate = 'front/'~websiteTemplate~'/actions/gallery/teaser/template/slider.html.twig' %}
+{% set teaserTemplate = teaser.asSlider and (sliderTemplate)|fileExist ? sliderTemplate : blockTemplate %}
+{% set template = (teaserTemplate)|fileExist ? teaserTemplate : defaultTemplate %}
+{% set intl = teaser|intl %}
+{% set title = intl.title is defined and intl.title ? intl.title : "Nos réalisations"|trans %}
+{% set titleForce = intl.titleForce is defined and intl.titleForce ? intl.titleForce : 2 %}
+{% set haveTitle = title|striptags|length > 0 %}
+{% set link = intl|intlLink %}
+{% set linkStyle = linkStyle is defined ? linkStyle : (link.style ? link.style : 'btn btn-outline-white') %}
+{% set linkAsButton = 'btn' in linkStyle %}
+{% set linkUrl = link.link %}
+{% set linkUriInfos = linkUrl|uriInfos %}
+{% set linkLabel = link.label is defined and link.label ? link.label : "Voir toute la galerie"|trans %}
+
+<div id="teaser-gallery-container-{{ teaser.slug }}" class="teaser-gallery-container">
+    {{ macroWebmaster.box({
+        title: "Éditer le teaser"|trans([], 'front_webmaster'),
+        role: 'ROLE_GALLERY',
+        path: path('admin_galleryteaser_edit', {website: teaser.website.id, galleryteaser: teaser.id})
+    }) }}
+    {% include template with {
+        entities: entities,
+        thumbConfiguration: thumbConfiguration,
+        teaser: teaser,
+        title: title,
+        titleForce: titleForce,
+        haveTitle: haveTitle,
+        link: link,
+        linkStyle: linkStyle,
+        linkAsButton: linkAsButton,
+        linkUrl: linkUrl,
+        linkUriInfos: linkUriInfos,
+        linkLabel: linkLabel,
+    } only %}
+</div>

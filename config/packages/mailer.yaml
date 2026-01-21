@@ -1,0 +1,15 @@
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
+
+when@local:
+    framework:
+        mailer:
+            envelope:
+                recipients: ['dev@agence-felix.fr']
+
+when@dev:
+    framework:
+        mailer:
+            envelope:
+                recipients: ['dev@agence-felix.fr']

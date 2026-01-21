@@ -1,0 +1,90 @@
+#####################################
+#           Gallery                 #
+#####################################
+
+App\Entity\Module\Gallery\Category:
+    translations:
+        adminName:
+            fr: "Nom de la catégorie"
+            en: 'Category name'
+        isDefault:
+            fr: "Principale"
+            en: 'Main'
+        singular:
+            fr: "Catégorie de galerie"
+            en: 'Gallery category'
+        plural:
+            fr: "Catégories de galeries"
+            en: 'Galleries categories'
+        add:
+            fr: 'Ajouter une catégorie'
+            en: 'Add category'
+        delete:
+            fr: "Supprimer la catégorie"
+            en: 'Delete category'
+    columns:
+        - adminName
+        - isDefault
+
+App\Entity\Module\Gallery\Gallery:
+    mediaMulti: true
+    translations:
+        adminName:
+            fr: 'Nom de la galerie'
+            en: 'Gallery name'
+        category:
+            fr: "Catégorie"
+            en: 'Category'
+        singular:
+            fr: 'Galerie'
+            en: 'Gallery'
+        plural:
+            fr: 'Galeries'
+            en: 'Gallery'
+        add:
+            fr: 'Ajouter une galerie'
+            en: 'Add gallery'
+        delete:
+            fr: "Supprimer la galerie"
+            en: 'Delete gallery'
+        media:
+            fr: 'Image'
+            en: 'Image'
+    columns:
+        - media
+        - adminName
+        - category
+        - infos
+
+App\Entity\Module\Gallery\Listing:
+    translations:
+        singular:
+            fr: "Index (Module galerie)"
+            en: 'Index (Module gallery)'
+        plural:
+            fr: 'Indexes'
+            en: 'Indexes'
+        add:
+            fr: 'Ajouter un index'
+            en: 'Add index'
+        delete:
+            fr: "Supprimer l'index"
+            en: 'Delete index'
+
+App\Entity\Module\Gallery\Teaser:
+    translations:
+        adminName:
+            fr: 'Nom du teaser (Module galerie)'
+            en: 'Teaser name (Module gallery)'
+        singular:
+            fr: 'Teaser (Module galerie)'
+            en: 'Teaser (Module gallery)'
+        plural:
+            fr: 'Teasers'
+            en: 'Teasers'
+        add:
+            fr: 'Ajouter un teaser'
+            en: 'Add teaser'
+        delete:
+            fr: "Supprimer le teaser"
+            en: 'Delete teaser'

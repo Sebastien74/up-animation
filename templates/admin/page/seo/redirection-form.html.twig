@@ -1,0 +1,43 @@
+{% trans_default_domain 'admin' %}
+
+{% set configuration = website.configuration %}
+{% set defaultLocale = configuration.locale %}
+{% set allLocales = configuration.allLocales %}
+
+<tr id="entity-row-{{ entity.id }}">
+    {{ form_start(form, {attr: {
+        novalidate: "novalidate",
+        action: path('admin_redirection_form', {website: websiteId(), redirection: entity.id}),
+        id: 'redirection-form-'~entity.id
+    }}) }}
+        <td id="group-locale-{{ entity.id }}" class="col-locale refresh-group{% if allLocales|length <= 1 %} d-none{% endif %}">
+            {{ form_row(form.locale, {id: 'redirection_locale_'~entity.id}) }}
+        </td>
+        <td id="group-old-{{ entity.id }}" class="refresh-group align-middle">
+            {{ form_row(form.old, {id: 'redirection_locale_'~entity.id}) }}
+        </td>
+        <td id="group-new-{{ entity.id }}" class="refresh-group align-middle">
+            {{ form_row(form.new, {id: 'redirection_locale_'~entity.id}) }}
+        </td>
+        <td class="align-middle text-end actions">
+            <button class="btn btn-sm btn-info ajax-save-row"
+                    data-form-id="redirection-form-{{ entity.id }}">
+                {{ 'far save'|icon(20, 20, 'fa-save') }}
+                {{ 'fad spinner-third'|icon(20, 20, 'fa-spin d-none') }}
+            </button>
+            {% if 'delete'|moduleActive(configuration) %}
+                <a href="{{ path('admin_redirection_delete', {website: websiteId(), redirection: entity.id}) }}"
+                   data-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
+                   data-target="#entity-row-{{ entity.id }}"
+                   class="text-dark swal-delete-link">
+                    {{ 'fas trash'|icon(null, 14, 'dark ms-3') }}
+                </a>
+            {% endif %}
+{#            <div class="custom-control custom-checkbox delete-input-index-wrap d-none">#}
+{#                <input type="checkbox" class="custom-control-input delete-input-index" id="input-9717" data-path="/admin-495lkm2yp5pt/1/seo/redirections/delete/website_redirection_redirections_0">#}
+{#                <label class="custom-control-label" for="input-9717"></label>#}
+{#            </div>#}
+            <div class="d-none">{{ form_rest(form) }}</div>
+        </td>
+    {{ form_end(form) }}
+</tr>

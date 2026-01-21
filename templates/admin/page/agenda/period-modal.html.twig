@@ -1,0 +1,37 @@
+{% trans_default_domain 'admin' %}
+
+<div class="modal fade modal-event-agenda"
+     id="modal-event-agenda" tabindex="-1" role="dialog">
+    <div class="ajax-content">
+        {{ form_start(form, {attr: {
+            novalidate: "novalidate",
+            action: form_route,
+            id: 'modal-event-agenda-form'
+        }}) }}
+            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                <div class="modal-content border">
+                    <div class="modal-header">
+                        {% if entity.id %}
+                            <a class="btn btn-transparent sa-warning swal-delete-link"
+                               href="{{ path('admin_agendaperiod_delete', {website: websiteId(), agendaperiod: entity.id}) }}"
+                               data-bs-toggle="tooltip"
+                               title="{{ "Supprimer"|trans|striptags }}"
+                               data-type="collection">
+                                {{ 'fas trash'|icon(null, 14, 'danger') }}
+                            </a>
+                        {% endif %}
+                        <h5 class="modal-title text-center w-100 mb-3 mt-3">{{ 'fal calendar'|icon(null, 50, 'dark') }}</h5>
+                        <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                            {{ 'fal times'|icon(20, 20, 'dark') }}
+                        </button>
+                    </div>
+                    <div class="modal-body pe-4 ps-4">
+                        <div class="row">
+                            {{ form_row(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>

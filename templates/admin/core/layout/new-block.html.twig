@@ -1,0 +1,110 @@
+{% trans_default_domain 'admin' %}
+
+{% set displayNav = true %}
+{% set groups = configuration|blockTypesActionsGroups(entity) %}
+
+<div class="modal-wrapper">
+    <div id="block-modal-{{ col.id }}" class="modal fade add-block-modal edit-element-form layout-modal" tabindex="-1" role="dialog" aria-labelledby="block-modal-{{ col.id }}">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content border refer-preloader">
+                {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'add-block-preloader', preloaderClass: 'radius-preloader', full: true} only %}
+                <div class="modal-header">
+                    <h5 class="modal-title text-center w-100">{{ 'fal th-large'|icon(50, 50, 'dark') }}</h5>
+                    <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                        {{ 'fal times'|icon(20, 20, 'dark') }}
+                    </button>
+                </div>
+                <div class="modal-body pe-5 ps-5">
+                    <div class="mx-auto">
+
+                        {% set modalTitle = 'Ajouter un bloc'|trans %}
+                        {% if groups|length == 1 and groups['block'] is defined and groups['block']|length == 1 and groups['block']['form'] is defined %}
+                            {% set displayNav = false %}
+                            {% set modalTitle = 'Ajouter un champs'|trans %}
+                        {% elseif groups|length == 1 and groups['block'] is defined and groups['block']|length == 1 and groups['block']['layout'] is defined %}
+                            {% set displayNav = false %}
+                        {% endif %}
+
+                        <h2 class="main-title text-center fw-bold{% if displayNav %} mb-5{% endif %}">{{ modalTitle }}</h2>
+
+                        {% set titles = {
+                            "block-layout": "Blocs de fiche"|trans,
+                            "block-form": "Champs de formulaire"|trans,
+                            "block-main": "Blocs les plus utilisés"|trans,
+                            "block-secondary": "Autres blocs"|trans,
+                            "module-main": "Modules les plus utilisés"|trans,
+                            "module-secondary": "Autres modules"|trans
+                        } %}
+
+                        {% if displayNav %}
+                            <ul class="nav nav-tabs" id="block-types-actions-tab" role="tablist">
+                                {% for type, group in groups %}
+                                    {% set isActive = loop.first %}
+                                    {% for category, blocksActions in group %}
+                                        {% set isActive = isActive and loop.first %}
+                                        <li class="nav-item col text-center">
+                                            <a class="nav-link d-flex align-items-center{% if isActive %} active{% endif %}"
+                                               id="{{ type~'-'~category~'-'~col.id }}-tab"
+                                               data-bs-toggle="tab"
+                                               href="#{{ type~'-'~category~'-'~col.id }}"
+                                               role="tab" aria-controls="{{ type~'-'~category~'-'~col.id }}"
+                                               aria-selected="{% if isActive %}true{% else %}false{% endif %}">
+                                                <span class="mx-auto">
+                                                    {% if titles[type~'-'~category] is defined %}
+                                                        {{ titles[type~'-'~category] }}
+                                                    {% else %}
+                                                        {{ 'fal question'|icon(13, 17, 'info-darken') }}
+                                                    {% endif %}
+                                                </span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        <div class="tab-content text-white" id="block-types-actions-tab-content">
+                            {% for type, group in groups %}
+                                {% set isActive = loop.first %}
+                                {% for category, blocksActions in group %}
+                                    {% set isActive = isActive and loop.first %}
+                                    <div class="tab-pane fade{% if isActive %} show active{% endif %}" id="{{ type~'-'~category~'-'~col.id }}" role="tabpanel" aria-labelledby="{{ type~'-'~category~'-'~col.id }}-tab">
+                                        <div class="row justify-content-center">
+                                            {% for blockAction in blocksActions %}
+                                                {% set path = "#" %}
+                                                {% set title = "?" %}
+                                                {% set display = blockAction.role is not defined or not blockAction.role or granted(blockAction.role) %}
+                                                {% if type == 'block' %}
+                                                    {% set title = blockAction.slug|trans([], 'entity_blocktype') %}
+                                                    {% set title = title != blockAction.slug ? title : blockAction.adminName %}
+                                                    {% set path = path('admin_block_add', {website: websiteId(), interfaceName: interface.name, interfaceEntity: entity.id, col: col.id, blockType: blockAction.id}) %}
+                                                {% elseif type == 'module' and blockTypeAction %}
+                                                    {% set title = blockAction.slug|trans([], 'entity_action') %}
+                                                    {% set title = title != blockAction.slug ? title : blockAction.adminName %}
+                                                    {% set path = path('admin_block_add', {website: websiteId(), interfaceName: interface.name, interfaceEntity: entity.id, col: col.id, blockType: blockTypeAction.id, action: blockAction.id}) %}
+                                                {% endif %}
+                                                {% if display %}
+                                                    <div class="col-md-3 mb-3">
+                                                        <a href="{{ path }}" data-toggle="preloader"
+                                                           class="d-inline-flex align-items-center justify-content-center btn btn-info text-white text-center w-100 h-100 p-3 btn-add-block">
+                                                            <span class="inner d-inline-block">
+                                                                {% set icon = blockAction.iconClass ? blockAction.iconClass : "fal question" %}
+                                                                {{ icon|icon(null, 40, 'white w-100 d-inline-block mb-2') }}
+                                                                <span class="add-block-title d-inline-block">{{ title|removeBetween(['(', ')']) }}</span>
+                                                            </span>
+                                                        </a>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

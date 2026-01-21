@@ -1,0 +1,6 @@
+{% trans_default_domain 'admin' %}
+
+<a href="{{ path('admin_'~interface.name~'_video', {website: website.id, (interface.name): entityId}) }}" id="add-video-btn"
+   class="btn btn-info-darken w-100 mb-4 d-flex justify-content-center align-items-center">
+    <span>{{  'fal plus-circle'|icon(null, 14, 'me-2 white') }}<span class="text-white">{{ "Ajouter une vidéo"|trans|raw }}</span></span>
+</a>

@@ -1,0 +1,6 @@
+{% trans_default_domain 'admin' %}
+
+<div class="row">
+    {{ form_row(form.pages) }}
+    {% include 'admin/core/form/prototype.html.twig' with {field: form.transitions} %}
+</div>

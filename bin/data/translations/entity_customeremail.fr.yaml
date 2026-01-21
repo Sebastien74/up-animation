@@ -1,0 +1,5 @@
+add: 'Ajouter un email'
+adminName: 'Email '
+delete: 'Supprimer l''email'
+plural: Emails
+singular: 'Email '

@@ -1,0 +1,7 @@
+add: 'Ajouter un formulaire'
+adminName: 'Nom du formulaire'
+admin_form_index: Formulaires
+admin_formcontact_index: Contacts
+admin_stepformcontact_index: Contacts
+plural: 'Formulaires à étapes'
+singular: 'Formulaire à étapes'

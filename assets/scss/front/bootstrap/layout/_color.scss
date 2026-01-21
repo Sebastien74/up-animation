@@ -1,0 +1,124 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Module : Color
+    Copyright : 2024
+    Created on : 2024-10-04, 11:26 AM
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+------------------------------------------------------------------ */
+
+@if not $enable-medias-queries {
+
+    .bg-transparent {
+        --bs-bg-opacity: 1;
+        background-color: transparent !important
+    }
+
+    @if $enable-opacity {
+        @each $opacity, $value in $opacities {
+            .opacity-#{$opacity} {
+                opacity: #{calc(1 - #{$value})}
+            }
+        }
+    }
+
+    @if $enable-opacity-bg {
+        @each $opacity, $value in $opacities {
+            .bg-opacity-#{$opacity} {
+                --bs-bg-opacity: #{calc(1 - #{$value})}
+            }
+        }
+    }
+
+    @if $enable-gradient-bg {
+        .bg-gradient {
+            background-image: var(--bs-gradient) !important
+        }
+    }
+
+    /** Theme colors */
+    @each $name, $color in $theme-colors {
+        .bg-#{$name} {
+            --bs-bg-opacity: 1;
+            background-color: rgba(var(--bs-#{$name}-rgb), var(--bs-bg-opacity)) !important
+        }
+        .text-#{$name}, .body.text-#{$name} *:not(a) {
+            --bs-text-opacity: 1;
+            color: rgba(var(--bs-#{$name}-rgb), var(--bs-text-opacity)) !important
+        }
+        @if $enable-body-color {
+            .text-body-#{$name} {
+                --bs-text-opacity: 1;
+                color: var(--bs-#{$name}-color) !important
+            }
+        }
+        @if $enable-lighten-color {
+            .text-#{$name}-lighten {
+                color: var(--bs-#{$name}-lighten) !important
+            }
+        }
+        @if $enable-emphasis-color {
+            .text-#{$name}-emphasis {
+                color: var(--bs-#{$name}-emphasis) !important
+            }
+        }
+        @if $enable-darken-color {
+            .text-#{$name}-darken {
+                color: var(--bs-#{$name}-darken) !important
+            }
+        }
+        @if $enable-opacity-color {
+            @each $value, $opacity in $opacities {
+                .text-#{$name}-#{$value} {
+                    color: var(--bs-#{$name}-#{$value}) !important
+                }
+            }
+        }
+        @if $enable-text-bg {
+            .text-bg-#{$name} {
+                color: color-contrast($color) if($enable-important-utilities, !important, null);
+                background-color: rgba(var(--bs-#{$name}-rgb), var(--bs-bg-opacity, 1)) if($enable-important-utilities, !important, null);
+            }
+        }
+        @if $enable-body-bg {
+            .bg-body-#{$name} {
+                --bs-bg-opacity: 1;
+                background-color: rgba(var(--bs-#{$name}-bg-rgb), var(--bs-bg-opacity)) !important
+            }
+        }
+        @if $enable-focus-ring-color {
+            .focus-ring-#{$name} {
+                --bs-focus-ring-color: rgba(var(--bs-#{$name}-rgb), var(--bs-focus-ring-opacity))
+            }
+        }
+        @if $enable-link-color {
+            .link-#{$name} {
+                color: RGBA(var(--bs-#{$name}-rgb), var(--bs-link-opacity, 1)) if($enable-important-utilities, !important, null);
+                text-decoration-color: RGBA(var(--bs-#{$name}-rgb), var(--bs-link-underline-opacity, 1)) if($enable-important-utilities, !important, null);
+                @if $link-shade-percentage != 0 {
+                    &:hover,
+                    &:focus {
+                        $hover-color: if(color-contrast($color) == $color-contrast-light, shade-color($color, $link-shade-percentage), tint-color($color, $link-shade-percentage));
+                        color: RGBA(#{to-rgb($hover-color)}, var(--bs-link-opacity, 1)) if($enable-important-utilities, !important, null);
+                        text-decoration-color: RGBA(to-rgb($hover-color), var(--bs-link-underline-opacity, 1)) if($enable-important-utilities, !important, null);
+                    }
+                }
+            }
+        }
+        @if $enable-lighten-color {
+            .bg-#{$name}-lighten {
+                background-color: var(--bs-#{$name}-lighten) !important
+            }
+        }
+        @if $enable-emphasis-color {
+            .bg-#{$name}-emphasis {
+                background-color: var(--bs-#{$name}-emphasis) !important
+            }
+        }
+        @if $enable-darken-color {
+            .bg-#{$name}-darken {
+                background-color: var(--bs-#{$name}-darken) !important
+            }
+        }
+    }
+}

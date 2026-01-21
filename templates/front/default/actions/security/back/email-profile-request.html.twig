@@ -1,0 +1,36 @@
+{% extends 'core/email/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% block metaTitle %}{{ subject|htmlEntities }}{% endblock %}
+
+{% block preheader %}{% endblock %}
+
+{% block info %}{% endblock %}
+
+{% block body %}
+    <tr>
+        <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+            {% if message %}
+                {{ message|raw }}
+            {% else %}
+                <h2>Confirmation de modification</h2>
+                <p>Bonjour,</p>
+                <p>Nous avons reçu une demande de modification de vos informations personnelles sur votre espace <strong>{{ companyName|striptags }}</strong>.</p>
+                <p>Pour des raisons de sécurité, ces changements ne seront appliqués qu'après votre confirmation.</p>
+                <p>Si vous ignorez ce message, aucune modification ne sera effectuée et votre profil restera inchangé.</p>
+            {% endif %}
+            <p style="text-align:center; margin:30px 0;">
+                <a href="{{ absolute_url(path('security_front_confirm_user_request', {token: userRequest.token|url_encode})) }}" style="display:inline-block;padding:12px 24px;background-color:#28a745;color:#fff;text-decoration:none;border-radius:4px;">
+                    {{ "Confirmer la modification"|trans|raw }}
+                </a>
+            </p>
+            <p style="text-align:center; margin:30px 0;">
+                <a href="{{ absolute_url(path('security_front_user_remove', {token: userRequest.token|url_encode})) }}"
+                   style="display:inline-block;padding:12px 24px;background-color:#dc3545;color:#fff;text-decoration:none;border-radius:4px;">
+                    {{ "Refuser cette modification"|trans|raw }}
+                </a>
+            </p>
+        </td>
+    </tr>
+{% endblock %}

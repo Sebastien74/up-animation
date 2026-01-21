@@ -1,0 +1,23 @@
+App\Entity\Security\User:
+
+#    constraints:
+#        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+#            fields: [email, login]
+#            message: 'Votre email ou identifiant est déjà enregistré !'
+
+    properties:
+
+        login:
+            - NotBlank: { message: 'Veuillez saisir un identifiant.' }
+            - App\Form\Validator\UniqUserLogin: { message: 'Cet identifiant existe déjà !' }
+
+        email:
+            - NotBlank: { message: 'Veuillez saisir un email.' }
+            - App\Form\Validator\UniqUserEmail: { message: 'Cet email existe déjà !' }
+
+#        plainPassword:
+#            - NotBlank: { message: 'Veuillez saisir un mot de passe.' }
+#            - Regex: { message: 'Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule.', pattern: "/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}/" }
+
+#        agreeTerms:
+#            - IsTrue: { message: 'Vous devez accepter les conditions générales.' }

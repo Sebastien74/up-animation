@@ -1,0 +1,56 @@
+{% trans_default_domain 'admin' %}
+
+{% if allLocales|length > 1 %}
+<div class="locales-tab-container">
+    {% endif %}
+    {% if allLocales|length > 1 %}
+        <ul class="nav nav-tabs w-100" id="custom-tab" role="tablist">
+            {% for intl in customIntls %}
+                {% set locale = intl.vars.value.locale %}
+                <li class="nav-item">
+                    <a class="nav-link{% if locale == defaultLocale %} active{% endif %}"
+                       id="social-{{ locale }}-tab"
+                       data-bs-toggle="tab"
+                       href="#custom-tab-{{ locale }}"
+                       role="tab"
+                       aria-controls="custom-tab-{{ locale }}"
+                       aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if allLocales|length > 1 %}
+    <div class="tab-content tab-content-border w-100" id="custom-tab-content">
+        {% endif %}
+        {% for intl in customIntls %}
+            {% set locale = intl.vars.value.locale %}
+            {% if allLocales|length > 1 %}
+                <div class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}" id="custom-tab-{{ locale }}" role="tabpanel" aria-labelledby="social-{{ locale }}-tab">
+                    <div class="p-20 pb-0">
+                        <div class="row">
+            {% endif %}
+                {% for field in intl.children %}
+                    {% if (displayFields is defined and field.vars.name in displayFields) or (displayFields is not defined) %}
+                        {% if locale not in allLocales %}
+                            <div class="d-none">
+                        {% endif %}
+                            {{ form_row(intl[field.vars.name]) }}
+                        {% if locale not in allLocales %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% if allLocales|length > 1 %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% if allLocales|length > 1 %}
+    </div>
+    {% endif %}
+    {% if allLocales|length > 1 %}
+</div>
+{% endif %}

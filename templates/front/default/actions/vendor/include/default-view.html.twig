@@ -1,0 +1,64 @@
+{% trans_default_domain 'front_default' %}
+
+{% set category = entity.category.entity is defined ? entity.category.entity : null %}
+
+{% if entity.intl.title %}
+    {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+        block: entity,
+        customMedia: entity.mainMediaInHeader ? entity.headerMedia : null,
+        fullSize: true,
+        page: page,
+        pageTitle: entity.intl.title,
+        template: websiteTemplate,
+        thumbConfiguration: thumbConfigurationHeader } %}
+{% endif %}
+
+<div class="container pt-5 pb-5">
+    <div class="row">
+        <div class="col-lg-7 pe-lg-5">
+            <div class="row d-flex align-items-center mb-4">
+                <div class="col-md-6">
+                    {% if category and not category.hideDate or not category %}
+                        {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-published-date.html.twig' with {entity: entity} only %}
+                    {% endif %}
+                </div>
+                <div class="col-md-6 d-flex justify-content-md-end">
+                    {% include 'front/'~websiteTemplate~'/blocks/share/default.html.twig' %}
+                </div>
+            </div>
+            {% if category and category.displayCategory %}
+                {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-category.html.twig' with {entity: entity} only %}
+            {% endif %}
+            {% if entity.intl.introduction %}
+                <p class="introduction text-bold">{{ entity.intl.introduction|raw }}</p>
+            {% endif %}
+            {% if entity.intl.body %}
+                <div class="body">{{ entity.intl.body|raw }}</div>
+            {% endif %}
+            {% if entity.author is defined and entity.author %}
+                <strong class="author mb-4 d-inline-block w-100">{{ entity.author }}</strong>
+            {% endif %}
+            {% if entity.mainVideo %}
+                {% include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {block: entity} %}
+            {% endif %}
+            {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-back-button.html.twig' with {entity: entity, pageUrl: pageUrl is defined ? pageUrl : null, class: 'mt-5 d-none d-lg-inline-block'} only %}
+        </div>
+        <div class="col-lg-5">
+            {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-slider.html.twig' with {entity: entity, websiteTemplate: websiteTemplate, thumbConfigurationView: thumbConfigurationView} only %}
+            {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-back-button.html.twig' with {entity: entity, pageUrl: pageUrl is defined ? pageUrl : null, class: 'mt-5 d-lg-none'} only %}
+        </div>
+    </div>
+    {% if associatedEntities is not empty %}
+        <div class="mt-5">
+            {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-slider.html.twig' with {
+                associatedEntities: associatedEntities,
+                entity: entity,
+                website: website,
+                interfaceName: interfaceName,
+                websiteTemplate: websiteTemplate,
+                pageUrl: pageUrl,
+                associatedEntitiesThumbConfiguration: associatedEntitiesThumbConfiguration
+            } only %}
+        </div>
+    {% endif %}
+</div>

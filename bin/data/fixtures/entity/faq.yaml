@@ -1,0 +1,59 @@
+#####################################
+#             Faq                   #
+#####################################
+
+App\Entity\Module\Faq\Faq:
+    translations:
+        singular:
+            fr: 'FAQ'
+            en: 'FAQ'
+        plural:
+            fr: 'FAQ'
+            en: 'FAQ'
+        add:
+            fr: 'Ajouter une FAQ'
+            en: 'Add FAQ'
+        adminName:
+            fr: 'Nom de la FAQ'
+            en: 'FAQ name'
+        admin_faqquestion_index:
+            fr: 'Questions'
+            en: 'Questions'
+        delete:
+            fr: "Supprimer la FAQ"
+            en: 'Delete FAQ'
+        disabledMicrodata:
+            fr: "Microdata désactivée"
+            en: 'Disabled Microdata'
+    columns:
+        - media
+        - adminName
+        - disabledMicrodata
+
+App\Entity\Module\Faq\Question:
+    translations:
+        adminName:
+            fr: "Question (FAQ)"
+            en: 'Question (FAQ)'
+        singular:
+            fr: 'FAQ Question'
+            en: 'FAQ Question'
+        plural:
+            fr: 'FAQ Questions'
+            en: 'FAQ Questions'
+        add:
+            fr: 'Ajouter une question'
+            en: 'Add question'
+        intl.title:
+            fr: 'Intitulé de la question'
+            en: 'Question entitled'
+        delete:
+            fr: "Supprimer la question"
+            en: 'Delete question'
+        promote:
+            fr: "Mise en avant"
+            en: 'Promote'
+    columns:
+        - media
+        - adminName
+        - promote

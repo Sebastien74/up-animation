@@ -1,0 +1,30 @@
+{% if form is defined %}
+    {% set inLibrary = "medias/library" in masterRequest().uri %}
+    {% set interfaceName = interface.name is defined ? interface.name : null %}
+    <div id="dropzone-errors" class="w-100 mt-4"></div>
+    {% if inLibrary %}
+        <div class="collapse mt-4" id="collapseFormMedias">
+    {% endif %}
+        <div class="row position-relative {% if not inLibrary %} mb-4{% endif %}">
+            <div class="{% if inLibrary %}col-12{% else %}col-md-10{% endif %}">
+                {{ form_start(form, {attr: {
+                    novalidate: "novalidate",
+                    action: path('admin_medias_uploader', {website: websiteId(), entityNamespace: entityNamespace, entityId: entityId}),
+                    class: 'dropzone js-reference-dropzone'
+                }}) }}
+                {{ form_end(form) }}
+            </div>
+            {% if not inLibrary %}
+                {% set haveAddVideo = ('admin_'~interfaceName~'_video')|routeExist %}
+                <div id="add-medias-col" class="col-md-2{% if haveAddVideo %} have-video-btn{% endif %}">
+                    {% include 'admin/page/media/modal-btn.html.twig' with {uploadType: 'multiple', entityId: entityId, classname: entityNamespace|url_decode, haveAddVideo: haveAddVideo} %}
+                    {% if haveAddVideo %}
+                        {% include 'admin/core/include/add-video-btn.html.twig' %}
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    {% if inLibrary %}
+        </div>
+    {% endif %}
+{% endif %}

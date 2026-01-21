@@ -1,0 +1,19 @@
+{% trans_default_domain 'front_default' %}
+
+<div class="contact-information-module d-inline-flex">
+    <div class="inner p-5 radius">
+        {% if contact.intl.body %}
+            <div class="body text-primary w-100">{{ contact.intl.body|trans|unescape|raw }}</div>
+        {% endif %}
+        {% if (contact.intl.help and contact.intl.placeholder) or (contact.intl.link and contact.intl.link) %}
+            <div class="w-100 mt-4 d-flex flex-column">
+                {% if contact.intl.help and contact.intl.placeholder %}
+                    <div class="phone text-primary d-inline-flex align-items-center justify-content-center fw-700"><i class="icon-phone-alt me-2 text-primary"></i><a href="tel:{{ contact.intl.help }}">{{ contact.intl.placeholder }}</a></div>
+                {% endif %}
+                {% if contact.intl.link and contact.intl.link %}
+                    <div class="email text-primary d-inline-flex align-items-center justify-content-center fw-700"><i class="icon-at me-2 text-primary"></i><a href="mailto:{{ contact.intl.link }}">{{ contact.intl.link|replace({'mailto:': ''}) }}</a></div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>

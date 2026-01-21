@@ -1,0 +1,79 @@
+{% trans_default_domain 'front_default' %}
+
+{% if entities %}
+
+    {% set asSlider = false %}
+    {% set itemsPerSlide = 4 %}
+    {% set productsPageUrl = mainPages['nos-produits'].code is defined ? mainPages['nos-produits'].code : null %}
+
+    {% if asSlider %}
+        <div class="catalog-teaser splide mt-5"
+             data-items="4"
+             data-items-medium-pc="3"
+             data-items-mini-pc="3"
+             data-items-tablet="2"
+             data-items-mobile="1"
+             data-fade="loop"
+             data-scroll="1"
+             data-pause="1"
+             data-autoplay="1"
+             data-arrows="1"
+             data-dots="0"
+             data-interval="1500">
+            <div class="splide__track">
+                <ul class="splide__list{% if entities|length < itemsPerSlide %} d-lg-flex justify-content-lg-center{% endif %}">
+                    {% for entity in entities %}
+                        {% set mediaRelation = entity|mainMedia %}
+                        {% set intl = entity|intl %}
+                        {% set title = intl.title is defined and intl.title ? intl.title : entity.adminName %}
+                        <li class="splide__slide">
+                            <a href="{{ path('front_index', {url: productsPageUrl, categories: entity.slug}) }}" class="card ms-3 me-3">
+                                {{ mediaRelation|file(thumbConfiguration, {
+                                    btnLink: false,
+                                    popupGallery: false,
+                                    fullPopup: false,
+                                    placeholder: true,
+                                    lazyLoad: true,
+                                    class: 'w-100' }) }}
+                                <h3 class="title text-dark mt-3 mb-0 fw-300">{{ title|raw }}</h3>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% else %}
+        <div class="categories-catalog-teaser">
+            {% set rowLimit = 3 %}
+            {% set colSizes = 12 / rowLimit %}
+            {% for entity in entities %}
+                {% set closeRow = (loop.index / rowLimit)|isInt or loop.last %}
+                {% if loop.first %}
+                    <div class="row justify-content-center">
+                {% endif %}
+                {% set mediaRelation = entity|mainMedia %}
+                {% set intl = entity|intl %}
+                {% set title = intl.title is defined and intl.title ? intl.title : entity.adminName %}
+                <div class="col-md-{{ colSizes }} item mb-5">
+                    <a href="{{ path('front_index', {url: productsPageUrl, categories: entity.slug}) }}" class="card ms-3 me-3">
+                        {{ mediaRelation|file(thumbConfiguration, {
+                            btnLink: false,
+                            popupGallery: false,
+                            fullPopup: false,
+                            placeholder: true,
+                            lazyLoad: true,
+                            class: 'w-100' }) }}
+                        <h3 class="title text-dark mt-3 mb-0 fw-300">{{ title|raw }}</h3>
+                    </a>
+                </div>
+                {% if closeRow %}
+                    </div>
+                    {% if not loop.last %}
+                        <div class="row justify-content-center">
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endif %}

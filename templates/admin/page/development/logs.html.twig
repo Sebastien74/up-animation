@@ -1,0 +1,75 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set websiteId = websiteId() %}
+{% set pageTitle = "Logs"|trans %}
+
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-development', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+
+        {% if logFiles %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-header mb-3">{{ 'fal copy'|icon(16, 14, 'info-darken me-2') }}{{ "Files"|trans }}</div>
+                    <ul class="m-0">
+                        {% for logFile in logFiles %}
+                            {% set color = 'info' %}
+                            {% if 'critical' in logFile or 'error' in logFile %}
+                                {% set color = 'danger' %}
+                            {% elseif 'deprecations' in logFile %}
+                                {% set color = 'warning' %}
+                            {% endif %}
+                            <li>
+                                <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}"
+                                   class="text-{{ color }}" data-toggle="preloader">{{ logFile }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+
+        {% set day = null %}
+        {% for key, logDay in dailyLogs %}
+            {% for logDay, logFiles in logDay %}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-header mb-3">{{ 'fal calendar'|icon(16, 14, 'info-darken float-start mt-1 me-2') }}{{ logDay|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</div>
+                        <ul class="m-0">
+                            {% for logFile in logFiles %}
+                                {% set color = 'info' %}
+                                {% if 'critical' in logFile or 'error' in logFile %}
+                                    {% set color = 'danger' %}
+                                {% elseif 'deprecations' in logFile %}
+                                    {% set color = 'warning' %}
+                                {% endif %}
+                                <li>
+                                    <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}"
+                                       class="text-{{ color }}" data-toggle="preloader">{{ logFile }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

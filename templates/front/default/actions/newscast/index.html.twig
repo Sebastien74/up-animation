@@ -1,0 +1,43 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set asListing = listing is defined %}
+{% set microDataActive = microDataActive is defined ? microDataActive : website.seoConfiguration.microData %}
+{% set pageNum = app.request.get('page') ? app.request.get('page') : 1 %}
+{% set ajaxPath = path('front_newscast_index', {website: website.id, url: url.id, filter: filter}) %}
+{% set displayFormFilters = listing.displayFilters is defined ? listing.displayFilters : false %}
+
+{% if microDataActive %}
+    {% include 'front/'~websiteTemplate~'/actions/newscast/index/microdata.html.twig' with {entities: entities, url: url, website: website} only %}
+{% endif %}
+
+<div id="listing-news-container-{{ listing.slug }}" class="listing-news-container listing-entities-container">
+    {% if displayFormFilters %}
+        <div class="container">
+            {% set reset = form.children|first.vars.attr['reset-btn'] is defined and form.children|first.vars.attr['reset-btn'] %}
+            {% include 'front/'~websiteTemplate~'/actions/vendor/include/entities-filters-form.html.twig' with {
+                form: form,
+                interfaceName: interfaceName,
+                website: website,
+                url: url,
+                filter: filter,
+                filters: filters is defined ? filters : false,
+                allEntities: allEntities,
+                websiteTemplate: websiteTemplate,
+                alignment: 'start',
+                counterInline: false,
+                counter: listing.counter,
+                reset: reset,
+            } only %}
+        </div>
+    {% endif %}
+    {% if asListing %}
+        {{ macroWebmaster.box({
+            title: "Éditer l'index"|trans([], 'front_webmaster'),
+            role: 'ROLE_NEWSCAST',
+            path: path('admin_newscastlisting_edit', {website: listing.website.id, newscastlisting: listing.id})
+        }) }}
+    {% endif %}
+    {% include 'front/'~websiteTemplate~'/actions/newscast/index/default.html.twig' %}
+</div>

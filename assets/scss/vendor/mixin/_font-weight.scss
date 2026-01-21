@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2020-12-11, 1:06 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    MIXIN FONTS :
+    ============
+
+------------------------------------------------------------------ */
+
+@mixin fontsWeights($fonts-weights) {
+    @each $size in $fonts-weights {
+        .fw-#{$size}, .fw-#{$size} *:not(strong):not(b):not([class^="icon-"]) {
+            font-weight: $size !important;
+        }
+    }
+}

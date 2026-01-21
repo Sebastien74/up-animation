@@ -1,0 +1,20 @@
+{% trans_default_domain 'admin' %}
+
+<li>
+    <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
+        {{ 'fal sign-out-alt'|icon(15, 15, 'white me-2', {icon: true}) }}
+        <span class="hide-menu">{{ "Logs"|trans }}</span>
+    </a>
+    <ul aria-expanded="false" class="collapse bg-info-light">
+        <li>
+            <a href="{{ path('admin_logs') }}" data-toggle="preloader">
+                <span class="hide-menu">{{ "Tout afficher"|trans }}</span>
+            </a>
+        </li>
+        <li>
+            <a class="swal-delete-link" href="{{ path('admin_log_clear') }}">
+                <span class="hide-menu">{{ "Supprimer"|trans }}</span>
+            </a>
+        </li>
+    </ul>
+</li>

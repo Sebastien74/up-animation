@@ -1,0 +1,168 @@
+ROLE_USER:
+    en: 'User'
+    fr: 'Utilisateur'
+ROLE_ADMIN:
+    en: 'Administrator'
+    fr: 'Administrateur'
+ROLE_ADD:
+    en: 'Allowed to add entities'
+    fr: 'Autorisé à ajouter les entités'
+ROLE_EDIT:
+    en: 'Allowed to edit entities'
+    fr: 'Autorisé à éditer les entités'
+ROLE_DELETE:
+    en: 'Allowed to delete'
+    fr: 'Autorisé à supprimer les entités'
+ROLE_EXPORT:
+    en: 'Allowed to export'
+    fr: 'Autorisé à exporter les données'
+ROLE_PAGE:
+    en: 'Pages management'
+    fr: 'Gestion des pages'
+ROLE_USERS:
+    en: 'Users management'
+    fr: 'Gestion des utilisateurs'
+ROLE_USERS_GROUP:
+    en: 'Users groups management'
+    fr: "Gestion des groupes d'utilisateurs"
+ROLE_NEWSCAST:
+    en: 'News management'
+    fr: 'Gestion des actualités'
+ROLE_INFORMATION:
+    en: 'Information management'
+    fr: 'Gestion des informations générales'
+ROLE_FORM:
+    en: 'Forms management'
+    fr: 'Gestion des formulaires'
+ROLE_FORM_CALENDAR:
+    en: 'Forms calendars management'
+    fr: 'Gestion des calendriers de formulaires'
+ROLE_STEP_FORM:
+    en: 'Steps forms management'
+    fr: 'Gestion des formulaires à étapes'
+ROLE_MEDIA:
+    en: 'Medias management'
+    fr: 'Gestion des médias'
+ROLE_MEDIA_COMPRESS:
+    en: 'Medias compression management'
+    fr: 'Gestion de la compression des médias'
+ROLE_NAVIGATION:
+    en: 'Navigations management'
+    fr: 'Gestion des menus'
+ROLE_SEO:
+    en: 'SEO management'
+    fr: 'Gestion du référencement'
+ROLE_SLIDER:
+    en: 'Sliders management'
+    fr: 'Gestion des carousels'
+ROLE_TRANSLATION:
+    en: 'Translations management'
+    fr: 'Gestion des traductions'
+ROLE_SEARCH_ENGINE:
+    en: 'Search engines management'
+    fr: 'Gestion des moteurs de recherche'
+ROLE_TRANSLATOR:
+    en: 'Translation management only'
+    fr: 'Gestion des traductions (uniquement)'
+ROLE_INTERNAL:
+    en: 'Internal role (agency)'
+    fr: 'Rôle interne (agence)'
+ROLE_GOOGLE_ANALYTICS:
+    en: 'Google Analytics Access'
+    fr: 'Accès Google Analytics'
+ROLE_GALLERY:
+    en: 'Galleries management'
+    fr: 'Gestion des galeries'
+ROLE_NEWSLETTER:
+    en: 'Newsletter registrations management'
+    fr: 'Gestion des inscriptions à la newsletter'
+ROLE_SECURE_PAGE:
+    en: 'Allowed to access secure pages'
+    fr: 'Autorisé à accéder aux pages sécurisées'
+ROLE_USER_FRONT:
+    en: 'User front'
+    fr: 'Utilisateur front'
+ROLE_SECURE_MODULE:
+    en: 'Secure modules'
+    fr: 'Modules sécurisés'
+ROLE_TABLE:
+    en: 'Tables management'
+    fr: 'Gestion des tableaux'
+ROLE_CONTACT:
+    en: 'Contact management (Module)'
+    fr: 'Gestion des informations de contact (Module)'
+ROLE_MAP:
+    en: 'Maps management'
+    fr: 'Gestion des cartes'
+ROLE_TAB:
+    en: 'Tabs management'
+    fr: 'Gestion des onglets'
+ROLE_BACKGROUND_PAGE:
+    en: 'Backgrounds pages management'
+    fr: 'Gestion des backgrounds de pages'
+ROLE_LAYOUT_NEWSCAST:
+    en: 'Layout news'
+    fr: 'Mise en page des actualités'
+ROLE_LAYOUT_CATALOG:
+    en: 'Layout catalog'
+    fr: 'Mise en page des catalogues'
+ROLE_LAYOUT_CATALOGPRODUCT:
+    en: 'Layout catalog'
+    fr: 'Mise en page des produits'
+ROLE_REAL_ESTATE_PROGRAM:
+    en: 'Real estate programs management'
+    fr: 'Gestion des programmes immobiliers'
+ROLE_LAYOUT_NEWSCASTCATEGORY:
+    en: 'Layout news categories'
+    fr: "Mise en page des catégories d'actualités"
+ROLE_LAYOUT_FORM:
+    en: 'Layout news'
+    fr: 'Mise en page des formulaires'
+ROLE_ALLOWED_TO_SWITCH:
+    en: 'Allowed to switch users'
+    fr: "Autorisé à changer d'utilisateur"
+ROLE_PORTFOLIO:
+    en: 'Portfolios management'
+    fr: 'Gestion des portfolios'
+ROLE_LAYOUT_PORTFOLIO:
+    en: 'Layout portfolios'
+    fr: 'Mise en page des portfolios'
+ROLE_LAYOUT_PORTFOLIOCARD:
+    en: 'Layout card portfolios'
+    fr: 'Mise en page des fiches de portfolios'
+ROLE_LAYOUT_PORTFOLIOCATEGORY:
+    en: 'Layout portfolios categories'
+    fr: 'Mise en page des catégories de portfolios'
+ROLE_AGENDA:
+    en: 'Agendas management'
+    fr: 'Gestion des agendas'
+ROLE_SOCIAL_WALL:
+    en: 'Social walls management'
+    fr: 'Gestion des social walls'
+ROLE_SITE_MAP:
+    en: 'Sitemaps management'
+    fr: 'Gestion des Sitemaps'
+ROLE_CUSTOMS_ACTIONS:
+    en: 'Custom action access'
+    fr: 'Access aux actions personnalisées'
+ROLE_ALERT:
+    en: 'Allowed to edit website alert'
+    fr: "Autorisé à éditer l'alerte de site"
+ROLE_TIMELINE:
+    en: 'Timeline management'
+    fr: 'Gestion des timelines'
+ROLE_CATALOG:
+    en: 'Catalogs management'
+    fr: 'Gestion des catalogues'
+ROLE_FAQ:
+    en: 'FAQ management'
+    fr: 'Gestion des FAQ'
+ROLE_RECRUITMENT:
+    en: 'Recruitment management'
+    fr: 'Gestion des recrutements'
+ROLE_AI:
+    en: 'IA tools access'
+    fr: 'Accès aux outils IA'
+ROLE_CHATBOT:
+    en: 'Chatbot access'
+    fr: 'Accès au Chatbot'

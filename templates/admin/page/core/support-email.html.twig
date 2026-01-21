@@ -1,0 +1,23 @@
+{% set base = base is defined ? 'core/email/'~base~'.html.twig' : 'core/email/base.html.twig' %}
+{% extends base %}
+
+{% trans_default_domain 'email' %}
+
+{% block body %}
+
+    {% set domain = app.request.locale|domain %}
+    {% if not domain %}
+        {% set domain = app.request.getSchemeAndHttpHost() %}
+    {% endif %}
+
+    <tr>
+        <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+            <p style="font-size: 14px;"><strong>{{ "Site :"|trans }}</strong> {{ domain }}</p>
+            <p style="font-size: 14px;"><strong>{{ "Nom & prénom :"|trans }}</strong> {{ name }}</p>
+            <p style="font-size: 14px;"><strong>{{ "Email :"|trans }}</strong> {{ phone }}</p>
+            <p style="font-size: 14px;"><strong>{{ "Téléphone :"|trans }}</strong> {{ email }}</p>
+            <p style="font-size: 14px;"><strong>{{ "Message :"|trans }}</strong> {{ message }}</p>
+        </td>
+    </tr>
+
+{% endblock %}

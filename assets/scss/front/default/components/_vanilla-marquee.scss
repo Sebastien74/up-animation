@@ -1,0 +1,113 @@
+/*! purgecss start ignore */
+
+/* -----------------------------------------------------------------
+    Module : Marquee
+    Copyright : 2025
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+------------------------------------------------------------------ */
+
+.marquee-container.paused {
+
+    animation-play-state: paused !important;
+
+    * {
+        animation-play-state: paused !important;
+    }
+}
+
+.horizontal-marquee {
+
+    $horiz: #{&};
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    gap: var(--_gap);
+    max-width: 100%;
+
+    &.smooth {
+        -webkit-mask: linear-gradient(90deg, transparent, #fff 20%, #fff 80%, transparent);
+        mask: linear-gradient(90deg, transparent, #fff 20%, #fff 80%, transparent);
+    }
+
+    &-inner {
+
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: nowrap;
+        gap: var(--_gap);
+        white-space: nowrap;
+
+        #{$horiz}.paused & {
+            animation-play-state: paused;
+        }
+
+        #{$horiz}.full & {
+            min-width: var(--_containerWidth);
+        }
+    }
+
+    &[data-animate='true'] .horizontal-marquee-inner {
+        animation: horizontal-marquee var(--_speed) linear infinite var(--_direction);
+    }
+}
+
+@keyframes horizontal-marquee {
+    0% {
+        transform: translate(calc(var(--_gap) * -1));
+    }
+
+    100% {
+        transform: translate(calc(-100% - var(--_gap) * 2));
+    }
+}
+
+.vertical-marquee {
+
+    $vert: #{&};
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    margin-bottom: var(--_gap);
+    max-height: 100%;
+    flex-direction: column;
+    height: calc(calc(var(--_containerSize) - var(--_vGap)) / 1.2);
+
+    &.smooth {
+        -webkit-mask: linear-gradient(180deg, transparent, #fff 20%, #fff 80%, transparent);
+        mask: linear-gradient(180deg, transparent, #fff 20%, #fff 80%, transparent);
+    }
+
+    &-inner {
+
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: nowrap;
+        margin-bottom: var(--_vGap);
+
+        #{$vert}.paused & {
+            animation-play-state: paused;
+        }
+
+        [data-animate='true'] & {
+            animation: vertical-marquee var(--_speed) linear infinite var(--_direction);
+        }
+
+        & > *:not(:last-child) {
+            margin-right: var(--_hGap);
+        }
+    }
+}
+
+@keyframes vertical-marquee {
+    0% {
+        transform: translateY(calc(var(--_vGap) * -1));
+    }
+    100% {
+        transform: translateY(calc(-100% - var(--_vGap) * 2));
+    }
+}
+
+/*! purgecss end ignore */

@@ -1,0 +1,16 @@
+{% trans_default_domain 'front_default' %}
+
+<div class="row m-0">
+    {% include 'front/'~websiteTemplate~'/actions/map/include/filters.html.twig' %}
+    <div class="map-filter-box col-lg-{% if displayFilters %}8{% else %}12{% endif %} p-0"
+         data-category-length="{{ categories|length }}">
+        <div id="map-{{ map.id }}" class="map-box"
+             data-layer="{{ map.layer }}"
+             data-multiple="{{ map.multiFilters }}"
+             role="region"
+             aria-label="{{ 'Carte interactive'|trans|striptags }}"
+             {% if map.height|isNumeric and map.height > 0 %} style="height: {{ map.height }}px"{% endif %}>
+            {% include 'front/'~websiteTemplate~'/actions/map/include/data.html.twig' %}
+        </div>
+    </div>
+</div>

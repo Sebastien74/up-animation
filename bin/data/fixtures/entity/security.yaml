@@ -1,0 +1,298 @@
+#####################################
+#           Security                #
+#####################################
+
+App\Entity\Security\Company:
+    translations:
+        singular:
+            fr: "Entreprise"
+            en: 'Company'
+        plural:
+            fr: "Entreprises"
+            en: 'Companies'
+        add:
+            fr: 'Ajouter une entreprise'
+            en: 'Add company'
+        delete:
+            fr: "Supprimer l'entreprise"
+            en: 'Delete company'
+        name:
+            fr: "Nom de l'entreprise"
+            en: 'Company name'
+    columns:
+        - name
+
+App\Entity\Security\CompanyAddress:
+    translations:
+        singular:
+            fr: 'Adresse (Security)'
+            en: 'Address (Security)'
+        plural:
+            fr: 'Adresses (Security)'
+            en: 'Addresses (Security)'
+        add:
+            fr: 'Ajouter une adresse'
+            en: 'Add address'
+        delete:
+            fr: "Supprimer l'adresse"
+            en: 'Delete address'
+
+App\Entity\Security\Configuration:
+    translations:
+        singular:
+            fr: "ConfigurationModel des utilisateurs"
+            en: 'Users configuration'
+
+App\Entity\Security\Group:
+    translations:
+        singular:
+            fr: "Groupe d'utilisateurs"
+            en: 'User group'
+        plural:
+            fr: "Groupes d'utilisateurs"
+            en: 'Users groups'
+        add:
+            fr: 'Ajouter un groupe'
+            en: 'Add group'
+        delete:
+            fr: "Supprimer le groupe"
+            en: 'Delete group'
+    columns:
+        - adminName
+        - infos
+
+App\Entity\Security\Logo:
+    translations:
+        singular:
+            fr: "Logo"
+            en: 'Logo'
+        plural:
+            fr: "Logos"
+            en: 'Logos'
+        add:
+            fr: 'Ajouter un logo'
+            en: 'Add logo'
+        delete:
+            fr: "Supprimer le logo"
+            en: 'Delete logo'
+
+App\Entity\Security\Message:
+    translations:
+        singular:
+            fr: "Message"
+            en: 'Message'
+        plural:
+            fr: "Messages"
+            en: 'Messages'
+        add:
+            fr: 'Ajouter un message'
+            en: 'Add message'
+        delete:
+            fr: "Supprimer le message"
+            en: 'Delete message'
+
+App\Entity\Security\Link:
+    translations:
+        singular:
+            fr: "Lien de sécurité"
+            en: 'Security link'
+
+App\Entity\Security\Profile:
+    translations:
+        singular:
+            fr: "Profil"
+            en: 'Profile'
+        plural:
+            fr: "Profils"
+            en: 'Profiles'
+        add:
+            fr: 'Ajouter un profil'
+            en: 'Add profile'
+        delete:
+            fr: "Supprimer le profil"
+            en: 'Delete profils'
+
+App\Entity\Security\Role:
+    translations:
+        singular:
+            fr: "Rôle d'utilisateurs"
+            en: 'User role'
+        plural:
+            fr: "Rôles d'utilisateurs"
+            en: 'Users roles'
+        add:
+            fr: 'Ajouter un rôle'
+            en: 'Add role'
+        delete:
+            fr: "Supprimer le rôle"
+            en: 'Delete role'
+        adminName:
+            fr: 'Intitulé'
+            en: 'Entitled'
+        name:
+            fr: 'Nom'
+            en: 'Name'
+    columns:
+        - adminName
+        - name
+
+App\Entity\Security\Picture:
+    translations:
+        singular:
+            fr: "Image (Security)"
+            en: 'Picture (Security)'
+        plural:
+            fr: "Images (Security)"
+            en: 'Pictures (Security)'
+        add:
+            fr: 'Ajouter une image'
+            en: 'Add picture'
+        delete:
+            fr: "Supprimer le rôle"
+            en: 'Delete picture'
+
+App\Entity\Security\User:
+    translations:
+        singular:
+            fr: 'Utilisateur'
+            en: 'User'
+        plural:
+            fr: 'Utilisateurs'
+            en: 'Users'
+        add:
+            fr: 'Ajouter un utilisateur'
+            en: 'Add user'
+        delete:
+            fr: "Supprimer l'utilisateur"
+            en: 'Delete user'
+        login:
+            fr: Identifiant
+            en: Login
+        email:
+            fr: Email
+            en: Email
+        roles:
+            fr: Roles
+            en: Roles
+        firstname:
+            fr: Prénom
+            en: Firstname
+        lastname:
+            fr: Nom
+            en: Name
+        agreeTerms:
+            fr: A accépté les conditions générales
+            en: Accepted general conditions
+        agreesTermsAt:
+            fr: Conditions générales acceptées le
+            en: General conditions accepted at
+        lastLogin:
+            fr: Dernière connexion le
+            en: Last login at
+        locale:
+            fr: Langue
+            en: Language
+        active:
+            fr: Activé
+            en: Active
+        group.adminName:
+            fr: Groupe
+            en: Group
+    searchFields:
+        - login
+    columns:
+        - login
+        - group.adminName
+        - infos
+        - active
+    show:
+        - login
+        - email
+        - roles
+        - firstname
+        - lastname
+        - agreeTerms
+        - agreesTermsAt
+        - lastLogin
+        - locale
+
+App\Entity\Security\UserCategory:
+    translations:
+        adminName:
+            fr: "Nom de la catégorie"
+            en: 'Category name'
+        singular:
+            fr: "Catégorie d'utilisateur"
+            en: 'User category'
+        plural:
+            fr: "Catégories d'utilisateurs"
+            en: 'Users categories'
+        add:
+            fr: 'Ajouter une catégorie'
+            en: 'Add category'
+        delete:
+            fr: "Supprimer la catégorie"
+            en: 'Delete category'
+    columns:
+        - adminName
+
+App\Entity\Security\UserFront:
+    translations:
+        singular:
+            fr: 'Utilisateur (Front)'
+            en: 'User (Front)'
+        plural:
+            fr: 'Utilisateurs (Front)'
+            en: 'Users (Front)'
+        add:
+            fr: 'Ajouter un utilisateur'
+            en: 'Add user'
+        delete:
+            fr: "Supprimer l'utilisateur"
+            en: 'Delete user'
+        login:
+            fr: Identifiant
+            en: Login
+        email:
+            fr: Email
+            en: Email
+        roles:
+            fr: Roles
+            en: Roles
+        firstname:
+            fr: Prénom
+            en: Lirstname
+        lastname:
+            fr: Nom
+            en: Name
+        agreeTerms:
+            fr: A accépté les conditions générales
+            en: Accepted general conditions
+        agreesTermsAt:
+            fr: Conditions générales accéptées le
+            en: General conditions accepted at
+        lastLogin:
+            fr: Dernière connexion le
+            en: Last login at
+        locale:
+            fr: Langue
+            en: Language
+        active:
+            fr: Activé
+            en: Active
+    searchFields:
+        - login
+    columns:
+        - login
+        - infos
+        - active
+    show:
+        - login
+        - email
+        - roles
+        - firstname
+        - lastname
+        - agreeTerms
+        - agreesTermsAt
+        - lastLogin
+        - locale

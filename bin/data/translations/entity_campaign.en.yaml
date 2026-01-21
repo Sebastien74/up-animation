@@ -1,0 +1,5 @@
+add: 'Add campaign'
+adminName: 'Campaign name'
+admin_newsletteremail_index: Emails
+plural: 'Newsletters Campaigns'
+singular: 'Newsletter Campaign'

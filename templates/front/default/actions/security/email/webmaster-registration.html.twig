@@ -1,0 +1,52 @@
+{% extends 'core/email/base.html.twig' %}
+
+{% trans_default_domain 'email' %}
+
+{% block title %}
+    {% if user is defined %}
+        {{ "Nouvel inscrit"|trans~" "~user.username }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <tr>
+        <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+            {% set profile = user.profile is defined ? user.profile : null %}
+            {% if profile.gender is defined and profile.gender %}
+                <p style="font-size: 14px;"><strong>{{ "Civilité :"|trans|raw }}</strong> {% if profile.gender == 'mr' %}{{ "Monsieur"|trans|raw }}{% elseif profile.gender == 'ms' %}{{ "Madame"|trans|raw }}{% endif %}</p>
+            {% endif %}
+            {% if user.lastName is defined and user.lastName %}
+                <p style="font-size: 14px;"><strong>{{ "Nom :"|trans|raw }}</strong> {{ user.lastName }}</p>
+            {% endif %}
+            {% if user.firstName is defined and user.firstName %}
+                <p style="font-size: 14px;"><strong>{{ "Prénom :"|trans|raw }}</strong> {{ user.firstName }}</p>
+            {% endif %}
+            {% if user.email is defined and user.email %}
+                <p style="font-size: 14px;"><strong>{{ "Email"|trans|raw }} :</strong> <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+            {% endif %}
+            {% set phone = profile.phones[0] is defined ? profile.phones[0] : null %}
+            {% if phone.number is defined and phone.number %}
+                <p style="font-size: 14px;"><strong>{{ "Téléphone :"|trans|raw }}</strong> {{ phone.number }}</p>
+            {% endif %}
+            {% set address = profile.addresses[0] is defined ? profile.addresses[0] : null %}
+            {% if address.address is defined and address.address %}
+                <p style="font-size: 14px;"><strong>{{ "Adresse :"|trans|raw }}</strong> {{ address.address }}</p>
+            {% endif %}
+            {% if address.zipCode is defined and address.zipCode %}
+                <p style="font-size: 14px;"><strong>{{ "Code postal :"|trans|raw }}</strong> {{ address.zipCode }}</p>
+            {% endif %}
+            {% if address.city is defined and address.city %}
+                <p style="font-size: 14px;"><strong>{{ "Ville :"|trans|raw }}</strong> {{ address.city }}</p>
+            {% endif %}
+            {% if address.department is defined and address.department %}
+                <p style="font-size: 14px;"><strong>{{ "Département :"|trans|raw }}</strong> {{ address.department }}</p>
+            {% endif %}
+            {% if address.region is defined and address.region %}
+                <p style="font-size: 14px;"><strong>{{ "Région :"|trans|raw }}</strong> {{ address.region }}</p>
+            {% endif %}
+            {% if address.country is defined and address.country %}
+                <p style="font-size: 14px;"><strong>{{ "Pays :"|trans|raw }}</strong> {{ address.country|countryName(app.request.locale) }}</p>
+            {% endif %}
+        </td>
+    </tr>
+{% endblock %}

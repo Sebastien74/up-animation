@@ -1,0 +1,141 @@
+#####################################
+#           Newscast                #
+#####################################
+
+App\Entity\Module\Newscast\Category:
+    translations:
+        adminName:
+            fr: "Nom de la catégorie (Module actualités)"
+            en: 'Category name (Module news)'
+        isDefault:
+            fr: "Principale"
+            en: 'Main'
+        singular:
+            fr: "Catégorie d'actualité"
+            en: 'News category'
+        breadcrumb:
+            fr: "Catégories"
+            en: 'Categories'
+        plural:
+            fr: "Catégories d'actualités"
+            en: 'News categories'
+        add:
+            fr: 'Ajouter une catégorie'
+            en: 'Add category'
+        delete:
+            fr: "Supprimer la catégorie"
+            en: 'Delete category'
+    columns:
+        - adminName
+        - isDefault
+
+App\Entity\Module\Newscast\Comment:
+    orderBy: publicationStart
+    orderSort: DESC
+    translations:
+        singular:
+            fr: "Commentaire (Module actualités)"
+            en: 'Comment (Module news)'
+        plural:
+            fr: 'Commentaires'
+            en: 'Comments'
+        add:
+            fr: 'Ajouter un commentaire'
+            en: 'Add comment'
+        delete:
+            fr: "Supprimer le commentaire"
+            en: 'Delete comment'
+        authorName:
+            fr: Auteur
+            en: Author
+    columns:
+        - authorName
+
+App\Entity\Module\Newscast\Listing:
+    translations:
+        adminName:
+            fr: "Liste des actualités"
+            en: 'News list'
+        singular:
+            fr: "Index (Module actualités)"
+            en: 'Index (Module news)'
+        plural:
+            fr: 'Indexes'
+            en: 'Indexes'
+        add:
+            fr: 'Ajouter un index'
+            en: 'Add index'
+        delete:
+            fr: "Supprimer l'index"
+            en: 'Delete index'
+
+App\Entity\Module\Newscast\Newscast:
+    mediaMulti: true
+    card: true
+    orderBy: publicationStart
+    orderSort: DESC
+    translations:
+        adminName:
+            fr: "Nom de l'actualité"
+            en: 'News name'
+        category:
+            fr: "Catégorie"
+            en: 'Category'
+        singular:
+            fr: 'Actualité'
+            en: 'News'
+        plural:
+            fr: 'Actualités'
+            en: 'News'
+        add:
+            fr: 'Ajouter une actualité'
+            en: 'Add news'
+        delete:
+            fr: "Supprimer l'actualité"
+            en: 'Delete news'
+        promote:
+            fr: "Mise en avant"
+            en: 'Promote'
+        media:
+            fr: 'Image'
+            en: 'Image'
+    columns:
+        - media
+        - adminName
+        - category
+        - promote
+        - publicationStart
+        - publicationEnd
+
+App\Entity\Module\Newscast\Tag:
+    translations:
+        singular:
+            fr: 'Étiquette'
+            en: 'Tag'
+        plural:
+            fr: 'Étiquettes'
+            en: 'Tags'
+        add:
+            fr: 'Ajouter une étiquette'
+            en: 'Add tag'
+        delete:
+            fr: "Supprimer l'étiquette"
+            en: 'Delete tag'
+
+App\Entity\Module\Newscast\Teaser:
+    translations:
+        adminName:
+            fr: 'Nom du teaser (Module actualités)'
+            en: 'Teaser name (Module news)'
+        singular:
+            fr: 'Teaser (Module actualités)'
+            en: 'Teaser (Module news)'
+        plural:
+            fr: 'Teasers'
+            en: 'Teasers'
+        add:
+            fr: 'Ajouter un teaser'
+            en: 'Add teaser'
+        delete:
+            fr: "Supprimer le teaser"
+            en: 'Delete teaser'

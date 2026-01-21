@@ -1,0 +1,122 @@
+@charset "UTF-8";
+
+.page-breadcrumb {
+
+    margin: 0 -25px 25px -25px;
+    padding: .75rem 1.75rem;
+    background-color: $white;
+
+    li {
+        font-size: 12px;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+        position: relative;
+        top: 1px;
+    }
+}
+
+.page-titles {
+
+    h4 .chevron {
+        position: relative;
+        top: 2px;
+    }
+
+    .notify {
+        position: relative;
+        top: 6px;
+        right: 3px;
+    }
+
+    .dropdown .icm-sort-down {
+        font-size: 11px;
+    }
+
+    .navbar-nav {
+
+        display: inline-block !important;
+        max-height: 70px;
+
+        > .nav-item {
+
+            float: left;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        .btn-darken {
+            background-color: $info-darken-dark;
+            color: $white;
+        }
+
+        .avatar {
+
+            width: 70px;
+            height: 70px;
+            line-height: 30px;
+            font-size: 11px;
+            font-weight: 300;
+
+            > span {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                transform: scale(.999);
+            }
+        }
+
+        .btn-transparent {
+            padding-top: 6px;
+        }
+
+        .btn-info-darken:hover, .dropdown-toggle:hover > span {
+            background-color: $info-darken-dark !important;
+            border-color: $info-darken-dark !important;
+        }
+
+        .dropdown-toggle {
+
+            border: 0 !important;
+
+            &::after {
+                display: none;
+            }
+        }
+
+        .item-icon-wrap {
+
+            .btn {
+                border-radius: 0 !important;
+                width: 70px;
+                height: 70px;
+                padding: 0;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            i:not(.icm-cog) {
+                font-size: 20px;
+            }
+
+            .fa-sort-down {
+                margin-top: 7px;
+            }
+        }
+    }
+
+    @include mediaQuery(max-md) {
+
+        .nav-link.sidebartoggler {
+            font-size: 25px;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-top: 2px;
+            line-height: 25px;
+        }
+    }
+}

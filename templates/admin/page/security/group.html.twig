@@ -1,0 +1,29 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set haveCustomLayout = entity.customLayout is defined and entity.customLayout and entity.layout.id is defined and entity.layout.id %}
+{% set transDomain = interface.name is defined and interface.name
+    ? 'entity_'~interface.name : null %}
+
+{% if pageTitle is not defined or pageTitle is defined and not pageTitle  %}
+    {% set title = 'singular'|trans([], transDomain) and 'singular'|trans([], transDomain) != 'singular'
+        ? 'singular'|trans([], transDomain) : 'Édition'|trans~" "~interface.name  %}
+    {% set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title %}
+{% endif %}
+
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle|truncate(50, false) }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% include 'admin/core/form/edit-form-base.html.twig' %}
+    {{ render_esi(path('admin_securitygroup_password', {website: websiteId(), securitygroup: entity.id} )) }}
+{% endblock %}

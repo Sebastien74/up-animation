@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2024-10-09, 8:55 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    TEMPLATE LEGACY :
+    =================
+
+    1 ) Modules
+    2 ) Core import
+    3 ) Core
+
+------------------------------------------------------------------ */
+
+/*--------------------------------------
+   1 ) Modules
+--------------------------------------*/
+
+$enable-table: true;
+$enable-gdpr-page: true;
+$enable-carousel: false;
+
+/*-----------------------------------
+   2 ) Core import
+-----------------------------------*/
+
+@import "../vendor";
+
+/*-----------------------------------
+   3 ) Core
+-----------------------------------*/
+
+#legacy-body {
+
+    #body-page {
+        padding-bottom: 0 !important;
+    }
+
+    .text-block {
+
+        * {
+            font-size: $font-size-base !important;
+        }
+
+        .bold {
+            font-weight: $font-weight-bold !important;
+        }
+
+        h2 {
+
+            color: $primary !important;
+            font-size: rem(23px) !important;
+
+            a {
+                text-transform: initial !important;
+            }
+        }
+
+        h3 {
+            color: #333 !important;
+            font-size: rem(17px) !important;
+            text-transform: initial !important;
+        }
+
+        a {
+
+            white-space: normal;
+            word-wrap: break-word;
+            font-style: italic;
+            text-decoration: underline;
+
+            &.webmaster-link-edit {
+                display: none;
+            }
+        }
+
+        ul {
+            padding-left: 15px;
+        }
+
+        p {
+            font-weight: normal !important;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}

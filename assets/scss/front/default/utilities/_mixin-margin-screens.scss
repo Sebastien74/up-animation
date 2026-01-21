@@ -1,0 +1,116 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2021
+    Created on : 2021-08-01, 10:19 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT MIXIN MARGIN SCREENS :
+    ===========================
+
+------------------------------------------------------------------ */
+
+@mixin appMarginsScreens($configs) {
+
+    body {
+
+        @each $screen, $config in $configs {
+
+            $breakpoint: 'max-md';
+            @if ($screen == 'tablet') {
+                $breakpoint: 'between-md-lg';
+            } @else if ($screen == 'mini-pc') {
+                $breakpoint: 'between-lg-xxl';
+            }
+
+            @include mediaQuery(#{$breakpoint}) {
+
+                @each $axisSize, $size in map-get($config, "y") {
+
+                    $ratio: false;
+                    @if type-of($size) == 'map' {
+                        $ratio: map-get($size, 'ratio');
+                        $size: calc(var(--bs-gutter-y-margin) * #{$ratio});
+                    }
+
+                    .mt-#{$axisSize}-#{$screen} {
+                        margin-top: $size !important;
+                    }
+                    .mb-#{$axisSize}-#{$screen} {
+                        margin-bottom: $size !important;
+                    }
+                    .mt-#{$axisSize}-neg-#{$screen} {
+                        margin-top: -$size !important;
+                    }
+                    .mb-#{$axisSize}-neg-#{$screen} {
+                        margin-bottom: -$size !important;
+                    }
+                    .pt-#{$screen}-#{$axisSize} {
+                        padding-top: $size !important;
+                    }
+                    .pb-#{$screen}-#{$axisSize} {
+                        padding-bottom: $size !important;
+                    }
+                }
+
+                @each $axisSize, $size in map-get($config, "x") {
+
+                    $ratio: false;
+                    @if type-of($size) == 'map' {
+                        $ratio: map-get($size, 'ratio');
+                        $size: calc(var(--bs-gutter-x-margin) * #{$ratio});
+                    }
+
+                    .ms-#{$axisSize}-#{$screen} {
+                        margin-left: $size !important;
+                    }
+                    .me-#{$axisSize}-#{$screen} {
+                        margin-right: $size !important;
+                    }
+                    .ms-#{$axisSize}-neg-#{$screen} {
+                        margin-left: -$size !important;
+                    }
+                    .me-#{$axisSize}-neg-#{$screen} {
+                        margin-right: -$size !important;
+                    }
+                    .ps-#{$screen}-#{$axisSize} {
+                        padding-left: $size !important;
+                    }
+                    .pe-#{$screen}-#{$axisSize} {
+                        padding-right: $size !important;
+                    }
+
+                    //@if $ratio {
+                    //
+                    //    .layout-zone.ms-#{$axisSize}-#{$screen}.me-#{$axisSize}-#{$screen},
+                    //    .layout-col.ms-#{$axisSize}-#{$screen}.me-#{$axisSize}-#{$screen},
+                    //    .layout-block.ms-#{$axisSize}-#{$screen}.me-#{$axisSize}-#{$screen} {
+                    //        $multiplier: $ratio * 2;
+                    //        max-width: calc(100% - var(--bs-gutter-x) * #{$multiplier}) !important;
+                    //    }
+                    //
+                    //    .layout-zone.me-#{$axisSize}-#{$screen}:not(.ms-#{$axisSize}-#{$screen}),
+                    //    .layout-zone.ms-#{$axisSize}-#{$screen}:not(.me-#{$axisSize}-#{$screen}),
+                    //    .layout-col.me-#{$axisSize}-#{$screen}:not(.ms-#{$axisSize}-#{$screen}),
+                    //    .layout-col.ms-#{$axisSize}-#{$screen}:not(.me-#{$axisSize}-#{$screen}),
+                    //    .layout-block.me-#{$axisSize}-#{$screen}:not(.ms-#{$axisSize}-#{$screen}),
+                    //    .layout-block.ms-#{$axisSize}-#{$screen}:not(.me-#{$axisSize}-#{$screen}) {
+                    //        $multiplier: $ratio / 2;
+                    //        max-width: calc(100% - var(--bs-gutter-x) * #{$multiplier}) !important;
+                    //    }
+                    //
+                    //    @each $axisSizeSub, $sizeSub in map-get($config, "x") {
+                    //        .layout-zone.ms-#{$axisSize}-#{$screen}.me-#{$axisSizeSub}-#{$screen},
+                    //        .layout-col.ms-#{$axisSize}-#{$screen}.me-#{$axisSizeSub}-#{$screen},
+                    //        .layout-block.ms-#{$axisSize}-#{$screen}.me-#{$axisSizeSub}-#{$screen} {
+                    //            $multiplier: $ratio * 2;
+                    //            max-width: calc(100% - var(--bs-gutter-x) * #{$multiplier}) !important;
+                    //        }
+                    //    }
+                    //}
+                }
+            }
+        }
+    }
+}

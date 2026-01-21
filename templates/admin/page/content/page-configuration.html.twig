@@ -1,0 +1,74 @@
+{% if configFields is defined and configFields %}
+
+    {% trans_default_domain 'admin' %}
+
+    {% set haveMedia = form.mediaRelations is defined %}
+    {% set haveIntls = form.intls is defined %}
+
+    <div class="col-12">
+        <div id="collapseForm" class="collapse collapse-configuration">
+            <div class="card-body pb-0 border bg-lighten mb-4 radius">
+                <div class="row">
+                    {% include 'admin/core/form/urls.html.twig' with {urls: form.urls} %}
+                    {% if haveMedia %}
+                        <div class="col-md-4">
+                            <div class="row">
+                                {% include 'admin/core/form/media-relations-uniq.html.twig' with {mediaRelations: form.mediaRelations} %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="col-md-4">
+                        <h4 class="card-subtitle mb-4">
+                            {{ 'fal calendar-alt'|icon(null, 14, 'info-darken me-2') }}{{ "Dates de publication"|trans }}
+                        </h4>
+                        <div class="row">
+                            {% if form.publicationStart is defined %}
+                                {{ form_row(form.publicationStart) }}
+                            {% endif %}
+                            {% if form.publicationEnd is defined %}
+                                {{ form_row(form.publicationEnd) }}
+                            {% endif %}
+                        </div>
+                    {% if not haveMedia %}
+                        </div>
+                        <div class="col-md-4">
+                    {% endif %}
+                        <h4 class="card-subtitle mb-4">
+                            {{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}
+                        </h4>
+                        <div class="row">
+                            {% if haveIntls and not entity.infill %}
+                                <div class="row">
+                                    {% include 'admin/core/form/intls-config.html.twig' with {intls: form.intls} %}
+                                </div>
+                            {% endif %}
+                            {% if form.template is defined %}
+                                {{ form_row(form.template) }}
+                            {% endif %}
+                            {% if form.backgroundColor is defined %}
+                                {{ form_row(form.backgroundColor) }}
+                            {% endif %}
+                            {% if form.secure is defined %}
+                                {{ form_row(form.secure) }}
+                            {% endif %}
+                            {% if form.asIndex is defined %}
+                                {{ form_row(form.asIndex) }}
+                            {% endif %}
+                            {% if form.infill is defined %}
+                                {{ form_row(form.infill) }}
+                            {% endif %}
+                            {% if form.pictogram is defined %}
+                                {{ form_row(form.pictogram) }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            {% include 'admin/page/seo/seo-basic.html.twig' with {urls: form.urls} %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

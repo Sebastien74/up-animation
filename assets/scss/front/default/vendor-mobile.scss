@@ -1,0 +1,48 @@
+/* ------------------------------------------------------------------------------------------
+
+    Module : Mobile
+    Copyright : 2024
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    1 ) Core
+    2 ) Variables
+    3 ) Layout
+    4 ) App
+
+------------------------------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Core
+-----------------------------------*/
+
+@import 'utilities/functions';
+
+/*-----------------------------------
+   2 ) Variables
+-----------------------------------*/
+
+@import 'variables';
+@import 'variables-bootstrap';
+@import '../bootstrap/variables';
+
+$enable-medias-queries: true;
+$breakpoint: 'xs';
+$screens: 'mobile';
+
+/*-----------------------------------
+   3 ) Layout
+-----------------------------------*/
+
+@import '../bootstrap/bootstrap';
+
+/*-----------------------------------
+   4 ) App
+-----------------------------------*/
+
+@import 'utilities/mixin-margin';
+@include appMargins($margins, (sm: 'max-sm'));
+@import 'utilities/mixin-button';
+@each $suffix, $config in $buttons {
+    @include button($suffix, $config, $screens);
+}

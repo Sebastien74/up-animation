@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2021-11-14, 1:33 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Doc        : https://animate.style/
+    Doc        : https://codepen.io/giana/pen/yYBpVY
+
+    ANIMATIONS COMPONENT :
+    =====================
+
+------------------------------------------------------------------ */
+
+/*! purgecss start ignore */
+
+@import '../components/_animate.scss';
+
+.animation {
+
+    background: none;
+    border: 0;
+    box-sizing: border-box;
+    position: relative;
+    vertical-align: middle;
+
+    &::before,
+    &::after {
+        box-sizing: inherit;
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.spin {
+
+    &:hover {
+        color: $primary;
+    }
+
+    &::before,
+    &::after {
+        top: -10px;
+        left: -10px;
+        height: calc(100% + 20px);
+        width: calc(100% + 20px);
+    }
+
+    &::before {
+        border: 2px solid transparent; // We're animating border-color again
+    }
+
+    &:hover::before {
+        border-top-color: $primary; // Show borders
+        border-right-color: $primary;
+        border-bottom-color: $primary;
+        transition: border-top-color 0.15s linear, // Stagger border appearances
+        border-right-color .15s linear 0.1s,
+        border-bottom-color .15s linear 0.2s;
+    }
+
+    &::after {
+        border: 0 solid transparent; // Makes border thinner at the edges? I forgot what I was doing
+    }
+
+    &:hover::after {
+        border-top: 2px solid $primary; // Shows border
+        border-left-width: 2px; // Solid edges, invisible borders
+        border-right-width: 2px; // Solid edges, invisible borders
+        transform: rotate(270deg); // Rotate around circle
+        transition: transform .4s linear 0s,
+        border-left-width 0s linear 0.35s; // Solid edge post-rotation
+    }
+}
+
+.circle {
+
+    border-radius: 100%;
+    box-shadow: none;
+
+    &::before,
+    &::after {
+        border-radius: 100%;
+    }
+}
+
+/*! purgecss end ignore */

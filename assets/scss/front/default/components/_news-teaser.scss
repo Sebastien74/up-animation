@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2021
+    Created on : 2021-10-08, 11:56 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT NEWS TEASER COMPONENTS :
+    =============================
+
+    1 ) Default
+    2 ) Slider
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Default
+-----------------------------------*/
+
+/*-----------------------------------
+   2 ) Slider
+-----------------------------------*/
+
+#teaser-news-container-main {
+
+    .splide__arrows {
+        display: none;
+    }
+
+    .arrows {
+        img {
+            width: 34px;
+            height: 20px;
+        }
+    }
+}

@@ -1,0 +1,436 @@
+@charset "UTF-8";
+
+//Buttons
+
+.btn {
+
+    .fa-plus {
+        font-size: 15px;
+        margin-top: 3px;
+    }
+
+    &:focus, &.active, &.focus {
+        box-shadow: none !important;
+    }
+
+    &.btn-success {
+        color: $white;
+    }
+
+    &.standard {
+        height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &.btn-info-lighten {
+        svg, i {
+            color: $info !important;
+            fill: $info !important;
+        }
+    }
+
+    &.btn-outline-info {
+        &:hover {
+            color: $info-light !important;
+            fill: $info-light !important;
+        }
+    }
+}
+
+.index-delete-show {
+    z-index: 999;
+    position: relative;
+}
+
+.label-info-darken {
+    background-color: $info-darken;
+    color: $white;
+}
+
+.btn-outline-info-darken,
+.btn-outline-info-darken-dark {
+
+    svg {
+        transition: all .3s ease-in-out;
+    }
+
+    &:hover svg {
+        transition: all .3s ease-in-out;
+        fill: $white;
+    }
+
+    &.active {
+        color: $white;
+    }
+}
+
+.btn-outline-info-lighten {
+
+    svg {
+        fill: $info-lighten;
+    }
+
+    &.active, &:hover, &:focus {
+
+        color: $info-darken-dark;
+
+        svg {
+            fill: $info-darken-dark;
+        }
+    }
+}
+
+#download-notice {
+
+    border: 2px dashed rgba(0, 0, 0, .2) !important;
+    border-radius: var(--bs-border-radius);
+    color: $dark;
+    padding: 15px;
+    background-image: linear-gradient(-45deg, #F6F6F6 25%, $white 25%, $white 50%, #F6F6F6 50%, #F6F6F6 75%, $white 75%, $white);
+    background-size: 30px 30px;
+
+    &:hover {
+        animation: stripes 2s linear infinite;
+    }
+
+    @-webkit-keyframes stripes {
+        from {
+            background-position: 0 0;
+        }
+        to {
+            background-position: 60px 30px;
+        }
+    }
+
+    @keyframes stripes {
+        from {
+            background-position: 0 0;
+        }
+        to {
+            background-position: 60px 30px;
+        }
+    }
+}
+
+#delete-pack-btn {
+    position: fixed;
+    z-index: 99999;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    height: 35px;
+    width: 35px;
+    transform: scale(0.99);
+    top: 145px;
+    right: 0;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.46);
+    font-size: 12px;
+    padding: 0;
+}
+
+#password-generator-result {
+
+    .copy-link {
+
+        right: 0;
+        top: 0;
+        width: 33px;
+        height: 33px;
+        line-height: 35px;
+        background: $white;
+        color: $gray-900;
+        border-radius: 0.25rem;
+
+        svg {
+            fill: $dark !important;
+            margin-top: -3px;
+        }
+    }
+}
+
+body .btn-outline-dark {
+
+    color: $dark !important;
+
+    &:hover, &.active {
+        color: $white !important;
+        fill: $white !important;
+    }
+}
+
+.btn-circle-wrap {
+    max-width: 35px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.btn-circle {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+}
+
+.btn-circle.btn-sm {
+    width: 35px;
+    height: 35px;
+    padding: 7px 0;
+    font-size: 14px;
+}
+
+.btn-circle.btn-lg {
+    width: 50px;
+    height: 50px;
+    padding: 14px 15px;
+    font-size: 18px;
+    line-height: 23px;
+}
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 14px 15px;
+    font-size: 24px;
+}
+
+.btn-xs {
+    padding: .25rem .5rem;
+    font-size: 10px;
+}
+
+.btn-rounded {
+
+    border-radius: 60px;
+    padding: 7px 18px;
+
+    &.btn-lg {
+        padding: .75rem 1.5rem;
+    }
+
+    &.btn-sm {
+        padding: .25rem .5rem;
+        font-size: 12px;
+    }
+
+    &.btn-xs {
+        padding: .25rem .5rem;
+        font-size: 10px;
+    }
+
+    &.btn-md {
+        padding: 12px 35px;
+        font-size: 16px;
+    }
+}
+
+.btn-primary,
+.btn-warning,
+.btn-outline-primary:hover,
+.btn-outline-warning:hover,
+.btn-outline-danger:hover,
+.btn-outline-dark:hover {
+
+    color: $white !important;
+    transition: all .3s ease-in-out;
+
+    &:hover {
+
+        color: $white;
+        fill: $white;
+        transition: all .3s ease-in-out;
+
+        svg {
+            fill: $white !important;
+            transition: all .3s ease-in-out;
+        }
+    }
+}
+
+.btn-secondary {
+    border-color: $btn-secondary-border;
+}
+
+.btn-outline-secondary {
+
+    color: $body-color;
+    background: $white;
+    border-color: $btn-secondary-border;
+
+    &:hover {
+        border-color: $gray-400;
+    }
+}
+
+.btn-outline-disabled {
+
+    cursor: not-allowed;
+    color: $gray-400;
+    background: transparent;
+    border-color: $gray-400;
+
+    &:hover {
+        color: $white;
+        background: $gray-400;
+    }
+}
+
+.btn-facebook {
+    color: $white;
+    background-color: $facebook-color;
+
+    &:hover {
+        color: $white;
+    }
+}
+
+.btn-twitter {
+    color: $white;
+    background-color: $twitter-color;
+
+    &:hover {
+        color: $white;
+    }
+}
+
+.btn-linkedin {
+    color: $white;
+    background-color: $linkedin-color;
+
+    &:hover {
+        color: $white;
+    }
+}
+
+.btn-dribbble {
+
+    color: $white;
+    background-color: $dribble-color;
+
+    &:hover {
+        color: $white;
+    }
+}
+
+.btn-googleplus {
+    color: $white;
+    background-color: $google-plus-color;
+
+    &:hover {
+        color: $white;
+    }
+}
+
+.btn-instagram {
+    color: $white;
+    background-color: $instagram-color;
+}
+
+.btn-pinterest {
+    color: $white;
+    background-color: $pinterest-color;
+}
+
+.btn-dropbox {
+    color: $white;
+    background-color: $dropbox-color;
+}
+
+.btn-flickr {
+    color: $white;
+    background-color: $flickr-color;
+}
+
+.btn-tumblr {
+    color: $white;
+    background-color: $tumblr-color;
+}
+
+.btn-skype {
+    color: $white;
+    background-color: $skype-color;
+}
+
+.btn-youtube {
+    color: $white;
+    background-color: $youtube-color;
+}
+
+.btn-github {
+    color: $white;
+    background-color: $github-color;
+}
+
+.button-group {
+    .btn {
+        margin-bottom: 5px;
+        margin-right: 5px;
+    }
+}
+
+.no-button-group .btn {
+    margin-bottom: 5px;
+    margin-right: 0;
+}
+
+.btn .text-active {
+    display: none;
+}
+
+.btn.active .text-active {
+    display: inline-block;
+}
+
+.btn.active .text {
+    display: none;
+}
+
+span.position.btn-outline-info {
+
+    padding: 0;
+    min-width: 30px;
+    height: 30px;
+
+    a {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        line-height: 28px;
+    }
+
+    &:hover {
+        a {
+            color: $white;
+        }
+    }
+}
+
+// Checkbox and radio options
+//
+// In order to support the browser's form validation feedback, powered by the
+// `required` attribute, we have to "hide" the inputs via `clip`. We cannot use
+// `display: none;` or `visibility: hidden;` as that also hides the popover.
+// Simply visually hiding the inputs via `opacity` would leave them clickable in
+// certain cases which is prevented by using `clip` and `pointer-events`.
+// This way, we ensure a DOM element is visible to position the popover from.
+//
+// See https://github.com/twbs/bootstrap/pull/12794 and
+// https://github.com/twbs/bootstrap/pull/14559 for more information.
+
+.btn-group-toggle {
+    > .btn,
+    > .btn-group > .btn {
+        input[type="radio"],
+        input[type="checkbox"] {
+            position: absolute;
+            clip: rect(0, 0, 0, 0);
+            pointer-events: none;
+        }
+    }
+}
+
+.align-items-end {
+    .btn-group-toggle {
+        width: 100%;
+    }
+}

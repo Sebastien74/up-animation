@@ -1,0 +1,22 @@
+{% trans_default_domain 'front_default' %}
+
+{% set networks = logos['social-networks'] is defined and logos['social-networks'] ? logos['social-networks'] : null %}
+
+{% if networks %}
+    <h3>{{ "Suivez-nous :"|trans|raw }}</h3>
+    <ul class="socials-list d-inline-block reset">
+        {% for name, infos in networks %}
+            {% if infos.link and infos.dirname %}
+                <li class="d-inline-block me-0 {% if not loop.last %}me-md-3{% endif %}">
+                    {% set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags %}
+                    <button class="{{ name }} btn btn-transparent basic p-0 d-inline-flex mx-1 js-open-window"
+                            data-url="{{ infos.link }}"
+                            aria-label="{{ label }}">
+                        <i class="icon-{{ name|lower }}" aria-hidden="true"></i>
+                        <span class="visually-hidden">{{ label }}</span>
+                    </button>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

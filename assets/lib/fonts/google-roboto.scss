@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+/* --------------------------------------------------------
+
+    Copyright  : 2019
+    Created on : 2019-10-31, 1:26 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT FONTS ROBOTO :
+    ====================
+
+-------------------------------------------------------- */
+
+@import "../../scss/vendor/mixin/fonts";
+
+$local: true;
+$swap: true;
+$fontFamily: 'Roboto', sans-serif;
+
+@if ($local) {
+
+    $fonts: (
+        'Roboto-Thin': ('weight': 100, 'style': normal),
+        'Roboto-ThinItalic': ('weight': 100, 'style': italic),
+        'Roboto-Light': ('weight': 300, 'style': normal),
+        'Roboto-LightItalic': ('weight': 300, 'style': italic),
+        'Roboto-Regular': ('weight': normal, 'style': normal),
+        'Roboto-Italic': ('weight': normal, 'style': italic),
+        'Roboto-Medium': ('weight': 500, 'style': normal),
+        'Roboto-MediumItalic': ('weight': 500, 'style': italic),
+        'Roboto-Bold': ('weight': bold, 'style': normal),
+        'Roboto-BoldItalic': ('weight': bold, 'style': italic),
+        'Roboto-Black': ('weight': 900, 'style': normal),
+        'Roboto-BlackItalic': ('weight': 900, 'style': italic),
+    );
+
+    @include font-face("Roboto", $fonts, sans-serif, woff2);
+
+} @else if ($swap) {
+
+    @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+} @else {
+
+    @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=optional");
+}

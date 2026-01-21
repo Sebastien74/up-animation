@@ -1,0 +1,15 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'contact-information'|moduleActive(configuration) %}
+    {% set uri = app.request.uri %}
+    {% set active = '/contacts/' in uri and not 'forms/contacts' in uri %}
+    {% set module = 'contact-information'|moduleActive(configuration) %}
+    {% set intl = intlsModules['contact-information'][app.user.locale] is defined ? intlsModules['contact-information'][app.user.locale] : intlsModules['contact-information']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['contact-information']['entity'].adminName is defined ? intlsModules['contact-information']['entity'].adminName : 'Informations de contact'|trans) %}
+    {% set icon = intlsModules['contact-information']['entity'].iconClass is defined and intlsModules['contact-information']['entity'].iconClass ? intlsModules['contact-information']['entity'].iconClass : '/medias/icons/light/info.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a href="{{ path('admin_contact_index', {website: websiteId}) }}" data-toggle="preloader">
+            {{ icon|icon(17, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% endif %}

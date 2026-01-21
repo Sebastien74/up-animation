@@ -1,0 +1,28 @@
+{%- block _front_calendar_slot_date_widget %}
+    {% set dates = customized_options %}
+    <div class="row">
+        {% for date in dates.dates %}
+            <div class="col text-center">
+                <ul class="reset">
+                    {% for occurrence in date.occurrences %}
+                        <li{% if not loop.last %} class="mb-2"{% endif %}>
+                            {% set slotId = date.datetime|date('Y-m-d')~'-'~loop.index %}
+                            <label for="slot-{{ slotId }}"
+                                   class="w-100 btn-block-slot btn-{{ occurrence.available~" "~occurrence.available }}">
+                                {{ occurrence.datetime|date('H:i') }}
+                                {% for choice in choices %}
+                                    {% if choice.value == occurrence.datetime|date('Y-m-d H:i:s') %}
+                                        <input type="radio" id="slot-{{ slotId }}" class="d-none"
+                                               name="{{ full_name }}"
+                                               required="required"
+                                               value="{{ occurrence.datetime|date('Y-m-d H:i:s') }}">
+                                    {% endif %}
+                                {% endfor %}
+                            </label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+{%- endblock _front_calendar_slot_date_widget -%}

@@ -1,0 +1,101 @@
+{% trans_default_domain 'front_default' %}
+
+{% set addresses = website.infoZones.addresses.footer is defined ? website.infoZones.addresses.footer : [] %}
+{% set address = addresses|first %}
+{% set phones = addresses|length <= 1 and website.infoZones.phones.footer is defined ? website.infoZones.phones.footer : [] %}
+{% set emails = addresses|length <= 1 and website.infoZones.emails.footer is defined ? website.infoZones.emails.footer : [] %}
+{% set footerDescription = information.introduction is defined and information.introduction|striptags|length > 0 ? information.introduction : null %}
+{% set footerDescription = seo.footerDescription is defined and seo.footerDescription|striptags|length > 0 ? seo.footerDescription : footerDescription %}
+{% set logo = logos.footer is defined ? logos.footer : null %}
+{% set contactPageUrl = mainPages.contact.code is defined ? mainPages.contact.code : null %}
+
+<footer role="contentinfo" id="footer" class="footer position-relative pt-0 pt-lg-5 pb-4 bg-dark">
+    <div class="container pt-4">
+        <div class="row row-container mb-5">
+            <div class="col-12 text-center">
+                {% if logo %}
+                    <a class="d-inline-block" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}" data-toggle="preloader">
+                        {{ asset(logo)|file({}, {
+                            screensSizes: {
+                                mobile: {width: 207, height: 90},
+                                tablet: {width: 207, height: 90},
+                                desktop: {width: 207, height: 90}
+                            },
+                            title: companyName,
+                            id: 'main-footer-logo',
+                            class: 'force-size initial-color mb-3',
+                            only_html: false,
+                            lazyLoad: true
+                        }) }}
+                    </a>
+                {% endif %}
+                {% if addresses is not empty %}
+                    <strong class="label d-inline-block w-100 fw-600">{{ companyName|raw }}</strong>
+                    {% for address in website.addresses %}
+                        <address class="text-white mb-{% if not loop.last %}-3{% else %}0{% endif %}">
+                            {% if address.address %}
+                                {{ address.address|raw }}<br>
+                            {% endif %}
+                            {% if address.zipCode %}
+                                {{ address.zipCode }}
+                            {% endif %}
+                            {% if address.city %}
+                                {{ address.city }}{% if address.country %}, {% endif %}
+                            {% endif %}
+                            {% if address.country %}
+                                {{ address.country|countryName|capitalize }}
+                            {% endif %}
+                            {% if address.googleMapUrl %}
+                                <div class="w-100">
+                                    <a href="{{ address.googleMapUrl }}" class="link" target="_blank" rel="noopener noreferrer">
+                                        {{ "Plan d'accès"|trans|raw }}<i class="icon-chevron-right ms-2"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% set phones = address.phones is not empty ? address.phones : phones %}
+                            {% if phones is not empty %}
+                                <div class="w-100 mt-4">
+                                    {% for phone in phones %}
+                                        {{ phone|phone(website, {icon: false, only_href: true}) }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% set emails = address.emails is not empty ? address.emails : emails %}
+                            {% if emails is not empty %}
+                                <div class="mt-{% if phones is not empty %}2{% else %}4{% endif %}">
+                                    {% for email in emails %}
+                                        {{ email.email|email(website, {icon: false, only_href: true}) }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </address>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% if website.networks %}
+                <div class="col-12 text-center pt-5">
+                    <strong class="label d-inline-block w-100 fw-500 mb-4">{{ "Suivez-nous :"|trans|raw }}</strong>
+                    <nav class="socials-list d-inline-flex justify-content-center justify-content-sm-start" aria-label="{{ "Navigation des liens sociaux"|trans|striptags }}">
+                        {% for name, infos in website.networks %}
+                            {% if infos.link and infos.dirname %}
+                                {% set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags %}
+                                <span role="button" class="{{ name }} p-0 d-inline-flex mx-2 js-open-window"
+                                      data-url="{{ infos.link }}"
+                                      aria-label="{{ label }}">
+                                    <i class="icon-{{ name|lower }}" aria-hidden="true"></i>
+                                    <span class="visually-hidden">{{ label }}</span>
+                                </span>
+                            {% endif %}
+                        {% endfor %}
+                    </nav>
+                </div>
+            {% endif %}
+        </div>
+        {% if mainMenus.footer.arguments is defined and mainMenus.footer.arguments %}
+            <div id="footer-bottom">
+                {% set menuArgs = mainMenus.footer.arguments|merge({information: information, logos: logos, axeptioActive: axeptioActive}) %}
+                {% include mainMenus.footer.arguments.template with menuArgs only %}
+            </div>
+        {% endif %}
+    </div>
+</footer>

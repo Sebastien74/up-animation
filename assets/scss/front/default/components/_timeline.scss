@@ -1,0 +1,256 @@
+@charset "UTF-8";
+
+@if $enable-timeline {
+
+    /* -----------------------------------------------------------------
+
+        Created on : 2020-09-18, 4:36 AM
+        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+        FRONT TIMELINE COMPONENT :
+        ==========================
+
+    ------------------------------------------------------------------ */
+
+    .timeline-container {
+
+        $connectorHeight: 42px;
+        $connectorBorderWidth: 1px;
+        $connectorBorderColor: #d8d8d8;
+
+        $display-number: false;
+        $circleSizeSmall: 36px;
+        $circlePaddingSmall: 9px;
+
+        $circleSizeLarge: 174px;
+        $circlePaddingLarge: 48px;
+
+        .step-list {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .step-list-item {
+
+            counter-increment: step-counter;
+            position: relative;
+
+            &:before {
+                @if ($display-number) {
+                    content: counter(step-counter);
+                    font-weight: 300;
+                    color: $connectorBorderColor;
+                } @else {
+                    display: none;
+                }
+            }
+
+            h2 {
+                font-size: 24px;
+                line-height: 30px;
+                font-weight: 300;
+            }
+
+            .icon {
+                border-radius: 50%;
+                display: block;
+                flex: 0 0 auto;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            .body {
+                font-size: 12px;
+                line-height: 18px;
+                font-weight: 300;
+            }
+
+            .content {
+                display: flex;
+                flex-direction: row;
+                padding-bottom: 18px;
+            }
+
+            &:nth-child(odd) {
+
+                .content {
+                    justify-content: flex-start;
+                }
+
+                .icon {
+                    background: #f4f6d5;
+                }
+            }
+
+            &:nth-child(even) {
+
+                .content {
+                    justify-content: flex-end;
+                }
+
+                .icon {
+                    background: #e8f4f3;
+                }
+            }
+
+            &:first-child {
+                > .step-list-item-inner {
+                    &:before {
+                        content: none;
+                    }
+                }
+            }
+
+            &:last-child {
+                > .step-list-item-inner {
+                    &:after {
+                        content: none;
+                    }
+                }
+            }
+
+            + li {
+
+                margin-top: $connectorHeight * 2;
+
+                > div {
+                    margin-top: -$connectorBorderWidth;
+                }
+            }
+
+            &:before {
+                content: counter(step-counter);
+                position: absolute;
+                font-size: 90px;
+                line-height: 1;
+                font-weight: 300;
+                color: #d8d8d8;
+            }
+
+            .icon {
+                width: $circleSizeLarge;
+                height: $circleSizeLarge;
+                padding: $circlePaddingLarge;
+            }
+
+            .body {
+                @if ($display-number) {
+                    margin-top: $connectorHeight * 2;
+                } @else {
+                    margin-top: 15px;
+                }
+            }
+
+            .content {
+                align-items: flex-end;
+            }
+
+            > .step-list-item-inner {
+                position: relative;
+
+                &:before,
+                &:after {
+                    border-width: 0;
+                    border-style: solid;
+                    border-color: $connectorBorderColor;
+                    display: block;
+                    content: '';
+                    position: absolute;
+                    height: $connectorHeight;
+                    width: calc(33.3333% - #{$connectorHeight});
+
+                }
+            }
+
+            &:nth-child(odd) {
+
+                > .step-list-item-inner {
+
+                    text-align: right;
+
+                    &:before,
+                    &:after {
+                        border-left-width: $connectorBorderWidth;
+                        left: calc(33.3333% - #{$connectorHeight / 2});
+                    }
+
+                    &:before {
+                        border-top-width: $connectorBorderWidth;
+                        border-top-left-radius: $connectorHeight;
+                        margin-top: -$connectorHeight;
+                    }
+
+                    &:after {
+                        border-bottom-width: $connectorBorderWidth;
+                        border-bottom-left-radius: $connectorHeight;
+                        margin-bottom: -$connectorHeight;
+                    }
+                }
+
+                &:before {
+                    left: 0;
+                    margin-left: 33.3333%;
+                    transform: translateX(-100%);
+                }
+
+                .icon {
+                    margin-left: 72px;
+                }
+            }
+
+            &:nth-child(even) {
+
+                > .step-list-item-inner {
+
+                    &:before,
+                    &:after {
+                        border-right-width: $connectorBorderWidth;
+                        right: calc(33.3333% - #{$connectorHeight / 2});
+                    }
+
+                    &:before {
+                        border-top-width: $connectorBorderWidth;
+                        border-top-right-radius: $connectorHeight;
+                        margin-top: -$connectorHeight;
+                    }
+
+                    &:after {
+                        border-bottom-width: $connectorBorderWidth;
+                        border-bottom-right-radius: $connectorHeight;
+                        margin-bottom: -$connectorHeight;
+                    }
+                }
+
+                &:before {
+                    right: 0;
+                    margin-right: 33.3333%;
+                    transform: translateX(100%);
+                }
+
+                .icon {
+                    margin-right: 72px;
+                }
+
+                .body {
+                    order: 1;
+                }
+            }
+
+            @include mediaQuery(max-md) {
+                .body {
+                    flex: 0 1 80%;
+                }
+            }
+
+            @include mediaQuery(min-md) {
+                .body {
+                    flex: 0 1 33.3333%;
+                }
+            }
+        }
+    }
+}

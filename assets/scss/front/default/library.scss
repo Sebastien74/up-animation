@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Module : Library
+    Copyright : 2024
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    1 ) Hover buttons
+        a - Active library
+        b - Fill transitions
+        c - Border transitions
+
+------------------------------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Hover buttons
+-----------------------------------*/
+
+/*-- a - Active library --*/
+
+$enable-hover-buttons: false !default;
+$enable-hover-buttons-fill: false !default;
+$enable-hover-buttons-border: false !default;
+
+/*-- b - Fill transitions --*/
+
+$enable-hover-buttons-fill-on: false !default;          // btn hbtn hb-fill-on
+$enable-hover-buttons-fill-bottom: false !default;      // btn hbtn hb-fill-bottom
+$enable-hover-buttons-fill-left: false !default;        // btn hbtn hb-fill-left
+$enable-hover-buttons-fill-top: false !default;         // btn hbtn hb-fill-top
+$enable-hover-buttons-fill-right: true !default;        // btn hbtn hb-fill-right
+$enable-hover-buttons-fill-middle: false !default;      // btn hbtn hb-fill-middle
+$enable-hover-buttons-fill-middle2: false !default;     // btn hbtn hb-fill-middle2
+$enable-hover-buttons-fill-on-rev: false !default;      // btn hbtn hb-fill-on-rev
+$enable-hover-buttons-fill-bottom-rev: false !default;  // btn hbtn hb-fill-bottom-rev
+$enable-hover-buttons-fill-left-rev: false !default;    // btn hbtn hb-fill-left-rev
+$enable-hover-buttons-fill-top-rev: false !default;     // btn hbtn hb-fill-top-rev
+$enable-hover-buttons-fill-right-rev: false !default;   // btn hbtn hb-fill-right-rev
+$enable-hover-buttons-fill-middle-rev: false !default;  // btn hbtn hb-fill-middle-rev
+$enable-hover-buttons-fill-middle2-rev: false !default; // btn hbtn hb-fill-middle2-rev
+
+/*-- c - Border transitions --*/
+
+$enable-hover-buttons-border-off: false !default;         // btn hbtn hb-border-off
+$enable-hover-buttons-border-off2: false !default;        // btn hbtn hb-border-off2
+$enable-hover-buttons-border-off3: false !default;        // btn hbtn hb-border-off3
+$enable-hover-buttons-border-top: false !default;         // btn hbtn hb-border-top
+$enable-hover-buttons-border-top2: false !default;        // btn hbtn hb-border-top2
+$enable-hover-buttons-border-top-br: false !default;      // btn hbtn hb-border-top-br
+$enable-hover-buttons-border-top-br2: false !default;     // btn hbtn hb-border-top-br2
+$enable-hover-buttons-border-top-br3: false !default;     // btn hbtn hb-border-top-br3
+$enable-hover-buttons-border-top-br4: false !default;     // btn hbtn hb-border-top-br4
+$enable-hover-buttons-border-right: false !default;       // btn hbtn hb-border-right
+$enable-hover-buttons-border-right-br: false !default;    // btn hbtn hb-border-right-br
+$enable-hover-buttons-border-right-br2: false !default;   // btn hbtn hb-border-right-br2
+$enable-hover-buttons-border-right-br3: false !default;   // btn hbtn hb-border-right-br3
+$enable-hover-buttons-border-right-br4: false !default;   // btn hbtn hb-border-right-br4
+$enable-hover-buttons-border-right2: false !default;      // btn hbtn hb-border-right2
+$enable-hover-buttons-border-bottom: false !default;      // btn hbtn hb-border-bottom
+$enable-hover-buttons-border-bottom2: false !default;     // btn hbtn hb-border-bottom2
+$enable-hover-buttons-border-bottom-br: false !default;   // btn hbtn hb-border-bottom-br
+$enable-hover-buttons-border-bottom-br2: false !default;  // btn hbtn hb-border-bottom-br2
+$enable-hover-buttons-border-bottom-br3: false !default;  // btn hbtn hb-border-bottom-br3
+$enable-hover-buttons-border-bottom-br4: false !default;  // btn hbtn hb-border-bottom-br4
+$enable-hover-buttons-border-left: false !default;        // btn hbtn hb-border-left
+$enable-hover-buttons-border-left2: false !default;       // btn hbtn hb-border-left2
+$enable-hover-buttons-border-left-br: false !default;     // btn hbtn hb-border-left-br
+$enable-hover-buttons-border-left-br2: false !default;    // btn hbtn hb-border-left-br2
+$enable-hover-buttons-border-left-br3: false !default;    // btn hbtn hb-border-left-br3
+$enable-hover-buttons-border-left-br4: false !default;    // btn hbtn hb-border-left-br4

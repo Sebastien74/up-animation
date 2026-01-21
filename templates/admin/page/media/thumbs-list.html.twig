@@ -1,0 +1,36 @@
+{% trans_default_domain 'admin' %}
+
+{% if files is defined %}
+    {% set count = files|length %}
+    {% set filename = files[0].filename is defined ? files[0].filename : null %}
+    <div id="progress-card" class="card mt-5">
+        <div class="card-body">
+            <h6 class="title d-flex align-items-center">{{ "Suppression en cours"|trans|raw }}</h6>
+            <div class="progress">
+                <div id="progress-bar" class="progress-bar progress-bar-striped bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small class="counter d-inline-flex w-100 mt-2">
+                <span class="count" data-count="{{ count }}" data-progress="1">0</span>/{{ count }} <span class="filename text-italic ms-3">{{ filename }}</span> <span class="thumb text-italic ms-3"></span>
+            </small>
+        </div>
+    </div>
+    <div id="end-process-wrap" class="mb-4 d-none position-relative" data-url="{{ path('admin_thumbs_remove_cache_end_process', {website: website.id}) }}">
+        <div class="bg-stripe"></div>
+        <div class="refresh-container">
+            <div class="refresh-bloc text-center">
+                <div class="inner">
+                    <h4 class="mb-0">{{ "Finalisation de la suppression en cours..."|trans }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul id="thumbs-to-delete" class="d-none">
+        {% for file in files %}
+            <li class="thumb to-clear"
+                data-filename="{{ file.filename }}"
+                data-url="{{ path('admin_thumbs_remove_cache_file', {website: website.id, path: file.path, relations: file.mediaRelations}) }}"
+                data-path="{{ file.path }}"
+                data-medias-relations="{{ file.mediaRelations }}"></li>
+        {% endfor %}
+    </ul>
+{% endif %}

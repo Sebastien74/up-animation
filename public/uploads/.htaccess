@@ -1,0 +1,6 @@
+ErrorDocument 403 /denied.php
+
+<FilesMatch "\\.(php|txt|js)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>

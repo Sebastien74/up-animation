@@ -1,0 +1,6 @@
+add: 'Ajouter un chef de projets'
+adminName: 'Chef de projets '
+delete: 'Supprimer le chef de projets'
+name: Nom
+plural: 'Chefs de projets'
+singular: 'Chef de projets '

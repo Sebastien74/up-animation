@@ -1,0 +1,55 @@
+{% trans_default_domain 'admin' %}
+
+{% set configuration = website().configuration %}
+{% set defaultLocale = configuration.locale %}
+{% set allLocales = configuration.allLocales %}
+
+<div id="entities-index" class="card d-inline-block w-100">
+
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-8 my-auto">
+                {% if searchFiltersForm is defined and searchFiltersForm %}
+                    {% include 'admin/core/form/filters.html.twig' with {form: searchFiltersForm} %}
+                {% endif %}
+                {% if searchForm %}
+                    {% include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div id="result" class="position-relative">
+
+        {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only %}
+
+        <table class="table editable-table table-bordered table-striped mb-0">
+            <thead>
+                <tr>
+                    <th class="col-locale{% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans }}</th>
+                    <th>{{ "URL"|trans }} <small class="text-info ms-1">({{ "Ancienne URI / URL"|trans }})</small></th>
+                    <th class="text-start">{{ "Nouvelle URL"|trans }} <small class="text-info ms-1">({{ "Avec protocol"|trans }})</small></th>
+                    <th class="text-end">
+                        <div class="delete-index-all-wrap custom-control custom-checkbox float-end ms-3 d-none" data-toggle="tooltip"
+                             title="{{ "Tout cocher"|trans|striptags }}"
+                             data-checked="{{ "Tout cocher"|trans|striptags }}"
+                             data-unchecked="{{ "Tout décocher"|trans|striptags }}">
+                            <input type="checkbox" class="custom-control-input delete-index-all" id="delete-index-all">
+                            <label class="custom-control-label" for="delete-index-all"></label>
+                        </div>
+                        {{ "Actions"|trans }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for redirection in pagination %}
+                    {{ render_esi(path('admin_redirection_form', {website: website.id, redirection: redirection.id} )) }}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/core/include/pagination.html.twig' %}
+
+    </div>
+
+</div>

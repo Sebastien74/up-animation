@@ -1,0 +1,153 @@
+@charset "UTF-8";
+
+@import "~choices.js/public/assets/styles/choices.min.css";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-12-05, 8:49 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    USER SWITCHER :
+    ===============
+
+------------------------------------------------------------------ */
+
+/*! purgecss start ignore */
+
+#users-switcher-box {
+
+    position: fixed;
+    z-index: 9999;
+    top: 55px;
+    left: 90px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.46) !important;
+    border-radius: 10px !important;
+    background-color: #24252e !important;
+    width: 300px;
+    font-weight: 300;
+
+    * {
+        font-size: 14px !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        font-weight: 400;
+    }
+
+    .card-body {
+
+        padding: 15px !important;
+
+        input.choices__input {
+            background: #dee2e6 url(../../medias/images/vendor/search.svg) no-repeat scroll 1rem 1rem !important;
+            background-size: 15px !important;
+            padding-left: 2rem !important;
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+            margin-bottom: 0;
+        }
+
+        svg {
+            width: 20px;
+            height: 20px;
+            fill: #fff;
+            cursor: pointer;
+        }
+
+        #users-switcher-close {
+            color: rgba(255, 255, 255, .8);
+            position: absolute;
+            right: 9px;
+            top: 9px;
+            opacity: 1;
+        }
+
+        label {
+            color: #fff !important;
+            margin-top: -5px;
+            margin-bottom: 5px;
+            float: left;
+            font-size: 15px !important;
+            width: 100%;
+        }
+    }
+}
+
+#users-switcher-front-box {
+
+    border-radius: 10px !important;
+    background-color: #24252e !important;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.46) !important;
+
+    .card-body {
+
+        padding-top: 13px !important;
+
+        label {
+            color: #fff !important;
+        }
+    }
+}
+
+.skin-admin #users-switcher-box {
+    bottom: initial;
+    left: initial;
+    top: 15px;
+    right: 20px;
+}
+
+.choices-users-select {
+
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    margin-top: 5px;
+
+    &[data-type*="select-one"]::after {
+        content: '';
+        height: 0;
+        width: 0;
+        border-style: solid;
+        border-color: #6f7072 transparent transparent;
+        border-width: 5px;
+        position: absolute;
+        right: 11.5px;
+        top: 53%;
+        margin-top: -2.5px;
+        pointer-events: none;
+    }
+
+    .choices__list--single {
+        margin-top: 3px;
+    }
+
+
+    .choices__list--dropdown {
+
+        border-radius: .75rem !important;
+        border: 0 !important;
+        padding: 0 !important;
+
+        .choices__item--selectable {
+            padding: 10px 1.5rem !important;
+        }
+    }
+
+    .choices__inner {
+        background-image: none;
+        border-radius: .75rem !important;
+    }
+
+    .choices__input {
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 100%;
+    }
+}
+
+#users-switcher-front-box {
+    .choices__input {
+        text-align: center;
+    }
+}
+
+/*! purgecss end ignore */

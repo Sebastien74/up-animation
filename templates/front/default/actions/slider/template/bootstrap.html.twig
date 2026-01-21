@@ -1,0 +1,172 @@
+{% trans_default_domain 'front_default' %}
+
+{% import _self as macro %}
+
+{% set slider = slider is defined ? slider : false %}
+{% set sliderSlug = sliderSlug is defined ? sliderSlug : 'slider-'~uniqId() %}
+{% set intervalDuration = slider.intervalDuration is defined and slider.intervalDuration ? slider.intervalDuration : (intervalDuration is defined ? intervalDuration : 5000) %}
+{% set autoplay = slider.autoplay is defined and slider.autoplay ? slider.autoplay : (autoplay is defined ? autoplay : 1) %}
+{% set pause = slider.pause is defined and slider.pause ? 'hover' : (pauseOnHover is defined and pauseOnHover ? 'hover' : 0) %}
+{% set effect = slider.effect is defined ? slider.effect : (effect is defined and effect ? effect : 'fade') %}
+{% set popup = slider.popup is defined ? slider.popup : (popup is defined ? popup : 1) %}
+{% set displayIndicators = displayIndicators is defined ? displayIndicators and medias|length > 1 : false %}
+{% set colSize = colSize is defined ? colSize : false %}
+{% set isFirstZone = isFirstZone is defined ? isFirstZone : false %}
+{% set disabledTitleForce = disabledTitleForce is defined ? disabledTitleForce : false %}
+{% set websiteTemplate = websiteTemplate is defined ? websiteTemplate : website().configuration.template %}
+
+{% set arrows = (slider.control is defined and slider.control and medias|length > 1) or (arrows is defined and arrows and medias|length > 1)  %}
+{% set arrowAlignment = slider.arrowAlignment is defined ? slider.arrowAlignment : (arrowAlignment is defined and arrowAlignment ? arrowAlignment : 'bottom-start') %}
+{% set arrowsSide = arrowsSide is defined ? arrowsSide : 'start' %}
+{% set arrowsColor = arrowsColor is defined ? arrowsColor : 'primary' %}
+{% set arrowsAsBtn = arrowsAsBtn is defined ? arrowsAsBtn : true %}
+{% set displayArrows = arrows and 'bottom' in arrowAlignment %}
+
+{% macro arrows(slider, autoplay, sliderSlug, side, color, asBtn, position) %}
+    {% set website = slider.website is defined ? slider.website : website() %}
+    {% set configuration = website.configuration is defined ? website.configuration : false %}
+    {% set accessibility = configuration.accessibilityStatus is defined ? configuration.accessibilityStatus : true %}
+    {% set iconClasses = not asBtn ? 'text-'~color : '' %}
+    {% set icon = asBtn ? 'chevron' : 'arrow' %}
+    {% set btnClasses = asBtn ? 'btn-circle btn btn-'~color : '' %}
+    <div class="controls d-inline-flex align-items-start justify-content-{{ side }}{% if 'end' == side %} w-100{% endif %} {% if 'top' == position %}mb-4{% else %}mt-4{% endif %}{% if 'end' == side %} {% endif %}{% if asBtn %} as-btn{% endif %}">
+        <button class="carousel-control-prev position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} me-2"
+                data-bs-slide="prev"
+                data-bs-target="#carousel-{{ sliderSlug }}"
+                aria-label="{{ "Précédent"|trans }}"
+                tabindex="-1">
+            <i class="icon-{{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+        </button>
+        {% if autoplay and accessibility %}
+            <button class="carousel-control-pause position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{ "Pause"|trans }}" tabindex="-1">
+                <i class="icon-pause{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            </button>
+            <button class="carousel-control-play position-relative d-none cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{ "Pause"|trans }}" tabindex="-1">
+                <i class="icon-play{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            </button>
+        {% endif %}
+        <button class="carousel-control-next position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} ms-2"
+                data-bs-slide="next"
+                data-bs-target="#carousel-{{ sliderSlug }}"
+                aria-label="{{ "Suivant"|trans }}"
+                tabindex="-1">
+            <i class="icon-{{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+        </button>
+    </div>
+{% endmacro %}
+
+<div id="carousel-{{ sliderSlug }}"
+     class="carousel-{{ sliderSlug }} carousel standard slide{% if effect == 'fade' %} carousel-fade{% endif %}"
+     data-bs-interval="{{ intervalDuration }}"
+     data-bs-autoplay="{{ autoplay }}"
+     data-bs-pause="{{ pause ? 'hover' : 0 }}"
+     data-component="carousel-bootstrap">
+    <div class="carousel-inner">
+        {% set isFirst = true %}
+        {% for media in medias %}
+            {% set intlMedia = media.intl %}
+            {% set pictogram = intlMedia.pictogram is defined ? intlMedia.pictogram : null %}
+            {% set mediaTitleForce = intlMedia.titleForce is defined and intlMedia.titleForce ? intlMedia.titleForce : 2 %}
+            {% set mediaTitle = intlMedia.title is defined and intlMedia.title|striptags|length > 0 ? intlMedia.title : null %}
+            {% set mediaIntro = intlMedia.introduction is defined and intlMedia.introduction|striptags|length > 0 ? intlMedia.introduction : null %}
+            {% set mediaBody = intlMedia.body is defined and intlMedia.body|striptags|length > 0 ? intlMedia.body : null %}
+            {% set popup = popup or media.popup %}
+            {% set mediaClass = fileSizes.height is defined and medias|length > 1 ? 'force-size main-media' : 'w-100 main-media' %}
+            {% set mediaType = (media.media.screen is defined and media.media.screen == 'poster')
+                or (media.intl.video is defined and media.intl.video) ? 'video' : 'image' %}
+            {% set haveContent = mediaIntro or mediaBody %}
+            {% set haveText = mediaIntro or mediaBody %}
+            {% set display = (mediaType == 'video' and media.videoLink is not empty) or (media.media.filename is defined and media.media.filename) %}
+            {% set link = intlMedia.link is defined and intlMedia.link ? intlMedia.link : false %}
+            {% if display %}
+                <div class="carousel-item{% if isFirst %} active{% endif %}">
+                    <div class="inner d-inline-block">
+                        {% if arrows and 'top' in arrowAlignment %}
+                            <div class="top-arrows">
+                                {{ macro.arrows(sliderSlug, autoplay, arrowsSide, arrowsColor, arrowsAsBtn, 'top') }}
+                            </div>
+                        {% endif %}
+                        {% if mediaType == 'video' %}
+                            {% include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {
+                                block: media,
+                                media: media,
+                                website: website,
+                                autoplay: true,
+                                thumbConfiguration: thumbConfiguration,
+                                disableTitle: true,
+                                displayMobile: true,
+                                intlMedia: media
+                            } only %}
+                        {% else %}
+                            {{ media|file(thumbConfiguration, {
+                                btnLink: false,
+                                isInBox: false,
+                                popupGallery: popup ? 'carousel-gallery-'~sliderSlug : false,
+                                fullPopup: popup,
+                                placeholder: true,
+                                maxWidth: fileSizes.width is defined ? fileSizes.width : (maxWidth is defined ? maxWidth : null),
+                                maxHeight: fileSizes.height is defined ? fileSizes.height : (maxHeight is defined ? maxHeight : null),
+                                screensSizes: screensSizes is defined and screensSizes is not empty ? screensSizes : {},
+                                colSize: colSize,
+                                lazyLoad: not isFirstZone or (isFirstZone and not loop.first),
+                                priority: not isFirstZone or (isFirstZone and not loop.first) ? 'low': 'high',
+                                class: mediaClass
+                            }) }}
+                        {% endif %}
+                        {% if haveContent or displayArrows or link %}
+                            <div class="carousel-caption text-start position-relative bg-transparent border-0 p-0">
+                                <div class="d-flex align-items-center">
+                                    {% if arrows and 'bottom' in arrowAlignment %}
+                                        {{ macro.arrows(slider, autoplay, sliderSlug, arrowsSide, arrowsColor, arrowsAsBtn, 'bottom') }}
+                                    {% endif %}
+                                    {% if mediaTitle and not disabledTitleForce %}
+                                        <h{{ mediaTitleForce }} class="caption-title mt-4 mb-0 ms-auto">{{ mediaTitle|unescape|raw }}</h{{ mediaTitleForce }}>
+                                    {% elseif mediaTitle %}
+                                        <p class="caption-title bg-secondary text-white fw-400 ms-auto mt-4 mb-0 py-1 px-2">{{ mediaTitle|unescape|raw }}</p>
+                                    {% endif %}
+                                </div>
+                                {% if haveContent or link %}
+                                    <div class="content flex-shrink-0">
+                                        {% if mediaIntro %}
+                                            <p class="introduction text-bold{% if mediaTitle %} mt-3{% endif %}">{{ mediaIntro|unescape|raw|nl2br }}</p>
+                                        {% endif %}
+                                        {% if mediaBody %}
+                                            <div class="body{% if mediaTitle or mediaIntro %} mt-3{% endif %}">{{ mediaBody|unescape|raw|nl2br }}</div>
+                                        {% endif %}
+                                        {% if link %}
+                                            <div class="mt-4">
+                                                {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                                    intl: intlMedia,
+                                                    linkLabel: intlMedia.linkLabel ? intlMedia.linkLabel : 'En savoir +'|trans
+                                                } only %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% set isFirst = false %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% if displayIndicators %}
+        <ul class="carousel-indicators reset position-relative ms-0 me-0 mb-0 mt-4 justify-content-start">
+            {% set isFirst = true %}
+            {% for media in medias %}
+                {% if media.media.filename is defined and media.media.filename %}
+                    <li data-bs-target="#carousel-{{ sliderSlug }}"
+                        data-bs-slide-to="{{ loop.index - 1 }}"
+                        data-index="{{ loop.index }}"
+                        class="position-relative {% if isFirst and loop.first %}active{% endif %}">
+                        {% if slider.progress is defined and slider.progress %}
+                            <span class="position-absolute loader left"></span>
+                        {% endif %}
+                    </li>
+                    {% set isFirst = false %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>

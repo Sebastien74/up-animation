@@ -1,0 +1,27 @@
+{% trans_default_domain 'admin' %}
+
+{% set haveTooHeavyFiles = tooHeavyFiles is defined and tooHeavyFiles|length > 0 and disabledMedias is not defined %}
+{% set haveSeoAlert = (haveH1.error is defined and haveH1.error)
+    or ((seoAlert.noTitle is defined or seoAlert.noDescription is defined) and (seoAlert.noTitle is not empty or seoAlert.noDescription is not empty))
+    or (mediasAlert is defined and mediasAlert is not empty) %}
+
+{% if haveTooHeavyFiles or haveSeoAlert %}
+    <div id="accordion-alerts" class="accordion mb-4">
+        <div class="accordion-item border-0 bg-transparent">
+            <div class="alert alert-danger position-relative d-flex p-0 collapsed mb-0 cursor" data-bs-toggle="collapse" data-bs-target="#collapse-alerts" aria-expanded="false" aria-controls="collapseTwo">
+                <div class="icon d-flex align-items-center justify-content-center position-relative">
+                    {{ 'fal exclamation-triangle'|icon(null, 22, 'white') }}
+                </div>
+                <div class="message px-4 py-3 w-100">
+                    <small class="d-inline-block">{{ "Vous avez des alertes !! Cliquez pour les afficher."|trans|raw }}</small>
+                </div>
+            </div>
+            <div id="collapse-alerts" class="accordion-collapse collapse bg-transparent" data-bs-parent="#accordion-alerts">
+                <div class="pt-4 alerts-wrap">
+                    {% include 'admin/core/include/too-heavy-files.html.twig' %}
+                    {% include 'admin/core/include/seo-alert.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

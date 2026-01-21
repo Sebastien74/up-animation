@@ -1,0 +1,33 @@
+{% trans_default_domain 'admin' %}
+
+{% set uri = app.request.uri %}
+{% set moduleActive = 'medias'|moduleActive(configuration) or granted('ROLE_INTERNAL') %}
+{% set website = website is defined and website ? website : website() %}
+{% set configuration = website.configuration %}
+{% set active = '/medias/' in uri %}
+
+{% if moduleActive and configuration.entity.mediasCategoriesStatus %}
+    {% set module = 'medias'|moduleActive(configuration) %}
+    {% set intl = intlsModules['medias'][app.user.locale] is defined ? intlsModules['medias'][app.user.locale] : intlsModules['medias']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['medias']['entity'].adminName is defined ? intlsModules['medias']['entity'].adminName : 'Médias'|trans) %}
+    {% set icon = intlsModules['medias']['entity'].iconClass is defined and intlsModules['medias']['entity'].iconClass ? intlsModules['medias']['entity'].iconClass : '/medias/icons/light/photo-video.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a class="as-arrow{% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+            {{ icon|icon(19, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+        <ul aria-expanded="false" class="collapse{% if active %} in{% endif %}">
+            <li><a href="{{ path('admin_medias_library', {website: websiteId}) }}" data-toggle="preloader">{{ "Bibliothèque"|trans }}</a></li>
+            <li><a href="{{ path('admin_mediacategory_index', {website: websiteId}) }}" data-toggle="preloader">{{ "Catégories de médias"|trans }}</a></li>
+        </ul>
+    </li>
+{% elseif moduleActive %}
+    {% set module = 'medias'|moduleActive(configuration) %}
+    {% set intl = intlsModules['medias'][app.user.locale] is defined ? intlsModules['medias'][app.user.locale] : intlsModules['medias']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['medias']['entity'].adminName is defined ? intlsModules['medias']['entity'].adminName : 'Médias'|trans) %}
+    {% set icon = intlsModules['medias']['entity'].iconClass is defined and intlsModules['medias']['entity'].iconClass ? intlsModules['medias']['entity'].iconClass : '/medias/icons/light/photo-video.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a href="{{ path('admin_medias_library', {website: websiteId}) }}" data-toggle="preloader">
+            {{ icon|icon(19, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% endif %}

@@ -1,0 +1,452 @@
+{% trans_default_domain 'admin' %}
+
+{% block _col_size_size_widget %}
+    <div id="{{ id }}" class="w-100 text-center">
+        {% for choice in choices %}
+            {% set id = uniqId() %}
+            <label for="{{ choice.value~''~id }}" class="btn btn-outline-dark cursor">
+                {{ choice.value }}
+                <input type="radio" id="{{ choice.value~''~id }}" name="{{ full_name }}" required="required" class="d-none input-btn" value="{{ choice.value }}">
+            </label>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block _zone_grid_grid_widget %}
+    <div id="grid-cols-group" class="row justify-content-center">
+        {% for key, choice in choices %}
+            {% if choice.data.cols|length > 0 %}
+                <label for="{{ id~"_"~key }}" class="col-md-6 col-lg-4">
+                    <div class="inner-grid">
+                        <div class="row ms-0 me-0">
+                            {% for col in choice.data.cols %}
+                                <div class="item-col col-{{ col.size }}"><div class="inner">{{ col.size }}</div></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <input type="radio" id="{{ id~"_"~key }}" name="{{ full_name }}" required="required" class="d-none input-grid input-btn" value="{{ choice.value }}">
+                </label>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block _background_color_zone_backgroundColor_widget %}
+    <div id="{{ id }}" class="background-rounded-selector w-100 text-center">
+        {% for choice in choices %}
+            {% set filedId = loop.index~uniqId() %}
+            {% set color = 'background'|color(website(), choice.data) %}
+            {% set hexa = color ? color.color : choice.data %}
+            {% set hexa = hexa ? hexa : 'transparent' %}
+            <span class="background-input-label-active d-inline-block mb-2{% if value == choice.value %} active{% endif %}">
+                <span class="background-input-label-border d-inline-block">
+                    <label for="{{ filedId }}"
+                           class="background-input-label btn btn-circle cursor mb-0"
+                           data-hexa="{{ hexa }}"
+                           style="background-color: {{ hexa }}; border-color: {{ hexa }};">
+                        {% if hexa == 'transparent' %}
+                            {{ 'far times'|icon(34, 37, 'white') }}
+                        {% endif %}
+                        <input type="radio"
+                               id="{{ filedId }}"
+                               name="{{ full_name }}"
+                               {% if required %}required="required"{% endif %}
+                               class="background-input d-none"
+                               data-hexa="{{ hexa }}"
+                               value="{{ choice.value }}"{% if value == choice.value %} checked="checked"{% endif %}>
+                    </label>
+                </span>
+            </span>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block _background_color_col_backgroundColor_widget %}
+    <div id="{{ id }}" class="background-rounded-selector w-100 text-center">
+        {% for choice in choices %}
+            {% set filedId = loop.index~uniqId() %}
+            {% set color = 'background'|color(website(), choice.data) %}
+            {% set hexa = color ? color.color : choice.data %}
+            {% set hexa = hexa ? hexa : 'transparent' %}
+            <span class="background-input-label-active d-inline-block mb-2{% if value == choice.value %} active{% endif %}">
+                <span class="background-input-label-border d-inline-block">
+                    <label for="{{ filedId }}" class="background-input-label btn btn-circle cursor mb-0"
+                           data-hexa="{{ hexa }}"
+                           style="background-color: {{ hexa }};">
+                        {% if hexa == 'transparent' %}
+                            {{ 'far times'|icon(34, 37, 'white') }}
+                        {% endif %}
+                        <input type="radio"
+                               id="{{ filedId }}"
+                               name="{{ full_name }}"
+                               {% if required %}required="required"{% endif %}
+                               class="background-input d-none"
+                               data-hexa="{{ hexa }}"
+                               value="{{ choice.value }}"{% if value == choice.value %} checked="checked"{% endif %}>
+                    </label>
+                </span>
+            </span>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block _background_color_block_backgroundColor_widget %}
+    <div id="{{ id }}" class="background-rounded-selector w-100 text-center">
+        {% for choice in choices %}
+            {% set filedId = loop.index~uniqId() %}
+            {% set color = 'background'|color(website(), choice.data) %}
+            {% set hexa = color ? color.color : choice.data %}
+            {% set hexa = hexa ? hexa : 'transparent' %}
+            <span class="background-input-label-active d-inline-block mb-2{% if value == choice.value %} active{% endif %}">
+                <span class="background-input-label-border d-inline-block">
+                    <label for="{{ filedId }}" class="background-input-label btn btn-circle cursor mb-0"
+                           data-hexa="{{ hexa }}"
+                           style="background-color: {{ hexa }};">
+                        {% if hexa == 'transparent' %}
+                            {{ 'far times'|icon(34, 37, 'white') }}
+                        {% endif %}
+                        <input type="radio"
+                               id="{{ filedId }}"
+                               name="{{ full_name }}"
+                               {% if required %}required="required"{% endif %}
+                               class="background-input d-none"
+                               data-hexa="{{ hexa }}"
+                               value="{{ choice.value }}"{% if value == choice.value %} checked="checked"{% endif %}>
+                    </label>
+                </span>
+            </span>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block _layout_configuration_modules_widget %}
+    {% set disabled = ['edit', "medias", "seo", "translation", "user", "user-switcher", "gdpr", "css", "analytic"] %}
+    <select id="{{ id }}"
+            name="{{ full_name }}"
+            data-placeholder="{{ attr['data-placeholder']|trans|striptags }}"
+            class="{{ attr.class }} form-control"
+            multiple>
+        {% for choice in choices %}
+            {% if choice.data.slug not in disabled %}
+                <option value="{{ choice.value }}"{% if choice.value in value %} selected="selected"{% endif %}>{{ choice.label }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+{% endblock %}
+
+{% block _layout_configuration_blockTypes_widget %}
+    <select id="{{ id }}"
+            name="{{ full_name }}"
+            data-placeholder="{{ attr['data-placeholder']|trans|striptags }}"
+            class="{{ attr.class }} form-control"
+            multiple>
+        {% for choice in choices %}
+            <option value="{{ choice.value }}"{% if choice.value in value %} selected="selected"{% endif %}>{{ choice.label }}</option>
+        {% endfor %}
+    </select>
+{% endblock %}
+
+{% block _website_configuration_blockTypes_widget %}
+    {% set disabled = ["action"] %}
+    <div id="{{ id }}" class="row {% if attr.class is defined %} {{ attr.class }}{% endif %}">
+        {% for choiceId, choice in choices %}
+            {% if choice.data.slug not in disabled %}
+                <div class="col-md-6">
+                    <div class="form-check form-check-inline form-switch mb-1 me-0">
+                        <input type="checkbox"
+                               id="block-type-{{ choice.value }}"
+                               name="{{ full_name }}[]"
+                               class="form-check-input cursor"
+                               value="{{ choice.value }}"{% if choice.value in value %} checked="checked"{% endif %}>
+                        <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="block-type-{{ choice.value }}">{{ choice.label }}</label>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block _website_configuration_modules_widget %}
+    {% set disabled = ["secure-module", "customs-actions"] %}
+    <div id="{{ id }}" class="row {% if attr.class is defined %} {{ attr.class }}{% endif %}">
+        {% for choiceId, choice in choices %}
+            {% if choice.data.slug not in disabled %}
+                <div class="col-md-6">
+                    <div class="form-check form-check-inline form-switch mb-1 me-0">
+                        <input type="checkbox"
+                               id="modules-input-{{ choice.value }}"
+                               name="{{ full_name }}[]"
+                               class="form-check-input cursor"
+                               value="{{ choice.value }}"{% if choice.value in value %} checked="checked"{% endif %}>
+                        <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="modules-input-{{ choice.value }}">{{ choice.label }}</label>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block _information_emails_widget %}
+
+    {% import _self as macro %}
+
+    {% macro field_prototype(property, prototypeGroup, prototypePosition) %}
+
+        {% set entity = property.vars.data is defined ? property.vars.data : null %}
+        {% set isNew = entity.id is defined and entity.id ? false : true %}
+        {% set entityId = isNew ? uniqId() : entity.id %}
+        {% set interfaceName = property.vars.errors.form.config.dataClass|interfaceName %}
+
+        {% if prototypeGroup %}
+            <div class="{{ prototypeGroup }} mb-4 prototype prototype-block-group">
+        {% endif %}
+
+        <div class="prototype-block {% if prototypeGroup %}h-100{% else %}prototype mb-4{% endif %}">
+
+            {% set slug = entity.slug is defined and entity.slug %}
+            {% set haveTitle = slug == ('support' or 'no-reply') %}
+
+            {% if haveTitle %}
+                {% set title = entity.slug == 'support' ? 'Expéditeur par défaut'|trans : 'Répondre à par défaut'|trans %}
+                <div class="prototype-block-title p-3">
+                    <h6 class="mb-0">{{ title }}</h6>
+                </div>
+            {% endif %}
+
+                <div class="row pt-3 pe-3 ps-3 pb-0">
+
+                    {{ form_row(property.email) }}
+                    {{ form_row(property.entitled) }}
+                    {{ form_row(property.locale) }}
+
+                    {% if haveTitle %}
+                        <div class="d-none">
+                    {% endif %}
+                        {{ form_row(property.zones) }}
+                    {% if haveTitle %}
+                        </div>
+                    {% endif %}
+
+                    {% if prototypePosition %}
+                        {% include 'admin/include/handle-item-collection.html.twig' with {isNew: isNew} %}
+                    {% endif %}
+                    {% if entity.deletable is not defined or entity.deletable is defined and entity.deletable %}
+                        {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                            isNew: property.vars.data.id is defined and property.vars.data.id ? false : true,
+                            entityId: isNew ? uniqId() : property.vars.data.id,
+                            interfaceName: interfaceName
+                        } %}
+                    {% else %}
+                        <span class="btn btn-transparent delete-disabled" data-toggle="tooltip" title="{{ "Donnée requise"|trans }}">
+                            {{ 'fas trash'|icon(null, 14, 'dark') }}
+                        </span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        {% if prototypeGroup %}
+            </div>
+        {% endif %}
+
+    {% endmacro %}
+
+    {% set prototypeOptions = form.vars.prototype.vars %}
+    {% set prototypeGroup = prototypeOptions.attr.group is defined ? prototypeOptions.attr.group : (prototypeOptions.attr['data-group'] is defined ? prototypeOptions.attr['data-group'] : null) %}
+    {% set prototypePosition = true %}
+
+    <div id="{{ id }}_collection"
+         data-index="{{ form.children|length }}"
+         class="collection{% if prototypePosition %} prototype-sortable{% endif %} {% if prototypeGroup %}row w-100 m-0{% else %}col-12{% endif %}"
+         data-prototype="{{ macro.field_prototype(form.vars.prototype, prototypeGroup)|e('html_attr') }}">
+        {% include 'admin/include/stripe-preloader.html.twig' %}
+        {% for property in form.children %}
+            {{ macro.field_prototype(property, prototypeGroup, prototypeOptions) }}
+        {% endfor %}
+    </div>
+
+    <div class="col-12 text-end mb-4">
+        <button role="button" class="add-collection btn btn-success"
+                data-collection-target="append"
+                data-target="#{{ id }}_collection">
+                {{ 'fal plus'|icon(null, 15, 'white me-2') }}
+            <span class="d-inline-block">
+                {% if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] %}
+                    {{ prototypeOptions['attr']['button'] }}
+                {% else %}
+                    {{ 'Ajouter'|trans }}
+                {% endif %}
+            </span>
+        </button>
+    </div>
+
+{% endblock %}
+
+{% block _website_configuration_adminTheme_widget %}
+    <div id="{{ id }}_fields" class="row themes-group">
+        {% for choice in choices %}
+            {% set isChecked = choice.value == value %}
+            <div class="col-md-3 text-center mb-2">
+                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="admin-theme-{{ choice.data }}">
+                    {% set src = choice.data ? choice.data : 'anonymous' %}
+                    <img src="{{ asset('build/admin/images/theme/admin-theme-'~src~'.jpg', 'admin')|imagine_filter('admin_theme') }}" class="img-fluid" alt="theme">
+                    <div class="vertical-align w-100 p-4">
+                        <div class="content p-3">
+                            <h5 class="m-0">{{ choice.label }}</h5>
+                        </div>
+                    </div>
+                    <input type="radio"
+                           id="admin-theme-{{ choice.data }}"
+                           name="{{ full_name }}"
+                           class="input-theme d-none{% if isChecked %} active{% endif %}"
+                           value="{{ choice.value }}"{% if required %} required{% endif %}{% if isChecked %} checked{% endif %}>
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block _website_configuration_buildTheme_widget %}
+    <div id="{{ id }}_fields" class="row themes-group">
+        {% for choice in choices %}
+            {% set isChecked = choice.value == value %}
+            <div class="col-md-3 text-center mb-2">
+                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="build-theme-{{ choice.data }}">
+                    {% set src = choice.data ? choice.data : 'anonymous' %}
+                    <img src="{{ asset('build/admin/images/theme/build-theme-'~src~'.jpg', 'admin')|imagine_filter('admin_theme') }}" class="img-fluid" alt="theme">
+                    <div class="vertical-align w-100 p-4">
+                        <div class="content p-3">
+                            <h5 class="m-0">{{ choice.label }}</h5>
+                        </div>
+                    </div>
+                    <input type="radio" id="build-theme-{{ choice.data }}"
+                           name="{{ full_name }}"
+                           class="input-theme d-none{% if isChecked %} active{% endif %}"
+                           value="{{ choice.value }}"{% if required %} required{% endif %}{% if isChecked %} checked{% endif %}>
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block _website_configuration_template_widget %}
+    <div id="{{ id }}_fields" class="row themes-group">
+        {% for choice in choices %}
+            {% set isChecked = choice.value == value %}
+            <div class="col-md-3 text-center mb-2">
+                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="front-theme-{{ choice.data }}">
+                    {% set src = choice.data ? choice.data : 'anonymous' %}
+                    <img src="{{ asset('build/admin/images/theme/theme-'~src~'.jpg', 'admin')|imagine_filter('admin_theme') }}" class="img-fluid" alt="theme">
+                    <div class="vertical-align w-100 p-4">
+                        <div class="content p-3">
+                            <h5 class="m-0">{{ choice.label }}</h5>
+                        </div>
+                    </div>
+                    <input type="radio" id="front-theme-{{ choice.data }}"
+                           name="{{ full_name }}"
+                           class="input-theme d-none{% if isChecked %} active{% endif %}"
+                           value="{{ choice.value }}"{% if required %} required{% endif %}{% if isChecked %} checked{% endif %}>
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{#{% block _page_parent_widget %}#}
+
+{#    {% set options = [] %}#}
+{#    {% for choice in choices %}#}
+{#        {% set options = options|merge([choice.data]) %}#}
+{#    {% endfor %}#}
+
+{#    {% set tree = options|entityTree %}#}
+{#    {% set entities = tree.main is defined ? tree.main : [] %}#}
+
+{#    {% macro option(entity, tree, pupPosition = 1) %}#}
+
+{#        {% set children = tree[entity.id] is defined ? tree[entity.id] : [] %}#}
+
+{#        {% if children and entity.level == 2 %}#}
+{#            {% set pupPosition = pupPosition == 1 ? pupPosition : pupPosition + 1 %}#}
+{#            {{ dump(pupPosition) }}#}
+{#            {% set pup = pupPosition %}#}
+{#        {% endif %}#}
+
+{#        {% set pup = pup~'1' %}#}
+
+{#        {% set isMain = not index %}#}
+{#        {% set index = isMain ? index + 1 : index %}#}
+{#        {% set pup = not pup ? index : pup~'1' %}#}
+
+{#        <option value="{{ entity.id }}"#}
+{#                {% if not isMain %}data-pup="{{ pup|slice(0, pup|length - 1) }}"{% endif %}#}
+{#                class="l{{ entity.level }}{% if children %} non-leaf{% endif %}">#}
+{#            {{ entity.adminName }}#}
+{#        </option>#}
+
+{#        {% import _self as macro %}#}
+
+{#        {% for child in children %}#}
+{#            {{ macro.option(child, tree, pupPosition) }}#}
+{#        {% endfor %}#}
+
+{#    {% endmacro %}#}
+
+{#    {% macro option(entities, tree, pupPosition = 0, pup = null) %}#}
+
+{#        {% import _self as macro %}#}
+
+{#        {% for entity in entities %}#}
+
+{#            {% set children = tree[entity.id] is defined ? tree[entity.id] : [] %}#}
+
+{#            {% if children and entity.level == 1 %}#}
+{#                {% set pupPosition = pupPosition + 1 %}#}
+{#            {% endif %}#}
+
+{#            {% if children and entity.level == 2 %}#}
+{#                {% set pup = pupPosition %}#}
+{#            {% elseif children and entity.level > 2 %}#}
+{#                {% set pup = pup~1 %}#}
+{#            {% endif %}#}
+
+{#            {{ dump(pupPosition) }}#}
+{#            <option value="{{ entity.id }}">#}
+{#                {{ entity.adminName }}#}
+{#            </option>#}
+
+{#            {% if children %}#}
+{#                {{ macro.option(children, tree, pupPosition, pup) }}#}
+{#            {% endif %}#}
+
+{#        {% endfor %}#}
+
+{#    {% endmacro %}#}
+
+{#    {% import _self as macro %}#}
+
+{#    <select class="tree-select" style="width:8em">#}
+
+{#        <option value="1" class="l1 non-leaf">opt_1</option>#}
+{#        <option value="11" data-pup="1" class="l2 non-leaf">1</option>#}
+{#        <option value="111" data-pup="11" class="l3 non-leaf">11</option>#}
+{#        <option value="qdqsdqsd" data-pup="111" class="l4">opt_1111</option>#}
+{#        <option value="11dqsdqsdq11" data-pup="111" class="l4">opt_1111</option>#}
+{#        <option value="112" data-pup="11" class="l3">12</option>#}
+
+{#        <option value="2" class="l1 non-leaf">opt_1</option>#}
+{#        <option value="21" data-pup="2" class="l2 non-leaf">1</option>#}
+{#        <option value="211" data-pup="21" class="l3 non-leaf">11</option>#}
+{#        <option value="2111" data-pup="211" class="l4">opt_1111</option>#}
+{#        <option value="212" data-pup="21" class="l3">12</option>#}
+
+{#    </select>#}
+
+{#    <select id="{{ id }}" class="tree-select form-control" name="{{ full_name }}">#}
+{#        {% for entity in entities %}#}
+{#            {{ macro.option(entities, tree) }}#}
+{#        {% endfor %}#}
+{#    </select>#}
+
+{#{% endblock %}#}

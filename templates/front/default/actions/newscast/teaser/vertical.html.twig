@@ -1,0 +1,134 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set currentZone = block.col.zone %}
+{% set layout = currentZone.layout %}
+{% set previousZonePosition = currentZone.position - 1 %}
+{% set previousZoneBg = 'primary' %}
+
+{% for zone in layout.zones %}
+    {% if zone.position == previousZonePosition %}
+        {% set previousZoneBg = 'video-bg' in zone.customClass ? 'primary-darken' : zone.backgroundColor|replace({'bg-': ''}) %}
+    {% endif %}
+{% endfor %}
+
+<div class="newscast-teaser-vertical position-relative {{ previousZoneBg }}">
+    {{ macroWebmaster.box({
+        title: "Éditer le teaser"|trans([], 'front_webmaster'),
+        role: 'ROLE_NEWSCAST',
+        toolBoxClass: 'listing-box',
+        path: path('admin_newscastteaser_edit', {website: website.id, newscastteaser: teaser.id})
+    }) }}
+    {% if intl.title %}
+        <div class="row row-container py-xl-5 mt-5">
+            <div class="col-lg-6">
+                <h2 class="title position-relative d-inline-block mb-4 mb-lg-5 ps-tablet-xs pe-tablet-xs">{{ intl.title|raw }}<i class="icon-circle position-relative text-warning ms-1"></i></h2>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-6 pb-5">
+            <div class="row row-container ps-tablet-xs pe-tablet-xs">
+                <div class="nav flex-column nav-pills me-lg-5 pe-lg-4 col-12" id="v-pills-tab-{{ teaser.id }}" role="tablist" aria-orientation="vertical">
+                    {% for entity in entities %}
+                        <button class="nav-link text-start cursor bg-transparent position-relative d-md-inline-flex px-0 pt-4 pb-0{% if loop.first %} active{% endif %}"
+                                id="v-pills-{{ entity.slug }}-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#v-pills-{{ entity.slug }}"
+                                type="button"
+                                role="tab"
+                                aria-controls="v-pills-{{ entity.slug }}"
+                                aria-selected="{% if loop.first %}true{% else %}false{% endif %}">
+                            {{ macroWebmaster.box({
+                                title: "Éditer l'actualité"|trans([], 'front_webmaster'),
+                                role: 'ROLE_NEWSCAST',
+                                path: path('admin_newscast_edit', {website: teaser.website.id, newscast: entity.id})
+                            }) }}
+                            {% if entity.showCategory and entity.category.intl.title is defined %}
+                                <div class="category-wrap pe-4 mb-2 mb-lg-0">
+                                    <strong class="category fw-600 lh-1 d-inline-block text-uppercase text-primary">{{ entity.category.intl.title|raw }}</strong>
+                                </div>
+                            {% endif %}
+                            <div class="content d-flex pb-3 pb-md-4">
+                                <div class="content-wrap me-4">
+                                    {% if entity.showTitle %}
+                                        <h3 class="title mb-2 d-inline-block w-100 fw-600">{{ entity.intl.title|raw }}</h3>
+                                    {% endif %}
+                                    {% if entity.showSubTitle %}
+                                        <strong class="sub-title mb-2 d-inline-block fw-300 w-100">{{ entity.intl.title|raw }}</strong>
+                                    {% endif %}
+                                    {% if entity.date and entity.showDate %}
+                                        {{ component('Date', {date: entity.date}) }}
+                                    {% endif %}
+                                </div>
+                                <i class="icon-chevron-right text-gray-600 position-relative ms-auto"></i>
+                            </div>
+                        </button>
+                    {% else %}
+                        <p class="mb-0">{{ "Aucune actualité pour le moment."|trans|raw }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if 'index-link' in teaser.fields and entities is not empty %}
+                <div class="w-100 text-start mt-xl-5 mb-xl-5 pt-5 d-none d-lg-inline-block">
+                    {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                        intl: {
+                            link: path('front_index', {url: entities|first.urlIndex}),
+                            linkStyle: 'btn btn-outline-primary',
+                            linkLabel: "Toutes les news"|trans,
+                        }
+                    } %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-lg-6 d-flex">
+            <div class="tab-content position-relative w-100">
+                {% for entity in entities %}
+                    <div class="tab-pane h-100 bg-light align-items-center py-5 px-5 fade{% if loop.first %} show active{% endif %}"
+                         id="v-pills-{{ entity.slug }}"
+                         role="tabpanel"
+                         aria-labelledby="v-pills-{{ entity.slug }}-tab" tabindex="0">
+                        <div class="inner py-xl-5 px-xl-5">
+                            {% set haveContent = entity.haveContent and (entity.showIntro or entity.showBody or entity.showBody) %}
+                            {% if entity.showImage and entity.haveMedias %}
+                                <div class="media-wrap{% if haveContent %} mb-4{% endif %}">
+                                    {{ entity.mainMedia|file(thumbConfiguration, {
+                                        targetLink: entity.url,
+                                        placeholder: true,
+                                        isInBox: false,
+                                        class: '',
+                                    }) }}
+                                </div>
+                            {% endif %}
+                            {% if entity.showIntro and entity.intl.introduction %}
+                                <p class="introduction fw-700 mb-4">{{ entity.intl.introduction|raw|nl2br }}</p>
+                            {% endif %}
+                            {% if entity.showBody and entity.intl.body %}
+                                <div class="body mb-4">{{ entity.intl.body|raw }}</div>
+                            {% endif %}
+                            {% if entity.showLinkCard and entity.url %}
+                                {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: {link: entity.url}, linkStyle: 'btn btn-primary'} %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% if 'index-link' in teaser.fields and entities is not empty %}
+            <div class="container-fluid d-lg-none">
+                <div class="row row-container m-0 text-start mt-5 mb-5 ps-tablet-xs pe-tablet-xs">
+                    <div class="col-12">
+                        {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                            intl: {
+                                link: path('front_index', {url: entities|first.urlIndex}),
+                                linkStyle: 'btn btn-outline-primary',
+                                linkLabel: "Toutes les news"|trans,
+                            }
+                        } %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>

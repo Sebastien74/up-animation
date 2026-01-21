@@ -1,0 +1,5 @@
+add: 'Add category'
+adminName: 'Category name'
+isDefault: Main
+plural: 'News categories'
+singular: 'News category'

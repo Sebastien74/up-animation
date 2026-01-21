@@ -1,0 +1,114 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard %}
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% if microDataActive and microdataEntities is defined %}
+    {% include 'front/'~websiteTemplate~'/include/microdata-entities.html.twig' with {entities: microdataEntities, url: url, website: website} only %}
+{% endif %}
+
+{% set pageNum = app.request.get('page') ? app.request.get('page') : 1 %}
+{% set ajaxPath = path('front_cataloglisting_index', {website: website.id, url: url.id, filter: filter}) %}
+
+<div id="index-products" class="index-products row position-relative">
+
+    {{ macroWebmaster.box({
+        title: "Éditer le listing"|trans([], 'front_webmaster'),
+        role: 'ROLE_CATALOG',
+        toolBoxClass: 'listing-box',
+        path: path('admin_cataloglisting_edit', {website: website.id, cataloglisting: listing.id})
+    }) }}
+
+    {% if listing.display != 'disable' %}
+        {% include 'front/'~websiteTemplate~'/include/loader.html.twig' only %}
+        <div class="col-12">
+            {{ render_esi(path('front_catalog_search', {listing: listing.id, url: url.id})) }}
+        </div>
+    {% endif %}
+
+    <div class="col-lg-{% if listing.display != 'disable' %}12{% else %}12{% endif %}">
+
+        {% set mainCatalog = listing.catalogs|first %}
+        {% set mainCatalogSlug = mainCatalog.slug is defined ? mainCatalog.slug : false %}
+        {% set noneResultTxt = 'exemple-one' == mainCatalogSlug ? "Aucune exemple-one pour le moment"|trans : ('exemple-two' == mainCatalogSlug ? "Aucun exemple-two pour le moment"|trans : "Aucun produit pour le moment"|trans) %}
+        {% set oneResultTxt = 'exemple-one' == mainCatalogSlug ? "exemple-one trouvé"|trans : ('exemple-two' == mainCatalogSlug ? "exemple-two trouvé"|trans : "produit"|trans) %}
+        {% set multiResultTxt = 'exemple-one' == mainCatalogSlug ? "exemple-one trouvés"|trans : ('exemple-two' == mainCatalogSlug ? "exemple-two trouvés"|trans : "produits"|trans) %}
+
+        <div id="result-counter" class="text-white fw-600 d-flex align-items-center p-0 mb-4 mb-lg-5{% if not listing.counter or not haveFilters %} d-none{% endif %}">
+            {% if count == 0 %}
+                {{ noneResultTxt }}
+            {% elseif count == 1 %}
+                <span class="count me-3 bg-primary text-white fw-600 d-flex align-items-center justify-content-center">{{ count }}</span><span class="message">{{ oneResultTxt|raw }}</span>
+            {% else %}
+                <span class="count me-3 bg-primary text-white fw-600 d-flex align-items-center justify-content-center">{{ count }}</span><span class="message">{{ multiResultTxt|raw }}</span>
+            {% endif %}
+        </div>
+
+        {% if productsByCategories|length > 0 %}
+            {% for categoryArgs in productsByCategories %}
+                {% set category = categoryArgs.entity %}
+                <div class="category-section my-5 {% if loop.index is odd %}odd{% else %}even{% endif %}">
+                    <div class="container">
+                        <h2 class="title category-title text-secondary mb-0">{{ category.intl.title|raw }}</h2>
+                        {% if category.intl.subTitle %}
+                            <strong class="sub-title">{{ category.intl.subTitle|raw }}</strong>
+                        {% endif %}
+                        <div class="row products-section justify-content-center mt-5">
+                            {% for product in categoryArgs.products %}
+                                <div class="col-md-6 col-lg-4 mb-5 position-relative">
+                                    {{ macroWebmaster.box({
+                                        title: "Éditer le produit"|trans([], 'front_webmaster'),
+                                        role: 'ROLE_CATALOG',
+                                        path: path('admin_catalogproduct_edit', {website: website.id, catalogproduct: product.id})
+                                    }) }}
+                                    {{ macroCard.standard({
+                                        entity: product,
+                                        titleForce: 3,
+                                        thumbConfiguration: thumbConfiguration,
+                                        thumbPlaceholder: true,
+                                        displayThumbnail: true,
+                                        showLink: true,
+                                        colSize: 4,
+                                        webmaster: {
+                                            title: "Éditer le produit"|trans([], 'front_webmaster'),
+                                            role: 'ROLE_CATALOG',
+                                            path: path('admin_catalogproduct_edit', {website: website.id, catalogproduct: product.id})
+                                        }}) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div id="scroll-wrapper"
+                 data-scroll-active="{{ scrollInfinite }}"
+                 data-page="{{ pageNum }}"
+                 data-max="{{ maxPage }}"
+                 data-href="{{ ajaxPath }}"
+                 data-highlight="{{ highlight }}"
+                 class="products-index-container pagination-ajax-wrap">
+                {% include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader'} only %}
+                {% include 'front/'~websiteTemplate~'/actions/catalog/results.html.twig' %}
+                {% if scrollInfinite or showMoreBtn %}
+                    <div id="scroller-loader" class="w-100 mt-5 d-none text-center">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                {% endif %}
+                {% if showMoreBtn and maxPage > 1 %}
+                    <div id="show-more-wrap" class="w-100 text-center mt-5{% if maxPage >= 1 %} d-none{% endif %}">
+                        <button type="button" id="show-more-index-btn" class="btn btn-secondary">{{ "Voir plus"|trans|raw }}</button>
+                    </div>
+                {% endif %}
+                {% if maxPage > 1 %}
+                    <div class="pagination-container row mx-0 mt-3">
+                        <div class="col-12 d-flex justify-content-end">
+                            {{ knp_pagination_render(products, 'core/pagination.html.twig', [], {class: 'ajax-pagination'}) }}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+

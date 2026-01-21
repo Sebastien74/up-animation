@@ -1,0 +1,95 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% set asListing = listing is defined %}
+{% set microDataActive = microDataActive is defined ? microDataActive : website.seoConfiguration.microData %}
+{% set pageNum = app.request.get('page') ? app.request.get('page') : 1 %}
+{% set ajaxPath = path('front_'~interfaceName~'_index', {website: website.id, url: url.id, filter: filter}) %}
+
+{% if microDataActive %}
+    {% include 'front/'~websiteTemplate~'/include/microdata-entities.html.twig' with {allEntities: allEntities, url: url, website: website} only %}
+{% endif %}
+
+<div id="listing-{{ interfaceName }}-container-{{ listing.slug }}" class="listing-{{ interfaceName }}-container listing-container">
+
+    {% if asListing %}
+        {{ macroWebmaster.box({
+            title: "Éditer l'index"|trans([], 'front_webmaster'),
+            role: 'ROLE_'~interfaceName|upper,
+            path: path('admin_'~interfaceName~'listing_edit', {website: listing.website.id, (interfaceName~'listing'): listing.id})
+        }) }}
+    {% endif %}
+
+    {% if lastEntity %}
+        {% include 'front/'~websiteTemplate~'/actions/vendor/include/first-entity-block.html.twig' %}
+    {% endif %}
+
+    {% if entities is defined and entities %}
+
+        {% set asListing = listing is defined %}
+        {% set formatDate = asListing ? listing.formatDate : null %}
+        {% set hideDate = asListing ? listing.hideDate : false %}
+        {% set displayCategory = asListing ? listing.displayCategory : null %}
+
+        {% set pageNum = app.request.query.get('page') ? app.request.query.get('page')) : 1 %}
+        {% set ajaxPath = path('front_'~interfaceName~'_index', {website: website.id, url: url.id, filter: filter}) %}
+
+        <div id="scroll-wrapper"
+             data-scroll-active="{{ scrollInfinite }}"
+             data-page="{{ pageNum }}"
+             data-max="{{ maxPage }}"
+             data-href="{{ ajaxPath }}"
+             class="{{ interfaceName }}-index-container index-container container {% if entities|length > 0 %} pt-4 pb-3 pt-md-5 pb-md-4{% endif %}">
+
+            {% include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader'} only %}
+
+            <div id="results" class="results row-container row">
+                {% for entity in entities %}
+                    {% if not lastEntity or entity.id != lastEntity.id %}
+                        <div class="col-md-6 col-lg-4 mb-4 item">
+                            {% include 'front/'~websiteTemplate~'/include/card.html.twig' with {
+                                entity: entity,
+                                thumbConfiguration: thumbConfiguration,
+                                thumbPlaceholder: true,
+                                displayThumbnail: asListing ? listing.displayThumbnail : null,
+                                formatDate: asListing ? listing.formatDate : 'mm/dd',
+                                showDate: asListing and not hideDate or not asListing and not entity.category.hideDate,
+                                showCategory: asListing and displayCategory or not asListing and entity.category.displayCategory,
+                                showLink: true,
+                                targetLink: path('front_'~interfaceName~'_view', {pageUrl: url.code, url: website|intlUrl(entity)}),
+                                colSize: 4,
+                                webmaster: {
+                                    title: "Éditer l'entité"|trans([], 'front_webmaster'),
+                                    role: 'ROLE_'~interfaceName|upper,
+                                    path: path('admin_'~interfaceName~'_edit', {website: listing.website.id, (interfaceName): entity.id})
+                                }
+                            } only %}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    {% if not lastEntity %}
+                        <div class="col-12 pt-4 pb-3 pt-md-5 pb-md-4">
+                            {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Aucune publication pour le moment."|trans} only %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if scrollInfinite %}
+                <div id="scroller-loader" class="w-100 mt-5 d-none text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden sr-only">{{ "Chargement..."|trans }}</span>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if maxPage > 1 %}
+                <div class="pagination-container text-center text-md-end mt-3{% if scrollInfinite or showMoreBtn %} d-none{% endif %}">
+                    {{ knp_pagination_render(entities, 'core/pagination.html.twig', [], {class: 'ajax-pagination'}) }}
+                </div>
+            {% endif %}
+
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,15 @@
+{% trans_default_domain 'admin' %}
+
+{% if pagination.getTotalItemCount is defined and (pagination.getTotalItemCount / pagination.itemNumberPerPage) > 0 %}
+    <div class="card-footer border-top">
+        <div class="row">
+            <div class="col-md-4 my-auto d-flex justify-content-start">
+                {% set delta = (pagination.itemNumberPerPage - pagination|length) %}
+                {% set itemsCountStart = pagination.currentPageNumber == 1 ? 1 : (pagination.itemNumberPerPage * pagination.currentPageNumber) - pagination.itemNumberPerPage + 1 %}
+                {% set itemsCountEnd = (pagination.itemNumberPerPage * pagination.currentPageNumber) - delta %}
+                <span class="text-white">{{ itemsCountStart }} - {{ itemsCountEnd }} / {{ pagination.getTotalItemCount }}</span>
+            </div>
+            <div class="col-md-8 my-auto d-flex justify-content-end">{{ knp_pagination_render(pagination) }}</div>
+        </div>
+    </div>
+{% endif %}

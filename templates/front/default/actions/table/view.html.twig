@@ -1,0 +1,49 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+<div class="table-container position-relative header-table{% if render.haveColsTitles %} table-responsive{% endif %}">
+    {{ macroWebmaster.box({
+        title: "Éditer le tableau"|trans([], 'front_webmaster'),
+        role: 'ROLE_FORM',
+        path: path('admin_table_edit', {website: website.id, table: table.id, entitylocale: app.request.locale})
+    }) }}
+    {% if table.intl.title %}
+        <strong class="table-title text-uppercase text-center d-inline-block mb-3 w-100">{{ table.intl.title|raw }}</strong>
+    {% endif %}
+    <table class="table table-bordered{% if table.entity.striped %} table-striped{% endif %}" data-bg="{{ table.entity.headBackgroundColor }}" data-color="text-{{ table.entity.headColor }}">
+        {% if render.haveColsTitles %}
+            <thead>
+                <tr class="{{ table.entity.headBackgroundColor }}">
+                    {% for col in render.head %}
+                        {% set title = col.intl.title is defined ? col.intl.title|raw : null %}
+                        <th scope="col" class="text-{{ table.entity.headColor }}">{{ title }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+        {% endif %}
+        <tbody>
+            {% for rows in render.body %}
+                <tr class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
+                    {% for row in rows %}
+                        {% set dataTitle = render.head['col-'~loop.index].intl.title is defined ? render.head['col-'~loop.index].intl.title : '' %}
+                        <td data-title="{{ dataTitle|unescape|raw }}">
+                            <div class="content">
+                                {% if row.intl.title %}
+                                    {% set titleForce = row.intl.titleForce ? row.intl.titleForce : 3 %}
+                                    <h{{ titleForce }}>{{ row.intl.title|raw }}</h{{ titleForce }}>
+                                {% endif %}
+                                {% if row.intl.introduction %}
+                                    <p class="introduction">{{ row.intl.introduction|raw }}</p>
+                                {% endif %}
+                                {% if row.intl.body %}
+                                    <div class="body">{{ row.intl.body|raw }}</div>
+                                {% endif %}
+                            </div>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

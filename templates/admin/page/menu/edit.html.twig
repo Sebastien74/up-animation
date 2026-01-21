@@ -1,0 +1,130 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageTitle = "Menu"|trans~" : "~entity.adminName %}
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-menu', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-menu', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <div id="menu-edit-page" class="position-relative">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <h4 class="card-title card-header">{{ 'fal copy'|icon(null, 18, 'info-darken me-2') }}{{ "Pages du site"|trans }}</h4>
+                    <div class="card-body">
+                        <form method="post" id="page-selector-menu"
+                              action="{{ path('admin_link_add', {website: websiteId(), menu: entity.id, locale: entitylocale, multiple: 0}) }}" class="mb-4">
+                            <div class="input-group mb-3">
+                                <select name="page" class="custom-select select-2">
+                                    <option value="">{{ "Sélectionnez une page"|trans }}</option>
+                                    {% for page in pages %}
+                                        {% if page.template != "components.html.twig" %}
+                                            <option value="{{ page.id }}">{{ page.adminName }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="submit" class="input-group-text bg-info cursor">{{ 'far chevron-right'|icon(null, 14, 'white') }}</button>
+                                </div>
+                            </div>
+                        </form>
+                        <form id="pages-to-menu-form" action="{{ path('admin_link_add', {website: websiteId(), menu: entity.id, locale: entitylocale, multiple: 1}) }}" method="POST" >
+                            <ul id="pages-list" class="w-100 ps-3">
+                                {% set pages = treePages.main is defined ? treePages.main : [] %}
+                                {% for page in pages %}
+                                    {% if page.template != "components.html.twig" and page.template != "error.html.twig" %}
+                                        {% include 'admin/page/menu/link-element.html.twig' with {page: page, tree: treePages} only %}
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                            <button type="submit" class="btn btn-info w-100">{{ "Ajouter au menu"|trans }}</button>
+                        </form>
+                    </div>
+                </div>
+                <div id="add-link-card" class="card">
+                    <h4 class="card-title card-header">{{ 'fal link'|icon(null, 18, 'info-darken me-2') }}{{ "Ajouter un lien externe ou d'arborescence"|trans }}</h4>
+                    <div class="card-body pb-0 px-2">
+                        {{ render_esi(path('admin_link_new', {website: websiteId(), menu: entity.id, entitylocale: entitylocale} )) }}
+                    </div>
+                </div>
+                <div class="card">
+                    <h4 class="card-title card-header">{{ 'fal cog'|icon(null, 18, 'info-darken me-2') }}{{ "Configuration"|trans }}</h4>
+                    <div class="card-body pb-0">
+                        <div class="row">
+                            {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri}}) }}
+                                {% include 'admin/core/form/edit-fields-base.html.twig' with {
+                                    form: form,
+                                    excludes: ['expand', 'size', 'alignment', 'maxLevel', 'main', 'footer', 'alwaysFixed', 'fixedOnScroll', 'dropdownHover', 'vertical', 'save']} only %}
+                                <button class="btn btn-outline-info-darken d-inline-flex align-items-center justify-content-center collapsed w-100 mb-3"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        href="#collapseConfigForm"
+                                        aria-expanded="false"
+                                        aria-controls="collapseForm">
+                                    {{ 'fal cog'|icon(14, 14, 'me-2') }}{{ "Options avancées"|trans }}
+                                </button>
+                                <div id="collapseConfigForm" class="collapse">
+                                    {% include 'admin/core/form/edit-fields-base.html.twig' with {
+                                        form: form,
+                                        excludes: ['adminName', 'slug', 'template', 'save']} only %}
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card radius-bottom">
+                    <h4 class="card-title card-header">
+                        <div class="row">
+                            <div class="col-md-6 d-inline-flex align-items-center">
+                                {{ 'far bars'|icon(null, 17, 'white me-2') }} {{ "Menu"|trans|striptags }}
+                            </div>
+                            <div class="col-md-6 d-inline-flex justify-content-end">
+                                {% if 'delete'|moduleActive(configuration) %}
+                                    <button id="delete-pack-btn" class="btn btn-danger d-none"
+                                            data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
+                                        {{ 'fas trash'|icon(10, 13, 'white') }}
+                                    </button>
+                                {% endif %}
+                                {% set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
+                                    ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees %}
+                                <span id="nestable-expand-all" class="btn btn-outline-info-lighten cursor standard me-2{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
+                                    {{ 'fal arrow-alt-to-bottom'|icon(null, 16, 'dark') }}
+                                </span>
+                                <span id="nestable-collapse-all" class="btn btn-dark cursor standard me-2{% if collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
+                                    {{ 'fal arrow-alt-to-top'|icon(null, 16, 'dark') }}
+                                </span>
+                                <span data-toggle="preloader">
+                                    <a href="{{ lastRoute() }}" class="btn btn-white text-info standard"
+                                       data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
+                                       aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                                        {{ 'fas reply'|icon(14, 14, 'info') }}
+                                    </a>
+                                </span>
+                                {% include 'admin/include/intl-selector.html.twig' with {route: 'admin_menu_edit', args: { menu: entity.id, selectorClass: 'ms-2' }} %}
+                            </div>
+                        </div>
+                    </h4>
+                    <div class="card-body bg-info-light radius-bottom">
+                        {% set limit = entity.maxLevel > 0 ? entity.maxLevel : 1000 %}
+                        {% include 'admin/core/include/nestable.html.twig' with {routenameInterface: "link", forceLimit: limit, infoUrl: true} %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

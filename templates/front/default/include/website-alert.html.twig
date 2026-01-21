@@ -1,0 +1,39 @@
+{% trans_default_domain 'front_default' %}
+
+{% set mode = information.newTab is defined and information.newTab ? 'remove' : 'hide' %}
+{% set remove = mode == 'remove' %}
+{% set postion = 'top' %} {# 'top' or 'bottom' #}
+{% set type = information.alertType ? information.alertType : 'marquee' %} {# 'basic', 'marquee' or 'flip' #}
+{% set speed = information.alertDuration ? information.alertDuration * 1000 : 25000 %}
+{% set hide = app.session.get('front_website_alert_'~mode) %}
+{% set asMarquee = 'marquee' == type %}
+{% set asflip = 'flip' == type %}
+{% set bg = 'bg-primary' %}
+
+{% set classes = 'text-center d-none '~postion~' '~bg %}
+{% set classes = 'top' == postion ? classes~' position-relative' : classes~' position-fixed' %}
+
+{% if not hide %}
+    <div id="website-alert" class="{{ classes }}"
+         data-type="{{ type }}"
+         data-position="{{ postion }}"
+         data-gap="0"
+         data-duplicate="2"
+         data-direction="left"
+         data-direction-mobile="left"
+         data-speed="{{ speed }}"
+         data-speed-mobile="20000">
+        <div class="d-flex justify-content-center pt-4 pb-4 position-relative overflow-hidden{% if asflip %} flip-container{% endif %}{% if not asMarquee %} mx-4 mx-lg-5{% endif %}">
+            <div class="message body{% if asMarquee %} d-flex align-items-center{% endif %}{% if asMarquee %} marquee-container{% elseif asflip %} flip-wrapper w-100{% endif %}">
+                {% for message in websiteAlertmessage %}
+                    <p class="mb-0 mx-3{% if asflip %} flip-face{% endif %}">{{ message|raw }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <span id="close-website-alert-wrap" class="py-2 px-3 position-absolute h-100 d-flex align-items-center justify-content-center">
+            <span id="close-website-alert" class="cursor position-relative" data-path="{{ path('website_alert', {mode: mode}) }}">
+                <i class="icon-times-circle"></i>
+            </span>
+        </span>
+    </div>
+{% endif %}

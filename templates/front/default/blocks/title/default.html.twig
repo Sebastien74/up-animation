@@ -1,0 +1,55 @@
+{% trans_default_domain 'front_default' %}
+
+{% if intl.title %}
+    {% set titleForce = titleForce is defined ? titleForce : intl.titleForce %}
+    {% set animActive = false %}
+    {% set blockClasses = blockClasses is defined ? blockClasses : '' %}
+    {% set blockTransitions = blockTransitions is defined ? blockTransitions : [] %}
+    {% set icon = icon is defined ? icon : null %}
+    {% set iconBackground = iconBackground is defined ? iconBackground : null %}
+    {% set style = style is defined ? style : false %}
+    {% set anim = blockTransitions|transitionsAttributes({
+        title: animActive ? ('block-title-title-h'~titleForce) : null,
+        subtitle: animActive ? 'block-title-subtitle' : null
+    }) %}
+    <div class="title-block w-100{% if blockClasses %} {{ blockClasses }}{% endif %}">
+        {% if intl.subTitlePosition is defined and intl.subTitlePosition == 'top' and intl.subTitle %}
+            <strong class="sub-title sub-title-h{{ titleForce }} mb-3 d-inline-block w-100{% if anim.subtitle.class %} {{ anim.subtitle.class|raw }}{% endif %}"
+                {% if anim.subtitle.attr %} {{ anim.subtitle.attr|raw }}{% endif %}>
+                {{ intl.subTitle|unescape|raw }}
+            </strong>
+        {% endif %}
+        {% if icon and iconBackground %}
+            <div class="title-icon-wrap position-relative d-inline-flex">
+        {% endif %}
+        <h{{ titleForce }} class="title position-relative mb-0{% if style %} {{ style }}{% endif %}{% if anim.title.class %} {{ anim.title.class|raw }}{% endif %}"
+            {% if anim.title.attr %} {{ anim.title.attr|raw }}{% endif %}>
+            {% if intl.link is defined and intl.link %}
+                <a href="{{ intl.link }}"{% if intl.linkExternal %} rel="noopener noreferrer"{% endif %}{% if intl.linkBlank %} target="_blank" {% endif %}>
+            {% endif %}
+                {{ intl.title|raw }}
+            {% if intl.link is defined and intl.link %}
+                </a>
+            {% endif %}
+        </h{{ titleForce }}>
+        {% if icon and iconBackground %}
+                <div class="wrap-icon-title position-absolute d-flex align-items-center justify-content-center {{ iconBackground }}">
+                    {{ asset(icon)|file({}, {
+                        screensSizes: {
+                            mobile: {width: null, height: 50},
+                            tablet: {width: null, height: 50},
+                            desktop: {width: null, height: 50}
+                        },
+                        only_html: '.svg' in icon,
+                    }) }}
+                </div>
+            </div>
+        {% endif %}
+        {% if intl.subTitlePosition is defined and intl.subTitlePosition == 'bottom' and intl.subTitle %}
+            <strong class="sub-title sub-title-h{{ titleForce }} mt-2 d-inline-block w-100{% if anim.subtitle.class %} {{ anim.subtitle.class|raw }}{% endif %}"
+                {% if anim.subtitle.attr %} {{ anim.subtitle.attr|raw }}{% endif %}>
+                {{ intl.subTitle|unescape|raw }}
+            </strong>
+        {% endif %}
+    </div>
+{% endif %}

@@ -1,0 +1,149 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% if calendar %}
+
+    {% set blockId = block.id is defined ? block.id : null %}
+    {% set blockColSize = block.col.size is defined and block.col.size ? block.col.size : 12 %}
+
+    {% set colSize = 12 %}
+    {% if blockColSize < 6 %}
+        {% set colSize = 12 %}
+    {% elseif calendar.daysPerPage == 3 %}
+        {% set colSize = 4 %}
+    {% elseif calendar.daysPerPage == 4 %}
+        {% set colSize = 5 %}
+    {% elseif calendar.daysPerPage == 5 %}
+        {% set colSize = 6 %}
+    {% elseif calendar.daysPerPage == 6 %}
+        {% set colSize = 8 %}
+    {% elseif calendar.daysPerPage == 7 %}
+        {% set colSize = 10 %}
+    {% endif %}
+
+    <div class="form-calendar-container position-relative">
+        
+        {{ macroWebmaster.box({
+            title: "Éditer le calendrier"|trans([], 'front_webmaster'),
+            role: 'ROLE_FORM_CALENDAR',
+            path: path('admin_formcalendar_edit', {website: website.id, form: form.id, formcalendar: calendar.id})
+        }) }}
+
+        <div class="form-calendar-ajax-content">
+
+            {% if calendars|length > 1 %}
+                <div class="row">
+                    <div class="col-lg-{{ colSize }} mx-auto">
+                        <div id="calendars-selector-group" class="form-group calendars-selector-group text-center">
+                            <label for="calendars-selector" class="text-primary text-bold">{{ "Choisissez"|trans|raw }}</label>
+                            <select class="form-control text-center" id="calendars-selector">
+                                {% for calendarChange in calendars %}
+                                    <option value="{{ path('front_form_calendar_view', {block: blockId, website: website.id, calendar: calendarChange.id}) }}"
+                                        {% if calendarChange.id == calendar.id %} selected{% endif %}>
+                                        {% set intl = calendarChange|intl %}
+                                        {% set optionTitle = intl.title is defined and intl.title ? intl.title : calendarChange.adminName %}
+                                        {{ optionTitle }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-primary d-inline-block mt-2 mb-2">{{ "Vous pourrez sélectionner un créneau après avoir rempli le formulaire"|trans|raw }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {{ form_start(formCalendar, {attr: {
+                id: 'form-calendar-container-'~calendar.id,
+                class: not contact ? 'disabled form-calendar' : 'form-calendar',
+                novalidate: "novalidate",
+                action: path('front_form_calendar_view', {block: blockId, token: token, startDate: startDate}),
+                "data-calendar": calendar.id,
+                "data-component": "form-calendar" }}) }}
+
+                {% set intl = calendar|intl %}
+                {% set title = intl.title is defined and intl.title ? intl.title : calendar.adminName %}
+
+                <div class="row">
+                    <div class="col-lg-{{ colSize }} mx-auto">
+
+                        {% if not calendars %}
+                            <h2 class="title text-center">{{ title }}</h2>
+                        {% endif %}
+
+                        <div class="card form-calendar-card">
+                            <div class="card-loader d-none">
+                                <div class="vertical-align">
+                                    <span class="spinner-border" role="status"></span>
+                                </div>
+                            </div>
+                            <div class="card-header">
+                                <div class="row">
+                                    {% for date in dates.dates %}
+                                        <div class="col text-center">
+                                            {{ date.datetime|format_datetime(pattern='cccc', locale=app.request.locale)|capitalize }}<br>
+                                            {{ date.datetime|format_datetime(pattern='dd/MM/Y', locale=app.request.locale)|capitalize }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="slots-container card-body" data-simplebar>
+                                {{ form_row(formCalendar.slot_date) }}
+                            </div>
+                            <div class="card-footer p-0">
+                                <div class="caption">
+                                    <ul class="reset">
+                                        <li>{{ 'fas square'|icon(12, 12, 'available float-start me-1') }}{{ "Libre"|trans|raw }}</li>
+                                        <li>{{ 'fas square'|icon(12, 12, 'later float-start me-1') }}{{ "Bientôt disponible"|trans|raw }}</li>
+                                        <li>{{ 'fas square'|icon(12, 12, 'unavailable float-start me-1') }}{{ "Indisponible"|trans|raw }}</li>
+                                    </ul>
+                                </div>
+                                {% if calendar.controls %}
+                                    <div class="controls">
+                                        <div class="row">
+                                            <div class="col-6 text-start">
+                                                {% if dates.previous %}
+                                                    <span data-href="{{ path('front_form_calendar_view', {block: blockId, website: website.id, token: token, calendar: calendar.id, startDate: dates.previous|date('Y-m-d')}) }}"
+                                                          class="btn btn-primary change-dates-btn">
+                                                        <i class="icon-chevron-left"></i>
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-6 text-end">
+                                                {% if dates.next %}
+                                                    <span data-href="{{ path('front_form_calendar_view', {block: blockId, website: website.id, token: token, calendar: calendar.id, startDate: dates.next|date('Y-m-d')}) }}"
+                                                          class="btn btn-primary change-dates-btn">
+                                                        <i class="icon-chevron-right"></i>
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if register == 'no-available' %}
+                            <div id="calendar-error">
+                                {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'error', message: "Ce crénéau n'est plus disponible. Veuillez en choisir un autre."|trans} only %}
+                            </div>
+                        {% endif %}
+
+                        {% if contact %}
+                            <div id="block-slot-submit" class="btn btn-primary mt-4 w-100 disabled">{{ "Enregistrer"|trans|raw }}</div>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            {{ form_end(formCalendar) }}
+
+        </div>
+
+    </div>
+
+{% else %}
+
+    {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Nous n'avons pas trouvé de calendrier !!"|trans} only %}
+
+{% endif %}

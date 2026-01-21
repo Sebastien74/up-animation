@@ -1,0 +1,15 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'timeline'|moduleActive(configuration) %}
+    {% set uri = app.request.uri %}
+    {% set active = '/timelines/' in uri %}
+    {% set module = 'timeline'|moduleActive(configuration) %}
+    {% set intl = intlsModules['timeline'][app.user.locale] is defined ? intlsModules['timeline'][app.user.locale] : intlsModules['timeline']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['timeline']['entity'].adminName is defined ? intlsModules['timeline']['entity'].adminName : 'Chronologies'|trans) %}
+    {% set icon = intlsModules['timeline']['entity'].iconClass is defined and intlsModules['timeline']['entity'].iconClass ? intlsModules['timeline']['entity'].iconClass : '/medias/icons/light/clock.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a href="{{ path('admin_timeline_index', {website: websiteId}) }}" data-toggle="preloader">
+            {{ icon|icon(15, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% endif %}

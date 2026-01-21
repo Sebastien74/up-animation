@@ -1,0 +1,82 @@
+{% trans_default_domain 'gdpr' %}
+
+{% set website = website is defined and website ? website : website() %}
+{% set axeptioId = website.api.custom.axeptioId is defined ? website.api.custom.axeptioId : null %}
+
+{% if not axeptioId and 'gdpr'|moduleActive(website.configuration) %}
+    <div id="cookies-infos" class="container table-responsive mb-5">
+        <h2 id="legacy-title-params" class="mb-4">{{ "Paramétrage des cookies"|trans }}</h2>
+        <table class="table table-bordered table-striped gdpr-management mb-0">
+            <thead>
+                <tr>
+                    <th class="align-middle">{{ "Groupe"|trans }}</th>
+                    <th class="align-middle">
+                        <div class="row">
+                            <div class="col-8 my-auto">{{ "Description"|trans }}</div>
+                            <div class="col-4 my-auto">
+                                <button type="button" id="gdpr-choices-validate" class="gdpr-choices-validate btn float-end d-none d-lg-inline-block">
+                                    <span id="gdpr-choices-validate-icon-large" class="spinner-border me-2 d-none" role="status"></span>
+                                    <span class="d-inline-block">{{ "Enregistrer"|trans|raw }}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                    {% for group in category.gdprgroups %}
+                        {% if category.slug != "functional" %}
+                            {% set intl = intl(group) %}
+                            <tr>
+                                <td data-title="{{ "Groupe"|trans|striptags }}">
+                                    <div class="content text-bold">
+                                        <span class="img-wrap float-start me-2">
+                                            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                                 data-src="{{ asset('build/gdpr/images/'~group.slug~'-gdpr.svg', 'gdpr') }}"
+                                                 class="lazy-load"
+                                                 width="25" height="auto"
+                                                 alt="{{ group.adminName|striptags }}" title="{{ group.adminName|striptags }}" />
+                                        </span>
+                                        {{ group.adminName|unescape|raw }}
+                                    </div>
+                                </td>
+                                <td data-title="{{ "Description"|trans|striptags }}">
+                                    <div class="content">
+                                        <div class="row">
+                                            <div class="col-lg-9 my-auto">
+                                                {% if intl.introduction|striptags|length > 0 %}
+                                                    {{ intl.introduction|unescape|raw }}
+                                                {% endif %}
+                                                {% if intl.body|striptags|length > 0 %}
+                                                    {{ intl.body|unescape|raw }}
+                                                {% endif %}
+                                                {% if intl.targetLink is defined and intl.targetLink %}
+                                                    <a href="{{ intl.targetLink }}" target="_blank">{{ "En savoir plus"|trans }}</a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-lg-3 my-auto">
+                                                <div class="material-switch float-end">
+                                                    <input id="table-gdpr-{{ group.slug }}"
+                                                           type="checkbox"
+                                                           class="cookie-group-checkbox"
+                                                           data-service="{{ group.service }}"
+                                                           data-code="{{ group.slug }}"{% if cookie(group.slug) %} checked{% endif %} />
+                                                    <label for="table-gdpr-{{ group.slug }}" class="label-primary"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="button" id="gdpr-choices-validate" class="gdpr-choices-validate btn d-lg-none mt-4">
+            <div id="gdpr-choices-validate-icon-small" class="spinner-border me-2 d-none" role="status"></div>
+            {{ "Enregistrer"|trans|raw }}
+        </button>
+    </div>
+{% endif %}

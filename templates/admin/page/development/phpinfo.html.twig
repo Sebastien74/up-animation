@@ -1,0 +1,22 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% block title %}{{ "PHP Info"|trans|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ "PHP Info"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-development', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-development', null,  'admin') }}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div id="phpinfo-container" class="py-4">
+        {{ phpinfo|raw }}
+    </div>
+{% endblock %}

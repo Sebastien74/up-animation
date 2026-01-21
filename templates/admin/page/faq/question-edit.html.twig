@@ -1,0 +1,58 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set multiMedia = interface.configuration.mediaMulti is defined
+    and interface.configuration.mediaMulti
+    and entity.mediaRelations is defined
+    and class is defined and class
+    and entity.id is defined and entity.id %}
+{% set displayUploader = multiMedia and not haveCustomLayout %}
+{% set hideRadius = interface.configuration.saveArea is not defined or interface.configuration.saveArea != 'bottom' or configFields is defined and configFields %}
+{% set transDomain = interface.name is defined and interface.name
+    ? 'entity_'~interface.name : null %}
+
+{% if pageTitle is not defined or pageTitle is defined and not pageTitle  %}
+    {% set title = 'singular'|trans([], transDomain) and 'singular'|trans([], transDomain) != 'singular'
+        ? 'singular'|trans([], transDomain) : 'Édition'|trans~" "~interface.name  %}
+    {% set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title %}
+{% endif %}
+
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle|unescape|raw }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {attr: {
+        novalidate: "novalidate",
+        action: app.request.uri,
+        class: 'master-form position-relative',
+        id: 'form-'~entity.id }}) }}
+        <div id="edit-form-{{ interface.name }}" class="card refer-preloader">
+            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only %}
+            {% include 'admin/core/form/save/header.html.twig' %}
+            <div class="card-body pb-0{% if not hideRadius %} top-radius{% endif %}">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            {{ form_row(form.adminName) }}
+                            {% include 'admin/core/form/intls.html.twig' with {intls: form.intls, disableTitle: true} %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        {% include 'admin/core/form/media-relations-uniq.html.twig' with {mediaRelations: form.mediaRelations} %}
+                        {{ form_row(form.pictogram) }}
+                    </div>
+                </div>
+            </div>
+            {% include 'admin/core/form/save/footer.html.twig' %}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

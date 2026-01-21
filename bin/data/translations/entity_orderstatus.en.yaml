@@ -1,0 +1,5 @@
+add: 'Add status'
+adminName: 'Status '
+delete: 'Delete status'
+plural: Status
+singular: 'Status '

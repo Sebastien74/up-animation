@@ -1,0 +1,55 @@
+{% trans_default_domain 'admin' %}
+
+{% import _self as macro %}
+
+{% set configuration = entity.configuration %}
+{% set defaultLocale = configuration.locale %}
+{% set allLocales = configuration.allLocales %}
+
+{% macro domain_prototype(domain, configuration) %}
+
+    {% set allLocales = configuration.allLocales %}
+    {% set isNew = domain.vars.data.id is defined and domain.vars.data.id ? false : true %}
+    {% set entityId = domain.vars.data.id is defined and domain.vars.data.id ? domain.vars.data.id : domain.vars.id %}
+    {% set locale = domain.vars.data.locale is defined and domain.vars.data.locale ? domain.vars.data.locale : null %}
+
+    <tr id="refer-col-domain-{{ entityId }}" class="prototype">
+        <td class="col-locale{% if allLocales|length <= 1 %} d-none{% endif %}"><span class="d-none">{{ locale }}</span>{{ form_row(domain.locale) }}</td>
+        <td class="align-middle">
+            {{ form_widget(domain.name) }}
+            {{ form_errors(domain.name) }}
+        </td>
+        <td class="align-middle text-center">{{ form_widget(domain.asDefault) }}</td>
+        <td class="align-middle text-end actions">
+            {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                isNew: domain.vars.data.id is defined and domain.vars.data.id ? false : true,
+                entityId: isNew ? uniqId() : domain.vars.data.id,
+                interfaceName: 'domain'
+            } %}
+        </td>
+    </tr>
+
+{% endmacro %}
+
+<table class="table editable-table table-bordered table-striped">
+    <thead>
+        <th class="col-locale{% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans }}</th>
+        <th>{{ "URL"|trans }} <small class="text-info ms-1">({{ "Sans le protocole"|trans }})</small></th>
+        <th class="text-center">{{ "Défault ?"|trans }}</th>
+        <th class="text-end">{{ "Actions"|trans }}</th>
+    </thead>
+    <tbody id="domains-collection" data-index="{{ form.configuration.domains|length }}" class="collection" data-prototype="{{ macro.domain_prototype(form.configuration.domains.vars.prototype, configuration)|e('html_attr') }}">
+        {% for domain in form.configuration.domains %}
+            {{ macro.domain_prototype(domain, configuration) }}
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="w-100 text-end mt-4 mb-4">
+    <button role="button" class="add-collection btn btn-success standard"
+            data-type="table"
+            data-collection-target="append"
+            data-target="#domains-collection">
+        {{ 'fal plus'|icon(11, 15, 'white me-2') }}{{ "Ajouter un domaine"|trans }}
+    </button>
+</div>

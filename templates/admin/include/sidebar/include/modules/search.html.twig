@@ -1,0 +1,15 @@
+{% trans_default_domain 'admin' %}
+
+{% if 'search'|moduleActive(configuration) and granted('ROLE_INTERNAL') %}
+    {% set uri = app.request.uri %}
+    {% set active = '/searchs/' in uri %}
+    {% set module = 'search'|moduleActive(configuration) %}
+    {% set intl = intlsModules['search'][app.user.locale] is defined ? intlsModules['search'][app.user.locale] : intlsModules['search']['fr'] %}
+    {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['search']['entity'].adminName is defined ? intlsModules['search']['entity'].adminName : 'Actualités'|trans) %}
+    {% set icon = intlsModules['search']['entity'].iconClass is defined and intlsModules['search']['entity'].iconClass ? intlsModules['search']['entity'].iconClass : '/medias/icons/light/newspaper.svg' %}
+    <li{% if active %} class="active"{% endif %}>
+        <a href="{{ path('admin_search_index', {website: websiteId}) }}" data-toggle="preloader">
+            {{ icon|icon(15, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+        </a>
+    </li>
+{% endif %}

@@ -1,0 +1,290 @@
+services:
+    Liip\ImagineBundle\Service\FilterService:
+        alias: 'liip_imagine.service.filter'
+
+liip_imagine:
+
+    controller:
+        redirect_response_code: 302
+
+    driver: "gd"
+
+    twig:
+        mode: lazy
+
+    # configure webp
+    #    default_filter_set_settings:
+    #        format: ~
+
+#    webp:
+#        generate: true
+#        quality: 80
+
+    # configure resolvers
+    resolvers:
+
+        # set up the default resolver
+        default:
+
+            # use the default web path
+            web_path:
+                cache_prefix: thumbnails
+
+    default_image: /medias/placeholder.jpg
+
+    # your filter sets are defined here
+    filter_sets:
+
+        # use the default cache configuration
+        cache: ~
+
+        #####################################
+        #           Admin filters           #
+        #####################################
+
+        admin_theme:
+            quality: 72
+            filters:
+                upscale: { min: [ 367, 187 ] }
+                thumbnail: { size: [ 367, 187 ], mode: outbound }
+
+        #####################################
+        #            Front filters          #
+        #####################################
+
+        youtube_poster:
+            quality: 85
+            filters:
+                upscale: { min: [ 640, 480 ] }
+                thumbnail: { size: [ 640, 480 ], mode: outbound }
+
+        #####################################
+        #        Microdata filters          #
+        #####################################
+
+        microdata_16x9:
+            quality: 85
+            filters:
+                upscale: { min: [ 1280, 720 ] }
+                thumbnail: { size: [ 1280, 720 ], mode: outbound }
+
+        microdata_4x3:
+            quality: 85
+            filters:
+                upscale: { min: [ 1200, 900 ] }
+                thumbnail: { size: [ 1200, 900 ], mode: outbound }
+
+        microdata_1x1:
+            quality: 85
+            filters:
+                upscale: { min: [ 1000, 1000 ] }
+                thumbnail: { size: [ 1000, 1000 ], mode: outbound }
+
+        #####################################
+        #          Quality filters          #
+        #####################################
+
+        media101:
+            quality: 101
+        media100:
+            quality: 100
+        media99:
+            quality: 99
+        media98:
+            quality: 98
+        media97:
+            quality: 97
+        media96:
+            quality: 96
+        media95:
+            quality: 95
+        media94:
+            quality: 94
+        media93:
+            quality: 93
+        media92:
+            quality: 92
+        media91:
+            quality: 91
+        media90:
+            quality: 90
+        media89:
+            quality: 89
+        media88:
+            quality: 88
+        media87:
+            quality: 87
+        media86:
+            quality: 86
+        media85:
+            quality: 85
+        media84:
+            quality: 84
+        media83:
+            quality: 83
+        media82:
+            quality: 82
+        media81:
+            quality: 81
+        media80:
+            quality: 80
+        media79:
+            quality: 79
+        media78:
+            quality: 78
+        media77:
+            quality: 77
+        media76:
+            quality: 76
+        media75:
+            quality: 75
+        media74:
+            quality: 74
+        media73:
+            quality: 73
+        media72:
+            quality: 72
+        media71:
+            quality: 71
+        media70:
+            quality: 70
+        media69:
+            quality: 69
+        media68:
+            quality: 68
+        media67:
+            quality: 67
+        media66:
+            quality: 66
+        media65:
+            quality: 65
+        media64:
+            quality: 64
+        media63:
+            quality: 63
+        media62:
+            quality: 62
+        media61:
+            quality: 61
+        media60:
+            quality: 60
+        media59:
+            quality: 59
+        media58:
+            quality: 58
+        media57:
+            quality: 57
+        media56:
+            quality: 56
+        media55:
+            quality: 55
+        media54:
+            quality: 54
+        media53:
+            quality: 53
+        media52:
+            quality: 52
+        media51:
+            quality: 51
+        media50:
+            quality: 50
+        media49:
+            quality: 49
+        media48:
+            quality: 48
+        media47:
+            quality: 47
+        media46:
+            quality: 46
+        media45:
+            quality: 45
+        media44:
+            quality: 44
+        media43:
+            quality: 43
+        media42:
+            quality: 42
+        media41:
+            quality: 41
+        media40:
+            quality: 40
+        media39:
+            quality: 39
+        media38:
+            quality: 38
+        media37:
+            quality: 37
+        media36:
+            quality: 36
+        media35:
+            quality: 35
+        media34:
+            quality: 34
+        media33:
+            quality: 33
+        media32:
+            quality: 32
+        media31:
+            quality: 31
+        media30:
+            quality: 30
+        media29:
+            quality: 29
+        media28:
+            quality: 28
+        media27:
+            quality: 27
+        media26:
+            quality: 26
+        media25:
+            quality: 25
+        media24:
+            quality: 24
+        media23:
+            quality: 23
+        media22:
+            quality: 22
+        media21:
+            quality: 21
+        media20:
+            quality: 20
+        media19:
+            quality: 19
+        media18:
+            quality: 18
+        media17:
+            quality: 17
+        media16:
+            quality: 16
+        media15:
+            quality: 15
+        media14:
+            quality: 14
+        media13:
+            quality: 13
+        media12:
+            quality: 12
+        media11:
+            quality: 11
+        media10:
+            quality: 10
+        media9:
+            quality: 9
+        media8:
+            quality: 8
+        media7:
+            quality: 7
+        media6:
+            quality: 6
+        media5:
+            quality: 5
+        media4:
+            quality: 4
+        media3:
+            quality: 3
+        media2:
+            quality: 2
+        media1:
+            quality: 1
+        media0:
+            quality: 0

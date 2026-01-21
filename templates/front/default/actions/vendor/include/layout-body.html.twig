@@ -1,0 +1,5 @@
+{% trans_default_domain 'front_default' %}
+
+{% if entity.intl.body %}
+    <div class="body">{{ entity.intl.body|raw|nl2br }}</div>
+{% endif %}

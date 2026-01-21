@@ -1,0 +1,207 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Module : Form
+    Copyright : 2024
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Import
+-----------------------------------*/
+
+@import "../../variables";
+
+/*-----------------------------------
+   2 ) Wizard
+-----------------------------------*/
+
+.form-wizard > {
+
+    #step-one {
+
+        .form-error-icon {
+            margin-top: 5px;
+        }
+
+        .invalid-feedback {
+            font-size: 1rem !important;
+        }
+    }
+
+    .steps {
+
+        position: relative;
+        display: block;
+        width: 100%;
+        overflow: hidden;
+
+        > ul {
+
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            margin: 0;
+            padding: 0 !important;
+            list-style: none;
+
+            > li {
+
+                display: table-cell;
+                width: auto;
+                vertical-align: top;
+                text-align: center;
+                position: relative;
+                float: none;
+
+                span.step-title {
+                    max-width: 65%;
+                    font-size: rem(12px);
+                }
+            }
+        }
+    }
+
+    .actions > ul > li {
+        float: none;
+    }
+
+    .steps {
+
+        > ul > li.done .step-wrap {
+
+            color: $gray-600;
+
+            &:focus, &:hover {
+                color: $gray-600;
+            }
+        }
+
+        .current .step-wrap {
+            background: transparent;
+        }
+    }
+
+    .actions .step-wrap {
+
+        background: transparent;
+
+        &:hover {
+            background: transparent;
+        }
+    }
+
+    .steps .disabled .step-wrap {
+
+        background: transparent;
+
+        &:hover, &:active {
+            background: transparent;
+        }
+    }
+
+    .content {
+
+        background: transparent;
+    }
+
+    .steps {
+
+        .done .step-wrap {
+
+            background: transparent;
+
+            .step {
+                background-color: $primary;
+                color: $white !important;
+            }
+
+            &:hover, &:active {
+                background: transparent;
+            }
+        }
+
+        > ul > li {
+
+            .step-wrap {
+                position: relative;
+                padding-top: 52px;
+                margin-top: 20px;
+                margin-bottom: 20px;
+                display: block;
+            }
+
+            &::after, &::before {
+                top: 45px;
+                width: 50% !important;
+                height: 3px;
+                background-color: $primary;
+            }
+
+            &::after {
+                right: 0;
+                content: '';
+                z-index: 9;
+                display: block !important;
+                position: absolute;
+            }
+
+            &::before {
+                content: '' !important;
+                z-index: 9;
+                display: block !important;
+                position: absolute;
+            }
+
+            &.current > .step-wrap {
+                color: $gray-800;
+                cursor: default;
+            }
+        }
+
+        .current-info {
+            position: absolute;
+            left: -99999px;
+        }
+
+        > ul > li.current .step {
+            border-color: $primary;
+            background-color: $white;
+            color: $primary;
+        }
+
+        .step {
+            background-color: $white;
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin-left: -24px;
+            z-index: 10;
+            text-align: center;
+            width: 50px;
+            height: 50px;
+            border: 3px solid $primary;
+            font-size: rem(20px);
+            line-height: rem(45px);
+            border-radius: 50%;
+            color: $primary !important;
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Form
+-----------------------------------*/
+
+.steps-form-container {
+
+    .form-group {
+
+        &.form-participants-group {
+            > div {
+                width: 100%;
+            }
+        }
+    }
+}

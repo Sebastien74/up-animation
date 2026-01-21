@@ -1,0 +1,39 @@
+{% block datalist_widget %}
+
+    {% set addonSide = attr.addon is defined and attr.side is defined and attr.side ? attr.side : 'left' %}
+    {% set haveAddon = attr.addon is defined and attr.addon %}
+    {% set groupClass = haveAddon ? 'input-group' : 'form-group' %}
+    {% set groupClass = attr.group is defined and attr.group ? groupClass~" "~attr.group : groupClass %}
+    {% set groupClass = attr['data-group'] is defined and attr['data-group'] ? groupClass~" "~attr['data-group'] : groupClass %}
+
+    <div class="{{ groupClass }}">
+
+        {% if haveAddon and addonSide == 'left' %}
+            <div class="input-group-prepend">
+                <span class="input-group-text">{{ attr.addon|icon(null, 18) }}</span>
+            </div>
+        {% endif %}
+
+        <input type="text"
+               list="{{ id }}_list"
+               id="{{ id }}"
+               class="form-control{% if attr.class is defined and attr.class %} {{ attr.class }}{% endif %}"
+               name="{{ full_name }}"
+               {% if attr.placeholder is defined and attr.placeholder %}placeholder="{{ attr.placeholder }}"{% endif %}
+               {% if value is not empty %}value="{{ value }}"{% endif %}>
+
+        <datalist id="{{ id }}_list">
+            {% for choice in choices %}
+                <option value="{{ choice }}"></option>
+            {% endfor %}
+        </datalist>
+
+        {% if haveAddon and addonSide == 'right' %}
+            <div class="input-group-prepend">
+                <span class="input-group-text">{{ attr.addon|icon(null, 18) }}</span>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

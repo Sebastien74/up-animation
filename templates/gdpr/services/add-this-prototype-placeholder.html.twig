@@ -1,0 +1,11 @@
+{% trans_default_domain 'gdpr' %}
+
+{% extends "gdpr/services/base-placeholder.html.twig" %}
+
+{% set size = 'small-fixed' %}
+{% set service = 'addthis' %}
+{% set code = 'addthis' %}
+{% set image = asset('build/gdpr/images/addthis-gdpr.svg', 'gdpr') %}
+{% set label_btn = 'Pour afficher les liens de partages vous devez activer les cookies addThis.'|trans|raw|capitalize %}
+{% set image_title = 'addThis'|capitalize %}
+{% set message = "Pour afficher les liens de partages vous devez activer les cookies addThis."|trans|raw %}

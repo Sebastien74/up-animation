@@ -1,0 +1,22 @@
+imports:
+    - { resource: entity/agenda.yaml }
+    - { resource: entity/api.yaml }
+    - { resource: entity/catalog.yaml }
+    - { resource: entity/core.yaml }
+    - { resource: entity/faq.yaml }
+    - { resource: entity/form.yaml }
+    - { resource: entity/gallery.yaml }
+    - { resource: entity/gdpr.yaml }
+    - { resource: entity/information.yaml }
+    - { resource: entity/layout.yaml }
+    - { resource: entity/media.yaml }
+    - { resource: entity/menu.yaml }
+    - { resource: entity/modules.yaml }
+    - { resource: entity/newscast.yaml }
+    - { resource: entity/portfolio.yaml }
+    - { resource: entity/recruitment.yaml }
+    - { resource: entity/security.yaml }
+    - { resource: entity/seo.yaml }
+    - { resource: entity/timeline.yaml }
+    - { resource: entity/todo.yaml }
+    - { resource: entity/translation.yaml }

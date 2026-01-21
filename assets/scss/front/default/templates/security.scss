@@ -1,0 +1,95 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2024
+    Created on : 2024-10-09, 8:26 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    TEMPLATE SECURITY :
+    ==================
+
+    1 ) Modules
+    2 ) Core import
+    3 ) Core
+
+------------------------------------------------------------------ */
+
+/*--------------------------------------
+   1 ) Modules
+--------------------------------------*/
+
+$enable-form: true;
+$enable-form-preloader: true;
+$enable-thanks-modal: true;
+$enable-alert: true;
+$enable-spinner: true;
+$enable-toast: true;
+$enable-progress: true;
+$enable-icon: true;
+
+/*-----------------------------------
+   2 ) Core import
+-----------------------------------*/
+
+@import "../vendor";
+
+/*-----------------------------------
+   3 ) Core
+-----------------------------------*/
+
+#body-page {
+    .text-warning {
+        color: $warning !important;
+    }
+}
+
+/*! purgecss start ignore */
+
+#form-login {
+
+    .checkbox-group {
+        margin-bottom: 0 !important;
+        top: initial !important;
+    }
+
+    .form-check {
+
+        align-items: center !important;
+        margin-bottom: 0 !important;
+
+        input {
+            margin-top: 0 !important;
+        }
+
+        label {
+            font-size: 13px !important;
+        }
+    }
+
+    #to-recover {
+        small {
+            font-size: 13px !important;
+        }
+    }
+}
+
+/*! purgecss end ignore */
+
+#user-registration-form {
+
+    #strength-wrap {
+        .progress {
+            height: 7px;
+        }
+    }
+
+    .agree-terms-group {
+        label {
+            a {
+                color: $primary;
+                text-decoration: underline;
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{% trans_default_domain 'gdpr' %}
+
+<div class="block-video ratio ratio-16x9">
+    {% if 'youtube' in embed %}
+        {% set screen = screen is defined and screen ? screen : screen() %}
+        {% set title = media.intl.title is defined and media.intl.title ? media.intl.title : 'Poster'|trans %}
+        {% set havePoster = media.media.filename is defined and media.media.filename %}
+        {% set thumbConfiguration = thumbConfiguration[screen] is defined ? thumbConfiguration[screen] : (thumbConfiguration['desktop'] is defined ? thumbConfiguration['desktop'] : null) %}
+        {% set width = thumbConfiguration.width is defined ? thumbConfiguration.width : 640 %}
+        {% set height = thumbConfiguration.height is defined ? thumbConfiguration.height : 480 %}
+        {% set poster = havePoster and width and height ? media|file({}, {maxWidth: width, maxHeight: height, path: true})
+            : (havePoster ? media|file({}, {filter: 'youtube_poster', path: true})) %}
+        <div id="youtube-{{ uniqId() }}"
+             class="w-100 embed-youtube embed-data"
+             data-title="{{ title|striptags }}"
+             data-poster="{{ poster }}"
+             data-autoplay="{{ autoplay }}"
+             data-loop="{{ loop }}"
+             data-start="{{ videoStart }}"
+             data-video-id="{{ videoID }}">
+            <div class="embed-responsive-item w-100 iframe-wrap"><div class="iframe-loader"></div></div>
+            <div class="player-control-play-wrap embed-youtube-play d-flex align-items-center justify-content-center p-1">
+                <span class="player-control control-play-btn d-inline-flex justify-content-center align-items-center cursor"></span>
+                <span class="player-control control-play-btn hover d-inline-flex justify-content-center align-items-center cursor position-absolute"></span>
+            </div>
+        </div>
+    {% else %}
+        <iframe data-src="{{ embed }}"
+                webkitallowfullscreen
+                mozallowfullscreen
+                allowfullscreen
+                class="lazy-load embed-responsive-item w-100"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+    {% endif %}
+</div>

@@ -1,0 +1,13 @@
+<script>
+    let scripts = document.querySelectorAll('link[as="script"]')
+    for (let i = 0; i < scripts.length; ++i) {
+        let preloadScript = scripts[i]
+        preloadScript.remove()
+        let usedLaterScript = document.createElement('script')
+        usedLaterScript.defer = false
+        usedLaterScript.src = preloadScript.getAttribute('href')
+        usedLaterScript.setAttribute('nonce', preloadScript.getAttribute('data-nonce'))
+        usedLaterScript.setAttribute('crossorigin', preloadScript.getAttribute('crossorigin'))
+        document.body.appendChild(usedLaterScript)
+    }
+</script>

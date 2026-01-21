@@ -1,0 +1,26 @@
+{% trans_default_domain 'admin' %}
+
+<li class="item-page">
+    <div class="inner">
+        {% set intlUrl = page.website|intlUrl(page, masterRequest().get('entitylocale'), true) %}
+        {% set isOnline = intlUrl.online is defined and intlUrl.online %}
+        {% set isArchived = intlUrl.archived is defined and intlUrl.archived %}
+        {% set tooltipTitle = isArchived ? "Page archivée"|trans : (not isOnline ? "Page non publiée"|trans : null) %}
+        <label for="item-page-{{ page.id }}" class="cursor{% if tooltipTitle %} text-muted opacity-50{% endif %}"
+            {% if tooltipTitle %} data-bs-toggle="tooltip" title="{{ tooltipTitle|striptags }}" {% endif %}>{{ page.adminName|truncate(40) }}</label>
+        <div class="push float-end">
+            <div class="custom-control custom-checkbox">
+                <input id="item-page-{{ page.id }}" name="page-{{ page.id }}" value="{{ page.id }}" class="custom-control-input ajax-get-loop-item" type="checkbox">
+                <label class="checkbox-custom custom-control-label" for="item-page-{{ page.id }}"></label>
+            </div>
+        </div>
+    </div>
+    {% set children = tree[page.id] is defined ? tree[page.id] : [] %}
+    {% if children %}
+        <ul class="w-100 ps-3">
+            {% for child in children %}
+                {% include 'admin/page/menu/link-element.html.twig' with {page: child, tree: tree} only %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>

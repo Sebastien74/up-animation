@@ -1,0 +1,35 @@
+{% trans_default_domain 'front_default' %}
+
+{% set withThumbs = false %}
+
+<div class="marquee items-center marquee-left"
+     data-direction="left"
+     data-speed="100">
+    <div class="marquee-inner">
+        <div class="marquee-content d-inline-flex align-items-center">
+            {% for media in medias %}
+                {% set display = (mediaType == 'video' and media.videoLink is not empty) or (media.media.filename is defined and media.media.filename) %}
+                {% if display %}
+                    <div class="marquee-item h-100 d-flex align-items-center justify-content-center ps-2 pe-2 ps-md-4 pe-md-4">
+                        {% if withThumbs %}
+                            {{ media|file(thumbConfiguration, {
+                                notInBox: true,
+                                maxWidth: fileSizes.width is defined ? fileSizes.width : null,
+                                maxHeight: fileSizes.height is defined ? fileSizes.height : 70,
+                                popupGallery: slider.popup,
+                                fullPopup: slider.popup,
+                                colSize: colSize
+                            }) }}
+                        {% else %}
+                            {% set path = media|file(thumbConfiguration, {
+                                path: true,
+                            }) %}
+                            {% set title = media.intl.title ? media.intl.title : media.entity.name %}
+                            <img src="{{ path }}" alt="{{ title }}" class="img-fluid img-{{ media.extension }}" height="70"{% if 'svg' == media.extension %} style="height: 70px;"{% endif %}>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

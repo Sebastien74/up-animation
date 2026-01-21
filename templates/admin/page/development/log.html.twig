@@ -1,0 +1,60 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set pageTitle = "Fichier de log"|trans~" : "~file %}
+
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-development', null, 'admin') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {% set categories = {
+        critical: {bg: 'danger', color: 'white', icon: 'far exclamation-triangle'},
+        warning: {bg: 'warning', color: 'white', icon: 'far whistle'},
+        error: {bg: 'warning', color: 'dark', icon: 'far whistle'},
+        alert: {bg: 'warning', color: 'dark', icon: 'far whistle'}
+    } %}
+
+    <div id="log-page">
+        {% for log in logs|reverse %}
+            {% if log %}
+                {% set category = categories[log.status] is defined ? categories[log.status] : null %}
+                {% set bg = category and category['bg'] is defined ? category['bg'] : 'info' %}
+                {% set color = category and category['color'] is defined ? category['color'] : 'white' %}
+                {% set icon = category and category['icon'] is defined ? category['icon'] : 'far info-circle' %}
+                <div class="card log-card">
+                    <div class="card-header card-title bg-{{ bg }} text-{{ color }}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                {{ icon|icon(null, 14, color~' me-2') }}{{ log.code }}
+                            </div>
+                            <div class="col-md-8 text-end">
+                                {% if log.date|isDateTime %}
+                                    {{ "far calendar-alt"|icon(null, 14, color~' ms-2 me-2') }}{{ log.date|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}
+                                    {{ "far clock"|icon(null, 14, color~' ms-2 me-2') }}{{ log.date|format_datetime(pattern='HH:mm', locale=app.request.locale)|capitalize }}
+                                {% endif %}
+                                <span data-bs-toggle="tooltip" title="{{ "Retourner à la liste des logs"|trans|striptags }}">
+                                    <a href="{{ path('admin_logs') }}" class="ms-2 text-{{ color }}" data-toggle="preloader">
+                                        {{ 'fas reply'|icon(null, 14, color) }}
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">{{ log.message }}</div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+{% endblock %}

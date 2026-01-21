@@ -1,0 +1,264 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-15, 12:44 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    MIXIN MEDIA QUERIES :
+    ====================
+
+    1 ) Custom
+    2 ) Bootstrap
+    3 ) I-pad
+    4 ) Laptop
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Custom
+-----------------------------------*/
+
+@mixin mediaQuerySizes($min-width: null, $max-width: null) {
+    @if $min-width != null and $max-width == null {
+        @media (min-width: $min-width) { @content; }
+    } @else if $min-width == null and $max-width != null {
+        @media (max-width : $max-width) { @content; }
+    } @else if $min-width != null and $max-width != null {
+        @media only screen
+        and (min-width : $min-width)
+        and (max-width : $max-width) { @content; }
+    }
+}
+
+/*-----------------------------------
+   2 ) Bootstrap
+-----------------------------------*/
+
+@mixin mediaQuery($media) {
+
+    @if $media == min-xs {
+        @media only screen
+        and (min-width : 1px) { @content; }
+    }
+    @else if $media == min-sm {
+        @media only screen
+        and (min-width : $sm) { @content; }
+    }
+    @else if $media == min-md {
+        @media only screen
+        and (min-width : $md) { @content; }
+    }
+    @else if $media == min-lg {
+        @media only screen
+        and (min-width : $lg) { @content; }
+    }
+    @else if $media == min-xl {
+        @media only screen
+        and (min-width : $xl) { @content; }
+    }
+    @else if $media == min-xxl {
+        @media only screen
+        and (min-width : $xxl) { @content; }
+    }
+    @else if $media == min-xxxl {
+        @media only screen
+        and (min-width : $xxxl) { @content; }
+    }
+    @else if $media == max-xs {
+        @media only screen
+        and (max-width : $xs - 1) { @content; }
+    }
+    @else if $media == max-sm {
+        @media only screen
+        and (max-width : $sm - 1) { @content; }
+    }
+    @else if $media == max-md {
+        @media only screen
+        and (max-width : $md - 1) { @content; }
+    }
+    @else if $media == max-lg {
+        @media only screen
+        and (max-width : $lg - 1) { @content; }
+    }
+    @else if $media == max-xl {
+        @media only screen
+        and (max-width : $xl - 1) { @content; }
+    }
+    @else if $media == max-xxl {
+        @media only screen
+        and (max-width : $xxl - 1) { @content; }
+    }
+    @else if $media == max-xxxl {
+        @media only screen
+        and (max-width : $xxxl - 1) { @content; }
+    }
+    @else if $media == between-xs-sm {
+        @media only screen
+        and (min-width : $xs)
+        and (max-width : $sm - 1) { @content; }
+    }
+    @else if $media == between-xs-md {
+        @media only screen
+        and (min-width : $xs)
+        and (max-width : $md - 1) { @content; }
+    }
+    @else if $media == between-xs-lg {
+        @media only screen
+        and (min-width : $xs)
+        and (max-width : $lg - 1) { @content; }
+    }
+    @else if $media == between-xs-xl {
+        @media only screen
+        and (min-width : $xs)
+        and (max-width : $xl - 1) { @content; }
+    }
+    @else if $media == between-xs-xxl {
+        @media only screen
+        and (min-width : $xs)
+        and (max-width : $xxl - 1) { @content; }
+    }
+    @else if $media == between-xs-xxxl {
+        @media only screen
+        and (min-width : $xs)
+        and (max-width : $xxxl - 1) { @content; }
+    }
+    @else if $media == between-sm-md {
+        @media only screen
+        and (min-width : $sm)
+        and (max-width : $md - 1) { @content; }
+    }
+    @else if $media == between-sm-lg {
+        @media only screen
+        and (min-width : $sm)
+        and (max-width : $lg - 1) { @content; }
+    }
+    @else if $media == between-sm-xl {
+        @media only screen
+        and (min-width : $sm)
+        and (max-width : $xl - 1) { @content; }
+    }
+    @else if $media == between-sm-xxl {
+        @media only screen
+        and (min-width : $sm)
+        and (max-width : $xxl - 1) { @content; }
+    }
+    @else if $media == between-sm-xxxl {
+        @media only screen
+        and (min-width : $sm)
+        and (max-width : $xxxl - 1) { @content; }
+    }
+    @else if $media == between-md-lg {
+        @media only screen
+        and (min-width : $md)
+        and (max-width : $lg - 1) { @content; }
+    }
+    @else if $media == between-md-xl {
+        @media only screen
+        and (min-width : $md)
+        and (max-width : $xl - 1) { @content; }
+    }
+    @else if $media == between-md-xxl {
+        @media only screen
+        and (min-width : $md)
+        and (max-width : $xxl - 1) { @content; }
+    }
+    @else if $media == between-md-xxxl {
+        @media only screen
+        and (min-width : $md)
+        and (max-width : $xxxl - 1) { @content; }
+    }
+    @else if $media == between-lg-xl {
+        @media only screen
+        and (min-width : $lg)
+        and (max-width : $xl - 1) { @content; }
+    }
+    @else if $media == between-lg-xxl {
+        @media only screen
+        and (min-width : $lg)
+        and (max-width : $xxl - 1) { @content; }
+    }
+    @else if $media == between-lg-xxxl {
+        @media only screen
+        and (min-width : $lg)
+        and (max-width : $xxxl - 1) { @content; }
+    }
+    @else if $media == between-xl-xxl {
+        @media only screen
+        and (min-width : $xl)
+        and (max-width : $xxl - 1) { @content; }
+    }
+    @else if $media == between-xl-xxxl {
+        @media only screen
+        and (min-width : $xl)
+        and (max-width : $xxxl - 1) { @content; }
+    }
+    @else if $media == between-xxl-xxxl {
+        @media only screen
+        and (min-width : $xxl)
+        and (max-width : $xxxl - 1) { @content; }
+    }
+}
+
+/*-----------------------------------
+   3 ) I-pad
+-----------------------------------*/
+
+@mixin ipad() {
+    @media only screen
+    and (min-device-width : 768px)
+    and (max-device-width : 1024px) { @content; }
+}
+
+@mixin ipadLandscape() {
+    @media only screen
+    and (min-device-width : 768px)
+    and (max-device-width : 1024px)
+    and (orientation : landscape) { @content; }
+}
+
+@mixin ipadPortrait() {
+    @media only screen
+    and (min-device-width : 768px)
+    and (max-device-width : 1024px)
+    and (orientation : portrait) { @content; }
+}
+
+@mixin ipadPro() {
+    @media only screen
+    and (min-width: 1024px)
+    and (max-height: 1366px)
+    and (-webkit-min-device-pixel-ratio: 1.5) { @content; }
+}
+
+@mixin ipadLandscapePro() {
+    @media only screen
+    and (min-width: 1024px)
+    and (max-height: 1366px)
+    and (orientation: landscape)
+    and (-webkit-min-device-pixel-ratio: 1.5) { @content; }
+}
+
+@mixin ipadPortraitPro() {
+    @media only screen
+    and (min-width: 1024px)
+    and (max-height: 1366px)
+    and (orientation: portrait)
+    and (-webkit-min-device-pixel-ratio: 1.5) { @content; }
+}
+
+/*-----------------------------------
+   4 ) Laptop
+-----------------------------------*/
+
+@mixin laptopRetina() {
+    @media screen
+    and (min-device-width: 1200px)
+    and (max-device-width: 1600px)
+    and (-webkit-min-device-pixel-ratio: 2)
+    and (min-resolution: 192dpi) { @content; }
+}
+
+@mixin laptop() {
+    @media (min-width: 1025px) and (max-width: 1280px) { @content; }
+}

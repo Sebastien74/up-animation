@@ -1,0 +1,127 @@
+{% trans_default_domain 'front_default' %}
+
+{% import _self as macro %}
+
+{% set prototypeOptions = field.vars.form.vars.errors.form.config.attributes.prototype.config.options is defined
+    ? field.vars.form.vars.errors.form.config.attributes.prototype.config.options : [] %}
+
+{% macro field_prototype(property, hideDelete, websiteTemplate) %}
+
+    {% set entity = property.vars.data is defined ? property.vars.data : null %}
+    {% set isNew = entity.id is defined and entity.id ? false : true %}
+    {% set entityId = isNew ? uniqId() : entity.id %}
+    {% set interfaceName = property.vars.errors.form.config.dataClass|interfaceName %}
+    {% set deletableProperty = property.vars.attr.deletable is not defined or property.vars.attr.deletable is defined and property.vars.attr.deletable != false %}
+    {% set asSchedule = 'scheduleDays' in property.vars.id %}
+    {% set dayName = asSchedule and property.vars.data.dayName is defined ? property.vars.data.dayName : null %}
+    {% set dayName = dayName ? dayName|localeDayNameByEnglishName : null %}
+
+    <div class="item-collection position-relative row p-3 bg-gray-800 mb-3">
+
+        {% if dayName %}
+            <div class="col-12">
+                <h4 class="title border-bottom ps-0 pe-0 pb-2 mb-3">{{ dayName|capitalize }}</h4>
+            </div>
+        {% endif %}
+
+        {% for field in property.children %}
+            {% set customLabel = field.vars.attr['data-label'] is defined ? field.vars.attr['data-label'] : null %}
+            {% set asPrototype = field.vars.prototype is defined and field.vars.prototype %}
+            {% if customLabel %}
+                <div class="col-12"><label>{{ customLabel|raw }}</label></div>
+            {% endif %}
+            {% if asPrototype %}
+                <div class="row m-0">
+                    <div class="col-12">
+                        {% include 'front/'~websiteTemplate~'/include/prototype.html.twig' with {
+                            field: field,
+                            hideDelete: false,
+                            groupClass: 'col-12',
+                            websiteTemplate: websiteTemplate,
+                        } %}
+                    </div>
+                </div>
+            {% else %}
+                {% set group = field.vars.attr.group is defined ? field.vars.attr.group : 'col-12' %}
+                <div class="{{ group }} {{ field.vars.name }}">
+                    <div class="inner w-100">
+                        {{ form_label(property[field.vars.name]) }}
+                        {{ form_widget(property[field.vars.name]) }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        {% if not hideDelete %}
+            <span role="button" class="btn btn-primary p-0 position-absolute collection-open-modal" data-bs-toggle="modal" data-bs-target="#collection-delete-modal-{{ entityId }}">
+                {{ 'fas trash'|icon(14, 14, 'dark') }}
+            </span>
+            <div class="modal fade collection-delete-modal" id="collection-delete-modal-{{ entityId }}" tabindex="-1" aria-labelledby="collection-delete-modal-{{ entityId }}-label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-center">
+                        <div class="modal-loader row text-center position-absolute d-none">
+                            <div class="col-12 my-auto">
+                                <span class="spinner-border" role="status"></span>
+                            </div>
+                        </div>
+                        <div class="modal-header border-0">
+                            <div class="w-100 pt-4">
+                                {{ "fal exclamation-triangle"|icon(null, 50, 'danger') }}
+                            </div>
+                        </div>
+                        <div class="modal-body border-0 text-center">
+                            <strong class="text-danger">{{ "Êtes-vous sûr de vouloir supprimer ?"|trans|raw }}</strong>
+                        </div>
+                        <div class="modal-footer d-inline-block border-0 text-center">
+                            <div class="modal-footer border-0">
+                                <div class="row w-100">
+                                    <div class="col-6">
+                                        <button class="btn btn-secondary w-100" data-bs-dismiss="modal">{{ "Annuler"|trans|raw }}</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="collection-delete btn btn-primary w-100"
+                                           href="{% if not isNew %}{{ path('front_'~interfaceName~'_delete', {(interfaceName): entityId}) }}{% endif %}"
+                                           data-toggle="tooltip"
+                                           title="{{ "Supprimer"|trans|striptags }}"
+                                           data-type="collection">{{ "Confirmer"|trans|raw }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endmacro %}
+
+{% set groupClass = groupClass is defined ? groupClass : 'col-12' %}
+{% set hideDelete = hideDelete is defined ? hideDelete : false %}
+{% set websiteTemplate = websiteTemplate is defined ? websiteTemplate : 'default' %}
+
+<ul id="{{ field.vars.id }}-collection" class="collection reset row"
+     data-index="{{ field.children|length }}"
+     data-prototype="{{ macro.field_prototype(field.vars.prototype, hideDelete, websiteTemplate)|e('html_attr') }}">
+    {% for property in field.children %}
+        <li class="{{ groupClass }}">{{ macro.field_prototype(property, hideDelete, websiteTemplate) }}</li>
+    {% endfor %}
+</ul>
+
+{% set displayBtn = prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] != false or prototypeOptions['attr']['button'] is not defined %}
+
+{% if displayBtn %}
+    <div class="col-12 d-flex justify-content-lg-end mt-4">
+        <span role="button" class="add-to-collection btn btn-outline-white"
+                data-collection-target="{{ field.vars.id }}-collection">
+            {% if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] %}
+                {{ prototypeOptions['attr']['button'] }}
+            {% else %}
+                {{ 'Ajouter'|trans }}
+            {% endif %}
+            {{ 'fal plus'|icon(11, 15, 'ms-1') }}
+        </span>
+    </div>
+{% endif %}

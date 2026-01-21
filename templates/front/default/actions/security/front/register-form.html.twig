@@ -1,0 +1,50 @@
+{% trans_default_domain 'front_default' %}
+
+<div class="card form-container small-radius shadow">
+    <div class="card-body form-ajax-container p-4">
+        {% if app.user and not post %}
+            {% include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Vous êtes déjà connecté."|trans} only %}
+        {% else %}
+            {% include 'front/'~websiteTemplate~'/include/loader.html.twig' only %}
+            <p class="text-uppercase text-bold mb-2">{{ "Je n'ai pas de compte"|trans }}</p>
+            <h3 class="title text-uppercase mb-4">{{ "S'inscrire"|trans }}</h3>
+            {% set action = path('security_front_register', {category: 'undefined', view: 'form'}) %}
+            {% if category is defined and category %}
+                {% set action = path('security_front_register', {category: category.id, view: 'form'}) %}
+            {% endif %}
+            {{ form_start(form, {attr: {
+                novalidate: "novalidate",
+                class: 'security form-ajax',
+                action: action,
+                id: "user-registration-form",
+                "data-action": action,
+                'data-component': 'webpack-form'
+            }}) }}
+                <div class="row">
+                    {% for field in form.children %}
+                        {{ form_row(form[field.vars.name]) }}
+                        {% if field.vars.name == 'plainPassword' %}
+                            {% include "core/password-checker.html.twig" %}
+                            <small class="form-group col-12 form-text text-muted mt-0 mb-3">
+                                {{ "Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule."|trans|raw }}
+                            </small>
+                        {% endif %}
+                    {% endfor %}
+                    {% include "security/includes/recaptcha-fields.html.twig" %}
+                </div>
+                {% include "front/"~websiteTemplate~"/include/flashbag.html.twig" with {alertClass: 'w-100'} %}
+                {% if 'facebookLogin' in security.frontRegistrationFields %}
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <button id="fb-login-btn" class="btn btn-primary">
+                                Facebook login
+                                <fb:login-button id="fb-login" class="d-nones" scope="public_profile,email"></fb:login-button>
+                            </button>
+                        </div>
+                    </div>
+                {% endif %}
+                <button id="submit" name="submit" type="submit" class="btn btn-primary text-uppercase w-100 d-flexs justify-content-center">{{ "Créer son compte"|trans }}</button>
+            {{ form_end(form) }}
+        {% endif %}
+    </div>
+</div>

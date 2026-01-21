@@ -1,0 +1,10 @@
+{% trans_default_domain 'front_default' %}
+
+{% set productInCart = productInCart(productId) %}
+
+<span class="add-to-cart position-absolute cursor {{ productInCart }}"
+      data-cart="{{ productInCart }}"
+      data-id="{{ productId }}">
+    <span class="icon-off{% if productInCart == 'on' %} d-none{% endif %}">{{ 'fal heart'|icon(null, 17) }}</span>
+    <span class="icon-on{% if productInCart == 'off' %} d-none{% endif %}">{{ 'fas heart'|icon(null, 17, 'secondary') }}</span>
+</span>

@@ -1,0 +1,46 @@
+/*! purgecss start ignore */
+
+.search-engine-form {
+
+    .autocomplete {
+
+        #search-box {
+
+            position: absolute;
+            left: 0;
+            width: 100%;
+            top: 100%;
+            background-color: white;
+            border-radius: 0;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1;
+
+            &.close {
+                display: none;
+            }
+
+            .header {
+                background-color: #a300ff;
+                padding: 15px 15px;
+                color: white;
+            }
+
+            .items {
+                padding: 10px 0;
+
+                .item {
+                    cursor: pointer;
+                    padding: 8px 15px;
+                }
+
+                .classname {
+                    padding: 8px 15px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+
+/*! purgecss end ignore */

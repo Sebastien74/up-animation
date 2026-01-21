@@ -1,0 +1,31 @@
+{% extends 'front/'~websiteTemplate~'/base.html.twig' %}
+
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+{% import 'front/'~websiteTemplate~'/include/macros/microdata.html.twig' as microdata %}
+
+{% block microData %}
+    {{ microdata.view(entity.mainMedia, seo) }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-catalog', null, webpack) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-catalog.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-catalog', null, webpack, {defer: true, nonce: csp_nonce()}) }}
+{% endblock %}
+
+{% block body %}
+    <div class="product-view-container view-container position-relative">
+        {% if entity.haveLayout %}
+            {% include 'front/'~websiteTemplate~'/layout.html.twig' with { layout: entity.entityForLayout.layout, asLayout: true } %}
+        {% else %}
+            {% include entity.template %}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,593 @@
+{% use "core/form/bootstrap_base_layout.html.twig" %}
+
+{# Widgets #}
+
+{% block money_widget -%}
+    {%- set prepend = not (money_pattern starts with '{{') -%}
+    {%- set append = not (money_pattern ends with '}}') -%}
+    {%- if prepend or append -%}
+        <div class="input-group {{ group_class|default('') }}">
+            {%- if prepend -%}
+                <span class="input-group-text">{{ money_pattern|form_encode_currency }}</span>
+            {%- endif -%}
+            {{- block('form_widget_simple') -}}
+            {%- if append -%}
+                <span class="input-group-text">{{ money_pattern|form_encode_currency }}</span>
+            {%- endif -%}
+        </div>
+    {%- else -%}
+        {{- block('form_widget_simple') -}}
+    {%- endif -%}
+{%- endblock money_widget %}
+
+{% block date_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {% if not valid %}
+            {% set attr = attr|merge({class: (attr.class|default('')~' is-invalid')|trim}) -%}
+            {% set valid = true %}
+        {% endif %}
+        {%- if datetime is not defined or not datetime -%}
+            <div {{ block('widget_container_attributes') -}}>
+        {%- endif %}
+        {%- if label is not same as(false) -%}
+            {{- form_label(form.year) -}}
+            {{- form_label(form.month) -}}
+            {{- form_label(form.day) -}}
+        {%- endif -%}
+        <div class="input-group">
+            {{- date_pattern|replace({
+                '{{ year }}': form_widget(form.year),
+                '{{ month }}': form_widget(form.month),
+                '{{ day }}': form_widget(form.day),
+            })|raw -}}
+        </div>
+        {%- if datetime is not defined or not datetime -%}
+            </div>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock date_widget %}
+
+{% block time_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {% if not valid %}
+            {% set attr = attr|merge({class: (attr.class|default('')~' is-invalid')|trim}) -%}
+            {% set valid = true %}
+        {% endif %}
+        {%- if datetime is not defined or false == datetime -%}
+            <div {{ block('widget_container_attributes') -}}>
+        {%- endif -%}
+        {%- if label is not same as(false) -%}
+            {{- form_label(form.hour) -}}
+            {%- if with_minutes -%}{{ form_label(form.minute) }}{%- endif -%}
+            {%- if with_seconds -%}{{ form_label(form.second) }}{%- endif -%}
+        {%- endif -%}
+        {% if with_minutes or with_seconds %}
+            <div class="input-group">
+        {% endif %}
+        {{- form_widget(form.hour) -}}
+        {%- if with_minutes -%}
+            <span class="input-group-text">:</span>
+            {{- form_widget(form.minute) -}}
+        {%- endif -%}
+        {%- if with_seconds -%}
+            <span class="input-group-text">:</span>
+            {{- form_widget(form.second) -}}
+        {%- endif -%}
+        {% if with_minutes or with_seconds %}
+            </div>
+        {% endif %}
+        {%- if datetime is not defined or false == datetime -%}
+            </div>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock time_widget %}
+
+{% block datetime_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {% if not valid %}
+            {% set attr = attr|merge({class: (attr.class|default('')~' is-invalid')|trim}) -%}
+            {% set valid = true %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            {{- form_widget(form.date, { datetime: true } ) -}}
+            {{- form_errors(form.date) -}}
+            {{- form_widget(form.time, { datetime: true } ) -}}
+            {{- form_errors(form.time) -}}
+        </div>
+    {%- endif -%}
+{%- endblock datetime_widget %}
+
+{% block dateinterval_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {% if not valid %}
+            {% set attr = attr|merge({class: (attr.class|default('')~' is-invalid')|trim}) -%}
+            {% set valid = true %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            {%- if with_years -%}
+                <div class="col-auto mb-3">
+                    {{ form_label(form.years) }}
+                    {{ form_widget(form.years) }}
+                </div>
+            {%- endif -%}
+            {%- if with_months -%}
+                <div class="col-auto mb-3">
+                    {{ form_label(form.months) }}
+                    {{ form_widget(form.months) }}
+                </div>
+            {%- endif -%}
+            {%- if with_weeks -%}
+                <div class="col-auto mb-3">
+                    {{ form_label(form.weeks) }}
+                    {{ form_widget(form.weeks) }}
+                </div>
+            {%- endif -%}
+            {%- if with_days -%}
+                <div class="col-auto mb-3">
+                    {{ form_label(form.days) }}
+                    {{ form_widget(form.days) }}
+                </div>
+            {%- endif -%}
+            {%- if with_hours -%}
+                <div class="col-auto mb-3">
+                    {{ form_label(form.hours) }}
+                    {{ form_widget(form.hours) }}
+                </div>
+            {%- endif -%}
+            {%- if with_minutes -%}
+                <div class="col-auto mb-3">
+                    {{ form_label(form.minutes) }}
+                    {{ form_widget(form.minutes) }}
+                </div>
+            {%- endif -%}
+            {%- if with_seconds -%}
+                <div class="col-auto mb-3">
+                    {{ form_label(form.seconds) }}
+                    {{ form_widget(form.seconds) }}
+                </div>
+            {%- endif -%}
+            {%- if with_invert %}{{ form_widget(form.invert) }}{% endif -%}
+        </div>
+    {%- endif -%}
+{%- endblock dateinterval_widget %}
+
+{% block percent_widget -%}
+    {%- if symbol -%}
+        <div class="input-group">
+            {{- block('form_widget_simple') -}}
+            <span class="input-group-text">{{ symbol|default('%') }}</span>
+        </div>
+    {%- else -%}
+        {{- block('form_widget_simple') -}}
+    {%- endif -%}
+{%- endblock percent_widget %}
+
+{% block form_widget_simple -%}
+    {% if 'placeholder' in full_name|lower and 'relation' in full_name|lower  and 'media' in full_name|lower %}
+        <div class="ia-form-group position-relative">
+    {% endif %}
+    {%- set isDropzone = false -%}
+    {%- set isDropify = false -%}
+    {%- if type is not defined or type != 'hidden' %}
+        {%- set widget_class = ' form-control' %}
+        {%- if type|default('') == 'color' -%}
+            {%- set widget_class = widget_class~' form-control-color' -%}
+        {%- elseif type|default('') == 'range' -%}
+            {%- set widget_class = ' form-range' -%}
+        {%- elseif type|default('') == 'file' -%}
+            {%- set isDropzone = attr.class is defined and 'dropzone' in attr.class -%}
+            {%- set isDropify = attr.class is defined and 'dropify' in attr.class -%}
+        {%- endif -%}
+        {%- set attr = attr|merge({class: (attr.class|default('')~widget_class)|trim}) -%}
+    {% endif -%}
+    {%- if type is defined and type in ['range', 'color'] %}
+        {# Attribute "required" is not supported #}
+        {% set required = false %}
+    {% endif -%}
+    {% if isDropify %}
+        {{- block('form_widget_dropify') -}}
+    {%- else -%}
+        {{- parent() -}}
+    {% endif -%}
+    {% set attrGroup = attr.group is defined ? attr.group : (attr['data-group'] is defined ? attr['data-group'] : null) %}
+    {% if 'password-generator' in attrGroup %}
+        <small id="help_{{ id }}" class="form-text text-info cursor generator-password">{{ 'far sync'|icon(null, 11, 'info me-1') }}{{ "Générer un mot de passe"|trans([], 'admin')|raw }}</small>
+    {% endif %}
+    {% if bytes is defined and bytes %}
+        <small id="help_{{ id }}" class="form-text text-info cursor generate-bytes">{{ 'far sync'|icon(null, 11, 'info me-1') }}{{ "Générer"|trans([], 'admin')|raw }}</small>
+    {% endif %}
+    {% set dataHelp = attr['data-help'] is defined ? attr['data-help'] : false %}
+    {% if 'placeholder' in full_name|lower and 'relation' in full_name|lower  and 'media' in full_name|lower %}
+            {% include 'admin/core/include/ia/alt-tag.html.twig' with {mediaRelation: form.parent.parent.vars.data} only %}
+        </div>
+    {% endif %}
+    {% if 'no-alt' == dataHelp %}
+        <small class="mt-1 form-text px-3 py-2 d-inline-flex align-items-center text-white w-100 bg-warning fw-600 radius">
+            <span class="flex-grow-1">{{ 'far exclamation-triangle'|icon(null, 12, 'white me-2') }}</span>
+            {{ "Ajoutez un titre pour optimser votre référencement. Par défault le nom du fichier sera pris en compte."|trans([], 'admin')|raw }}
+        </small>
+    {% endif %}
+{%- endblock form_widget_simple %}
+
+{%- block form_widget_dropify -%}
+
+    {%- set isMedia = false -%}
+    {% set filename = form.parent.parent.vars.data.media.filename is defined and form.parent.parent.vars.data.media.filename
+        ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.parent.vars.data.media.filename : "" %}
+    {%- if not filename -%}
+        {% set isMedia = true %}
+        {% set filename = form.parent.vars.data.filename is defined and form.parent.vars.data.filename
+            ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.vars.data.filename : "" %}
+    {%- endif -%}
+    {%- set extentions = ['.png', '.jpeg', '.jpg', '.gif', '.svg', '.ico'] -%}
+    {%- for extention in extentions -%}
+        {%- if extention in filename -%}
+            {%- set display = true -%}
+        {%- endif -%}
+    {%- endfor -%}
+    {%- set dataMedia = null -%}
+    {%- set dataScreen = null -%}
+    {%- set dataGroup = attr['data-group'] is defined and attr['data-group'] ? attr['data-group'] : 'dropify-group' -%}
+    {%- set dataHeight = attr['data-height'] is defined and attr['data-height'] ? attr['data-height'] : 250 -%}
+    {%- set maxSize = attr['data-max-size'] is defined and attr['data-max-size'] ? attr['data-max-size'] : null -%}
+    {%- set accept = accept is defined ? accept : null -%}
+    {%- set placeholder = attr.placeholder is defined and attr.placeholder ? attr.placeholder : null -%}
+    {%- set mediaExist = form.parent.parent.vars.data is defined and form.parent.parent.vars.data.media is defined -%}
+    {%- if mediaExist and not isMedia -%}
+        {%- set dataMedia = 'data-media-relation="'~form.parent.parent.vars.data.id|trim~'" data-media-classname="'~form.parent.parent.vars.data|getClass|url_encode~'"' -%}
+    {%- elseif isMedia -%}
+        {%- set dataMedia = form.parent.vars.data ? 'data-media="'~form.parent.vars.data.id|trim~'"' : '' -%}
+        {%- if form.parent.vars.data.screen is defined -%}
+            {%- set dataScreen = 'data-screen="'~form.parent.vars.data.screen|trim~'"' -%}
+        {%- endif -%}
+    {%- endif -%}
+    {%- set filename = form.parent.parent.vars.data.media.filename is defined and form.parent.parent.vars.data.media.filename
+        ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.parent.vars.data.media.filename : "" -%}
+    {%- if not filename -%}
+        {% set isMedia = true %}
+        {% set filename = form.parent.vars.data.filename is defined and form.parent.vars.data.filename
+            ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.vars.data.filename : "" %}
+    {%- endif -%}
+    {%- set display = true -%}
+    {%- for extention in extentions -%}
+        {%- if extention in filename -%}
+            {%- set display = true -%}
+        {%- endif -%}
+    {%- endfor -%}
+
+    <div class="form-group {{ dataGroup }}">
+        {%- if filename -%}
+            {%- if ('/admin-' in app.request.uri and display) or '/admin-' in app.request.uri and '.pdf' in filename -%}
+                <div class="position-relative">
+                    {%- if '/admin-' in app.request.uri and display -%}
+                        <a class="dropify-popup glightbox position-absolute btn btn-outline-dark btn-xs" href="{{ filename }}">
+                            {{ 'fal search-plus'|icon(10, 10) }}
+                        </a>
+                    {%- endif -%}
+                    {%- if '/admin-' in app.request.uri and '.pdf' in filename -%}
+                        <a class="dropify-popup position-absolute btn btn-outline-dark btn-xs" target="_blank" href="{{ filename }}">
+                            {{ 'fal search-plus'|icon(10, 10) }}
+                        </a>
+                    {%- endif -%}
+            {%- endif -%}
+        {%- endif -%}
+                <input type="{{ type }}" id="{{ id }}"
+                       name="{{ full_name }}"
+                       {%- if accept -%}accept="{{ accept }}"{%- endif -%}
+                       {%- if maxSize -%}data-max-size="{{ maxSize }}"{%- endif -%}
+                       {%- if placeholder -%}placeholder="{{ placeholder }}"{%- endif -%}
+                       class="dropify custom-file-input"
+                       data-height="{{ dataHeight }}"
+                       {%- if dataScreen -%}{{ dataScreen|raw }}{%- endif -%}
+                       {%- if dataMedia -%}{{ dataMedia|raw }}{%- endif -%}
+                       data-default-file="{{ filename|raw }}"
+                       data-errors-position="outside">
+        {%- if filename -%}
+            {%- if ('/admin-' in app.request.uri and display) or '/admin-' in app.request.uri and '.pdf' in filename -%}
+                    {% set filename = form.parent.parent.vars.data.media.filename is defined and form.parent.parent.vars.data.media.filename ? form.parent.parent.vars.data.media.filename : null %}
+                    {% set infoFile = website()|fileInfo(filename) %}
+                    {%- if infoFile.size is defined and infoFile.size > 500000 -%}
+                        <small class="too-heavy-badge form-text px-3 py-2 d-inline-flex align-items-center text-white w-100 bg-warning fw-600 radius">{{ 'far exclamation-triangle'|icon(null, 12, 'white me-2') }}
+                            {{ "Le fichier ci-dessus devrait être optimsé %bytes% > 500k."|trans({'%bytes%': infoFile.formatBytes}, 'admin')|raw }}
+                        </small>
+                    {%- endif -%}
+                </div>
+            {%- endif -%}
+        {%- endif -%}
+    </div>
+
+{%- endblock form_widget_dropify -%}
+
+{%- block widget_attributes -%}
+    {%- if not valid %}
+        {% set attr = attr|merge({class: (attr.class|default('')~' is-invalid')|trim}) %}
+    {% endif -%}
+    {{ parent() }}
+{%- endblock widget_attributes -%}
+
+{%- block button_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('btn-secondary')~' btn')|trim}) -%}
+    {{- parent() -}}
+{%- endblock button_widget %}
+
+{%- block submit_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('btn-primary'))|trim}) -%}
+    {{- parent() -}}
+{%- endblock submit_widget %}
+
+{%- block checkbox_widget -%}
+    {%- set is_check_class = checked is defined and checked ? ' checked' : '' -%}
+    {%- set attr_class = attr_class|default(attr.class|default('')) -%}
+    {%- set attr_data = '' -%}
+    {%- set row_class = is_check_class -%}
+    {%- if 'btn-check' not in attr_class -%}
+        {%- set attr_class = attr_class~' form-check-input' -%}
+        {%- set row_class = 'form-check'~is_check_class -%}
+    {%- endif -%}
+    {%- set attr = attr|merge({class: attr_class|trim}) -%}
+    {%- set parent_label_class = parent_label_class|default(label_attr.class|default('')) -%}
+    {%- if 'checkbox-inline' in parent_label_class %}
+        {%- set row_class = row_class~' form-check-inline' -%}
+    {% endif -%}
+    {%- if 'checkbox-switch' in parent_label_class %}
+        {%- set row_class = row_class~' form-switch' -%}
+    {% endif -%}
+    {%- if 'button' in parent_label_class %}
+        {%- set row_class = 'btn-group-toggle' -%}
+        {%- set attr_data = ' data-bs-toggle="buttons"' -%}
+    {% endif -%}
+    {%- if row_class is not empty -%}
+        <div class="{{ row_class }}"{{ attr_data|raw }}>
+    {%- endif -%}
+        {%- if 'button' in parent_label_class -%}
+            {% set color = attr['data-color'] is defined ? attr['data-color'] : 'primary' %}
+            {% set values = attr['data-values'] is defined ? attr['data-values'] : false %}
+            {% set class = attr['class'] is defined ? attr['class'] : null %}
+            <label for="{{ id }}" class="cursor btn btn-{{ color }}{% if class %} {{ class }}{% endif %}{% if checked %} active{% endif %}">
+                {{ 'fal check'|icon(13, 14, 'me-2 fa-check') }}{{ label }}
+            </label>
+            <input id="{{ id }}" type="checkbox" class="btn-check" value="{{ checked }}" name="{{ full_name }}"{% if checked %} checked{% endif %}{% if values %} data-values="{{ values }}"{% endif %}>
+        {%- else -%}
+            {{- form_label(form, null, { widget: parent() }) -}}
+        {%- endif -%}
+    {%- if row_class is not empty -%}
+        </div>
+    {%- endif -%}
+{%- endblock checkbox_widget %}
+
+{%- block radio_widget -%}
+    {%- set is_check_class = checked is defined and checked ? ' checked' : '' -%}
+    {%- set attr_class = attr_class|default(attr.class|default('')) -%}
+    {%- set row_class = is_check_class -%}
+    {%- if 'btn-check' not in attr_class -%}
+        {%- set attr_class = attr_class~' form-check-input' -%}
+        {%- set row_class = 'form-check'~is_check_class -%}
+    {%- endif -%}
+    {%- set attr = attr|merge({class: attr_class|trim}) -%}
+    {%- set parent_label_class = parent_label_class|default(label_attr.class|default('')) -%}
+    {%- if 'radio-inline' in parent_label_class -%}
+        {%- set row_class = row_class~' form-check-inline' -%}
+    {%- endif -%}
+    {%- if row_class is not empty -%}
+        <div class="{{ row_class }}">
+    {%- endif -%}
+        {{- form_label(form, null, { widget: parent() }) -}}
+    {%- if row_class is not empty -%}
+        </div>
+    {%- endif -%}
+{%- endblock radio_widget %}
+
+{%- block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: (attr.class|default('')~' form-select')|trim}) -%}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed -%}
+
+{%- block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for child in form %}
+            {{- form_widget(child, {
+                parent_label_class: label_attr.class|default(''),
+                translation_domain: choice_translation_domain,
+                valid: valid,
+            }) -}}
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded %}
+
+{# Labels #}
+
+{%- block form_label -%}
+    {% if label is not same as(false) -%}
+        {%- set parent_label_class = parent_label_class|default(label_attr.class|default('')) -%}
+        {%- if compound is defined and compound -%}
+            {%- set element = 'legend' -%}
+            {%- if 'col-form-label' not in parent_label_class -%}
+                {%- set label_attr = label_attr|merge({class: (label_attr.class|default('')~' col-form-label' )|trim}) -%}
+            {%- endif -%}
+        {%- else -%}
+            {%- set row_class = row_class|default(row_attr.class|default('')) -%}
+            {%- set label_attr = label_attr|merge({for: id}) -%}
+            {%- if 'col-form-label' not in parent_label_class -%}
+                {%- set label_attr = label_attr|merge({class: (label_attr.class|default('')~('input-group' in row_class ? ' input-group-text' : ' form-label') )|trim}) -%}
+            {%- endif -%}
+        {%- endif -%}
+    {%- endif -%}
+    {%- if label -%}
+        {{- parent() -}}
+    {%- endif -%}
+    {%- if granted('ROLE_AI') -%}
+        {%- if name == 'introduction' or name == 'title' or name == 'subTitle' or name == 'body' -%}
+            <div class="btn ai-button btn-chatgpt tool-5 spelling-correction"
+                 data-bs-toggle="tooltip"
+                 title="{{ 'Corriger les fautes'|trans }}"
+                 data-method="POST"
+                 data-felix-api="{{ path('ai_api_run', {'tool': 5}) }}">
+                <span class="d-none spinner-grow spinner-grow-sm bg-white" role="status" aria-hidden="true"></span>
+                <span class="ai-icon">{{ 'cms spell'|icon(null, null, null, [], '#ffffff') }}</span>
+            </div>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock form_label %}
+
+{%- block checkbox_radio_label -%}
+    {#- Do not display the label if widget is not defined in order to prevent double label rendering -#}
+    {%- if widget is defined -%}
+        {%- set label_attr_class = label_attr_class|default(label_attr.class|default('')) -%}
+        {%- if 'btn' not in label_attr_class -%}
+            {%- set label_attr_class = label_attr_class~' form-check-label' -%}
+        {%- endif -%}
+        {%- set label_attr = label_attr|merge({class: label_attr_class|trim}) -%}
+        {%- if not compound -%}
+            {% set label_attr = label_attr|merge({for: id}) %}
+        {%- endif -%}
+        {%- if required -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('')~' required')|trim}) -%}
+        {%- endif -%}
+        {%- if parent_label_class is defined -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('')~' '~parent_label_class)|replace({'checkbox-inline': '', 'radio-inline': ''})|trim}) -%}
+        {%- endif -%}
+        {{ widget|raw }}
+        <label{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
+            {%- if label is not same as(false) -%}
+                {{- block('form_label_content') -}}
+            {%- endif -%}
+        </label>
+    {%- endif -%}
+{%- endblock checkbox_radio_label %}
+
+{# Rows #}
+
+{%- block form_row -%}
+{#    {%- if compound is not defined or (compound is defined and not compound) -%}#}
+        {% set asColorPicker = attr.class is defined and 'colorpicker' in attr.class %}
+        {% set modalMediaCopy = form.vars.attr['data-media-modal-copy'] is defined and form.vars.attr['data-media-modal-copy'] %}
+    {#    {%- if compound is defined and compound -%}#}
+    {#        {%- set element = 'fieldset' -%}#}
+    {#    {%- endif -%}#}
+        {%- set counterExist = counter is defined -%}
+        {%- set widget_attr = {} -%}
+        {%- if help is not empty -%}
+            {%- set widget_attr = {attr: {'aria-describedby': id~"_help"}} -%}
+        {%- endif -%}
+        {%- set group_size = attr['data-group'] is defined and attr['data-group'] ? attr['data-group'] : 'col-12' -%}
+        {%- set row_attr_class = row_attr.class is defined ? row_attr.class|trim~' '~group_size : group_size -%}
+        {%- set row_class = 'mb-' not in row_attr_class ? row_attr_class~' mb-3' : row_attr_class -%}
+        {%- set allowed_for_floating = ['text', 'choice', 'single_text', 'integer', 'number'] -%}
+        {%- set field_display = display is defined ? display : null -%}
+        {%- set field_display_disallowed = ['switch'] -%}
+        {%- set field_type = form.vars.block_prefixes[1] is defined ? form.vars.block_prefixes[1] : null -%}
+        {%- set field_type_allowed = field_type and field_type in allowed_for_floating and field_display not in field_display_disallowed -%}
+        {%- set field_type_allowed = (form.vars.widget is defined and form.vars.widget in allowed_for_floating) or field_type_allowed -%}
+        {%- set class_attr = attr.class is defined ? attr.class : '' -%}
+        {%- set disabledFloating = 'disabled-floating' in row_class or (attr['data-floating'] is defined and not attr['data-floating']) -%}
+        {%- set front_floating = front_floating is defined ? not disabledFloating and front_floating : not disabledFloating -%}
+        {%- if front_floating and 'form-floating' not in row_class and field_type_allowed and 'tinymce' not in class_attr and 'disabled-floating' not in row_class and label -%}
+            {%- set row_class = row_class~' form-floating floating-form-'~field_type -%}
+        {%- endif -%}
+        {%- set isCheckboxes = '/admin-' not in app.request.requestUri and ('check-inline' in class_attr or 'form-check' in class_attr) -%}
+        {%- if 'tinymce' in class_attr -%}
+            {%- set row_class = row_class~' tinymce-group' -%}
+        {%- endif -%}
+        {%- if asColorPicker -%}
+            {%- set row_class = row_class~' colorpicker-group' -%}
+        {%- endif -%}
+        {%- if not valid -%}
+            {%- set row_class = row_class~' is-invalid' -%}
+        {%- endif -%}
+        {%- set isSelected = is_selected is defined and data -%}
+        {%- if isSelected -%}
+            {%- set row_class = row_class~' selected' -%}
+        {%- endif -%}
+        {%- if counterExist -%}
+            {%- set row_class = row_class~' counter-form-group' -%}
+        {%- endif -%}
+        {%- if isCheckboxes -%}
+            {%- set element = 'fieldset' -%}
+        {%- endif -%}
+        <{{ element|default('div') }}{% with {attr: row_attr|merge({class: row_class|replace({'form-floating': ''})|trim})} %}{{ block('attributes') }}{% endwith %}>
+            {%- if 'form-floating' in row_class -%}
+                <div class="position-relative form-floating{% if 'select-icons' in class_attr %} icons-group{% endif %}{% if 'img-pictograms' in class_attr %} img-pictograms-group{% endif %}{% if isSelected %} selected{% endif %}{% if not valid %} is-invalid{% endif %}">
+                    {{- form_widget(form, widget_attr) -}}
+                    {{- form_label(form) -}}
+                </div>
+            {%- else -%}
+                {% if modalMediaCopy %}
+                    <div class="d-flex align-items-end mb-2 modal-btn-wrap-label">
+                {% endif %}
+                {{- form_label(form) -}}
+                {% if modalMediaCopy %}
+                        <span class="ps-4 ms-auto">
+                            <span id="open-modal-{{ full_name }}"
+                                  data-options="{{ {type: 'copy'}|json_encode }}"
+                                  class="open-modal-medias btn btn-info d-flex align-items-center">
+                                {{ 'fal photo-video'|icon(null, 15, 'white me-2') }}{{ "Afficher la librairie"|trans|raw }}
+                            </span>
+                        </span>
+                    </div>
+                {% endif %}
+                {{- form_widget(form, widget_attr) -}}
+            {%- endif -%}
+            {%- if counterExist -%}
+                {%- set counter_class = data|length > counter ? 'bg-danger' : (data|length > 0 ? 'bg-success' : 'bg-info') -%}
+                <small class="char-counter mt-1 form-text px-2 py-1 d-inline-block text-white w-100 {{ counter_class }}" data-limit="{{ counter }}">
+                    <span class="count">{{ value|striptags|length }}</span> / {{ counter }} {{ "caractères recommandés"|trans([], 'admin')|raw }}
+                </small>
+            {%- endif -%}
+            {%- if 'tinymce' in class_attr -%}
+                <small class="table-alert mt-1 form-text px-3 py-2 d-inline-flex align-items-center text-white w-100 bg-warning fw-600 radius d-none">
+                    {{ 'far exclamation-triangle'|icon(14, 14, 'white me-2') }}
+                    {{ "Pour l'accessiblité pensez à ajouter un texte descriptif ou un titre devant chacun de vos tableaux et des intitulés à vos colonnes."|trans([], 'admin')|raw }}
+                </small>
+            {% endif %}
+            {{- form_help(form) -}}
+            {{- form_errors(form) -}}
+        </{{ element|default('div') }}>
+{#    {%- endif -%}#}
+{%- endblock form_row %}
+
+{%- block button_row -%}
+    {%- set group_size = attr['data-group'] is defined and attr['data-group'] ? attr['data-group'] : '' -%}
+    <div{% with {attr: row_attr|merge({class: row_attr.class|default('mb-3 '~group_size)|trim})} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock button_row %}
+
+{# Errors #}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        {%- for error in errors -%}
+            <div class="{% if form is not rootform %}invalid-feedback{% else %}alert alert-danger{% endif %} d-block" role="alert">{{ error.message|raw }}</div>
+        {%- endfor -%}
+    {%- endif %}
+{%- endblock form_errors %}
+
+{# Help #}
+
+{%- block form_help -%}
+    {% set row_class = row_attr.class|default('') %}
+    {% set help_class = ' form-text' %}
+    {% if 'input-group' in row_class %}
+        {#- Hack to properly display help with input group -#}
+        {% set help_class = ' input-group-text' %}
+    {% endif %}
+    {%- if help is not empty -%}
+        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('')~help_class~' mb-0')|trim}) -%}
+    {%- endif -%}
+    {% set alert = attr['data-help-alert'] is defined and attr['data-help-alert'] ? attr['data-help-alert'] : false %}
+    {%- if alert and help is not empty -%}
+        <small class="table-alert mt-1 form-text px-3 py-2 d-inline-flex align-items-center text-white w-100 bg-{{ alert }} fw-600 radius">
+            {{ 'far exclamation-triangle'|icon(14, 14, 'white me-2') }}{{ help|raw }}
+        </small>
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock form_help %}

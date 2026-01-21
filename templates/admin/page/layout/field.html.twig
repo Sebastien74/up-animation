@@ -1,0 +1,153 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% block title %}{{ pageTitle|replace({'(form)': ''})|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle|replace({'(form)': ''}) }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
+        <div id="edit-form-{{ interface.name }}" class="card">
+
+            {% include 'admin/core/form/save/header.html.twig' %}
+
+            <div class="card-body pb-0">
+                <div class="row">
+
+                    {% set fieldConfiguration = form.fieldConfiguration %}
+
+                    {{ form_row(form.adminName) }}
+
+                    {% if form.fieldConfiguration.slug is defined %}
+                        {{ form_row(form.fieldConfiguration.slug) }}
+                    {% endif %}
+
+                    {% if form.color is defined %}
+                        {{ form_row(form.color) }}
+                    {% endif %}
+
+                    {% if form.icon is defined %}
+                        {{ form_row(form.icon) }}
+                    {% endif %}
+
+                    {% if fieldConfiguration.script is defined %}
+                        {{ form_row(fieldConfiguration.script) }}
+                    {% endif %}
+
+                    {% if fieldConfiguration.className is defined %}
+                        {{ form_row(fieldConfiguration.className) }}
+                    {% endif %}
+
+                    {% if form.fieldConfiguration.masterField is defined %}
+                        {{ form_row(form.fieldConfiguration.masterField) }}
+                    {% endif %}
+
+                    {% include 'admin/core/form/intls.html.twig' with {intls: form.intls} %}
+
+                    {% if fieldConfiguration.fieldValues is defined %}
+
+                        <div class="col-12">
+                            <h4 class="card-subtitle mb-4">{{ "fal text"|icon(null, 14, 'info-darken me-2') }}{{ "Valeurs"|trans }}</h4>
+                        </div>
+
+                        {% import _self as macro %}
+
+                        {% macro values_prototype(property) %}
+                            {% set isNew = property.vars.data.id is defined and property.vars.data.id ? false : true %}
+                            {% set entity = isNew ? uniqId() : property.vars.data %}
+                            {% set entityId = isNew ? uniqId() : entity.id %}
+                            {% set asChild = not isNew and property.vars.data.value %}
+                            {% set asLabel = not isNew and property.vars.data.values.count > 0 %}
+                            {% set interfaceName = property.vars.errors.form.config.dataClass|interfaceName %}
+                            <div id="{{ interfaceName~"-"~entityId }}" class="prototype prototype-block p-3 mb-3{% if asChild %} ms-4{% endif %}{% if asLabel %} as-field-label{% endif %}">
+                                <div class="row">
+                                    {% if property.intls|length > 0 %}
+                                        <div class="d-none">{{ form_row(property.adminName) }}</div>
+                                        {% include 'admin/core/form/intls.html.twig' with {intls: property.intls, disableTitle: true} %}
+                                        {{ form_row(property.value) }}
+                                        {% if property.associatedElements is defined %}
+                                            {{ form_row(property.associatedElements) }}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ form_row(property.adminName) }}
+                                    {% endif %}
+                                    {% include 'admin/include/handle-item-collection.html.twig' with {isNew: isNew} %}
+                                    {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                                        isNew: isNew,
+                                        entityId: isNew ? uniqId() : property.vars.data.id,
+                                        interfaceName: interfaceName
+                                    } %}
+                                </div>
+                            </div>
+                        {% endmacro %}
+
+                        {% set isCheckboxType = entity.blockType.fieldType is defined and 'CheckboxType' in entity.blockType.fieldType %}
+
+                        <div id="configuration-values-collection"
+                             data-index="{{ fieldConfiguration.fieldValues|length }}"
+                             class="collection prototype-sortable col-12"
+                             data-prototype="{{ macro.values_prototype(fieldConfiguration.fieldValues.vars.prototype)|e('html_attr') }}">
+                            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderClass: 'field-values-preloader', progress: true} only %}
+                            {% for property in fieldConfiguration.fieldValues %}
+                                {{ macro.values_prototype(property) }}
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-12 text-end mb-4">
+                            <button role="button" class="add-collection btn btn-success standard{% if isCheckboxType %} d-none{% endif %}"
+                                    data-collection-target="append"
+                                    data-target="#configuration-values-collection">
+                                {{ 'fal plus'|icon(11, 15, 'white me-2') }}
+                                <span class="d-inline-block">{{ 'Ajouter une valeur'|trans }}</span>
+                            </button>
+                        </div>
+
+                    {% endif %}
+
+                    {% set fieldsConfiguration = [
+                        'filesTypes', 'maxFileSize', 'min', 'max', 'regex', 'buttonType', 'smallSize', 'required', 'multiple', 'expanded', 'picker', 'inline', 'anonymize'
+                    ] %}
+                    {% set count = 0 %}
+                    {% for field in form.children.fieldConfiguration %}
+                        {% if field.vars.name in fieldsConfiguration %}
+                            {% set count = count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if count > 0 %}
+                        <div class="col-12">
+                            <h4 class="card-subtitle mb-4">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}</h4>
+                        </div>
+                    {% endif %}
+
+                    {% for field in fieldsConfiguration %}
+                        {% if form.fieldConfiguration[field] is defined %}
+                            {{ form_row(form.fieldConfiguration[field]) }}
+                            {% if form.fieldConfiguration.associatedElements is defined %}
+                                {{ form_row(form.fieldConfiguration.associatedElements) }}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if form.controls is defined %}
+                        {{ form_row(form.controls) }}
+                    {% endif %}
+
+                </div>
+            </div>
+
+            {% include 'admin/core/form/save/footer.html.twig' %}
+
+        </div>
+    {{ form_end(form) }}
+
+{% endblock %}

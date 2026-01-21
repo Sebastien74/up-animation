@@ -1,0 +1,30 @@
+{% trans_default_domain 'front_default' %}
+
+{% if haveContent %}
+    {% set blockClasses = blockClasses is defined ? blockClasses : '' %}
+    {% set animActive = false %}
+    {% set fontWeight = fontWeight is defined ? fontWeight : false %}
+    {% set anim = blockTransitions is defined ? blockTransitions|transitionsAttributes({
+        text: animActive ? 'block-text-text' : null,
+        intro: animActive ? 'block-title-intro' : null
+    }) : false %}
+    <div class="text-block w-100{% if block.controls is defined and block.controls %} list-style-check{% endif %}{% if blockClasses %} {{ blockClasses }}{% endif %}">
+        {% if intl.introduction %}
+            {% set introClasses = anim.intro.class is defined ? anim.intro.class : '' %}
+            {% set introClasses = fontWeightSecondary ? introClasses~' '~fontWeightSecondary : introClasses %}
+            {% set introClasses = fontSize ? introClasses~' '~fontSize : introClasses %}
+            {% set introClasses = intl.body ? introClasses~' mb-4 mb-lg-5' : introClasses %}
+            {% set introClasses = color ? (introClasses~' '~color)|trim : introClasses|trim %}
+            <p class="text-bold introduction{% if introClasses %} {{ introClasses|raw }}{% endif %}"
+                    {% if anim.intro.attr %} {{ anim.intro.attr|raw }}{% endif %}>
+                {{ intl.introduction|raw|nl2br }}
+            </p>
+        {% endif %}
+        {% if intl.body %}
+            <div class="body{% if anim.text.class is defined and anim.text.class %} {{ anim.text.class|raw }}{% endif %}{% if fontWeight %} {{ fontWeight }}{% endif %}"
+                    {% if anim.text.attr is defined and anim.text.attr %} {{ anim.text.attr|raw }}{% endif %}>
+                {{ intl.body|raw }}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

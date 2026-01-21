@@ -1,0 +1,86 @@
+{% extends "admin/base.html.twig" %}
+
+{% trans_default_domain 'admin' %}
+
+{% set transDomain = interface.name is defined and interface.name
+    ? 'entity_'~interface.name : null %}
+
+{% if pageTitle is not defined or pageTitle is defined and not pageTitle  %}
+    {% set title = 'singular'|trans([], transDomain) and 'singular'|trans([], transDomain) != 'singular'
+        ? 'singular'|trans([], transDomain) : 'Édition'|trans~" "~interface.name  %}
+    {% set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title %}
+{% endif %}
+
+{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
+{% block pageTitle %}{{ pageTitle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {% set fields = [] %}
+    {% set unsetElements = ['contactValues.label', 'contactValues.value'] %}
+    {% set elementsToShow = interface.configuration.showView is defined ? interface.configuration.showView : null %}
+    {% for element in elementsToShow %}
+        {% if element not in unsetElements %}
+            {% set fields = fields|merge([element]) %}
+        {% endif %}
+    {% endfor %}
+    {% set labels = {
+        slug: 'Code'|trans,
+        id: 'ID'|trans,
+        createdAt: 'Créé le'|trans,
+        updatedAt: 'Modifié le'|trans,
+        createdBy: 'Créé par'|trans,
+        updatedBy: 'Modifié par'|trans,
+        position: 'Position'|trans,
+    } %}
+
+    <div id="entities-index" class="card">
+
+        <div class="card-header text-end">
+            <span data-toggle="preloader">
+                <a href="{{ lastRoute() }}" class="btn btn-white text-info"
+                   data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
+                   aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                {{ 'fas reply'|icon(14, 14, 'info') }}
+                </a>
+            </span>
+        </div>
+
+        <table class="table table-striped table-bordered mb-0">
+            <tbody>
+                {% if granted('ROLE_INTERNAL') and entity.slug is defined and entity.slug %}
+                    <tr>
+                        <td class="align-middle">{{ 'Code'|trans }}</td>
+                        <td class="align-middle">{{ entity.slug }}</td>
+                    </tr>
+                {% endif %}
+                {% for field in fields %}
+                    {% if field in elementsToShow or elementsToShow is empty %}
+                        {% set labelName = labels[field] is defined ? labels[field] : (field|trans([], transDomain) and field|trans([], transDomain) != field
+                            ? field|trans([], transDomain) : field) %}
+                        {% set fieldValue = entityValue(entity, field) %}
+                        {% if not fieldValue %}
+                            {% set fieldValue = 'N/C' %}
+                        {% endif %}
+                        <tr>
+                            <td class="align-middle">{{ labelName|trans }}</td>
+                            <td class="align-middle">
+                                {% include 'core/data-formater.html.twig' with {elementsToShow: elementsToShow, dataValue: fieldValue, property: field, view: 'show'} only %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

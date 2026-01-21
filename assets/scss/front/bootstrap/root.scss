@@ -1,0 +1,91 @@
+@import "functions";
+
+@if not $enable-medias-queries {
+
+@charset "UTF-8";
+
+    :root, [data-bs-theme=light] {
+        --bs-gutter-x: #{$gutter-x};
+        --bs-gutter-y: #{$gutter-y};
+        --bs-gutter-x-margin: #{$gutter-x-margin};
+        --bs-gutter-y-margin: #{$gutter-y-margin};
+        --bs-font-size: 1rem;
+        --bs-font-sans-serif: #{$font-primary};
+        --bs-body-font-family: var(--bs-font-sans-serif);
+        --bs-body-font-size: #{$font-size-base};
+        --bs-body-font-weight: #{$body-font-weight};
+        --bs-body-line-height: #{$body-line-height};
+        --bs-body-color: #{$body-color};
+        --bs-title-font-weight: #{$title-font-weight};
+        --bs-title-line-height: #{$title-line-height};
+        --bs-title-margin-botom: #{$title-margin-bottom};
+        --bs-heading-color: inherit;
+        --bs-white: #{$white};
+        --bs-box-gray-100: #{$gray-100};
+        --bs-box-gray-200: #{$gray-200};
+        --bs-box-gray-300: #{$gray-300};
+        --bs-box-gray-400: #{$gray-400};
+        --bs-box-gray-500: #{$gray-500};
+        --bs-box-gray-600: #{$gray-600};
+        --bs-box-gray-700: #{$gray-700};
+        --bs-box-gray-800: #{$gray-800};
+        --bs-box-gray-900: #{$gray-900};
+        --bs-black: #{$black};
+        --bs-black-rgb: #{toRGB($black)};
+        --bs-body-bg: var(--bs-white);
+        --bs-body-bg-rgb: #{toRGB($white)};
+        --bs-tertiary-bg: #{$body-tertiary-bg};
+        --bs-emphasis-color: #{$body-emphasis-color};
+        --bs-border-width: #{$border-width};
+        --bs-border-color: #{$gray-300};
+        --bs-border-color-translucent: #{$border-translucent};
+        --bs-border-radius: #{$border-radius};
+        --bs-box-shadow: #{$box-shadow};
+        --bs-link-color-rgb: #{$primary};
+        --bs-link-opacity: 1;
+        @each $name, $color in $theme-colors {
+            @if 'white' != $name and 'black' != $name {
+                --bs-#{$name}: #{$color};
+            }
+            @if 'black' != $name {
+                --bs-#{$name}-rgb: #{toRGB($color)};
+            }
+            --bs-#{$name}-bg: #{$color};
+            --bs-#{$name}-color: #{$color};
+            --bs-#{$name}-lighten: #{tint-color($color, 40%)};
+            --bs-#{$name}-emphasis: #{shade-color($color, 60%)};
+            --bs-#{$name}-emphasis-40: #{shade-color($color, 40%)};
+            --bs-#{$name}-emphasis-color: #{tint-color($color, 60%)};
+            --bs-#{$name}-darken: #{shade-color($color, 80%)};
+            --bs-#{$name}-border: #{$color};
+            --bs-#{$name}-border-lighten: #{tint-color($color, 40%)};
+            @each $contrast, $percent in $contrasts {
+                @if $contrast <= 400 {
+                    --bs-#{$name}-#{$contrast}: #{tint-color($color, $percent)};
+                } @else if ($contrast == 500) {
+                    --bs-#{$name}-#{$contrast}: #{$color};
+                } @else if ($contrast > 500) {
+                    --bs-#{$name}-#{$contrast}: #{shade-color($color, $percent)};
+                }
+            }
+            @each $value, $opacity in $opacities {
+                --bs-#{$name}-opacity-#{$value}: #{transparentize($color, $opacity)};
+            }
+        }
+        @each $name, $config in $alert-colors {
+            --bs-alert-#{$name}-bg: #{map-get($config, 'bg')};
+            --bs-alert-#{$name}-icon-bg: #{map-get($config, 'bg-icon')};
+            --bs-alert-#{$name}-color: #{map-get($config, 'color')};
+            --bs-alert-#{$name}-icon-color: #{map-get($config, 'color-icon')};
+            --bs-alert-#{$name}-border-color: #{map-get($config, 'border')};
+            --bs-alert-#{$name}-link-color: #{shade-color(map-get($config, 'color'), 80%)};
+            --bs-alert-#{$name}-font-size: #{map-get($config, 'font-size')};
+        }
+        --bs-breakpoint-xs: 0;
+        --bs-breakpoint-sm: 576px;
+        --bs-breakpoint-md: 768px;
+        --bs-breakpoint-lg: 992px;
+        --bs-breakpoint-xl: 1200px;
+        --bs-breakpoint-xxl: 1400px;
+    }
+}

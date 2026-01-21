@@ -1,0 +1,45 @@
+{% trans_default_domain 'front_default' %}
+
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+
+{% if entities %}
+    {% set zone = block.col.zone %}
+    {% set defaultTemplate = 'front/'~websiteTemplate~'/actions/portfolio/teaser/default.html.twig' %}
+    {% set blockTemplate = block.template ? 'front/'~websiteTemplate~'/actions/portfolio/teaser/'~block.template~'.html.twig' : defaultTemplate %}
+    {% set template = (blockTemplate)|fileExist ? blockTemplate : defaultTemplate %}
+    {% set posts = [] %}
+    {% set loopIndex = 0 %}
+    {% for categoryId, categoryEntities in entities %}
+        {% for entity in categoryEntities %}
+            {% set layout = entity.layout %}
+            {% set asCustomLayout = entity.customLayout is defined and entity.customLayout
+                and layout.zones is defined and layout.zones|length > 0 %}
+            {% set intl = asCustomLayout ? layout|layoutBlockType('text')|intl : entity|intl %}
+            {% if intl %}
+                {% set mediaRelation = asCustomLayout ? layout|layoutBlockType('media')|mainMedia : entity|mainMedia %}
+                {% set title = asCustomLayout ? layout|mainLayoutTitle(app.request.locale, true) : intl.title %}
+                {% set posts = posts|merge({(loopIndex): {
+                    entity: entity,
+                    title: title.title is defined ? title.title : title,
+                    subTitle: title.subTitle is defined ? title.subTitle : intl.subTitle,
+                    titleForce: 2,
+                    intro: intl.introduction,
+                    body: intl.body,
+                    mediaRelation: mediaRelation,
+                    thumbConfiguration: thumbConfiguration,
+                    url: website|intlUrl(entity),
+                    pageUrl: urlsIndex[entity.id] is defined and urlsIndex[entity.id] ? urlsIndex[entity.id] : null
+                }}) %}
+                {% set loopIndex = loopIndex + 1 %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    <div id="teaser-news-container-{{ teaser.slug }}" class="teaser-news-container">
+        {{ macroWebmaster.box({
+            title: "Éditer le teaser"|trans([], 'front_webmaster'),
+            role: 'ROLE_PORTFOLIO',
+            path: path('admin_portfolioteaser_edit', {website: teaser.website.id, portfolioteaser: teaser.id})
+        }) }}
+        {% include template %}
+    </div>
+{% endif %}
