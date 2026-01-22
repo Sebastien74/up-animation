@@ -5,17 +5,28 @@ declare(strict_types=1);
 namespace App\Service\Development\Import;
 
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-
 
 /**
  * MetaCrawlerService.
  *
- * Fetch a page and extract SEO/social metadata.
- * Also extracts a human-readable "title" from the DOM (first H1, fallback to first H2).
+ * Crawl a list of URLs and extract SEO/social metas + JSON-LD + page title (H1/H2 innerHtml).
  *
- * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
+ * Output keys order (important for your JSON diffs):
+ * - title
+ * - titleType
+ * - meta-title
+ * - meta-description
+ * - meta-robots
+ * - og
+ * - article
+ * - twitter
+ * - ld+json
+ * - error
+ *
+ * @author Sébastien FOURNIER
  */
 readonly class MetaCrawlerService
 {
@@ -80,7 +91,36 @@ readonly class MetaCrawlerService
             $urls = $decoded;
         }
 
-$urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_string($u) && $u !== '')));
+        $urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_string($u) && trim($u) !== '')));
+
+        if (count($urls) > $limit) {
+            $urls = array_slice($urls, 0, $limit);
+        }
+
+        return $urls;
+    }
+
+    /**
+     * Read a YAML file and return URLs list.
+     * (Kept for backward compatibility.)
+     *
+     * @param string $inputPath
+     * @param int    $limit
+     *
+     * @return array<int, string>
+     */
+    public function readUrlsFromYaml(string $inputPath, int $limit): array
+    {
+        $yaml = Yaml::parseFile($inputPath);
+
+        $urls = [];
+        if (is_array($yaml) && isset($yaml['urls']) && is_array($yaml['urls'])) {
+            $urls = $yaml['urls'];
+        } elseif (is_array($yaml)) {
+            $urls = $yaml;
+        }
+
+        $urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_string($u) && trim($u) !== '')));
 
         if (count($urls) > $limit) {
             $urls = array_slice($urls, 0, $limit);
@@ -102,6 +142,8 @@ $urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_strin
     {
         // Default structure (keep keys even if empty)
         $result = [
+            'title' => '',
+            'titleType' => '',
             'meta-title' => '',
             'meta-description' => '',
             'meta-robots' => '', // Empty string if not present (as requested)
@@ -142,7 +184,12 @@ $urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_strin
 
             $crawler = new Crawler($html, $url);
 
-            // Title
+            // H1/H2 innerHtml (requested)
+            [$pageTitle, $pageTitleType] = $this->extractHeadingInnerHtml($crawler);
+            $result['title'] = $pageTitle;
+            $result['titleType'] = $pageTitleType;
+
+            // <title>
             $titleNode = $crawler->filter('head > title');
             if ($titleNode->count() > 0) {
                 $result['meta-title'] = trim((string) $titleNode->text(''));
@@ -171,12 +218,35 @@ $urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_strin
     }
 
     /**
+     * Extract innerHtml from the first H1; if none, from the first H2.
+     *
+     * @return array{0: string, 1: string} [innerHtml, type(h1|h2|'')]
+     */
+    private function extractHeadingInnerHtml(Crawler $crawler): array
+    {
+        // H1
+        $h1 = $crawler->filter('h1');
+        if ($h1->count() > 0) {
+            $html = trim((string) $h1->first()->html());
+            if ($html !== '') {
+                return [$html, 'h1'];
+            }
+        }
+
+        // H2
+        $h2 = $crawler->filter('h2');
+        if ($h2->count() > 0) {
+            $html = trim((string) $h2->first()->html());
+            if ($html !== '') {
+                return [$html, 'h2'];
+            }
+        }
+
+        return ['', ''];
+    }
+
+    /**
      * Get a meta content by its "name" attribute.
-     *
-     * @param Crawler $crawler
-     * @param string  $name
-     *
-     * @return string|null
      */
     private function getMetaByName(Crawler $crawler, string $name): ?string
     {
@@ -193,9 +263,6 @@ $urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_strin
      * Get metas where property starts with a prefix (e.g. og:, article:).
      * Returns map "property" => "content".
      *
-     * @param Crawler $crawler
-     * @param string  $prefix
-     *
      * @return array<string, string>
      */
     private function getMetaByPropertyPrefix(Crawler $crawler, string $prefix): array
@@ -209,7 +276,7 @@ $urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_strin
             }
 
             $content = trim((string) $node->getAttribute('content'));
-            $out[$prop] = $content; // keep empty content if present in DOM
+            $out[$prop] = $content;
         }
 
         ksort($out);
@@ -220,9 +287,6 @@ $urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_strin
     /**
      * Get metas where name starts with a prefix (e.g. twitter:).
      * Returns map "name" => "content".
-     *
-     * @param Crawler $crawler
-     * @param string  $prefix
      *
      * @return array<string, string>
      */
@@ -247,8 +311,6 @@ $urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_strin
 
     /**
      * Extract raw JSON-LD scripts from the page.
-     *
-     * @param Crawler $crawler
      *
      * @return array<int, string>
      */
