@@ -106,7 +106,9 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\ErrorHandler\\' => 31,
             'Symfony\\Component\\Dotenv\\' => 25,
+            'Symfony\\Component\\DomCrawler\\' => 29,
             'Symfony\\Component\\DependencyInjection\\' => 38,
+            'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\Config\\' => 25,
             'Symfony\\Component\\Clock\\' => 24,
@@ -167,6 +169,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
             'Monolog\\' => 8,
             'Misd\\PhoneNumberBundle\\' => 23,
             'Matrix\\' => 7,
+            'Masterminds\\' => 12,
             'Maestroerror\\' => 13,
         ),
         'L' => 
@@ -502,9 +505,17 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             0 => __DIR__ . '/..' . '/symfony/dotenv',
         ),
+        'Symfony\\Component\\DomCrawler\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/dom-crawler',
+        ),
         'Symfony\\Component\\DependencyInjection\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/dependency-injection',
+        ),
+        'Symfony\\Component\\CssSelector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/css-selector',
         ),
         'Symfony\\Component\\Console\\' => 
         array (
@@ -687,6 +698,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'Matrix\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
+        ),
+        'Masterminds\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/masterminds/html5/src',
         ),
         'Maestroerror\\' => 
         array (

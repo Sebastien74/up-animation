@@ -5,7 +5,33 @@ https://preview.themeforest.net/item/exhibiz-event-conference-and-meetup/full_sc
 https://html.iwthemes.com/allEvents/Conference/index-video.html
 http://preview.themeforest.net/item/events-conference-tourism-music-sport-all-events-theme/full_screen_preview/9573526
 
+
+Mettre les Crawler URLS et Meta dans CMS
+
+
+    ERREUR !!!!!!!!!!!!!!
+    /**
+     * To resolve thumbnail.
+     */
+    public function resolve(Website $website, ThumbConfiguration $thumbConfiguration, string $dirname): void
+    {
+        $dirname = urldecode($dirname);
+        $dirname = str_replace('/', '\\', $dirname);
+        $matches = explode('\\', $dirname);
+        $filename = end($matches);
+        $media = $this->entityManager->getRepository(Media::class)->findOneBy(['website' => $website, 'filename' => $filename]);
+        if ($media instanceof Media) {
+            $thumbConfiguration = $this->thumbnailRuntime->thumbConfiguration($media, $thumbConfiguration);
+            try {
+                $this->thumbnailRuntime->thumb($media, $thumbConfiguration, ['execute' => true, 'path' => true, 'generator' => true]);
+            } catch (LoaderError|RuntimeError|SyntaxError|NonUniqueResultException $e) {
+            }
+        }
+    }
+
 Regarder todo CMS
+
+Dans le URLS Crawler récupérer les métas title, description, script/json ...
 
 Mettre le site sur api.abcd.com
 
