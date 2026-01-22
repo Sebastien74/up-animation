@@ -10,17 +10,19 @@ namespace App\Service\Development\Import;
  * Classify URLs into buckets (products / indexes / categories / pages) and provide JSON helpers
  * used by crawl commands.
  *
- * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
+ * Pagination rule:
+ * - /category/foo/page/2 => /category/foo (same key)
+ *
+ * Existing data in contents.json must be preserved when rebuilding the map:
+ * - keep "contents" if non-empty
+ * - keep "urls" (categories) if present
+ *
+ * @author Sébastien FOURNIER
  */
 class UrlContentsClassifierService
 {
     /**
      * Read an existing contents.json map.
-     *
-     * Used to preserve already extracted "contents" blocks when regenerating the map.
-     * Returns an empty array if the file does not exist, is empty, or is invalid JSON.
-     *
-     * @param string $path
      *
      * @return array<string, mixed>
      */
@@ -42,12 +44,6 @@ class UrlContentsClassifierService
 
     /**
      * Read a JSON file and return URLs list.
-     * Supports both formats:
-     * - payload with "urls" key (recommended)
-     * - raw list of URLs
-     *
-     * @param string $inputPath
-     * @param int    $limit
      *
      * @return array<int, string>
      */
@@ -83,11 +79,10 @@ class UrlContentsClassifierService
     /**
      * Classify URLs into products/indexes/categories/pages based on their path.
      *
-     * @param array<int, string> $urls
-     *
+     * @param array<int, string>   $urls
      * @param array<string, mixed> $existingMap
      *
-     * @return array<string, array<string, array{contents: mixed}>>
+     * @return array<string, array<string, array<string, mixed>>>
      */
     public function classify(array $urls, array $existingMap = []): array
     {
@@ -108,18 +103,35 @@ class UrlContentsClassifierService
 
             $bucket = $this->bucketFromPath($path);
 
-            $existingContents = $existingMap[$bucket][$url]['contents'] ?? null;
+            // Categories pagination must be merged into the base category URL:
+            // /category/foo/page/2 => /category/foo
+            $keyUrl = $bucket === 'categories'
+                ? $this->normalizeCategoryPaginationUrl($url)
+                : $url;
 
-            // If an existing non-empty contents array is present, preserve it.
-            if (is_array($existingContents) && $existingContents !== []) {
-                $out[$bucket][$url] = ['contents' => $existingContents];
-                continue;
+            $entry = ['contents' => []];
+
+            // Preserve existing non-empty contents
+            $existing = $this->findExistingEntry($existingMap, $bucket, $keyUrl, $url);
+            if (is_array($existing)) {
+                if (isset($existing['contents']) && is_array($existing['contents']) && $existing['contents'] !== []) {
+                    $entry['contents'] = $existing['contents'];
+                }
+
+                // Preserve categories urls (matched products)
+                if ($bucket === 'categories' && isset($existing['urls']) && is_array($existing['urls']) && $existing['urls'] !== []) {
+                    $entry['urls'] = array_values(array_unique(array_filter($existing['urls'], 'is_string')));
+                }
             }
 
-            $out[$bucket][$url] = ['contents' => []];
+            // Merge if the same key was already created (pagination collapse)
+            if (!isset($out[$bucket][$keyUrl])) {
+                $out[$bucket][$keyUrl] = $entry;
+            } else {
+                $out[$bucket][$keyUrl] = $this->mergeEntries($out[$bucket][$keyUrl], $entry);
+            }
         }
 
-        // Stable output (useful for diffs)
         ksort($out['products']);
         ksort($out['indexes']);
         ksort($out['categories']);
@@ -131,25 +143,16 @@ class UrlContentsClassifierService
     /**
      * Decide which bucket a path belongs to.
      *
-     * Rules (order matters):
-     * 1) /les-defis-... OR /animation-... => products
-     * 2) /animations/... => indexes
-     * 3) /category/... => categories
-     * 4) else => pages
-     *
-     * @param string $path
-     *
      * @return 'products'|'indexes'|'categories'|'pages'
      */
     private function bucketFromPath(string $path): string
     {
-        // Normalize path (avoid empty, ensure leading slash)
         $path = trim($path);
         if ($path === '' || $path[0] !== '/') {
             $path = '/' . ltrim($path, '/');
         }
 
-        // products: /les-defis-... or /animation-...
+        // products
         if (
             preg_match('~^/les-defis-[^/]*$~i', $path) === 1
             || preg_match('~^/animation-[^/]*$~i', $path) === 1
@@ -175,16 +178,105 @@ class UrlContentsClassifierService
             return 'products';
         }
 
-        // indexes: /animations/...
+        // indexes
         if (preg_match('~^/animations/.*$~i', $path) === 1) {
             return 'indexes';
         }
 
-        // categories: /category/...
+        // categories
         if (preg_match('~^/category/.*$~i', $path) === 1) {
             return 'categories';
         }
 
         return 'pages';
+    }
+
+    /**
+     * Normalize paginated category URLs into their base category URL.
+     *
+     * @example https://up-animations.fr/category/anniversaire/page/2 => https://up-animations.fr/category/anniversaire
+     */
+    private function normalizeCategoryPaginationUrl(string $url): string
+    {
+        $url = trim($url);
+        if ($url === '') {
+            return '';
+        }
+
+        $parts = parse_url($url);
+        if (!is_array($parts) || empty($parts['scheme']) || empty($parts['host'])) {
+            return rtrim($url, '/');
+        }
+
+        $scheme = (string) $parts['scheme'];
+        $host = (string) $parts['host'];
+        $path = (string) ($parts['path'] ?? '');
+        $path = '/' . ltrim($path, '/');
+        $path = rtrim($path, '/');
+
+        // Strip '/page/<n>' at the end for categories
+        $path = preg_replace('~^(/category/[^/]+)(?:/page/\d+)$~i', '$1', $path) ?? $path;
+
+        return sprintf('%s://%s%s', $scheme, $host, $path);
+    }
+
+    /**
+     * Find the best existing entry to preserve.
+     *
+     * @param array<string, mixed> $existingMap
+     *
+     * @return array<string, mixed>|null
+     */
+    private function findExistingEntry(array $existingMap, string $bucket, string $keyUrl, string $rawUrl): ?array
+    {
+        if (isset($existingMap[$bucket][$keyUrl]) && is_array($existingMap[$bucket][$keyUrl])) {
+            return $existingMap[$bucket][$keyUrl];
+        }
+
+        if (isset($existingMap[$bucket][$rawUrl]) && is_array($existingMap[$bucket][$rawUrl])) {
+            return $existingMap[$bucket][$rawUrl];
+        }
+
+        if ($bucket === 'categories') {
+            $baseKey = $this->normalizeCategoryPaginationUrl($rawUrl);
+            if ($baseKey !== '' && isset($existingMap[$bucket][$baseKey]) && is_array($existingMap[$bucket][$baseKey])) {
+                return $existingMap[$bucket][$baseKey];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Merge two entries.
+     *
+     * @param array<string, mixed> $a
+     * @param array<string, mixed> $b
+     *
+     * @return array<string, mixed>
+     */
+    private function mergeEntries(array $a, array $b): array
+    {
+        $aContents = isset($a['contents']) && is_array($a['contents']) ? $a['contents'] : [];
+        $bContents = isset($b['contents']) && is_array($b['contents']) ? $b['contents'] : [];
+
+        if (($aContents === [] || !isset($a['contents'])) && $bContents !== []) {
+            $a['contents'] = $bContents;
+        } elseif (!isset($a['contents'])) {
+            $a['contents'] = $aContents;
+        }
+
+        $aUrls = isset($a['urls']) && is_array($a['urls']) ? $a['urls'] : [];
+        $bUrls = isset($b['urls']) && is_array($b['urls']) ? $b['urls'] : [];
+
+        if ($aUrls !== [] || $bUrls !== []) {
+            $merged = array_values(array_unique(array_merge(
+                array_values(array_filter($aUrls, 'is_string')),
+                array_values(array_filter($bUrls, 'is_string')),
+            )));
+            $a['urls'] = $merged;
+        }
+
+        return $a;
     }
 }
