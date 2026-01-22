@@ -13,7 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\UriResolver;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -32,7 +31,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 #[AsCommand(
     name: 'app:crawl:internal-urls',
-    description: 'Crawl a website and extract internal URLs only (BFS, dedup, limit, YAML output).',
+    description: 'Crawl a website and extract internal URLs only (BFS, dedup, limit, JSON output).',
 )]
 class CrawlInternalUrlsCommand extends Command
 {
@@ -49,7 +48,7 @@ class CrawlInternalUrlsCommand extends Command
             ->addOption('max-urls', null, InputOption::VALUE_REQUIRED, 'Max URLs to collect', '2000')
             ->addOption('max-depth', null, InputOption::VALUE_REQUIRED, 'Max crawl depth (0 = unlimited)', '10')
             ->addOption('concurrency', null, InputOption::VALUE_REQUIRED, 'Max in-flight HTTP requests', '10')
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output YAML file (recommended: var/crawler/urls.yaml)', 'var/crawler/urls.yaml')
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output JSON file (recommended: var/crawler/urls.json)', 'var/crawler/urls.json')
             ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyCrawler/1.0')
             ->addOption('ignore-query', null, InputOption::VALUE_NONE, 'Drop query string (?a=b) to avoid URL explosion')
         ;
@@ -91,7 +90,7 @@ class CrawlInternalUrlsCommand extends Command
             $maxDepth === 0 ? 'unlimited' : (string) $maxDepth,
             $concurrency
         ));
-        $io->writeln(sprintf('Output: <info>%s</info> (YAML)', $outputFile));
+        $io->writeln(sprintf('Output: <info>%s</info> (JSON)', $outputFile));
 
         // Queue stores [url, depth]
         $queue = new \SplQueue();
@@ -216,12 +215,12 @@ class CrawlInternalUrlsCommand extends Command
             'urls' => $collected,
         ];
 
-        $yaml = Yaml::dump($payload, 4, 2, Yaml::DUMP_OBJECT_AS_MAP);
+        $json = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
         @mkdir(\dirname($outputFile), 0777, true);
-        file_put_contents($outputFile, $yaml);
+        file_put_contents($outputFile, $json . PHP_EOL);
 
         $io->success(sprintf('Collected %d internal URLs.', count($collected)));
-        $io->writeln(sprintf('YAML written to: <info>%s</info>', $outputFile));
+        $io->writeln(sprintf('JSON written to: <info>%s</info>', $outputFile));
 
         return Command::SUCCESS;
     }

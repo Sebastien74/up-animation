@@ -13,11 +13,22 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
 
+
+/**
+ * CrawlMetasCommand.
+ *
+ * @doc php bin/console app:crawl:metas --input=var/crawler/urls.json --output=var/crawler/metas.json --limit=2000 --timeout=15
+ * Fetch each URL from urls.json and extract meta-title, meta-description, meta-robots, og:*, twitter:* and ld+json.
+ *
+ * @doc php bin/console app:crawl:metas --input=var/crawler/urls.json --output=var/crawler/metas.json --user-agent="MyBot/1.0"
+ * Same extraction, but forces a custom User-Agent header.
+ *
+ * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
+ */
 #[AsCommand(
     name: 'app:crawl:metas',
-    description: 'Extract metas from URLs in urls.yaml and write metas.yaml.',
+    description: 'Extract metas from URLs in urls.json and write metas.json.',
 )]
 class CrawlMetasCommand extends Command
 {
@@ -31,8 +42,8 @@ class CrawlMetasCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('input', null, InputOption::VALUE_REQUIRED, 'Input YAML file containing URLs', 'var/crawler/urls.yaml')
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output YAML metas file', 'var/crawler/metas.yaml')
+            ->addOption('input', null, InputOption::VALUE_REQUIRED, 'Input JSON file containing URLs', 'var/crawler/urls.json')
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output JSON metas file', 'var/crawler/metas.json')
             ->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Max URLs to process', '2000')
             ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'HTTP timeout (seconds)', '15')
             ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyMetaCrawler/1.0')
@@ -56,10 +67,10 @@ class CrawlMetasCommand extends Command
             return Command::FAILURE;
         }
 
-        $urls = $this->metaCrawler->readUrlsFromYaml($inputPath, $limit);
+        $urls = $this->metaCrawler->readUrlsFromJson($inputPath, $limit);
 
         if ($urls === []) {
-            $io->warning('No URLs found in input YAML.');
+            $io->warning('No URLs found in input JSON.');
             return Command::SUCCESS;
         }
 
@@ -79,7 +90,8 @@ class CrawlMetasCommand extends Command
         $io->progressFinish();
 
         $fs->mkdir(\dirname($outputPath));
-        file_put_contents($outputPath, Yaml::dump($metasByUrl, 6, 2, Yaml::DUMP_OBJECT_AS_MAP));
+        $json = json_encode($metasByUrl, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+        file_put_contents($outputPath, $json . PHP_EOL);
 
         $io->success(sprintf('Metas extracted for %d URLs.', count($metasByUrl)));
 

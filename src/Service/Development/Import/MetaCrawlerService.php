@@ -5,10 +5,18 @@ declare(strict_types=1);
 namespace App\Service\Development\Import;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+
+/**
+ * MetaCrawlerService.
+ *
+ * Fetch a page and extract SEO/social metadata.
+ * Also extracts a human-readable "title" from the DOM (first H1, fallback to first H2).
+ *
+ * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
+ */
 readonly class MetaCrawlerService
 {
     public function __construct(
@@ -42,7 +50,7 @@ readonly class MetaCrawlerService
     }
 
     /**
-     * Read a YAML file and return URLs list.
+     * Read a JSON file and return URLs list.
      * Supports both formats:
      * - payload with "urls" key (recommended)
      * - raw list of URLs
@@ -52,18 +60,27 @@ readonly class MetaCrawlerService
      *
      * @return array<int, string>
      */
-    public function readUrlsFromYaml(string $inputPath, int $limit): array
+    public function readUrlsFromJson(string $inputPath, int $limit): array
     {
-        $yaml = Yaml::parseFile($inputPath);
-
-        $urls = [];
-        if (is_array($yaml) && isset($yaml['urls']) && is_array($yaml['urls'])) {
-            $urls = $yaml['urls'];
-        } elseif (is_array($yaml)) {
-            $urls = $yaml;
+        $raw = @file_get_contents($inputPath);
+        if ($raw === false || trim($raw) === '') {
+            return [];
         }
 
-        $urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_string($u) && $u !== '')));
+        try {
+            $decoded = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            return [];
+        }
+
+        $urls = [];
+        if (is_array($decoded) && isset($decoded['urls']) && is_array($decoded['urls'])) {
+            $urls = $decoded['urls'];
+        } elseif (is_array($decoded)) {
+            $urls = $decoded;
+        }
+
+$urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_string($u) && $u !== '')));
 
         if (count($urls) > $limit) {
             $urls = array_slice($urls, 0, $limit);
@@ -85,7 +102,6 @@ readonly class MetaCrawlerService
     {
         // Default structure (keep keys even if empty)
         $result = [
-            'title' => '',
             'meta-title' => '',
             'meta-description' => '',
             'meta-robots' => '', // Empty string if not present (as requested)
@@ -126,12 +142,6 @@ readonly class MetaCrawlerService
 
             $crawler = new Crawler($html, $url);
 
-            // H1 title (page main heading)
-            $title = $this->getFirstHeadingFallback($crawler, ['h1', 'h2']);
-            if ($title !== null) {
-                $result['title'] = $title;
-            }
-
             // Title
             $titleNode = $crawler->filter('head > title');
             if ($titleNode->count() > 0) {
@@ -158,31 +168,6 @@ readonly class MetaCrawlerService
             $result['error'] = 'Exception: ' . $e->getMessage();
             return $result;
         }
-    }
-
-    /**
-     * Get the first non-empty heading text from a list of selectors (e.g. h1 then h2).
-     *
-     * @param Crawler              $crawler
-     * @param array<int, string>   $selectors
-     *
-     * @return string|null
-     */
-    private function getFirstHeadingFallback(Crawler $crawler, array $selectors): ?string
-    {
-        foreach ($selectors as $selector) {
-            $node = $crawler->filter($selector);
-            if ($node->count() === 0) {
-                continue;
-            }
-
-            $text = trim((string) $node->first()->text(''));
-            if ($text !== '') {
-                return $text;
-            }
-        }
-
-        return null;
     }
 
     /**

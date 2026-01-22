@@ -13,9 +13,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 
+
+/**
+ * CrawlProductContentsCommand.
+ *
+ * @doc php bin/console app:crawl:product-contents --file=var/crawler/contents.json
+ * For each product URL in contents.json, scrape WPBakery "picto" blocks and populate the "contents" payload.
+ *
+ * @doc php bin/console app:crawl:product-contents --file=var/crawler/contents.json --timeout=20 --user-agent="MyBot/1.0"
+ * Same crawl, with custom timeout and User-Agent.
+ *
+ * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
+ */
 #[AsCommand(
     name: 'app:crawl:product-contents',
-    description: 'Enrich products contents in contents.yaml by scraping WPBakery picto blocks.',
+    description: 'Enrich products contents in contents.json by scraping WPBakery picto blocks.',
 )]
 class CrawlProductContentsCommand extends Command
 {
@@ -29,7 +41,7 @@ class CrawlProductContentsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to contents.yaml', 'var/crawler/contents.yaml')
+            ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/contents.json')
             ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'HTTP timeout (seconds)', '15')
             ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyProductContentCrawler/1.0')
         ;
@@ -49,7 +61,7 @@ class CrawlProductContentsCommand extends Command
             return Command::FAILURE;
         }
 
-        $map = $this->crawler->readContentsYaml($filePath);
+        $map = $this->crawler->readContentsJson($filePath);
 
         $productsCount = (isset($map['products']) && is_array($map['products'])) ? count($map['products']) : 0;
 
@@ -58,7 +70,7 @@ class CrawlProductContentsCommand extends Command
         $io->writeln(sprintf('Products: <info>%d</info>', $productsCount));
 
         if ($productsCount === 0) {
-            $io->warning('No products found in contents.yaml.');
+            $io->warning('No products found in contents.json.');
             return Command::SUCCESS;
         }
 
@@ -78,9 +90,9 @@ class CrawlProductContentsCommand extends Command
         // Ensure target directory exists
         $fs->mkdir(\dirname($filePath));
 
-        $this->crawler->writeContentsYaml($filePath, $map);
+        $this->crawler->writeContentsJson($filePath, $map);
 
-        $io->success('contents.yaml updated with product contents.');
+        $io->success('contents.json updated with product contents.');
 
         return Command::SUCCESS;
     }

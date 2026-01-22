@@ -6,19 +6,20 @@ namespace App\Service\Development\Import;
 
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\String\Slugger\AsciiSlugger;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * ProductContentsCrawlerService.
  *
- * Extract structured "picto" contents from WPBakery product pages
- * and inject them into the "products" section of contents.yaml.
+ * Scrape product pages and extract structured "picto" blocks (WPBakery) as a normalized contents payload.
+ * Reads/writes the contents.json file used by the crawl commands.
  *
  * Output format per product URL:
  *  contents:
  *    <urlized picto label>: "<comma-separated strong texts from the target paragraph>"
+ *
+ * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 class ProductContentsCrawlerService
 {
@@ -31,35 +32,44 @@ class ProductContentsCrawlerService
     }
 
     /**
-     * Read contents.yaml and return the decoded array.
+     * Read contents.json and return the decoded array.
      *
      * @param string $path
      *
      * @return array<string, mixed>
      */
-    public function readContentsYaml(string $path): array
+    public function readContentsJson(string $path): array
     {
-        $data = Yaml::parseFile($path);
+        $raw = @file_get_contents($path);
+        if ($raw === false || trim($raw) === '') {
+            return [];
+        }
+
+        try {
+            $data = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            return [];
+        }
 
         return is_array($data) ? $data : [];
     }
 
     /**
-     * Dump the given array as YAML to disk.
+     * Dump the given array as JSON to disk.
      *
      * @param string               $path
      * @param array<string, mixed> $data
      *
      * @return void
      */
-    public function writeContentsYaml(string $path, array $data): void
+    public function writeContentsJson(string $path, array $data): void
     {
-        $yaml = Yaml::dump($data, 12, 2, Yaml::DUMP_OBJECT_AS_MAP);
-        file_put_contents($path, $yaml);
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+        file_put_contents($path, $json . PHP_EOL);
     }
 
     /**
-     * Enrich the "products" section of contents.yaml:
+     * Enrich the "products" section of contents.json:
      * - For each product URL, fill "contents" with a map:
      *   slug (urlized picto strong) => "value list" extracted from the outer wrapper paragraph.
      *
@@ -263,7 +273,7 @@ class ProductContentsCrawlerService
         foreach ($pCrawler->filter('strong') as $strongEl) {
             $txt = $this->cleanText($strongEl->textContent ?? '');
             if ($txt !== '') {
-                $items[] = $txt;
+                $items[] = str_replace(['Evenementiel'], ['Évènementiel'], $txt);
             }
         }
 

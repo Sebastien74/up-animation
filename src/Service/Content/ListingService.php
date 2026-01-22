@@ -99,15 +99,15 @@ class ListingService
                 return $this->cache['indexes_pages'][$cacheKey] = $codes;
             }
 
+            $listings = [];
             if (!empty($this->cache['listing'][$listingClassname])) {
                 $listings = $this->cache['listing'][$listingClassname];
-            } else {
+            } elseif ($currentWebsite) {
                 $referListing = new $listingClassname();
                 $queryBuilder = $this->coreLocator->em()->getRepository($listingClassname)
                     ->createQueryBuilder('e')
                     ->andWhere('e.website = :website')
                     ->setParameter('website', $currentWebsite->entity);
-
                 if (method_exists($referListing, 'getPosition')) {
                     $queryBuilder->orderBy('e.position', 'ASC');
                 }

@@ -63,7 +63,7 @@ class NewscastTeaserManager
                 $category->setWebsite($website);
                 $category->setOrderBy('startDate-desc');
                 $category->setPosition($position);
-                $category->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $category->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $teaser->addCategory($category);
             }
         }

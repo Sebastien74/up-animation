@@ -102,12 +102,12 @@ class LayoutManager
             $entityLayout = $entity->getCol()->getZone()->getLayout();
         }
         if ($entityLayout instanceof Layout\Layout) {
-            $entityLayout->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $entityLayout->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $entityLayout->setParent($this->entityManager);
             $this->entityManager->persist($entityLayout);
             $parent = $entityLayout->getParent($this->entityManager);
             if ($parent) {
-                $parent->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $parent->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $this->entityManager->persist($parent);
             }
         }

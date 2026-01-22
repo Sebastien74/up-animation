@@ -39,6 +39,7 @@ class PageFixtures
 {
     private const bool CONTACT_LAYOUT = true;
     private const bool CONTACT_MAP = true;
+    private const bool PRODUCT_PAGE = false;
     private array $yamlConfiguration = [];
     private Generator $faker;
     private Website $website;
@@ -173,7 +174,7 @@ class PageFixtures
             $this->addHomeLayout($layout);
         } elseif ('news' == $params->reference) {
             $this->addNewscastLayout($layout);
-        } elseif ('products' == $params->reference) {
+        } elseif ('products' == $params->reference && self::PRODUCT_PAGE) {
             $this->addProductLayout($layout);
         } elseif ('sitemap' == $params->reference) {
             $this->addSitemapLayout($layout);
@@ -487,7 +488,7 @@ class PageFixtures
             $search->setAdminName('Principal');
             $search->setSlug('main');
             $search->setCreatedBy($this->user);
-            $search->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $search->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         }
 
         $this->coreLocator->em()->persist($search);

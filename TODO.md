@@ -6,6 +6,10 @@ https://html.iwthemes.com/allEvents/Conference/index-video.html
 http://preview.themeforest.net/item/events-conference-tourism-music-sport-all-events-theme/full_screen_preview/9573526
 
 
+Pour les produit et actus verifier si un model est possible ou si actuellement sur le site c'est unique pour chaque fiche
+
+Pour les menus pieds de pages récupérer l'abo plutôt que de faire un menu classique et ajouter aux entités concernées un champ "Intitulé du menu"
+
 Mettre les Crawler URLS et Meta dans CMS
 
 

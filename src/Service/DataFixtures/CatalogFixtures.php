@@ -13,8 +13,10 @@ use App\Model\Module\ProductModel;
 use App\Service\Content\LayoutGeneratorService;
 use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
+use Exception;
 use Faker\Factory;
 use Faker\Generator;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Finder\Finder;
 
@@ -30,6 +32,8 @@ use Symfony\Component\Finder\Finder;
 ])]
 class CatalogFixtures
 {
+    private const bool GENERATE = false;
+
     private const int LIMIT = 15;
     private Generator $faker;
     private Website $website;
@@ -48,11 +52,11 @@ class CatalogFixtures
     /**
      * Add Product.
      *
-     * @throws \Exception
+     * @throws Exception|InvalidArgumentException
      */
     public function add(Website $website, ?User $user = null): void
     {
-        if (count($this->coreLocator->em()->getRepository(CatalogEntities\Product::class)->findBy(['website' => $website])) > 0) {
+        if (!self::GENERATE || count($this->coreLocator->em()->getRepository(CatalogEntities\Product::class)->findBy(['website' => $website])) > 0) {
             return;
         }
 
@@ -77,7 +81,7 @@ class CatalogFixtures
                 $feature->setWebsite($website);
                 $feature->setPosition($i);
                 $feature->setCreatedBy($this->user);
-                $feature->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $feature->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $this->generateIntl($title, $feature);
                 $this->generateMediaRelation($feature);
                 for ($j = 1; $j <= 30; ++$j) {
@@ -90,7 +94,7 @@ class CatalogFixtures
                     $featureValue->setPosition($j);
                     $featureValue->setIconClass('/medias/icons/light/'.$icon);
                     $featureValue->setCreatedBy($this->user);
-                    $featureValue->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                    $featureValue->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                     $feature->addValue($featureValue);
                     $this->generateIntl($title, $featureValue);
                     $this->generateMediaRelation($featureValue);
@@ -114,7 +118,7 @@ class CatalogFixtures
             $product->setCatalog($catalog);
             $product->setWebsite($website);
             $product->setPosition($i);
-            $product->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $product->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $product->setCreatedBy($this->user);
             $this->generateIntl($title, $product);
             $this->generateMediaRelation($product);
@@ -129,7 +133,7 @@ class CatalogFixtures
                 $valueProduct->setCreatedBy($this->user);
                 $valueProduct->setPosition($key + 1);
                 $valueProduct->setFeaturePosition($key + 1);
-                $valueProduct->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $valueProduct->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $product->addValue($valueProduct);
             }
 

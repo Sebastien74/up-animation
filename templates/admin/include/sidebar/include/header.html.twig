@@ -19,7 +19,7 @@
                 {{ asset('medias/icons/brands/cloudversify.svg')|file({}, {width: 50, height: 50, class: 'img-white float-start', title: "Tableau de bord"|trans}) }}
             {% endif %}
             <span class="cms-name hide-menu float-start d-none d-xl-inline-block">
-                {% set cmsName = customAdmin is defined and not customAdmin ? "Administration"|trans : "Agence Félix CMS"|trans %}
+                {% set cmsName = customAdmin is defined and not customAdmin ? "Administration"|trans : "CMS"|trans %}
                 {{ cmsName|raw }}
                 <br>
                 <small class="cms-version text-italic float-start">{{ "Symfony"|trans|raw }} {{ symfonyVersion() }} - {{ "CMS 7.3"|trans|raw }} - {{ "PHP"|trans|raw }} {{ phpversion() }}</small>
@@ -31,12 +31,6 @@
         {% set domain = app.user.locale is defined ? app.user.locale|domain() : null %}
         {% set scheme = not domain ? path('front_index') : domain %}
         <li><a href="{{ scheme }}" target="_blank">{{ 'far desktop'|icon(19, 17, 'white me-2') }}{{ "Accéder au site"|trans }}</a></li>
-        {% if customAdmin %}
-            <li><a href="{{ path('admin_support', {website: website.id}) }}" data-toggle="preloader">{{ 'fas user-headset'|icon(19, 17, 'white me-2') }}{{ "Support"|trans }}</a></li>
-        {% endif %}
-        {% if website.configuration.entity.adminAdvertising or granted('ROLE_INTERNAL') %}
-            <li><a href="{{ path('admin_advertising', {website: website.id}) }}" data-toggle="preloader">{{ 'fal plus-square'|icon(15, 17, 'white me-2') }}{{ "Nos extensions"|trans }}</a></li>
-        {% endif %}
         <li><a href="{{ path('app_logout') }}" class="d-md-none text-danger" data-toggle="preloader">{{ 'fas power-off'|icon(17, 17, 'danger me-2') }}{{ "Déconnexion"|trans }}</a></li>
     </ul>
 

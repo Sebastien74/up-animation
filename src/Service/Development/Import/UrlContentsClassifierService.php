@@ -4,12 +4,44 @@ declare(strict_types=1);
 
 namespace App\Service\Development\Import;
 
-use Symfony\Component\Yaml\Yaml;
-
+/**
+ * UrlContentsClassifierService.
+ *
+ * Classify URLs into buckets (products / indexes / categories / pages) and provide JSON helpers
+ * used by crawl commands.
+ *
+ * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
+ */
 class UrlContentsClassifierService
 {
     /**
-     * Read a YAML file and return URLs list.
+     * Read an existing contents.json map.
+     *
+     * Used to preserve already extracted "contents" blocks when regenerating the map.
+     * Returns an empty array if the file does not exist, is empty, or is invalid JSON.
+     *
+     * @param string $path
+     *
+     * @return array<string, mixed>
+     */
+    public function readContentsMapFromJson(string $path): array
+    {
+        $raw = @file_get_contents($path);
+        if ($raw === false || trim($raw) === '') {
+            return [];
+        }
+
+        try {
+            $decoded = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            return [];
+        }
+
+        return is_array($decoded) ? $decoded : [];
+    }
+
+    /**
+     * Read a JSON file and return URLs list.
      * Supports both formats:
      * - payload with "urls" key (recommended)
      * - raw list of URLs
@@ -19,15 +51,24 @@ class UrlContentsClassifierService
      *
      * @return array<int, string>
      */
-    public function readUrlsFromYaml(string $inputPath, int $limit): array
+    public function readUrlsFromJson(string $inputPath, int $limit): array
     {
-        $yaml = Yaml::parseFile($inputPath);
+        $raw = @file_get_contents($inputPath);
+        if ($raw === false || trim($raw) === '') {
+            return [];
+        }
+
+        try {
+            $decoded = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            return [];
+        }
 
         $urls = [];
-        if (is_array($yaml) && isset($yaml['urls']) && is_array($yaml['urls'])) {
-            $urls = $yaml['urls'];
-        } elseif (is_array($yaml)) {
-            $urls = $yaml;
+        if (is_array($decoded) && isset($decoded['urls']) && is_array($decoded['urls'])) {
+            $urls = $decoded['urls'];
+        } elseif (is_array($decoded)) {
+            $urls = $decoded;
         }
 
         $urls = array_values(array_unique(array_filter($urls, static fn ($u) => is_string($u) && trim($u) !== '')));
@@ -44,9 +85,11 @@ class UrlContentsClassifierService
      *
      * @param array<int, string> $urls
      *
+     * @param array<string, mixed> $existingMap
+     *
      * @return array<string, array<string, array{contents: mixed}>>
      */
-    public function classify(array $urls): array
+    public function classify(array $urls, array $existingMap = []): array
     {
         $out = [
             'products' => [],
@@ -65,10 +108,15 @@ class UrlContentsClassifierService
 
             $bucket = $this->bucketFromPath($path);
 
-            // Keep URL as key, "contents" null for now
-            $out[$bucket][$url] = [
-                'contents' => null,
-            ];
+            $existingContents = $existingMap[$bucket][$url]['contents'] ?? null;
+
+            // If an existing non-empty contents array is present, preserve it.
+            if (is_array($existingContents) && $existingContents !== []) {
+                $out[$bucket][$url] = ['contents' => $existingContents];
+                continue;
+            }
+
+            $out[$bucket][$url] = ['contents' => []];
         }
 
         // Stable output (useful for diffs)

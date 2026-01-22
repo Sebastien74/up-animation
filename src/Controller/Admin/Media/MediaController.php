@@ -365,7 +365,7 @@ class MediaController extends AdminController
             $folder->setPosition(count($folders) + 1);
             $folder->setParent($parent);
             $folder->setLevel($level);
-            $folder->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $folder->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $folder->setCreatedBy($this->getUser());
             $this->coreLocator->em()->persist($folder);
             $this->coreLocator->em()->flush();

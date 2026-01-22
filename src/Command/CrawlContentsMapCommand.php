@@ -12,11 +12,19 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
 
+
+/**
+ * CrawlContentsMapCommand.
+ *
+ * @doc php bin/console app:crawl:contents-map --input=var/crawler/urls.json --output=var/crawler/contents.json --limit=2000
+ * Build a structured contents.json map (products / indexes / categories / pages) from a flat urls.json list.
+ *
+ * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
+ */
 #[AsCommand(
     name: 'app:crawl:contents-map',
-    description: 'Read urls.yaml and generate a contents.yaml map grouped by URL patterns.',
+    description: 'Read urls.json and generate a contents.json map grouped by URL patterns.',
 )]
 class CrawlContentsMapCommand extends Command
 {
@@ -30,8 +38,8 @@ class CrawlContentsMapCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('input', null, InputOption::VALUE_REQUIRED, 'Input YAML file containing URLs', 'var/crawler/urls.yaml')
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output contents YAML file', 'var/crawler/contents.yaml')
+            ->addOption('input', null, InputOption::VALUE_REQUIRED, 'Input JSON file containing URLs', 'var/crawler/urls.json')
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output contents JSON file', 'var/crawler/contents.json')
             ->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Max URLs to process', '2000')
         ;
     }
@@ -50,9 +58,9 @@ class CrawlContentsMapCommand extends Command
             return Command::FAILURE;
         }
 
-        $urls = $this->classifier->readUrlsFromYaml($inputPath, $limit);
+        $urls = $this->classifier->readUrlsFromJson($inputPath, $limit);
         if ($urls === []) {
-            $io->warning('No URLs found in input YAML.');
+            $io->warning('No URLs found in input JSON.');
             return Command::SUCCESS;
         }
 
@@ -61,10 +69,13 @@ class CrawlContentsMapCommand extends Command
         $io->writeln(sprintf('Output: <info>%s</info>', $outputPath));
         $io->writeln(sprintf('URLs  : <info>%d</info>', count($urls)));
 
-        $map = $this->classifier->classify($urls);
+        // Preserve already scraped "contents" blocks if contents.json exists
+        $existingMap = $fs->exists($outputPath) ? $this->classifier->readContentsMapFromJson($outputPath) : [];
+        $map = $this->classifier->classify($urls, $existingMap);
 
         $fs->mkdir(\dirname($outputPath));
-        file_put_contents($outputPath, Yaml::dump($map, 10, 2, Yaml::DUMP_OBJECT_AS_MAP));
+        $json = json_encode($map, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+        file_put_contents($outputPath, $json . PHP_EOL);
 
         $io->success(sprintf(
             'Generated contents map: products=%d, indexes=%d, categories=%d, pages=%d',

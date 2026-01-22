@@ -407,7 +407,7 @@ class FormManager
             $contact->setToken($token);
             $contact->setEmail($email);
             $contact->setPhone($this->phone);
-            $contact->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $contact->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $form->addContact($contact);
 
             foreach ($this->fields as $keyName => $field) {

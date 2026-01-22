@@ -128,7 +128,7 @@ class MediaManager
         $asMediaRelation = !empty($metadata['media']['targetEntity']) && Media\Media::class === $metadata['media']['targetEntity'];
 
         if (method_exists($entity, 'setUpdatedAt')) {
-            $entity->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $entity->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $this->entityManager->persist($entity);
         }
 

@@ -254,7 +254,7 @@ class CopyBundleService implements CopyBundleInterface
             if (!$role) {
                 $position = count($this->coreLocator->em()->getRepository(Role::class)->findAll()) + 1;
                 $role = new Role();
-                $role->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $role->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $role->setAdminName($roleName);
                 $role->setName($roleName);
                 $role->setSlug(Urlizer::urlize($roleName));
@@ -297,7 +297,7 @@ class CopyBundleService implements CopyBundleInterface
             if (!$module) {
                 $position = count($this->coreLocator->em()->getRepository(Module::class)->findAll()) + 1;
                 $module = new Module();
-                $module->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $module->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $module->setAdminName($bundleConfig->module->name);
                 $module->setSlug($bundleConfig->slug);
                 $module->setIconClass($bundleConfig->module->icon);
@@ -348,7 +348,7 @@ class CopyBundleService implements CopyBundleInterface
                 $blockType->setDropdown(true);
                 $blockType->setEditable($config->editable);
                 $blockType->setPosition($position);
-                $blockType->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $blockType->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $this->coreLocator->em()->persist($blockType);
                 $this->coreLocator->em()->flush();
                 ++$position;
@@ -406,7 +406,7 @@ class CopyBundleService implements CopyBundleInterface
                 if (!$action) {
                     $position = count($this->coreLocator->em()->getRepository(Action::class)->findAll()) + 1;
                     $action = new Action();
-                    $action->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                    $action->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                     $action->setAdminName($config->name);
                     $action->setSlug($bundleConfig->slug.'-'.$config->action);
                     $action->setPosition($position);
@@ -441,7 +441,7 @@ class CopyBundleService implements CopyBundleInterface
                     $layoutConfiguration->setEntity($config->classsname);
                     $layoutConfiguration->setPosition($position);
                     $layoutConfiguration->setWebsite($website);
-                    $layoutConfiguration->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                    $layoutConfiguration->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                     ++$position;
                     foreach ($bundleBlockTypes as $bundleBlockType) {
                         $layoutConfiguration->addBlockType($bundleBlockType);

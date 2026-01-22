@@ -125,7 +125,7 @@ class BaseController extends AdminController
         //            }
         //            if (!$urlExisting && !$isArchived && !empty($request->get('entitylocale'))) {
         //                $url = new Url();
-        //                $url->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        //                $url->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         //                $url->setCreatedBy($this->getUser());
         //                $url->setLocale($request->get('entitylocale'));
         //                $url->setWebsite($website);

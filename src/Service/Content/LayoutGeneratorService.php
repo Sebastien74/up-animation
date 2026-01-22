@@ -15,12 +15,12 @@ use Doctrine\ORM\EntityManagerInterface;
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-class LayoutGeneratorService
+readonly class LayoutGeneratorService
 {
     /**
      * LayoutGeneratorService constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
     }
 

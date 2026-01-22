@@ -212,7 +212,7 @@ class DoctrineEventsListener
             $method = 'get'.ucfirst($masterField);
             $masterEntity = method_exists($entity, $method) ? $entity->$method() : null;
             if (is_object($masterEntity) && method_exists($masterEntity, 'setUpdatedAt')) {
-                $masterEntity->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $masterEntity->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $this->coreLocator->em()->persist($masterEntity);
                 if ($this->inAdmin && $clearCache) {
                     $this->coreLocator->cacheService()->clearCaches($entity);

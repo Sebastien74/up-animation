@@ -85,7 +85,7 @@ class Layout extends BaseEntity
     {
         $parent = $this->getParent($entityManager);
         if (is_object($parent) && method_exists($parent, 'getLayout')) {
-            $parent->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $parent->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $entityManager->persist($parent);
         }
     }

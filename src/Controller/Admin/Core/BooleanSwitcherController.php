@@ -43,7 +43,7 @@ class BooleanSwitcherController extends AdminController
         if ($masterFieldGetter && method_exists($currentEntity, $masterFieldGetter) && !$currentEntity instanceof Website) {
             $masterEntity = $currentEntity->$masterFieldGetter();
             if (is_object($masterEntity) && method_exists($masterEntity, 'setUpdatedAt')) {
-                $masterEntity->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $masterEntity->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $this->coreLocator->em()->persist($masterEntity);
             }
         }

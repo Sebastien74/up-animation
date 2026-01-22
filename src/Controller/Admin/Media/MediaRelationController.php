@@ -182,7 +182,7 @@ class MediaRelationController extends AdminController
         if ($request->isMethod('POST') && $referClassname && $referEntityId) {
             $parentEntity = $this->coreLocator->em()->getRepository($referClassname)->find($referEntityId);
             if (is_object($parentEntity) && method_exists($parentEntity, 'setUpdatedAt')) {
-                $parentEntity->setUpdatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $parentEntity->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $this->coreLocator->em()->persist($parentEntity);
             }
         }
