@@ -85,6 +85,7 @@ readonly class MetaCrawlerService
     {
         // Default structure (keep keys even if empty)
         $result = [
+            'title' => '',
             'meta-title' => '',
             'meta-description' => '',
             'meta-robots' => '', // Empty string if not present (as requested)
@@ -125,6 +126,12 @@ readonly class MetaCrawlerService
 
             $crawler = new Crawler($html, $url);
 
+            // H1 title (page main heading)
+            $title = $this->getFirstHeadingFallback($crawler, ['h1', 'h2']);
+            if ($title !== null) {
+                $result['title'] = $title;
+            }
+
             // Title
             $titleNode = $crawler->filter('head > title');
             if ($titleNode->count() > 0) {
@@ -151,6 +158,31 @@ readonly class MetaCrawlerService
             $result['error'] = 'Exception: ' . $e->getMessage();
             return $result;
         }
+    }
+
+    /**
+     * Get the first non-empty heading text from a list of selectors (e.g. h1 then h2).
+     *
+     * @param Crawler              $crawler
+     * @param array<int, string>   $selectors
+     *
+     * @return string|null
+     */
+    private function getFirstHeadingFallback(Crawler $crawler, array $selectors): ?string
+    {
+        foreach ($selectors as $selector) {
+            $node = $crawler->filter($selector);
+            if ($node->count() === 0) {
+                continue;
+            }
+
+            $text = trim((string) $node->first()->text(''));
+            if ($text !== '') {
+                return $text;
+            }
+        }
+
+        return null;
     }
 
     /**

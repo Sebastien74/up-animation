@@ -102,7 +102,28 @@ class UrlContentsClassifierService
         }
 
         // products: /les-defis-... or /animation-...
-        if (preg_match('~^/les-defis-[^/]*$~i', $path) === 1 || preg_match('~^/animation-[^/]*$~i', $path) === 1) {
+        if (
+            preg_match('~^/les-defis-[^/]*$~i', $path) === 1
+            || preg_match('~^/animation-[^/]*$~i', $path) === 1
+            || preg_match('~^/spectacle-[^/]*$~i', $path) === 1
+            || preg_match('~^/magie-[^/]*$~i', $path) === 1
+            || preg_match('~^/location-[^/]*$~i', $path) === 1
+            || preg_match('~^/bulles[^/]*$~i', $path) === 1
+            || preg_match('~^/casino[^/]*$~i', $path) === 1
+            || preg_match('~^/close-up[^/]*$~i', $path) === 1
+            || preg_match('~^/formule-1[^/]*$~i', $path) === 1
+            || preg_match('~^/graf[^/]*$~i', $path) === 1
+            || preg_match('~^/magic-academy[^/]*$~i', $path) === 1
+            || preg_match('~^/magicien[^/]*$~i', $path) === 1
+            || preg_match('~^/mascotte[^/]*$~i', $path) === 1
+            || preg_match('~^/olympiades[^/]*$~i', $path) === 1
+            || preg_match('~^/quizz[^/]*$~i', $path) === 1
+            || preg_match('~^/atelier-cirque[^/]*$~i', $path) === 1
+            || preg_match('~^/ballons-ballooner[^/]*$~i', $path) === 1
+            || preg_match('~^/buggy-teleguides[^/]*$~i', $path) === 1
+            || preg_match('~^/pere-noel[^/]*$~i', $path) === 1
+            || preg_match('~^/theatre-deambulatoire[^/]*$~i', $path) === 1
+        ) {
             return 'products';
         }
 
