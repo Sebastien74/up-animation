@@ -6,6 +6,7 @@ namespace App\Service\Development\Import;
 
 use App\Entity\Core\Website;
 use App\Entity\Module\Catalog\Category;
+use App\Entity\Module\Catalog\Product;
 use App\Service\Core\Urlizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -16,13 +17,17 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * CategoriesImport.
  *
- * Create / update catalog categories from contents.json "categories" bucket.
+ * Create / update catalog categories from contents.json "categories" bucket,
+ * then ensure products listed under categories[<url>]["urls"] are linked to the category.
  *
  * Rules:
  * - adminName is taken from metas.json "title" for the matching category URL
  * - slug is Urlizer::urlize(adminName)
  * - upsert by (slug + website)
  * - position is set only when the category is newly created (append after current max)
+ * - for each product URL under payload["urls"]:
+ *   - find Product by (slug + website)
+ *   - if category not linked: addCategory($category)
  *
  * Notes:
  * - metas.json is expected at var/crawler/metas.json by default.
@@ -60,14 +65,15 @@ class CategoriesImport implements ContentsImporterInterface
 
         $created = 0;
         $updated = 0;
+        $relationsAdded = 0;
 
         $maxPos = $this->getMaxCategoryPosition($website);
         $nextPos = $maxPos + 1;
 
         $batchSize = 50;
-        $i = 0;
+        $ops = 0;
 
-        foreach (array_keys($bucketPayload) as $url) {
+        foreach ($bucketPayload as $url => $payload) {
             $progressBar->setMessage('Importing categories');
 
             if (!is_string($url) || trim($url) === '') {
@@ -79,7 +85,7 @@ class CategoriesImport implements ContentsImporterInterface
             $normalizedUrl = $this->normalizeUrlKey($url);
 
             $titleHtml = $metasIndex[$normalizedUrl]['title'] ?? '';
-            $adminName = $this->adminNameFromTitleHtml($titleHtml);
+            $adminName = $this->adminNameFromTitleHtml(is_string($titleHtml) ? $titleHtml : '');
 
             // Fallback if no title available
             if ($adminName === '') {
@@ -124,18 +130,61 @@ class CategoriesImport implements ContentsImporterInterface
             }
 
             $isNew ? $created++ : $updated++;
+            $ops++;
+
+            /**
+             * Link products to category using payload["urls"]
+             */
+            $productUrls = [];
+            if (is_array($payload) && isset($payload['urls']) && is_array($payload['urls'])) {
+                $productUrls = $payload['urls'];
+            }
+
+            if ($productUrls !== []) {
+                foreach ($productUrls as $productUrl) {
+                    if (!is_string($productUrl) || trim($productUrl) === '') {
+                        continue;
+                    }
+
+                    $productSlug = $this->productSlugFromUrl(trim($productUrl));
+                    if ($productSlug === '') {
+                        continue;
+                    }
+
+                    /** @var Product|null $product */
+                    $product = $this->entityManager->getRepository(Product::class)->findOneBy([
+                        'slug' => $productSlug,
+                        'website' => $website,
+                    ]);
+
+                    if (!$product) {
+                        continue;
+                    }
+
+                    // Add category only if missing
+                    if (!$product->getCategories()->contains($category)) {
+                        $product->addCategory($category);
+                        $relationsAdded++;
+                        $ops++;
+
+                        if (!$dryRun) {
+                            $this->entityManager->persist($product);
+                        }
+                    }
+                }
+            }
 
             $progressBar->advance();
 
-            if (!$dryRun) {
-                $i++;
-                if (($i % $batchSize) === 0) {
-                    $this->entityManager->flush();
-                    $this->entityManager->clear();
+            if (!$dryRun && $ops >= $batchSize) {
+                $this->entityManager->flush();
+                $this->entityManager->clear();
 
-                    // Re-hydrate Website reference after clear
-                    $website = $this->getWebsiteRef($websiteId);
-                }
+                // Re-hydrate Website reference after clear
+                $website = $this->getWebsiteRef($websiteId);
+
+                // Reset ops counter after flush
+                $ops = 0;
             }
         }
 
@@ -143,7 +192,13 @@ class CategoriesImport implements ContentsImporterInterface
             $this->entityManager->flush();
         }
 
-        $io->writeln(sprintf('Categories: created=%d, updated=%d%s', $created, $updated, $dryRun ? ' (dry-run)' : ''));
+        $io->writeln(sprintf(
+            'Categories: created=%d, updated=%d, relationsAdded=%d%s',
+            $created,
+            $updated,
+            $relationsAdded,
+            $dryRun ? ' (dry-run)' : ''
+        ));
     }
 
     /**
@@ -182,8 +237,6 @@ class CategoriesImport implements ContentsImporterInterface
             }
 
             $norm = $this->normalizeUrlKey(trim($url));
-
-            // We only need title/titleType for this importer, but keep the whole payload
             $index[$norm] = $payload;
         }
 
@@ -252,6 +305,29 @@ class CategoriesImport implements ContentsImporterInterface
     }
 
     /**
+     * Extract a Product slug from a product URL.
+     * Uses the last path segment and urlizes it.
+     */
+    private function productSlugFromUrl(string $url): string
+    {
+        $path = (string) (parse_url($url, PHP_URL_PATH) ?? '');
+        $path = trim($path, '/');
+
+        if ($path === '') {
+            return '';
+        }
+
+        $segments = explode('/', $path);
+        $last = trim((string) end($segments));
+
+        if ($last === '') {
+            return '';
+        }
+
+        return Urlizer::urlize($last);
+    }
+
+    /**
      * Get max category position for a given website.
      */
     private function getMaxCategoryPosition(Website $website): int
@@ -278,14 +354,8 @@ class CategoriesImport implements ContentsImporterInterface
             ->orderBy('w.id', 'ASC')
             ->setMaxResults(1);
 
-        $id = $qb->getQuery()->getOneOrNullResult();
-
-        $websiteId = 0;
-        if (is_array($id) && isset($id['id'])) {
-            $websiteId = (int) $id['id'];
-        } elseif (is_numeric($id)) {
-            $websiteId = (int) $id;
-        }
+        $row = $qb->getQuery()->getOneOrNullResult();
+        $websiteId = is_array($row) && isset($row['id']) ? (int) $row['id'] : 0;
 
         if ($websiteId <= 0) {
             throw new \RuntimeException('No Website found in database.');
@@ -306,17 +376,10 @@ class CategoriesImport implements ContentsImporterInterface
     }
 
     /**
-     * Convert relative paths to absolute paths from projectDir.
+     * Build an absolute path from project dir.
      */
-    private function absPath(string $path): string
+    private function absPath(string $relative): string
     {
-        $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
-
-        // Already absolute?
-        if (str_starts_with($path, DIRECTORY_SEPARATOR) || preg_match('~^[A-Za-z]:\\\\~', $path) === 1) {
-            return $path;
-        }
-
-        return $this->projectDir . DIRECTORY_SEPARATOR . $path;
+        return rtrim($this->projectDir, '/') . '/' . ltrim($relative, '/');
     }
 }
