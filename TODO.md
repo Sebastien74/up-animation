@@ -5,6 +5,7 @@ https://preview.themeforest.net/item/exhibiz-event-conference-and-meetup/full_sc
 https://html.iwthemes.com/allEvents/Conference/index-video.html
 http://preview.themeforest.net/item/events-conference-tourism-music-sport-all-events-theme/full_screen_preview/9573526
 
+Mettre les boutons gradients
 
 Mettre une video home come isacar
 
