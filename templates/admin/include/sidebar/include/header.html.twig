@@ -7,22 +7,19 @@
 
     <span data-toggle="preloader">
         <a href="{{ path('admin_dashboard', {website: websiteId()}) }}"
-           id="dashboard-btn" class="overflow-hidden d-flex"
+           id="dashboard-btn" class="overflow-hidden d-flex align-items-center"
            data-bs-toggle="tooltip"
            data-placement="right"
            title="{{ "Tableau de bord"|trans|striptags }}">
             {% if customAdmin is defined and not customAdmin %}
                 {{ asset('medias/icons/brands/cloudversify.svg')|file({}, {width: 50, height: 50, class: 'img-white float-start', title: "Tableau de bord"|trans}) }}
             {% elseif logos.admin is defined and logos.admin and 'placeholder' not in logos.admin %}
-                {{ asset(logos.admin)|file({}, {width: 50, height: 30, class: 'float-start', title: "Tableau de bord"|trans}) }}
+                {{ asset(logos.admin)|file({}, {width: null, height: 45, class: 'float-start', title: "Tableau de bord"|trans}) }}
             {% else %}
                 {{ asset('medias/icons/brands/cloudversify.svg')|file({}, {width: 50, height: 50, class: 'img-white float-start', title: "Tableau de bord"|trans}) }}
             {% endif %}
             <span class="cms-name hide-menu float-start d-none d-xl-inline-block">
-                {% set cmsName = customAdmin is defined and not customAdmin ? "Administration"|trans : "CMS"|trans %}
-                {{ cmsName|raw }}
-                <br>
-                <small class="cms-version text-italic float-start">{{ "Symfony"|trans|raw }} {{ symfonyVersion() }} - {{ "CMS 7.3"|trans|raw }} - {{ "PHP"|trans|raw }} {{ phpversion() }}</small>
+                {{ "Administration"|trans|raw }}
             </span>
         </a>
     </span>

@@ -42,22 +42,6 @@
         </a>
         <div class="row">
             {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: ['aiFelixSiteId']} %}
-{#            {% if granted('ROLE_AI') %}#}
-{#                <div class="col-12 mb-4">#}
-{#                    <div class="me-2 text-white btn py-2 ai-button btn-chatgpt px-3 handle-loader"#}
-{#                         data-felix-api="#}
-{#                                {{ path('ai_generate_embedding', {#}
-{#                             'tool': 8,#}
-{#                         }) }}">#}
-{#                        {{ 'cms ai'|icon(null, null, null, [], '#ffffff') }}#}
-{#                        {{ 'Générer les clés de recherche'|trans|raw }}#}
-{#                    </div>#}
-{#                    <a href="{{ path('ai_api_remove_embeddings', {'locale': app.request.locale}) }}" class="me-2 text-white btn py-2 ai-button px-3 handle-loader">#}
-{#                        {{ 'cms ai'|icon(null, null, null, [], '#ffffff') }}#}
-{#                        {{ 'Supprimer les clés de recherche'|trans|raw }}#}
-{#                    </a>#}
-{#                </div>#}
-{#            {% endif %}#}
         </div>
     </div>
 </div>

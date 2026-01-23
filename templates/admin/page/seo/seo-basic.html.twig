@@ -57,39 +57,6 @@
                     <div class="p-20 pb-0">
                         <div class="row">
             {% endif %}
-
-                {% if granted('ROLE_AI') %}
-                    {% if entity.urls is defined %}
-                        {% set apiIntls = website.entity.api.custom.intls is defined ? website.entity.api.custom.intls : false %}
-                        {% set siteId = false %}
-                        {% for apiIntl in apiIntls %}
-                            {% if apiIntl.locale == app.request.locale %}
-                                {% set siteId = apiIntl.aiFelixSiteId %}
-                            {% endif %}
-                        {% endfor %}
-                        {% for url in entity.urls %}
-                            {% if locale == url.locale %}
-                                <div class="col-12">
-                                    <div class="mb-2 text-white btn w-100 py-2 ai-button btn-chatgpt px-0 py-0"
-                                         data-felix-api="{{ path('ai_api_run',
-                                             {
-                                                 'tool': 2,
-                                                 'site': siteId,
-                                                 'locale': locale,
-                                                 'url': url.id,
-                                                 'entityId': entity.id,
-                                                 'class': classname is defined ? classname : null,
-                                             }) }}">
-                                        <span class="ai-icon">{{ 'cms ai'|icon(null, null, null, [], '#ffffff') }}</span>
-                                        <span class="d-none spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                        <span class="ms-1">{{ 'Remplir le SEO'|trans|raw }}</span>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                {% endif %}
-
                 {% if url.seo.metaTitle is defined %}
                     {{ form_row(url.seo.metaTitle) }}
                 {% endif %}

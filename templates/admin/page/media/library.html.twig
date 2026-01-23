@@ -33,38 +33,6 @@
 {#                            {{ 'fal trash'|icon(17, 14, 'danger me-2') }}{{ "Supprimer les vignettes"|trans }} #}
 {#                        </span> #}
 {#                    {% endif %} #}
-                    {% if granted('ROLE_AI') %}
-
-                        {% set apiIntls = website.entity.api.custom.intls is defined ? website.entity.api.custom.intls : false %}
-                        {% set siteId = false %}
-                        {% for apiIntl in apiIntls %}
-                            {% if apiIntl.locale == app.request.locale %}
-                                {% set siteId = apiIntl.aiFelixSiteId %}
-                            {% endif %}
-                        {% endfor %}
-
-                        <div class="d-inline-flex flex-column">
-                            <div class="me-2 text-white btn py-2 ai-button btn-chatgpt px-3"
-                                 data-api-run="
-                                 {{ path('ai_api_run', {
-                                     'tool': 4,
-                                     'site': siteId,
-                                 }) }}"
-                                 data-felix-api="
-                                {{ path('ai_api_run_get_medias', {
-                                     'tool': 4,
-                                     'site': siteId,
-                                 }) }}">
-                                <span class="ai-icon">{{ 'cms ai'|icon(null, null, null, [], '#ffffff') }}</span>
-                                <span class="d-none spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                <span class="ms-1">{{ 'Générer les balises ALT'|trans|raw }}</span>
-                            </div>
-                            <div id="generate-alts-progress" class="progress mt-2 d-none" style="width: 212px;">
-                                <div id="progress-bar" class="progress-bar progress-bar-striped bg-info"
-                                     role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    {% endif %}
                     {% if granted('ROLE_INTERNAL') %}
                         <span id="reorder-medias-btn" class="btn btn-outline-info-darken standard cursor me-2"
                               data-path="{{ path('admin_medias_reorder', { website: websiteId }) }}">

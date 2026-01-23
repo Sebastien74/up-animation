@@ -17,11 +17,14 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * CategoriesImport.
  *
- * Create / update catalog categories from contents.json "categories" bucket,
- * then ensure products listed under categories[<url>]["urls"] are linked to the category.
+ * Create / update catalog categories from contents.json buckets:
+ * - "categories"
+ * - "indexes"
+ *
+ * Then ensure products listed under <bucket>[<url>]["urls"] are linked to the category.
  *
  * Rules:
- * - adminName is taken from metas.json "title" for the matching category URL
+ * - adminName is taken from metas.json "title" for the matching listing URL
  * - slug is Urlizer::urlize(adminName)
  * - upsert by (slug + website)
  * - position is set only when the category is newly created (append after current max)
@@ -32,8 +35,10 @@ use Symfony\Component\Filesystem\Filesystem;
  * Notes:
  * - metas.json is expected at var/crawler/metas.json by default.
  * - URL matching is tolerant:
+ *   - ignores scheme (http/https)
+ *   - ignores query/fragment
  *   - ignores trailing slashes
- *   - normalizes pagination (/page/<n>/) to the root category URL
+ *   - normalizes pagination (/page/<n>) to the root listing URL
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
@@ -50,7 +55,7 @@ class CategoriesImport implements ContentsImporterInterface
 
     public function supports(string $bucket): bool
     {
-        return $bucket === 'categories';
+        return in_array($bucket, ['categories', 'indexes'], true);
     }
 
     /**
@@ -74,7 +79,7 @@ class CategoriesImport implements ContentsImporterInterface
         $ops = 0;
 
         foreach ($bucketPayload as $url => $payload) {
-            $progressBar->setMessage('Importing categories');
+            $progressBar->setMessage(sprintf('Importing %s', $bucket));
 
             if (!is_string($url) || trim($url) === '') {
                 $progressBar->advance();
@@ -89,7 +94,7 @@ class CategoriesImport implements ContentsImporterInterface
 
             // Fallback if no title available
             if ($adminName === '') {
-                $adminName = $this->adminNameFromUrl($normalizedUrl);
+                $adminName = $this->adminNameFromUrl($url);
             }
 
             if ($adminName === '') {
@@ -193,7 +198,8 @@ class CategoriesImport implements ContentsImporterInterface
         }
 
         $io->writeln(sprintf(
-            'Categories: created=%d, updated=%d, relationsAdded=%d%s',
+            '%s: created=%d, updated=%d, relationsAdded=%d%s',
+            ucfirst($bucket),
             $created,
             $updated,
             $relationsAdded,
@@ -245,19 +251,42 @@ class CategoriesImport implements ContentsImporterInterface
 
     /**
      * Normalize URL key for matching metas/contents:
-     * - trim + remove trailing slash
-     * - collapse pagination: /page/<n>/ => base category URL
+     * - ignores scheme (http/https)
+     * - ignores query + fragment
+     * - normalizes host (lowercase, strips "www.")
+     * - trims trailing slash
+     * - collapses pagination: /page/<n> => base listing URL
+     *
+     * Output format: "<host><path>" (no scheme), e.g. "up-animations.fr/category/anniversaire"
      */
     private function normalizeUrlKey(string $url): string
     {
         $url = trim($url);
-        $url = rtrim($url, '/');
+        if ($url === '') {
+            return '';
+        }
+
+        $parts = $this->parseUrlLenient($url);
+        $host = strtolower((string) ($parts['host'] ?? ''));
+        $host = preg_replace('~^www\.~i', '', $host) ?? $host;
+
+        $path = (string) ($parts['path'] ?? '');
+        $path = '/' . ltrim($path, '/');
+        $path = rtrim($path, '/');
 
         // Normalize ".../page/<n>" patterns
-        $url = preg_replace('~(/page/\d+)$~', '', $url) ?? $url;
-        $url = rtrim($url, '/');
+        $path = preg_replace('~(/page/\d+)$~', '', $path) ?? $path;
+        $path = rtrim($path, '/');
 
-        return $url;
+        if ($host === '') {
+            // As a last resort, keep the original without query/fragment and slash
+            $fallback = preg_replace('~[?#].*$~', '', $url) ?? $url;
+            $fallback = rtrim($fallback, '/');
+
+            return $fallback;
+        }
+
+        return $host . $path;
     }
 
     /**
@@ -283,7 +312,8 @@ class CategoriesImport implements ContentsImporterInterface
      */
     private function adminNameFromUrl(string $url): string
     {
-        $path = (string) (parse_url($url, PHP_URL_PATH) ?? '');
+        $parts = $this->parseUrlLenient($url);
+        $path = (string) ($parts['path'] ?? '');
         $path = trim($path, '/');
 
         if ($path === '') {
@@ -310,7 +340,8 @@ class CategoriesImport implements ContentsImporterInterface
      */
     private function productSlugFromUrl(string $url): string
     {
-        $path = (string) (parse_url($url, PHP_URL_PATH) ?? '');
+        $parts = $this->parseUrlLenient($url);
+        $path = (string) ($parts['path'] ?? '');
         $path = trim($path, '/');
 
         if ($path === '') {
@@ -325,6 +356,32 @@ class CategoriesImport implements ContentsImporterInterface
         }
 
         return Urlizer::urlize($last);
+    }
+
+    /**
+     * Parse URL with a tolerant strategy:
+     * - Accepts full URLs with scheme
+     * - Accepts match-key like "up-animations.fr/path"
+     *
+     * @return array<string, mixed>
+     */
+    private function parseUrlLenient(string $url): array
+    {
+        $url = trim($url);
+
+        // Remove query/fragment early to simplify
+        $url = preg_replace('~[?#].*$~', '', $url) ?? $url;
+
+        if (preg_match('~^https?://~i', $url) !== 1) {
+            // If it looks like "host/path", prepend scheme for parse_url
+            if (preg_match('~^[^/]+\.[^/]+/.*$~', $url) === 1) {
+                $url = 'https://' . $url;
+            }
+        }
+
+        $parts = parse_url($url);
+
+        return is_array($parts) ? $parts : [];
     }
 
     /**

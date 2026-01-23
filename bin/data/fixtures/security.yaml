@@ -160,9 +160,6 @@ ROLE_FAQ:
 ROLE_RECRUITMENT:
     en: 'Recruitment management'
     fr: 'Gestion des recrutements'
-ROLE_AI:
-    en: 'IA tools access'
-    fr: 'Accès aux outils IA'
 ROLE_CHATBOT:
     en: 'Chatbot access'
     fr: 'Accès au Chatbot'

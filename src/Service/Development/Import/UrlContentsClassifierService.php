@@ -105,7 +105,7 @@ class UrlContentsClassifierService
 
             // Categories pagination must be merged into the base category URL:
             // /category/foo/page/2 => /category/foo
-            $keyUrl = $bucket === 'categories'
+            $keyUrl = ($bucket === 'categories' || $bucket === 'indexes')
                 ? $this->normalizeCategoryPaginationUrl($url)
                 : $url;
 

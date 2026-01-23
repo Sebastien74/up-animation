@@ -10,12 +10,11 @@
 {% set cacheClearDate = website.cacheClearDate is defined and website.cacheClearDate ? website.cacheClearDate|date('Y-m-d') : null %}
 {% set isCustomPath = logos['security-logo'] is defined and logos['security-logo'] or not adminTheme %}
 {% set companyName = isCustomPath and information.title is defined and information.title ? information.title : "Agence Félix CMS"|trans|striptags %}
-{#{% set faviconPath = isCustomPath and logos['favicon'] is defined and logos['favicon'] ? asset(logos['favicon']) : asset('build/security/images/favicon.ico', 'security') %}#}
 {% set faviconPath = asset('build/security/images/favicon.ico', 'security') %}
 {% set logoPath = isCustomPath and logos['security-logo'] is defined and logos['security-logo'] and 'placeholder' not in logos['security-logo'] ? asset(logos['security-logo'])
     : (not adminTheme ? asset('build/security/images/security.svg', 'security') : asset('build/security/images/logo.png', 'security')) %}
 {% set bgPath = logos['security-bg'] is defined and logos['security-bg'] and 'placeholder' not in logos['security-bg'] ? asset(logos['security-bg'])
-    : (adminTheme ? asset('build/security/images/background-security.jpg', 'security') : asset('build/security/images/login-register.jpg', 'security')) %}
+    : (adminTheme ? asset('build/security/images/background-security.jpg', 'security') : asset('build/security/images/background-security.jpg', 'security')) %}
 {% set bgImgStyle = bgPath|file({}, {style: true, maxWidth: 1520, maxHeight: 919, placeholder: true }) %}
 
 <html lang="{{ app.request.locale }}"
@@ -43,7 +42,7 @@
         {% if logos.share is defined and logos.share %}
             <meta property="og:image" content="{{ asset(logos.share) }}">
         {% else %}
-            <meta property="og:image" content="{{ asset('build/security/images/share-felix.jpg', 'security') }}">
+            <meta property="og:image" content="{{ asset('build/security/images/share.jpg', 'security') }}">
         {% endif %}
 
         {% block stylesheets %}

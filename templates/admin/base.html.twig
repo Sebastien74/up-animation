@@ -165,10 +165,6 @@
             </div>
         {% endif %}
 
-        {% if granted('ROLE_CHATBOT') %}
-            {% include 'admin/include/chat-bot.html.twig' with {website: website} only %}
-        {% endif %}
-
     </body>
 
 </html>

@@ -205,10 +205,6 @@
         <small id="help_{{ id }}" class="form-text text-info cursor generate-bytes">{{ 'far sync'|icon(null, 11, 'info me-1') }}{{ "Générer"|trans([], 'admin')|raw }}</small>
     {% endif %}
     {% set dataHelp = attr['data-help'] is defined ? attr['data-help'] : false %}
-    {% if 'placeholder' in full_name|lower and 'relation' in full_name|lower  and 'media' in full_name|lower %}
-            {% include 'admin/core/include/ia/alt-tag.html.twig' with {mediaRelation: form.parent.parent.vars.data} only %}
-        </div>
-    {% endif %}
     {% if 'no-alt' == dataHelp %}
         <small class="mt-1 form-text px-3 py-2 d-inline-flex align-items-center text-white w-100 bg-warning fw-600 radius">
             <span class="flex-grow-1">{{ 'far exclamation-triangle'|icon(null, 12, 'white me-2') }}</span>
@@ -422,18 +418,6 @@
     {%- endif -%}
     {%- if label -%}
         {{- parent() -}}
-    {%- endif -%}
-    {%- if granted('ROLE_AI') -%}
-        {%- if name == 'introduction' or name == 'title' or name == 'subTitle' or name == 'body' -%}
-            <div class="btn ai-button btn-chatgpt tool-5 spelling-correction"
-                 data-bs-toggle="tooltip"
-                 title="{{ 'Corriger les fautes'|trans }}"
-                 data-method="POST"
-                 data-felix-api="{{ path('ai_api_run', {'tool': 5}) }}">
-                <span class="d-none spinner-grow spinner-grow-sm bg-white" role="status" aria-hidden="true"></span>
-                <span class="ai-icon">{{ 'cms spell'|icon(null, null, null, [], '#ffffff') }}</span>
-            </div>
-        {%- endif -%}
     {%- endif -%}
 {%- endblock form_label %}
 

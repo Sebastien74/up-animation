@@ -18,25 +18,28 @@ use Symfony\Component\Filesystem\Filesystem;
  * CrawlCategoryUrlsCommand.
  *
  * @doc php bin/console app:crawl:category-urls var/crawler/contents.json
- * Crawl category pages listed in contents.json and attach matching product URLs.
+ * Crawl listing pages listed in contents.json and attach matching product URLs.
  *
  * @doc php bin/console app:crawl:category-urls var/crawler/contents.json --timeout=20 --user-agent="MyCrawler/1.0"
  * Same behavior with custom HTTP settings.
  *
- * It scans each category page for links pointing to any URL in the "products" bucket,
- * and stores the result in: categories[<categoryUrl>]["urls"] (array of URLs).
+ * It scans each listing page for links pointing to any URL in the "products" bucket,
+ * and stores the result in:
+ * - categories[<url>]["urls"] (array of product URLs)
+ * - indexes[<url>]["urls"] (array of product URLs)
+ *
  * Existing data in contents.json is preserved (merge + unique).
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 #[AsCommand(
     name: 'app:crawl:category-urls',
-    description: 'Enrich categories in contents.json by detecting linked product URLs.',
+    description: 'Enrich categories + indexes in contents.json by detecting linked product URLs.',
 )]
 class CrawlCategoryUrlsCommand extends Command
 {
     public function __construct(
-        private readonly CategoryUrlsCrawlerService $categoryCrawler,
+        private readonly CategoryUrlsCrawlerService $listingCrawler,
         private readonly ProductContentsCrawlerService $jsonIo,
         private readonly string $projectDir,
     ) {
@@ -48,7 +51,7 @@ class CrawlCategoryUrlsCommand extends Command
         $this
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/contents.json')
             ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'HTTP timeout (seconds)', '15')
-            ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyCategoryUrlCrawler/1.0')
+            ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyListingUrlCrawler/1.0')
         ;
     }
 
@@ -70,28 +73,32 @@ class CrawlCategoryUrlsCommand extends Command
 
         $products = (isset($map['products']) && is_array($map['products'])) ? array_keys($map['products']) : [];
         $categories = (isset($map['categories']) && is_array($map['categories'])) ? array_keys($map['categories']) : [];
+        $indexes = (isset($map['indexes']) && is_array($map['indexes'])) ? array_keys($map['indexes']) : [];
 
-        $io->title('Category URLs crawler');
+        $io->title('Listing URLs crawler (categories + indexes)');
         $io->writeln(sprintf('File      : <info>%s</info>', $filePath));
         $io->writeln(sprintf('Products  : <info>%d</info>', count($products)));
         $io->writeln(sprintf('Categories: <info>%d</info>', count($categories)));
+        $io->writeln(sprintf('Indexes   : <info>%d</info>', count($indexes)));
 
         if ($products === []) {
             $io->warning('No products found in contents.json. Nothing to match.');
             return Command::SUCCESS;
         }
 
-        if ($categories === []) {
-            $io->warning('No categories found in contents.json.');
+        $total = count($categories) + count($indexes);
+        if ($total === 0) {
+            $io->warning('No categories/indexes found in contents.json.');
             return Command::SUCCESS;
         }
 
-        $io->progressStart(count($categories));
+        $io->progressStart($total);
 
-        foreach ($categories as $categoryUrl) {
-            $payload = is_array($map['categories'][$categoryUrl] ?? null) ? $map['categories'][$categoryUrl] : [];
+        // 1) Categories
+        foreach ($categories as $listingUrl) {
+            $payload = is_array($map['categories'][$listingUrl] ?? null) ? $map['categories'][$listingUrl] : [];
 
-            $found = $this->categoryCrawler->extractCategoryProductUrls((string) $categoryUrl, $products, $timeout, $userAgent);
+            $found = $this->listingCrawler->extractCategoryProductUrls((string) $listingUrl, $products, $timeout, $userAgent);
 
             $existing = $payload['urls'] ?? [];
             if (!is_array($existing)) {
@@ -99,9 +106,24 @@ class CrawlCategoryUrlsCommand extends Command
             }
 
             $payload['urls'] = $this->uniqueSorted(array_merge($existing, $found));
+            $map['categories'][$listingUrl] = $payload;
 
-            // Preserve existing keys (contents, metas, etc.) and update payload
-            $map['categories'][$categoryUrl] = $payload;
+            $io->progressAdvance();
+        }
+
+        // 2) Indexes
+        foreach ($indexes as $listingUrl) {
+            $payload = is_array($map['indexes'][$listingUrl] ?? null) ? $map['indexes'][$listingUrl] : [];
+
+            $found = $this->listingCrawler->extractIndexProductUrls((string) $listingUrl, $products, $timeout, $userAgent);
+
+            $existing = $payload['urls'] ?? [];
+            if (!is_array($existing)) {
+                $existing = [];
+            }
+
+            $payload['urls'] = $this->uniqueSorted(array_merge($existing, $found));
+            $map['indexes'][$listingUrl] = $payload;
 
             $io->progressAdvance();
         }
@@ -113,7 +135,7 @@ class CrawlCategoryUrlsCommand extends Command
 
         $this->jsonIo->writeContentsJson($filePath, $map);
 
-        $io->success('contents.json updated with categories URLs.');
+        $io->success('contents.json updated with categories + indexes URLs.');
 
         return Command::SUCCESS;
     }

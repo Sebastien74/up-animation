@@ -6,29 +6,6 @@
 
     <div class="card-body">
 
-        {% if granted('ROLE_AI') %}
-            {% set apiIntls = website.entity.api.custom.intls is defined ? website.entity.api.custom.intls : false %}
-            {% set siteId = false %}
-            {% for apiIntl in apiIntls %}
-                {% if apiIntl.locale == app.request.locale %}
-                    {% set siteId = apiIntl.aiFelixSiteId %}
-                {% endif %}
-            {% endfor %}
-            <div class="mb-2 text-white btn w-100 py-2 ai-button btn-chatgpt px-0 py-0"
-                 data-felix-api="{{ path('ai_api_run',
-                     {
-                         'tool': 2,
-                         'site': siteId,
-                         'locale': entitylocale,
-                         'urlPath': seo.canonical|striptags,
-                         'url': seo.url.id,
-                     }) }}">
-                <span class="ai-icon">{{ 'cms ai'|icon(null, null, null, [], '#ffffff') }}</span>
-                <span class="d-none spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                <span class="ms-1">{{ 'Remplir le SEO'|trans|raw }}</span>
-            </div>
-        {% endif %}
-
         {{ form_start(form, {attr: {
             id: 'seo-form-'~entity.id,
             novalidate: "novalidate"
@@ -120,39 +97,6 @@
                     </div>
                 </div>
 
-            {% endif %}
-
-            {% if granted('ROLE_AI') %}
-
-                <div class="form-group col-12 ribbon-wrapper m-0">
-                    <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
-                         href="#collapse-analyze" role="button" aria-expanded="false">
-                        {{ 'fal robot'|icon(null, 13, 'white me-3') }}{{ "Analyse de la page"|trans }}
-                    </div>
-                </div>
-
-                <div class="collapse col-12" id="collapse-analyze">
-                    <div class="row pt-3">
-                        <div class="mb-2 text-white btn w-100 py-2 ai-button btn-chatgpt px-0 py-0"
-                             data-container-result="#result-api-3"
-                             data-felix-api="{{ path('ai_api_run',
-                                 {
-                                     'tool': 3,
-                                     'site': siteId,
-                                     'locale': entitylocale,
-                                     'urlPath': seo.canonical|striptags,
-                                     'url': seo.url.id,
-                                 }) }}">
-                            <span class="ai-icon">{{ 'cms ai'|icon(null, null, null, [], '#ffffff') }}</span>
-                            <span class="d-none spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                            <span class="ms-1">{{ "J'analyse ma page"|trans|raw }}</span>
-                        </div>
-
-                        <div id="result-api-3">
-
-                        </div>
-                    </div>
-                </div>
             {% endif %}
 
             <div class="form-group text-end mb-0 mt-3">

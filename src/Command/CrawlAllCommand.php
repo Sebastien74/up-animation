@@ -21,13 +21,13 @@ use Symfony\Component\Console\Application;
  *
  * @doc php bin/console app:crawl:all https://up-animations.fr --max-urls=2000 --max-depth=12 --ignore-query
  * Runs the full crawl pipeline:
- * internal-urls -> contents-map -> metas -> product-contents -> category-urls
+ * internal-urls -> contents-map -> metas -> product-contents -> category-urls -> index-urls
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 #[AsCommand(
     name: 'app:crawl:all',
-    description: 'Run the full crawl pipeline (internal-urls -> contents-map -> metas -> product-contents -> category-urls).',
+    description: 'Run the full crawl pipeline (internal-urls -> contents-map -> metas -> product-contents -> category-urls -> index-urls).',
 )]
 class CrawlAllCommand extends Command
 {
@@ -89,11 +89,9 @@ class CrawlAllCommand extends Command
                         '--output' => $urlsPath,
                         '--user-agent' => $userAgent,
                     ];
-
                     if ($ignoreQuery) {
                         $args['--ignore-query'] = true;
                     }
-
                     return new ArrayInput($args);
                 },
             ],
@@ -137,6 +135,18 @@ class CrawlAllCommand extends Command
             [
                 'label' => 'category-urls',
                 'name'  => 'app:crawl:category-urls',
+                'input' => function () use ($contentsPath, $timeout, $userAgent): ArrayInput {
+                    // IMPORTANT: CrawlCategoryUrlsCommand uses --file, not --contents
+                    return new ArrayInput([
+                        '--file' => $contentsPath,
+                        '--timeout' => $timeout,
+                        '--user-agent' => $userAgent,
+                    ]);
+                },
+            ],
+            [
+                'label' => 'import-contents',
+                'name'  => 'app:import:contents',
                 'input' => function () use ($contentsPath, $timeout, $userAgent): ArrayInput {
                     // IMPORTANT: CrawlCategoryUrlsCommand uses --file, not --contents
                     return new ArrayInput([

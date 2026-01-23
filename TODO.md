@@ -7,6 +7,12 @@ http://preview.themeforest.net/item/events-conference-tourism-music-sport-all-ev
 
 Mettre les boutons gradients
 
+Refaire le bouton webmaster front à la charte dark
+
+Enregister toutes les ancienne url dans l'url pour faire les redirections
+
+UNe fois le dev terminer passer toutes les URLS product à offline
+
 Mettre une video home come isacar
 
 Pour les produit et actus verifier si un model est possible ou si actuellement sur le site c'est unique pour chaque fiche
