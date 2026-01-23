@@ -9,9 +9,8 @@
     =============
 
     1 ) Core
-    2 ) Contact infos
-    3 ) Base theme
-    4 ) Responsive
+    2 ) Base theme
+    3 ) Responsive
 
 ------------------------------------------------------------------ */
 
@@ -83,7 +82,10 @@ a {
         left: 0;
         bottom: 0;
         width: calc(100% - 400px);
-        background-color: transparentize($primary, .5);
+        background: radial-gradient(900px 600px at 20% 0%, rgba($primary, 0.08), transparent 55%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 42%),
+        $bg-body;
+        opacity: .9;
     }
 
     .btn {
@@ -95,7 +97,9 @@ a {
 
         width: 400px;
         margin: 0 auto;
-        background-color: $white;
+        background: radial-gradient(900px 600px at 20% 0%, rgba($primary, 0.08), transparent 55%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 42%),
+        $bg-body;
         min-height: 100%;
         position: absolute;
         right: 0;
@@ -115,12 +119,6 @@ a {
                 fill: $primary;
             }
         }
-
-        #contact-info {
-            a, a i {
-                font-size: 12px;
-            }
-        }
     }
 
     .alert {
@@ -133,22 +131,8 @@ a {
     bottom: 65px !important;
 }
 
-
 /*-----------------------------------
-   2 ) Contact infos
------------------------------------*/
-
-#contact-info {
-
-    background-color: transparentize($bg-body, .8) !important;
-
-    ul li {
-        line-height: 18px;
-    }
-}
-
-/*-----------------------------------
-   3 ) Base theme
+   2 ) Base theme
 -----------------------------------*/
 
 .base-theme {
@@ -175,7 +159,7 @@ a {
 }
 
 /*-----------------------------------
-   4 ) Responsive
+   3 ) Responsive
 -----------------------------------*/
 
 @media(max-width: 991px) {

@@ -156,6 +156,7 @@ File: scss
     .material-icon-list-demo .icons div {
         width: 100%;
     }
+
     .error-page {
         .footer {
             position: fixed;
@@ -163,10 +164,12 @@ File: scss
             z-index: 10;
         }
     }
+
     .error-box {
         position: relative;
         padding-bottom: 60px;
     }
+
     .error-body {
         padding-top: 10%;
 
@@ -176,13 +179,16 @@ File: scss
             line-height: 100px;
         }
     }
+
     .login-register {
         position: relative;
         overflow: hidden;
     }
+
     .login-box {
         width: 90%;
     }
+
     .login-sidebar {
         padding: 10% 0;
 
@@ -190,8 +196,11 @@ File: scss
             position: relative;
         }
     }
+
     /*This is for chat page*/
+
     .chat-main-box .chat-left-aside {
+
         left: -250px;
         position: absolute;
         transition: .5s ease-in;
@@ -205,13 +214,16 @@ File: scss
             display: block;
         }
     }
+
     .chat-main-box .chat-right-aside {
         width: 100%;
     }
+
     /*Timeline*/
     ul.timeline:before {
         left: 40px;
     }
+
     ul.timeline > li > .timeline-panel {
         width: calc(100% - 90px);
     }
@@ -220,34 +232,41 @@ File: scss
         left: 15px;
         margin-left: 0;
     }
+
     ul.timeline > li > .timeline-panel {
         float: right;
     }
+
     ul.timeline > li > .timeline-panel:before {
         right: auto;
         left: -15px;
         border-right-width: 15px;
         border-left-width: 0;
     }
+
     ul.timeline > li > .timeline-panel:after {
         right: auto;
         left: -14px;
         border-right-width: 14px;
         border-left-width: 0;
     }
+
     /*Contact app page*/
     .left-aside {
         width: 100%;
         position: relative;
         border: 0;
     }
+
     .right-aside {
         margin-left: 0;
     }
+
     .flex-wrap {
         flex-wrap: wrap !important;
         -webkit-flex-wrap: wrap !important;
     }
+
     .chat-list li .chat-content {
         width: calc(100% - 80px);
     }
