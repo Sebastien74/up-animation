@@ -476,6 +476,7 @@ class CoreLocator implements CoreLocatorInterface
             'targetEntity' => !empty($metadata['targetEntity']) ? $metadata['targetEntity'] : null,
             'mappedBy' => !empty($metadata['mappedBy']) ? $metadata['mappedBy'] : null,
             'setter' => !empty($metadata['mappedBy']) ? 'set'.ucfirst($metadata['mappedBy']) : null,
+            'getter' => !empty($metadata['mappedBy']) ? 'get'.ucfirst($metadata['mappedBy']) : null,
             'sourceEntity' => !empty($metadata['sourceEntity']) ? $metadata['sourceEntity'] : null,
         ];
     }

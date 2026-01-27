@@ -30,6 +30,13 @@
         top: 0;
     }
 
+    .carousel-control-pause,
+    .carousel-control-play,
+    .carousel-control-prev,
+    .carousel-control-next {
+        opacity: 1;
+    }
+
     .carousel-caption {
 
         .caption-title {
@@ -41,9 +48,6 @@
         .carousel-control-play,
         .carousel-control-prev,
         .carousel-control-next {
-
-            opacity: 1;
-
             &:not(.btn) {
                 width: initial;
             }
@@ -83,7 +87,7 @@
 
     .carousel-indicators:not(.as-loader) {
 
-        li {
+        li, button {
 
             background-color: $primary;
             border-radius: 99px;
@@ -401,8 +405,6 @@
 
     .splide__track {
 
-        padding-top: 1.5rem;
-
         @include mediaQuery(max-md) {
             margin-left: -1.5rem !important;
         }
@@ -485,6 +487,37 @@
     }
 }
 
+.splide.thumbnails-slider {
+
+    .splide__track {
+        position: relative; /* anchor for pseudo-elements */
+        overflow: hidden; /* normalement déjà le cas avec Splide, mais safe */
+    }
+
+    .splide__track::before,
+    .splide__track::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 48px;
+        z-index: 5; /* au-dessus des thumbs */
+        pointer-events: none; /* ne bloque pas le drag/click */
+    }
+
+    /* Left fade */
+    .splide__track::before {
+        left: 0;
+        background: linear-gradient(to right, $body-bg 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    /* Right fade */
+    .splide__track::after {
+        right: 0;
+        background: linear-gradient(to left, $body-bg 0%, rgba(255, 255, 255, 0) 100%);
+    }
+}
+
 .zone-video-bg, .bg-primary {
 
     .slider-progress {
@@ -498,26 +531,3 @@
 }
 
 /*! purgecss end ignore */
-
-/*-----------------------------------
-   4 ) Marquee
------------------------------------*/
-
-//.marquee-content {
-//
-//    .marquee-item {
-//
-//        img {
-//
-//            @include mediaQuery(max-md) {
-//                max-height: 25px;
-//                max-width: 100px;
-//            }
-//
-//            @include mediaQuery(min-md) {
-//                max-height: 35px;
-//                max-width: 150px;
-//            }
-//        }
-//    }
-//}

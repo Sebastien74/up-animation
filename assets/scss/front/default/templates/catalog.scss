@@ -31,3 +31,14 @@ $enable-youtube: true;
 /*-----------------------------------
    3 ) Core
 -----------------------------------*/
+
+.product-view-container {
+
+    .splide-container {
+        .splide:not(.thumbnails-slider) {
+            img {
+                width: 100%;
+            }
+        }
+    }
+}

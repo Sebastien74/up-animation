@@ -5,7 +5,7 @@
     {% set class = class is defined ? class : null %}
     {% set btnLabel = entity.category.intl.linkLabel is defined and entity.category.intl.linkLabel
         ? entity.category.intl.linkLabel : "Retourner à la liste des publications"|trans %}
-    <a href="{{ path('front_index', {url: pageUrl}) }}" class="link d-inline-block{% if class %} {{ class }}{% endif %}" data-toggle="preloader">
+    <a href="{{ path('front_index', {url: pageUrl}) }}" class="btn btn-secondary text-uppercase d-inline-block back-link">
         <i class="icon-chevron-left me-2"></i>{{ btnLabel }}
     </a>
 {% endif %}

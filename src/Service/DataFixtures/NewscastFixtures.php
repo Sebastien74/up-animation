@@ -160,7 +160,7 @@ class NewscastFixtures
         /** Content */
         $zoneContent = $this->layoutGenerator->addZone($layout, ['fullSize' => false, 'paddingTop' => null, 'paddingBottom' => null]);
         /** Content column one */
-        $col = $this->layoutGenerator->addCol($zoneContent, ['position' => 2, 'size' => 6, 'paddingRight' => 'pe-md']);
+        $col = $this->layoutGenerator->addCol($zoneContent, ['position' => 2, 'size' => 7, 'paddingRight' => 'pe-md']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-published-date', 'size' => 6, 'miniPcSize' => 6, 'tabletSize' => 6, 'mobileSize' => 6, 'marginBottom' => 'mb-sm']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-share', 'size' => 6, 'miniPcSize' => 6, 'tabletSize' => 6, 'mobileSize' => 6, 'alignment' => 'end', 'marginBottom' => 'mb-sm']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-intro']);
@@ -168,7 +168,7 @@ class NewscastFixtures
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-link']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-back-button', 'marginTop' => 'mt-lg', 'hideMobile' => true, 'hideTablet' => true]);
         /** Content column two */
-        $col = $this->layoutGenerator->addCol($zoneContent, ['position' => 3, 'size' => 6]);
+        $col = $this->layoutGenerator->addCol($zoneContent, ['position' => 3, 'size' => 5]);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-video']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-slider']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-back-button', 'marginTop' => 'mt-md', 'hideMiniPc' => true, 'hideDesktop' => true]);

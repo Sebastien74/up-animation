@@ -90,6 +90,14 @@ class CatalogSearchService implements CatalogSearchServiceInterface
         //        $this->cache($allProducts, 'products-values', true);
 
         $productIds = $this->products;
+
+        $productIdsDisplay = [];
+        foreach ($productIds as $id => $productId) {
+            if (count($productIdsDisplay) < $listing->getItemsPerPage()) {
+                $productIdsDisplay[$id] = $productId;
+            }
+        }
+
         $this->products = $this->coreLocator->em()->getRepository(Product::class)->findByIds($this->website, $this->locale, $this->products, $this->listing);
 //        $this->coreLocator->em()->clear();
         $this->cache['categories'] = !empty($this->cacheAll['categories']) ? $this->cacheAll['categories'] : [];
@@ -111,6 +119,7 @@ class CatalogSearchService implements CatalogSearchServiceInterface
             //            'initialResults' => $this->updateFields ? $this->products : $allProducts,
             'initialResults' => $this->products,
             'productIds' => $productIds,
+            'productIdsDisplay' => $productIdsDisplay,
             'searchResults' => $searchResults,
             'catalogs' => $catalogs,
             'categories' => $categories,

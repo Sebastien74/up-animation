@@ -13,7 +13,7 @@
         thumbConfiguration: thumbConfigurationHeader } %}
 {% endif %}
 
-<div class="container pt-5 pb-5">
+<section class="container pt-5 pb-5">
     <div class="row">
         <div class="col-lg-7 pe-lg-5">
             <div class="row d-flex align-items-center mb-4">
@@ -48,8 +48,10 @@
             {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-back-button.html.twig' with {entity: entity, pageUrl: pageUrl is defined ? pageUrl : null, class: 'mt-5 d-lg-none'} only %}
         </div>
     </div>
-    {% if associatedEntities is not empty %}
-        <div class="mt-5">
+</section>
+{% if associatedEntities is not empty %}
+    <section class="associated-entities-container bg-light pt-lg pb-lg">
+        <div class="container-fluid-right">
             {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-slider.html.twig' with {
                 associatedEntities: associatedEntities,
                 entity: entity,
@@ -57,8 +59,8 @@
                 interfaceName: interfaceName,
                 websiteTemplate: websiteTemplate,
                 pageUrl: pageUrl,
-                associatedEntitiesThumbConfiguration: associatedEntitiesThumbConfiguration
+                thumbConfiguration: associatedEntitiesThumbConfiguration
             } only %}
         </div>
-    {% endif %}
-</div>
+    </section>
+{% endif %}

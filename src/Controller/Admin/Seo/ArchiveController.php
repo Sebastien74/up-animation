@@ -106,10 +106,13 @@ class ArchiveController extends AdminController
     #[Route('/delete', name: 'admin_url_archive_delete', methods: 'DELETE')]
     public function delete(Request $request)
     {
-        $classname = urldecode($request->get('classname'));
-        $entity = $this->coreLocator->em()->getRepository($classname)->find($request->get('id'));
-        $this->coreLocator->em()->remove($entity);
-        $this->coreLocator->em()->flush();
+        $classname = urldecode($request->attributes->get('classname'));
+        $entity = $this->coreLocator->em()->getRepository($classname)->find($request->attributes->get('id'));
+
+        if ($entity) {
+            $this->coreLocator->em()->remove($entity);
+            $this->coreLocator->em()->flush();
+        }
 
         return new JsonResponse(['success' => true]);
     }

@@ -17,98 +17,100 @@
     } %}
 {% endif %}
 
-<div id="product-view" class="container pt-5 pb-5">
-    <div class="row">
-        <div class="col-lg-7">
-            {% if entity.category and entity.category.intl.title %}
-                <strong class="d-inline-block w-100">{{ entity.category.intl.title|raw }}</strong>
-            {% endif %}
-            {% if entity.intl.introduction %}
-                <p class="introduction text-bold">{{ entity.intl.introduction|raw|nl2br }}</p>
-            {% endif %}
-            {% if entity.intl.body %}
-                <div class="body">{{ entity.intl.body|raw }}</div>
-            {% endif %}
-            {% if entity.mainVideo %}
-                {% include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {
-                    block: entity,
-                    website: website,
-                    intl: entity.intl,
-                    media: entity.mainVideo,
-                } only %}
-            {% endif %}
-            {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
-                intl: entity.intl
-            } %}
-            <a href="{{ path('front_index', {url: pageUrl}) }}" class="link mt-5">
-                {{ "Retourner à la liste des produits"|trans }}<i class="icon-chevron-right ms-2"></i>
-            </a>
-        </div>
-        <div class="col-lg-5">
-            <div class="carousel-wrap">
-                {% if 'thumbnails' == slideType %}
-                    {% include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
-                        medias: entity.medias,
-                        thumbConfiguration: thumbConfigurationView,
-                        arrowsSide: 'side',
-                        arrowsColor: 'blur',
-                        arrowsAsBtn: true,
-                        slider: {
-                            effect: 'fade',
-                            thumbnails: true,
-                            pause: true,
-                            control: true,
-                            autoplay: false,
-                            indicators: false,
-                            progress: false,
-                            popup: false,
-                            offsetDesktop: 0,
-                            offsetMiniPC: 0,
-                            offsetTablet: 0,
-                            offsetMobile: 0,
-                            arrowAlignment: 'side',
-                            intervalDuration: 2000,
-                            itemsPerSlide: 1,
-                            itemsPerSlideMiniPC: 1,
-                            itemsPerSlideTablet: 1,
-                            itemsPerSlideMobile: 1,
-                        }
-                    } %}
-                {% else %}
-                    {% include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
-                        sliderSlug: 'event',
-                        websiteTemplate: websiteTemplate,
-                        entity: entity,
-                        medias: entity.medias,
-                        interfaceName: interfaceName,
-                        mainMediaInHeader: entity.mainMediaInHeader,
-                        disabledTitleForce: true,
-                        class: false,
-                        fade: true,
-                        popup: true,
-                        arrows: true,
-                        thumbConfiguration: thumbConfigurationView,
-                        maxWidth: not thumbConfigurationView ? null : null,
-                        maxHeight: not thumbConfigurationView ? 375 : null,
-                    } %}
+<div id="product-view">
+    <section id="product-content" class="container pt-lg pb-lg">
+        <div class="row">
+            <div class="col-lg-7">
+                {% if entity.category and entity.category.intl.title %}
+                    <strong class="d-inline-block w-100">{{ entity.category.intl.title|raw }}</strong>
                 {% endif %}
-            </div>
-        </div>
-        {% if associatedEntities is not empty %}
-            <div class="col-12">
-                <div class="mt-5">
-                    {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-slider.html.twig' with {
-                        listingTitle: 'Découvrez également'|trans,
-                        associatedEntities: associatedEntities,
-                        entity: entity,
+                {% if entity.intl.introduction %}
+                    <p class="introduction text-bold">{{ entity.intl.introduction|raw|nl2br }}</p>
+                {% endif %}
+                {% if entity.intl.body %}
+                    <div class="body">{{ entity.intl.body|raw }}</div>
+                {% endif %}
+                {% if entity.mainVideo %}
+                    {% include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {
+                        block: entity,
                         website: website,
-                        interfaceName: interfaceName,
-                        websiteTemplate: websiteTemplate,
-                        pageUrl: pageUrl,
-                        associatedEntitiesThumbConfiguration: associatedEntitiesThumbConfiguration
+                        intl: entity.intl,
+                        media: entity.mainVideo,
                     } only %}
+                {% endif %}
+                {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                    intl: entity.intl
+                } %}
+                <a href="{{ path('front_index', {url: pageUrl}) }}" class="link mt-5">
+                    {{ "Retourner à la liste des produits"|trans }}<i class="icon-chevron-right ms-2"></i>
+                </a>
+            </div>
+            <div class="col-lg-5">
+                <div class="carousel-wrap">
+                    {% if 'thumbnails' == slideType %}
+                        {% include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
+                            medias: entity.medias,
+                            thumbConfiguration: thumbConfigurationView,
+                            arrowsSide: 'side',
+                            arrowsColor: 'blur',
+                            arrowsAsBtn: true,
+                            slider: {
+                                effect: 'fade',
+                                thumbnails: true,
+                                pause: true,
+                                control: true,
+                                autoplay: false,
+                                indicators: false,
+                                progress: false,
+                                popup: false,
+                                offsetDesktop: 0,
+                                offsetMiniPC: 0,
+                                offsetTablet: 0,
+                                offsetMobile: 0,
+                                arrowAlignment: 'side',
+                                intervalDuration: 2000,
+                                itemsPerSlide: 1,
+                                itemsPerSlideMiniPC: 1,
+                                itemsPerSlideTablet: 1,
+                                itemsPerSlideMobile: 1,
+                            }
+                        } %}
+                    {% else %}
+                        {% include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
+                            sliderSlug: 'event',
+                            websiteTemplate: websiteTemplate,
+                            entity: entity,
+                            medias: entity.medias,
+                            interfaceName: interfaceName,
+                            mainMediaInHeader: entity.mainMediaInHeader,
+                            disabledTitleForce: true,
+                            class: false,
+                            fade: true,
+                            popup: true,
+                            arrows: true,
+                            thumbConfiguration: thumbConfigurationView,
+                            maxWidth: not thumbConfigurationView ? null : null,
+                            maxHeight: not thumbConfigurationView ? 375 : null,
+                        } %}
+                    {% endif %}
                 </div>
             </div>
-        {% endif %}
-    </div>
+        </div>
+    </section>
+    {% if associatedEntities is not empty %}
+        <section class="associated-entities-container bg-light pt-lg pb-lg">
+            <div class="container-fluid-right">
+                {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-slider.html.twig' with {
+                    listingTitle: 'Découvrez également'|trans,
+                    associatedEntities: associatedEntities,
+                    entity: entity,
+                    website: website,
+                    interfaceName: interfaceName,
+                    websiteTemplate: websiteTemplate,
+                    pageUrl: pageUrl,
+                    thumbConfiguration: associatedEntitiesThumbConfiguration
+                } only %}
+            </div>
+        </section>
+    {% endif %}
 </div>

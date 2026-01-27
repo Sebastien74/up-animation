@@ -70,7 +70,7 @@ final class ProductModel extends BaseModel
             'entityForLayout' => $model->layout && $model->layout->getSlug() && !$model->layout->getZones()->isEmpty() && $model->asCustomLayout ? $model->entity : $catalog,
             'info' => $info,
             'subCategories' => $subCategories,
-            'mediasCard' => array_slice($model->medias, 0, self::MEDIA_CARD_LIMIT),
+            'mediasCard' => $model->medias ? array_slice($model->medias, array_key_first($model->medias), self::MEDIA_CARD_LIMIT) : [],
             'values' => $values,
             'products' => $products,
             'template' => self::getTemplate($model, $catalog->entity, $catalogLayout),

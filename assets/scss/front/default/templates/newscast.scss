@@ -11,6 +11,7 @@
 
     1 ) Modules
     2 ) Core import
+    3 ) Core
 
 ------------------------------------------------------------------ */
 
@@ -26,3 +27,18 @@ $enable-code: true;
 -----------------------------------*/
 
 @import "../vendor";
+
+/*-----------------------------------
+   3 ) Core
+-----------------------------------*/
+
+.newscast-view-container {
+
+    .splide-container {
+        .splide:not(.thumbnails-slider) {
+            img {
+                width: 100%;
+            }
+        }
+    }
+}
