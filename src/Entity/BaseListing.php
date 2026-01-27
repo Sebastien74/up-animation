@@ -56,6 +56,12 @@ class BaseListing extends BaseEntity
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $orderBy = 'publicationStart-desc';
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $icon = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $iconBackground = null;
+
     #[ORM\ManyToOne(targetEntity: Page::class)]
     #[ORM\JoinColumn(nullable: true)]
     private ?Page $page = null;
@@ -204,6 +210,30 @@ class BaseListing extends BaseEntity
     public function setOrderBy(string $orderBy): static
     {
         $this->orderBy = $orderBy;
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): static
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getIconBackground(): ?string
+    {
+        return $this->iconBackground;
+    }
+
+    public function setIconBackground(?string $iconBackground): static
+    {
+        $this->iconBackground = $iconBackground;
 
         return $this;
     }

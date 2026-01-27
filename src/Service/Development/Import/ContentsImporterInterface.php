@@ -31,5 +31,5 @@ interface ContentsImporterInterface
      *
      * @param array<string, mixed> $bucketPayload
      */
-    public function import(string $bucket, array $bucketPayload, SymfonyStyle $io, ProgressBar $progressBar, bool $dryRun = false): void;
+    public function import(string $bucket, array $bucketPayload, array $metas, SymfonyStyle $io, ProgressBar $progressBar, bool $dryRun = false): void;
 }

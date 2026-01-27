@@ -167,7 +167,6 @@ class SitemapService
                 'urlEntity' => $urlEntity,
                 'isInfill' => $isInfill,
             ];
-
             return $this->xml['pages'][$entity->id][$locale];
         }
 
@@ -288,7 +287,6 @@ class SitemapService
                     'urlEntity' => $urlEntity,
                     'isInfill' => false,
                 ];
-
                 return $this->xml[$interface['name']][$entity->id][$urlEntity->getLocale()];
             }
         }
@@ -303,7 +301,8 @@ class SitemapService
      */
     public function getIndexPages(mixed $entities, array $interface = []): array
     {
-        $entitiesToIndex = [];
+        $entitiesToIndex = $indexPagesCodes = [];
+
         foreach ($entities as $entity) {
             $interface = empty($interface) ? $entity->interface : $interface;
             if (!empty($interface['listingClass'])) {
@@ -312,7 +311,7 @@ class SitemapService
                 $entitiesToIndex[$interface['classname']][$interface['listingClass']][] = $entity;
             }
         }
-        $indexPagesCodes = [];
+
         foreach ($entitiesToIndex as $classname => $group) {
             foreach ($group as $listingClassname => $entities) {
                 $referEntity = !empty($entities[0]) ? $entities[0] : null;
@@ -340,7 +339,7 @@ class SitemapService
     /**
      * Get Date.
      */
-    private function getDate(mixed $entity): ?\DateTime
+    private function getDate(mixed $entity): ?\DateTimeImmutable
     {
         $entity = $entity instanceof ViewModel ? $entity->entity : $entity;
 
@@ -354,7 +353,7 @@ class SitemapService
             return !empty($entity['updatedAt']) ? $entity['updatedAt'] : $entity['createdAt'];
         }
 
-        return new \DateTime('01-01-1970');
+        return new \DateTimeImmutable('01-01-1970');
     }
 
     /**
@@ -480,7 +479,7 @@ class SitemapService
 
         if (!empty($trees['page']['main'])) {
             foreach ($trees['page']['main'] as $keyPage => $page) {
-                if (!$page['active'] && empty($page['children'])) {
+                if ($page['isInfill'] && !$page['active'] && empty($page['children'])) {
                     unset($trees['page']['main'][$keyPage]);
                 }
             }

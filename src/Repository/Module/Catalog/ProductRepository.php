@@ -40,6 +40,22 @@ class ProductRepository extends ServiceEntityRepository
      *
      * @throws NonUniqueResultException
      */
+    public function findByOldUrl(string $url): ?Product
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.urls', 'u')
+            ->andWhere('u.oldUrl = :oldUrl')
+            ->setParameter('oldUrl', $url)
+            ->addSelect('u')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Find by Id for admin.
+     *
+     * @throws NonUniqueResultException
+     */
     public function findForAdmin(int $id): ?Product
     {
         return $this->createQueryBuilder('p')

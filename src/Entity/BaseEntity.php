@@ -34,6 +34,9 @@ abstract class BaseEntity extends BaseInterface
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $position = 1;
 
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $noSeo = false;
+
     #[ORM\PrePersist]
     public function prePersist(): void
     {
@@ -93,6 +96,18 @@ abstract class BaseEntity extends BaseInterface
     public function setPosition(?int $position): static
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    public function isNoSeo(): ?bool
+    {
+        return $this->noSeo;
+    }
+
+    public function setNoSeo(bool $noSeo): static
+    {
+        $this->noSeo = $noSeo;
 
         return $this;
     }

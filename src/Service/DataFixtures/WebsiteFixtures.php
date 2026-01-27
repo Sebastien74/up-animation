@@ -45,7 +45,6 @@ class WebsiteFixtures
         'ROLE_MAP',
         'ROLE_TAB',
         'ROLE_FAQ',
-        'ROLE_NEWSLETTER',
         'ROLE_USERS',
     ];
     private const array OTHERS_MODULES = [
@@ -61,6 +60,7 @@ class WebsiteFixtures
         'ROLE_FORM_CALENDAR',
         'ROLE_TIMELINE',
         'ROLE_RECRUITMENT',
+        'ROLE_NEWSLETTER',
     ];
 
     private array $websites = [];

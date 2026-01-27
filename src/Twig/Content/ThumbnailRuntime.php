@@ -554,14 +554,16 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             || ($mediaModel instanceof MediaModel && $mediaModel->media && !$mediaModel->media->getFilename() && isset($options['placeholder']) && $options['placeholder'])) {
             $inAdmin = (isset($options['inAdmin']) && true === (bool)$options['inAdmin']) || (isset($this->arguments['inAdmin']) && true === (bool)$this->arguments['inAdmin']);
             $filename = $inAdmin ? 'placeholder-back.jpg' : 'placeholder.jpg';
+            $website = !empty($options['website']) ? $options['website']: (!empty($this->arguments['website']) ? $this->arguments['website'] : $this->coreLocator->website()->entity);
+            $locale = $this->request ? $this->request->getLocale() : $this->coreLocator->locale();
             $media = new Media\Media();
             $media->setFilename('medias/'.$filename);
             $media->setExtension('jpg');
             $media->setScreen('desktop');
             $media->setName('placeholder');
-            $media->setWebsite($this->arguments['website']);
+            $media->setWebsite($website);
             $mediaRelation = new Media\MediaRelation();
-            $mediaRelation->setLocale($this->request->getLocale());
+            $mediaRelation->setLocale($locale);
             $mediaRelation->setMedia($media);
             $mediaModel = MediaModel::fromEntity($mediaRelation, $this->coreLocator);
         }
@@ -574,7 +576,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
      */
     private function asPlaceholder(?MediaModel $mediaModel = null): bool
     {
-        if ($mediaModel->media && $mediaModel->media->getFilename() && str_contains($mediaModel->media->getFilename(), 'placeholder.jpg')) {
+        if ($mediaModel && $mediaModel->media && $mediaModel->media->getFilename() && str_contains($mediaModel->media->getFilename(), 'placeholder.jpg')) {
             return in_array($mediaModel->media->getFilename(), ['placeholder.jpg', 'placeholder-dark.jpg']);
         }
         return false;

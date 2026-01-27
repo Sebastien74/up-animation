@@ -101,6 +101,9 @@ class Listing extends BaseEntity
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $searchFeatures = null;
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $searchProducts = null;
+
     #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\NotBlank]
     private string $orderBy = 'position';
@@ -112,10 +115,21 @@ class Listing extends BaseEntity
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $itemsPerPage = 12;
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $icon = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $iconBackground = null;
+
     #[ORM\OneToMany(targetEntity: ListingFeatureValue::class, mappedBy: 'listing', cascade: ['persist'])]
     #[ORM\OrderBy(['position' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $featuresValues;
+
+    #[ORM\OneToMany(targetEntity: ListingIntl::class, mappedBy: 'listing', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['locale' => 'ASC'])]
+    #[Assert\Valid(['groups' => ['form_submission']])]
+    private ArrayCollection|PersistentCollection $intls;
 
     #[ORM\ManyToOne(targetEntity: Page::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -141,16 +155,22 @@ class Listing extends BaseEntity
     #[ORM\OrderBy(['position' => 'ASC'])]
     private ArrayCollection|PersistentCollection $features;
 
+    #[ORM\ManyToMany(targetEntity: Product::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\OrderBy(['adminName' => 'ASC'])]
+    private ArrayCollection|PersistentCollection $products;
+
     /**
      * Listing constructor.
      */
     public function __construct()
     {
         $this->featuresValues = new ArrayCollection();
+        $this->intls = new ArrayCollection();
         $this->catalogs = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->subCategories = new ArrayCollection();
         $this->features = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getDisplay(): ?string
@@ -321,6 +341,18 @@ class Listing extends BaseEntity
         return $this;
     }
 
+    public function getSearchProducts(): ?string
+    {
+        return $this->searchProducts;
+    }
+
+    public function setSearchProducts(?string $searchProducts): static
+    {
+        $this->searchProducts = $searchProducts;
+
+        return $this;
+    }
+
     public function getOrderBy(): ?string
     {
         return $this->orderBy;
@@ -357,6 +389,30 @@ class Listing extends BaseEntity
         return $this;
     }
 
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): static
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getIconBackground(): ?string
+    {
+        return $this->iconBackground;
+    }
+
+    public function setIconBackground(?string $iconBackground): static
+    {
+        $this->iconBackground = $iconBackground;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, ListingFeatureValue>
      */
@@ -381,6 +437,36 @@ class Listing extends BaseEntity
             // set the owning side to null (unless already changed)
             if ($featuresValue->getListing() === $this) {
                 $featuresValue->setListing(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ListingIntl>
+     */
+    public function getIntls(): Collection
+    {
+        return $this->intls;
+    }
+
+    public function addIntl(ListingIntl $intl): static
+    {
+        if (!$this->intls->contains($intl)) {
+            $this->intls->add($intl);
+            $intl->setListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntl(ListingIntl $intl): static
+    {
+        if ($this->intls->removeElement($intl)) {
+            // set the owning side to null (unless already changed)
+            if ($intl->getListing() === $this) {
+                $intl->setListing(null);
             }
         }
 
@@ -503,6 +589,30 @@ class Listing extends BaseEntity
     public function removeFeature(Feature $feature): static
     {
         $this->features->removeElement($feature);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        $this->products->removeElement($product);
 
         return $this;
     }

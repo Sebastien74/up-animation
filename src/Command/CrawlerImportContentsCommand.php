@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Service\Development\Import\ContentsImporterInterface;
+use App\Service\Development\Import\ProductContentsCrawlerService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -44,6 +45,7 @@ class CrawlerImportContentsCommand extends Command
     public function __construct(
         #[AutowireIterator('app.contents_importer')]
         private readonly iterable $importers,
+        private readonly ProductContentsCrawlerService $jsonIo,
         private readonly string $projectDir,
     ) {
         parent::__construct();
@@ -53,6 +55,7 @@ class CrawlerImportContentsCommand extends Command
     {
         $this
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/contents.json')
+            ->addOption('meta-file', 'm', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/metas.json')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Do not write to database (read-only simulation)')
             ->addOption('only', null, InputOption::VALUE_REQUIRED, 'Import only one bucket (products|categories|indexes|pages)', '')
         ;
@@ -66,9 +69,15 @@ class CrawlerImportContentsCommand extends Command
         $filePath = $this->absPath((string) $input->getOption('file'));
         $dryRun = (bool) $input->getOption('dry-run');
         $only = trim((string) $input->getOption('only'));
+        $metasPath = $this->absPath((string) $input->getOption('meta-file'));
 
         if (!$fs->exists($filePath)) {
             $io->error(sprintf('File not found: %s', $filePath));
+            return Command::FAILURE;
+        }
+
+        if (!$fs->exists($metasPath)) {
+            $io->error(sprintf('File not found: %s', $metasPath));
             return Command::FAILURE;
         }
 
@@ -90,6 +99,7 @@ class CrawlerImportContentsCommand extends Command
             return Command::FAILURE;
         }
 
+        $metas = $this->jsonIo->readContentsJson($metasPath);
         $buckets = ['products', 'categories', 'indexes', 'pages'];
 
         if ($only !== '') {
@@ -148,7 +158,7 @@ class CrawlerImportContentsCommand extends Command
             }
 
             $progress->setMessage(sprintf('Importing %s', $bucket));
-            $importer->import($bucket, $bucketPayload, $io, $progress, $dryRun);
+            $importer->import($bucket, $bucketPayload, $metas, $io, $progress, $dryRun);
         }
 
         $progress->setMessage('Done');

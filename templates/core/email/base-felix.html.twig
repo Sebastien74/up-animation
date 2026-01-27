@@ -1,168 +1,160 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% trans_default_domain 'email' %}
 
-<html xmlns="https://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="https://www.w3.org/1999/xhtml" lang="{{ locale }}">
 
     <head>
-
-        {% trans_default_domain 'email' %}
-
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <!--[if !mso]><!-->
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <!--<![endif]-->
-        <title>{% block metaTitle %}{{ "Nouveau message site Internet"|trans|raw }}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block metaTitle %}{{ ('New message Felix API')|trans|striptags }}{% endblock %}</title>
 
+        {# Keep your existing behavior #}
+        {% set isText = isText is defined ? isText : false %}
+
+        {# Keep your existing host resolution (useful for absolute links if needed) #}
         {% set host = null %}
         {% if schemeAndHttpHost is defined %}
             {% set host = schemeAndHttpHost %}
         {% elseif app.request %}
             {% set host = app.request.getSchemeAndHttpHost() %}
         {% endif %}
-        {% set isText = isText is defined ? isText : false %}
 
+        {# Minimal responsive helpers (some clients ignore <style>, but OK as bonus) #}
         {% if not isText %}
-            {% block stylesheets %}
-                {% include 'core/email/style.html.twig' %}
-            {% endblock %}
+            <style type="text/css">
+                @media screen and (max-width: 620px) {
+                    .container { width: 100% !important; }
+                    .px { padding-left: 16px !important; padding-right: 16px !important; }
+                    .py { padding-top: 16px !important; padding-bottom: 16px !important; }
+                    .btn { width: 100% !important; }
+                    .btn a { display: block !important; }
+                }
+            </style>
         {% endif %}
 
+        <!--[if mso]>
+        <style type="text/css">
+            body, table, td { font-family: Arial, Helvetica, sans-serif !important; }
+        </style>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:AllowPNG/>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+        <![endif]-->
     </head>
 
-    <body style="background-color: #e9ecef;">
+    <body style="margin:0; padding:0; background-color:#0B1020;">
 
-        <!-- .preheader -->
-        <div class="preheader" style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0;">
-            {% block preheader %}{% endblock %}
-        </div>
-        <!-- /.preheader -->
+        {% if not isText %}
+            <!-- Preheader (hidden preview text) -->
+            <div class="preheader" style="display:none; max-width:0; max-height:0; overflow:hidden; font-size:1px; line-height:1px; color:#0B1020; opacity:0; mso-hide:all;">
+                {% block preheader %}{% endblock %}
+            </div>
+        {% endif %}
 
-        <!-- body -->
-        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-
-            {% if email is defined %}
-                <!-- logo -->
-                <tr>
-                    <td align="center" bgcolor="#e9ecef">
-                        <!--[if (gte mso 9)|(IE)]>
-                        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-                            <tr>
-                                <td align="center" valign="top" width="600">
-                        <![endif]-->
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                            <tr>
-                                <td align="center" valign="top" style="padding: 36px 24px;">
-                                    <a href="https://www.felix-creation.fr/" target="_blank" style="display: inline-block;">
-                                        <img src="{{ email.image('@images/medias/felix-logo.svg') }}"
-                                             alt="Logo" border="0" height="150"
-                                             style="display: block; max-width: 400px; max-height: 150px; min-height: 100px;">
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
-                        <!--[if (gte mso 9)|(IE)]>
-                                </td>
-                            </tr>
-                        </table>
-                        <![endif]-->
-                    </td>
-                </tr>
-                <!-- end logo -->
-            {% endif %}
-
-            <!-- start hero -->
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#0B1020;">
             <tr>
-                <td align="center" bgcolor="#e9ecef">
-                    <!--[if (gte mso 9)|(IE)]>
-                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                <td align="center" style="padding:28px 12px;">
+
+                    {# Outer container (card) #}
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" class="container"
+                           style="width:600px; max-width:600px; background-color:#14161E; border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); box-shadow:0 18px 60px rgba(0,0,0,0.55);">
+
+                        {# Header gradient (as requested) #}
                         <tr>
-                            <td align="center" valign="top" width="600">
-                    <![endif]-->
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                        <tr>
-                            <td align="center" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
-                                <h1 style="margin: 0; font-size: 32px; font-weight: 600; letter-spacing: -1px; line-height: 40px;">
-                                    {% block title %}{% endblock %}
-                                </h1>
+                            <td style="background-color:#171A2A;
+                                background-image:linear-gradient(90deg,#2A1F57 0%,#1B2140 45%,#121626 100%);
+                                padding:18px 22px;" class="px">
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td align="left" valign="middle">
+                                            {% if email is defined %}
+                                                <a href="https://up-animations.fr" target="_blank" style="display:inline-block; text-decoration:none;">
+                                                    <img src="{{ email.image('@images/medias/logo-email.png') }}"
+                                                         alt="{{ ('Agence Felix')|trans }}"
+                                                         width="120"
+                                                         style="display:block; border:0; outline:none; text-decoration:none; height:auto; max-width:120px;">
+                                                </a>
+                                            {% else %}
+                                                {# Fallback if email context not available (rare) #}
+                                                <span style="font-family:Arial, Helvetica, sans-serif; font-size:14px; font-weight:800; color:rgba(255,255,255,0.92);">
+                                                    {{ ('Agence Felix')|trans }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td align="right" valign="middle" style="font-family:Arial, Helvetica, sans-serif; color:rgba(255,255,255,0.72); font-size:12px;">
+                                            {% block headerRight %}{{ ('Notification')|trans }}{% endblock %}
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
-                    </table>
-                    <!--[if (gte mso 9)|(IE)]>
+
+                        {# Title (optional) #}
+                        {% if block('title')|striptags|length > 0 %}
+                            <tr>
+                                <td style="padding:22px 22px 0 22px;" class="px">
+                                    <div style="font-family:Arial, Helvetica, sans-serif; font-size:20px; font-weight:800; line-height:1.25; color:rgba(255,255,255,0.92);">
+                                        {% block title %}{% endblock %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                        {# Body (main content) #}
+                        {% if block('body')|striptags|length > 0 %}
+                            <tr>
+                                <td style="padding:18px 22px 0 22px;" class="px">
+                                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"
+                                           style="background-color:#0F1424; border-radius:14px; border:1px solid rgba(255,255,255,0.08);">
+                                        <tr>
+                                            <td style="padding:18px;" class="py">
+                                                <div style="font-family:Arial, Helvetica, sans-serif; font-size:13.5px; line-height:1.65; color:rgba(255,255,255,0.72);">
+                                                    {% block body %}{% endblock %}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                        {# Info (footer-like block above final footer) #}
+                        {% if block('info')|striptags|length > 0 %}
+                            <tr>
+                                <td style="padding:16px 22px 0 22px;" class="px">
+                                    <div style="font-family:Arial, Helvetica, sans-serif; font-size:11.5px; line-height:1.6; color:rgba(255,255,255,0.55); border-top:1px solid rgba(255,255,255,0.08); padding-top:14px;">
+                                        {% block info %}{% endblock %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                        {# Final footer #}
+                        <tr>
+                            <td style="padding:18px 22px 22px 22px;" class="px">
+                                <div style="font-family:Arial, Helvetica, sans-serif; font-size:11.5px; line-height:1.6; color:rgba(255,255,255,0.48);">
+                                    {% block footer %}
+                                        © {{ "now"|date("Y") }} {{ ('Agence Felix')|trans }}.
+                                    {% endblock %}
+                                </div>
                             </td>
                         </tr>
+
                     </table>
-                    <![endif]-->
+
+                    <div style="height:18px; line-height:18px; font-size:18px;">&nbsp;</div>
+
                 </td>
             </tr>
-            <!-- end hero -->
-
-            <!-- start copy block -->
-            <tr>
-                <td align="center" bgcolor="#e9ecef">
-                    <!--[if (gte mso 9)|(IE)]>
-                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-                        <tr>
-                            <td align="center" valign="top" width="600">
-                    <![endif]-->
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                            {% block body %}{% endblock %}
-                        </table>
-                    <!--[if (gte mso 9)|(IE)]>
-                            </td>
-                        </tr>
-                    </table>
-                    <![endif]-->
-                </td>
-            </tr>
-            <!-- end copy block -->
-
-            <!-- start footer -->
-            <tr>
-                <td align="center" bgcolor="#e9ecef" style="padding: 24px;">
-                    <!--[if (gte mso 9)|(IE)]>
-                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-                        <tr>
-                            <td align="center" valign="top" width="600">
-                    <![endif]-->
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-
-                            <!-- start permission -->
-                            <tr>
-                                <td align="center" bgcolor="#e9ecef"
-                                    style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
-                                    <p style="margin: 0;">{% block info %}{% endblock %}</p>
-                                </td>
-                            </tr>
-                            <!-- end permission -->
-
-                            <!-- start unsubscribe -->
-                            <tr>
-                                <td align="center" bgcolor="#e9ecef" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
-                                    <p style="margin: 0;">4BIS Avenue du Pont de Tasset, 74960 Cran-Gevrier / Annecy</p>
-                                    <p style="margin: 3px 0 0;">
-                                        <a href="mailto:support@agence-felix.fr" style="text-decoration: none;">support@agence-felix.fr</a>
-                                    </p>
-                                    <p style="margin: 3px 0 0;">
-                                        <a href="tel:+33450671855" style="text-decoration: none;">+33(0)4 50 67 18 55</a>
-                                    </p>
-                                    <p class="copyright" style="margin: 30px 0 0;">{{ "E-mail généré par"|trans|raw }} <a href="https://www.felix-creation.fr/" target="_blank" style="text-decoration: none;">{{ "Agence Félix"|trans }}</a> &copy; {{ "now"|date("Y") }}</p>
-                                </td>
-                            </tr>
-                            <!-- end unsubscribe -->
-
-                        </table>
-                    <!--[if (gte mso 9)|(IE)]>
-                            </td>
-                        </tr>
-                    </table>
-                    <![endif]-->
-                </td>
-            </tr>
-            <!-- end footer -->
-
         </table>
-        <!-- end body -->
 
     </body>
 </html>

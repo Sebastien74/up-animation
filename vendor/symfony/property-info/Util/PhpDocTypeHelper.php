@@ -21,6 +21,7 @@ use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
+use phpDocumentor\Reflection\Types\Scalar;
 use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\PropertyInfo\Type as LegacyType;
 use Symfony\Component\TypeInfo\Type;
@@ -60,6 +61,15 @@ final class PhpDocTypeHelper
         if ($varType instanceof Nullable) {
             $nullable = true;
             $varType = $varType->getActualType();
+        }
+
+        if ($varType instanceof Scalar) {
+            return [
+                new LegacyType(LegacyType::BUILTIN_TYPE_BOOL),
+                new LegacyType(LegacyType::BUILTIN_TYPE_FLOAT),
+                new LegacyType(LegacyType::BUILTIN_TYPE_INT),
+                new LegacyType(LegacyType::BUILTIN_TYPE_STRING),
+            ];
         }
 
         if (!$varType instanceof Compound) {
@@ -163,6 +173,10 @@ final class PhpDocTypeHelper
             if (null !== $t = $this->createType($varType)) {
                 $unionTypes[] = $t;
             }
+        }
+
+        if (!$unionTypes) {
+            return null;
         }
 
         $type = 1 === \count($unionTypes) ? $unionTypes[0] : Type::union(...$unionTypes);

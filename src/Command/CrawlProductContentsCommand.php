@@ -90,6 +90,8 @@ class CrawlProductContentsCommand extends Command
         // Ensure target directory exists
         $fs->mkdir(\dirname($filePath));
 
+        $map = $this->crawler->readContentsJson($filePath);
+        $map = $this->crawler->enrichProducts($map, $timeout, $userAgent);
         $this->crawler->writeContentsJson($filePath, $map);
 
         $io->success('contents.json updated with product contents.');

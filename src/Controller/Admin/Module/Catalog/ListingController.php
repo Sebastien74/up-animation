@@ -97,7 +97,7 @@ class ListingController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('cataloglisting')) {
+        if ($request->attributes->get('cataloglisting')) {
             $items[$this->coreLocator->translator()->trans('Index', [], 'admin_breadcrumb')] = 'admin_cataloglisting_index';
         }
 

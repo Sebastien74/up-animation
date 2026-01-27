@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Service\Development\Import;
 
 use App\Entity\Core\Website;
+use App\Entity\Layout\Layout;
 use App\Entity\Module\Catalog\Catalog;
 use App\Entity\Module\Catalog\Product;
+use App\Entity\Module\Catalog\ProductIntl;
 use App\Entity\Seo\Seo;
 use App\Entity\Seo\Url;
 use App\Service\Core\Urlizer;
@@ -68,7 +70,7 @@ class ProductsImport implements ContentsImporterInterface
     /**
      * @param array<string, mixed> $bucketPayload map(url => payload)
      */
-    public function import(string $bucket, array $bucketPayload, SymfonyStyle $io, ProgressBar $progressBar, bool $dryRun = false): void
+    public function import(string $bucket, array $bucketPayload, array $metas, SymfonyStyle $io, ProgressBar $progressBar, bool $dryRun = false): void
     {
         $websiteId = $this->getFirstWebsiteId();
         $websiteRef = $this->getWebsiteRef($websiteId);
@@ -87,6 +89,7 @@ class ProductsImport implements ContentsImporterInterface
         $urlsCreated = 0;
 
         foreach ($bucketPayload as $url => $payload) {
+
             $progressBar->setMessage('Importing products');
 
             if (!is_string($url) || trim($url) === '') {
@@ -123,23 +126,33 @@ class ProductsImport implements ContentsImporterInterface
             if (!$product) {
                 $product = new Product();
                 $product->setWebsite($websiteRef);
-
                 // Position only if new
                 $product->setPosition($nextPosByCatalogSlug[$catalogSlug] ?? 1);
                 $nextPosByCatalogSlug[$catalogSlug] = ($nextPosByCatalogSlug[$catalogSlug] ?? 1) + 1;
-
                 $isNew = true;
             }
 
             // Upsert fields
             $product->setSlug($productSlug);
             $product->setAdminName($adminName);
+            $product->setNoSeo(empty($metas['meta-title']));
+
+            $intl = $product->getIntls()->isEmpty() ? new ProductIntl() : $product->getIntls()->first();
+            if ($product->getIntls()->isEmpty()) {
+                $product->addIntl($intl);
+            }
+            $intl->setLocale(self::DEFAULT_LOCALE);
+            $intl->setTitle($adminName);
+            $intl->setWebsite($websiteRef);
 
             // IMPORTANT: ensure association is set on both sides
             $catalog->addProduct($product);
 
+            $stringUrl = $url;
+
             // Create Url+Seo only if product has none
             if ($product->getUrls()->isEmpty()) {
+
                 $code = $this->codeFromUrl($url);
 
                 $urlEntity = new Url();
@@ -149,7 +162,6 @@ class ProductsImport implements ContentsImporterInterface
                 $urlEntity->setOnline(true);
 
                 $seo = new Seo();
-                $seo->setMetaTitle($adminName);
 
                 // Owning side is Url::seo
                 $urlEntity->setSeo($seo);
@@ -159,6 +171,9 @@ class ProductsImport implements ContentsImporterInterface
 
                 $urlsCreated++;
             }
+
+            $url = $product->getUrls()->first();
+            $url->setOldUrl($stringUrl);
 
             if (!$dryRun) {
                 $this->entityManager->persist($product);
@@ -253,7 +268,19 @@ class ProductsImport implements ContentsImporterInterface
         $catalogs = $this->reloadCatalogs($websiteRef);
 
         foreach (self::CATALOGS as $slug => $cfg) {
+
             if ($catalogs[$slug] instanceof Catalog) {
+                $catalog = $catalogs[$slug];
+                if (!$catalog->getLayout()) {
+                    $layout = new Layout();
+                    $layout->setWebsite($websiteRef);
+                    $layout->setAdminName((string) $cfg['adminName']);
+                    $catalog->setLayout($layout);
+                    if (!$dryRun) {
+                        $this->entityManager->persist($catalog);
+                        $this->entityManager->flush();
+                    }
+                }
                 continue;
             }
 
@@ -262,6 +289,11 @@ class ProductsImport implements ContentsImporterInterface
             $catalog->setSlug($slug);
             $catalog->setAdminName((string) $cfg['adminName']);
             $catalog->setPosition((int) $cfg['position']);
+
+            $layout = new Layout();
+            $layout->setWebsite($websiteRef);
+            $layout->setAdminName((string) $cfg['adminName']);
+            $catalog->setLayout($layout);
 
             if (!$dryRun) {
                 $this->entityManager->persist($catalog);

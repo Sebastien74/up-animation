@@ -17,9 +17,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 #[ORM\Table(name: 'seo_url')]
-#[ORM\Index(columns: ['code'], name: 'idx_seo_url_code')]
-#[ORM\Index(columns: ['locale'], name: 'idx_seo_url_locale')]
-#[ORM\Index(columns: ['online'], name: 'idx_seo_url_online')]
+#[ORM\Index(name: 'idx_seo_url_code', columns: ['code'])]
+#[ORM\Index(name: 'idx_seo_url_locale', columns: ['locale'])]
+#[ORM\Index(name: 'idx_seo_url_online', columns: ['online'])]
 #[ORM\Entity(repositoryClass: UrlRepository::class)]
 class Url extends BaseInterface
 {
@@ -40,6 +40,9 @@ class Url extends BaseInterface
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $code = null;
+
+    #[ORM\Column(type: Types::STRING, length: 1500, nullable: true)]
+    private ?string $oldUrl = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $online = false;
@@ -89,6 +92,18 @@ class Url extends BaseInterface
     public function setCode(?string $code): static
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function getOldUrl(): ?string
+    {
+        return $this->oldUrl;
+    }
+
+    public function setOldUrl(?string $oldUrl): static
+    {
+        $this->oldUrl = $oldUrl;
 
         return $this;
     }

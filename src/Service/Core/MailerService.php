@@ -36,7 +36,7 @@ class MailerService
     private ?WebsiteModel $website = null;
     private ?string $envName;
     private ?string $subject = null;
-    private ?string $name = null;
+    private ?string $name = 'Up Animations!';
     private ?string $from = null;
     private bool $fromSet = false;
     private array $to = [];
@@ -135,7 +135,7 @@ class MailerService
         $information = $this->website?->information;
         $hosts = $this->website?->hosts;
 
-        if (is_object($information) && property_exists($information, 'companyName')) {
+        if (is_object($information) && property_exists($information, 'companyName') && $information->companyName) {
             $this->name = $information->companyName;
         }
 

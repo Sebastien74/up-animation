@@ -16,9 +16,9 @@ use League\ISO3166\Exception\DomainException;
 final class ISO3166DataValidator
 {
     /**
-     * @param array<array<string, mixed>> $data
+     * @param array<array{name: string, alpha2: string, alpha3: string, numeric: numeric-string, currency: array<string>}> $data
      *
-     * @return array<array<string, mixed>>
+     * @return array<array{name: string, alpha2: string, alpha3: string, numeric: numeric-string, currency: array<string>}>
      */
     public function validate(array $data): array
     {
@@ -32,7 +32,7 @@ final class ISO3166DataValidator
     /**
      * @param array<string, mixed> $entry
      *
-     * @throws \League\ISO3166\Exception\DomainException if given data entry does not have all the required keys
+     * @throws DomainException if given data entry does not have all the required keys
      */
     private function assertEntryHasRequiredKeys(array $entry): void
     {

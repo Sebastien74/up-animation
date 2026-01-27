@@ -209,6 +209,9 @@ class FormHelper
                 if (0 === $result[$locale] || $result[$locale] > 1) {
                     $result['error'] = true;
                 }
+                if (!empty($result['error']) && $this->entity instanceof Page && $this->entity->isInfill()) {
+                    unset($result['error']);
+                }
             }
             $this->haveH1 = $result;
         }

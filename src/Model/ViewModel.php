@@ -127,7 +127,7 @@ final class ViewModel extends BaseModel
         $listingClass = !empty($interface['listingClass']) ? $interface['listingClass'] : null;
         $configEntity = !empty($options['configEntity']) ? $options['configEntity'] : null;
         $configFields = self::getContent('fields', $configEntity, false, true);
-        $urlsIndex = !empty($options['urlsIndex']) ? $options['urlsIndex'] : ($listingClass ? self::$coreLocator->listingService()->indexesPages($entity, self::$coreLocator->locale(), $listingClass, get_class($entity)) : []);
+        $urlsIndex = !empty($options['urlsIndex']) ? $options['urlsIndex'] : ($listingClass && $entity ? self::$coreLocator->listingService()->indexesPages($entity, self::$coreLocator->locale(), $listingClass, get_class($entity)) : []);
         $locale = !empty($options['locale']) ? $options['locale'] : self::$coreLocator->locale();
         $intl = $entitiesIds ? IntlModel::fromEntities($entity, $coreLocator, $options['entitiesIds'], $locale) : [];
         $intl = $intl ?: (!$disabledIntl ? IntlModel::fromEntity($entity, $coreLocator, false, $options) : null);
@@ -172,7 +172,7 @@ final class ViewModel extends BaseModel
             dates: $dates,
             formatDate: self::getContent('formatDate', $entity),
             author: self::getContent('author', $entity),
-            medias: !$disabledMedias && $medias ? $medias->list : [],
+            medias: !$disabledMedias && $medias && is_iterable($medias->list) ? $medias->list : [],
             mainMedia: !$disabledMedias && $medias ? $medias->main : null,
             mainImage: $titleInfos ? $titleInfos->media : null,
             mediasWithoutMain: !$disabledMedias && $medias ? $medias->withoutMain : [],
@@ -243,7 +243,7 @@ final class ViewModel extends BaseModel
             if ($entity instanceof Layout\Page) {
                 $path = self::$coreLocator->router()->generate('front_index', ['url' => $entity->isAsIndex() ? null : $urlCode], 0);
             } else {
-                $pageUrl = array_key_exists($entity->getId(), $urlsIndex) ? $urlsIndex[$entity->getId()] : ($request && $request->get('pageUrl') ? $request->get('pageUrl')
+                $pageUrl = array_key_exists($entity->getId(), $urlsIndex) ? $urlsIndex[$entity->getId()] : ($request && $request->attributes->get('pageUrl') ? $request->attributes->get('pageUrl')
                     : ($request ? trim($request->getPathInfo(), '/') : null));
                 $path = $pageUrl && $urlCode && !str_contains($pageUrl, '/') && self::$coreLocator->checkRoute('front_'.$interface['name'].'_view.'.$locale)
                     ? self::$coreLocator->router()->generate('front_'.$interface['name'].'_view', ['pageUrl' => $pageUrl, 'url' => $urlCode], 0) : null;

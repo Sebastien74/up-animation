@@ -51,13 +51,13 @@ class Category extends BaseEntity
     #[ORM\OneToMany(targetEntity: SubCategory::class, mappedBy: 'catalogcategory', cascade: ['persist', 'remove'])]
     private ArrayCollection|PersistentCollection $subCategories;
 
-    #[ORM\OneToMany(targetEntity: CategoryMediaRelation::class, mappedBy: 'category', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: CategoryMediaRelation::class, mappedBy: 'category', cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     #[ORM\OrderBy(['position' => 'ASC', 'locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $mediaRelations;
 
-    #[ORM\OneToMany(targetEntity: CategoryIntl::class, mappedBy: 'category', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: CategoryIntl::class, mappedBy: 'category', cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
     #[ORM\OrderBy(['locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $intls;

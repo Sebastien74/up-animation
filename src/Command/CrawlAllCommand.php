@@ -147,8 +147,16 @@ class CrawlAllCommand extends Command
             [
                 'label' => 'import-contents',
                 'name'  => 'app:import:contents',
+                'input' => function () use ($contentsPath): ArrayInput {
+                    return new ArrayInput([
+                        '--file' => $contentsPath,
+                    ]);
+                },
+            ],
+            [
+                'label' => 'index-urls',
+                'name'  => 'app:crawl:index-urls',
                 'input' => function () use ($contentsPath, $timeout, $userAgent): ArrayInput {
-                    // IMPORTANT: CrawlCategoryUrlsCommand uses --file, not --contents
                     return new ArrayInput([
                         '--file' => $contentsPath,
                         '--timeout' => $timeout,

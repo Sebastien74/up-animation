@@ -1,0 +1,6 @@
+{
+    "2026-01-23 17:25:11": {
+        "type": "email",
+        "message": "Unable to find template \"@images\/medias\/logo-email.png\" (looked into: C:\\wamp64\\www\\up-animation\/public) in \"core\/email\/base-felix.html.twig\" at line 80. in App\\Service\\Core\\MailerService at line 80"
+    }
+}

@@ -25,6 +25,22 @@
             display: none;
         }
 
+        @include mediaQuery(min-lg) {
+
+            li {
+
+                a, a span {
+
+                    transition: color .3s ease-in-out;
+
+                    &:hover, &:focus {
+                        transition: all .3s ease-in-out;
+                        color: $primary !important;
+                    }
+                }
+            }
+        }
+
         @include mediaQuery(min-md) {
 
             .separator {

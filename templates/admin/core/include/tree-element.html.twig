@@ -33,6 +33,9 @@
                 {% if entity.secure is defined and entity.secure %}
                     <span class="me-2" data-bs-toggle="tooltip" title="{{ "Page sécurisée"|trans|striptags }}">{{ 'fas lock-alt'|icon(null, 13, 'info') }}</span>
                 {% endif %}
+                {% if entity.noSeo is defined and entity.noSeo %}
+                    <span class="me-2" data-bs-toggle="tooltip" title="{{ "SEO nonrécupéré"|trans|striptags }}">{{ 'fas lock-alt'|icon(null, 13, 'info') }}</span>
+                {% endif %}
                 {% if infoUrl %}
                     {% set entityIntl = entity.intl is defined ? entity.intl : null %}
                     {% set page = entityIntl.targetPage is defined and entityIntl.targetPage ? entityIntl.targetPage : null %}
@@ -46,7 +49,7 @@
                     {% endif %}
                     <span class="me-1 info-url" data-bs-toggle="tooltip" title="{{ tooltipTitle|striptags }}">{{ 'fas circle'|icon(null, 10, color) }}</span>
                 {% endif %}
-                {% if entity.adminName is defined and entity.adminName %}{{ entity.adminName|truncate(35, false) }}{% endif %}
+                {% if entity.adminName is defined and entity.adminName %}{{ entity.adminName|truncate(75, false) }}{% endif %}
             </span>
 
             {% if children %}

@@ -18,13 +18,13 @@
    1 ) Breakpoints
 -----------------------------------*/
 
-$xs: 320px;
-$sm: 576px;
-$md: 768px;
-$lg: 992px;
-$xl: 1200px;
-$xxl: 1400px;
-$xxxl: 1600px;
+$xs: 320px !default;
+$sm: 576px !default;
+$md: 768px !default;
+$lg: 992px !default;
+$xl: 1200px !default;
+$xxl: 1400px !default;
+$xxxl: 1600px !default;
 
 /*-----------------------------------
    2 ) Colors
@@ -41,13 +41,65 @@ $ribbon-danger-bookmark: $primary;
 $ribbon-danger-color: #fff;
 $preloader-bg: $primary;
 
+$red: #dc3545 !default
+$white: #fff !default;
+
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #4c4c4c !default;
+$gray-800: #292929 !default;
+$gray-900: #0e0e0e !default;
+
+$dash-surface: #14161e !default;
+$dash-surface-2: mix(#ffffff, $dash-surface, 4%) !default;
+$dash-surface-3: mix(#000000, $dash-surface, 6%) !default;
+
+$dash-border: rgba(255, 255, 255, 0.10) !default;
+
+/*-----------------------------------
+   2 ) Elements
+-----------------------------------*/
+
+$fonts-weights: (100, 200, 300, 400, 500, 600, 700, 800, 900);
+
+/*-----------------------------------
+   6 ) Form
+-----------------------------------*/
+
+@each $size in $fonts-weights {
+    .fw-#{$size}, .fw-#{$size} *:not(strong):not(b) {
+        font-weight: $size !important;
+    }
+}
+
+/*-----------------------------------
+   6 ) Form
+-----------------------------------*/
+
+$form-label-color: $gray-600 !default;
+$input-bg: radial-gradient(520px 160px at 12% 0%, mix($primary, $dash-surface, 10%), $dash-surface 62%), linear-gradient(180deg, $dash-surface-2, $dash-surface 45%, $dash-surface-3) !default;
+$input-invalid-bg: radial-gradient(520px 160px at 12% 0%, mix($red, $dash-surface, 10%), $dash-surface 62%), linear-gradient(180deg, $dash-surface-2, $dash-surface 45%, $dash-surface-3) !default;
+$input-border-color: $dash-border !default;
+$input-border-radius: 12px !default;
+$input-font-size: 12px !default;
+$input-color: $gray-300 !default;
+$input-border-width: 1px !default;
+$input-placeholder-color: transparentize($white, .6) !default;
+$form-invalid-border-color: $input-bg !default;
+$input-font-size: 14px !default;
+$input-group-addon-bg: transparent !default;
+
 /*-----------------------------------
    3 ) Imports
 -----------------------------------*/
 
-@import "~bootstrap/scss/bootstrap";
+@import './bootstrap/bootstrap';
+@import './bootstrap/variables';
 
-@import '../vendor/components/recaptcha';
 @import 'core/app';
 @import 'core/preloader';
 @import 'core/ribbon';

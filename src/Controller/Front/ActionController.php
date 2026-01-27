@@ -237,7 +237,7 @@ class ActionController extends FrontController
         $indexPagesCodes = $listingService->indexesPages($entity, $locale, $this->listingClassname, $this->classname, [$entity]);
         $indexPageCode = !empty($indexPagesCodes) ? $indexPagesCodes[array_key_first($indexPagesCodes)] : $pageUrl;
         $this->modelOptions['urlsIndex'] = $indexPagesCodes;
-        if ($indexPageCode && $indexPageCode !== $pageUrl) {
+        if ($indexPageCode && $indexPageCode !== $pageUrl && $this->coreLocator->checkRoute('front_'.$this->arguments['interface']['name'].'_view.'.$locale)) {
             return $this->redirectToRoute('front_'.$this->arguments['interface']['name'].'_view', ['pageUrl' => $indexPageCode, 'url' => $url->getCode()], 301);
         }
 

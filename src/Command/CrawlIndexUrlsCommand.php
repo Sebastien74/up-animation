@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Service\Development\Import\CategoryUrlsCrawlerService;
+use App\Service\Development\Import\IndexUrlsCrawlerService;
 use App\Service\Development\Import\ProductContentsCrawlerService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -35,7 +35,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class CrawlIndexUrlsCommand extends Command
 {
     public function __construct(
-        private readonly CategoryUrlsCrawlerService $listingCrawler,
+        private readonly IndexUrlsCrawlerService $listingCrawler,
         private readonly ProductContentsCrawlerService $jsonIo,
         private readonly string $projectDir,
     ) {
@@ -46,6 +46,7 @@ class CrawlIndexUrlsCommand extends Command
     {
         $this
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/contents.json')
+            ->addOption('meta-file', 'm', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/metas.json')
             ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'HTTP timeout (seconds)', '15')
             ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyIndexUrlCrawler/1.0')
         ;
@@ -57,57 +58,41 @@ class CrawlIndexUrlsCommand extends Command
         $fs = new Filesystem();
 
         $filePath = $this->absPath((string) $input->getOption('file'));
-        $timeout = max(1, (int) $input->getOption('timeout'));
-        $userAgent = (string) $input->getOption('user-agent');
+        $metasPath = $this->absPath((string) $input->getOption('meta-file'));
 
         if (!$fs->exists($filePath)) {
             $io->error(sprintf('File not found: %s', $filePath));
             return Command::FAILURE;
         }
 
-        $map = $this->jsonIo->readContentsJson($filePath);
+        if (!$fs->exists($metasPath)) {
+            $io->error(sprintf('File not found: %s', $metasPath));
+            return Command::FAILURE;
+        }
 
-        $products = (isset($map['products']) && is_array($map['products'])) ? array_keys($map['products']) : [];
-        $indexes = (isset($map['indexes']) && is_array($map['indexes'])) ? array_keys($map['indexes']) : [];
+        $map = $this->jsonIo->readContentsJson($filePath);
+        $indexes = (isset($map['indexes']) && is_array($map['indexes'])) ? $map['indexes'] : [];
+        $categorie = (isset($map['categories']) && is_array($map['categories'])) ? $map['categories'] : [];
+        $pages = array_merge($indexes, $categorie);
+        $metas = $this->jsonIo->readContentsJson($metasPath);
 
         $io->title('Index URLs crawler');
-        $io->writeln(sprintf('File    : <info>%s</info>', $filePath));
-        $io->writeln(sprintf('Products: <info>%d</info>', count($products)));
-        $io->writeln(sprintf('Indexes : <info>%d</info>', count($indexes)));
-
-        if ($products === []) {
-            $io->warning('No products found in contents.json. Nothing to match.');
-            return Command::SUCCESS;
-        }
+        $io->writeln(sprintf('Indexes : <info>%d</info>', count($pages)));
 
         if ($indexes === []) {
             $io->warning('No indexes found in contents.json.');
             return Command::SUCCESS;
         }
 
-        $io->progressStart(count($indexes));
+        $io->progressStart(count($pages));
 
-        foreach ($indexes as $indexUrl) {
-            $payload = is_array($map['indexes'][$indexUrl] ?? null) ? $map['indexes'][$indexUrl] : [];
-
-            $found = $this->listingCrawler->extractIndexProductUrls((string) $indexUrl, $products, $timeout, $userAgent);
-
-            $existing = $payload['urls'] ?? [];
-            if (!is_array($existing)) {
-                $existing = [];
-            }
-
-            $payload['urls'] = $this->uniqueSorted(array_merge($existing, $found));
-
-            $map['indexes'][$indexUrl] = $payload;
-
+        foreach ($pages as $indexUrl => $contents) {
+            $metas = !empty($metas[$indexUrl]) ? $metas[$indexUrl] : [];
+            $this->listingCrawler->createPageIndex((string) $indexUrl, $contents, $metas);
             $io->progressAdvance();
         }
 
         $io->progressFinish();
-
-        $fs->mkdir(\dirname($filePath));
-        $this->jsonIo->writeContentsJson($filePath, $map);
 
         $io->success('contents.json updated with indexes URLs.');
 
@@ -123,18 +108,5 @@ class CrawlIndexUrlsCommand extends Command
         }
 
         return $this->projectDir . DIRECTORY_SEPARATOR . $path;
-    }
-
-    /**
-     * @param array<int, mixed> $values
-     *
-     * @return array<int, string>
-     */
-    private function uniqueSorted(array $values): array
-    {
-        $values = array_values(array_unique(array_filter($values, static fn ($v) => is_string($v) && trim($v) !== '')));
-        sort($values);
-
-        return $values;
     }
 }

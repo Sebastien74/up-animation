@@ -85,11 +85,6 @@ class CatalogController extends ActionController
      * @throws ReflectionException|ContainerExceptionInterface|InvalidArgumentException|NonUniqueResultException|NotFoundExceptionInterface|MappingException|QueryException
      */
     #[Route([
-        'fr' => '/{pageUrl}/fiche-produit/{url}',
-        'fr_ch' => '/{pageUrl}/fiche-produit/{url}',
-        'en' => '/{pageUrl}/product-card/{url}',
-    ], name: 'front_catalogproduct_view', methods: 'GET', schemes: '%protocol%', priority: 300)]
-    #[Route([
         'fr' => '/fiche-produit/{url}',
         'fr_ch' => '/fiche-produit/{url}',
         'en' => '/product-card/{url}',
@@ -238,7 +233,7 @@ class CatalogController extends ActionController
         $searchProducts = ($listing->isShowMap() && $this->coreLocator->request()->get('ajax')) || !$listing->isShowMap();
         $searchService = $this->frontLocator->catalogSearch();
 
-        $productIds = [];
+        $productIdsDisplay = [];
         $products = [];
         if ($searchProducts && !empty($data['text']) && !$listing->isCombineFieldsText()) {
             $products = $this->coreLocator->em()->getRepository(Catalog\Product::class)->findLikeInTitle($website->entity, $request->getLocale(), $data['text'], $listing);
@@ -248,7 +243,7 @@ class CatalogController extends ActionController
         } elseif ($searchProducts) {
             $results = $searchService->execute($listing);
             $products = $results['initialResults'];
-            $productIds = $results['productIds'];
+            $productIdsDisplay = $results['productIdsDisplay'];
         }
 
         $listingService = $this->coreLocator->listingService();
@@ -263,7 +258,7 @@ class CatalogController extends ActionController
         $items = [];
         if ($listing->isGroupByCategories()) {
             foreach ($products as $product) {
-                $productModel = $this->arguments['microdataEntities'][] = ProductModel::fromEntity($product, $this->coreLocator, ['urlsIndex' => $this->arguments['urlsIndex'], 'entitiesIds' => $productIds]);
+                $productModel = $this->arguments['microdataEntities'][] = ProductModel::fromEntity($product, $this->coreLocator, ['urlsIndex' => $this->arguments['urlsIndex'], 'entitiesIds' => $productIdsDisplay]);
                 foreach ($product->getCategories() as $category) {
                     $categoryModel = $this->cache['categories'][$category->getId()] = !empty($this->cache['categories'][$category->getId()]) ? $this->cache['categories'][$category->getId()] : EntityModel::fromEntity($category, $this->coreLocator)->response;
                     $entities = !empty($this->arguments['productsByCategories'][$category->getPosition()]['products']) ? $this->arguments['productsByCategories'][$category->getPosition()]['products'] : [];
@@ -277,12 +272,12 @@ class CatalogController extends ActionController
             }
         } else {
             foreach ($this->arguments['products']->getItems() as $item) {
-                $items[] = $this->arguments['microdataEntities'][] = ProductModel::fromEntity($item, $this->coreLocator, ['urlsIndex' => $this->arguments['urlsIndex'], 'entitiesIds' => $productIds]);
+                $items[] = $this->arguments['microdataEntities'][] = ProductModel::fromEntity($item, $this->coreLocator, ['urlsIndex' => $this->arguments['urlsIndex'], 'entitiesIds' => $productIdsDisplay]);
             }
             $this->arguments['products']->setItems($items);
         }
 
-        if ($request->get('ajax') || $request->get('scroll-ajax')) {
+        if ($request->attributes->get('ajax') || $request->attributes->get('scroll-ajax')) {
             return new JsonResponse(['count' => $this->arguments['count'], 'html' => $this->renderView($this->arguments['template'], $this->arguments)]);
         } else {
             return $this->render($this->arguments['template'], $this->arguments);

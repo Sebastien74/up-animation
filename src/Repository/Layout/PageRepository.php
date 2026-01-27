@@ -156,7 +156,7 @@ class PageRepository extends ServiceEntityRepository
     /**
      * Find by Action.
      */
-    public function findByAction(
+    public function findOneByAction(
         mixed $website,
         string $locale,
         string $classname,
@@ -165,7 +165,7 @@ class PageRepository extends ServiceEntityRepository
     {
         $websiteId = $website instanceof Website ? $website->getId() : $website['id'];
 
-        if (isset($this->cache[$classname][$websiteId][$locale][$filterId])) {
+        if (array_key_exists($filterId, $this->cache[$classname][$websiteId][$locale] ?? [])) {
             return $this->cache[$classname][$websiteId][$locale][$filterId];
         }
 
@@ -184,7 +184,6 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('website', $websiteId)
             ->addSelect('u');
 
-        /* Find by action & filter */
         $page = $queryBuilder
             ->andWhere('a.entity = :entity')
             ->andWhere('ai.actionFilter = :actionFilter')
@@ -195,7 +194,6 @@ class PageRepository extends ServiceEntityRepository
             ->getResult();
 
         if (!$page && $slugAction) {
-            /* Find by action & filter */
             $page = $queryBuilder->andWhere('a.slug = :slug')
                 ->setParameter('slug', $slugAction)
                 ->getQuery()
@@ -205,6 +203,53 @@ class PageRepository extends ServiceEntityRepository
         $this->cache[$classname][$websiteId][$locale][$filterId] = !empty($page[0]) ? $page[0] : null;
 
         return $this->cache[$classname][$websiteId][$locale][$filterId];
+    }
+
+    /**
+     * Find by Action.
+     */
+    public function findByAction(
+        mixed $website,
+        string $locale,
+        string $classname,
+        array $filterIds,
+        ?string $slugAction = null): mixed
+    {
+        $websiteId = $website instanceof Website ? $website->getId() : $website['id'];
+
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->leftJoin('p.urls', 'u')
+            ->leftJoin('p.website', 'w')
+            ->leftJoin('p.layout', 'l')
+            ->leftJoin('l.zones', 'z')
+            ->leftJoin('z.cols', 'c')
+            ->leftJoin('c.blocks', 'b')
+            ->leftJoin('b.action', 'a')
+            ->leftJoin('b.actionIntls', 'ai')
+            ->andWhere('p.website = :website')
+            ->andWhere('u.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->setParameter('website', $websiteId)
+            ->addSelect('u', 'l', 'z', 'c', 'b', 'a', 'ai');
+
+        $pages = $queryBuilder
+            ->andWhere('a.entity = :entity')
+            ->andWhere('ai.actionFilter IN (:actionFilters)')
+            ->andWhere('ai.locale = :locale')
+            ->setParameter('entity', $classname)
+            ->setParameter('actionFilters', $filterIds)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getArrayResult();
+
+        if (empty($pages) && $slugAction) {
+            $pages = $queryBuilder->andWhere('a.slug = :slug')
+                ->setParameter('slug', $slugAction)
+                ->getQuery()
+                ->getArrayResult();
+        }
+
+        return $pages;
     }
 
     /**

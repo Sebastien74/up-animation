@@ -224,8 +224,6 @@ App\Entity\Module\Catalog\Product:
         - media
         - adminName
         - promote
-        - mainCategory
-        - categories
         - publicationStart
         - publicationEnd
     exports: ['id']

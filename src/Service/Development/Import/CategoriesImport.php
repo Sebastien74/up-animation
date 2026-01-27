@@ -61,7 +61,7 @@ class CategoriesImport implements ContentsImporterInterface
     /**
      * @param array<string, mixed> $bucketPayload map(url => payload)
      */
-    public function import(string $bucket, array $bucketPayload, SymfonyStyle $io, ProgressBar $progressBar, bool $dryRun = false): void
+    public function import(string $bucket, array $bucketPayload, array $metas, SymfonyStyle $io, ProgressBar $progressBar, bool $dryRun = false): void
     {
         $websiteId = $this->getFirstWebsiteId();
         $website = $this->getWebsiteRef($websiteId);

@@ -34,16 +34,19 @@ class LoginType extends AbstractType
     {
         $loginType = 'email' == $options['login_type'] ? Type\EmailType::class : Type\TextType::class;
         $loginInputName = 'email' == $options['login_type'] ? 'email' : 'login';
+        $loginLabel = 'email' == $options['login_type']
+            ? $this->translator->trans('E-mail', [], 'security_form')
+            : $this->translator->trans("Username", [], 'security_form');
         $loginPlaceholder = 'email' == $options['login_type']
-            ? $this->translator->trans('E-mail', [], 'security_cms')
-            : $this->translator->trans("Nom d'utilisateur", [], 'security_cms');
+            ? $this->translator->trans('Enter your e-mail', [], 'security_form')
+            : $this->translator->trans("Enter your username", [], 'security_form');
         $constraints = [new NotBlank()];
         if (Type\EmailType::class === $loginType) {
             $constraints[] = new Email();
         }
 
         $builder->add($loginInputName, $loginType, [
-            'label' => false,
+            'label' => $loginLabel,
             'attr' => [
                 'placeholder' => $loginPlaceholder,
                 'autocomplete' => 'off',
@@ -51,18 +54,20 @@ class LoginType extends AbstractType
                 'class' => 'pt-2 pb-2 material',
                 'group' => 'col-12 mb-3',
             ],
+            'row_attr' => ['class' => 'form-floating'],
             'constraints' => $constraints,
         ]);
 
         $builder->add('_password', Type\PasswordType::class, [
-            'label' => false,
+            'label' => $this->translator->trans('Password', [], 'security_form'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                 'autocomplete' => 'off',
                 'autofocus' => false,
-                'class' => 'pt-2 pb-2 material',
+                'class' => 'pt-2 pb-2',
                 'group' => 'col-12 mb-3',
             ],
+            'row_attr' => ['class' => 'form-floating'],
             'constraints' => [new NotBlank()],
         ]);
 

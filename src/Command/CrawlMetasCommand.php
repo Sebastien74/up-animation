@@ -50,6 +50,9 @@ class CrawlMetasCommand extends Command
         ;
     }
 
+    /**
+     * @throws \JsonException
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -57,6 +60,15 @@ class CrawlMetasCommand extends Command
 
         $inputPath = $this->absPath((string) $input->getOption('input'));
         $outputPath = $this->absPath((string) $input->getOption('output'));
+
+        if ($fs->exists($outputPath)) {
+            $raw = @file_get_contents($outputPath);
+            $decoded = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+            if (is_iterable($decoded)) {
+                $io->success(sprintf('Metas already extracted for %d URLs.', count($decoded)));
+                return Command::SUCCESS;
+            }
+        }
 
         $limit = max(1, (int) $input->getOption('limit'));
         $timeout = max(1, (int) $input->getOption('timeout'));

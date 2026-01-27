@@ -14,12 +14,12 @@
     {% set website = vars.website is defined ? vars.website : website() %}
     {% set websiteTemplate = vars.websiteTemplate is defined ? vars.websiteTemplate : website.configuration.template %}
     {% set intl = vars.intl is defined ? vars.intl : (entity.intlCard is defined ? vars.entity.intlCard : (entity.intl is defined ? entity.intl : null)) %}
-    {% set media = vars.media is defined ? vars.media : (intl.mainMedia is defined ? intl.mainMedia : null) %}
+    {% set media = vars.media is defined and vars.media ? vars.media : (intl.mainMedia is defined and intl.mainMedia ? intl.mainMedia : (entity.mainMedia is defined ? entity.mainMedia : null)) %}
     {% set mediaWidth = vars.mediaWidth is defined and vars.mediaWidth and vars.mediaWidth > 0 ? vars.mediaWidth : null  %}
     {% set mediaHeight = vars.mediaHeight is defined and vars.mediaHeight and vars.mediaHeight > 0 ? vars.mediaHeight : null  %}
     {% set pictogram = vars.pictogram is defined ? vars.pictogram : (media.pictogram is defined ? media.pictogram : null) %}
     {% set thumbConfiguration = vars.thumbConfiguration is defined and vars.thumbConfiguration ? vars.thumbConfiguration : {} %}
-    {% set showThumbnail = displayThumbnail is defined ? displayThumbnail : true %}
+    {% set showThumbnail = (vars.displayThumbnail is defined ? vars.displayThumbnail : true) or (vars.showThumbnail is defined ? vars.showThumbnail : true) %}
     {% set targetLink = vars.targetLink is defined and vars.targetLink ? vars.targetLink : (entity.url is defined ? entity.url : (vars.intl.link is defined ? vars.intl.link : null)) %}
     {% set newTab = vars.newTab is defined ? vars.newTab : (intl.linkBlank is defined ? intl.linkBlank : null) %}
     {% set externalLink = vars.externalLink is defined ? vars.externalLink : (intl.linkExternal is defined ? intl.linkExternal : null) %}
@@ -42,7 +42,7 @@
     {% set background = entity.backgroundColor is defined and entity.backgroundColor ? entity.backgroundColor : (vars.backgroundColor is defined and vars.backgroundColor ? vars.backgroundColor : background) %}
     {% set paddingX = 'transparent' in background ? 'px-0' : 'px-4' %}
     {% set haveBg = background and 'transparent' not in background %}
-    {% set displayMedia = media and showThumbnail %}
+    {% set displayMedia = (media and showThumbnail) or (thumbPlaceholder and showThumbnail) %}
 
     <{{ card }} class="card-block bg-transparent card h-100 border-0 {% if targetLink %} have-link{% endif %}{% if class %} {{ class }}{% endif %}{% if haveBg %} have-bg{% endif %}">
         {% if vars.webmaster is defined %}

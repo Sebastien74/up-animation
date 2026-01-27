@@ -9,6 +9,7 @@ use App\Entity\Module\Catalog\Catalog;
 use App\Entity\Module\Catalog\Category;
 use App\Entity\Module\Catalog\Feature;
 use App\Entity\Module\Catalog\Listing;
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Catalog\SubCategory;
 use App\Form\Widget as WidgetType;
 use App\Service\Interface\CoreLocatorInterface;
@@ -136,6 +137,34 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Type de filtre (Catalogues)', [], 'admin'),
                 'display' => 'search',
                 'choices' => $this->getSelectChoices('searchCatalogs'),
+                'attr' => ['group' => 'col-md-3'],
+            ]);
+
+            $builder->add('products', EntityType::class, [
+                'label' => $this->translator->trans('Filtres par produits', [], 'admin'),
+                'required' => false,
+                'class' => Product::class,
+                'attr' => [
+                    'group' => 'col-md-9',
+                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+                ],
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.website = :website')
+                        ->setParameter('website', $this->website)
+                        ->orderBy('c.adminName', 'ASC');
+                },
+                'choice_label' => function ($entity) {
+                    return strip_tags($entity->getAdminName());
+                },
+                'multiple' => true,
+                'display' => 'search',
+            ]);
+
+            $builder->add('searchProducts', Type\ChoiceType::class, [
+                'label' => $this->translator->trans('Type de filtre (Produits)', [], 'admin'),
+                'display' => 'search',
+                'choices' => $this->getSelectChoices('searchProducts'),
                 'attr' => ['group' => 'col-md-3'],
             ]);
 

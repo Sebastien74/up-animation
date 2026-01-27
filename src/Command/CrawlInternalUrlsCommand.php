@@ -13,6 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\UriResolver;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -54,6 +55,10 @@ class CrawlInternalUrlsCommand extends Command
         ;
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws \JsonException
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -65,6 +70,16 @@ class CrawlInternalUrlsCommand extends Command
         $outputFile = trim((string) $input->getOption('output'));
         $userAgent = (string) $input->getOption('user-agent');
         $ignoreQuery = (bool) $input->getOption('ignore-query');
+        $fs = new Filesystem();
+
+        if ($fs->exists($outputFile)) {
+            $raw = @file_get_contents($outputFile);
+            $decoded = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+            if (is_iterable($decoded) && !empty($decoded['urls'])) {
+                $io->success(sprintf('Already collected %d internal URLs.', count($decoded['urls'])));
+                return Command::SUCCESS;
+            }
+        }
 
         $startUrl = $this->normalizeUrl($startUrl, $startUrl, $ignoreQuery);
         if ($startUrl === null) {

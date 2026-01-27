@@ -213,6 +213,9 @@
                                         {% set fieldValue = haveProperty ? entityValue(entity, property) : null %}
                                         {% set centerText = fieldValue|isBool or property == 'locale' or 'status' in property|lower or 'count' in property|lower or property in centerColumns %}
                                         <td class="align-middle{% if centerText %} text-center{% endif %}">
+                                            {% if 'adminName' == property and entity.noSeo is defined and entity.noSeo %}
+                                                <span class="me-2" data-bs-toggle="tooltip" title="{{ "SEO nonrécupéré"|trans|striptags }}">{{ 'fas lock-alt'|icon(null, 13, 'info') }}</span>
+                                            {% endif %}
                                             {% if fieldValue|isBool and editActive and property not in noSwitcher %}
                                                 {% include 'admin/core/form/boolean-switcher.html.twig' %}
                                             {% elseif '.' in property %}

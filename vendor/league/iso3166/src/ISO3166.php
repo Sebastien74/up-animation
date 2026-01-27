@@ -39,6 +39,9 @@ final class ISO3166 implements \Countable, \IteratorAggregate, ISO3166DataProvid
     }
 
     /**
+     * @throws DomainException Invalid argument format
+     * @throws OutOfBoundsException No country could be found based on argument value
+     *
      * @return array{name: string, alpha2: string, alpha3: string, numeric: numeric-string, currency: string[]}
      */
     public function name(string $name): array
@@ -49,6 +52,9 @@ final class ISO3166 implements \Countable, \IteratorAggregate, ISO3166DataProvid
     }
 
     /**
+     * @throws DomainException Invalid argument format
+     * @throws OutOfBoundsException No country could be found based on argument value
+     *
      * @return array{name: string, alpha2: string, alpha3: string, numeric: numeric-string, currency: string[]}
      */
     public function alpha2(string $alpha2): array
@@ -59,6 +65,9 @@ final class ISO3166 implements \Countable, \IteratorAggregate, ISO3166DataProvid
     }
 
     /**
+     * @throws DomainException Invalid argument format
+     * @throws OutOfBoundsException No country could be found based on argument value
+     *
      * @return array{name: string, alpha2: string, alpha3: string, numeric: numeric-string, currency: string[]}
      */
     public function alpha3(string $alpha3): array
@@ -69,6 +78,9 @@ final class ISO3166 implements \Countable, \IteratorAggregate, ISO3166DataProvid
     }
 
     /**
+     * @throws DomainException Invalid argument format
+     * @throws OutOfBoundsException No country could be found based on argument value
+     *
      * @return array{name: string, alpha2: string, alpha3: string, numeric: numeric-string, currency: string[]}
      */
     public function numeric(string $numeric): array
@@ -79,12 +91,15 @@ final class ISO3166 implements \Countable, \IteratorAggregate, ISO3166DataProvid
     }
 
     /**
+     * @throws DomainException Invalid argument format
+     * @throws OutOfBoundsException No country could be found based on argument value
+     *
      * @return array{name: string, alpha2: string, alpha3: string, numeric: numeric-string, currency: string[]}
      */
     public function exactName(string $name): array
     {
         Guards::guardAgainstInvalidName($name);
-        
+
         $value = mb_strtolower($name);
 
         foreach ($this->countries as $country) {
@@ -109,7 +124,7 @@ final class ISO3166 implements \Countable, \IteratorAggregate, ISO3166DataProvid
     /**
      * @param 'name'|'alpha2'|'alpha3'|'numeric' $key
      *
-     * @throws \League\ISO3166\Exception\DomainException if an invalid key is specified
+     * @throws DomainException if an invalid key is specified
      *
      * @return \Generator<string, array{name: string, alpha2: string, alpha3: string, numeric: numeric-string, currency: string[]}>
      */
@@ -155,7 +170,7 @@ final class ISO3166 implements \Countable, \IteratorAggregate, ISO3166DataProvid
      *
      * @param 'name'|'alpha2'|'alpha3'|'numeric' $key
      *
-     * @throws \League\ISO3166\Exception\OutOfBoundsException if key does not exist in dataset
+     * @throws OutOfBoundsException if key does not exist in dataset
      *
      * @return array{name: string, alpha2: string, alpha3: string, numeric: numeric-string, currency: string[]}
      */
@@ -260,7 +275,6 @@ final class ISO3166 implements \Countable, \IteratorAggregate, ISO3166DataProvid
             'currency' => [
                 'ARS',
                 'AUD',
-                'BGN',
                 'BRL',
                 'BYR',
                 'CLP',
@@ -517,7 +531,7 @@ final class ISO3166 implements \Countable, \IteratorAggregate, ISO3166DataProvid
             'alpha3' => 'BGR',
             'numeric' => '100',
             'currency' => [
-                'BGN',
+                'EUR',
             ],
         ],
         [
