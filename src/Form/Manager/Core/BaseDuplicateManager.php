@@ -178,9 +178,9 @@ class BaseDuplicateManager
                 $setter = 'set'.ucfirst($name);
                 $value = method_exists($entityToDuplicate, $getMethod) ? $entityToDuplicate->$getMethod() : $entityToDuplicate->$isMethod();
                 if (isset($configFields[$name]) && 'newDate' === $configFields[$name]) {
-                    $value = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+                    $value = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
                 } elseif ('computeETag' === $name) {
-                    $date = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+                    $date = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
                     $value = uniqid().md5($date->format('YmdHis'));
                 }
                 $newEntity->$setter($value);

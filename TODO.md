@@ -1,6 +1,8 @@
 
 https://themeforest.net/category/site-templates/entertainment/events?gad_source=1&gad_campaignid=20946799167&gclid=EAIaIQobChMI9uaJh7edkgMVg8t5BB1mOAFbEAAYAiAAEgKm1fD_BwE
 
+Lame moteur & footer : https://jthemes.net/themes/html/harmony-event/event-1.html
+
 https://www.madebydesignesia.com/themes/exhibiz/index-new.html
 https://preview.themeforest.net/item/harmoni-event-management-html-template/full_screen_preview/21975440
 https://preview.themeforest.net/item/myticket-event-ticket-hall-reservation-html5-template/full_screen_preview/19779762

@@ -99,7 +99,6 @@ readonly class CatalogFixtures
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-back-button', 'marginTop' => 'mt-md', 'hideMiniPc' => true, 'hideDesktop' => true]);
         /** Associated entities */
         $zoneAssociated = $this->layoutGenerator->addZone($layout, ['position' => 3, 'fullSize' => false, 'paddingTop' => null, 'paddingBottom' => null, 'backgroundColor' => 'bg-light']);
-        $zoneAssociated->setFullSize(true);
         $zoneAssociated->setEndAlign(true);
         $col = $this->layoutGenerator->addCol($zoneAssociated, ['size' => 12]);
         $block = $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-associated-entities']);

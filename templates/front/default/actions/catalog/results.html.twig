@@ -5,7 +5,7 @@
 {% set maxPage = maxPage is defined ? maxPage : 1 %}
 {% set pageNum = pageNum is defined ? pageNum : 1 %}
 
-<div id="results" class="results row row-container m-0 listing-{{ listing.slug }}" data-page="{{ pageNum }}" data-max="{{ maxPage }}">
+<div id="results" class="results row row-container listing-{{ listing.slug }}" data-page="{{ pageNum }}" data-max="{{ maxPage }}">
     {% for product in products %}
         <div class="col-md-6 col-lg-4 item mb-5 position-relative">
             {{ macroCard.standard({
