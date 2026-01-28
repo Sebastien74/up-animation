@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=../../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
 parameters:
     protocol: '%env(APP_PROTOCOL)%'
     env(SECURE_SCHEME): '%env(APP_PROTOCOL)%'

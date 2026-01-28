@@ -14,6 +14,8 @@ Mettre copyright dans le footer
 
 Faire des ULRLS avec l'arbo
 
+LA mise à jour des poistions des medias dans prodiots est trop lente
+
 Dans navigation mettre Nos agence en active si une agence est sélectionnée, vrai pour tous les sous menus
 
 Logiquement je devrais avoir 111 index et ce n'est pas le cas

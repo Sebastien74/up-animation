@@ -106,8 +106,8 @@ class ArchiveController extends AdminController
     #[Route('/delete', name: 'admin_url_archive_delete', methods: 'DELETE')]
     public function delete(Request $request)
     {
-        $classname = urldecode($request->attributes->get('classname'));
-        $entity = $this->coreLocator->em()->getRepository($classname)->find($request->attributes->get('id'));
+        $classname = urldecode($request->query->get('classname'));
+        $entity = $this->coreLocator->em()->getRepository($classname)->find($request->query->get('id'));
 
         if ($entity) {
             $this->coreLocator->em()->remove($entity);
@@ -119,8 +119,6 @@ class ArchiveController extends AdminController
 
     /**
      * Initialize archive.
-     *
-     * @throws InvalidArgumentException
      */
     private function getArchive(Website $website, AppRuntime $appRuntime): array
     {

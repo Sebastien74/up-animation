@@ -71,6 +71,9 @@ class MenuFixtures
             $menu->setPosition($referMenu->getPosition());
             $menu->setCreatedBy($this->user);
             $menu->setFixedOnScroll($referMenu->isFixedOnScroll());
+            if ($menu->isMain()) {
+                $menu->setVertical(true);
+            }
             $this->entityManager->persist($menu);
             $this->entityManager->flush();
             $this->addDbLinks($referMenu, $menu);

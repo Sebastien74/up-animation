@@ -91,7 +91,7 @@ class CrawlPagesUrlsCommand extends Command
 
         foreach ($pagesIndex as $indexUrl => $contents) {
             $metas = !empty($metas[$indexUrl]) ? $metas[$indexUrl] : [];
-//            $this->crawler->createPageIndex((string)$indexUrl, $contents, $metas);
+            $this->crawler->createPageIndex((string)$indexUrl, $contents, $metas);
             $io->progressAdvance();
         }
 

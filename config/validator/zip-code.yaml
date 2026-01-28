@@ -1,2 +1,4 @@
+# yaml-language-server: $schema=../../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
 parameters:
     zip_code_pattern:
