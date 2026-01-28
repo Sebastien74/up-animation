@@ -402,17 +402,7 @@
 }
 
 .slider-container:not(.is-home-page) {
-
     .splide__track {
-
-        @include mediaQuery(max-md) {
-            margin-left: -1.5rem !important;
-        }
-
-        @include mediaQuery(min-md) {
-            margin-left: -3rem !important;
-        }
-
         .title {
             @include rfs(26px);
         }
@@ -471,7 +461,7 @@
             border-radius: 35px;
 
             .slider-progress-bar {
-                background: transparentize($white, .2);
+                background: transparentize($primary, .2);
                 transition: width 400ms ease;
                 width: 0;
                 height: 100%;

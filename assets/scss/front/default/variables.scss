@@ -65,8 +65,8 @@ $enable-animate-css-animations: (
 /*-- c - Modules --*/
 
 $enable-newsletter: false !default;
-$enable-basic-nav: true !default;
-$enable-lateral-nav: false !default;
+$enable-basic-nav: false !default;
+$enable-lateral-nav: true !default;
 $enable-locales-switcher: false !default;
 $enable-faq: false !default;
 $enable-timeline: false !default;

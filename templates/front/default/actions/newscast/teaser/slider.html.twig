@@ -6,8 +6,8 @@
 {% macro mediaRelation(entity, thumbConfiguration) %}
     {{ entity.mainMedia|file(thumbConfiguration, {
         btnLink: false,
-        targetLink: entity.intl.link is defined ? entity.intl.link : false,
-        placeholder: false,
+        isInBox: true,
+        targetLink: entity.url is defined ? entity.url : false,
         popupGallery: false,
         fullPopup: false,
         placeholder: true,
@@ -152,9 +152,9 @@
 {% set colSizeFirst = isDesktop() ? 50 : (isTablet() ? 60 : 100) %}
 {% set displayFormFilters = teaser.displayFilters is defined ? teaser.displayFilters : false %}
 
-{% if entities|length > 0 %}
+{% if entities is not empty %}
     {% if 'teaser-title' in teaser.fields and intl.title %}
-        <h{{ intl.titleForce }} class="title text-center mb-5 pb-4">{{ intl.title|raw }}</h{{ intl.titleForce }}>
+        <h{{ intl.titleForce }} class="title mb-4 mb-lg-3">{{ intl.title|raw }}</h{{ intl.titleForce }}>
     {% endif %}
     <div class="row listing-entities-container">
         {{ macroWebmaster.box({

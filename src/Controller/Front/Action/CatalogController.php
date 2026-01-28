@@ -99,7 +99,7 @@ class CatalogController extends ActionController
         $this->setListingClassname(Catalog\Listing::class);
         $this->setAssociatedThumbMethod('catalog');
         $this->setAssociatedEntitiesProperties(['catalog']);
-        $this->setAssociatedEntitiesLimit(6);
+        $this->setAssociatedEntitiesLimit(10);
 
         return $this->getView($request, $url, $pageUrl, $preview);
     }
@@ -188,7 +188,7 @@ class CatalogController extends ActionController
         $this->arguments['formFilters'] = $formFilters->createView();
         $this->arguments['count'] = count($allProducts['searchResults']);
 
-        if (!empty($request->get('ajax'))) {
+        if (!empty($request->query->get('ajax'))) {
             $this->arguments['template'] = 'front/'.$websiteTemplate.'/actions/catalog/index.html.twig';
             $this->getIndexArguments($listing, $url);
             $count = !$listing->isScrollInfinite() && !$listing->isShowMoreBtn() ? $listing->getItemsPerPage() : null;
@@ -277,7 +277,7 @@ class CatalogController extends ActionController
             $this->arguments['products']->setItems($items);
         }
 
-        if ($request->attributes->get('ajax') || $request->attributes->get('scroll-ajax')) {
+        if ($request->query->get('ajax') || $request->query->get('scroll-ajax')) {
             return new JsonResponse(['count' => $this->arguments['count'], 'html' => $this->renderView($this->arguments['template'], $this->arguments)]);
         } else {
             return $this->render($this->arguments['template'], $this->arguments);

@@ -47,7 +47,8 @@ class CrawlerImportContentsCommand extends Command
         private readonly iterable $importers,
         private readonly ProductContentsCrawlerService $jsonIo,
         private readonly string $projectDir,
-    ) {
+    )
+    {
         parent::__construct();
     }
 
@@ -57,8 +58,7 @@ class CrawlerImportContentsCommand extends Command
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/contents.json')
             ->addOption('meta-file', 'm', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/metas.json')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Do not write to database (read-only simulation)')
-            ->addOption('only', null, InputOption::VALUE_REQUIRED, 'Import only one bucket (products|categories|indexes|pages)', '')
-        ;
+            ->addOption('only', null, InputOption::VALUE_REQUIRED, 'Import only one bucket (products|categories|indexes|pages)', '');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -66,10 +66,10 @@ class CrawlerImportContentsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $fs = new Filesystem();
 
-        $filePath = $this->absPath((string) $input->getOption('file'));
-        $dryRun = (bool) $input->getOption('dry-run');
-        $only = trim((string) $input->getOption('only'));
-        $metasPath = $this->absPath((string) $input->getOption('meta-file'));
+        $filePath = $this->absPath((string)$input->getOption('file'));
+        $dryRun = (bool)$input->getOption('dry-run');
+        $only = trim((string)$input->getOption('only'));
+        $metasPath = $this->absPath((string)$input->getOption('meta-file'));
 
         if (!$fs->exists($filePath)) {
             $io->error(sprintf('File not found: %s', $filePath));

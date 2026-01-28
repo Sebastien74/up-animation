@@ -90,11 +90,11 @@ class ThumbnailFixtures
         $teaser = $this->entityManager->getRepository(NewscastEntities\Teaser::class)->findOneBy(['website' => $this->website]);
         $slider = $this->entityManager->getRepository(Slider::class)->findOneBy(['website' => $this->website]);
         $headerTitle = $this->entityManager->getRepository(LayoutEntities\BlockType::class)->findOneBy(['slug' => 'title-header']);
-        $this->addConfig('Thumbnail 451 x 290', 451, 290, 'Liste des actualités', NewscastEntities\Newscast::class, 'index');
+        $this->addConfig('Thumbnail 456 x 290', 456, 290, 'Liste des actualités', NewscastEntities\Newscast::class, 'index');
         $this->addConfig('Thumbnail 468 x Infinite', 468, null, 'Actualité mise en avant index', NewscastEntities\Newscast::class, 'index', 'first-newscast-index');
-        $this->addConfig('Thumbnail 332 x 200', 332, 200, "Teaser d'actualités associées", NewscastEntities\Newscast::class, 'view', 'associated-newscast');
+        $this->addConfig('Thumbnail 390 x 285', 390, 285, "Teaser d'actualités associées", NewscastEntities\Newscast::class, 'view', 'associated-newscast');
         if ($teaser instanceof NewscastEntities\Teaser) {
-            $this->addConfig('Thumbnail 664 x 492', 664, 492, "Teaser d'actualités accueil", NewscastEntities\Newscast::class, 'teaser', $teaser->getId());
+            $this->addConfig('Thumbnail 390 x 285', 390, 285, "Teaser d'actualités accueil", NewscastEntities\Newscast::class, 'teaser', $teaser->getId());
         }
         $this->addConfig('Thumbnail 576 x 375', 576, 375, 'Fiche actualité', NewscastEntities\Newscast::class, 'view');
         if ($slider instanceof Slider) {
@@ -107,10 +107,10 @@ class ThumbnailFixtures
         $this->addConfig('Thumbnail 412 x 350', 412, 350, 'Block entête', LayoutEntities\Block::class, 'block', $headerTitle, 'mobile');
         $this->addConfig('Thumbnail 1920 x 650', 1920, 650, 'Block entête large', LayoutEntities\Block::class, 'block', $headerTitle, 'large');
         $this->addConfig('Thumbnail 363 x 240', 363, 240, 'Teaser de produits', CatalogEntities\Product::class, 'teaser');
-        $this->addConfig('Thumbnail 451 x 290', 451, 290, 'Liste des produits', CatalogEntities\Product::class, 'index');
+        $this->addConfig('Thumbnail 456 x 290', 456, 290, 'Liste des produits', CatalogEntities\Product::class, 'index');
         $this->addConfig('Thumbnail 576 x 375', 576, 375, 'Fiche produit', CatalogEntities\Product::class, 'view');
         $this->addConfig('Thumbnail 1920 x 500', 1920, 500, 'Teaser de produits carrousel', CatalogEntities\Product::class, 'teaser');
-        $this->addConfig('Thumbnail 332 x 200', 332, 200, 'Teaser de produits associés', CatalogEntities\Product::class, 'view', 'associated-catalogproduct');
+        $this->addConfig('Thumbnail 390 x 285', 390, 285, 'Teaser de produits associés', CatalogEntities\Product::class, 'view', 'associated-catalogproduct');
         $this->addConfig('Infinite');
     }
 

@@ -208,7 +208,6 @@ class ActionService
                     ->andWhere('intl.locale = :locale')
                     ->addSelect('intl');
             }
-
             return $qb->getQuery()->getOneOrNullResult();
         }
 
@@ -240,7 +239,9 @@ class ActionService
             $statement->leftJoin('e.urls', 'u')
                 ->leftJoin('u.seo', 's')
                 ->andWhere('u.locale = :locale')
+                ->andWhere('u.archived = :archived')
                 ->setParameter('locale', $this->locale)
+                ->setParameter('archived', false)
                 ->addSelect('u')
                 ->addSelect('s');
         }

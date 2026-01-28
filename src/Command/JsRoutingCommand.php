@@ -72,14 +72,14 @@ class JsRoutingCommand extends BaseCommand
             }
 
             $routes['base_url'] = $content->base_url;
-            $routes['routes'] = (object) $routes['routes'];
+            $routes['routes'] = (object)$routes['routes'];
             $routes['prefix'] = $content->prefix;
             $routes['host'] = $content->host;
             $routes['port'] = $content->port;
             $routes['scheme'] = $content->scheme;
             $routes['locale'] = $content->locale;
 
-            file_put_contents($jsRoutingDirname.$filename.'.json', json_encode((object) $routes));
+            file_put_contents($jsRoutingDirname . $filename . '.json', json_encode((object)$routes));
         }
     }
 }

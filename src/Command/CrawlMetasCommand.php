@@ -46,8 +46,7 @@ class CrawlMetasCommand extends Command
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output JSON metas file', 'var/crawler/metas.json')
             ->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Max URLs to process', '2000')
             ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'HTTP timeout (seconds)', '15')
-            ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyMetaCrawler/1.0')
-        ;
+            ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyMetaCrawler/1.0');
     }
 
     /**
@@ -58,8 +57,8 @@ class CrawlMetasCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $fs = new Filesystem();
 
-        $inputPath = $this->absPath((string) $input->getOption('input'));
-        $outputPath = $this->absPath((string) $input->getOption('output'));
+        $inputPath = $this->absPath((string)$input->getOption('input'));
+        $outputPath = $this->absPath((string)$input->getOption('output'));
 
         if ($fs->exists($outputPath)) {
             $raw = @file_get_contents($outputPath);
@@ -70,9 +69,9 @@ class CrawlMetasCommand extends Command
             }
         }
 
-        $limit = max(1, (int) $input->getOption('limit'));
-        $timeout = max(1, (int) $input->getOption('timeout'));
-        $userAgent = (string) $input->getOption('user-agent');
+        $limit = max(1, (int)$input->getOption('limit'));
+        $timeout = max(1, (int)$input->getOption('timeout'));
+        $userAgent = (string)$input->getOption('user-agent');
 
         if (!$fs->exists($inputPath)) {
             $io->error(sprintf('Input file not found: %s', $inputPath));

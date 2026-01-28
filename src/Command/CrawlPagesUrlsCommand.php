@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Service\Development\Import\IndexUrlsCrawlerService;
+use App\Service\Development\Import\PagesUrlsCrawlerService;
 use App\Service\Development\Import\ProductContentsCrawlerService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -15,9 +15,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * CrawlIndexUrlsCommand.
+ * CrawlPagesUrlsCommand.
  *
- * @doc php bin/console app:crawl:index-urls var/crawler/contents.json
+ * @doc php bin/console app:crawl:pages-urls var/crawler/contents.json
  * Crawl index pages listed in contents.json and attach matching product URLs.
  *
  * It scans each index page for links (ONLY inside <article>) pointing to any URL
@@ -29,16 +29,17 @@ use Symfony\Component\Filesystem\Filesystem;
  * @author Sébastien FOURNIER
  */
 #[AsCommand(
-    name: 'app:crawl:index-urls',
+    name: 'app:crawl:pages-urls',
     description: 'Enrich indexes in contents.json by detecting linked product URLs.',
 )]
-class CrawlIndexUrlsCommand extends Command
+class CrawlPagesUrlsCommand extends Command
 {
     public function __construct(
-        private readonly IndexUrlsCrawlerService $listingCrawler,
+        private readonly PagesUrlsCrawlerService $crawler,
         private readonly ProductContentsCrawlerService $jsonIo,
         private readonly string $projectDir,
-    ) {
+    )
+    {
         parent::__construct();
     }
 
@@ -48,8 +49,7 @@ class CrawlIndexUrlsCommand extends Command
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/contents.json')
             ->addOption('meta-file', 'm', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/metas.json')
             ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'HTTP timeout (seconds)', '15')
-            ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyIndexUrlCrawler/1.0')
-        ;
+            ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyIndexUrlCrawler/1.0');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -57,8 +57,8 @@ class CrawlIndexUrlsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $fs = new Filesystem();
 
-        $filePath = $this->absPath((string) $input->getOption('file'));
-        $metasPath = $this->absPath((string) $input->getOption('meta-file'));
+        $filePath = $this->absPath((string)$input->getOption('file'));
+        $metasPath = $this->absPath((string)$input->getOption('meta-file'));
 
         if (!$fs->exists($filePath)) {
             $io->error(sprintf('File not found: %s', $filePath));
@@ -72,23 +72,32 @@ class CrawlIndexUrlsCommand extends Command
 
         $map = $this->jsonIo->readContentsJson($filePath);
         $indexes = (isset($map['indexes']) && is_array($map['indexes'])) ? $map['indexes'] : [];
-        $categorie = (isset($map['categories']) && is_array($map['categories'])) ? $map['categories'] : [];
-        $pages = array_merge($indexes, $categorie);
+        $categories = (isset($map['categories']) && is_array($map['categories'])) ? $map['categories'] : [];
+        $pages = (isset($map['pages']) && is_array($map['pages'])) ? $map['pages'] : [];
+
+        $allPages = array_merge($indexes, $categories, $pages);
+        $pagesIndex = array_merge($indexes, $categories);
         $metas = $this->jsonIo->readContentsJson($metasPath);
 
-        $io->title('Index URLs crawler');
-        $io->writeln(sprintf('Indexes : <info>%d</info>', count($pages)));
+        $io->title('Pages URLs crawler');
+        $io->writeln(sprintf('Indexes : <info>%d</info>', count($allPages)));
 
-        if ($indexes === []) {
-            $io->warning('No indexes found in contents.json.');
+        if ($allPages === []) {
+            $io->warning('No pages found in contents.json.');
             return Command::SUCCESS;
         }
 
-        $io->progressStart(count($pages));
+        $io->progressStart(count($allPages));
 
-        foreach ($pages as $indexUrl => $contents) {
+        foreach ($pagesIndex as $indexUrl => $contents) {
             $metas = !empty($metas[$indexUrl]) ? $metas[$indexUrl] : [];
-            $this->listingCrawler->createPageIndex((string) $indexUrl, $contents, $metas);
+//            $this->crawler->createPageIndex((string)$indexUrl, $contents, $metas);
+            $io->progressAdvance();
+        }
+
+        foreach ($pages as $url => $contents) {
+            $metas = !empty($metas[$url]) ? $metas[$url] : [];
+            $this->crawler->createPage((string)$url, $contents, $metas);
             $io->progressAdvance();
         }
 

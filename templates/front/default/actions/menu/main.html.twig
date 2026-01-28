@@ -34,7 +34,7 @@
             {% set linkClass = link.children ? linkClass~' as-dropdown-toggle dropdown-toggle' : linkClass %}
             {% set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass %}
             {% set linkClass = 1 == link.level ? linkClass~' text-initial' : linkClass %}
-            {% set linkClass = link.active ? linkClass~' active text-primary' : linkClass~' active text-white' %}
+            {% set linkClass = link.active ? linkClass~' active text-primary' : linkClass~' active text-dark' %}
             <{% if 'a' == element %}a{% else %}div{% endif %} class="{{ linkClass }} text-center"{% if link.dataAnchor %} data-anchor="{{ link.dataAnchor }}"{% endif %}
                 href="{% if path %}{{ path }}{% else %}javascript:void(0){% endif %}"{% if link.children and not dropdownHover %} id="navbar-link-{{ link.id }}"{% endif %}
                 {% if link.children and not dropdownHover %} role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% elseif link.linkBlank %} target="_blank"{% else %} data-toggle="preloader"{% endif %}

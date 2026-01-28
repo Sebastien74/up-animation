@@ -23,7 +23,7 @@ class BaseCommand
      * BaseCommand constructor.
      */
     public function __construct(
-        protected readonly KernelInterface $kernel,
+        protected readonly KernelInterface      $kernel,
         protected readonly CronSchedulerService $cronSchedulerService
     ) {
     }
@@ -40,11 +40,9 @@ class BaseCommand
             $output = new BufferedOutput();
             $application->run($input, $output);
             $this->cronSchedulerService->logger($message.'successfully executed.');
-
             return $output->fetch();
         } catch (\Exception $exception) {
             $this->cronSchedulerService->logger($message.$exception->getMessage().' - '.$exception->getTraceAsString(), null, false);
-
             return $exception->getMessage().' - '.$exception->getTraceAsString();
         }
     }

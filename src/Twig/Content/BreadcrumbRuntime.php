@@ -80,7 +80,7 @@ class BreadcrumbRuntime implements RuntimeExtensionInterface
                             $itemTitle = $seo['breadcrumb'] ?: ($seo['titleH1'] ?: $seo['title']);
                             $inFill = $item->entity instanceof Page && $item->entity->isInFill();
                             if ($item->entity instanceof Page && $item->entity->isInfill()) {
-                                $children = $pageRepository->findOneBy(['website' => $website, 'parent' => $item->entity, 'position' => 1], ['position' => 'ASC']);
+                                $children = $pageRepository->findOneBy(['website' => $website->entity, 'parent' => $item->entity, 'position' => 1], ['position' => 'ASC']);
                                 $item = $children instanceof Page ? ViewModel::fromEntity($children, $this->coreLocator, $disableModelArgs) : $item;
                             }
                             if (!empty($itemTitle)) {

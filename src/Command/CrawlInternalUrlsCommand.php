@@ -51,8 +51,7 @@ class CrawlInternalUrlsCommand extends Command
             ->addOption('concurrency', null, InputOption::VALUE_REQUIRED, 'Max in-flight HTTP requests', '10')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output JSON file (recommended: var/crawler/urls.json)', 'var/crawler/urls.json')
             ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyCrawler/1.0')
-            ->addOption('ignore-query', null, InputOption::VALUE_NONE, 'Drop query string (?a=b) to avoid URL explosion')
-        ;
+            ->addOption('ignore-query', null, InputOption::VALUE_NONE, 'Drop query string (?a=b) to avoid URL explosion');
     }
 
     /**
@@ -63,13 +62,13 @@ class CrawlInternalUrlsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $startUrl = (string) $input->getArgument('startUrl');
-        $maxUrls = max(1, (int) $input->getOption('max-urls'));
-        $maxDepth = max(0, (int) $input->getOption('max-depth'));
-        $concurrency = max(1, (int) $input->getOption('concurrency'));
-        $outputFile = trim((string) $input->getOption('output'));
-        $userAgent = (string) $input->getOption('user-agent');
-        $ignoreQuery = (bool) $input->getOption('ignore-query');
+        $startUrl = (string)$input->getArgument('startUrl');
+        $maxUrls = max(1, (int)$input->getOption('max-urls'));
+        $maxDepth = max(0, (int)$input->getOption('max-depth'));
+        $concurrency = max(1, (int)$input->getOption('concurrency'));
+        $outputFile = trim((string)$input->getOption('output'));
+        $userAgent = (string)$input->getOption('user-agent');
+        $ignoreQuery = (bool)$input->getOption('ignore-query');
         $fs = new Filesystem();
 
         if ($fs->exists($outputFile)) {
@@ -102,7 +101,7 @@ class CrawlInternalUrlsCommand extends Command
         $io->writeln(sprintf('Start: <info>%s</info>', $startUrl));
         $io->writeln(sprintf('Max  : <info>%d</info> URLs | Depth: <info>%s</info> | Concurrency: <info>%d</info>',
             $maxUrls,
-            $maxDepth === 0 ? 'unlimited' : (string) $maxDepth,
+            $maxDepth === 0 ? 'unlimited' : (string)$maxDepth,
             $concurrency
         ));
         $io->writeln(sprintf('Output: <info>%s</info> (JSON)', $outputFile));
@@ -334,7 +333,7 @@ class CrawlInternalUrlsCommand extends Command
             $path = rtrim($path, '/');
         }
 
-        $port = isset($parts['port']) ? ':' . (int) $parts['port'] : '';
+        $port = isset($parts['port']) ? ':' . (int)$parts['port'] : '';
 
         $queryStr = '';
         if (!$ignoreQuery) {
@@ -346,8 +345,8 @@ class CrawlInternalUrlsCommand extends Command
 
         return sprintf(
             '%s://%s%s%s%s',
-            strtolower((string) $parts['scheme']),
-            (string) $parts['host'],
+            strtolower((string)$parts['scheme']),
+            (string)$parts['host'],
             $port,
             $path,
             $queryStr

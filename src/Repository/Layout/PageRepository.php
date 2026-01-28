@@ -88,7 +88,9 @@ class PageRepository extends ServiceEntityRepository
 
         $page = $this->optimizedQueryBuilder($website, $locale, $preview)
             ->andWhere('u.code = :code')
+            ->andWhere('u.archived = :archived')
             ->setParameter('code', $urlCode)
+            ->setParameter('archived', false)
             ->getQuery()
             ->getOneOrNullResult();
 

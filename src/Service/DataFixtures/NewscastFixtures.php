@@ -193,6 +193,15 @@ class NewscastFixtures
         $teaser->setPromoteFirst(true);
         $teaser->setCreatedBy($this->user);
         $teaser->addCategory($category);
+
+        $intl = new NewscastEntities\TeaserIntl();
+        $intl->setTitle('Notre actualité');
+        $intl->setLocale($this->locale);
+        $intl->setWebsite($this->website);
+        $intl->setCreatedBy($this->user);
+
+        $teaser->addIntl($intl);
+
         $this->coreLocator->em()->persist($teaser);
     }
 

@@ -48,11 +48,9 @@ class SecurityPasswordExpireCommand extends Command
         try {
             $this->passwordExpire->execute($input, $command);
             $this->cronSchedulerService->logger($command.' successfully executed.');
-
             return Command::SUCCESS;
         } catch (\Exception $exception) {
             $this->cronSchedulerService->logger($command.' '.$exception->getMessage().' - '.$exception->getTraceAsString(), null, false);
-
             return Command::FAILURE;
         }
     }

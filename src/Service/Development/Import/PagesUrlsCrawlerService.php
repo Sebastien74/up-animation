@@ -4,8 +4,6 @@ namespace App\Service\Development\Import;
 
 use App\Entity\Core\Website;
 use App\Entity\Layout;
-use App\Entity\Media\Media;
-use App\Entity\Media\MediaRelationIntl;
 use App\Entity\Module\Catalog\Listing;
 use App\Entity\Module\Catalog\Product;
 use App\Entity\Seo\Seo;
@@ -16,7 +14,7 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
 use Monolog\Logger;
 
-readonly class IndexUrlsCrawlerService
+readonly class PagesUrlsCrawlerService
 {
     private const string DEFAULT_LOCALE = 'fr';
 
@@ -29,19 +27,13 @@ readonly class IndexUrlsCrawlerService
 
     public function createPageIndex(string $url, array $contents, array $metas): void
     {
-        $websiteId = $this->getFirstWebsiteId();
-        $website = $this->getWebsiteRef($websiteId);
-        $urlCode = str_replace(['https://up-animations.fr', 'http://up-animations.fr'], '', $url);
-        $urlCode = Urlizer::urlize(trim($urlCode,'/'));
+        $website = $this->getWebsite();
+        $urlCode = $this->getUrlCode($url);
+        $metas = $this->getMetas($metas, $url);
 
         $listingRepository = $this->coreLocator->em()->getRepository(Listing::class);
         $productRepository = $this->coreLocator->em()->getRepository(Product::class);
         $pageRepository = $this->coreLocator->em()->getRepository(Layout\Page::class);
-
-        if (empty($metas['meta-title'])) {
-            $metas = $this->metaCrawler->crawlUrls([$url], 60, 'SymfonyMetaCrawler/1.0');
-            $metas = !empty($metas[$url]) ? $metas[$url] : [];
-        }
 
         $listingAdminName = $metas['title'] ?? ucfirst(str_replace(['-'], ' ', $urlCode));
         $listing = $listingRepository->findOneBy(['slug' => $urlCode, 'website' => $website]);
@@ -189,6 +181,110 @@ readonly class IndexUrlsCrawlerService
         }
     }
 
+    public function createPage(string $url, array $contents, array $metas): void
+    {
+        $website = $this->getWebsite();
+        $urlCode = $this->getUrlCode($url);
+        $metas = $this->getMetas($metas, $url);
+
+        $pageRepository = $this->coreLocator->em()->getRepository(Layout\Page::class);
+        $page = $pageRepository->findOneBy(['slug' => $urlCode, 'website' => $website]);
+        $titleZone = !empty($metas['title']) ? $metas['title'] : (!empty($metas['meta-title']) ? $metas['meta-title'] : ucfirst(str_replace(['-'], ' ', $urlCode)));
+
+        if (!$page) {
+
+            $position = count($pageRepository->findBy(['website' => $website, 'level' => 1])) + 1;
+            $page = new Layout\Page();
+            $page->setWebsite($website);
+            $page->setPosition($position);
+            $page->setSlug($urlCode);
+            $this->coreLocator->em()->persist($page);
+
+            $layout = new Layout\Layout();
+            $layout->setWebsite($website);
+            $layout->setAdminName(ucfirst($titleZone));
+            $page->setLayout($layout);
+        }
+
+        $page->setLevel(1);
+
+        $layout = $page->getLayout();
+
+        if ($layout->getZones()->isEmpty()) {
+            $zone = $this->addZone($layout, 1, true);
+            $col = $this->addCol($zone);
+            $this->addHeader($col, $titleZone, $website);
+            $this->coreLocator->em()->persist($layout);
+        }
+
+        if ($page->getUrls()->isEmpty()) {
+
+            $urlEntity = new Url();
+            $urlEntity->setWebsite($website);
+            $urlEntity->setLocale(self::DEFAULT_LOCALE);
+            $urlEntity->setCode($urlCode);
+            $urlEntity->setOnline(true);
+
+            $seo = new Seo();
+
+            $urlEntity->setSeo($seo);
+
+            $page->addUrl($urlEntity);
+        }
+
+        $urlEntity = $page->getUrls()->first();
+        $urlEntity->setOldUrl($url);
+
+        $seo = $urlEntity->getSeo();
+        if (!empty($metas['meta-title'])) {
+            $seo->setMetaTitle($metas['meta-title']);
+        } else {
+            $logger = new Logger('no-seo');
+            $logger->pushHandler(new RotatingFileHandler($this->coreLocator->logDir().'/no-seo.log', 20, Level::Info));
+            $logger->info(trim($url));
+        }
+        if (!empty($metas['meta-description'])) {
+            $seo->setMetaDescription($metas['meta-description']);
+        }
+        $this->coreLocator->em()->persist($seo);
+
+        $page->setAdminName(ucfirst($titleZone));
+        $page->setNoSeo(empty($metas['meta-title']));
+
+        $this->coreLocator->em()->persist($page);
+        $this->coreLocator->em()->flush();
+    }
+
+    /**
+     * Get the first Website id from database (id ASC).
+     */
+    private function getWebsite(): Website
+    {
+        $websiteId = $this->getFirstWebsiteId();
+        return $this->getWebsiteRef($websiteId);
+    }
+
+    /**
+     * Get url code.
+     */
+    private function getUrlCode(string $url): string
+    {
+        $urlCode = str_replace(['https://up-animations.fr', 'http://up-animations.fr'], '', $url);
+        return Urlizer::urlize(trim($urlCode,'/'));
+    }
+
+    /**
+     * Get metas.
+     */
+    private function getMetas(array $metas, string $url): array
+    {
+        if (empty($metas['meta-title'])) {
+            $metas = $this->metaCrawler->crawlUrls([$url], 60, 'SymfonyMetaCrawler/1.0');
+            $metas = !empty($metas[$url]) ? $metas[$url] : [];
+        }
+        return $metas;
+    }
+
     /**
      * Get the first Website id from database (id ASC).
      */
@@ -199,7 +295,6 @@ readonly class IndexUrlsCrawlerService
             ->from(Website::class, 'w')
             ->orderBy('w.id', 'ASC')
             ->setMaxResults(1);
-
         $row = $qb->getQuery()->getOneOrNullResult();
         $websiteId = is_array($row) && isset($row['id']) ? (int) $row['id'] : 0;
 

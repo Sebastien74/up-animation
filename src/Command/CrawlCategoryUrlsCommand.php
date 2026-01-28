@@ -42,7 +42,8 @@ class CrawlCategoryUrlsCommand extends Command
         private readonly CategoryUrlsCrawlerService $listingCrawler,
         private readonly ProductContentsCrawlerService $jsonIo,
         private readonly string $projectDir,
-    ) {
+    )
+    {
         parent::__construct();
     }
 
@@ -51,8 +52,7 @@ class CrawlCategoryUrlsCommand extends Command
         $this
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/contents.json')
             ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'HTTP timeout (seconds)', '15')
-            ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyListingUrlCrawler/1.0')
-        ;
+            ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyListingUrlCrawler/1.0');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -60,9 +60,9 @@ class CrawlCategoryUrlsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $fs = new Filesystem();
 
-        $filePath = $this->absPath((string) $input->getOption('file'));
-        $timeout = max(1, (int) $input->getOption('timeout'));
-        $userAgent = (string) $input->getOption('user-agent');
+        $filePath = $this->absPath((string)$input->getOption('file'));
+        $timeout = max(1, (int)$input->getOption('timeout'));
+        $userAgent = (string)$input->getOption('user-agent');
 
         if (!$fs->exists($filePath)) {
             $io->error(sprintf('File not found: %s', $filePath));
@@ -98,7 +98,7 @@ class CrawlCategoryUrlsCommand extends Command
         foreach ($categories as $listingUrl) {
             $payload = is_array($map['categories'][$listingUrl] ?? null) ? $map['categories'][$listingUrl] : [];
 
-            $found = $this->listingCrawler->extractCategoryProductUrls((string) $listingUrl, $products, $timeout, $userAgent);
+            $found = $this->listingCrawler->extractCategoryProductUrls((string)$listingUrl, $products, $timeout, $userAgent);
 
             $existing = $payload['urls'] ?? [];
             if (!is_array($existing)) {
@@ -115,7 +115,7 @@ class CrawlCategoryUrlsCommand extends Command
         foreach ($indexes as $listingUrl) {
             $payload = is_array($map['indexes'][$listingUrl] ?? null) ? $map['indexes'][$listingUrl] : [];
 
-            $found = $this->listingCrawler->extractIndexProductUrls((string) $listingUrl, $products, $timeout, $userAgent);
+            $found = $this->listingCrawler->extractIndexProductUrls((string)$listingUrl, $products, $timeout, $userAgent);
 
             $existing = $payload['urls'] ?? [];
             if (!is_array($existing)) {

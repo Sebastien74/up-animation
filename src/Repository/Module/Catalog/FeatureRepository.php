@@ -63,7 +63,7 @@ class FeatureRepository extends ServiceEntityRepository
             ->leftJoin('f.values', 'v')
             ->andWhere('f.id = :website')
             ->setParameter('website', $website)
-            ->addSelect('c')
+            ->addSelect('v')
             ->orderBy('v.'.$sort, $order)
             ->getQuery()
             ->getResult();

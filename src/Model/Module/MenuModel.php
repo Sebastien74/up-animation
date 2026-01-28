@@ -257,6 +257,9 @@ final class MenuModel extends BaseModel
         if ($menu->isMain()) {
             $custom = 'front/'.$template.'/actions/menu/'.$menu->getTemplate().'.html.twig';
         }
+        if ($menu->isVertical()) {
+            $custom = 'front/'.$template.'/actions/menu/lateral.html.twig';
+        }
         $customDirname = self::$coreLocator->projectDir().DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $custom);
 
         return $filesystem->exists($customDirname) ? $custom : $default;

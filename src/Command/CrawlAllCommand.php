@@ -49,8 +49,7 @@ class CrawlAllCommand extends Command
             // file paths
             ->addOption('urls', null, InputOption::VALUE_REQUIRED, 'URLs JSON file', 'var/crawler/urls.json')
             ->addOption('contents', null, InputOption::VALUE_REQUIRED, 'Contents JSON file', 'var/crawler/contents.json')
-            ->addOption('metas', null, InputOption::VALUE_REQUIRED, 'Metas JSON file', 'var/crawler/metas.json')
-        ;
+            ->addOption('metas', null, InputOption::VALUE_REQUIRED, 'Metas JSON file', 'var/crawler/metas.json');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -63,23 +62,23 @@ class CrawlAllCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
 
-        $startUrl     = (string) $input->getArgument('startUrl');
-        $maxUrls      = (string) $input->getOption('max-urls');
-        $maxDepth     = (string) $input->getOption('max-depth');
-        $concurrency  = (string) $input->getOption('concurrency');
-        $ignoreQuery  = (bool) $input->getOption('ignore-query');
+        $startUrl = (string)$input->getArgument('startUrl');
+        $maxUrls = (string)$input->getOption('max-urls');
+        $maxDepth = (string)$input->getOption('max-depth');
+        $concurrency = (string)$input->getOption('concurrency');
+        $ignoreQuery = (bool)$input->getOption('ignore-query');
 
-        $timeout      = (string) $input->getOption('timeout');
-        $userAgent    = (string) $input->getOption('user-agent');
+        $timeout = (string)$input->getOption('timeout');
+        $userAgent = (string)$input->getOption('user-agent');
 
-        $urlsPath     = (string) $input->getOption('urls');
-        $contentsPath = (string) $input->getOption('contents');
-        $metasPath    = (string) $input->getOption('metas');
+        $urlsPath = (string)$input->getOption('urls');
+        $contentsPath = (string)$input->getOption('contents');
+        $metasPath = (string)$input->getOption('metas');
 
         $steps = [
             [
                 'label' => 'internal-urls',
-                'name'  => 'app:crawl:internal-urls',
+                'name' => 'app:crawl:internal-urls',
                 'input' => function () use ($startUrl, $maxUrls, $maxDepth, $concurrency, $ignoreQuery, $userAgent, $urlsPath): ArrayInput {
                     $args = [
                         'startUrl' => $startUrl,
@@ -97,7 +96,7 @@ class CrawlAllCommand extends Command
             ],
             [
                 'label' => 'contents-map',
-                'name'  => 'app:crawl:contents-map',
+                'name' => 'app:crawl:contents-map',
                 'input' => function () use ($urlsPath, $contentsPath, $maxUrls): ArrayInput {
                     return new ArrayInput([
                         '--input' => $urlsPath,
@@ -108,7 +107,7 @@ class CrawlAllCommand extends Command
             ],
             [
                 'label' => 'metas',
-                'name'  => 'app:crawl:metas',
+                'name' => 'app:crawl:metas',
                 'input' => function () use ($urlsPath, $metasPath, $maxUrls, $timeout, $userAgent): ArrayInput {
                     // IMPORTANT: CrawlMetasCommand does NOT support --contents
                     return new ArrayInput([
@@ -122,7 +121,7 @@ class CrawlAllCommand extends Command
             ],
             [
                 'label' => 'product-contents',
-                'name'  => 'app:crawl:product-contents',
+                'name' => 'app:crawl:product-contents',
                 'input' => function () use ($contentsPath, $timeout, $userAgent): ArrayInput {
                     // IMPORTANT: CrawlProductContentsCommand uses --file, not --contents
                     return new ArrayInput([
@@ -134,7 +133,7 @@ class CrawlAllCommand extends Command
             ],
             [
                 'label' => 'category-urls',
-                'name'  => 'app:crawl:category-urls',
+                'name' => 'app:crawl:category-urls',
                 'input' => function () use ($contentsPath, $timeout, $userAgent): ArrayInput {
                     // IMPORTANT: CrawlCategoryUrlsCommand uses --file, not --contents
                     return new ArrayInput([
@@ -146,7 +145,7 @@ class CrawlAllCommand extends Command
             ],
             [
                 'label' => 'import-contents',
-                'name'  => 'app:import:contents',
+                'name' => 'app:import:contents',
                 'input' => function () use ($contentsPath): ArrayInput {
                     return new ArrayInput([
                         '--file' => $contentsPath,
@@ -155,7 +154,7 @@ class CrawlAllCommand extends Command
             ],
             [
                 'label' => 'index-urls',
-                'name'  => 'app:crawl:index-urls',
+                'name' => 'app:crawl:pages-urls',
                 'input' => function () use ($contentsPath, $timeout, $userAgent): ArrayInput {
                     return new ArrayInput([
                         '--file' => $contentsPath,

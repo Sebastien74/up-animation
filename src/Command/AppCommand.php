@@ -72,11 +72,9 @@ class AppCommand extends Command
 
         if (!empty($this->commands[$alias]['command']['website'])) {
             $this->io->error('You must run this command whit Helper!!!'.$alias);
-
             return Command::FAILURE;
         } elseif ($alias && !empty($this->commands[$alias]['command'])) {
             $this->commandHelper->runCmd($alias, $this->io, $output);
-
             return Command::SUCCESS;
         } elseif ($alias) {
             $this->io->error("This alias doesn't exist!!!");

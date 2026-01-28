@@ -43,8 +43,7 @@ class CrawlProductContentsCommand extends Command
         $this
             ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to contents.json', 'var/crawler/contents.json')
             ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'HTTP timeout (seconds)', '15')
-            ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyProductContentCrawler/1.0')
-        ;
+            ->addOption('user-agent', null, InputOption::VALUE_REQUIRED, 'User-Agent header', 'SymfonyProductContentCrawler/1.0');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -52,9 +51,9 @@ class CrawlProductContentsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $fs = new Filesystem();
 
-        $filePath = $this->absPath((string) $input->getOption('file'));
-        $timeout = max(1, (int) $input->getOption('timeout'));
-        $userAgent = (string) $input->getOption('user-agent');
+        $filePath = $this->absPath((string)$input->getOption('file'));
+        $timeout = max(1, (int)$input->getOption('timeout'));
+        $userAgent = (string)$input->getOption('user-agent');
 
         if (!$fs->exists($filePath)) {
             $io->error(sprintf('File not found: %s', $filePath));
@@ -79,7 +78,7 @@ class CrawlProductContentsCommand extends Command
         // Enrich each product URL (progress-friendly)
         foreach (array_keys($map['products']) as $url) {
             $payload = is_array($map['products'][$url] ?? null) ? $map['products'][$url] : [];
-            $payload['contents'] = $this->crawler->extractProductContents((string) $url, $timeout, $userAgent);
+            $payload['contents'] = $this->crawler->extractProductContents((string)$url, $timeout, $userAgent);
             $map['products'][$url] = $payload;
 
             $io->progressAdvance();

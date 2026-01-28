@@ -209,7 +209,8 @@ class ActionController extends FrontController
      */
     public function getView(
         Request $request,
-        string $url, ?string $pageUrl = null,
+        string $url,
+        ?string $pageUrl = null,
         bool $preview = false,
         bool $onlyArguments = false,
     ): array|Response|RedirectResponse {

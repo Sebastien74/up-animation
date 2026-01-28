@@ -31,7 +31,8 @@ class CrawlContentsMapCommand extends Command
     public function __construct(
         private readonly UrlContentsClassifierService $classifier,
         private readonly string $projectDir,
-    ) {
+    )
+    {
         parent::__construct();
     }
 
@@ -40,8 +41,7 @@ class CrawlContentsMapCommand extends Command
         $this
             ->addOption('input', null, InputOption::VALUE_REQUIRED, 'Input JSON file containing URLs', 'var/crawler/urls.json')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output contents JSON file', 'var/crawler/contents.json')
-            ->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Max URLs to process', '2000')
-        ;
+            ->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Max URLs to process', '2000');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -49,9 +49,9 @@ class CrawlContentsMapCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $fs = new Filesystem();
 
-        $inputPath = $this->absPath((string) $input->getOption('input'));
-        $outputPath = $this->absPath((string) $input->getOption('output'));
-        $limit = max(1, (int) $input->getOption('limit'));
+        $inputPath = $this->absPath((string)$input->getOption('input'));
+        $outputPath = $this->absPath((string)$input->getOption('output'));
+        $limit = max(1, (int)$input->getOption('limit'));
 
         if (!$fs->exists($inputPath)) {
             $io->error(sprintf('Input file not found: %s', $inputPath));

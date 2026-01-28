@@ -17,7 +17,26 @@
 {% set displayIndexLInk = true %}
 {% set disabledTitle = disabledTitle is defined ? disabledTitle : false %}
 {% set listingTitle = listingTitle is defined and listingTitle ? listingTitle : "Découvrez également"|trans %}
-{% set thumbConfiguration = thumbConfiguration is defined ? thumbConfiguration : [] %}
+{% set thumbConfiguration = associatedEntitiesThumbConfiguration is defined ? associatedEntitiesThumbConfiguration : (thumbConfiguration is defined ? thumbConfiguration : []) %}
+{% set isMobile = isMobile() %}
+{% set promoteFirst = false %}
+
+{% macro mediaRelation(entity, thumbConfiguration) %}
+    {{ entity.mainMedia|file(thumbConfiguration, {
+        btnLink: false,
+        isInBox: true,
+        targetLink: entity.url is defined ? entity.url : false,
+        popupGallery: false,
+        fullPopup: false,
+        placeholder: true,
+        lazyLoad: true,
+        class: 'w-100'
+    }) }}
+{% endmacro %}
+
+{% macro body(entity) %}
+    <h3 class="title mb-4"><a href="{{ entity.url }}" class="title-link fw-600">{{ entity.intl.title|raw }}</a></h3>
+{% endmacro %}
 
 {% macro arrows(entity, autoplay, side, color, asBtn, position) %}
     {% set website = entity.website is defined ? entity.website : website() %}
@@ -44,6 +63,10 @@
     </div>
 {% endmacro %}
 
+{% macro showLink(websiteTemplate, entity) %}
+    {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: {link: entity.url}} %}
+{% endmacro %}
+
 <div class="slider-container{% if entities is empty %} empty-associated-entities{% endif %}">
     {% if not disabledTitle %}
         <div class="title-block w-100 mb-4 mb-lg-3">
@@ -52,23 +75,20 @@
     {% endif %}
     {% set autoplay = 1 %}
     <div class="splide{% if not arrows %} no-arrows{% endif %}"
-         data-lenght="{{ entities|length }}"
          data-items="{{ itemsPerSlide }}"
+         data-lenght="{{ entities|length }}"
          data-items-medium-pc="3"
          data-items-mini-pc="3"
          data-items-tablet="2"
          data-items-mobile="1"
-         data-fade="fade"
-         data-scroll="{{ itemsPerSlide }}"
+         data-fade="loop"
+         data-scroll="1"
          data-pause="1"
          data-autoplay="{{ autoplay }}"
-         data-arrows="{{ entities|length > 1 }}"
+         data-arrows="1"
          data-dots="0"
-         data-offset="150"
-         data-offset-medium-pc="50"
-         data-offset-mini-pc="50"
-         data-offset-tablet="50"
-         data-offset-mobile="50"
+         data-gap="2rem"
+         data-counter="0"
          data-interval="2500">
         <div class="splide__track">
             {% if arrows and 'top' in arrowsAlignment %}
@@ -77,30 +97,23 @@
             <ul class="splide__list">
                 {% set isFirst = true %}
                 {% for entity in entities %}
-                    {% set media = entity.mainMedia %}
-                    <li class="splide__slide">
-                        <div class="ms-4 ms-md-5">
-                            <a href="{{ entity.url }}" class="d-inline-block slider-link">
-                                <div class="media-wrap">
-                                    {{ media|file(thumbConfiguration, {
-                                        notInBox: true,
-                                        maxWidth: null,
-                                        maxHeight: 200
-                                    }) }}
-                                </div>
-                                {% if entity.intl.title or entity.intl.body or entity.intl.introduction %}
-                                    <div class="content d-flex mt-4 pt-3 pe-3">
-                                        <div class="inner">
-                                            {% if entity.intl.title %}
-                                                <h3 class="title fw-600 mb-3 mb-md-4">{{ entity.intl.title|raw }}</h3>
-                                            {% endif %}
-                                            {% if entity.intl.introduction %}
-                                                <p class="introduction text-warning">{{ entity.intl.introduction|raw|nl2br }}</p>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            </a>
+                    {% set isFirst = loop.index == 1 %}
+                    {% set colSizeNext = promoteFirst ? (100 - colSizeFirst) / (teaser.itemsPerSlide - 1) : null %}
+                    {% set colSizeNext = isMobile ? 100 : (isTablet() ? 40 : colSizeNext) %}
+                    {% set colSize = promoteFirst and not isFirst ? colSizeNext : (promoteFirst ? colSizeFirst : null) %}
+                    <li class="splide__slide ps-0 pe-0 ps-md-0 pe-md-4 {% if isMobile %}col-12{% else %}col{% if not promoteFirst %}-md-4{% endif %}{% endif %}{% if loop.index > itemsPerSlide %} d-none{% endif %}{% if isFirst %} is-first{% endif %}"
+                        {% if colSizeNext %}data-size-next="{{ colSizeNext }}%"{% endif %}
+                            {% if colSize %}style="width: {{ colSize }}%"{% endif %}>
+                        <div class="card bg-transparent d-inline-block border-0 w-100">
+                            <div class="card-header bg-transparent p-0 border-0">
+                                {{ macro.mediaRelation(entity, thumbConfiguration) }}
+                            </div>
+                            <div class="card-body bg-transparent p-0 border-0 pt-4">
+                                {{ macro.body(entity) }}
+                            </div>
+                            <div class="card-footer bg-transparent p-0 border-0 pt-3">
+                                {{ macro.showLink(websiteTemplate, entity) }}
+                            </div>
                         </div>
                     </li>
                 {% endfor %}

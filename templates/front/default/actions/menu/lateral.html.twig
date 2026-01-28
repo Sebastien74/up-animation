@@ -161,12 +161,12 @@
                     </button>
                     {% if logo %}
                         <{% if 'h1' == compagnyNameElement %}h1{% else %}strong{% endif %} class="d-none" aria-hidden="true">{{ companyName|striptags }}</{% if 'h1' == compagnyNameElement %}h1{% else %}strong{% endif %}>
-                        <a class="navbar-brand d-block p-0 mx-0 ms-2 ms-md-4" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}" data-toggle="preloader">
+                        <a class="navbar-brand d-inline-flex p-0" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}" data-toggle="preloader">
                             {{ asset(logo)|file({}, {
                                 screensSizes: {
-                                    mobile: {width: 138, height: 60},
-                                    tablet: {width: 138, height: 60},
-                                    desktop: {width: 138, height: 60}
+                                    mobile: {width: null, height: 60},
+                                    tablet: {width: null, height: 60},
+                                    desktop: {width: null, height: 60}
                                 },
                                 decor: false,
                                 title: companyName,

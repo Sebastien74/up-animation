@@ -41,9 +41,13 @@
                 {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                     intl: entity.intl
                 } %}
-                <a href="{{ path('front_index', {url: pageUrl}) }}" class="link mt-5">
-                    {{ "Retourner à la liste des produits"|trans }}<i class="icon-chevron-right ms-2"></i>
-                </a>
+                {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                    intl: {
+                        link: path('front_index', {url: pageUrl}),
+                        linkStyle: 'btn btn-primary mt-5',
+                        linkLabel: "Retourner à la liste des produits"|trans,
+                    }
+                } %}
             </div>
             <div class="col-lg-5">
                 <div class="carousel-wrap">
