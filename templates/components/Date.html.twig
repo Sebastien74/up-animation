@@ -3,11 +3,13 @@
 {% set currentYear = 'now'|date('Y') %}
 
 {% if this.localize.date and not this.localize.between and not this.localize.asHours %}
-    {% set betweenDate = this.localize.date|hourBetweenTwoDates %}
+    {% set between = this.between %}
+    {% set betweenDate = between ? this.localize.date|hourBetweenTwoDates : false %}
     {% set newYear = this.localize.date ? this.localize.date|date('Y') : null %}
     {% set localizeDate = this.localize.date|format_datetime(pattern=this.localize.formatDate, locale=app.request.locale) %}
     {% set dateStr = betweenDate < 24 and betweenDate and not disabledHours ? 'Il y a %betweenDate%H'|trans({'%betweenDate%': betweenDate})
-        : (this.localize.date ? 'Le %localizeDate%'|trans({'%localizeDate%': localizeDate}) : null) %}
+        : (this.localize.date and this.prefix ? 'Le %localizeDate%'|trans({'%localizeDate%': localizeDate})
+        : (this.localize.date ? localizeDate : null)) %}
     {% if currentYear != newYear and betweenDate > 24 and newYear not in dateStr and not disabledHours %}
         {% set dateStr = dateStr~' '~newYear %}
     {% endif %}

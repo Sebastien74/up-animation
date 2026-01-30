@@ -66,6 +66,7 @@ final class ProductModel extends BaseModel
 
         return (object) array_merge((array) $model, [
             'catalog' => $catalog,
+            'asAgency' => 'agencies' === $catalog->slug,
             'catalogSlug' => self::getContent('slug', $catalog),
             'entityForLayout' => $model->layout && $model->layout->getSlug() && !$model->layout->getZones()->isEmpty() && $model->asCustomLayout ? $model->entity : $catalog,
             'info' => $info,

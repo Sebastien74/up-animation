@@ -647,9 +647,17 @@ class CoreLocator implements CoreLocatorInterface
     /**
      * To get projectDir.
      */
+    public function formatDirname(?string $dirname = null): ?string
+    {
+        return $dirname ? str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname) : null;
+    }
+
+    /**
+     * To get projectDir.
+     */
     public function projectDir(): string
     {
-        return $this->projectDir;
+        return $this->formatDirname($this->projectDir);
     }
 
     /**
@@ -657,9 +665,7 @@ class CoreLocator implements CoreLocatorInterface
      */
     public function publicDir(): string
     {
-        $dirname = $this->projectDir.'/public';
-
-        return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
+        return $this->formatDirname($this->projectDir.'/public');
     }
 
     /**
@@ -667,9 +673,7 @@ class CoreLocator implements CoreLocatorInterface
      */
     public function uploadDir(): string
     {
-        $dirname = $this->publicDir().'/uploads';
-
-        return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
+        return $this->formatDirname($this->publicDir().'/uploads');
     }
 
     /**
@@ -677,7 +681,7 @@ class CoreLocator implements CoreLocatorInterface
      */
     public function cacheDir(): string
     {
-        return $this->cacheDir;
+        return $this->formatDirname($this->cacheDir);
     }
 
     /**
@@ -685,7 +689,7 @@ class CoreLocator implements CoreLocatorInterface
      */
     public function logDir(): string
     {
-        return $this->logDir;
+        return $this->formatDirname($this->logDir);
     }
 
     /**

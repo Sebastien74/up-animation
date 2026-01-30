@@ -40,6 +40,9 @@ class Date
     public ?bool $strict = false;
 
     #[LiveProp]
+    public ?bool $prefix = true;
+
+    #[LiveProp]
     public ?bool $asHours = false;
 
     #[LiveProp]
@@ -71,6 +74,7 @@ class Date
             'disabledHours' => $this->disabledHours,
             'between' => $this->between,
             'strict' => $this->strict,
+            'prefix' => $this->prefix,
             'asHours' => $this->asHours,
             'class' => $this->class,
         ];

@@ -41,7 +41,7 @@
 {#                <div class="{% if haveMedia %}col-md-7 pt-4 pt-lg-5 pb-4 pb-lg-5 ps-lg-5 pe-lg-5{% else %}col-12 pt-5 pb-5{% endif %} my-auto">#}
 
 {#                    {% if title|striptags|length > 0 %}#}
-{#                        <a href="{{ path('front_'~interfaceName~'_view', {pageUrl: url.code, url: website|intlUrl(lastEntity)}) }}" data-toggle="preloader">#}
+{#                        <a href="{{ path('front_'~interfaceName~'_view', {pageUrl: url.code, url: website|intlUrl(lastEntity)}) }}">#}
 {#                            <h{{ titleForce }} class="title text-white">{{ title|unescape|raw }}</h{{ titleForce }}>#}
 {#                        </a>#}
 {#                    {% endif %}#}
@@ -74,7 +74,7 @@
 {#                    {% endif %}#}
 
 {#                    <div class="w-100 mt-4">#}
-{#                        <a href="{{ path('front_'~interfaceName~'_view', {pageUrl: url.code, url: website|intlUrl(lastEntity)}) }}" class="btn btn-outline-white" data-toggle="preloader">#}
+{#                        <a href="{{ path('front_'~interfaceName~'_view', {pageUrl: url.code, url: website|intlUrl(lastEntity)}) }}" class="btn btn-outline-white">#}
 {#                            {{ "En savoir plus"|trans }}<i class="icon-chevron-right ms-2"></i>#}
 {#                        </a>#}
 {#                    </div>#}

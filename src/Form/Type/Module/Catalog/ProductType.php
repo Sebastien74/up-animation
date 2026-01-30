@@ -208,7 +208,7 @@ class ProductType extends AbstractType
                 $searchModuleActive = $this->entityManager->getRepository(\App\Entity\Core\Configuration::class)->moduleExist($options['website'], $searchModule);
                 $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
                 $intls->add($builder, [
-                    'fields' => $searchModuleActive ? ['title' => 'col-md-8', 'subTitle' => 'col-md-4', 'introduction', 'body', 'associatedWords'] : ['title' => 'col-md-8', 'subTitle' => 'col-md-4', 'introduction', 'body'],
+                    'fields' => $searchModuleActive ? ['title' => 'col-md-8', 'subTitle' => 'col-md-4', 'introduction' => 'editor', 'body', 'associatedWords'] : ['title' => 'col-md-8', 'subTitle' => 'col-md-4', 'introduction' => 'editor', 'body'],
                     'disableTitle' => true,
                 ]);
             }

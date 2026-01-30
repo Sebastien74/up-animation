@@ -164,8 +164,11 @@ class CatalogSearchService implements CatalogSearchServiceInterface
     private function getByCatalogs(): Collection|array
     {
         $catalogs = [];
-        if ($this->listing->getCatalogs()->count() > 0 && !$this->displayAll) {
+        if (!$this->listing->getCatalogs()->isEmpty() && !$this->displayAll) {
             $catalogs = $this->listing->getCatalogs();
+        } elseif ($this->listing->getCatalogs()->isEmpty() && !$this->listing->getProducts()->isEmpty()) {
+            $this->products = $this->listing->getProducts()->getValues();
+            return $catalogs;
         } elseif ($this->displayAll) {
             $catalogs = $this->coreLocator->em()->getRepository(Catalog::class)->findBy(['website' => $this->website]);
         }

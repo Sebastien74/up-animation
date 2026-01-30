@@ -6,9 +6,10 @@
 {% set isHome = (seo.entity.asIndex is defined and seo.entity.asIndex) or (app.request.requestUri == '/') or (not app.request.requestUri) %}
 {% set logo = logos.logo is defined and logos.logo ? logos.logo : null %}
 {% set networks = logos['social-networks'] is defined and logos['social-networks'] ? logos['social-networks'] : null %}
-{% set haveEmails = infos.emails.header is defined and infos.emails.header|length > 0 %}
-{% set havePhones = infos.phones.header is defined and infos.phones.header|length > 0 %}
-{% set companyName = informationIntl.title is defined and informationIntl.title ? informationIntl.title : "Agence Félix"|trans|raw %}
+{% set haveEmails = information.emails.header is defined and information.emails.header is not empty %}
+{% set havePhones = information.phones.header is defined and information.phones.header is not empty %}
+{% set companyName = information.companyName is defined and information.companyName ? information.companyName : "Up Animations!"|trans|raw %}
+{% set schedule = information.schedule is defined and information.schedule ? information.schedule : false %}
 {% set haveLogin = 'secure-page'|moduleActive(configuration) %}
 {% set links = tree.main is defined ? tree.main : [] %}
 {% set compagnyNameElement = (seo.titleH1 is defined and not seo.titleH1 or seo.titleH1 is not defined) ? 'h1' : 'strong' %}
@@ -16,11 +17,13 @@
     {% set compagnyNameElement = 'strong' %}
 {% endif %}
 {% set contactPageUrl = mainPages.contact.code is defined ? mainPages.contact.code : null %}
+{% set newsPageUrl = mainPages.newscasts.code is defined ? mainPages.newscasts.code : null %}
+{% set aboutPageUrl = mainPages.about.code is defined ? mainPages.about.code : null %}
 {% set notExpanded = 'xxxl' == expand %}
 
 {% import _self as macro %}
 
-{% macro element(link, tree, microDataActive, expand, dropdownHover, dropdownItem, isLast, websiteTemplate, notExpanded, haveIcons = false) %}
+{% macro element(link, tree, companyName, logo, microDataActive, expand, dropdownHover, dropdownItem, isLast, websiteTemplate, notExpanded, haveIcons = false) %}
     {% set dropdownBack = false %}
     {% if link.online is defined and link.online %}
         {% set path = link.link %}
@@ -46,18 +49,18 @@
             {% set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass %}
             {% set linkClass = 1 == link.level ? linkClass~' text-initial text-white d-flex justify-content-end align-items-center text-end' : linkClass~' text-initial text-white' %}
             {% if link.level >= 3 %}
-            {% if haveIcons %}
-                <div class="pictogram-wrap me-3">
-                    {% if link.pictogram %}
-                        {{ asset(link.pictogram)|file({}, {class: 'pictogram', width: 40, height: 40}) }}
-                    {% endif %}
-                </div>
-            {% endif %}
-            <div class="link-wrap">
+                {% if haveIcons %}
+                    <div class="pictogram-wrap me-3">
+                        {% if link.pictogram %}
+                            {{ asset(link.pictogram)|file({}, {class: 'pictogram', width: 40, height: 40}) }}
+                        {% endif %}
+                    </div>
                 {% endif %}
+                <div class="link-wrap">
+            {% endif %}
                 <{% if 'a' == element %}a{% else %}div{% endif %} class="{{ linkClass }}"{% if link.dataAnchor %} data-anchor="{{ link.dataAnchor }}"{% endif %}
                     href="{% if path %}{{ path }}{% else %}javascript:void(0){% endif %}"{% if link.children and not dropdownHover %} id="navbar-link-{{ link.id }}"{% endif %}
-                    {% if link.linkBlank %} target="_blank"{% else %} data-toggle="preloader"{% endif %}
+                    {% if link.linkBlank %} target="_blank"{% else %}{% endif %}
                     {% if link.linkExternal %} rel="noopener noreferrer"{% endif %}
                     {% if pushMicroData %} itemprop="url"{% endif %}>
                     {% if link.media.haveMedia is defined and link.media.haveMedia %}
@@ -65,12 +68,6 @@
                         <span class="d-lg-none"{% if pushMicroData %} itemprop="name"{% endif %}>{{ link.title|unescape|raw }}</span>
                     {% else %}
                         <span class="link-label cursor{% if link.level > 1 %} text-secondary{% endif %}"{% if pushMicroData %} itemprop="name"{% endif %}>{{ link.title|unescape|raw }}</span>
-                    {% endif %}
-                    {% if link.level == 1 %}
-                        <span class="caret position-relative ms-4 ms-md-4{% if link.children is not empty %} have-children{% endif %}"{% if dropdownHover %} id="navbar-link-{{ link.id }}"{% endif %}>
-                        {% set icon = link.level == 1 ? 'right' : 'right' %}
-                        <i class="icon-arrow-{{ icon }} position-relative" aria-label="{{ "Voir plus"|trans|striptags }}"></i>
-                    </span>
                     {% endif %}
                 </{% if 'a' == element %}a{% else %}div{% endif %}>
                 {% if link.level >= 3 %}
@@ -80,17 +77,35 @@
             </div>
             {% endif %}
             {% if link.children %}
-                <div class="submenu bg-white submenu-level-{{ link.level }}">
-                    {% set displayBack = link.level == 3 %}
-                    <div class="dropdown-back cursor d-flex px-3 px-md-4 px-md-5 py-4 fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}" aria-hidden="true">
-                        <i class="icon-arrow-left text-primary me-3"></i>
-                        <span class="label-back text-warning position-relative fw-500 me-3 me-lg-0">{{ link.title|unescape|raw }}</span>
-                    </div>
-                    <div class="inner py-3 py-lg-5 px-4 px-lg-5 position-relative">
+                <div class="submenu px-5 py-5 bg-white submenu-level-{{ link.level }}">
+                    {% set displayBack = link.level >= 1 %}
+                    <div class="d-flex mb-5">
+                        <a class="d-inline-flex me-4" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
+                            {{ asset(logo)|file({}, {
+                                screensSizes: {
+                                    mobile: {width: null, height: 80},
+                                    tablet: {width: null, height: 80},
+                                    desktop: {width: null, height: 80}
+                                },
+                                decor: false,
+                                title: companyName,
+                                class: 'force-size logo initial-color',
+                                only_html: false,
+                                lazyLoad: false,
+                                priority: 'high'
+                            }) }}
+                        </a>
                         {% if link.level == 1 %}
-                            <i class="close-menu-level-{{ link.level }} close-menu-submenu icon-times-circle text-primary position-absolute cursor d-inline-block"></i>
+                            <i class="close-menu-level-{{ link.level }} close-menu-submenu ms-auto icon-times text-primary cursor d-inline-block"></i>
                         {% endif %}
-                        <div class="inner-sub-wrap px-xxl-5 spy-scroll position-relative text-start {% if link.level >= 3 %}pt-4{% else %}mt-4 mt-lg-4{% endif %}" tabindex="-1">
+                    </div>
+                    <a href="{{ link.link }}" class="d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}" aria-hidden="true">
+                        <span class="parent-label text-warning position-relative fw-500 me-3 me-lg-0">{{ link.title|unescape|raw }} Mettre label Voir toutes nos agence dans menu</span>
+                        <i class="icon-arrow-right text-primary ms-3"></i>
+                    </a>
+                    <div class="inner position-relative mt-5">
+                        <div class="inner-sub-wrap spy-scroll position-relative text-start {% if link.level >= 3 %}pt-4{% else %}mt-4 mt-lg-4{% endif %}" tabindex="-1"
+                             data-scroll-bar="1">
                             {% if link.subTitle %}
                                 <strong class="submenu-label d-inline-block fw-600 mb-5 w-100 lh-1">{{ link.subTitle|raw }}</strong>
                             {% endif %}
@@ -120,15 +135,15 @@
                                     {% for subLink in link.children %}
                                         <ul class="sublist ps-0{% if loop.index > 1 %} ms-xl-5{% endif %}">
                                             {% for subSubLInk in subLink.children %}
-                                                {{ macro.element(subSubLInk, tree, microDataActive, expand, dropdownHover, true, loop.last, websiteTemplate, notExpanded, haveIcons) }}
+                                                {{ macro.element(subSubLInk, tree, companyName, logo, microDataActive, expand, dropdownHover, true, loop.last, websiteTemplate, notExpanded, haveIcons) }}
                                             {% endfor %}
                                         </ul>
                                     {% endfor %}
                                 </div>
                             {% else %}
-                                <ul class="reset">
+                                <ul class="list-unstyled scroll-inner">
                                     {% for subLink in link.children %}
-                                        {{ macro.element(subLink, tree, microDataActive, expand, dropdownHover, true, loop.last, websiteTemplate, notExpanded, haveIcons) }}
+                                        {{ macro.element(subLink, tree, companyName, logo, microDataActive, expand, dropdownHover, true, loop.last, websiteTemplate, notExpanded, haveIcons) }}
                                     {% endfor %}
                                 </ul>
                             {% endif %}
@@ -148,10 +163,51 @@
         role: 'ROLE_NAVIGATION',
         path: path('admin_menu_edit', {website: website.id, menu: id, entitylocale: app.request.locale})
     }) }}
-    <header id="main-navigation" class="navbar navbar-expand-{{ expand }} px-0 py-0">
-        <div class="{{ size }}{% if size == 'container-fluid' %} px-0{% endif %}">
-            <div class="row w-100 m-0">
-                <div class="side col-6 d-flex align-items-center px-0">
+    <header id="main-navigation" class="navbar navbar-expand-{{ expand }} flex-column px-0 py-0">
+        <div id="top-navigation" class="bg-primary py-3 position-relative w-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        {% if schedule %}
+                            <div class="schedule text-white d-flex align-items-center">
+                                <i class="icon-clock text-white me-3"></i>{{ schedule|striptags|raw }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-6 links-wrap d-flex justify-content-end">
+                        <div class="inner d-flex align-items-center">
+                            {% if newsPageUrl %}
+                                <a href="{{ path('front_index', {url: newsPageUrl}) }}" class="d-inline-block text-white">{{ 'Nos Actus'|trans|raw }}</a>
+                            {% endif %}
+                            {% if newsPageUrl and aboutPageUrl %}
+                                <span class="mx-2 text-white">|</span>
+                            {% endif %}
+                            {% if aboutPageUrl %}
+                                <a href="{{ path('front_index', {url: aboutPageUrl}) }}" class="d-inline-block text-white">{{ companyName|striptags }}</a>
+                            {% endif %}
+                            {% if website.networks is not empty %}
+                                <nav class="socials-list d-inline-flex align-items-center ms-3" aria-label="{{ "Navigation des liens sociaux"|trans|striptags }}">
+                                    {% for name, infos in website.networks %}
+                                        {% if infos.link and infos.dirname %}
+                                            {% set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags %}
+                                            <button class="{{ name }} btn btn-transparent basic p-0 d-inline-flex ms-2 js-open-window"
+                                                    data-url="{{ infos.link }}"
+                                                    aria-label="{{ label }}">
+                                                <i class="icon-{{ name|lower }}" aria-hidden="true"></i>
+                                                <span class="visually-hidden">{{ label }}</span>
+                                            </button>
+                                        {% endif %}
+                                    {% endfor %}
+                                </nav>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="navigation-container" class="{{ size }}{% if size == 'container-fluid' %} px-0{% endif %}">
+            <div class="d-lg-flex w-100">
+                <div class="side d-flex align-items-center px-0">
                     <button class="navbar-toggler bg-transparent me-2 cursor" data-bs-toggle="collapse" data-bs-target="#main-navigation-nav" aria-controls="main-navigation-nav" aria-expanded="false" aria-label="{{ "Menu"|trans|raw }}">
                         <span class="nav-toggler-icon" aria-label="{{ "Menu"|trans|raw }}">
                             <span></span>
@@ -161,7 +217,7 @@
                     </button>
                     {% if logo %}
                         <{% if 'h1' == compagnyNameElement %}h1{% else %}strong{% endif %} class="d-none" aria-hidden="true">{{ companyName|striptags }}</{% if 'h1' == compagnyNameElement %}h1{% else %}strong{% endif %}>
-                        <a class="navbar-brand d-inline-flex p-0" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}" data-toggle="preloader">
+                        <a class="navbar-brand d-inline-flex p-0" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
                             {{ asset(logo)|file({}, {
                                 screensSizes: {
                                     mobile: {width: null, height: 60},
@@ -185,34 +241,19 @@
                                     <li class="nav-item d-flex align-items-center justify-content-center level-1 text-center d-{{ expand }}-none{% if indexActive %} active{% endif %}"
                                         {% if microDataActive %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"{% endif %}>
                                         <a href="{{ path('front_index') }}" class="nav-link link-level-1 fw-600 text-black{% if indexActive %} active{% endif %}"
-                                            {% if microDataActive %} itemprop="url"{% endif %} data-toggle="preloader">
+                                            {% if microDataActive %} itemprop="url"{% endif %}>
                                             {% if microDataActive %}<span itemprop="name">{% endif %}{{ "Accueil"|trans|raw }}{% if microDataActive %}</span>{% endif %}
                                         </a>
                                     </li>
                                 {% endif %}
                                 {% for link in links %}
-                                    {{ macro.element(link, tree, microDataActive, expand, dropdownHover, false, loop.last, websiteTemplate, notExpanded) }}
+                                    {{ macro.element(link, tree, companyName, logo, microDataActive, expand, dropdownHover, false, loop.last, websiteTemplate, notExpanded) }}
                                 {% endfor %}
                             </ul>
                         </nav>
-                        {% if website.networks %}
-                            <nav class="socials-list d-inline-flex justify-content-center mt-auto mb-5 w-100" aria-label="{{ "Navigation des liens sociaux"|trans|striptags }}">
-                                {% for name, infos in website.networks %}
-                                    {% if infos.link and infos.dirname %}
-                                        {% set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags %}
-                                        <button class="{{ name }} btn btn-transparent basic p-0 d-inline-flex ms-3 me-3 me-lg-3 js-open-window"
-                                                data-url="{{ infos.link }}"
-                                                aria-label="{{ label }}">
-                                            <i class="icon-{{ name|lower }}" aria-hidden="true"></i>
-                                            <span class="visually-hidden">{{ label }}</span>
-                                        </button>
-                                    {% endif %}
-                                {% endfor %}
-                            </nav>
-                        {% endif %}
                     </div>
                 </div>
-                <div class="side col-6 d-flex align-items-center justify-content-end pe-3 pe-md-4">
+                <div class="side d-flex align-items-center justify-content-end ms-auto ps-lg-4">
                     {% if haveLogin %}
                         {% include 'front/'~websiteTemplate~'/actions/menu/login-nav.html.twig' with {
                             website: website,
@@ -222,9 +263,13 @@
                         } only %}
                     {% endif %}
                     {% if contactPageUrl %}
-                        <a href="{{ path('front_index', {url: contactPageUrl}) }}" class="track-link-contact-form contact-link d-none d-lg-flex justify-content-lg-center align-content-lg-center btn btn-primary ms-lg-4 me-lg-5">
-                            {{ "Nous contacter"|trans|raw }}<i class="icon-circle ms-4"></i>
-                        </a>
+                        {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                            intl: {
+                                link: path('front_index', {url: contactPageUrl}),
+                                linkStyle: 'btn btn-primary track-link-contact-form contact-link',
+                                linkLabel: "Nous contacter"|trans,
+                            }
+                        } %}
                     {% endif %}
                     {% if multiLingues %}
                         {{ render_esi(path('front_locales_switcher', {class: ''|url_encode, classname: currentClassname|url_encode, entityId: currentEntityId} )) }}
@@ -235,6 +280,6 @@
                 </div>
             </div>
         </div>
-        <div class="overlay d-none d-lg-inline-block position-fixed"></div>
+        <div class="overlay position-fixed"></div>
     </header>
 </div>

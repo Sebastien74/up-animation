@@ -1,5 +1,5 @@
 const closeMenu = function () {
-    let body = document.body;
+    const body = document.body;
     body.classList.remove('menu-open');
     document.querySelectorAll('.submenu.show, .dropdown-menu.show').forEach(function (submenu) {
         submenu.classList.remove('collapse');
@@ -32,6 +32,7 @@ const dropdownBack = function (submenu) {
 export function collapseEvent(body) {
     document.querySelectorAll('.navbar-collapse').forEach(function (collapse) {
         collapse.addEventListener('show.bs.collapse', function () {
+            console.log('here')
             body.classList.add('menu-open');
             collapse.closest('.navbar').classList.add('open');
             document.querySelectorAll('.nav-toggler-icon').forEach(function (toggle) {
@@ -99,15 +100,14 @@ export function scrollEvent(nav) {
 
 export function lateralMenu(body, nav, screenWidth) {
 
-    let overlay = nav.querySelector('.overlay');
-    if (overlay) {
-        overlay.addEventListener('click', () => {
-            closeMenu();
-        });
-    }
+    document.querySelectorAll('.overlay').forEach(function (el) {
+        el.onclick = function () {
+            nav.querySelector('.close-menu-submenu').click();
+        }
+    });
 
     nav.querySelectorAll('.close-menu').forEach(function (btn) {
-        btn.addEventListener('click', () => {
+        btn.onclick = function () {
             closeMenu();
             if (screenWidth <= 991) {
                 let burgerBtn = nav.querySelector('.navbar-toggler');
@@ -115,7 +115,7 @@ export function lateralMenu(body, nav, screenWidth) {
                     burgerBtn.click();
                 }
             }
-        });
+        }
     });
 
     nav.querySelectorAll('.close-menu-submenu').forEach(function (btn) {

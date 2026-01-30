@@ -98,6 +98,8 @@ interface CoreLocatorInterface
 
     public function preloadFiles(): array;
 
+    public function formatDirname(?string $dirname = null): ?string;
+
     public function projectDir(): string;
 
     public function publicDir(): string;

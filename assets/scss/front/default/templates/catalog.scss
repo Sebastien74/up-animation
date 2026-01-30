@@ -34,6 +34,12 @@ $enable-youtube: true;
 
 .product-view-container {
 
+    .div-introduction {
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+
     .splide-container {
         .splide:not(.thumbnails-slider) {
             img {

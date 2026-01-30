@@ -26,7 +26,7 @@
     {% set microDataActive = microDataActive is defined ? microDataActive : website.seoConfiguration.microData %}
     {% set information = website.information %}
     {% set infoIntl = information.intl %}
-    {% set companyName = infoIntl.title is defined and infoIntl.title ? infoIntl.title : "Agence Félix"|trans|raw %}
+    {% set companyName = infoIntl.title is defined and infoIntl.title ? infoIntl.title : "Up Animations!"|trans|raw %}
     {% set api = website.api is defined ? website.api : null %}
     {% set urlId = seo.url.id is defined ? seo.url.id : null %}
     {% set bodyBg = configuration.backgroundColor is defined ? configuration.backgroundColor : null %}
@@ -236,7 +236,10 @@
 
             <main id="body-page" role="main" class="position-relative{% if pageClass %} {{ pageClass }}{% endif %}"{% if bgImgStyle %} style="{{ bgImgStyle }}"{% endif %}>
                 {% block body %}{% endblock %}
+                {{ component('LastNews') }}
             </main>
+
+            {{ render_esi(path('front_contact_us')) }}
 
             {% if 'newsletter'|moduleActive(configuration) and not onlyBody %}
                 {{ render_esi(path('front_newsletter_view', {filter: 'main', website: website.id} )) }}
@@ -254,7 +257,8 @@
                     mainMenus: mainMenus,
                     mainPages: mainPages,
                     companyName: companyName,
-                    seo: seo is defined ? seo : null} only %}
+                    seo: seo is defined ? seo : null
+                } only %}
             {% endif %}
 
         </div>

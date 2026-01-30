@@ -103,7 +103,7 @@ final class InformationModel extends BaseModel
             alerts: self::alerts($intl),
             alertType: self::getContent('alertType', $intl->intl),
             alertDuration: self::getContent('alertDuration', $intl->intl),
-            footerDescription: $intl->body,
+            footerDescription: $intl->introduction,
         );
 
         return self::$cache['response'][$website->getId()][$locale];

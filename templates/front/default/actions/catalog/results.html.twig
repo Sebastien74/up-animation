@@ -1,30 +1,44 @@
 {% trans_default_domain 'front_default' %}
 
 {% import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard %}
+{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
 
 {% set maxPage = maxPage is defined ? maxPage : 1 %}
 {% set pageNum = pageNum is defined ? pageNum : 1 %}
+{% set colSize = 'agencies' == listing.slug ? 3 : 4 %}
 
 <div id="results" class="results row row-container listing-{{ listing.slug }}" data-page="{{ pageNum }}" data-max="{{ maxPage }}">
     {% for product in products %}
-        <div class="col-md-6 col-lg-4 item mb-5 position-relative">
-            {{ macroCard.standard({
-                entity: product,
-                intl: product.intl,
-                titleForce: 3,
-                thumbConfiguration: thumbConfiguration,
-                thumbPlaceholder: true,
-                displayThumbnail: true,
-                showLink: true,
-                colSize: 4,
-                linkStyle: 'btn btn-primary',
-                showLinkLabel: product.catalog.intl.help is defined and product.catalog.intl.help ? product.catalog.intl.help : "Découvrir"|trans,
-                mediaClass: '',
-                webmaster: {
-                    title: "Éditer le produit"|trans([], 'front_webmaster'),
-                    role: 'ROLE_CATALOG',
-                    path: path('admin_catalogproduct_edit', {website: website.id, catalogproduct: product.id})
+        <div class="col-md-6 col-lg-4 col-xl-{{ colSize }} item my-3 position-relative">
+            {% if 'agencies' == listing.slug %}
+                {{ macroCard.agency({
+                    entity: product,
+                    thumbConfiguration: thumbConfiguration,
+                    webmaster: {
+                        title: "Éditer l'agence"|trans([], 'front_webmaster'),
+                        role: 'ROLE_CATALOG',
+                        path: path('admin_catalogproduct_edit', { website: website.id, catalogproduct: product.id })
+                    }
+                }) }}
+            {% else %}
+                {{ macroCard.standard({
+                    entity: product,
+                    intl: product.intl,
+                    titleForce: 3,
+                    thumbConfiguration: thumbConfiguration,
+                    thumbPlaceholder: true,
+                    displayThumbnail: true,
+                    showLink: true,
+                    colSize: 4,
+                    linkStyle: 'btn btn-primary',
+                    showLinkLabel: product.catalog.intl.help is defined and product.catalog.intl.help ? product.catalog.intl.help : "Découvrir"|trans,
+                    mediaClass: '',
+                    webmaster: {
+                        title: "Éditer le produit"|trans([], 'front_webmaster'),
+                        role: 'ROLE_CATALOG',
+                        path: path('admin_catalogproduct_edit', {website: website.id, catalogproduct: product.id})
                 }}) }}
+            {% endif %}
         </div>
     {% endfor %}
 </div>

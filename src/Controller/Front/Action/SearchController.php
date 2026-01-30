@@ -33,11 +33,7 @@ class SearchController extends FrontController
      *
      * @throws NonUniqueResultException
      */
-    #[Route('/front/search/view/{filter}',
-        name: 'front_search_view',
-        options: ['isMainRequest' => false],
-        methods: 'GET',
-        schemes: '%protocol%')]
+    #[Route('/front/search/view/{filter}', name: 'front_search_view', options: ['isMainRequest' => false], methods: 'GET', schemes: '%protocol%')]
     public function view(
         Request $request,
         RequestStack $requestStack,

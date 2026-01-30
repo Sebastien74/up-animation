@@ -6,6 +6,7 @@ namespace App\Form\Widget;
 
 use App\Entity\Media\Category;
 use App\Entity\Media\MediaRelationIntl;
+use App\Entity\Module\Catalog\ProductMediaRelation;
 use App\Model\Core\WebsiteModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Symfony\Component\Form\AbstractType;
@@ -36,6 +37,14 @@ class MediaRelationType extends AbstractType
     {
         $data = $builder->getData();
         $this->website = $this->coreLocator->website();
+
+        $slugEntity = null;
+        if ($options['data_class'] === ProductMediaRelation::class) {
+            $mediaRelation = $this->coreLocator->em()->getRepository(ProductMediaRelation::class)->find($this->coreLocator->request()->query->get('mediaRelation'));
+            $product = $mediaRelation ? $mediaRelation->getProduct() : null;
+            $catalog = $product ? $product->getCatalog() : null;
+            $slugEntity = $product ? $catalog->getSlug() : null;
+        }
 
         $builder->add('media', MediaType::class, [
             'label' => false,
@@ -103,7 +112,9 @@ class MediaRelationType extends AbstractType
                 'required' => false,
                 'display' => 'button',
                 'color' => 'outline-info-darken',
-                'label' => $this->translator->trans('Image principale', [], 'admin'),
+                'label' => 'agencies' === $slugEntity
+                    ? $this->translator->trans('Image de vignette', [], 'admin')
+                    : $this->translator->trans('Image principale', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);
 

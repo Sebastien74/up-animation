@@ -23,7 +23,7 @@
 {% block body %}
     <div class="product-view-container view-container position-relative">
         {% if entity.haveLayout %}
-            {% include 'front/'~websiteTemplate~'/layout.html.twig' with { layout: entity.entityForLayout.layout, asLayout: true } %}
+            {% include 'front/'~websiteTemplate~'/layout.html.twig' with {layout: entity.entityForLayout.layout, asLayout: true} %}
         {% else %}
             {% include entity.template %}
         {% endif %}

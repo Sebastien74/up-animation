@@ -1,0 +1,35 @@
+{% trans_default_domain 'front_default' %}
+
+{% set entity = this.lastNews.entity %}
+
+{% if entity %}
+    <a href="{{ entity.url }}" class="fixed-news position-fixed d-flex align-items-center justify-content-center">
+        {% if entity.haveMainMedia %}
+            <div class="media-wrap me-3">
+                {{ entity.mainMedia|file({}, {
+                    screensSizes: {
+                        mobile: {width: 100, height: 100},
+                        tablet: {width: 100, height: 60},
+                        desktop: {width: 100, height: 100}
+                    },
+                    decor: false,
+                    title: entity.intl.title,
+                    class: 'force-size',
+                    lazyLoad: true,
+                    priority: 'high'
+                }) }}
+            </div>
+        {% endif %}
+        <div class="content d-flex flex-column justify-content-between pe-4">
+            {{ component('Date', {
+                date: entity.date,
+                formatDate: 'dd MMM',
+                prefix: false,
+                class: 'fw-800 text-uppercase',
+            }) }}
+            <strong class="text-secondary title fw-600 my-2">{{ entity.intl.title|striptags }}</strong>
+            <span class="text-primary learn-more text-uppercase fw-600">{{ "En savoir plus"|trans|raw }} <i class="icon-arrow-right text-primary ms-2"></i></span>
+        </div>
+        <i class="icon-times text-secondary cursor position-absolute btn-close"></i>
+    </a>
+{% endif %}

@@ -1,7 +1,18 @@
 
 https://themeforest.net/category/site-templates/entertainment/events?gad_source=1&gad_campaignid=20946799167&gclid=EAIaIQobChMI9uaJh7edkgMVg8t5BB1mOAFbEAAYAiAAEgKm1fD_BwE
 
+supprimer ->findByOldUrl() Page repo
+
+Supprimer les update created partout et faire en sorte que ca se fasse dans Doctrine Listner ou autre
+
 Lame moteur & footer : https://jthemes.net/themes/html/harmony-event/event-1.html
+
+Retirer les Agence Félix
+
+Manque animations : https://up-animations.fr/close-up/, https://up-animations.fr/graf/
+
+PAS mal : https://preview.themeforest.net/item/eventiva-music-bands-bootstrap-5-html-templates/full_screen_preview/48533121
+https://themeperch.net/html/eventiva/home-1.html
 
 https://www.madebydesignesia.com/themes/exhibiz/index-new.html
 https://preview.themeforest.net/item/harmoni-event-management-html-template/full_screen_preview/21975440
@@ -10,7 +21,23 @@ https://preview.themeforest.net/item/exhibiz-event-conference-and-meetup/full_sc
 https://html.iwthemes.com/allEvents/Conference/index-video.html
 http://preview.themeforest.net/item/events-conference-tourism-music-sport-all-events-theme/full_screen_preview/9573526
 
+https://freefrontend.com/bootstrap-cards/
+
+Faire un tour pour ->formatDirname
+
+Mettre le LastNaws si une actus à moins de un mois
+
+Finir ViewController
+
+Faire un catalogue agence
+
+Virer les cachvePool : Comparer sur CMS7
+
+Faire mail tester
+
 '/fiche-produit/{url}' a la place de fiche-produit essayer le slug du catalog
+
+SUr les pages légales passer les liens en couleur
 
 Mettre copyright dans le footer
 

@@ -9,12 +9,12 @@
 {% set logo = logos.footer is defined ? logos.footer : null %}
 {% set contactPageUrl = mainPages.contact.code is defined ? mainPages.contact.code : null %}
 
-<footer role="contentinfo" id="footer" class="footer position-relative pt-0 pt-lg-5 pb-4 bg-dark">
+<footer role="contentinfo" id="footer" class="footer position-relative pt-0 pt-lg-5 bg-dark-lighten">
     <div class="container pt-4">
         <div class="row row-container mb-5">
             <div class="col-12 text-center">
                 {% if logo %}
-                    <a class="d-inline-block" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}" data-toggle="preloader">
+                    <a class="d-inline-block" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
                         {{ asset(logo)|file({}, {
                             screensSizes: {
                                 mobile: {width: null, height: 90},
@@ -91,11 +91,11 @@
                 </div>
             {% endif %}
         </div>
-        {% if mainMenus.footer.arguments is defined and mainMenus.footer.arguments %}
-            <div id="footer-bottom">
-                {% set menuArgs = mainMenus.footer.arguments|merge({information: information, logos: logos, axeptioActive: axeptioActive}) %}
-                {% include mainMenus.footer.arguments.template with menuArgs only %}
-            </div>
-        {% endif %}
     </div>
+    {% if mainMenus.footer.arguments is defined and mainMenus.footer.arguments %}
+        <div id="footer-bottom" class="bg-dark py-4 px-4">
+            {% set menuArgs = mainMenus.footer.arguments|merge({information: information, logos: logos, axeptioActive: axeptioActive}) %}
+            {% include mainMenus.footer.arguments.template with menuArgs only %}
+        </div>
+    {% endif %}
 </footer>

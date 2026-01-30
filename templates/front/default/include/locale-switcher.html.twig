@@ -46,7 +46,7 @@
                 {% set displayFlag = currentFlag or (app.request.locale != locale) %}
                 {% set active = locale == app.request.locale %}
                 {% if displayFlag and routes[locale] is defined %}
-                    <li class="d-inline-flex {% if active %}active-locale{% else %}inactive{% endif %}" data-toggle="preloader"
+                    <li class="d-inline-flex {% if active %}active-locale{% else %}inactive{% endif %}"
                         {% if microDataActive %} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language"{% endif %}>
                         {% set languageName = locale|languageName(locale) %}
                         {% if microDataActive %}

@@ -76,6 +76,20 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
+     * Find by old URL.
+     */
+    public function findByOldUrl(string $oldUrl): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.urls', 'u')
+            ->andWhere('u.oldUrl = :oldUrl')
+            ->setParameter('oldUrl', $oldUrl)
+            ->addSelect('u')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Find by URL code and locale.
      *
      * @throws NonUniqueResultException

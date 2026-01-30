@@ -31,9 +31,10 @@ function safeList() {
         /-body/, /-footer/, /-style/, /m-/, /mx-/, /my-/, /mb-/, /mt-/, /ms-/, /me-/, /p-/, /px-/, /py-/, /pb-/, /pt-/, /ps-/, /pe-/, /fw-/, /fz-/, /-none/, /h-0/,
         /offset-/, /h-100/, /d-/, /align-/, /-align/, /flex-/, /list-/, /justify-/, /fixed-/, /link-/, /display-/, /opactity-/, /have-/,
         /screen-/, /ribbon-/, /alert-/, /badge-/, /-view-body/, /text-/, /zone-/, /custom-/, /col-/, /block-/, /level-/, /ff-/, /card-/,
-        /-block/, /order-/, /btn-/, /gdt-/, /bg-/, /modal-/, /tooltip-/, /card-/, /cta-/, /carousel-/, /overlay-/, /-overlay/, /as-scroll/,
+        /-block/, /order-/, /btn-/, /gdt-/, /bg-/, /modal-/, /tooltip-/, /card-/, /cta-/, /wave-/, /carousel-/, /overlay-/, /-overlay/, /as-scroll/,
         /address/, /container/, /body/, /description/, /introduction/, /sr-only/,
         /datepicker-/, /days/, /days-/, /dow/, /selected/, /autofill/, /focus/, /choices__/, /splide_/,
+        /scrollable/, /scrollbar-thumb/, /scrollbar-track/, /scrollbar-track-x/,
         /overflow-initial/, /parallax-window/, /full-screen/, /mobile-first/, /full-size/, /aos/, /lax/, /as-newscast-teaser/, /animation/, /aspect-ratio/, /large-file-container/, /fa-spin/, /shadow-box/, /shadow-left/, /shadow-right/,
     ];
     return {

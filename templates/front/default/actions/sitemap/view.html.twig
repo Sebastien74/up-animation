@@ -36,14 +36,14 @@
             : (url.children is defined and url.children is not empty ? url.children : []) %}
         {% set display = not url.isInfill or (url.isInfill and children is not empty) %}
         {% if display %}
-            <li class="d-flex align-items-start">
+            <li class="d-inline-block align-items-start">
                 {% if url.url and not url.isInfill %}
-                    <a href="{{ url.url }}" title="{{ title|striptags|raw }}" class="mb-2 d-inline-block" data-toggle="preloader">{{ title|striptags|raw }}</a>
+                    <a href="{{ url.url }}" title="{{ title|striptags|raw }}" class="mb-2 d-inline-block">{{ title|striptags|raw }}</a>
                 {% else %}
                     <div title="{{ title|striptags|raw }}" class="mb-2 d-inline-block">{{ title|striptags|raw }}</div>
                 {% endif %}
                 {% if children is not empty %}
-                    <ul class="ps-3">
+                    <ul class="ps-3 d-flex flex-column m-0">
                         {% for child in children %}
                             {{ macro.element(child, websiteTemplate, interfaceName, trees) }}
                         {% endfor %}
@@ -64,7 +64,7 @@
             <h2 class="title mb-3{%if not loop.first %} mt-4{%endif%}">{{ title|striptags }}</h2>
         {% endif %}
         {% if group is not empty %}
-            <ul class="ps-3">
+            <ul class="ps-3 d-flex flex-column m-0">
                 {% set groupsBy = [] %}
                 {% for groupName, urls in group %}
                     {% if interfaceName == 'catalogproduct' and groupByCatalog %}
@@ -72,7 +72,7 @@
                     {% elseif groupName != 'main' and urls.entity is defined and urls.url is defined %}
                         {% set title = urls.entity.intlCard.title is defined and urls.entity.intlCard.title ? urls.entity.intlCard.title : (urls.title is defined ? urls.title : null) %}
                         {% if title %}
-                            <li class="d-flex align-items-start"><a href="{{ urls.url }}" class="mb-2 d-inline-block" title="{{ title|striptags|raw }}" data-toggle="preloader">{{ title|striptags|raw }}</a></li>
+                            <li class="d-inline-block align-items-start"><a href="{{ urls.url }}" class="mb-2 d-inline-block" title="{{ title|striptags|raw }}">{{ title|striptags|raw }}</a></li>
                         {% endif %}
                     {% elseif groupName == 'main' %}
                         {% set entities = group.main is defined ? group.main : [] %}
@@ -87,7 +87,7 @@
             {% for groupSlug, urlsGroup in groupsBy %}
                 {% set title = categories[groupSlug].title is defined ? categories[groupSlug].title : groupSlug %}
                 <h2 class="title mb-3 mt-4">{{ title|striptags }}</h2>
-                <ul class="ps-3 mb-0">
+                <ul class="ps-3 d-flex flex-column m-0">
                     {% for url in urlsGroup %}
                         {{ macro.element(url, websiteTemplate, interfaceName, trees) }}
                     {% endfor %}

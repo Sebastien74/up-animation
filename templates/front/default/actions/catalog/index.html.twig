@@ -88,7 +88,9 @@
                  data-href="{{ ajaxPath }}"
                  data-highlight="{{ highlight }}"
                  class="products-index-container pagination-ajax-wrap">
-                {% include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader'} only %}
+                {% if products is not empty %}
+                    {% include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader'} only %}
+                {% endif %}
                 {% include 'front/'~websiteTemplate~'/actions/catalog/results.html.twig' %}
                 {% if scrollInfinite or showMoreBtn %}
                     <div id="scroller-loader" class="w-100 mt-5 d-none text-center">

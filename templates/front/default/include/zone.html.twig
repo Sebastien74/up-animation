@@ -198,6 +198,7 @@
                                                             {% if block.blockType.slug is defined and block.blockType.slug == "title-header" %}
                                                                 {% set haveTitleHeader = true %}
                                                             {% endif %}
+                                                            {{ dump(block.blockType.slug) }}
                                                             {{ renderBlock(_context)|raw }}
                                                         {% endif %}
                                                     {% if innerBlockBackground or bgColorHexaInner %}

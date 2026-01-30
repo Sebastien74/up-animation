@@ -16,15 +16,22 @@
     .card {
 
         .card-header {
-            picture, picture img, .img-hover-buttons-wrap, .img-loader-wrap {
-                border-top-left-radius: $border-radius-small;
-                border-top-right-radius: $border-radius-small;
+            picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader-wrap {
                 width: 100%;
                 object-fit: cover;
             }
         }
 
-        &:not(.have-bg) {
+        &:not(.card-wave) {
+            .card-header {
+                picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader-wrap {
+                    border-top-left-radius: $border-radius-small;
+                    border-top-right-radius: $border-radius-small;
+                }
+            }
+        }
+
+        &:not(.have-bg):not(.card-wave) {
             .card-header {
                 picture img, .img-hover-buttons-wrap {
                     border-bottom-left-radius: $border-radius-small;
@@ -52,6 +59,73 @@
 
         .card-footer {
             margin-top: -1px;
+        }
+
+        &.card-wave {
+
+            border-radius: $border-radius;
+
+            @include mediaQuery(min-lg) {
+
+                transition: box-shadow .3s linear;
+
+                .card-header img {
+                    transition: transform .3s linear;
+                    transform: scale(1);
+                }
+
+                &:hover {
+
+                    transition: box-shadow .3s linear;
+                    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.30) !important;
+
+                    .card-header img {
+                        transition: transform .3s linear;
+                        transform: scale(1.02);
+                    }
+                }
+            }
+
+            .card-header, .card-header .img-loader-wrap, .card-header img {
+                border-top-left-radius: $border-radius;
+                border-top-right-radius: $border-radius;
+            }
+
+            .card-body {
+
+                border-bottom-left-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+                z-index: 500;
+
+                .shape-divider-top {
+                    position: absolute;
+                    top: -29px;
+                    left: 0;
+                    width: 100%;
+                    overflow: hidden;
+                    line-height: 0;
+                    transform: rotate(180deg);
+                }
+
+                .circle {
+
+                    z-index: 100;
+                    width: 55px;
+                    height: 55px;
+                    border-radius: 50%;
+                    aspect-ratio: 1;
+                    right: 3rem;
+                    top: -2.5rem;
+
+                    i {
+                        font-size: 26px;
+                    }
+                }
+
+                .content {
+                    z-index: 500;
+                }
+            }
         }
     }
 

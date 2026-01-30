@@ -1,6 +1,7 @@
 {% trans_default_domain 'front_default' %}
 
 {% import _self as macro %}
+{% import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard %}
 
 {% set itemsPerSlide = itemsPerSlide is defined ? itemsPerSlide : 4 %}
 {% set entities = associatedEntities.list %}
@@ -101,20 +102,33 @@
                     {% set colSizeNext = promoteFirst ? (100 - colSizeFirst) / (teaser.itemsPerSlide - 1) : null %}
                     {% set colSizeNext = isMobile ? 100 : (isTablet() ? 40 : colSizeNext) %}
                     {% set colSize = promoteFirst and not isFirst ? colSizeNext : (promoteFirst ? colSizeFirst : null) %}
+                    {% set asAgency = entity.asAgency is defined and entity.asAgency %}
                     <li class="splide__slide ps-0 pe-0 ps-md-0 pe-md-4 {% if isMobile %}col-12{% else %}col{% if not promoteFirst %}-md-4{% endif %}{% endif %}{% if loop.index > itemsPerSlide %} d-none{% endif %}{% if isFirst %} is-first{% endif %}"
                         {% if colSizeNext %}data-size-next="{{ colSizeNext }}%"{% endif %}
                             {% if colSize %}style="width: {{ colSize }}%"{% endif %}>
-                        <div class="card bg-transparent d-inline-block border-0 w-100">
-                            <div class="card-header bg-transparent p-0 border-0">
-                                {{ macro.mediaRelation(entity, thumbConfiguration) }}
+                        {% if asAgency %}
+                            {{ macroCard.agency({
+                                entity: entity,
+                                thumbConfiguration: thumbConfiguration,
+                                webmaster: {
+                                    title: "Éditer l'agence"|trans([], 'front_webmaster'),
+                                    role: 'ROLE_CATALOG',
+                                    path: path('admin_catalogproduct_edit', { website: website.id, catalogproduct: entity.id })
+                                }
+                            }) }}
+                        {% else %}
+                            <div class="card bg-transparent d-inline-block border-0 w-100">
+                                <div class="card-header bg-transparent p-0 border-0">
+                                    {{ macro.mediaRelation(entity, thumbConfiguration) }}
+                                </div>
+                                <div class="card-body bg-transparent p-0 border-0 pt-4">
+                                    {{ macro.body(entity) }}
+                                </div>
+                                <div class="card-footer bg-transparent p-0 border-0 pt-3">
+                                    {{ macro.showLink(websiteTemplate, entity) }}
+                                </div>
                             </div>
-                            <div class="card-body bg-transparent p-0 border-0 pt-4">
-                                {{ macro.body(entity) }}
-                            </div>
-                            <div class="card-footer bg-transparent p-0 border-0 pt-3">
-                                {{ macro.showLink(websiteTemplate, entity) }}
-                            </div>
-                        </div>
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>

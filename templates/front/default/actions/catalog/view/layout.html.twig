@@ -1,6 +1,8 @@
 {% trans_default_domain 'front_default' %}
 
 {% set blockType = block.blockType is defined and block.blockType ? block.blockType.slug : null %}
+{% set catalogSlug = entity.catalog.slug is defined ? entity.catalog.slug : null %}
+{% set asAgency = entity.asAgency %}
 
 {% if blockType == 'layout-title-header' and entity.intl.title %}
 
@@ -19,13 +21,26 @@
 
     <h{{ entity.intl.titleForce }} class="title mt-4 mb-4">{{ entity.intl.title|raw }}</h{{ entity.intl.titleForce }}>
 
+{% elseif blockType == 'layout-secondary-title' and entity.intl.title %}
+
+    À LA RECHERCHE D'UN PROFESSIONNEL ?
+    DES Animations POUR
+    TOUS VOS ÉVÉNEMENTS
+    DANS LE RHÔNE
+
+
 {% elseif blockType == 'layout-published-date' and entity.date %}
 
     {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-published-date.html.twig' with {entity: entity} only %}
 
 {% elseif blockType == 'layout-intro' and entity.intl.introduction %}
 
-    <p class="introduction text-bold">{{ entity.intl.introduction|raw }}</p>
+    {% if asAgency %}
+        <div class="introduction div-introduction">{{ entity.intl.introduction|raw }}</div>
+    {% else %}
+        <p class="introduction text-bold">{{ entity.intl.introduction|raw }}</p>
+    {% endif %}
+
 
 {% elseif blockType == 'layout-body' and entity.intl.body %}
 
@@ -101,7 +116,8 @@
 
 {% elseif blockType == 'layout-image' and entity.mainMedia %}
 
-    <div class="image">{{ entity.mainMedia|file(thumbConfiguration) }}</div>
+    {% set mainMedia = entity.asAgency ? entity.mediasWithoutMain|first : entity.mainMedia %}
+    <div class="image">{{ mainMedia|file(thumbConfiguration) }}</div>
 
 {% elseif blockType == 'layout-catalog-lots-table' %}
 
@@ -246,7 +262,7 @@
     {% if pageUrl %}
         {% set btnLabel = entity.catalog.intl.linkLabel is defined and entity.catalog.intl.linkLabel
             ? entity.catalog.intl.linkLabel : "Retourner à la liste des produits"|trans %}
-        <a href="{{ path('front_index', {url: pageUrl}) }}" class="link" data-toggle="preloader">
+        <a href="{{ path('front_index', {url: pageUrl}) }}" class="link">
             <i class="icon-chevron-left me-2"></i>{{ btnLabel }}
         </a>
     {% endif %}
@@ -254,9 +270,9 @@
 {% elseif blockType == 'layout-associated-entities' %}
 
     {% set display = layout.associatedEntitiesDisplay is defined and layout.associatedEntitiesDisplay ? layout.associatedEntitiesDisplay : 'slider' %}
-    {% set catalogSlug = entity.catalog.slug is defined ? entity.catalog.slug : null %}
-    {% set disabledTitle = false %}
-
+    {% if asAgency %}
+        {% set listingTitle = 'Découvrez nos autres agences'|trans %}
+    {% endif %}
     <div class="associated-entities-container w-100{% if associatedEntities.list is empty %} empty-associated-entities{% endif %}">
         {% if associatedEntities.list is empty %}
             <p class="mb-0">{{ "Aucun produit associés."|trans|raw }}</p>
@@ -268,6 +284,10 @@
             {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-cards.html.twig' %}
         {% endif %}
     </div>
+
+{% elseif blockType == 'layout-agency-animations' %}
+
+    {% include 'front/'~websiteTemplate~'/actions/catalog/include/layout-agency-animations.html.twig' %}
 
 {% elseif blockType == 'layout-share' %}
 

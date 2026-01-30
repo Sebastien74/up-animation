@@ -226,7 +226,7 @@ class PasswordExpire
         }
 
         if (empty($this->emailNames[$website->getId()])) {
-            $this->emailNames[$website->getId()] = 'Agence Félix';
+            $this->emailNames[$website->getId()] = 'Up Animations!';
         }
 
         return $this->emailNames[$website->getId()];

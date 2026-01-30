@@ -41,7 +41,7 @@
         {% if linkBlank %} target="_blank"{% endif %}
         {% if samePage %} data-target="#{{ uriInfos.anchor }}"{% endif %}
         {% if linkExternal %} rel="noopener noreferrer"{% endif %}>
-        <span class="initial">{{ linkLabel|unescape|raw }}</span>{% if linkAsButton %} <i class="icon-{{ iconClass }}"></i>{% endif %}
+        <span class="initial">{{ linkLabel|unescape|raw }}</span>
     </a>
 {% endmacro %}
 

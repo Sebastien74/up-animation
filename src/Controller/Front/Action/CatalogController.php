@@ -230,7 +230,7 @@ class CatalogController extends ActionController
     {
         $this->arguments['locale'] = $request->getLocale();
         $this->arguments['limit'] = (-1 === $limit) || !is_numeric($limit) ? 1000000 : $limit;
-        $searchProducts = ($listing->isShowMap() && $this->coreLocator->request()->get('ajax')) || !$listing->isShowMap();
+        $searchProducts = ($listing->isShowMap() && $this->coreLocator->request()->query->get('ajax')) || !$listing->isShowMap();
         $searchService = $this->frontLocator->catalogSearch();
 
         $productIdsDisplay = [];

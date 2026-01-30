@@ -359,7 +359,7 @@ readonly class PagesUrlsCrawlerService
     /**
      * Add header.
      */
-    private function addHeader(Layout\Col $col, string $adminName, Website $website): void
+    public function addHeader(Layout\Col $col, string $adminName, Website $website): void
     {
         $col->setPaddingLeft('ps-0');
         $col->setPaddingRight('pe-0');

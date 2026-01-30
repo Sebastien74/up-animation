@@ -9,7 +9,7 @@
 {% set information = website.information %}
 {% set cacheClearDate = website.cacheClearDate is defined and website.cacheClearDate ? website.cacheClearDate|date('Y-m-d') : null %}
 {% set isCustomPath = logos['security-logo'] is defined and logos['security-logo'] or not adminTheme %}
-{% set companyName = isCustomPath and information.title is defined and information.title ? information.title : "Agence Félix CMS"|trans|striptags %}
+{% set companyName = isCustomPath and information.title is defined and information.title ? information.title : "Up Animations! CMS"|trans|striptags %}
 {% set faviconPath = asset('build/security/images/favicon.ico', 'security') %}
 {% set logoPath = isCustomPath and logos['security-logo'] is defined and logos['security-logo'] and 'placeholder' not in logos['security-logo'] ? asset(logos['security-logo'])
     : (not adminTheme ? asset('build/security/images/security.svg', 'security') : asset('build/security/images/logo.png', 'security')) %}

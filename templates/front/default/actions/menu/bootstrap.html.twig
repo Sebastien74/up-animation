@@ -9,9 +9,9 @@
 
 {% set logo = logos.logo is defined and logos.logo ? logos.logo : null %}
 {% set networks = logos['social-networks'] is defined and logos['social-networks'] ? logos['social-networks'] : null %}
-{% set haveEmails = infos.emails.header is defined and infos.emails.header|length > 0 %}
-{% set havePhones = infos.phones.header is defined and infos.phones.header|length > 0 %}
-{% set companyName = informationIntl.title is defined and informationIntl.title ? informationIntl.title : "Agence Félix"|trans|raw %}
+{% set haveEmails = information.emails.header is defined and information.emails.header is not empty %}
+{% set havePhones = information.phones.header is defined and information.phones.header is not empty %}
+{% set companyName = information.companyName is defined and information.companyName ? information.companyName : "Up Animations!"|trans|raw %}
 {% set haveLogin = 'secure-page'|moduleActive(configuration) %}
 {% set links = tree.main is defined ? tree.main : [] %}
 {% set compagnyNameElement = (seo.titleH1 is defined and not seo.titleH1 or seo.titleH1 is not defined) ? 'h1' : 'strong' %}
@@ -40,7 +40,7 @@
             {% set linkClass = 1 == link.level ? linkClass~' text-uppercase' : linkClass %}
             <{% if 'a' == element %}a{% else %}div{% endif %} class="{{ linkClass }}"{% if link.dataAnchor %} data-anchor="{{ link.dataAnchor }}"{% endif %}
                 {% if path %}href="{{ path }}"{% endif %}{% if link.children and not dropdownHover %} id="navbar-link-{{ link.id }}"{% endif %}
-                {% if link.children and not dropdownHover %} role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% elseif link.linkBlank %} target="_blank"{% else %} data-toggle="preloader"{% endif %}
+                {% if link.children and not dropdownHover %} role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% elseif link.linkBlank %} target="_blank"{% else %}{% endif %}
                 {% if link.linkExternal %} rel="noopener noreferrer"{% endif %}
                 {% if pushMicroData %} itemprop="url"{% endif %}>
                 {% if link.media %}
@@ -85,7 +85,7 @@
                         <li class="nav-item level-1 text-center d-{{ expand }}-none text-uppercase{% if indexActive %} active{% endif %}"
                             {% if microDataActive %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement"{% endif %}>
                             <a href="{{ path('front_index') }}" class="nav-link link-level-1 text-primary{% if indexActive %} active{% endif %}"
-                                {% if microDataActive %} itemprop="url"{% endif %} data-toggle="preloader">
+                                {% if microDataActive %} itemprop="url"{% endif %}>
                                 {% if microDataActive %}<span itemprop="name">{% endif %}{{ "Accueil"|trans|raw }}{% if microDataActive %}</span>{% endif %}
                             </a>
                         </li>

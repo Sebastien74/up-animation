@@ -96,6 +96,7 @@
         "select2": "^4.1.0-rc.0",
         "shikwasa": "^2.2.1",
         "simplebar": "^6.2.7",
+        "smooth-scrollbar": "^8.8.4",
         "typed.js": "^2.1.0",
         "vanilla-infinite-marquee": "^1.0.13",
         "vanilla-lazyload": "^19.1.3",
