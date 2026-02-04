@@ -133,9 +133,6 @@ class DoctrineEventsListener
                 if ($entity->getId() && empty($this->objects[$classname])) {
                     $this->logger($entity, 'onFlush');
                     $this->setMasterField($entity, true);
-                    if ($this->inAdmin) {
-                        $this->coreLocator->cacheService()->clearCaches($entity);
-                    }
                     $this->objects[$classname][$entity->getId()] = $entity;
                 }
                 $this->removeCacheFiles($entity);
@@ -153,7 +150,6 @@ class DoctrineEventsListener
         if (($allowed && $this->inAdmin && !$this->disabledCache($entity))
             || ($this->request && $this->request->isMethod('delete'))
         ) {
-            $this->coreLocator->cacheService()->clearCaches($entity);
             $this->logger($entity, 'postRemove');
         }
     }
@@ -216,9 +212,6 @@ class DoctrineEventsListener
             if (is_object($masterEntity) && method_exists($masterEntity, 'setUpdatedAt')) {
                 $masterEntity->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $this->coreLocator->em()->persist($masterEntity);
-                if ($this->inAdmin && $clearCache) {
-                    $this->coreLocator->cacheService()->clearCaches($entity);
-                }
             }
         }
     }

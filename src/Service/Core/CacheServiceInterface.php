@@ -13,8 +13,5 @@ namespace App\Service\Core;
  */
 interface CacheServiceInterface
 {
-    public function cachePool(mixed $entity, string $name, string $method, mixed $response = null, mixed $parentEntity = null): mixed;
-    public function clearCaches(mixed $entity = null, bool $force = false): void;
-    public function cacheKey(mixed $entity, ?string $prefix = null, bool $generateEmpty = true): ?string;
     public function generateRoutes(): void;
 }

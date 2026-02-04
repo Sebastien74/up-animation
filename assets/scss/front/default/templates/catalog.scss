@@ -12,6 +12,8 @@
     1 ) Modules
     2 ) Core import
     3 ) Core
+    4 ) Agency highlights
+    5 ) Contact us
 
 ------------------------------------------------------------------ */
 
@@ -27,6 +29,7 @@ $enable-youtube: true;
 -----------------------------------*/
 
 @import "../vendor";
+@import "../components/contact-us";
 
 /*-----------------------------------
    3 ) Core
@@ -45,6 +48,58 @@ $enable-youtube: true;
             img {
                 width: 100%;
             }
+        }
+    }
+
+    .introduction {
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+/*-----------------------------------
+   4 ) Agency highlights
+-----------------------------------*/
+
+.agency-highlights {
+
+    .card-header {
+
+        .rounded-badge {
+
+            width: 40px;
+            height: 40px;
+            border-radius: 1rem;
+
+            i {
+                font-size: 25px;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   5 ) Contact us
+-----------------------------------*/
+
+.contact-us-container {
+
+    .item {
+
+        .rounded-badge {
+
+            width: 60px;
+            height: 60px;
+            border-radius: 1rem;
+
+            i {
+                font-size: 35px;
+            }
+        }
+
+        address {
+            line-height: 1.2;
         }
     }
 }

@@ -24,9 +24,9 @@
 {% set linkAsButton = linkAsButton is defined ? linkAsButton : 'btn' in linkStyle %}
 
 {% macro icon(iconCustom, iconCustomSize, iconCustomColor, iconCustomWidth, iconCustomHeight, iconCustomPosition) %}
-    {% set class = iconCustomPosition == 'start' ? 'me-3' : '' %}
+    {% set class = iconCustomPosition == 'start' ? 'me-2' : '' %}
     {% if 'icon-' in iconCustom %}
-        <i class="{{ iconCustom }} {{ class }}"></i>
+        <i class="{{ iconCustom }} {{ class }}" aria-hidden="true"></i>
     {% elseif iconCustom and 'medias' in iconCustom %}
         {{ iconCustom|icon(null, null, class~" icon-"~iconCustomSize~" "~iconCustomColor) }}
     {% elseif iconCustom %}
@@ -34,19 +34,25 @@
     {% endif %}
 {% endmacro %}
 
-{% macro link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage) %}
+{% macro link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage, iconCustom = false, iconSide = 'start') %}
     {% set iconClass = linkAsButton ? 'chevron-right ms-2 as-btn' : 'chevron-right' %}
     <a {% if samePage %}data-href{% else %}href{% endif %}="{{ link }}"
        class="{{ linkStyle }} d-inline-flex align-items-center{% if samePage %} scroll-link{% endif %}{{ trackClass }}"
         {% if linkBlank %} target="_blank"{% endif %}
         {% if samePage %} data-target="#{{ uriInfos.anchor }}"{% endif %}
         {% if linkExternal %} rel="noopener noreferrer"{% endif %}>
-        <span class="initial">{{ linkLabel|unescape|raw }}</span>
+        {% if 'start' == iconSide and iconCustom %}
+            <i class="icon-{{ iconCustom }} me-2" aria-hidden="true"></i>
+        {% endif %}
+            <span class="initial">{{ linkLabel|unescape|raw }}</span>
+        {% if 'end' == iconSide and iconCustom %}
+            <i class="icon-{{ iconCustom }} ms-2" aria-hidden="true"></i>
+        {% endif %}
     </a>
 {% endmacro %}
 
 {% if link %}
-    <div class="link-block {% if style %} {{ style }}{% endif %}">
+    <div class="link-block{% if style %} {{ style }}{% endif %}">
         {% if linkIsEmail is defined and linkIsEmail %}
             <div class="{{ style }}">
                 {{ link|email(website, {only_href: true}) }}
@@ -78,7 +84,7 @@
                 {{ linkLabel|unescape|raw }} <i class="icon-chevron-right"></i>
             </a>
         {% else %}
-            {{ macro.link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage) }}
+            {{ macro.link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage, iconCustom) }}
         {% endif %}
         {% if script is defined and script %}
             {{ script|raw }}

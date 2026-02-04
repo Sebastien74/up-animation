@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\Request;
 ])]
 class RedirectionService
 {
-    private const array IPS_DEV = ['::1', '127.0.0.1', 'fe80::1', '194.51.155.21', '195.135.16.88', '176.135.112.19', '2a02:8440:5341:81fb:fd04:6bf3:c8c7:1edb', '88.173.106.115', '2001:861:43c3:ce70:bd5f:81d1:7710:888b', '2001:861:43c3:ce70:45e7:2aa7:ab50:c245'];
+    private const array IPS_DEV = ['::1', '127.0.0.1', 'fe80::1', '194.51.155.21', '195.135.16.88'];
     private string $protocol;
     private static ?PhpArrayAdapter $redirectionCache = null;
 
@@ -209,7 +209,7 @@ class RedirectionService
                 }
             }
 
-            return 'front_build_page' !== $request->get('_route') ? $this->coreLocator->router()->generate('front_build_page') : false;
+            return 'front_build_page' !== $request->attributes->get('_route') ? $this->coreLocator->router()->generate('front_build_page') : false;
         }
 
         return false;

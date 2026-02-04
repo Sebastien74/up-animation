@@ -8,10 +8,13 @@ use App\Command\JsRoutingCommand;
 use App\Entity\Core\Website;
 use App\Entity\Layout\Block;
 use App\Entity\Layout\Page;
+use App\Entity\Module\Catalog\Catalog;
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Security\User;
 use App\Entity\Seo\Seo;
 use App\Entity\Seo\Url;
 use App\Model\Core\WebsiteModel;
+use App\Model\Module\ProductModel;
 use App\Service\Content\MenuServiceInterface;
 use App\Service\Content\SeoService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -173,7 +176,8 @@ class ExceptionController extends BaseController
         SeoService $seoService,
         ?DebugLoggerInterface $logger = null,
     ): array {
-        $internalsIPS = ['::1', '127.0.0.1', 'fe80::1', '194.51.155.21', '195.135.16.88', '176.135.112.19', '2a02:8440:5341:81fb:fd04:6bf3:c8c7:1edb', '88.173.106.115', '2001:861:43c3:ce70:bd5f:81d1:7710:888b', '2001:861:43c3:ce70:45e7:2aa7:ab50:c245'];
+
+        $internalsIPS = ['::1', '127.0.0.1', 'fe80::1', '194.51.155.21', '195.135.16.88'];
         $allowedIP = $this->checkIP($internalsIPS);
 
         $arguments['is_debug'] = $this->isDebug;
@@ -185,10 +189,10 @@ class ExceptionController extends BaseController
         $arguments['currentContent'] = null;
 
         if (preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $request->getUri()) && !str_contains($request->getUri(), '/preview/')) {
-            if (!$request->get('website')) {
+            if (!$request->attributes->get('website')) {
                 $website = $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($request->getHost());
             } else {
-                $website = $this->coreLocator->em()->getRepository(Website::class)->findObject(intval($request->get('website')));
+                $website = $this->coreLocator->em()->getRepository(Website::class)->findObject(intval($request->attributes->get('website')));
             }
             $arguments['website'] = $this->website = $website;
             $arguments['configuration'] = $website->configuration;
@@ -198,6 +202,12 @@ class ExceptionController extends BaseController
             $configuration = $website->configuration;
             $userBackIPS = $configuration ? $configuration->entity->getAllIPS() : [];
             $allowedIP = $this->checkIP($userBackIPS);
+            $agenciesCatalog = $this->coreLocator->em()->getRepository(Catalog::class)->findOneBy(['website' => $website->entity, 'slug' => 'agencies']);
+            $agenciesBd = $this->coreLocator->em()->getRepository(Product::class)->findOnlineByCatalogs($website->entity, $this->coreLocator->locale(), [$agenciesCatalog]);
+            $agencies = [];
+            foreach ($agenciesBd as $agency) {
+                $agencies[] = ProductModel::fromEntity($agency, $this->coreLocator, ['disabledProducts' => true, 'disabledLayout' => true, 'disabledMedias' => true, 'disabledCategories' => true, 'disabledCategory' => true]);
+            }
             $arguments['thumbConfigurationHeader'] = $this->thumbConfiguration($website, Block::class, 'block', null, 'title-header');
             $arguments['isUserBack'] = $allowedIP || $this->getUser() instanceof User;
             $arguments['website'] = $this->website = $website;
@@ -208,6 +218,8 @@ class ExceptionController extends BaseController
             $arguments['mainMenus'] = !$website->isEmpty ? $menuService->all($website) : [];
             $arguments['mainPages'] = $website->configuration->pages;
             $arguments['logos'] = $website->logos;
+            $arguments['agencies'] = $agencies;
+            $arguments['catalogMenus'] = $this->coreLocator->em()->getRepository(Product::class)->findOnlineInMenus($website->entity, $this->coreLocator->locale());
         }
 
         return $arguments;
@@ -268,7 +280,6 @@ class ExceptionController extends BaseController
 
                     $this->coreLocator->em()->persist($page);
                     $this->coreLocator->em()->flush();
-                    $this->coreLocator->cacheService()->clearCaches($page, true);
 
                     $exceptionUrl = $errorUrl;
                     $currentLocaleExisting = true;

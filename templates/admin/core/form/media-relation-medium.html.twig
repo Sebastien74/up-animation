@@ -93,6 +93,9 @@
                     {% if form.radius is defined %}
                         <div class="col-md-6">{{ form_row(form.radius) }}</div>
                     {% endif %}
+                    {% if form.rotation is defined %}
+                        <div class="col-md-6">{{ form_row(form.rotation) }}</div>
+                    {% endif %}
                     {% if form.media.hideHover is defined %}
                         <div class="col-md-6">{{ form_row(form.media.hideHover) }}</div>
                     {% endif %}

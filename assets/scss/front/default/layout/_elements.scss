@@ -89,6 +89,10 @@ sup {
     text-align: justify !important;
 }
 
+.text-white-50 {
+    color: transparentize($white, .5) !important;
+}
+
 @include mediaQuery(min-xs) {
     .text-xs-justify {
         text-align: justify !important;
@@ -476,7 +480,7 @@ a {
         i {
             font-size: 11px;
             position: relative;
-            transition: all .3s ease-in-out;
+            transition: all .3s linear;
         }
     }
 }
@@ -514,22 +518,22 @@ a {
             left: 0;
             height: 1px;
             width: 0;
-            transition: all .3s ease-in-out;
+            transition: all .3s linear;
         }
 
         &:hover {
 
             color: $primary;
-            transition: all .3s ease-in-out;
+            transition: all .3s linear;
 
             svg {
                 fill: $primary;
-                transition: all .3s ease-in-out;
+                transition: all .3s linear;
             }
 
             &:after {
                 width: 100%;
-                transition: all .3s ease-in-out;
+                transition: all .3s linear;
                 background-color: $secondary;
             }
         }
@@ -551,7 +555,7 @@ a {
     left: 0;
     height: 1px;
     width: 100%;
-    transition: all .3s ease-in-out;
+    transition: all .3s linear;
     background-color: currentColor;
 }
 

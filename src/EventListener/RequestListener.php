@@ -78,7 +78,7 @@ class RequestListener
         }
 
         $securityToken = $_ENV['SECURITY_TOKEN'] ?? '';
-        $isAdminPath = str_contains($this->uri, '/admin-' . $securityToken . '/');
+        $isAdminPath = str_contains($this->uri, '/admin-'.$securityToken.'/');
         $isLogin = str_contains($this->uri, '/secure/user');
         $isPreview = str_contains($this->uri, '/preview/');
         $isFront = (!$isAdminPath && !$isLogin) || $isPreview;
@@ -140,7 +140,7 @@ class RequestListener
         }
 
         if (self::$routesCache === null) {
-            $dirname = $this->coreLocator->cacheDir() . DIRECTORY_SEPARATOR . 'routes.cache';
+            $dirname = $this->coreLocator->cacheDir().DIRECTORY_SEPARATOR.'routes.cache';
             if (file_exists($dirname)) {
                 $cache = new PhpArrayAdapter($dirname, new FilesystemAdapter());
                 self::$routesCache = $cache->getItem('routes.list')->get() ?? [];

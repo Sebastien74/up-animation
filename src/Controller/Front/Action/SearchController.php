@@ -12,6 +12,7 @@ use App\Form\Type\Module\Search\FrontType;
 use App\Repository\Layout\PageRepository;
 use App\Repository\Module\Search\SearchRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,25 +42,16 @@ class SearchController extends FrontController
         PageRepository $pageRepository,
         mixed $filter = null,
     ): Response {
-        if (!$filter) {
-            return new Response();
-        }
-
-        $block = $request->get('block') instanceof Block ? $request->get('block') : null;
-        $cache = $this->coreLocator->cacheService()->cachePool($block, 'search_view', 'GET');
-        if ($cache) {
-            return $cache;
-        }
 
         $website = $this->getWebsite();
-        $search = $searchRepository->findOneByFilter($website->entity, $request->getLocale(), $filter);
+        $search = $filter ? $searchRepository->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
 
         if (!$search) {
             return new Response();
         }
 
-        $modal = $request->get('modal') && $search->isModal();
-        $button = $request->get('button');
+        $modal = $request->query->get('modal') && $search->isModal();
+        $button = $request->query->get('button');
         $displayForm = $search->isModal() && !$button || !$search->isModal() && $button;
 
         $configuration = $website->configuration;
@@ -79,7 +71,7 @@ class SearchController extends FrontController
             'method' => 'GET',
         ]);
 
-        $response = $this->render('front/'.$template.'/actions/search/view.html.twig', [
+        return $this->render('front/'.$template.'/actions/search/view.html.twig', [
             'resultsPage' => $resultsPageUrl,
             'search' => $search,
             'websiteTemplate' => $template,
@@ -89,14 +81,12 @@ class SearchController extends FrontController
             'btn' => $button,
             'scrollInfinite' => $search->isScrollInfinite(),
         ]);
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'search_view', 'GENERATE', $response);
     }
 
     /**
      * Results view.
      *
-     * @throws \Exception|InvalidArgumentException|NonUniqueResultException
+     * @throws Exception|InvalidArgumentException|NonUniqueResultException
      */
     #[Route('/front/search/results/{filter}', name: 'front_search_results', options: ['isMainRequest' => false], methods: 'GET', schemes: '%protocol%')]
     public function results(
@@ -107,19 +97,16 @@ class SearchController extends FrontController
         PageRepository $pageRepository,
         mixed $filter = null,
     ): Response {
-        if (!$filter) {
-            return new Response();
-        }
 
         $website = $this->getWebsite();
-        $search = $searchRepository->findOneByFilter($website->entity, $request->getLocale(), $filter);
-        $displayForm = 'only-results' !== $request->get('slug');
+        $search = $filter ? $searchRepository->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
+        $displayForm = 'only-results' !== $request->query->get('slug');
 
         if (!$search) {
             return new Response();
         }
 
-        $searchText = $requestStack->getMainRequest()->get('search');
+        $searchText = $requestStack->getMainRequest()->query->get('search');
         $searchText = $searchText ? urldecode($searchText) : $searchText;
         // XSS protection: reset the value if it contains potentially malicious content
         if (!is_string($searchText) || !preg_match('/^[\p{L}\p{N} _\-.,\'"]+$/u', $searchText)) {
@@ -136,7 +123,7 @@ class SearchController extends FrontController
         $results = $searchText ? $searchManager->execute($search, $website->entity, $searchText) : [];
         $configuration = $website->configuration;
         $websiteTemplate = $configuration->template;
-        $currentPage = $requestStack->getMainRequest()->get('page') ? $requestStack->getMainRequest()->get('page') : 1;
+        $currentPage = $requestStack->getMainRequest()->query->get('page') ? $requestStack->getMainRequest()->query->get('page') : 1;
         $allResults = $results['results'] ?? [];
         $counts = $results['counts'] ?? 0;
         $count = is_array($counts) && isset($counts['all']) ? $counts['all'] : 0;

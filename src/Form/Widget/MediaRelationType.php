@@ -40,7 +40,9 @@ class MediaRelationType extends AbstractType
 
         $slugEntity = null;
         if ($options['data_class'] === ProductMediaRelation::class) {
-            $mediaRelation = $this->coreLocator->em()->getRepository(ProductMediaRelation::class)->find($this->coreLocator->request()->query->get('mediaRelation'));
+            $request = $this->coreLocator->request();
+            $mediaRelationId = $request->attributes->get('mediarelation') ? $request->attributes->get('mediarelation') : $request->query->get('mediaRelation');
+            $mediaRelation = $mediaRelationId ? $this->coreLocator->em()->getRepository(ProductMediaRelation::class)->find($mediaRelationId) : null;
             $product = $mediaRelation ? $mediaRelation->getProduct() : null;
             $catalog = $product ? $product->getCatalog() : null;
             $slugEntity = $product ? $catalog->getSlug() : null;
@@ -124,6 +126,16 @@ class MediaRelationType extends AbstractType
                     'display' => 'button',
                     'color' => 'outline-info-darken',
                     'label' => $this->translator->trans("Image d'entête", [], 'admin'),
+                    'attr' => ['class' => 'w-100'],
+                ]);
+            }
+
+            if ($options['rotation']) {
+                $builder->add('rotation', Type\CheckboxType::class, [
+                    'required' => false,
+                    'display' => 'button',
+                    'color' => 'outline-info-darken',
+                    'label' => $this->translator->trans("Rotation de l'image", [], 'admin'),
                     'attr' => ['class' => 'w-100'],
                 ]);
             }
@@ -273,6 +285,7 @@ class MediaRelationType extends AbstractType
             'categories' => false,
             'pictogram' => false,
             'pictogramSizes' => false,
+            'rotation' => false,
             'onlyOne' => false,
             'onlyMp3' => false,
             'onlyMedia' => false,

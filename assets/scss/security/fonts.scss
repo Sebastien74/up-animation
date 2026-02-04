@@ -1,0 +1,15 @@
+/* ------------------------------------------------------------------------------------------
+    Module : Fonts
+    Copyright : 2025
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+------------------------------------------------------------------------------------------ */
+
+@import "../vendor/mixin/fonts";
+
+$fontFamily: 'Poppins', sans-serif; /** Keep to admin font plugin */
+@import "../../lib/fonts/google-poppins";
+
+/*! purgecss start ignore */
+//@import "../../../lib/fonts/icomoon";
+/*! purgecss end ignore */

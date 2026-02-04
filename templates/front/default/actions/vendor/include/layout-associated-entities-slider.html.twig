@@ -71,7 +71,7 @@
 <div class="slider-container{% if entities is empty %} empty-associated-entities{% endif %}">
     {% if not disabledTitle %}
         <div class="title-block w-100 mb-4 mb-lg-3">
-            <h2 class="title">{{ listingTitle|raw }}</h2>
+            <h2 class="title text-uppercase">{{ listingTitle|raw }}</h2>
         </div>
     {% endif %}
     {% set autoplay = 1 %}
@@ -91,11 +91,11 @@
          data-gap="2rem"
          data-counter="0"
          data-interval="2500">
-        <div class="splide__track">
+        <div class="splide__track pb-4 ps-4">
             {% if arrows and 'top' in arrowsAlignment %}
                 {{ macro.arrows(entity, autoplay, arrowsSide, arrowsColor, arrowsAsBtn, 'top') }}
             {% endif %}
-            <ul class="splide__list">
+            <ul class="splide__list d-flex">
                 {% set isFirst = true %}
                 {% for entity in entities %}
                     {% set isFirst = loop.index == 1 %}
@@ -109,7 +109,11 @@
                         {% if asAgency %}
                             {{ macroCard.agency({
                                 entity: entity,
-                                thumbConfiguration: thumbConfiguration,
+                                screensSizes: {
+                                    mobile: {width: 393, height: 255},
+                                    tablet: {width: 393, height: 255},
+                                    desktop: {width: 393, height: 255}
+                                },
                                 webmaster: {
                                     title: "Éditer l'agence"|trans([], 'front_webmaster'),
                                     role: 'ROLE_CATALOG',

@@ -31,19 +31,11 @@ class SliderController extends FrontController
         mixed $filter = null,
     ): Response {
 
-        if (!$filter) {
-            return new Response();
-        }
-
-        $cache = $this->coreLocator->cacheService()->cachePool($block, 'slider_view', 'GET');
-        if ($cache) {
-            return $cache;
-        }
-
-        $slider = $this->coreLocator->em()->getRepository(Slider::class)->findOneByWithRelations(
+        $slider = $filter ? $this->coreLocator->em()->getRepository(Slider::class)->findOneByWithRelations(
             is_numeric($filter) ? 'id' : 'slug',
             $filter
-        );
+        ) : false;
+
         if (!$slider) {
             return new Response();
         }
@@ -59,7 +51,7 @@ class SliderController extends FrontController
         $arrowsAlignment = $slider->getArrowAlignment();
         $arrowsColor = $slider->getArrowColor();
 
-        $response = $this->cache($request, 'front/'.$template.'/actions/slider/view.html.twig', $slider, [
+        return $this->cache($request, 'front/'.$template.'/actions/slider/view.html.twig', $slider, [
             'websiteTemplate' => $template,
             'block' => $block,
             'isHomePage' => !$uri || '/' === $uri,
@@ -71,7 +63,5 @@ class SliderController extends FrontController
             'arrowsColor' => $arrowsColor ? str_replace(['btn-', 'text-'], '', $arrowsColor) : 'primary',
             'medias' => MediasModel::fromEntity($slider, $this->coreLocator)->mediasAndVideos,
         ]);
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'slider_view', 'GENERATE', $response);
     }
 }

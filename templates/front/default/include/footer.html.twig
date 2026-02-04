@@ -7,95 +7,278 @@
 {% set footerDescription = information.introduction is defined and information.introduction|striptags|length > 0 ? information.introduction : null %}
 {% set footerDescription = seo.footerDescription is defined and seo.footerDescription|striptags|length > 0 ? seo.footerDescription : footerDescription %}
 {% set logo = logos.footer is defined ? logos.footer : null %}
-{% set contactPageUrl = mainPages.contact.code is defined ? mainPages.contact.code : null %}
+{% set contactUrl = mainPages.contact.code is defined ? mainPages.contact.code : null %}
+{% set animationsUrl = mainPages.animations.code is defined ? mainPages.animations.code : null %}
 
-<footer role="contentinfo" id="footer" class="footer position-relative pt-0 pt-lg-5 bg-dark-lighten">
-    <div class="container pt-4">
-        <div class="row row-container mb-5">
-            <div class="col-12 text-center">
-                {% if logo %}
-                    <a class="d-inline-block" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
-                        {{ asset(logo)|file({}, {
-                            screensSizes: {
-                                mobile: {width: null, height: 90},
-                                tablet: {width: null, height: 90},
-                                desktop: {width: null, height: 90}
-                            },
-                            title: companyName,
-                            id: 'main-footer-logo',
-                            class: 'force-size initial-color mb-3',
-                            only_html: false,
-                            lazyLoad: true
-                        }) }}
-                    </a>
+<footer class="ua-footer text-white">
+    <!-- CONTACT BAR -->
+    <section class="ua-footer__contact py-4">
+        <div class="container">
+            <div class="row g-3 g-lg-0 ua-contact align-items-stretch">
+
+                {% if agencies is not empty %}
+                    <div class="col-12 col-lg-3">
+                        <div class="ua-contact__item h-100 d-flex align-items-center py-3">
+                            <div class="h-100 d-flex align-items-center gap-3">
+                                <div class="ua-contact__icon d-flex align-items-center justify-content-center rounded-3" aria-hidden="true">
+                                    <i class="icon-map-marker-alt-solid text-white"></i>
+                                </div>
+                                <div class="lh-sm">
+                                    <div class="ua-contact__title">Plusieurs agences</div>
+                                    <div class="fw-600">{{ agencies|length }} en France & Suisse</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {% endif %}
-                {% if addresses is not empty %}
-                    <strong class="label d-inline-block w-100 fw-600">{{ companyName|raw }}</strong>
-                    {% for address in website.addresses %}
-                        <address class="text-white mb-{% if not loop.last %}-3{% else %}0{% endif %}">
-                            {% if address.address %}
-                                {{ address.address|raw }}<br>
-                            {% endif %}
-                            {% if address.zipCode %}
-                                {{ address.zipCode }}
-                            {% endif %}
-                            {% if address.city %}
-                                {{ address.city }}{% if address.country %}, {% endif %}
-                            {% endif %}
-                            {% if address.country %}
-                                {{ address.country|countryName|capitalize }}
-                            {% endif %}
-                            {% if address.googleMapUrl %}
-                                <div class="w-100">
-                                    <a href="{{ address.googleMapUrl }}" class="link" target="_blank" rel="noopener noreferrer">
-                                        {{ "Plan d'accès"|trans|raw }}<i class="icon-chevron-right ms-2"></i>
-                                    </a>
+
+                {% if emails is not empty %}
+                    <div class="col-12 col-lg-3">
+                        <div class="ua-contact__item h-100 d-flex align-items-center py-3">
+                            <div class="h-100 d-flex align-items-center gap-3">
+                                <div class="ua-contact__icon d-flex align-items-center justify-content-center rounded-3" aria-hidden="true">
+                                    <i class="icon-envelope-solid text-white"></i>
                                 </div>
-                            {% endif %}
-                            {% set phones = address.phones is not empty ? address.phones : phones %}
-                            {% if phones is not empty %}
-                                <div class="w-100 mt-4">
-                                    {% for phone in phones %}
-                                        {{ phone|phone(website, {icon: false, only_href: true}) }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                            {% set emails = address.emails is not empty ? address.emails : emails %}
-                            {% if emails is not empty %}
-                                <div class="mt-{% if phones is not empty %}2{% else %}4{% endif %}">
+                                <div class="lh-sm">
+                                    <div class="ua-contact__title">Contactez-nous par mail</div>
                                     {% for email in emails %}
-                                        {{ email.email|email(website, {icon: false, only_href: true}) }}
+                                        {{ email.email|email(website, {icon: false, only_href: true, entitled: false, class: 'ua-link fw-600 d-inline-block'}) }}
                                     {% endfor %}
                                 </div>
-                            {% endif %}
-                        </address>
-                    {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 {% endif %}
+
+                {% if contactUrl %}
+                    <div class="col-12 col-lg-3">
+                        <div class="ua-contact__item h-100 d-flex align-items-center py-3">
+                            <div class="h-100 d-flex align-items-center gap-3">
+                                <div class="ua-contact__icon d-flex align-items-center justify-content-center rounded-3" aria-hidden="true">
+                                    <i class="icon-envelope-solid text-white"></i>
+                                </div>
+                                <div class="lh-sm">
+                                    <div class="ua-contact__title">Utiliser notre formulaire</div>
+                                    <a href="{{ path('front_index', {url: contactUrl}) }}" class="ua-link fw-600 d-inline-block">Écrivez-nous</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if phones is not empty %}
+                    <div class="col-12 col-lg-3">
+                        <div class="ua-contact__item h-100 d-flex align-items-center py-3">
+                            <div class="h-100 d-flex align-items-center gap-3">
+                                <div class="ua-contact__icon d-flex align-items-center justify-content-center rounded-3" aria-hidden="true">
+                                    <i class="icon-phone-alt-solid text-white"></i>
+                                </div>
+                                <div class="lh-sm">
+                                    <div class="ua-contact__title">Appelez-nous quand vous voulez</div>
+                                    {% for phone in phones %}
+                                        {{ phone|phone(website, {icon: false, only_href: true, entitled: false, class: 'ua-link fw-600 d-inline-block'}) }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
             </div>
-            {% if website.networks %}
-                <div class="col-12 text-center pt-5">
-                    <strong class="label d-inline-block w-100 fw-500 mb-4">{{ "Suivez-nous :"|trans|raw }}</strong>
-                    <nav class="socials-list d-inline-flex justify-content-center justify-content-sm-start" aria-label="{{ "Navigation des liens sociaux"|trans|striptags }}">
-                        {% for name, infos in website.networks %}
-                            {% if infos.link and infos.dirname %}
-                                {% set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags %}
-                                <span role="button" class="{{ name }} p-0 d-inline-flex mx-2 js-open-window"
-                                      data-url="{{ infos.link }}"
-                                      aria-label="{{ label }}">
-                                    <i class="icon-{{ name|lower }}" aria-hidden="true"></i>
-                                    <span class="visually-hidden">{{ label }}</span>
-                                </span>
-                            {% endif %}
-                        {% endfor %}
-                    </nav>
+        </div>
+    </section>
+
+    <!-- MAIN -->
+    <section class="ua-footer__main py-5">
+        <div class="container">
+            <div class="row g-4">
+
+                <!-- Brand / Pitch -->
+                <div class="col-12 col-lg-4 pe-lg-5">
+                    <div class="ua-brand pe-lg-4">
+
+                        {% if logo %}
+                            <a class="d-inline-block" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
+                                {{ asset(logo)|file({}, {
+                                    screensSizes: {
+                                        mobile: {width: null, height: 120},
+                                        tablet: {width: null, height: 120},
+                                        desktop: {width: null, height: 120}
+                                    },
+                                    title: companyName,
+                                    id: 'main-footer-logo',
+                                    class: 'force-size initial-color mb-3',
+                                    only_html: false,
+                                    lazyLoad: true
+                                }) }}
+                            </a>
+                        {% endif %}
+
+                        <p class="text-white-50 mb-4">
+                            Animations et spectacles professionnels pour <span class="text-white fw-semibold">séminaires</span>,
+                            <span class="text-white fw-semibold">team building</span> et <span class="text-white fw-semibold">soirées d’entreprise</span>.
+                        </p>
+
+                        {% if contactUrl %}
+                            <div class="d-flex flex-wrap gap-2">
+{#                                <i class="icon-headset"></i>#}
+                                {% if contactUrl %}
+                                    {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                        intl: {
+                                            link: path('front_index', {url: contactUrl}),
+                                            linkStyle: 'btn btn-primary my-1',
+                                            linkLabel: 'Demander un devis',
+                                        },
+                                        icon: 'headset',
+                                    } %}
+                                {% endif %}
+                                {% if animationsUrl %}
+                                    {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                        intl: {
+                                            link: path('front_index', {url: animationsUrl}),
+                                            linkStyle: 'btn btn-white my-1',
+                                            linkLabel: 'Voir les animations',
+                                        },
+                                        icon: 'people-group',
+                                    } %}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        <hr class="ua-sep my-4">
+
+                        {% if agencies is not empty %}
+                            <h3 class="footer-title pb-2 mb-3 fw-900 text-white">Nos agences</h3>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for agency in agencies %}
+                                    <a class="ua-city px-3" href="{{ agency.url }}">Agence {{ agency.city }}</a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {% if website.networks is not empty %}
+                            <hr class="ua-sep my-4">
+                            <h3 class="footer-title pb-2 mb-3 fw-900 text-white">Restez connecté&nbsp;!</h3>
+                            <p class="text-white-50">Rejoignez <strong class="text-white-50">{{ companyName|unescape|replace({'!': ''}) }}</strong> sur les <strong class="text-white-50">réseaux sociaux</strong> dès maintenant&nbsp;!</p>
+                            <div class="d-flex flex-wrap">
+                                <nav class="socials-list d-inline-flex justify-content-center justify-content-sm-start gap-3" aria-label="{{ "Navigation des liens sociaux"|trans|striptags }}">
+                                    {% for name, infos in website.networks %}
+                                        {% if infos.link and infos.dirname %}
+                                            {% set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags %}
+                                            <span role="button" class="{{ name }} p-0 d-inline-flex js-open-window"
+                                                  data-url="{{ infos.link }}"
+                                                  aria-label="{{ label }}">
+                                                <i class="icon-{{ name|lower }} text-white" aria-hidden="true"></i>
+                                                <span class="visually-hidden">{{ label }}</span>
+                                            </span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </nav>
+                            </div>
+                        {% endif %}
+
+                    </div>
                 </div>
-            {% endif %}
+
+                <!-- Links grid -->
+                <div class="col-12 col-lg-8 ps-lg-5">
+                    <div class="row g-4">
+
+                        {% if catalogMenus.services is not empty or catalogMenus.performances is not empty %}
+                            <div class="col-12 col-md-6">
+                                {% if catalogMenus.services is not empty %}
+                                    <h3 class="footer-title pb-2 mb-3 fw-900 text-white">Nos Prestations</h3>
+                                    <ul class="list-unstyled d-grid gap-2 mb-4 ps-3">
+                                        {% for service in catalogMenus.services %}
+                                            <li><a class="footer-link" href="{{ service.url }}">{{ service.intl.title|striptags }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                {% if catalogMenus.performances is not empty %}
+                                    <h3 class="footer-title pb-2 mb-3 fw-900 text-white">Spectacles</h3>
+                                    <ul class="list-unstyled d-grid gap-2 mb-4 ps-3">
+                                        {% for performance in catalogMenus.performances %}
+                                            <li><a class="footer-link" href="{{ performance.url }}">{{ performance.intl.title|striptags }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        {% if catalogMenus.animations is not empty or catalogMenus.rentals is not empty %}
+                            <div class="col-12 col-md-6">
+                                {% if catalogMenus.animations is not empty %}
+                                    <h3 class="footer-title pb-2 mb-3 fw-900 text-white">Animations Création</h3>
+                                    <ul class="list-unstyled d-grid gap-2 mb-4 ps-3">
+                                        {% for animation in catalogMenus.animations %}
+                                            <li><a class="footer-link" href="{{ animation.url }}">{{ animation.intl.title|striptags }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                {% if catalogMenus.rentals is not empty %}
+                                    <h3 class="footer-title pb-2 mb-3 fw-900 text-white">Nos Locations</h3>
+                                    <ul class="list-unstyled d-grid gap-2 mb-4 ps-3">
+                                        {% for rental in catalogMenus.rentals %}
+                                            <li><a class="footer-link" href="{{ rental.url }}">{{ rental.intl.title|striptags }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        {% set labels = agencies|map(a =>
+                            '<a href="' ~ a.url ~ '" class="text-white fw-700">' ~ a.city ~ '</a> ' ~ a.zipcodeSmall
+                        ) %}
+                        <div class="col-12">
+                            <hr class="ua-sep mt-2 mb-4">
+                            <p class="mb-0 small text-white-50">
+                                Découvrez <strong class="text-white-50 fw-600">Up Animations</strong> expert en animations événementielles dans les villes d’{% for agency in agencies %}<strong class="text-white-50 fw-600">{{ agency.city }}</strong> {{ agency.zipcodeSmall }}{% if not loop.last %}{% if loop.revindex0 == 1 %} et {% else %}, {% endif %}{% endif %}{% endfor %}. Nous saurons rendre vos événements originaux et conviviales. Magiciens professionnels, nous nous déplaçons pour vos spectacles de magie et animations en tout genre&nbsp;!
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- REQUIRED BOTTOM (as requested) -->
+    <div id="footer-bottom" class="bg-dark py-4 px-4">
+        <nav class="menu-container position-relative d-flex justify-content-center justify-content-md-center" aria-label="Liens utiles">
+            <a href="/admin-b2cba79269c9e51dfb69f1eedf4732f6d47e7ec5/1/menus/edit/2/fr" class="webmaster-link-edit success d-none" data-toggle="tooltip" data-placement="right" tabindex="-1" aria-hidden="true" title="Éditer le menu" target="_blank">
+                <i class="icw-pencil-alt"></i>
+            </a>
+
+            <ul id="footer-menu-footer" class="reset d-flex flex-wrap justify-content-center align-items-center gap-2 gap-md-3 mb-0">
+                <li id="item-link-footer-sitemap" class="d-flex align-items-center justify-content-center">
+                    <a href="https://up-animation.local/plan-de-site" id="link-footer-sitemap" class="track-link-footer-sitemap text-white link position-relative">
+                        Plan de site
+                    </a>
+                    <span class="dashed text-white-50 d-none d-md-inline ms-2">•</span>
+                </li>
+                <li id="item-link-footer-legals" class="d-flex align-items-center justify-content-center">
+                    <a href="https://up-animation.local/mentions-legales" id="link-footer-legals" class="track-link-footer-legals text-white link position-relative">
+                        Mentions légales
+                    </a>
+                    <span class="dashed text-white-50 d-none d-md-inline ms-2">•</span>
+                </li>
+                <li id="item-link-footer-cookies" class="d-flex align-items-center justify-content-center">
+                    <a href="https://up-animation.local/politique-relative-aux-cookies" id="link-footer-cookies" class="track-link-footer-cookies text-white link position-relative">
+                        Politique relative aux cookies
+                    </a>
+                </li>
+                <li id="item-footer-accessibility" class="d-flex align-items-center justify-content-center">
+                    <span class="dashed text-white-50 d-none d-md-inline">•</span>
+                    <a href="?user_accessibility=true" class="text-white link">Activer le mode accessibilité</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container px-0">
+            <div class="pt-3 text-center small text-white-50">
+                Copyright 2025 - <strong class="text-white">Up Animations</strong>
+            </div>
         </div>
     </div>
-    {% if mainMenus.footer.arguments is defined and mainMenus.footer.arguments %}
-        <div id="footer-bottom" class="bg-dark py-4 px-4">
-            {% set menuArgs = mainMenus.footer.arguments|merge({information: information, logos: logos, axeptioActive: axeptioActive}) %}
-            {% include mainMenus.footer.arguments.template with menuArgs only %}
-        </div>
-    {% endif %}
 </footer>

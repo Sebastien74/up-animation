@@ -24,14 +24,14 @@
         <span class="label fw-600 me-1">{{ label|raw }}</span>
     {% endif %}
     <a href="{{ href }}"{% if not only_href %} data-tel="{{ phone.tagNumber|encrypt(website) }}"{% endif %}
-       class="phone-link position-relative{% if not only_href %} loading{% endif %}{% if phoneTrack %} fb-phone-track{% endif %} {% if isMobile() %}as-mobile{% else %}as-desktop{% endif %}{{ btnClasses }}"
+       class="phone-link position-relative{% if class %} {{ class }}{% endif %}{% if not only_href %} loading{% endif %}{% if phoneTrack %} fb-phone-track{% endif %} {% if isMobile() %}as-mobile{% else %}as-desktop{% endif %}{{ btnClasses }}"
        aria-label="{{ "Téléphone"|trans|striptags }}"
         {% if not only_href %}data-text="{{ phone.number|encrypt(website) }}"{% endif %}
        data-id="{{ website.id }}"{% if microDataActive and itemprop %} itemscope="itemscope" itemtype="https://schema.org/Organization"{% endif %}>
         {% if options.text is defined %}
             {{ options.text|raw }}
         {% elseif only_href %}
-            <span class="number">{{ phone.number }}</span>
+        {% if icon or entitled %}<span class="number">{% endif %}{{ phone.number }}{% if icon or entitled %}</span>{% endif %}
         {% else %}
             <span class="phone-text d-inline-block"{% if microDataActive and itemprop %} itemprop="{{ itemprop }}"{% endif %}>
             <div class="spinner-border me-1" role="status"></div>

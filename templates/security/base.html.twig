@@ -12,7 +12,7 @@
 {% set companyName = isCustomPath and information.title is defined and information.title ? information.title : "Up Animations! CMS"|trans|striptags %}
 {% set faviconPath = asset('build/security/images/favicon.ico', 'security') %}
 {% set logoPath = isCustomPath and logos['security-logo'] is defined and logos['security-logo'] and 'placeholder' not in logos['security-logo'] ? asset(logos['security-logo'])
-    : (not adminTheme ? asset('build/security/images/security.svg', 'security') : asset('build/security/images/logo.png', 'security')) %}
+    : (not adminTheme ? asset('build/security/images/security.svg', 'security') : asset('build/security/images/logo.svg', 'security')) %}
 {% set bgPath = logos['security-bg'] is defined and logos['security-bg'] and 'placeholder' not in logos['security-bg'] ? asset(logos['security-bg'])
     : (adminTheme ? asset('build/security/images/background-security.jpg', 'security') : asset('build/security/images/background-security.jpg', 'security')) %}
 {% set bgImgStyle = bgPath|file({}, {style: true, maxWidth: 1520, maxHeight: 919, placeholder: true }) %}
@@ -45,10 +45,10 @@
             <meta property="og:image" content="{{ asset('build/security/images/share.jpg', 'security') }}">
         {% endif %}
 
+        <!-- Fonts -->
+        <link href="{{ asset('build/security/security-fonts.css', 'security') }}" rel="preload" as="style" class="preload-css" nonce="{{ csp_nonce() }}">
+
         {% block stylesheets %}
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;1,400&display=swap" nonce="{{ csp_nonce() }}">
             {{ encore_entry_link_tags('security', null, 'security', {nonce: csp_nonce()}) }}
         {% endblock %}
 

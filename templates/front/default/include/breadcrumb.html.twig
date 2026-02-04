@@ -24,11 +24,10 @@
                            itemid="{{ absolute_url(item.url) }}"
                            href="{{ absolute_url(item.url) }}"
                            class="text-white d-inline-flex"
-                           data-position="{{ loop.index }}"
-                          >
+                           data-position="{{ loop.index }}">
                     {% endif %}
                             <span itemprop="name" class="text-white d-inline-block{% if loop.last %} active{% endif %}" aria-label="{{ item.title|striptags }}">
-                                {{ item.title|truncate(30) }}
+                                {{ item.title|truncate(75) }}
                             </span>
                     {% if haveUrl %}
                         </a>

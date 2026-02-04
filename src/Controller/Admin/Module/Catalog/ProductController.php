@@ -60,7 +60,7 @@ class ProductController extends AdminController
     #[Route('/index/{catalog}', name: 'admin_catalogproduct_index', defaults: ['catalog' => null], methods: 'GET|POST')]
     public function index(Request $request, PaginatorInterface $paginator)
     {
-        if ($request->get('catalog')) {
+        if ($request->attributes->get('catalog')) {
             $catalog = $this->coreLocator->em()->getRepository(Catalog::class)->find($request->attributes->getInt('catalog'));
             $this->pageTitle = $catalog ? $catalog->getAdminName() : null;
         } else {
@@ -102,7 +102,7 @@ class ProductController extends AdminController
         }
         $this->template = 'admin/page/catalog/product-edit.html.twig';
         $this->formOptions['isDraggable'] = $this->formManager->isDraggable();
-        $this->arguments['activeTab'] = $request->get('tab');
+        $this->arguments['activeTab'] = $request->attributes->get('tab');
         $this->arguments['activeTabs'] = $this->formOptions['activesFields'] = $this->entity->getCatalog()->getTabs();
 
         return parent::edit($request);

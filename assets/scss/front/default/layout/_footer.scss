@@ -6,54 +6,276 @@
     Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 ------------------------------------------------------------------ */
 
-#footer {
+//#footer {
+//
+//    .socials-list {
+//
+//        i {
+//
+//            font-size: 40px;
+//            transition: color .5s linear;
+//
+//            &:hover {
+//                color: $primary;
+//                transition: color .5s linear;
+//            }
+//        }
+//    }
+//
+//    //.phone-link-wrap, .email-link-wrap {
+//    //
+//    //    .label, .wrap-icon-link i {
+//    //        color: $primary !important;
+//    //    }
+//    //
+//    //    @include mediaQuery(min-lg) {
+//    //
+//    //        .phone-link, .email-link {
+//    //
+//    //            &:before {
+//    //                content: '';
+//    //                position: absolute;
+//    //                bottom: -2px;
+//    //                left: 0;
+//    //                width: 0;
+//    //                height: 1px;
+//    //                background-color: $primary;
+//    //                transition: width .3s linear;
+//    //            }
+//    //
+//    //            &:hover:before {
+//    //                width: 100%;
+//    //                transition: width .3s linear;
+//    //            }
+//    //        }
+//    //    }
+//    //}
+//
+//    .menu-container ul {
+//        .link, .dashed {
+//            font-size: rem(12px);
+//        }
+//    }
+//}
+
+html body .ua-footer .link-block {
+    .btn, .btn:hover {
+        span, i {
+            color: $dark !important;
+        }
+    }
+}
+
+.ua-footer {
+
+    --ua-bg-1: #333333; // contact
+    --ua-bg-2: #2c2c2c; // main
+    --ua-bg-3: #222222; // bottom
+    --ua-accent: #ff7100;
+
+    background: var(--ua-bg-1);
+    color: #fff;
+
+    &__contact {
+        background: var(--ua-bg-1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    &__main {
+        background: var(--ua-bg-2);
+    }
+
+    #footer-bottom {
+        background: var(--ua-bg-3) !important;
+    }
 
     .socials-list {
 
         i {
 
             font-size: 40px;
-            transition: color .5s ease-in-out;
+            transition: color .5s linear;
 
-            &:hover {
-                color: $primary;
-                transition: color .5s ease-in-out;
+            @include mediaQuery(min-lg) {
+
+                transition: color .15s linear, transform .2s linear;
+
+                &:hover {
+                    transform: translateY(-1px);
+                }
+
+                &:hover {
+                    color: $primary !important;
+                    transition: color .5s linear;
+                }
             }
         }
     }
 
-    //.phone-link-wrap, .email-link-wrap {
-    //
-    //    .label, .wrap-icon-link i {
-    //        color: $primary !important;
-    //    }
-    //
-    //    @include mediaQuery(min-lg) {
-    //
-    //        .phone-link, .email-link {
-    //
-    //            &:before {
-    //                content: '';
-    //                position: absolute;
-    //                bottom: -2px;
-    //                left: 0;
-    //                width: 0;
-    //                height: 1px;
-    //                background-color: $primary;
-    //                transition: width .3s ease-in-out;
-    //            }
-    //
-    //            &:hover:before {
-    //                width: 100%;
-    //                transition: width .3s ease-in-out;
-    //            }
-    //        }
-    //    }
-    //}
+    /* Contact bar */
+    .ua-contact__item {
+        position: relative;
+    }
 
-    .menu-container ul {
-        .link, .dashed {
-            font-size: rem(12px);
+    /* vertical separators on desktop only */
+    .ua-contact {
+        @media (min-width: 992px) {
+            > div:not(:last-child) .ua-contact__item {
+                border-right: 1px solid rgba(255, 255, 255, 0.08);
+            }
         }
+    }
+
+    .ua-contact__icon {
+        width: 44px;
+        height: 44px;
+        background: #1f1f1f;
+        color: var(--ua-accent);
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+    .ua-contact__title {
+        font-size: .75rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.55);
+    }
+
+    .ua-contact__accent {
+        color: var(--ua-accent);
+    }
+
+    /* separators */
+    .ua-sep {
+        border-color: rgba(255, 255, 255, 0.12);
+        opacity: 1;
+    }
+
+    /* Titles */
+    .footer-title {
+
+        position: relative;
+        font-size: 1.2rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 45px;
+            height: 2px;
+            background: var(--ua-accent);
+        }
+    }
+
+    /* Link system */
+    .ua-link,
+    .footer-link,
+    #footer-bottom .link {
+
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: color .15s linear;
+
+        &:hover,
+        &:focus {
+            color: $white;
+        }
+    }
+
+    li::marker {
+
+        color: var(--ua-accent);
+
+        @include mediaQuery(min-lg) {
+
+            transition: color .15s linear;
+
+            &:hover {
+                color: $white;
+                transition: color .15s linear;
+            }
+        }
+    }
+
+    li {
+
+        @include mediaQuery(min-lg) {
+
+            transition: color .15s linear;
+
+            &:hover {
+                color: $white;
+                transition: color .15s linear;
+            }
+        }
+    }
+
+    .footer-link {
+
+        transition: color .15s linear;
+
+        @include mediaQuery(min-lg) {
+            &:hover {
+                transition: color .15s linear;
+                color: $primary !important;
+            }
+        }
+    }
+
+    /* Underline accent on hover (modern but sober) */
+    #footer-bottom .link {
+
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            height: 1px;
+            background: var(--ua-accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .2s linear;
+        }
+
+        &:hover::after,
+        &:focus::after {
+            transform: scaleX(1);
+        }
+    }
+
+    /* City pills (accent border) */
+    .ua-city {
+
+        display: inline-flex;
+        align-items: center;
+        padding: .45rem .7rem;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 113, 0, 0.35);
+        color: rgba(255, 255, 255, 0.82);
+        text-decoration: none;
+        font-size: .9rem;
+        transition: border-color .15s linear, color .15s linear, transform .15s linear;
+
+        &:hover,
+        &:focus {
+            transform: translateY(-1px);
+            border-color: rgba(255, 113, 0, 0.75);
+            color: #fff;
+            text-decoration: none;
+        }
+    }
+
+    /* Accessibility */
+    a:focus-visible {
+        outline: 2px solid var(--ua-accent);
+        outline-offset: 3px;
+        border-radius: 4px;
     }
 }

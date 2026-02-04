@@ -492,7 +492,7 @@
     .ts-control {
         align-items: center;
         display: flex;
-        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
+        transition: border-color .15s linear, box-shadow .15s linear
     }
 
     @media (prefers-reduced-motion: reduce) {

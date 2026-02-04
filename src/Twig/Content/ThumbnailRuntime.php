@@ -258,7 +258,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         $this->arguments['parentEntity'] = !empty($options['parentEntity']) ? $options['parentEntity'] : null;
         $this->arguments['block'] = !empty($options['block']) ? $options['block'] : $this->arguments['parentEntity'];
         $this->arguments['lazyLoad'] = $options['lazyLoad'] ?? true;
-        $this->arguments['targetLink'] = !empty($options['targetLink']) ? $options['targetLink'] : null;
+        $this->arguments['targetLink'] = array_key_exists('targetLink', $options) ? $options['targetLink'] : null;
         $this->arguments['targetBlank'] = $options['targetBlank'] ?? false;
         $this->arguments['fullPopup'] = $options['fullPopup'] = $options['fullPopup'] ?? true;
         $this->arguments['displayPage'] = $options['displayPage'] ?? true;
@@ -459,7 +459,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
     private function inBox(?Website $website = null, ?string $extension = null, ?MediaModel $mediaModel = null): void
     {
         $this->arguments['inBox'] = false;
-        if (isset($this->options['isInBox'])) {
+        if (array_key_exists('isInBox', $this->options)) {
             $this->arguments['inBox'] = $this->options['isInBox'];
         } elseif ($website) {
             $exceptionExceptions = !empty($this->arguments['thumbnails']) ? $this->arguments['thumbnails']['extensionsExceptions'] : ['svg', 'gif', 'tiff'];

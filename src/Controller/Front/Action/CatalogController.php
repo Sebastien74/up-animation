@@ -55,19 +55,14 @@ class CatalogController extends ActionController
         Url $url,
         mixed $filter = null): JsonResponse|Response
     {
-        if (!$filter) {
-            return new Response();
-        }
-
         $website = $this->getWebsite();
-        $listing = $this->coreLocator->em()->getRepository(Catalog\Listing::class)->findOneByFilter($website->entity, $request->getLocale(), $filter);
-        if ($listing) {
-            $this->getIndexArguments($listing, $url);
-        }
+        $listing = $filter ? $this->coreLocator->em()->getRepository(Catalog\Listing::class)->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
 
         if (!$listing) {
             return new Response();
         }
+
+        $this->getIndexArguments($listing, $url);
 
         $this->arguments['websiteTemplate'] = $website->configuration->template;
         $this->arguments['filter'] = $filter;

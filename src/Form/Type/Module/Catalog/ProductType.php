@@ -57,13 +57,14 @@ class ProductType extends AbstractType
         /* @var Product $data */
         $data = $builder->getData();
         $isNew = !$data->getId();
-        $displayCatalog = !$this->request->get('catalog') && $isNew || !$isNew;
+        $catalogSlug = $data->getCatalog()?->getSlug();
+        $displayCatalog = !$this->request->attributes->get('catalog') && $isNew || !$isNew;
         $this->website = $options['website'];
         $activesFields = $options['activesFields'];
 
         $adminName = new WidgetType\AdminNameType($this->coreLocator);
         $adminName->add($builder, [
-            'adminNameGroup' => $isNew && $displayCatalog ? 'col-md-9' : 'col-12',
+            'adminNameGroup' => ($isNew && $displayCatalog) || (!$isNew && 'agencies' !== $catalogSlug) ? 'col-lg-9' : 'col-12',
             'class' => 'refer-code',
         ]);
 
@@ -143,7 +144,7 @@ class ProductType extends AbstractType
                 'display' => 'button',
                 'color' => 'outline-info-darken',
                 'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['group' => 'col-lg-3', 'class' => 'w-100', 'data-config' => true],
             ]);
         }
 
@@ -176,13 +177,15 @@ class ProductType extends AbstractType
                 ]);
             }
 
-            $builder->add('promote', Type\CheckboxType::class, [
-                'required' => false,
-                'display' => 'button',
-                'color' => 'outline-info-darken',
-                'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
-                'attr' => ['group' => 'col-md-2 d-flex align-items-end', 'class' => 'w-100'],
-            ]);
+            if (in_array('promote', $activesFields)) {
+                $builder->add('promote', Type\CheckboxType::class, [
+                    'required' => false,
+                    'display' => 'button',
+                    'color' => 'outline-info-darken',
+                    'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
+                    'attr' => ['group' => 'col-lg-2 d-flex align-items-end', 'class' => 'w-100'],
+                ]);
+            }
 
             $builder->add('catalogBeforePost', Type\HiddenType::class, [
                 'mapped' => false,
@@ -199,27 +202,82 @@ class ProductType extends AbstractType
 
             $dates = new WidgetType\PublicationDatesType($this->coreLocator);
             $dates->add($builder, [
-                'startGroup' => 'col-md-4',
-                'endGroup' => 'col-md-4',
+                'startGroup' => 'col-lg-4',
+                'endGroup' => 'col-lg-4',
             ]);
 
-            if (in_array('intls', $activesFields)) {
-                $searchModule = $this->entityManager->getRepository(Module::class)->findOneBy(['slug' => 'search']);
-                $searchModuleActive = $this->entityManager->getRepository(\App\Entity\Core\Configuration::class)->moduleExist($options['website'], $searchModule);
-                $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
-                $intls->add($builder, [
-                    'fields' => $searchModuleActive ? ['title' => 'col-md-8', 'subTitle' => 'col-md-4', 'introduction' => 'editor', 'body', 'associatedWords'] : ['title' => 'col-md-8', 'subTitle' => 'col-md-4', 'introduction' => 'editor', 'body'],
-                    'disableTitle' => true,
+            if ('agencies' !== $catalogSlug) {
+                $builder->add('menu', Type\ChoiceType::class, [
+                    'label' => $this->translator->trans('Afficher dans le menu', [], 'admin'),
+                    'placeholder' => $this->translator->trans('Séléctionnez', [], 'admin'),
+                    'choices' => [
+                        $this->translator->trans('Nos Prestations', [], 'admin') => 'services',
+                        $this->translator->trans('Animations Création', [], 'admin') => 'animations',
+                        $this->translator->trans('Spectacles', [], 'admin') => 'performances',
+                        $this->translator->trans('Nos Locations', [], 'admin') => 'rentals',
+                    ],
+                    'required' => false,
+                    'display' => 'search',
+                    'row_attr' => ['class' => 'col-lg-3'],
                 ]);
             }
 
-            if ($this->isLayoutUser) {
+            if (in_array('intls', $activesFields)) {
+                $extraFields = [];
+                $searchModule = $this->entityManager->getRepository(Module::class)->findOneBy(['slug' => 'search']);
+                $searchModuleActive = $this->entityManager->getRepository(\App\Entity\Core\Configuration::class)->moduleExist($options['website'], $searchModule);
+                $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introduction' => 'editor', 'body'];
+                if ($searchModuleActive) {
+                    $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introduction' => 'editor', 'body', 'associatedWords'];
+                }
+                if ('agencies' === $catalogSlug) {
+                    $fields['introduction'] = 'col-lg-6 editor';
+                    $fields['body'] = 'col-lg-6';
+                    $extraFields = [
+                        'gather' => [
+                            'type' => Type\TextareaType::class,
+                            'required' => false,
+                            'label' => $this->translator->trans('Réunir', [], 'admin'),
+                            'attr' => [
+                                'group' => 'col-lg-4 editor',
+                                'placeholder' => $this->translator->trans('Saisissez une description', [], 'admin'),
+                            ],
+                        ],
+                        'sympathise' => [
+                            'type' => Type\TextareaType::class,
+                            'required' => false,
+                            'label' => $this->translator->trans('Sympathiser', [], 'admin'),
+                            'attr' => [
+                                'group' => 'col-lg-4 editor',
+                                'placeholder' => $this->translator->trans('Saisissez une description', [], 'admin'),
+                            ],
+                        ],
+                        'impress' => [
+                            'type' => Type\TextareaType::class,
+                            'required' => false,
+                            'label' => $this->translator->trans('Marquer', [], 'admin'),
+                            'attr' => [
+                                'group' => 'col-lg-4 editor',
+                                'placeholder' => $this->translator->trans('Saisissez une description', [], 'admin'),
+                            ],
+                        ],
+                    ];
+                }
+                $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
+                $intls->add($builder, [
+                    'fields' => $fields,
+                    'disableTitle' => true,
+                    'extra_fields' => $extraFields,
+                ]);
+            }
+
+            if ($this->isLayoutUser && in_array('customLayout', $activesFields)) {
                 $builder->add('customLayout', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
                     'color' => 'outline-info-darken',
                     'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
-                    'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
+                    'attr' => ['group' => 'col-lg-4', 'class' => 'w-100', 'data-config' => true],
                 ]);
             }
 

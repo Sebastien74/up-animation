@@ -80,7 +80,7 @@ class BaseAuthenticator
      */
     public function supports(Request $request): ?bool
     {
-        $currentRoute = $request->get('_route');
+        $currentRoute = $request->attributes->get('_route');
 
         if (($currentRoute === $this->loginRoute || $currentRoute === $this->registerRoute) && $request->isMethod('POST')) {
             $this->setCredentials($request);
@@ -109,7 +109,7 @@ class BaseAuthenticator
             }
         }
 
-        if ($request->get('_route') !== $this->registerRoute) {
+        if ($request->attributes->get('_route') !== $this->registerRoute) {
             $website = $this->entityManager->getRepository(Website::class)->findOneByHost($request->getHost());
             $this->checkRecaptcha($website, $request);
             $this->checkPassword($website);
@@ -160,11 +160,11 @@ class BaseAuthenticator
 
         $response = $route ? new RedirectResponse($this->coreLocator->router()->generate($route)) : null;
 
-        if ($response && $request->get('_route') === $this->registerRoute) {
+        if ($response && $request->attributes->get('_route') === $this->registerRoute) {
             $response->headers->setCookie(Cookie::create('SECURITY_ERROR', $this->translator->trans('La connexion automatique a échouée.', [], 'security_cms')));
         }
 
-        if (str_contains($request->get('_route'), 'security_front_connect')) {
+        if (str_contains($request->attributes->get('_route'), 'security_front_connect')) {
             foreach ($request->getSession()->all() as $key => $message) {
                 if ('_security.last_error' === $key) {
                     $request->getSession()->remove($key);

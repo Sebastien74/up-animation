@@ -61,7 +61,7 @@ class LocaleService
     public function execute(WebsiteModel $website, $entity = null, mixed $url = null, ?string $pageUrl = null): array
     {
         $this->localesWebsites = $this->getLocalesWebsites($website);
-        $routeName = $this->request->get('_route');
+        $routeName = $this->request->attributes->get('_route');
         $requestUrl = $url instanceof Url ? $url->getCode() : (!empty($url['code']) ? $url['code'] : $this->request->get('url'));
         $configuration = $website->configuration;
         $locales = $configuration->onlineLocales;

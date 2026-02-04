@@ -1,5 +1,80 @@
 {% trans_default_domain 'front_default' %}
 
-<div>
-    <h1>CONTACTEZ-NOUS</h1>
+<div class="contact-us-container bg-lighten">
+    <div class="container">
+        <div class="row top pt-4">
+            <div class="col-lg-5 d-flex align-items-center py-4">
+                {{ asset('build/front/'~websiteTemplate~'/images/mockup-contact-animation-evenementiel.gif', 'front_default')|file({}, {
+                    screensSizes: {
+                        mobile: {width: null, height: 400},
+                        tablet: {width: null, height: 400},
+                        desktop: {width: null, height: 400}
+                    }
+                }) }}
+            </div>
+            <div class="col-lg-7 d-flex align-items-center py-4">
+                <div class="content">
+                    <div class="block-title">
+                        <span class="subtitle text-uppercase d-inline-block mb-2">Vous êtes intéressé&nbsp;?</span>
+                        <h2 class="title text-uppercase">Contactez-nous <span>maintenant&nbsp;!</span></h2>
+                    </div>
+                    <p class="mb-1">Vous recherchez un prestataire pour votre événement&nbsp;?</p>
+                    <p class="mb-1">Une ou plusieurs animations vous intéressent&nbsp;?</p>
+                    <p class="mb-0">
+                        <strong>Contactez votre agence Up Animations{% if city %} {{ city }}{% endif %} dès maintenant</strong> et faites-nous part de votre projet, nos experts se chargeront de répondre au mieux à votre demande.
+                    </p>
+                    {% if contactUrl %}
+                        {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                            intl: {
+                                link: contactUrl,
+                                linkStyle: 'btn btn-primary mt-4',
+                                linkLabel: "Contacter Up Animations"|trans,
+                            }
+                        } %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom bg-light">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                {% if email %}
+                    <div class="item col-lg-4 py-5 px-5 d-flex justify-content-center text-center">
+                        <div class="inner d-flex align-items-center flex-column">
+                            <span class="rounded-badge shadow-lg d-flex align-items-center justify-content-center bg-primary"><i class="icon-envelope-solid text-white"></i></span>
+                            <span class="fw-900 text-uppercase my-2">Mail</span>
+                            <strong>Équipe Up Animations{% if city %} {{ city }}{% endif %}</strong>
+                            <a href="mailto:{{ email.email }}">{{ email.email }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if phone %}
+                    <div class="item col-lg-4 py-5 px-5 d-flex justify-content-center text-center">
+                        <div class="inner d-flex align-items-center flex-column">
+                            <span class="rounded-badge shadow-lg d-flex align-items-center justify-content-center bg-primary"><i class="icon-phone-alt-solid text-white"></i></span>
+                            <span class="fw-900 text-uppercase my-2">Téléphone</span>
+                            <a href="tel:{{ phone.tagNumber }}">{{ phone.number }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if address and address.address %}
+                    <div class="item col-lg-4 py-5 px-5 d-flex justify-content-center text-center">
+                        <div class="inner d-flex align-items-center flex-column">
+                            <span class="rounded-badge shadow-lg d-flex align-items-center justify-content-center bg-primary"><i class="icon-map-marker-alt-solid text-white"></i></span>
+                            <span class="fw-900 text-uppercase my-2">Adresse</span>
+                            <address class="mb-0">
+                                {{ address.address|raw }}{% if address.city or address.zipCode or address.department or address.region %}<br>{% endif %}
+                                {% if address.zipCode %}{{ address.zipCode }}{% endif %}
+                                {% if address.city %}{{ address.city }}{% endif %}
+                                {% if address.department %}{% if address.zipCode or address.city %} - {% endif %}{{ address.department }}{% endif %}
+                                {% if (address.city or address.zipCode or address.department) and address.region %}<br>{% endif %}
+                                {% if address.region %}{{ address.region }}{% endif %}
+                            </address>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>

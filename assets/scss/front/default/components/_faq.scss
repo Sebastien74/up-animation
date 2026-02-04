@@ -28,11 +28,11 @@
 
             svg.anim, i.anim {
                 transform: rotate(0deg);
-                transition: all .3s ease-in-out;
+                transition: all .3s linear;
             }
 
             &.collapsed svg.anim, &.collapsed i.anim {
-                transition: all .3s ease-in-out;
+                transition: all .3s linear;
                 transform: rotate(180deg);
             }
         }

@@ -88,8 +88,10 @@ class ButtonColorType extends AbstractType
                 if (!str_contains($color->getSlug(), 'outline') && str_contains($color->getSlug(), 'btn')) {
                     $ctaValue = str_replace(['btn'], ['cta'], $color->getSlug());
                     $this->colors[$ctaValue] = $color->getColor();
-                    $gradientValue = str_replace(['btn'], ['btn-gradient btn-gradient'], $color->getSlug());
-                    $this->colors[$gradientValue] = $color->getColor();
+                    if ($options['gradientColors']) {
+                        $gradientValue = str_replace(['btn'], ['btn-gradient btn-gradient'], $color->getSlug());
+                        $this->colors[$gradientValue] = $color->getColor();
+                    }
                     $linkValue = str_replace(['btn'], ['text'], $color->getSlug());
                     $this->colors[$linkValue] = $color->getColor();
                 }

@@ -2,49 +2,154 @@ import Tooltip from '../../../bootstrap/dist/tooltip';
 import {hideLoader, displayLoader} from '../loader';
 import {AjaxPagination} from '../../functions';
 
+/**
+ * Catalog filters / ajax listing
+ *
+ * @author Sébastien FOURNIER
+ */
 export default function () {
 
     const indexProducts = document.getElementById('index-products');
+    const formHome = document.querySelector('#content-home #search-filter-form');
+
+    if (!indexProducts) {
+        return;
+    }
+
+    /**
+     * Bind dropdown-select -> hidden/select field value.
+     * Delegated so it keeps working after AJAX DOM replacement.
+     */
+    const bindDropdownSelect = () => {
+
+        if (document.documentElement.dataset.bindDropdownSelect === '1') {
+            return;
+        }
+        document.documentElement.dataset.bindDropdownSelect = '1';
+
+        document.addEventListener('click', (event) => {
+
+            const item = event.target?.closest?.('.dropdown-select .dropdown-item');
+            if (!item) {
+                return;
+            }
+
+            const form = item.closest('form') || document;
+            const fieldSelector = item.dataset.fieldId;
+            const dropdown = item.closest('.dropdown');
+            const clearWrap = dropdown.querySelector('.reset-select-wrap');
+            const clear = clearWrap.querySelector('.clear');
+            const toggle = dropdown.querySelector('.dropdown-toggle');
+            const value = item.dataset.value;
+
+            toggle.innerHTML = item.dataset.label;
+
+            console.log(clearWrap);
+            console.log(formHome);
+
+            if (formHome && clearWrap) {
+                clearWrap.classList.remove('d-none');
+                clear.onclick = () => {
+                    toggle.innerHTML = toggle.dataset.placeholder;
+                    field.value = '';
+                }
+            }
+
+            if (!fieldSelector) {
+                return;
+            }
+
+            const field = form.querySelector(fieldSelector);
+            if (!field) {
+                return;
+            }
+
+            // Update underlying field
+            field.value = value ?? '';
+
+            if (!formHome) {
+                // Trigger listeners (your filters rely on "change") :contentReference[oaicite:1]{index=1}
+                field.dispatchEvent(new Event('input', {bubbles: true}));
+                field.dispatchEvent(new Event('change', {bubbles: true}));
+            }
+        });
+    };
+
+    if (formHome) {
+        bindDropdownSelect(formHome);
+        return;
+    }
 
     hideLoader(indexProducts);
     AjaxPagination(indexProducts);
 
     /**
-     * Bind sidebar toggle/reset behaviors and auto-open if at least one filter is active.
-     *
-     * @param {HTMLFormElement|HTMLElement} form
+     * Bind "Enter" key on search inputs and click on submit icon (delegated).
      */
-    const sidebarEvent = (form) => {
+    const bindSearchEnter = () => {
 
-        const formEl = form ? document.getElementById(form.getAttribute('id')) : document;
-        const sidebar = document.querySelector('.filter-sidebar');
-
-        if (!sidebar) {
+        if (indexProducts.dataset.bindSearchEnter === '1') {
             return;
         }
 
-        // Auto-open if any filter is active
-        sidebar.querySelectorAll('select, input[type="checkbox"], input[type="radio"]').forEach(el => {
-            if (sidebar.classList.contains('show')) {
+        indexProducts.dataset.bindSearchEnter = '1';
+
+        indexProducts.addEventListener('keydown', (event) => {
+            const input = event.target?.closest?.('input[type="search"]');
+            if (!input) {
                 return;
             }
-            const hasValue =
-                (el.tagName === 'SELECT' && el.value !== '') ||
-                (el.type === 'checkbox' && el.checked && el.value) ||
-                (el.type === 'radio' && el.checked && el.value);
-
-            if (hasValue) {
-                sidebar.classList.add('show');
+            if (event.key === 'Enter' || event.code === 'Enter') {
+                const group = input.closest('.input-group');
+                const submitText = group ? group.querySelector('.input-group-text') : null;
+                if (submitText) {
+                    submitText.click();
+                    event.preventDefault();
+                }
             }
         });
 
-        formEl.querySelectorAll('.sidebar-toggle').forEach(toggle => {
-            toggle.onclick = () => sidebar.classList.toggle('show');
-        });
+        indexProducts.addEventListener('click', (event) => {
+            const submitText = event.target?.closest?.('.input-group-text');
+            if (!submitText) {
+                return;
+            }
 
-        sidebar.querySelectorAll('.reset-sidebar-filters').forEach(resetBtn => {
-            resetBtn.onclick = () => {
-                sidebar.querySelectorAll('select, input').forEach(el => {
+            const form = submitText.closest('form');
+            if (form) {
+                post(form);
+            }
+        });
+    };
+
+    /**
+     * Bind sidebar toggle/reset behaviors and auto-open if at least one filter is active.
+     * Uses delegation on document to avoid rebinding after AJAX.
+     */
+    const bindSidebarEvents = () => {
+
+        if (document.documentElement.dataset.bindSidebarEvents === '1') {
+            return;
+        }
+        document.documentElement.dataset.bindSidebarEvents = '1';
+
+        document.addEventListener('click', (event) => {
+
+            const sidebar = document.querySelector('.filter-sidebar');
+            if (!sidebar) {
+                return;
+            }
+
+            const toggle = event.target?.closest?.('.sidebar-toggle');
+            if (toggle) {
+                sidebar.classList.toggle('show');
+                return;
+            }
+
+            const resetBtn = event.target?.closest?.('.reset-sidebar-filters');
+            if (resetBtn) {
+                // Reset all fields inside sidebar then post
+                sidebar.querySelectorAll('select, input').forEach((el) => {
                     el.classList.add('is-refresh');
                     if (el.tagName === 'SELECT') {
                         el.value = '';
@@ -54,113 +159,155 @@ export default function () {
                         el.value = '';
                     }
                 });
-                post(formEl, resetBtn);
-            };
+
+                const form = sidebar.querySelector('form');
+                if (form) {
+                    post(form, resetBtn);
+                }
+            }
         });
     };
 
     /**
-     * Bind filter fields events (change + clear buttons) and prevent double post for .btn-group-toggle.
-     *
-     * @param {HTMLFormElement|HTMLElement} form
+     * Auto-open sidebar if any filter is active (run after initial load and after AJAX).
      */
-    const fields = (form) => {
+    const autoOpenSidebarIfActive = () => {
 
-        if (!form) {
+        const sidebar = document.querySelector('.filter-sidebar');
+        if (!sidebar || sidebar.classList.contains('show')) {
             return;
         }
 
-        const formEl = document.getElementById(form.getAttribute('id'));
-        if (!formEl) {
+        sidebar.querySelectorAll('select, input[type="checkbox"], input[type="radio"]').forEach((el) => {
+            const hasValue =
+                (el.tagName === 'SELECT' && el.value !== '') ||
+                (el.type === 'checkbox' && el.checked && el.value) ||
+                (el.type === 'radio' && el.checked && el.value);
+
+            if (hasValue) {
+                sidebar.classList.add('show');
+            }
+        });
+    };
+
+    /**
+     * Bind filter fields (change + clear) using delegation to avoid rebind.
+     */
+    const bindFilterFields = () => {
+
+        if (document.documentElement.dataset.bindFilterFields === '1') {
             return;
         }
+        document.documentElement.dataset.bindFilterFields = '1';
 
-        formEl.querySelectorAll('.select-search:not(.is-refresh), .form-check-input:not(.is-refresh)').forEach(selector => {
-
-            // Avoid double post: inputs in .btn-group-toggle are handled below
-            if (selector.tagName === 'INPUT' && selector.closest('.btn-group-toggle')) {
+        // Clear buttons
+        document.addEventListener('click', (event) => {
+            const clearBtn = event.target?.closest?.('.group .clear');
+            if (!clearBtn) {
                 return;
             }
 
-            const group = selector.closest('.group');
-            const resetBtn = group ? group.querySelector('.clear') : null;
-
-            if (resetBtn) {
-                resetBtn.onclick = () => {
-                    if (selector.tagName === 'SELECT') {
-                        selector.value = '';
-                    } else if (selector.type === 'checkbox' || selector.type === 'radio') {
-                        selector.checked = false;
-                    } else {
-                        selector.value = '';
-                    }
-                    post(formEl);
-                };
+            const group = clearBtn.closest('.group');
+            if (!group) {
+                return;
             }
 
-            selector.addEventListener('change', () => post(formEl, selector), false);
+            // Find the associated field in the group
+            const selector = group.querySelector('.select-search, .form-check-input');
+            if (!selector) {
+                return;
+            }
+
+            if (selector.tagName === 'SELECT') {
+                selector.value = '';
+            } else if (selector.type === 'checkbox' || selector.type === 'radio') {
+                selector.checked = false;
+            } else {
+                selector.value = '';
+            }
+
+            const form = selector.closest('form');
+            if (form) {
+                post(form);
+            }
         });
 
-        formEl.querySelectorAll('.btn-group-toggle').forEach(checkboxGroup => {
+        // Generic changes (excluding btn-group-toggle input handled below)
+        document.addEventListener(
+            'change',
+            (event) => {
+                const target = event.target;
 
-            const label = checkboxGroup.querySelector('label');
-            const input = checkboxGroup.querySelector('input');
-            if (!label || !input) {
-                return;
-            }
+                const isFilter =
+                    target?.matches?.('.select-search, .form-check-input') &&
+                    !target.classList.contains('is-refresh');
 
-            input.addEventListener('change', (event) => {
-                label.classList.toggle('active');
-                post(formEl, input);
+                if (!isFilter) {
+                    return;
+                }
+
+                // Avoid double post: inputs inside .btn-group-toggle are handled separately
+                if (target.tagName === 'INPUT' && target.closest('.btn-group-toggle')) {
+                    return;
+                }
+
+                const form = target.closest('form');
+                if (form) {
+                    post(form, target);
+                }
+            },
+            false
+        );
+
+        // btn-group-toggle (toggle active class + post once)
+        document.addEventListener(
+            'change',
+            (event) => {
+                const input = event.target?.closest?.('.btn-group-toggle input');
+                if (!input) {
+                    return;
+                }
+
+                const wrapper = input.closest('.btn-group-toggle');
+                const label = wrapper ? wrapper.querySelector('label') : null;
+
+                if (label) {
+                    label.classList.toggle('active');
+                }
+
+                const form = input.closest('form');
+                if (form) {
+                    post(form, input);
+                }
+
                 event.stopImmediatePropagation();
-            });
-        });
+            },
+            true
+        );
     };
 
     /**
-     * Bind 'Enter' key to submit search inputs via the associated button.
+     * Init tooltips in a given container.
+     *
+     * @param {HTMLElement|Document} root
      */
-    const keyDown = () => {
-
-        indexProducts.querySelectorAll('input[type="search"]').forEach(inputText => {
-
-            const group = inputText.closest('.input-group');
-            const submitText = group ? group.querySelector('.input-group-text') : null;
-            if (!submitText) {
-                return;
-            }
-
-            inputText.addEventListener('keydown', (event) => {
-                if (event.keyCode === 13 || event.which === 13) {
-                    submitText.click();
-                    event.preventDefault();
-                    return false;
-                }
-            });
-
-            submitText.onclick = () => {
-                const f = inputText.closest('form');
-                if (f) {
-                    post(f);
-                }
-            };
-        });
+    const initTooltips = (root) => {
+        if (!root) {
+            return;
+        }
+        root.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((tooltipEl) => new Tooltip(tooltipEl));
     };
-    keyDown();
-
-    const form = document.getElementById('search-filter-form');
-    if (form) {
-        fields(form);
-        sidebarEvent(form);
-    }
 
     /**
      * Submit a form via AJAX (GET) and refresh results + filters UI.
      *
-     * @param {HTMLFormElement|HTMLElement} form
+     * @param {HTMLFormElement} form
      * @param {HTMLElement|null} selector
      */
     const post = (form, selector = null) => {
+        if (!form) {
+            return;
+        }
 
         displayLoader(indexProducts, false);
 
@@ -177,7 +324,10 @@ export default function () {
 
         const locale = document.documentElement.lang || '';
         const url = removeParam(form, 'search_terms');
-        const action = (url ? form.getAttribute('action') + url + '&ajax=true&_locale=' + locale : form.getAttribute('action') + '?ajax=true&_locale=' + locale);
+        const action = url
+            ? `${form.getAttribute('action')}${url}&ajax=true&_locale=${locale}`
+            : `${form.getAttribute('action')}?ajax=true&_locale=${locale}`;
+
         const pathname = window.location.pathname;
 
         const unlock = () => {
@@ -192,7 +342,6 @@ export default function () {
         xHttp.send();
 
         xHttp.onload = function () {
-
             if (!(this.readyState === 4 && this.status === 200)) {
                 unlock();
                 return;
@@ -205,14 +354,17 @@ export default function () {
             const html = document.createElement('div');
             html.innerHTML = response.html;
 
+            // Results
             const container = document.getElementById('results');
             const rspContainer = html.querySelector('#results');
             if (container && rspContainer) {
                 container.innerHTML = rspContainer.innerHTML;
             }
 
+            // URL
             window.history.replaceState({}, document.title, pathname + url);
 
+            // Pagination datasets
             const scrollWrapper = html.querySelector('#scroll-wrapper');
             const docWrapper = document.querySelector('#scroll-wrapper');
             if (scrollWrapper) {
@@ -226,15 +378,21 @@ export default function () {
                 }
             }
 
+            // Show more button
             const showMoreDoc = document.querySelector('#show-more-wrap');
             if (showMoreDoc && container) {
-                (parseInt(container.dataset.max) > 1 ? showMoreDoc.classList.remove : showMoreDoc.classList.add).call(showMoreDoc.classList, 'd-none');
+                (parseInt(container.dataset.max, 10) > 1 ? showMoreDoc.classList.remove : showMoreDoc.classList.add).call(
+                    showMoreDoc.classList,
+                    'd-none'
+                );
             }
 
+            // Tooltips
             if (container) {
-                container.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(tooltipEl => new Tooltip(tooltipEl));
+                initTooltips(container);
             }
 
+            // Counter
             const resultCounter = document.querySelector('#result-counter');
             const rspCounter = html.querySelector('#result-counter');
             if (resultCounter && rspCounter) {
@@ -242,24 +400,18 @@ export default function () {
                 resultCounter.innerHTML = rspCounter.innerHTML;
             }
 
+            // Filters container (HTML replaced)
             const formContainer = document.getElementById('search-products-filters-container');
             const rspFormContainer = html.querySelector('#search-products-filters-container');
             if (formContainer && rspFormContainer) {
                 formContainer.innerHTML = rspFormContainer.innerHTML;
-                fields(formContainer.querySelector('#search-filter-form'));
-
-                const searchTextForm = formContainer.querySelector('#search-text-form');
-                if (searchTextForm) {
-                    const submitText = searchTextForm.querySelector('.input-group-text');
-                    if (submitText) {
-                        submitText.onclick = () => post(searchTextForm);
-                    }
-                }
+                // Re-init tooltips inside filters if any
+                initTooltips(formContainer);
             }
-
-            AjaxPagination(html);
-            keyDown();
-            sidebarEvent(form);
+            // Re-run pagination binding if your helper expects updated DOM
+            AjaxPagination(indexProducts);
+            // Ensure sidebar state updated
+            autoOpenSidebarIfActive();
             hideLoader(indexProducts);
             unlock();
         };
@@ -270,7 +422,7 @@ export default function () {
     /**
      * Build a query string from FormData and remove empty params + a given parameter.
      *
-     * @param {HTMLFormElement|HTMLElement} form
+     * @param {HTMLFormElement} form
      * @param {string} parameter
      * @returns {string}
      */
@@ -292,4 +444,14 @@ export default function () {
         }
         return sourceURL === '?' ? '' : sourceURL;
     };
+
+    // Initial bindings (all delegated / idempotent)
+    bindSearchEnter();
+    bindSidebarEvents();
+    bindDropdownSelect();
+    bindFilterFields();
+    autoOpenSidebarIfActive();
+
+    // Initial tooltips
+    initTooltips(document);
 }

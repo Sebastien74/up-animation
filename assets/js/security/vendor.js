@@ -17,6 +17,10 @@ import '../../scss/security/vendor.scss';
 /** 1 - Preloader */
 import './preloader';
 
+document.querySelectorAll('link.preload-css[rel="preload"]').forEach(link => {
+    link.rel = 'stylesheet';
+});
+
 /** 2 - Lazy load */
 import(/* webpackPreload: true */ '../vendor/components/lazy-load').then(({default: lazyLoad}) => {
     new lazyLoad();

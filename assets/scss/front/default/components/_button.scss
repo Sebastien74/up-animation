@@ -17,15 +17,22 @@
 
 .btn.btn-circle {
 
-    border-radius: 50% !important;
     justify-content: center !important;
     align-items: center !important;
     padding: 0 !important;
-    transition: all .3s ease-in-out !important;
-    aspect-ratio: 1 !important;
+    transition: all .3s linear !important;
     width: 45px !important;
     height: 45px !important;
     flex: 0 0 45px !important;
+
+    &.rounded {
+        border-radius: $border-radius-lg !important
+    }
+
+    &:not(.rounded) {
+        border-radius: 50% !important;
+        aspect-ratio: 1 !important;
+    }
 
     i {
         font-size: 1rem !important;
@@ -35,7 +42,7 @@
 
 .btn:not(.basic):not(.btn-blur) {
 
-    box-shadow: none !important;
+    box-shadow: $box-shadow !important;
     overflow: hidden;
     text-align: center;
     text-decoration: none;
@@ -47,10 +54,10 @@
     box-sizing: border-box;
     border-width: $btn-border-width !important;
     border-style: solid;
-    font-size: 16px;
+    font-size: 1rem;
 
     span {
-        font-size: 16px;
+        font-size: 1rem;
     }
 
     &:not(.btn-circle) {
@@ -63,7 +70,7 @@
         min-width: 175px;
 
         i {
-            font-size: 15px;
+            font-size: 1rem;
         }
 
         @include mediaQuery(max-md) {
@@ -78,43 +85,20 @@
     }
 
     @include mediaQuery(min-lg) {
-
         &:not(.btn-circle) {
             padding: $btn-padding;
             font-size: $btn-font-size;
         }
+    }
+}
 
-        @media (prefers-reduced-motion: no-preference) {
+.btn {
 
-            &:not(.btn-gradient) {
+    transition: transform .2s linear;
 
-                &:before {
-                    position: absolute;
-                    content: "";
-                    background: $white;
-                    transition-duration: .3s;
-                    z-index: -1;
-                    top: 0;
-                    right: auto;
-                    bottom: auto;
-                    left: 0;
-                    width: 0;
-                    height: 100%;
-                    opacity: 1;
-                    border-radius: $btn-border-radius;
-                }
-
-                &:hover,
-                &:focus,
-                &:active,
-                &.active {
-                    &:before {
-                        width: 100%;
-                        opacity: 1;
-                    }
-                }
-            }
-        }
+    &:hover {
+        transition: transform .2s linear;
+        transform: translateY(-1px);
     }
 }
 
@@ -135,7 +119,7 @@
             border-radius: inherit;
             pointer-events: none;
             z-index: -1;
-            transition: opacity .5s ease-in-out;
+            transition: opacity .5s linear;
         }
 
         &::before {
@@ -166,10 +150,6 @@
 
     i {
         color: $white !important;
-    }
-
-    &:before {
-        display: none !important;
     }
 
     &:hover, &:active, &:focus {

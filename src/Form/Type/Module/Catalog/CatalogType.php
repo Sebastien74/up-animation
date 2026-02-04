@@ -59,6 +59,8 @@ class CatalogType extends AbstractType
                         $this->translator->trans('Dates', [], 'admin') => 'dates',
                         $this->translator->trans('Sous-catégories', [], 'admin') => 'sub-categories',
                         $this->translator->trans('Médias', [], 'admin') => 'medias',
+                        $this->translator->trans('Mettre en avant', [], 'admin') => 'promote',
+                        $this->translator->trans('Template personnalisé', [], 'admin') => 'customLayout',
                     ],
                     'multiple' => true,
                     'display' => 'search',
@@ -94,7 +96,7 @@ class CatalogType extends AbstractType
         }
 
         $save = new WidgetType\SubmitType($this->coreLocator);
-        $save->add($builder);
+        $save->add($builder, ['btn_both' => true]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

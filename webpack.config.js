@@ -455,6 +455,7 @@ Encore.reset();
 Encore.setOutputPath('public/build/security')
     .setPublicPath('/build/security')
     .addEntry('security', './assets/js/security/vendor.js')
+    .addStyleEntry('security-fonts', ['./assets/scss/security/fonts.scss'])
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(enableSourceMaps)
     .enableVersioning(enableVersioning)

@@ -16,6 +16,7 @@ use App\Form\Manager\Translation\IntlManager;
 use App\Form\Type\Core\DefaultType;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Twig\Core\AppRuntime;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\Mapping\MappingException;
 use Monolog\Handler\RotatingFileHandler;
@@ -78,7 +79,7 @@ class FormHelper
     /**
      * Execute FormHelper.
      *
-     * @throws ContainerExceptionInterface|MappingException|NonUniqueResultException|NotFoundExceptionInterface|\ReflectionException|InvalidArgumentException
+     * @throws ContainerExceptionInterface|MappingException|NonUniqueResultException|NotFoundExceptionInterface|\ReflectionException|InvalidArgumentException|ORMException
      */
     public function execute(
         ?string $formType = null,
@@ -321,6 +322,8 @@ class FormHelper
 
     /**
      * Synchronize locale Media screens.
+     *
+     * @throws ORMException
      */
     private function setMediaScreen(Media $media): void
     {
@@ -438,7 +441,7 @@ class FormHelper
                 ? $this->request->get('interfaceName') : $this->interface['name'];
             $saveLayoutRoute = 'admin_'.$interfaceName.'_layout';
             $saveAddRoute = 'admin_'.$interfaceName.'_index';
-            $currentRoute = $this->request->get('_route');
+            $currentRoute = $this->request->attributes->get('_route');
             $parameters = $this->getRouteParameters($saveEditRoute, $entity);
             if (!empty($redirection)) {
                 $this->redirection = $redirection;
@@ -458,10 +461,16 @@ class FormHelper
                 if (is_object($lastRoute) && property_exists($lastRoute, 'name')) {
                     $this->redirection = $this->coreLocator->router()->generate($lastRoute->name, $lastRoute->params);
                 } elseif (!$this->redirection && str_contains($currentRoute, '_edit') && $this->appExtension->routeExist($saveAddRoute)) {
-                    if(isset($parameters[$interfaceName])) {
+                    if (isset($parameters[$interfaceName])) {
                         unset($parameters[$interfaceName]);
                     }
                     $this->redirection = $this->coreLocator->router()->generate($saveAddRoute, $parameters);
+                }
+                if (!$this->redirection && 'admin_link_edit' === $currentRoute) {
+                    if (isset($parameters[$interfaceName])) {
+                        unset($parameters[$interfaceName]);
+                    }
+                    $this->redirection = $this->coreLocator->router()->generate('admin_menu_edit', $parameters);
                 }
                 if (!$this->redirection) {
                     $this->redirection = $this->request->headers->get('referer');
@@ -488,14 +497,15 @@ class FormHelper
         $parameters = [];
         $parameters['website'] = $this->website->getId();
         $routeInfos = $this->coreLocator->router()->getRouteCollection()->get($saveEditRoute);
-        $interfaceNameParameter = $this->request->get('interfaceName');
-        $interfaceEntityParameter = $this->request->get('interfaceEntity');
+        $interfaceNameParameter = $this->request->attributes->get('interfaceName') ? $this->request->attributes->get('interfaceName') : $this->request->query->get('interfaceName');
+        $interfaceEntityParameter = $this->request->attributes->get('interfaceEntity') ? $this->request->attributes->get('interfaceEntity') : $this->request->query->get('interfaceEntity');
 
         if ($routeInfos) {
             if (str_contains($routeInfos->getPath(), '{entitylocale}')) {
-                $parameters['entitylocale'] = $this->request->get('entitylocale')
-                    ? $this->request->get('entitylocale')
-                    : $this->website->getConfiguration()->getLocale();
+                $parameters['entitylocale'] = $this->request->attributes->get('entitylocale')
+                    ? $this->request->attributes->get('entitylocale')
+                    : ($this->request->query->get('entitylocale') ? $this->request->query->get('entitylocale')
+                        : $this->website->getConfiguration()->getLocale());
             }
         }
 

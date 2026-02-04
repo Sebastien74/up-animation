@@ -8,6 +8,7 @@
 {% set networks = logos['social-networks'] is defined and logos['social-networks'] ? logos['social-networks'] : null %}
 {% set haveEmails = information.emails.header is defined and information.emails.header is not empty %}
 {% set havePhones = information.phones.header is defined and information.phones.header is not empty %}
+{% set phone = information.phone is defined and information.phone ? information.phone : false %}
 {% set companyName = information.companyName is defined and information.companyName ? information.companyName : "Up Animations!"|trans|raw %}
 {% set schedule = information.schedule is defined and information.schedule ? information.schedule : false %}
 {% set haveLogin = 'secure-page'|moduleActive(configuration) %}
@@ -63,11 +64,12 @@
                     {% if link.linkBlank %} target="_blank"{% else %}{% endif %}
                     {% if link.linkExternal %} rel="noopener noreferrer"{% endif %}
                     {% if pushMicroData %} itemprop="url"{% endif %}>
+                    {% set linkLabel = link.linkLabel and link.level > 1 ? link.linkLabel : link.title %}
                     {% if link.media.haveMedia is defined and link.media.haveMedia %}
                         {{ link.media|file }}
-                        <span class="d-lg-none"{% if pushMicroData %} itemprop="name"{% endif %}>{{ link.title|unescape|raw }}</span>
+                        <span class="d-lg-none"{% if pushMicroData %} itemprop="name"{% endif %}>{{ linkLabel|unescape|raw }}</span>
                     {% else %}
-                        <span class="link-label cursor{% if link.level > 1 %} text-secondary{% endif %}"{% if pushMicroData %} itemprop="name"{% endif %}>{{ link.title|unescape|raw }}</span>
+                        <span class="link-label cursor{% if link.level > 1 %} text-secondary{% endif %}"{% if pushMicroData %} itemprop="name"{% endif %}>{{ linkLabel|unescape|raw }}</span>
                     {% endif %}
                 </{% if 'a' == element %}a{% else %}div{% endif %}>
                 {% if link.level >= 3 %}
@@ -99,16 +101,15 @@
                             <i class="close-menu-level-{{ link.level }} close-menu-submenu ms-auto icon-times text-primary cursor d-inline-block"></i>
                         {% endif %}
                     </div>
-                    <a href="{{ link.link }}" class="d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}" aria-hidden="true">
-                        <span class="parent-label text-warning position-relative fw-500 me-3 me-lg-0">{{ link.title|unescape|raw }} Mettre label Voir toutes nos agence dans menu</span>
+                    {% set subLabel = link.subTitle ? link.subTitle : link.title %}
+                    {% set parentEl = link.link ? 'a' : 'div' %}
+                    <{{ parentEl }}{% if 'a' == parentEl %} href="{{ link.link }}"{% endif %} class="d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}" aria-hidden="true">
+                        <span class="parent-label text-warning position-relative fw-500 me-3 me-lg-0">{{ subLabel|unescape|raw }}</span>
                         <i class="icon-arrow-right text-primary ms-3"></i>
-                    </a>
+                    </{{ parentEl }}>
                     <div class="inner position-relative mt-5">
                         <div class="inner-sub-wrap spy-scroll position-relative text-start {% if link.level >= 3 %}pt-4{% else %}mt-4 mt-lg-4{% endif %}" tabindex="-1"
                              data-scroll-bar="1">
-                            {% if link.subTitle %}
-                                <strong class="submenu-label d-inline-block fw-600 mb-5 w-100 lh-1">{{ link.subTitle|raw }}</strong>
-                            {% endif %}
                             {% set haveColumns = false %}
                             {% set haveIcons = false %}
                             {% for subLink in link.children %}
@@ -190,10 +191,10 @@
                                     {% for name, infos in website.networks %}
                                         {% if infos.link and infos.dirname %}
                                             {% set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags %}
-                                            <button class="{{ name }} btn btn-transparent basic p-0 d-inline-flex ms-2 js-open-window"
+                                            <button class="{{ name }} btn btn-transparent shadow basic p-0 d-inline-flex ms-2 js-open-window"
                                                     data-url="{{ infos.link }}"
                                                     aria-label="{{ label }}">
-                                                <i class="icon-{{ name|lower }}" aria-hidden="true"></i>
+                                                <i class="icon-{{ name|lower }} text-white" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ label }}</span>
                                             </button>
                                         {% endif %}
@@ -262,13 +263,19 @@
                             microDataActive: microDataActive,
                         } only %}
                     {% endif %}
+                    {% if phone %}
+                        <span class="d-lg-nones">
+                            <a href="tel:{{ phone.tagNumber }}" class="btn btn-circle rounded btn-primary" aria-label="{{ "Téléphone"|trans|striptags }}"><i class="icon-phone-alt-solid"></i></a>
+                        </span>
+                    {% endif %}
                     {% if contactPageUrl %}
                         {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                             intl: {
                                 link: path('front_index', {url: contactPageUrl}),
                                 linkStyle: 'btn btn-primary track-link-contact-form contact-link',
                                 linkLabel: "Nous contacter"|trans,
-                            }
+                            },
+                            icon: 'headset',
                         } %}
                     {% endif %}
                     {% if multiLingues %}

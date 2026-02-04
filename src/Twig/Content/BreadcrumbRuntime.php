@@ -98,7 +98,10 @@ class BreadcrumbRuntime implements RuntimeExtensionInterface
                 $breadcrumbs[] = ['title' => $options['parent']['title'], 'url' => $url, 'inFill' => false];
             }
 
-            if ($currentTitle && $page && $currentEntity && $page->getId() !== $currentEntity->id) {
+            if (
+                ($currentTitle && $page && $currentEntity && $page->getId() !== $currentEntity->id)
+                || ($currentTitle && count($breadcrumbs) === 1 && self::DISPLAY_HOME)
+            ) {
                 $breadcrumbs[] = ['title' => $currentTitle, 'url' => false, 'inFill' => false];
             }
 

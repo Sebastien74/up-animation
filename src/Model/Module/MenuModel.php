@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Model\Module;
 
 use App\Entity\Core\Website;
+use App\Entity\Module\Catalog\Listing;
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Menu\Link;
 use App\Entity\Module\Menu\Menu;
 use App\Entity\Seo\Url;
@@ -17,6 +19,9 @@ use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
+use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -37,7 +42,7 @@ final class MenuModel extends BaseModel
     /**
      * fromEntity.
      *
-     * @throws NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public static function fromEntity(Menu $menu, WebsiteModel $website, CoreLocatorInterface $coreLocator, array $links = [], ?Url $url = null): self
     {
@@ -80,7 +85,7 @@ final class MenuModel extends BaseModel
     /**
      * To get tree.
      *
-     * @throws NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     private static function tree(
         WebsiteModel $website,
@@ -96,34 +101,50 @@ final class MenuModel extends BaseModel
         $uri = self::$coreLocator->request()->getRequestUri();
         $schemeAndHttpHost = self::$coreLocator->request()->getSchemeAndHttpHost();
 
+        $catalogSlugs = [];
+        if (!empty($tree['main'])) {
+            foreach ($tree['main'] as $link) {
+                $catalog = $link instanceof Link ? $link->getCatalog() : false;
+                if ($catalog) {
+                    $catalogSlugs[] = $catalog->getSlug();
+                }
+            }
+        }
+
         $treeResponse = [];
         foreach ($tree as $key => $links) {
             foreach ($links as $keyLink => $link) {
-                $intl = IntlModel::fromEntity($link, self::$coreLocator, false);
+                $asCatalog = $link instanceof Link && $link->getCatalog();
+                $intl = IntlModel::fromEntity($link, self::$coreLocator, false, ['toLinkMenu' => true]);
                 $targetPage = $intl?->linkTargetPage;
                 $path = self::linkPath($website, $intl, $url);
                 $asPath = $path !== $schemeAndHttpHost;
                 $active = $asPath && $path && trim($uri, '/') === trim(str_replace($schemeAndHttpHost, '', $path), '/');
-                $color = $link->getColor() ? 'text-'.$link->getColor() : '';
-                $btnColor = $link->getBtnColor() ? 'btn '.$link->getBtnColor() : '';
+                $color = $link instanceof Link && $link->getColor() ? 'text-'.$link->getColor() : '';
+                $btnColor = $link instanceof Link && $link->getBtnColor() ? 'btn '.$link->getBtnColor() : '';
                 $id = $intl->linkTargetPage && $intl->linkTargetPage->getSlug() ? 'link-'.$menu->getSlug().'-'.$intl->linkTargetPage->getSlug() : 'link-'.$menu->getSlug().'-'.$link->getSlug();
-                $media = MediaModel::fromEntity($link->getMediaRelation(), self::$coreLocator);
+                $media = $link instanceof Link ? MediaModel::fromEntity($link->getMediaRelation(), self::$coreLocator) : null;
                 $pictogram = self::getContent('pictogram', $link);
+                $children = !empty($defaultTree[$link->getId()]) ? self::tree($website, $menu, $defaultTree[$link->getId()], null, $defaultTree)[$link->getId()] : [];
+                if ($asCatalog) {
+                    $products = self::$coreLocator->em()->getRepository(Product::class)->findOnlineByCatalogs($website->entity, self::$coreLocator->locale(), [$link->getCatalog()]);
+                    $children = self::tree($website, $menu, $products, null, $defaultTree)['products'];
+                }
                 $treeResponse[$key][$keyLink] = array_merge((array) $intl, [
                     'id' => $id,
                     'entity' => $link,
                     'pictogram' => $pictogram ?: ($targetPage && $targetPage->getPictogram() ? $targetPage->getPictogram() : null),
                     'online' => $intl->linkOnline,
                     'active' => $active,
-                    'level' => $link->getLevel(),
+                    'level' => $link instanceof Link ? $link->getLevel() : 2,
                     'asAnchor' => $intl->linkAsAnchor,
                     'dataAnchor' => $intl->linkDataAnchor,
                     'color' => $color,
                     'btnColor' => $btnColor,
-                    'bgColor' => $link->getBackgroundColor() ?: '',
+                    'bgColor' => $link instanceof Link && $link->getBackgroundColor() ? $link->getBackgroundColor() : '',
                     'class' => self::linkClass($id, $active, $intl->linkAsAnchor, $color, $btnColor),
-                    'media' => $media->media ? $media : null,
-                    'children' => !empty($defaultTree[$link->getId()]) ? self::tree($website, $menu, $defaultTree[$link->getId()], null, $defaultTree)[$link->getId()] : [],
+                    'media' => $media && $media->media ? $media : null,
+                    'children' => $children,
                 ]);
             }
         }

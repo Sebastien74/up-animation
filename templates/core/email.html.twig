@@ -14,7 +14,7 @@
         <span class="label fw-600 me-1">{{ "E-mail :"|trans|raw }}</span>
     {% endif %}
     <a href="{{ mailto }}"{% if not only_href %} data-mailto="{{ email|encrypt(website) }}"{% endif %}
-       class="email-link position-relative d-inline-flex align-items-center{% if not only_href %} loading{% else %} only-href{% endif %}{{ btnClasses }}"
+       class="email-link position-relative d-inline-flex align-items-center{% if class %} {{ class }}{% endif %}{% if not only_href %} loading{% else %} only-href{% endif %}{{ btnClasses }}"
        data-id="{{ website.id }}"
        aria-label="{{ "E-mail"|trans|striptags }}"
        data-toggle="tooltip"
@@ -25,7 +25,7 @@
         {% if options.text is defined %}
             {{ options.text }}
         {% elseif only_href %}
-            <span class="email">{{ email }}</span>
+            {% if icon or entitled %}<span class="email">{% endif %}{{ email }}{% if icon or entitled %}</span>{% endif %}
         {% else %}
             <span class="email-text d-inline-block">
                 <span class="spinner-border float-start me-1" role="status"></span>

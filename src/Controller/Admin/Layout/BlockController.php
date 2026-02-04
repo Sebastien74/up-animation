@@ -122,6 +122,14 @@ class BlockController extends AdminController
             $block->setSoundControls(true);
         } elseif ('separator' === $slugBlock) {
             $block->setMarginBottom(null);
+        } elseif ('card' === $slugBlock) {
+            foreach ($this->coreLocator->website()->configuration->allLocales as $locale) {
+                $intl = new Layout\BlockIntl();
+                $intl->setTitleForce(3);
+                $intl->setLocale($locale);
+                $intl->setWebsite($website->entity);
+                $block->addIntl($intl);
+            }
         } else {
             $block->setMarginBottom($layoutConfiguration->getBlockMarginBottom());
         }

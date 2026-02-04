@@ -19,6 +19,7 @@ use App\Repository\Module\Portfolio\TeaserRepository;
 use App\Service\Content\ListingService;
 use App\Service\Content\SeoService;
 use Doctrine\ORM\NonUniqueResultException;
+use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +38,7 @@ class PortfolioController extends FrontController
     /**
      * Index.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function index(
         Request $request,
@@ -47,17 +48,8 @@ class PortfolioController extends FrontController
         ?Block $block = null,
         mixed $filter = null,
     ) {
-        if (!$filter) {
-            return new Response();
-        }
 
-        $cache = $this->coreLocator->cacheService()->cachePool($block, 'portfolio_index', 'GET');
-        if ($cache) {
-            return $cache;
-        }
-
-        /** @var Listing $listing */
-        $listing = $listingRepository->find($filter);
+        $listing = $filter ? $listingRepository->find($filter) : false;
 
         if (!$listing) {
             return new Response();
@@ -80,7 +72,7 @@ class PortfolioController extends FrontController
         $entity = $block instanceof Block ? $block : $listing;
         $entity->setUpdatedAt($listing->getUpdatedAt());
 
-        $response = $this->render('front/'.$template.'/actions/portfolio/index.html.twig', [
+        return $this->render('front/'.$template.'/actions/portfolio/index.html.twig', [
             'website' => $website,
             'url' => $url,
             'filter' => $filter,
@@ -90,14 +82,12 @@ class PortfolioController extends FrontController
             'websiteTemplate' => $template,
             'thumbConfiguration' => $this->thumbConfiguration($website, Card::class, 'index'),
         ]);
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'portfolio_index', 'GENERATE', $response);
     }
 
     /**
      * Teaser.
      *
-     * @throws NonUniqueResultException|\Exception
+     * @throws NonUniqueResultException|Exception
      */
     public function teaser(
         Request $request,
@@ -107,17 +97,9 @@ class PortfolioController extends FrontController
         ?Block $block = null,
         mixed $filter = null,
     ) {
-        if (!$filter) {
-            return new Response();
-        }
-
-        $cache = $this->coreLocator->cacheService()->cachePool($block, 'portfolio_teaser', 'GET');
-        if ($cache) {
-            return $cache;
-        }
 
         $website = $this->getWebsite();
-        $teaser = $teaserRepository->findOneByFilter($website->entity, $request->getLocale(), $filter);
+        $teaser = $filter ? $teaserRepository->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
 
         if (!$teaser) {
             return new Response();
@@ -131,7 +113,7 @@ class PortfolioController extends FrontController
         $entity = $block instanceof Block ? $block : $teaser;
         $entity->setUpdatedAt($teaser->getUpdatedAt());
 
-        $response = $this->render('front/'.$template.'/actions/portfolio/teaser.html.twig', [
+        return $this->render('front/'.$template.'/actions/portfolio/teaser.html.twig', [
             'websiteTemplate' => $template,
             'block' => $block,
             'url' => $url,
@@ -141,15 +123,13 @@ class PortfolioController extends FrontController
             'entities' => $entities,
             'thumbConfiguration' => $this->thumbConfiguration($website, Card::class, 'teaser'),
         ]);
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'portfolio_teaser', 'GENERATE', $response);
     }
 
     /**
      * Category View.
      *
      * @throws NonUniqueResultException
-     * @throws \Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     #[Route([
         'fr' => '/{pageUrl}/portfolio-categorie/{url}',

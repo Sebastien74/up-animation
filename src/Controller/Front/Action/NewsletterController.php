@@ -36,22 +36,11 @@ class NewsletterController extends FrontController
         Request $request,
         CampaignRepository $campaignRepository,
         NewsletterManager $manager,
-        mixed $filter = null): JsonResponse|Response
-    {
-        if (!$filter) {
-            return new Response();
-        }
-
-        $block = $request->get('block') instanceof Block ? $request->get('block') : null;
-        if ('GET' === $request->getMethod()) {
-            $cache = $this->coreLocator->cacheService()->cachePool($block, 'newsletter_view', 'GET');
-            if ($cache) {
-                return $cache;
-            }
-        }
+        mixed $filter = null
+    ): JsonResponse|Response {
 
         $website = $this->getWebsite();
-        $campaign = $campaignRepository->findOneByFilter($website->entity, $request->getLocale(), $filter);
+        $campaign = $filter ? $campaignRepository->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
         if (!$campaign) {
             return new Response();
         }
@@ -77,15 +66,13 @@ class NewsletterController extends FrontController
             ]);
         }
 
-        $response = $this->cache($request, 'front/'.$template.'/actions/newsletter/view.html.twig', $campaign, $arguments);
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'newsletter_view', 'GENERATE', $response);
+        return $this->render('front/'.$template.'/actions/newsletter/view.html.twig', $arguments);
     }
 
     /**
      * Thanks.
      *
-     * @throws Exception
+     * @throws Exception|InvalidArgumentException
      */
     #[Route([
         'fr' => '/newsletter/merci/{token}',
@@ -112,7 +99,7 @@ class NewsletterController extends FrontController
     /**
      * Confirmation.
      *
-     * @throws Exception
+     * @throws Exception|InvalidArgumentException
      */
     #[Route([
         'fr' => '/newsletter/confirmation/{token}/{status}',

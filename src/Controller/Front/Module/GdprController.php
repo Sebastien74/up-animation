@@ -161,7 +161,7 @@ class GdprController extends FrontController
     public function removeData(Request $request, GdprService $gdprService): JsonResponse
     {
         $gdprService->removeData($this->getWebsite()->entity);
-        if ($request->get('referer')) {
+        if ($request->headers->get('referer')) {
             $session = new Session();
             $session->getFlashBag()->add('success', $this->coreLocator->translator()->trans('Les données ont été supprimées avec succès.', [], 'admin'));
         }

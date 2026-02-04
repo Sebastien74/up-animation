@@ -31,10 +31,10 @@
 
                 a, a span {
 
-                    transition: color .3s ease-in-out;
+                    transition: color .3s linear;
 
                     &:hover, &:focus {
-                        transition: all .3s ease-in-out;
+                        transition: all .3s linear;
                         color: $primary !important;
                     }
                 }

@@ -170,6 +170,85 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
+     * Find all by Action.
+     */
+    public function findAllByAction(
+        mixed $website,
+        string $locale,
+        string $classname,
+        array $filterIds
+    ): array {
+
+        $websiteId = $website instanceof Website ? $website->getId() : $website['id'];
+
+        if (array_key_exists('findAllByAction', $this->cache) && array_key_exists($classname, $this->cache['findAllByAction'])) {
+            return $this->cache['findAllByAction'][$classname];
+        }
+
+        $pages = $this->createQueryBuilder('p')
+            ->leftJoin('p.urls', 'u')
+            ->leftJoin('p.website', 'w')
+            ->leftJoin('p.layout', 'l')
+            ->leftJoin('l.zones', 'z')
+            ->leftJoin('z.cols', 'c')
+            ->leftJoin('c.blocks', 'b')
+            ->leftJoin('b.action', 'a')
+            ->leftJoin('b.actionIntls', 'ai')
+            ->andWhere('p.website = :website')
+            ->andWhere('u.locale = :locale')
+            ->andWhere('a.entity = :entity')
+            ->andWhere('ai.actionFilter IN (:actionFilters)')
+            ->andWhere('ai.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->setParameter('website', $websiteId)
+            ->setParameter('entity', $classname)
+            ->setParameter('actionFilters', $filterIds)
+            ->addSelect('u', 'l', 'z', 'c', 'b', 'a', 'ai')
+            ->addSelect('ai.actionFilter AS actionFilter')
+            ->getQuery()
+            ->getResult();
+
+        $result = [];
+        foreach ($pages as $page) {
+            $result[$page['actionFilter']] = $page[0];
+        }
+
+        $this->cache['findAllByAction'][$classname] = $result;
+
+        return $result;
+    }
+
+    /**
+     * Find pages indexes by url code.
+     */
+    public function findPagesIndexByUrl(array $ids, string $classname, string $locale): array
+    {
+        if (array_key_exists('findPagesIndexByUrl', $this->cache) && array_key_exists($classname, $this->cache['findPagesIndexByUrl'])) {
+            return $this->cache['findPagesIndexByUrl'][$classname];
+        }
+
+        $pages = $this->createQueryBuilder('p')
+            ->leftJoin('p.urls', 'u')
+            ->andWhere('p.id IN (:ids)')
+            ->andWhere('u.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->setParameter('ids', $ids)
+            ->addSelect('u')
+            ->addSelect('u.code AS urlCode')
+            ->getQuery()
+            ->getResult();
+
+        $result = [];
+        foreach ($pages as $page) {
+            $result[$page[0]->getId()] = $page['urlCode'];
+        }
+
+        $this->cache['findPagesIndexByUrl'][$classname] = $result;
+
+        return $result;
+    }
+
+    /**
      * Find by Action.
      */
     public function findOneByAction(
@@ -177,8 +256,9 @@ class PageRepository extends ServiceEntityRepository
         string $locale,
         string $classname,
         int $filterId,
-        ?string $slugAction = null): mixed
-    {
+        ?string $slugAction = null
+    ): mixed {
+
         $websiteId = $website instanceof Website ? $website->getId() : $website['id'];
 
         if (array_key_exists($filterId, $this->cache[$classname][$websiteId][$locale] ?? [])) {

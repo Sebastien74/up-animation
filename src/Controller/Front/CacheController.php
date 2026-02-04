@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CacheController extends BaseController
 {
-    protected const bool CACHE_POOL = false;
     private const int CACHE_EXPIRES = 3600;
     private const string CHARSET = 'UTF-8';
 
@@ -34,21 +33,13 @@ class CacheController extends BaseController
     }
 
     /**
-     * Get cache pool.
-     */
-    protected function cachePool(mixed $entity, string $name, string $method, mixed $response = null): mixed
-    {
-        return $this->coreLocator->cacheService()->cachePool($entity, $name, $method, $response);
-    }
-
-    /**
      * Get cache.
      *
      * @throws Exception
      */
     protected function cache(Request $request, string $template, mixed $entity = null, array $arguments = []): JsonResponse|Response|null
     {
-        $isAjax = $request->get('scroll-ajax') || $request->get('ajax');
+        $isAjax = $request->query->get('scroll-ajax') || $request->query->get('ajax');
         
         if ($isAjax) {
             $response = new JsonResponse(['html' => $this->renderView($template, $arguments)]);

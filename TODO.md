@@ -1,5 +1,65 @@
+Dans les controller vois pour enlever $entity->setUpdatedAt($tab->getUpdatedAt());
+
+Mettre des grosses icones comme ISacar en fons de zone avec du parallax
+
+Sur les boutons mettre le meme hover que les badges du footer et pareil sur les boutons réseaux sociaux du pied de page
 
 https://themeforest.net/category/site-templates/entertainment/events?gad_source=1&gad_campaignid=20946799167&gclid=EAIaIQobChMI9uaJh7edkgMVg8t5BB1mOAFbEAAYAiAAEgKm1fD_BwE
+
+Verifier que tous les hover soient en min-lg
+
+Page components 
+
+Revoir le hover bouton avec fond blanc et autre j'aime pas peut-etre le retirer
+
+Dans les adresses fiche agence mettre le pays
+
+UTILISER 'onlyForUrl' => true
+        foreach ($agenciesBd as $agency) {
+            $agencies[] = ProductModel::fromEntity($agency, $this->coreLocator, [
+//                'onlyForUrl' => true,
+'disabledProducts' => true,
+'disabledLayout' => true,
+'disabledMedias' => true,
+'disabledCategories' => true,
+'disabledCategory' => true
+]);
+}
+
+Finir ListingService 
+
+Le fw-900 ne fonctionne pas : voir footer title danas le pied page
+
+Nettoyer footer.scss
+
+retirer $this->cache( dans les controllers
+
+gitlab
+
+Dans Block Model Faire un cache en récupérant d'abord tous les intls, medias... du Layout
+
+Rotation de l'image
+
+Faire la page de maintenance
+
+Faire un model Features
+
+https://up-animation.local/sitemap.xml TROP LENT
+
+11 en France & Suisse et je n'en ai que 8
+
+Progressive Web App affichée alors que que désactivé
+
+Faire un commun controller pour
+$agenciesCatalog = $em->getRepository(Catalog::class)->findOneBy(['website' => $website->entity, 'slug' => 'agencies']);
+
+Virer CacheController et Services associés et refaire le systeme avec Juni
+
+Supprimer le script dans CatalogController
+
+Faire un sélecteur de menu dans les produits
+
+Mettre icône tel dans le menu mais peut-être qu'en mobile
 
 supprimer ->findByOldUrl() Page repo
 

@@ -218,6 +218,9 @@
                                             {% if mediaRelation.radius is defined %}
                                                 <div class="col-md-6">{{ form_row(mediaRelation.radius) }}</div>
                                             {% endif %}
+                                            {% if mediaRelation.rotation is defined %}
+                                                <div class="col-md-6">{{ form_row(mediaRelation.rotation) }}</div>
+                                            {% endif %}
                                         </div>
 
                                     </div>

@@ -208,9 +208,6 @@ class MediaRelationController extends AdminController
                 $this->coreLocator->em()->persist($mediaRelation);
                 $this->coreLocator->em()->flush();
             }
-            if (is_object($entity)) {
-                $this->coreLocator->cacheService()->clearCaches($entity, true);
-            }
         }
 
         return new JsonResponse(['success' => true]);

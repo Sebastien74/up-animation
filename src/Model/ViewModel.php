@@ -14,6 +14,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Query\QueryException;
 use Exception;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -95,7 +96,7 @@ final class ViewModel extends BaseModel
     /**
      * fromEntity.
      *
-     * @throws NonUniqueResultException|MappingException|QueryException|Exception
+     * @throws NonUniqueResultException|MappingException|QueryException|Exception|InvalidArgumentException
      */
     public static function fromEntity(mixed $entity, CoreLocatorInterface $coreLocator, array $options = []): self
     {
@@ -255,7 +256,7 @@ final class ViewModel extends BaseModel
         }
 
         self::$cache[get_class($entity)]['url'][$entity->getId()] = (object) [
-            'path' => $path ?: ($request && $request->get('_route') && str_contains($request->get('_route'), '_view') ? $request?->getUri() : null),
+            'path' => $path ?: ($request && $request->attributes->get('_route') && str_contains($request->attributes->get('_route'), '_view') ? $request?->getUri() : null),
             'entity' => $url,
             'code' => $url ? $url->getCode() : null,
             'online' => ($url && $url->isOnline()) || (method_exists($entity, 'isInfill') && $entity->isInfill()),

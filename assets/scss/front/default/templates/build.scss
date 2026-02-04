@@ -99,10 +99,10 @@ $beige-ternary: #1890be;
 
                 svg {
 
-                    transition: fill .5s ease-in-out !important;
+                    transition: fill .5s linear !important;
 
                     &:hover, &:focus, &:active {
-                        transition: fill .5s ease-in-out !important;
+                        transition: fill .5s linear !important;
                         fill: $primary;
                     }
                 }

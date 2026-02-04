@@ -18,7 +18,9 @@ use App\Twig\Translation\i18nRuntime;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
+use Exception;
 use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -74,14 +76,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * To generate cache key.
-     */
-    public function cacheKey(mixed $entity, ?string $prefix = null, bool $generateEmpty = true): ?string
-    {
-        return $this->coreLocator->cacheService()->cacheKey($entity, $prefix, $generateEmpty);
-    }
-
-    /**
      * Get style classes.
      */
     public function styleClass(mixed $entity, array $default = []): string
@@ -111,7 +105,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
      * @throws RuntimeError
      * @throws SyntaxError
      * @throws InvalidArgumentException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      * @throws NonUniqueResultException
      */
     public function renderBlock(array $options = []): string|Response|null
@@ -119,7 +113,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         if (!$this->isDebug) {
             try {
                 return $this->getRenderBlock($options);
-            } catch (LoaderError|RuntimeError|SyntaxError|\Exception $e) {
+            } catch (LoaderError|RuntimeError|SyntaxError|Exception $e) {
                 return null;
             }
         } else {
@@ -130,13 +124,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
     /**
      * Get render block.
      *
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
-     * @throws InvalidArgumentException
-     * @throws \ReflectionException
-     * @throws NonUniqueResultException
-     * @throws \Exception
+     * @throws LoaderError|RuntimeError|SyntaxError|InvalidArgumentException|ReflectionException|NonUniqueResultException|Exception
      */
     private function getRenderBlock(array $options = []): string|Response|null
     {
@@ -154,7 +142,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $template = $entityTemplate && $this->templating->getLoader()->exists($entityTemplate) ? $entityTemplate : 'front/'.$websiteTemplate.'/blocks/'.$blockTemplate.'/'.$block->getTemplate().'.html.twig';
         $template = !$this->templating->getLoader()->exists($template) ? 'front/'.$websiteTemplate.'/actions/vendor/include/'.$blockTemplate.'.html.twig' : $template;
         if (!$this->templating->getLoader()->exists($template)) {
-            throw new \Exception('Template '.$template." doesn't exist !!");
+            throw new Exception('Template '.$template." doesn't exist !!");
         }
 
         /** Get Block Transition[] */
@@ -188,12 +176,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $response->setContent($html);
         $response->setSharedMaxAge(3600);
 
-        $poolResponse = $this->coreLocator->cacheService()->cachePool($block, 'block', 'GET', null, $entity);
-        if ($poolResponse) {
-            return $poolResponse->getContent();
-        }
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'block', 'GENERATE', $response, $entity)->getContent();
+        return $response->getContent();
     }
 
     /**
@@ -552,13 +535,13 @@ class LayoutRuntime implements RuntimeExtensionInterface
     /**
      * Get Layout main title.
      *
-     * @throws NonUniqueResultException|MappingException|QueryException
+     * @throws NonUniqueResultException|MappingException|QueryException|InvalidArgumentException
      */
     public function mainLayoutTitle(mixed $layout, ?string $locale = null, bool $all = false): mixed
     {
         $locale = $locale ?: $this->coreLocator->request()->getLocale();
         $layoutId = is_object($layout) ? $layout->getId() : $layout['id'];
-        $cacheKey = $layoutId . '-' . $locale . '-' . ($all ? 'all' : 'one');
+        $cacheKey = $layoutId.'-'.$locale.'-'.($all ? 'all' : 'one');
 
         if (isset($this->cache['main_title'][$cacheKey])) {
             return $this->cache['main_title'][$cacheKey];
@@ -591,7 +574,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
     {
         $locale = $locale ?: $this->coreLocator->request()->getLocale();
         $layoutId = is_object($layout) ? $layout->getId() : $layout['id'];
-        $cacheKey = $layoutId . '-' . $slug . '-' . $locale;
+        $cacheKey = $layoutId.'-'.$slug.'-'.$locale;
 
         if (isset($this->cache['block_type'][$cacheKey])) {
             return $this->cache['block_type'][$cacheKey];

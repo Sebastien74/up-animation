@@ -26,6 +26,7 @@ use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
+use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,7 +50,7 @@ class FormController extends FrontController
     /**
      * View Form.
      *
-     * @throws NonUniqueResultException|\Exception|InvalidArgumentException|ExceptionInterface|ORMException
+     * @throws NonUniqueResultException|Exception|InvalidArgumentException|ExceptionInterface|ORMException
      */
     #[Route([
         'fr' => '/front/form/view-fr/{url}/{filter}/{_locale}',
@@ -61,20 +62,17 @@ class FormController extends FrontController
         FormManager $formManager,
         Url $url,
         ?Block $block = null,
-        int|string|null $filter = null): JsonResponse|RedirectResponse|bool|string|Response|null
-    {
-        if (!$filter) {
-            return new Response();
-        }
+        int|string|null $filter = null
+    ): mixed {
 
         $website = $this->getWebsite();
-        $entity = $formRepository->findOneByFilter($website->entity, $request->getLocale(), $filter);
-        $contact = $formManager->getContact();
+        $entity = $filter ? $formRepository->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
 
         if (!$entity) {
             return new Response();
         }
 
+        $contact = $formManager->getContact();
         $this->coreLocator->em()->refresh($entity);
         $template = $website->configuration->template;
         $form = $this->createForm(FrontType::class, null, ['form_data' => $entity]);
@@ -115,9 +113,10 @@ class FormController extends FrontController
         StepFormRepository $stepFormRepository,
         ContactFormRepository $contactFormRepository,
         ContactStepFormRepository $contactStepFormRepository,
-        string $code): JsonResponse|Response|null
-    {
-        $token = $request->get('token');
+        string $code
+    ): JsonResponse|Response|null {
+
+        $token = $request->query->get('token');
         $website = $this->getWebsite();
         $form = $formRepository->findOneBy(['website' => $website->entity, 'slug' => $code]);
         if (!$form) {
@@ -158,7 +157,7 @@ class FormController extends FrontController
     /**
      * View Form.
      *
-     * @throws NonUniqueResultException|\Exception|InvalidArgumentException|ExceptionInterface
+     * @throws NonUniqueResultException|Exception|InvalidArgumentException|ExceptionInterface
      */
     #[Route('/front/form/steps/view/{url}/{filter}', name: 'front_formstep_view', options: ['isMainRequest' => false], methods: 'GET|POST', schemes: '%protocol%')]
     public function step(
@@ -167,20 +166,17 @@ class FormController extends FrontController
         FormManager $formManager,
         Url $url,
         ?Block $block = null,
-        int|string|null $filter = null): JsonResponse|RedirectResponse|bool|string|Response|null
-    {
-        if (!$filter) {
-            return new Response();
-        }
+        int|string|null $filter = null
+    ): JsonResponse|RedirectResponse|bool|string|Response|null {
 
         $website = $this->getWebsite();
-        $entity = $stepFormRepository->findOneByFilter($website->entity, $request->getLocale(), $filter);
-        $contact = $formManager->getContact();
+        $entity = $filter ? $stepFormRepository->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
 
         if (!$entity) {
             return new Response();
         }
 
+        $contact = $formManager->getContact();
         $websiteTemplate = $website->configuration->template;
         $form = $this->createForm(FrontType::class, null, ['form_data' => $entity]);
         $form->handleRequest($request);
@@ -206,7 +202,7 @@ class FormController extends FrontController
     /**
      * View calendar.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('/front/form/calendar/view/{block}', name: 'front_form_calendar_view', options: ['isMainRequest' => false], methods: 'GET|POST', schemes: '%protocol%')]
     public function calendar(Request $request, FormCalendarManager $calendarManager, FormManager $formManager, ?Block $block = null): JsonResponse|Response
@@ -253,7 +249,7 @@ class FormController extends FrontController
     /**
      * Success view.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function success(FormManager $formManager): Response
     {
@@ -290,7 +286,7 @@ class FormController extends FrontController
     /**
      * Get render view.
      *
-     * @throws \Exception|InvalidArgumentException|ExceptionInterface
+     * @throws Exception|InvalidArgumentException|ExceptionInterface
      */
     private function getRender(FormInterface $form, FormManager $formManager, array $arguments): RedirectResponse|JsonResponse|bool|string|Response|null
     {

@@ -4,47 +4,78 @@
 {% set catalogSlug = entity.catalog.slug is defined ? entity.catalog.slug : null %}
 {% set asAgency = entity.asAgency %}
 
-{% if blockType == 'layout-title-header' and entity.intl.title %}
+{% if blockType == 'layout-title-header' %}
+
+    {% set pageTitle = entity.intl.title %}
+    {% if asAgency and not pageTitle %}
+        {% if entity.city or entity.department or entity.zipcodeSmall %}
+            {% set pageTitle = 'Animations événementielles' %}
+            {% if entity.city or entity.department or entity.zipcodeSmall %}
+                {% set pageTitle = pageTitle~'<br>' %}
+                {% if entity.city %}
+                    {% set pageTitle = pageTitle~' à <span class="text-primary">'~entity.city~'</span>' %}
+                {% endif %}
+                {% if entity.department %}
+                    {% set pageTitle = pageTitle~' '~entity.department|deptPreposition~entity.department %}
+                {% endif %}
+                {% if entity.zipcodeSmall %}
+                    {% set pageTitle = pageTitle~' '~entity.zipcodeSmall %}
+                {% endif %}
+                {% if entity.country != 'FR' %}
+                    {% set pageTitle = pageTitle~' en '~entity.country|countryName %}
+                {% endif %}
+            {% endif %}
+        {% else %}
+            {% set pageTitle = entity.adminName %}
+        {% endif %}
+    {% endif %}
 
     {% set displayMainMedia = false %}
     {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
         block: entity,
-        intlMedia: displayMainMedia ? intlMainMedia : null,
+        customMedia: displayMainMedia ? intlMainMedia : entity.headerMedia,
         titleForce: 1,
         fullSize: true,
         page: page,
-        pageTitle: entity.intl.title,
+        pageTitle: pageTitle,
         template: websiteTemplate,
-        thumbConfiguration: thumbConfigurationHeader} %}
+        thumbConfiguration: thumbConfigurationHeader
+    } %}
 
 {% elseif blockType == 'layout-title' and entity.intl.title %}
 
     <h{{ entity.intl.titleForce }} class="title mt-4 mb-4">{{ entity.intl.title|raw }}</h{{ entity.intl.titleForce }}>
 
-{% elseif blockType == 'layout-secondary-title' and entity.intl.title %}
-
-    À LA RECHERCHE D'UN PROFESSIONNEL ?
-    DES Animations POUR
-    TOUS VOS ÉVÉNEMENTS
-    DANS LE RHÔNE
-
-
 {% elseif blockType == 'layout-published-date' and entity.date %}
 
     {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-published-date.html.twig' with {entity: entity} only %}
 
-{% elseif blockType == 'layout-intro' and entity.intl.introduction %}
+{% elseif blockType == 'layout-intro'  %}
 
     {% if asAgency %}
-        <div class="introduction div-introduction">{{ entity.intl.introduction|raw }}</div>
-    {% else %}
-        <p class="introduction text-bold">{{ entity.intl.introduction|raw }}</p>
+        <div class="introduction bg-light radius shadow px-5 py-5">
+            {% if not entity.intl.introduction %}
+                <p>Vous souhaitez<strong> animer votre prochain événement</strong>{% if entity.city %} dans la ville {{ entity.city|deCityPrefix }}{{ entity.city }}{% endif %}{% if entity.department %} {{ entity.department|deptPreposition }}{{ entity.department }}{% endif %}&nbsp;? Faites confiance à l'équipe Up&nbsp;Animations spécialiste {{ entity.city|deCityPrefix }}{{ entity.city }} et ses environs. Nous vous proposons des <strong>animations expertes</strong> pour séminaires, team building, soirées d'entreprises, anniversaires d'entreprises, arbres de noël, centres commerciaux et offices de tourisme. Avec Up&nbsp;Animations vous vous offrez des animations pour événements <strong>100% uniques et personnalisés</strong>.</p>
+            {% else %}
+                {{ entity.intl.introduction|raw }}
+            {% endif %}
+        </div>
+    {% elseif entity.intl.introduction %}
+        <p class="introduction {% if not asAgency %}text-bold{% else %}bg-light{% endif %}">{{ entity.intl.introduction|raw }}</p>
     {% endif %}
 
+{% elseif blockType == 'layout-body' %}
 
-{% elseif blockType == 'layout-body' and entity.intl.body %}
-
-    <div class="body">{{ entity.intl.body|raw }}</div>
+    {% if asAgency and not entity.intl.body %}
+        <div class="body">
+            <p class="mb-2">Votre partenaire Up&nbsp;Animations {% if entity.city %}<strong>basé dans la ville {{ entity.city|deCityPrefix }}{{ entity.city }}</strong> {% endif %}vous propose ses services d'<strong>animations pour tout événement</strong> d'entreprise. Offrez à vos invités des animations professionnelles uniques. Nous vous proposons de <strong>nombreuses animations</strong>{% if entity.department %} {{ entity.department|deptPreposition('all_in') }}{{ entity.department }}{% if entity.zipcodeSmall %}&nbsp;{{ entity.zipcodeSmall }}{% endif %}{% endif %}.</p>
+            <p class="mb-2">Nous nous <strong>adaptons à toutes vos demandes</strong> et à tous vos besoins en terme d'animations et de thèmes. Nous vous offrons pour cela un large panel d'animations.</p>
+            <p class="mb-2">Choisissez votre prochaine <strong>animation en fonction de votre événement</strong>&nbsp;: team building, séminaire, soirée d'entreprise, anniversaire d'entreprise, arbre de Noël, centre commercial, événementiel, office de tourisme et même magie.{% if entity.department or entity.city %} Toutes nos animations sont disponibles{% if entity.department %} {{ entity.department|deptPreposition('all_in') }}{{ entity.department }}{% endif %}{% if entity.department and entity.city %} et{% elseif entity.city %} dans toutes les{% endif %}{% if entity.city %} <strong>villes proches {{ entity.city|deCityPrefix }}{{ entity.city }}</strong>{% endif %}{% endif %}&nbsp;!</p>
+            <p class="mb-0">Faites vite appel à votre partenaire événementiel Up&nbsp;Animations&nbsp;!</p>
+        </div>
+    {% elseif entity.intl.body %}
+        <div class="body">{{ entity.intl.body|raw }}</div>
+    {% endif %}
 
 {% elseif blockType == 'layout-video' and entity.mainVideo %}
 
@@ -114,10 +145,12 @@
 
     {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: entity.intl} %}
 
-{% elseif blockType == 'layout-image' and entity.mainMedia %}
+{% elseif blockType == 'layout-image' %}
 
     {% set mainMedia = entity.asAgency ? entity.mediasWithoutMain|first : entity.mainMedia %}
-    <div class="image">{{ mainMedia|file(thumbConfiguration) }}</div>
+    {% if mainMedia %}
+        <div class="image-wrap">{{ mainMedia|file(thumbConfiguration) }}</div>
+    {% endif %}
 
 {% elseif blockType == 'layout-catalog-lots-table' %}
 
@@ -271,7 +304,7 @@
 
     {% set display = layout.associatedEntitiesDisplay is defined and layout.associatedEntitiesDisplay ? layout.associatedEntitiesDisplay : 'slider' %}
     {% if asAgency %}
-        {% set listingTitle = 'Découvrez nos autres agences'|trans %}
+        {% set listingTitle = 'Découvrez<br> <span>nos autres agences</span>'|trans %}
     {% endif %}
     <div class="associated-entities-container w-100{% if associatedEntities.list is empty %} empty-associated-entities{% endif %}">
         {% if associatedEntities.list is empty %}
@@ -285,9 +318,104 @@
         {% endif %}
     </div>
 
+{% elseif blockType == 'layout-secondary-title' %}
+
+    <div class="block-secondary-title">
+        <span class="subtitle text-uppercase d-inline-block mb-2">À la recherche d'un professionnel&nbsp;?</span>
+        <h2 class="title text-uppercase">Des animations pour<br> <span>tous vos événements{% if entity.department %} <br>{{ entity.department|deptPreposition }} {{ entity.department }}{% endif %}</span></h2>
+    </div>
+
 {% elseif blockType == 'layout-agency-animations' %}
 
-    {% include 'front/'~websiteTemplate~'/actions/catalog/include/layout-agency-animations.html.twig' %}
+    <div class="agency-animations">
+        <h2 class="title text-uppercase">Découvrez nos animations<br> <span>séminaire, team building & soirée d'entreprise{% if entity.city %} à {{ entity.city }}{% endif %}</span></h2>
+    </div>
+
+{% elseif blockType == 'layout-highlights-agency' %}
+
+    <div class="agency-highlights">
+        <h2 class="title text-uppercase mb-5">Pourquoi animer son événement<br> <span>professionnel{% if entity.city %} à {{ entity.city }}{% endif %}&nbsp;?</span></h2>
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-4">
+                <div class="card radius bg-primary h-100 px-3 py-2">
+                    <div class="card-header d-flex flex-column px-4 pt-4 pb-0 mb-3 border-0">
+                        <div class="inner d-flex align-items-center">
+                            <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-white me-3"><i class="icon-people-group text-primary"></i></span>
+                            <strong class="text-uppercase lh-1">Réunir</strong>
+                        </div>
+                        <hr class="text-white">
+                    </div>
+                    <div class="card-body px-4 pt-0 pb-4">
+                        <div class="body">
+                            {% if entity.intl.gather %}
+                                {{ entity.intl.gather|raw }}
+                            {% else %}
+                                <p class="mb-2">Up&nbsp;Animations vous propose des animations originales et festives pour tous vos événements{% if entity.city %} à {{ entity.city }}{% endif %}.</p>
+                                <p class="mb-2">Faites parler de vous et de votre événement autour de vous grâce à des animations qui sauront marquer les esprits.</p>
+                                <p class="mb-2">Notre équipe vous propose des animations hors du commun qui offrira surprise et interactivité. Nous vous offrons également la possibilité de créer votre animation événementielle 100% sur mesure pour répondre à tous vos objectifs.</p>
+                                <p class="mb-2">Vous avez une idée ? Nous nous chargeons de la mettre en œuvre{% if entity.department %} {{ entity.department|deptPreposition }}{{ entity.department }}{% endif %}. Pour que votre événement d'entreprise ne ressemble qu'à vous&nbsp;!</p>
+                                <p class="mb-0">Alors qu'attendez-vous&nbsp;?</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card radius bg-light h-100 px-3 py-2">
+                    <div class="card-header d-flex flex-column px-4 pt-4 pb-0 mb-3 border-0">
+                        <div class="inner d-flex align-items-center">
+                            <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-dark me-3"><i class="icon-face-grin text-white"></i></span>
+                            <strong class="text-uppercase lh-1">Sympathiser</strong>
+                        </div>
+                        <hr class="text-dark">
+                    </div>
+                    <div class="card-body px-4 pt-0 pb-4">
+                        <div class="body">
+                            {% if entity.intl.sympathise %}
+                                {{ entity.intl.sympathise|raw }}
+                            {% else %}
+                                <p class="mb-2">La solution Up&nbsp;Animations c'est organiser des événements professionnels d'envergure{% if entity.city %} à {{ entity.city }}{% endif %}.</p>
+                                <p class="mb-2">Nous nous occupons de tout&nbsp;: la logistique, l'organisation et la mise en place du matériel.</p>
+                                <p class="mb-2">Nous pouvons vous proposer la création d'olympiades&nbsp;: des jeux et des challenges vous attendent. De nombreuses animations vous sont proposées&nbsp;: la soirée casino, un après-midi modélisme ou encore faire la course en buggy téléguidé.</p>
+                                <p class="mb-0">Nos équipes restent disponibles pour prendre en main vos animations tout au long de votre Anniversaire d'entreprise. Faites confiance à Up&nbsp;Animations{% if entity.city %} {{ entity.city }}{% endif %} pour rendre votre événement unique aux yeux de vos invités&nbsp;!</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card radius bg-light h-100 px-3 py-2">
+                    <div class="card-header d-flex flex-column px-4 pt-4 pb-0 mb-3 border-0">
+                        <div class="inner d-flex align-items-center">
+                            <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-dark me-3"><i class="icon-thumbs-up text-white"></i></span>
+                            <strong class="text-uppercase lh-1">Marquer</strong>
+                        </div>
+                        <hr class="text-dark">
+                    </div>
+                    <div class="card-body px-4 pt-0 pb-4">
+                        <div class="body">
+                            {% if entity.intl.impress %}
+                                {{ entity.intl.impress|raw }}
+                            {% else %}
+                                <p class="mb-2">Choisissez votre partenaire Up&nbsp;Animations pour l'animation de votre prochain événement{% if entity.city %} à {{ entity.city }}{% endif %}, c'est être sûr de marquer les esprits de vos invités.</p>
+                                <p class="mb-2">Nous répondons à tous vos objectifs&nbsp;: visibilité ou notoriété.</p>
+                                <p class="mb-2">Nos animateurs et magiciens se rendent sur votre événement dans n'importe quelle ville près de votre entreprise. Nous nous chargeons de toutes les animations de votre événement professionnel{% if entity.city %} dans la ville {{ entity.city|deCityPrefix }}{{ entity.city }}{% endif %}{% if entity.city and entity.department %} et{% endif %}{% if entity.department %} {{ entity.department|deptPreposition('all_in') }}{{ entity.department }}{% endif %}{% if entity.zipcodeSmall %}&nbsp;{{ entity.zipcodeSmall }}{% endif %}.</p>
+                                <p class="mb-2">Marquez les esprits et les journaux&nbsp;! Avec une animation originale pour des retombées médiatiques positives.</p>
+                                <p class="mb-0">Profitez d'un tel événement pour faire parler de vous et de votre enseigne.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% elseif blockType == 'layout-agency-animations-city' %}
+
+    <div class="agency-animations-city">
+        <h2 class="title text-uppercase">Découvrez toutes <br> <span>nos animations{% if entity.department %} {{ entity.department|deptPreposition }}{{ entity.department }}{% endif %}{% if entity.zipcodeSmall %}&nbsp;{{ entity.zipcodeSmall }}{% endif %}</span></h2>
+
+    </div>
 
 {% elseif blockType == 'layout-share' %}
 

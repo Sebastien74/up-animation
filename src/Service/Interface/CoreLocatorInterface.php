@@ -76,8 +76,6 @@ interface CoreLocatorInterface
 
     public function emQuery(): QueryServiceInterface;
 
-    public function ai(): Core\AI;
-
     public function XssProtectionData(mixed $value = null): string|array|null;
 
     public function metadata(mixed $entity, string $fieldName): object|bool;

@@ -14,7 +14,14 @@
 {% endfor %}
 {% set displayMediaSizes = mediaSizesFieldsCount == mediaSizesFields|length %}
 
-{% if 'map' == interfaceName %}
+{% set haveMapFields = false %}
+{% for field in form.children %}
+    {% if 'latitude' == field.vars.name or 'latitude' == field.vars.name %}
+        {% set haveMapFields = true %}
+    {% endif %}
+{% endfor %}
+
+{% if haveMapFields or 'map' == interfaceName %}
     <div class="col-12">
         <a href="https://www.openstreetmap.org" class="mb-3 mt-2 btn btn-info-darken standard" target="_blank">{{ 'fal search'|icon(14, 14, 'me-2 white') }}{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
     </div>
@@ -34,8 +41,10 @@
                 </div>
             {% elseif field.vars.name == 'address' %}
                 <div class="col-12">
-                    <h4 class="card-subtitle mb-2">{{ 'fal map-marked-alt'|icon(null, 14, 'info-darken me-2') }}{{ "Adresse"|trans }}</h4>
-                    <a href="https://www.openstreetmap.org" class="mb-4 mt-2 btn btn-info-darken standard" target="_blank">{{ 'fal search'|icon(14, 14, 'me-2 white') }}{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
+                    <h4 class="card-subtitle mb-{% if haveMapFields %}2{% else %}4{% endif %}">{{ 'fal map-marked-alt'|icon(null, 14, 'info-darken me-2') }}{{ "Adresse"|trans }}</h4>
+                    {% if haveMapFields %}
+                        <a href="https://www.openstreetmap.org" class="mb-4 mt-2 btn btn-info-darken standard" target="_blank">{{ 'fal search'|icon(14, 14, 'me-2 white') }}{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
+                    {% endif %}
                 </div>
             {% elseif field.vars.name == 'schedule' %}
                 <div class="col-12">

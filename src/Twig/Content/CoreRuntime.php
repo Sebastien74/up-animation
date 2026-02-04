@@ -24,15 +24,15 @@ use Twig\Extension\RuntimeExtensionInterface;
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-class CoreRuntime implements RuntimeExtensionInterface
+readonly class CoreRuntime implements RuntimeExtensionInterface
 {
     /**
      * CoreRuntime constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly Environment $templating,
-        private readonly CryptService $cryptService,
+        private CoreLocatorInterface $coreLocator,
+        private Environment          $templating,
+        private CryptService         $cryptService,
     ) {
     }
 
@@ -79,6 +79,7 @@ class CoreRuntime implements RuntimeExtensionInterface
             'only_href' => !isset($options['only_href']) ? true : $options['only_href'],
             'icon' => !isset($options['icon']) ? true : $options['icon'],
             'entitled' => !isset($options['entitled']) ? true : $options['entitled'],
+            'class' => isset($options['class']) ?: null,
             'options' => $options,
         ]);
     }
@@ -111,6 +112,7 @@ class CoreRuntime implements RuntimeExtensionInterface
             'only_href' => !isset($options['only_href']) ? true : $options['only_href'],
             'icon' => !isset($options['icon']) ? true : $options['icon'],
             'entitled' => !isset($options['entitled']) ? true : $options['entitled'],
+            'class' => isset($options['class']) ?: null,
             'options' => $options,
         ]);
     }

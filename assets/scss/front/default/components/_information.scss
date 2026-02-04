@@ -25,7 +25,7 @@ body .information-container {
 
     ul {
         a:hover {
-            transition: all .3s ease-in-out;
+            transition: all .3s linear;
             color: $primary !important;
         }
     }

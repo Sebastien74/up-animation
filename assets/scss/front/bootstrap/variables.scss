@@ -99,9 +99,15 @@ $enable-titles-font-size: false !default;
 $border-width: 1px !default;
 $border-translucent: rgba(255, 255, 255, 0.15) !default;
 $border-radius: 0.25rem !default;
+$border-radius-lg: .5rem !default;
+$border-radius-xl: 1rem !default;
+$border-radius-xxl: 2rem !default;
+$border-radius-pill: 50rem !default;
 $card-border-radius: $border-radius !default;
 
-$box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !default;
+$box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.175) !default;
+$box-shadow-sm: 0 1rem 2rem rgba(0, 0, 0, 0.175) !default;
+$box-shadow-lg: 0 0rem 1.5rem rgba(0, 0, 0, 0.4) !default;
 
 $display-font-sizes: (
     1: 5rem,

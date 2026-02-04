@@ -38,36 +38,27 @@ class AgendaController extends FrontController
         ?Block $block = null,
         mixed $filter = null,
     ): Response {
-        if (!$filter) {
-            return new Response();
-        }
-
-        $cache = $this->coreLocator->cacheService()->cachePool($block, 'agenda_view', 'GET');
-        if ($cache) {
-            return $cache;
-        }
 
         $website = $this->getWebsite();
-        $agenda = $agendaRepository->findOneByFilter($website->entity, $request->getLocale(), $filter);
-        $configuration = $website->configuration;
-        $websiteTemplate = $configuration->template;
+        $agenda = $filter ? $agendaRepository->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
 
         if (!$agenda) {
             return new Response();
         }
 
+        $configuration = $website->configuration;
+        $websiteTemplate = $configuration->template;
+
         $entity = $block instanceof Block ? $block : $agenda;
         $entity->setUpdatedAt($agenda->getUpdatedAt());
 
-        $response = $this->render('front/'.$websiteTemplate.'/actions/agenda/view.html.twig', array_merge($agendaService->eventsDaysData($agenda), [
+        return $this->render('front/'.$websiteTemplate.'/actions/agenda/view.html.twig', array_merge($agendaService->eventsDaysData($agenda), [
             'periodDate' => new \DateTime('now', new \DateTimeZone('Europe/Paris')),
             'agenda' => $agenda,
             'configuration' => $configuration,
             'websiteTemplate' => $websiteTemplate,
             'website' => $website,
         ]));
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'agenda_view', 'GENERATE', $response);
     }
 
     /**

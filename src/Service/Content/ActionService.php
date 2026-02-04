@@ -29,6 +29,7 @@ class ActionService
     private string $classname = '';
     private string $categoryClassname = '';
     private mixed $listing = null;
+    private array $cache = [];
 
     /**
      * ActionService constructor.
@@ -198,6 +199,10 @@ class ActionService
      */
     public function findEntityByUrlAndLocale(string $url, bool $preview = false): mixed
     {
+        if (array_key_exists($this->classname, $this->cache) && array_key_exists($url, $this->cache[$this->classname])) {
+            return $this->cache[$this->classname][$url];
+        }
+
         $referEntity = new $this->classname();
         if (method_exists($referEntity, 'getUrls')) {
             $qb = $this->optimizedQueryBuilder(null, null, $preview)
@@ -208,10 +213,13 @@ class ActionService
                     ->andWhere('intl.locale = :locale')
                     ->addSelect('intl');
             }
-            return $qb->getQuery()->getOneOrNullResult();
+            $entity = $qb->getQuery()->getOneOrNullResult();
+            $this->cache[$this->classname][$url] = $entity;
+            return $this->cache[$this->classname][$url];
         }
 
-        return null;
+        $this->cache[$this->classname][$url] = null;
+        return $this->cache[$this->classname][$url];
     }
 
     /**

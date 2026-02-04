@@ -7,21 +7,27 @@ namespace App\Controller\Front;
 use App\Entity\Core\Website;
 use App\Entity\Layout\Block;
 use App\Entity\Media\ThumbConfiguration;
+use App\Entity\Module\Catalog\Catalog;
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Security\User;
 use App\Entity\Security\UserFront;
 use App\Entity\Seo\Url;
 use App\Http\TransparentPixelResponse;
 use App\Model\Core\WebsiteModel;
 use App\Model\MediaModel;
+use App\Model\Module\ProductModel;
 use App\Repository\Core\WebsiteRepository;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Service\Interface\FrontLocatorInterface;
 use App\Twig\Content\ThumbnailRuntime;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
 use Monolog\Logger;
+use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -201,12 +207,29 @@ class FrontController extends CacheController
 
     /**
      * To get default arguments.
+     *
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     protected function defaultArgs(WebsiteModel $website, ?Url $url = null, mixed $entityModel = null): array
     {
         $user = $this->getUser();
         $thumbConfigurationHeader = $this->thumbConfiguration($website, Block::class, null, 'title-header');
         $websiteTemplate = $website->configuration->template;
+
+        $em = $this->coreLocator->em();
+        $agenciesCatalog = $em->getRepository(Catalog::class)->findOneBy(['website' => $website->entity, 'slug' => 'agencies']);
+        $agenciesBd = $em->getRepository(Product::class)->findOnlineByCatalogs($website->entity, $this->coreLocator->locale(), [$agenciesCatalog]);
+        $agencies = [];
+        foreach ($agenciesBd as $agency) {
+            $agencies[] = ProductModel::fromEntity($agency, $this->coreLocator, [
+//                'onlyForUrl' => true,
+                'disabledProducts' => true,
+                'disabledLayout' => true,
+                'disabledMedias' => true,
+                'disabledCategories' => true,
+                'disabledCategory' => true
+            ]);
+        }
 
         $arguments = [
             'isUserBack' => $this->coreLocator->checkIP($website) && !$user instanceof UserFront || $user instanceof User,
@@ -217,6 +240,8 @@ class FrontController extends CacheController
             'mainPages' => $website->configuration->pages,
             'logos' => $website->configuration->logos,
             'thumbConfigurationHeader' => $thumbConfigurationHeader,
+            'agencies' => $agencies,
+            'catalogMenus' => $this->coreLocator->em()->getRepository(Product::class)->findOnlineInMenus($website->entity, $this->coreLocator->locale()),
             'url' => $url,
             'preloadFiles' => is_object($entityModel) && property_exists($entityModel, 'preloadFiles') ? $entityModel->preloadFiles : false,
         ];

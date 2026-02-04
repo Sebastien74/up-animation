@@ -43,11 +43,11 @@
         bottom: 100px;
         z-index: 2000;
         right: -185px;
-        transition: all .5s ease-in-out;
+        transition: all .5s linear;
         font-family: Arial, Helvetica, sans-serif;
 
         &.active {
-            transition: all .5s ease-in-out;
+            transition: all .5s linear;
             right: 5px;
         }
 

@@ -75,15 +75,4 @@
     }
 }
 
-.circle {
-
-    border-radius: 100%;
-    box-shadow: none;
-
-    &::before,
-    &::after {
-        border-radius: 100%;
-    }
-}
-
 /*! purgecss end ignore */

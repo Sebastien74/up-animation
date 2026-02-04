@@ -17,6 +17,9 @@
                             {% if tabId not in configsSet %}
                                 {% if tabId == 'intls' %}
                                     {{ form_row(form.adminName) }}
+                                    {% if form.menu is defined %}
+                                        {{ form_row(form.menu) }}
+                                    {% endif %}
                                     {% if form.intls is defined %}
                                         {% include 'admin/core/form/intls.html.twig' with {intls: form.intls, disableFields: ['associatedWords']} %}
                                     {% endif %}
@@ -24,9 +27,11 @@
                                 {% elseif tabId == 'features' and field.vars.name == 'values' %}
                                     {% include 'admin/core/form/prototype.html.twig' with {fullBtn: true} %}
                                 {% elseif tabId == 'configuration' %}
-                                    <div class="col-12">
-                                        <h4 class="card-subtitle mb-4">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}</h4>
-                                    </div>
+                                    {% if form.mainCategory is defined or form.categories is defined or form.subCategories is defined or form.promote is defined or form.customLayout is defined %}
+                                        <div class="col-12">
+                                            <h4 class="card-subtitle mb-4">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}</h4>
+                                        </div>
+                                    {% endif %}
                                     {% if form.catalog is defined %}
                                         {{ form_row(form.catalog) }}
                                     {% endif %}
@@ -39,7 +44,9 @@
                                     {% if form.subCategories is defined %}
                                         {{ form_row(form.subCategories) }}
                                     {% endif %}
-                                    {{ form_row(form.promote) }}
+                                    {% if form.promote is defined %}
+                                        {{ form_row(form.promote) }}
+                                    {% endif %}
                                     {% if form.customLayout is defined %}
                                         {{ form_row(form.customLayout) }}
                                     {% endif %}

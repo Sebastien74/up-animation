@@ -11,12 +11,18 @@ use App\Entity\Module\Catalog\FeatureValue;
 use App\Entity\Module\Catalog\Listing;
 use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Catalog\SubCategory;
+use App\Model\Module\ProductModel;
+use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\PersistentCollection;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 
 /**
  * ProductRepository.
@@ -27,10 +33,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProductRepository extends ServiceEntityRepository
 {
+    private array $cache = [];
+
     /**
      * ProductRepository constructor.
      */
-    public function __construct(private readonly ManagerRegistry $registry)
+    public function __construct(private readonly ManagerRegistry $registry, private readonly CoreLocatorInterface $coreLocator)
     {
         parent::__construct($this->registry, Product::class);
     }
@@ -144,6 +152,42 @@ class ProductRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+
+    /**
+     * Find Product[] in menus.
+     *
+     * @return array<Product>
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|QueryException|ReflectionException
+     */
+    public function findOnlineInMenus(Website $website, string $locale): array
+    {
+        $products = $this->optimizedQueryBuilder($locale, $website)
+            ->andWhere('u.archived = :archived')
+            ->andWhere('p.menu IS NOT NULL')
+            ->setParameter('archived', false)
+            ->getQuery()
+            ->getResult();
+
+        $menus = [];
+        foreach ($products as $product) {
+            $menus[$product->getMenu()][] = ProductModel::fromEntity($product, $this->coreLocator, [
+                'disabledProducts' => true,
+                'disabledLayout' => true,
+                'disabledMedias' => true,
+                'disabledCategories' => true,
+                'disabledCategory' => true
+            ]);
+        }
+
+        foreach (['services', 'animations', 'performances', 'rentals'] as $slug) {
+            if (empty($menus[$slug])) {
+                $menus[$slug] = [];
+            }
+        }
+
+        return $menus;
+    }
+
     /**
      * Find by Catalog[].
      *
@@ -151,6 +195,16 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function findOnlineByCatalogs(Website $website, string $locale, array|PersistentCollection $catalogs = [], ?Listing $listing = null): array
     {
+        $asOnlyOneCatalog = $catalogs instanceof PersistentCollection && $catalogs->count() === 1 || count($catalogs) === 1;
+        $firstCatalog = $asOnlyOneCatalog && $catalogs instanceof PersistentCollection ? $catalogs->first()
+            : ($asOnlyOneCatalog ? $catalogs[array_key_first($catalogs)] : false);
+        $listingSlug = $listing ? '-'.$listing->getSlug() : '';
+        $keyCache = $firstCatalog ? 'onlineByCatalogs-'.$firstCatalog->getSlug().$listingSlug : 'onlineByCatalogs-'.$listingSlug;
+
+        if ($keyCache && array_key_exists($keyCache, $this->cache)) {
+            return $this->cache[$keyCache];
+        }
+
         $order = $listing instanceof Listing && $listing->getOrderBy() ? $listing->getOrderBy() : 'position';
         $sort = $listing instanceof Listing && $listing->getOrderSort() ? $listing->getOrderSort() : 'ASC';
         $queryBuilder = $this->optimizedQueryBuilder($locale, $website, $order, $sort)
@@ -158,7 +212,7 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('archived', false);
 
         $catalogIds = [];
-        foreach ($catalogs as $key => $catalog) {
+        foreach ($catalogs as $catalog) {
             $catalogIds[] = $catalog->getId();
         }
         if ($catalogIds) {
@@ -178,6 +232,8 @@ class ProductRepository extends ServiceEntityRepository
                 unset($products[$key]);
             }
         }
+
+        $this->cache[$keyCache] = $products;
 
         return $products;
     }

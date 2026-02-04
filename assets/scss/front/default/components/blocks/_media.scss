@@ -31,9 +31,31 @@ $mediaGap: 60px;
 ----------------------------------------------*/
 
 .media-block {
+
+    &.img-rotation {
+        img {
+            transform: rotate(-5deg);
+            border-radius: 55px !important;
+        }
+    }
+
     .media-content.have-content-side {
         .img-loader-wrap {
             flex: 0 0 auto;
+        }
+    }
+
+    .media-cta {
+
+        .cta-content {
+            z-index: 50;
+            background-color: transparentize($black, 0.5);
+            border-radius: $border-radius !important;
+        }
+
+        .text {
+            @include rfs(32px);
+            line-height: 1.2;
         }
     }
 }
@@ -121,7 +143,7 @@ $imgCopyright: map-get($elements, 'img-copyright-svg');
 
         img {
             transform: scale(1);
-            transition: all .5s ease-in-out;
+            transition: all .5s linear;
         }
     }
 
@@ -136,7 +158,7 @@ $imgCopyright: map-get($elements, 'img-copyright-svg');
 
         &:not(.only-one) {
             background-color: transparentize($primary, .1);
-            transition: all .6s ease-in-out;
+            transition: all .6s linear;
             clip-path: circle(0.0% at 0 100%);
         }
 
@@ -157,7 +179,7 @@ $imgCopyright: map-get($elements, 'img-copyright-svg');
                 .wrap {
                     width: 100%;
                     height: 100%;
-                    transition: all .6s ease-in-out;
+                    transition: all .6s linear;
                     background-color: transparentize($primary, .1);
                     clip-path: circle(0.0% at 0 100%);
                 }
@@ -178,12 +200,12 @@ $imgCopyright: map-get($elements, 'img-copyright-svg');
 
         > picture img {
             transform: scale(1.1);
-            transition: all .5s ease-in-out;
+            transition: all .5s linear;
         }
 
         &:not(.only-one) {
             .inner {
-                transition: all .6s ease-in-out;
+                transition: all .6s linear;
                 clip-path: circle(141.4% at 0 100%);
             }
         }
@@ -191,7 +213,7 @@ $imgCopyright: map-get($elements, 'img-copyright-svg');
         &.only-one {
             .inner .item {
                 .wrap {
-                    transition: all .6s ease-in-out;
+                    transition: all .6s linear;
                     clip-path: circle(141.4% at 0 100%);
                 }
             }

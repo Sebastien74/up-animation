@@ -27,7 +27,7 @@ class LastRouteService
     {
         $request = $event->getRequest();
         $uri = $request->getUri();
-        $routeName = $request->get('_route');
+        $routeName = $request->attributes->get('_route');
 
         if ($this->isAllowed($request, $routeName, $request->getRequestUri())) {
             $session = $request->getSession();

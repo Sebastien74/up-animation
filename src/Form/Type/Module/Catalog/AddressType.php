@@ -37,52 +37,55 @@ class AddressType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('name', Type\TextType::class, [
-            'label' => $this->translator->trans('Raison sociale', [], 'admin'),
-            'required' => false,
-            'attr' => [
-                'group' => 'col-md-6',
-                'placeholder' => $this->translator->trans('Saisissez une raison sociale', [], 'admin'),
-            ],
-        ]);
+        if ($options['map_fields']) {
 
-        $builder->add('latitude', Type\TextType::class, [
-            'required' => false,
-            'label' => $this->translator->trans('Latitude', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-3',
-                'class' => 'latitude',
-                'placeholder' => $this->translator->trans('Saisissez une latitude', [], 'admin'),
-            ],
-        ]);
+            $builder->add('name', Type\TextType::class, [
+                'label' => $this->translator->trans('Raison sociale', [], 'admin'),
+                'required' => false,
+                'attr' => [
+                    'group' => 'col-md-6',
+                    'placeholder' => $this->translator->trans('Saisissez une raison sociale', [], 'admin'),
+                ],
+            ]);
 
-        $builder->add('longitude', Type\TextType::class, [
-            'required' => false,
-            'label' => $this->translator->trans('Longitude', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-3',
-                'class' => 'longitude',
-                'placeholder' => $this->translator->trans('Saisissez une longitude', [], 'admin'),
-            ],
-        ]);
+            $builder->add('latitude', Type\TextType::class, [
+                'required' => false,
+                'label' => $this->translator->trans('Latitude', [], 'admin'),
+                'attr' => [
+                    'group' => 'col-md-3',
+                    'class' => 'latitude',
+                    'placeholder' => $this->translator->trans('Saisissez une latitude', [], 'admin'),
+                ],
+            ]);
 
-        $builder->add('zoom', Type\IntegerType::class, [
-            'required' => false,
-            'label' => $this->translator->trans('Zoom', [], 'admin'),
-            'attr' => ['group' => 'col-md-4', 'data-config' => true, 'min' => 1, 'max' => 16],
-        ]);
+            $builder->add('longitude', Type\TextType::class, [
+                'required' => false,
+                'label' => $this->translator->trans('Longitude', [], 'admin'),
+                'attr' => [
+                    'group' => 'col-md-3',
+                    'class' => 'longitude',
+                    'placeholder' => $this->translator->trans('Saisissez une longitude', [], 'admin'),
+                ],
+            ]);
 
-        $builder->add('minZoom', Type\IntegerType::class, [
-            'required' => false,
-            'label' => $this->translator->trans('Zoom minimum', [], 'admin'),
-            'attr' => ['group' => 'col-md-4', 'data-config' => true, 'min' => 1, 'max' => 16],
-        ]);
+            $builder->add('zoom', Type\IntegerType::class, [
+                'required' => false,
+                'label' => $this->translator->trans('Zoom', [], 'admin'),
+                'attr' => ['group' => 'col-md-4', 'data-config' => true, 'min' => 1, 'max' => 16],
+            ]);
 
-        $builder->add('maxZoom', Type\IntegerType::class, [
-            'required' => false,
-            'label' => $this->translator->trans('Zoom maximum', [], 'admin'),
-            'attr' => ['group' => 'col-md-4', 'data-config' => true, 'min' => 1, 'max' => 25],
-        ]);
+            $builder->add('minZoom', Type\IntegerType::class, [
+                'required' => false,
+                'label' => $this->translator->trans('Zoom minimum', [], 'admin'),
+                'attr' => ['group' => 'col-md-4', 'data-config' => true, 'min' => 1, 'max' => 16],
+            ]);
+
+            $builder->add('maxZoom', Type\IntegerType::class, [
+                'required' => false,
+                'label' => $this->translator->trans('Zoom maximum', [], 'admin'),
+                'attr' => ['group' => 'col-md-4', 'data-config' => true, 'min' => 1, 'max' => 25],
+            ]);
+        }
 
         $builder->add('address', Type\TextType::class, [
             'label' => $this->translator->trans('Adresse', [], 'admin'),
@@ -140,26 +143,30 @@ class AddressType extends AbstractType
             'required' => false,
             'display' => 'search',
             'placeholder' => $this->translator->trans('Sélectionnez un pays', [], 'admin'),
+            'preferred_choices' => ['FR', 'CH'],
             'attr' => ['group' => 'col-md-3', 'class' => 'country'],
         ]);
 
-        $builder->add('googleMapUrl', Type\UrlType::class, [
-            'label' => $this->translator->trans('Google map URL', [], 'admin'),
-            'required' => false,
-            'attr' => [
-                'group' => 'col-md-6',
-                'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-            ],
-        ]);
+        if ($options['google_fields']) {
 
-        $builder->add('googleMapDirectionUrl', Type\UrlType::class, [
-            'label' => $this->translator->trans('Google map itinéraire URL', [], 'admin'),
-            'required' => false,
-            'attr' => [
-                'group' => 'col-md-6',
-                'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-            ],
-        ]);
+            $builder->add('googleMapUrl', Type\UrlType::class, [
+                'label' => $this->translator->trans('Google map URL', [], 'admin'),
+                'required' => false,
+                'attr' => [
+                    'group' => 'col-md-6',
+                    'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
+                ],
+            ]);
+
+            $builder->add('googleMapDirectionUrl', Type\UrlType::class, [
+                'label' => $this->translator->trans('Google map itinéraire URL', [], 'admin'),
+                'required' => false,
+                'attr' => [
+                    'group' => 'col-md-6',
+                    'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
+                ],
+            ]);
+        }
 
         $builder->add('phones', CollectionType::class, [
             'label' => false,
@@ -218,6 +225,8 @@ class AddressType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Address::class,
             'website' => null,
+            'map_fields' => false,
+            'google_fields' => false,
             'prototypePosition' => true,
             'translation_domain' => 'admin',
         ]);

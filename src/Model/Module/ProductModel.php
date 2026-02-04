@@ -40,7 +40,7 @@ final class ProductModel extends BaseModel
         $catalog = ViewModel::fromEntity($catalogDb, $coreLocator, array_merge($options, []));
         $catalogLayout = self::$cache['catalogLayout'][$catalog->id] = !empty(self::$cache['catalogLayout'][$catalog->id])
             ? self::$cache['catalogLayout'][$catalog->id] : self::getContent('layout', $catalog->entity);
-        $info = self::information($product);
+
         if (isset($options['entitiesIds'])) {
             unset($options['entitiesIds']);
         }
@@ -64,12 +64,21 @@ final class ProductModel extends BaseModel
             }
         }
 
+        $information = in_array('informations', $catalogDb->getTabs()) ? self::information($product) : false;
+        $address = $information ? $information->getAddress() : false;
+
         return (object) array_merge((array) $model, [
             'catalog' => $catalog,
             'asAgency' => 'agencies' === $catalog->slug,
             'catalogSlug' => self::getContent('slug', $catalog),
             'entityForLayout' => $model->layout && $model->layout->getSlug() && !$model->layout->getZones()->isEmpty() && $model->asCustomLayout ? $model->entity : $catalog,
-            'info' => $info,
+            'info' => $information,
+            'address' => $address,
+            'city' => $address ? $address->getCity() : false,
+            'department' => $address && 'FR' === $address->getCountry() ? $address->getDepartment() : false,
+            'zipcode' => $address && 'FR' === $address->getCountry() ? $address->getZipCode() : false,
+            'country' => $address ? $address->getCountry() : false,
+            'zipcodeSmall' => $address && $address->getZipCode() && 'FR' === $address->getCountry() ? '('.substr($address->getZipCode(), 0 , 2).')' : false,
             'subCategories' => $subCategories,
             'mediasCard' => $model->medias ? array_slice($model->medias, array_key_first($model->medias), self::MEDIA_CARD_LIMIT) : [],
             'values' => $values,
@@ -139,6 +148,8 @@ final class ProductModel extends BaseModel
      */
     private static function getValues(Catalog\Product $product, Catalog\Catalog $catalog, array $multiFeaturesValues = [], array $defaultUniqFeatures = []): array
     {
+//        dd('FAIRE UN CACHE GROUP BY');
+
         $website = self::$coreLocator->website() ? self::$coreLocator->website() : WebsiteModel::fromEntity($product->getWebsite(), self::$coreLocator);
 
         $result = [];
@@ -169,6 +180,10 @@ final class ProductModel extends BaseModel
         $jsonValues = self::jsonValues($product, $multiFeaturesValues);
         $setJsonValues = false;
 
+        // VOIR POUR METTRE EN ADMIN
+        // VOIR POUR METTRE EN ADMIN
+        // VOIR POUR METTRE EN ADMIN
+        // VOIR POUR METTRE EN ADMIN
         // To add default FeatureValue[]
         self::$cache['valuesCatalog'][$catalog->getId()] = self::$cache['valuesCatalog'][$catalog->getId()] ??
             self::$coreLocator->em()->getRepository(Catalog\FeatureValue::class)->findByCatalog($catalog);
@@ -178,6 +193,10 @@ final class ProductModel extends BaseModel
                 self::addValue($product, $value->getCatalogFeature(), $value);
             }
         }
+        // VOIR POUR METTRE EN ADMIN
+        // VOIR POUR METTRE EN ADMIN
+        // VOIR POUR METTRE EN ADMIN
+        // VOIR POUR METTRE EN ADMIN
 
         // To add default Feature[]
         self::$cache['featuresCatalog'][$catalog->getId()] = self::$cache['featuresCatalog'][$catalog->getId()] ??

@@ -163,14 +163,6 @@
                 }
             }
         }
-
-        @if map-has-key($config, 'bg-hover') and (index($screens, 'desktop') or index($screens, 'all')) {
-            @include mediaQuery(min-lg) {
-                &:not(.basic):before {
-                    background-color: map-get($config, "bg-hover");
-                }
-            }
-        }
     }
 
     body .btn.btn-outline-#{$suffix} {

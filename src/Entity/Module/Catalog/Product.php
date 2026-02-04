@@ -102,6 +102,9 @@ class Product extends BaseEntity
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private array $jsonValues = [];
 
+    #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
+    private ?string $menu = null;
+
     #[ORM\OneToOne(targetEntity: Layout::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]
     private ?Layout $layout = null;
@@ -284,6 +287,18 @@ class Product extends BaseEntity
     public function setJsonValues(?array $jsonValues): static
     {
         $this->jsonValues = $jsonValues;
+
+        return $this;
+    }
+
+    public function getMenu(): ?string
+    {
+        return $this->menu;
+    }
+
+    public function setMenu(?string $menu): static
+    {
+        $this->menu = $menu;
 
         return $this;
     }

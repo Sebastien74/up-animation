@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Core;
 
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Seo\Url;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -18,12 +19,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => TreeService::class, 'key' => 'tree_service'],
 ])]
-class TreeService
+readonly class TreeService
 {
     /**
      * TreeService constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
     }
 
@@ -96,6 +97,10 @@ class TreeService
      */
     private function getParent($entity): mixed
     {
+        if ($entity instanceof Product) {
+            return 'products';
+        }
+
         return is_array($entity) && !empty($entity['parent']) ? $entity['parent']['id'] : (is_object($entity) && $entity->getParent() ? $entity->getParent()->getId() : 'main');
     }
 

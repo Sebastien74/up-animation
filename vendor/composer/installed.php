@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '1cc503b23f52275dd91233b86cd6a1add42d75ad',
+        'reference' => '53b1f46f7951491a74a0595d869a6e22616b85af',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '1cc503b23f52275dd91233b86cd6a1add42d75ad',
+            'reference' => '53b1f46f7951491a74a0595d869a6e22616b85af',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -191,9 +191,9 @@
             'dev_requirement' => false,
         ),
         'doctrine/orm' => array(
-            'pretty_version' => '3.6.1',
-            'version' => '3.6.1.0',
-            'reference' => '2148940290e4c44b9101095707e71fb590832fa5',
+            'pretty_version' => '3.6.2',
+            'version' => '3.6.2.0',
+            'reference' => '4262eb495b4d2a53b45de1ac58881e0091f2970f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../doctrine/orm',
             'aliases' => array(),
@@ -299,9 +299,9 @@
             'dev_requirement' => false,
         ),
         'giggsey/libphonenumber-for-php' => array(
-            'pretty_version' => '9.0.22',
-            'version' => '9.0.22.0',
-            'reference' => '38fbbbf512928c5dbc1c11d9501784beb788ed55',
+            'pretty_version' => '9.0.23',
+            'version' => '9.0.23.0',
+            'reference' => 'c415b68b44f8f6d7bb0de79769de8b2189d8a055',
             'type' => 'library',
             'install_path' => __DIR__ . '/../giggsey/libphonenumber-for-php',
             'aliases' => array(),
@@ -310,7 +310,7 @@
         'giggsey/libphonenumber-for-php-lite' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '9.0.22',
+                0 => '9.0.23',
             ),
         ),
         'giggsey/locale' => array(
@@ -530,9 +530,9 @@
             'dev_requirement' => false,
         ),
         'nette/utils' => array(
-            'pretty_version' => 'v4.1.1',
-            'version' => '4.1.1.0',
-            'reference' => 'c99059c0315591f1a0db7ad6002000288ab8dc72',
+            'pretty_version' => 'v4.1.2',
+            'version' => '4.1.2.0',
+            'reference' => 'f76b5dc3d6c6d3043c8d937df2698515b99cbaf5',
             'type' => 'library',
             'install_path' => __DIR__ . '/../nette/utils',
             'aliases' => array(),
@@ -611,9 +611,9 @@
             'dev_requirement' => true,
         ),
         'phpunit/php-file-iterator' => array(
-            'pretty_version' => '6.0.0',
-            'version' => '6.0.0.0',
-            'reference' => '961bc913d42fe24a257bfff826a5068079ac7782',
+            'pretty_version' => '6.0.1',
+            'version' => '6.0.1.0',
+            'reference' => '3d1cd096ef6bea4bf2762ba586e35dbd317cbfd5',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/php-file-iterator',
             'aliases' => array(),

@@ -6,6 +6,7 @@
 {% set isFirstZone = zone.position is defined and zone.position == 1 %}
 {% set fade = slider.effect == 'fade' ? 'fade' : 'loop' %}
 {% set arrows = slider.control and medias|length > 1 %}
+{% set focus = slider.focus is defined and slider.focus ? slider.focus : '' %}
 {% if slider.itemsPerSlide > 1 %}
     {% set fade = 'loop' %}
 {% endif %}
@@ -58,7 +59,7 @@
 {% endmacro %}
 
 <div class="splide-container">
-    <div class="splide{% if not arrows %} no-arrows{% endif %}{% if slider.thumbnails %} with-thumbnails{% endif %}"
+    <div class="splide{% if not arrows %} no-arrows{% endif %}{% if slider.thumbnails %} with-thumbnails{% endif %}{% if 'center' == focus %} focus-center{% endif %}"
          data-lenght="{{ medias|length }}"
          data-items="{{ slider.itemsPerSlide }}"
          data-items-medium-pc="{{ slider.itemsPerSlideMiniPC ? slider.itemsPerSlideMiniPC : 3 }}"
@@ -82,7 +83,7 @@
                 {{ macro.arrowsPrev(arrowsAsBtn, arrowsColor, 'vertical-center') }}
             {% endif %}
             {% if arrows and 'top' in slider.arrowAlignment %}
-                {{ macro.arrows(arrowsSide, arrowsColor, arrowsAsBtn, 'top') }}
+                {{ macro.arrows(slider, arrowsSide, arrowsColor, arrowsAsBtn, 'top') }}
             {% endif %}
             <ul class="splide__list{% if medias|length < slider.itemsPerSlide %} d-lg-flex justify-content-lg-center{% endif %}">
                 {% set isFirst = true %}
@@ -93,7 +94,7 @@
                     {% set display = (mediaType == 'video' and media.videoLink is defined and media.videoLink is not empty) or (media.media.filename is defined and media.media.filename) %}
                     {% if display %}
                         <li class="splide__slide">
-                            <div class="content{% if slider.itemsPerSlide > 1 %} me-4 me-md-5{% endif %}">
+                            <div class="content{% if slider.itemsPerSlide > 1 and 'center' != focus %} me-4 me-md-5{% elseif 'center' == focus %} mx-4 mx-md-4{% endif %}">
                                 {% if linkFullSize and media.intl.link %}
                                     <a href="{{ media.intl.link }}" class="d-inline-block slider-link"
                                         {% if media.intl.linkBlank %} target="_blank"{% endif %}

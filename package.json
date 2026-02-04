@@ -40,6 +40,7 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress",
+        "build:font-fallbacks": "node assets/js/vendor/font-metrics.js --target assets/lib/fonts/Roboto/Roboto-Regular.ttf --fallback assets/lib/fonts/Arial/Arial.ttf --family roboto-fallback --out assets/font-fallbacks/generated.scss",
         "xss-check": "node tools/xss-check.mjs"
     },
     "dependencies": {
@@ -67,6 +68,7 @@
         "dropify": "^0.2.2",
         "dropzone": "^6.0.0-beta.2",
         "flatpickr": "^4.6.13",
+        "fontkit": "^2.0.4",
         "fullib-js": "^2.0.41",
         "glightbox": "^3.2.0",
         "highlight.js": "^11.11.1",

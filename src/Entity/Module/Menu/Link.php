@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Module\Menu;
 
 use App\Entity\BaseEntity;
+use App\Entity\Module\Catalog\Catalog;
 use App\Repository\Module\Menu\LinkRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -69,6 +70,10 @@ class Link extends BaseEntity
     #[ORM\ManyToOne(targetEntity: Link::class, inversedBy: 'links')]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'cascade')]
     private ?Link $parent = null;
+
+    #[ORM\ManyToOne(targetEntity: Catalog::class)]
+    #[ORM\JoinColumn(name: 'catalog_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    private ?Catalog $catalog = null;
 
     /**
      * Link constructor.
@@ -237,6 +242,18 @@ class Link extends BaseEntity
     public function setParent(?self $parent): static
     {
         $this->parent = $parent;
+
+        return $this;
+    }
+
+    public function getCatalog(): ?Catalog
+    {
+        return $this->catalog;
+    }
+
+    public function setCatalog(?Catalog $catalog): static
+    {
+        $this->catalog = $catalog;
 
         return $this;
     }

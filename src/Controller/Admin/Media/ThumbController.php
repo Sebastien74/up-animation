@@ -123,8 +123,6 @@ class ThumbController extends AdminController
             }
         }
 
-        $this->coreLocator->cacheService()->clearCaches();
-
         return new JsonResponse(['success' => true]);
     }
 

@@ -58,7 +58,6 @@ class CoreLocator implements CoreLocatorInterface
         #[AutowireLocator(Content\RedirectionService::class, indexAttribute: 'key')] protected ServiceLocator $redirectionLocator,
         #[AutowireLocator(Content\MarkdownServiceInterface::class, indexAttribute: 'key')] protected ServiceLocator $markdownLocator,
         #[AutowireLocator(Core\FileInfo::class, indexAttribute: 'key')] protected ServiceLocator $fileLocator,
-        #[AutowireLocator(Core\AI::class, indexAttribute: 'key')] protected ServiceLocator $aiLocator,
         private readonly EntryFilesTwigExtension $entryFiles,
         private readonly Core\CacheServiceInterface $cacheService,
         private readonly QueryServiceInterface $queryService,
@@ -424,16 +423,6 @@ class CoreLocator implements CoreLocatorInterface
     public function emQuery(): QueryServiceInterface
     {
         return $this->queryService;
-    }
-
-    /**
-     * To get AI.
-     *
-     * @throws ContainerExceptionInterface
-     */
-    public function ai(): Core\AI
-    {
-        return $this->aiLocator->get('ai_service');
     }
 
     /**

@@ -88,11 +88,6 @@ class ActionController extends FrontController
 
         $this->setCore($request, $url, $block, $filter);
 
-        $cache = $this->cachePool($block, $this->arguments['interface']['name'].'_index', 'GET');
-        if ($cache) {
-            return $cache;
-        }
-
         $listing = !$filter ? $this->findListing('main') : $this->findListing($filter);
 
         if (!$listing) {
@@ -196,10 +191,8 @@ class ActionController extends FrontController
             $template = 'front/'.$this->websiteTemplate.'/actions/'.$this->interfaceName.'/index-events.html.twig';
         }
 
-        $response = $request->get('scroll-ajax') || $request->get('ajax') ? new JsonResponse(['html' => $this->renderView($template, $arguments)])
+        return $request->query->get('scroll-ajax') || $request->query->get('ajax') ? new JsonResponse(['html' => $this->renderView($template, $arguments)])
             : $this->render($template, $arguments);
-
-        return $this->cachePool($block, $this->arguments['interface']['name'].'_index', 'GENERATE', $response);
     }
 
     /**
@@ -216,11 +209,6 @@ class ActionController extends FrontController
     ): array|Response|RedirectResponse {
 
         $this->setCore($request);
-
-        $cache = $this->cachePool($url, $this->arguments['interface']['name'].'_view', 'GET');
-        if ($cache) {
-            return $cache;
-        }
 
         $page = $pageUrl ? $this->service->findPageByUrlCodeAndLocale($pageUrl, $preview) : null;
         $entity = $this->service->findEntityByUrlAndLocale($url, $preview);
@@ -240,14 +228,6 @@ class ActionController extends FrontController
         $this->modelOptions['urlsIndex'] = $indexPagesCodes;
         if ($indexPageCode && $indexPageCode !== $pageUrl && $this->coreLocator->checkRoute('front_'.$this->arguments['interface']['name'].'_view.'.$locale)) {
             return $this->redirectToRoute('front_'.$this->arguments['interface']['name'].'_view', ['pageUrl' => $indexPageCode, 'url' => $url->getCode()], 301);
-        }
-
-        /** To display cache pool */
-        if (self::CACHE_POOL) {
-            $poolResponse = $this->cachePool($entity, $this->arguments['interface']['name'], 'GET');
-            if ($poolResponse) {
-                return $poolResponse;
-            }
         }
 
         $thumbConfigurationHeader = $this->thumbConfiguration($this->website, $this->classname, 'view', null, 'title-header');
@@ -289,9 +269,7 @@ class ActionController extends FrontController
             return $arguments;
         }
 
-        $response = $this->render($this->getTemplate($this->websiteTemplate, 'view', $entity), $arguments);
-
-        return $this->cachePool($entity, $this->arguments['interface']['name'].'_view', 'GENERATE', $response);
+        return $this->render($this->getTemplate($this->websiteTemplate, 'view', $entity), $arguments);
     }
 
     private function setTeaserArguments(?object $teaser): void
@@ -314,11 +292,6 @@ class ActionController extends FrontController
         $teaser = $this->findTeaser($this->website->entity, $filter);
 
         $this->setTeaserArguments($teaser);
-
-        $cache = $this->cachePool($block, ($this->arguments['interface']['name'] ?? 'vendor').'_teaser', 'GET');
-        if ($cache) {
-            return $cache;
-        }
 
         if (!$teaser) {
             return new Response();
@@ -454,12 +427,10 @@ class ActionController extends FrontController
             }
         }
 
-        $response = $request->get('ajax') ? new JsonResponse([
+        return $request->query->get('ajax') ? new JsonResponse([
             'success' => true,
             'html' => $this->renderView($template, $arguments),
         ]) : $this->render($template, $arguments);
-
-        return $this->cachePool($block, $this->arguments['interface']['name'].'_teaser', 'GENERATE', $response);
     }
 
     /**

@@ -88,7 +88,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
 
         $this->clearAdminSession();
 
-        if (self::REGISTER_ROUTE === $request->get('_route')) {
+        if (self::REGISTER_ROUTE === $request->attributes->get('_route')) {
             return new RedirectResponse($this->coreLocator->router()->generate(self::REGISTER_ROUTE));
         }
 

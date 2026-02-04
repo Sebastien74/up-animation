@@ -34,11 +34,6 @@ class PagesNavigationController extends FrontController
         mixed $filter = null,
     ): Response {
 
-        $cache = $this->coreLocator->cacheService()->cachePool($block, 'pages_navigation_view', 'GET');
-        if ($cache) {
-            return $cache;
-        }
-
         $arguments = [];
         $website = $this->getWebsite();
         $configuration = $website->configuration;
@@ -56,8 +51,6 @@ class PagesNavigationController extends FrontController
         }
         $arguments['subNavigation'] = $pages;
 
-        $response = $this->cache($request, 'front/'.$arguments['websiteTemplate'].'/actions/pages-navigation/view.html.twig', $parentPage, $arguments);
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'pages_navigation_view', 'GENERATE', $response);
+        return $this->cache($request, 'front/'.$arguments['websiteTemplate'].'/actions/pages-navigation/view.html.twig', $parentPage, $arguments);
     }
 }

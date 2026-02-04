@@ -47,7 +47,7 @@ class UserChecker implements UserCheckerInterface
         $disableDRoutes = ['app_logout'];
         $loginRoutes = ['security_front_login', 'security_login', 'security_front_forms'];
         $allowedSwitchRoutes = ['security_front_confirmation'];
-        $routeName = $request->get('_route');
+        $routeName = $request->attributes->get('_route');
         $roles = $this->user ? $this->user->getRoles() : [];
 
         /* To redirect user back to switcher if in front secure page */

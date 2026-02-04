@@ -66,7 +66,6 @@ class AddLinkManager
                 $this->coreLocator->em()->persist($menu);
                 $this->coreLocator->em()->flush();
             }
-            $this->coreLocator->cacheService()->clearCaches($menu);
         }
     }
 

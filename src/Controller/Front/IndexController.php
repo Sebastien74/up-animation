@@ -107,24 +107,15 @@ class IndexController extends FrontController
             $userAllowed = $this->isGranted('ROLE_USER_FRONT') || ($this->isGranted('ROLE_SECURE_PAGE') && $this->isGranted('IS_IMPERSONATOR'));
             if (!$userAllowed) {
                 return $this->redirectToRoute('app_logout');
-            } elseif ('front_index_security' !== $request->get('_route') && $this->isGranted('ROLE_USER_FRONT')) {
+            } elseif ('front_index_security' !== $request->attributes->get('_route') && $this->isGranted('ROLE_USER_FRONT')) {
                 return $this->redirectToRoute('front_index_security', ['url' => $url->getCode()], 301);
-            }
-        }
-
-        /** To display cache pool */
-        if (self::CACHE_POOL) {
-            $poolResponse = $this->cachePool($page, 'page', 'GET');
-            if ($poolResponse && !$page->isSecure()) {
-                return $poolResponse;
             }
         }
 
         /* Set request */
         $request->setLocale($url->getLocale());
-        $response = $this->render($this->getTemplate($website->configuration, $page), $this->getArguments($website, $page, $url));
 
-        return $this->cachePool($page, 'page', 'GENERATE', $response);
+        return $this->render($this->getTemplate($website->configuration, $page), $this->getArguments($website, $page, $url));
     }
 
     /**

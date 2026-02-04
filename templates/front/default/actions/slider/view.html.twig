@@ -19,6 +19,7 @@
     {% set displayArrows = count > 1 and slider.control %}
     {% set autoplay = slider.autoplay %}
     {% set pauseOnHover = slider.pause %}
+    {% set focus = slider.focus is defined and slider.focus ? slider.focus : '' %}
     {% set fileSizes = thumbConfiguration is empty and slider.standardizeMedia ? mediasSize(slider, 'height', 'less') : null %}
     {% set zone = block.col.zone is defined ? block.col.zone : null %}
     {% set selectedTemplate = 'front/'~websiteTemplate~'/actions/slider/template/'~slider.template~'.html.twig' %}
@@ -27,7 +28,7 @@
     {% set customTemplateExist = (customTemplate)|fileExist %}
     {% set template = customTemplateExist ? 'front/'~websiteTemplate~'/actions/slider/template/'~slider.slug~'.html.twig'
         : ((selectedTemplate)|fileExist ? selectedTemplate : 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig') %}
-    <div id="slider-container-{{ slider.slug }}" class="slider-container-{{ slider.slug }} slider-container{% if slider.popup %} popup-gallery{% endif %}{% if isHomePage %} is-home-page{% endif %}">
+    <div id="slider-container-{{ slider.slug }}" class="slider-container-{{ slider.slug }} slider-container{% if slider.popup %} popup-gallery{% endif %}{% if isHomePage %} is-home-page{% endif %}{% if 'center' == focus %} focus-center{% endif %}">
         {{ macroWebmaster.box({
             title: "Éditer le carrousel"|trans([], 'front_webmaster'),
             role: 'ROLE_SLIDER',

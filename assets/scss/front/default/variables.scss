@@ -87,8 +87,8 @@ $enable-recruitment: false !default;
 -----------------------------------*/
 
 $gray-100: #f8f9fa !default;
-$gray-200: #e9ecef !default;
-$gray-300: #dee2e6 !default;
+$gray-200: #f9f9f9 !default;
+$gray-300: #f2f2f2 !default;
 $gray-400: #d7d7d7 !default;
 $gray-500: #adadad !default;
 $gray-600: #6c757d !default;
@@ -106,6 +106,7 @@ $warning: #f0ad4e !default;
 $danger: #a82835 !default;
 $danger-light: #ee9da5 !default;
 $light: $gray-300 !default;
+$lighten: $gray-200 !default;
 $dark: $gray-900 !default;
 $dark-lighten: $gray-800 !default;
 $focus-color: #ff9800 !default;
@@ -122,6 +123,7 @@ $theme-colors: (
     'success': $success,
     'danger': $danger,
     'light': $light,
+    'lighten': $lighten,
     'dark': $dark,
     'dark-lighten': $dark-lighten,
     'black': $black,
@@ -175,29 +177,23 @@ $container-fluid-side-limit: 'xl';
 /** @doc: To find font adjust https://support.envoke.com/en/articles/5760547-fallback-font-rules */
 
 @if not $enable-medias-queries {
+
+    /** run yarn build:font-fallbacks */
+
     @font-face {
-        font-family: font-fallback;
-        src: local('Arial');
-        size-adjust: 60.85099821%;
-        ascent-override: 164.3358416%;
-        descent-override: 57.51754455%;
-        line-gap-override: 16.43358416%;
-        font-display: swap;
-    }
-    @font-face {
-        font-family: font-fallback-android;
-        src: local('Roboto');
-        size-adjust: 55.5193474%;
-        ascent-override: 180.1173909%;
-        descent-override: 63.04108683%;
-        line-gap-override: 18.01173909%;
+        font-family: roboto-fallback;
+        src: url("../../../lib/fonts/Arial/Arial.ttf") format("truetype");
+        size-adjust: 101.88323917%;
+        ascent-override: 92.7734375%;
+        descent-override: 24.4140625%;
+        line-gap-override: 0%;
         font-display: swap;
     }
 }
 
-$font-primary: 'Roboto', system-ui, -apple-system, font-fallback, font-fallback-android, sans-serif !default;
-$font-light: 'Roboto', system-ui, -apple-system, font-fallback, font-fallback-android, sans-serif !default;
-$font-secondary: 'Roboto', system-ui, -apple-system, font-fallback, font-fallback-android, sans-serif !default;
+$font-primary: 'Roboto', roboto-fallback, sans-serif !default;
+$font-light: 'Roboto', roboto-fallback, sans-serif !default;
+$font-secondary: 'Roboto', roboto-fallback, sans-serif !default;
 $font-title: $font-primary !default;
 $theme-fonts: (
     'primary': ('font-family': $font-primary, 'line-height': 1),
@@ -297,6 +293,24 @@ $elements: map-merge((
             'dark': $white,
             'dark-lighten': $white,
             'white': $body-color,
+        )
+    ),
+    'h2 span, .h2 span': (
+        'properties': (
+            'color': $primary,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $primary,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $primary,
+            'dark-lighten': $primary,
+            'white': $primary,
         )
     ),
     'h3, h3 a, .h3, .h3 a': (
@@ -438,7 +452,7 @@ $elements: map-merge((
     'a.link, a.link span, a.link svg, .open-gdpr-modal.link, .body a, .introduction a, a.phone-link, a.email-link': (
         'properties': (
             'color': $primary,
-            'transition': all .3s ease-in-out,
+            'transition': all .3s linear,
         ),
         'colors-in-backgrounds': (
             'primary': $white,
@@ -458,7 +472,7 @@ $elements: map-merge((
     'a:hover, a:hover .title, a:hover span, a.link:hover, a.link:hover span': (
         'properties': (
             'color': $primary,
-            'transition': all .3s ease-in-out,
+            'transition': all .3s linear,
         ),
         'colors-in-backgrounds': (
             'primary': $white,
@@ -726,7 +740,7 @@ $enable-caret: false;
 
 /*-- g - Border radius --*/
 
-$border-radius: 1.5rem !default;
+$border-radius: 1.3rem !default;
 $border-radius-small: .25rem;
 $border-radius-medium: 35px;
 $border-radius-large: 80px;
@@ -889,17 +903,17 @@ $btn-font-size-xs: $btn-font-size;
 $btn-transition: .3s;
 
 $btn-padding-top: 1rem;
-$btn-padding-bottom: .9rem;
+$btn-padding-bottom: 1rem;
 $btn-padding-right: 2rem;
 $btn-padding-left: 2rem;
 
 $btn-padding-top-md: 1rem;
-$btn-padding-bottom-md: .9rem;
+$btn-padding-bottom-md: 1rem;
 $btn-padding-left-md: 2rem;
 $btn-padding-right-md: 2rem;
 
 $btn-padding-top-xs: 1rem;
-$btn-padding-bottom-xs: .9rem;
+$btn-padding-bottom-xs: 1rem;
 $btn-padding-left-xs: 2rem;
 $btn-padding-right-xs: 2rem;
 
@@ -910,9 +924,11 @@ $btn-padding-xs: $btn-padding-top-xs $btn-padding-right-xs $btn-padding-bottom-x
 $buttons: (
     'primary': (
         'bg': $primary,
+        'border': $primary,
         'color': $white,
-        'bg-hover': $white,
-        'color-hover': $primary,
+        'bg-hover': darken-color($primary, 5),
+        'border-hover': darken-color($primary, 5),
+        'color-hover': darken-color($white, 5),
         'bg-outline': transparent,
         'bg-outline-hover': $primary,
         'color-outline': $primary,
@@ -1021,11 +1037,11 @@ $buttons: (
     ),
     'white': (
         'bg': $white,
-        'color': $primary,
-        'bg-hover': $primary,
         'border': $white,
-        'border-hover': $white,
-        'color-hover': $white,
+        'color': $primary,
+        'bg-hover': darken-color($white, 5),
+        'border-hover': darken-color($white, 5),
+        'color-hover': darken-color($primary, 5),
         'bg-outline': transparent,
         'bg-outline-hover': $white,
         'color-outline': $white,

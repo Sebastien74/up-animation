@@ -14,6 +14,7 @@ use App\Repository\Module\Gallery\TeaserRepository;
 use App\Service\Content\ListingService;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
@@ -54,22 +55,12 @@ class GalleryController extends ActionController
     /**
      * View.
      *
-     * @throws NonUniqueResultException
-     * @throws \Exception
+     * @throws NonUniqueResultException|Exception|InvalidArgumentException
      */
     public function view(Request $request, GalleryRepository $galleryRepository, ?Block $block = null, mixed $filter = null): Response
     {
-        if (!$filter) {
-            return new Response();
-        }
-
-        $cache = $this->coreLocator->cacheService()->cachePool($block, 'gallery_view', 'GET');
-        if ($cache) {
-            return $cache;
-        }
-
         $website = $this->getWebsite();
-        $gallery = $galleryRepository->findOneByFilter($website->entity, $request->getLocale(), $filter);
+        $gallery = $filter ? $galleryRepository->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
 
         if (!$gallery) {
             return new Response();
@@ -81,20 +72,18 @@ class GalleryController extends ActionController
         $gallery = ViewModel::fromEntity($gallery, $this->coreLocator);
         $entity->setUpdatedAt($gallery->entity->getUpdatedAt());
 
-        $response = $this->render('front/'.$template.'/actions/gallery/view.html.twig', [
+        return $this->render('front/'.$template.'/actions/gallery/view.html.twig', [
             'websiteTemplate' => $template,
             'website' => $website,
             'gallery' => $gallery,
             'thumbConfiguration' => $this->thumbConfiguration($website, Gallery::class, 'view', $gallery->entity),
         ]);
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'gallery_view', 'GENERATE', $response);
     }
 
     /**
      * Teaser.
      *
-     * @throws NonUniqueResultException|\Exception
+     * @throws NonUniqueResultException|Exception
      */
     public function teaser(
         Request $request,
@@ -104,17 +93,8 @@ class GalleryController extends ActionController
         Url $url,
         mixed $filter = null): Response
     {
-        if (!$filter) {
-            return new Response();
-        }
-
-        $cache = $this->coreLocator->cacheService()->cachePool($block, 'gallery_teaser', 'GET');
-        if ($cache) {
-            return $cache;
-        }
-
         $website = $this->getWebsite();
-        $teaser = $teaserRepository->findOneByFilter($website->entity, $request->getLocale(), $filter);
+        $teaser = $filter ? $teaserRepository->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
 
         if (!$teaser) {
             return new Response();
@@ -127,7 +107,7 @@ class GalleryController extends ActionController
 
         $block->setUpdatedAt($teaser->getUpdatedAt());
 
-        $response = $this->render('front/'.$template.'/actions/gallery/teaser.html.twig', [
+        return $this->render('front/'.$template.'/actions/gallery/teaser.html.twig', [
             'websiteTemplate' => $template,
             'block' => $block,
             'url' => $url,
@@ -136,7 +116,5 @@ class GalleryController extends ActionController
             'entities' => $entities,
             'thumbConfiguration' => $this->thumbConfiguration($website, Gallery::class, 'teaser', $teaser->getSlug()),
         ]);
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'gallery_teaser', 'GENERATE', $response);
     }
 }

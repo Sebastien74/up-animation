@@ -13,6 +13,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 
 /**
  * WebsiteRepository.
@@ -40,7 +41,7 @@ class WebsiteRepository extends ServiceEntityRepository
     /**
      * Get WebsiteModel.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
      */
     public function findObject(int $id): ?WebsiteModel
     {
@@ -56,7 +57,7 @@ class WebsiteRepository extends ServiceEntityRepository
     /**
      * Get current WebsiteModel.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
      */
     public function findCurrent(): ?WebsiteModel
     {
@@ -71,7 +72,7 @@ class WebsiteRepository extends ServiceEntityRepository
     /**
      * Get WebsiteModel by Host name.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
      */
     public function findOneByHost(?string $host = null, bool $forceByHost = false, bool $asObject = false)
     {
@@ -129,7 +130,7 @@ class WebsiteRepository extends ServiceEntityRepository
     /**
      * Get WebsiteModel by ID for admin part.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
      */
     public function findByIdForAdmin(int $id): ?WebsiteModel
     {
@@ -155,9 +156,9 @@ class WebsiteRepository extends ServiceEntityRepository
     /**
      * Get default WebsiteModel.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
      */
-    public function findDefault(bool $asObject = false): ?WebsiteModel
+    public function findDefault(bool $asObject = false): WebsiteModel|Website|null
     {
         $website = $this->createQueryBuilder('w')
             ->leftJoin('w.configuration', 'c')

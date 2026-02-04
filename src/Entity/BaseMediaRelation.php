@@ -49,7 +49,10 @@ class BaseMediaRelation extends BaseInterface
     protected bool $header = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected bool $radius = false;
+    protected bool $radius = true;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    protected bool $rotation = false;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     protected ?int $maxWidth = null;
@@ -192,6 +195,18 @@ class BaseMediaRelation extends BaseInterface
     public function setRadius(bool $radius): static
     {
         $this->radius = $radius;
+
+        return $this;
+    }
+
+    public function isRotation(): ?bool
+    {
+        return $this->rotation;
+    }
+
+    public function setRotation(bool $rotation): static
+    {
+        $this->rotation = $rotation;
 
         return $this;
     }

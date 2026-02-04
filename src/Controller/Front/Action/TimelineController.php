@@ -28,35 +28,25 @@ class TimelineController extends FrontController
      */
     public function view(Request $request, TimelineRepository $timelineRepository, ?Block $block = null, mixed $filter = null): Response
     {
-        if (!$filter) {
-            return new Response();
-        }
-
-        $cache = $this->coreLocator->cacheService()->cachePool($block, 'timeline_view', 'GET');
-        if ($cache) {
-            return $cache;
-        }
-
         $website = $this->getWebsite();
-        $timeline = $timelineRepository->findOneByFilter($website->entity, $request->getLocale(), $filter);
-        $configuration = $website->configuration;
-        $websiteTemplate = $configuration->template;
+        $timeline = $filter ? $timelineRepository->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
 
         if (!$timeline) {
             return new Response();
         }
 
+        $configuration = $website->configuration;
+        $websiteTemplate = $configuration->template;
+
         $entity = $block instanceof Block ? $block : $timeline;
         $entity->setUpdatedAt($timeline->getUpdatedAt());
 
-        $response = $this->render('front/'.$websiteTemplate.'/actions/timeline/view.html.twig', [
+        return $this->render('front/'.$websiteTemplate.'/actions/timeline/view.html.twig', [
             'timeline' => $timeline,
             'thumbConfiguration' => $this->thumbConfiguration($website, Timeline::class, 'view', null),
             'configuration' => $configuration,
             'websiteTemplate' => $websiteTemplate,
             'website' => $website,
         ]);
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'timeline_view', 'GENERATE', $response);
     }
 }

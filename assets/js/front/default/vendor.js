@@ -79,7 +79,8 @@ lazyLoadComponent('.scroll-link', () => import(/* webpackPreload: true */'./comp
 lazyLoadComponent('.newsletter-form-container', () => import(/* webpackPreload: true */'./components/form/newsletter'), (Newsletters) => new Newsletters());
 lazyLoadComponent('.step-form-ajax', () => import(/* webpackPreload: true */'./components/form/steps-form'), (StepForm) => new StepForm());
 lazyLoadComponent('[data-scroll-bar="1"]', () => import('./components/scrollbar'), (ScrollSpy, els) => new ScrollSpy(els));
-
+lazyLoadComponent('.fixed-news', () => import('./components/fixed-news'), (FixedNews, el) => new FixedNews(el));
+lazyLoadComponent('.dropdown-toggle', () => import('../bootstrap/modules/dropdown'), (Dropdown) => new Dropdown());
 document.addEventListener('DOMContentLoaded', function () {
 
     const body = document.body;
@@ -96,19 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         tabTrigger.show();
                     });
                 });
-            });
-        }).catch(error => console.error(error.message));
-    }
-
-    const dropdown = document.querySelector('.dropdown-toggle');
-    if (dropdown) {
-        import('../bootstrap/dist/dropdown').then(({default: Dropdown}) => {
-            const dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
-            const dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-                if (!dropdownToggleEl.classList.contains('loaded')) {
-                    dropdownToggleEl.classList.add('loaded')
-                    return new Dropdown(dropdownToggleEl);
-                }
             });
         }).catch(error => console.error(error.message));
     }

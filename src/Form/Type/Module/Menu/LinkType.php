@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Module\Menu;
 
+use App\Entity\Core\Website;
+use App\Entity\Module\Catalog\Catalog;
 use App\Entity\Module\Menu\Link;
 use App\Entity\Module\Menu\LinkIntl;
 use App\Entity\Module\Menu\LinkMediaRelation;
 use App\Form\EventListener\Translation\IntlListener;
 use App\Form\Widget as WidgetType;
 use App\Service\Interface\CoreLocatorInterface;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,6 +29,7 @@ class LinkType extends AbstractType
 {
     private TranslatorInterface $translator;
     private bool $isInternalUser;
+    private Website $website;
 
     /**
      * LinkType constructor.
@@ -36,6 +41,7 @@ class LinkType extends AbstractType
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
+        $this->website = $this->coreLocator->website()->entity;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -47,11 +53,32 @@ class LinkType extends AbstractType
             $adminName = new WidgetType\AdminNameType($this->coreLocator);
             $adminName->add($builder, [
                 'slug' => true,
-                'adminNameGroup' => 'col-md-6',
-                'slugGroup' => 'col-md-3',
+                'adminNameGroup' => 'col-lg-3',
+                'slugGroup' => 'col-lg-3',
             ]);
 
             $builder->add('pictogram', WidgetType\PictogramType::class, ['attr' => ['data-config' => false]]);
+
+            $builder->add('catalog', EntityType::class, [
+                'label' => $this->translator->trans('Catalogue', [], 'admin'),
+                'required' => false,
+                'display' => 'search',
+                'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+                'attr' => [
+                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+                ],
+                'row_attr' => ['class' => 'col-lg-3'],
+                'class' => Catalog::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.website = :website')
+                        ->setParameter('website', $this->website)
+                        ->orderBy('c.adminName', 'ASC');
+                },
+                'choice_label' => function ($entity) {
+                    return strip_tags($entity->getAdminName());
+                },
+            ]);
         }
 
         $saveOptions = [];
@@ -60,11 +87,12 @@ class LinkType extends AbstractType
             $saveOptions['btn_save'] = true;
             $saveOptions['btn_save_label'] = $this->translator->trans('Ajouter au menu', [], 'admin');
         } else {
-            $saveOptions['btn_back'] = true;
+            $saveOptions['btn_both'] = true;
+            $saveOptions['btn_both_label'] = $this->translator->trans('Enregistrer et retourner au menu', [], 'admin');
         }
 
-        $fieldsClass = $isNew ? 'col-12' : 'col-md-6';
-        $checkClass = $isNew ? 'col-12' : 'col-md-4 my-auto';
+        $fieldsClass = $isNew ? 'col-12' : 'col-lg-6';
+        $checkClass = $isNew ? 'col-12' : 'col-lg-4 my-auto';
 
         $builder->add('intl', WidgetType\IntlType::class, [
             'label' => false,
@@ -98,17 +126,18 @@ class LinkType extends AbstractType
             $builder->add('icon', WidgetType\IconType::class, [
                 'attr' => [
                     'class' => 'select-icons',
-                    'group' => 'col-md-3',
+                    'group' => 'col-lg-3',
                     'data-config' => true,
                 ],
             ]);
 
             if ($this->isInternalUser) {
+
                 $builder->add('color', WidgetType\AppColorType::class, [
                     'attr' => [
                         'data-config' => true,
                         'class' => 'select-icons',
-                        'group' => 'col-md-3',
+                        'group' => 'col-lg-3',
                     ],
                 ]);
 
@@ -116,7 +145,7 @@ class LinkType extends AbstractType
                     'attr' => [
                         'data-config' => true,
                         'class' => 'select-icons',
-                        'group' => 'col-md-3',
+                        'group' => 'col-lg-3',
                     ],
                 ]);
 
@@ -125,7 +154,7 @@ class LinkType extends AbstractType
                     'attr' => [
                         'data-config' => true,
                         'class' => 'select-icons',
-                        'group' => 'col-md-3',
+                        'group' => 'col-lg-3',
                     ],
                 ]);
             }

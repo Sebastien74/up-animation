@@ -69,7 +69,7 @@
         height: 100%;
         width: 100%;
         transform-style: preserve-3d;
-        transition: transform 0.8s ease-in-out;
+        transition: transform 0.8s linear;
         will-change: transform;
     }
 
@@ -99,15 +99,15 @@ body {
     position: relative !important;
 
     &.remove-alert-top {
-        transition: margin-top .4s ease-in-out !important;
+        transition: margin-top .4s linear !important;
     }
 
     &.remove-alert-bottom {
 
-        transition: margin-bottom .4s ease-in-out !important;
+        transition: margin-bottom .4s linear !important;
 
         #website-alert {
-            transition: bottom .4s ease-in-out !important;
+            transition: bottom .4s linear !important;
         }
     }
 }

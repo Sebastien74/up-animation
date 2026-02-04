@@ -73,7 +73,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
         $this->requestUri = $this->request->getRequestUri();
         $this->host = $this->request->getHost();
         $this->schemeAndHttpHost = $this->request->getSchemeAndHttpHost();
-        $this->routeName = $this->request->get('_route');
+        $this->routeName = $this->request->attributes->get('_route');
         $this->session = $this->request->getSession();
         $this->isMainRequest = $event->isMainRequest();
         $this->inAdmin = (bool) preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $this->uri);
@@ -311,7 +311,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
      */
     private function containsXss(mixed $value): bool
     {
-        if (!is_scalar($value) || 'javascript_errors_logger' === $this->request->get('_route')) {
+        if (!is_scalar($value) || 'javascript_errors_logger' === $this->request->attributes->get('_route')) {
             return false;
         }
 

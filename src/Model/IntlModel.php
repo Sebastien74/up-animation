@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Entity\Layout\Page;
+use App\Entity\Module\Catalog\Product;
+use App\Entity\Module\Menu\Link;
+use App\Model\Module\ProductModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Composer\DependencyResolver\Request;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
+use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 
 /**
  * IntlModel.
@@ -61,11 +66,14 @@ final class IntlModel extends BaseModel
         public readonly ?bool $linkIsEmail = null,
         public readonly ?bool $linkIsPhone = null,
         public readonly ?string $slug = null,
+        public readonly ?string $gather = null,
+        public readonly ?string $sympathise = null,
+        public readonly ?string $impress = null,
     ) {
     }
 
     /**
-     * @throws NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public static function fromEntity(mixed $entity, CoreLocatorInterface $coreLocator, bool $query = true, array $options = []): self
     {
@@ -77,8 +85,9 @@ final class IntlModel extends BaseModel
 
         $entity = is_object($entity) && property_exists($entity, 'entity') && !method_exists($entity, 'getEntity') ? $entity->entity : $entity;
         $locale = $options['locale'] ?? self::$coreLocator->locale();
+        $toLinkMenu = isset($options['toLinkMenu']) && !$entity instanceof Link ? $options['toLinkMenu'] : false;
 
-        if (is_object($entity) && $entity->getId() && isset(self::$cache['response'][get_class($entity)][$entity->getId()][$locale])) {
+        if (!$toLinkMenu && is_object($entity) && $entity->getId() && isset(self::$cache['response'][get_class($entity)][$entity->getId()][$locale])) {
             return self::$cache['response'][get_class($entity)][$entity->getId()][$locale];
         }
 
@@ -90,7 +99,7 @@ final class IntlModel extends BaseModel
         $title = self::getContent('title', $intl);
         $intro = self::getContent('introduction', $intl);
         $body = self::getContent('body', $intl);
-        $link = self::intlLink($intl);
+        $link = self::intlLink($entity, $intl, $toLinkMenu, $options);
 
         $response = new self(
             intl: $intl,
@@ -130,6 +139,9 @@ final class IntlModel extends BaseModel
             linkIsEmail: $link->linkIsEmail,
             linkIsPhone: $link->linkIsPhone,
             slug: self::getContent('slug', $intl),
+            gather: self::getContent('gather', $intl),
+            sympathise: self::getContent('sympathise', $intl),
+            impress: self::getContent('impress', $intl),
         );
 
         if (is_object($entity) && $entity->getId()) {
@@ -142,7 +154,7 @@ final class IntlModel extends BaseModel
     /**
      * To get intls by entities array and by locale.
      *
-     * @throws QueryException|NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public static function fromEntities(mixed $entity, CoreLocatorInterface $coreLocator, array $ids = [], ?string $locale = null): self
     {
@@ -253,9 +265,9 @@ final class IntlModel extends BaseModel
     /**
      * Get intl Link.
      *
-     * @throws NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
-    private static function intlLink(mixed $intl = null): object
+    private static function intlLink(mixed $entity, mixed $intl = null, bool $toLinkMenu = false, array $options = []): object
     {
         $href = null;
         $targetDomain = null;
@@ -311,13 +323,31 @@ final class IntlModel extends BaseModel
         $path = $currentAnchor ?: $path;
         $external = self::externalLink($path);
 
+        if ($toLinkMenu) {
+            $urlsIndex = !empty($options['urlsIndex']) ? $options['urlsIndex'] : [];
+            $entity = $entity instanceof Product
+                ? ProductModel::fromEntity($entity, self::$coreLocator, ['urlsIndex' => $urlsIndex, 'disabledProducts' => true, 'disabledLayout' => true, 'disabledMedias' => true, 'disabledCategories' => true, 'disabledCategory' => true])
+                : ViewModel::fromEntity($entity, self::$coreLocator);
+            $intl = $entity->intl;
+            $label = $entity->intl->title ?: $entity->adminName;
+            $entityDb = $entity->entity;
+            if ($entityDb instanceof Product) {
+                $catalogSlug = $entityDb->getCatalog()->getSlug();
+                if ('agencies' === $catalogSlug && $entity->city) {
+                    $label = 'Agence '.$entity->city;
+                }
+            }
+            $path = $entity->url;
+            $isOnline = $entity->online;
+        }
+
         return (object) [
             'linkOnline' => $isOnline,
             'linkPath' => $path,
             'linkTargetPage' => $targetPage,
             'linkTargetPageInfill' => $targetPage ? $targetPage->isInfill() : false,
-            'linkExternal' => $external || ($path && $intl->isExternalLink()) || ($intl && $intl->isExternalLink()) || ($request && $request->getHost() && $href && !preg_match('/'.$request->getHost().'/', $href)),
-            'linkBlank' => $external || ($intl && $intl->isNewTab()),
+            'linkExternal' => $external || ($path && method_exists($intl, 'isExternalLink') && $intl->isExternalLink()) || ($intl && method_exists($intl, 'isExternalLink') && $intl->isExternalLink()) || ($request && $request->getHost() && $href && !preg_match('/'.$request->getHost().'/', $href)),
+            'linkBlank' => $external || ($intl && method_exists($intl, 'isNewTab') && $intl->isNewTab()),
             'linkWithoutParams' => !empty($matches[0]) ? $matches[0] : null,
             'linkParams' => !empty($matches[0]) ? $matches[0] : null,
             'linkStyle' => $style ?: 'link',

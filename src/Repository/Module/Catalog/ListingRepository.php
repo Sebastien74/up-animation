@@ -19,6 +19,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ListingRepository extends ServiceEntityRepository
 {
+    private array $cache = [];
+
     /**
      * ListingRepository constructor.
      */
@@ -46,6 +48,33 @@ class ListingRepository extends ServiceEntityRepository
 
         return $statement->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * Find by slugs.
+     *
+     * @throws NonUniqueResultException
+     */
+    public function findBySlugs(array $slugs = []): array
+    {
+        if (array_key_exists('findBySlugs', $this->cache)) {
+            return $this->cache['findBySlugs'];
+        }
+
+        $result = !empty($slugs) ? $this->createQueryBuilder('l')
+            ->andWhere('l.slug IN (:slugs)')
+            ->setParameter('slugs', $slugs)
+            ->getQuery()
+            ->getResult() : [];
+
+        $listings = [];
+        foreach ($result as $item) {
+            $listings[$item->getSlug()] = $item;
+        }
+
+        $this->cache['findBySlugs'] = $listings;
+
+        return $listings;
     }
 
     /**

@@ -31,17 +31,8 @@ class TabController extends FrontController
     #[Route('/front/tab/view/{filter}', name: 'front_tab_view', options: ['isMainRequest' => false], methods: 'GET', schemes: '%protocol%')]
     public function view(Request $request, TabRepository $tabRepository, ?Block $block = null, mixed $filter = null): Response
     {
-        if (!$filter) {
-            return new Response();
-        }
-
-        $cache = $this->coreLocator->cacheService()->cachePool($block, 'tab_view', 'GET');
-        if ($cache) {
-            return $cache;
-        }
-
         $website = $this->getWebsite();
-        $tab = $tabRepository->findOneByFilter($website->entity, $request->getLocale(), $filter);
+        $tab = $filter ? $tabRepository->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
 
         if (!$tab) {
             return new Response();
@@ -53,13 +44,11 @@ class TabController extends FrontController
         $entity->setUpdatedAt($tab->getUpdatedAt());
         $tab = TabModel::fromEntity($tab, $this->coreLocator);
 
-        $response = $this->render('front/'.$template.'/actions/tab/view.html.twig', [
+        return $this->render('front/'.$template.'/actions/tab/view.html.twig', [
             'tab' => $tab,
             'website' => $website,
             'websiteTemplate' => $template,
             'thumbConfiguration' => $this->thumbConfiguration($website, Content::class, 'view'),
         ]);
-
-        return $this->coreLocator->cacheService()->cachePool($block, 'tab_view', 'GENERATE', $response);
     }
 }

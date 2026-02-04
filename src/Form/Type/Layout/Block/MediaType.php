@@ -48,6 +48,7 @@ class MediaType extends AbstractType
                 'titlePosition' => true,
                 'pictogram' => true,
                 'pictogramSizes' => true,
+                'rotation' => true,
                 'intlTitleForce' => false,
                 'hideHover' => true,
                 'fields' => [
