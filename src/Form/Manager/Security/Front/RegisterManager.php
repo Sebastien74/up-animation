@@ -205,7 +205,7 @@ class RegisterManager
             );
         }
 
-        $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $currentDate = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $user->setWebsite($website->entity);
         $user->setAgreeTerms(true);
         $user->setAgreesTermsAt($currentDate);

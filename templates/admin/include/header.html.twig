@@ -1,0 +1,70 @@
+{% trans_default_domain 'admin' %}
+
+{% set pageTitle = pageTitle ? pageTitle : (defaultTitle is defined ? defaultTitle : "Adminstration"|trans) %}
+{% set website = website is defined ? website : website() %}
+{% set isAllowedToSwitch = granted('ROLE_ALLOWED_TO_SWITCH') or granted('ROLE_INTERNAL') %}
+{% set onlineUsers = website|online_users('admin') %}
+{% set pageIcon = pageIcon ? pageIcon
+    : ('index' in masterRequest().get('_route') ? 'list'
+    : ('edit' in masterRequest().get('_route') ? 'pencil'
+    : ('tree' in masterRequest().get('_route') ? 'network-wired'
+    : ('layout' in masterRequest().get('_route') ? 'desktop-alt' : 'pencil'
+)))) %}
+
+<header class="page-titles d-flex navbar w-100 p-0">
+    <a href="{{ path('admin_dashboard') }}" class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white d-flex align-items-center h-100">
+        <span class="btn-icon me-3">
+            {{ asset('build/admin/images/theme/logo.svg', 'admin')|file({}, {width: 50, height: 50, class: 'img-white float-start', title: "Tableau de bord"|trans}) }}
+        </span>
+        <span class="cms-name fw-500 d-none d-sm-flex flex-column align-items-start justify-content-center">
+            {{ "Administration"|trans|raw }}
+            <small class="cms-version text-italic fw-300">{{ "Symfony"|trans|raw }} {{ symfonyVersion() }} - {{ "CMS 7.4"|trans|raw }} - {{ "PHP"|trans|raw }} {{ phpversion() }}</small>
+        </span>
+    </a>
+    <div class="right d-flex align-items-center h-100 pe-3 pe-lg-4 ms-auto">
+        <div class="title-wrap d-none d-lg-inline-flex align-items-center pe-4">
+            <span class="btn-icon me-3">
+                <i class="icm-{{ pageIcon }}"></i>
+            </span>
+            <h2 class="title fw-400 text-white mb-0">{{ pageTitle|raw }}</h2>
+        </div>
+        <div class="actions ms-auto d-flex align-items-center gap-2">
+            {% if isAllowedToSwitch and not is_granted('IS_IMPERSONATOR') %}
+                <a id="users-switcher-btn" data-path="{{ path('admin_user_switcher', {website: website.id, type: 'admin'}) }}"
+                   class="btn-icon cursor"
+                   aria-label="{{ "Afficher le commutateur d'utilsateurs"|trans|striptags }}">
+                    <i class="icm-switch-user"></i>
+                </a>
+            {% elseif is_granted('IS_IMPERSONATOR') %}
+                <a href="{{ impersonation_exit_path(path('admin_dashboard', {website: websiteId()})) }}"
+                   aria-label="{{ "Reconnectez-vous en tant qu'administrateur"|trans|striptags }}"
+                   class="btn-icon">
+                    <i class="icm-power-off"></i>
+                </a>
+            {% endif %}
+            {% if granted('ROLE_INTERNAL') and logAlert() %}
+                <a href="{{ path('admin_logs') }}"
+                   aria-label="{{ "Afficher les logs"|trans|striptags }}"
+                   class="btn-icon position-relative"
+                   data-bs-toggle="tooltip"
+                   title="{{ "Afficher les logs"|trans|striptags }}">
+                    <i class="icm-bug"></i>
+                    <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+                </a>
+            {% endif %}
+            <a href="{{ path('app_logout') }}" class="btn-icon danger d-none d-lg-inline-flex">
+                <i class="icm-power-off"></i>
+            </a>
+            {% if granted('ROLE_INTERNAL') %}
+                <span class="open-sidebar btn-icon cursor" data-target=".right-sidebar">
+                    <i class="icm-cog"></i>
+                    <i class="icm-times d-none"></i>
+                </span>
+            {% endif %}
+            <span class="open-sidebar btn-icon cursor d-xl-none" data-target=".left-sidebar">
+                <i class="icm-bars"></i>
+                <i class="icm-times d-none"></i>
+            </span>
+        </div>
+    </div>
+</header>

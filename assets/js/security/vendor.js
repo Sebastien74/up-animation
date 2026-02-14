@@ -17,6 +17,23 @@ import '../../scss/security/vendor.scss';
 /** 1 - Preloader */
 import './preloader';
 
+document.querySelectorAll('.form-control').forEach((el) => {
+    const toggleFocusClass = (isFocused) => {
+        const inputGroup = el.closest('.input-group');
+        const floatingGroup = el.closest('.form-floating');
+        const group = inputGroup ? inputGroup : (floatingGroup ? floatingGroup : el.closest('.group-form'));
+        if (!group) {
+            return;
+        }
+        group.classList.toggle('focus-group', isFocused);
+    };
+    el.addEventListener('focusin', () => toggleFocusClass(true));
+    el.addEventListener('focusout', () => toggleFocusClass(false));
+    if (document.activeElement === el) {
+        toggleFocusClass(true);
+    }
+});
+
 document.querySelectorAll('link.preload-css[rel="preload"]').forEach(link => {
     link.rel = 'stylesheet';
 });
@@ -28,6 +45,7 @@ import(/* webpackPreload: true */ '../vendor/components/lazy-load').then(({defau
 
 /** 3 - Password field */
 import passwordFields from '../vendor/components/password-field';
+
 let fields = document.querySelectorAll('.show-password');
 if (fields.length > 0) {
     passwordFields(fields);
@@ -59,7 +77,7 @@ document.querySelectorAll('form.security').forEach(function (form) {
 
 window.addEventListener('load', () => {
 
-    let filled = function(input) {
+    let filled = function (input) {
         if (input.value !== '') {
             input.classList.add('filled');
             input.parentNode.classList.add('filled-group');

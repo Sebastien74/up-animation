@@ -17,6 +17,33 @@ export default function () {
     }
 
     /**
+     * To reset form.
+     */
+    const resetFilters = () => {
+        const form = document.querySelector('#search-filter-form');
+        if (form) {
+            form.querySelectorAll('.reset-filters').forEach((resetBtn) => {
+                resetBtn.onclick = function () {
+                    const sidebar = document.querySelector('.filter-sidebar');
+                    form.querySelectorAll('select, input').forEach((el) => {
+                        el.classList.add('is-refresh');
+                        if (el.tagName === 'SELECT') {
+                            el.value = '';
+                        } else if (el.type === 'checkbox' || el.type === 'radio') {
+                            el.checked = false;
+                        } else {
+                            el.value = '';
+                        }
+                    });
+                    if (form) {
+                        post(form, resetBtn);
+                    }
+                }
+            });
+        }
+    }
+
+    /**
      * Bind dropdown-select -> hidden/select field value.
      * Delegated so it keeps working after AJAX DOM replacement.
      */
@@ -133,37 +160,22 @@ export default function () {
         }
         document.documentElement.dataset.bindSidebarEvents = '1';
 
-        document.addEventListener('click', (event) => {
+        const sidebar = document.querySelector('.filter-sidebar');
+        if (!sidebar) {
+            sidebar.querySelectorAll('.form-check').forEach((el) => {
+                el.onclick = function () {
+                    el.classList.toggle('checked');
+                };
+            });
+        }
 
-            const sidebar = document.querySelector('.filter-sidebar');
+        document.addEventListener('click', (event) => {
             if (!sidebar) {
                 return;
             }
-
             const toggle = event.target?.closest?.('.sidebar-toggle');
             if (toggle) {
                 sidebar.classList.toggle('show');
-                return;
-            }
-
-            const resetBtn = event.target?.closest?.('.reset-sidebar-filters');
-            if (resetBtn) {
-                // Reset all fields inside sidebar then post
-                sidebar.querySelectorAll('select, input').forEach((el) => {
-                    el.classList.add('is-refresh');
-                    if (el.tagName === 'SELECT') {
-                        el.value = '';
-                    } else if (el.type === 'checkbox' || el.type === 'radio') {
-                        el.checked = false;
-                    } else {
-                        el.value = '';
-                    }
-                });
-
-                const form = sidebar.querySelector('form');
-                if (form) {
-                    post(form, resetBtn);
-                }
             }
         });
     };
@@ -305,6 +317,7 @@ export default function () {
      * @param {HTMLElement|null} selector
      */
     const post = (form, selector = null) => {
+
         if (!form) {
             return;
         }
@@ -408,12 +421,13 @@ export default function () {
                 // Re-init tooltips inside filters if any
                 initTooltips(formContainer);
             }
-            // Re-run pagination binding if your helper expects updated DOM
+            // Re-run pagination binding if your helper expects an updated DOM
             AjaxPagination(indexProducts);
             // Ensure sidebar state updated
             autoOpenSidebarIfActive();
             hideLoader(indexProducts);
             unlock();
+            resetFilters();
         };
 
         xHttp.onerror = unlock;
@@ -451,7 +465,6 @@ export default function () {
     bindDropdownSelect();
     bindFilterFields();
     autoOpenSidebarIfActive();
-
-    // Initial tooltips
     initTooltips(document);
+    resetFilters();
 }

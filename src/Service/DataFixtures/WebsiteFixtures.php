@@ -82,7 +82,7 @@ class WebsiteFixtures
      *
      * @throws Exception
      */
-    private function getYamlConfiguration(?string $yamlConfigDirname = null): void
+    public function getYamlConfiguration(?string $yamlConfigDirname = null): array
     {
         $this->websites = $this->websiteRepository->findAll();
         $filesystem = new Filesystem();
@@ -94,6 +94,8 @@ class WebsiteFixtures
             $configuration = Yaml::parseFile($configFileDirname);
             $this->yamlConfiguration = is_array($configuration) ? $configuration : $this->yamlConfiguration;
         }
+
+        return $this->yamlConfiguration;
     }
 
     /**

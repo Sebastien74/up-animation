@@ -80,11 +80,55 @@ $pink: #e83e8c !default;
 $red: #dc3545 !default;
 $orange: #fb9678 !default;
 $yellow: #ff671b !default;
-$green: #09B884 !default;
-$teal: #20c997 !default;
+$green: #20c997 !default;
+$teal: rgba(13, 148, 136, .50) !default;
 $cyan: $theme-color !default;
-$primary: #fb9678 !default;
+$primary: #6f42c1 !default;
+$warning: rgba(245, 158, 11, .7) !default;
 $text-muted: $gray-600 !default;
+
+$dash-bg-0: #0a0d12 !default; // deepest
+$dash-bg-1: #0e1219 !default; // main
+$dash-bg-2: #121726 !default; // top
+
+$dash-dark: #07090d !default;
+$darken: $dash-bg-1 !default;
+$dash-text: rgba(255, 255, 255, 0.92) !default;
+$dash-border: rgba(255, 255, 255, 0.05) !default;
+$dash-accent: $primary !default;
+$dash-lighten: lighten($dash-accent, 20%) !default;
+
+$btn-text: transparentize($white, .3) !default;
+$btn-surface: rgba(255, 255, 255, 0.02) !default;
+$btn-border: rgba(255, 255, 255, 0.07) !default;
+$btn-surface-hover: rgba(255, 255, 255, 0.04) !default;
+$btn-border-hover: rgba(255, 255, 255, 0.12) !default;
+$btn-shadow: 0 18px 45px rgba(0, 0, 0, 0.55) !default;
+
+$crumb-surface: rgba(255, 255, 255, 0.015) !default;
+$crumb-border: rgba(255, 255, 255, 0.06) !default;
+$crumb-border-hover: rgba(255, 255, 255, 0.10) !default;
+$crumb-text: rgba(255, 255, 255, 0.92) !default;
+$crumb-muted: rgba(255, 255, 255, 0.68) !default;
+$crumb-shadow: 0 18px 45px rgba(0, 0, 0, 0.55) !default;
+
+$table-striped-bg: #151a28 !default;
+
+$form-switch-color: transparentize($white, .75) !default;
+$form-switch-checked-color: $teal !default;
+$form-switch-bg-color: $dash-dark !default;
+$form-switch-border: 1px solid $form-switch-bg-color !default;
+
+$pg-surface: rgba(255, 255, 255, 0.02) !default;
+$pg-border: rgba(255, 255, 255, 0.07) !default;
+$pg-border-hover: rgba(255, 255, 255, 0.12) !default;
+$pg-text: rgba(255, 255, 255, 0.92) !default;
+$pg-muted: rgba(255, 255, 255, 0.70) !default;
+$pg-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !default;
+
+$bg-gradient-primary: radial-gradient(520px 160px at 12% 0%, rgba($dash-accent, 0.10), transparent 60%),
+linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 45%),
+$crumb-surface;
 
 $colors: (
     blue: $blue,
@@ -219,7 +263,7 @@ $card-border-width: 0 !default;
 $card-border-color: transparent !default;
 $card-border-radius: var(--bs-border-radius) !default;
 $card-spacer-y: 1.25rem !default;
-$card-spacer-x : 1.25rem !default;
+$card-spacer-x: 1.25rem !default;
 
 /*-- f - Dropdowns --*/
 

@@ -10,7 +10,7 @@ use App\Form\Type\Module\Recruitment\ContractType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Attribute\Route;;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * ContractController

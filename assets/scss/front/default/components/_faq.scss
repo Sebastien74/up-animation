@@ -15,25 +15,48 @@
 
     .faq-accordion {
 
-        button {
+        .accordion-header {
 
-            position: relative;
-            font-size: 14px;
-            border-radius: 35px;
+            .accordion-button {
 
-            .anim-wrap {
-                width: 40px;
-                height: 40px;
+                border-radius: 20px 0 !important;
+                padding-left: 1.75rem;
+                box-shadow: 2px 2px 0 0 $secondary;
+                transition: border-radius .3s linear;
+
+                &:not(.collapsed) {
+                    transition: border-radius .3s linear;
+                    border-bottom-right-radius: 0 !important;
+                }
             }
 
-            svg.anim, i.anim {
-                transform: rotate(0deg);
-                transition: all .3s linear;
+            .badge-wrap {
+                margin-top: -2.25rem;
             }
 
-            &.collapsed svg.anim, &.collapsed i.anim {
-                transition: all .3s linear;
-                transform: rotate(180deg);
+            .info {
+                font-size: 14px;
+            }
+        }
+
+        .accordion-item {
+            box-shadow: 0 8px 8px -6px rgba(0, 0, 0, 0.2);
+            border-bottom: 0 !important;
+            border-radius: 20px 0 !important;
+        }
+
+        .accordion-collapse {
+
+            box-shadow: 2px 2px 0 0 $gray-400 !important;
+            border-radius: 0 0 20px 0 !important;
+
+            .content {
+
+                border-radius: 0 0 20px 0 !important;
+
+                > *:last-child {
+                    margin-bottom: 0 !important;
+                }
             }
         }
     }

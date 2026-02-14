@@ -15,6 +15,8 @@ export default function (els) {
             const clone = content.cloneNode(true);
             clone.setAttribute('aria-hidden', 'true');
             inner.appendChild(clone);
+            // Hint the compositor for smoother animation
+            inner.style.willChange = 'transform';
             requestAnimationFrame(() => {
                 const width = content.scrollWidth;
                 inner.style.width = `${width * 2}px`;

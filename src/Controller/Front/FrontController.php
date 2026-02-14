@@ -212,38 +212,38 @@ class FrontController extends CacheController
      */
     protected function defaultArgs(WebsiteModel $website, ?Url $url = null, mixed $entityModel = null): array
     {
-        $user = $this->getUser();
-        $thumbConfigurationHeader = $this->thumbConfiguration($website, Block::class, null, 'title-header');
+//        $user = $this->getUser();
+//        $thumbConfigurationHeader = $this->thumbConfiguration($website, Block::class, null, 'title-header');
         $websiteTemplate = $website->configuration->template;
 
-        $em = $this->coreLocator->em();
-        $agenciesCatalog = $em->getRepository(Catalog::class)->findOneBy(['website' => $website->entity, 'slug' => 'agencies']);
-        $agenciesBd = $em->getRepository(Product::class)->findOnlineByCatalogs($website->entity, $this->coreLocator->locale(), [$agenciesCatalog]);
-        $agencies = [];
-        foreach ($agenciesBd as $agency) {
-            $agencies[] = ProductModel::fromEntity($agency, $this->coreLocator, [
-//                'onlyForUrl' => true,
-                'disabledProducts' => true,
-                'disabledLayout' => true,
-                'disabledMedias' => true,
-                'disabledCategories' => true,
-                'disabledCategory' => true
-            ]);
-        }
+//        $em = $this->coreLocator->em();
+//        $agenciesCatalog = $em->getRepository(Catalog::class)->findOneBy(['website' => $website->entity, 'slug' => 'agencies']);
+//        $agenciesBd = $em->getRepository(Product::class)->findOnlineByCatalogs($website->entity, $this->coreLocator->locale(), [$agenciesCatalog]);
+//        $agencies = [];
+//        foreach ($agenciesBd as $agency) {
+//            $agencies[] = ProductModel::fromEntity($agency, $this->coreLocator, [
+////                'onlyForUrl' => true,
+//                'disabledProducts' => true,
+//                'disabledLayout' => true,
+//                'disabledMedias' => true,
+//                'disabledCategories' => true,
+//                'disabledCategory' => true
+//            ]);
+//        }
 
         $arguments = [
-            'isUserBack' => $this->coreLocator->checkIP($website) && !$user instanceof UserFront || $user instanceof User,
+//            'isUserBack' => $this->coreLocator->checkIP($website) && !$user instanceof UserFront || $user instanceof User,
             'website' => $website,
             'configuration' => $website->configuration,
             'websiteTemplate' => $websiteTemplate,
-            'mainMenus' => $this->frontLocator->menuService()->all($website, $url),
-            'mainPages' => $website->configuration->pages,
-            'logos' => $website->configuration->logos,
-            'thumbConfigurationHeader' => $thumbConfigurationHeader,
-            'agencies' => $agencies,
-            'catalogMenus' => $this->coreLocator->em()->getRepository(Product::class)->findOnlineInMenus($website->entity, $this->coreLocator->locale()),
-            'url' => $url,
-            'preloadFiles' => is_object($entityModel) && property_exists($entityModel, 'preloadFiles') ? $entityModel->preloadFiles : false,
+//            'mainMenus' => $this->frontLocator->menuService()->all($website, $url),
+//            'mainPages' => $website->configuration->pages,
+//            'logos' => $website->configuration->logos,
+//            'thumbConfigurationHeader' => $thumbConfigurationHeader,
+//            'agencies' => $agencies,
+//            'catalogMenus' => $this->coreLocator->em()->getRepository(Product::class)->findOnlineInMenus($website->entity, $this->coreLocator->locale()),
+//            'url' => $url,
+//            'preloadFiles' => is_object($entityModel) && property_exists($entityModel, 'preloadFiles') ? $entityModel->preloadFiles : false,
         ];
 
         if (str_contains($this->coreLocator->request()->get('_route'), '_security')

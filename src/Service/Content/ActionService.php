@@ -278,6 +278,9 @@ class ActionService
                 $statement->andWhere('e.startDate IS NULL OR e.startDate >= CURRENT_TIMESTAMP()')
                     ->andWhere('e.endDate IS NULL OR e.endDate <= CURRENT_TIMESTAMP()');
             }
+            if (method_exists($this->listing, 'isAsEvents') && !$this->listing->isAsEvents() && !$displayPastEvents) {
+                $statement->andWhere('e.startDate IS NULL OR e.startDate >= CURRENT_TIMESTAMP()');
+            }
             if (method_exists($referEntity, 'getUrls')) {
                 $statement->andWhere('u.online = :online')
                     ->andWhere('u.archived = :archived')

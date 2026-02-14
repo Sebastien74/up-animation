@@ -25,26 +25,26 @@
 
 .nestable-list-container {
 
-    & > .dd-list > .dd-item {
-        background-color: rgba(0,0,0,.05);
-    }
+    //& > .dd-list > .dd-item {
+    //    background-color: rgba(0, 0, 0, .1);
+    //}
 
-    .btn-transparent i,
-    .btn-transparent svg {
-
-        font-size: 17px !important;
-        margin-top: -2px;
-        opacity: .8;
-        transition: all .3s;
-
-        &:hover {
-            opacity: 1;
-            transition: all .3s;
-        }
-    }
+    //.btn-transparent i,
+    //.btn-transparent svg {
+    //
+    //    font-size: 17px !important;
+    //    margin-top: -2px;
+    //    opacity: .8;
+    //    transition: all .3s;
+    //
+    //    &:hover {
+    //        opacity: 1;
+    //        transition: all .3s;
+    //    }
+    //}
 
     .delete-pack-control {
-        margin-left: 35px;
+        margin-left: 1rem;
     }
 }
 
@@ -96,13 +96,13 @@
     min-height: 50px;
     font-size: 13px;
     line-height: 50px !important;
-    border-radius: $card-border-radius;
+    border-radius: 12px;
 }
 
 .dd-dragel {
     li {
         .dd3-content {
-            padding-top: 5px !important;
+            //padding-top: 5px !important;
             padding-left: 60px !important;
         }
     }
@@ -123,12 +123,12 @@
     -moz-box-sizing: border-box;
 }
 
-.dd-handle:hover {
-    color: $gray-900;
-    background: $white;
-}
+//.dd-handle:hover {
+//    color: $gray-900;
+//    background: $white;
+//}
 
-.dd-item>button {
+.dd-item > button {
     display: block;
     position: relative;
     cursor: grabbing;
@@ -149,7 +149,7 @@
     margin-left: 40px !important;
 }
 
-.dd-item>button:before {
+.dd-item > button:before {
     content: '+';
     display: block;
     position: absolute;
@@ -158,7 +158,7 @@
     text-indent: 0;
 }
 
-.dd-item>button[data-action="collapse"]:before {
+.dd-item > button[data-action="collapse"]:before {
     content: ' ';
 }
 
@@ -167,29 +167,43 @@
     margin: 5px 0;
     padding: 0;
     min-height: 50px;
-    background-color: $gray-400;
-    border: 1px solid $gray-400;
+    border: 1px solid transparent;
     -moz-box-sizing: border-box;
-}
-.dd-placeholder {
-    background-color: $gray-400;
-    border: 1px solid $gray-400;
-    border-radius: var(--bs-border-radius);
+    border-radius: 12px;
 }
 
-.dd-empty {
-    border: 1px solid $white;
-    min-height: 100px;
-    background-color: $white;
-    background-size: 60px 60px;
-    background-position: 0 0, 30px 30px;
+.dd-placeholder {
+    background-color: $dash-dark;
+    border-radius: 12px;
 }
+
+//.dd-empty {
+//    border: 1px solid $white;
+//    min-height: 100px;
+//    background-color: $bg-gradient-primary;
+//    background-size: 60px 60px;
+//    background-position: 0 0, 30px 30px;
+//}
 
 .dd-dragel {
 
     position: absolute;
     pointer-events: none;
     z-index: 9999;
+
+    .dd3-content {
+        background-color: $darken;
+    }
+
+    //&:after {
+    //    content: '';
+    //    position: absolute;
+    //    top: 0;
+    //    left: 0;
+    //    right: 0;
+    //    height: 100%;
+    //    background-color: $bg-gradient-primary;
+    //}
 
     .dd3-content {
         padding: 0 0 0 70px !important;
@@ -199,71 +213,40 @@
 .dd3-content {
 
     mark {
-        color: $gray-300 !important;
+        color: $warning !important;
+        padding: 0;
+        font-weight: 700;
     }
 
-    span.btn-right {
-        & > a, & > span {
-
-            margin-right: 0;
-            border: transparent;
-            color: $gray-800;
-            display: initial !important;
-
-            &:hover {
-                background-color: transparent;
-            }
-        }
+    .text-muted {
+        color: transparentize($white, .9) !important;
     }
 }
 
 .dd-dragel .dd3-content, .dd-dragel .dd3-handle {
-    border-radius: var(--bs-border-radius) !important;
+    border-radius: 12px !important;
 }
 
-.dd-dragel>.dd-item .dd-handle {
+.dd-dragel > .dd-item .dd-handle {
     margin-top: 0;
 }
 
-
 body .dd3-content {
 
-    display: block;
     height: 50px !important;
-    line-height: 40px;
     margin: 7px 0;
     padding: 5px 15px 5px 60px;
-    color: $gray-900;
+    color: $btn-text;
     text-decoration: none;
-    border: 1px solid $white;
-    background: $white;
+    border: 1px solid $btn-border;
+    background: $bg-gradient-primary;
     box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    border-radius: $card-border-radius;
+    border-radius: 12px;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
 
-    .btn-circle {
-
-        width: 35px;
-        height: 35px;
-        padding: 6px;
-        margin-top: -2px;
-
-        i, svg {
-            font-size: 15px;
-        }
-    }
-
-    .btn-collapsed-group {
-
-        .btn {
-
-            position: relative;
-
-            i, svg {
-                font-size: 14px;
-            }
-        }
+    &:hover {
+        color: $btn-text;
+        background: $bg-gradient-primary;
     }
 
     .select2-container {
@@ -275,20 +258,22 @@ body .dd3-content {
     display: none !important;
 }
 
-.dd3-content span.title {
-    font-weight: 400;
+.dd3-content  {
+
+    .badges .icon-info {
+        font-size: 11px;
+    }
+
+    span.title {
+        font-weight: 400;
+    }
 }
 
-.dd3-content:hover {
-    color: $gray-900;
-    background: $white;
-}
-
-.dd-dragel>.dd3-item>.dd3-content {
+.dd-dragel > .dd3-item > .dd3-content {
     margin: 0;
 }
 
-.dd3-item>button {
+.dd3-item > button {
     margin-left: 30px;
 }
 
@@ -308,115 +293,123 @@ body .dd3-content {
 }
 
 .dd3-handle {
+
     position: absolute;
     margin: 0;
     left: 0;
     top: 0;
     cursor: grabbing;
-    width: 30px;
-    text-indent: 100%;
+    width: 60px !important;
+    text-indent: initial !important;
     white-space: nowrap;
     overflow: hidden;
-    border: 1px solid $white;
-    background: $white;
-    border-radius: $card-border-radius;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 12px;
+
+    .dd3-handle {
+        .btn-icon {
+            flex: 0 0 34px;
+        }
+    }
 }
 
-.dd3-handle svg {
-    position: absolute;
-    top: 18px;
-    left: 18px;
-}
+//.dd3-handle:hover {
+//    background: $white;
+//    border: 1px solid $white;
+//}
 
-.dd3-handle:after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 15px;
-    bottom: 15px;
-    width: 1px;
-    background-color: $gray-800;
-}
+//.myadmin-dd .dd-list .dd-item .dd-handle {
+//    background: $white;
+//    border: 1px solid $white;
+//    padding: 8px 16px;
+//    height: auto;
+//    font-family: "Montserrat", sans-serif;
+//    font-weight: 400;
+//    border-radius: 0;
+//}
+//
+//.myadmin-dd-empty .dd-list .dd3-content {
+//    height: auto;
+//    padding: 0 0 0 70px;
+//    background: $white;
+//    font-weight: 400;
+//    border-radius: var(--bs-border-radius);
+//    border: 0 !important;
+//}
+//
+//.myadmin-dd-empty .dd-list .dd3-handle {
+//    background: $white;
+//    height: 50px !important;
+//    width: 50px !important;
+//    cursor: move;
+//    border-top-left-radius: var(--bs-border-radius);
+//    border-bottom-left-radius: var(--bs-border-radius);
+//    border: 0 !important;
+//}
 
-.dd3-handle:hover {
-    background: $white;
-    border: 1px solid $white;
-}
-
-.myadmin-dd .dd-list .dd-item .dd-handle {
-    background: $white;
-    border: 1px solid $white;
-    padding: 8px 16px;
-    height: auto;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 400;
-    border-radius: 0;
-}
-
-.myadmin-dd-empty .dd-list .dd3-content {
-    height: auto;
-    padding: 0 0 0 70px;
-    background: $white;
-    font-weight: 400;
-    border-radius: var(--bs-border-radius);
-    border: 0 !important;
-}
-
-.myadmin-dd-empty .dd-list .dd3-handle {
-    background: $white;
-    height: 50px !important;
-    width: 50px !important;
-    cursor: move;
-    border-top-left-radius: var(--bs-border-radius);
-    border-bottom-left-radius: var(--bs-border-radius);
-    border: 0 !important;
-}
-
-#nestable-list .ajax-get-refresh i.fa-eye,
-#nestable-list .ajax-get-refresh svg.fa-eye {
+#nestable-list .ajax-get-refresh i.fa-eye {
     margin-top: 3px !important;
 }
 
-.dd3-handle:before {
-    color: $info;
-    top: 0;
-}
+//.dd3-handle:before {
+//    color: $info;
+//    top: 0;
+//}
 
-.dd-dragel,
-.btn-group-nestable {
+//.dd-dragel {
+//    height: 50px !important;
+//}
+
+.dd-dragel {
+
+//.btn-group-nestable {
 
     padding-right: 15px;
 
-    form {
-        display: inline-block;
+    //form {
+    //    display: inline-block;
+    //}
+
+    //.btn-interface {
+    //    margin-top: -2px;
+    //}
+
+    //.custom-checkbox {
+    //
+    //    display: inline-block;
+    //    padding-left: 1rem;
+    //    margin-left: 1.5rem !important;
+    //    cursor: pointer;
+    //
+    //    .custom-control-label {
+    //        cursor: pointer;
+    //    }
+    //}
+
+    //.dd3-handle {
+    //    height: 50px !important;
+    //    width: 50px !important;
+    //}
+
+    .dd3-content-right {
+        display: flex;
+        justify-content: flex-end;
     }
 
-    .btn-interface {
-        margin-top: -2px;
-    }
+    .delete-pack-control {
 
-    .custom-checkbox {
 
-        display: inline-block;
-        padding-left: 1rem;
-        margin-left: 1.5rem !important;
-        cursor: pointer;
 
         .custom-control-label {
-            cursor: pointer;
-        }
-    }
 
-    .dd3-handle {
-        height: 50px !important;
-        width: 50px !important;
-    }
-
-    .delete-pack-control .custom-control-label {
-
-        &:before, &:after {
-            top: 18px;
-            border-radius: 50% !important;
+            &:before, &:after {
+                top: 0 !important;
+                border-radius: 0.25rem !important;
+            }
         }
     }
 }

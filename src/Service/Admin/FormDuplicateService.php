@@ -28,7 +28,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class FormDuplicateService implements FormDuplicateInterface
 {
     private Form $form;
-    private \DateTime $datetime;
+    private \DateTimeImmutable $datetime;
     private Website $website;
     private UserInterface $user;
 
@@ -46,7 +46,7 @@ class FormDuplicateService implements FormDuplicateInterface
      */
     public function execute(Form $form, UserInterface $user): Form
     {
-        $this->datetime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $this->datetime = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $this->website = $form->getWebsite();
         $this->user = $user;
 
@@ -76,7 +76,7 @@ class FormDuplicateService implements FormDuplicateInterface
     }
 
     /**
-     * To set Form position.
+     * To set the Form position.
      */
     private function formPosition(Form $form): void
     {
@@ -196,11 +196,9 @@ class FormDuplicateService implements FormDuplicateInterface
         if (method_exists($entity, 'setCreatedAt')) {
             $entity->setCreatedAt($this->datetime);
         }
-
         if (method_exists($entity, 'setCreatedBy')) {
             $entity->setCreatedBy($this->user);
         }
-
         if (method_exists($entity, 'setWebsite')) {
             $entity->setWebsite($this->website);
         }

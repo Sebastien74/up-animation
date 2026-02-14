@@ -3,29 +3,35 @@
 {% trans_default_domain 'security_cms' %}
 
 {% set icons = {
-    success: 'far check',
-    info: 'fas info',
-    warning: 'fas exclamation',
-    danger: 'far exclamation-triangle',
-    error_form: 'far exclamation-triangle',
-    error: 'far exclamation-triangle',
-    undefined: 'fas info',
+    success: {icon: 'check', bgColor: 'success', color: 'success', iconColor: 'white-50'},
+    info: {icon: 'info', bgColor: 'info', color: 'primary', iconColor: 'white-50'},
+    warning: {icon: 'exclamation', bgColor: 'warning', color: 'warning', iconColor: 'white-50'},
+    danger: {icon: 'exclamation-triangle', bgColor: 'danger', color: 'danger', iconColor: 'white-50'},
+    error: {icon: 'exclamation-triangle', bgColor: 'danger', color: 'danger', iconColor: 'white-50'},
+    undefined: {icon: 'info', bgColor: 'primary', color: 'primary', iconColor: 'white'},
 } %}
 
-{% set alert = alert is defined ? alert : "info" %}
-{% set alert = "error" in alert  ? "danger" : alert %}
-{% set icon = icons[alert] is defined ? icons[alert] : icons['undefined'] %}
+{% set display = display is defined ? display : "toast" %}
+{% set size = size is defined ? size : null %}
+{% set icon = icons[alert].icon is defined ? icons[alert].icon : icons['undefined'].icon %}
+{% set bgColor = icons[alert].bgColor is defined ? icons[alert].bgColor : icons['undefined'].bgColor %}
+{% set color = icons[alert].color is defined ? icons[alert].color : icons['undefined'].color %}
+{% set iconColor = icons[alert].iconColor is defined ? icons[alert].iconColor : icons['undefined'].iconColor %}
+{% set help = help is defined ? help : null %}
+{% set class = class is defined ? class : null %}
 
-<!-- .alert -->
-<div class="ribbon-vwrapper alert alert-{{ alert }}">
-    <div class="ribbon ribbon-bookmark ribbon-vertical-l ribbon-{{ alert }}">
-        {{ icon|icon(null, 14) }}
+<div class="alert alert-{{ bgColor }} position-relative d-flex p-0 {% if class %} {{ class }}{% endif %}">
+    <div class="icon d-flex align-items-center justify-content-center position-relative bg-{{ bgColor }}"><i class="icon-{{ icon }} text-{{ iconColor }}"></i></div>
+    <div class="message px-3 py-3 w-100 text-start text-{{ iconColor }}">
+        {% if 'small' == size %}
+            <small class="d-inline-block text-{{ iconColor }}">
+        {% endif %}
+            {{ message|raw }}
+            {% if help %}
+                <br>{{ help|raw }}
+            {% endif %}
+        {% if 'small' == size %}
+            </small>
+        {% endif %}
     </div>
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
-    {% if message is defined %}
-        {{ message|raw }}
-    {% else %}
-        {{ "Que se passe-t-il ?"|trans|raw }}
-    {% endif %}
 </div>
-<!-- /.alert -->

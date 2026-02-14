@@ -43,6 +43,13 @@ class UserChecker implements UserCheckerInterface
      */
     public function execute(RequestEvent $event, ?WebsiteModel $website = null): void
     {
+        $excludedRoutes = ['_wdt', '_fragment', '_profiler'];
+        foreach ($excludedRoutes as $excludedRoute) {
+            if (str_contains($event->getRequest()->getPathInfo(), $excludedRoute)) {
+                return;
+            }
+        }
+
         $request = $event->getRequest();
         $disableDRoutes = ['app_logout'];
         $loginRoutes = ['security_front_login', 'security_login', 'security_front_forms'];
@@ -50,7 +57,7 @@ class UserChecker implements UserCheckerInterface
         $routeName = $request->attributes->get('_route');
         $roles = $this->user ? $this->user->getRoles() : [];
 
-        /* To redirect user back to switcher if in front secure page */
+        /* To redirect the user back to switcher if in front the secure page */
         $isAdmin = $this->user && in_array('ROLE_ADMIN', $roles);
         if ($isAdmin && str_contains($routeName, 'front') && str_contains($routeName, 'security') && !in_array($routeName, $allowedSwitchRoutes)) {
             $response = new RedirectResponse($this->coreLocator->router()->generate('security_switcher'));

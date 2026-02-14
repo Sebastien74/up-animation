@@ -44,7 +44,7 @@ readonly class CacheService implements CacheServiceInterface
                     $options = is_object($route) && method_exists($route, 'getOptions') ? $route->getOptions() : [];
                     $isMainRequest = $options['isMainRequest'] ?? true;
                 }
-                $cacheRoutes['route.'.$name] = ['isMainRequest' => $isMainRequest];
+                $cacheRoutes[$name] = ['isMainRequest' => $isMainRequest];
             }
             $cache = new PhpArrayAdapter($dirname, new FilesystemAdapter());
             $cache->warmUp($cacheRoutes);

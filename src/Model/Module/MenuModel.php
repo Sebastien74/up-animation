@@ -126,10 +126,10 @@ final class MenuModel extends BaseModel
                 $media = $link instanceof Link ? MediaModel::fromEntity($link->getMediaRelation(), self::$coreLocator) : null;
                 $pictogram = self::getContent('pictogram', $link);
                 $children = !empty($defaultTree[$link->getId()]) ? self::tree($website, $menu, $defaultTree[$link->getId()], null, $defaultTree)[$link->getId()] : [];
-                if ($asCatalog) {
-                    $products = self::$coreLocator->em()->getRepository(Product::class)->findOnlineByCatalogs($website->entity, self::$coreLocator->locale(), [$link->getCatalog()]);
-                    $children = self::tree($website, $menu, $products, null, $defaultTree)['products'];
-                }
+//                if ($asCatalog) {
+//                    $products = self::$coreLocator->em()->getRepository(Product::class)->findOnlineByCatalogs($website->entity, self::$coreLocator->locale(), [$link->getCatalog()]);
+//                    $children = self::tree($website, $menu, $products, null, $defaultTree)['products'];
+//                }
                 $treeResponse[$key][$keyLink] = array_merge((array) $intl, [
                     'id' => $id,
                     'entity' => $link,

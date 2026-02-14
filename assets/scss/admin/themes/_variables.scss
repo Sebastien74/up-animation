@@ -10,18 +10,20 @@ $custom-control-gutter: .5rem !default;
 $custom-control-spacer-x: 1rem !default;
 
 $custom-control-indicator-size: 1rem !default;
-$custom-control-indicator-bg: $input-bg !default;
+$custom-control-indicator-bg: $dash-dark !default;
 
 $custom-control-indicator-bg-size: 50% 50% !default;
-$custom-control-indicator-box-shadow: $input-box-shadow !default;
-$custom-control-indicator-border-color: $gray-500 !default;
+$custom-control-indicator-box-shadow: $dash-dark !default;
+$custom-control-indicator-border-color: $btn-border !default;
 $custom-control-indicator-border-width: 1px !default;
 
 $custom-control-indicator-disabled-bg: $input-disabled-bg !default;
 $custom-control-label-disabled-color: $gray-600 !default;
 
+$custom-control-indicator-checked-danger-bg: rgba(255, 92, 92, .5) !default;
+
 $custom-control-indicator-checked-color: $component-active-color !default;
-$custom-control-indicator-checked-bg: $component-active-bg !default;
+$custom-control-indicator-checked-bg: $dash-dark !default;
 $custom-control-indicator-checked-disabled-bg: rgba($primary, .5) !default;
 $custom-control-indicator-checked-box-shadow: none !default;
 $custom-control-indicator-checked-border-color: $custom-control-indicator-checked-bg !default;

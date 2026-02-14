@@ -19,13 +19,13 @@ import '../bootstrap/dist/collapse';
 import '../bootstrap/dist/modal';
 import '../bootstrap/dist/button';
 
-import './perfect-scrollbar.jquery.min';
-import './sidebarmenu';
-import './sticky-kit';
-import './jquery.sparkline.min';
-import './custom';
+// import './perfect-scrollbar.jquery.min';
+// import './sticky-kit';
+// import './jquery.sparkline.min';
+// import './custom';
+import './sidebar';
 import './tree-list';
-import 'simplebar';
+// import 'simplebar';
 import route from "../../vendor/components/routing";
 
 /** 2 - Scroll to errors */
@@ -40,9 +40,6 @@ if (errors.length > 0) {
 import('./ajax-get').then(({default: ajaxGet}) => {
     new ajaxGet();
 }).catch(error => console.error(error.message));
-
-/** 4 - Remove saying href attribute */
-$('#saying').find('a').removeAttr('href').addClass('text-info');
 
 /** 5 - To remove cache dir */
 const queryString = window.location.search;

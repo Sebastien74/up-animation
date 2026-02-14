@@ -51,10 +51,10 @@
             {% for tabId, config in tabs %}
                 <li class="nav-item">
                     {% if not loop.last %}
-                        {% set active = tabId == app.request.get('page') %}
+                        {% set active = tabId == app.request.query.get('page') %}
                         {% set color = active ? 'white' : 'dark' %}
                         <a href="{{ path('admin_google_analytics', {website: websiteId, page: tabId, locale: locale}) }}"
-                           class="nav-link{% if tabId == app.request.get('page') %} active{% endif %}" data-toggle="preloader">
+                           class="nav-link{% if tabId == app.request.query.get('page') %} active{% endif %}" data-toggle="preloader">
                             {{ config.icon|icon(17, 17 ,color~' me-sm-2') }}
                             <span class="d-none d-sm-inline-block">{{ config.title }}</span>
                         </a>

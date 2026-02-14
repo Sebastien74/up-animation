@@ -2,7 +2,7 @@
 
 {% trans_default_domain 'admin' %}
 
-{% set pageIcon = 'fal tachometer-alt-average' %}
+{% set pageIcon = 'tachometer-alt' %}
 {% set pageTitle = "Tableau de bord"|trans %}
 
 {% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
@@ -20,7 +20,7 @@
 
 {% block body %}
 
-    <div id="dashboard" class="container-fluid pt-4 pb-5 position-relative">
+    <div id="dashboard" class="pt-4 pb-5 position-relative">
 
         <div class="header mb-1 d-inline-block px-4 py-4 shadow-item">
             <h1 class="w-100 text-info d-flex align-items-center">{{ seasonIcon()|icon(25, 25, 'me-2 info-darken') }}{{ "Ravi de vous revoir !"|trans }}</h1>

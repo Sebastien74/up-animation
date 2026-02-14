@@ -62,7 +62,7 @@ class WebsiteRepository extends ServiceEntityRepository
     public function findCurrent(): ?WebsiteModel
     {
         $website = $this->findOneByHost();
-        if (!$website->isEmpty) {
+        if ($website && $website->isEmpty) {
             $website = $this->findDefault();
         }
 
@@ -91,15 +91,12 @@ class WebsiteRepository extends ServiceEntityRepository
             ->innerJoin('w.seoConfiguration', 'sc')
             ->innerJoin('sc.intls', 'sci')
             ->innerJoin('c.domains', 'd')
-            ->leftJoin('c.modules', 'mo')
             ->andWhere('d.name = :host')
             ->setParameter('host', $host)
             ->addSelect('c')
             ->addSelect('s')
             ->addSelect('sc')
             ->addSelect('sci')
-            ->addSelect('d')
-            ->addSelect('mo')
             ->getQuery()
             ->getOneOrNullResult();
 
@@ -128,7 +125,7 @@ class WebsiteRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get WebsiteModel by ID for admin part.
+     * Get WebsiteModel by ID for the admin part.
      *
      * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
      */

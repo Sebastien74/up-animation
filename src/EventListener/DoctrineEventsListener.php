@@ -194,7 +194,7 @@ class DoctrineEventsListener
     }
 
     /**
-     * To set master field entity.
+     * To set a master field entity.
      *
      * @throws InvalidArgumentException|NonUniqueResultException|ReflectionException|Exception
      */
@@ -286,7 +286,7 @@ class DoctrineEventsListener
         $entitiesCache = [
             Api::class => ['apimodel'],
             SeoConfiguration::class => ['apimodel'],
-            Website::class => ['apimodel', 'domains'],
+            Website::class => ['apimodel', 'domains', 'modules-configuration'],
             Configuration::class => ['pages'],
             Information::class => ['apimodel'],
         ];

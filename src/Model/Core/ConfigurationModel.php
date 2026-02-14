@@ -58,7 +58,6 @@ final class ConfigurationModel extends BaseModel
         public readonly ?array $domains = null,
         public readonly ?object $domain = null,
         public readonly ?array $pages = null,
-        public readonly ?array $medias = null,
         public readonly ?array $logos = null,
         public readonly ?array $modules = null,
         public readonly ?array $transitions = null,
@@ -112,7 +111,6 @@ final class ConfigurationModel extends BaseModel
             domains: $domains->list,
             domain: $domains->default,
             pages: self::pages($configuration, $locale),
-            medias: $informationModel->medias,
             logos: $informationModel->logos,
             modules: self::modules($configuration),
             transitions: TransitionModel::class::fromEntity($configuration, $coreLocator, $locale)->list,
@@ -134,6 +132,7 @@ final class ConfigurationModel extends BaseModel
         $dirname = self::$coreLocator->cacheDir().'/pages.cache.json';
 
         if (!$filesystem->exists($dirname)) {
+
             $pageIds = [];
             foreach ($configuration->getPages() as $page) {
                 $pageIds[] = $page->getId();
@@ -180,6 +179,12 @@ final class ConfigurationModel extends BaseModel
      */
     private static function modules(Configuration $configuration): array
     {
+        $dirname = self::$coreLocator->formatDirname(self::$coreLocator->cacheDir().'/modules-configuration-'.$configuration->getId().'.cache.json');
+        $filesystem = new Filesystem();
+        if ($filesystem->exists($dirname)) {
+            return (array) json_decode(file_get_contents($dirname));
+        }
+
         if (isset(self::$cache['modules'][$configuration->getId()])) {
             return self::$cache['modules'][$configuration->getId()];
         }
@@ -206,6 +211,10 @@ final class ConfigurationModel extends BaseModel
         self::$cache['modules'][$configuration->getId()]['gdpr'] = isset($modulesActives['gdpr']);
 
         ksort(self::$cache['modules'][$configuration->getId()]);
+
+        $fp = fopen($dirname, 'w');
+        fwrite($fp, json_encode(self::$cache['modules'][$configuration->getId()], JSON_PRETTY_PRINT));
+        fclose($fp);
 
         return self::$cache['modules'][$configuration->getId()];
     }

@@ -6,12 +6,30 @@
  * @licence under the MIT License (LICENSE.txt)
  */
 
-export function lazyLoadComponent(selector, importFn, init) {
+export function lazyLoadComponent(selector, importFn, init, useObserver = false) {
     const asId = selector.includes('#');
     const els = asId ? document.querySelector(selector) : document.querySelectorAll(selector);
     const haveEls = (asId && els) || (!asId && els.length > 0);
+
     if (haveEls) {
-        importFn().then(m => init(m.default, els)).catch(e => console.error(e.message));
+        if (useObserver && 'IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        importFn().then(m => init(m.default, els)).catch(e => console.error(e.message));
+                        observer.disconnect();
+                    }
+                });
+            }, {rootMargin: '100px'});
+
+            if (asId) {
+                observer.observe(els);
+            } else {
+                els.forEach(el => observer.observe(el));
+            }
+        } else {
+            importFn().then(m => init(m.default, els)).catch(e => console.error(e.message));
+        }
     }
 }
 
@@ -80,20 +98,32 @@ export function AjaxPagination(html) {
 }
 
 export function RemoveAttrsTitle() {
-    document.querySelectorAll("[title]:not([data-bs-toggle])").forEach(el => {
-        el.addEventListener("mouseover", () => {
-            const titleValue = el.getAttribute("title");
-            if (titleValue) {
-                el.setAttribute("data-tmp", titleValue);
-                el.removeAttribute("title");
-            }
-        });
-        el.addEventListener("mouseleave", () => {
-            const tmpTitle = el.getAttribute("data-tmp");
-            if (tmpTitle !== null) {
-                el.setAttribute("title", tmpTitle);
-                el.removeAttribute("data-tmp");
-            }
-        });
-    });
+    const selector = "[title]:not([data-bs-toggle])";
+
+    // Use event delegation to avoid attaching many listeners
+    const onMouseOver = (e) => {
+        const el = e.target.closest(selector);
+        if (!el) return;
+        const titleValue = el.getAttribute("title");
+        if (titleValue) {
+            el.setAttribute("data-tmp", titleValue);
+            el.removeAttribute("title");
+        }
+    };
+
+    const onMouseOut = (e) => {
+        const el = e.target.closest(selector);
+        if (!el) return;
+        // Ensure the mouse actually left the element (and not moved to a child)
+        const related = e.relatedTarget;
+        if (related && el.contains(related)) return;
+        const tmpTitle = el.getAttribute("data-tmp");
+        if (tmpTitle !== null) {
+            el.setAttribute("title", tmpTitle);
+            el.removeAttribute("data-tmp");
+        }
+    };
+
+    document.body.addEventListener("mouseover", onMouseOver, true);
+    document.body.addEventListener("mouseout", onMouseOut, true);
 }

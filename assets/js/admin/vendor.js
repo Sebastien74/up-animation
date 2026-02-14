@@ -31,7 +31,7 @@ import Cookies from "js-cookie";
 
 let body = document.body;
 
-/** To open creation modal after saveAdd submit redirection */
+/** To open the creation modal after saveAdd submit redirection */
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const openModal = urlParams.get('open_modal');
@@ -88,7 +88,7 @@ import "../vendor/first-paint";
 import "../vendor/vendor";
 import "./core/core";
 import './form/vendor';
-import './media/cache-resolve';
+// import './media/cache-resolve';
 
 import pluginsVendor from './plugins/vendor';
 

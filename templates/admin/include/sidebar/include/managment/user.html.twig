@@ -10,7 +10,7 @@
     {% set icon = intlsModules['user']['entity'].iconClass is defined and intlsModules['user']['entity'].iconClass ? intlsModules['user']['entity'].iconClass : '/medias/icons/light/users.svg' %}
     <li{% if active %} class="active"{% endif %}>
         <a href="{{ path('admin_user_index', {website: websiteId}) }}" data-toggle="preloader">
-            {{ icon|icon(19, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+            <span class="btn-icon small me-3">{{ icon|icon(19, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>
 {% elseif 'user'|moduleActive(configuration) or granted('ROLE_INTERNAL') %}
@@ -20,7 +20,7 @@
     {% set icon = intlsModules['user']['entity'].iconClass is defined and intlsModules['user']['entity'].iconClass ? intlsModules['user']['entity'].iconClass : '/medias/icons/light/users.svg' %}
     <li{% if active %} class="active"{% endif %}>
         <a class="as-arrow{% if pageTag == 'security' %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
-            {{ icon|icon(19, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+            <span class="btn-icon small me-3">{{ icon|icon(19, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
         <ul aria-expanded="false" class="collapse{% if pageTag == 'security' %} in{% endif %}">
             <li>

@@ -20,6 +20,32 @@
     overflow: hidden;
     margin: 0 auto;
 
+    .marquee {
+        position: relative;
+    }
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 75px;
+        z-index: 5;
+        pointer-events: none;
+        display: inline-block;
+    }
+
+    &::before {
+        left: 0;
+        background: linear-gradient(to right, $primary 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    &::after {
+        right: 0;
+        background: linear-gradient(to left, $primary 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
     &.top {
         top: 0;
     }
@@ -47,6 +73,7 @@
         top: 0;
         right: 0;
         font-size: 20px;
+        z-index: 100;
     }
 
     .flip-container {
@@ -69,7 +96,7 @@
         height: 100%;
         width: 100%;
         transform-style: preserve-3d;
-        transition: transform 0.8s linear;
+        transition: transform 0.8s ease-in-out;
         will-change: transform;
     }
 
@@ -99,15 +126,15 @@ body {
     position: relative !important;
 
     &.remove-alert-top {
-        transition: margin-top .4s linear !important;
+        transition: margin-top .4s ease-in-out !important;
     }
 
     &.remove-alert-bottom {
 
-        transition: margin-bottom .4s linear !important;
+        transition: margin-bottom .4s ease-in-out !important;
 
         #website-alert {
-            transition: bottom .4s linear !important;
+            transition: bottom .4s ease-in-out !important;
         }
     }
 }

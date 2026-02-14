@@ -48,7 +48,7 @@
             </p>
         {% endif %}
 
-        {% set pageNum = app.request.get('page') ? app.request.get('page') : 1 %}
+        {% set pageNum = app.request.query.get('page') ? app.request.query.get('page') : 1 %}
         {% set ajaxPath = path('front_search_results', {website: website.id, filter: filter, search: masterRequest().get('search')}) %}
 
         <div id="scroll-wrapper"

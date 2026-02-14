@@ -166,7 +166,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             $options['media'] = $media;
             $options['generateThumbs'] = $generateThumbs && $allowedExtension;
             $options['display'] = !isset($options['path']) || !$options['path'];
-            $options['spinnerColor'] = $inAdmin ? 'white' : 'primary';
+            $options['spinnerColor'] = $inAdmin ? 'white-50' : 'primary';
             $options['inAdmin'] = $inAdmin;
             $options['class'] = $options['class'] ?? null;
         } elseif ($media instanceof MediaModel && !$placeholder) {
@@ -572,12 +572,14 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * To check if is as default placeholder.
+     * To check if is as the default placeholder.
      */
     private function asPlaceholder(?MediaModel $mediaModel = null): bool
     {
-        if ($mediaModel && $mediaModel->media && $mediaModel->media->getFilename() && str_contains($mediaModel->media->getFilename(), 'placeholder.jpg')) {
-            return in_array($mediaModel->media->getFilename(), ['placeholder.jpg', 'placeholder-dark.jpg']);
+        if ($mediaModel && $mediaModel->media && $mediaModel->media->getFilename() && str_contains($mediaModel->media->getFilename(), 'placeholder')) {
+            $matches = explode('/', $mediaModel->media->getFilename());
+            $filename = end($matches);
+            return in_array($filename, ['placeholder.jpg', 'placeholder-dark.jpg', 'placeholder-back.jpg']);
         }
         return false;
     }

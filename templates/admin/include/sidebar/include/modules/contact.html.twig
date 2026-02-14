@@ -9,7 +9,7 @@
     {% set icon = intlsModules['contact-information']['entity'].iconClass is defined and intlsModules['contact-information']['entity'].iconClass ? intlsModules['contact-information']['entity'].iconClass : '/medias/icons/light/info.svg' %}
     <li{% if active %} class="active"{% endif %}>
         <a href="{{ path('admin_contact_index', {website: websiteId}) }}" data-toggle="preloader">
-            {{ icon|icon(17, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+            <span class="btn-icon small me-3">{{ icon|icon(17, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>
 {% endif %}

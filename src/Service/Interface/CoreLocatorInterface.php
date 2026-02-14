@@ -110,5 +110,7 @@ interface CoreLocatorInterface
 
     public function isDebug(): bool;
 
+    public function isProd(): bool;
+
     public function envName(): string;
 }

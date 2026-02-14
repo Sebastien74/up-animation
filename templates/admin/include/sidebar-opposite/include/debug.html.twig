@@ -2,10 +2,9 @@
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-        {{ 'fal bug'|icon(17, 15, 'white me-2', {icon: true}) }}
-        <span class="hide-menu">{{ "Debug"|trans }}</span>
+        <span class="btn-icon small me-3"><i class="icm-bug"></i></span>{{ "Debug"|trans }}
     </a>
-    <ul aria-expanded="false" class="collapse bg-info-light">
+    <ul aria-expanded="false" class="collapse">
         <li>
             <a href="{{ path('bin_debug', {service: 'autowiring'}) }}" data-toggle="preloader">
                 <span class="hide-menu">{{ "Autowiring"|trans }}</span>

@@ -13,7 +13,7 @@ use App\Repository\Security\UserRepository;
 use App\Service\Content\CryptService;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use KnpU\OAuth2ClientBundle\Security\Exception\IdentityProviderAuthenticationException;
+use Exception;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
 use Monolog\Logger;
@@ -96,7 +96,7 @@ class BaseAuthenticator
     /**
      * authenticate.
      *
-     * @throws \Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     public function authenticate(Request $request): Passport
     {
@@ -149,8 +149,6 @@ class BaseAuthenticator
     {
         if ($exception instanceof SecurityException\TooManyLoginAttemptsAuthenticationException) {
             $request->getSession()->set(SecurityRequestAttributes::AUTHENTICATION_ERROR, $exception);
-        } elseif ($exception instanceof IdentityProviderAuthenticationException) {
-            $request->getSession()->set(SecurityRequestAttributes::AUTHENTICATION_ERROR, new SecurityException\CustomUserMessageAccountStatusException($exception->getMessage()));
         } elseif (!$this->user) {
             $message = $this->translator->trans('Authentication credentials could not be found.', [], 'security');
             $request->getSession()->set(SecurityRequestAttributes::AUTHENTICATION_ERROR, new SecurityException\AuthenticationCredentialsNotFoundException($message));
@@ -191,7 +189,6 @@ class BaseAuthenticator
         if ($authException instanceof SecurityException\InsufficientAuthenticationException) {
             $indAmin = preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $request->getUri());
             $routeName = $indAmin ? 'security_login' : 'security_front_login';
-
             return new RedirectResponse($this->coreLocator->router()->generate('app_logout', ['route_name' => $routeName]));
         }
 
@@ -200,15 +197,12 @@ class BaseAuthenticator
                 $response = new RedirectResponse($this->coreLocator->router()->generate($loginRoute));
                 $session = new Session();
                 $session->getFlashBag()->add('error', $authException->getMessageKey());
-
                 return $response;
             }
-
             $response = new RedirectResponse($this->coreLocator->router()->generate($route));
             if ('security_front_forms' === $route) {
                 $response->headers->setCookie(Cookie::create('SECURITY_ERROR', $authException->getMessageKey()));
             }
-
             return $response;
         }
 
@@ -222,7 +216,7 @@ class BaseAuthenticator
     /**
      * To get credentials.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getCredentials(): array
     {
@@ -295,7 +289,7 @@ class BaseAuthenticator
     /**
      * Check recaptcha.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkRecaptcha(WebsiteModel $website, Request $request, bool $asResponse = false)
     {
@@ -323,7 +317,6 @@ class BaseAuthenticator
                 $this->logger($request);
                 if ($asResponse) {
                     $session->getFlashBag()->add('error', $message);
-
                     return false;
                 } else {
                     throw new SecurityException\CustomUserMessageAccountStatusException($message);
@@ -333,7 +326,6 @@ class BaseAuthenticator
             $this->logger($request);
             if ($asResponse) {
                 $session->getFlashBag()->add('error', $message);
-
                 return false;
             } else {
                 throw new SecurityException\CustomUserMessageAccountStatusException($message);
@@ -343,12 +335,14 @@ class BaseAuthenticator
         if ($asResponse) {
             return true;
         }
+
+        return false;
     }
 
     /**
      * To check password.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkPassword(WebsiteModel $website): void
     {
@@ -374,7 +368,7 @@ class BaseAuthenticator
     }
 
     /**
-     * To get inactive message.
+     * To get an inactive message.
      */
     public function getInactiveMessage(WebsiteModel $website): string
     {
@@ -406,7 +400,7 @@ class BaseAuthenticator
     /**
      * Set security keys if not generated.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function setSecurityKeys(WebsiteModel $website): void
     {

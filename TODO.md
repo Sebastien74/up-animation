@@ -1,12 +1,83 @@
+Nestable Ajustement + a la recherche d-none sur page de 2 second niveau
+et si tous second caché et que le parent ne match pas on cache aussi le parent
+
+Revoir toutes les requetes depuis le debut
+
+changer favicon back
+
+Theme light back
+
+Mettre les validations sur le formulaire de login
+
+Dans le tpl header include back les icon sont e svg
+Remplacer les svg par des i {{ 'fa
+
+Dans js back virer vendor clouds, dark etc... CSS pareil
+
+Le https://up-animation.local/robots.txt?preview=true devrait afficher ce qui est vraiment dans le robots.txt
+
+Alléger le css security en retirant le boostrap inutile
+Voir pour ne pas mettre le JS bootstrap dans sécurity
+Ajouter le bg sécurity dans CSS et le retirer des medias configuration 
+
+Récupérer le tpl du back API et cleaner le remplacer le css existant
+
+SUr la page sécurity Total time de 1300ms c'est bizarre
+
+Changer l'intitulé du bouton produits index pour quelque chose de plus générique ChaGPT 
+
+PAge 404 back
+
+icon copyright pied de page back
+
+Créer une API Instagram feed
+
+Validation des formulaires securite reset password le border invalid est pété
+
+Finir LastNews Component
+
+TRaduire les mail sécurity
+
+Changer le favicon security pour un violet
+
+Refaire les favicons (PSD dans le dossier sur bureau) front au nouveau format générator et retirer ceux de la DB qui ne servent plus
+
+Dépréciations
+
+Remplacer les app.request.get
+
+Dans les trads back edition mettre la pagination classique
+
+Au update vider les caches concerné par les models, pages, logos...  dans removeCacheFiles() DoctrineLIstners
+
 Dans les controller vois pour enlever $entity->setUpdatedAt($tab->getUpdatedAt());
 
-Mettre des grosses icones comme ISacar en fons de zone avec du parallax
+Back en dark, tableau de bord moche actuellement, reprendre new API
+
+Mettre l'alerte website en mode défilement
+
+CategoryType Newscast retourner à la liste save ne fonctionne pas
+
+// Ajouter des exceptions sur le update par exemple les contacts, l'ajax etc
+dd('Ajouter dans website un etag global et le persister dans Doctrine listener');
+
+Dans le footer changer l'icône Utiliser notre formulaire
+Dans le footer faire macro pour les liens du footer 
+Dans le footer faire macro pour les liens des réseaux sociaux
+
+Dans l'édition Information mettre les textarea en col-lg-4 là en col-12 ça fait trop long au scroll.
+
+Mettre des grosses icônes comme Isacar en fons de zone avec du parallax
+
+Carousel focus center comme Isacar
 
 Sur les boutons mettre le meme hover que les badges du footer et pareil sur les boutons réseaux sociaux du pied de page
 
 https://themeforest.net/category/site-templates/entertainment/events?gad_source=1&gad_campaignid=20946799167&gclid=EAIaIQobChMI9uaJh7edkgMVg8t5BB1mOAFbEAAYAiAAEgKm1fD_BwE
 
 Verifier que tous les hover soient en min-lg
+
+Pour le carrousel thumbnailer en mobile faire comme isacar
 
 Page components 
 

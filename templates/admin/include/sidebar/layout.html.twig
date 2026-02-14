@@ -33,26 +33,38 @@
     {% endfor %}
 
     {% set mainActive = not moduleActive %}
+    {% set website = website is defined ? website : website() %}
+    {% set isMultiWebsite = isMultiWebsite() %}
 
     <aside class="left-sidebar">
-        <div class="scroll-sidebar">
+        <div class="scroll-sidebar px-4">
             <nav class="sidebar-nav">
-                <ul id="sidebarnav">
-                    {% include 'admin/include/sidebar/include/header.html.twig' %}
+                <ul id="sidebar-nav" class="list-unstyled">
+                    <li class="sidebar-top pt-3{% if not isMultiWebsite %} pb-3{% endif %}">
+                        <ul class="list-unstyled">
+                            {% set domain = app.user.locale is defined ? app.user.locale|domain() : null %}
+                            {% set scheme = not domain ? path('front_index') : domain %}
+                            <li><a href="{{ scheme }}" target="_blank"><span class="btn-icon small me-3"><i class="icm-desktop"></i></span>{{ "Accéder au site"|trans }}</a></li>
+                            <li><a href="{{ path('app_logout') }}" class="d-lg-none"><span class="btn-icon danger small me-3"><i class="icm-power-off"></i></span>{{ "Déconnexion"|trans }}</a></li>
+                        </ul>
+                        {% if isMultiWebsite and app.user %}
+                            {{ render_esi(path('admin_site_selector', {website: websiteId()})) }}
+                            <span class="sidebar-website-info text-white d-inline-block w-100 ps-3 pt-2 pe-2 pb-2 mt-3">
+                                {{ 'fas pen-fancy'|icon(14, 14, 'white me-2') }} {{ website.adminName }}
+                            </span>
+                        {% endif %}
+                    </li>
+                    {% if not configuration.onlineStatus %}
+                        {% set domain = app.user.locale is defined ? app.user.locale|domain() : null %}
+                        {% set scheme = not domain ? path('front_index') : domain %}
+                        <li class="in-build-info bg-info-light">
+                            <a href="{{ scheme }}?disabled_ips=true" target="_blank" class="d-flex align-items-center text-info">
+                                {{ 'fas exclamation-triangle'|icon(14, 14, 'info me-1') }}{{ "Site en maintenance"|trans|raw }}
+                            </a>
+                        </li>
+                    {% endif %}
                     {% include 'admin/include/sidebar/include/managment.html.twig' %}
                     {% include 'admin/include/sidebar/include/modules.html.twig' %}
-                </ul>
-            </nav>
-        </div>
-    </aside>
-
-{% else %}
-
-    <aside class="left-sidebar">
-        <div class="scroll-sidebar ps ps--theme_default" data-ps-id="a3999edd-4318-03cb-d7c0-a466289cae2c">
-            <nav class="sidebar-nav">
-                <ul id="sidebarnav">
-                    {% include 'admin/include/sidebar/include/header.html.twig' %}
                 </ul>
             </nav>
         </div>

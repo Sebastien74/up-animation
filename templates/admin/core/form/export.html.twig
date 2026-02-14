@@ -14,11 +14,11 @@
         {% set args = args|merge({entitylocale: interface.website.configuration.locale}) %}
     {% endif %}
 
-    <a href="{{ path('admin_'~interface['name']~'_export', args) }}" class="btn btn-info standard">{{ 'fal upload'|icon(14, 14, 'white me-2') }}{{ "Exporter"|trans }}</a>
+    <a href="{{ path('admin_'~interface['name']~'_export', args) }}" class="btn-app"><i class="icm-upload"></i>{{ "Exporter"|trans }}</a>
 
 {% else %}
 
-    <button class="btn btn-dark standard" data-bs-toggle="modal" data-bs-target="#export-modal">{{ 'fal upload'|icon(14, 14, 'white me-2') }}{{ "Exporter"|trans }}</button>
+    <button class="btn-app" data-bs-toggle="modal" data-bs-target="#export-modal"><i class="icm-upload"></i>{{ "Exporter"|trans }}</button>
 
     <div class="modal-wrapper float-start">
         <div class="modal fade" id="export-modal" tabindex="-1"

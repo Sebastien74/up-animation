@@ -1,7 +1,7 @@
 {% trans_default_domain 'admin' %}
 
-<button type="button" class="btn btn-info-lighten standard" data-bs-toggle="modal" data-bs-target="#import-modal">
-    {{ 'fal download'|icon(14, 14, 'white me-2') }}{{ "Import"|trans }}
+<button type="button" class="btn-app" data-bs-toggle="modal" data-bs-target="#import-modal">
+    <i class="icm-download"></i>{{ "Import"|trans|raw }}
 </button>
 
 <div class="modal fade" id="import-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -11,7 +11,7 @@
             <div class="modal-header">
                 <h5 class="modal-title text-center w-100">{{ 'fal download'|icon(null, 50, 'dark') }}</h5>
                 <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
-                    {{ 'fal times'|icon(20, 20, 'dark') }}
+                    <i class="icm-times"></i>
                 </button>
             </div>
             <div class="modal-body d-flex">

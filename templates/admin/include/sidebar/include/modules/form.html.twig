@@ -11,7 +11,7 @@
     {% set icon = intlsModules['form']['entity'].iconClass is defined and intlsModules['form']['entity'].iconClass ? intlsModules['form']['entity'].iconClass : '/medias/icons/brand/wpforms.svg' %}
     <li{% if active %} class="active"{% endif %}>
         <a class="as-arrow{% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
-            {{ icon|icon(13, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+            <span class="btn-icon small me-3">{{ icon|icon(13, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
         <ul aria-expanded="false" class="collapse{% if active %} in{% endif %}">
             <li>
@@ -31,7 +31,7 @@
     {% set icon = intlsModules['form']['entity'].iconClass is defined and intlsModules['form']['entity'].iconClass ? intlsModules['form']['entity'].iconClass : '/medias/icons/brand/wpforms.svg' %}
     <li{% if active %} class="active"{% endif %}>
         <a href="{{ path('admin_form_index', {website: websiteId}) }}" data-toggle="preloader">
-            {{ icon|icon(13, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+            <span class="btn-icon small me-3">{{ icon|icon(13, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>
 {% endif %}

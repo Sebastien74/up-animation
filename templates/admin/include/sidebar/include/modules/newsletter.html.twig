@@ -9,7 +9,7 @@
     {% set icon = intlsModules['newsletter']['entity'].iconClass is defined and intlsModules['newsletter']['entity'].iconClass ? intlsModules['newsletter']['entity'].iconClass : '/medias/icons/light/typewriter.svg' %}
     <li{% if active %} class="active"{% endif %}>
         <a href="{{ path('admin_campaign_index', { website: websiteId }) }}" data-toggle="preloader">
-            {{ icon|icon(17, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+            <span class="btn-icon small me-3">{{ icon|icon(17, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>
 {% endif %}

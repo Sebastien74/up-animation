@@ -86,7 +86,8 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
 
         if ('front_clear_cache' === $this->routeName) {
             $nonce = $this->session->get('app_nonce');
-            if ($nonce === $this->request->get('token')) {
+            $token = $this->request->query->get('token') ? $this->request->query->get('token') : $this->request->attributes->get('token');
+            if ($nonce === $token) {
                 return;
             }
         } elseif (!$this->isMainRequest || str_contains($this->uri, '_wdt') || !$this->isMainRequest()) {

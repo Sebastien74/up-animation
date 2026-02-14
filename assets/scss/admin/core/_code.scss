@@ -1,0 +1,20 @@
+:not(pre) > code[class*=language-],
+pre[class*=language-] {
+    //background: #07090d
+    background: radial-gradient(
+                    900px 520px at 18% 0%,
+                    rgba($primary, 0.045),
+                    transparent 62%
+    ),
+    radial-gradient(
+                    1100px 780px at 70% 35%,
+                    rgba(255, 255, 255, 0.012),
+                    transparent 68%
+    ),
+    linear-gradient(
+                    180deg,
+                    $dash-bg-2,
+                    $dash-bg-1 48%,
+                    $dash-bg-0
+    ) !important;
+}

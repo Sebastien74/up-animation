@@ -19,65 +19,82 @@ const isDebug = html.dataset.debug ? parseInt(html.dataset.debug) === 1 : false;
  */
 
 function adjustColumnsByMargin() {
-    document.querySelectorAll(".layout-block, .layout-col").forEach(col => {
+    const columns = document.querySelectorAll(".layout-block, .layout-col");
+    if (columns.length === 0) return;
+
+    const data = [];
+
+    // 1️⃣ Read phase: Get all measurements first
+    columns.forEach(col => {
+        col.style.maxWidth = ""; // Reset to read original CSS
         let style = window.getComputedStyle(col);
-        // 1️⃣ Remove previously added max-width to reset to the original CSS
-        col.style.maxWidth = "";
-        // 2️⃣ Get the width defined in % from the original CSS
         let widthValue = col.style.width || style.getPropertyValue("width");
+        let parentWidth = col.parentElement.clientWidth || 1;
         let widthPercent = widthValue.includes("%")
             ? parseFloat(widthValue)
-            : (parseFloat(style.width) / col.parentElement.clientWidth) * 100;
-        // 3️⃣ Check if there is a margin
+            : (parseFloat(style.width) / parentWidth) * 100;
+
         let marginRight = parseFloat(style.marginRight) || 0;
         let marginLeft = parseFloat(style.marginLeft) || 0;
-        // 4️⃣ Apply calculation ONLY if at least one margin is greater than 0
+
         if (marginRight > 0 || marginLeft > 0) {
-            let parentWidth = col.parentElement.clientWidth || 1; // Get parent width in px
-            // 5️⃣ Convert margins from px to % of the parent width
-            let totalMarginPercent = ((marginRight + marginLeft) / parentWidth) * 100;
-            // 6️⃣ Calculate the new adjusted width (always ≤ original width)
-            let newWidthPercent = Math.max(0, widthPercent - totalMarginPercent);
-            // 7️⃣ Apply the new max-width
-            col.style.maxWidth = `${newWidthPercent}%`;
+            data.push({
+                el: col,
+                widthPercent,
+                marginPercent: ((marginRight + marginLeft) / parentWidth) * 100
+            });
         }
     });
+
+    // 2️⃣ Write phase: Apply all styles together
+    data.forEach(item => {
+        let newWidthPercent = Math.max(0, item.widthPercent - item.marginPercent);
+        item.el.style.maxWidth = `${newWidthPercent}%`;
+    });
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
 }
 
 // Prevent unnecessary recalculations on Y-axis resize
 let lastWindowWidth = window.innerWidth;
 
-function handleResize() {
+const handleResize = debounce(() => {
     let currentWindowWidth = window.innerWidth;
     if (currentWindowWidth !== lastWindowWidth) {
         adjustColumnsByMargin();
         lastWindowWidth = currentWindowWidth;
     }
-}
+}, 150);
 
 // Run at load and on X-axis resize only
 window.addEventListener("load", adjustColumnsByMargin);
 window.addEventListener("resize", handleResize);
 
 lazyLoadComponent('#main-preloader', () => import(/* webpackPreload: true */'./components/preloader'), (Preloader) => new Preloader());
-lazyLoadComponent('.media-block', () => import(/* webpackPreload: true */'./components/medias'), (Medias, els) => new Medias(els));
-lazyLoadComponent('.splide:not(.thumbnails-slider)', () => import('./components/splide-slider'), (Sliders, els) => new Sliders(els));
-lazyLoadComponent('.marquee', () => import(/* webpackPreload: true */'./components/marquee'), (Marquees, els) => new Marquees(els));
+lazyLoadComponent('.media-block', () => import(/* webpackPreload: true */'./components/medias'), (Medias, els) => new Medias(els), true);
+lazyLoadComponent('.splide:not(.thumbnails-slider)', () => import('./components/splide-slider'), (Sliders, els) => new Sliders(els), true);
+lazyLoadComponent('.marquee', () => import(/* webpackPreload: true */'./components/marquee'), (Marquees, els) => new Marquees(els), true);
 lazyLoadComponent('.entities-filters-form', () => import(/* webpackPreload: true */'./components/entities-filters'), (Filters, els) => new Filters(els));
 lazyLoadComponent('.zones-navigation', () => import(/* webpackPreload: true */'./components/zones-navigation'), (Navigations, els) => new Navigations(els));
 lazyLoadComponent('.glightbox', () => import(/* webpackPreload: true */'../../vendor/plugins/popup'), (Popups) => new Popups());
-lazyLoadComponent('[data-component="masonry"]', () => import(/* webpackPreload: true */'./components/masonry'), (Masonry, els) => new Masonry(els));
-lazyLoadComponent('.social-wall-wrap', () => import(/* webpackPreload: true */'./components/social-wall'), (socialWalls, els) => new socialWalls(els));
-lazyLoadComponent('[data-component="counter"]', () => import(/* webpackPreload: true */'./components/counters'), (Counters, els) => new Counters(els));
-lazyLoadComponent('.parallax', () => import(/* webpackPreload: true */'./components/parallax'), (Parallax, els) => new Parallax(els));
+lazyLoadComponent('[data-component="masonry"]', () => import(/* webpackPreload: true */'./components/masonry'), (Masonry, els) => new Masonry(els), true);
+lazyLoadComponent('.social-wall-wrap', () => import(/* webpackPreload: true */'./components/social-wall'), (socialWalls, els) => new socialWalls(els), true);
+lazyLoadComponent('[data-component="counter"]', () => import(/* webpackPreload: true */'./components/counters'), (Counters, els) => new Counters(els), true);
+lazyLoadComponent('.parallax', () => import(/* webpackPreload: true */'./components/parallax'), (Parallax, els) => new Parallax(els), true);
 lazyLoadComponent('.share-content', () => import(/* webpackPreload: true */'./components/share'), (ShareBoxes) => new ShareBoxes());
 lazyLoadComponent('#website-alert', () => import(/* webpackPreload: true */'./components/website-alert'), (Alerts) => new Alerts());
 lazyLoadComponent('font', () => import(/* webpackPreload: true */'./components/fonts'), (Fonts) => new Fonts());
 lazyLoadComponent('#webmaster-box', () => import(/* webpackPreload: true */'../../vendor/components/webmaster'), (Webmaster, el) => new Webmaster(el));
-lazyLoadComponent('#scroll-top-btn', () => import(/* webpackPreload: true */'./components/scroll'), (Scroll) => new Scroll());
+lazyLoadComponent('#scroll-top-btn', () => import(/* webpackPreload: true */'./components/scroll'), (Scroll) => new Scroll(), true);
 lazyLoadComponent('.scroll-link', () => import(/* webpackPreload: true */'./components/scroll'), (Scroll) => new Scroll());
-lazyLoadComponent('.newsletter-form-container', () => import(/* webpackPreload: true */'./components/form/newsletter'), (Newsletters) => new Newsletters());
-lazyLoadComponent('.step-form-ajax', () => import(/* webpackPreload: true */'./components/form/steps-form'), (StepForm) => new StepForm());
+lazyLoadComponent('.newsletter-form-container', () => import(/* webpackPreload: true */'./components/form/newsletter'), (Newsletters) => new Newsletters(), true);
+lazyLoadComponent('.step-form-ajax', () => import(/* webpackPreload: true */'./components/form/steps-form'), (StepForm) => new StepForm(), true);
 lazyLoadComponent('[data-scroll-bar="1"]', () => import('./components/scrollbar'), (ScrollSpy, els) => new ScrollSpy(els));
 lazyLoadComponent('.fixed-news', () => import('./components/fixed-news'), (FixedNews, el) => new FixedNews(el));
 lazyLoadComponent('.dropdown-toggle', () => import('../bootstrap/modules/dropdown'), (Dropdown) => new Dropdown());
@@ -107,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.collapse').forEach(function (collapseToggleEl) {
                 if (!collapseToggleEl.classList.contains('loaded')) {
                     collapseToggleEl.classList.add('loaded')
-                    const bsCollapse = new Collapse(collapseToggleEl, {
+                    new Collapse(collapseToggleEl, {
                         toggle: false
                     });
                 }
@@ -185,15 +202,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Target all elements inside .body that have a style attribute
     document.querySelectorAll('.body [style]').forEach(el => {
-        // Extract the inline style as individual declarations
-        const declarations = el.getAttribute('style').split(';').filter(d => d.trim() !== '');
+        const style = el.getAttribute('style');
+        if (!style) return;
+
         // Reconstruct the style with !important
-        const newStyle = declarations.map(decl => {
-            const [prop, value] = decl.split(':');
-            return `${prop.trim()}: ${value.trim()} !important`;
-        }).join('; ');
-        // Replace the style attribute with the modified version
-        el.setAttribute('style', newStyle);
+        const newStyle = style.split(';')
+            .filter(d => d.trim() !== '')
+            .map(decl => {
+                const parts = decl.split(':');
+                if (parts.length < 2) return decl;
+                const prop = parts.shift().trim();
+                const value = parts.join(':').trim();
+                return `${prop}: ${value.replace(/\s*!important/g, '')} !important`;
+            }).join('; ');
+
+        // Replace the style attribute with the modified version if changed
+        if (newStyle !== style) {
+            el.setAttribute('style', newStyle);
+        }
     });
 
     document.querySelectorAll('link.preload-css[rel="preload"]').forEach(link => {
@@ -216,9 +242,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     zoomLevel();
 
-    window.addEventListener('resize', function () {
-        zoomLevel();
-    });
+    window.addEventListener('resize', debounce(zoomLevel, 200));
 
     import('../../vendor/components/lazy-load').then(({default: lazyLoad}) => {
         new lazyLoad();

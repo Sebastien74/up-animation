@@ -8,6 +8,7 @@ use App\Entity\Api\Api;
 use App\Entity\Api\Instagram;
 use App\Model\BaseModel;
 use App\Service\Interface\CoreLocatorInterface;
+use Doctrine\ORM\Mapping\MappingException;
 
 /**
  * InstagramModel.
@@ -32,6 +33,8 @@ final class InstagramModel extends BaseModel
 
     /**
      * Get model.
+     *
+     * @throws MappingException
      */
     public static function fromEntity(Api $api, CoreLocatorInterface $coreLocator, ?string $locale = null): self
     {
@@ -46,7 +49,7 @@ final class InstagramModel extends BaseModel
         $instagram = self::cache($api, 'instagram', self::$cache);
 
         self::$cache['instagram'][$api->getId()][$locale] = new self(
-            id: $api->getId(),
+            id: $instagram->getId(),
             entity: $instagram,
             accessToken: self::getContent('accessToken', $api),
             nbrItems: self::getContent('nbrItems', $api),

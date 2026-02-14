@@ -60,7 +60,7 @@ class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Check if route exist in PHP CLASS.
+     * Check if the route exists in PHP CLASS.
      */
     public function routeExist(string $routeName): bool
     {
@@ -68,7 +68,7 @@ class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * To set route name.
+     * To set a route name.
      */
     public function routeName(string $string): string
     {

@@ -14,18 +14,22 @@ $fonts-weights: (100, 200, 300, 400, 500, 600, 700, 800, 900);
 @import "../vendor/mixin/font-weight";
 @include fontsWeights($fonts-weights);
 
-@import 'preloader';
-@import 'themes/custom';
+//@import 'preloader';
+//@import 'themes/custom';
+@import 'themes/custom-forms';
 
 @import '../vendor/mixin/media-queries';
-@import "../vendor/vendor";
+//@import "../vendor/vendor";
+
+@import '../vendor/components/ai';
+@import '../security/switcher';
 
 @import "bootstrap/bootstrap";
 @import "layout/layout";
 
 @import "core/core";
 
-@import "widgets/widgets";
+//@import "widgets/widgets";
 
 @import "pages/index";
 @import "pages/layout";

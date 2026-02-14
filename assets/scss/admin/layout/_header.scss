@@ -1,122 +1,126 @@
 @charset "UTF-8";
 
-.page-breadcrumb {
+/* --------------------------------------------------------------------------------------
 
-    margin: 0 -25px 25px -25px;
-    padding: .75rem 1.75rem;
-    background-color: $white;
+    Module : Back header
+    Copyright : 2025
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
 
-    li {
-        font-size: 12px;
+    1 ) Main
+    2 ) Burger icon
+
+----------------------------------------------------------------------------------------- */
+
+/*-----------------------------------
+   1 ) Main
+-----------------------------------*/
+
+header.navbar {
+
+    height: 70px;
+    position: fixed;
+    z-index: 5000;
+    background: radial-gradient(900px 220px at 15% 0%, rgba($dash-accent, 0.10), transparent 55%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 48%),
+    $dash-dark;
+    border-bottom: 1px solid $dash-border;
+
+    .navbar-brand {
+
+        font-size: 14px !important;
+
+        @include mediaQuery(max-lg) {
+            width: auto;
+        }
+
+        @include mediaQuery(min-lg) {
+            width: 300px;
+        }
+
+        img, picture {
+            max-width: 25px !important;
+            max-height: 20px !important;
+            display: flex;
+            filter: brightness(0) invert(1);
+        }
+
+        small {
+            font-size: 10px;
+            opacity: .7;
+        }
     }
 
-    .breadcrumb-item + .breadcrumb-item::before {
-        content: ">";
-        position: relative;
-        top: 1px;
+    .right {
+
+        @include mediaQuery(min-lg) {
+            width: calc(100% - 300px);
+        }
+
+        .title-wrap {
+            .title {
+                font-size: 15px;
+                opacity: .7;
+            }
+        }
     }
 }
 
-.page-titles {
+.notify {
 
-    h4 .chevron {
-        position: relative;
-        top: 2px;
+    position: relative;
+    top: 7px;
+    right: 1px;
+
+    .heartbit {
+        position: absolute;
+        top: -20px;
+        right: -4px;
+        height: 25px;
+        width: 25px;
+        z-index: 10;
+        border: 5px solid $danger;
+        border-radius: 70px;
+        -moz-animation: heartbit 1s ease-out;
+        -moz-animation-iteration-count: infinite;
+        -o-animation: heartbit 1s ease-out;
+        -o-animation-iteration-count: infinite;
+        -webkit-animation: heartbit 1s ease-out;
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
     }
 
-    .notify {
-        position: relative;
-        top: 6px;
-        right: 3px;
+    .point {
+        width: 6px;
+        height: 6px;
+        border-radius: 30px;
+        background-color: $danger;
+        position: absolute;
+        right: 5px;
+        top: -10px;
     }
+}
 
-    .dropdown .icm-sort-down {
-        font-size: 11px;
+@keyframes heartbit {
+
+    0% {
+        transform: scale(0);
+        opacity: 0.0;
     }
-
-    .navbar-nav {
-
-        display: inline-block !important;
-        max-height: 70px;
-
-        > .nav-item {
-
-            float: left;
-
-            &:last-child {
-                margin-right: 0;
-            }
-        }
-
-        .btn-darken {
-            background-color: $info-darken-dark;
-            color: $white;
-        }
-
-        .avatar {
-
-            width: 70px;
-            height: 70px;
-            line-height: 30px;
-            font-size: 11px;
-            font-weight: 300;
-
-            > span {
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                transform: scale(.999);
-            }
-        }
-
-        .btn-transparent {
-            padding-top: 6px;
-        }
-
-        .btn-info-darken:hover, .dropdown-toggle:hover > span {
-            background-color: $info-darken-dark !important;
-            border-color: $info-darken-dark !important;
-        }
-
-        .dropdown-toggle {
-
-            border: 0 !important;
-
-            &::after {
-                display: none;
-            }
-        }
-
-        .item-icon-wrap {
-
-            .btn {
-                border-radius: 0 !important;
-                width: 70px;
-                height: 70px;
-                padding: 0;
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            i:not(.icm-cog) {
-                font-size: 20px;
-            }
-
-            .fa-sort-down {
-                margin-top: 7px;
-            }
-        }
+    25% {
+        transform: scale(0.1);
+        opacity: 0.1;
     }
-
-    @include mediaQuery(max-md) {
-
-        .nav-link.sidebartoggler {
-            font-size: 25px;
-            padding-top: 0;
-            padding-bottom: 0;
-            margin-top: 2px;
-            line-height: 25px;
-        }
+    50% {
+        transform: scale(0.5);
+        opacity: 0.3;
+    }
+    75% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.0;
     }
 }

@@ -16,6 +16,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Query\QueryException;
 use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -235,7 +236,7 @@ class BaseModel extends FunctionModel
     /**
      * To get cache.
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected static function jsonCache(mixed $entity, string $locale, string $model)
     {
@@ -248,7 +249,7 @@ class BaseModel extends FunctionModel
     }
 
     /**
-     * To set cache file.
+     * To set a cache file.
      */
     private static function cacheData(mixed $entity, string $locale, string $modelClassname, string $dirname, bool $force = false)
     {
@@ -274,7 +275,7 @@ class BaseModel extends FunctionModel
     }
 
     /**
-     * Get target domain.
+     * Get a target domain.
      */
     protected static function getTargetDomain(Website $website): ?string
     {
@@ -283,7 +284,6 @@ class BaseModel extends FunctionModel
             $sameDomain = $domain->getName() === $request->getHost();
             if ($sameDomain && $domain->getLocale() === $request->getLocale() && $domain->isAsDefault()) {
                 $protocol = $request->isSecure() ? 'https' : 'http';
-
                 return $protocol.'://'.$domain->getName();
             }
         }

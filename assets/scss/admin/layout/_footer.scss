@@ -2,15 +2,14 @@
 
 .footer {
 
-    picture {
-        display: inline-block !important;
-    }
+    height: 60px;
+    color: transparentize($white, .7);
 
-    img {
-        max-height: 25px;
-    }
-
-    @include mediaQuery(max-sm) {
-        background: #eee;
+    .btn-icon {
+        i {
+            position: relative;
+            top: 1px;
+            left: 1px;
+        }
     }
 }

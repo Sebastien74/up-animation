@@ -499,10 +499,17 @@ class PageRepository extends ServiceEntityRepository
                 ->innerJoin('z.cols', 'c')
                 ->innerJoin('c.blocks', 'b')
                 ->innerJoin('b.blockType', 'bt')
+                ->leftJoin('b.intls', 'bi')
+                ->leftJoin('b.mediaRelations', 'bmr')
+                ->leftJoin('bmr.media', 'bmrm')
+                ->andWhere('bi.locale = :locale')
                 ->addSelect('z')
                 ->addSelect('c')
                 ->addSelect('b')
-                ->addSelect('bt');
+                ->addSelect('bt')
+                ->addSelect('bi')
+                ->addSelect('bmr')
+                ->addSelect('bmrm');
         }
 
         if (!$offline) {

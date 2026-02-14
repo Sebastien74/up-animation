@@ -23,25 +23,30 @@ export default function () {
 
     /** To set grow flex wrap to svg img **/
     if (!skinAdmin) {
+        const batchGrow = [];
         document.querySelectorAll('img.img-svg').forEach(function (svg) {
             let block = svg.closest('.layout-block');
-            if (block && block.classList.contains('justify-content-start')
-                || block && block.classList.contains('justify-content-center')
-                || block && block.classList.contains('justify-content-end')) {
+            if (block && (block.classList.contains('justify-content-start')
+                || block.classList.contains('justify-content-center')
+                || block.classList.contains('justify-content-end'))) {
                 let blockWrap = block.querySelector('.layout-block-content');
                 if (blockWrap) {
-                    blockWrap.classList.add('flex-grow');
+                    batchGrow.push(blockWrap);
                 }
             }
         });
+        batchGrow.forEach(el => el.classList.add('flex-grow'));
+
+        const batchRadius = [];
         document.querySelectorAll('img').forEach(function (image) {
             if (image.classList.contains('radius')) {
                 let hoverContainer = image.closest('.img-hover-buttons-wrap');
                 if (hoverContainer) {
-                    hoverContainer.classList.add('radius');
+                    batchRadius.push(hoverContainer);
                 }
             }
         });
+        batchRadius.forEach(el => el.classList.add('radius'));
     }
 
     /** Medias loader */
@@ -53,19 +58,24 @@ export default function () {
     }
 
     /** Images loader generating */
-    document.querySelectorAll('.img-loader-wrap.generating').forEach((wrap) => {
-        let image = wrap.querySelector('img');
-        if (image) {
-            let width = image.offsetWidth;
-            if (width) {
-                image.setAttribute('width', width.toString());
+    const imageLoaders = document.querySelectorAll('.img-loader-wrap.generating');
+    if (imageLoaders.length > 0) {
+        const loaderData = [];
+        imageLoaders.forEach((wrap) => {
+            let image = wrap.querySelector('img');
+            if (image) {
+                loaderData.push({
+                    image: image,
+                    width: image.offsetWidth,
+                    height: image.offsetHeight
+                });
             }
-            let height = image.offsetHeight;
-            if (height) {
-                image.setAttribute('height', height.toString());
-            }
-        }
-    });
+        });
+        loaderData.forEach(item => {
+            if (item.width) item.image.setAttribute('width', item.width.toString());
+            if (item.height) item.image.setAttribute('height', item.height.toString());
+        });
+    }
 
     /** Lazy loading background */
     let backgrounds = document.querySelectorAll("*[data-background]");
@@ -86,17 +96,20 @@ export default function () {
     }
 
     /** Videos not lazy */
-    document.querySelectorAll("video:not(.lazy-video)").forEach(function (video) {
-        let hideElementSelector = video.dataset.hideEnded
-        let hideElement = hideElementSelector ? document.querySelector(hideElementSelector) : null
-        video.onended = function () {
-            video.classList.add('ended')
-            if (hideElement) {
-                hideElement.classList.add('completed')
-            }
-            body.classList.remove('overflow-hidden')
-        }
-    });
+    const nonLazyVideos = document.querySelectorAll("video:not(.lazy-video)");
+    if (nonLazyVideos.length > 0) {
+        nonLazyVideos.forEach(function (video) {
+            let hideElementSelector = video.dataset.hideEnded;
+            let hideElement = hideElementSelector ? document.querySelector(hideElementSelector) : null;
+            video.onended = function () {
+                video.classList.add('ended');
+                if (hideElement) {
+                    hideElement.classList.add('completed');
+                }
+                body.classList.remove('overflow-hidden');
+            };
+        });
+    }
 
     /** Generated files */
     document.querySelectorAll('.spinner-wrap.as-placeholder').forEach(el => {
@@ -104,7 +117,15 @@ export default function () {
     });
 
     /** Larges files */
-    document.querySelectorAll('.large-file-container').forEach(el => {
-        el.parentNode.style = 'position: relative !important; display: inline-block !important; width: 100% !important';
-    });
+    const largeFileContainers = document.querySelectorAll('.large-file-container');
+    if (largeFileContainers.length > 0) {
+        largeFileContainers.forEach(el => {
+            const parent = el.parentNode;
+            if (parent) {
+                parent.style.setProperty('position', 'relative', 'important');
+                parent.style.setProperty('display', 'inline-block', 'important');
+                parent.style.setProperty('width', '100%', 'important');
+            }
+        });
+    }
 }

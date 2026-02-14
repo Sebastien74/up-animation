@@ -306,9 +306,11 @@ class WebsiteManager
 //            'secure-page' => [['name' => 'Mon compte', 'asIndex' => false, 'reference' => 'user-dashboard', 'menu' => false, 'template' => 'cms', 'urlAsIndex' => false, 'deletable' => true, 'secure' => true]],
             'search' => [['name' => 'Page de résultats', 'asIndex' => false, 'reference' => 'search-results', 'menu' => false, 'template' => 'cms', 'urlAsIndex' => false, 'deletable' => true, 'secure' => false]],
         ];
+        $yamlConfiguration = $this->fixtures->website()->getYamlConfiguration();
+
         foreach ($pagesToCreate as $slugModule => $pageParams) {
             if ($this->moduleActive($configuration, $slugModule)) {
-                $pages = $this->fixtures->page()->add($website, $pageParams, $this->user, false);
+                $pages = $this->fixtures->page()->add($website, $yamlConfiguration, $pageParams, $this->user, false);
                 foreach ($pages as $slug => $page) {
                     if ('user-dashboard' === $slug) {
                         $security->setFrontPageRedirection($page);
@@ -324,7 +326,7 @@ class WebsiteManager
         if (!$configuration->isOnlineStatus()) {
             $reference = 'in-build';
             $pageParams = [['name' => 'En maintenance', 'asIndex' => false, 'reference' => $reference, 'menu' => false, 'template' => 'build', 'urlAsIndex' => false, 'deletable' => true, 'secure' => false]];
-            $pages = $this->fixtures->page()->add($website, $pageParams, $this->user, false);
+            $pages = $this->fixtures->page()->add($website, $yamlConfiguration, $pageParams, $this->user, false);
             $page = !empty($pages[$reference]) ? $pages[$reference] : null;
             if ($page instanceof LayoutEntities\Page) {
                 $layout = $page->getLayout();

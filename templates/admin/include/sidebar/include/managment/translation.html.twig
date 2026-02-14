@@ -11,7 +11,7 @@
     {% if granted('ROLE_INTERNAL') %}
         <li{% if active %} class="active"{% endif %}>
             <a class="as-arrow{% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
-                {{ icon|icon(15, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+                <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
             </a>
             <ul aria-expanded="false" class="collapse{% if active %} in{% endif %}">
                 <li class="pt-3 pe-3 d-inline-block w-100">
@@ -26,7 +26,7 @@
     {% else %}
         <li{% if '/translations/' in uri %} class="active"{% endif %}>
             <a class="as-arrow{% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="{% if active %}true{% else %}false{% endif %}">
-                {{ icon|icon(15, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+                <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
             </a>
             <ul aria-expanded="false" class="collapse{% if active %} in{% endif %}{% if transDomains|length == 0 %} pb-3{% endif %}">
                 <li class="pt-3 pe-3 d-inline-block w-100">

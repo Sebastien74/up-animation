@@ -15,15 +15,16 @@ html body form .form-field-none {
     left: -1000%;
 }
 
-button[type="submit"] {
-    border-radius: 0;
-}
-
 #strength-wrap {
 
     .progress {
         height: 6px;
-        border-radius: 0;
+        border-radius: 5px;
+        background-color: $dash-surface-2 !important;
+    }
+
+    #strength-bar {
+        border-radius: 5px;
     }
 
     #strength-text {
@@ -35,43 +36,99 @@ button[type="submit"] {
     overflow: initial !important;
 }
 
-.filled-group {
-
-    border-bottom: 1px $gray-200 solid;
-
-    .input-group-text.show-password::after {
-        display: none !important;
-    }
-}
-
 .input-group {
+
+    .form-control, .form-control.is-invalid {
+        border-right-color: transparent !important;
+    }
 
     .input-group-text.show-password {
 
-        border: 0;
-        background-color: transparent;
-        border-radius: 0;
-        cursor: pointer;
-        position: relative;
+        .show-icon, .hide-icon {
 
-        &:after {
-            content: '';
-            position: absolute;
-            bottom: 1px;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background-color: #e9ecef;
+            align-items: center;
+            background: transparentize($primary, .78);
+            border-color: transparentize($primary, .45);
+            border-radius: 14px;
+            color: transparentize($white, .5);
+            display: flex;
+            flex: 0 0 auto;
+            height: 38px;
+            justify-content: center;
+            width: 38px;
+            transition: color .3s ease-in-out;
+
+            @include mediaQuery(min-lg) {
+
+                cursor: pointer;
+
+                &:hover {
+                    color: transparentize($white, .25);
+                    transition: color .3s ease-in-out;
+                }
+            }
         }
+    }
+}
+
+.group-form {
+    .input-group-text {
+        transition: border-color 0.15s ease-in-out;
+    }
+}
+
+.focus-group {
+
+    box-shadow: $input-focus-box-shadow;
+    border-radius: $input-border-radius;
+    border-color: $input-focus-border-color;
+
+    .form-control {
+        box-shadow: none !important;
+    }
+
+    .input-group-text {
+        border-color: $input-focus-border-color;
+        transition: border-color 0.15s ease-in-out;
+    }
+}
+
+.form-check-input:checked {
+    background-color: transparentize($primary, .65) !important;
+    border-color: transparentize($primary, .45) !important;
+    box-shadow: 0 20px 55px transparentize($black, .25), 0 0 0 4px transparentize($primary, .84);
+}
+
+.form-check-label {
+
+    transition: color 0.3s ease-in-out;
+    color: transparentize($white, .5);
+    font-size: 12px;
+    line-height: 1;
+
+    @include mediaQuery(min-lg) {
+        &:hover {
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+            color: transparentize($white, .25);
+        }
+    }
+}
+
+.form-floating {
+    .form-label {
+        transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
     }
 }
 
 .form-control.is-invalid,
 .was-validated .form-control:invalid {
-    background-image: linear-gradient($danger, $danger), linear-gradient($gray-200, $gray-200) !important;
-    background-size: 100% 2px, 100% 1px;
-    outline: 0 none;
-    transition-duration: .3s;
+    background-image: $input-invalid-bg !important;
+    background-size: 100% 100% !important;
+    background-position: initial !important;
+    outline: 0 none !important;
+    transition-duration: .3s !important;
+    border: 1px solid $input-border-color-invalid !important;
 }
 
 .form-control-line .form-group {
@@ -105,9 +162,16 @@ form {
     .invalid-feedback {
 
         font-size: 11px;
+        color: lighten($danger, 7%);
 
         .badge {
             display: none;
+        }
+    }
+
+    .is-invalid {
+        .input-group-text {
+            border-color: $input-border-color-invalid;
         }
     }
 }

@@ -2,10 +2,9 @@
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-        {{ 'fal database'|icon(13, 15, 'white me-2', {icon: true}) }}
-        <span class="hide-menu">{{ "Doctrine"|trans }}</span>
+        <span class="btn-icon small me-3"><i class="icm-database"></i></span>{{ "Doctrine"|trans }}
     </a>
-    <ul aria-expanded="false" class="collapse bg-info-light">
+    <ul aria-expanded="false" class="collapse">
         <li>
             <a href="{{ path('doctrine_schema_update') }}" data-toggle="preloader">
                 <span class="hide-menu">{{ "MAJ de la base de donnée"|trans }}</span>

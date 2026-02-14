@@ -46,6 +46,7 @@ class RecaptchaType extends AbstractType
                     'class' => 'form-field-none field_ho',
                     'autocomplete' => 'off',
                 ],
+                'row_attr' => ['class' => 'mb-0'],
             ]);
 
             $builder->add('field_ho_entitled', Type\TextType::class, [
@@ -57,6 +58,7 @@ class RecaptchaType extends AbstractType
                     'class' => 'form-field-none',
                     'autocomplete' => 'off',
                 ],
+                'row_attr' => ['class' => 'mb-0'],
             ]);
         }
     }

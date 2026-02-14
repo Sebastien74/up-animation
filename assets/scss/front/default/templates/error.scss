@@ -111,7 +111,7 @@ $enable-alert: true;
         line-height: rem(130px);
         font-weight: 900 !important;
         margin-bottom: 10px;
-        color: $primary !important;
+        color: $primary-darken !important;
         text-transform: uppercase;
 
         @include mediaQuery(min-lg) {
@@ -123,7 +123,7 @@ $enable-alert: true;
 
         font-family: $font-secondary;
         font-size: rem(35px);
-        font-weight: 400;
+        font-weight: 500;
         margin: 0;
         color: transparentize($white, .2) !important;
         text-transform: uppercase;

@@ -2,10 +2,9 @@
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-        {{ 'fal link'|icon(15, 15, 'white me-2', {icon: true}) }}
-        <span class="hide-menu">{{ "Routing JS"|trans }}</span>
+        <span class="btn-icon small me-3"><i class="icm-link"></i></span>{{ "Routing JS"|trans }}
     </a>
-    <ul aria-expanded="false" class="collapse bg-info-light">
+    <ul aria-expanded="false" class="collapse">
         <li>
             <a href="{{ path('js_routing_dump') }}" data-toggle="preloader">
                 <span class="hide-menu">{{ "Générer les routes"|trans }}</span>

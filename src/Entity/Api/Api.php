@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'api')]
 #[ORM\Entity(repositoryClass: ApiRepository::class)]
 class Api
@@ -37,19 +38,19 @@ class Api
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $securitySecretIv = null;
 
-    #[ORM\OneToOne(targetEntity: Facebook::class, inversedBy: 'api', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Facebook::class, inversedBy: 'api', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ?Facebook $facebook = null;
 
-    #[ORM\OneToOne(targetEntity: Google::class, inversedBy: 'api', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Google::class, inversedBy: 'api', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ?Google $google = null;
 
-    #[ORM\OneToOne(targetEntity: Instagram::class, inversedBy: 'api', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Instagram::class, inversedBy: 'api', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ?Instagram $instagram = null;
 
-    #[ORM\OneToOne(targetEntity: Custom::class, inversedBy: 'api', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Custom::class, inversedBy: 'api', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ?Custom $custom = null;
 

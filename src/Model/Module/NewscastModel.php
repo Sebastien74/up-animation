@@ -12,6 +12,7 @@ use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
+use Psr\Cache\InvalidArgumentException;
 
 /**
  * NewscastModel.
@@ -23,17 +24,19 @@ final class NewscastModel extends BaseModel
     /**
      * fromEntity.
      *
-     * @throws MappingException|NonUniqueResultException|QueryException
+     * @throws MappingException|NonUniqueResultException|QueryException|InvalidArgumentException
      */
     public static function fromEntity(Newscast $newscast, CoreLocatorInterface $coreLocator, array $options = []): object
     {
         $model = ViewModel::fromEntity($newscast, $coreLocator, array_merge($options));
-        $showLabel = self::getContent('help', $model->category->intl);
-        $publicationLabel = self::getContent('error', $model->category->intl);
-        $backLabel = self::getContent('targetLabel', $model->category->intl);
+        $category = $model->category;
+        $categoryIntl = $category ? $category->intl : null;
+        $showLabel = self::getContent('help', $categoryIntl);
+        $publicationLabel = self::getContent('error', $categoryIntl);
+        $backLabel = self::getContent('targetLabel', $categoryIntl);
 
         return (object) array_merge((array) $model, [
-            'asEvent' => $model->category->entity && $model->category->entity->isAsEvents(),
+            'asEvent' => $category && $category->entity && $category->entity->isAsEvents(),
             'showLabel' => $showLabel ?: self::$coreLocator->translator()->trans('En savoir +'),
             'publicationLabel' => $publicationLabel ?: self::$coreLocator->translator()->trans('Publié le'),
             'backLabel' => $backLabel ?: self::$coreLocator->translator()->trans('Retourner à la liste des publications'),

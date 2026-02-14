@@ -16,7 +16,9 @@ use App\Model\ViewModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
 use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\WebLink\GenericLinkProvider;
 use Symfony\Component\WebLink\Link;
@@ -51,7 +53,7 @@ final class WebsiteModel extends BaseModel
         public readonly ?string $logo = null,
         public readonly ?string $footerLogo = null,
         public readonly ?string $emailLogo = null,
-        public readonly ?array $networks = null,
+        public readonly ?object $networks = null,
         public readonly ?array $addresses = null,
         public readonly ?array $phones = null,
         public readonly ?array $emails = null,
@@ -64,7 +66,7 @@ final class WebsiteModel extends BaseModel
     /**
      * Get model.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public static function fromEntity(WebsiteEntity $website, CoreLocatorInterface $coreLocator, ?string $locale = null): self
     {

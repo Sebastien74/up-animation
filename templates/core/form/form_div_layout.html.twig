@@ -51,8 +51,8 @@
         <input type="{{ type }}" {{ block('widget_attributes') }}{% if value is not empty %} value="{{ value }}"{% endif %}>
     {% if type is defined and type == 'password' %}
             <span class="input-group-text show-password">
-                <span class="show-icon">{{ 'fad eye'|icon(null, 14) }}</span>
-                <span class="hide-icon d-none">{{ 'fad eye-slash'|icon(null, 14) }}</span>
+                <span class="show-icon"><i class="icon-eye"></i></span>
+                <span class="hide-icon d-none"><i class="icon-eye-slash"></i></span>
             </span>
         </div>
     {% endif %}

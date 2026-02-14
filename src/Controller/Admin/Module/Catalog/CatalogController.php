@@ -18,6 +18,7 @@ use App\Service\Development\Import\MetaCrawlerService;
 use App\Service\Development\Import\PagesUrlsCrawlerService;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
+use DateMalformedStringException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -214,6 +215,9 @@ class CatalogController extends AdminController
         return parent::index($request, $paginator);
     }
 
+    /**
+     * @throws DateMalformedStringException
+     */
     private function setUrl(string $oldUrl, array $metas): Url
     {
         $matches = explode('/', $oldUrl);

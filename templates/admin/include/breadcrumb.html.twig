@@ -1,24 +1,18 @@
-{% if wo_breadcrumbs()|length %}
-    <ol id="{{ listId }}" class="breadcrumb d-none d-md-inline-flex {{ listClass }}" itemscope
-        itemtype="https://schema.org/BreadcrumbList">
-        {% for b in breadcrumbs %}
-            <li class="breadcrumb-item{% if loop.last %} active{% endif %}{% if itemClass is defined and itemClass|length %} {{ itemClass }}{% endif %}"
-                itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                {% if b.url and not loop.last %}
-                <a href="{{ b.url }}"
-                   itemprop="item"{% if linkRel is defined and linkRel|length %} rel="{{ linkRel }}"{% endif %}>
-                    {% endif %}
-                    <span itemprop="name">{% if b.translate is defined and b.translate == true %}{{- b.text | trans(b.translationParameters, translation_domain, locale) -}}{% else %}{{- b.text -}}{% endif %}</span>
-                    {% if b.url and not loop.last %}
-                </a>
-            {% elseif b.url %}
-                <meta itemprop="item" content="{{ b.url }}"/>
-                {% endif %}
-                <meta itemprop="position" content="{{ loop.index }}"/>
-                {% if separator is not null and not loop.last %}
-                    <span class='{{ separatorClass }}'>{{ separator }}</span>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ol>
+{% trans_default_domain 'admin' %}
+
+{% if breadcrumb is defined and breadcrumb is not empty %}
+    <nav class="breadcrumb-container d-inline-block w-100 mt-4 mb-3" aria-label="breadcrumb">
+        <div class="d-flex align-items-center gap-2 px-1">
+                <span class="btn-icon small me-2" aria-hidden="true">
+                    <i class="icm-tachometer-alt"></i>
+                </span>
+            <div class="container-fluid">
+                <ol class="page-breadcrumb bg-transparent breadcrumb mb-0">
+                    {% for item, path in breadcrumb %}
+                        <li class="breadcrumb-item ps-0"><a href="{{ path }}" class="text-white">{{ item }}</a></li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </nav>
 {% endif %}

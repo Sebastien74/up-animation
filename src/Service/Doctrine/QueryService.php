@@ -17,6 +17,8 @@ use Doctrine\ORM\Query\ResultSetMapping;
  */
 class QueryService implements QueryServiceInterface
 {
+    private array $cache = [];
+
     public function __construct(private readonly EntityManagerInterface $entityManager)
     {
     }
@@ -28,6 +30,11 @@ class QueryService implements QueryServiceInterface
      */
     public function findOneBy(string $classname, string $column, mixed $value): ?object
     {
+        $cacheKey = 'findOneBy' . md5($classname . $column . serialize($value));
+        if (array_key_exists($cacheKey, $this->cache)) {
+            return $this->cache[$cacheKey];
+        }
+
         $metadata = $this->entityManager->getClassMetadata($classname);
         $table = !empty($metadata->table['name']) ? $metadata->table['name'] : null;
 
@@ -41,7 +48,7 @@ class QueryService implements QueryServiceInterface
         $query = $this->entityManager->createNativeQuery('SELECT '.rtrim($columns, ', ').' FROM '.$table.' WHERE '.$column.' = :'.$column, $rsm);
         $query->setParameter(':'.$column, $value);
 
-        return $query->getOneOrNullResult();
+        return $this->cache[$cacheKey] = $query->getOneOrNullResult();
     }
 
     /**
@@ -49,6 +56,11 @@ class QueryService implements QueryServiceInterface
      */
     public function findBy(string $classname, string $column, mixed $value): array
     {
+        $cacheKey = 'findBy' . md5($classname . $column . serialize($value));
+        if (array_key_exists($cacheKey, $this->cache)) {
+            return $this->cache[$cacheKey];
+        }
+
         $metadata = $this->entityManager->getClassMetadata($classname);
         $table = !empty($metadata->table['name']) ? $metadata->table['name'] : null;
 
@@ -62,6 +74,6 @@ class QueryService implements QueryServiceInterface
         $query = $this->entityManager->createNativeQuery('SELECT '.rtrim($columns, ', ').' FROM '.$table.' WHERE '.$column.' = :'.$column, $rsm);
         $query->setParameter(':'.$column, $value);
 
-        return $query->getResult();
+        return $this->cache[$cacheKey] = $query->getResult();
     }
 }

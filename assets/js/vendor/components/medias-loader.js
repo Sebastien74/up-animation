@@ -5,66 +5,79 @@
  */
 export default function () {
 
-    let loaderRequest = function () {
-        let body = document.body;
-        let skinAdmin = body.classList.contains('skin-admin');
-        let el = document.querySelector('.hx-include-in-viewport');
-        let loader = skinAdmin ? document.getElementById('main-preloader') : null;
-        if (loader) {
+    const body = document.body;
+    const skinAdmin = body.classList.contains('skin-admin');
+    const loader = skinAdmin ? document.getElementById('main-preloader') : null;
+
+    const loaderRequest = function () {
+        const el = document.querySelector('hx\\:include.hx-include-in-viewport');
+
+        if (loader && el) {
             loader.classList.remove('d-none');
             loader.style.opacity = '1';
         }
+
         if (el && !body.classList.contains('media-loader-active')) {
             body.classList.add('media-loader-active');
-            let xHttp = new XMLHttpRequest();
+
+            const xHttp = new XMLHttpRequest();
             xHttp.open("GET", el.getAttribute('src'), true);
             xHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-            xHttp.send();
+
             xHttp.onload = function () {
-                if (this.readyState === 4 && this.status === 200) {
+                if (xHttp.status === 200) {
                     if (!el.classList.contains('only-hx')) {
-                        let response = JSON.parse(this.response);
-                        let loaderWrap = el.closest('.img-loader-wrap');
-                        let loader = loaderWrap.querySelector('.img-loader');
-                        loaderWrap.innerHTML = response.html;
-                        if (loader) {
-                            loader.remove();
+                        const response = JSON.parse(xHttp.response);
+                        const loaderWrap = el.closest('.img-loader-wrap');
+                        if (loaderWrap) {
+                            const innerLoader = loaderWrap.querySelector('.img-loader');
+                            loaderWrap.innerHTML = response.html;
+                            if (innerLoader) {
+                                innerLoader.remove();
+                            }
                         }
                     } else {
                         el.remove();
                     }
                     body.classList.remove('media-loader-active');
-                    loaderRequest();
+                    // Small delay to let the browser breathe before next request
+                    setTimeout(loaderRequest, 50);
                 }
             };
-        } else if(!el && loader) {
+            xHttp.onerror = () => body.classList.remove('media-loader-active');
+            xHttp.send();
+        } else if (!el && loader) {
             loader.classList.add('d-none');
             loader.style.opacity = '0';
         }
     }
 
-    let elInViewport = function (el, offset = 0) {
-        const bounding = el.getBoundingClientRect(),
-            myElementHeight = el.offsetHeight,
-            myElementWidth = el.offsetWidth;
-        return bounding.top >= -myElementHeight
-            && bounding.left >= -myElementWidth
-            && bounding.right <= (window.innerWidth + offset || document.documentElement.clientWidth + offset) + myElementWidth
-            && bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) + myElementHeight;
-    }
-
-    let inViewport = function (offset = 0) {
-        let els = document.querySelectorAll('hx\\:include');
+    const checkViewport = function () {
+        const els = document.querySelectorAll('hx\\:include:not(.hx-include-in-viewport)');
+        let changed = false;
         els.forEach(function (el) {
-            if (elInViewport(el, offset)) {
-                el.classList.add('hx-include-in-viewport')
+            const rect = el.getBoundingClientRect();
+            const isIn = rect.top < (window.innerHeight || document.documentElement.clientHeight) + 300 && rect.bottom > -300;
+            if (isIn) {
+                el.classList.add('hx-include-in-viewport');
+                changed = true;
             }
         });
-        loaderRequest();
+        if (changed || document.querySelector('hx\\:include.hx-include-in-viewport')) {
+            loaderRequest();
+        }
     }
 
-    inViewport();
-    window.onscroll = function () {
-        inViewport(300);
-    }
+    checkViewport();
+
+    let scheduled = false;
+    window.addEventListener('scroll', () => {
+        if (!scheduled) {
+            scheduled = true;
+            requestAnimationFrame(() => {
+                checkViewport();
+                scheduled = false;
+            });
+        }
+    }, { passive: true });
 };

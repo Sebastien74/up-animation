@@ -9,6 +9,7 @@ export default function () {
             {selector: '.select2-selection', event: 'click'},
             {selector: '.custom-control-input', event: 'change'},
             {selector: '.form-check-input', event: 'change'},
+            {selector: '.form-select', event: 'change'},
             {selector: '.flatpicker', event: 'change'}
         ];
         selectors.forEach(({selector, event}) => {

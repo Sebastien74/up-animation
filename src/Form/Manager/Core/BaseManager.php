@@ -54,16 +54,24 @@ class BaseManager
     public function prePersist(mixed $entity, Website $website, ?UserFront $userFront = null): void
     {
         $allLocales = $this->getAllLocales($website);
-        $intls = $entity->getIntls();
+
         if (method_exists($entity, 'setUserFront')) {
             $entity->setUserFront($userFront);
         }
+
         if (method_exists($entity, 'setWebsite')) {
             $entity->setWebsite($website);
         }
-        $this->addIntls($allLocales, $website, $intls, $entity);
-        $this->addUrls($allLocales, $website, $entity);
-        $this->setTitleForce($intls);
+
+        if (method_exists($entity, 'getIntls')) {
+            $intls = $entity->getIntls();
+            $this->addIntls($allLocales, $website, $intls, $entity);
+            $this->setTitleForce($intls);
+        }
+
+        if (method_exists($entity, 'getUrls')) {
+            $this->addUrls($allLocales, $website, $entity);
+        }
     }
 
     /**

@@ -17,7 +17,7 @@
         {% endif %}
         <div class="row">
             {% for entity in entities %}
-                <div class="col-md-4 mb-5 mb-md-0 position-relative">
+                <div class="col-md-4 position-relative{% if not loop.last %} mb-5{% endif %} mb-md-0">
                     {{ macroCard.standard({
                         website: website,
                         entity: entity,

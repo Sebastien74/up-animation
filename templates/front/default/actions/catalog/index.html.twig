@@ -7,7 +7,7 @@
     {% include 'front/'~websiteTemplate~'/include/microdata-entities.html.twig' with {entities: microdataEntities, url: url, website: website} only %}
 {% endif %}
 
-{% set pageNum = app.request.get('page') ? app.request.get('page') : 1 %}
+{% set pageNum = app.request.query.get('page') ? app.request.query.get('page') : 1 %}
 {% set ajaxPath = path('front_cataloglisting_index', {website: website.id, url: url.id, filter: filter}) %}
 
 <div id="index-products" class="index-products row position-relative">

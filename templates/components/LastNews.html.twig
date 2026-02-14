@@ -1,35 +1,35 @@
 {% trans_default_domain 'front_default' %}
 
-{% set entity = this.lastNews.entity %}
+{% set data = this.lastNews %}
 
-{% if entity %}
-    <a href="{{ entity.url }}" class="fixed-news shadow position-fixed d-flex align-items-center justify-content-center">
-        {% if entity.haveMainMedia %}
-            <div class="media-wrap me-3">
-                {{ entity.mainMedia|file({}, {
-                    screensSizes: {
-                        mobile: {width: 100, height: 100},
-                        tablet: {width: 100, height: 60},
-                        desktop: {width: 100, height: 100}
-                    },
-                    decor: false,
-                    title: entity.intl.title,
-                    class: 'force-size',
-                    lazyLoad: true,
-                    priority: 'high'
-                }) }}
-            </div>
-        {% endif %}
-        <div class="content d-flex flex-column justify-content-between pe-4">
-            {{ component('Date', {
-                date: entity.date,
-                formatDate: 'dd MMM',
-                prefix: true,
-                class: 'fw-400 text-uppercase',
-            }) }}
-            <strong class="text-dark title fw-600 mb-2">{{ entity.intl.title|striptags }}</strong>
-            <span class="text-primary learn-more text-uppercase fw-600 mt-1">{{ "En savoir plus"|trans|raw }} <i class="icon-arrow-right text-primary ms-2"></i></span>
-        </div>
-        <i class="icon-times text-secondary cursor position-absolute btn-close"></i>
-    </a>
-{% endif %}
+{#{% if data %}#}
+{#    <a href="{{ path('front_newscast_view', {url: data.urlCode}) }}" class="fixed-news shadow position-fixed d-flex align-items-center justify-content-center">#}
+{#        {% if data.filename %}#}
+{#            <div class="media-wrap me-3">#}
+{#                {{ data.filename|file({}, {#}
+{#                    screensSizes: {#}
+{#                        mobile: {width: 100, height: 100},#}
+{#                        tablet: {width: 100, height: 60},#}
+{#                        desktop: {width: 100, height: 100}#}
+{#                    },#}
+{#                    decor: false,#}
+{#                    title: data.intl.title,#}
+{#                    class: 'force-size',#}
+{#                    lazyLoad: true,#}
+{#                    priority: 'high'#}
+{#                }) }}#}
+{#            </div>#}
+{#        {% endif %}#}
+{#        <div class="content d-flex flex-column justify-content-between pe-4 me-2">#}
+{#            {{ component('Date', {#}
+{#                date: data.dates.publicationStart,#}
+{#                formatDate: 'dd MMM',#}
+{#                prefix: true,#}
+{#                class: 'fw-400 text-uppercase',#}
+{#            }) }}#}
+{#            <strong class="text-dark title fw-600 mb-2">{{ data.intl.title|striptags }}</strong>#}
+{#            <span class="text-primary learn-more text-uppercase fw-600 mt-1">{{ "En savoir plus"|trans|raw }} <i class="icon-arrow-right text-primary ms-2"></i></span>#}
+{#        </div>#}
+{#        <i class="icon-times text-secondary btn btn-primary btn-circle text-white position-absolute btn-close"></i>#}
+{#    </a>#}
+{#{% endif %}#}

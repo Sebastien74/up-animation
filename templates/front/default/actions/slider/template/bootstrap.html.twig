@@ -22,22 +22,22 @@
 {% set arrowsAsBtn = arrowsAsBtn is defined ? arrowsAsBtn : true %}
 {% set displayArrows = arrows and 'bottom' in arrowAlignment %}
 
-{% macro arrows(slider, autoplay, sliderSlug, side, color, asBtn, position) %}
-    {% set website = slider.website is defined ? slider.website : website() %}
+{% macro arrows(autoplay, sliderSlug, side, color, asBtn, position) %}
+    {% set website = website() %}
     {% set configuration = website.configuration is defined ? website.configuration : false %}
     {% set accessibility = configuration.accessibilityStatus is defined ? configuration.accessibilityStatus : true %}
     {% set iconClasses = not asBtn ? 'text-'~color : '' %}
     {% set icon = asBtn ? 'chevron' : 'arrow' %}
     {% set btnClasses = asBtn ? 'btn-circle btn btn-'~color : '' %}
     <div class="controls d-inline-flex align-items-start justify-content-{{ side }}{% if 'end' == side %} w-100{% endif %} {% if 'top' == position %}mb-4{% else %}mt-4{% endif %}{% if 'end' == side %} {% endif %}{% if asBtn %} as-btn{% endif %}">
-        <button class="carousel-control-prev position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} me-2"
+        <button class="carousel-control-prev position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'center' != position %}me-2{% endif %}"
                 data-bs-slide="prev"
                 data-bs-target="#carousel-{{ sliderSlug }}"
                 aria-label="{{ "Précédent"|trans }}"
                 tabindex="-1">
             <i class="icon-{{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
         </button>
-        {% if autoplay and accessibility %}
+        {% if autoplay and accessibility and 'center' != position %}
             <button class="carousel-control-pause position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{ "Pause"|trans }}" tabindex="-1">
                 <i class="icon-pause{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
             </button>
@@ -45,7 +45,7 @@
                 <i class="icon-play{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
             </button>
         {% endif %}
-        <button class="carousel-control-next position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} ms-2"
+        <button class="carousel-control-next position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} {% if 'center' != position %}ms-2{% else %}ms-auto{% endif %}"
                 data-bs-slide="next"
                 data-bs-target="#carousel-{{ sliderSlug }}"
                 aria-label="{{ "Suivant"|trans }}"
@@ -80,6 +80,11 @@
             {% set link = intlMedia.link is defined and intlMedia.link ? intlMedia.link : false %}
             {% if display %}
                 <div class="carousel-item{% if isFirst %} active{% endif %}">
+                    {% if arrows and 'center' in arrowAlignment %}
+                        <div class="center-arrows vertical-align w-100">
+                            {{ macro.arrows(sliderSlug, autoplay, arrowsSide, arrowsColor, arrowsAsBtn, 'center') }}
+                        </div>
+                    {% endif %}
                     <div class="inner d-inline-block">
                         {% if arrows and 'top' in arrowAlignment %}
                             <div class="top-arrows">

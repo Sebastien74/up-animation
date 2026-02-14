@@ -116,13 +116,52 @@ class NewscastRepository extends ServiceEntityRepository
      *
      * @throws NonUniqueResultException
      */
-    public function findMaxResultPublishedOrderByNewest(string $locale, Website $website, int $limit = 5): array|Newscast|null
+    public function findMaxResultPublishedOrderByNewest(string $locale, Website $website, int $limit = 5, bool $optimized = true): array|Newscast|null
     {
-        $qb = $this->optimizedQueryBuilder($locale, $website)
-            ->setMaxResults($limit)
-            ->getQuery();
+        $qb = $optimized ? $this->optimizedQueryBuilder($locale, $website) : $this->lightQueryBuilder($locale, $website);
+        $qb->setMaxResults($limit);
 
         if (1 === $limit) {
+            return $qb->getQuery()->getOneOrNullResult();
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Find the last published news.
+     *
+     * @throws NonUniqueResultException
+     */
+    public function findOptimized(string $locale, Website $website, int $limit = null): Newscast|array|null
+    {
+        $qb = $this->createQueryBuilder('n')
+            ->addSelect('c', 'i', 'u', 's', 'mr', 'm')
+            ->join('n.intls', 'i')
+            ->join('n.urls', 'u')
+            ->leftJoin('n.category', 'c')
+            ->leftJoin('u.seo', 's')
+            ->leftJoin('n.mediaRelations', 'mr')
+            ->leftJoin('mr.media', 'm')
+            ->andWhere('n.website = :website')
+            ->andWhere('i.locale = :locale')
+            ->andWhere('u.locale = :locale')
+            ->andWhere('u.online = :online')
+            ->andWhere('n.publicationStart IS NOT NULL')
+            ->andWhere('n.publicationStart < CURRENT_TIMESTAMP()')
+            ->andWhere('n.publicationEnd IS NULL OR n.publicationEnd > CURRENT_TIMESTAMP()')
+            ->orderBy('n.publicationStart', 'DESC')
+            ->setParameter('website', $website)
+            ->setParameter('locale', $locale)
+            ->setParameter('online', true);
+
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        $qb = $qb->getQuery();
+
+        if ($limit === 1) {
             return $qb->getOneOrNullResult();
         }
 
@@ -220,24 +259,42 @@ class NewscastRepository extends ServiceEntityRepository
         string $sort = null,
         string $order = null,
         bool $preview = false,
-        QueryBuilder $qb = null): QueryBuilder
-    {
+        QueryBuilder $qb = null
+    ): QueryBuilder {
+
+        $statement = $this->lightQueryBuilder($locale, $website, $sort, $order, $preview, $qb);
+        $statement->leftJoin('n.website', 'w')
+            ->leftJoin('u.seo', 's')
+            ->leftJoin('n.category', 'c')
+            ->addSelect('w')
+            ->addSelect('s')
+            ->addSelect('c');
+
+        return $statement;
+    }
+
+    /**
+     * lightQueryBuilder.
+     */
+    public function lightQueryBuilder(
+        string $locale,
+        Website $website,
+        string $sort = null,
+        string $order = null,
+        bool $preview = false,
+        QueryBuilder $qb = null
+    ): QueryBuilder {
+
         $sort = $sort ?: 'publicationStart';
         $order = $order ?: 'DESC';
 
         $statement = $this->getOrCreateQueryBuilder($qb)
-            ->leftJoin('n.website', 'w')
             ->leftJoin('n.urls', 'u')
-            ->leftJoin('u.seo', 's')
-            ->leftJoin('n.category', 'c')
             ->andWhere('n.website = :website')
             ->andWhere('u.locale = :locale')
             ->setParameter('website', $website)
             ->setParameter('locale', $locale)
-            ->addSelect('w')
-            ->addSelect('u')
-            ->addSelect('s')
-            ->addSelect('c');
+            ->addSelect('u');
 
         if ('category' !== $sort) {
             $statement->orderBy('n.'.$sort, $order);

@@ -3,9 +3,9 @@
 {% set gdprArgs = gdprArguments() %}
 {% set gdprActive = gdprArgs.gdprActive or slug is not empty or block.controls %}
 {% set asSocialWall = 'elfsight' in slug or 'elfsight' in intl.introduction %}
-{% set code = slug ? slug : (asSocialWall ? 'apps-elfsight' : 'iframe') %}
+{% set code = asSocialWall ? 'elfsight' : (slug ? slug : 'iframe') %}
 
-<div class="widget-block{% if asSocialWall %} social-wall{% endif %}">
+<div class="widget-block{% if asSocialWall %} social-wall-wrap{% endif %}">
     {% if asSocialWall %}
         {% set content = intl.introduction|htmlEntities(false) %}
         {% set split = content|split('</script>') %}

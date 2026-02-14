@@ -32,37 +32,61 @@ class LastRouteService
         if ($this->isAllowed($request, $routeName, $request->getRequestUri())) {
             $session = $request->getSession();
 
-            $routeParams = $request->get('_route_params');
-            if ('_' == $routeName[0]) {
+            if ($routeName[0] === '_') {
                 return;
             }
 
-            if (preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $uri) && str_contains($uri, 'index') && !$request->isMethod('POST')) {
-                $session->set('last_route_back_page', intval($request->get('page')));
+            $securityToken = $_ENV['SECURITY_TOKEN'] ?? '';
+            $isAdminPath = $securityToken && str_contains($uri, '/admin-' . $securityToken);
+
+            if ($isAdminPath && str_contains($uri, 'index') && !$request->isMethod('POST')) {
+                $page = intval($request->get('page'));
+                if ($session->get('last_route_back_page') !== $page) {
+                    $session->set('last_route_back_page', $page);
+                }
             }
 
+            $routeParams = $request->get('_route_params');
             $routeData = (object) ['name' => $routeName, 'params' => $routeParams];
 
             /** Do not save same matched route twice */
-            $thisRoute = $session->get('this_route', []);
+            $thisRoute = $session->get('this_route');
             if ($thisRoute == $routeData) {
                 return;
             }
 
-            $session->set('last_uri', $uri);
-            $session->set('last_route', $thisRoute);
-            $session->set('this_route', $routeData);
-            $session->set('previous_secure_url', $uri);
+            if ($session->get('last_uri') !== $uri) {
+                $session->set('last_uri', $uri);
+            }
+            if ($session->get('last_route') !== $thisRoute) {
+                $session->set('last_route', $thisRoute);
+            }
+            if ($session->get('this_route') !== $routeData) {
+                $session->set('this_route', $routeData);
+            }
+            if ($session->get('previous_secure_url') !== $uri) {
+                $session->set('previous_secure_url', $uri);
+            }
 
-            if (preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $uri) && is_object($thisRoute) && str_contains($thisRoute->name, 'admin_')) {
-                $session->set('last_route_back', $thisRoute);
-                $session->set('this_route_back', $routeData);
+            if ($isAdminPath && is_object($thisRoute) && str_contains($thisRoute->name, 'admin_')) {
+                if ($session->get('last_route_back') !== $thisRoute) {
+                    $session->set('last_route_back', $thisRoute);
+                }
+                if ($session->get('this_route_back') !== $routeData) {
+                    $session->set('this_route_back', $routeData);
+                }
             }
 
             if (str_contains($uri, 'front') && is_object($thisRoute) && !str_contains($thisRoute->name, 'admin_')) {
-                $session->set('last_uri_front', $uri);
-                $session->set('last_route_front', $thisRoute);
-                $session->set('this_route_front', $routeData);
+                if ($session->get('last_uri_front') !== $uri) {
+                    $session->set('last_uri_front', $uri);
+                }
+                if ($session->get('last_route_front') !== $thisRoute) {
+                    $session->set('last_route_front', $thisRoute);
+                }
+                if ($session->get('this_route_front') !== $routeData) {
+                    $session->set('this_route_front', $routeData);
+                }
             }
         }
     }
@@ -84,39 +108,39 @@ class LastRouteService
             return false;
         }
 
-        $disabledRoutes = [
-            'liip_imagine_filter',
-            'fos_js_routing_js',
-            'admin_code_generator',
-            'admin_mediarelation_reset_media',
-            'admin_zone_size',
-            'admin_zone_background',
-            'admin_col_align',
-            'admin_col_background',
-            'admin_col_size',
-            'admin_cols_positions',
-            'admin_block_add',
-            'admin_block_edit',
-            'admin_blocks_positions',
-            'front_gdpr_scripts',
-            'front_webmaster_toolbox',
+        static $disabledRoutes = [
+            'liip_imagine_filter' => true,
+            'fos_js_routing_js' => true,
+            'admin_code_generator' => true,
+            'admin_mediarelation_reset_media' => true,
+            'admin_zone_size' => true,
+            'admin_zone_background' => true,
+            'admin_col_align' => true,
+            'admin_col_background' => true,
+            'admin_col_size' => true,
+            'admin_cols_positions' => true,
+            'admin_block_add' => true,
+            'admin_block_edit' => true,
+            'admin_blocks_positions' => true,
+            'front_gdpr_scripts' => true,
+            'front_webmaster_toolbox' => true,
         ];
 
-        if (in_array($routeName, $disabledRoutes)) {
+        if (isset($disabledRoutes[$routeName])) {
             return false;
         }
 
-        $disabledUris = [
+        static $disabledUris = [
             'ajax',
             'remove',
             'duplicate',
             'modal',
             'delete',
             'reset',
-            'front\/crypt',
-            'urls\/status',
-            'thumbnails\/media',
-            'uploads\/',
+            'front/crypt',
+            'urls/status',
+            'thumbnails/media',
+            'uploads/',
             'webp',
             'png',
             'jpeg',
@@ -127,21 +151,22 @@ class LastRouteService
         ];
 
         foreach ($disabledUris as $disabledUri) {
-            if (preg_match('/'.$disabledUri.'/', $uri)) {
+            if (str_contains($uri, $disabledUri)) {
                 return false;
             }
         }
 
-        $adminPatterns = ['edit', 'tree', 'index', 'layout'];
+        static $adminPatterns = ['edit', 'tree', 'index', 'layout'];
         $registerAdmin = false;
         foreach ($adminPatterns as $pattern) {
-            if (preg_match('/'.$pattern.'/', $uri)) {
+            if (str_contains($uri, $pattern)) {
                 $registerAdmin = true;
                 break;
             }
         }
 
-        if (preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $uri) && !$registerAdmin) {
+        $securityToken = $_ENV['SECURITY_TOKEN'] ?? '';
+        if ($securityToken && str_contains($uri, '/admin-' . $securityToken) && !$registerAdmin) {
             return false;
         }
 

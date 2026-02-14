@@ -37,11 +37,9 @@
 
     {% set modalId = modalId is defined ? modalId : (interface.name is defined ? interface.name : uniqId()) %}
 
-    <span class="add-open-modal" data-bs-toggle="modal" data-bs-target="#new-modal-{{ modalId }}">
-        <button class="btn btn-info standard">
-            {{ 'fal plus'|icon(15, 15, 'white me-2') }}<span class="hidden-xs">{{ addLabel|unescape|raw }}</span>
-        </button>
-    </span>
+    <button class="btn-app" data-bs-toggle="modal" data-bs-target="#new-modal-{{ modalId }}">
+        <i class="icm-plus"></i>{{ addLabel|unescape|raw }}
+    </button>
 
     <div class="modal fade" id="new-modal-{{ modalId }}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">

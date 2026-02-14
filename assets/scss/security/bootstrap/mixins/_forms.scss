@@ -56,7 +56,9 @@
     }
 
     .form-control {
+
         @include form-validation-state-selector($state) {
+
             border-color: $border-color;
 
             @if $enable-validation-icons {

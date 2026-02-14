@@ -63,8 +63,8 @@ class UserRequest
     #[ORM\PrePersist]
     public function prePersist(): void
     {
-        $this->tokenDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-        $this->createdAt = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $this->tokenDate = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
     }
 
     /**
@@ -73,7 +73,7 @@ class UserRequest
     #[ORM\PreUpdate]
     public function preUpdate(): void
     {
-        $this->updatedAt = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
     }
 
     public function getId(): ?int

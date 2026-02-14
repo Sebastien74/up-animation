@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Core;
 
 use App\Entity\Core\Website;
-use App\Entity\Information\Address;
 use App\Entity\Information\Information;
-use App\Entity\Information\Legal;
-use App\Entity\Information\Phone;
 use App\Model\BaseModel;
 use App\Model\IntlModel;
 use App\Model\MediaModel;
@@ -16,6 +13,9 @@ use App\Model\MediasModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
+use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -34,21 +34,20 @@ final class InformationModel extends BaseModel
         public readonly ?int $id = null,
         public readonly ?object $entity = null,
         public readonly ?string $companyName = null,
-        public readonly ?array $medias = null,
         public readonly ?array $logos = null,
         public readonly ?IntlModel $intl = null,
-        public readonly ?array $networks = null,
+        public readonly ?object $networks = null,
         public readonly ?array $addresses = null,
-        public readonly ?Address $address = null,
+        public readonly ?object $address = null,
         public readonly ?string $schedule = null,
         public readonly ?array $phones = null,
-        public readonly ?Phone $phone = null,
+        public readonly ?object $phone = null,
         public readonly ?array $emails = null,
         public readonly ?string $email = null,
         public readonly ?array $zones = null,
         public readonly ?string $emailFrom = null,
         public readonly ?string $emailNoReply = null,
-        public readonly ?Legal $legals = null,
+        public readonly ?LegalModel $legals = null,
         public readonly ?array $scheduleDays = null,
         public readonly ?array $alerts = null,
         public readonly ?string $alertType = null,
@@ -60,7 +59,7 @@ final class InformationModel extends BaseModel
     /**
      * Get model.
      *
-     * @throws NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public static function fromEntity(Website $website, CoreLocatorInterface $coreLocator, ?string $locale = null): self
     {
@@ -73,13 +72,11 @@ final class InformationModel extends BaseModel
         }
 
         $information = self::information($website);
-        $medias = MediasModel::fromEntity($website->getConfiguration(), $coreLocator, $locale)->list;
         $intl = IntlModel::fromEntity($information, $coreLocator, false);
-        $logos = self::logos($website, $medias, $locale);
+        $logos = self::logos($website, $locale);
         $addresses = self::addresses($information);
         $emails = self::emails($information);
         $phones = self::phones($information);
-        $legals = IntlModel::intls($information, 'legals', false);
 
         self::$cache['response'][$website->getId()][$locale] = new self(
             id: self::getContent('id', $information),
@@ -87,7 +84,7 @@ final class InformationModel extends BaseModel
             companyName: $intl->title,
             logos: $logos,
             intl: $intl,
-            networks: !empty($logos['social-networks']) ? $logos['social-networks'] : [],
+            networks: !empty($logos['social-networks']) ? $logos['social-networks'] : (object)[],
             addresses: $addresses->all,
             address: $addresses->main,
             schedule: $intl->body,
@@ -98,7 +95,7 @@ final class InformationModel extends BaseModel
             zones: self::contactZones($addresses->all, $phones->all, $emails->all),
             emailFrom: $emails->from,
             emailNoReply: $emails->noReply,
-            legals: !empty($legals[0]) ? $legals[0] : null,
+            legals: self::jsonCache($information, $locale, LegalModel::class),
             scheduleDays: IntlModel::intls($information, 'scheduleDays', false),
             alerts: self::alerts($intl),
             alertType: self::getContent('alertType', $intl->intl),
@@ -119,36 +116,43 @@ final class InformationModel extends BaseModel
         return self::$coreLocator->em()->getRepository(Information::class)
             ->createQueryBuilder('i')
             ->innerJoin('i.website', 'w')
+            ->leftJoin('i.intls', 'intl')
+            ->leftJoin('i.socialNetworks', 'sn')
             ->leftJoin('i.phones', 'p')
             ->leftJoin('i.emails', 'e')
             ->leftJoin('i.addresses', 'a')
             ->leftJoin('i.legals', 'l')
             ->leftJoin('i.scheduleDays', 's')
-            ->leftJoin('i.socialNetworks', 'sn')
-            ->leftJoin('i.intls', 'intl')
-            ->andWhere('w.id =  :website')
+            ->leftJoin('s.occurrences', 'o')
+            ->andWhere('w.id = :website')
             ->setParameter('website', $website)
             ->addSelect('w')
+            ->addSelect('intl')
+            ->addSelect('sn')
             ->addSelect('p')
             ->addSelect('e')
             ->addSelect('a')
             ->addSelect('l')
             ->addSelect('s')
-            ->addSelect('sn')
-            ->addSelect('intl')
+            ->addSelect('o')
             ->getQuery()
             ->getOneOrNullResult();
     }
 
     /**
      * To get logos.
+     *
+     * @throws NonUniqueResultException|MappingException
      */
-    private static function logos(Website $website, array $medias, string $locale): array
+    private static function logos(Website $website, string $locale): array
     {
-        if (!empty(self::$cache['logos'][$website->getId()])) {
-            return self::$cache['logos'][$website->getId()];
+        $cacheDirname = self::$coreLocator->formatDirname(self::$coreLocator->cacheDir().'/website-logos-'.$website->getId().'.cache.json');
+        $filesystem = new Filesystem();
+        if ($filesystem->exists($cacheDirname)) {
+            return (array) json_decode(file_get_contents($cacheDirname));
         }
 
+        $medias = MediasModel::fromEntity($website->getConfiguration(), self::$coreLocator, $locale)->list;
         $logos = [];
         $socialLogos = [];
         $filesystem = new Filesystem();
@@ -206,7 +210,9 @@ final class InformationModel extends BaseModel
             $logos['social-networks'] = $networks;
         }
 
-        self::$cache['logos'][$website->getId()] = $logos;
+        $fp = fopen($cacheDirname, 'w');
+        fwrite($fp, json_encode($logos, JSON_PRETTY_PRINT));
+        fclose($fp);
 
         return $logos;
     }

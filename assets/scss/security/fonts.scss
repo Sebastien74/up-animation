@@ -6,10 +6,8 @@
 ------------------------------------------------------------------------------------------ */
 
 @import "../vendor/mixin/fonts";
-
-$fontFamily: 'Poppins', sans-serif; /** Keep to admin font plugin */
 @import "../../lib/fonts/google-poppins";
 
 /*! purgecss start ignore */
-//@import "../../../lib/fonts/icomoon";
+@import "../../lib/fonts/icomoon-security";
 /*! purgecss end ignore */

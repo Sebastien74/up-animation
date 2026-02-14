@@ -75,7 +75,7 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
-     * To get website model.
+     * To get a website model.
      */
     public function website(): ?WebsiteModel
     {
@@ -94,14 +94,12 @@ class CoreLocator implements CoreLocatorInterface
             } else {
                 $this->cache['adminWebsite'] = $this->request()->get('website');
             }
-
             return $this->cache['adminWebsite'];
         } elseif ($this->request()) {
             if (!empty($this->cache['frontWebsite'])) {
                 return $this->cache['frontWebsite'];
             }
             $this->cache['frontWebsite'] = $this->em()->getRepository(Website::class)->findOneByHost($this->request()->getHost());
-
             return $this->cache['frontWebsite'];
         }
 
@@ -257,23 +255,25 @@ class CoreLocator implements CoreLocatorInterface
     {
         if ($route) {
             $routeInfos = $this->router()->getRouteCollection()->get($route);
-            preg_match_all('/\{([^}]*)\}/', $routeInfos->getPath(), $matches);
-            if (!empty($matches[1])) {
-                foreach ($matches[1] as $match) {
-                    if (empty($parameters[$match])) {
-                        if ($this->request()->get($match) && is_numeric($this->request()->get($match))) {
-                            $parameters[$match] = intval($this->request()->get($match));
-                        } elseif ($entity && is_object($entity) && method_exists($entity, 'getId')) {
-                            $interface = $this->interfaceHelper()->generate(get_class($entity));
-                            if (!empty($interface['name']) && $match === $interface['name']) {
-                                $parameters[$match] = $entity->getId();
+            if ($routeInfos) {
+                preg_match_all('/\{([^}]*)\}/', $routeInfos->getPath(), $matches);
+                if (!empty($matches[1])) {
+                    foreach ($matches[1] as $match) {
+                        if (empty($parameters[$match])) {
+                            if ($this->request()->get($match) && is_numeric($this->request()->get($match))) {
+                                $parameters[$match] = intval($this->request()->get($match));
+                            } elseif ($entity && is_object($entity) && method_exists($entity, 'getId')) {
+                                $interface = $this->interfaceHelper()->generate(get_class($entity));
+                                if (!empty($interface['name']) && $match === $interface['name']) {
+                                    $parameters[$match] = $entity->getId();
+                                }
+                            } elseif ($this->request()->attributes->get('interfaceName')
+                                && $this->request()->attributes->get('interfaceEntity')
+                                && $match === $this->request()->attributes->get('interfaceName')) {
+                                $parameters[$match] = $this->request()->attributes->get('interfaceEntity');
+                            } elseif ($this->request()->attributes->get('entitylocale') && 'entitylocale' === $match) {
+                                $parameters[$match] = $this->request()->attributes->get('entitylocale');
                             }
-                        } elseif ($this->request()->attributes->get('interfaceName')
-                            && $this->request()->attributes->get('interfaceEntity')
-                            && $match === $this->request()->attributes->get('interfaceName')) {
-                            $parameters[$match] = $this->request()->attributes->get('interfaceEntity');
-                        } elseif ($this->request()->attributes->get('entitylocale') && 'entitylocale' === $match) {
-                            $parameters[$match] = $this->request()->attributes->get('entitylocale');
                         }
                     }
                 }
@@ -479,7 +479,7 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
-     * To check if file exist.
+     * To check if a file exists.
      */
     public function fileExist(?string $path = null, string $dir = '/templates/'): bool
     {
@@ -493,7 +493,6 @@ class CoreLocator implements CoreLocatorInterface
 
         try {
             $filesystem = new Filesystem();
-
             return $filesystem->exists($this->projectDir.$fileDir);
         } catch (\Exception $e) {
             return false;
@@ -501,27 +500,27 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
-     * To check if file exist.
+     * To check if a route exists.
      *
      * @throws InvalidArgumentException
      */
     public function routeExist(string $routeName): bool
     {
-        if (!empty($this->cache['routes'][$routeName])) {
-            return $this->cache['routes'][$routeName];
+        if (!empty($this->cache['routes'])) {
+            return array_key_exists($routeName, $this->cache['routes']);
         }
 
         $filesystem = new Filesystem();
-        $dirname = $this->cacheDir.'/routes.cache';
-        $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
+        $dirname = $this->formatDirname($this->cacheDir . '/routes.cache');
         if ($filesystem->exists($dirname)) {
-            $cache = new PhpArrayAdapter($dirname, new FilesystemAdapter());
-            $this->cache['routes'][$routeName] = $cache->getItem('route.'.$routeName)->isHit();
-
-            return $this->cache['routes'][$routeName];
+            $raw = require $dirname;
+            $map = $raw[0] ?? [];
+            foreach ($map as $name => $isMainRequest) {
+                $this->cache['routes'][$name] = $isMainRequest;
+            }
         }
 
-        return false;
+        return array_key_exists($routeName, $this->cache['routes']);
     }
 
     /**
@@ -687,6 +686,14 @@ class CoreLocator implements CoreLocatorInterface
     public function isDebug(): bool
     {
         return $this->isDebug;
+    }
+
+    /**
+     * To get isProd.
+     */
+    public function isProd(): bool
+    {
+        return $this->envName() === 'prod';
     }
 
     /**

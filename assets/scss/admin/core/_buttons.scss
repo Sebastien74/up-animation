@@ -1,436 +1,284 @@
 @charset "UTF-8";
 
-//Buttons
+.btn-icon {
 
-.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba($dash-accent, 0.14);
+    border: 1px solid rgba($dash-accent, 0.28);
+    color: $btn-text;
 
-    .fa-plus {
-        font-size: 15px;
-        margin-top: 3px;
+    i {
+        position: relative;
     }
 
-    &:focus, &.active, &.focus {
-        box-shadow: none !important;
+    &.small {
+
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+
+        i {
+            font-size: .95rem !important;
+        }
     }
 
-    &.btn-success {
-        color: $white;
+    &:not(.small) {
+
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+
+        i {
+            font-size: 1.05rem !important;
+        }
+    }
+}
+
+.btn-app {
+
+    border-radius: 16px;
+
+    background: $btn-surface;
+    border: 1px solid $btn-border;
+    color: $btn-text;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    font-size: 14px;
+
+    &:not(.small) {
+        padding: .5rem .75rem !important;
     }
 
-    &.standard {
-        height: 38px;
+    &.small {
+        padding: .25rem 1rem !important;
+    }
+
+    &.icon-end {
+        padding-right: .5rem !important;
+    }
+
+    &.icon-start {
+        padding-left: .5rem !important;
+    }
+
+    transition: transform 140ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    filter 140ms ease;
+
+    i {
+        position: relative;
+        width: 34px;
+        height: 34px;
+        border-radius: 14px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        background: rgba($dash-accent, 0.14);
+        border: 1px solid rgba($dash-accent, 0.28);
+        color: $btn-text;
     }
 
-    &.btn-info-lighten {
-        svg, i {
-            color: $info !important;
-            fill: $info !important;
-        }
-    }
-
-    &.btn-outline-info {
+    @include mediaQuery(min-lg) {
         &:hover {
-            color: $info-light !important;
-            fill: $info-light !important;
+            background: $btn-surface-hover;
+            border-color: $btn-border-hover;
+            box-shadow: $btn-shadow;
+            transform: translateY(-1px);
+            color: $btn-text !important;
+        }
+    }
+
+    &:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 4px rgba($dash-accent, 0.18);
+    }
+}
+
+.btn-icon, .btn-app {
+
+    &.danger {
+        background: rgba(255, 92, 92, .12);
+        border-color: rgba(255, 92, 92, .30);
+    }
+
+    &.danger-darken {
+
+        background: rgba(255, 92, 92, .7);
+        border-color: rgba(255, 92, 92, .6);
+
+        i {
+            color: transparentize($white, .6) !important;
+        }
+    }
+
+    &.info {
+        background: rgba(59, 130, 246, .12);
+        border-color: rgba(59, 130, 246, .30);
+    }
+
+    &.info-darken {
+
+        background: rgba(59, 130, 246, .7);
+        border-color: rgba(59, 130, 246, .6);
+
+        i {
+            color: transparentize($dark, .3) !important;
+        }
+    }
+
+    &.warning {
+        background: rgba(245, 158, 11, .12);
+        border-color: rgba(245, 158, 11, .30);
+    }
+
+    &.warning-darken {
+
+        background: rgba(245, 158, 11, .7);
+        border-color: rgba(245, 158, 11, .6);
+
+        i {
+            color: transparentize($dark, .3) !important;
+        }
+    }
+
+    &.teal {
+        background: rgba(13, 148, 136, .12);
+        border-color: rgba(13, 148, 136, .30);
+    }
+
+    &.teal-darken {
+
+        background: rgba(13, 148, 136, .7);
+        border-color: rgba(13, 148, 136, .6);
+
+        i {
+            color: transparentize($white, .5) !important;
+        }
+    }
+
+    &.success {
+        background: rgba(13, 148, 136, .12);
+        border-color: rgba(13, 148, 136, .30);
+    }
+
+    &.success-darken {
+
+        background: rgba(13, 148, 136, .7);
+        border-color: rgba(13, 148, 136, .6);
+
+        i {
+            color: transparentize($white, .5) !important;
+        }
+    }
+
+    &.muted {
+        background: rgba(255, 255, 255, .05);
+        border-color: rgba(255, 255, 255, .10);
+        color: rgba(255, 255, 255, .35);
+    }
+
+    &.white {
+
+        background: rgba(255, 255, 255, .32);
+        border-color: rgba(255, 255, 255, .55);
+
+        i {
+            color: transparentize($dark, .5) !important;
         }
     }
 }
 
-.index-delete-show {
-    z-index: 999;
-    position: relative;
-}
+@include mediaQuery(min-lg) {
 
-.label-info-darken {
-    background-color: $info-darken;
-    color: $white;
-}
-
-.btn-outline-info-darken,
-.btn-outline-info-darken-dark {
-
-    svg {
-        transition: all .3s ease-in-out;
+    .btn-icon.cursor,
+    button.btn-icon,
+    a.btn-icon {
+        transition: all .3s ease;
     }
 
-    &:hover svg {
-        transition: all .3s ease-in-out;
-        fill: $white;
-    }
+    .btn-icon.cursor:hover,
+    button.btn-icon:hover,
+    a.btn-icon:hover {
 
-    &.active {
-        color: $white;
-    }
-}
+        transition: all .3s ease;
+        background: rgba($dash-accent, .22);
+        border-color: rgba($dash-accent, .55);
 
-.btn-outline-info-lighten {
-
-    svg {
-        fill: $info-lighten;
-    }
-
-    &.active, &:hover, &:focus {
-
-        color: $info-darken-dark;
-
-        svg {
-            fill: $info-darken-dark;
+        &.danger {
+            background: rgba(255, 92, 92, .18);
+            border-color: rgba(255, 92, 92, .55);
         }
-    }
-}
 
-#download-notice {
-
-    border: 2px dashed rgba(0, 0, 0, .2) !important;
-    border-radius: var(--bs-border-radius);
-    color: $dark;
-    padding: 15px;
-    background-image: linear-gradient(-45deg, #F6F6F6 25%, $white 25%, $white 50%, #F6F6F6 50%, #F6F6F6 75%, $white 75%, $white);
-    background-size: 30px 30px;
-
-    &:hover {
-        animation: stripes 2s linear infinite;
-    }
-
-    @-webkit-keyframes stripes {
-        from {
-            background-position: 0 0;
+        &.danger-darken {
+            background: rgba(255, 92, 92, .32);
+            border-color: rgba(255, 92, 92, .50);
         }
-        to {
-            background-position: 60px 30px;
+
+        &.info {
+            background: rgba(59, 130, 246, .18);
+            border-color: rgba(59, 130, 246, .55);
         }
-    }
 
-    @keyframes stripes {
-        from {
-            background-position: 0 0;
+        &.info-darken {
+            background: rgba(59, 130, 246, .18);
+            border-color: rgba(59, 130, 246, .55);
         }
-        to {
-            background-position: 60px 30px;
+
+        &.warning {
+            background: rgba(59, 130, 246, .18);
+            border-color: rgba(59, 130, 246, .55);
         }
-    }
-}
 
-#delete-pack-btn {
-    position: fixed;
-    z-index: 99999;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    height: 35px;
-    width: 35px;
-    transform: scale(0.99);
-    top: 145px;
-    right: 0;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.46);
-    font-size: 12px;
-    padding: 0;
-}
+        &.warning-darken {
 
-#password-generator-result {
+            background: rgba(245, 158, 11, .18);
+            border-color: rgba(245, 158, 11, .55);
 
-    .copy-link {
-
-        right: 0;
-        top: 0;
-        width: 33px;
-        height: 33px;
-        line-height: 35px;
-        background: $white;
-        color: $gray-900;
-        border-radius: 0.25rem;
-
-        svg {
-            fill: $dark !important;
-            margin-top: -3px;
+            &.dash-darken {
+                i {
+                    color: transparentize($white, .3) !important;
+                }
+            }
         }
-    }
-}
 
-body .btn-outline-dark {
-
-    color: $dark !important;
-
-    &:hover, &.active {
-        color: $white !important;
-        fill: $white !important;
-    }
-}
-
-.btn-circle-wrap {
-    max-width: 35px;
-    display: inline-block;
-    border-radius: 50%;
-}
-
-.btn-circle {
-    border-radius: 100%;
-    width: 40px;
-    height: 40px;
-    padding: 10px;
-}
-
-.btn-circle.btn-sm {
-    width: 35px;
-    height: 35px;
-    padding: 7px 0;
-    font-size: 14px;
-}
-
-.btn-circle.btn-lg {
-    width: 50px;
-    height: 50px;
-    padding: 14px 15px;
-    font-size: 18px;
-    line-height: 23px;
-}
-
-.btn-circle.btn-xl {
-    width: 70px;
-    height: 70px;
-    padding: 14px 15px;
-    font-size: 24px;
-}
-
-.btn-xs {
-    padding: .25rem .5rem;
-    font-size: 10px;
-}
-
-.btn-rounded {
-
-    border-radius: 60px;
-    padding: 7px 18px;
-
-    &.btn-lg {
-        padding: .75rem 1.5rem;
-    }
-
-    &.btn-sm {
-        padding: .25rem .5rem;
-        font-size: 12px;
-    }
-
-    &.btn-xs {
-        padding: .25rem .5rem;
-        font-size: 10px;
-    }
-
-    &.btn-md {
-        padding: 12px 35px;
-        font-size: 16px;
-    }
-}
-
-.btn-primary,
-.btn-warning,
-.btn-outline-primary:hover,
-.btn-outline-warning:hover,
-.btn-outline-danger:hover,
-.btn-outline-dark:hover {
-
-    color: $white !important;
-    transition: all .3s ease-in-out;
-
-    &:hover {
-
-        color: $white;
-        fill: $white;
-        transition: all .3s ease-in-out;
-
-        svg {
-            fill: $white !important;
-            transition: all .3s ease-in-out;
+        &.teal {
+            background: rgba(13, 148, 136, .18);
+            border-color: rgba(13, 148, 136, .55);
         }
-    }
-}
 
-.btn-secondary {
-    border-color: $btn-secondary-border;
-}
-
-.btn-outline-secondary {
-
-    color: $body-color;
-    background: $white;
-    border-color: $btn-secondary-border;
-
-    &:hover {
-        border-color: $gray-400;
-    }
-}
-
-.btn-outline-disabled {
-
-    cursor: not-allowed;
-    color: $gray-400;
-    background: transparent;
-    border-color: $gray-400;
-
-    &:hover {
-        color: $white;
-        background: $gray-400;
-    }
-}
-
-.btn-facebook {
-    color: $white;
-    background-color: $facebook-color;
-
-    &:hover {
-        color: $white;
-    }
-}
-
-.btn-twitter {
-    color: $white;
-    background-color: $twitter-color;
-
-    &:hover {
-        color: $white;
-    }
-}
-
-.btn-linkedin {
-    color: $white;
-    background-color: $linkedin-color;
-
-    &:hover {
-        color: $white;
-    }
-}
-
-.btn-dribbble {
-
-    color: $white;
-    background-color: $dribble-color;
-
-    &:hover {
-        color: $white;
-    }
-}
-
-.btn-googleplus {
-    color: $white;
-    background-color: $google-color;
-
-    &:hover {
-        color: $white;
-    }
-}
-
-.btn-instagram {
-    color: $white;
-    background-color: $instagram-color;
-}
-
-.btn-pinterest {
-    color: $white;
-    background-color: $pinterest-color;
-}
-
-.btn-dropbox {
-    color: $white;
-    background-color: $dropbox-color;
-}
-
-.btn-flickr {
-    color: $white;
-    background-color: $flickr-color;
-}
-
-.btn-tumblr {
-    color: $white;
-    background-color: $tumblr-color;
-}
-
-.btn-skype {
-    color: $white;
-    background-color: $skype-color;
-}
-
-.btn-youtube {
-    color: $white;
-    background-color: $youtube-color;
-}
-
-.btn-github {
-    color: $white;
-    background-color: $github-color;
-}
-
-.button-group {
-    .btn {
-        margin-bottom: 5px;
-        margin-right: 5px;
-    }
-}
-
-.no-button-group .btn {
-    margin-bottom: 5px;
-    margin-right: 0;
-}
-
-.btn .text-active {
-    display: none;
-}
-
-.btn.active .text-active {
-    display: inline-block;
-}
-
-.btn.active .text {
-    display: none;
-}
-
-span.position.btn-outline-info {
-
-    padding: 0;
-    min-width: 30px;
-    height: 30px;
-
-    a {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        line-height: 28px;
-    }
-
-    &:hover {
-        a {
-            color: $white;
+        &.teal-darken {
+            background: rgba(13, 148, 136, .18);
+            border-color: rgba(13, 148, 136, .55);
         }
-    }
-}
 
-// Checkbox and radio options
-//
-// In order to support the browser's form validation feedback, powered by the
-// `required` attribute, we have to "hide" the inputs via `clip`. We cannot use
-// `display: none;` or `visibility: hidden;` as that also hides the popover.
-// Simply visually hiding the inputs via `opacity` would leave them clickable in
-// certain cases which is prevented by using `clip` and `pointer-events`.
-// This way, we ensure a DOM element is visible to position the popover from.
-//
-// See https://github.com/twbs/bootstrap/pull/12794 and
-// https://github.com/twbs/bootstrap/pull/14559 for more information.
-
-.btn-group-toggle {
-    > .btn,
-    > .btn-group > .btn {
-        input[type="radio"],
-        input[type="checkbox"] {
-            position: absolute;
-            clip: rect(0, 0, 0, 0);
-            pointer-events: none;
+        &.success {
+            background: rgba(13, 148, 136, .18);
+            border-color: rgba(13, 148, 136, .55);
         }
-    }
-}
 
-.align-items-end {
-    .btn-group-toggle {
-        width: 100%;
+        &.success-darken {
+            background: rgba(13, 148, 136, .18);
+            border-color: rgba(13, 148, 136, .55);
+        }
+
+        &.muted {
+            background: rgba(255, 255, 255, .18);
+            border-color: rgba(255, 255, 255, .55);
+            color: rgba(255, 255, 255, .65);
+        }
+
+        &.white {
+            background: rgba(255, 255, 255, .55);
+            border-color: rgba(255, 255, 255, .75);
+        }
     }
 }

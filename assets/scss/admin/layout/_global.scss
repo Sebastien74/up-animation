@@ -19,6 +19,42 @@
    1 ) Core
 -----------------------------------*/
 
+html body {
+    font-family: $font-family;
+}
+
+#main-wrapper {
+    width: 100%;
+    overflow: hidden;
+    background: radial-gradient(
+                    900px 520px at 18% 0%,
+                    rgba($dash-accent, 0.045),
+                    transparent 62%
+    ),
+    radial-gradient(
+                    1100px 780px at 70% 35%,
+                    rgba(255, 255, 255, 0.012),
+                    transparent 68%
+    ),
+    linear-gradient(
+                    180deg,
+                    $dash-bg-2,
+                    $dash-bg-1 48%,
+                    $dash-bg-0
+    );
+}
+
+@include mediaQuery(min-xl) {
+    .page-wrapper, .footer {
+        margin-left: 300px;
+    }
+}
+
+.page-wrapper {
+    margin-top: 70px;
+    min-height: calc(100dvh - (70px + 60px));
+}
+
 .row.w-initial > * {
     width: initial;
 }
@@ -30,6 +66,10 @@
 
 a {
     text-decoration: none;
+}
+
+.cursor-not-allowed {
+    cursor: not-allowed !important;
 }
 
 .shadow-item {
@@ -44,9 +84,13 @@ a.shadow-item {
 
     &:hover {
         transform: translateY(calc(1.5rem * -.15));
-        box-shadow: 0 5px 10px rgba(30,32,37,.12);
+        box-shadow: 0 5px 10px rgba(30, 32, 37, .12);
         transition: all .4s;
     }
+}
+
+.cursor {
+    cursor: pointer !important;
 }
 
 .badge-white {
@@ -87,7 +131,7 @@ tr.bg-info-darken > th {
     z-index: 10;
 
     .inner {
-        filter: blur(3px);
+        filter: blur(20px);
         background-size: cover !important;
         background-position: center !important;
     }
@@ -98,10 +142,11 @@ tr.bg-info-darken > th {
         bottom: 0;
         display: flex;
         align-items: center;
+        justify-content: center;
     }
 }
 
-#accordion-alerts  {
+#accordion-alerts {
     .alerts-wrap {
         .alert:last-child {
             margin-bottom: 0 !important;
@@ -109,7 +154,7 @@ tr.bg-info-darken > th {
     }
 }
 
-.alert  {
+.alert {
 
     border: 0;
     border-radius: $border-radius;

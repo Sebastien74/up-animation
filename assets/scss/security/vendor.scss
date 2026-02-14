@@ -58,7 +58,10 @@ $dash-surface: #14161e !default;
 $dash-surface-2: mix(#ffffff, $dash-surface, 4%) !default;
 $dash-surface-3: mix(#000000, $dash-surface, 6%) !default;
 
-$dash-border: rgba(255, 255, 255, 0.10) !default;
+$dash-border: transparentize($white, .9) !default;
+$dash-invalid: transparentize($red, .9) !default;
+
+$component-active-color: transparentize($white, .25) !default;
 
 /*-----------------------------------
    2 ) Elements
@@ -85,6 +88,7 @@ $form-label-color: $gray-600 !default;
 $input-bg: radial-gradient(520px 160px at 12% 0%, mix($primary, $dash-surface, 10%), $dash-surface 62%), linear-gradient(180deg, $dash-surface-2, $dash-surface 45%, $dash-surface-3) !default;
 $input-invalid-bg: radial-gradient(520px 160px at 12% 0%, mix($red, $dash-surface, 10%), $dash-surface 62%), linear-gradient(180deg, $dash-surface-2, $dash-surface 45%, $dash-surface-3) !default;
 $input-border-color: $dash-border !default;
+$input-border-color-invalid: $dash-invalid !default;
 $input-border-radius: 12px !default;
 $input-font-size: 12px !default;
 $input-color: $gray-300 !default;
@@ -101,7 +105,9 @@ $input-group-addon-bg: transparent !default;
 @import './bootstrap/bootstrap';
 @import './bootstrap/variables';
 
+@import "../vendor/mixin/media-queries";
+
 @import 'core/app';
 @import 'core/preloader';
-@import 'core/ribbon';
 @import 'core/form';
+@import 'core/alert';

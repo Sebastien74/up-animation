@@ -10,9 +10,11 @@ use App\Entity\Seo\Url;
 use App\Model\Core\ConfigurationModel;
 use App\Model\Core\WebsiteModel;
 use App\Model\ViewModel;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
+use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -35,13 +37,13 @@ class IndexController extends FrontController
     /**
      * To logout user.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('/logout', name: 'app_logout', methods: 'GET', schemes: '%protocol%', priority: 1000)]
     public function logout(): void
     {
         /* controller can be blank: it will never be executed! */
-        throw new \Exception("Don't forget to activate logout in security.yaml");
+        throw new Exception("Don't forget to activate logout in security.yaml");
     }
 
     /**
@@ -63,15 +65,21 @@ class IndexController extends FrontController
         bool $preview = false
     ): RedirectResponse|Response {
 
+
         $website = $this->getWebsite();
-        $page = !$website->isEmpty ? $this->getPage($website, $request, $preview, $url) : [];
+        if ($website->isEmpty) {
+            throw $this->createNotFoundException($this->coreLocator->translator()->trans("Site non configuré !!", [], 'front'));
+        }
+
+        $page = $this->getPage($website, $request, $preview, $url);
+        return $this->render('core/debug.html.twig', []);
         $requestUri = $request->getRequestUri();
         $pageSlug = $page instanceof Page ? $page->getSlug() : null;
 
         /* 404 & Redirection */
         if (!$page instanceof Page || 'components' === $pageSlug && !$this->isGranted('ROLE_INTERNAL')) {
             if ('components' === $pageSlug) {
-                $session = new Session();
+                $session = $request->hasSession() ? $request->getSession() : new Session();
                 $session->getFlashBag()->add('info', 'Veuillez vous connecter pour visualiser cette page.');
                 $session->set('alert_error', true);
             } elseif (is_array($page) && !empty($page['redirection'])) {
@@ -80,21 +88,24 @@ class IndexController extends FrontController
             throw $this->createNotFoundException($this->coreLocator->translator()->trans("Cette page n'existe pas !!", [], 'front'));
         }
 
-        $url = $page->getUrls()->first();
+        $urlEntity = $page->getUrls()->first();
+        if (!$urlEntity instanceof Url) {
+            throw $this->createNotFoundException($this->coreLocator->translator()->trans("Cette page n'a pas d'URL !!", [], 'front'));
+        }
+
         if (!$preview && $page->isAsIndex() && !empty($requestUri) && '/' != $requestUri && !preg_match('/\?*=/', $requestUri)) {
             return $this->redirectToRoute('front_index', [], 301);
         }
 
         /* To redirect if pagination == 1 */
-        $mainRequest = $this->coreLocator->request();
-        if ($mainRequest->get('page') && 1 == $mainRequest->get('page') && !str_contains($mainRequest->getUri(), 'ajax')) {
-            $query = $mainRequest->query->all();
+        if ($request->query->get('page') && 1 == $request->query->get('page') && !str_contains($request->getUri(), 'ajax')) {
+            $query = $request->query->all();
             unset($query['page']);
-            $url = $mainRequest->getPathInfo();
+            $redirectUrl = $request->getPathInfo();
             if (!empty($query)) {
-                $url .= '?' . http_build_query($query);
+                $redirectUrl .= '?' . http_build_query($query);
             }
-            return $this->redirect($url);
+            return $this->redirect($redirectUrl);
         }
 
         /* To redirect build page if website is online */
@@ -108,14 +119,55 @@ class IndexController extends FrontController
             if (!$userAllowed) {
                 return $this->redirectToRoute('app_logout');
             } elseif ('front_index_security' !== $request->attributes->get('_route') && $this->isGranted('ROLE_USER_FRONT')) {
-                return $this->redirectToRoute('front_index_security', ['url' => $url->getCode()], 301);
+                return $this->redirectToRoute('front_index_security', ['url' => $urlEntity->getCode()], 301);
             }
         }
 
         /* Set request */
-        $request->setLocale($url->getLocale());
+        $request->setLocale($urlEntity->getLocale());
 
-        return $this->render($this->getTemplate($website->configuration, $page), $this->getArguments($website, $page, $url));
+        /* Optimization: HTTP Cache (ETag & Last-Modified) */
+        $response = new Response();
+        if (!$preview && !$page->isSecure() && !$this->coreLocator->isDebug()) {
+            $lastUpdate = $this->getLastUpdateDate($website, $page, $urlEntity);
+            $response->setLastModified($lastUpdate);
+            $response->setEtag(md5($urlEntity->getId() . $lastUpdate->getTimestamp() . $request->getLocale()));
+            $response->setPublic();
+            if ($response->isNotModified($request)) {
+                return $response;
+            }
+        }
+
+        return $this->render(
+            $this->getTemplate($website->configuration, $page),
+            $this->getArguments($website, $page, $urlEntity),
+            $response
+        );
+    }
+
+    /**
+     * Get the last update date for caching.
+     */
+    private function getLastUpdateDate(WebsiteModel $website, Page $page, Url $url): DateTimeInterface
+    {
+        dd('Ajouter dans website un etag global et le persister dans Doctrine listener');
+
+        $dates = [
+            $page->getUpdatedAt(),
+            $url->getUpdatedAt(),
+            $website->entity->getCacheClearDate()
+        ];
+
+        /** @var DateTimeInterface $lastUpdate */
+        $lastUpdate = $page->getCreatedAt() ?: new \DateTimeImmutable();
+
+        foreach ($dates as $date) {
+            if ($date instanceof DateTimeInterface && $date > $lastUpdate) {
+                $lastUpdate = $date;
+            }
+        }
+
+        return $lastUpdate;
     }
 
     /**
@@ -129,6 +181,7 @@ class IndexController extends FrontController
 
         return $this->forward('App\Controller\Front\IndexController::view', [
             'url' => $url->getCode(),
+            'website' => $website,
             'preview' => true,
         ]);
     }
@@ -177,19 +230,26 @@ class IndexController extends FrontController
      */
     private function getArguments(WebsiteModel $website, Page $page, Url $url): array
     {
+        $cacheKey = 'page_args_' . $page->getId() . '_' . $url->getLocale();
+        if (isset(self::$argsCache[$cacheKey])) {
+            return self::$argsCache[$cacheKey];
+        }
+
         $pageModel = ViewModel::fromEntity($page, $this->coreLocator, ['disabledMedias' => false, 'disabledIntl' => false]);
         $seo = $this->coreLocator->seoService()->execute($url, $pageModel, null, false, $website);
         $interface = !empty($seo['interface']) ? $seo['interface'] : $this->getInterface(Page::class);
 
-        return array_merge([
-            'seo' => $seo,
-            'templateName' => str_contains($this->coreLocator->request()->get('_route'), '_security') ? 'security' : str_replace('.html.twig', '', $pageModel->template),
-            'interface' => $interface,
-            'interfaceName' => !empty($interface['name']) ? $interface['name'] : null,
-            'thumbConfiguration' => $this->thumbConfiguration($website, Page::class),
-            'entityModel' => $pageModel,
-            'intlMedia' => $pageModel->mainMedia,
-            'entity' => $pageModel->entity,
+        return self::$argsCache[$cacheKey] = array_merge([
+//            'seo' => $seo,
+//            'templateName' => str_contains($this->coreLocator->request()->get('_route'), '_security') ? 'security' : str_replace('.html.twig', '', $pageModel->template),
+//            'interface' => $interface,
+//            'interfaceName' => !empty($interface['name']) ? $interface['name'] : null,
+//            'thumbConfiguration' => $this->thumbConfiguration($website, Page::class),
+//            'entityModel' => $pageModel,
+//            'intlMedia' => $pageModel->mainMedia,
+//            'entity' => $pageModel->entity,
         ], $this->defaultArgs($website, $url, $pageModel));
     }
+
+    private static array $argsCache = [];
 }

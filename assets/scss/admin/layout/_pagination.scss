@@ -1,0 +1,120 @@
+@charset "UTF-8";
+
+/* --------------------------------------------------------------------------------------
+
+    Module : Back pagination
+    Copyright : 2025
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+
+----------------------------------------------------------------------------------------- */
+
+/* Remove Bootstrap defaults that clash */
+.pagination {
+    --bs-pagination-bg: transparent;
+    --bs-pagination-border-color: transparent;
+    --bs-pagination-hover-bg: transparent;
+    --bs-pagination-hover-border-color: transparent;
+    --bs-pagination-focus-bg: transparent;
+    --bs-pagination-focus-box-shadow: none;
+}
+
+.pagination-nav {
+
+    /* Target Knp default output */
+    nav {
+        > .pagination {
+            margin: 0;
+            gap: 0.4rem; /* modern spacing */
+        }
+    }
+
+    .page-item {
+        &.disabled .page-link {
+            opacity: 0.45;
+            pointer-events: none;
+        }
+
+        &.active .page-link {
+            background: rgba($dash-accent, 0.22);
+            border-color: rgba($dash-accent, 0.55);
+            color: #fff;
+            font-weight: 650;
+
+            box-shadow: 0 0 0 4px rgba($dash-accent, 0.14);
+        }
+    }
+
+    .pagination-counter {
+        font-size: 13px;
+    }
+
+    .page-link {
+
+        /* Chip look */
+        min-width: 30px;
+        height: 30px;
+        padding: 0 12px;
+        border-radius: 12px;
+        border: 1px solid $pg-border;
+        background: rgba(255, 255, 255, 0.015);
+        color: $pg-text;
+        font-weight: 600;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-size: 12px;
+
+        transition: transform 140ms ease,
+        background-color 140ms ease,
+        border-color 140ms ease,
+        box-shadow 140ms ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: $pg-border-hover;
+            transform: translateY(-1px);
+            box-shadow: $pg-shadow;
+            text-decoration: none;
+            color: $pg-text;
+        }
+
+        &:focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 4px rgba($dash-accent, 0.18);
+        }
+    }
+
+    /* Ellipsis (disabled item with …) should look neutral */
+    .page-item.disabled .page-link {
+        border-color: transparent;
+        background: transparent;
+        color: $pg-muted;
+        box-shadow: none;
+    }
+
+    /* Make prev/next wider automatically (matches your "Précédent/Suivant") */
+    .page-link[rel="next"],
+    .page-link[rel="prev"] {
+        padding-left: 14px;
+        padding-right: 14px;
+        font-weight: 500;
+        border-radius: 12px;
+    }
+
+    /* Optional: slightly emphasize "Suivant »" as a CTA without changing HTML */
+    .page-link[rel="next"] {
+
+        background: rgba($dash-accent, 0.10);
+        border-color: rgba($dash-accent, 0.28);
+
+        &:hover {
+            background: rgba($dash-accent, 0.16);
+            border-color: rgba($dash-accent, 0.45);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55),
+            0 0 0 4px rgba($dash-accent, 0.12);
+        }
+    }
+}

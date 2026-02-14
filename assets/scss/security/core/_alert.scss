@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+/* --------------------------------------------------------------------------------------
+
+    Module : Back card
+    Copyright : 2025
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+
+----------------------------------------------------------------------------------------- */
+
+.alert {
+
+    border-radius: 16px;
+
+    .btn-close {
+        background: none;
+        position: absolute;
+        right: 12px;
+        top: 7px;
+    }
+
+    small {
+        font-size: .8em;
+    }
+
+    .icon {
+
+        flex: 0 0 38px;
+        height: 38px;
+        margin: auto auto auto 1rem;
+        border-radius: 14px;
+
+        i {
+            font-size: 1rem;
+        }
+    }
+
+    .message {
+
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        font-size: 13px;
+
+        * {
+            color: transparentize($white, .3) !important;
+        }
+    }
+
+    $states: success, primary, info, warning, danger, secondary;
+
+    @function theme-color($name) {
+        @return map-get($theme-colors, $name);
+    }
+
+    @each $s in $states {
+
+        $c: theme-color($s);
+
+        &.alert-#{$s} {
+
+            border-color: transparentize($c, .7) !important;
+            background:
+                    radial-gradient(900px 520px at 82% 100%, rgba($c, 0.18), transparent 62%),
+                    radial-gradient(900px 520px at 82% 100%, rgba(111, 66, 193, 0.10), transparent 62%),
+                    radial-gradient(1100px 780px at 30% 65%, rgba(255, 255, 255, 0.04), transparent 68%),
+                    linear-gradient(180deg, rgba(16, 18, 28, 0.72), rgba(10, 11, 18, 0.62));
+
+            .icon.bg-#{$s} {
+                background-color: rgba($c, 0.22) !important;
+                border-color: rgba($c, 0.55) !important;
+            }
+        }
+    }
+}

@@ -14,7 +14,6 @@ use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,8 +22,6 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
  * RequestListener.
- *
- * Listen front events
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
@@ -59,23 +56,22 @@ class RequestListener
             return;
         }
 
+        $this->event = $event;
         $this->request = $event->getRequest();
         $this->routeName = $this->request->attributes->get('_route');
+        $this->uri = $this->request->getUri();
 
         if (!$this->isMainRequest() || $this->isSubRequest()) {
             return;
         }
 
-        $this->event = $event;
-        $this->session = $this->request->getSession();
-        $this->uri = $this->request->getUri();
         $requestUri = $this->request->getRequestUri();
-        $asIndexFile = 'index.php' === str_replace('/', '', $requestUri);
-
-        if ($asIndexFile) {
+        if ('/index.php' === $requestUri || 'index.php' === $requestUri) {
             $this->event->setResponse(new RedirectResponse($this->request->getSchemeAndHttpHost(), 301));
             return;
         }
+
+        $this->session = $this->request->getSession();
 
         $securityToken = $_ENV['SECURITY_TOKEN'] ?? '';
         $isAdminPath = str_contains($this->uri, '/admin-'.$securityToken.'/');
@@ -86,7 +82,10 @@ class RequestListener
         $this->website = $this->coreLocator->website();
         $this->coreLocator->lastRoute()->execute($event);
         $this->coreLocator->cacheService()->generateRoutes();
-        $this->session->remove('mainExceptionMessage');
+        
+        if ($this->session->has('mainExceptionMessage')) {
+            $this->session->remove('mainExceptionMessage');
+        }
 
         if ($isFront) {
             $this->checkDisabledUris();
@@ -119,31 +118,33 @@ class RequestListener
     }
 
     /**
-     * Check if is mainRequest.
-     *
      * @throws InvalidArgumentException
      */
     private function isMainRequest(): bool
     {
-        $excludedRoutes = ['_wdt' => true, '_fragment' => true, '_profiler' => true];
+        if (!$this->routeName) {
+            return true;
+        }
+
+        static $excludedRoutes = ['_wdt' => true, '_fragment' => true, '_profiler' => true];
         if (isset($excludedRoutes[$this->routeName])) {
             return false;
         }
 
-        $uri = $this->request->getUri();
-        if (str_contains($uri, '_wdt') || str_contains($uri, '_profiler')) {
+        if (str_contains($this->uri, '_wdt') || str_contains($this->uri, '_profiler')) {
             return false;
         }
 
-        if (str_contains($uri, '_fragment') && str_contains($uri, '_hash')) {
+        if (str_contains($this->uri, '_fragment') && str_contains($this->uri, '_hash')) {
             return false;
         }
 
         if (self::$routesCache === null) {
-            $dirname = $this->coreLocator->cacheDir().DIRECTORY_SEPARATOR.'routes.cache';
-            if (file_exists($dirname)) {
-                $cache = new PhpArrayAdapter($dirname, new FilesystemAdapter());
-                self::$routesCache = $cache->getItem('routes.list')->get() ?? [];
+            $cacheFile = $this->coreLocator->cacheDir() . DIRECTORY_SEPARATOR . 'routes.cache';
+            if (file_exists($cacheFile)) {
+                $cache = new PhpArrayAdapter($cacheFile, new FilesystemAdapter());
+                $item = $cache->getItem('routes.list');
+                self::$routesCache = $item->isHit() ? $item->get() : [];
             } else {
                 self::$routesCache = [];
             }
@@ -156,12 +157,14 @@ class RequestListener
         return true;
     }
 
-    /**
-     * Check if is disabled URI.
-     */
     private function checkDisabledUris(): void
     {
-        if ($this->uri && preg_match('/wordpress|wp-includes|wp-admin|autodiscover/i', $this->uri)) {
+        if ($this->uri && (
+            str_contains($this->uri, 'wordpress') ||
+            str_contains($this->uri, 'wp-includes') ||
+            str_contains($this->uri, 'wp-admin') ||
+            str_contains($this->uri, 'autodiscover')
+        )) {
             $this->event->setResponse(new RedirectResponse($this->request->getSchemeAndHttpHost(), 301));
         }
     }
@@ -173,9 +176,9 @@ class RequestListener
      */
     private function frontRequest(): void
     {
-        $asAccessibility = $this->request->get('user_accessibility') || $this->request->get('user_accessibility_initial');
+        $asAccessibility = $this->request->query->get('user_accessibility') || $this->request->query->get('user_accessibility_initial');
         if ($asAccessibility) {
-            $status = true === (bool)$this->request->get('user_accessibility') ? '1' : '0';
+            $status = true === (bool)$this->request->query->get('user_accessibility') ? '1' : '0';
             $response = new RedirectResponse($this->request->getPathInfo());
             $response->headers->setCookie(Cookie::create('USER_ACCESSIBILITY',
                 $status,
@@ -223,16 +226,17 @@ class RequestListener
             }
         }
 
-        if ($this->request->get('admin_dark_theme') || $this->request->get('admin_dark_theme_initial')) {
+        if ($this->request->query->get('admin_dark_theme') || $this->request->query->get('admin_dark_theme_initial')) {
             $response = new RedirectResponse($this->request->getPathInfo());
             $expire = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->modify('+365 days');
-            $response->headers->setCookie(Cookie::create('ADMIN_DARK_THEME', !empty($this->request->get('admin_dark_theme')) ? '1' : '0', $expire));
+            $response->headers->setCookie(Cookie::create('ADMIN_DARK_THEME', !empty($this->request->query->get('admin_dark_theme')) ? '1' : '0', $expire));
             $this->event->setResponse($response);
             return;
         }
 
-        if (!$_FILES && $this->request->get('entitylocale')) {
-            $this->session->set('currentEntityLocale', $this->request->query->get('entitylocale'));
+        $entityLocale = $this->request->query->get('entitylocale') ? $this->request->query->get('entitylocale') : $this->request->attributes->get('entitylocale');
+        if (!$_FILES && $entityLocale) {
+            $this->session->set('currentEntityLocale', $entityLocale);
         }
     }
 }

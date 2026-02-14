@@ -69,13 +69,15 @@ class CategoryRepository extends ServiceEntityRepository
             ->leftJoin('c.website', 'w')
             ->leftJoin('c.intls', 'i')
             ->leftJoin('c.mediaRelations', 'mr')
+            ->leftJoin('mr.media', 'm')
             ->andWhere('c.website = :website')
             ->andWhere('i.locale = :locale')
             ->setParameter('website', $website)
             ->setParameter('locale', $locale)
             ->addSelect('w')
             ->addSelect('i')
-            ->addSelect('mr');
+            ->addSelect('mr')
+            ->addSelect('m');
 
         if ($slug) {
             $statement->andWhere('c.slug = :slug')

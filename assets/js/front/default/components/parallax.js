@@ -6,42 +6,59 @@ import Parlx from 'parlx.js'
 
 export default function (parallaxElements) {
 
-    let init = function (parallaxElements) {
-
-        for (let i = 0; i < parallaxElements.length; i++) {
-
-            let parallaxElement = parallaxElements[i];
-
-            parallaxElement.setAttribute('style', 'height: initial');
-
-            let paddingTop = window.getComputedStyle(parallaxElement, null).getPropertyValue('padding-top');
-            let paddingBottom = window.getComputedStyle(parallaxElement, null).getPropertyValue('padding-bottom');
-            let parallaxElementHeight = parallaxElement.offsetHeight;
-            let parallaxChildren = parallaxElement.querySelector('.parlx-children');
-            let parallaxImg = parallaxChildren.querySelector('.parallax-img');
-            let parallaxImgHeight = parallaxElementHeight + (parseInt(paddingTop.replace('px', '')) * 2) + (parseInt(paddingBottom.replace('px', '')) * 2);
-
-            parallaxChildren.style.marginTop = '-' + paddingTop;
-            parallaxChildren.style.height = parallaxElementHeight + 'px !important';
-            parallaxImg.style.height = parallaxImgHeight + 'px !important';
-            parallaxImg.setAttribute('style', 'height: ' + parallaxImgHeight + 'px');
-
-            Parlx.init({
-                elements: parallaxElement,
-                settings: {
-                    // direction: 'vertical',
-                    height: parallaxElementHeight + 'px',
-                    // exclude: /(iPod|iPhone|iPad|Android)/
-                },
-                callbacks: {
-                    // callbacks...
-                }
-            })
-        }
+    function read(parallaxElement) {
+        const styles = window.getComputedStyle(parallaxElement);
+        const paddingTop = parseInt(styles.getPropertyValue('padding-top')) || 0;
+        const paddingBottom = parseInt(styles.getPropertyValue('padding-bottom')) || 0;
+        const elHeight = parallaxElement.offsetHeight;
+        const children = parallaxElement.querySelector('.parlx-children');
+        if (!children) return null;
+        const img = children.querySelector('.parallax-img');
+        if (!img) return null;
+        const imgHeight = elHeight + (paddingTop * 2) + (paddingBottom * 2);
+        return { parallaxElement, children, img, paddingTop, elHeight, imgHeight };
     }
 
-    init(parallaxElements)
-    window.addEventListener("resize", function (event) {
-        init(parallaxElements)
-    })
+    function write(data) {
+        const { children, img, paddingTop, elHeight, imgHeight, parallaxElement } = data;
+        children.style.marginTop = `-${paddingTop}px`;
+        children.style.setProperty('height', `${elHeight}px`, 'important');
+        img.style.setProperty('height', `${imgHeight}px`, 'important');
+        // Ensure height is applied even if !important is overridden elsewhere
+        img.style.height = `${imgHeight}px`;
+
+        Parlx.init({
+            elements: parallaxElement,
+            settings: {
+                // direction: 'vertical',
+                height: `${elHeight}px`,
+                // exclude: /(iPod|iPhone|iPad|Android)/
+            },
+            callbacks: {
+                // callbacks...
+            }
+        });
+    }
+
+    function init(list) {
+        const batch = [];
+        for (let i = 0; i < list.length; i++) {
+            const item = read(list[i]);
+            if (item) batch.push(item);
+        }
+        // Single write phase
+        batch.forEach(write);
+    }
+
+    function debounce(fn, wait) {
+        let t;
+        return (...args) => {
+            clearTimeout(t);
+            t = setTimeout(() => fn.apply(this, args), wait);
+        };
+    }
+
+    init(parallaxElements);
+    const onResize = debounce(() => init(parallaxElements), 150);
+    window.addEventListener('resize', onResize);
 }

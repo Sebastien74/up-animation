@@ -108,7 +108,7 @@ class IndexHelper
     }
 
     /**
-     * Set search Form.
+     * Set a search Form.
      */
     public function setSearchForm(array $interface): void
     {
@@ -234,22 +234,31 @@ class IndexHelper
      */
     private function getQueryParams(array $interface): array
     {
-        if (!empty($interface['masterField']) && !empty($interface['parentMasterField'])) {
+        $masterField = !empty($interface['masterField']) ? $interface['masterField'] : null;
+        $parentMasterField = !empty($interface['parentMasterField']) ? $interface['parentMasterField'] : null;
+        $masterFieldRequest = $masterField && $this->request->attributes->get($masterField)
+            ? $this->request->attributes->get($masterField)
+            : ($masterField ? $this->request->query->get($masterField) : null);
+        $parentMasterFieldRequest = $parentMasterField && $this->request->attributes->get($parentMasterField)
+            ? $this->request->attributes->get($parentMasterField)
+            : ($parentMasterField ? $this->request->query->get($parentMasterField) : null);
+
+        if ($masterField && $parentMasterField) {
             return [
-                $interface['masterField'] => $this->request->get($interface['masterField']),
-                $interface['parentMasterField'] => $this->request->get($interface['parentMasterField']),
+                $interface['masterField'] => $masterFieldRequest,
+                $interface['parentMasterField'] => $parentMasterFieldRequest,
             ];
-        } elseif (!empty($interface['masterField']) && 'website' === $interface['masterField']) {
+        } elseif ($masterField && 'website' === $interface['masterField']) {
             return [
                 'website' => $interface['website'],
             ];
-        } elseif (!empty($interface['masterField']) && 'configuration' === $interface['masterField']) {
+        } elseif ($masterField && 'configuration' === $interface['masterField']) {
             return [
                 'configuration' => $interface['website']->getConfiguration(),
             ];
-        } elseif (!empty($interface['masterField']) && !empty($this->request->get($interface['masterField']))) {
+        } elseif ($masterField && $masterFieldRequest) {
             return [
-                $interface['masterField'] => $this->request->get($interface['masterField']),
+                $interface['masterField'] => $masterFieldRequest,
             ];
         }
 

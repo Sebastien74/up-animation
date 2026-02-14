@@ -48,9 +48,22 @@ class QuestionType extends AbstractType
 
             $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
             $intls->add($builder, [
-                'fields' => ['title' => 'col-lg-6', 'subTitle' => 'col-lg-6', 'introduction', 'body'],
+                'fields' => [
+                    'title' => 'col-lg-4',
+                    'subTitle' => 'col-lg-4',
+                    'placeholder' => 'col-lg-4',
+                    'introduction',
+                    'body',
+                    'targetPage' => 'col-lg-4',
+                    'targetLabel' => 'col-lg-4',
+                    'targetStyle' => 'col-lg-4',
+                    'targetLink' => 'col-lg-12',
+                    'newTab' => 'col-lg-6',
+                    'externalLink' => 'col-lg-6',
+                ],
                 'label_fields' => [
                     'title' => $this->translator->trans('Question', [], 'admin'),
+                    'placeholder' => $this->translator->trans('Bagde', [], 'admin'),
                     'body' => $this->translator->trans('Réponse', [], 'admin'),
                 ],
                 'fields_data' => ['titleForce' => 3],

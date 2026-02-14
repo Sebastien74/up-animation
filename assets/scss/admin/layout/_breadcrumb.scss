@@ -1,0 +1,69 @@
+@charset "UTF-8";
+
+/* --------------------------------------------------------------------------------------
+
+    Module : Back breadcrumb
+    Copyright : 2025
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+
+----------------------------------------------------------------------------------------- */
+
+.breadcrumb-container {
+    padding: 10px 14px;
+    border-radius: 16px;
+    background: $bg-gradient-primary;
+    border: 1px solid $crumb-border;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.breadcrumb-container:hover {
+    border-color: $crumb-border-hover;
+    box-shadow: $crumb-shadow;
+    transform: translateY(-1px);
+}
+
+/* Ensure container doesn't add unwanted padding in the breadcrumb row */
+.breadcrumb-container .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.page-breadcrumb {
+
+    align-items: center;
+    margin: 0;
+
+    .breadcrumb-item {
+        color: $crumb-muted;
+        font-weight: 400;
+        font-size: 13px;
+        letter-spacing: -0.01em;
+    }
+
+    /* Replace Bootstrap "/" with a subtle dot */
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: "•";
+        color: rgba(255, 255, 255, 0.30);
+        padding: 0 10px;
+    }
+
+    /* Links inside breadcrumb */
+    .breadcrumb-item a {
+        color: $crumb-muted !important;
+        text-decoration: none;
+        transition: color 120ms ease;
+
+        &:hover {
+            color: $crumb-text !important;
+        }
+    }
+
+    /* Active item (usually last) */
+    .breadcrumb-item.active {
+        color: $crumb-text;
+        font-weight: 650;
+    }
+}

@@ -21,7 +21,7 @@
     {% set formatDate = asListing ? listing.formatDate : null %}
     {% set hideDate = asListing ? listing.hideDate : false %}
     {% set displayCategory = asListing ? listing.displayCategory : null %}
-    {% set pageNum = app.request.get('page') ? app.request.get('page') : 1 %}
+    {% set pageNum = app.request.query.get('page') ? app.request.query.get('page') : 1 %}
     {% set ajaxPath = path('front_newscast_index', {website: website.id, url: url.id, filter: filter}) %}
     {% set asEvent = asEvent is defined ? asEvent : false %}
 

@@ -81,11 +81,11 @@
 
     {% include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {media: entity.mainVideo} %}
 
-{% elseif blockType == 'layout-gallery' and entity.medias|length > 0 %}
+{% elseif blockType == 'layout-gallery' and entity.medias is not empty %}
 
     {% include 'front/'~websiteTemplate~'/include/gallery.html.twig' with {gallery: entity, slug: 'product'} %}
 
-{% elseif blockType == 'layout-slider' and entity.medias|length > 0 %}
+{% elseif blockType == 'layout-slider' and entity.medias is not empty %}
 
     {% set slideType = 'thumbnails' %}
 

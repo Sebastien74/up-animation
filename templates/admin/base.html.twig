@@ -37,8 +37,13 @@
         <meta name="robots" content="index"/>
 
         <!-- Favicon icon -->
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('build/admin/images/theme/favicons/favicon-32x32.png', 'admin') }}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('build/admin/images/theme/favicons/favicon-16x16.png', 'admin') }}">
+        <link rel="icon" type="image/png" href="{{ asset('build/admin/images/theme/favicons/favicon-96x96.png', 'admin') }}" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="{{ asset('build/admin/images/theme/favicons/favicon.svg', 'admin') }}" />
+        <link rel="shortcut icon" href="{{ asset('build/admin/images/theme/favicons/favicon.ico', 'admin') }}" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('build/admin/images/theme/favicons/apple-touch-icon.png', 'admin') }}" />
+        <meta name="apple-mobile-web-app-title" content="Up!" />
+        <link rel="manifest" href="{{ asset('build/admin/images/theme/favicons/site.webmanifest', 'admin') }}" />
+        <meta property="og:image" content="{{ asset('build/admin/images/theme/favicons/share.jpg', 'admin') }}">
 
         <!-- Title -->
         {% set metaTitle = block('title') is defined ? block('title') : "Bienvenue !!"|trans %}
@@ -82,16 +87,15 @@
         {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'main-preloader', preloaderClass: 'main-preloader', visible: false, full: true} only %}
 
         <div id="main-wrapper">
-
+            {% include 'admin/include/header.html.twig' with {
+                pageIcon: pageIcon is defined ? pageIcon : null,
+                pageTitle: block('pageTitle') is defined ? block('pageTitle') : 'Administration'|trans,
+                breadcrumb: breadcrumb is defined ? breadcrumb : false,
+            } only %}
             {% include 'admin/include/sidebar/layout.html.twig' %}
-
             <div class="page-wrapper">
-                <div class="container-fluid">
-                    {% include 'admin/include/page-title.html.twig' with {
-                        pageIcon: pageIcon is defined ? pageIcon : null,
-                        pageTitle: block('pageTitle') is defined ? block('pageTitle') : null,
-                        breadcrumb: breadcrumb is defined ? breadcrumb : false,
-                    } only %}
+                <div class="container-fluid px-5">
+                    {% include 'admin/include/breadcrumb.html.twig' %}
                     <div id="admin-body">
                         {% if adminTheme == 'clouds' %}
                             <div id="clouds">
@@ -107,24 +111,20 @@
                         {% endif %}
                         {% block body %}{% endblock %}
                     </div>
-                    {% if granted('ROLE_INTERNAL') %}
-                        {% include 'admin/include/sidebar-opposite/layout.html.twig' %}
-                    {% endif %}
                 </div>
             </div>
-
-            <footer id="admin-footer" class="footer position-relative text-xs-center mt-4">
-                {{ 'far copyright'|icon(15, 15, 'dark me-1') }}{{ 'now'|date('Y') }} {{ cmsAuthorTitle|raw }}
+            {% if granted('ROLE_INTERNAL') %}
+                {% include 'admin/include/sidebar-opposite/layout.html.twig' %}
+            {% endif %}
+            <footer id="admin-footer" class="footer position-relative text-xs-center px-5 d-flex align-items-center mt-4">
+                <span class="btn-icon small me-2"><i class="icm-copyright"></i></span>{{ 'now'|date('Y') }} - {{ cmsAuthorTitle|raw }}
             </footer>
-
             {% include 'admin/include/translations.html.twig' %}
-
             <span id="cms-plugins-data" class="d-none"
                   data-colors-editor="{{ website|appColors('color') }}"
                   data-fonts-css-editor="{{ asset('build/front/'~configuration.template~'/front-default-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}"
                   data-fonts-format-editor="{{ configuration|appAdminFonts('family') }}">
             </span>
-
         </div>
 
         {% block javascripts %}
@@ -147,8 +147,7 @@
                  aria-atomic="true">
                 <div class="toast-header bg-danger">
                     <strong class="me-auto text-white">{{ "Alerte sécurité"|trans|raw }}</strong>
-                    <button class="btn-close btn-close-white text-white" data-bs-dismiss="toast"
-                            aria-label="{{ "Fermer"|trans|raw }}"></button>
+                    <button class="btn-close btn-close-white text-white" data-bs-dismiss="toast" aria-label="{{ "Fermer"|trans|raw }}"></button>
                 </div>
                 <div class="toast-body bg-white">
                     <small class="mb-2 d-inline-block w-100">{{ "Vous avez une session d'utlisateur front ouverte. Pensez à vous déconnecter"|trans|raw }}</small>

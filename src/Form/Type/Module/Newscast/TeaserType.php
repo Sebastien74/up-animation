@@ -138,17 +138,6 @@ class TeaserType extends AbstractType
                     'attr' => ['group' => 'col-md-3', 'data-config' => true],
                 ]);
 
-                $builder->add('template', Type\ChoiceType::class, [
-                    'label' => $this->translator->trans('Affichage', [], 'admin'),
-                    'display' => 'search',
-                    'choices' => [
-                        $this->translator->trans('Slider', [], 'admin') => 'slider',
-                        $this->translator->trans('Liste', [], 'admin') => 'list',
-                        $this->translator->trans('Onglets verticaux', [], 'admin') => 'vertical',
-                    ],
-                    'attr' => ['group' => 'col-md-3', 'data-config' => true],
-                ]);
-
                 $builder->add('promote', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',

@@ -1,8 +1,9 @@
 @import "mixins/banner";
 @include bsBanner("");
 
+
 // scss-docs-start import-stack
-// ConfigurationModel
+// Configuration
 @import "functions";
 @import "variables";
 @import "variables-dark";
@@ -40,9 +41,8 @@
 @import "popover";
 @import "carousel";
 @import "spinners";
-@import "offcanvas";
-@import "placeholders";
-@import "../themes/custom-forms";
+//@import "offcanvas";
+//@import "placeholders";
 
 // Helpers
 @import "helpers";

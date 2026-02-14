@@ -56,7 +56,7 @@ final class FacebookModel extends BaseModel
         $facebook = self::cache($api, 'facebook', self::$cache);
 
         self::$cache['facebook'][$api->getId()][$locale] = new self(
-            id: $api->getId(),
+            id: $facebook->getId(),
             entity: $facebook,
             apiVersion: self::getContent('apiVersion', $api),
             pageId: self::getContent('pageId', $api),

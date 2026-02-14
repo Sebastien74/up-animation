@@ -9,7 +9,7 @@
     {% set icon = intlsModules['slider']['entity'].iconClass is defined and intlsModules['slider']['entity'].iconClass ? intlsModules['slider']['entity'].iconClass : '/medias/icons/light/images.svg' %}
     <li{% if active %} class="active"{% endif %}>
         <a href="{{ path('admin_slider_index', {website: websiteId}) }}" data-toggle="preloader">
-            {{ icon|icon(17, 15, 'white me-3', {icon: true}) }}{{ title|raw }}
+            <span class="btn-icon small me-3">{{ icon|icon(17, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>
 {% endif %}

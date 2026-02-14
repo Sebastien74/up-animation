@@ -19,11 +19,32 @@
 -----------------------------------*/
 
 body {
+
     font-family: $font-family-sans-serif;
     font-size: 15px;
     overflow-x: hidden;
     background-color: $bg-body;
     min-height: 100dvh;
+
+    .fz-small {
+        font-size: 12px;
+    }
+
+    .fz-smaller {
+        font-size: 14px;
+    }
+
+    a {
+
+        transition: color 0.3s ease-in-out;
+
+        @include mediaQuery(min-lg) {
+            &.text-white-50:hover {
+                transition: color 0.3s ease-in-out;
+                color: transparentize($white, .25) !important;
+            }
+        }
+    }
 }
 
 * {
@@ -90,7 +111,11 @@ a {
 
     .btn {
         font-weight: 300;
-        border-radius: 0;
+        border-radius: 14px;
+        background: transparentize($primary, .82) !important;
+        border-color: transparentize($primary, .45) !important;
+        box-shadow: 0 20px 55px transparentize($black, .25), 0 0 0 4px transparentize($primary, .84);
+        transition: all .3s ease-in-out;
     }
 
     .login-box {
@@ -127,35 +152,17 @@ a {
     }
 }
 
-#recaptcha {
-    bottom: 65px !important;
-}
-
-/*-----------------------------------
-   2 ) Base theme
------------------------------------*/
-
-.base-theme {
-
-    $theme-color: $primary;
-
-    .header {
-        #logo {
-            min-height: 100px;
-        }
-    }
-
-    .btn-info,
-    .form-check-input:checked {
-        background-color: $theme-color;
-        border-color: $theme-color;
-    }
-
-    .form-material .form-control,
-    .form-material .form-control.focus,
-    .form-material .form-control:focus {
-        background-image: linear-gradient($theme-color, $theme-color), linear-gradient(#e9ecef, #e9ecef);
-    }
+.square-badge-primary {
+    align-items: center;
+    background: transparentize($primary, .78);
+    border-color: transparentize($primary, .45);
+    border-radius: 14px;
+    color: transparentize($white, .5);
+    display: flex;
+    flex: 0 0 auto;
+    height: 38px;
+    justify-content: center;
+    width: 38px;
 }
 
 /*-----------------------------------

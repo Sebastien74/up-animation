@@ -46,28 +46,38 @@ readonly class ThumbService
     public function preload(mixed $mediaModel, array $thumbConfiguration = []): array
     {
         $thumbsRender = [];
+        $filename = $mediaModel->media->getFilename();
+        if (!$filename) {
+            return $thumbsRender;
+        }
+
         $filesystem = new Filesystem();
         $inAdmin = $this->coreLocator->inAdmin();
         $prefixCache = $inAdmin ? 'admin' : 'front';
-        $dirnameGenerated = $this->coreLocator->projectDir().'/public/thumbnails/generated/';
-        $dirnameGenerated = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirnameGenerated);
-        $dirnameGenerated = $dirnameGenerated.$prefixCache.'-'.$mediaModel->media->getWebsite()->getUploadDirname().'.cache.json';
+        $dirnameGenerated = $this->coreLocator->projectDir() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'thumbnails' . DIRECTORY_SEPARATOR . 'generated' . DIRECTORY_SEPARATOR;
+        $dirnameGenerated = $dirnameGenerated . $prefixCache . '-' . $mediaModel->media->getWebsite()->getUploadDirname() . '.cache.json';
+        
         $jsonData = $filesystem->exists($dirnameGenerated) ? file_get_contents($dirnameGenerated) : null;
 
-        if ($jsonData && $mediaModel->media->getFilename() && preg_match('/'.$mediaModel->media->getFilename().'/', $jsonData)) {
+        if ($jsonData && str_contains($jsonData, $filename)) {
             $files = $this->thumbnail->execute($mediaModel, $thumbConfiguration);
             $thumbs = !empty($files['lazyFile']) ? [$files['lazyFile']] : [];
             $thumbs = !empty($files['files']) ? array_replace($thumbs, $files['files']) : $thumbs;
             $sizesDisplay = !empty($files['sizesDisplay']) ? $files['sizesDisplay'] : $this->thumbnail->getSizes();
+            
+            $request = $this->coreLocator->request();
+            $linkProvider = $request->attributes->get('_links', new GenericLinkProvider());
+            $retinaSizes = $this->thumbnail->getRetinaSizes();
+
             foreach ($thumbs as $key => $thumb) {
-                if ('0' == $key || in_array($key, $sizesDisplay) && !in_array($key, $this->thumbnail->getRetinaSizes()) && !str_contains($thumb, '-blur.')) {
+                if ('0' == $key || in_array($key, $sizesDisplay) && !in_array($key, $retinaSizes) && !str_contains($thumb, '-blur.')) {
                     $thumbsRender[$key] = $thumb;
-                    $linkProvider = $this->coreLocator->request()->attributes->get('_links', new GenericLinkProvider());
-                    $this->coreLocator->request()->attributes->set('_links', $linkProvider->withLink(
+                    $linkProvider = $linkProvider->withLink(
                         (new Link('preload', $thumb))->withAttribute('as', 'image')
-                    ));
+                    );
                 }
             }
+            $request->attributes->set('_links', $linkProvider);
         }
 
         return $thumbsRender;
@@ -78,9 +88,9 @@ readonly class ThumbService
      */
     public function thumbConfiguration(WebsiteModel $website, string $classname, ?string $action = null, mixed $filter = null, ?string $type = null): array
     {
-        $session = new Session();
-        $thumbsSession = $session->get('thumbs_actions_'.$website->uploadDirname);
-        $thumbs = $thumbsSession ?: [];
+        $session = $this->coreLocator->request()->getSession();
+        $sessionKey = 'thumbs_actions_' . $website->uploadDirname;
+        $thumbs = $session->get($sessionKey, []);
         $type = !$type && Block::class === $classname ? $filter : $type;
 
         if ($type && str_contains($type, '-large')) {
@@ -108,7 +118,7 @@ readonly class ThumbService
                     array_unshift($thumbs[$thumbAction->getNamespace()], $thumbConfig);
                 }
             }
-            $session->set('thumbs_actions_'.$website->uploadDirname, $thumbs);
+            $session->set($sessionKey, $thumbs);
         }
 
         $configurations = [];

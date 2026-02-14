@@ -57,7 +57,9 @@ class RedirectionService
         $host = $request->getHost();
         $repository = $this->coreLocator->em()->getRepository(CoreEntities\Website::class);
         $websiteId = $request->get('website') ? intval($request->get('website')) : null;
-        $website = preg_match('/\/preview\//', $request->getUri())
+        $uri = $request->getUri();
+        
+        $website = str_contains($uri, '/preview/')
             ? $repository->findObject($websiteId)
             : $repository->findOneByHost($host);
 
@@ -74,8 +76,10 @@ class RedirectionService
                 $domainRedirection = $this->domainRedirection($request, $website, $configuration, $domain);
                 $urlRedirection = $this->urlRedirection($request, $website, $locale, $domainRedirection);
                 $inBuild = $this->inBuild($request, $website, $configuration);
-                $request->setLocale($locale);
-                $request->getSession()->set('_locale', $locale);
+                if ($request->getLocale() !== $locale) {
+                    $request->setLocale($locale);
+                    $request->getSession()->set('_locale', $locale);
+                }
             }
         }
 
@@ -116,7 +120,7 @@ class RedirectionService
         $redirection = false;
         if (!$domain || !$domain->asDefault && $configuration->domain) {
             $defaultDomain = $configuration->domain;
-            if ($defaultDomain && !preg_match('/\/uploads\/'.$website->uploadDirname.'/', $request->getUri())) {
+            if ($defaultDomain && !str_contains($request->getUri(), '/uploads/' . $website->uploadDirname . '/')) {
                 $domainName = str_contains($defaultDomain->name, 'http') ? $defaultDomain->name : $this->protocol.$defaultDomain->name;
                 $redirection = rtrim($domainName.$request->getRequestUri(), '/');
             }

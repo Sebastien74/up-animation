@@ -36,7 +36,11 @@ class ListingRepository extends ServiceEntityRepository
      */
     public function findOneByFilter(Website $website, string $locale, mixed $filter): ?Listing
     {
-        $statement = $this->createQueryBuilder('l');
+        $statement = $this->createQueryBuilder('l')
+            ->leftJoin('l.intls', 'i')
+            ->andWhere('i.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->addSelect('i');
 
         if (is_numeric($filter)) {
             $statement->andWhere('l.id = :id')

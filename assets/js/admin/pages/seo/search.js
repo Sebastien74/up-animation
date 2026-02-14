@@ -24,8 +24,8 @@ export default function () {
             let srcStr = item.text();
 
             let pattern = new RegExp("(" + term + ")", "gi");
-            srcStr = srcStr.replace(pattern, "<mark class=\"bg-info\">$1</mark>");
-            srcStr = srcStr.replace(/(<mark class="bg-info">[^<>]*)((<[^>]+>)+)([^<>]*<\/mark>)/, "$1</mark>$2<mark>$4");
+            srcStr = srcStr.replace(pattern, "<mark class=\"bg-transparent\">$1</mark>");
+            srcStr = srcStr.replace(/(<mark class="bg-transparent">[^<>]*)((<[^>]+>)+)([^<>]*<\/mark>)/, "$1</mark>$2<mark>$4");
 
             item.html(srcStr);
 

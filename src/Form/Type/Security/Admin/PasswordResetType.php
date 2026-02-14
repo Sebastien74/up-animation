@@ -36,7 +36,7 @@ class PasswordResetType extends AbstractType
             'type' => Type\PasswordType::class,
             'invalid_message' => $this->translator->trans('Les mots de passe sont différents', [], 'validators_cms'),
             'first_options' => [
-                'label' => false,
+                'label' => $this->translator->trans('Nouveau mor de passe', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un mot de passe', [], 'security_cms'),
                     'group' => 'col-12 mb-3',
@@ -44,9 +44,9 @@ class PasswordResetType extends AbstractType
                 ],
             ],
             'second_options' => [
-                'label' => false,
+                'label' => $this->translator->trans('Confirmez le mot de passe', [], 'security_cms'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Confirmez le mot de passe', [], 'security_cms'),
+                    'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms'),
                     'group' => 'col-12 mb-3',
                     'class' => 'pt-2 pb-2',
                 ],

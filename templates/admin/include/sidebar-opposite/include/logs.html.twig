@@ -2,10 +2,9 @@
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-        {{ 'fal sign-out-alt'|icon(15, 15, 'white me-2', {icon: true}) }}
-        <span class="hide-menu">{{ "Logs"|trans }}</span>
+        <span class="btn-icon small me-3"><i class="icm-sign-out-alt"></i></span>{{ "Logs"|trans }}
     </a>
-    <ul aria-expanded="false" class="collapse bg-info-light">
+    <ul aria-expanded="false" class="collapse">
         <li>
             <a href="{{ path('admin_logs') }}" data-toggle="preloader">
                 <span class="hide-menu">{{ "Tout afficher"|trans }}</span>

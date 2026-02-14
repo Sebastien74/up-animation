@@ -12,16 +12,17 @@ export function lazyVideos(videosYoutube = [], videos = []) {
     let controls = function (video, videoContainer) {
 
         let videoBlock = video.closest('.video-block-html');
+        if (!videoBlock) return;
 
         /** Player controls */
-        videoBlock.querySelectorAll('.player-control').forEach(function (playerControl) {
-            let parent = playerControl.closest('.video-block-html');
-            if (parent && playerControl.classList.contains('control-play-btn')) {
+        const playerControls = videoBlock.querySelectorAll('.player-control');
+        playerControls.forEach(function (playerControl) {
+            if (playerControl.classList.contains('control-play-btn')) {
                 playerControl.addEventListener("mouseenter", function () {
-                    parent.classList.add('hover-player')
+                    videoBlock.classList.add('hover-player');
                 });
                 playerControl.addEventListener("mouseleave", function () {
-                    parent.classList.remove('hover-player')
+                    videoBlock.classList.remove('hover-player');
                 });
             }
             playerControl.onclick = function (event) {
@@ -52,9 +53,11 @@ export function lazyVideos(videosYoutube = [], videos = []) {
                 if (tooltip) {
                     tooltip.remove();
                 }
-                soundControl.querySelector('.pause').classList.toggle('d-none');
-                soundControl.querySelector('.play').classList.toggle('d-none');
-                soundControl.classList.toggle('active')
+                const pauseIcon = soundControl.querySelector('.pause');
+                const playIcon = soundControl.querySelector('.play');
+                if (pauseIcon) pauseIcon.classList.toggle('d-none');
+                if (playIcon) playIcon.classList.toggle('d-none');
+                soundControl.classList.toggle('active');
             }
         }
     }
@@ -101,13 +104,17 @@ export function lazyVideos(videosYoutube = [], videos = []) {
                     let target = video.target;
                     let sizes = getSizes(target);
                     if (video.isIntersecting) {
+                        const styleUpdates = {};
                         if (sizes.height > 0) {
-                            target.style.maxHeight = sizes.height + 'px';
+                            styleUpdates.maxHeight = sizes.height + 'px';
                         }
-                        target.style.objectFit = 'cover';
-                        for (let source in video.target.children) {
-                            let videoSource = video.target.children[source];
-                            if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
+                        styleUpdates.objectFit = 'cover';
+                        
+                        Object.assign(target.style, styleUpdates);
+
+                        for (let i = 0; i < target.children.length; i++) {
+                            let videoSource = target.children[i];
+                            if (videoSource.tagName === "SOURCE") {
                                 let dataSrc = videoSource.dataset.src;
                                 if (dataSrc) {
                                     videoSource.src = dataSrc;

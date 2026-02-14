@@ -98,6 +98,22 @@ html body .ua-footer .link-block {
 
             @include mediaQuery(min-lg) {
 
+                &:before {
+                    z-index: 50;
+                    position: relative;
+                }
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    top: 3px;
+                    left: 3px;
+                    right: 3px;
+                    bottom: 3px;
+                    border-radius: 50%;
+                    background-color: red;
+                }
+
                 transition: color .15s linear, transform .2s linear;
 
                 &:hover {
@@ -113,20 +129,20 @@ html body .ua-footer .link-block {
     }
 
     /* Contact bar */
-    .ua-contact__item {
+    .ua-contact-item {
         position: relative;
     }
 
     /* vertical separators on desktop only */
     .ua-contact {
         @media (min-width: 992px) {
-            > div:not(:last-child) .ua-contact__item {
+            > div:not(:last-child) .ua-contact-item {
                 border-right: 1px solid rgba(255, 255, 255, 0.08);
             }
         }
     }
 
-    .ua-contact__icon {
+    .ua-contact-icon {
         width: 44px;
         height: 44px;
         background: #1f1f1f;
@@ -135,11 +151,9 @@ html body .ua-footer .link-block {
         flex-shrink: 0;
     }
 
-    .ua-contact__title {
+    .ua-contact-title {
         font-size: .75rem;
         letter-spacing: .08em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.55);
     }
 
     .ua-contact__accent {

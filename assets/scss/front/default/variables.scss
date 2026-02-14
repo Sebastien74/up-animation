@@ -99,6 +99,7 @@ $gray-900: #2e2e2e !default;
 $white: #fff !default;
 $black: #000 !default;
 $primary: #ff7100 !default;
+$primary-darken: darken($primary, 5%) !default;
 $secondary: #68312c !default;
 $success: #5d7808 !default;
 $info: #0081ac !default;
@@ -120,6 +121,7 @@ $btn-colors: 'primary', 'secondary';
 $hover-colors: 'primary', 'secondary';
 $theme-colors: (
     'primary': $primary,
+    'primary-darken': $primary-darken,
     'success': $success,
     'danger': $danger,
     'light': $light,
@@ -926,12 +928,24 @@ $buttons: (
         'bg': $primary,
         'border': $primary,
         'color': $white,
-        'bg-hover': darken-color($primary, 5),
-        'border-hover': darken-color($primary, 5),
-        'color-hover': darken-color($white, 5),
+        'bg-hover': darken($primary, 5%),
+        'border-hover': darken($primary, 5%),
+        'color-hover': darken($white, 5%),
         'bg-outline': transparent,
         'bg-outline-hover': $primary,
         'color-outline': $primary,
+        'color-outline-hover': $white
+    ),
+    'primary-darken': (
+        'bg': $primary-darken,
+        'border': $primary-darken,
+        'color': $white,
+        'bg-hover': darken($primary-darken, 5%),
+        'border-hover': darken($primary-darken, 5%),
+        'color-hover': darken($white, 5%),
+        'bg-outline': transparent,
+        'bg-outline-hover': $primary-darken,
+        'color-outline': $primary-darken,
         'color-outline-hover': $white
     ),
     'secondary': (
@@ -1039,9 +1053,9 @@ $buttons: (
         'bg': $white,
         'border': $white,
         'color': $primary,
-        'bg-hover': darken-color($white, 5),
-        'border-hover': darken-color($white, 5),
-        'color-hover': darken-color($primary, 5),
+        'bg-hover': darken($white, 5%),
+        'border-hover': darken($white, 5%),
+        'color-hover': darken($primary, 5%),
         'bg-outline': transparent,
         'bg-outline-hover': $white,
         'color-outline': $white,

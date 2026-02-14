@@ -53,7 +53,7 @@ class SwitchUserSubscriber implements EventSubscriberInterface
             $inAdmin = preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $request->getUri());
             $redirection = $inAdmin ? $request->getSchemeAndHttpHost().'/admin-'.$_ENV['SECURITY_TOKEN'].'/dashboard' : $request->getUri();
             $response = new RedirectResponse($redirection);
-            if ('_exit' === $request->get('_switch_user')) {
+            if ('_exit' === $request->query->get('_switch_user')) {
                 $response->headers->setCookie(Cookie::create('USER_IMPERSONATOR', '0'));
                 if (!$inAdmin) {
                     $response->headers->setCookie(Cookie::create('IS_IMPERSONATOR_FRONT', '0'));

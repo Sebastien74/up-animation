@@ -59,7 +59,7 @@ final class CustomModel extends BaseModel
         $custom = self::cache($api, 'custom', self::$cache);
 
         self::$cache['custom'][$api->getId()][$locale] = new self(
-            id: $api->getId(),
+            id: $custom->getId(),
             entity: $custom,
             matomoId: self::getContentIntl('matomoId', $locale, $custom),
             matomoUrl: self::getContentIntl('matomoUrl', $locale, $custom),

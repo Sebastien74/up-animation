@@ -184,7 +184,7 @@ class CategoryType extends AbstractType
         }
 
         $save = new WidgetType\SubmitType($this->coreLocator);
-        $save->add($builder);
+        $save->add($builder, ['btn_both' => true]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

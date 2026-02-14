@@ -74,7 +74,7 @@ readonly class ExceptionListener
             $logger->pushHandler(new RotatingFileHandler($this->coreLocator->logDir().'/doctrine-update-errors.log', 10, Level::Critical));
             $logger->critical($exception->getMessage());
             $this->doctrineCommand->update();
-        } elseif ($request->get('_switch_user') && '_exit' === $request->get('_switch_user')) {
+        } elseif ($request->query->get('_switch_user') && '_exit' === $request->query->get('_switch_user')) {
             $event->setResponse(new RedirectResponse($request->getSchemeAndHttpHost()));
         } else {
             if ($exception instanceof NotFoundHttpException) {

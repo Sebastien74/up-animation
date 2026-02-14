@@ -49,56 +49,58 @@
                     }
                 } %}
             </div>
-            <div class="col-lg-5">
-                <div class="carousel-wrap">
-                    {% if 'thumbnails' == slideType %}
-                        {% include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
-                            medias: entity.medias,
-                            thumbConfiguration: thumbConfigurationView,
-                            arrowsSide: 'side',
-                            arrowsColor: 'blur',
-                            arrowsAsBtn: true,
-                            slider: {
-                                effect: 'fade',
-                                thumbnails: true,
-                                pause: true,
-                                control: true,
-                                autoplay: false,
-                                indicators: false,
-                                progress: false,
-                                popup: false,
-                                offsetDesktop: 0,
-                                offsetMiniPC: 0,
-                                offsetTablet: 0,
-                                offsetMobile: 0,
-                                arrowAlignment: 'side',
-                                intervalDuration: 2000,
-                                itemsPerSlide: 1,
-                                itemsPerSlideMiniPC: 1,
-                                itemsPerSlideTablet: 1,
-                                itemsPerSlideMobile: 1,
-                            }
-                        } %}
-                    {% else %}
-                        {% include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
-                            sliderSlug: 'event',
-                            websiteTemplate: websiteTemplate,
-                            entity: entity,
-                            medias: entity.medias,
-                            interfaceName: interfaceName,
-                            mainMediaInHeader: entity.mainMediaInHeader,
-                            disabledTitleForce: true,
-                            class: false,
-                            fade: true,
-                            popup: true,
-                            arrows: true,
-                            thumbConfiguration: thumbConfigurationView,
-                            maxWidth: not thumbConfigurationView ? null : null,
-                            maxHeight: not thumbConfigurationView ? 375 : null,
-                        } %}
-                    {% endif %}
+            {% if entity.medias is not empty %}
+                <div class="col-lg-5">
+                    <div class="carousel-wrap">
+                        {% if 'thumbnails' == slideType %}
+                            {% include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
+                                medias: entity.medias,
+                                thumbConfiguration: thumbConfigurationView,
+                                arrowsSide: 'side',
+                                arrowsColor: 'blur',
+                                arrowsAsBtn: true,
+                                slider: {
+                                    effect: 'fade',
+                                    thumbnails: true,
+                                    pause: true,
+                                    control: true,
+                                    autoplay: false,
+                                    indicators: false,
+                                    progress: false,
+                                    popup: false,
+                                    offsetDesktop: 0,
+                                    offsetMiniPC: 0,
+                                    offsetTablet: 0,
+                                    offsetMobile: 0,
+                                    arrowAlignment: 'side',
+                                    intervalDuration: 2000,
+                                    itemsPerSlide: 1,
+                                    itemsPerSlideMiniPC: 1,
+                                    itemsPerSlideTablet: 1,
+                                    itemsPerSlideMobile: 1,
+                                }
+                            } %}
+                        {% else %}
+                            {% include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
+                                sliderSlug: 'event',
+                                websiteTemplate: websiteTemplate,
+                                entity: entity,
+                                medias: entity.medias,
+                                interfaceName: interfaceName,
+                                mainMediaInHeader: entity.mainMediaInHeader,
+                                disabledTitleForce: true,
+                                class: false,
+                                fade: true,
+                                popup: true,
+                                arrows: true,
+                                thumbConfiguration: thumbConfigurationView,
+                                maxWidth: not thumbConfigurationView ? null : null,
+                                maxHeight: not thumbConfigurationView ? 375 : null,
+                            } %}
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </section>
     {% if associatedEntities is not empty %}

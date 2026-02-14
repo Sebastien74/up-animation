@@ -1,0 +1,181 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-08-15, 17:27:15 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    SIDEBAR :
+    ===========================
+
+    1 ) Core
+    2 ) Left sidebar
+    3 ) Right sidebar
+    4 ) Sidebar navigation
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Core
+-----------------------------------*/
+
+.left-sidebar, .right-sidebar {
+
+    position: fixed;
+    height: calc(100% - 70px);
+    top: 70px;
+    z-index: 3000;
+    background: radial-gradient(900px 600px at 20% 0%, rgba($dash-accent, 0.08), transparent 55%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 42%),
+    $dash-dark;
+
+    @include mediaQuery(max-sm) {
+        width: 100%;
+    }
+
+    @include mediaQuery(min-sm) {
+        width: 300px;
+    }
+
+    .scroll-sidebar {
+        max-height: 100%;
+        overflow: auto;
+    }
+
+    a {
+
+        color: transparentize($white, .3);
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        transition: color .3s linear;
+        width: 100%;
+    }
+
+    .as-arrow {
+
+        width: 100%;
+
+        &::after {
+            content: '';
+            position: absolute;
+            right: 20px;
+            width: 7px;
+            height: 7px;
+            border-width: 1px 0 0 1px;
+            border-style: solid;
+            border-color: transparentize($white, .3);
+            transform: rotate(135deg) translate(0, -50%);
+            transform-origin: top;
+            transition: transform .3s linear;
+        }
+
+        &.active::after {
+            transform: rotate(225deg) translate(0, -50%);
+            transition: transform .3s linear;
+        }
+
+        &:not(.bigger) {
+            &::after {
+                top: 18px;
+            }
+        }
+
+        &.bigger {
+
+            font-size: 16px;
+
+            &::after {
+                top: 20px;
+            }
+        }
+    }
+
+    .collapse {
+        &.in {
+            display: block !important;
+        }
+    }
+}
+
+.left-sidebar .scroll-sidebar > nav > ul > li > ul > li,
+.right-sidebar .scroll-sidebar > nav > ul > li {
+
+    padding: .4rem 0;
+
+    a {
+
+        font-size: 14px;
+
+        &:hover, &:active, &:focus, &.active {
+            color: $dash-lighten !important;
+        }
+    }
+
+    &:hover, &:active, &:focus, &.active {
+        .btn-icon {
+            background: rgba($dash-accent, 0.4);
+        }
+    }
+}
+
+.left-sidebar .collapse .collapse,
+.right-sidebar .collapse {
+
+    list-style-type: none;
+    padding-left: 1rem;
+    padding-top: .75rem;
+    padding-bottom: .3rem;
+
+    > li {
+        padding: .3rem 0;
+    }
+}
+
+/*-----------------------------------
+   2 ) Left sidebar
+-----------------------------------*/
+
+.left-sidebar {
+
+    transition: left .3s linear;
+
+    @include mediaQuery(max-sm) {
+        left: -100%;
+    }
+
+    @include mediaQuery(min-sm) {
+        left: 0;
+    }
+
+    &.open {
+        left: 0;
+        transition: left .3s linear;
+    }
+
+    > nav > ul > li > ul > li {
+        padding: .3rem 0;
+    }
+}
+
+/*-----------------------------------
+   3 ) Right sidebar
+-----------------------------------*/
+
+.right-sidebar {
+
+    transition: right .3s linear;
+
+    @include mediaQuery(max-sm) {
+        right: -100%;
+    }
+
+    @include mediaQuery(min-sm) {
+        right: -300px;
+    }
+
+    &.open {
+        right: 0;
+        transition: right .3s linear;
+    }
+}

@@ -18,9 +18,9 @@ export default function () {
 
             let el = $(this);
             let isActive = el.hasClass('active');
-            let card = el.closest('.card');
-            let inputs = card.find('.delete-input-index');
-            let removeAllBtn = card.find('.delete-index-all');
+            let container = el.closest('.index-container');
+            let inputs = container.find('.delete-input-index');
+            let removeAllBtn = container.find('.delete-index-all');
 
             if (isActive) {
                 inputs.parent().removeClass('d-inline-block').addClass('d-none');
@@ -53,10 +53,10 @@ export default function () {
         body.on('change', '.delete-index-all', function (e) {
 
             let el = $(this);
-            let card = el.closest('.card');
-            let isChecked = card.find('.delete-index-all').is(':checked');
-            let allInputs = card.find('.delete-input-index');
-            let removeAllBtn = card.find('.delete-index-all');
+            let container = el.closest('.index-container');
+            let isChecked = container.find('.delete-index-all').is(':checked');
+            let allInputs = container.find('.delete-input-index');
+            let removeAllBtn = container.find('.delete-index-all');
             let parent = removeAllBtn.parent();
 
             if (isChecked) {
@@ -67,12 +67,12 @@ export default function () {
                 allInputs.prop('checked', false);
             }
 
-            inputChecked(card);
+            inputChecked(container);
         });
 
         body.on('change', '.delete-input-index', function (e) {
-            let card = $(this).closest('.card');
-            inputChecked(card);
+            let container = $(this).closest('.index-container');
+            inputChecked(container);
         });
 
         body.on('click', '.index-delete-submit', function (e) {
@@ -80,7 +80,7 @@ export default function () {
             e.preventDefault();
 
             let trans = $('#data-translation');
-            let card = $(this).closest('.card');
+            let container = $(this).closest('.index-container');
 
             swal({
                 title: trans.data('swal-delete-title'),
@@ -135,9 +135,9 @@ export default function () {
                     swal.close();
                 }, 1500);
 
-                let inputs = card.find('.delete-input-index');
-                let removeBtn = card.find('.index-delete-submit');
-                let showBtn = card.find('.index-delete-show');
+                let inputs = container.find('.delete-input-index');
+                let removeBtn = container.find('.index-delete-submit');
+                let showBtn = container.find('.index-delete-show');
 
                 removeBtn.addClass('d-none');
                 showBtn.removeClass('d-none').attr('data-original-title', showBtn.data('display')).tooltip();

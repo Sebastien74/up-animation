@@ -41,11 +41,11 @@ class LogoutListener
     public function onSymfonyComponentSecurityHttpEventLogoutEvent(LogoutEvent $event): void
     {
         $request = $event->getRequest();
-        $routeName = !empty($request->get('route_name')) ? $request->get('route_name') : 'front_index';
+        $routeName = !empty($request->query->get('route_name')) ? $request->query->get('route_name') : 'front_index';
         $response = new RedirectResponse($this->router->generate($routeName));
         $token = $this->tokenStorage->getToken();
 
-        if (!empty($request->get('route_name'))) {
+        if (!empty($request->query->get('route_name'))) {
             $session = new Session();
             $session->getFlashBag()->add('error', $this->translator->trans('Une erreur de sécurité est survenue, veuillez réessayer de vous connecter.', [], 'security_cms'));
         }

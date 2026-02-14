@@ -14,62 +14,70 @@ export default function (tables) {
 
         tables.forEach(function (table) {
 
-            let inBody = table.closest('.header-table');
             let blockContent = table.closest('.layout-block-content');
             if (blockContent) {
                 blockContent.classList.add('w-100');
             }
 
-            if (inBody && window.innerWidth < 992) {
+            if (window.innerWidth < 992) {
 
-                let head = table.querySelector('tr:first-child');
-                let cols = head.querySelectorAll('th');
-                if (cols.length === 0) {
-                    cols = head.querySelectorAll('td');
+                let body = table.querySelector('tbody');
+                let head = table.querySelector('thead tr');
+
+                if (!head) {
+                    head = table.querySelector('tr:first-child');
+                } else {
+                    table.classList.add('have-head');
                 }
-                let colsCount = cols.length;
-                let width = 100 / colsCount;
+                if (!head) return;
+
+                if (!head && !body) {
+                    table.classList.add('no-head-body');
+                } else if (!head && body) {
+                    table.classList.add('no-head');
+                }
+
+                let colsHead = head.querySelectorAll('th');
+                if (colsHead.length === 0) {
+                    colsHead = head.querySelectorAll('td');
+                }
 
                 let headElements = {};
-                cols.forEach(function (col, i) {
-                    if (typeof headElements['td' + i] === "object") {
-                        headElements['td' + i].push(col.innerText);
-                    } else if (headElements['td' + i]) {
-                        headElements['td' + i] = [];
-                        headElements['td' + i].push(col.innerText);
-                    } else {
-                        headElements['td' + i] = col.innerText;
-                    }
+                colsHead.forEach(function (col, i) {
+                    headElements['td' + i] = col.innerHTML.trim();
                 });
-
-                console.log(headElements);
 
                 let rows = table.querySelectorAll('tr');
                 rows.forEach(function (row, i) {
                     if (i > 0) {
-                        let cols = head.querySelectorAll('td');
-                        if (cols.length === 0) {
-                            cols = head.querySelectorAll('th');
-                        }
-                        cols.forEach(function (col, j) {
-                            col.innerHTML = '<div class="content">' + col.innerHTML + '</div>';
-                            col.setAttribute('data-title', headElements['td' + j]);
-                            col.setAttribute('scope', 'col');
-                            col.style.width = width + '%';
-                            col.classList.add('d-inline-block');
+                        let cells = row.querySelectorAll('td');
+                        cells.forEach(function (cell, j) {
+                            if (!cell.querySelector('.table-content')) {
+                                cell.innerHTML = '<div class="table-content mt-2">' + cell.innerHTML + '</div>';
+                            }
+                            if (headElements['td' + j] && !cell.querySelector('.table-title')) {
+                                let titleElement = document.createElement('div');
+                                titleElement.classList.add('table-title');
+                                titleElement.innerHTML = headElements['td' + j];
+                                cell.insertBefore(titleElement, cell.firstChild);
+                            }
+                            cell.setAttribute('scope', 'col');
                         });
                     }
                 });
-
-                table.classList.add('table-responsive', 'body-table');
+                table.classList.add('body-table');
             } else {
-
-                table.classList.remove('table-responsive', 'body-table');
-                let cols = table.querySelectorAll('td');
-                cols.forEach(function (col) {
-                    col.setAttribute('scope', 'col');
-                    col.style.width = 'initial';
-                    col.classList.remove('d-inline-block');
+                table.classList.remove('body-table');
+                let cells = table.querySelectorAll('td');
+                cells.forEach(function (cell) {
+                    let content = cell.querySelector('.table-content');
+                    let title = cell.querySelector('.table-title');
+                    if (title) {
+                        title.remove();
+                    }
+                    if (content) {
+                        cell.innerHTML = content.innerHTML;
+                    }
                 });
             }
         });

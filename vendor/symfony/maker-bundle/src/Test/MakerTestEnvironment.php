@@ -138,7 +138,13 @@ final class MakerTestEnvironment
         }
 
         if (!$this->fs->exists($this->flexPath)) {
-            $this->buildFlexSkeleton();
+            try {
+                $this->buildFlexSkeleton();
+            } catch (\Exception $e) {
+                $this->fs->remove($this->flexPath);
+
+                throw $e;
+            }
         }
 
         if (!$this->fs->exists($this->path)) {
@@ -168,7 +174,7 @@ final class MakerTestEnvironment
                     ;
 
                     if (!$composerProcess->isSuccessful()) {
-                        throw new \Exception(\sprintf('Error running command: composer require %s -v. Output: "%s". Error: "%s"', implode(' ', $dependencies), $composerProcess->getOutput(), $composerProcess->getErrorOutput()));
+                        throw new \Exception(\sprintf('Error running command: composer require "%s" -v. Output: "%s". Error: "%s"', implode(' ', $dependencies), $composerProcess->getOutput(), $composerProcess->getErrorOutput()));
                     }
                 }
 
@@ -345,7 +351,7 @@ final class MakerTestEnvironment
             // start the command with some input
             $inputStream->write(current($userInputs)."\n");
 
-            $inputStream->onEmpty(function () use ($inputStream, &$userInputs) {
+            $inputStream->onEmpty(static function () use ($inputStream, &$userInputs) {
                 $nextInput = next($userInputs);
                 if (false === $nextInput) {
                     $inputStream->close();
@@ -406,13 +412,7 @@ echo json_encode($missingDependencies);
 
     public function getTargetSkeletonVersion(): ?string
     {
-        $symfonyVersion = $_SERVER['SYMFONY_VERSION'] ?? '';
-
-        return match (true) {
-            str_starts_with($symfonyVersion, '^7.4.') && str_contains($symfonyVersion, 'RC') => '7.4.x-dev',
-            str_starts_with($symfonyVersion, '^8.0.') && str_contains($symfonyVersion, 'RC') => '8.0.x-dev',
-            default => $symfonyVersion,
-        };
+        return $_SERVER['SYMFONY_VERSION'] ?? '';
     }
 
     private function composerRequireMakerBundle(string $projectDirectory): void

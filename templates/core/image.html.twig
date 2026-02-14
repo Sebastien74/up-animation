@@ -112,7 +112,7 @@
                     {% if 'width' not in attributes and infos.width %} width="{{ infos.width }}"{% endif %}
                     {% if 'height' not in attributes and infos.width %} height="{{ infos.height }}"{% endif %}
                     {% if attributes %} {{ attributes|raw }}{% endif %}
-                    {% if priority != 'high' and lazyLoad %} loading="lazy"{% elseif priority != 'high' %} loading="eager"{% else %} decoding="async" loading="eager"{% endif %}
+                    {% if priority != 'high' and lazyLoad %} loading="lazy" decoding="async"{% elseif priority != 'high' %} loading="eager" decoding="async"{% else %} decoding="sync" loading="eager"{% endif %}
                      fetchpriority="{{ priority }}">
             </picture>
         {% endif %}

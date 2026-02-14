@@ -2,10 +2,9 @@
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-        {{ 'fal crosshairs'|icon(15, 15, 'white me-2', {icon: true}) }}
-        <span class="hide-menu">{{ "Cache"|trans }}</span>
+        <span class="btn-icon small me-3"><i class="icm-crosshairs"></i></span>{{ "Cache"|trans }}
     </a>
-    <ul aria-expanded="false" class="collapse bg-info-light">
+    <ul aria-expanded="false" class="collapse">
         <li>
             <a href="{{ path('cache_clear', {rename: true}) }}" data-toggle="preloader">
                 <span class="hide-menu">{{ "Vider le cache principal"|trans }}</span>

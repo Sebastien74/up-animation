@@ -30,7 +30,7 @@ class FileRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Check if file exist.
+     * Check if a file exists.
      */
     public function fileInfo(mixed $website, ?string $filename = null, ?string $dirname = null): ?FileInfo
     {

@@ -38,6 +38,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class MediaManager
 {
     private const array SCREENS = ['tablet', 'mobile'];
+
+    private const array VIDEO_EXTENSIONS = ['webm', 'mp4', 'vtt'];
     private const array ALLOWED_IMAGES_EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp'];
 
     private TranslatorInterface $translator;
@@ -643,6 +645,10 @@ class MediaManager
      */
     public function removeMedia(Media\Media $media): object
     {
+        if ($media->getScreen() && in_array($media->getScreen(), self::VIDEO_EXTENSIONS)) {
+            $media = $media->getMedia();
+        }
+
         $metadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
         $removeScreenMedias = true;
         foreach ($metadata as $data) {

@@ -20,18 +20,30 @@ export default function () {
             }
         });
 
-        setTimeout(() => {
-            import("aos/dist/aos.css");
-        }, 0.1);
+        // Lazy-load AOS CSS when idle (fallback to timeout)
+        const scheduleCss = (cb) => {
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(cb, { timeout: 500 });
+            } else {
+                setTimeout(cb, 0);
+            }
+        }
+        scheduleCss(() => import("aos/dist/aos.css"));
 
         AOS.init({
             duration: 800,
             once: false
         });
 
-        onElementHeightChange(document.body, function () {
-            AOS.refresh();
-        });
+        // Use ResizeObserver instead of polling for height changes
+        if ('ResizeObserver' in window) {
+            const ro = new ResizeObserver(() => AOS.refresh());
+            ro.observe(document.body);
+        } else {
+            onElementHeightChange(document.body, function () {
+                AOS.refresh();
+            });
+        }
 
         function onElementHeightChange(elm, callback) {
             let lastHeight = elm.clientHeight;

@@ -8,6 +8,7 @@ use App\Entity\Api\Api;
 use App\Entity\Api\Google;
 use App\Model\BaseModel;
 use App\Service\Interface\CoreLocatorInterface;
+use Doctrine\ORM\Mapping\MappingException;
 
 /**
  * GoogleModel.
@@ -39,6 +40,8 @@ final class GoogleModel extends BaseModel
 
     /**
      * Get model.
+     *
+     * @throws MappingException
      */
     public static function fromEntity(Api $api, CoreLocatorInterface $coreLocator, ?string $locale = null): self
     {
@@ -51,20 +54,21 @@ final class GoogleModel extends BaseModel
         }
 
         $google = self::cache($api, 'google', self::$cache);
+        $isProd = self::$coreLocator->isProd();
 
         self::$cache['google'][$api->getId()][$locale] = new self(
-            id: $api->getId(),
+            id: $google->getId(),
             entity: $google,
-            clientId: self::getContentIntl('clientId', $locale, $google),
-            analyticsUa: self::getContentIntl('analyticsUa', $locale, $google),
-            analyticsAccountId: self::getContentIntl('analyticsAccountId', $locale, $google),
-            analyticsStatsDuration: self::getContentIntl('analyticsStatsDuration', $locale, $google),
-            tagManagerKey: self::getContentIntl('tagManagerKey', $locale, $google),
-            tagManagerLayer: self::getContentIntl('tagManagerLayer', $locale, $google),
-            searchConsoleKey: self::getContentIntl('searchConsoleKey', $locale, $google),
-            serverUrl: self::getContentIntl('serverUrl', $locale, $google),
-            mapKey: self::getContentIntl('mapKey', $locale, $google),
-            placeId: self::getContentIntl('placeId', $locale, $google),
+            clientId: $isProd ? self::getContentIntl('clientId', $locale, $google) : null,
+            analyticsUa: $isProd ? self::getContentIntl('analyticsUa', $locale, $google) : null,
+            analyticsAccountId: $isProd ? self::getContentIntl('analyticsAccountId', $locale, $google) : null,
+            analyticsStatsDuration: $isProd ? self::getContentIntl('analyticsStatsDuration', $locale, $google) : null,
+            tagManagerKey: $isProd ? self::getContentIntl('tagManagerKey', $locale, $google) : null,
+            tagManagerLayer: $isProd ? self::getContentIntl('tagManagerLayer', $locale, $google) : null,
+            searchConsoleKey: $isProd ? self::getContentIntl('searchConsoleKey', $locale, $google) : null,
+            serverUrl: $isProd ? self::getContentIntl('serverUrl', $locale, $google) : null,
+            mapKey: $isProd ? self::getContentIntl('mapKey', $locale, $google) : null,
+            placeId:$isProd ? self::getContentIntl('placeId', $locale, $google) : null,
         );
 
         return self::$cache['google'][$api->getId()][$locale];

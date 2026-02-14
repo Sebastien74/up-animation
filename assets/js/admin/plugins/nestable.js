@@ -121,19 +121,25 @@ export default function () {
         let group = $(this);
         let collapseBtn = group.find('.collapse-btn');
         let expandBtn = group.find('.expand-btn');
+        let parent = group.closest('.parent-row');
 
         collapseBtn.on('click', function () {
-            collapseBtn.toggleClass('d-none');
-            expandBtn.toggleClass('d-none');
-            expandBtn.removeClass('active');
+            if (!collapseBtn.hasClass('d-flex')) {
+                collapseBtn.removeClass('d-none');
+                collapseBtn.addClass('d-flex');
+                expandBtn.addClass('d-none');
+                expandBtn.removeClass('d-flex');
+            } else {
+                collapseBtn.addClass('d-none');
+                collapseBtn.removeClass('d-flex');
+                expandBtn.removeClass('d-none');
+                expandBtn.addClass('d-flex');
+            }
+            parent.toggleClass('dd-collapsed');
         });
 
         expandBtn.on('click', function () {
-            expandBtn.toggleClass('d-none');
-            collapseBtn.toggleClass('d-none');
-            if (!expandBtn.hasClass('active')) {
-                expandBtn.addClass('active');
-            }
+            collapseBtn.click();
         });
     });
 

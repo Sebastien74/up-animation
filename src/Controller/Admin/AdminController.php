@@ -107,6 +107,8 @@ class AdminController extends BaseController
             'namespace' => $this->getCurrentNamespace($request),
             'searchFiltersForm' => $filterForm?->createView(),
             'searchForm' => $helper->getSearchForm()->createView(),
+            'searchText' => $this->coreLocator->request()->query->all('index_search')['search'] ?? null,
+            'searchClearPath' => $request->getSchemeAndHttpHost() . $request->getBaseUrl() . $request->getPathInfo(),
             'columns' => $interface['configuration']->columns,
             'website' => $website,
             'pagination' => $pagination,

@@ -21,6 +21,7 @@
     }
 
     .carousel-item {
+
         position: relative;
         display: none;
         float: left;
@@ -28,7 +29,11 @@
         margin-right: -100%;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
-        transition: transform 1s ease-in-out
+        transition: transform 1s ease-in-out;
+
+        > .inner {
+            width: 100%;
+        }
     }
 
     @media (prefers-reduced-motion: reduce) {

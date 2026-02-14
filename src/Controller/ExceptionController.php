@@ -202,12 +202,12 @@ class ExceptionController extends BaseController
             $configuration = $website->configuration;
             $userBackIPS = $configuration ? $configuration->entity->getAllIPS() : [];
             $allowedIP = $this->checkIP($userBackIPS);
-            $agenciesCatalog = $this->coreLocator->em()->getRepository(Catalog::class)->findOneBy(['website' => $website->entity, 'slug' => 'agencies']);
-            $agenciesBd = $this->coreLocator->em()->getRepository(Product::class)->findOnlineByCatalogs($website->entity, $this->coreLocator->locale(), [$agenciesCatalog]);
+//            $agenciesCatalog = $this->coreLocator->em()->getRepository(Catalog::class)->findOneBy(['website' => $website->entity, 'slug' => 'agencies']);
+//            $agenciesBd = $this->coreLocator->em()->getRepository(Product::class)->findOnlineByCatalogs($website->entity, $this->coreLocator->locale(), [$agenciesCatalog]);
             $agencies = [];
-            foreach ($agenciesBd as $agency) {
-                $agencies[] = ProductModel::fromEntity($agency, $this->coreLocator, ['disabledProducts' => true, 'disabledLayout' => true, 'disabledMedias' => true, 'disabledCategories' => true, 'disabledCategory' => true]);
-            }
+//            foreach ($agenciesBd as $agency) {
+//                $agencies[] = ProductModel::fromEntity($agency, $this->coreLocator, ['disabledProducts' => true, 'disabledLayout' => true, 'disabledMedias' => true, 'disabledCategories' => true, 'disabledCategory' => true]);
+//            }
             $arguments['thumbConfigurationHeader'] = $this->thumbConfiguration($website, Block::class, 'block', null, 'title-header');
             $arguments['isUserBack'] = $allowedIP || $this->getUser() instanceof User;
             $arguments['website'] = $this->website = $website;
