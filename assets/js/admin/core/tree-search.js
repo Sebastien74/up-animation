@@ -8,13 +8,17 @@ export default function () {
     $('.pages-search input').keyup(function () {
 
         let term = this.value;
+        let termLower = term.toLowerCase();
         term = term.replace(/(\s+)/, "(<[^>]+>)*$1(<[^>]+>)*");
+
+        let items = $('#nestable-list').find('.dd3-item');
+        items.removeClass('d-none');
 
         $('#nestable-list').find('.dd3-content .title').each(function () {
 
             let body = $('body');
             let expandBtn = body.find('.expand-btn');
-            if (!expandBtn.hasClass('active')) {
+            if (!expandBtn.hasClass('active') && term !== '') {
                 expandBtn.addClass('active');
                 expandBtn.trigger('click')
             }
@@ -32,15 +36,23 @@ export default function () {
                 item.find('mark').remove();
             }
 
-            let e = '(^| )' + term;
-            let l = $(this).text();
-            let a = new RegExp(e, "i");
+            let l = $(this).text().toLowerCase();
 
-            if (!a.test(l)) {
+            if (term !== '' && l.indexOf(termLower) === -1) {
                 item.addClass('text-muted');
             } else {
                 item.removeClass('text-muted');
             }
         });
+
+        if (term !== '') {
+            items.addClass('d-none');
+            $('#nestable-list').find('.dd3-content .title').each(function () {
+                let l = $(this).text().toLowerCase();
+                if (l.indexOf(termLower) !== -1) {
+                    $(this).closest('.dd3-item').removeClass('d-none').parents('.dd3-item').removeClass('d-none');
+                }
+            });
+        }
     });
 }
