@@ -5,6 +5,8 @@ Revoir toutes les requetes depuis le debut
 
 Virer les  data-toggle="preloader"
 
+Pou le selecteur de picto pour les icon actions et modules et autres récupérer les icones i
+
 Virer un max |icon dans zone Layout back pas dit
 
 changer favicon back

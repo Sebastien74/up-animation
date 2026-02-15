@@ -64,15 +64,17 @@
             {% else %}
                 {{ encore_entry_link_tags('admin-vendor-'~adminTheme, null, 'admin') }}
             {% endif %}
+            <link rel="preload" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+            <noscript><link rel="stylesheet" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}"></noscript>
             {% if displayFrontFonts is defined and displayFrontFonts %}
                 <!-- Front fonts -->
                 {% if (configuration.template)|asGoogleFont %}
                     <link rel="preconnect" href="https://fonts.googleapis.com">
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
                 {% endif %}
-                <link href="{{ asset('build/front/'~configuration.template~'/front-'~configuration.template~'-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}" rel="stylesheet" nonce="{{ csp_nonce() }}">
+                <link rel="preload" href="{{ asset('build/front/'~configuration.template~'/front-'~configuration.template~'-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+                <noscript><link rel="stylesheet" href="{{ asset('build/front/'~configuration.template~'/front-'~configuration.template~'-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}"></noscript>
             {% endif %}
-            <link href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" rel="stylesheet" nonce="{{ csp_nonce() }}">
             {% if stylesSrc is defined %}
                 {% for webpackEntry, webpackName in stylesSrc %}
                     {{ encore_entry_link_tags(webpackEntry, null, 'admin') }}
@@ -129,8 +131,8 @@
 
         {% block javascripts %}
             {{ jsRouting() }}
-            <script src="{{ asset('bundles/tinymce/ext/tinymce/tinymce.min.js') }}"></script>
-            <script src="{{ asset('bundles/tinymce/ext/tinymce-webcomponent.js') }}" type="module"></script>
+            <script src="{{ asset('bundles/tinymce/ext/tinymce/tinymce.min.js') }}" defer></script>
+            <script src="{{ asset('bundles/tinymce/ext/tinymce-webcomponent.js') }}" type="module" defer></script>
             {% if isIE() %}
                 {{ encore_entry_script_tags('browsers', null,  'vendor') }}
             {% endif %}
@@ -139,7 +141,7 @@
                     {{ encore_entry_script_tags(webpackEntry, null,  webpackName) }}
                 {% endfor %}
             {% endif %}
-            {{ encore_entry_script_tags('admin-vendor-'~adminTheme, null, 'admin', {defer: false}) }}
+            {{ encore_entry_script_tags('admin-vendor-'~adminTheme, null, 'admin', {defer: true}) }}
         {% endblock %}
 
         {% if app.request.cookies.get('IS_IMPERSONATOR_FRONT') %}

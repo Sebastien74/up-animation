@@ -102,7 +102,8 @@ Encore.setOutputPath('public/build/vendor')
     })
     .configureBabelPresetEnv((config) => {
         config.useBuiltIns = 'usage';
-        config.corejs = '3.38'
+        config.corejs = '3.38';
+        config.targets = { esmodules: true };
     })
     .enablePostCssLoader((options) => {
         options.postcssOptions = {
@@ -119,12 +120,21 @@ Encore.setOutputPath('public/build/vendor')
     })
     .splitEntryChunks()
     .configureSplitChunks(function (splitChunks) {
-        splitChunks.chunks = 'all'; // Tous les types de chunks
-        splitChunks.minSize = 20000; // Taille minimale d'un chunk
-        splitChunks.maxSize = 250000; // Taille maximale d'un chunk
+        splitChunks.chunks = 'all';
+        splitChunks.minSize = 20000;
+        splitChunks.maxSize = 250000;
         splitChunks.maxAsyncRequests = 30;
         splitChunks.maxInitialRequests = 30;
         splitChunks.enforceSizeThreshold = 50000;
+        splitChunks.cacheGroups = {
+            vendor: {
+                test: /[\\/]node_modules[\\/]/,
+                name: 'vendors-common',
+                chunks: 'all',
+                priority: -10,
+                reuseExistingChunk: true,
+            }
+        };
     })
     .addPlugin(new CleanWebpackPlugin())
     .enableSingleRuntimeChunk()
@@ -224,18 +234,40 @@ Encore.setOutputPath('public/build/front/default')
     .splitEntryChunks()
     .enableStimulusBridge('./assets/js/front/default/controllers.json')
     .configureSplitChunks(function (splitChunks) {
-        splitChunks.chunks = 'all'; // Tous les types de chunks
-        splitChunks.minSize = 20000; // Augmenté pour éviter trop de petits fichiers
+        splitChunks.chunks = 'all';
+        splitChunks.minSize = 20000;
         splitChunks.maxSize = 250000;
-        splitChunks.maxAsyncRequests = 30; // Augmenté pour le parallélisme HTTP/2+
+        splitChunks.maxAsyncRequests = 30;
         splitChunks.maxInitialRequests = 30;
         splitChunks.enforceSizeThreshold = 50000;
+        splitChunks.cacheGroups = {
+            vendor: {
+                test: /[\\/]node_modules[\\/]/,
+                name: 'vendors',
+                chunks: 'all',
+                priority: -10,
+                reuseExistingChunk: true,
+            },
+            bootstrap: {
+                test: /[\\/]node_modules[\\/](bootstrap)[\\/]/,
+                name: 'bootstrap',
+                chunks: 'all',
+                priority: 20,
+            },
+            jquery: {
+                test: /[\\/]node_modules[\\/](jquery)[\\/]/,
+                name: 'jquery',
+                chunks: 'all',
+                priority: 20,
+            },
+        };
     })
     .addPlugin(new CleanWebpackPlugin())
     .addPlugin(new PurgeCSSPlugin({
-        paths: glob.sync(
-            `${path.join(__dirname, 'templates')}/{front/default,core,components,gdpr}/**/*.html.twig`, {nodir: true}
-        ),
+        paths: [
+            ...glob.sync(`${path.join(__dirname, 'templates')}/**/*.html.twig`, {nodir: true}),
+            ...glob.sync(`${path.join(__dirname, 'assets/js')}/**/*.js`, {nodir: true}),
+        ],
         safelist: safeList,
         blocklist: blockList,
     }))
@@ -287,7 +319,8 @@ Encore.setOutputPath('public/build/gdpr')
     }, {})
     .configureBabelPresetEnv((config) => {
         config.useBuiltIns = 'usage';
-        config.corejs = '3.38'
+        config.corejs = '3.38';
+        config.targets = { esmodules: true };
     })
     .copyFiles({
         from: './assets/medias/images/gdpr',
@@ -308,12 +341,20 @@ Encore.setOutputPath('public/build/gdpr')
     })
     .splitEntryChunks()
     .configureSplitChunks(function (splitChunks) {
-        splitChunks.chunks = 'all'; // Tous les types de chunks
-        splitChunks.minSize = 20000; // Taille minimale d'un chunk
-        splitChunks.maxSize = 250000; // Taille maximale d'un chunk
+        splitChunks.chunks = 'all';
+        splitChunks.minSize = 20000;
+        splitChunks.maxSize = 250000;
         splitChunks.maxAsyncRequests = 30;
         splitChunks.maxInitialRequests = 30;
         splitChunks.enforceSizeThreshold = 50000;
+        splitChunks.cacheGroups = {
+            gdpr_vendor: {
+                test: /[\\/]node_modules[\\/]/,
+                name: 'gdpr-vendors',
+                chunks: 'all',
+                priority: -10,
+            }
+        };
     })
     .addPlugin(new CleanWebpackPlugin())
     .enableSingleRuntimeChunk()
@@ -389,7 +430,8 @@ Encore.setOutputPath('public/build/admin')
     }, {})
     .configureBabelPresetEnv((config) => {
         config.useBuiltIns = 'usage';
-        config.corejs = '3.38'
+        config.corejs = '3.38';
+        config.targets = { esmodules: true };
     })
     .enablePostCssLoader((options) => {
         options.postcssOptions = {
@@ -407,12 +449,20 @@ Encore.setOutputPath('public/build/admin')
     .splitEntryChunks()
     .enableStimulusBridge('./assets/js/admin/controllers.json')
     .configureSplitChunks(function (splitChunks) {
-        splitChunks.chunks = 'all'; // Tous les types de chunks
-        splitChunks.minSize = 20000; // Taille minimale d'un chunk
-        splitChunks.maxSize = 250000; // Taille maximale d'un chunk
+        splitChunks.chunks = 'all';
+        splitChunks.minSize = 20000;
+        splitChunks.maxSize = 250000;
         splitChunks.maxAsyncRequests = 30;
         splitChunks.maxInitialRequests = 30;
         splitChunks.enforceSizeThreshold = 50000;
+        splitChunks.cacheGroups = {
+            admin_vendor: {
+                test: /[\\/]node_modules[\\/]/,
+                name: 'admin-vendors',
+                chunks: 'all',
+                priority: -10,
+            }
+        };
     })
     .addPlugin(new CleanWebpackPlugin())
     .enableSingleRuntimeChunk()
@@ -466,7 +516,8 @@ Encore.setOutputPath('public/build/security')
     }, {})
     .configureBabelPresetEnv((config) => {
         config.useBuiltIns = 'usage';
-        config.corejs = '3.38'
+        config.corejs = '3.38';
+        config.targets = { esmodules: true };
     })
     .enablePostCssLoader((options) => {
         options.postcssOptions = {
@@ -483,12 +534,20 @@ Encore.setOutputPath('public/build/security')
     })
     .splitEntryChunks()
     .configureSplitChunks(function (splitChunks) {
-        splitChunks.chunks = 'all'; // Tous les types de chunks
-        splitChunks.minSize = 20000; // Taille minimale d'un chunk
-        splitChunks.maxSize = 250000; // Taille maximale d'un chunk
+        splitChunks.chunks = 'all';
+        splitChunks.minSize = 20000;
+        splitChunks.maxSize = 250000;
         splitChunks.maxAsyncRequests = 30;
         splitChunks.maxInitialRequests = 30;
         splitChunks.enforceSizeThreshold = 50000;
+        splitChunks.cacheGroups = {
+            security_vendor: {
+                test: /[\\/]node_modules[\\/]/,
+                name: 'security-vendors',
+                chunks: 'all',
+                priority: -10,
+            }
+        };
     })
     .addPlugin(new CleanWebpackPlugin())
     .enableSingleRuntimeChunk()
