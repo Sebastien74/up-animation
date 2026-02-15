@@ -1,7 +1,7 @@
 import setPositions from "./positions";
 
 /**
- * Sortable activation : Zones order
+ * Sortable activation: Zones order
  */
 export default function (Routing) {
     let sortableZone = $('#zones-sortable').sortable({
@@ -14,7 +14,7 @@ export default function (Routing) {
         update: function (event, ui) {
             let zonesSortable = ui.item.parent().find('.zone');
             setPositions(Routing, zonesSortable, 'admin_zones_positions');
-            event.stopImmediatePropagation();
+            event.stopPropagation();
         }
     });
     sortableZone.disableSelection();

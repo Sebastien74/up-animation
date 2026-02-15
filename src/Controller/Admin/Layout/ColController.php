@@ -125,7 +125,7 @@ class ColController extends AdminController
     #[Route('/standardize-elements/{col}', name: 'admin_blocks_standardize', options: ['expose' => true], methods: 'GET')]
     public function standardizeElements(Request $request, Col $col): JsonResponse
     {
-        $col->setStandardizeElements($request->get('standardize'));
+        $col->setStandardizeElements($request->query->getBoolean('standardize'));
         $this->coreLocator->em()->persist($col);
         $this->coreLocator->em()->flush();
 

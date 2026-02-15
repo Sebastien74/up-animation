@@ -148,7 +148,7 @@ class ZoneController extends AdminController
     #[Route('/standardize-elements/{zone}', name: 'admin_cols_standardize', options: ['expose' => true], methods: 'GET')]
     public function standardizeElements(Request $request, Zone $zone): JsonResponse
     {
-        $zone->setStandardizeElements($request->get('standardize'));
+        $zone->setStandardizeElements($request->query->getBoolean('standardize'));
         $this->coreLocator->em()->persist($zone);
         $this->coreLocator->em()->flush();
 

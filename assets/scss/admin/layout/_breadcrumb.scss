@@ -11,7 +11,7 @@
 
 .breadcrumb-container {
     padding: 10px 14px;
-    border-radius: 16px;
+    border-radius: $border-radius;
     background: $bg-gradient-primary;
     border: 1px solid $crumb-border;
     backdrop-filter: blur(8px);

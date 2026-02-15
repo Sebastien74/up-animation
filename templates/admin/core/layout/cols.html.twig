@@ -14,89 +14,93 @@
                          data-id="{{ col.id }}"
                          data-position="{{ col.position }}">
                         <div class="portlet h-100">
-                            <div class="header w-100 text-end">
+                            <div class="header w-100 d-flex justify-content-end">
                                 <div class="col-actions text-end">
 
-                                    {% if 'edit'|moduleActive(configuration) %}
-                                        <span data-bs-toggle="tooltip"
-                                              title="{{ "Configuration"|trans|striptags }}"
-                                              data-path="{{ path('admin_col_configuration', {website: websiteId(), col: col.id}) }}"
-                                              class="item edit-layout-element-btn">
-                                            <button class="btn btn-action"><i class="icm-cog-reg"></i></button>
-                                        </span>
-                                    {% endif %}
+                                    <div class="d-flex align-items-center gap-2">
 
-                                    {% if 'col-edit'|moduleActive(configuration) %}
-                                        {% set mediaRelation = col.mediaRelations is defined ? col.mediaRelations|intl(website().configuration.locale) : null %}
-                                        <span data-toggle="preloader" class="position-relative col-img-bulle-wrap d-inline-block">
-                                            {% if mediaRelation and mediaRelation.media and mediaRelation.media.filename %}
-                                                <span style="background: url({{ asset(mediaRelation|file({}, {path: true})) }})" class="image-info-bulle"></span>
-                                            {% endif %}
-                                            <a href="{{ path('admin_col_edit', {website: websiteId(), zone: zone.id, col: col.id, interfaceName: interface.name, interfaceEntity: entity.id}) }}"
-                                               class="btn position-relative btn-action" data-bs-toggle="tooltip" title="{{ "Image de fond"|trans|striptags }}">
-                                                <i class="icm-image"></i>
-                                            </a>
-                                        </span>
-                                    {% endif %}
-
-                                    {% if 'edit'|moduleActive(configuration) %}
-                                        <span class="item background-col-item background-item d-inline-block">
-                                            {% set color = 'background'|color(website(), col.backgroundColor) %}
-                                            {% set hexa = color.color is defined and color.color ? color.color : col.hexadecimalCode %}
-                                            <span class="color-info-bulle"{% if hexa %} style="background-color: {{ hexa }}" {% endif %}></span>
-                                            <span class="btn edit-layout-element-btn btn-palette btn-action cursor"
-                                               data-path="{{ path('admin_col_background', {website: websiteId(), col: col.id}) }}"
-                                               data-bs-toggle="tooltip"
-                                               title="{{ "Couleur de fond"|trans|striptags }}">
-                                                <i class="icm-palette"></i>
+                                        {% if 'edit'|moduleActive(configuration) %}
+                                            <span data-bs-toggle="tooltip"
+                                                  title="{{ "Configuration"|trans|striptags }}"
+                                                  data-path="{{ path('admin_col_configuration', {website: websiteId(), col: col.id}) }}"
+                                                  class="item edit-layout-element-btn">
+                                                <i class="icm-cog-reg"></i>
                                             </span>
-                                        </span>
-                                    {% endif %}
+                                        {% endif %}
 
-                                    {% if 'edit'|moduleActive(configuration) and interface.resize is defined and interface.resize %}
-                                        {% set isStandardize = col.standardizeElements %}
-                                        {% set standardizeAction = isStandardize ? "Largeur par défaut des blocs"|trans : "Uniformiser la largeur des blocs"|trans %}
-                                        {% set standardize = isStandardize ? 'true' : 'false' %}
-                                        <span data-bs-toggle="tooltip" title="{{ standardizeAction|striptags }}" data-placement="right" class="item">
-                                            <a class="btn btn-action col-blocks-standardize cursor"
-                                               data-col="{{ col.id }}"
-                                               data-standardize="{{ standardize }}"
-                                               data-cols-default="{{ "Largeur par défaut des blocs"|trans }}"
-                                               data-cols-standardize="{{ "Uniformiser la largeur des blocs"|trans }}">
-                                                <span class="icon-wrap{% if isStandardize %} d-none{% endif %}">
-                                                    <i class="icm-indent"></i>
+                                        {% if 'col-edit'|moduleActive(configuration) %}
+                                            {% set mediaRelation = col.mediaRelations is defined ? col.mediaRelations|intl(website().configuration.locale) : null %}
+                                            <span data-toggle="preloader" class="position-relative col-img-bulle-wrap d-inline-block">
+                                                {% if mediaRelation and mediaRelation.media and mediaRelation.media.filename %}
+                                                    <span style="background: url({{ asset(mediaRelation|file({}, {path: true})) }})" class="image-info-bulle"></span>
+                                                {% endif %}
+                                                <a href="{{ path('admin_col_edit', {website: websiteId(), zone: zone.id, col: col.id, interfaceName: interface.name, interfaceEntity: entity.id}) }}"
+                                                   class="btn position-relative btn-action" data-bs-toggle="tooltip" title="{{ "Image de fond"|trans|striptags }}">
+                                                    <i class="icm-image"></i>
+                                                </a>
+                                            </span>
+                                        {% endif %}
+
+                                        {% if 'edit'|moduleActive(configuration) %}
+                                            <span class="item background-col-item background-item d-inline-block">
+                                                {% set color = 'background'|color(website(), col.backgroundColor) %}
+                                                {% set hexa = color.color is defined and color.color ? color.color : col.hexadecimalCode %}
+                                                <span class="color-info-bulle"{% if hexa %} style="background-color: {{ hexa }}" {% endif %}></span>
+                                                <span class="edit-layout-element-btn btn-palette btn-action cursor"
+                                                   data-path="{{ path('admin_col_background', {website: websiteId(), col: col.id}) }}"
+                                                   data-bs-toggle="tooltip"
+                                                   title="{{ "Couleur de fond"|trans|striptags }}">
+                                                    <i class="icm-palette"></i>
                                                 </span>
-                                                <span class="icon-wrap{% if not isStandardize %} d-none{% endif %}">
-                                                    <i class="icm-outdent"></i>
-                                                </span>
-                                            </a>
-                                        </span>
-                                    {% endif %}
+                                            </span>
+                                        {% endif %}
 
-                                    {% if 'delete'|moduleActive(configuration) %}
-                                        <span href="{{ path('admin_col_delete', {website: websiteId(), zone: zone.id, col: col.id}) }}"
-                                           data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
-                                           data-target="#col-{{ col.id }}"
-                                           data-type="stay"
-                                           class="btn btn-action swal-delete-link cursor">
-                                            <i class="icm-trash"></i>
-                                        </span>
-                                    {% endif %}
+                                        {% if 'edit'|moduleActive(configuration) and interface.resize is defined and interface.resize %}
+                                            {% set isStandardize = col.standardizeElements %}
+                                            {% set standardizeAction = isStandardize ? "Largeur par défaut des blocs"|trans : "Uniformiser la largeur des blocs"|trans %}
+                                            {% set standardize = isStandardize ? 'true' : 'false' %}
+                                            <span data-bs-toggle="tooltip" title="{{ standardizeAction|striptags }}" data-placement="right" class="item">
+                                                <a class="btn-action col-blocks-standardize cursor"
+                                                   data-col="{{ col.id }}"
+                                                   data-standardize="{{ standardize }}"
+                                                   data-cols-default="{{ "Largeur par défaut des blocs"|trans }}"
+                                                   data-cols-standardize="{{ "Uniformiser la largeur des blocs"|trans }}">
+                                                    <span class="icon-wrap{% if isStandardize %} d-none{% endif %}">
+                                                        <i class="icm-indent"></i>
+                                                    </span>
+                                                    <span class="icon-wrap{% if not isStandardize %} d-none{% endif %}">
+                                                        <i class="icm-outdent"></i>
+                                                    </span>
+                                                </a>
+                                            </span>
+                                        {% endif %}
 
-                                    {% if col.hide %}
-                                        <span class="item btn btn-action"
-                                              data-bs-toggle="tooltip"
-                                              data-placement="right" title="{{ "Colonne désactivée"|trans|striptags }}">
-                                            <i class="icm-ban text-danger"></i>
-                                        </span>
-                                    {% endif %}
+                                        {% if 'delete'|moduleActive(configuration) %}
+                                            <span href="{{ path('admin_col_delete', {website: websiteId(), zone: zone.id, col: col.id}) }}"
+                                               data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
+                                               data-target="#col-{{ col.id }}"
+                                               data-type="stay"
+                                               class="btn-action swal-delete-link cursor">
+                                                <i class="icm-trash"></i>
+                                            </span>
+                                        {% endif %}
 
-                                    {% if 'edit'|moduleActive(configuration) %}
-                                        <span class="item handle-col grabbable btn btn-action"
-                                              data-bs-toggle="tooltip" title="{{ "Déplacer"|trans|striptags }}">
-                                            <i class="icm-arrows-alt"></i>
-                                        </span>
-                                    {% endif %}
+                                        {% if col.hide %}
+                                            <span class="item btn-action"
+                                                  data-bs-toggle="tooltip"
+                                                  data-placement="right" title="{{ "Colonne désactivée"|trans|striptags }}">
+                                                <i class="icm-ban text-danger"></i>
+                                            </span>
+                                        {% endif %}
+
+                                        {% if 'edit'|moduleActive(configuration) %}
+                                            <span class="item handle-col grabbable btn-action"
+                                                  data-bs-toggle="tooltip" title="{{ "Déplacer"|trans|striptags }}">
+                                                <i class="icm-arrows-alt"></i>
+                                            </span>
+                                        {% endif %}
+
+                                    </div>
 
                                 </div>
                             </div>

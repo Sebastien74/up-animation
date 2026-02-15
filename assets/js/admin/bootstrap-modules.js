@@ -28,12 +28,6 @@ export function Tooltip() {
                 tip.setAttribute('data-variant', variant);
             });
 
-            el.addEventListener('click', (event) => {
-                event.stopPropagation();
-                instance.update();
-                instance.hide();
-            });
-
             el.classList.add('tooltip-loaded');
         };
 

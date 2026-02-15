@@ -11,7 +11,7 @@
 
 {% if displayTitleCard %}
     <div class="col-12">
-        <h4 class="card-subtitle mb-4 media-subtitle">
+        <h4 class="main-subtitle mb-4 media-subtitle">
             {{ 'fal photo-video'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Médias"|trans }}{% else %}{{ "Média"|trans }}{% endif %}
         </h4>
     </div>
@@ -123,7 +123,7 @@
 
                 {% if mediaRelation.intl.targetLink is defined %}
                     <div class="card-body pb-0 border bg-light mb-4 radius">
-                        <h4 class="card-subtitle mb-4 w-100">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
+                        <h4 class="main-subtitle mb-4 w-100">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
                         <div class="row">
                             {% if mediaRelation.intl.targetStyle is defined %}
                                 {{ form_row(mediaRelation.intl.targetStyle) }}

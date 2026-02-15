@@ -57,7 +57,7 @@
             {% if not first %}
                 </div>
             {% endif %}
-            <h4 class="card-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-{{ category }}" aria-expanded="false" aria-controls="collapse-{{ category }}">
+            <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-{{ category }}" aria-expanded="false" aria-controls="collapse-{{ category }}">
                 {% set label = category|trans|capitalize %}
                 {% if category == 'background' %}
                     {{ 'fal eye-dropper'|icon(null, 14, 'info-darken me-2') }}{% set label = 'Couleurs de fond'|trans %}

@@ -24,7 +24,7 @@ $tbl-shadow: 0 18px 45px rgba(0, 0, 0, .55) !default;
 .app-table {
     position: relative;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: $border-radius;
     background: $tbl-surface;
     border: 1px solid $tbl-border;
 }

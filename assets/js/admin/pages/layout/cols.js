@@ -1,7 +1,7 @@
 import setPositions from "./positions";
 
 /**
- * Sortable activation : Cols order
+ * Sortable activation: Cols order
  */
 export default function (Routing) {
 
@@ -20,7 +20,7 @@ export default function (Routing) {
             update: function (event, ui) {
                 let colsSortable = ui.item.parent().find('.col-sortable');
                 setPositions(Routing, colsSortable, 'admin_cols_positions');
-                event.stopImmediatePropagation();
+                event.stopPropagation();
             }
         });
 

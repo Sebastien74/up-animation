@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+.main-subtitle i,
 .btn-icon {
 
     display: inline-flex;
@@ -47,7 +48,7 @@
 
 .btn-app {
 
-    border-radius: 16px;
+    border-radius: $border-radius;
 
     background: $btn-surface;
     border: 1px solid $btn-border;

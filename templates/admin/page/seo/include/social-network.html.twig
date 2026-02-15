@@ -1,15 +1,15 @@
 {% trans_default_domain 'admin' %}
 
-<h4 class="card-subtitle mb-3">{{ 'fal copy'|icon(null, 14, 'info-darken me-2') }}{{ "Pages"|trans }}</h4>
+<h4 class="main-subtitle mb-3">{{ 'fal copy'|icon(null, 14, 'info-darken me-2') }}{{ "Pages"|trans }}</h4>
 
 {% include 'admin/page/information/social-network.html.twig' with {socialsNetworks: form.website.information.socialNetworks} %}
 
-<h4 class="card-subtitle mb-3">{{ 'fal share-alt'|icon(null, 14, 'info-darken me-2') }}{{ "Partage"|trans }}</h4>
+<h4 class="main-subtitle mb-3">{{ 'fal share-alt'|icon(null, 14, 'info-darken me-2') }}{{ "Partage"|trans }}</h4>
 <div class="row">
     {{ form_row(form.website.api.addThis) }}
 </div>
 
-<h4 class="card-subtitle mb-3">
+<h4 class="main-subtitle mb-3">
     <div class="row">
         <div class="col-md-6 d-flex align-items-center">
             {{ 'fab instagram'|icon( null, 14, 'info-darken me-2') }}{{ "Instagram"|trans }}

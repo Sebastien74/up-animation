@@ -266,4 +266,21 @@ form .btn-group-toggle label {
             display: none;
         }
     }
+
+    .url-edit-group {
+
+        .url-style {
+            color: #006621;
+        }
+
+        .input-group {
+            .generate-code {
+                display: none;
+            }
+        }
+
+        i {
+            font-size: 13px;
+        }
+    }
 }

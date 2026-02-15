@@ -81,7 +81,7 @@ export default function (Routing) {
                         });
                     }
 
-                    event.stopImmediatePropagation();
+                    event.stopPropagation();
                     return false;
                 }
             });

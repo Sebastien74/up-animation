@@ -31,7 +31,7 @@ export default function (Routing) {
                 el.attr('data-size', size);
             },
             success: function () {
-                if (size == 'false') {
+                if (size === 'false') {
                     titleBlock.attr('data-original-title', el.data('compress')).parent().find('.tooltip-inner').html(el.data('compress'));
                 } else {
                     titleBlock.attr('data-original-title', el.data('expand')).parent().find('.tooltip-inner').html(el.data('expand'));
@@ -47,7 +47,7 @@ export default function (Routing) {
             }
         });
 
-        e.stopImmediatePropagation();
+        e.stopPropagation();
         return false;
     });
 }

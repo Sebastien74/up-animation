@@ -31,7 +31,7 @@ export default function (Routing) {
                 el.attr('data-standardize', standardize);
             },
             success: function () {
-                if (standardize == 'false') {
+                if (standardize === 'false') {
                     titleBlock.attr('data-original-title', el.data('cols-standardize')).parent().find('.tooltip-inner').html(el.data('cols-default'));
                 } else {
                     titleBlock.attr('data-original-title', el.data('cols-default')).parent().find('.tooltip-inner').html(el.data('cols-standardize'));
@@ -47,7 +47,7 @@ export default function (Routing) {
             }
         });
 
-        e.stopImmediatePropagation();
+        e.stopPropagation();
         return false;
     });
 }

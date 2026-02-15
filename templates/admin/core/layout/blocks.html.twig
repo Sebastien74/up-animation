@@ -82,14 +82,14 @@
 
                             </div>
                         </div>
-                        <div class="col-6 btn-block-group text-end my-auto">
+                        <div class="col-6 btn-block-group justify-content-end my-auto d-flex gap-2">
 
                             {% if 'edit'|moduleActive(configuration) %}
                                 <span data-path="{{ path('admin_block_configuration', {website: websiteId(), block: block.id}) }}"
                                       class="item edit-layout-element-btn cursor">
                                     <span data-bs-toggle="tooltip"
                                           title="{{ "Configuration"|trans|striptags }}"
-                                          class="btn btn-action"><i class="icm-cog-reg"></i></span>
+                                          class="btn-action"><i class="icm-cog-reg"></i></span>
                                 </span>
                             {% endif %}
 
@@ -98,7 +98,7 @@
                                     {% set color = 'background'|color(website, block.backgroundColor) %}
                                     {% set hexa = color.color is defined and color.color ? color.color : block.hexadecimalCode %}
                                     <span class="color-info-bulle"{% if hexa %} style="background-color: {{ hexa }}" {% endif %}></span>
-                                    <span class="btn btn-action edit-layout-element-btn btn-palette cursor"
+                                    <span class="btn-action edit-layout-element-btn btn-palette cursor"
                                           data-path="{{ path('admin_block_background', {website: website.id, block: block.id}) }}"
                                           data-bs-toggle="tooltip"
                                           title="{{ "Couleur de fond"|trans|striptags }}">
@@ -112,7 +112,7 @@
                                     <span data-toggle="preloader">
                                         <a href="{{ path('admin_block_edit', {website: websiteId(), col: col.id, interfaceName: interface.name, interfaceEntity: entity.id, block: block.id}) }}"
                                            data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}"
-                                           class="btn btn-action">
+                                           class="btn-action">
                                             <i class="icm-pencil-alt"></i>
                                         </a>
                                     </span>
@@ -124,13 +124,13 @@
                                       data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
                                       data-target="#block-{{ block.id }}"
                                       data-type="stay"
-                                      class="btn btn-action swal-delete-link cursor">
+                                      class="btn-action swal-delete-link cursor">
                                     <i class="icm-trash"></i>
                                 </span>
                             {% endif %}
 
                             {% if block.hide %}
-                                <span class="item btn btn-action"
+                                <span class="item btn-action"
                                       data-bs-toggle="tooltip"
                                       data-placement="right" title="{{ "Bloc désactivée"|trans|striptags }}">
                                     <i class="icm-ban text-danger"></i>
@@ -138,7 +138,7 @@
                             {% endif %}
 
                             {% if 'edit'|moduleActive(configuration) %}
-                                <span class="item handle-block grabbable btn btn-action"
+                                <span class="item handle-block grabbable btn-action"
                                       data-bs-toggle="tooltip" title="{{ "Déplacer"|trans|striptags }}">
                                     <i class="icm-arrows-alt"></i>
                                 </span>

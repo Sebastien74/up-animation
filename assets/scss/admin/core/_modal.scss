@@ -15,7 +15,7 @@
 
         background-color: transparentize($black, 0);
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
-        border-radius: 16px !important;
+        border-radius: $border-radius !important;
 
         &:before {
             content: '';

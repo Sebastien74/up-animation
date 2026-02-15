@@ -67,7 +67,7 @@ class SubmitType
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
             'attr' => [
                 'class' => 'btn-app'.$this->ajaxClass.$this->refreshClass,
-                'data-icon' => 'fal save',
+                'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],
         ]);
@@ -75,7 +75,7 @@ class SubmitType
             'label' => $this->translator->trans('Enregistrer et éditer', [], 'admin'),
             'attr' => [
                 'class' => 'btn-app'.$this->ajaxClass.$this->refreshClass,
-                'data-icon' => 'fal save',
+                'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],
         ]);
@@ -92,7 +92,7 @@ class SubmitType
             'attr' => [
                 'class' => isset($options['class']) ? $options['class'].$this->ajaxClass.$this->refreshClass : 'btn-app'.$this->ajaxClass.$this->refreshClass,
                 'force' => $options['force'] ?? false,
-                'data-icon' => 'fal save',
+                'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],
         ]);
@@ -114,7 +114,7 @@ class SubmitType
             'label' => $label,
             'attr' => [
                 'class' => 'btn-app',
-                'data-icon' => 'fal save',
+                'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],
         ]);
@@ -129,7 +129,7 @@ class SubmitType
             'label' => $this->translator->trans('Enregistrer et ajouter', [], 'admin'),
             'attr' => [
                 'class' => 'btn-app',
-                'data-icon' => 'fal save',
+                'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],
         ]);

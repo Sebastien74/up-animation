@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-md-8">
                 {% if intlCardTitle %}
-                    <h4 class="card-subtitle mb-4">{{ 'fal align-center'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Descriptions"|trans }}{% else %}{{ "Description"|trans }}{% endif %}</h4>
+                    <h4 class="main-subtitle mb-4">{{ 'fal align-center'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Descriptions"|trans }}{% else %}{{ "Description"|trans }}{% endif %}</h4>
                 {% endif %}
                 <div class="row">
                     {% if form.intl.titleForce is defined %}
@@ -45,7 +45,7 @@
                     {% endif %}
                 </div>
                 {% if linkCardTitle %}
-                    <h4 class="card-subtitle mb-4">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
+                    <h4 class="main-subtitle mb-4">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
                 {% endif %}
                 <div class="row">
                     {% if form.intl.targetLink is defined %}
@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <h4 class="card-subtitle mb-4">{{ 'fal image'|icon(null, 14, 'info-darken me-2') }}{{ "Média"|trans }}</h4>
+                <h4 class="main-subtitle mb-4">{{ 'fal image'|icon(null, 14, 'info-darken me-2') }}{{ "Média"|trans }}</h4>
                 {% include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: entity.id, classname: class} %}
                 {{ form_row(form.media.uploadedFile) }}
                 <div class="row">

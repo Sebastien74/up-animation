@@ -258,7 +258,11 @@ class ZoneConfigurationType extends AbstractType
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
-            'attr' => ['class' => 'btn-info edit-element-submit-btn'],
+            'attr' => [
+                'class' => 'btn-app edit-element-submit-btn',
+                'data-icon' => 'save',
+                'data-icon-side' => 'left',
+            ],
         ]);
     }
 

@@ -95,7 +95,7 @@
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        top: 5px;
+        top: 0;
         right: 11px;
         z-index: 9;
     }
@@ -401,14 +401,14 @@
 
 .zone {
 
-    padding-left: 50px;
-    padding-right: 15px;
+    display: flex;
+    padding-right: 1rem;
     min-height: 305px !important;
     position: relative;
     background: $input-bg;
     margin-bottom: 15px;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .1);
-    border-radius: 16px;
+    border-radius: $border-radius;
     border: 1px solid $input-border-color;
 
     &.hide-zone {
@@ -418,17 +418,28 @@
 
 .zone-sidebar {
 
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 50px;
-    text-align: center;
-    padding-top: 15px;
+    width: 60px;
 
     i {
         font-size: 17px;
         color: transparentize($white, .5);
+    }
+
+    .btn-icon {
+
+        width: 35px;
+        height: 35px;
+        border-radius: 11px;
+
+        i {
+            font-size: 15px !important;
+        }
+
+        &.swal-delete-link {
+            i {
+                font-size: 13px !important;
+            }
+        }
     }
 
     @include mediaQuery(min-lg) {
@@ -482,19 +493,13 @@
             background-color: $dash-bg-1;
             border-top-right-radius: 16px;
             border-top-left-radius: 16px;
-            border-top: 1px solid $dash-bg-1;
-            border-right: 1px solid $dash-bg-1;
-            border-left: 1px solid $dash-bg-1;
+            border: 0;
             display: inline-block;
-            padding: 2px 15px 0 15px;
+            padding: 10px 18px 1px 20px;
 
-            svg {
-                height: 17px;
-            }
-
-            .btn {
-                padding-right: .25rem;
-                padding-left: .25rem;
+            .item {
+                display: flex !important;
+                align-items: center;
             }
         }
 
@@ -503,9 +508,7 @@
             display: inline-block;
             background-color: $dash-bg-1;
             border-top-left-radius: 16px;
-            border-top: 1px solid $dash-bg-1;
-            border-right: 1px solid $dash-bg-1;
-            border-left: 1px solid $dash-bg-1;
+            border: 0;
         }
 
         .img-loader {
@@ -577,9 +580,7 @@
             background-color: $dash-bg-1;
             border-bottom-right-radius: 16px;
             border-bottom-left-radius: 16px;
-            border-left: 1px solid $dash-bg-1;
-            border-right: 1px solid $dash-bg-1;
-            border-bottom: 1px solid $dash-bg-1;
+            border: 0;
             padding-top: 10px !important;
             position: relative;
         }

@@ -1,5 +1,5 @@
-import '../../bootstrap/dist/modal';
-import '../../bootstrap/dist/tooltip';
+import Modal from '../../bootstrap/dist/modal';
+import Tooltip from '../../bootstrap/dist/tooltip';
 
 import resetModal from "../../../vendor/components/reset-modal";
 import select2 from "../../../vendor/plugins/select2";
@@ -12,98 +12,119 @@ import dropify from "../../form/dropify";
 export default function (Routing) {
 
     /**
-     * On input change in new element form
+     * On input change in a new element form
      */
-    let showSubmit = function (modal) {
-        $('body .edit-element-form').on('change', 'input', function () {
-            let form = modal.find('form');
-            let btn = form.find('.modal-buttons button');
-            if (btn.hasClass('d-none')) {
-                btn.removeClass('d-none');
+    let showSubmit = function () {
+        document.body.addEventListener('change', function (e) {
+            let formElement = e.target.closest('.edit-element-form');
+            if (formElement && e.target.matches('input')) {
+                let form = formElement.querySelector('form') || formElement.closest('form') || (formElement.tagName === 'FORM' ? formElement : null);
+                if (form) {
+                    let btn = form.querySelector('.modal-buttons button');
+                    if (btn && btn.classList.contains('d-none')) {
+                        btn.classList.remove('d-none');
+                    }
+                }
             }
         });
     };
 
     /**
-     * On submit
+     * On submitting
      */
     let submit = function () {
-        $('body').on('click', '.edit-element-submit-btn', function (e) {
-            e.preventDefault();
-            let body = $('body');
-            let modal = body.find('.layout-modal');
-            if (!body.hasClass('ajax-posted')) {
-                let form = $(this).closest('.edit-element-form');
-                /** Refresh layout */
-                import('./refresh-layout').then(({default: refreshLayout}) => {
-                    new refreshLayout(Routing, form, modal, e);
-                }).catch(error => console.error(error.message));
+        document.body.addEventListener('click', function (e) {
+            let submitBtn = e.target.closest('.edit-element-submit-btn');
+            if (submitBtn) {
+                e.preventDefault();
+                let body = document.body;
+                let modal = body.querySelector('.layout-modal');
+                if (!body.classList.contains('ajax-posted')) {
+                    let form = submitBtn.closest('.edit-element-form');
+                    /** Refresh layout */
+                    import('./refresh-layout').then(({default: refreshLayout}) => {
+                        new refreshLayout(Routing, $(form), $(modal), e);
+                    }).catch(error => console.error(error.message));
+                }
             }
         });
     };
 
     /**
-     * On add Block
+     * On adding Block
      */
     let addBlock = function () {
-        $('body').on('click', '.btn-add-block', function () {
-            $('body').find('#main-preloader').toggleClass('d-none');
+        document.body.addEventListener('click', function (e) {
+            if (e.target.closest('.btn-add-block')) {
+                let preloader = document.getElementById('main-preloader');
+                if (preloader) {
+                    preloader.classList.toggle('d-none');
+                }
+            }
         });
     };
 
     /**
      * Background modal
      */
-    let backgroundModal = function (modal) {
-        let modalId = modal.attr('id');
-        $('#' + modalId + ' .background-rounded-selector').on('change', 'input', function () {
-            let el = $(this);
-            let elId = el.attr('id');
-            let body = $('body');
-            body.find('.background-input-label-active').removeClass('active');
-            body.find('input#' + elId).closest('.background-input-label-active').addClass('active');
+    let backgroundModal = function () {
+        document.body.addEventListener('change', function (e) {
+            let input = e.target.closest('.background-rounded-selector input');
+            if (input) {
+                let elId = input.getAttribute('id');
+                let body = document.body;
+                body.querySelectorAll('.background-input-label-active').forEach(label => {
+                    label.classList.remove('active');
+                });
+                let targetInput = body.querySelector('input#' + elId);
+                if (targetInput) {
+                    let label = targetInput.closest('.background-input-label-active');
+                    if (label) {
+                        label.classList.add('active');
+                    }
+                }
+            }
         });
     };
 
     /**
      * Background modal
      */
-    let copyClass = function (modal) {
-
-        modal.on("shown.bs.modal", function () {
-            let modal = $(this);
-            $('body').on('click', '.class-copy', function () {
-                let el = $(this);
-                let text = el.parent().find('.text-copy').text();
-                let field = modal.find('.input-css');
-                let copy = field.val() === "" ? text : field.val() + " " + text;
-                field.val(copy);
-            });
+    let copyClass = function () {
+        document.body.addEventListener('click', function (e) {
+            let copyBtn = e.target.closest('.class-copy');
+            if (copyBtn) {
+                let text = copyBtn.parentElement.querySelector('.text-copy').textContent;
+                let modal = copyBtn.closest('.modal');
+                if (modal) {
+                    let field = modal.querySelector('.input-css');
+                    if (field) {
+                        let copy = field.value === "" ? text : field.value + " " + text;
+                        field.value = copy;
+                    }
+                }
+            }
         });
     };
 
     /**
      * Tabs height
      */
-    let tabHeight = function (modal) {
-
-        modal.on("shown.bs.modal", function () {
-
-            let modal = $(this);
+    let tabHeight = function () {
+        document.body.addEventListener('shown.bs.modal', function (e) {
+            let modal = e.target;
             let maxHeight = 0;
-            let tabs = modal.find('.config-tabs-content .tab-pane-config');
-
-            tabs.each(function() {
-                let tab = $(this);
-                tab.addClass("active");
-                maxHeight = (tab.height() > maxHeight ? tab.height() : maxHeight);
-                if (!tab.hasClass("show")) {
-                    tab.removeClass("active");
+            let tabs = modal.querySelectorAll('.config-tabs-content .tab-pane-config');
+            tabs.forEach(function (tab) {
+                tab.classList.add("active");
+                let height = tab.offsetHeight;
+                maxHeight = (height > maxHeight ? height : maxHeight);
+                if (!tab.classList.contains("show")) {
+                    tab.classList.remove("active");
                 }
             });
-
-            tabs.each(function() {
-                $(this).height(maxHeight);
+            tabs.forEach(function (tab) {
+                tab.style.height = maxHeight + "px";
             });
         });
     };
@@ -112,112 +133,149 @@ export default function (Routing) {
      * Input label btn
      */
     let inputLabelBtn = function () {
-        let body = $('body');
-        body.on('change', '.input-btn', function () {
-            let el = $(this);
-            let elId = el.attr('id');
-            body.find('.input-btn').closest('label').removeClass('active');
-            body.find('input#' + elId).closest('label').addClass('active');
+        let body = document.body;
+        body.addEventListener('change', function (e) {
+            let inputBtn = e.target.closest('.input-btn');
+            if (inputBtn) {
+                let elId = inputBtn.getAttribute('id');
+                body.querySelectorAll('.input-btn').forEach(input => {
+                    let label = input.closest('label');
+                    if (label) {
+                        label.classList.remove('active');
+                    }
+                });
+                let targetInput = body.querySelector('input#' + elId);
+                if (targetInput) {
+                    let label = targetInput.closest('label');
+                    if (label) {
+                        label.classList.add('active');
+                    }
+                }
+            }
         });
     };
 
     /**
-     * Show modal
+     * Show modal click handler
      */
-    $('body').on('click', '.edit-layout-element-btn', function handler(e) {
+    let showModal = function() {
 
-        e.preventDefault();
+        document.body.addEventListener('click', function handler(e) {
 
-        let btn = $(this);
-        let body = $('body');
-        let loader = body.find('#layout-preloader');
+            let btn = e.target.closest('.edit-layout-element-btn');
 
-        $.ajax({
-            url: btn.data('path') + "?ajax=true",
-            type: "GET",
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            async: true,
-            beforeSend: function () {
-                loader.toggleClass('d-none');
-            },
-            success: function (response) {
+            if (!btn) return;
 
-                let html = response.html;
-                let body = $('body');
-                let container = body.find('#layout-grid')
+            e.preventDefault();
 
-                container.append(html);
+            let body = document.body;
+            let loader = body.querySelector('#layout-preloader');
 
-                $('[data-bs-toggle="tooltip"]').tooltip();
-
-                let modal = body.find('.layout-modal');
-                let modalEl = body.find('#' + modal.attr('id'));
-
-                modalEl.modal('show');
-                loader.addClass('d-none');
-
-                select2();
-                dropify();
-                touchspin();
-
-                $("#layout-preloader").addClass('d-none');
-
-                $('[data-bs-toggle="preloader"]').on('click', function () {
-                    $("#main-preloader").toggleClass('d-none');
-                    let el = $(this);
-                    let stripePreloader = el.closest('.refer-preloader').find('.stripe-preloader');
-                    let preloader = stripePreloader.length > 0 ? stripePreloader : body.find("#layout-preloader");
-                    preloader.removeClass('d-none');
-                });
-
-                inputLabelBtn();
-                showSubmit(modalEl);
-                submit();
-                backgroundModal(modalEl);
-                copyClass(modalEl);
-                tabHeight(modalEl);
-                addBlock();
-
-                import('../../form/btn-group-toggle').then(({default: btnToggle}) => {
-                    new btnToggle();
-                }).catch(error => console.error(error.message));
-
-                let colorPicker = body.find('.colorpicker');
-                if (colorPicker.length > 0) {
-                    import('./../../plugins/colorpicker').then(({default: asColorPicker}) => {
-                        new asColorPicker();
-                    }).catch(error => console.error(error.message));
-                }
-
-                $(modalEl).on('click', '.reset-margins', function (e) {
-                    e.preventDefault();
-                    import('./../../plugins/sweet-alert').then(({default: sweetAlert}) => {
-                        new sweetAlert(e, $(this));
-                    }).catch(error => console.error(error.message));
-                });
-
-                modalEl.on("hide.bs.modal", function () {
-                    resetModal(modalEl, true);
-                    $('.modal-wrapper').remove();
-                });
-            },
-            error: function (errors) {
-
-                let body = $('body');
-                let modal = body.find('.modal');
-
-                /** Display errors */
-                import('../../core/errors').then(({default: displayErrors}) => {
-                    new displayErrors(errors);
-                }).catch(error => console.error(error.message));
-
-                resetModal(modal, true);
+            if (loader) {
+                loader.classList.remove('d-none');
             }
-        });
 
-        e.stopImmediatePropagation();
-        return false;
-    });
+            fetch(btn.dataset.path + "?ajax=true")
+                .then(response => response.json())
+                .then(response => {
+                    let html = response.html;
+                    let container = body.querySelector('#layout-grid');
+
+                    if (container) {
+                        container.insertAdjacentHTML('beforeend', html);
+                    }
+
+                    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                        Tooltip.getOrCreateInstance(el);
+                    });
+
+                    let modal = body.querySelector('.layout-modal:last-of-type');
+                    if (modal) {
+                        let modalId = modal.getAttribute('id');
+                        let modalEl = document.getElementById(modalId);
+
+                        if (modalEl) {
+                            Modal.getOrCreateInstance(modalEl).show();
+                            if (loader) {
+                                loader.classList.add('d-none');
+                            }
+
+                            select2();
+                            dropify();
+                            touchspin();
+
+                            let layoutPreloader = document.getElementById("layout-preloader");
+                            if (layoutPreloader) {
+                                layoutPreloader.classList.add('d-none');
+                            }
+
+                            modalEl.querySelectorAll('[data-bs-toggle="preloader"]').forEach(preloaderBtn => {
+                                preloaderBtn.addEventListener('click', function () {
+                                    let mainPreloader = document.getElementById("main-preloader");
+                                    if (mainPreloader) {
+                                        mainPreloader.classList.toggle('d-none');
+                                    }
+                                    let referPreloader = this.closest('.refer-preloader');
+                                    let stripePreloader = referPreloader ? referPreloader.querySelector('.stripe-preloader') : null;
+                                    let preloader = stripePreloader || document.getElementById("layout-preloader");
+                                    if (preloader) {
+                                        preloader.classList.remove('d-none');
+                                    }
+                                });
+                            });
+
+                            import('../../form/btn-group-toggle').then(({default: btnToggle}) => {
+                                new btnToggle();
+                            }).catch(error => console.error(error.message));
+
+                            let colorPicker = body.querySelector('.colorpicker');
+                            if (colorPicker) {
+                                import('./../../plugins/colorpicker').then(({default: asColorPicker}) => {
+                                    new asColorPicker();
+                                }).catch(error => console.error(error.message));
+                            }
+
+                            modalEl.addEventListener('click', function (e) {
+                                let resetBtn = e.target.closest('.reset-margins');
+                                if (resetBtn) {
+                                    e.preventDefault();
+                                    import('./../../plugins/sweet-alert').then(({default: sweetAlert}) => {
+                                        new sweetAlert(e, $(resetBtn));
+                                    }).catch(error => console.error(error.message));
+                                }
+                            });
+
+                            modalEl.addEventListener('hide.bs.modal', function () {
+                                resetModal($(modalEl), true);
+                                document.querySelectorAll('.modal-wrapper').forEach(wrapper => wrapper.remove());
+                            });
+                        }
+                    }
+                })
+                .catch(errors => {
+                    let modal = body.querySelector('.modal');
+
+                    /** Display errors */
+                    import('../../core/errors').then(({default: displayErrors}) => {
+                        new displayErrors(errors);
+                    }).catch(error => console.error(error.message));
+
+                    if (modal) {
+                        resetModal($(modal), true);
+                    }
+                });
+        });
+    };
+
+    if (!window.editElementInitialized) {
+        showSubmit();
+        submit();
+        backgroundModal();
+        copyClass();
+        tabHeight();
+        addBlock();
+        inputLabelBtn();
+        showModal();
+        window.editElementInitialized = true;
+    }
 }

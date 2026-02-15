@@ -82,6 +82,6 @@ export default function (Routing, form, modal, event) {
         });
     }
 
-    event.stopImmediatePropagation();
+    event.stopPropagation();
     return false;
 }

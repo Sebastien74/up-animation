@@ -1,7 +1,7 @@
 import setPositions from "./positions";
 
 /**
- * Sortable activation : Blocks order
+ * Sortable activation: Blocks order
  * & Block modal
  */
 export default function (Routing) {
@@ -29,7 +29,7 @@ export default function (Routing) {
             update: function (event, ui) {
                 let blocksSortableOriginal = $(event.target).find('.block');
                 setPositions(Routing, blocksSortableOriginal, 'admin_blocks_positions', true);
-                event.stopImmediatePropagation();
+                event.stopPropagation();
             }
         });
 

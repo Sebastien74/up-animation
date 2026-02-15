@@ -40,7 +40,7 @@
         novalidate: "novalidate",
         action: path('admin_mediarelation_edit', {website: websiteId(), mediarelation: entity.id, entityNamespace: entityNamespace, referEntityId: referEntityId, screen: screen}),
         id: 'form-'~entity.id }}) }}
-        <h4 class="card-subtitle mb-4">{{ 'fal video'|icon(null, 14, 'info-darken me-2') }}{{ "Vidéo"|trans }}</h4>
+        <h4 class="main-subtitle mb-4">{{ 'fal video'|icon(null, 14, 'info-darken me-2') }}{{ "Vidéo"|trans }}</h4>
         <div class="row">
             {{ macro.card(entity, 'App\\Entity\\Media\\MediaRelation', form.media.uploadedFile, 'mediaRelationId', entity.media.screen) }}
             {% for mediaScreen in form.media.mediaScreens %}
@@ -49,7 +49,7 @@
         </div>
         <div class="row">
             <div class="col-md-7">
-                <h4 class="card-subtitle mb-4">{{ 'fal align-center'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Descriptions"|trans }}{% else %}{{ "Description"|trans }}{% endif %}</h4>
+                <h4 class="main-subtitle mb-4">{{ 'fal align-center'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Descriptions"|trans }}{% else %}{{ "Description"|trans }}{% endif %}</h4>
                 <div class="row">
                     {% set fieldNames = ['titleForce', 'title', 'subTitle', 'pictogram', 'introduction', 'body'] %}
                     {% for fieldName in fieldNames %}
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <div class="col-md-5">
-                <h4 class="card-subtitle mb-4">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
+                <h4 class="main-subtitle mb-4">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
                 <div class="row">
                     {% set fieldNames = ['video', 'targetLink', 'targetPage', 'targetLabel', 'targetStyle'] %}
                     {% for fieldName in fieldNames %}
