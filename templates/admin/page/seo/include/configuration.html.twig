@@ -11,26 +11,26 @@
     {{ form_row(form.disableAfterDash) }}
 </div>
 
-<h4 class="main-subtitle mb-3"><i class="icm-chart-line me-2"></i>{{ "Google Analytics"|trans }}</h4>
+<h4 class="main-subtitle mb-3"><i class="icm-chart-line"></i>{{ "Google Analytics"|trans }}</h4>
 <div class="row">
     {% include 'admin/page/api/google-intls.html.twig' with {googleIntls: form.website.api.google.intls} %}
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <h4 class="main-subtitle mb-3"><i class="icm-chart-line me-2"></i>{{ "Matomo"|trans }}</h4>
+        <h4 class="main-subtitle mb-3"><i class="icm-chart-line"></i>{{ "Matomo"|trans }}</h4>
         <div class="row">
             {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: ['matomoId', 'matomoUrl']} %}
         </div>
     </div>
     <div class="col-md-4">
-        <h4 class="main-subtitle mb-3"><i class="icm-chart-line me-2"></i>{{ "Axeptio"|trans }}</h4>
+        <h4 class="main-subtitle mb-3"><i class="icm-chart-line"></i>{{ "Axeptio"|trans }}</h4>
         <div class="row">
             {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: ['axeptioId', 'axeptioCookieVersion', 'axeptioExternal']} %}
         </div>
     </div>
     <div class="col-md-4">
-        <h4 class="main-subtitle mb-3"><i class="icm-facebook-square me-2"></i>{{ "Facebook"|trans }}</h4>
+        <h4 class="main-subtitle mb-3"><i class="icm-facebook-square"></i>{{ "Facebook"|trans }}</h4>
         <div class="row">
             {% include 'admin/page/api/facebook-intls.html.twig' with {facebookIntls: form.website.api.facebook.intls} %}
         </div>
@@ -38,7 +38,7 @@
 
     <div class="col-md-4">
         <a href="https://prompt.agence-felix.fr/v1/doc" target="_blank">
-            <h4 class="main-subtitle mb-3"><i class="icm-chart-line me-2"></i>{{ "API Felix AI"|trans }}</h4>
+            <h4 class="main-subtitle mb-3"><i class="icm-chart-line"></i>{{ "API Felix AI"|trans }}</h4>
         </a>
         <div class="row">
             {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: ['aiFelixSiteId']} %}
@@ -46,7 +46,7 @@
     </div>
 </div>
 
-<h4 class="main-subtitle mb-3"><i class="icm-plus-circle me-2"></i>{{ "Autres"|trans }}</h4>
+<h4 class="main-subtitle mb-3"><i class="icm-plus-circle"></i>{{ "Autres"|trans }}</h4>
 <div class="row">
     {% set customOthers = [] %}
     {% for customField in form.website.api.custom.intls %}
@@ -62,7 +62,7 @@
 {% set configurationActive = 'google-analytics'|moduleActive(configuration) %}
 
 {% if configurationActive %}
-    <h4 class="main-subtitle mb-3"><i class="icm-cog me-2"></i>{{ "Configuration"|trans }}</h4>
+    <h4 class="main-subtitle mb-3"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
 {% endif %}
 
 <div class="{% if configurationActive %}row{% else %}d-none{% endif %}">
