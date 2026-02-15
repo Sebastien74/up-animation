@@ -231,7 +231,7 @@ class SliderType extends AbstractType
             $builder->add('indicators', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher les points de navigation', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -239,7 +239,7 @@ class SliderType extends AbstractType
             $builder->add('autoplay', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Lecture automatique', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -247,7 +247,7 @@ class SliderType extends AbstractType
             $builder->add('pause', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Pause au survol', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -255,7 +255,7 @@ class SliderType extends AbstractType
             $builder->add('popup', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher popup au clic des images', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -263,7 +263,7 @@ class SliderType extends AbstractType
             $builder->add('standardizeMedia', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Uniformiser la hauteur des médias', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -271,7 +271,7 @@ class SliderType extends AbstractType
             $builder->add('progress', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Barre de progression', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -279,7 +279,7 @@ class SliderType extends AbstractType
             $builder->add('control', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher les flèches de navigation', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -287,7 +287,7 @@ class SliderType extends AbstractType
             $builder->add('thumbnails', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher les vignettes', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);

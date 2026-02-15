@@ -57,7 +57,7 @@ class BackgroundColorColType extends AbstractType
         $builder->add('backgroundFullSize', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Toute la largeur', [], 'admin'),
             'attr' => [
                 'group' => $this->isInternalUser ? 'text-center mb-0' : 'text-center mt-4 mb-0',
@@ -68,7 +68,7 @@ class BackgroundColorColType extends AbstractType
         $builder->add('backgroundFullHeight', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Toute la hauteur', [], 'admin'),
             'attr' => [
                 'group' => 'text-center mt-2 mb-0',

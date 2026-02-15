@@ -67,10 +67,12 @@ export default function () {
 
             let nestableEl = $('#' + elId);
 
-            body.on('click', '.delete-pack', function () {
-                if (!nestableEl.hasClass('disabled-nestable')) {
-                    nestableEl.addClass('disabled-nestable');
-                }
+            document.querySelectorAll('.custom-control-label').forEach(label => {
+                label.addEventListener('click', function (e) {
+                    if (!nestableEl.hasClass('disabled-nestable')) {
+                        nestableEl.addClass('disabled-nestable');
+                    }
+                });
             });
 
             nestableEl.nestable({
@@ -86,7 +88,7 @@ export default function () {
             });
         }
 
-        /** To use loader only if not first load */
+        /** To use loader only if not the first load */
         el.append('<span class="nestable-window-load"></span>');
     });
 

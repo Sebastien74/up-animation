@@ -94,7 +94,7 @@ class BlockConfigurationType extends AbstractType
             $builder->add('useForThumb', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Utiliser pour les vignettes', [], 'admin'),
                 'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
             ]);
@@ -103,7 +103,7 @@ class BlockConfigurationType extends AbstractType
         $builder->add('verticalAlign', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Centrer verticalement le contenu du bloc', [], 'admin'),
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);
@@ -111,7 +111,7 @@ class BlockConfigurationType extends AbstractType
         $builder->add('endAlign', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Aligner le contenu en bas du bloc', [], 'admin'),
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);
@@ -147,7 +147,7 @@ class BlockConfigurationType extends AbstractType
         $builder->add('reverse', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Afficher le bloc en première position sur mobile', [], 'admin'),
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);

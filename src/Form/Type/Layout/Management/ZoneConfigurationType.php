@@ -71,7 +71,7 @@ class ZoneConfigurationType extends AbstractType
         $builder->add('idAsAnchor', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Id pour ancre', [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
         ]);
@@ -104,7 +104,7 @@ class ZoneConfigurationType extends AbstractType
         $builder->add('fullSize', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Étendre', [], 'admin'),
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);
@@ -140,7 +140,7 @@ class ZoneConfigurationType extends AbstractType
         $builder->add('centerCol', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $centerColLabel,
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);
@@ -151,7 +151,7 @@ class ZoneConfigurationType extends AbstractType
         $builder->add('colToRight', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $colToRightLabel,
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);
@@ -162,7 +162,7 @@ class ZoneConfigurationType extends AbstractType
         $builder->add('colToEnd', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $colToRightLabel,
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);
@@ -171,7 +171,7 @@ class ZoneConfigurationType extends AbstractType
             $builder->add('standardizeElements', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Uniformiser la largeur des colonnes', [], 'admin'),
                 'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
             ]);
@@ -183,7 +183,7 @@ class ZoneConfigurationType extends AbstractType
         $builder->add('standardizeMedia', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Uniformiser la hauteur des médias', [], 'admin'),
             'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
         ]);
@@ -195,7 +195,7 @@ class ZoneConfigurationType extends AbstractType
             $builder->add('backgroundFixed', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Arrière-plan fixe ?', [], 'admin'),
                 'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
             ]);
@@ -203,7 +203,7 @@ class ZoneConfigurationType extends AbstractType
             $builder->add('backgroundParallax', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Arrière-plan avec effet de parallax ?', [], 'admin'),
                 'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
             ]);

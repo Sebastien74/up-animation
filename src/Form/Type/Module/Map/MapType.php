@@ -103,7 +103,7 @@ class MapType extends AbstractType
                 $builder->add('autoCenter', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Centrer automatiquement la carte', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -111,7 +111,7 @@ class MapType extends AbstractType
                 $builder->add('forceZoom', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Forcer le zoom (Si centré auto)', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -119,7 +119,7 @@ class MapType extends AbstractType
                 $builder->add('displayFilters', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Afficher les filtres', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -127,7 +127,7 @@ class MapType extends AbstractType
                 $builder->add('multiFilters', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Choix multiple des filtres', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -135,7 +135,7 @@ class MapType extends AbstractType
                 $builder->add('markerClusters', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Activer les groupes de points', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -143,7 +143,7 @@ class MapType extends AbstractType
                 $builder->add('displayPointsList', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Afficher la liste des points', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -151,7 +151,7 @@ class MapType extends AbstractType
                 $builder->add('asDefault', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Carte principale', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -159,7 +159,7 @@ class MapType extends AbstractType
                 $builder->add('popupHover', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Afficher la popup au hover', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -167,7 +167,7 @@ class MapType extends AbstractType
                 $builder->add('countriesGeometry', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Géomérties des pays', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -175,7 +175,7 @@ class MapType extends AbstractType
                 $builder->add('departmentsGeometry', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Géomérties des départements', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -183,7 +183,7 @@ class MapType extends AbstractType
                 $builder->add('jsonGeometry', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Activer les fichiers de Géomérties', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);

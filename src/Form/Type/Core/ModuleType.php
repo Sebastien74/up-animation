@@ -64,7 +64,7 @@ class ModuleType extends AbstractType
         $builder->add('inAdvert', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Afficher dans les extensions', [], 'admin'),
             'attr' => ['group' => 'mx-auto col-md-4', 'class' => 'w-100', 'data-config' => true],
         ]);

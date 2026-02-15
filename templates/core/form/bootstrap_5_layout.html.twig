@@ -348,7 +348,7 @@
             {% set values = attr['data-values'] is defined ? attr['data-values'] : false %}
             {% set class = attr['class'] is defined ? attr['class'] : null %}
             <label for="{{ id }}" class="cursor btn btn-{{ color }}{% if class %} {{ class }}{% endif %}{% if checked %} active{% endif %}">
-                {{ 'fal check'|icon(13, 14, 'me-2 fa-check') }}{{ label }}
+                <i class="icm-check"></i>{{ label }}
             </label>
             <input id="{{ id }}" type="checkbox" class="btn-check" value="{{ checked }}" name="{{ full_name }}"{% if checked %} checked{% endif %}{% if values %} data-values="{{ values }}"{% endif %}>
         {%- else -%}

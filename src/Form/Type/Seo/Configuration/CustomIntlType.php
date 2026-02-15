@@ -104,7 +104,7 @@ class CustomIntlType extends AbstractType
         $builder->add('axeptioExternal', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Activer Axeptio GTM', [], 'admin'),
             'attr' => ['group' => 'col-12 d-flex align-items-end', 'class' => 'w-100'],
         ]);

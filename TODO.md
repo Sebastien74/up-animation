@@ -3,6 +3,10 @@ et si tous second caché et que le parent ne match pas on cache aussi le parent
 
 Revoir toutes les requetes depuis le debut
 
+Virer les  data-toggle="preloader"
+
+Virer un max |icon dans zone Layout back pas dit
+
 changer favicon back
 
 Theme light back

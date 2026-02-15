@@ -67,7 +67,7 @@ class VideoType extends AbstractType
         $builder->add('autoplay', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Lecture automatique', [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
         ]);
@@ -75,7 +75,7 @@ class VideoType extends AbstractType
         $builder->add('playInHover', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Lecture au survol', [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
         ]);
@@ -83,7 +83,7 @@ class VideoType extends AbstractType
         $builder->add('controls', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Afficher les boutons de contrôle', [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
         ]);
@@ -91,7 +91,7 @@ class VideoType extends AbstractType
         $builder->add('soundControls', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Afficher le bouton de contrôle du son', [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
         ]);
@@ -99,7 +99,7 @@ class VideoType extends AbstractType
         $builder->add('asLoop', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('En boucle', [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
         ]);

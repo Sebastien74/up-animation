@@ -97,7 +97,7 @@ class MediaRelationType extends AbstractType
             $builder->add('downloadable', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Téléchargeable', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);
@@ -105,7 +105,7 @@ class MediaRelationType extends AbstractType
             $builder->add('popup', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher popup au clic', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);
@@ -113,7 +113,7 @@ class MediaRelationType extends AbstractType
             $builder->add('main', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => 'agencies' === $slugEntity
                     ? $this->translator->trans('Image de vignette', [], 'admin')
                     : $this->translator->trans('Image principale', [], 'admin'),
@@ -124,7 +124,7 @@ class MediaRelationType extends AbstractType
                 $builder->add('header', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans("Image d'entête", [], 'admin'),
                     'attr' => ['class' => 'w-100'],
                 ]);
@@ -134,7 +134,7 @@ class MediaRelationType extends AbstractType
                 $builder->add('rotation', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans("Rotation de l'image", [], 'admin'),
                     'attr' => ['class' => 'w-100'],
                 ]);
@@ -242,7 +242,7 @@ class MediaRelationType extends AbstractType
             $builder->add('active', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Activer', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);

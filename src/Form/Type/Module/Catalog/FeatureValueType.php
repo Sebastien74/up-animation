@@ -128,7 +128,7 @@ class FeatureValueType extends AbstractType
                     'required' => false,
                     'mapped' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Supprimer les valeurs des fiches', [], 'admin'),
                     'attr' => ['group' => 'col-md-4', 'class' => 'w-100 remove-cards d-none', 'data-values' => json_encode($catalogsIds)],
                 ]);

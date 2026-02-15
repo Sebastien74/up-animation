@@ -74,7 +74,7 @@ class ScheduledCommandType extends AbstractType
             $builder->add('executeImmediately', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Exécuter maintenant', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);
@@ -82,7 +82,7 @@ class ScheduledCommandType extends AbstractType
             $builder->add('active', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Activer', [], 'admin'),
                 'attr' => ['group' => 'col-md-2', 'class' => 'w-100'],
             ]);
@@ -90,7 +90,7 @@ class ScheduledCommandType extends AbstractType
             $builder->add('locked', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Bloquée suite erreur', [], 'admin'),
                 'attr' => ['group' => 'col-md-2', 'class' => 'w-100'],
             ]);

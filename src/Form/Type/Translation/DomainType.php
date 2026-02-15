@@ -38,7 +38,7 @@ class DomainType extends AbstractType
         $builder->add('extract', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans("Ajouter à l'extraction", [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
         ]);
@@ -46,7 +46,7 @@ class DomainType extends AbstractType
         $builder->add('forTranslator', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Pour le traducteur', [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
         ]);

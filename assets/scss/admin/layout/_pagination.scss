@@ -11,12 +11,16 @@
 
 /* Remove Bootstrap defaults that clash */
 .pagination {
+
     --bs-pagination-bg: transparent;
     --bs-pagination-border-color: transparent;
     --bs-pagination-hover-bg: transparent;
     --bs-pagination-hover-border-color: transparent;
     --bs-pagination-focus-bg: transparent;
     --bs-pagination-focus-box-shadow: none;
+
+    list-style-type: none;
+    display: flex;
 }
 
 .pagination-nav {

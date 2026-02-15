@@ -73,7 +73,7 @@ class ColorType extends AbstractType
         $builder->add('active', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Actif', [], 'admin'),
             'attr' => ['class' => 'w-100'],
         ]);

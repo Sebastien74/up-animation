@@ -9,8 +9,17 @@
     border: 1px solid rgba($dash-accent, 0.28);
     color: $btn-text;
 
+    @include mediaQuery(min-lg) {
+        transition: color .3s ease;
+    }
+
     i {
+
         position: relative;
+
+        @include mediaQuery(min-lg) {
+            transition: color .3s ease;
+        }
     }
 
     &.small {
@@ -116,7 +125,7 @@
         border-color: rgba(255, 92, 92, .6);
 
         i {
-            color: transparentize($white, .6) !important;
+            color: transparentize($white, .5) !important;
         }
     }
 
@@ -197,6 +206,10 @@
     }
 }
 
+.btn-close {
+    padding: 0 !important;
+}
+
 @include mediaQuery(min-lg) {
 
     .btn-icon.cursor,
@@ -212,6 +225,12 @@
         transition: all .3s ease;
         background: rgba($dash-accent, .22);
         border-color: rgba($dash-accent, .55);
+        opacity: 1 !important;
+
+        i {
+            color: $white;
+            transition: color .3s ease;
+        }
 
         &.danger {
             background: rgba(255, 92, 92, .18);

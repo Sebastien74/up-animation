@@ -41,7 +41,7 @@ class SecurityType extends AbstractType
         $builder->add('secureWebsite', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Site sécurisé', [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
         ]);
@@ -74,7 +74,7 @@ class SecurityType extends AbstractType
         $builder->add('resetPasswordsByGroup', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Modification des mots de passe par groupe', [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
         ]);
@@ -82,7 +82,7 @@ class SecurityType extends AbstractType
         $builder->add('adminRegistration', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans("Activer l'inscription", [], 'admin'),
             'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
         ]);
@@ -90,7 +90,7 @@ class SecurityType extends AbstractType
         $builder->add('adminRegistrationValidation', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans("Activer la validation administrateur", [], 'admin'),
             'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
         ]);
@@ -98,7 +98,7 @@ class SecurityType extends AbstractType
         $builder->add('adminPasswordSecurity', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Activer la validaté des mots de passe', [], 'admin'),
             'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
         ]);
@@ -117,7 +117,7 @@ class SecurityType extends AbstractType
             $builder->add('frontRegistration', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans("Activer l'inscription", [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -125,7 +125,7 @@ class SecurityType extends AbstractType
             $builder->add('frontRegistrationValidation', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans("Activer la validation administrateur", [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -133,7 +133,7 @@ class SecurityType extends AbstractType
             $builder->add('frontEmailConfirmation', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans("Activer la confirmation par email", [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -141,7 +141,7 @@ class SecurityType extends AbstractType
             $builder->add('frontEmailWebmaster', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Envoyer un mail au webmaster', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -149,7 +149,7 @@ class SecurityType extends AbstractType
             $builder->add('frontCustomTemplate', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Utiliser le template personnalisé', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -157,7 +157,7 @@ class SecurityType extends AbstractType
             $builder->add('frontPasswordSecurity', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Activer la validaté des mots de passe', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);

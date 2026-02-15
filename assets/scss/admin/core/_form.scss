@@ -1,0 +1,269 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2019-02-05, 2:58 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    SECURITY FORM :
+    ===============
+
+------------------------------------------------------------------ */
+
+$dash-surface-2: mix(#ffffff, $dash-surface, 4%) !default;
+
+#strength-wrap {
+
+    .progress {
+        height: 6px;
+        border-radius: 5px;
+        background-color: $dash-surface-2 !important;
+    }
+
+    #strength-bar {
+        border-radius: 5px;
+    }
+
+    #strength-text {
+        font-size: 12px;
+    }
+}
+
+.checkbox-group {
+    overflow: initial !important;
+}
+
+.input-group {
+
+    border: 1px solid $input-border-color !important;
+
+    .form-control, .form-control.is-invalid {
+        border-right-color: transparent !important;
+    }
+
+    .form-control {
+        border: 0;
+        border-left: 0 !important;
+        height: 100% !important;
+        padding-left: .25rem !important;
+        font-size: 13px !important;
+    }
+
+    .input-group-text {
+
+        padding: 0 10px !important;
+        border: 0 !important;
+
+        &.left {
+            border-right: 0 !important;
+        }
+
+        &.right {
+            border-left: 0 !important;
+        }
+
+        .search-reset {
+
+            height: 26px;
+            width: 26px;
+            border-radius: 10px;
+
+            i {
+                font-size: 11px !important;
+            }
+        }
+
+        &.show-password {
+
+            .show-icon, .hide-icon {
+
+                align-items: center;
+                background: transparentize($primary, .78);
+                border-color: transparentize($primary, .45);
+                border-radius: 14px;
+                color: transparentize($white, .5);
+                display: flex;
+                flex: 0 0 auto;
+                height: 38px;
+                justify-content: center;
+                width: 38px;
+                transition: color .3s ease-in-out;
+
+                @include mediaQuery(min-lg) {
+
+                    cursor: pointer;
+
+                    &:hover {
+                        color: transparentize($white, .25);
+                        transition: color .3s ease-in-out;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.group-form {
+    .input-group-text {
+        transition: border-color 0.15s ease-in-out;
+    }
+}
+
+.select2-group {
+
+    .form-floating > label {
+        left: 0;
+    }
+
+    .form-floating, .select2-container, .select2-selection {
+        height: 100% !important;
+    }
+
+    .select2-selection--single:not([class*="bg-"]):not([class*="border-"]),
+    .select2-container--default .select2-selection--multiple {
+        border: 1px solid $input-border-color !important;
+        border-radius: $input-border-radius;
+    }
+
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        font-size: $input-font-size;
+        color: $input-color;
+        margin-top: 26px;
+        padding-left: 1rem;
+    }
+
+    &:not(.selected) {
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            color: $input-placeholder-color !important;
+        }
+    }
+
+    .select2-selection {
+        background: $input-bg !important;
+    }
+}
+
+.focus-group {
+
+    box-shadow: $input-focus-box-shadow;
+    border-radius: $input-border-radius;
+    border-color: $input-focus-border-color;
+
+    .form-control {
+        box-shadow: none !important;
+    }
+
+    .input-group-text {
+        border-color: $input-focus-border-color;
+        transition: border-color 0.15s ease-in-out;
+    }
+}
+
+.form-check-input:checked {
+    background-color: transparentize($primary, .65) !important;
+    border-color: transparentize($primary, .45) !important;
+    box-shadow: 0 20px 55px transparentize($black, .25), 0 0 0 4px transparentize($primary, .84);
+}
+
+.form-check-label {
+
+    transition: color 0.3s ease-in-out;
+    color: transparentize($white, .5);
+    font-size: 12px;
+    line-height: 1;
+
+    @include mediaQuery(min-lg) {
+        &:hover {
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+            color: transparentize($white, .25);
+        }
+    }
+}
+
+.form-floating {
+    .form-label {
+        transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+    }
+}
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
+    background-image: $input-invalid-bg !important;
+    background-size: 100% 100% !important;
+    background-position: initial !important;
+    outline: 0 none !important;
+    transition-duration: .3s !important;
+    border: 1px solid $input-border-color-invalid !important;
+}
+
+.form-control-line .form-group {
+    overflow: hidden;
+}
+
+.custom-control-label {
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 22px;
+}
+
+.form-control-line .form-control {
+
+    border: 0;
+    border-radius: 0;
+    padding-left: 0;
+    border-bottom: 1px solid $gray-200;
+
+    &:focus {
+        border-bottom: 1px solid $primary;
+    }
+}
+
+form {
+
+    .form-group.is-invalid {
+        margin-bottom: .3rem !important;
+    }
+
+    .invalid-feedback {
+
+        font-size: 11px;
+        color: lighten($danger, 7%);
+
+        .badge {
+            display: none;
+        }
+    }
+
+    .is-invalid {
+        .input-group-text {
+            border-color: $input-border-color-invalid;
+        }
+    }
+}
+
+.form-label {
+    .text-muted {
+        color: transparentize($white, .5) !important;
+    }
+}
+
+form .btn-group-toggle label {
+
+    min-height: 52px;
+    justify-content: center;
+    border: 1px solid $btn-border !important;
+    color: $btn-text !important;
+    background: $btn-surface !important;
+    transform: initial !important;
+
+    &.active {
+        box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+    }
+
+    &:not(.active) {
+        i {
+            display: none;
+        }
+    }
+}

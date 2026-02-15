@@ -69,7 +69,7 @@ class EntityType extends AbstractType
             $builder->add('card', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Type fiche', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);
@@ -77,7 +77,7 @@ class EntityType extends AbstractType
             $builder->add('mediaMulti', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Multi médias', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);
@@ -85,7 +85,7 @@ class EntityType extends AbstractType
             $builder->add('uniqueLocale', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Langue unique', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);
@@ -93,7 +93,7 @@ class EntityType extends AbstractType
             $builder->add('inFieldConfiguration', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Ajouter au sélecteur du module formulaire', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);

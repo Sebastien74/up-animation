@@ -116,7 +116,7 @@ class PageType extends AbstractType
                         'required' => false,
                         'mapped' => false,
                         'display' => 'button',
-                        'color' => 'outline-info-darken',
+                        'color' => 'app',
                         'label' => $this->translator->trans('Afficher dans le menu', [], 'admin'),
                         'attr' => ['group' => $secureActive ? 'col-md-4 text-center' : 'col-md-6 text-center', 'class' => 'w-100'],
                     ]);
@@ -125,7 +125,7 @@ class PageType extends AbstractType
                 $builder->add('infill', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Page intercalaire', [], 'admin'),
                     'attr' => ['group' => $secureActive && $mainMenu ? 'col-md-4 text-center' : 'col-md-6 text-center', 'class' => 'w-100'],
                 ]);
@@ -135,7 +135,7 @@ class PageType extends AbstractType
                 $builder->add('secure', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Page sécurisée', [], 'admin'),
                     'attr' => ['group' => !$mainMenu ? 'col-md-6 text-center' : 'col-md-4 text-center', 'class' => 'w-100'],
                 ]);
@@ -173,7 +173,7 @@ class PageType extends AbstractType
                 $builder->add('asIndex', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans("Page d'accueil", [], 'admin'),
                     'attr' => ['data-config' => true, 'group' => 'col-md-6', 'class' => 'w-100'],
                 ]);
@@ -181,7 +181,7 @@ class PageType extends AbstractType
                 $builder->add('infill', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Page intercalaire', [], 'admin'),
                     'attr' => ['data-config' => true, 'group' => 'col-md-6', 'class' => 'w-100'],
                 ]);
@@ -194,7 +194,7 @@ class PageType extends AbstractType
                     $builder->add('secure', Type\CheckboxType::class, [
                         'required' => false,
                         'display' => 'button',
-                        'color' => 'outline-info-darken',
+                        'color' => 'app',
                         'label' => $this->translator->trans('Page sécurisée', [], 'admin'),
                         'attr' => ['data-config' => true, 'group' => 'col-md-6', 'class' => 'w-100'],
                     ]);
@@ -224,7 +224,7 @@ class PageType extends AbstractType
             $builder->add('infill', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Page intercalaire', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 text-center', 'class' => 'w-100'],
             ]);
@@ -233,7 +233,7 @@ class PageType extends AbstractType
                 $builder->add('secure', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Page sécurisée', [], 'admin'),
                     'attr' => ['group' => 'col-md-3 text-center', 'class' => 'w-100'],
                 ]);

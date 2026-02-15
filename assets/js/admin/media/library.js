@@ -75,17 +75,9 @@ body.on('click', '.open-media-edit', function (e) {
                 modal.on('hidden.bs.modal', function () {
                     modal.remove();
                 });
-
-                import('./../../vendor/components/ai').then(({default: ai}) => {
-                    new ai()
-                }).catch(error => console.error(error.message));
             }
             loader.addClass('d-none');
             loader.parent().addClass('d-none');
-
-            import('./../../vendor/components/ai').then(({default: ai}) => {
-                new ai();
-            }).catch(error => console.error(error.message));
         },
         error: function (errors) {
             /** Display errors */

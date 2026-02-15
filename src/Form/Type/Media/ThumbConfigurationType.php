@@ -72,7 +72,7 @@ class ThumbConfigurationType extends AbstractType
             $builder->add('fixedHeight', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Conserver la hauteur définie', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);

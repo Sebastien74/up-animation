@@ -110,7 +110,7 @@ class MediaType extends AbstractType
             $builder->add('notContractual', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Image non contractuelle', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);
@@ -120,7 +120,7 @@ class MediaType extends AbstractType
             $builder->add('hideHover', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Désactiver le hover', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);

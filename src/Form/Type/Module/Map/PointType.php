@@ -70,7 +70,7 @@ class PointType extends AbstractType
             $builder->add('hide', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Cacher le point', [], 'admin'),
                 'attr' => ['group' => 'col-md-2 d-flex align-items-end', 'class' => 'w-100 mb-3'],
             ]);

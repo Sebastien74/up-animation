@@ -66,7 +66,7 @@ class SeparatorType extends AbstractType
         $builder->add('hideMobile', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Cacher le séparateur en mobile', [], 'admin'),
             'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
         ]);

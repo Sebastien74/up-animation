@@ -4,17 +4,16 @@
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 export default function () {
-    let btnToggles = document.getElementsByClassName('btn-group-toggle');
-    for (let i = 0; i < btnToggles.length; i++) {
-        let btnToggle = btnToggles[i]
-        btnToggle.onclick = function (e) {
-            let input = btnToggle.querySelector('input');
-            let label = btnToggle.querySelector('label');
+    document.querySelectorAll('.btn-group-toggle').forEach(btnToggle => {
+        btnToggle.addEventListener('click', function (e) {
+            const label = btnToggle.querySelector('label');
+            const input = document.querySelector('input#' + label.getAttribute('for'));
             if (input.checked) {
                 label.classList.add('active');
             } else {
                 label.classList.remove('active');
             }
-        }
-    }
+            e.stopImmediatePropagation();
+        });
+    });
 }

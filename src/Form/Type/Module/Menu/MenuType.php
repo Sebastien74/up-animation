@@ -96,7 +96,7 @@ class MenuType extends AbstractType
             $builder->add('main', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Menu principal', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);
@@ -104,7 +104,7 @@ class MenuType extends AbstractType
             $builder->add('footer', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Pied de page principal', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);
@@ -112,7 +112,7 @@ class MenuType extends AbstractType
             $builder->add('alwaysFixed', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Fixe', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);
@@ -120,7 +120,7 @@ class MenuType extends AbstractType
             $builder->add('fixedOnScroll', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Fixe au scroll', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);
@@ -128,7 +128,7 @@ class MenuType extends AbstractType
             $builder->add('dropdownHover', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Ouvrir les sous-menus au survol', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);
@@ -136,7 +136,7 @@ class MenuType extends AbstractType
             $builder->add('vertical', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Menu vertical', [], 'admin'),
                 'attr' => ['class' => 'w-100'],
             ]);

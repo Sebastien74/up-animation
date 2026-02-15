@@ -9,128 +9,129 @@
 
 ----------------------------------------------------------------------------------------- */
 
-.pages-search,
-#index-search-form {
-
-
-    /* --------------------------------------------
-   Search input-group (refonte)
-   -------------------------------------------- */
-
-    .search-input-group {
-
-        --search-radius: 16px;
-        --search-h: 52px;
-        --search-bg: #{$darken};
-        --search-bg-focus: #{$darken};
-        --search-border: rgba(255, 255, 255, 0.08);
-        --search-accent: #7c6cff; /* violet refonte */
-        --search-text: #fff;
-        --search-placeholder: rgba(255, 255, 255, 0.45);
-        --search-icon: #9b9bff;
-
-        align-items: stretch;
-        height: var(--search-h);
-        width: 300px;
-
-        border-radius: var(--search-radius);
-        background: var(--search-bg);
-        border: 1px solid var(--search-border);
-
-        overflow: hidden; /* important pour radius + input-group */
-        transition: border-color .2s ease, background-color .2s ease;
-
-        /* Bootstrap ajoute parfois des bordures entre items */
-        > .input-group-text,
-        > .form-control {
-            border: 0 !important;
-            border-radius: 0 !important;
-            box-shadow: none !important;
-        }
-
-        /* Hover global */
-        &:hover {
-            background: var(--search-bg-focus);
-        }
-
-        /* Focus global */
-        &:focus-within {
-            background: var(--search-bg-focus);
-            border-color: var(--search-accent);
-        }
-
-        ///* Boutons (loupe + reset) */
-        .input-group-text {
-            background: transparent !important;
-            min-width: 44px;
-            padding: 0 .75rem;
-        }
-
-        .search-reset {
-
-            height: 25px;
-            width: 25px;
-            border-radius: 9px !important;
-
-            i {
-                font-size: 10px !important;
-                top: .08rem;
-            }
-        }
-
-        .search-btn {
-
-            cursor: pointer;
-
-            i {
-                font-size: 16px;
-                line-height: 1;
-            }
-
-            &:hover {
-                color: #fff;
-            }
-
-            &:active {
-                transform: translateY(0); /* neutralise certains styles */
-            }
-        }
-
-        .search-reset {
-            text-decoration: none;
-
-            i {
-                font-size: 16px;
-                line-height: 1;
-            }
-
-            &:hover {
-                color: #fff;
-            }
-        }
-
-        input.form-control {
-            height: calc(var(--search-h) - 2px); /* pas de jump */
-            padding: 0 14px;
-
-            background: transparent !important;
-            color: var(--search-text);
-
-            font-size: 14px;
-            font-weight: 500;
-
-            &::placeholder {
-                color: var(--search-placeholder);
-                opacity: 1;
-            }
-
-            &:focus {
-                outline: none !important;
-                box-shadow: none !important;
-            }
-        }
-    }
-}
+//.form-search {
+//
+//    /* --------------------------------------------
+//   Search input-group (refonte)
+//   -------------------------------------------- */
+//
+//    .search-input-group {
+//
+//        --search-radius: 16px;
+//        --search-h: 52px;
+//        --search-bg: #{$darken};
+//        --search-bg-focus: #{$darken};
+//        --search-border: rgba(255, 255, 255, 0.08);
+//        --search-accent: #7c6cff; /* violet refonte */
+//        --search-text: #fff;
+//        --search-placeholder: rgba(255, 255, 255, 0.45);
+//        --search-icon: #9b9bff;
+//
+//        align-items: stretch;
+//        height: var(--search-h);
+//        width: 300px;
+//        max-width: 100%;
+//
+//        //border-radius: var(--search-radius);
+//        //background: var(--search-bg);
+//        //border: 1px solid var(--search-border);
+//
+//        overflow: hidden; /* important pour radius + input-group */
+//        transition: border-color .2s ease, background-color .2s ease;
+//
+//        ///* Bootstrap ajoute parfois des bordures entre items */
+//        //> .input-group-text,
+//        //> .form-control {
+//        //    border: 0 !important;
+//        //    border-radius: 0 !important;
+//        //    box-shadow: none !important;
+//        //}
+//
+//        ///* Hover global */
+//        //&:hover {
+//        //    background: var(--search-bg-focus);
+//        //}
+//
+//        ///* Focus global */
+//        //&:focus-within {
+//        //    background: var(--search-bg-focus);
+//        //    border-color: var(--search-accent);
+//        //}
+//
+//        /////* Boutons (loupe + reset) */
+//        //.input-group-text {
+//        //    background: transparent !important;
+//        //    min-width: 44px;
+//        //    padding: 0 .75rem;
+//        //}
+//
+//        .search-reset {
+//
+//            height: 25px;
+//            width: 25px;
+//            border-radius: 9px !important;
+//
+//            i {
+//                font-size: 10px !important;
+//                top: .08rem;
+//            }
+//        }
+//
+//        .search-btn {
+//
+//            cursor: pointer;
+//
+//            i {
+//                font-size: 16px;
+//                line-height: 1;
+//            }
+//
+//            &:hover {
+//                color: #fff;
+//            }
+//
+//            &:active {
+//                transform: translateY(0); /* neutralise certains styles */
+//            }
+//        }
+//
+//        .search-reset {
+//
+//            text-decoration: none;
+//
+//            i {
+//                font-size: 16px;
+//                line-height: 1;
+//            }
+//
+//            &:hover {
+//                color: #fff;
+//            }
+//        }
+//
+//        input.form-control {
+//
+//            height: calc(var(--search-h) - 2px); /* pas de jump */
+//            padding: 0 14px;
+//
+//            background: transparent !important;
+//            color: var(--search-text);
+//
+//            font-size: 14px;
+//            font-weight: 500;
+//
+//            &::placeholder {
+//                color: var(--search-placeholder);
+//                opacity: 1;
+//            }
+//
+//            &:focus {
+//                outline: none !important;
+//                box-shadow: none !important;
+//            }
+//        }
+//    }
+//}
 
 #entities-index-page {
 

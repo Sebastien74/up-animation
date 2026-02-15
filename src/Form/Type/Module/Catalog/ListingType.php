@@ -257,7 +257,7 @@ class ListingType extends AbstractType
             $builder->add('updateFields', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Mettre à jour les sélecteurs', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);
@@ -265,7 +265,7 @@ class ListingType extends AbstractType
             $builder->add('counter', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Activer le compteur de résultats', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);
@@ -273,7 +273,7 @@ class ListingType extends AbstractType
             $builder->add('displayLabel', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher les labels', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);
@@ -281,7 +281,7 @@ class ListingType extends AbstractType
             $builder->add('searchText', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Activer la recherche par mots-clés', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -289,7 +289,7 @@ class ListingType extends AbstractType
             $builder->add('groupByCategories', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Grouper par catégories', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -297,7 +297,7 @@ class ListingType extends AbstractType
             $builder->add('scrollInfinite', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Scroll infinite', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);
@@ -305,7 +305,7 @@ class ListingType extends AbstractType
             $builder->add('showMoreBtn', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Bouton voir plus', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);
@@ -313,7 +313,7 @@ class ListingType extends AbstractType
             $builder->add('combineFieldsText', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Recherche mots-clés et flitres combinés', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);
@@ -322,7 +322,7 @@ class ListingType extends AbstractType
                 $builder->add('showMap', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Aficher sur une carte', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
                 ]);

@@ -75,7 +75,7 @@ class WidgetType extends AbstractType
             $builder->add('controls', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Activer la vérification RGPD', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
             ]);

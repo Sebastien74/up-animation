@@ -49,7 +49,7 @@ class GroupType extends AbstractType
             $builder->add('scriptInHead', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Script dans le <head>', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);
@@ -57,7 +57,7 @@ class GroupType extends AbstractType
             $builder->add('active', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Activer', [], 'admin'),
                 'attr' => ['group' => 'col-md-2', 'class' => 'w-100'],
             ]);
@@ -65,7 +65,7 @@ class GroupType extends AbstractType
             $builder->add('anonymize', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Anonymiser le script', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);

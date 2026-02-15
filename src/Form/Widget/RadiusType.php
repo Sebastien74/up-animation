@@ -35,7 +35,7 @@ class RadiusType extends AbstractType
         $builder->add('radius', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Arrondir les angles', [], 'admin'),
             'attr' => ['group' => !empty($options['group']) ? $options['group'] : 'col-md-3', 'class' => 'w-100'],
         ]);

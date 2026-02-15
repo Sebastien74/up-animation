@@ -47,7 +47,7 @@ class CategoryType extends AbstractType
             $builder->add('promote', CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
                 'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -55,7 +55,7 @@ class CategoryType extends AbstractType
             $builder->add('mainMediaInHeader', CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans("Afficher l'image principale dans les entêtes", [], 'admin'),
                 'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
             ]);

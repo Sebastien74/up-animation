@@ -54,7 +54,7 @@ class CategoryType extends AbstractType
             $builder->add('displayCategory', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher le nom de la catégorie', [], 'admin'),
                 'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -62,7 +62,7 @@ class CategoryType extends AbstractType
             $builder->add('scrollInfinite', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Scroll infinite', [], 'admin'),
                 'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
             ]);

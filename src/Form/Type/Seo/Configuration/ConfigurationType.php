@@ -47,7 +47,7 @@ class ConfigurationType extends AbstractType
         $builder->add('microData', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Activer les micros données', [], 'admin'),
             'attr' => ['group' => 'col-md-6 d-flex align-items-end', 'class' => 'w-100'],
         ]);
@@ -55,7 +55,7 @@ class ConfigurationType extends AbstractType
         $builder->add('disableAfterDash', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Retirer toutes les métas après le tiret', [], 'admin'),
             'attr' => ['group' => 'col-md-6 d-flex align-items-end', 'class' => 'w-100'],
         ]);

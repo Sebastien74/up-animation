@@ -146,7 +146,7 @@ class ContentConfigType
         $builder->add('italic', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('En italique', [], 'admin'),
             'attr' => [
                 'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field].' d-flex align-items-end' : 'col-md-2 d-flex align-items-end',
@@ -163,7 +163,7 @@ class ContentConfigType
         $builder->add('uppercase', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('En majuscule', [], 'admin'),
             'attr' => [
                 'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field].' d-flex align-items-end' : 'col-md-2 d-flex align-items-end',

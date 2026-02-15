@@ -6,13 +6,13 @@
     or (mediasAlert is defined and mediasAlert is not empty) %}
 
 {% if haveTooHeavyFiles or haveSeoAlert %}
-    <div id="accordion-alerts" class="accordion mb-4">
+    <div id="accordion-alerts" class="accordion my-4">
         <div class="accordion-item border-0 bg-transparent">
-            <div class="alert alert-danger position-relative d-flex p-0 collapsed mb-0 cursor" data-bs-toggle="collapse" data-bs-target="#collapse-alerts" aria-expanded="false" aria-controls="collapseTwo">
-                <div class="icon d-flex align-items-center justify-content-center position-relative">
-                    {{ 'fal exclamation-triangle'|icon(null, 22, 'white') }}
+            <div class="alert alert-danger position-relative d-flex p-3 my-3 mb-0 cursor" data-bs-toggle="collapse" data-bs-target="#collapse-alerts" aria-expanded="false" aria-controls="collapseTwo">
+                <div class="btn-icon danger d-flex align-items-center justify-content-center position-relative me-3">
+                    <i class="icm-exclamation-triangle"></i>
                 </div>
-                <div class="message px-4 py-3 w-100">
+                <div class="message w-100 d-flex align-items-center">
                     <small class="d-inline-block">{{ "Vous avez des alertes !! Cliquez pour les afficher."|trans|raw }}</small>
                 </div>
             </div>

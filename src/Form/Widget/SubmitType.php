@@ -66,7 +66,7 @@ class SubmitType
         $builder->add('save', SymfonySubmitType::class, [
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
             'attr' => [
-                'class' => 'btn-info standard'.$this->ajaxClass.$this->refreshClass,
+                'class' => 'btn-app'.$this->ajaxClass.$this->refreshClass,
                 'data-icon' => 'fal save',
                 'data-icon-side' => 'left',
             ],
@@ -74,7 +74,7 @@ class SubmitType
         $builder->add('saveEdit', SymfonySubmitType::class, [
             'label' => $this->translator->trans('Enregistrer et éditer', [], 'admin'),
             'attr' => [
-                'class' => 'btn-info standard'.$this->ajaxClass.$this->refreshClass,
+                'class' => 'btn-app'.$this->ajaxClass.$this->refreshClass,
                 'data-icon' => 'fal save',
                 'data-icon-side' => 'left',
             ],
@@ -90,7 +90,7 @@ class SubmitType
         $builder->add('save', SymfonySubmitType::class, [
             'label' => $label,
             'attr' => [
-                'class' => isset($options['class']) ? $options['class'].$this->ajaxClass.$this->refreshClass : 'btn-info standard'.$this->ajaxClass.$this->refreshClass,
+                'class' => isset($options['class']) ? $options['class'].$this->ajaxClass.$this->refreshClass : 'btn-app'.$this->ajaxClass.$this->refreshClass,
                 'force' => $options['force'] ?? false,
                 'data-icon' => 'fal save',
                 'data-icon-side' => 'left',
@@ -113,7 +113,7 @@ class SubmitType
         $builder->add('saveBack', SymfonySubmitType::class, [
             'label' => $label,
             'attr' => [
-                'class' => 'btn-info standard',
+                'class' => 'btn-app',
                 'data-icon' => 'fal save',
                 'data-icon-side' => 'left',
             ],
@@ -121,14 +121,14 @@ class SubmitType
     }
 
     /**
-     * Save, go to index and open creation modal.
+     * Save, go to the index and open the creation modal.
      */
     private function saveAdd(FormBuilderInterface $builder, array $options = []): void
     {
         $builder->add('saveAdd', SymfonySubmitType::class, [
             'label' => $this->translator->trans('Enregistrer et ajouter', [], 'admin'),
             'attr' => [
-                'class' => 'btn-info standard',
+                'class' => 'btn-app',
                 'data-icon' => 'fal save',
                 'data-icon-side' => 'left',
             ],

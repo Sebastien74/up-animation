@@ -437,7 +437,7 @@ class IntlType extends AbstractType
             $builder->add($field, Type\CheckboxType::class, [
                 'required' => in_array($field, $this->options['required_fields']),
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->getAttribute($field, 'label'),
                 'attr' => ['group' => $groupClass, 'class' => 'w-100'],
                 'help' => $this->getAttribute($field, 'help'),
@@ -450,7 +450,7 @@ class IntlType extends AbstractType
             $builder->add('externalLink', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Lien externe'),
                 'attr' => ['group' => $groupClass, 'class' => 'w-100'],
                 'help' => $this->getAttribute('externalLink', 'help'),
@@ -468,7 +468,7 @@ class IntlType extends AbstractType
             $builder->add($field, Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->getAttribute($field, 'label'),
                 'attr' => ['group' => $groupClass, 'class' => 'w-100'],
                 'help' => $this->getAttribute($field, 'help'),

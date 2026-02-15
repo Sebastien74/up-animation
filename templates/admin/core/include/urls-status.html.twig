@@ -17,13 +17,20 @@
                     {% set classname = interface.classname is defined ? interface.classname : null %}
                     <a href="{{ path("admin_url_status", {website: websiteId(), url: url.id, classname: classname|url_encode, entityId: entity.id}) }}"
                        class="{{ status }} btn-icon small {% if 'offline' == status %}muted{% else %}success{% endif %}"
-                       data-bs-toggle="tooltip" title="{{ statusLabel }}">
+                       data-icon-offline="snooze"
+                       data-icon-online="wifi"
+                       data-color-offline="muted"
+                       data-color-online="success"
+                       data-label-offline="{{ multiLocales ? 'Hors ligne : '~languageName : 'Hors ligne' }}"
+                       data-label-online="{{ multiLocales ? 'En ligne : '~languageName : 'En ligne' }}"
+                       data-bs-toggle="tooltip"
+                       title="{{ statusLabel }}">
                         {% if multiLocales %}
                             <span class="language text-uppercase label">{{ url.locale }}</span>
                         {% else %}
                             <i class="label icm-{% if 'offline' == status %}snooze{% else %}wifi{% endif %}"></i>
                         {% endif %}
-                        <i class="icm-sync-alt d-none"></i>
+                        <i class="icm-sync-alt fa-spin refresh-icon d-none"></i>
                     </a>
                     {% set exist = true %}
                 {% endif %}

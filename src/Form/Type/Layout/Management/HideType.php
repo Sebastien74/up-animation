@@ -32,7 +32,7 @@ class HideType extends AbstractType
         $resolver->setDefaults([
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Cacher', [], 'admin'),
             'attr' => ['group' => 'col-12', 'class' => 'w-100'],
         ]);

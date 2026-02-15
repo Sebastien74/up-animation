@@ -74,7 +74,7 @@ class BlockTypeType extends AbstractType
         $builder->add('dropdown', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Ajouter à la zone non prioritaire', [], 'admin'),
             'attr' => ['group' => $isNew ? 'col-md-4' : 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
         ]);
@@ -82,7 +82,7 @@ class BlockTypeType extends AbstractType
         $builder->add('editable', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Éditable', [], 'admin'),
             'attr' => ['group' => $isNew ? 'col-md-4' : 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
         ]);
@@ -90,7 +90,7 @@ class BlockTypeType extends AbstractType
         $builder->add('inAdvert', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Afficher aux extensions', [], 'admin'),
             'attr' => ['group' => $isNew ? 'col-md-4' : 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
         ]);

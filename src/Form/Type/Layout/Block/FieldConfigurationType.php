@@ -101,7 +101,7 @@ class FieldConfigurationType extends AbstractType
         $builder->add('anonymize', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Anonymiser (RGPD)', [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
         ]);
@@ -117,7 +117,7 @@ class FieldConfigurationType extends AbstractType
         $builder->add('required', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Champs obligatoire', [], 'admin'),
             'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
         ]);
@@ -133,7 +133,7 @@ class FieldConfigurationType extends AbstractType
         $builder->add('smallSize', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $label,
             'attr' => ['group' => $groupClass ?: 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
         ]);
@@ -233,7 +233,7 @@ class FieldConfigurationType extends AbstractType
         $builder->add('multiple', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Choix multiple', [], 'admin'),
             'attr' => ['group' => $groupClass ?: 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
         ]);
@@ -247,7 +247,7 @@ class FieldConfigurationType extends AbstractType
         $builder->add('expanded', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Afficher les cases à cocher', [], 'admin'),
             'attr' => ['group' => $groupClass ?: 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
         ]);
@@ -263,7 +263,7 @@ class FieldConfigurationType extends AbstractType
         $builder->add('picker', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $label,
             'attr' => ['group' => $groupClass ? $groupClass.' d-flex align-items-end' : 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
         ]);
@@ -279,7 +279,7 @@ class FieldConfigurationType extends AbstractType
         $builder->add('inline', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $label,
             'attr' => ['group' => $groupClass ?: 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
         ]);

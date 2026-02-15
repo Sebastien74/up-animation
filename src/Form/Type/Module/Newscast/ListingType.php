@@ -103,7 +103,7 @@ class ListingType extends AbstractType
             $builder->add('hideDate', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Cacher la date', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -111,7 +111,7 @@ class ListingType extends AbstractType
             $builder->add('displayCategory', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher le nom de la catégorie', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -119,7 +119,7 @@ class ListingType extends AbstractType
             $builder->add('displayThumbnail', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher les vignettes', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -127,7 +127,7 @@ class ListingType extends AbstractType
             $builder->add('largeFirst', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Mettre en avant la dernière actualité', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -135,7 +135,7 @@ class ListingType extends AbstractType
             $builder->add('scrollInfinite', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Scroll infinite', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -143,7 +143,7 @@ class ListingType extends AbstractType
             $builder->add('showMoreBtn', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Bouton voir plus', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -151,7 +151,7 @@ class ListingType extends AbstractType
             $builder->add('displayFilters', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher les filtres', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -159,7 +159,7 @@ class ListingType extends AbstractType
             $builder->add('filtersInline', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Filtres inline', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -167,7 +167,7 @@ class ListingType extends AbstractType
             $builder->add('counter', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Activer le compteur de résultats', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -175,7 +175,7 @@ class ListingType extends AbstractType
             $builder->add('asEvents', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans("Index d'événements", [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -183,7 +183,7 @@ class ListingType extends AbstractType
             $builder->add('pastEvents', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher les actualités passées', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);

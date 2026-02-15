@@ -60,7 +60,7 @@ class TitleHeaderType extends AbstractType
             $builder->add('large', CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->coreLocator->translator()->trans('Grande entête', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
             ]);

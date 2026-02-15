@@ -55,9 +55,6 @@ export default function (Routing, el) {
                     import('../form/ajax').then(({default: ajaxPost}) => {
                         new ajaxPost();
                     }).catch(error => console.error(error.message));
-                    import('./../../vendor/components/ai').then(({default: ai}) => {
-                        new ai()
-                    }).catch(error => console.error(error.message));
                     $('[data-bs-toggle="tooltip"]').tooltip();
                     $('html, body').animate({scrollTop: $(el).offset().top - 50}, 100);
                     let mediasModals = document.querySelectorAll('.open-modal-medias')

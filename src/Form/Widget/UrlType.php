@@ -81,7 +81,7 @@ class UrlType extends AbstractType
         $builder->add($field, Type\CheckboxType::class, [
             'required' => in_array($field, $this->options['required_fields']),
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->getAttribute($field, 'label'),
             'attr' => ['group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass, 'class' => 'w-100'],
             'help' => $this->getAttribute($field, 'help'),
@@ -96,7 +96,7 @@ class UrlType extends AbstractType
         $builder->add($field, Type\CheckboxType::class, [
             'required' => in_array($field, $this->options['required_fields']),
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->getAttribute($field, 'label'),
             'attr' => ['group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass, 'class' => 'w-100'],
             'help' => $this->getAttribute($field, 'help'),

@@ -104,15 +104,15 @@
                                 {% include 'admin/core/layout/blocks.html.twig' %}
                             </div>
                             {% if 'edit'|moduleActive(configuration) and layoutConfiguration is defined and layoutConfiguration %}
-                                <div class="add-block-wrap w-100 pe-3 ps-3 pt-2 text-center">
-                                    <span class="edit-layout-element-btn btn btn-info add-block-btn cursor d-inline-flex justify-content-center align-items-center"
+                                <div class="add-block-wrap w-100 pe-3 ps-3 pt-2">
+                                    <span class="edit-layout-element-btn btn-app cursor add-block-btn cursor"
                                           data-path="{{ path('admin_block_modal', {
                                               website: websiteId(),
                                               col: col.id,
                                               configuration: layoutConfiguration.id,
                                               entityId: entity.id,
                                           }) }}">
-                                        <i class="icm-plus-circle"></i>
+                                        <i class="icm-plus"></i>{{ 'Ajouter un bloc'|trans|striptags }}
                                     </span>
                                     <span class="btn-resize btn-resize-col btn-white btn-xs btn-circle"><i class="icm-arrow-from-right"></i></span>
                                 </div>
@@ -127,12 +127,8 @@
     {% if 'edit'|moduleActive(configuration) %}
         <div class="col-12 d-inline-flex align-items-end">
             <button data-path="{{ path('admin_col_new', {website: websiteId(), zone: zone.id}) }}"
-                    class="btn new-col-btn edit-layout-element-btn w-100 mb-3">
-                <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
-                     src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                     class="img-fluid rounded-add-img lazy-load"
-                     width="20" height="20" alt="{{ 'Ajouter'|trans|striptags }}" /><br>
-                {{ 'Ajouter une colonne'|trans }}
+                    class="btn-app new-col-btn edit-layout-element-btn mb-3">
+                <i class="icm-plus"></i>{{ 'Ajouter une colonne'|trans }}
             </button>
         </div>
     {% endif %}

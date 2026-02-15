@@ -66,7 +66,7 @@ class TextType extends AbstractType
         $builder->add('controls', CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Liste à puces checkbox', [], 'admin'),
             'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
         ]);

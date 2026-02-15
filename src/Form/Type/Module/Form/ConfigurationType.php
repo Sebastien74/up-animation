@@ -123,7 +123,7 @@ class ConfigurationType extends AbstractType
             $builder->add('dbRegistration', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Enregistrer les contacts', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -131,7 +131,7 @@ class ConfigurationType extends AbstractType
             $builder->add('attachmentsInMail', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Fichiers en pièces-jointes du mail', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -139,7 +139,7 @@ class ConfigurationType extends AbstractType
             $builder->add('uniqueContact', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Un seul envoi de mail possible', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -147,7 +147,7 @@ class ConfigurationType extends AbstractType
             $builder->add('thanksModal', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher modal de remerciement', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -155,7 +155,7 @@ class ConfigurationType extends AbstractType
             $builder->add('thanksPage', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Rediriger vers la page remerciement', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -164,7 +164,7 @@ class ConfigurationType extends AbstractType
         $builder->add('confirmEmail', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Envoyer un e-mail de confirmation', [], 'admin'),
             'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
         ]);
@@ -173,7 +173,7 @@ class ConfigurationType extends AbstractType
             $builder->add('recaptcha', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Activer le recaptcha', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -181,7 +181,7 @@ class ConfigurationType extends AbstractType
             $builder->add('dynamic', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Activer les champs dynamiques', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -192,7 +192,7 @@ class ConfigurationType extends AbstractType
                 $builder->add('calendarsActive', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Activer les calendriers', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -202,7 +202,7 @@ class ConfigurationType extends AbstractType
                 $builder->add('ajax', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Soumission en ajax', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -211,7 +211,7 @@ class ConfigurationType extends AbstractType
             $builder->add('floatingLabels', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Labels dans les champs', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);

@@ -7,6 +7,7 @@
  */
 
 export function lazyLoadComponent(selector, importFn, init, useObserver = false) {
+
     const asId = selector.includes('#');
     const els = asId ? document.querySelector(selector) : document.querySelectorAll(selector);
     const haveEls = (asId && els) || (!asId && els.length > 0);

@@ -89,7 +89,7 @@ class GalleryType extends AbstractType
         $builder->add('popup', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Afficher popup au clic des images', [], 'admin'),
             'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
         ]);

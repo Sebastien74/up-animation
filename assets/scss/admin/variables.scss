@@ -51,11 +51,13 @@ $gray-600: #6c757d !global;
 $gray-700: #4F5467 !global;
 $gray-800: #343a40 !global;
 $gray-900: #212529 !global;
-$black: #000 !global;
-$dark: $gray-800 !global;
+
+$black: #07090d !global;
+$dark: lighten($black, 5%) !global;
+$primary: #6f42c1 !default;
 
 $body-bg: $gray-100 !global;
-$theme-color: #24252e !global;
+$theme-color: $primary !global;
 $body-shadow: transparentize($theme-color, .8) !global;
 $theme-color-alt: $theme-color !global;
 $info-darken: $theme-color !global;
@@ -73,17 +75,16 @@ $sidebar-text: #8d97ad !global;
 $sidebar-icons: #787f91 !global;
 $right-sidebar-bg: $info-darken-dark !global;
 
-$blue: $theme-color !default;
+$blue: #00265f !default;
 $indigo: #6610f2 !default;
-$purple: #ab8ce4 !default;
-$pink: #e83e8c !default;
+$purple: #6f42c1 !default;
+$pink: #d63384 !default;
 $red: #dc3545 !default;
-$orange: #fb9678 !default;
-$yellow: #ff671b !default;
-$green: #20c997 !default;
+$orange: #fd7e14 !default;
+$yellow: #ffc107 !default;
+$green: rgba(13, 148, 136, .50) !default;
 $teal: rgba(13, 148, 136, .50) !default;
-$cyan: $theme-color !default;
-$primary: #6f42c1 !default;
+$cyan: #3C91E6 !default;
 $warning: rgba(245, 158, 11, .7) !default;
 $text-muted: $gray-600 !default;
 
@@ -91,12 +92,19 @@ $dash-bg-0: #0a0d12 !default; // deepest
 $dash-bg-1: #0e1219 !default; // main
 $dash-bg-2: #121726 !default; // top
 
-$dash-dark: #07090d !default;
+$dash-surface: #14161e !default;
+$dash-surface-2: mix(#ffffff, $dash-surface, 4%) !default;
+$dash-surface-3: mix(#000000, $dash-surface, 6%) !default;
+
+$dash-dark: $black !default;
 $darken: $dash-bg-1 !default;
 $dash-text: rgba(255, 255, 255, 0.92) !default;
 $dash-border: rgba(255, 255, 255, 0.05) !default;
 $dash-accent: $primary !default;
 $dash-lighten: lighten($dash-accent, 20%) !default;
+
+$dash-border: transparentize($white, .9) !default;
+$dash-invalid: transparentize($red, .9) !default;
 
 $btn-text: transparentize($white, .3) !default;
 $btn-surface: rgba(255, 255, 255, 0.02) !default;
@@ -129,6 +137,11 @@ $pg-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !default;
 $bg-gradient-primary: radial-gradient(520px 160px at 12% 0%, rgba($dash-accent, 0.10), transparent 60%),
 linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 45%),
 $crumb-surface;
+
+
+
+//$link-hover-color: $primary !default;
+//$link-hover-color-dark: $primary !default;
 
 $colors: (
     blue: $blue,
@@ -298,8 +311,19 @@ $badge-pill-padding-y: 1em !default;
 
 /*-- k - Forms --*/
 
-$input-group-addon-bg: $gray-100;
-$input-border-color: $gray-200;
+$form-label-color: $gray-600 !default;
+$input-bg: radial-gradient(520px 160px at 12% 0%, mix($primary, $dash-surface, 10%), $dash-surface 62%), linear-gradient(180deg, $dash-surface-2, $dash-surface 45%, $dash-surface-3) !default;
+$input-invalid-bg: radial-gradient(520px 160px at 12% 0%, mix($red, $dash-surface, 10%), $dash-surface 62%), linear-gradient(180deg, $dash-surface-2, $dash-surface 45%, $dash-surface-3) !default;
+$input-border-color-invalid: $dash-invalid !default;
+$input-border-radius: 12px !default;
+$input-font-size: 12px !default;
+$input-color: $gray-300 !default;
+$input-border-width: 1px !default;
+$input-placeholder-color: transparentize($white, .6) !default;
+$form-invalid-border-color: $input-bg !default;
+$input-group-addon-bg: transparent !default;
+
+$input-border-color: rgba(255, 255, 255, 0.08);
 $input-group-addon-border-color: $gray-200;
 $input-btn-focus-color: rgba(0, 0, 0, .25) !default;
 $input-focus-border-color: rgba(0, 0, 0, 0.1) !default;
@@ -325,10 +349,10 @@ $nav-tabs-link-active-border-color: $info !default;
    4 ) Bootstrap import
 -----------------------------------*/
 
-@import "bootstrap/functions";
-@import "bootstrap/variables";
-@import "themes/variables";
-@import "bootstrap/mixins";
+@import 'bootstrap/functions';
+@import 'bootstrap/variables';
+@import 'themes/variables';
+@import 'bootstrap/mixins';
 
 /*-----------------------------------
    5 ) Breakpoints

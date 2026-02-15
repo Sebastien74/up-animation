@@ -99,7 +99,7 @@ class CampaignType extends AbstractType
             $builder->add('internalRegistration', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans("Activer l'enregistrement interne", [], 'admin'),
                 'attr' => ['group' => 'col-md-6', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -144,7 +144,7 @@ class CampaignType extends AbstractType
             $builder->add('recaptcha', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Activer le recaptcha', [], 'admin'),
                 'attr' => ['group' => 'col-md-6', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -152,7 +152,7 @@ class CampaignType extends AbstractType
             $builder->add('emailConfirmation', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Envoyer un e-mail de confirmation', [], 'admin'),
                 'attr' => ['group' => 'col-md-6', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -160,7 +160,7 @@ class CampaignType extends AbstractType
             $builder->add('emailToWebmaster', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Envoyer un e-mail aux administrateurs', [], 'admin'),
                 'attr' => ['group' => 'col-md-6 d-flex align-items-end', 'class' => 'w-100', 'data-config' => true],
             ]);

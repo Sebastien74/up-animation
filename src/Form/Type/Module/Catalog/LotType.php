@@ -80,7 +80,7 @@ class LotType extends AbstractType
         $builder->add('sold', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Vendu', [], 'admin'),
             'attr' => ['group' => 'col-md-2 d-flex align-items-end', 'class' => 'w-100'],
         ]);

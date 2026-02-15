@@ -50,22 +50,12 @@ body.preloader-active {
 }
 
 .bg-stripe-loader {
-
     position: absolute;
     top: 0;
     left: -150px;
     bottom: 0;
     width: 150%;
-
-    background: repeating-linear-gradient(
-                    -55deg,
-                    #eee 1px,
-                    #e2e2e2 2px,
-                    #e2e2e2 11px,
-                    #eee 12px,
-                    #eee 20px
-    ) !important;
-
+    background: repeating-linear-gradient(-55deg, transparentize($dark, .5) 1px, transparentize($dash-bg-2, .5) 2px, transparentize($dash-bg-2, .5) 11px, transparentize($dark, .5) 12px, transparentize($dark, .5) 20px) !important;
     animation-name: MOVE-BG !important;
     animation-duration: .6s !important;
     animation-timing-function: linear !important;
@@ -83,7 +73,7 @@ body.preloader-active {
     bottom: 0;
 
     .bg-stripe-loader {
-        background: repeating-linear-gradient(-55deg, transparentize($info, .5) 1px, transparentize($info-darken, .5) 2px, transparentize($info-darken, .5) 11px, transparentize($info, .5) 12px, transparentize($info, .5) 20px) !important;
+        background: repeating-linear-gradient(-55deg, transparentize($dark, .5) 1px, transparentize($dash-bg-2, .5) 2px, transparentize($dash-bg-2, .5) 11px, transparentize($dark, .5) 12px, transparentize($dark, .5) 20px) !important;
         opacity: .7;
     }
 

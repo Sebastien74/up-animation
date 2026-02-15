@@ -51,7 +51,7 @@ class ColConfigurationType extends AbstractType
         $builder->add('fullSize', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Toute la largeur', [], 'admin'),
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);
@@ -87,7 +87,7 @@ class ColConfigurationType extends AbstractType
         $builder->add('verticalAlign', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Centrer verticalement le contenu colonne', [], 'admin'),
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);
@@ -95,7 +95,7 @@ class ColConfigurationType extends AbstractType
         $builder->add('endAlign', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Aligner en bas de la colonne', [], 'admin'),
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);
@@ -103,7 +103,7 @@ class ColConfigurationType extends AbstractType
         $builder->add('reverse', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Afficher la colonne en première position sur mobile', [], 'admin'),
             'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
         ]);
@@ -111,7 +111,7 @@ class ColConfigurationType extends AbstractType
         $builder->add('sticky', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Colonne fixe', [], 'admin'),
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);
@@ -139,7 +139,7 @@ class ColConfigurationType extends AbstractType
         $builder->add('hide', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Cacher la colonne', [], 'admin'),
             'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
         ]);

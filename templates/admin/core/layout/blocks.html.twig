@@ -24,7 +24,7 @@
                             {% set mediaRelation = block|mainMedia(defaultLocale) %}
                             {% set haveMedia = mediaRelation and mediaRelation.media and mediaRelation.media.filename %}
 
-                            <div class="infos-block me-1 d-inline-flex align-items-center {% if haveMedia %} mt-1{% endif %}">
+                            <div class="infos-block me-1 d-inline-flex align-items-center gap-2 {% if haveMedia %} mt-1{% endif %}">
 
                                 {% if block.blockType and block.blockType.slug == 'core-action' %}
                                     {% set title = block.action.adminName is defined ? block.action.adminName : null %}
@@ -33,46 +33,51 @@
 
                                 {% set filename = mediaRelation.media.filename is defined and mediaRelation.media.filename ? mediaRelation.media.filename : null %}
                                 {% set asMediaWarning = tooHeavyFiles[filename][block.id] is defined or mediasAlert[filename][block.id] is defined %}
+                                {% set btnColor = asMediaWarning ? 'warning' : 'primary' %}
 
-                                {% if icon %}
-                                    <span data-bs-toggle="tooltip" title="{{ title|striptags }}">
-                                        {% set iconColor = asMediaWarning ? 'warning' : 'info' %}
+                                {% if icon and 'media' != blockTypeCode %}
+                                    <span class="btn-icon small {{ btnColor }}" data-bs-toggle="tooltip" title="{{ title|striptags }}">
                                         {% set icon = asMediaWarning ? icon|replace({'fal ': 'far '}) : icon %}
-                                        {{ icon|icon(null, 16, iconColor~' me-2') }}
+                                        {{ icon|icon(null, 16) }}
                                     </span>
+                                {% elseif 'media' == blockTypeCode %}
+                                    {% if haveMedia %}
+                                        <a href="{{ asset(mediaRelation|file({}, {path: true})) }}" class="glightbox d-inline-block text-center">
+                                            {{ mediaRelation|file({}, {width: 28, height: 28}) }}
+                                        </a>
+                                    {% else %}
+                                        <span class="btn-icon small {{ btnColor }}" data-bs-toggle="tooltip" title="{{ title|striptags }}">
+                                            {% set icon = asMediaWarning ? icon|replace({'fal ': 'far '}) : icon %}
+                                            {{ icon|icon(null, 16) }}
+                                        </span>
+                                    {% endif %}
                                 {% endif %}
 
                                 {% if title %}
-                                    <span class="block-title{% if asMediaWarning %} text-warning fw-700{% endif %}">{{ title|trans }}</span>
+                                    <span class="block-title{% if asMediaWarning %} text-warning{% endif %}">{{ title|trans }}</span>
                                 {% endif %}
 
                                 {% if (blockTypeCode == 'title' or blockTypeCode == 'title-header') %}
                                     {% if intl.titleForce is defined and intl.titleForce %}
-                                        <span class="title-info text-info ms-1 me-1">H{{ intl.titleForce }}</span>
+                                        <span class="title-info text-info">H{{ intl.titleForce }}</span>
                                     {% endif %}
                                     {% if intl.title is defined and intl.title %}
-                                        <small class="info-text italic ms-1">{{ intl.title|truncate(35, false) }}</small>
+                                        <small class="info-text italic">{{ intl.title|truncate(35, false) }}</small>
                                     {% endif %}
                                 {% elseif interface.name in displayAdminName %}
-                                    <small class="info-text italic ms-2">{{ block.adminName|truncate(35, false) }}</small>
+                                    <small class="info-text italic">{{ block.adminName|truncate(35, false) }}</small>
                                 {% elseif 'layout-catalog-features' == blockTypeCode %}
                                     {% set featureId = block.data.featureId is defined ? block.data.featureId : false %}
                                     {% if featureId %}
-                                        <small class="info-text italic ms-2">{{ featureId|blockFeatureName }}</small>
+                                        <small class="info-text italic">{{ featureId|blockFeatureName }}</small>
                                     {% endif %}
                                 {% endif %}
 
                                 {% if intl.introduction is defined and intl.introduction or intl.body is defined and intl.body %}
                                     {% set description = intl.body|striptags|length > 0 ? intl.body : intl.introduction %}
-                                    <small class="info-text italic ms-2">{{ description|truncate(35, false) }}</small>
+                                    <small class="info-text italic">{{ description|truncate(35, false) }}</small>
                                 {% elseif intl.targetLabel is defined and intl.targetLabel %}
-                                    <small class="info-text italic ms-2">{{ intl.targetLabel|truncate(35, false) }}</small>
-                                {% endif %}
-
-                                {% if haveMedia %}
-                                    <a href="{{ asset(mediaRelation|file({}, {path: true})) }}" class="glightbox d-inline-block text-center ms-2">
-                                        {{ mediaRelation|file({}, {width: 17, height: 17}) }}
-                                    </a>
+                                    <small class="info-text italic">{{ intl.targetLabel|truncate(35, false) }}</small>
                                 {% endif %}
 
                             </div>

@@ -89,7 +89,7 @@ class NewscastType extends AbstractType
             $builder->add('customLayout', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
                 'attr' => ['group' => 'col-md-4 mx-auto', 'class' => 'w-100'],
             ]);
@@ -108,7 +108,7 @@ class NewscastType extends AbstractType
             $builder->add('promote', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
                 'attr' => ['group' => 'col-md-2 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -184,7 +184,7 @@ class NewscastType extends AbstractType
                 $builder->add('customLayout', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
                     'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100', 'data-config' => true],
                 ]);

@@ -115,7 +115,7 @@ class CategoryType extends AbstractType
             $builder->add('useDefaultTemplate', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Utiliser le template de la catégorie principale', [], 'admin'),
                 'attr' => ['group' => 'col-md-4 d-flex align-items-end', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -123,7 +123,7 @@ class CategoryType extends AbstractType
             $builder->add('hideDate', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Cacher la date', [], 'admin'),
                 'attr' => ['group' => 'col-md-4 d-flex align-items-end', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -131,7 +131,7 @@ class CategoryType extends AbstractType
             $builder->add('displayCategory', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher le nom de la catégorie', [], 'admin'),
                 'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -139,7 +139,7 @@ class CategoryType extends AbstractType
             $builder->add('asDefault', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Catégorie principale', [], 'admin'),
                 'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -147,7 +147,7 @@ class CategoryType extends AbstractType
             $builder->add('mainMediaInHeader', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans("Afficher l'image principale dans les entêtes", [], 'admin'),
                 'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -158,7 +158,7 @@ class CategoryType extends AbstractType
             $builder->add('asEvents', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans("Type événement", [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);

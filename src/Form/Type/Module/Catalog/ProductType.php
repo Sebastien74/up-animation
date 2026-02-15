@@ -142,7 +142,7 @@ class ProductType extends AbstractType
             $builder->add('customLayout', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
                 'attr' => ['group' => 'col-lg-3', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -181,7 +181,7 @@ class ProductType extends AbstractType
                 $builder->add('promote', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
                     'attr' => ['group' => 'col-lg-2 d-flex align-items-end', 'class' => 'w-100'],
                 ]);
@@ -275,7 +275,7 @@ class ProductType extends AbstractType
                 $builder->add('customLayout', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
                     'attr' => ['group' => 'col-lg-4', 'class' => 'w-100', 'data-config' => true],
                 ]);

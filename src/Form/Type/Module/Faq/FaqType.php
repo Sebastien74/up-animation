@@ -82,7 +82,7 @@ class FaqType extends AbstractType
             $builder->add('disabledMicrodata', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Désactiver les microdatas', [], 'admin'),
                 'attr' => ['group' => 'col-md-4 d-flex align-items-end', 'class' => 'w-100'],
             ]);

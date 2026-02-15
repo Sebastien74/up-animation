@@ -52,7 +52,7 @@ class FacebookIntlType extends AbstractType
         $builder->add('phoneTrack', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Activer Phone track', [], 'admin'),
             'attr' => ['group' => 'col-12 d-flex align-items-end', 'class' => 'w-100'],
         ]);

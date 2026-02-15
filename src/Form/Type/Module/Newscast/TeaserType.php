@@ -141,7 +141,7 @@ class TeaserType extends AbstractType
                 $builder->add('promote', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Afficher uniquement les actualités mis en avant', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -149,7 +149,7 @@ class TeaserType extends AbstractType
                 $builder->add('promoteFirst', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Mettre en avant la première actualité', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -157,7 +157,7 @@ class TeaserType extends AbstractType
                 $builder->add('displayFilters', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Afficher les filtres', [], 'admin'),
                     'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -186,7 +186,7 @@ class TeaserType extends AbstractType
             $builder->add('matchCategories', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Appartenant à toutes les catégories', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -194,7 +194,7 @@ class TeaserType extends AbstractType
             $builder->add('asEvents', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans("Teaser d'événements", [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -202,7 +202,7 @@ class TeaserType extends AbstractType
             $builder->add('pastEvents', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher les événements passés', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);

@@ -71,7 +71,7 @@ class ContentType extends AbstractType
             $builder->add('largeBullets', CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Liste à puces checkbox', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
             ]);

@@ -17,15 +17,6 @@ let body = document.body
 import './decrypt'
 
 window.addEventListener("load", function () {
-
-    /** 2 - AI */
-    let aiBot = body.querySelectorAll('.btn-chatgpt');
-    if (aiBot) {
-        import('./ai').then(({default: Ai}) => {
-            new Ai();
-        }).catch(error => console.error(error.message));
-    }
-
     /** 3 - Recaptcha */
     let formSecurity = body.querySelectorAll('form.security')
     if (formSecurity.length > 0) {

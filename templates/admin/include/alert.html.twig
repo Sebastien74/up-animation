@@ -1,48 +1,53 @@
 {% trans_default_domain 'admin' %}
 
 {% set icons = {
-    success: 'far check',
-    info: 'fas info',
-    warning: 'fas exclamation',
-    danger: 'far exclamation-triangle',
-    error_form: 'far exclamation-triangle',
-    error: 'far exclamation-triangle',
-    undefined: 'fas info',
+    success: {icon: 'check', bgColor: 'success', color: 'success', iconColor: 'white-50'},
+    info: {icon: 'info', bgColor: 'info', color: 'primary', iconColor: 'white-50'},
+    warning: {icon: 'exclamation', bgColor: 'warning', color: 'warning', iconColor: 'white-50'},
+    danger: {icon: 'exclamation-triangle', bgColor: 'danger', color: 'danger', iconColor: 'white-50'},
+    error: {icon: 'exclamation-triangle', bgColor: 'danger', color: 'danger', iconColor: 'white-50'},
+    undefined: {icon: 'info', bgColor: 'primary', color: 'primary', iconColor: 'white'},
 } %}
 
-{% set class = class is defined ? class : null %}
-{% set display = display is defined ? display : "toast" %}
-{% set alert = alert is defined ? alert : "info" %}
-{% set alert = alert == "error" ? "danger" : alert %}
-{% set icon = icons[alert] is defined ? icons[alert] : icons['undefined'] %}
+{% set display = display is defined ? display : 'toast' %}
 {% set size = size is defined ? size : null %}
-{% set badge = badge is defined ? badge : null %}
+{% set icon = icons[alert].icon is defined ? icons[alert].icon : icons['undefined'].icon %}
+{% set bgColor = icons[alert].bgColor is defined ? icons[alert].bgColor : icons['undefined'].bgColor %}
+{% set color = icons[alert].color is defined ? icons[alert].color : icons['undefined'].color %}
+{% set iconColor = icons[alert].iconColor is defined ? icons[alert].iconColor : icons['undefined'].iconColor %}
+{% set help = help is defined ? help : null %}
+{% set id = id is defined ? id : null %}
+{% set class = class is defined ? class : null %}
 
 {% if 'alert' == display %}
-    <div class="alert alert-{{ alert }} position-relative d-flex p-0 {% if class %} {{ class }}{% endif %}">
-        <div class="icon d-flex align-items-center justify-content-center position-relative">{{ icon|icon(null, 22) }}</div>
-        <div class="message px-4 py-3 w-100">
-            {% if 'small' == size %}<small class="d-inline-block">{% endif %}{{ message|raw }}{% if 'small' == size %}</small>{% endif %}
-            {% if badge %}
-                <div class="position-absolute fw-700 badge bg-{{ alert }}">{{ badge|raw }}</div>
-            {% endif %}
+    <div{% if id %} id="{{ id }}"{% endif %} class="alert alert-{{ bgColor }} position-relative d-flex p-3 my-3 {% if class %} {{ class }}{% endif %}">
+        <div class="btn-icon d-flex align-items-center justify-content-center position-relative {{ bgColor }} me-3">
+            <i class="icm-{{ icon }} text-{{ iconColor }}"></i>
+        </div>
+        <div class="message w-100 d-flex align-items-center text-{{ iconColor }}">
+            <div class="content">
+                {% if 'small' == size %}
+                <small class="d-inline-block text-{{ iconColor }}">
+                    {% endif %}
+                        {{ message|raw }}
+                    {% if help %}
+                        <br>{{ help|raw }}
+                    {% endif %}
+                    {% if 'small' == size %}
+                </small>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% else %}
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div class="toast toast-alert fade show border-0 bg-{{ alert }}" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header d-flex border-0 no-radius py-3 px-3">
+    <div{% if id %} id="{{ id }}"{% endif %} class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast toast-alert fade show border-0 bg-{{ color }}" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header d-flex border-0 no-radius py-3 px-3 text-{{ bgColor }}">
                 <div class="inner d-flex align-items-center">
-                    {{ icon|icon(null, 17, alert~' me-2') }}
-                    <div class="message">
-                        {% if message is defined %}
-                            {{ message|raw }}
-                        {% else %}
-                            {{ "Que se passe-t-il ?"|trans }}
-                        {% endif %}
-                    </div>
+                    <span class="dash-action dash-{{ bgColor }} dash-accent me-3"><i class="icm-{{ icon }}"></i></span>
+                    <div class="message">{{ message|raw }}</div>
                 </div>
-                <button type="button" class="btn-close ms-3" data-bs-dismiss="toast" aria-label="Close"></button>
+                <button type="button" class="btn-close ms-3" data-bs-dismiss="toast" aria-label="{{ "Close"|trans|striptags }}"></button>
             </div>
         </div>
     </div>

@@ -138,13 +138,9 @@
 
     {% if 'edit'|moduleActive(configuration) and layout.id is defined and layout.id %}
         <button id="add-zone-btn"
-                class="btn edit-layout-element-btn w-100"
+                class="btn-app edit-layout-element-btn"
                 data-path="{{ path('admin_zone_new', {website: websiteId(), layout: layout.id}) }}">
-            <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
-                 src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                 class="img-fluid rounded-add-img lazy-load"
-                 width="20" height="20" alt="{{ 'Ajouter'|trans|striptags }}" /><br>
-            {{ 'Ajouter une ligne'|trans }}
+            <i class="icm-plus"></i>{{ 'Ajouter une ligne'|trans }}
         </button>
     {% endif %}
 

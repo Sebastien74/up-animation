@@ -28,19 +28,25 @@
     </div>
 
     <div class="dd3-content d-flex">
-        <div class="d-inline-flex align-items-center w-100 gap-3">
+        <div class="d-inline-flex align-items-center w-100">
 
-            <span class="badges d-inline-flex gap-2">
-                {#                {% if entity.webmaster is defined and entity.webmaster %}#}
-                    <i class="icm-star icon-info d-flex" data-bs-toggle="tooltip" title="{{ "Webmaster"|trans|striptags }}"></i>
-{#                {% endif %}#}
-                {#                {% if entity.secure is defined and entity.secure %}#}
-                    <i class="icm-lock-alt icon-info d-flex" data-bs-toggle="tooltip" title="{{ "Page sécurisée"|trans|striptags }}"></i>
-{#                {% endif %}#}
-                {#                {% if entity.noSeo is defined and entity.noSeo %}#}
-                    <i class="icm-ban icon-info d-flex" data-bs-toggle="tooltip" title="{{ "SEO nonrécupéré"|trans|striptags }}"></i>
-{#                {% endif %}#}
-            </span>
+            {% set webmasterInfo = entity.webmaster is defined and entity.webmaster %}
+            {% set secureInfo = entity.secure is defined and entity.secure %}
+            {% set noSeoInfo = entity.noSeo is defined and entity.noSeo %}
+
+            {% if webmasterInfo or secureInfo or noSeoInfo %}
+                <span class="badges d-inline-flex gap-2 me-3">
+                    {% if webmasterInfo %}
+                        <i class="icm-star icon-info d-flex" data-bs-toggle="tooltip" title="{{ "Webmaster"|trans|striptags }}"></i>
+                    {% endif %}
+                    {% if secureInfo %}
+                        <i class="icm-lock-alt icon-info d-flex" data-bs-toggle="tooltip" title="{{ "Page sécurisée"|trans|striptags }}"></i>
+                    {% endif %}
+                    {% if noSeoInfo %}
+                        <i class="icm-ban icon-info d-flex" data-bs-toggle="tooltip" title="{{ "SEO nonrécupéré"|trans|striptags }}"></i>
+                    {% endif %}
+                </span>
+            {% endif %}
 
             <span class="title">
                 {% if infoUrl %}
@@ -156,7 +162,7 @@
                                id="delete-pack-{{ entity.id }}"
                                data-path="{{ path('admin_'~interfaceName~'_delete', args) }}"
                                type="checkbox">
-                        <label class="custom-control-label danger" for="delete-pack-{{ entity.id }}"></label>
+                        <label class="custom-control-label delete-pack-label danger" for="delete-pack-{{ entity.id }}"></label>
                     </span>
                 {% endif %}
 

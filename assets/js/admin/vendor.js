@@ -27,6 +27,8 @@
  */
 
 import './bootstrap';
+import {Tooltip} from './bootstrap-modules';
+
 import Cookies from "js-cookie";
 
 let body = document.body;
@@ -95,16 +97,14 @@ import pluginsVendor from './plugins/vendor';
 pluginsVendor();
 
 /** 6 - Active URL */
-let urlLinks = document.querySelectorAll('.active-urls a')
-for (let i = 0; i < urlLinks.length; i++) {
-    let link = urlLinks[i]
+document.querySelectorAll('.active-urls a').forEach(function (link) {
     link.onclick = function (e) {
         e.preventDefault()
         import('./core/urls').then(({default: activeUrls}) => {
             new activeUrls(e, link)
         }).catch(error => console.error(error.message));
     }
-}
+});
 
 /** 7 - Code generator */
 let generateLinks = document.querySelectorAll('.generate-code')
@@ -115,28 +115,24 @@ if (generateLinks.length > 0) {
 }
 
 /** 8 - Bytes generator */
-let bytesLinks = document.querySelectorAll('.generate-bytes')
-for (let i = 0; i < bytesLinks.length; i++) {
-    let link = bytesLinks[i]
+document.querySelectorAll('.generate-bytes').forEach(function (link) {
     link.onclick = function (e) {
         e.preventDefault()
         import('./core/bytes-generator').then(({default: bytesGenerator}) => {
             new bytesGenerator(e, link)
         }).catch(error => console.error(error.message));
     }
-}
+});
 
 /** 9 - Password generator */
-let passwordLinks = document.querySelectorAll('.generator-password')
-for (let i = 0; i < passwordLinks.length; i++) {
-    let link = passwordLinks[i]
+document.querySelectorAll('.generator-password').forEach(function (link) {
     link.onclick = function (e) {
         e.preventDefault()
         import('./core/password-generator').then(({default: passwordGenerator}) => {
             new passwordGenerator(e, link)
         }).catch(error => console.error(error.message));
     }
-}
+});
 
 /** 10 - Tree search */
 if (document.querySelectorAll('.pages-search input').length > 0) {
@@ -153,16 +149,14 @@ if (document.querySelectorAll('.search-in-list input').length > 0) {
 }
 
 /** 12 - Medias modal library */
-let mediasModals = document.querySelectorAll('.open-modal-medias')
-for (let i = 0; i < mediasModals.length; i++) {
-    let modalEl = mediasModals[i]
+document.querySelectorAll('.open-modal-medias').forEach(function (modalEl) {
     modalEl.onclick = function (e) {
         e.preventDefault()
         import('./media/open-modal').then(({default: openModal}) => {
             new openModal(Routing, e, modalEl)
         }).catch(error => console.error(error.message));
     }
-}
+});
 
 /** 13 - Map */
 // if (document.querySelectorAll('.input-places').length > 0) {
@@ -190,15 +184,13 @@ if (document.getElementById('delete-index-all')
 }
 
 /** 16 - Media Tab */
-let mediasTabs = document.querySelectorAll('.media-tab-content-loader')
-for (let i = 0; i < mediasTabs.length; i++) {
-    let mediasTabEl = mediasTabs[i]
+document.querySelectorAll('.media-tab-content-loader').forEach(function (mediasTabEl) {
     mediasTabEl.onclick = function () {
         import('./core/medias-tab').then(({default: mediasTab}) => {
             new mediasTab(Routing, mediasTabEl)
         }).catch(error => console.error(error.message));
     }
-}
+});
 
 import websitesSelector from './core/websites-selector'
 
@@ -223,13 +215,15 @@ window.addEventListener("load", function () {
     }
 
     /** 18 - Tab item click */
-    let navLinks = document.querySelectorAll('.nav-link')
-    for (let i = 0; i < navLinks.length; i++) {
-        let navLinkEl = navLinks[i]
+    document.querySelectorAll('.nav-link').forEach(function (navLinkEl) {
         navLinkEl.onclick = function () {
             import('./core/tab').then(({default: tabPlugin}) => {
                 new tabPlugin()
             }).catch(error => console.error(error.message));
         }
-    }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    Tooltip();
 });

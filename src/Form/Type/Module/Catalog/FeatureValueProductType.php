@@ -95,7 +95,7 @@ class FeatureValueProductType extends AbstractType
             'required' => false,
             'mapped' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Ajouter aux principales', [], 'admin'),
             'attr' => ['class' => 'w-100'],
         ]);
@@ -108,7 +108,7 @@ class FeatureValueProductType extends AbstractType
             $builder->add('displayInArray', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Afficher dans un tableau', [], 'admin'),
                 'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
             ]);

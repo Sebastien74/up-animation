@@ -3,11 +3,11 @@
 {% if breadcrumb is defined and breadcrumb is not empty %}
     <nav class="breadcrumb-container d-inline-block w-100 mt-4 mb-3" aria-label="breadcrumb">
         <div class="d-flex align-items-center gap-2 px-1">
-                <span class="btn-icon small me-2" aria-hidden="true">
-                    <i class="icm-tachometer-alt"></i>
-                </span>
-            <div class="container-fluid">
-                <ol class="page-breadcrumb bg-transparent breadcrumb mb-0">
+            <span class="btn-icon small me-2" aria-hidden="true">
+                <i class="icm-tachometer-alt"></i>
+            </span>
+            <div class="container-fluid px-0 mx-0">
+                <ol class="page-breadcrumb bg-transparent breadcrumb d-flex flex-wrap list-unstyled mb-0">
                     {% for item, path in breadcrumb %}
                         <li class="breadcrumb-item ps-0"><a href="{{ path }}" class="text-white">{{ item }}</a></li>
                     {% endfor %}

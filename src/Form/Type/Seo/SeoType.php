@@ -88,7 +88,7 @@ class SeoType extends AbstractType
         $builder->add('noAfterDash', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Désactiver après tiret', [], 'admin'),
             'attr' => ['group' => 'col-12', 'class' => 'w-100'],
         ]);

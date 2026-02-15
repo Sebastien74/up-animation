@@ -5,54 +5,82 @@
  */
 export default function () {
 
-    $('.pages-search input').keyup(function () {
+    const searchInput = document.querySelector('.pages-search input');
+    if (!searchInput) {
+        return;
+    }
+
+    searchInput.addEventListener('keyup', function () {
 
         let term = this.value;
-        let termLower = term.toLowerCase();
-        term = term.replace(/(\s+)/, "(<[^>]+>)*$1(<[^>]+>)*");
+        const termLower = term.toLowerCase();
+        const termRegex = term.replace(/(\s+)/, "(<[^>]+>)*$1(<[^>]+>)*");
 
-        let items = $('#nestable-list').find('.dd3-item');
-        items.removeClass('d-none');
+        const nestableList = document.getElementById('nestable-list');
+        if (!nestableList) {
+            return;
+        }
 
-        $('#nestable-list').find('.dd3-content .title').each(function () {
+        const items = nestableList.querySelectorAll('.dd3-item');
+        items.forEach(item => item.classList.remove('d-none'));
 
-            let body = $('body');
-            let expandBtn = body.find('.expand-btn');
-            if (!expandBtn.hasClass('active') && term !== '') {
-                expandBtn.addClass('active');
-                expandBtn.trigger('click')
-            }
+        const titles = nestableList.querySelectorAll('.dd3-content .title');
 
-            let item = $(this);
-            let srcStr = item.text();
+        const expandAllBtn = document.getElementById('nestable-expand-all');
+        const collapseAllBtn = document.getElementById('nestable-collapse-all');
+        if (expandAllBtn && !expandAllBtn.classList.contains('d-none') && term !== '') {
+            expandAllBtn.click();
+        } else if (collapseAllBtn && !collapseAllBtn.classList.contains('d-none') && term === '') {
+            collapseAllBtn.click();
+        }
 
-            let pattern = new RegExp("(" + term + ")", "gi");
+        titles.forEach(title => {
+
+            let srcStr = title.textContent;
+            const pattern = new RegExp("(" + termRegex + ")", "gi");
             srcStr = srcStr.replace(pattern, "<mark class=\"bg-transparent\">$1</mark>");
             srcStr = srcStr.replace(/(<mark class="bg-transparent">[^<>]*)((<[^>]+>)+)([^<>]*<\/mark>)/, "$1</mark>$2<mark>$4");
 
-            item.html(srcStr);
+            title.innerHTML = srcStr;
 
             if (term === '') {
-                item.find('mark').remove();
+                const marks = title.querySelectorAll('mark');
+                marks.forEach(mark => {
+                    const parent = mark.parentNode;
+                    parent.replaceChild(document.createTextNode(mark.textContent), mark);
+                    parent.normalize();
+                });
             }
 
-            let l = $(this).text().toLowerCase();
+            const l = title.textContent.toLowerCase();
 
             if (term !== '' && l.indexOf(termLower) === -1) {
-                item.addClass('text-muted');
+                title.classList.add('text-muted');
             } else {
-                item.removeClass('text-muted');
+                title.classList.remove('text-muted');
             }
         });
 
+        let resultsCount = 0;
         if (term !== '') {
-            items.addClass('d-none');
-            $('#nestable-list').find('.dd3-content .title').each(function () {
-                let l = $(this).text().toLowerCase();
+            items.forEach(item => item.classList.add('d-none'));
+            titles.forEach(title => {
+                const l = title.textContent.toLowerCase();
                 if (l.indexOf(termLower) !== -1) {
-                    $(this).closest('.dd3-item').removeClass('d-none').parents('.dd3-item').removeClass('d-none');
+                    resultsCount++;
+                    let parentItem = title.closest('.dd3-item');
+                    while (parentItem) {
+                        parentItem.classList.remove('d-none');
+                        parentItem = parentItem.parentElement.closest('.dd3-item');
+                    }
                 }
             });
+        }
+
+        if(resultsCount === 0) {
+            document.getElementById('no-result-alert').classList.remove('d-none');
+        } else {
+            document.getElementById('no-result-alert').classList.add('d-none');
         }
     });
 }

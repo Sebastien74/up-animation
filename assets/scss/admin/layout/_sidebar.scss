@@ -76,8 +76,13 @@
         }
 
         &:not(.bigger) {
-            &::after {
+
+            &:not(.active)::after {
                 top: 18px;
+            }
+
+            &.active::after {
+                top: 17px;
             }
         }
 

@@ -84,7 +84,7 @@ class TransitionType extends AbstractType
         $builder->add('active', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Actif pour les sélecteurs', [], 'admin'),
             'attr' => ['class' => 'w-100'],
         ]);
@@ -92,7 +92,7 @@ class TransitionType extends AbstractType
         $builder->add('activeForBlock', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
-            'color' => 'outline-info-darken',
+            'color' => 'app',
             'label' => $this->translator->trans('Actif pour les blocks', [], 'admin'),
             'attr' => ['class' => 'w-100'],
         ]);

@@ -110,7 +110,7 @@ class TeaserType extends AbstractType
                 $builder->add('promote', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Afficher uniquement les produits mis en avant', [], 'admin'),
                     'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
                 ]);
@@ -194,7 +194,7 @@ class TeaserType extends AbstractType
             $builder->add('matchCategories', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Appartenant à toutes les catégories', [], 'admin'),
                 'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
             ]);

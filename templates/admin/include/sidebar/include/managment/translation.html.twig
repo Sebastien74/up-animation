@@ -14,7 +14,7 @@
                 <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
             </a>
             <ul aria-expanded="false" class="collapse{% if active %} in{% endif %}">
-                <li class="pt-3 pe-3 d-inline-block w-100">
+                <li class="mb-2 w-100">
                     {% include 'admin/page/translation/translation-search.html.twig' %}
                 </li>
                 {% for transDomain in transDomains %}
@@ -29,7 +29,7 @@
                 <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
             </a>
             <ul aria-expanded="false" class="collapse{% if active %} in{% endif %}{% if transDomains|length == 0 %} pb-3{% endif %}">
-                <li class="pt-3 pe-3 d-inline-block w-100">
+                <li class="mb-2 w-100">
                     {% include 'admin/page/translation/translation-search.html.twig' %}
                 </li>
                 {% for transDomain in transDomains %}

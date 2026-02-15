@@ -53,7 +53,7 @@ class CardType extends AbstractType
             $builder->add('customLayout', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
                 'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
             ]);
@@ -69,7 +69,7 @@ class CardType extends AbstractType
             $builder->add('promote', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
-                'color' => 'outline-info-darken',
+                'color' => 'app',
                 'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
                 'attr' => ['group' => 'col-md-2 d-flex align-items-end', 'class' => 'w-100'],
             ]);
@@ -100,7 +100,7 @@ class CardType extends AbstractType
                 $builder->add('customLayout', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
-                    'color' => 'outline-info-darken',
+                    'color' => 'app',
                     'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
                     'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
                 ]);

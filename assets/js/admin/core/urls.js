@@ -3,18 +3,17 @@
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
+
+import {Tooltip} from '../bootstrap-modules';
+
 export default function (event, el) {
 
-    let iconEl = el.querySelectorAll('img')[0]
-    let iconClass = iconEl.dataset.icon
-    let bubble = el.querySelectorAll('.bubble')[0]
-    let status = bubble.getAttribute('data-status')
+    const iconEl = el.querySelector('.label');
+    const iconRefresh = el.querySelector('.refresh-icon');
 
     let beforeSend = function () {
-        if (typeof iconClass != 'undefined') {
-            iconEl.setAttribute('src', iconClass)
-        }
-        iconEl.classList.add('fa-spin')
+        iconEl.classList.add('d-none');
+        iconRefresh.classList.remove('d-none');
     }
 
     let xHttp = new XMLHttpRequest()
@@ -26,30 +25,40 @@ export default function (event, el) {
 
         if (this.readyState === 4 && this.status === 200) {
 
-            let response = JSON.parse(this.response)
-            let iconEl = el.querySelectorAll('img')[0]
+            let response = JSON.parse(this.response);
 
-            if (typeof iconClass != 'undefined') {
-                iconEl.classList.remove("fa-spin")
-                iconEl.setAttribute('src', iconClass)
-                iconEl.setAttribute('data-icon', iconClass)
-            } else {
-                iconEl.classList.remove('fa-spin')
-            }
+            const iconEl = el.querySelector('.label');
+            const iconRefresh = el.querySelector('.refresh-icon');
 
-            el.classList.remove(status)
-            el.classList.add(response.status)
-            bubble.classList.remove(status)
-            bubble.classList.add(response.status)
-            bubble.setAttribute('data-status', response.status)
+            const status = response.status;
+            const iconOffline = el.dataset.iconOffline;
+            const iconOnline = el.dataset.iconOnline;
+            const colorOffline = el.dataset.colorOffline;
+            const colorOnline = el.dataset.colorOnline;
+            const labelOffline = el.dataset.labelOffline;
+            const labelOnline = el.dataset.labelOnline;
+
+            const iconPrevious = status === 'offline' ? iconOnline : iconOffline;
+            const iconCurrent = status === 'offline' ? iconOffline : iconOnline;
+
+            iconEl.classList.remove('icm-' + iconPrevious);
+            iconEl.classList.add('icm-' + iconCurrent);
+
+            const colorPrevious = status === 'offline' ? colorOnline : colorOffline;
+            const colorCurrent = status === 'offline' ? colorOffline : colorOnline;
+            const title = status === 'offline' ? labelOffline : labelOnline;
+
+            el.classList.remove(colorPrevious);
+            el.classList.add(colorCurrent);
+            el.setAttribute('title', title);
+            el.setAttribute('data-bs-original-title', title);
+            el.setAttribute('aria-label', title);
+
+            iconEl.classList.remove('d-none');
+            iconRefresh.classList.add('d-none');
         }
     }
-    xHttp.onerror = function (errors) {
-        // /** Display errors */
-        // import('./errors').then(({default: displayErrors}) => {
-        //     new displayErrors(errors);
-        // }).catch(error => console.error(error.message));
-    }
+    xHttp.onerror = function (errors) {}
 
     event.stopImmediatePropagation()
     return false
