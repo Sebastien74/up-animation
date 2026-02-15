@@ -56,7 +56,7 @@
                            data-url-id="{{ urlId }}"
                            data-classname="{{ classname|url_encode }}"
                            data-entity-id="{{ entity.id }}">
-                        {{ 'far sync'|icon(null, 11, 'info me-1', {icon: true}) }}{{ "Générer l'url"|trans([], 'admin') }}
+                        <i class="icm-sync me-1"></i>{{ "Générer l'url"|trans([], 'admin') }}
                     </small>
                     <div class="">{{ form_widget(url.online) }}</div>
                 </div>
@@ -72,13 +72,13 @@
                        data-bs-toggle="tooltip"
                        title="{{ title }}"
                        class="btn-icon {{ btn }}"
-                       target="_blank">{{ 'fas eye'|icon(null, 14, 'dark', {icon: true}) }}
+                       target="_blank"><i class="icm-eye"></i>
                     </a>
                     <span data-toggle="preloader">
                         <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: locale, url: urlId}) }}"
                            data-bs-toggle="tooltip" title="{{ "Référencement avancé"|trans }}"
                            class="btn btn-outline-info-darken standard">
-                            {{ 'fas chart-line'|icon(null, 14, 'dark', {icon: true}) }}
+                            <i class="icm-chart-line"></i>
                         </a>
                     </span>
                 </div>

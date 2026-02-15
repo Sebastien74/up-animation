@@ -61,7 +61,7 @@
                 <form role="search" class="icons-search bg-info-darken p-4 mb-0">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text h-100 bg-light">{{ 'fal search'|icon(14, 14, 'dark') }}</span>
+                            <span class="input-group-text h-100 bg-light"><i class="icm-search"></i></span>
                         </div>
                         <input placeholder="{{ "Rechercher"|trans }}" class="form-control" type="text">
                     </div>
@@ -74,7 +74,7 @@
                         role="button"
                         aria-expanded="false"
                         aria-controls="collapse-add-icons">
-                    {{ 'fal plus'|icon(25, 25, 'white me-3') }}{{ "Ajouter des icônes"|trans|raw }}
+                    <i class="icm-plus me-3"></i>{{ "Ajouter des icônes"|trans|raw }}
                 </button>
             </div>
         </div>
@@ -106,7 +106,7 @@
                                             </div>
                                             <div class="icon-actions text-info-darken">
                                                 <div class="icon-copy border-info-darken" data-bs-toggle="tooltip" title="{{ "Copier"|trans }}" data-placement="left">
-                                                    <div class="inner h-100">{{ 'fal copy'|icon(20, 20, 'info-darken') }}</div>
+                                                    <div class="inner h-100"><i class="icm-copy"></i></div>
                                                 </div>
                                                 {% set status = inWebsiteIcons ? 'true' : 'false' %}
                                                 {% set tooltip = inWebsiteIcons ? "Retirer"|trans : "Ajouter"|trans %}
@@ -118,9 +118,9 @@
                                                    data-bs-toggle="tooltip" title="{{ tooltip|raw }}" data-placement="left">
                                                     <div class="inner h-100">
                                                         {% set checkClass = inWebsiteIcons ? 'info-darken' : 'd-none' %}
-                                                        {{ 'fal check'|icon(20, 20, checkClass) }}
+                                                        <i class="icm-check"></i>
                                                         {% set addClass = not inWebsiteIcons ? 'info-darken' : 'd-none' %}
-                                                        {{ 'fal plus'|icon(20, 20, addClass) }}
+                                                        <i class="icm-plus"></i>
                                                     </div>
                                                 </a>
                                             </div>

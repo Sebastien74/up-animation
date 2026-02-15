@@ -44,7 +44,7 @@
                 <li class="nav-item bg-danger right">
                     <a href="{{ path("admin_notfoundurl_delete_all", {website: websiteId(), type: type, category: category}) }}"
                        class="nav-link swal-delete-link bg-danger d-flex align-items-center justify-content-center">
-                        <span class="d-none d-sm-inline-block text-white">{{ 'fas trash'|icon(null, 17, 'white me-sm-2') }}<span>{{ 'Tout suprimer' }}</span></span>
+                        <span class="d-none d-sm-inline-block text-white"><i class="icm-trash"></i><span>{{ 'Tout suprimer' }}</span></span>
                     </a>
                 </li>
             {% endif %}
@@ -70,7 +70,7 @@
                                    data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
                                    data-target="#entity-row-{{ entity.id }}"
                                    class="text-dark swal-delete-link">
-                                    {{ 'fas trash'|icon(null, 14, 'dark ms-3') }}
+                                    <i class="icm-trash ms-3"></i>
                                 </a>
                             {% endif %}
                         </td>

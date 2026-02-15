@@ -56,15 +56,15 @@
             <div class="d-flex align-items-center justify-content-end">
                 <button class="btn btn-sm btn-info save-row-trans"
                         data-form-id="unit-form-{{ entity.id }}">
-                    {{ 'far save'|icon(20, 20, 'save-svg') }}
-                    {{ 'fad spinner-third'|icon(20, 20, 'fa-spin d-none spinner-svg') }}
+                    <i class="icm-save"></i>
+                    <i class="icm-spinner-third"></i>
                 </button>
                 {% if 'delete'|moduleActive(configuration) %}
                     <a href="{{ path('admin_translationunit_delete', {website: websiteId(), translationunit: entity.id}) }}"
                        data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
                        data-target="#entity-row-{{ entity.id }}"
                        class="text-dark swal-delete-link">
-                        {{ 'fas trash'|icon(null, 14, 'dark ms-3') }}
+                        <i class="icm-trash ms-3"></i>
                     </a>
                 {% endif %}
                 <div class="d-none">{{ form_rest(form) }}</div>

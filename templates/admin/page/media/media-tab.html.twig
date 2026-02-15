@@ -8,7 +8,7 @@
             {{ form_row(media.uploadedFile) }}
             <a class="tinypng-btn btn btn-dark"
                href="https://tinypng.com/" target="_blank">
-                {{ 'fal file-archive'|icon(null, 24) }}
+                <i class="icm-file-archive"></i>
             </a>
         </div>
 
@@ -55,13 +55,13 @@
                                     <div class="col-md-6">
                                         <span class="btn btn-xs btn-outline-secondary copy-link cursor d-inline-block w-100"
                                               data-bs-toggle="tooltip" title="{{ "Copier l'URL"|trans }}">
-                                            {{ 'fal copy'|icon(null, 10, 'dark') }}
+                                            <i class="icm-copy"></i>
                                         </span>
                                     </div>
                                     <div class="col-md-6">
                                         <a href="{{ app.request.getSchemeAndHttpHost()~info.path }}" download="{{ info.filename }}" class="btn btn-xs btn-outline-secondary d-inline-block w-100"
                                            data-bs-toggle="tooltip" title="{{ "Télécharger"|trans }}">
-                                            {{ 'fal upload'|icon(null, 10, 'dark') }}
+                                            <i class="icm-upload"></i>
                                         </a>
                                     </div>
                                 </div>

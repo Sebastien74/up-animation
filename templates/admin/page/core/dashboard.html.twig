@@ -98,13 +98,13 @@
                                 <div class="inner">
                                     <span class="count text-dark w-100 d-inline-block">
                                         {% if notFoundUrls|length > notFoundsLimit %}
-                                            {{ 'fas chevron-right'|icon(20, 20, 'danger') }}
+                                            <i class="icm-chevron-right"></i>
                                             {{ notFoundsLimit }}
                                         {% else %}
                                             {{ notFoundUrls|length }}
                                         {% endif %}
                                     </span>
-                                    <span class="entitled text-dark d-inline-flex align-items-center justify-content-center">{{ 'fal unlink'|icon(16, 16, 'info me-2') }}{{ "Erreurs 404"|trans }}</span>
+                                    <span class="entitled text-dark d-inline-flex align-items-center justify-content-center"><i class="icm-unlink me-2"></i>{{ "Erreurs 404"|trans }}</span>
                                 </div>
                             </a>
                             <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: defaultLocale}) }}" data-toggle="preloader"
@@ -128,7 +128,7 @@
                                             </ul>
                                         </div>
                                     {% endif %}
-                                    <span class="entitled text-dark w-100 d-inline-block">{{ 'fal search'|icon(16, 16, 'info me-2') }}{{ "SEO manquant"|trans }}</span>
+                                    <span class="entitled text-dark w-100 d-inline-block"><i class="icm-search me-2"></i>{{ "SEO manquant"|trans }}</span>
                                 </div>
                             </a>
                         </div>
@@ -167,7 +167,7 @@
                                                        data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
                                                        data-target="#entity-row-{{ value.id }}"
                                                        class="text-dark swal-delete-link cursor">
-                                                        {{ 'fas trash'|icon(12, 18) }}
+                                                        <i class="icm-trash"></i>
                                                     </a>
                                                 </span>
                                             </td>

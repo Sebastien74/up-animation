@@ -22,7 +22,7 @@
 
         <div class="col-xl-8 mb-0 mb-sm-3">
             <div class="card h-100">
-                <h4 class="card-title card-header">{{ 'fal info'|icon(null, 18, 'info-darken me-2 float-start') }}{{ "Coordonnées"|trans }}</h4>
+                <h4 class="card-title card-header"><i class="icm-info me-2"></i>{{ "Coordonnées"|trans }}</h4>
                 <div class="card-body pb-0">
                     <div class="row xs-center sm-center">
                         <div class="col-12 col-md-7 col-xl-6 mb-3">
@@ -42,15 +42,15 @@
                         </div>
                         <ul class="reset ps-3 col-8 col-md-5 col-xl-3 mb-3">
                             <li class="mb-1">
-                                <span class="d-inline-block i-square me-1 float-start"><span title="{{ "Phone"|trans }}" data-toogle="tooltip">{{ 'fas phone'|icon(10, 10, 'white') }}</span></span>
+                                <span class="d-inline-block i-square me-1 float-start"><span title="{{ "Phone"|trans }}" data-toogle="tooltip"><i class="icm-phone"></i></span></span>
                                 <a href="tel:+33450671855" class="text-dark">+33 (0)4 50 67 18 55</a>
                             </li>
                             <li class="mb-1">
-                                <span class="d-inline-block i-square me-1 float-start"><span title="{{ "Fax"|trans }}" data-toogle="tooltip">{{ 'fas fax'|icon(10, 10, 'white') }}</span></span>
+                                <span class="d-inline-block i-square me-1 float-start"><span title="{{ "Fax"|trans }}" data-toogle="tooltip"><i class="icm-fax"></i></span></span>
                                 +33 (0)4 50 67 16 85
                             </li>
                             <li>
-                                <span class="d-inline-block i-square me-1 float-start"><span title="{{ "Email"|trans }}" data-toogle="tooltip">{{ 'fas at'|icon(10, 10, 'white') }}</span></span>
+                                <span class="d-inline-block i-square me-1 float-start"><span title="{{ "Email"|trans }}" data-toogle="tooltip"><i class="icm-at"></i></span></span>
                                 <a href="mailto:support@agence-felix.fr" class="text-dark">support@agence-felix.fr</a>
                             </li>
                         </ul>
@@ -87,7 +87,7 @@
 
         <div class="col-xl-4 mb-0 mb-sm-3">
             <div class="card h-100">
-                <h4 class="card-title card-header">{{ 'fal pencil-alt'|icon(null, 18, 'info-darken me-2 float-start') }}{{ "Contactez-nous"|trans }}</h4>
+                <h4 class="card-title card-header"><i class="icm-pencil-alt me-2"></i>{{ "Contactez-nous"|trans }}</h4>
                 <div class="card-body pb-0">
                     {{ form_start(form, {attr: {id: "contact-form", action: app.request.uri, novalidate: "novalidate"}}) }}
                         <div class="row">
@@ -109,7 +109,7 @@
                id="download-notice"
                class="w-100 text-center d-inline-block"
                download="notice-cms-agence-felix.pdf">
-                {{ 'fal file-pdf'|icon(null, 42, 'dark me-2 mb-3') }}
+                <i class="icm-file-pdf me-2"></i>
                 <br>{{ "Télécharger la notice"|trans }}
             </a>
         </div>

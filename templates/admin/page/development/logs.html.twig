@@ -24,7 +24,7 @@
         {% if logFiles %}
             <div class="col-md-4 mb-3">
                 <div class="card h-100">
-                    <div class="card-header mb-3">{{ 'fal copy'|icon(16, 14, 'info-darken me-2') }}{{ "Files"|trans }}</div>
+                    <div class="card-header mb-3"><i class="icm-copy me-2"></i>{{ "Files"|trans }}</div>
                     <ul class="m-0">
                         {% for logFile in logFiles %}
                             {% set color = 'info' %}
@@ -49,7 +49,7 @@
             {% for logDay, logFiles in logDay %}
                 <div class="col-md-4 mb-3">
                     <div class="card h-100">
-                        <div class="card-header mb-3">{{ 'fal calendar'|icon(16, 14, 'info-darken float-start mt-1 me-2') }}{{ logDay|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</div>
+                        <div class="card-header mb-3"><i class="icm-calendar me-2"></i>{{ logDay|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</div>
                         <ul class="m-0">
                             {% for logFile in logFiles %}
                                 {% set color = 'info' %}

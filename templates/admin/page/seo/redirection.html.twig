@@ -25,20 +25,20 @@
                 <div class="row">
                     <div class="col-md-6">
                         <a href="{{ asset('build/admin/docs/redirections.xlsx') }}" class="btn btn-outline-info-lighten me-1 standard" download="redirection.xlsx">
-                            {{ 'fal upload'|icon(null, 14, 'me-2 info-lighten') }}{{ "Télécharger le modèle XLS"|trans }}
+                            <i class="icm-upload me-2"></i>{{ "Télécharger le modèle XLS"|trans }}
                         </a>
                         <span class="btn btn-outline-info-lighten standard me-1 cursor" data-bs-toggle="modal" data-bs-target="#import-modal">
-                            {{ 'fal download'|icon(null, 14, 'me-2') }}{{ "Importer"|trans }}
+                            <i class="icm-download me-2"></i>{{ "Importer"|trans }}
                         </span>
                         {{ render_esi(path('admin_redirection_export', {website: website.id} )) }}
                     </div>
                     <div class="col-md-6 text-end">
-                        <button type="submit" class="btn-info btn standard me-1">{{ 'fal save'|icon(14, 14, 'me-2', {icon: true}) }}{{ "Enregistrer"|trans }}</button>
+                        <button type="submit" class="btn-info btn standard me-1"><i class="icm-save me-2"></i>{{ "Enregistrer"|trans }}</button>
                         <button role="button" class="add-collection btn btn-success standard"
                                 data-type="table"
                                 data-collection-target="prepend"
                                 data-target="#redirections-collection">
-                            {{ 'fal plus'|icon(11, 15, 'white me-2') }}{{ "Ajouter une redirection"|trans }}
+                            <i class="icm-plus me-2"></i>{{ "Ajouter une redirection"|trans }}
                         </button>
                     </div>
                 </div>

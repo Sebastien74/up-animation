@@ -11,8 +11,8 @@
 
 {% if displayTitleCard %}
     <div class="col-12">
-        <h4 class="main-subtitle mb-4 media-subtitle">
-            {{ 'fal photo-video'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Médias"|trans }}{% else %}{{ "Média"|trans }}{% endif %}
+        <h4 class="main-subtitle media-subtitle">
+            <i class="icm-photo-video"></i>{% if allLocales|length > 1 %}{{ "Médias"|trans }}{% else %}{{ "Média"|trans }}{% endif %}
         </h4>
     </div>
 {% endif %}
@@ -78,13 +78,13 @@
                         <span id="open-modal-{{ mediaRelation.vars.value.id }}"
                               class="open-modal-medias d-inline-block"
                               data-options="{{ parameters }}">
-                            {{ 'fal photo-video'|icon(null, 14, 'me-2') }}{{ "Choisir dans la bibliothèque"|trans }}
+                            <i class="icm-photo-video me-2"></i>{{ "Choisir dans la bibliothèque"|trans }}
                         </span>
                         <a href="https://tinypng.com/"
                            target="_blank" class="optimize-media-btn btn btn-dark"
                            data-bs-toggle="tooltip"
                            title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
-                            {{ 'fal file-archive'|icon(null, 16) }}
+                            <i class="icm-file-archive"></i>
                         </a>
                     </span>
             {% else %}
@@ -104,7 +104,7 @@
                             href="#collapseSubNavigation"
                             aria-expanded="false"
                             aria-controls="collapseSubNavigation">
-                        {{ 'fal text'|icon(14, 14, 'me-2 white') }}{{ "Contenus navigation"|trans }}
+                        <i class="icm-text me-2"></i>{{ "Contenus navigation"|trans }}
                     </button>
                     <div id="collapseSubNavigation" class="collapse">
                 {% endif %}
@@ -123,7 +123,7 @@
 
                 {% if mediaRelation.intl.targetLink is defined %}
                     <div class="card-body pb-0 border bg-light mb-4 radius">
-                        <h4 class="main-subtitle mb-4 w-100">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
+                        <h4 class="main-subtitle w-100"><i class="icm-link me-2"></i>{{ "Lien"|trans }}</h4>
                         <div class="row">
                             {% if mediaRelation.intl.targetStyle is defined %}
                                 {{ form_row(mediaRelation.intl.targetStyle) }}
@@ -181,13 +181,13 @@
                             <span id="open-screen-modal-{{ screen.vars.value.id }}"
                                   class="open-modal-medias d-inline-block"
                                   data-options="{{ parameters }}">
-                                {{ 'fal photo-video'|icon(null, 14, 'me-2') }}{{ "Choisir dans la bibliothèque"|trans }}
+                                <i class="icm-photo-video me-2"></i>{{ "Choisir dans la bibliothèque"|trans }}
                             </span>
                             <a href="https://tinypng.com/"
                                target="_blank" class="optimize-media-btn btn btn-dark"
                                data-bs-toggle="tooltip"
                                title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
-                                {{ 'fal file-archive'|icon(null, 16) }}
+                                <i class="icm-file-archive"></i>
                             </a>
                         </span>
                         {{ form_row(screen.uploadedFile) }}

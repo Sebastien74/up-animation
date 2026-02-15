@@ -17,8 +17,8 @@
                     </div>
                 {% endif %}
                 <div class="col-md-4">
-                    <h4 class="main-subtitle mb-4">
-                        {{ 'fal calendar-alt'|icon(null, 14, 'info-darken me-2') }}{{ "Dates de publication"|trans }}
+                    <h4 class="main-subtitle">
+                        <i class="icm-calendar-alt me-2"></i>{{ "Dates de publication"|trans }}
                     </h4>
                     <div class="row">
                         {% if form.publicationStart is defined %}
@@ -32,15 +32,15 @@
                     </div>
                     <div class="col-md-4">
                 {% endif %}
-                    <h4 class="main-subtitle mb-4">
-                        {{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}
-                    </h4>
                     <div class="row">
                         {% if haveIntls and not entity.infill %}
-                            <div class="row">
-                                {% include 'admin/core/form/intls-config.html.twig' with {intls: form.intls} %}
-                            </div>
+                            {% include 'admin/core/form/intls-config.html.twig' with {intls: form.intls} %}
                         {% endif %}
+                        <div class="col-12">
+                            <h4 class="main-subtitle">
+                                <i class="icm-cog me-2"></i>{{ "Configuration"|trans }}
+                            </h4>
+                        </div>
                         {% if form.template is defined %}
                             {{ form_row(form.template) }}
                         {% endif %}

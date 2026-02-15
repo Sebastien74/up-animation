@@ -33,37 +33,37 @@
             <ul class="nav nav-tabs custom-tab large w-100" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link{% if activeTab == 'description' %} active{% endif %}" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">
-                        {{ 'fal align-center'|icon(15, 17, 'dark me-sm-2') }}<span>{{ "Descriptions"|trans }}</span>
+                        <i class="icm-align-center"></i><span>{{ "Descriptions"|trans }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{% if activeTab == 'phones' %} active{% endif %}" id="phones-tab" data-bs-toggle="tab" href="#phones" role="tab" aria-controls="phones" aria-selected="false">
-                        {{ 'fal phone'|icon(17, 17, 'dark me-sm-2') }}<span>{{ "Numéros de téléphone"|trans }}</span>
+                        <i class="icm-phone"></i><span>{{ "Numéros de téléphone"|trans }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{% if activeTab == 'emails' %} active{% endif %}" id="emails-tab" data-bs-toggle="tab" href="#emails" role="tab" aria-controls="emails" aria-selected="false">
-                        {{ 'fal at'|icon(17, 17, 'dark me-sm-2') }}<span>{{ "E-mails"|trans }}</span>
+                        <i class="icm-at"></i><span>{{ "E-mails"|trans }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{% if activeTab == 'addresses' %} active{% endif %}" id="addresses-tab" data-bs-toggle="tab" href="#addresses" role="tab" aria-controls="addresses" aria-selected="false">
-                        {{ 'fal map-marked-alt'|icon(19, 17, 'dark me-sm-2') }}<span>{{ "Adresses"|trans }}</span>
+                        <i class="icm-map-marked-alt"></i><span>{{ "Adresses"|trans }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{% if activeTab == 'networks' %} active{% endif %}" id="networks-tab" data-bs-toggle="tab" href="#networks" role="tab" aria-controls="networks" aria-selected="false">
-                        {{ 'fal rss'|icon(15, 17, 'dark me-sm-2') }}<span>{{ "Réseaux sociaux"|trans }}</span>
+                        <i class="icm-rss"></i><span>{{ "Réseaux sociaux"|trans }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{% if activeTab == 'legal-notice' %} active{% endif %}" id="legal-notice-tab" data-bs-toggle="tab" href="#legal-notice" role="tab" aria-controls="legal-notice" aria-selected="false">
-                        {{ 'fal balance-scale-start'|icon(21, 17, 'dark me-sm-2') }}<span>{{ "Mentions légales"|trans }}</span>
+                        <i class="icm-balance-scale-start"></i><span>{{ "Mentions légales"|trans }}</span>
                     </a>
                 </li>
                 <li class="nav-item right">
                     <a class="nav-link text-white bg-info save">
-                        {{ 'fal globe-stand'|icon(15, 17, 'white me-sm-2 mt-1') }}<span>{{ "Votre IP :"|trans }} <span class="badge badge-white d-inline-block ms-2 pe-3 ps-3 pt-1 pb-1 ip-badge">{{ currentIP() }}</span></span>
+                        <i class="icm-globe-stand"></i><span>{{ "Votre IP :"|trans }} <span class="badge badge-white d-inline-block ms-2 pe-3 ps-3 pt-1 pb-1 ip-badge">{{ currentIP() }}</span></span>
                     </a>
                 </li>
             </ul>

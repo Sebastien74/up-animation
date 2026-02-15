@@ -4,7 +4,7 @@
 
     {% set mediasByPosition = entity|mediasIdsByPosition(website, interface) %}
 
-    <h4 class="main-subtitle position-relative mb-4">{{ 'fal photo-video'|icon(null, 14, 'info-darken me-2') }}{{ "Médias"|trans }}</h4>
+    <h4 class="main-subtitle position-relative mb-4"><i class="icm-photo-video me-2"></i>{{ "Médias"|trans }}</h4>
 
     {% set mediasInfos = {} %}
     {% set errors = {} %}
@@ -42,7 +42,7 @@
     {% if 'delete'|moduleActive(configuration) %}
         <button id="delete-pack-btn" class="btn btn-danger d-none"
                 data-bs-toggle="tooltip" data-placement="left" title="{{ "Supprimer"|trans|striptags }}" aria-label="{{ "Supprimer"|trans|striptags }}">
-            {{ 'fas trash'|icon(10, 13, 'white') }}
+            <i class="icm-trash"></i>
         </button>
     {% endif %}
 
@@ -73,7 +73,7 @@
                             </ul>
                             <div class="title-block col-8 my-auto">
                                 <div class="handle-item float-start text-center cursor" data-bs-toggle="tooltip" title="{{ "Déplacer"|trans|striptags }}">
-                                    {{ 'far arrows-alt'|icon(null, 14, 'info') }}
+                                    <i class="icm-arrows-alt"></i>
                                 </div>
                                 {% set media = mediaRelation.media %}
                                 {% set extension = media.extension is defined and media.extension ? media.extension : (media.screen is defined and 'poster' == media.screen ? 'mp4' : null) %}
@@ -95,14 +95,14 @@
                                 {% if mediaRelation.main %}
                                     <span class="file-is-main d-inline-block">
                                         <span data-bs-toggle="tooltip" title="{{ "Image principale"|trans|striptags }}">
-                                            {{ 'far star'|icon(null, 14, 'info ms-2') }}
+                                            <i class="icm-star ms-2"></i>
                                         </span>
                                     </span>
                                 {% endif %}
                                 {% if mediaRelation.header %}
                                     <span class="file-is-main d-inline-block">
                                         <span data-bs-toggle="tooltip" title="{{ "Image d'entête"|trans|striptags }}">
-                                            {{ 'far text-width'|icon(null, 14, 'info ms-2') }}
+                                            <i class="icm-text-width ms-2"></i>
                                         </span>
                                     </span>
                                 {% endif %}
@@ -137,7 +137,7 @@
                                               data-bs-toggle="collapse"
                                               href="#collapse-{{ mediaRelation.id }}"
                                               aria-expanded="false"
-                                              aria-controls="collapse-{{ mediaRelation.id }}">{{ 'fad pencil-alt'|icon(null, 14) }}
+                                              aria-controls="collapse-{{ mediaRelation.id }}"><i class="icm-pencil-alt"></i>
                                         </span>
                                     </span>
                                 {% endif %}
@@ -150,7 +150,7 @@
                                        data-target="#ui-media-relation-{{ mediaRelation.id }}"
                                        class="btn btn-transparent btn-circle swal-delete-link"
                                        data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
-                                        {{ 'fas trash'|icon(null, 14, 'dark') }}
+                                        <i class="icm-trash"></i>
                                     </a>
                                     <span data-bs-toggle="tooltip" title="{{ "Cocher pour supprimer"|trans|striptags }}">
                                         <div class="delete-pack-control custom-checkbox d-none d-sm-inline-block">

@@ -37,7 +37,7 @@
                 } %}
             {% else %}
                 <a class="btn btn-transparent delete-disabled" data-bs-toggle="tooltip" title="{{ "Suppression impossible"|trans }}">
-                    {{ 'fas trash'|icon(null, 14, 'dark') }}
+                    <i class="icm-trash"></i>
                 </a>
             {% endif %}
         </div>
@@ -60,18 +60,18 @@
             <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-{{ category }}" aria-expanded="false" aria-controls="collapse-{{ category }}">
                 {% set label = category|trans|capitalize %}
                 {% if category == 'background' %}
-                    {{ 'fal eye-dropper'|icon(null, 14, 'info-darken me-2') }}{% set label = 'Couleurs de fond'|trans %}
+                    <i class="icm-eye-dropper me-2"></i>{% set label = 'Couleurs de fond'|trans %}
                 {% elseif category == 'button' %}
-                    {{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{% set label = 'Boutons'|trans %}
+                    <i class="icm-link me-2"></i>{% set label = 'Boutons'|trans %}
                 {% elseif category == 'color' %}
-                    {{ 'fal tint'|icon(null, 14, 'info-darken me-2') }}{% set label = 'Couleurs'|trans %}
+                    <i class="icm-tint me-2"></i>{% set label = 'Couleurs'|trans %}
                 {% elseif category == 'alert' %}
-                    {{ 'fal exclamation-triangle'|icon(null, 14, 'info-darken me-2') }}{% set label = 'Alertes'|trans %}
+                    <i class="icm-exclamation-triangle me-2"></i>{% set label = 'Alertes'|trans %}
                 {% elseif category == 'favicon' %}
-                    {{ 'fab ravelry'|icon(null, 14, 'info-darken me-2') }}{% set label = 'Favicons'|trans %}
+                    <i class="icm-ravelry me-2"></i>{% set label = 'Favicons'|trans %}
                 {% endif %}
                 {% if category %}{{ label }}{% endif %}
-                {{ 'far chevron-down'|icon(null, 14, 'info-darken float-end mt-1') }}
+                <i class="icm-chevron-down"></i>
             </h4>
             <div id="collapse-{{ category }}" class="collapse row" aria-labelledby="heading{{ category }}" data-parent="#colors-collection">
             {% if first %}
@@ -90,6 +90,6 @@
             data-type="table"
             data-collection-target="append"
             data-target="#colors-collection">
-        {{ 'fal plus'|icon(11, 15, 'white me-2') }}{{ "Ajouter une couleur"|trans }}
+        <i class="icm-plus me-2"></i>{{ "Ajouter une couleur"|trans }}
     </button>
 </div>

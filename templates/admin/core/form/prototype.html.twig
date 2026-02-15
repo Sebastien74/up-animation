@@ -36,7 +36,7 @@
                         } %}
                     {% elseif deletableProperty %}
                         <span class="btn btn-white delete-disabled" data-bs-toggle="tooltip" title="{{ "Donnée requise"|trans|striptags }}">
-                            {{ 'fas trash'|icon(null, 14, 'dark') }}
+                            <i class="icm-trash"></i>
                         </span>
                     {% endif %}
                 </div>
@@ -49,11 +49,11 @@
     {% if not disableTitle %}
         {% set entity = form.vars.data is defined ? form.vars.data : null %}
         <div class="col-12">
-            <h4 class="main-subtitle mb-4">
+            <h4 class="main-subtitle">
                 {% if prototypeOptions['attr']['icon'] is defined and prototypeOptions['attr']['icon'] %}
                     {{ prototypeOptions['attr']['icon']|icon(null, 14, 'info-darken me-2') }}
                 {% else %}
-                    {{ 'fal list-ul'|icon(14, 14, 'info-darken me-2') }}
+                    <i class="icm-list-ul me-2"></i>
                 {% endif %}
                 {% if prototypeOptions['attr']['caption'] is defined and prototypeOptions['attr']['caption'] %}
                     {{ prototypeOptions['attr']['caption'] }}
@@ -94,7 +94,7 @@
                          class="img-fluid rounded-add-img lazy-load"
                          width="20" height="20" alt="{{ 'Ajouter'|trans|striptags }}" /><br>
                 {% else %}
-                    {{ 'fal plus'|icon(11, 15, 'white me-2') }}
+                    <i class="icm-plus me-2"></i>
                 {% endif %}
                 <span class="d-inline-block">
                     {% if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] %}

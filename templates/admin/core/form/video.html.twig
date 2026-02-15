@@ -21,13 +21,13 @@
             <span id="open-modal-{{ entity.id }}"
                   class="open-modal-medias d-inline-block"
                   data-options="{{ parameters }}">
-                {{ 'fal photo-video'|icon(null, 14, 'me-2') }}{{ "Choisir dans la bibliothèque"|trans }}
+                <i class="icm-photo-video me-2"></i>{{ "Choisir dans la bibliothèque"|trans }}
             </span>
             <a href="https://tinypng.com/"
                target="_blank" class="optimize-media-btn btn btn-dark"
                data-bs-toggle="tooltip"
                title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
-                {{ 'fal file-archive'|icon(null, 16) }}
+                <i class="icm-file-archive"></i>
             </a>
         </span>
         {{ form_row(field) }}
@@ -40,7 +40,7 @@
         novalidate: "novalidate",
         action: path('admin_mediarelation_edit', {website: websiteId(), mediarelation: entity.id, entityNamespace: entityNamespace, referEntityId: referEntityId, screen: screen}),
         id: 'form-'~entity.id }}) }}
-        <h4 class="main-subtitle mb-4">{{ 'fal video'|icon(null, 14, 'info-darken me-2') }}{{ "Vidéo"|trans }}</h4>
+        <h4 class="main-subtitle"><i class="icm-video me-2"></i>{{ "Vidéo"|trans }}</h4>
         <div class="row">
             {{ macro.card(entity, 'App\\Entity\\Media\\MediaRelation', form.media.uploadedFile, 'mediaRelationId', entity.media.screen) }}
             {% for mediaScreen in form.media.mediaScreens %}
@@ -49,7 +49,7 @@
         </div>
         <div class="row">
             <div class="col-md-7">
-                <h4 class="main-subtitle mb-4">{{ 'fal align-center'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Descriptions"|trans }}{% else %}{{ "Description"|trans }}{% endif %}</h4>
+                <h4 class="main-subtitle"><i class="icm-align-center me-2"></i>{% if allLocales|length > 1 %}{{ "Descriptions"|trans }}{% else %}{{ "Description"|trans }}{% endif %}</h4>
                 <div class="row">
                     {% set fieldNames = ['titleForce', 'title', 'subTitle', 'pictogram', 'introduction', 'body'] %}
                     {% for fieldName in fieldNames %}
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <div class="col-md-5">
-                <h4 class="main-subtitle mb-4">{{ 'fal link'|icon(null, 14, 'info-darken me-2') }}{{ "Lien"|trans }}</h4>
+                <h4 class="main-subtitle"><i class="icm-link me-2"></i>{{ "Lien"|trans }}</h4>
                 <div class="row">
                     {% set fieldNames = ['video', 'targetLink', 'targetPage', 'targetLabel', 'targetStyle'] %}
                     {% for fieldName in fieldNames %}

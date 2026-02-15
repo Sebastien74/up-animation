@@ -1,7 +1,7 @@
 {% trans_default_domain 'admin' %}
 
 <div class="card">
-    <h4 class="card-title card-header">{{ 'fab css3-alt'|icon(null, 18, 'info-darken me-2') }}{{ "Classes personnalisées"|trans }}</h4>
+    <h4 class="card-title card-header"><i class="icm-css3-alt me-2"></i>{{ "Classes personnalisées"|trans }}</h4>
     <div class="card-body pb-0">
 
         {% import _self as macro %}
@@ -41,7 +41,7 @@
                     data-type="table"
                     data-collection-target="append"
                     data-target="#cssclasses-collection">
-                {{ 'fal plus'|icon(11, 15, 'white me-2') }}{{ "Ajouter une classe"|trans }}
+                <i class="icm-plus me-2"></i>{{ "Ajouter une classe"|trans }}
             </button>
         </div>
 

@@ -29,7 +29,7 @@
                                 {% elseif tabId == 'configuration' %}
                                     {% if form.mainCategory is defined or form.categories is defined or form.subCategories is defined or form.promote is defined or form.customLayout is defined %}
                                         <div class="col-12">
-                                            <h4 class="main-subtitle mb-4">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}</h4>
+                                            <h4 class="main-subtitle"><i class="icm-cog me-2"></i>{{ "Configuration"|trans }}</h4>
                                         </div>
                                     {% endif %}
                                     {% if form.catalog is defined %}
@@ -52,13 +52,13 @@
                                     {% endif %}
                                     {% if form.startDate is defined and form.endDate is defined %}
                                         <div class="col-12">
-                                            <h4 class="main-subtitle mb-4">{{ 'fal calendar'|icon(null, 14, 'info-darken me-2') }}{{ "Dates"|trans }}</h4>
+                                            <h4 class="main-subtitle"><i class="icm-calendar me-2"></i>{{ "Dates"|trans }}</h4>
                                         </div>
                                         {{ form_row(form.startDate) }}
                                         {{ form_row(form.endDate) }}
                                     {% endif %}
                                     <div class="col-12">
-                                        <h4 class="main-subtitle mb-4">{{ 'fal calendar'|icon(null, 14, 'info-darken me-2') }}{{ "Dates de publication"|trans }}</h4>
+                                        <h4 class="main-subtitle"><i class="icm-calendar me-2"></i>{{ "Dates de publication"|trans }}</h4>
                                     </div>
                                     {{ form_row(form.publicationStart) }}
                                     {{ form_row(form.publicationEnd) }}

@@ -78,15 +78,24 @@ a {
 }
 
 .main-subtitle {
+
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: .75rem;
     padding: .5rem 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     font-weight: 500;
     background: $bg-gradient-primary;
-    border-radius: $border-radius;
+    border-radius: 12px;
     border: 1px solid $crumb-border;
+    font-size: 1rem;
+
+    i {
+        width: 30px !important;
+        height: 30px !important;
+        border-radius: 10px !important;
+        font-size: 12px !important;
+    }
 }
 
 @keyframes spin {

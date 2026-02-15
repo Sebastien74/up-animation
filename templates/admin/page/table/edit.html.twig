@@ -30,28 +30,28 @@
                             {% if not loop.first %}
                                 <span class="active btn" data-toggle="preloader">
                                     <a href="{{ path('admin_tablecol_position', {website: websiteId, table: entity.id, col: col.vars.data.id, type: "down"}) }}"
-                                       data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">{{ 'fas chevron-left'|icon(10, 16, 'dark') }}
+                                       data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}"><i class="icm-chevron-left"></i>
                                     </a>
                                 </span>
                             {% else %}
-                                <span class="disabled btn">{{ 'fas chevron-left'|icon(10, 16, 'dark-50') }}</span>
+                                <span class="disabled btn"><i class="icm-chevron-left"></i></span>
                             {% endif %}
                             {% if not loop.last %}
                                 {% set iconColor = loop.last ? 'dark-50' : 'dark' %}
                                 <span class="active btn" data-toggle="preloader">
                                     <a href="{{ path('admin_tablecol_position', {website: websiteId, table: entity.id, col: col.vars.data.id, type: "up"}) }}"
-                                       data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">{{ 'fas chevron-right'|icon(10, 16, iconColor) }}
+                                       data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}"><i class="icm-chevron-right"></i>
                                     </a>
                                 </span>
                             {% else %}
-                                <span class="disabled btn">{{ 'fas chevron-right'|icon(10, 16, 'dark-50') }}</span>
+                                <span class="disabled btn"><i class="icm-chevron-right"></i></span>
                             {% endif %}
                             <span data-bs-toggle="tooltip" title="{{ "Enregistrer"|trans|striptags }}">
-                                <button type="submit" class="btn" data-toggle="preloader">{{ 'far save'|icon(16, 18, 'dark') }}</button>
+                                <button type="submit" class="btn" data-toggle="preloader"><i class="icm-save"></i></button>
                             </span>
                             <a href="{{ path('admin_tablecol_delete', {website: website.id, table: entity.id, col: col.vars.data.id}) }}"
                                data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
-                               class="swal-delete-link btn">{{ 'fas trash'|icon(null, 15, 'dark') }}
+                               class="swal-delete-link btn"><i class="icm-trash"></i>
                             </a>
                         </div>
                     </div>
@@ -104,28 +104,28 @@
                                 <span {% if not loop.first %} data-toggle="preloader"{% endif %}>
                                     {% if not loop.first %}
                                         <a href="{{ path('admin_tablecell_position', {website: websiteId, table: entity.id, position: loop.index, type: "up"}) }}"
-                                           class="btn" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">{{ 'fas chevron-up'|icon(15, 16, 'dark') }}
+                                           class="btn" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}"><i class="icm-chevron-up"></i>
                                         </a>
                                     {% else %}
-                                        <span class="btn disabled">{{ 'fas chevron-up'|icon(15, 16, 'dark-50') }}</span>
+                                        <span class="btn disabled"><i class="icm-chevron-up"></i></span>
                                     {% endif %}
                                 </span>
                                 <span {% if not loop.last %} data-toggle="preloader"{% endif %}>
                                         {% if not loop.last %}
                                             <a href="{{ path('admin_tablecell_position', {website: websiteId, table: entity.id, position: loop.index, type: "down"}) }}"
-                                               class="btn" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">{{ 'fas chevron-down'|icon(15, 16, 'dark') }}
+                                               class="btn" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}"><i class="icm-chevron-down"></i>
                                             </a>
                                         {% else %}
-                                            <span class="btn disabled" >{{ 'fas chevron-down'|icon(15, 16, 'dark-50') }}</span>
+                                            <span class="btn disabled" ><i class="icm-chevron-down"></i></span>
                                         {% endif %}
                                     </span>
                                 <span data-bs-toggle="tooltip" title="{{ "Enregistrer"|trans|striptags }}">
-                                        <button type="submit" class="btn" data-toggle="preloader">{{ 'far save'|icon(16, 18, 'dark') }}</button>
+                                        <button type="submit" class="btn" data-toggle="preloader"><i class="icm-save"></i></button>
                                     </span>
                                 <a href="{{ path("admin_tablecell_delete", {website: websiteId, table: entity.id, position: loop.index}) }}"
                                    data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
                                    class="btn swal-delete-link">
-                                    {{ 'fas trash'|icon(null, 15, 'dark') }}
+                                    <i class="icm-trash"></i>
                                 </a>
                             </div>
                         </td>

@@ -1,7 +1,7 @@
 {% trans_default_domain 'admin' %}
 
 <div class="card">
-    <h4 class="card-title card-header">{{ 'fal shield-alt'|icon(null, 18, 'info-darken me-2') }}{{ "Recaptcha"|trans }}</h4>
+    <h4 class="card-title card-header"><i class="icm-shield-alt me-2"></i>{{ "Recaptcha"|trans }}</h4>
     <div class="card-body pb-0">
         <div class="row">
             {{ form_row(form.api.securitySecretKey) }}
@@ -14,7 +14,7 @@
     <h4 class="card-title card-header">
         <div class="row">
             <div class="col-md-6">
-                {{ 'fab google'|icon(null, 18, 'info-darken me-2') }}{{ "Google"|trans }}
+                <i class="icm-google me-2"></i>{{ "Google"|trans }}
             </div>
         </div>
     </h4>
@@ -29,7 +29,7 @@
     <h4 class="card-title card-header">
         <div class="row">
             <div class="col-md-6">
-                {{ 'fab instagram'|icon(null, 18, 'info-darken me-2') }}{{ "Instagram"|trans }}
+                <i class="icm-instagram me-2"></i>{{ "Instagram"|trans }}
             </div>
             <div class="col-md-6 text-end">
                 <a href="https://www.instagram.com/accounts/login/?force_authentication=1&enable_fb_login=1&platform_app_id=&next=/oauth/authorize/%3Fclient_id%3D1677ed07ddd54db0a70f14f9b1435579%26redirect_uri%3Dhttp%3A//instagram.pixelunion.net%26response_type%3Dtoken%26hl%3Den"
@@ -48,7 +48,7 @@
 </div>
 
 <div class="card">
-    <h4 class="card-title card-header">{{ 'fal plus-circle'|icon(null, 18, 'info-darken me-2') }}{{ "Autres"|trans }}</h4>
+    <h4 class="card-title card-header"><i class="icm-plus-circle me-2"></i>{{ "Autres"|trans }}</h4>
     <div class="card-body pb-0">
         <div class="row">
             {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.api.custom.intls} %}

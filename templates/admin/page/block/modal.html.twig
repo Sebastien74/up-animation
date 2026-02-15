@@ -53,8 +53,8 @@
                     </div>
                     <div class="col-md-4">
                         {% include 'admin/core/form/media-relations-uniq.html.twig' with {mediaRelations: form.mediaRelations, onlyMedia: true} %}
-                        <h4 class="main-subtitle mb-4 media-subtitle">
-                            {{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ "Configuration"|trans }}
+                        <h4 class="main-subtitle media-subtitle">
+                            <i class="icm-cog"></i>{{ "Configuration"|trans }}
                         </h4>
                         {{ form_row(form.timer) }}
                         {{ form_row(form.width) }}

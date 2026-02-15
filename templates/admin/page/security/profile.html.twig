@@ -27,12 +27,12 @@
                         {{ user.username }} <small class="text-italic">{{ user.login }}</small>
                         <a href="{{ path('admin_user_edit', {website: websiteId(), user: user.id}) }}"
                            data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}"
-                           id="edit-user-btn" class="float-end text-dark">{{ 'fal pen-alt'|icon(null, 18, 'dark') }}
+                           id="edit-user-btn" class="float-end text-dark"><i class="icm-pen-alt"></i>
                         </a>
                     </h1>
                     <div class="row">
                         <div class="{% if granted('ROLE_INTERNAL') %}col-md-5{% else %}col-12{% endif %}">
-                            <h2 class="pb-2 mb-3 border-bottom">{{ 'fal info'|icon(null, 18, 'dark me-2') }}{{ "Information"|trans }}</h2>
+                            <h2 class="pb-2 mb-3 border-bottom"><i class="icm-info me-2"></i>{{ "Information"|trans }}</h2>
                             <p><strong class="me-2">{{ "Dernière connexion :"|trans }}</strong> {{ user.lastLogin|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</p>
                             <p>
                                 <strong class="me-2">{{ "Langue :"|trans }}</strong>
@@ -48,7 +48,7 @@
                         </div>
                         {% if granted('ROLE_INTERNAL') %}
                             <div class="col-md-7">
-                                <h2 class="pb-2 mb-3 border-bottom">{{ 'fal user-tag'|icon(null, 18, 'dark me-2') }}{{ "Rôles"|trans }}</h2>
+                                <h2 class="pb-2 mb-3 border-bottom"><i class="icm-user-tag me-2"></i>{{ "Rôles"|trans }}</h2>
                                 <div class="row">
                                     {% for role in user.group.roles %}
                                         <div class="col-md-6">{{ role.adminName }}</div>

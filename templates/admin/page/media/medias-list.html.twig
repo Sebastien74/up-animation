@@ -8,7 +8,7 @@
 <div id="medias-results">
 
     <h4 class="main-subtitle mb-2">
-        {{ 'fal folder'|icon(null, 14, 'info-darken me-2') }}
+        <i class="icm-folder me-2"></i>
         {% if folder.adminName is defined and folder.adminName %}
             {{ folder.adminName }}
         {% else %}
@@ -43,8 +43,8 @@
                                                 {% endif %}
                                             </div>
                                             {% if not asCopy %}
-                                                <div class="loader-media d-none">{{ 'fad circle-notch'|icon(20, 20, 'fa-spin') }}</div>
-                                                <div class="check-media d-none">{{ 'fad check'|icon(null, 20) }}</div>
+                                                <div class="loader-media d-none"><i class="icm-circle-notch"></i></div>
+                                                <div class="check-media d-none"><i class="icm-check"></i></div>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -64,7 +64,7 @@
                                 <span class="to-copy d-none">{{ app.request.getSchemeAndHttpHost()~info.path }}</span>
                                 <span class="copy-link cursor d-inline-block w-100 h-100 d-flex align-items-center justify-content-center"
                                       data-bs-toggle="tooltip" title="{{ "Copier l'URL"|trans }}">
-                                    {{ 'fal copy'|icon(null, 30, 'white') }}
+                                    <i class="icm-copy"></i>
                                 </span>
                             </small>
                         {% endif %}
@@ -72,17 +72,17 @@
                             {% if not icon %}
                                 <a href="{{ path('admin_media_crop', {website: website.id, media: media.id}) }}"
                                    class="open-media-crop btn btn-info" data-bs-toggle="tooltip" title="{{ "Redimensionner"|trans|striptags }}">
-                                    {{ 'far crop-alt'|icon(12, 12, 'white') }}
+                                    <i class="icm-crop-alt"></i>
                                 </a>
                             {% endif %}
                             <a href="{{ path('admin_media_edit', {website: websiteId(), media: media.id}) }}"
                                class="open-media-edit btn btn-info" data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
-                                {{ 'fas pencil-alt'|icon(10, 10, 'white') }}
+                                <i class="icm-pencil-alt"></i>
                             </a>
                             {% if granted('ROLE_MEDIA_COMPRESS') %}
                                 <a href="{{ path('admin_media_compress_restore', {website: website.id, media: media.id}) }}"
                                    class="media-compress-restore btn btn-info{% if not media.compress %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Rétablir l'image d'origine"|trans|striptags }}">
-                                    {{ 'far sync'|icon(12, 12, 'white') }}
+                                    <i class="icm-sync"></i>
                                 </a>
                             {% endif %}
                         {% endif %}

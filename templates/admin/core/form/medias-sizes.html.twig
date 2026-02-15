@@ -16,7 +16,7 @@
 {% if displayTabs %}
     <div class="col-12 col-md-{{ tabSize }}">
         {% if displayTitle %}
-            <h4 class="main-subtitle mb-4">{{ 'fas expand'|icon(null, 14, 'info-darken me-2') }}{{ "Taille du médias"|trans }}</h4>
+            <h4 class="main-subtitle"><i class="icm-expand me-2"></i>{{ "Taille du médias"|trans }}</h4>
         {% endif %}
         <ul class="nav nav-tabs custom-tab" role="tablist">
             {% for tabId, config in tabs %}

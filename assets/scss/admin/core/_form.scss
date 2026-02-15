@@ -258,7 +258,7 @@ form .btn-group-toggle label {
     transform: initial !important;
 
     &.active {
-        box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+        box-shadow: 0 0 15px 0.05rem rgba(111, 66, 193, 0.25);
     }
 
     &:not(.active) {

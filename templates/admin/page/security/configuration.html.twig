@@ -19,13 +19,13 @@
         <div id="edit-form-{{ interface.name }}" class="card">
             {% include 'admin/core/form/save/header.html.twig' %}
             <div class="card-body pb-0">
-                <h4 class="main-subtitle mb-3">{{ "fal network-wired"|icon(null, 14, 'info-darken me-2') }}{{ "Administrateurs"|trans }}</h4>
+                <h4 class="main-subtitle mb-3"><i class="icm-network-wired me-2"></i>{{ "Administrateurs"|trans }}</h4>
                 <div class="row">
                     {{ form_row(form.adminRegistration) }}
                     {{ form_row(form.adminRegistrationValidation) }}
                 </div>
                 {% if form.frontRegistration is defined %}
-                    <h4 class="main-subtitle mb-3">{{ "fal desktop"|icon(null, 14, 'info-darken me-2') }}{{ "Front"|trans }}</h4>
+                    <h4 class="main-subtitle mb-3"><i class="icm-desktop me-2"></i>{{ "Front"|trans }}</h4>
                     <div class="row">
                         {{ form_row(form.frontRegistration) }}
                         {{ form_row(form.frontRegistrationValidation) }}

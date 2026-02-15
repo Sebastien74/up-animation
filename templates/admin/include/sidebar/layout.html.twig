@@ -50,7 +50,7 @@
                         {% if isMultiWebsite and app.user %}
                             {{ render_esi(path('admin_site_selector', {website: websiteId()})) }}
                             <span class="sidebar-website-info text-white d-inline-block w-100 ps-3 pt-2 pe-2 pb-2 mt-3">
-                                {{ 'fas pen-fancy'|icon(14, 14, 'white me-2') }} {{ website.adminName }}
+                                <i class="icm-pen-fancy me-2"></i> {{ website.adminName }}
                             </span>
                         {% endif %}
                     </li>
@@ -59,7 +59,7 @@
                         {% set scheme = not domain ? path('front_index') : domain %}
                         <li class="in-build-info bg-info-light">
                             <a href="{{ scheme }}?disabled_ips=true" target="_blank" class="d-flex align-items-center text-info">
-                                {{ 'fas exclamation-triangle'|icon(14, 14, 'info me-1') }}{{ "Site en maintenance"|trans|raw }}
+                                <i class="icm-exclamation-triangle me-1"></i>{{ "Site en maintenance"|trans|raw }}
                             </a>
                         </li>
                     {% endif %}

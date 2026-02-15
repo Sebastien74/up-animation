@@ -7,8 +7,8 @@
 
 {% if displayTitleCard %}
     <div class="col-12">
-        <h4 class="main-subtitle mb-4">
-            {{ 'fal photo-video'|icon(null, 14, 'info-darken me-2') }}{% if allLocales|length > 1 %}{{ "Médias"|trans }}{% else %}{{ "Média"|trans }}{% endif %}
+        <h4 class="main-subtitle">
+            <i class="icm-photo-video me-2"></i>{% if allLocales|length > 1 %}{{ "Médias"|trans }}{% else %}{{ "Média"|trans }}{% endif %}
         </h4>
     </div>
 {% endif %}
@@ -81,13 +81,13 @@
                         <span id="open-modal-{{ mediaRelation.vars.value.id }}"
                               class="open-modal-medias d-inline-block"
                               data-options="{{ parameters }}">
-                            {{ 'fal photo-video'|icon(null, 14, 'me-2') }}{{ "Choisir dans la bibliothèque"|trans }}
+                            <i class="icm-photo-video me-2"></i>{{ "Choisir dans la bibliothèque"|trans }}
                         </span>
                         <a href="https://tinypng.com/"
                            target="_blank" class="optimize-media-btn btn btn-dark"
                            data-bs-toggle="tooltip"
                            title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
-                            {{ 'fal file-archive'|icon(null, 16) }}
+                            <i class="icm-file-archive"></i>
                         </a>
                     </span>
 
@@ -99,7 +99,7 @@
                                 data-bs-toggle="collapse"
                                 href="#collapse-link-{{ mediaRelationId }}"
                                 aria-expanded="false">
-                            {{ 'fal link'|icon(null, 14, 'me-2') }}{{ "Lien"|trans }}
+                            <i class="icm-link me-2"></i>{{ "Lien"|trans }}
                         </button>
                     {% endif %}
 
@@ -139,7 +139,7 @@
                                 data-bs-toggle="collapse"
                                 href="#collapse-configuration-{{ mediaRelationId }}"
                                 aria-expanded="false">
-                            {{ 'fal cog'|icon(null, 14, 'me-2') }}{{ "Configuration / Contenu"|trans }}
+                            <i class="icm-cog me-2"></i>{{ "Configuration / Contenu"|trans }}
                         </button>
 
                         <div class="col-12">

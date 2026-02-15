@@ -30,28 +30,28 @@
         <ul id="domains-tabs" class="nav nav-tabs custom-tab w-100 bg-info-light shadow-light border-0 radius mb-4 text-center overflow-hidden" role="tablist">
             <li class="nav-item{% if toExtract %} w-50 bold{% endif %}">
                 <a class="translation-extract-btn text-center nav-link cursor text-info no-radius" data-domain="only_front">
-                    {{ 'fad sync-alt'|icon(null, 17, "info me-sm-2") }}<span>{{ "Extraire le front"|trans }}</span>
+                    <i class="icm-sync-alt"></i><span>{{ "Extraire le front"|trans }}</span>
                 </a>
             </li>
             <li class="nav-item{% if toExtract %} w-50 bold{% endif %}">
                 <a class="translation-extract-btn text-center nav-link cursor text-info no-radius" data-domain="all">
-                    {{ 'fad sync-alt'|icon(null, 17, "info me-sm-2") }}<span>{{ "Extraire tout"|trans }}</span>
+                    <i class="icm-sync-alt"></i><span>{{ "Extraire tout"|trans }}</span>
                 </a>
             </li>
             {% if not toExtract %}
                 <li class="nav-item">
                     <a href="{{ path('admin_intls_export', { website: websiteId }) }}" class="text-center nav-link no-radius">
-                        {{ 'fad upload'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Exporter les traductions"|trans }}</span>
+                        <i class="icm-upload"></i><span>{{ "Exporter les traductions"|trans }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="text-center nav-link no-radius" data-bs-toggle="modal" data-bs-target="#import-modal">
-                        {{ 'fad download'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Importer les traductions"|trans }}</span>
+                        <i class="icm-download"></i><span>{{ "Importer les traductions"|trans }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link no-radius" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}" data-toggle="preloader">
-                        {{ 'fad broom'|icon(null, 17, 'dark me-sm-2') }}<span>{{ "Vider le cache"|trans }}</span>
+                        <i class="icm-broom"></i><span>{{ "Vider le cache"|trans }}</span>
                     </a>
                 </li>
                 <li class="nav-item right as-button no-radius">
@@ -82,7 +82,7 @@
                             : path('admin_translationdomain_index', {website: website.id, domains: 'admin'}) %}
                         {% set domainslabel = app.request.get('domains') ? "Traductions front"|trans : "Traductions admin"|trans %}
                         <a href="{{ domainsPath }}" class="btn btn-info d-flex align-items-center">
-                            {{ 'fas eye'|icon(null, 17, 'me-2') }}<span>{{ domainslabel|raw }}</span>
+                            <i class="icm-eye me-2"></i><span>{{ domainslabel|raw }}</span>
                         </a>
                     </div>
                 </div>
@@ -122,10 +122,10 @@
                                                 {{ name }}
                                                 {% if granted('ROLE_INTERNAL') %}
                                                     {% if entity.forTranslator %}
-                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{ "Pour le traducteur"|trans|striptags }}">{{ 'far globe'|icon(null, 14, 'info ms-2') }}</span>
+                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{ "Pour le traducteur"|trans|striptags }}"><i class="icm-globe ms-2"></i></span>
                                                     {% endif %}
                                                     {% if entity.extract %}
-                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{ "À exporter"|trans|striptags }}">{{ 'far upload'|icon(16, 14, 'info ms-2') }}</span>
+                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{ "À exporter"|trans|striptags }}"><i class="icm-upload ms-2"></i></span>
                                                     {% endif %}
                                                 {% endif %}
                                             </div>
@@ -135,12 +135,12 @@
                                                         <a href="{{ path('admin_translationdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
                                                            class="btn btn-info btn-circle btn-sm"
                                                            data-toggle="preloader">
-                                                            {{ 'fas pencil-alt'|icon(null, 14, '', {icon: true}) }}
+                                                            <i class="icm-pencil-alt"></i>
                                                         </a>
                                                     </span>
                                                     <span data-bs-toggle="tooltip" title="{{ "Extraire"|trans|striptags }}">
                                                         <a class="translation-extract-btn btn btn-outline-info btn-circle btn-sm cursor" data-larges="1" data-domain="{{ entity.name }}">
-                                                            {{ 'far retweet-alt'|icon(null, 14) }}
+                                                            <i class="icm-retweet-alt"></i>
                                                         </a>
                                                     </span>
                                                 {% endif %}
@@ -148,14 +148,14 @@
                                                     <a href="{{ path('admin_translationsdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
                                                        class="btn btn-outline-info btn-circle btn-sm"
                                                        data-toggle="preloader">
-                                                        {{ 'far list-ul'|icon(null, 14) }}
+                                                        <i class="icm-list-ul"></i>
                                                     </a>
                                                 </span>
                                                 {% if granted('ROLE_INTERNAL') %}
                                                     <span data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
                                                         <a class="btn btn-outline-info btn-circle btn-sm cursor sa-warning swal-delete-link"
                                                            href="{{ path('admin_translationsdomain_delete', {website: websiteId(), translationdomain: entity.id}) }}">
-                                                            {{ 'fas trash'|icon(null, 14) }}
+                                                            <i class="icm-trash"></i>
                                                         </a>
                                                     </span>
                                                 {% endif %}

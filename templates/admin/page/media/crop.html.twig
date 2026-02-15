@@ -21,13 +21,13 @@
     <div id="medias-croppers-index" class="card">
         <h4 class="card-header mb-0">
             <div class="row">
-                <div class="col-md-8 my-auto">{{ 'fal image'|icon(null, 18, 'info-darken me-2') }}{{ media.filename }}</div>
+                <div class="col-md-8 my-auto"><i class="icm-image me-2"></i>{{ media.filename }}</div>
                 <div class="col-md-4 text-end">
                     <span data-toggle="preloader">
                         <a href="{{ path('admin_medias_library', {website: websiteId}) }}"
                            class="btn btn-white text-info"
                            data-bs-toggle="tooltip" title="{{ "Retourner aux médias"|trans|striptags }}">
-                            {{ 'fas reply'|icon(14, 14, 'info') }}
+                            <i class="icm-reply"></i>
                         </a>
                     </span>
                 </div>

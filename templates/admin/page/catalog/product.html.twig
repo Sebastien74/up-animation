@@ -88,7 +88,7 @@
                         <a href="{{ path('admin_catalogproduct_medias', routeArgs) }}"
                            id="medias-path"
                            class="nav-link{% if not isMainEntity %} active{% endif %}">
-                            {{ 'fal photo-video'|icon(null, 17, 'me-sm-2') }}
+                            <i class="icm-photo-video"></i>
                             <span class="d-none d-lg-inline-block">{{ "Médias"|trans }}</span>
                         </a>
                     </li>
@@ -98,17 +98,17 @@
                     {% set routeArgs = 'admin_catalogproduct_index'|routeArgs(entity, {website: website.id, page: backPage}) %}
                     <a href="{{ path('admin_catalogproduct_index', routeArgs) }}"
                        class="back-link d-inline-flex align-items-center nav-link btn btn-info save small py-2 px-4 text-white">
-                        {{ 'fal reply'|icon(16, 17, 'white me-2') }}<span>{{ "Retourner à la liste"|trans|raw }}</span>
+                        <i class="icm-reply me-2"></i><span>{{ "Retourner à la liste"|trans|raw }}</span>
                     </a>
                     {% if isMainEntity %}
                         <div class="save-buttons d-flex">
                             {% set lastRoute = app.request.session.get('last_route_back') %}
                             {% set haveSaveBack = lastRoute.name is defined and lastRoute.params is defined %}
                             <span id="save-entity" class="nav-link save small bg-info cursor text-white{% if haveSaveBack %} border-right{% endif %}">
-                                {{ 'fal save'|icon(16, 17, 'white me-2') }}<span>{{ "Enregistrer"|trans }}</span>
+                                <i class="icm-save me-2"></i><span>{{ "Enregistrer"|trans }}</span>
                             </span>
                             <span id="save-back-entity" class="nav-link save small bg-info cursor text-white" data-path="{{ path('admin_catalogproduct_index', routeArgs) }}">
-                                {{ 'fal save'|icon(16, 17, 'white me-2') }}<span>{{ "Enregistrer et retourner à la liste"|trans }}</span>
+                                <i class="icm-save me-2"></i><span>{{ "Enregistrer et retourner à la liste"|trans }}</span>
                             </span>
                         </div>
                     {% endif %}

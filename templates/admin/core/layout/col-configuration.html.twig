@@ -13,9 +13,9 @@
             <div class="modal-dialog modal-dialog-centered modal-xxl" role="document">
                 <div class="modal-content border">
                     <div class="modal-header">
-                        <h5 class="modal-title text-center w-100" id="modal-col-configuration-{{ interface['name']~'-'~entity.id }}-label">{{ 'fal cog'|icon(null, 50, 'dark') }}</h5>
+                        <h5 class="modal-title text-center w-100" id="modal-col-configuration-{{ interface['name']~'-'~entity.id }}-label"><i class="icm-cog"></i></h5>
                         <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
-                            {{ 'fal times'|icon(20, 20, 'dark') }}
+                            <i class="icm-times"></i>
                         </button>
                     </div>
                     <div class="modal-body pe-4 ps-4">
@@ -25,35 +25,35 @@
                         <ul class="nav nav-tabs config-tabs" id="col-configuration-tab" role="tablist">
                             <li class="nav-item text-center">
                                 <a class="nav-link active" id="general-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">
-                                    {{ 'fal star'|icon(17, 17, 'me-2') }}{{ "Général"|trans|raw }}
+                                    <i class="icm-star me-2"></i>{{ "Général"|trans|raw }}
                                 </a>
                             </li>
                             {% if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 %}
                                 <li class="nav-item text-center">
                                     <a class="nav-link" id="animation-tab" data-bs-toggle="tab" href="#animation" role="tab" aria-controls="animation" aria-selected="false">
-                                        {{ 'fal hurricane'|icon(17, 17, 'me-2') }}{{ "Animation / Styles"|trans|raw }}
+                                        <i class="icm-hurricane me-2"></i>{{ "Animation / Styles"|trans|raw }}
                                     </a>
                                 </li>
                             {% endif %}
                             <li class="nav-item text-center">
                                 <a class="nav-link" id="fingerprint-tab" data-bs-toggle="tab" href="#fingerprint" role="tab" aria-controls="fingerprint" aria-selected="false">
-                                    {{ 'fal fingerprint'|icon(17, 17, 'me-2') }}{{ "Identifiants"|trans|raw }}
+                                    <i class="icm-fingerprint me-2"></i>{{ "Identifiants"|trans|raw }}
                                 </a>
                             </li>
                             <li class="nav-item text-center">
                                 <a class="nav-link" id="screens-tab" data-bs-toggle="tab" href="#screens" role="tab" aria-controls="screens" aria-selected="false">
-                                    {{ 'fal desktop'|icon(17, 17, 'me-2') }}{{ "Écrans"|trans|raw }}
+                                    <i class="icm-desktop me-2"></i>{{ "Écrans"|trans|raw }}
                                 </a>
                             </li>
                             <li class="nav-item text-center">
                                 <a class="nav-link" id="blocks-tab" data-bs-toggle="tab" href="#blocks" role="tab" aria-controls="blocks" aria-selected="false">
-                                    {{ 'fal th-large'|icon(17, 17, 'me-2') }}{{ "Blocs"|trans|raw }}
+                                    <i class="icm-th-large me-2"></i>{{ "Blocs"|trans|raw }}
                                 </a>
                             </li>
                             {% if form.intls is defined %}
                                 <li class="nav-item text-center">
                                     <a class="nav-link" id="content-tab" data-bs-toggle="tab" href="#content" role="tab" aria-controls="content" aria-selected="false">
-                                        {{ 'fal text'|icon(17, 17, 'me-2') }}{{ "Contenu"|trans|raw }}
+                                        <i class="icm-text me-2"></i>{{ "Contenu"|trans|raw }}
                                     </a>
                                 </li>
                             {% endif %}

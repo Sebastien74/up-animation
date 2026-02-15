@@ -13,9 +13,9 @@
                 {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'medias-preloader', full: true} only %}
             </div>
             <div class="modal-header">
-                <h5 class="modal-title text-center w-100">{{ 'fal images'|icon(56, 50) }}</h5>
+                <h5 class="modal-title text-center w-100"><i class="icm-images"></i></h5>
                 <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
-                    {{ 'fal times'|icon(20, 20, 'dark') }}
+                    <i class="icm-times"></i>
                 </button>
             </div>
             <div class="modal-body d-flex">
@@ -30,17 +30,17 @@
                                 {% set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
                                     ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees %}
                                 <span id="nestable-expand-all" class="btn btn-outline-info-darken cursor{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
-                                    {{ 'fal arrow-alt-to-bottom'|icon(null, 16, 'dark') }}
+                                    <i class="icm-arrow-alt-to-bottom"></i>
                                 </span>
                                 <span id="nestable-collapse-all" class="btn btn-dark cursor{% if collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
-                                    {{ 'fal arrow-alt-to-top'|icon(null, 16, 'dark') }}
+                                    <i class="icm-arrow-alt-to-top"></i>
                                 </span>
                                 <a href="{{ path('admin_medias_library', {website: websiteId()}) }}"
                                    id="root-btn"
                                    class="ajax-get-refresh btn btn-white text-info w-100 text-center"
                                    data-target="#medias-results"
                                    data-target-loader="#medias-preloader">
-                                    {{ 'fas eye'|icon(null, 14, 'info me-2') }}{{ "Racine"|trans }}
+                                    <i class="icm-eye me-2"></i>{{ "Racine"|trans }}
                                 </a>
                             </div>
                             {% include 'admin/core/include/nestable.html.twig' with {

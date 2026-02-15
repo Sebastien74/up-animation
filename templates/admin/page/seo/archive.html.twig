@@ -37,8 +37,8 @@
                     <button class="index-delete-show btn btn-info-lighten btn-md ms-3" data-bs-toggle="tooltip"
                             title="{{ "Afficher les cases à cocher de suppression"|trans|striptags }}"
                             data-display="{{ "Afficher les cases à cocher de suppression"|trans|striptags }}"
-                            data-hide="{{ "Masquer"|trans|striptags }}">{{ 'fas trash'|icon(null, 14, 'dark') }}</button>
-                    <button class="index-delete-submit btn btn-danger ms-3 d-none" data-bs-toggle="tooltip" title="{{ "Supprimer la sélection"|trans|striptags }}">{{ 'fas trash'|icon(null, 14, 'white') }}</button>
+                            data-hide="{{ "Masquer"|trans|striptags }}"><i class="icm-trash"></i></button>
+                    <button class="index-delete-submit btn btn-danger ms-3 d-none" data-bs-toggle="tooltip" title="{{ "Supprimer la sélection"|trans|striptags }}"><i class="icm-trash"></i></button>
                 </h4>
                 <table class="table table-striped mb-4">
                     <thead>
@@ -95,7 +95,7 @@
                                         <a href="{{ path }}"
                                            data-bs-toggle="tooltip" title="{{ url.restore|striptags }}"
                                            data-target="#entity-row-{{ url.entity.id }}">
-                                            {{ 'fal redo-alt'|icon(null, 14, 'dark') }}
+                                            <i class="icm-redo-alt"></i>
                                         </a>
                                     {% endif %}
                                     {% if 'delete'|moduleActive(configuration) %}
@@ -108,7 +108,7 @@
                                            data-bs-toggle="tooltip" title="{{ url.delete|striptags }}"
                                            data-target="#entity-row-{{ url.entity.id }}"
                                            class="swal-delete-link ms-3">
-                                            {{ 'fas trash'|icon(null, 14, 'dark') }}
+                                            <i class="icm-trash"></i>
                                         </a>
                                         <div class="custom-control custom-checkbox delete-input-index-wrap ms-3 d-none position-relative">
                                             <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ url.entity.id }}"

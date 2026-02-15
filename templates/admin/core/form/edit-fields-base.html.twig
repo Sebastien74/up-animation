@@ -23,7 +23,7 @@
 
 {% if haveMapFields or 'map' == interfaceName %}
     <div class="col-12">
-        <a href="https://www.openstreetmap.org" class="mb-3 mt-2 btn btn-info-darken standard" target="_blank">{{ 'fal search'|icon(14, 14, 'me-2 white') }}{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
+        <a href="https://www.openstreetmap.org" class="mb-3 mt-2 btn btn-info-darken standard" target="_blank"><i class="icm-search me-2"></i>{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
     </div>
 {% endif %}
 
@@ -37,26 +37,26 @@
             {% if formSubTitle %}
                 {% set formSubTitleIcon = field.vars.attr.subtitleIcon is defined ? field.vars.attr.subtitleIcon : 'cog' %}
                 <div class="col-12">
-                    <h4 class="main-subtitle mb-4">{{ 'fal cog'|icon(null, 14, 'info-darken me-2') }}{{ formSubTitle|raw }}</h4>
+                    <h4 class="main-subtitle"><i class="icm-cog me-2"></i>{{ formSubTitle|raw }}</h4>
                 </div>
             {% elseif field.vars.name == 'address' %}
                 <div class="col-12">
-                    <h4 class="main-subtitle mb-{% if haveMapFields %}2{% else %}4{% endif %}">{{ 'fal map-marked-alt'|icon(null, 14, 'info-darken me-2') }}{{ "Adresse"|trans }}</h4>
+                    <h4 class="main-subtitle mb-{% if haveMapFields %}2{% else %}4{% endif %}"><i class="icm-map-marked-alt me-2"></i>{{ "Adresse"|trans }}</h4>
                     {% if haveMapFields %}
-                        <a href="https://www.openstreetmap.org" class="mb-4 mt-2 btn btn-info-darken standard" target="_blank">{{ 'fal search'|icon(14, 14, 'me-2 white') }}{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
+                        <a href="https://www.openstreetmap.org" class="mb-4 mt-2 btn btn-info-darken standard" target="_blank"><i class="icm-search me-2"></i>{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
                     {% endif %}
                 </div>
             {% elseif field.vars.name == 'schedule' %}
                 <div class="col-12">
-                    <h4 class="main-subtitle mb-4">{{ 'fal plus-circle'|icon(null, 14, 'info-darken me-2') }}{{ "Compléments"|trans }}</h4>
+                    <h4 class="main-subtitle"><i class="icm-plus-circle me-2"></i>{{ "Compléments"|trans }}</h4>
                 </div>
             {% elseif field.vars.name == 'geoJson' %}
                 <div class="col-12">
-                    <h4 class="main-subtitle mb-4">{{ 'fal map-marked-alt'|icon(null, 14, 'info-darken me-2') }}{{ "Geojson file"|trans }}</h4>
+                    <h4 class="main-subtitle"><i class="icm-map-marked-alt me-2"></i>{{ "Geojson file"|trans }}</h4>
                 </div>
             {% elseif field.vars.name == 'icon' and form.vars.name is defined and form.vars.name == 'link' %}
                 <div class="col-12">
-                    <h4 class="main-subtitle mb-4">{{ 'fal plus-circle'|icon(null, 14, 'info-darken me-2') }}{{ "Icône"|trans }}</h4>
+                    <h4 class="main-subtitle"><i class="icm-plus-circle me-2"></i>{{ "Icône"|trans }}</h4>
                 </div>
             {% endif %}
             {% if mediaSizesFieldsCount and field.vars.name == 'maxWidth' %}

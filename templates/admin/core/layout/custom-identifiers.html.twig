@@ -1,7 +1,7 @@
 {% set customClasses = website.entity.configuration.cssClasses is defined ? website.entity.configuration.cssClasses : [] %}
 {% if customClasses|length > 0 and form.customClass is defined %}
     <div class="text-start custom-css-alert ribbon-vwrapper alert alert-info">
-        <div class="ribbon ribbon-bookmark ribbon-vertical-l ribbon-info">{{ 'fas info'|icon(null, 14, 'white') }}</div>
+        <div class="ribbon ribbon-bookmark ribbon-vertical-l ribbon-info"><i class="icm-info"></i></div>
         <h5 class="mb-3">{{ "Classes personnalisées"|trans }}</h5>
         <div class="row css-classes-list">
             {% for customClass in customClasses %}
@@ -9,7 +9,7 @@
                     <div class="css-class-item col-md-6">
                         <span class="btn btn-sm btn-outline-info cursor mb-1 mt-1 me-2 class-copy cursor"
                               data-bs-toggle="tooltip" title="{{ "Ajouter"|trans|striptags }}">
-                            {{ 'fal copy'|icon(null, 10) }}
+                            <i class="icm-copy"></i>
                         </span>
                         <strong class="text-copy">{{ customClass.name }}</strong>
                         {% if customClass.description %}

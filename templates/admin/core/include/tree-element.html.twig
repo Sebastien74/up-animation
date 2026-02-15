@@ -60,7 +60,7 @@
                     {% if url.archived is defined and url.archived %}
                         {% set tooltipTitle = "Page archivée"|trans %}
                     {% endif %}
-                    <span class="me-1 info-url" data-bs-toggle="tooltip" title="{{ tooltipTitle|striptags }}">{{ 'fas circle'|icon(null, 10, color) }}</span>
+                    <span class="me-1 info-url" data-bs-toggle="tooltip" title="{{ tooltipTitle|striptags }}"><i class="icm-circle"></i></span>
                 {% endif %}
                 {% if entity.adminName is defined and entity.adminName %}{{ entity.adminName|truncate(75, false) }}{% endif %}
             </span>

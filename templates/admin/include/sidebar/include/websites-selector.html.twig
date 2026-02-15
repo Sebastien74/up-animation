@@ -6,7 +6,7 @@
     <ul class="pt-0 pb-0">
         <li>
             <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-                {{ 'fal chart-network'|icon(21, 17, 'white me-2') }}{{ "Sites"|trans }}
+                <i class="icm-chart-network me-2"></i>{{ "Sites"|trans }}
             </a>
             <ul aria-expanded="false" class="collapse">
                 {% for website in websites %}
@@ -16,7 +16,7 @@
                                 {{ website.adminName }}
                                 {% if not website.active %}
                                     <span class="website-ban position-absolute text-dark" data-bs-toggle="tooltip" title="{{ "Site désactivé"|trans|raw }}">
-                                        {{ 'fas ban'|icon(15, 15, 'dark') }}
+                                        <i class="icm-ban"></i>
                                     </span>
                                 {% endif %}
                             </a>

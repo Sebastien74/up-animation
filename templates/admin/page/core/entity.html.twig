@@ -20,7 +20,7 @@
         <div id="edit-form-{{ interface.name }}" class="card">
             {% include 'admin/core/form/save/header.html.twig' %}
             <div class="card-body pb-0">
-                <h4 class="main-subtitle mb-4">{{ 'fal cog'|icon(null, 18, 'info-darken me-2') }}{{ "Configuration de l'entité"|trans }}</h4>
+                <h4 class="main-subtitle"><i class="icm-cog me-2"></i>{{ "Configuration de l'entité"|trans }}</h4>
                 <div class="row">
                     {{ form_row(form.adminName) }}
                     {{ form_row(form.className) }}
@@ -30,7 +30,7 @@
                     {{ form_row(form.uniqueLocale) }}
                     {{ form_row(form.inFieldConfiguration) }}
                 </div>
-                <h4 class="main-subtitle mb-4">{{ 'fal list-ul'|icon(null, 18, 'info-darken me-2') }}{{ "Configuration des index"|trans }}</h4>
+                <h4 class="main-subtitle"><i class="icm-list-ul me-2"></i>{{ "Configuration des index"|trans }}</h4>
                 <div class="row">
                     {{ form_row(form.columns) }}
                     {{ form_row(form.searchFields) }}
@@ -42,13 +42,13 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <h4 class="main-subtitle mb-4">{{ 'fal pencil-alt'|icon(null, 18, 'info-darken me-2') }}{{ "Configuration de l'édition"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-pencil-alt me-2"></i>{{ "Configuration de l'édition"|trans }}</h4>
                         <div class="row">
                             {{ form_row(form.saveArea) }}
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <h4 class="main-subtitle mb-4">{{ 'fal eye'|icon(null, 18, 'info-darken me-2') }}{{ "Configuration de la visualisation"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-eye me-2"></i>{{ "Configuration de la visualisation"|trans }}</h4>
                         <div class="row">
                             {{ form_row(form.showView) }}
                         </div>
