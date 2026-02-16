@@ -138,7 +138,7 @@ $pg-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !default;
 $bg-gradient-primary: radial-gradient(520px 160px at 12% 0%, rgba($dash-accent, 0.10), transparent 60%),
 linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 45%),
 $crumb-surface;
-
+$bg-preloader: repeating-linear-gradient(-55deg, transparentize($dark, .5) 1px, transparentize($dash-bg-2, .5) 2px, transparentize($dash-bg-2, .5) 11px, transparentize($dark, .5) 12px, transparentize($dark, .5) 20px);
 
 
 //$link-hover-color: $primary !default;

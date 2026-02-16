@@ -31,7 +31,7 @@ body.preloader-active {
     border-radius: var(--bs-border-radius);
 }
 
-@-webkit-keyframes MOVE-BG {
+@-webkit-keyframes stripes {
     from {
         -webkit-transform: translateX(0);
     }
@@ -40,7 +40,7 @@ body.preloader-active {
     }
 }
 
-@keyframes MOVE-BG {
+@keyframes stripes {
     from {
         transform: translateX(0);
     }
@@ -55,8 +55,8 @@ body.preloader-active {
     left: -150px;
     bottom: 0;
     width: 150%;
-    background: repeating-linear-gradient(-55deg, transparentize($dark, .5) 1px, transparentize($dash-bg-2, .5) 2px, transparentize($dash-bg-2, .5) 11px, transparentize($dark, .5) 12px, transparentize($dark, .5) 20px) !important;
-    animation-name: MOVE-BG !important;
+    background: $bg-preloader !important;
+    animation-name: stripes !important;
     animation-duration: .6s !important;
     animation-timing-function: linear !important;
     animation-iteration-count: infinite !important;
@@ -73,7 +73,7 @@ body.preloader-active {
     bottom: 0;
 
     .bg-stripe-loader {
-        background: repeating-linear-gradient(-55deg, transparentize($dark, .5) 1px, transparentize($dash-bg-2, .5) 2px, transparentize($dash-bg-2, .5) 11px, transparentize($dark, .5) 12px, transparentize($dark, .5) 20px) !important;
+        background: $bg-preloader !important;
         opacity: .7;
     }
 

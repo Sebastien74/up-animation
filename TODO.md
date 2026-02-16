@@ -7,6 +7,8 @@ JS Natif Layout back
 
 Faire un tour global sur chrome
 
+Connecter GOOGLE TRADS
+
 https://www.svgbackgrounds.com/search/backgrounds
 
 Virer les  data-toggle="preloader"
