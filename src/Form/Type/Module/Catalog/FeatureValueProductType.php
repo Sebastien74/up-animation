@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Module\Catalog;
 
-use App\Entity\Module\Catalog\Feature;
 use App\Entity\Module\Catalog\FeatureValue;
 use App\Entity\Module\Catalog\FeatureValueProduct;
 use App\Form\Widget as WidgetType;
 use App\Repository\Module\Catalog\FeatureValueRepository;
 use App\Service\Interface\CoreLocatorInterface;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -18,7 +16,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**

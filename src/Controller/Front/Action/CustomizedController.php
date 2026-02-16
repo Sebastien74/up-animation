@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Front\Action;
 
 use App\Controller\Front\FrontController;
-use App\Model\Core\InformationModel;
 use App\Model\Module\ProductModel;
 use App\Service\Content\ActionService;
 use Doctrine\ORM\Mapping\MappingException;

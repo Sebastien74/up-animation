@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Repository\Module\Menu;
 
-use App\Entity\Core\Website;
 use App\Entity\Layout\Page;
 use App\Entity\Module\Menu\Link;
 use App\Entity\Module\Menu\Menu;

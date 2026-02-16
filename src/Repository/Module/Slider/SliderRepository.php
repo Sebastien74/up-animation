@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repository\Module\Slider;
 
 use App\Entity\Module\Slider\Slider;
-use App\Entity\Module\Slider\SliderMediaRelation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

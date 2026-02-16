@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Security\Front;
 
-use App\Entity\Security\UserFront;
 use App\Entity\Security\UserRequest;
 use App\Form\Validator\UniqUserEmail;
 use App\Form\Validator\UniqUserLogin;

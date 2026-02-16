@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Model\Module;
 
 use App\Entity\Core\Website;
-use App\Entity\Module\Catalog\Listing;
 use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Menu\Link;
 use App\Entity\Module\Menu\Menu;

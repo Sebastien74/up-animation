@@ -5,6 +5,8 @@ Revoir toutes les requetes depuis le debut
 
 JS Natif Layout back
 
+Faire un tour global sur chrome
+
 Virer les  data-toggle="preloader"
 
 Pou le selecteur de picto pour les icon actions et modules et autres récupérer les icones i

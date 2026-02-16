@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Twig\Components;
 
 use App\Entity\Module\Newscast\Newscast;
-use App\Model\Module\NewscastModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\Query\QueryException;

@@ -14,7 +14,6 @@ use App\Repository\Module\Search\SearchRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Psr\Cache\InvalidArgumentException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;

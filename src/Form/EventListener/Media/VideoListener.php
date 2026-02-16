@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Form\EventListener\Media;
 
-use App\Entity\Layout\Block;
 use App\Entity\Media\Media;
 use App\Form\EventListener\BaseListener;
 use Symfony\Component\Form\FormEvent;

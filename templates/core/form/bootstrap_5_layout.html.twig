@@ -473,8 +473,12 @@
         {%- set class_attr = attr.class is defined ? attr.class : '' -%}
         {%- set disabledFloating = 'disabled-floating' in row_class or (attr['data-floating'] is defined and not attr['data-floating']) -%}
         {%- set front_floating = front_floating is defined ? not disabledFloating and front_floating : not disabledFloating -%}
+        {%- set row_class = row_class~' form-group-'~field_type -%}
         {%- if front_floating and 'form-floating' not in row_class and field_type_allowed and 'tinymce' not in class_attr and 'disabled-floating' not in row_class and label -%}
-            {%- set row_class = row_class~' form-floating floating-form-'~field_type -%}
+            {%- set row_class = row_class~' form-floating floating-form-'~field_type~' form-group-'~field_type -%}
+            {%- if multiple is defined and multiple -%}
+                {%- set row_class = row_class~' field-multiple' -%}
+            {%- endif -%}
         {%- endif -%}
         {%- set isCheckboxes = '/admin-' not in app.request.requestUri and ('check-inline' in class_attr or 'form-check' in class_attr) -%}
         {%- if 'tinymce' in class_attr -%}

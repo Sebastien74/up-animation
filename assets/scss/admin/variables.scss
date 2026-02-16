@@ -95,6 +95,7 @@ $dash-bg-2: #121726 !default; // top
 $dash-surface: #14161e !default;
 $dash-surface-2: mix(#ffffff, $dash-surface, 4%) !default;
 $dash-surface-3: mix(#000000, $dash-surface, 6%) !default;
+$dash-surface-4: #2e1e51 !default;
 
 $dash-dark: $black !default;
 $darken: $dash-bg-1 !default;
@@ -314,6 +315,7 @@ $badge-pill-padding-y: 1em !default;
 $form-label-color: $gray-600 !default;
 $input-bg: radial-gradient(520px 160px at 12% 0%, mix($primary, $dash-surface, 10%), $dash-surface 62%), linear-gradient(180deg, $dash-surface-2, $dash-surface 45%, $dash-surface-3) !default;
 $input-invalid-bg: radial-gradient(520px 160px at 12% 0%, mix($red, $dash-surface, 10%), $dash-surface 62%), linear-gradient(180deg, $dash-surface-2, $dash-surface 45%, $dash-surface-3) !default;
+$input-height: 66px !default;
 $input-border-color-invalid: $dash-invalid !default;
 $input-border-radius: 12px !default;
 $input-font-size: 12px !default;

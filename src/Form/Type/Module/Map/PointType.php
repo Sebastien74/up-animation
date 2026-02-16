@@ -9,7 +9,6 @@ use App\Entity\Media\Folder;
 use App\Entity\Module\Map\Category;
 use App\Entity\Module\Map\Point;
 use App\Entity\Module\Map\PointGeoJson;
-use App\Entity\Module\Map\PointMediaRelation;
 use App\Form\Type\Information\PhoneType;
 use App\Form\Widget as WidgetType;
 use App\Service\Interface\CoreLocatorInterface;

@@ -6,7 +6,6 @@ namespace App\Repository\Module\Catalog;
 
 use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Catalog\ProductInformation;
-use App\Model\Core\WebsiteModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;

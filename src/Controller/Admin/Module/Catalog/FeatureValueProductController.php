@@ -9,7 +9,6 @@ use App\Entity\Module\Catalog\Feature;
 use App\Entity\Module\Catalog\FeatureValueProduct;
 use App\Entity\Module\Catalog\Product;
 use App\Form\Interface\ModuleFormManagerInterface;
-use App\Model\Module\ProductModel;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -6,7 +6,6 @@ namespace App\Form\Manager\Gdpr;
 
 use App\Entity\Core\Website;
 use App\Entity\Gdpr\Cookie;
-use App\Form\Manager\Core\BaseManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 

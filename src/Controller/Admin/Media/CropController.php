@@ -13,9 +13,7 @@ use App\Form\Manager\Core\GlobalManager;
 use App\Form\Type\Media\ThumbType;
 use App\Repository\Media\ThumbRepository;
 use App\Twig\Content\ThumbnailRuntime;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 

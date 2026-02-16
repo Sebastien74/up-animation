@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Model\Module;
 
 use App\Entity\Module\Newscast\Newscast;
-use App\Entity\Module\Newscast\Teaser;
 use App\Model\BaseModel;
 use App\Model\ViewModel;
 use App\Service\Interface\CoreLocatorInterface;

@@ -6,7 +6,6 @@ namespace App\Controller\Front\Action;
 
 use App\Controller\Front\ActionController;
 use App\Entity\Layout\Block;
-use App\Entity\Module\Portfolio\Card;
 use App\Entity\Module\Recruitment\Job;
 use App\Entity\Module\Recruitment\Listing;
 use App\Entity\Seo\Url;
