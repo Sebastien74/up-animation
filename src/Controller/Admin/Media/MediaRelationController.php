@@ -39,7 +39,13 @@ class MediaRelationController extends AdminController
     #[Route('/reset-media', name: 'admin_mediarelation_reset_media', options: ['expose' => true], methods: 'DELETE')]
     public function resetMedia(Request $request): JsonResponse
     {
-        $mediaRelation = $this->coreLocator->em()->getRepository(urldecode($request->get('mediaClassname')))->find($request->get('mediaRelationId'));
+        $mediaClassname = $request->query->get('mediaClassname') && 'undefined' !== $request->query->get('mediaClassname')
+            ? urldecode($request->query->get('mediaClassname')) : null;
+        $mediaRelationId = $request->query->get('mediaRelationId') && 'undefined' !== $request->query->get('mediaRelationId')
+            ? urldecode($request->query->get('mediaRelationId')) : null;
+        $mediaRelation = $mediaClassname && $mediaRelationId
+            ?$this->coreLocator->em()->getRepository(urldecode($mediaClassname))->find($mediaRelationId)
+            : false;
 
         if ($mediaRelation) {
             $media = $mediaRelation->getMedia();
