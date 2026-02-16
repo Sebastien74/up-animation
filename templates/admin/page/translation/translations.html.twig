@@ -2,7 +2,7 @@
 
 {% trans_default_domain 'admin' %}
 
-{% set pageIcon = 'fal globe' %}
+{% set pageIcon = 'globe' %}
 
 {% block title %}{{ "Traductions"|trans|htmlEntities }}{% endblock %}
 {% block pageTitle %}{{ "Traductions"|trans|raw }}{% endblock %}
@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('admin-translation', null,  'admin') }}
+    {{ encore_entry_script_tags('admin-translation', null,  'admin', {defer: true}) }}
     {{ parent() }}
 {% endblock %}
 
@@ -21,7 +21,7 @@
 
     {% set allLocales = website().configuration.allLocales %}
 
-    <span data-toggle="preloader">
+    <span>
         <a href="{{ lastRoute() }}" class="btn btn-outline-info btn-back mb-3"
            data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans }}"
            aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">

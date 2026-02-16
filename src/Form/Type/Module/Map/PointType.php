@@ -127,7 +127,7 @@ class PointType extends AbstractType
                 'entry_options' => [
                     'attr' => [
                         'class' => 'phone',
-                        'icon' => 'fal phone',
+                        'icon' => 'phone',
                         'group' => 'col-md-3',
                         'caption' => $this->translator->trans('Numéro de téléphone', [], 'admin'),
                         'button' => $this->translator->trans('Ajouter un numéro', [], 'admin'),

@@ -36,7 +36,7 @@ class FrontSearchTextType extends AbstractType
             'data' => $options['text'],
             'property_path' => 'text',
             'attr' => [
-                'addon' => 'fal search',
+                'addon' => 'search',
                 'side' => 'right',
                 'placeholder' => $this->translator->trans('Saisissez votre recherche', [], 'front_form'),
             ],

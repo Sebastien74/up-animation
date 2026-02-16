@@ -152,15 +152,115 @@ export function tinymcePlugin() {
                     language_url: domain + '/js/langs/fr_FR.js',
                     toolbar: toolbar,
                     plugins: 'emoticons link media lists table code searchreplace fullscreen',
-                    skin: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'oxide-dark' : 'oxide'),
-                    content_css: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default'),
+                    skin: 'oxide-dark',
+                    content_css: 'dark',
                     font_css: fontsCss,
                     font_family_formats: pluginsData.dataset.fontsFormatEditor,
                     font_size_formats: "8px 10px 12px 14px 16px 17px 18px 22px 26px 32px 36px 48px 60px 72px 96px",
                     color_cols: 4,
                     color_map: colors,
-                    content_style: "body { background-color: #292929; color: #adb5bd;} body .sr-only {display: none;}",
+                    content_style: "body { background-color: #0e1219; color: #fff;} body .sr-only {display: none;} .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before { color: rgba(255, 255, 255, 0.5) !important; }",
                     setup: (tinymceEl) => {
+
+                        tinymceEl.on('init', () => {
+                            const editorContainer = tinymceEl.getContainer();
+                            if (editorContainer) {
+
+                                const themeColor = '#121726';
+                                const themeColorDarken = '#07090d';
+
+                                const header = editorContainer.querySelector('.tox-editor-header');
+                                if (header) {
+                                    header.style.backgroundColor = themeColor;
+                                }
+                                editorContainer.style.border = '1px solid rgba(255, 255, 255, 0.05)';
+
+                                // Inject dynamic CSS for TinyMCE UI elements that are outside the container (like menus/dropdowns)
+                                const styleId = 'tinymce-custom-ui-styles';
+                                if (!document.getElementById(styleId)) {
+                                    const style = document.createElement('style');
+                                    style.id = styleId;
+                                    style.innerHTML = `
+                                        .tox-toolbar__primary,
+                                        .tox .tox-listboxfield .tox-listbox--select, 
+                                        .tox .tox-textarea, 
+                                        .tox .tox-textarea-wrap .tox-textarea:focus, 
+                                        .tox .tox-textfield, 
+                                        .tox .tox-toolbar-textfield,
+                                        .tox .tox-menu,
+                                        .tox .tox-toolbar__overflow,
+                                        .tox .tox-dialog,
+                                        .tox .tox-dialog__header,
+                                        .tox .tox-dialog__footer,
+                                        .tox .tox-collection__item {
+                                            background-color: ${themeColor} !important;
+                                            color: #fff !important;
+                                            border-color: rgba(255, 255, 255, 0.05) !important;
+                                        }
+                                        .tox .tox-listboxfield .tox-listbox--select:focus,
+                                        .tox .tox-textarea:focus, 
+                                        .tox .tox-textfield:focus, 
+                                        .tox .tox-toolbar-textfield:focus,
+                                        .tox .tox-tbtn--select:focus,
+                                        .tox .tox-button:focus,
+                                        .tox .tox-checkbox:focus,
+                                        .tox .tox-selectfield select:focus,
+                                        .tox .tox-focussed,
+                                        .tox :focus {
+                                            border-color: rgba(255, 255, 255, 0.05) !important;
+                                            box-shadow: none !important;
+                                            outline: none !important;
+                                        }
+                                        .tox-tinymce:focus-within,
+                                        .tox-tinymce--focused {
+                                            border-color: rgba(255, 255, 255, 0.05) !important;
+                                            box-shadow: none !important;
+                                        }
+                                        .tox .tox-tbtn:focus,
+                                        .tox .tox-tbtn--bespoke:focus,
+                                        .tox .tox-tbtn--select:focus,
+                                        .tox .tox-button:focus,
+                                        .tox .tox-tbtn--bespoke,
+                                        .tox .tox-button,
+                                        .tox .tox-tbtn--select {
+                                            background-color: ${themeColorDarken} !important;
+                                            color: #fff !important;
+                                            outline: none !important;
+                                            box-shadow: none !important;
+                                        }
+                                        .tox .tox-button--secondary {
+                                            background-color: ${themeColor} !important;
+                                            color: #fff !important;
+                                        }
+                                        .tox .tox-tbtn--enabled,
+                                        .tox .tox-tbtn--on {
+                                            background-color: rgba(255, 255, 255, 0.15) !important;
+                                        }
+                                        .tox .tox-collection__item--active,
+                                        .tox .tox-collection__item--enabled {
+                                            background-color: rgba(255, 255, 255, 0.1) !important;
+                                        }
+                                        .tox .tox-tbtn:hover {
+                                            background-color: rgba(255, 255, 255, 0.05) !important;
+                                        }
+                                        .tox .tox-collection__item-label {
+                                            color: #fff !important;
+                                        }
+                                        .tox-tinymce-aux {
+                                            z-index: 9000;
+                                        }
+                                        .tox .tox-tbtn--select {
+                                            margin: 6px 2px 5px 2px !important;
+                                        }
+                                        .tox .tox-textarea {
+                                            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+                                            box-shadow: none !important;
+                                        }
+                                    `;
+                                    document.head.appendChild(style);
+                                }
+                            }
+                        });
 
                         const runAccessibility = () => accessibilityFields(tinymceEl, editor);
                         tinymceEl.on('input', runAccessibility);       // pour la frappe

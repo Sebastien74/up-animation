@@ -15,7 +15,7 @@
      data-dash="{{ seo.afterDash|striptags }}"
      data-dash-active="{{ seo.haveAfterDash }}">
 
-    <h5 class="card-title card-header mb-0"><i class="icm-google me-2"></i>{{ "Aperçu Google"|trans }}</h5>
+    <h5 class="main-subtitle mb-0"><i class="icm-google"></i>{{ "Aperçu Google"|trans }}</h5>
 
     <div class="card-body">
         <div class="seo-title mb-0 ellipsis">
@@ -37,7 +37,7 @@
 {% set ogImage = ogImage and app.request.getSchemeAndHttpHost() not in ogImage ? app.request.getSchemeAndHttpHost()~ogImage : ogImage %}
 
 <div id="highlight-preview" class="card">
-    <h5 class="card-title card-header mb-0"><i class="icm-code me-2"></i>{{ "Métas"|trans }}</h5>
+    <h5 class="main-subtitle mb-0"><i class="icm-code"></i>{{ "Métas"|trans }}</h5>
     <section id="highlight-metas" class="language-markup">
 <pre>&lt;!-- Metas --/>
 <code class="highlight highlight-title">&lt;title>{{ seo.title|striptags }}{% if seo.title|striptags|length > 0 %} - {{ seo.afterDash }}{% endif %}{% if seo.afterDash %}{{ seo.afterDash }}{% endif %}&lt;/title></code>

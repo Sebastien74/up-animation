@@ -23,7 +23,9 @@
     {% if haveAddon %}
         <div class="input-group">
         {% if addonSide == 'left' %}
-            <span class="input-group-text addon" addon="{{ attr.addon }}">{{ attr.addon|icon(addonWidth, addonHeight) }}</span>
+            <span class="input-group-text addon" data-addon="{{ attr.addon }}">
+                <i class="icm-{{ attr.addon }} btn-icon"></i>
+            </span>
         {% endif %}
     {% endif %}
     {% if asEmoji %}

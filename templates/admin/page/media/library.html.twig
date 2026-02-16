@@ -3,7 +3,7 @@
 {% trans_default_domain 'admin' %}
 
 {% set websiteId = websiteId() %}
-{% set pageIcon = 'fal photo-video' %}
+{% set pageIcon = 'photo-video' %}
 
 {% block title %}{{ "Bibliothèque de médias"|trans|htmlEntities }}{% endblock %}
 {% block pageTitle %}{{ "Bibliothèque de médias"|trans }}{% endblock %}
@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('admin-medias-library', null,  'admin') }}
+    {{ encore_entry_script_tags('admin-medias-library', null,  'admin', {defer: true}) }}
     {{ parent() }}
 {% endblock %}
 
@@ -29,17 +29,17 @@
                 </div>
                 <div class="col-md-8 text-md-end">
 {#                    {% if granted('ROLE_INTERNAL') %} #}
-{#                        <span id="clear-thumbs-btn" data-url="{{ path('admin_thumbs_remove_cache_list', {website: websiteId}) }}" class="btn btn-outline-danger standard d-inline-flex align-items-center" data-toggle="preloader"> #}
-{#                            <i class="icm-trash me-2"></i>{{ "Supprimer les vignettes"|trans }} #}
+{#                        <span id="clear-thumbs-btn" data-url="{{ path('admin_thumbs_remove_cache_list', {website: websiteId}) }}" class="btn btn-outline-danger standard d-inline-flex align-items-center"> #}
+{#                            <i class="icm-trash"></i>{{ "Supprimer les vignettes"|trans }} #}
 {#                        </span> #}
 {#                    {% endif %} #}
                     {% if granted('ROLE_INTERNAL') %}
                         <span id="reorder-medias-btn" class="btn btn-outline-info-darken standard cursor me-2"
                               data-path="{{ path('admin_medias_reorder', { website: websiteId }) }}">
-                            <i class="icm-folders me-2"></i>{{ "Ranger les médias"|trans|raw }}
+                            <i class="icm-folders"></i>{{ "Ranger les médias"|trans|raw }}
                         </span>
                     {% endif %}
-                    <button class="btn btn-success standard"
+                    <button class="btn-app success"
                             data-bs-toggle="collapse"
                             href="#collapseFormMedias"
                             aria-expanded="false"
@@ -71,7 +71,7 @@
             <div class="col-md-5">
                 <h4 class="main-subtitle">
                     <div class="row">
-                        <div class="col-md-6 my-auto"><i class="icm-folder-tree me-2"></i>{{ "Dossiers"|trans }}</div>
+                        <div class="col-md-6 my-auto"><i class="icm-folder-tree"></i>{{ "Dossiers"|trans }}</div>
                         <div class="col-md-6 text-end my-auto">
                             {% if 'delete'|moduleActive(configuration) %}
                                 <button id="delete-pack-btn" class="btn btn-danger d-none"
@@ -95,7 +95,7 @@
                                class="ajax-get-refresh btn btn-info"
                                data-target="#medias-results"
                                data-target-loader="#medias-preloader">
-                                <i class="icm-eye me-2"></i>{{ "Racine"|trans|striptags }}
+                                <i class="icm-eye"></i>{{ "Racine"|trans|striptags }}
                             </a>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                     <h4 class="card-header mb-0">
                         <div class="row">
                             <div class="col-md-6 my-auto d-flex align-items-center">
-                                <i class="icm-photo-video me-2"></i>{{ "Médias"|trans }}
+                                <i class="icm-photo-video"></i>{{ "Médias"|trans }}
                                 <div id="media-management-buttons" class="d-none ms-3">
                                     {% if 'edit'|moduleActive(configuration) %}
                                         <button id="select-folder-btn"
@@ -159,3 +159,4 @@
     </div>
 
 {% endblock %}
+

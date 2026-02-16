@@ -19,10 +19,10 @@
 {% block body %}
 
     {% set categories = {
-        critical: {bg: 'danger', color: 'white', icon: 'far exclamation-triangle'},
-        warning: {bg: 'warning', color: 'white', icon: 'far whistle'},
-        error: {bg: 'warning', color: 'dark', icon: 'far whistle'},
-        alert: {bg: 'warning', color: 'dark', icon: 'far whistle'}
+        critical: {bg: 'danger', color: 'white', icon: 'exclamation-triangle'},
+        warning: {bg: 'warning', color: 'white', icon: 'whistle'},
+        error: {bg: 'warning', color: 'dark', icon: 'whistle'},
+        alert: {bg: 'warning', color: 'dark', icon: 'whistle'}
     } %}
 
     <div id="log-page">
@@ -31,7 +31,7 @@
                 {% set category = categories[log.status] is defined ? categories[log.status] : null %}
                 {% set bg = category and category['bg'] is defined ? category['bg'] : 'info' %}
                 {% set color = category and category['color'] is defined ? category['color'] : 'white' %}
-                {% set icon = category and category['icon'] is defined ? category['icon'] : 'far info-circle' %}
+                {% set icon = category and category['icon'] is defined ? category['icon'] : 'info-circle' %}
                 <div class="card log-card">
                     <div class="card-header card-title bg-{{ bg }} text-{{ color }}">
                         <div class="row">
@@ -40,11 +40,11 @@
                             </div>
                             <div class="col-md-8 text-end">
                                 {% if log.date|isDateTime %}
-                                    <i class="icm-calendar-alt ms-2 me-2"></i>{{ log.date|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}
-                                    <i class="icm-clock ms-2 me-2"></i>{{ log.date|format_datetime(pattern='HH:mm', locale=app.request.locale)|capitalize }}
+                                    <i class="icm-calendar-alt ms-2"></i>{{ log.date|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}
+                                    <i class="icm-clock ms-2"></i>{{ log.date|format_datetime(pattern='HH:mm', locale=app.request.locale)|capitalize }}
                                 {% endif %}
                                 <span data-bs-toggle="tooltip" title="{{ "Retourner à la liste des logs"|trans|striptags }}">
-                                    <a href="{{ path('admin_logs') }}" class="ms-2 text-{{ color }}" data-toggle="preloader">
+                                    <a href="{{ path('admin_logs') }}" class="ms-2 text-{{ color }}">
                                         <i class="icm-reply"></i>
                                     </a>
                                 </span>

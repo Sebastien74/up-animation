@@ -338,7 +338,7 @@ class ListingType extends AbstractType
                 'entry_options' => [
                     'attr' => [
                         'class' => 'feature',
-                        'icon' => 'fal filter',
+                        'icon' => 'filter',
                         'group' => 'col-md-4',
                         'caption' => $this->translator->trans('Filtres des produits par valeurs', [], 'admin'),
                         'button' => $this->translator->trans('Ajouter une valeur', [], 'admin'),

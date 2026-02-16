@@ -9,11 +9,9 @@ use Symfony\Component\Validator\Constraint;
 /**
  * UniqEmailCampaign.
  *
- * @Annotation
- * @Target({"PROPERTY", "ANNOTATION"})
- *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class UniqEmailCampaign extends Constraint
 {
 }

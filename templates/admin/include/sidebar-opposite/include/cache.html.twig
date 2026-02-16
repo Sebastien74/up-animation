@@ -6,32 +6,32 @@
     </a>
     <ul aria-expanded="false" class="collapse">
         <li>
-            <a href="{{ path('cache_clear', {rename: true}) }}" data-toggle="preloader">
+            <a href="{{ path('cache_clear', {rename: true}) }}">
                 <span class="hide-menu">{{ "Vider le cache principal"|trans }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('doctrine_clear_cache_result') }}" data-toggle="preloader">
+            <a href="{{ path('doctrine_clear_cache_result') }}">
                 <span class="hide-menu">{{ "Vider le cache Doctrine"|trans }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('cache_liip_clear') }}" data-toggle="preloader">
+            <a href="{{ path('cache_liip_clear') }}">
                 <span class="hide-menu">{{ "Vider les médias"|trans }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_translation_cache_clear', {website: websiteId()}) }}" data-toggle="preloader">
+            <a href="{{ path('admin_translation_cache_clear', {website: websiteId()}) }}">
                 <span class="hide-menu">{{ "Vider les traductions"|trans }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_clear_sessions') }}" data-toggle="preloader">
+            <a href="{{ path('admin_clear_sessions') }}">
                 <span class="hide-menu">{{ "Vider les sessions"|trans }}</span>
             </a>
         </li>
 {#        <li>#}
-{#            <a href="{{ path('composer_autoload') }}" data-toggle="preloader">#}
+{#            <a href="{{ path('composer_autoload') }}">#}
 {#                <span class="hide-menu">{{ "Optimiser l'autoload"|trans }}</span>#}
 {#            </a>#}
 {#        </li>#}

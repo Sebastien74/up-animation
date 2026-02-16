@@ -13,16 +13,16 @@
         </a>
         <ul aria-expanded="false" class="collapse{% if pageTag == 'portfolios' %} in{% endif %}">
             <li>
-                <a href="{{ path('admin_portfoliocard_index', {website: websiteId}) }}"{% if '/portfolios/cards/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des fiches"|trans }}</a>
+                <a href="{{ path('admin_portfoliocard_index', {website: websiteId}) }}"{% if '/portfolios/cards/' in uri %} class="active"{% endif %}>{{ "Liste des fiches"|trans }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_portfoliolisting_index', {website: websiteId}) }}" data-toggle="preloader">{{ "Liste des portfolios"|trans }}</a>
+                <a href="{{ path('admin_portfoliolisting_index', {website: websiteId}) }}">{{ "Liste des portfolios"|trans }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_portfoliocategory_index', {website: websiteId}) }}"{% if '/portfolios/categories/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des catégories"|trans }}</a>
+                <a href="{{ path('admin_portfoliocategory_index', {website: websiteId}) }}"{% if '/portfolios/categories/' in uri %} class="active"{% endif %}>{{ "Liste des catégories"|trans }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_portfolioteaser_index', {website: websiteId}) }}"{% if '/portfolios/teasers/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Configuration des teasers"|trans }}</a>
+                <a href="{{ path('admin_portfolioteaser_index', {website: websiteId}) }}"{% if '/portfolios/teasers/' in uri %} class="active"{% endif %}>{{ "Configuration des teasers"|trans }}</a>
             </li>
         </ul>
     </li>

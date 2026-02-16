@@ -64,7 +64,7 @@ class ConfigurationType extends AbstractType
             'entry_options' => [
                 'attr' => [
                     'class' => 'transition',
-                    'icon' => 'fal hurricane',
+                    'icon' => 'hurricane',
                     'group' => 'col-md-4',
                     'caption' => $this->translator->trans('Transitions', [], 'admin'),
                     'button' => $this->translator->trans('Ajouter une transition', [], 'admin'),

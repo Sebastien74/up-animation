@@ -183,7 +183,7 @@ class AddressType extends AbstractType
                 'entry_options' => [
                     'attr' => [
                         'class' => 'address-phone',
-                        'icon' => 'fal phone',
+                        'icon' => 'phone',
                         'caption' => $this->translator->trans('Numéro de téléphone', [], 'admin'),
                         'button' => $this->translator->trans('Ajouter un numéro', [], 'admin'),
                     ],
@@ -203,7 +203,7 @@ class AddressType extends AbstractType
                     'attr' => [
                         'group' => 'col-md-3',
                         'class' => 'address-email',
-                        'icon' => 'fal at',
+                        'icon' => 'at',
                         'caption' => $this->translator->trans('E-mails', [], 'admin'),
                         'button' => $this->translator->trans('Ajouter un e-mail', [], 'admin'),
                     ],

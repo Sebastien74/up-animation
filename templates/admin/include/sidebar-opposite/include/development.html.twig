@@ -6,48 +6,48 @@
     </a>
     <ul aria-expanded="false" class="collapse">
         <li>
-            <a href="{{ path('admin_tools') }}" data-toggle="preloader">
+            <a href="{{ path('admin_tools') }}">
                 <span class="hide-menu">{{ "Boite à outils"|trans }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_phpinfo') }}" data-toggle="preloader">
+            <a href="{{ path('admin_phpinfo') }}">
                 <span class="hide-menu">{{ "PHP info"|trans }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_entities_generator', {website: websiteId}) }}" data-toggle="preloader">
+            <a href="{{ path('admin_entities_generator', {website: websiteId}) }}">
                 <span class="hide-menu">{{ "Générer la configuration des entités"|trans }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_command_index', {website: websiteId}) }}" data-toggle="preloader">
+            <a href="{{ path('admin_command_index', {website: websiteId}) }}">
                 <span class="hide-menu">{{ "Tâches planifiées"|trans }}</span>
             </a>
         </li>
         <li>
-            <a class="swal-link-confirm" href="{{ path('admin_cron_scheluder') }}" data-toggle="preloader">
+            <a class="swal-link-confirm" href="{{ path('admin_cron_scheluder') }}">
                 <span class="hide-menu">{{ "Exécuter les tâches planifiées"|trans }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_dev_import', {website: websiteId}) }}" data-toggle="preloader">
+            <a href="{{ path('admin_dev_import', {website: websiteId}) }}">
                 <span class="hide-menu">{{ "Importation de données"|trans }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_translation_data_fixtures_parser', {website: websiteId}) }}" data-toggle="preloader">
+            <a href="{{ path('admin_translation_data_fixtures_parser', {website: websiteId}) }}">
                 <span class="hide-menu">{{ "Yaml translations fixtures parser"|trans }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_dev_test', {website: websiteId}) }}" data-toggle="preloader">
+            <a href="{{ path('admin_dev_test', {website: websiteId}) }}">
                 <span class="hide-menu">{{ "Controller de développement"|trans }}</span>
             </a>
         </li>
         {% if 'local' == app.environment %}
             <li>
-                <a href="{{ path('admin_project_info', {website: websiteId}) }}" data-toggle="preloader">
+                <a href="{{ path('admin_project_info', {website: websiteId}) }}">
                     <span class="hide-menu">{{ "Infos projet"|trans }}</span>
                 </a>
             </li>

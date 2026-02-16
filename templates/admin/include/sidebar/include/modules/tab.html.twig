@@ -8,7 +8,7 @@
     {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['tab']['entity'].adminName is defined ? intlsModules['tab']['entity'].adminName : "Groupes d'onglets"|trans) %}
     {% set icon = intlsModules['tab']['entity'].iconClass is defined and intlsModules['tab']['entity'].iconClass ? intlsModules['tab']['entity'].iconClass : '/medias/icons/light/layer-group.svg' %}
     <li{% if active %} class="active"{% endif %}>
-        <a href="{{ path('admin_tab_index', {website: websiteId}) }}" data-toggle="preloader">
+        <a href="{{ path('admin_tab_index', {website: websiteId}) }}">
             <span class="btn-icon small me-3">{{ icon|icon(13, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>

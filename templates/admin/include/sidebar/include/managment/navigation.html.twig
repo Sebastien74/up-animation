@@ -7,7 +7,7 @@
     {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['navigation']['entity'].adminName is defined ? intlsModules['navigation']['entity'].adminName : 'Navigations'|trans) %}
     {% set icon = intlsModules['navigation']['entity'].iconClass is defined and intlsModules['navigation']['entity'].iconClass ? intlsModules['navigation']['entity'].iconClass : '/medias/icons/light/bars.svg' %}
     <li{% if '/menus/' in uri %} class="active"{% endif %}>
-        <a href="{{ path('admin_menu_index', {website: websiteId}) }}" data-toggle="preloader">
+        <a href="{{ path('admin_menu_index', {website: websiteId}) }}">
             <span class="btn-icon small me-3">{{ icon|icon(19, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>

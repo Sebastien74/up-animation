@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('admin-user-profile', null,  'admin') }}
+    {{ encore_entry_script_tags('admin-user-profile', null,  'admin', {defer: true}) }}
     {{ parent() }}
 {% endblock %}
 
@@ -32,7 +32,7 @@
                     </h1>
                     <div class="row">
                         <div class="{% if granted('ROLE_INTERNAL') %}col-md-5{% else %}col-12{% endif %}">
-                            <h2 class="pb-2 mb-3 border-bottom"><i class="icm-info me-2"></i>{{ "Information"|trans }}</h2>
+                            <h2 class="pb-2 mb-3 border-bottom"><i class="icm-info"></i>{{ "Information"|trans }}</h2>
                             <p><strong class="me-2">{{ "Dernière connexion :"|trans }}</strong> {{ user.lastLogin|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</p>
                             <p>
                                 <strong class="me-2">{{ "Langue :"|trans }}</strong>
@@ -48,7 +48,7 @@
                         </div>
                         {% if granted('ROLE_INTERNAL') %}
                             <div class="col-md-7">
-                                <h2 class="pb-2 mb-3 border-bottom"><i class="icm-user-tag me-2"></i>{{ "Rôles"|trans }}</h2>
+                                <h2 class="pb-2 mb-3 border-bottom"><i class="icm-user-tag"></i>{{ "Rôles"|trans }}</h2>
                                 <div class="row">
                                     {% for role in user.group.roles %}
                                         <div class="col-md-6">{{ role.adminName }}</div>

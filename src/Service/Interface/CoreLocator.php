@@ -107,7 +107,7 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
-     * To get SeoInterface.
+     * To call SeoInterface.
      *
      * @throws ContainerExceptionInterface
      */
@@ -117,7 +117,7 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
-     * To get TreeService.
+     * To call TreeService.
      *
      * @throws ContainerExceptionInterface
      */
@@ -127,7 +127,7 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
-     * To get ListingService.
+     * To call ListingService.
      *
      * @throws ContainerExceptionInterface
      */
@@ -137,7 +137,7 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
-     * To get ThumbService.
+     * To call ThumbService.
      *
      * @throws ContainerExceptionInterface
      */
@@ -147,7 +147,7 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
-     * To get InterfaceHelper.
+     * To call InterfaceHelper.
      *
      * @throws ContainerExceptionInterface
      */
@@ -157,7 +157,7 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
-     * To get CacheServiceInterface.
+     * To call CacheServiceInterface.
      */
     public function cacheService(): Core\CacheServiceInterface
     {

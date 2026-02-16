@@ -1,8 +1,8 @@
 {% trans_default_domain 'admin' %}
 
-<div class="card">
-    <h4 class="card-title card-header"><i class="icm-shield-alt me-2"></i>{{ "Recaptcha"|trans }}</h4>
+<div class="card mb-3">
     <div class="card-body pb-0">
+        <h4 class="main-subtitle"><i class="icm-shield-alt"></i>{{ "Recaptcha"|trans }}</h4>
         <div class="row">
             {{ form_row(form.api.securitySecretKey) }}
             {{ form_row(form.api.securitySecretIv) }}
@@ -10,14 +10,8 @@
     </div>
 </div>
 
-<div class="card">
-    <h4 class="card-title card-header">
-        <div class="row">
-            <div class="col-md-6">
-                <i class="icm-google me-2"></i>{{ "Google"|trans }}
-            </div>
-        </div>
-    </h4>
+<div class="card mb-3">
+    <h4 class="main-subtitle"><i class="icm-google"></i>{{ "Google"|trans }}</h4>
     <div class="card-body pb-0">
         <div class="row">
             {% include 'admin/page/api/google-intls.html.twig' with {googleIntls: form.api.google.intls} %}
@@ -25,11 +19,11 @@
     </div>
 </div>
 
-<div class="card">
-    <h4 class="card-title card-header">
+<div class="card mb-3">
+    <h4 class="main-subtitle">
         <div class="row">
             <div class="col-md-6">
-                <i class="icm-instagram me-2"></i>{{ "Instagram"|trans }}
+                <i class="icm-instagram"></i>{{ "Instagram"|trans }}
             </div>
             <div class="col-md-6 text-end">
                 <a href="https://www.instagram.com/accounts/login/?force_authentication=1&enable_fb_login=1&platform_app_id=&next=/oauth/authorize/%3Fclient_id%3D1677ed07ddd54db0a70f14f9b1435579%26redirect_uri%3Dhttp%3A//instagram.pixelunion.net%26response_type%3Dtoken%26hl%3Den"
@@ -47,9 +41,9 @@
     </div>
 </div>
 
-<div class="card">
-    <h4 class="card-title card-header"><i class="icm-plus-circle me-2"></i>{{ "Autres"|trans }}</h4>
+<div class="card mb-3">
     <div class="card-body pb-0">
+        <h4 class="main-subtitle"><i class="icm-plus-circle"></i>{{ "Autres"|trans }}</h4>
         <div class="row">
             {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.api.custom.intls} %}
             {{ form_row(form.api.addThis) }}

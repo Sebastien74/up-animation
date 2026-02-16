@@ -13,10 +13,10 @@
         </a>
         <ul aria-expanded="false" class="collapse{% if pageTag == 'agendas' %} in{% endif %}">
             <li>
-                <a href="{{ path('admin_agenda_index', {website: websiteId}) }}" data-toggle="preloader">{{ "Liste des agendas"|trans }}</a>
+                <a href="{{ path('admin_agenda_index', {website: websiteId}) }}">{{ "Liste des agendas"|trans }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_agendainformation_index', {website: websiteId}) }}"{% if '/agendas/informations/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des informations"|trans }}</a>
+                <a href="{{ path('admin_agendainformation_index', {website: websiteId}) }}"{% if '/agendas/informations/' in uri %} class="active"{% endif %}>{{ "Liste des informations"|trans }}</a>
             </li>
         </ul>
     </li>

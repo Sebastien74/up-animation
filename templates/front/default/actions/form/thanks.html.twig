@@ -9,7 +9,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null,  webpack) }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null,  webpack, {defer: true}) }}
 {% endblock %}
 
 {% set seoTitle = "Merci pour votre message."|trans %}

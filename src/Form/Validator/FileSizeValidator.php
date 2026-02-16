@@ -15,7 +15,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * FileSizeValidator.
  *
- * Check if is valid mobile phone
+ * Check if it is a valid mobile phone.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */

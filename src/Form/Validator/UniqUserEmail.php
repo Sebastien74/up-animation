@@ -11,12 +11,9 @@ use Symfony\Component\Validator\Constraint;
 /**
  * UniqUserEmail.
  *
- * @Annotation
- * @Target({"PROPERTY", "ANNOTATION"})
- *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class UniqUserEmail extends Constraint
 {
     protected string $message = '';

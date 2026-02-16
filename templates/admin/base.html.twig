@@ -134,11 +134,11 @@
             <script src="{{ asset('bundles/tinymce/ext/tinymce/tinymce.min.js') }}" defer></script>
             <script src="{{ asset('bundles/tinymce/ext/tinymce-webcomponent.js') }}" type="module" defer></script>
             {% if isIE() %}
-                {{ encore_entry_script_tags('browsers', null,  'vendor') }}
+                {{ encore_entry_script_tags('browsers', null,  'vendor', {defer: true}) }}
             {% endif %}
             {% if scriptsSrc is defined %}
                 {% for webpackEntry, webpackName in scriptsSrc %}
-                    {{ encore_entry_script_tags(webpackEntry, null,  webpackName) }}
+                    {{ encore_entry_script_tags(webpackEntry, null,  webpackName, {defer: true}) }}
                 {% endfor %}
             {% endif %}
             {{ encore_entry_script_tags('admin-vendor-'~adminTheme, null, 'admin', {defer: true}) }}

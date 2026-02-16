@@ -239,15 +239,15 @@ final class InformationModel extends BaseModel
     private static function socialIcon(string $name): ?string
     {
         $icons = [
-            'facebook' => 'fab facebook-f',
-            'google' => 'fab google',
-            'instagram' => 'fab instagram',
-            'linkedin' => 'fab linkedin-in',
-            'pinterest' => 'fab pinterest-p',
-            'tripadvisor' => 'fab tripadvisor',
-            'twitter' => 'fab twitter',
-            'youtube' => 'fab youtube',
-            'tiktok' => 'fab tiktok',
+            'facebook' => 'facebook-f',
+            'google' => 'google',
+            'instagram' => 'instagram',
+            'linkedin' => 'linkedin-in',
+            'pinterest' => 'pinterest-p',
+            'tripadvisor' => 'tripadvisor',
+            'twitter' => 'twitter',
+            'youtube' => 'youtube',
+            'tiktok' => 'tiktok',
         ];
 
         return !empty($icons[$name]) ? $icons[$name] : null;

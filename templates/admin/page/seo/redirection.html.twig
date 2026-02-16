@@ -19,26 +19,26 @@
 
     {{ form_start(form, {attr: {novalidate: "novalidate", id: 'seo-form-redirection'}}) }}
 
-        <div class="card">
+        <div class="card mb-3">
 
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-6">
                         <a href="{{ asset('build/admin/docs/redirections.xlsx') }}" class="btn btn-outline-info-lighten me-1 standard" download="redirection.xlsx">
-                            <i class="icm-upload me-2"></i>{{ "Télécharger le modèle XLS"|trans }}
+                            <i class="icm-upload"></i>{{ "Télécharger le modèle XLS"|trans }}
                         </a>
                         <span class="btn btn-outline-info-lighten standard me-1 cursor" data-bs-toggle="modal" data-bs-target="#import-modal">
-                            <i class="icm-download me-2"></i>{{ "Importer"|trans }}
+                            <i class="icm-download"></i>{{ "Importer"|trans }}
                         </span>
                         {{ render_esi(path('admin_redirection_export', {website: website.id} )) }}
                     </div>
                     <div class="col-md-6 text-end">
-                        <button type="submit" class="btn-info btn standard me-1"><i class="icm-save me-2"></i>{{ "Enregistrer"|trans }}</button>
-                        <button role="button" class="add-collection btn btn-success standard"
+                        <button type="submit" class="btn-info btn standard me-1"><i class="icm-save"></i>{{ "Enregistrer"|trans }}</button>
+                        <button role="button" class="add-collection btn-app success"
                                 data-type="table"
                                 data-collection-target="prepend"
                                 data-target="#redirections-collection">
-                            <i class="icm-plus me-2"></i>{{ "Ajouter une redirection"|trans }}
+                            <i class="icm-plus"></i>{{ "Ajouter une redirection"|trans }}
                         </button>
                     </div>
                 </div>

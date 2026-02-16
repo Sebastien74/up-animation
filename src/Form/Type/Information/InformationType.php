@@ -48,9 +48,9 @@ class InformationType extends AbstractType
         $website = $options['website'];
         $multiLocales = count($website->getConfiguration()->getAllLocales()) > 1;
 
-        $intlsFields = ['title', 'introduction' => 'col-12 editor', 'body'];
+        $intlsFields = ['title' => 'col-12', 'introduction' => 'col-lg-4 editor', 'body' => 'col-lg-4'];
         if (in_array('ROLE_ALERT', $this->user->getRoles())) {
-            $intlsFields['placeholder'] = 'col-12 editor';
+            $intlsFields['placeholder'] = 'col-lg-4 editor';
             $intlsFields['active'] = 'col-md-4';
 //            $intlsFields['newTab'] = 'col-md-6';
         }
@@ -115,7 +115,7 @@ class InformationType extends AbstractType
             'entry_options' => [
                 'attr' => [
                     'class' => 'phone',
-                    'icon' => 'fal phone',
+                    'icon' => 'phone',
                     'group' => 'col-md-3',
                     'caption' => $this->translator->trans('Numéro de téléphone', [], 'admin'),
                     'button' => $this->translator->trans('Ajouter un numéro', [], 'admin'),
@@ -133,7 +133,7 @@ class InformationType extends AbstractType
             'entry_options' => [
                 'attr' => [
                     'class' => 'email',
-                    'icon' => 'fal at',
+                    'icon' => 'at',
                     'group' => 'col-md-3',
                     'caption' => $this->translator->trans('E-mails', [], 'admin'),
                     'button' => $this->translator->trans('Ajouter un e-mail', [], 'admin'),
@@ -151,7 +151,7 @@ class InformationType extends AbstractType
             'entry_options' => [
                 'attr' => [
                     'class' => 'address',
-                    'icon' => 'fal map-marked-alt',
+                    'icon' => 'map-marked-alt',
                     'group' => 'col-md-12',
                     'caption' => $this->translator->trans('Adresses', [], 'admin'),
                     'button' => $this->translator->trans('Ajouter une adresse', [], 'admin'),
@@ -169,7 +169,7 @@ class InformationType extends AbstractType
             'entry_options' => [
                 'attr' => [
                     'class' => 'legals',
-                    'icon' => 'fal balance-scale-left',
+                    'icon' => 'balance-scale-left',
                     'group' => 'col-12',
                     'deletable' => $multiLocales,
                     'caption' => $this->translator->trans('Mentions légales', [], 'admin'),

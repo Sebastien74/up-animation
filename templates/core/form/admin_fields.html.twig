@@ -258,7 +258,7 @@
 
     <div id="{{ id }}_collection"
          data-index="{{ form.children|length }}"
-         class="collection{% if prototypePosition %} prototype-sortable{% endif %} {% if prototypeGroup %}row w-100 m-0{% else %}col-12{% endif %}"
+         class="collection{% if prototypePosition %} prototype-sortable{% endif %} {% if prototypeGroup %}row w-100{% else %}col-12{% endif %}"
          data-prototype="{{ macro.field_prototype(form.vars.prototype, prototypeGroup)|e('html_attr') }}">
         {% include 'admin/include/stripe-preloader.html.twig' %}
         {% for property in form.children %}
@@ -267,10 +267,10 @@
     </div>
 
     <div class="col-12 text-end mb-4">
-        <button role="button" class="add-collection btn btn-success"
+        <button role="button" class="add-collection btn-app success"
                 data-collection-target="append"
                 data-target="#{{ id }}_collection">
-                {{ 'fal plus'|icon(null, 15, 'white me-2') }}
+                <i class="icm-plus"></i>
             <span class="d-inline-block">
                 {% if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] %}
                     {{ prototypeOptions['attr']['button'] }}

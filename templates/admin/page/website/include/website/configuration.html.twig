@@ -4,9 +4,9 @@
 
 <div class="row">
     <div class="col-md-4 mb-4">
-        <div class="card">
-            <h4 class="card-title card-header"><i class="icm-cog me-2"></i>{{ "Global"|trans }}</h4>
+        <div class="card mb-3">
             <div class="card-body">
+                <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Global"|trans }}</h4>
                 <div class="row">
                     {{ form_row(form.adminName) }}
                     {{ form_row(form.configuration.charset) }}
@@ -16,9 +16,9 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <h4 class="card-title card-header"><i class="icm-copy me-2"></i>{{ "Pages"|trans }}</h4>
+        <div class="card mb-3">
             <div class="card-body">
+                <h4 class="main-subtitle"><i class="icm-copy"></i>{{ "Pages"|trans }}</h4>
                 <ul class="reset">
                     <li><a href="{{ schemeAndHost~"/check.php" }}" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark"><i class="icm-shield-check"></i></span>{{ 'Recommandations'|trans }}</a></li>
                     <li><a href="https://validator.schema.org/" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark"><i class="icm-shield-check"></i></span>{{ 'validator.schema.org'|trans }}</a></li>
@@ -38,9 +38,9 @@
         </div>
     </div>
     <div class="col-md-4 mb-4">
-        <div class="card">
-            <h4 class="card-title card-header"><i class="icm-flag me-2"></i>{{ "Statuts"|trans }}</h4>
+        <div class="card mb-3">
             <div class="card-body pb-0">
+                <h4 class="main-subtitle"><i class="icm-flag"></i>{{ "Statuts"|trans }}</h4>
                 <div class="row">
                     {{ form_row(form.configuration.onlineStatus) }}
                     {{ form_row(form.configuration.asDefault) }}
@@ -49,9 +49,9 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <h4 class="card-title card-header"><i class="icm-cube me-2"></i>{{ "Éléments"|trans }}</h4>
+        <div class="card mb-3">
             <div class="card-body pb-0">
+                <h4 class="main-subtitle"><i class="icm-cube"></i>{{ "Éléments"|trans }}</h4>
                 <div class="row">
                     {{ form_row(form.configuration.fullWidth) }}
                     {{ form_row(form.configuration.preloader) }}
@@ -62,9 +62,9 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <h4 class="card-title card-header"><i class="icm-tools me-2"></i>{{ "Administration"|trans }}</h4>
+        <div class="card mb-3">
             <div class="card-body pb-0">
+                <h4 class="main-subtitle"><i class="icm-tools"></i>{{ "Administration"|trans }}</h4>
                 <div class="row">
                     {{ form_row(form.configuration.adminAdvertising) }}
                     {{ form_row(form.configuration.collapsedAdminTrees) }}
@@ -73,9 +73,9 @@
         </div>
     </div>
     <div class="col-md-4 mb-4">
-        <div class="card">
-            <h4 class="card-title card-header"><i class="icm-globe me-2"></i>{{ "Internationalisation"|trans }}</h4>
+        <div class="card mb-3">
             <div class="card-body pb-0">
+                <h4 class="main-subtitle"><i class="icm-globe"></i>{{ "Internationalisation"|trans }}</h4>
                 <div class="row">
                     {{ form_row(form.configuration.locale) }}
                     {{ form_row(form.configuration.locales) }}
@@ -84,9 +84,9 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <h4 class="card-title card-header"><i class="icm-photo-video me-2"></i>{{ "Médias"|trans }}</h4>
+        <div class="card mb-3">
             <div class="card-body pb-0">
+                <h4 class="main-subtitle"><i class="icm-photo-video"></i>{{ "Médias"|trans }}</h4>
                 <div class="row">
                     {{ form_row(form.configuration.mediasSecondary) }}
                     {{ form_row(form.configuration.duplicateMediasStatus) }}
@@ -94,9 +94,9 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <h4 class="card-title card-header"><i class="icm-burn me-2"></i>{{ "Audit"|trans }}</h4>
+        <div class="card mb-3">
             <div class="card-body">
+                <h4 class="main-subtitle"><i class="icm-burn"></i>{{ "Audit"|trans }}</h4>
                 <ul class="reset">
                     <li><a href="https://gtmetrix.com" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark"><i class="icm-tachometer-alt-slowest"></i></span>{{ 'GTmetrix'|trans }}</a></li>
                     <li><a href="https://web.dev/measure/" target="_blank" class="mb-2"><span class="icon-wrap me-2 text-dark"><i class="icm-tachometer-alt-slowest"></i></span>{{ 'Measure web.dev'|trans }}</a></li>

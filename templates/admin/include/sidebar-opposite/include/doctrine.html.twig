@@ -6,18 +6,18 @@
     </a>
     <ul aria-expanded="false" class="collapse">
         <li>
-            <a href="{{ path('doctrine_schema_update') }}" data-toggle="preloader">
-                <span class="hide-menu">{{ "MAJ de la base de donnée"|trans }}</span>
+            <a href="{{ path('doctrine_schema_update') }}">
+                {{ "MAJ de la base de donnée"|trans }}
             </a>
         </li>
         <li>
-            <a href="{{ path('doctrine_clear_cache_result') }}" data-toggle="preloader">
-                <span class="hide-menu">{{ "Vider le cache des résultats"|trans }}</span>
+            <a href="{{ path('doctrine_clear_cache_result') }}">
+                {{ "Vider le cache des résultats"|trans }}
             </a>
         </li>
         <li>
-            <a href="{{ path('doctrine_schema_validate') }}" data-toggle="preloader">
-                <span class="hide-menu">{{ "Vérification du schéma"|trans }}</span>
+            <a href="{{ path('doctrine_schema_validate') }}">
+                {{ "Vérification du schéma"|trans }}
             </a>
         </li>
     </ul>

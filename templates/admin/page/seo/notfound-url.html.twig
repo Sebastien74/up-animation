@@ -31,7 +31,7 @@
                         {% set active = page.type == type and page.category == category %}
                         <a href="{{ path("admin_notfoundurl_index", {website: websiteId(), type: page.type, category: page.category}) }}"
                            class="nav-link{% if active %} active{% endif %}"
-                           data-toggle="preloader">
+                          >
                             {% if page.count > 0 %}
                                 <span class="me-1 pe-2 ps-2 badge badge-{% if active %}white{% else %}info{% endif %}">{{ page.count }}</span>
                             {% endif %}

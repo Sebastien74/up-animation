@@ -248,6 +248,13 @@ form {
     }
 }
 
+.prototype-block {
+
+    border: 1px solid $input-border-color !important;
+    border-radius: $border-radius;
+    background: $bg-gradient-primary;
+}
+
 form .btn-group-toggle label {
 
     min-height: 52px;

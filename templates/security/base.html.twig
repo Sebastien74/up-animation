@@ -23,7 +23,8 @@
         <meta name="apple-mobile-web-app-title" content="Up!" />
         <link rel="manifest" href="{{ asset('build/security/images/site.webmanifest', 'security') }}" />
         <meta property="og:image" content="{{ asset('build/security/images/share.jpg', 'security') }}">
-        <link href="{{ asset('build/security/security-fonts.css', 'security') }}" rel="preload" as="style" class="preload-css" nonce="{{ csp_nonce() }}">
+        <link rel="preload" href="{{ asset('build/security/security-fonts.css', 'security') }}" as="style" onload="this.onload=null;this.rel='stylesheet'" nonce="{{ csp_nonce() }}">
+        <noscript><link rel="stylesheet" href="{{ asset('build/security/security-fonts.css', 'security') }}" nonce="{{ csp_nonce() }}"></noscript>
         {% block stylesheets %}
             {{ encore_entry_link_tags('security', null, 'security', {nonce: csp_nonce()}) }}
         {% endblock %}
@@ -53,9 +54,9 @@
         {% include 'core/data-path.html.twig' only %}
         {% block javascripts %}
             {% if isIE() %}
-                {{ encore_entry_script_tags('browsers', null, 'vendor', {nonce: csp_nonce()}) }}
+                {{ encore_entry_script_tags('browsers', null, 'vendor', {nonce: csp_nonce(), defer: true}) }}
             {% endif %}
-            {{ encore_entry_script_tags('security', null, 'security', {nonce: csp_nonce()}) }}
+            {{ encore_entry_script_tags('security', null, 'security', {nonce: csp_nonce(), defer: true}) }}
         {% endblock %}
     </body>
 

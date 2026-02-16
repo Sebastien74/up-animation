@@ -2,7 +2,7 @@
 
 {% trans_default_domain 'admin' %}
 
-{% set pageIcon = 'fal books' %}
+{% set pageIcon = 'books' %}
 
 {% block title %}{{ "Blibliothèque d'icônes"|trans|htmlEntities }}{% endblock %}
 {% block pageTitle %}{{ "Blibliothèque d'icônes"|trans }}{% endblock %}
@@ -13,13 +13,13 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('admin-icons-library', null, 'admin', {defer: false}) }}
+    {{ encore_entry_script_tags('admin-icons-library', null, 'admin', {defer: true}) }}
     {{ parent() }}
 {% endblock %}
 
 {% block body %}
 
-    <div class="card">
+    <div class="card mb-3">
 
         <ul class="nav nav-tabs custom-tab large" role="tablist">
             {% for libraryName, icons in libraries %}
@@ -28,7 +28,7 @@
                         {% set active = libraryName == library %}
                         <a href="{{ path("admin_icons", {website: websiteId, library: libraryName}) }}"
                            class="nav-link{% if active %} active{% endif %}"
-                           data-toggle="preloader">
+                          >
                             <span class="d-none d-sm-inline-block">{{ libraryName|capitalize|raw }}</span>
                         </a>
                     </li>
@@ -38,7 +38,7 @@
                 {% set active = library == 'website' %}
                 <a href="{{ path("admin_icons", {website: websiteId, library: 'website'}) }}"
                    class="nav-link{% if active %} active{% endif %}"
-                   data-toggle="preloader">
+                  >
                     <span class="d-none d-sm-inline-block">{{ "Icônes du site"|trans|raw }}</span>
                 </a>
             </li>

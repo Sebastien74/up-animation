@@ -13,16 +13,16 @@
         </a>
         <ul aria-expanded="false" class="collapse{% if pageTag == 'newscasts' %} in{% endif %}">
             <li>
-                <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" data-toggle="preloader">{{ "Liste des actualités"|trans }}</a>
+                <a href="{{ path('admin_newscast_index', {website: websiteId}) }}">{{ "Liste des actualités"|trans }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_newscastcategory_index', {website: websiteId}) }}"{% if '/newscasts/categories/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des catégories"|trans }}</a>
+                <a href="{{ path('admin_newscastcategory_index', {website: websiteId}) }}"{% if '/newscasts/categories/' in uri %} class="active"{% endif %}>{{ "Liste des catégories"|trans }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_newscastteaser_index', {website: websiteId}) }}"{% if '/newscasts/teasers/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Configuration des teasers"|trans }}</a>
+                <a href="{{ path('admin_newscastteaser_index', {website: websiteId}) }}"{% if '/newscasts/teasers/' in uri %} class="active"{% endif %}>{{ "Configuration des teasers"|trans }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_newscastlisting_index', {website: websiteId}) }}"{% if '/newscasts/listings/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Configuration des index"|trans }}</a>
+                <a href="{{ path('admin_newscastlisting_index', {website: websiteId}) }}"{% if '/newscasts/listings/' in uri %} class="active"{% endif %}>{{ "Configuration des index"|trans }}</a>
             </li>
         </ul>
     </li>

@@ -23,22 +23,22 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('admin-edit-in-tab', null,  'admin') }}
+    {{ encore_entry_script_tags('admin-edit-in-tab', null,  'admin', {defer: true}) }}
     {{ parent() }}
 {% endblock %}
 
 {% set tabs = {
     intls: {
         title: "Description"|trans,
-        icon: "fal align-center"
+        icon: "align-center"
     },
     configuration: {
         title: "Configuration"|trans,
-        icon: "fal cog"
+        icon: "cog"
     },
     seo: {
         title: "Référencement"|trans,
-        icon: "fal chart-line"
+        icon: "chart-line"
     }}
 %}
 
@@ -58,7 +58,7 @@
                     <li class="nav-item">
                         <a {% if not isMainEntity %}href="{{ path('admin_newscast_edit', {website: websiteId, newscast: entity.id, tab: tabId} ) }}"{% endif %}
                            id="nav-{{ tabId }}-tab" class="nav-link{% if activeTab == tabId or not activeTab and loop.first and isMainEntity %} active{% endif %}"
-                            {% if isMainEntity %}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}"{% else %} data-toggle="preloader"{% endif %}>
+                            {% if isMainEntity %}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}"{% else %}{% endif %}>
                             {{ config.icon|icon(17, 17, 'me-sm-2') }}
                             <span class="d-none d-sm-inline-block">{{ config.title }}</span>
                         </a>
@@ -75,11 +75,11 @@
                 <li class="nav-item d-inline-flex right">
                     <a href="{{ path('admin_newscast_index', {website: website.id}) }}"
                        class="back-link d-inline-flex align-items-center nav-link btn btn-info py-2 px-4 text-white">
-                        <i class="icm-reply me-2"></i><span>{{ "Retourner à la liste"|trans|raw }}</span>
+                        <i class="icm-reply"></i><span>{{ "Retourner à la liste"|trans|raw }}</span>
                     </a>
                     {% if isMainEntity %}
                         <span id="save-entity" class="nav-link save bg-info cursor text-white">
-                            <i class="icm-save me-2"></i><span>{{ "Enregistrer"|trans }}</span>
+                            <i class="icm-save"></i><span>{{ "Enregistrer"|trans }}</span>
                         </span>
                     {% endif %}
                 </li>

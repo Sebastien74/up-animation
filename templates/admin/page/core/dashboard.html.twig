@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('admin-dashboard', null,  'admin') }}
+    {{ encore_entry_script_tags('admin-dashboard', null,  'admin', {defer: true}) }}
     {{ parent() }}
 {% endblock %}
 
@@ -28,7 +28,7 @@
                 <p>{{ "Dernière connexion"|trans }} {{ app.user.lastLogin|ago }}</p>
             {% endif %}
             <div id="saying" class="mt-4">
-                <script language="javascript" charset="utf-8" src="https://dicocitations.lemonde.fr/dictonblog.js"></script>
+                <script language="javascript" charset="utf-8" src="https://dicocitations.lemonde.fr/dictonblog.js" defer></script>
             </div>
         </div>
 
@@ -40,7 +40,7 @@
                 <div class="row d-flex w-100">
                     {% if 'pages'|moduleActive(configuration) %}
                         <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_page_tree', {website: websiteId}) }}" data-toggle="preloader" class="text-info shadow-item d-flex flex-column h-100 p-4">
+                            <a href="{{ path('admin_page_tree', {website: websiteId}) }}" class="text-info shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin pages-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos pages"|trans }}</span>
                             </a>
@@ -48,7 +48,7 @@
                     {% endif %}
                     {% if 'medias'|moduleActive(configuration) %}
                         <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_medias_library', {website: websiteId}) }}" data-toggle="preloader" class="text-info shadow-item d-flex flex-column h-100 p-4">
+                            <a href="{{ path('admin_medias_library', {website: websiteId}) }}" class="text-info shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin images-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos médias"|trans }}</span>
                             </a>
@@ -56,7 +56,7 @@
                     {% endif %}
                     {% if 'newscast'|moduleActive(configuration) %}
                         <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" data-toggle="preloader" class="text-info shadow-item d-flex flex-column h-100 p-4">
+                            <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" class="text-info shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin news-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Publiez une actu"|trans }}</span>
                             </a>
@@ -66,7 +66,7 @@
                 <div class="row d-flex w-100">
                     {% if 'form'|moduleActive(configuration) %}
                         <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_form_index', {website: websiteId}) }}" data-toggle="preloader" class="text-info shadow-item d-flex flex-column h-100 p-4">
+                            <a href="{{ path('admin_form_index', {website: websiteId}) }}" class="text-info shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin form-color'|icon(70, 70, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos formulaires"|trans }}</span>
                             </a>
@@ -74,14 +74,14 @@
                     {% endif %}
                     {% if 'slider'|moduleActive(configuration) %}
                         <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_slider_index', {website: websiteId}) }}" data-toggle="preloader" class="text-info shadow-item d-flex flex-column h-100 p-4">
+                            <a href="{{ path('admin_slider_index', {website: websiteId}) }}" class="text-info shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin sliders-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Vos sliders"|trans }}</span>
                             </a>
                         </div>
                     {% endif %}
                     <div class="col-6 col-md-4 text-center py-2">
-                        <a href="{{ path('admin_support', {website: websiteId()}) }}" data-toggle="preloader" class="text-info d-flex shadow-item flex-column h-100 p-4">
+                        <a href="{{ path('admin_support', {website: websiteId()}) }}" class="text-info d-flex shadow-item flex-column h-100 p-4">
                             <span class="d-inline-block w-100 mb-2">{{ 'admin headset-color'|icon(65, 65, 'info') }}</span>
                             <span class="entitled text-dark d-inline-flex align-items-center justify-content-center mt-auto">{{ "Besoin d’aide ?"|trans }}</span>
                         </a>
@@ -104,10 +104,10 @@
                                             {{ notFoundUrls|length }}
                                         {% endif %}
                                     </span>
-                                    <span class="entitled text-dark d-inline-flex align-items-center justify-content-center"><i class="icm-unlink me-2"></i>{{ "Erreurs 404"|trans }}</span>
+                                    <span class="entitled text-dark d-inline-flex align-items-center justify-content-center"><i class="icm-unlink"></i>{{ "Erreurs 404"|trans }}</span>
                                 </div>
                             </a>
-                            <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: defaultLocale}) }}" data-toggle="preloader"
+                            <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: defaultLocale}) }}"
                                class="w-100 shadow-item text-center d-inline-flex align-items-center justify-content-center py-3 px-4 my-2">
                                 <div class="inner">
                                     <span class="count text-dark w-100 d-inline-block">{{ noSeoCounts['total'] }}</span>
@@ -128,7 +128,7 @@
                                             </ul>
                                         </div>
                                     {% endif %}
-                                    <span class="entitled text-dark w-100 d-inline-block"><i class="icm-search me-2"></i>{{ "SEO manquant"|trans }}</span>
+                                    <span class="entitled text-dark w-100 d-inline-block"><i class="icm-search"></i>{{ "SEO manquant"|trans }}</span>
                                 </div>
                             </a>
                         </div>

@@ -3,6 +3,8 @@ et si tous second caché et que le parent ne match pas on cache aussi le parent
 
 Revoir toutes les requetes depuis le debut
 
+JS Natif Layout back
+
 Virer les  data-toggle="preloader"
 
 Pou le selecteur de picto pour les icon actions et modules et autres récupérer les icones i
@@ -33,6 +35,8 @@ SUr la page sécurity Total time de 1300ms c'est bizarre
 Changer l'intitulé du bouton produits index pour quelque chose de plus générique ChaGPT 
 
 PAge 404 back
+
+A la fin du refector CSS faire une passe Juni pour regrouper les classes css
 
 icon copyright pied de page back
 

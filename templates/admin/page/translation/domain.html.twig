@@ -4,7 +4,7 @@
 
 {% set name = 'singular'|trans([], domain.name) and 'singular'|trans([], domain.name) != 'singular'
     ? 'singular'|trans([], domain.name) : domain.adminName  %}
-{% set pageIcon = 'fal globe' %}
+{% set pageIcon = 'globe' %}
 
 {% block title %}{{ "Contenus :"|trans~' '~name|htmlEntities }}{% endblock %}
 {% block pageTitle %}{{ "Contenus :"|trans~' '~name }}{% endblock %}
@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('admin-translation', null,  'admin') }}
+    {{ encore_entry_script_tags('admin-translation', null,  'admin', {defer: true}) }}
     {{ parent() }}
 {% endblock %}
 
@@ -33,7 +33,7 @@
                     {% endif %}
                 </div>
                 <div class="col-md-4 text-end my-auto">
-                    <span data-toggle="preloader">
+                    <span>
                         <a href="{{ lastRoute() }}" class="btn btn-white text-info"
                            data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
                            aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">

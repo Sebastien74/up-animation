@@ -279,7 +279,7 @@
                                                         {% set routeArgs = route|routeArgs(entity, routeArgs) %}
                                                         {% if routeArgs %}
                                                             <a href="{{ path(route, routeArgs) }}" class="btn-app small icon-start"
-                                                               {% if route != 'admin_medias_downloader' %} data-toggle="preloader"{% endif %}>
+                                                               {% if route != 'admin_medias_downloader' %}{% endif %}>
                                                                 {% set disableCount = interface.disableCount is defined and buttonsProperty in interface.disableCount %}
                                                                 {% set counter = entity|countCollection(buttonsProperty) %}
                                                                 {% if counter|isInt and not disableCount %}<span class="btn-icon small">{{ counter }}</span>{% endif %}{{ label }}
@@ -320,7 +320,7 @@
                                                 {% endif %}
 
                                                 {% if routeExist('admin_'~interface['name']~'_tree') and editActive %}
-                                                    <span data-toggle="preloader" class="btn-circle-wrap">
+                                                    <span class="btn-circle-wrap">
                                                         {% set treeArgs = ('admin_'~interface['name']~'_tree')|routeArgs(interface.entity, args) %}
                                                         <a href="{{ path('admin_'~interface['name']~'_tree', args) }}"
                                                            data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}" class="btn-icon small">
@@ -388,7 +388,7 @@
                                 <tr>
                                     <td colspan="12" class="px-4">
                                         <div class="py-2 d-flex align-items-center justify-content-center">
-                                            <i class="btn-icon info icm-info me-2"></i>{{ "Aucun résultat"|trans }}
+                                            <i class="btn-icon info icm-info"></i>{{ "Aucun résultat"|trans }}
                                         </div>
                                     </td>
                                 </tr>

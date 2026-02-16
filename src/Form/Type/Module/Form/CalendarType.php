@@ -122,7 +122,7 @@ class CalendarType extends AbstractType
                 'allow_add' => true,
                 'prototype' => true,
                 'by_reference' => true,
-                'entry_options' => ['attr' => ['button' => false, 'icon' => 'fal calendar']],
+                'entry_options' => ['attr' => ['button' => false, 'icon' => 'calendar']],
             ]);
 
             $builder->add('exceptions', Type\CollectionType::class, [
@@ -133,7 +133,7 @@ class CalendarType extends AbstractType
                 'delete_empty' => true,
                 'prototype' => true,
                 'by_reference' => false,
-                'entry_options' => ['attr' => ['group' => 'col-md-4', 'icon' => 'fal concierge-bell']],
+                'entry_options' => ['attr' => ['group' => 'col-md-4', 'icon' => 'concierge-bell']],
             ]);
         }
 

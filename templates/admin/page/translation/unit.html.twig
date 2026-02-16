@@ -46,7 +46,7 @@
                              data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
                              class="img-fluid lazy-load me-1" height="10" width="14">
                         {{ "Vous devez regénérer les traductions du domaine"|trans|striptags~' "'~entity.domain.adminName~'"' }}
-                        {{ "ou"|trans|raw }} <a href="{{ path('admin_translationunit_regenerate', {website: websiteId(), translationUnit: entity.id}) }}" class="text-white text-underline" data-toggle="preloader">{{'regénérer la clé de traduction'|trans|raw }}</a>
+                        {{ "ou"|trans|raw }} <a href="{{ path('admin_translationunit_regenerate', {website: websiteId(), translationUnit: entity.id}) }}" class="text-white text-underline">{{'regénérer la clé de traduction'|trans|raw }}</a>
                     </span>
                 {% endif %}
             {% endfor %}

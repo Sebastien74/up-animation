@@ -39,7 +39,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('front-'~websiteTemplate~'-cms', null,  webpack) }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-cms', null,  webpack, {defer: true}) }}
 {% endblock %}
 
 {% block body %}

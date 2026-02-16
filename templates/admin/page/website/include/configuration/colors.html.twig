@@ -9,7 +9,7 @@
     {% set deletable = isNew ? true : color.vars.data.deletable %}
 
     <div class="prototype col-md-6 col-lg-3">
-        <div class="card">
+        <div class="card mb-3">
             <div class="card-body pb-0">
                 <div class="row">
                     {{ form_row(color.adminName) }}
@@ -60,15 +60,15 @@
             <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-{{ category }}" aria-expanded="false" aria-controls="collapse-{{ category }}">
                 {% set label = category|trans|capitalize %}
                 {% if category == 'background' %}
-                    <i class="icm-eye-dropper me-2"></i>{% set label = 'Couleurs de fond'|trans %}
+                    <i class="icm-eye-dropper"></i>{% set label = 'Couleurs de fond'|trans %}
                 {% elseif category == 'button' %}
-                    <i class="icm-link me-2"></i>{% set label = 'Boutons'|trans %}
+                    <i class="icm-link"></i>{% set label = 'Boutons'|trans %}
                 {% elseif category == 'color' %}
-                    <i class="icm-tint me-2"></i>{% set label = 'Couleurs'|trans %}
+                    <i class="icm-tint"></i>{% set label = 'Couleurs'|trans %}
                 {% elseif category == 'alert' %}
-                    <i class="icm-exclamation-triangle me-2"></i>{% set label = 'Alertes'|trans %}
+                    <i class="icm-exclamation-triangle"></i>{% set label = 'Alertes'|trans %}
                 {% elseif category == 'favicon' %}
-                    <i class="icm-ravelry me-2"></i>{% set label = 'Favicons'|trans %}
+                    <i class="icm-ravelry"></i>{% set label = 'Favicons'|trans %}
                 {% endif %}
                 {% if category %}{{ label }}{% endif %}
                 <i class="icm-chevron-down"></i>
@@ -86,10 +86,10 @@
 </div>
 
 <div class="w-100 text-end mt-4 mb-4">
-    <button role="button" class="add-collection btn btn-success standard"
+    <button role="button" class="add-collection btn-app success"
             data-type="table"
             data-collection-target="append"
             data-target="#colors-collection">
-        <i class="icm-plus me-2"></i>{{ "Ajouter une couleur"|trans }}
+        <i class="icm-plus"></i>{{ "Ajouter une couleur"|trans }}
     </button>
 </div>

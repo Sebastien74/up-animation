@@ -303,10 +303,10 @@
 {#        {% block javascripts %}#}
 {#            {{ encore_entry_script_tags('front-'~websiteTemplate~'-vendor', null, webpack, {defer: true, type: 'module', nonce: csp_nonce()}) }}#}
 {#            {% if axeptioExternal or axeptioId %}#}
-{#                {{ encore_entry_script_tags('front-'~websiteTemplate~'-gdpr', null, webpack, {async: true, nonce: csp_nonce()}) }}#}
+{#                {{ encore_entry_script_tags('front-'~websiteTemplate~'-gdpr', null, webpack, {async: true, nonce: csp_nonce(), defer: true}) }}#}
 {#            {% endif %}#}
 {#            {% if matomoId %}#}
-{#                {{ encore_entry_script_tags('front-'~websiteTemplate~'-matomo', null, webpack, {async: true, nonce: csp_nonce()}) }}#}
+{#                {{ encore_entry_script_tags('front-'~websiteTemplate~'-matomo', null, webpack, {async: true, nonce: csp_nonce(), defer: true}) }}#}
 {#            {% endif %}#}
 {#            {{ jsRouting() }}#}
 {#        {% endblock %}#}

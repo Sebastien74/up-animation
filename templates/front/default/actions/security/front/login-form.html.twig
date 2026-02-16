@@ -33,7 +33,7 @@
                             {% if 'facebookConnect' in security.frontRegistrationFields %}
                                 <div class="col-lg-6">
                                     <a href="{{ path('security_front_connect_facebook_start') }}" class="btn btn-facebook w-100">
-                                        {{ 'fab facebook-f'|icon(null, 16) }}
+                                        <i class="icon-facebook-f"></i>
                                         {{ "Facebook"|trans|raw }}
                                     </a>
                                 </div>
@@ -41,7 +41,7 @@
                             {% if 'googleConnect' in security.frontRegistrationFields %}
                                 <div class="col-lg-6">
                                     <a href="{{ path('security_front_connect_google_start') }}" class="btn btn-google w-100">
-                                        {{ 'fab google'|icon(null, 16) }}
+                                        <i class="icon-google"></i>
                                         {{ "Google"|trans|raw }}
                                     </a>
                                 </div>

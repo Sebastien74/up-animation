@@ -1,8 +1,8 @@
 {% trans_default_domain 'admin' %}
 
-<div class="card">
-    <h4 class="card-title card-header"><i class="icm-css3-alt me-2"></i>{{ "Classes personnalisées"|trans }}</h4>
+<div class="card mb-3">
     <div class="card-body pb-0">
+        <h4 class="main-subtitle"><i class="icm-css3-alt"></i>{{ "Classes personnalisées"|trans }}</h4>
 
         {% import _self as macro %}
 
@@ -37,11 +37,11 @@
         </div>
 
         <div class="w-100 text-end mt-4 mb-4">
-            <button role="button" class="add-collection btn btn-success standard"
+            <button role="button" class="add-collection btn-app success"
                     data-type="table"
                     data-collection-target="append"
                     data-target="#cssclasses-collection">
-                <i class="icm-plus me-2"></i>{{ "Ajouter une classe"|trans }}
+                <i class="icm-plus"></i>{{ "Ajouter une classe"|trans }}
             </button>
         </div>
 

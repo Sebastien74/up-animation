@@ -85,10 +85,10 @@
                                                 {% endif %}
                                                 {% if display %}
                                                     <div class="col-md-3 mb-3">
-                                                        <a href="{{ path }}" data-toggle="preloader"
+                                                        <a href="{{ path }}"
                                                            class="d-inline-flex align-items-center justify-content-center btn btn-info text-white text-center w-100 h-100 p-3 btn-add-block">
                                                             <span class="inner d-inline-block">
-                                                                {% set icon = blockAction.iconClass ? blockAction.iconClass : "fal question" %}
+                                                                {% set icon = blockAction.iconClass ? blockAction.iconClass : "question" %}
                                                                 {{ icon|icon(null, 40, 'white w-100 d-inline-block mb-2') }}
                                                                 <span class="add-block-title d-inline-block">{{ title|removeBetween(['(', ')']) }}</span>
                                                             </span>

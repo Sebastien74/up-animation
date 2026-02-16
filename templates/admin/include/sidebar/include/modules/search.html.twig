@@ -8,7 +8,7 @@
     {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['search']['entity'].adminName is defined ? intlsModules['search']['entity'].adminName : 'Actualités'|trans) %}
     {% set icon = intlsModules['search']['entity'].iconClass is defined and intlsModules['search']['entity'].iconClass ? intlsModules['search']['entity'].iconClass : '/medias/icons/light/newspaper.svg' %}
     <li{% if active %} class="active"{% endif %}>
-        <a href="{{ path('admin_search_index', {website: websiteId}) }}" data-toggle="preloader">
+        <a href="{{ path('admin_search_index', {website: websiteId}) }}">
             <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>

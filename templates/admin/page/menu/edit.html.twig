@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('admin-menu', null,  'admin') }}
+    {{ encore_entry_script_tags('admin-menu', null,  'admin', {defer: true}) }}
     {{ parent() }}
 {% endblock %}
 
@@ -21,9 +21,9 @@
     <div id="menu-edit-page" class="position-relative">
         <div class="row">
             <div class="col-md-4">
-                <div class="card">
-                    <h4 class="card-title card-header"><i class="icm-copy me-2"></i>{{ "Pages du site"|trans }}</h4>
+                <div class="card mb-3">
                     <div class="card-body">
+                        <h4 class="main-subtitle"><i class="icm-copy"></i>{{ "Pages du site"|trans }}</h4>
                         <form method="post" id="page-selector-menu"
                               action="{{ path('admin_link_add', {website: websiteId(), menu: entity.id, locale: entitylocale, multiple: 0}) }}" class="mb-4">
                             <div class="input-group mb-3">
@@ -54,14 +54,14 @@
                     </div>
                 </div>
                 <div id="add-link-card" class="card">
-                    <h4 class="card-title card-header"><i class="icm-link me-2"></i>{{ "Ajouter un lien externe ou d'arborescence"|trans }}</h4>
+                    <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Ajouter un lien externe ou d'arborescence"|trans }}</h4>
                     <div class="card-body pb-0 px-2">
                         {{ render_esi(path('admin_link_new', {website: websiteId(), menu: entity.id, entitylocale: entitylocale} )) }}
                     </div>
                 </div>
-                <div class="card">
-                    <h4 class="card-title card-header"><i class="icm-cog me-2"></i>{{ "Configuration"|trans }}</h4>
+                <div class="card mb-3">
                     <div class="card-body pb-0">
+                        <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
                         <div class="row">
                             {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri}}) }}
                                 {% include 'admin/core/form/edit-fields-base.html.twig' with {
@@ -73,7 +73,7 @@
                                         href="#collapseConfigForm"
                                         aria-expanded="false"
                                         aria-controls="collapseForm">
-                                    <i class="icm-cog me-2"></i>{{ "Options avancées"|trans }}
+                                    <i class="icm-cog"></i>{{ "Options avancées"|trans }}
                                 </button>
                                 <div id="collapseConfigForm" class="collapse">
                                     {% include 'admin/core/form/edit-fields-base.html.twig' with {
@@ -87,10 +87,10 @@
             </div>
             <div class="col-md-8">
                 <div class="card radius-bottom">
-                    <h4 class="card-title card-header">
+                    <h4 class="main-subtitle">
                         <div class="row">
                             <div class="col-md-6 d-inline-flex align-items-center">
-                                <i class="icm-bars me-2"></i> {{ "Menu"|trans|striptags }}
+                                <i class="icm-bars"></i> {{ "Menu"|trans|striptags }}
                             </div>
                             <div class="col-md-6 d-inline-flex justify-content-end">
                                 {% if 'delete'|moduleActive(configuration) %}
@@ -107,7 +107,7 @@
                                 <span id="nestable-collapse-all" class="btn btn-dark cursor standard me-2{% if collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
                                     <i class="icm-arrow-alt-to-top"></i>
                                 </span>
-                                <span data-toggle="preloader">
+                                <span>
                                     <a href="{{ lastRoute() }}" class="btn btn-white text-info standard"
                                        data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
                                        aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">

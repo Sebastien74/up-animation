@@ -18,9 +18,9 @@
                     {% include 'admin/page/translation/translation-search.html.twig' %}
                 </li>
                 {% for transDomain in transDomains %}
-                    <li><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}" data-toggle="preloader">{{ transDomain.adminName }}</a></li>
+                    <li><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}">{{ transDomain.adminName }}</a></li>
                 {% endfor %}
-                <li><a href="{{ path('admin_translationdomain_index', {website: websiteId}) }}" data-toggle="preloader">{{ "Groupes de traductions"|trans }}</a></li>
+                <li><a href="{{ path('admin_translationdomain_index', {website: websiteId}) }}">{{ "Groupes de traductions"|trans }}</a></li>
             </ul>
         </li>
     {% else %}
@@ -33,7 +33,7 @@
                     {% include 'admin/page/translation/translation-search.html.twig' %}
                 </li>
                 {% for transDomain in transDomains %}
-                    <li><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}" data-toggle="preloader">{{ transDomain.adminName }}</a></li>
+                    <li><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}">{{ transDomain.adminName }}</a></li>
                 {% endfor %}
             </ul>
         </li>

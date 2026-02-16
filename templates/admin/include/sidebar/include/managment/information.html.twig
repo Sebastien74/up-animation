@@ -8,7 +8,7 @@
     {% set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['information']['entity'].adminName is defined ? intlsModules['information']['entity'].adminName : 'Informations'|trans) %}
     {% set icon = intlsModules['information']['entity'].iconClass is defined and intlsModules['information']['entity'].iconClass ? intlsModules['information']['entity'].iconClass : '/medias/icons/light/info.svg' %}
     <li>
-        <a href="{{ path('admin_information_edit', {website: websiteId, information: website.information.id}) }}" data-toggle="preloader">
+        <a href="{{ path('admin_information_edit', {website: websiteId, information: website.information.id}) }}">
             <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>

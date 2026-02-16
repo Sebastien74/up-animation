@@ -11,8 +11,8 @@
     {{ encore_entry_link_tags('admin-agenda', null, 'admin') }}
 {% endblock %}
 
-{% block javascripts %}x
-    {{ encore_entry_script_tags('admin-agenda', null,  'admin') }}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin-agenda', null,  'admin', {defer: true}) }}
     {{ parent() }}
 {% endblock %}
 
@@ -35,7 +35,7 @@
     </div>
 
     <div id="agenda-calendar-edition" class="d-inline-block w-100">
-        <div class="card">
+        <div class="card mb-3">
             <div class="card-header">
                 <div class="row">
                     <div class="col-sm-6 text-center text-md-start mb-3 mb-md-0">

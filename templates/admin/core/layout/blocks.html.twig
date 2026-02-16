@@ -109,7 +109,7 @@
 
                             {% if (block.blockType and block.blockType.editable) or (block.blockType and block.blockType.category == 'form') %}
                                 {% if 'edit'|moduleActive(configuration) and (block.blockType.category != 'layout' and block.blockType.slug != 'core-action' or block.blockType.slug == 'core-action' and block.action.entity is defined and block.action.entity) %}
-                                    <span data-toggle="preloader">
+                                    <span>
                                         <a href="{{ path('admin_block_edit', {website: websiteId(), col: col.id, interfaceName: interface.name, interfaceEntity: entity.id, block: block.id}) }}"
                                            data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}"
                                            class="btn-action">

@@ -9,11 +9,9 @@ use Symfony\Component\Validator\Constraint;
 /**
  * UniqOldRedirection.
  *
- * @Annotation
- * @Target({"PROPERTY", "ANNOTATION"})
- *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class UniqOldRedirection extends Constraint
 {
     protected string $message = '';

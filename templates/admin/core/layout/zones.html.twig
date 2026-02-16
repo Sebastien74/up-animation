@@ -48,7 +48,7 @@
 
                         {% if 'edit'|moduleActive(configuration) %}
                             {% set mediaRelation = zone.mediaRelations is defined ? zone.mediaRelations|intl(website().configuration.locale) : null %}
-                            <span class="item" data-toggle="preloader">
+                            <span class="item">
                                 <a href="{{ path('admin_zone_edit', {website: websiteId(), layout: layout.id, zone: zone.id, interfaceName: interface.name, interfaceEntity: entity.id}) }}"
                                    class="position-relative btn-action"
                                    data-bs-toggle="tooltip"

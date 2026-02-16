@@ -2,7 +2,7 @@
 
 {% trans_default_domain 'admin' %}
 
-{% set pageIcon = 'fal list' %}
+{% set pageIcon = 'list' %}
 {% set pageTitle = "Nos extensions"|trans %}
 
 {% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
@@ -28,14 +28,14 @@
             {% if granted('ROLE_INTERNAL') and entity.inAdvert or not extension.active and entity.inAdvert %}
 
                 {% set intl = entity|intl(app.request.locale, true) %}
-                {% set icon = entity.iconClass ? entity.iconClass : 'fal plus-square' %}
+                {% set icon = entity.iconClass ? entity.iconClass : 'plus-square' %}
                 {% set title = intl.title is defined and intl.title|striptags|length > 0 ? intl.title : entity.adminName %}
                 {% set subTitle = intl.subTitle is defined and intl.subTitle|striptags|length > 0 ? intl.subTitle : null %}
                 {% set introduction = intl.introduction is defined and intl.introduction|striptags|length > 0 ? intl.introduction : null %}
                 {% set body = intl.body is defined and intl.body|striptags|length > 0 ? intl.body : null %}
 
                 <div class="col-md-3">
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-body{% if extension.active %} active{% endif %}">
                             {% if 'medias' in icon %}
                                 <img data-src="{{ asset(icon) }}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="icon img-fluid lazy-load" height="40" alt="{{ title|striptags }}">

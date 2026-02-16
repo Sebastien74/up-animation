@@ -13,16 +13,16 @@
         </a>
         <ul aria-expanded="false" class="collapse{% if pageTag == 'recruitment' %} in{% endif %}">
             <li>
-                <a href="{{ path('admin_recruitmentjob_index', {"website": websiteId}) }}" data-toggle="preloader">{{ "Liste des offres"|trans }}</a>
+                <a href="{{ path('admin_recruitmentjob_index', {"website": websiteId}) }}">{{ "Liste des offres"|trans }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_recruitmentcontract_index', {"website": websiteId}) }}"{% if '/recruitment/contracts/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des types de contrat"|trans }}</a>
+                <a href="{{ path('admin_recruitmentcontract_index', {"website": websiteId}) }}"{% if '/recruitment/contracts/' in uri %} class="active"{% endif %}>{{ "Liste des types de contrat"|trans }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_recruitmentcategory_index', {"website": websiteId}) }}"{% if '/recruitment/categories/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Liste des domaines de compétence"|trans }}</a>
+                <a href="{{ path('admin_recruitmentcategory_index', {"website": websiteId}) }}"{% if '/recruitment/categories/' in uri %} class="active"{% endif %}>{{ "Liste des domaines de compétence"|trans }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_recruitmentlisting_index', {"website": websiteId}) }}"{% if '/recruitment/listings/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Configuration des index"|trans }}</a>
+                <a href="{{ path('admin_recruitmentlisting_index', {"website": websiteId}) }}"{% if '/recruitment/listings/' in uri %} class="active"{% endif %}>{{ "Configuration des index"|trans }}</a>
             </li>
         </ul>
     </li>

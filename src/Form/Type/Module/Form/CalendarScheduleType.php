@@ -37,7 +37,7 @@ class CalendarScheduleType extends AbstractType
             'allow_add' => true,
             'prototype' => true,
             'by_reference' => false,
-            'entry_options' => ['attr' => ['icon' => 'fal clock', 'group' => 'col-md-3']],
+            'entry_options' => ['attr' => ['icon' => 'clock', 'group' => 'col-md-3']],
         ]);
     }
 

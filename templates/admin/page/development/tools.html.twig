@@ -17,51 +17,51 @@
 {% block body %}
     <div class="row">
         <div class="col-md-3">
-            <div class="card">
-                <h4 class="card-title card-header"><i class="icm-crosshairs me-2"></i>{{ "Cache"|trans }}</h4>
+            <div class="card mb-3">
                 <div class="card-body">
-                    <a href="{{ path('cache_clear', {rename: true}) }}" class="btn btn-outline-info-darken mb-3 w-100" data-toggle="preloader">{{ "Vider le cache principal"|trans }}</a>
-                    <a href="{{ path('cache_clear_html') }}" class="btn btn-outline-info-darken mb-3 w-100" data-toggle="preloader">{{ "Vider le cache HTML"|trans }}</a>
-                    <a href="{{ path('doctrine_clear_cache_result') }}" class="btn btn-outline-info-darken mb-3 w-100" data-toggle="preloader">{{ "Vider le cache Doctrine"|trans }}</a>
-                    <a href="{{ path('cache_liip_clear') }}" class="btn btn-outline-info-darken mb-3 w-100" data-toggle="preloader">{{ "Vider les médias"|trans }}</a>
-                    <a href="{{ path('admin_translation_cache_clear', {website: websiteId()}) }}" class="btn btn-outline-info-darken mb-3 w-100" data-toggle="preloader">{{ "Vider les traductions"|trans }}</a>
-                    <a href="{{ path('admin_clear_sessions') }}" class="btn btn-outline-info-darken w-100" data-toggle="preloader">{{ "Vider les sessions"|trans }}</a>
+                    <h4 class="main-subtitle"><i class="icm-crosshairs"></i>{{ "Cache"|trans }}</h4>
+                    <a href="{{ path('cache_clear', {rename: true}) }}" class="btn-app center no-icon w-100 mb-3">{{ "Vider le cache principal"|trans }}</a>
+                    <a href="{{ path('cache_clear_html') }}" class="btn-app center no-icon w-100 mb-3">{{ "Vider le cache HTML"|trans }}</a>
+                    <a href="{{ path('doctrine_clear_cache_result') }}" class="btn-app center no-icon w-100 mb-3">{{ "Vider le cache Doctrine"|trans }}</a>
+                    <a href="{{ path('cache_liip_clear') }}" class="btn-app center no-icon w-100 mb-3">{{ "Vider les médias"|trans }}</a>
+                    <a href="{{ path('admin_translation_cache_clear', {website: websiteId()}) }}" class="btn-app center no-icon w-100 mb-3">{{ "Vider les traductions"|trans }}</a>
+                    <a href="{{ path('admin_clear_sessions') }}" class="btn-app center no-icon w-100">{{ "Vider les sessions"|trans }}</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card">
-                <h4 class="card-title card-header"><i class="icm-file-code me-2"></i>{{ "Assets"|trans }}</h4>
+            <div class="card mb-3">
                 <div class="card-body">
-                    <a href="{{ path('assets_install') }}" class="btn btn-outline-info-darken w-100" data-toggle="preloader">{{ "Installer"|trans }}</a>
+                    <h4 class="main-subtitle"><i class="icm-file-code"></i>{{ "Assets"|trans }}</h4>
+                    <a href="{{ path('assets_install') }}" class="btn-app center no-icon w-100">{{ "Installer"|trans }}</a>
                 </div>
-                <h4 class="card-title card-header no-radius"><i class="icm-sign-out-alt me-2"></i>{{ "Logs"|trans }}</h4>
                 <div class="card-body">
-                    <a href="{{ path('admin_log_clear') }}" class="btn btn-outline-info-darken swal-delete-link w-100">{{ "Supprimer"|trans }}</a>
+                    <h4 class="main-subtitle no-radius"><i class="icm-sign-out-alt"></i>{{ "Logs"|trans }}</h4>
+                    <a href="{{ path('admin_log_clear') }}" class="btn-app center no-icon swal-delete-link w-100">{{ "Supprimer"|trans }}</a>
                 </div>
-                <h4 class="card-title card-header no-radius"><i class="icm-file-alt me-2"></i>{{ "Fichiers"|trans }}</h4>
                 <div class="card-body">
-                    <a class="btn btn-outline-info-darken w-100 cursor" data-bs-toggle="modal" data-bs-target="#files-urlizer-modal">{{ "Urlizer"|trans }}</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <h4 class="card-title card-header"><i class="icm-link me-2"></i>{{ "Routing JS"|trans }}</h4>
-                <div class="card-body">
-                    <a href="{{ path('js_routing_dump') }}" class="btn btn-outline-info-darken w-100 mb-3" data-toggle="preloader">{{ "Générer les routes"|trans }}</a>
-                    <a href="{{ path('js_routing_debug') }}" class="btn btn-outline-info-darken w-100" data-toggle="preloader">{{ "Debug"|trans }}</a>
+                    <h4 class="main-subtitle no-radius"><i class="icm-file-alt"></i>{{ "Fichiers"|trans }}</h4>
+                    <a class="btn-app center no-icon w-100 cursor" data-bs-toggle="modal" data-bs-target="#files-urlizer-modal">{{ "Urlizer"|trans }}</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card">
-                <h4 class="card-title card-header"><i class="icm-database me-2"></i>{{ "Doctrine"|trans }}</h4>
+            <div class="card mb-3">
                 <div class="card-body">
-                    <a href="{{ path('doctrine_schema_update') }}" class="btn btn-outline-info-darken w-100 mb-3" data-toggle="preloader">{{ "MAJ de la base de donnée"|trans }}</a>
-                    <a href="{{ path('doctrine_schema_validate') }}" class="btn btn-outline-info-darken w-100 mb-3" data-toggle="preloader">{{ "Vérification du schéma"|trans }}</a>
+                    <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Routing JS"|trans }}</h4>
+                    <a href="{{ path('js_routing_dump') }}" class="btn-app center no-icon w-100 mb-3">{{ "Générer les routes"|trans }}</a>
+                    <a href="{{ path('js_routing_debug') }}" class="btn-app center no-icon w-100">{{ "Debug"|trans }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4 class="main-subtitle"><i class="icm-database"></i>{{ "Doctrine"|trans }}</h4>
+                    <a href="{{ path('doctrine_schema_update') }}" class="btn-app center no-icon w-100 mb-3">{{ "MAJ de la base de donnée"|trans }}</a>
+                    <a href="{{ path('doctrine_schema_validate') }}" class="btn-app center no-icon w-100 mb-3">{{ "Vérification du schéma"|trans }}</a>
                     {% if websiteId() %}
-                        <a href="{{ path('admin_entities_generator', {website: websiteId()}) }}" class="btn btn-outline-info-darken w-100">{{ "Générer la configuration des entités"|trans }}</a>
+                        <a href="{{ path('admin_entities_generator', {website: websiteId()}) }}" class="btn-app center no-icon w-100">{{ "Générer la configuration des entités"|trans }}</a>
                     {% endif %}
                 </div>
             </div>

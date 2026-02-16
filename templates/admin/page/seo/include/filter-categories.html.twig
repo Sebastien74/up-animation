@@ -69,7 +69,7 @@
                     <li class="item">
                         <span class="item-link text-info">
                             <a href="{{ path('admin_seo_model_edit', {website: websiteId(), model: model.id, entitylocale: entitylocale}) }}"
-                               class="link-item{% if isModel and entity.id == model.id %} active bold{% endif %}" data-toggle="preloader">
+                               class="link-item{% if isModel and entity.id == model.id %} active bold{% endif %}">
                                 {% set modelInterface = model.className|interface %}
                                 {% set entityDomain = 'entity_'~modelInterface.name %}
                                 {% set label = 'plural'|trans([], entityDomain) and 'plural'|trans([], entityDomain) != 'plural'

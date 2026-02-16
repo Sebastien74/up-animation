@@ -16,32 +16,32 @@
             <li>
                 <a href="{{ path('admin_catalog_index', {website: websiteId}) }}"
                    {% if '/catalogs/catalogs/' in uri %} class="active"{% endif %}
-                   data-toggle="preloader">{{ "Liste des catalogues"|trans }}</a>
+                  >{{ "Liste des catalogues"|trans }}</a>
             </li>
 {#            <li>#}
 {#                <a href="{{ path('admin_catalogproduct_index', {website: websiteId}) }}"#}
 {#                   {% if '/catalogs/products/' in uri %} class="active"{% endif %}#}
-{#                   data-toggle="preloader">{{ "Liste des produits"|trans }}</a>#}
+{#                  >{{ "Liste des produits"|trans }}</a>#}
 {#            </li>#}
             <li>
                 <a href="{{ path('admin_catalogfeature_index', {website: websiteId}) }}"
                    {% if '/catalogs/features/' in uri %} class="active"{% endif %}
-                   data-toggle="preloader">{{ "Liste des caractéristiques"|trans }}</a>
+                  >{{ "Liste des caractéristiques"|trans }}</a>
             </li>
             <li>
                 <a href="{{ path('admin_catalogcategory_index', {website: websiteId}) }}"
                    {% if '/catalogs/categories/' in uri %} class="active"{% endif %}
-                   data-toggle="preloader">{{ "Liste des catégories"|trans }}</a>
+                  >{{ "Liste des catégories"|trans }}</a>
             </li>
             <li>
                 <a href="{{ path('admin_productteaser_index', {website: websiteId}) }}"
                    {% if '/catalogs/teasers/' in uri %} class="active"{% endif %}
-                   data-toggle="preloader">{{ "Configuration des teasers"|trans }}</a>
+                  >{{ "Configuration des teasers"|trans }}</a>
             </li>
             <li>
                 <a href="{{ path('admin_cataloglisting_index', {website: websiteId}) }}"
                    {% if '/catalogs/listings/' in uri %} class="active"{% endif %}
-                   data-toggle="preloader">{{ "Configuration des index"|trans }}</a>
+                  >{{ "Configuration des index"|trans }}</a>
             </li>
         </ul>
     </li>

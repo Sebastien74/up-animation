@@ -50,7 +50,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get FormHelper.
+     * To call FormHelper.
      *
      * @throws ContainerExceptionInterface
      */
@@ -60,7 +60,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get TreeHelper.
+     * To call TreeHelper.
      *
      * @throws ContainerExceptionInterface
      */
@@ -70,7 +70,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get IndexHelper.
+     * To call IndexHelper.
      *
      * @throws ContainerExceptionInterface
      */
@@ -80,7 +80,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get FormDuplicateHelper.
+     * To call FormDuplicateHelper.
      *
      * @throws ContainerExceptionInterface
      */
@@ -90,7 +90,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get ClearMediasService.
+     * To call ClearMediasService.
      *
      * @throws ContainerExceptionInterface
      */
@@ -100,7 +100,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get SearchFilterService.
+     * To call SearchFilterService.
      *
      * @throws ContainerExceptionInterface
      */
@@ -110,7 +110,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get VideoService.
+     * To call VideoService.
      *
      * @throws ContainerExceptionInterface
      */
@@ -120,7 +120,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get PositionService.
+     * To call PositionService.
      *
      * @throws ContainerExceptionInterface
      */
@@ -130,7 +130,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get DeleteService.
+     * To call DeleteService.
      *
      * @throws ContainerExceptionInterface
      */
@@ -140,7 +140,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get TitleService.
+     * To call TitleService.
      *
      * @throws ContainerExceptionInterface
      */
@@ -150,7 +150,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get UrlManager.
+     * To call UrlManager.
      *
      * @throws ContainerExceptionInterface
      */
@@ -160,7 +160,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get UrlManager.
+     * To call UrlManager.
      *
      * @throws ContainerExceptionInterface
      */
@@ -170,7 +170,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get LayoutManager.
+     * To call LayoutManager.
      *
      * @throws ContainerExceptionInterface
      */
@@ -180,7 +180,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get TreeManager.
+     * To call TreeManager.
      *
      * @throws ContainerExceptionInterface
      */
@@ -190,7 +190,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get TreeManager.
+     * To call TreeManager.
      *
      * @throws ContainerExceptionInterface
      */
@@ -200,7 +200,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get DeleteInterface.
+     * To call DeleteInterface.
      */
     public function deleteManagers(): DeleteInterface
     {
@@ -208,7 +208,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get ImportInterface.
+     * To call ImportInterface.
      */
     public function importManagers(): ImportInterface
     {
@@ -216,7 +216,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get ExportInterface.
+     * To call ExportInterface.
      */
     public function exportManagers(): ExportInterface
     {
@@ -224,7 +224,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get too large files.
+     * To call too large files.
      *
      * @throws ContainerExceptionInterface|NonUniqueResultException
      */
@@ -296,7 +296,7 @@ class AdminLocator implements AdminLocatorInterface
     }
 
     /**
-     * To get route arguments.
+     * To call route arguments.
      */
     public function routeArgs(string $route, mixed $entity = null, array $parameters = []): array
     {

@@ -36,7 +36,7 @@ class SocialNetworkType extends AbstractType
             'label' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'addon' => 'fab facebook-f',
+                'addon' => 'facebook',
             ],
         ]);
 
@@ -45,7 +45,7 @@ class SocialNetworkType extends AbstractType
             'label' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'addon' => 'fab twitter',
+                'addon' => 'twitter',
             ],
         ]);
 
@@ -54,7 +54,7 @@ class SocialNetworkType extends AbstractType
             'label' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'addon' => 'fab google',
+                'addon' => 'google',
             ],
         ]);
 
@@ -63,7 +63,7 @@ class SocialNetworkType extends AbstractType
             'label' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'addon' => 'fab youtube',
+                'addon' => 'youtube',
             ],
         ]);
 
@@ -72,7 +72,7 @@ class SocialNetworkType extends AbstractType
             'label' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'addon' => 'fab tiktok',
+                'addon' => 'tiktok',
             ],
         ]);
 
@@ -81,7 +81,7 @@ class SocialNetworkType extends AbstractType
             'label' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'addon' => 'fab instagram',
+                'addon' => 'instagram',
             ],
         ]);
 
@@ -90,7 +90,7 @@ class SocialNetworkType extends AbstractType
             'label' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'addon' => 'fab linkedin-in',
+                'addon' => 'linkedin-in',
             ],
         ]);
 
@@ -99,7 +99,7 @@ class SocialNetworkType extends AbstractType
             'label' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'addon' => 'fab pinterest-p',
+                'addon' => 'pinterest-p',
             ],
         ]);
 
@@ -108,7 +108,7 @@ class SocialNetworkType extends AbstractType
             'label' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'addon' => 'fab tripadvisor',
+                'addon' => 'tripadvisor',
             ],
         ]);
     }

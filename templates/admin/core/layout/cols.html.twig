@@ -30,7 +30,7 @@
 
                                         {% if 'col-edit'|moduleActive(configuration) %}
                                             {% set mediaRelation = col.mediaRelations is defined ? col.mediaRelations|intl(website().configuration.locale) : null %}
-                                            <span data-toggle="preloader" class="position-relative col-img-bulle-wrap d-inline-block">
+                                            <span class="position-relative col-img-bulle-wrap d-inline-block">
                                                 {% if mediaRelation and mediaRelation.media and mediaRelation.media.filename %}
                                                     <span style="background: url({{ asset(mediaRelation|file({}, {path: true})) }})" class="image-info-bulle"></span>
                                                 {% endif %}

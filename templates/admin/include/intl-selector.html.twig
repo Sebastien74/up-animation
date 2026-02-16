@@ -14,7 +14,7 @@
             {% for websiteLocale in allLocales %}
                 {% if websiteLocale != entitylocale and (route)|routeExist %}
                     {% set args = args|merge({website: websiteId(), entitylocale: websiteLocale}) %}
-                    <a class="dropdown-item" href="{{ path(route, args) }}" data-toggle="preloader">
+                    <a class="dropdown-item" href="{{ path(route, args) }}">
                         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~websiteLocale~'.svg') }}" class="img-fluid lazy-load me-2" height="14" width="19">{{ websiteLocale|languageName }}
                     </a>
                 {% endif %}

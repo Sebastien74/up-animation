@@ -2,7 +2,7 @@
 
 {% trans_default_domain 'admin' %}
 
-{% set pageIcon = 'fal globe' %}
+{% set pageIcon = 'globe' %}
 
 {% block title %}{{ "Groupes de traductions"|trans|htmlEntities }}{% endblock %}
 {% block pageTitle %}{{ "Groupes de traductions"|trans }}{% endblock %}
@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('admin-translation', null,  'admin') }}
+    {{ encore_entry_script_tags('admin-translation', null,  'admin', {defer: true}) }}
     {{ parent() }}
 {% endblock %}
 
@@ -50,7 +50,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link no-radius" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}" data-toggle="preloader">
+                    <a class="nav-link no-radius" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}">
                         <i class="icm-broom"></i><span>{{ "Vider le cache"|trans }}</span>
                     </a>
                 </li>
@@ -82,7 +82,7 @@
                             : path('admin_translationdomain_index', {website: website.id, domains: 'admin'}) %}
                         {% set domainslabel = app.request.get('domains') ? "Traductions front"|trans : "Traductions admin"|trans %}
                         <a href="{{ domainsPath }}" class="btn btn-info d-flex align-items-center">
-                            <i class="icm-eye me-2"></i><span>{{ domainslabel|raw }}</span>
+                            <i class="icm-eye"></i><span>{{ domainslabel|raw }}</span>
                         </a>
                     </div>
                 </div>
@@ -134,7 +134,7 @@
                                                     <span data-bs-toggle="tooltip" title="{{ "Éditer le groupe"|trans|striptags }}">
                                                         <a href="{{ path('admin_translationdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
                                                            class="btn btn-info btn-circle btn-sm"
-                                                           data-toggle="preloader">
+                                                          >
                                                             <i class="icm-pencil-alt"></i>
                                                         </a>
                                                     </span>
@@ -147,7 +147,7 @@
                                                 <span data-bs-toggle="tooltip" title="{{ "Éditer les contenus"|trans|striptags }}">
                                                     <a href="{{ path('admin_translationsdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
                                                        class="btn btn-outline-info btn-circle btn-sm"
-                                                       data-toggle="preloader">
+                                                      >
                                                         <i class="icm-list-ul"></i>
                                                     </a>
                                                 </span>

@@ -16,27 +16,27 @@
         </a>
         <ul aria-expanded="false" class="collapse{% if active %} in{% endif %}">
             <li>
-                <a href="{{ path('admin_seo_edit', {website: websiteId, entitylocale: website().configuration.locale}) }}"{% if '/seo/edit/' in uri %} class="active"{% endif %}  data-toggle="preloader">{{ "Édition"|trans|raw }}</a>
+                <a href="{{ path('admin_seo_edit', {website: websiteId, entitylocale: website().configuration.locale}) }}"{% if '/seo/edit/' in uri %} class="active"{% endif %} >{{ "Édition"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_redirection_edit', {website: websiteId}) }}" data-toggle="preloader">{{ "Redirections"|trans|raw }}</a>
+                <a href="{{ path('admin_redirection_edit', {website: websiteId}) }}">{{ "Redirections"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_archive_index', {website: websiteId}) }}"{% if '/seo/archive/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "URLS archivées"|trans|raw }}</a>
+                <a href="{{ path('admin_archive_index', {website: websiteId}) }}"{% if '/seo/archive/' in uri %} class="active"{% endif %}>{{ "URLS archivées"|trans|raw }}</a>
             </li>
             {% if granted('ROLE_INTERNAL') %}
                 <li>
-                    <a href="{{ path('admin_notfoundurl_index', {website: websiteId, type: 'front', category: 'url'}) }}"{% if '/seo/not-found-urls/' in uri %} class="active"{% endif %} data-toggle="preloader">{{ "Erreurs 404"|trans|raw }}</a>
+                    <a href="{{ path('admin_notfoundurl_index', {website: websiteId, type: 'front', category: 'url'}) }}"{% if '/seo/not-found-urls/' in uri %} class="active"{% endif %}>{{ "Erreurs 404"|trans|raw }}</a>
                 </li>
                 <li>
-                    <a href="{{ path('admin_seo_sitemap', {website: websiteId}) }}" data-toggle="preloader">{{ "Sitemap"|trans|raw }}</a>
+                    <a href="{{ path('admin_seo_sitemap', {website: websiteId}) }}">{{ "Sitemap"|trans|raw }}</a>
                 </li>
                 <li>
-                    <a href="{{ path('admin_seoconfiguration_edit', {website: websiteId}) }}" data-toggle="preloader">{{ "Configuration"|trans|raw }}</a>
+                    <a href="{{ path('admin_seoconfiguration_edit', {website: websiteId}) }}">{{ "Configuration"|trans|raw }}</a>
                 </li>
                 {% if 'gdpr'|moduleActive(configuration) %}
                     <li>
-                        <a href="{{ path('admin_gdprcategory_index', {website: websiteId}) }}"{% if pageTag =='gdpr' %} class="active"{% endif %} data-toggle="preloader">{{ "RGPD"|trans|raw }}</a>
+                        <a href="{{ path('admin_gdprcategory_index', {website: websiteId}) }}"{% if pageTag =='gdpr' %} class="active"{% endif %}>{{ "RGPD"|trans|raw }}</a>
                     </li>
                 {% endif %}
             {% endif %}

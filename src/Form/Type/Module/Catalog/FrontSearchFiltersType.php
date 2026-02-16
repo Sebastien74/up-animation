@@ -71,7 +71,7 @@ class FrontSearchFiltersType extends AbstractType
                 'data' => $data,
                 'property_path' => 'text',
                 'attr' => [
-                    'addon' => 'fal search',
+                    'addon' => 'search',
                     'side' => 'right',
                     'placeholder' => $this->translator->trans('Recherche', [], 'front_form'),
                 ],
