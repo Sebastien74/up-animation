@@ -41,6 +41,7 @@
 /*-- a - Main --*/
 
 $white: #fff !global;
+$white-lighten: transparentize($white, .3) !global;
 $gray-50: #f9fafa !global;
 $gray-100: #f4f6f7 !global;
 $gray-200: #e9ecef !global;
@@ -87,6 +88,10 @@ $teal: rgba(13, 148, 136, .50) !default;
 $cyan: #3C91E6 !default;
 $warning: rgba(245, 158, 11, .7) !default;
 $text-muted: $gray-600 !default;
+
+$border-color: rgba(255, 255, 255, 0.08) !default;
+
+$backdrop-bg: rgba($black, .5) !default;
 
 $dash-bg-0: #0a0d12 !default; // deepest
 $dash-bg-1: #0e1219 !default; // main
@@ -325,7 +330,7 @@ $input-placeholder-color: transparentize($white, .6) !default;
 $form-invalid-border-color: $input-bg !default;
 $input-group-addon-bg: transparent !default;
 
-$input-border-color: rgba(255, 255, 255, 0.08);
+$input-border-color: $border-color;
 $input-group-addon-border-color: $gray-200;
 $input-btn-focus-color: rgba(0, 0, 0, .25) !default;
 $input-focus-border-color: rgba(0, 0, 0, 0.1) !default;

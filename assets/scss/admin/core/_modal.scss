@@ -3,7 +3,7 @@
     z-index: 4000;
 
     .text-white {
-        color: transparentize($white, .3) !important;
+        color: $white-lighten !important;
     }
 
     .modal-header, .modal-body, .modal-footer {
@@ -14,7 +14,7 @@
     .modal-content {
 
         background-color: transparentize($black, 0);
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border: 1px solid $border-color !important;
         border-radius: $border-radius !important;
 
         &:before {

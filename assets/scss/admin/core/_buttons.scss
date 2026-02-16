@@ -273,7 +273,7 @@
 
             &.dash-darken {
                 i {
-                    color: transparentize($white, .3) !important;
+                    color: $white-lighten !important;
                 }
             }
         }

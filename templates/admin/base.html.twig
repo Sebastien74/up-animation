@@ -59,7 +59,7 @@
         </title>
 
         {% block stylesheets %}
-            {% if (app.request.cookies.get('ADMIN_DARK_THEME') or masterRequest().get('admin_dark_theme')) and not masterRequest().get('admin_dark_theme_initial') %}
+            {% if (app.request.cookies.get('ADMIN_LIGHT_THEME') or masterRequest().get('admin_light_theme')) %}
                 {{ encore_entry_link_tags('admin-vendor-dark', null, 'admin') }}
             {% else %}
                 {{ encore_entry_link_tags('admin-vendor-'~adminTheme, null, 'admin') }}

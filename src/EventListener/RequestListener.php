@@ -226,10 +226,10 @@ class RequestListener
             }
         }
 
-        if ($this->request->query->get('admin_dark_theme') || $this->request->query->get('admin_dark_theme_initial')) {
+        if ($this->request->query->get('admin_light_theme') || $this->request->query->get('admin_dark_theme')) {
             $response = new RedirectResponse($this->request->getPathInfo());
             $expire = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->modify('+365 days');
-            $response->headers->setCookie(Cookie::create('ADMIN_DARK_THEME', !empty($this->request->query->get('admin_dark_theme')) ? '1' : '0', $expire));
+            $response->headers->setCookie(Cookie::create('ADMIN_LIGHT_THEME', !empty($this->request->query->get('admin_light_theme')) ? '1' : '0', $expire));
             $this->event->setResponse($response);
             return;
         }

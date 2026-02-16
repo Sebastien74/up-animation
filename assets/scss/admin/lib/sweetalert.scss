@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
 @import '../variables';
+@import '../../vendor/mixin/media-queries';
 
 body.stop-scrolling {
     height: 100%;
@@ -8,11 +9,10 @@ body.stop-scrolling {
 }
 
 .sweet-overlay {
-    background-color: black;
     /* IE8 */
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
     /* IE8 */
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: $backdrop-bg;
     position: fixed;
     left: 0;
     right: 0;
@@ -23,8 +23,9 @@ body.stop-scrolling {
 }
 
 .sweet-alert {
-    background-color: $info-lighten;
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+    background-color: transparentize($black, 0);
+    font-family: inherit;
     width: 478px;
     padding: 17px;
     border-radius: $border-radius;
@@ -37,6 +38,18 @@ body.stop-scrolling {
     overflow: hidden;
     display: none;
     z-index: 99999;
+    border: 1px solid $border-color;
+
+    &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: $bg-gradient-primary;
+        z-index: -1;
+    }
 }
 
 @media all and (max-width: 540px) {
@@ -50,13 +63,13 @@ body.stop-scrolling {
 }
 
 .sweet-alert h2 {
-    color: #575757;
-    font-size: 30px;
+    color: $white-lighten;
+    font-size: 25px;
     text-align: center;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: none;
     position: relative;
-    margin: 25px 0;
+    margin: 0 0;
     padding: 0;
     line-height: 40px;
     display: block;
@@ -68,7 +81,6 @@ body.stop-scrolling {
     text-align: center;
     font-weight: 300;
     position: relative;
-    text-align: inherit;
     float: none;
     margin: 0;
     padding: 0;
@@ -115,13 +127,29 @@ body.stop-scrolling {
 }
 
 .sweet-alert button.cancel {
-    background-color: $gray-600 !important;
-    border-radius: $border-radius;
+
+    background: rgba(255, 255, 255, .05) !important;
+    border: 1px solid rgba(255, 255, 255, .06) !important;
+
+    @include mediaQuery(min-lg) {
+        &:hover {
+            background: rgba(255, 255, 255, .08) !important;
+            border: 1px solid rgba(255, 255, 255, .08) !important;
+        }
+    }
 }
 
 .sweet-alert button.confirm {
-    background-color: $danger !important;
-    border-radius: $border-radius;
+
+    background: rgba(255, 92, 92, .12) !important;
+    border: 1px solid rgba(255, 92, 92, .15) !important;
+
+    @include mediaQuery(min-lg) {
+        &:hover {
+            background: rgba(255, 92, 92, .11) !important;
+            border: 1px solid rgba(255, 92, 92, .11) !important;
+        }
+    }
 }
 
 .sweet-alert .sa-input-error {
@@ -238,13 +266,11 @@ body.stop-scrolling {
 
 .sweet-alert button {
     background-color: #8CD4F5;
-    color: white;
-    border: none;
-    box-shadow: none;
-    font-size: 17px;
-    font-weight: 500;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    color: $white-lighten !important;
+    box-shadow: none !important;
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 12px !important;
     padding: 10px 32px;
     margin: 26px 5px 0 5px;
     cursor: pointer;
@@ -307,11 +333,10 @@ body.stop-scrolling {
 }
 
 .sweet-alert .sa-icon {
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     border: 4px solid gray;
     -webkit-border-radius: 40px;
-    border-radius: 40px;
     border-radius: 50%;
     margin: 20px auto;
     padding: 0;
@@ -357,7 +382,7 @@ body.stop-scrolling {
 .sweet-alert .sa-icon.sa-warning .sa-body {
     position: absolute;
     width: 5px;
-    height: 47px;
+    height: 20px;
     left: 50%;
     top: 10px;
     -webkit-border-radius: 2px;

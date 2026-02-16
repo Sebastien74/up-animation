@@ -130,6 +130,10 @@
 
     display: flex;
 
+    i.icm-photo-video {
+        font-size: 13px;
+    }
+
     &.multiple {
 
         border: 2px dashed rgba(0, 0, 0, .2) !important;
@@ -232,42 +236,8 @@ span.open-modal-medias-wrap.single {
     justify-content: center;
     align-items: center;
 
-    span {
-        padding: 0.5rem 0.75rem;
-    }
-
     .open-modal-medias {
-        width: calc(100% - 45px);
         cursor: pointer;
-    }
-
-    .optimize-media-btn {
-
-        float: right;
-        color: $white;
-        width: 30px;
-        height: 30px;
-        border-color: $white;
-        border-radius: 0.25rem;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0;
-
-        svg {
-            fill: $white;
-            height: 16px;
-        }
-
-        &:hover {
-
-            background-color: $white;
-            border-radius: 0.25rem;
-
-            svg {
-                fill: $dark !important;
-            }
-        }
     }
 }
 

@@ -7,6 +7,8 @@ JS Natif Layout back
 
 Faire un tour global sur chrome
 
+Faire le style langues du back
+
 Connecter GOOGLE TRADS
 
 https://www.svgbackgrounds.com/search/backgrounds

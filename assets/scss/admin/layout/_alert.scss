@@ -43,7 +43,7 @@
         font-size: 13px;
 
         *:not(a) {
-            color: transparentize($white, .3) !important;
+            color: $white-lighten !important;
         }
     }
 

@@ -44,7 +44,7 @@
 
     a {
 
-        color: transparentize($white, .3);
+        color: $white-lighten;
         display: inline-flex;
         align-items: center;
         position: relative;
@@ -64,7 +64,7 @@
             height: 7px;
             border-width: 1px 0 0 1px;
             border-style: solid;
-            border-color: transparentize($white, .3);
+            border-color: $white-lighten;
             transform: rotate(135deg) translate(0, -50%);
             transform-origin: top;
             transition: transform .3s linear;

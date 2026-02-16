@@ -408,7 +408,7 @@
     margin-bottom: 15px;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .1);
     border-radius: $border-radius;
-    border: 1px solid $input-border-color;
+    border: 1px solid $border-color;
 
     &.hide-zone {
         min-height: 340px !important;
@@ -594,7 +594,7 @@
             border-radius: 5px;
             box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
             background-color: transparentize($white, .5);
-            border: 1px solid $input-border-color;
+            border: 1px solid $border-color;
             padding: 0 !important;
             display: flex;
             align-items: center;

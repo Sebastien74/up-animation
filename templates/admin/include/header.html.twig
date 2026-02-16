@@ -29,6 +29,18 @@
             <h2 class="title fw-400 text-white mb-0">{{ pageTitle|raw }}</h2>
         </div>
         <div class="actions ms-auto d-flex align-items-center gap-2">
+            {% set asLightTheme = (app.request.cookies.get('ADMIN_LIGHT_THEME') or masterRequest().get('admin_light_theme')) %}
+            {% set themeParam = asLightTheme ? 'admin_dark_theme' : 'admin_light_theme' %}
+            {% set themeLabel = asLightTheme ? "Thème sombre"|trans : "Thème clair"|trans %}
+            {% set themeIcon = asLightTheme ? 'moon' : 'sun' %}
+            <a href="{{ '?'~themeParam~'=true' }}"
+               aria-label="{{ themeLabel|striptags }}"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title="{{ themeLabel|striptags }}"
+               class="btn-icon">
+                <i class="icm-{{ themeIcon }}"></i>
+            </a>
             {% if isAllowedToSwitch and not is_granted('IS_IMPERSONATOR') %}
                 <a id="users-switcher-btn" data-path="{{ path('admin_user_switcher', {website: website.id, type: 'admin'}) }}"
                    class="btn-icon cursor"
