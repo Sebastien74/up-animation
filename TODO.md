@@ -7,6 +7,8 @@ JS Natif Layout back
 
 Faire un tour global sur chrome
 
+https://www.svgbackgrounds.com/search/backgrounds
+
 Virer les  data-toggle="preloader"
 
 Pou le selecteur de picto pour les icon actions et modules et autres récupérer les icones i
