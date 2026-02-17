@@ -167,6 +167,7 @@ class PageType extends AbstractType
                             'class' => 'select-icons',
                             'group' => 'col-md-6',
                         ],
+                        'display' => 'search'
                     ]);
                 }
 

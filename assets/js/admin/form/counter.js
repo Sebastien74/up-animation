@@ -24,14 +24,14 @@ export default function (onlyUpdate = false) {
         let limit = counter.getAttribute('data-limit');
         counter.querySelector('.count').textContent = count;
         if (count > limit) {
-            counter.classList.remove('bg-info', 'bg-success');
-            counter.classList.add('bg-danger');
+            counter.classList.remove('alert-warning', 'alert-success');
+            counter.classList.add('alert-danger');
         } else if (count === 0) {
-            counter.classList.remove('bg-danger', 'bg-success');
-            counter.classList.add('bg-info');
+            counter.classList.remove('alert-danger', 'alert-success');
+            counter.classList.add('alert-warning');
         } else {
-            counter.classList.remove('bg-danger', 'bg-info');
-            counter.classList.add('bg-success');
+            counter.classList.remove('alert-danger', 'alert-warning');
+            counter.classList.add('alert-success');
         }
     }
 }

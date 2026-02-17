@@ -1,11 +1,17 @@
-Nestable Ajustement + a la recherche d-none sur page de 2 second niveau
-et si tous second caché et que le parent ne match pas on cache aussi le parent
+Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
-Revoir toutes les requetes depuis le debut
+Revoir toutes les requêtes depuis le debut
+
+Faire faire le responsive des FormType a Juni
 
 JS Natif Layout back
+Mettre un moteur de recherche sur le site et laisser faire Juni pour le script
 
 Faire un tour global sur chrome
+
+Faire un tour sur tout les actives sidebar
+
+Les active opposite sidebar ne fonctionne pas 
 
 Faire le style langues du back
 

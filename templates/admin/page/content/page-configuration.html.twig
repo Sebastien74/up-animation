@@ -6,7 +6,7 @@
     {% set haveIntls = form.intls is defined %}
 
     <div class="col-12">
-        <div id="collapseForm" class="collapse collapse-configuration show py-3">
+        <div id="collapseForm" class="collapse collapse-configuration">
             <div class="row">
                 {% include 'admin/core/form/urls.html.twig' with {urls: form.urls} %}
                 {% if haveMedia %}

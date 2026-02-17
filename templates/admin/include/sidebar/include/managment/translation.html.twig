@@ -20,7 +20,9 @@
                 {% for transDomain in transDomains %}
                     <li><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}">{{ transDomain.adminName }}</a></li>
                 {% endfor %}
-                <li><a href="{{ path('admin_translationdomain_index', {website: websiteId}) }}">{{ "Groupes de traductions"|trans }}</a></li>
+                <li>
+                    <a href="{{ path('admin_translationdomain_index', {website: websiteId}) }}"{% if 'translations/domains' in uri%} class="active" {% endif %}>{{ "Groupes de traductions"|trans }}</a>
+                </li>
             </ul>
         </li>
     {% else %}

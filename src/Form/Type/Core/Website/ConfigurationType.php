@@ -47,10 +47,11 @@ class ConfigurationType extends AbstractType
 
         $builder->add('locale', WidgetType\LanguageIconType::class, [
             'label' => $this->translator->trans('Langue par défaut', [], 'admin'),
-            'attr' => ['group' => $isNew ? 'col-md-3' : 'col-12'],
+            'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-12'],
         ]);
 
         if (!$isNew) {
+
             $builder->add('template', WidgetType\TemplateType::class, [
                 'label' => false,
                 'display' => false,
@@ -200,8 +201,6 @@ class ConfigurationType extends AbstractType
                 'display' => 'search',
                 'multiple' => true,
             ]);
-
-            $builder->add('backgroundColor', WidgetType\BackgroundColorSelectType::class);
 
             $builder->add('emailsDev', WidgetType\TagInputType::class, [
                 'label' => $this->translator->trans('E-mails de développement', [], 'admin'),

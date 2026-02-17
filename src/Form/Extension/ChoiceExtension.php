@@ -32,7 +32,7 @@ class ChoiceExtension implements FormTypeExtensionInterface
         $display = !in_array($fieldName, $noSelect2Fields) ? $setDisplay : 'classic';
 
         if ('select-flags' === $display) {
-            $view->vars['attr']['group'] = !empty($options['attr']['group']) ? $options['attr']['group'].' select-flags' : 'col-12 select-flags';
+            $view->vars['attr']['group'] = !empty($options['attr']['group']) ? $options['attr']['group'].' select2-group select-flags' : 'col-12 select2-group select-flags';
             $display = 'select-icons select-flags';
         }
 

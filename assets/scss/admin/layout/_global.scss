@@ -251,3 +251,13 @@ img.mfp-img {
 //.border-info-darken {
 //    border: 1px solid $info-darken;
 //}
+
+mark {
+    color: $warning !important;
+    padding: 0;
+    font-weight: 700;
+}
+
+.mark-muted {
+    color: transparentize($white, .9) !important;
+}

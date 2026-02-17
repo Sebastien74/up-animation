@@ -86,27 +86,27 @@
                     {% set routeArgs = 'admin_catalogproduct_medias'|routeArgs(entity) %}
                     <a href="{{ path('admin_catalogproduct_medias', routeArgs) }}"
                        id="medias-path"
-                       class="nav-link{% if not isMainEntity %} active{% endif %}">
+                       class="btn-app{% if not isMainEntity %} active{% endif %}">
                         <i class="icm-photo-video"></i>
                         <span class="d-none d-lg-inline-block">{{ "Médias"|trans }}</span>
                     </a>
                 </li>
             {% endif %}
-            <li class="nav-item d-inline-flex right">
+            <li class="nav-item d-inline-flex right gap-2">
                 {% set backPage = app.request.session.get('last_route_back_page') ? app.request.session.get('last_route_back_page') : 1 %}
                 {% set routeArgs = 'admin_catalogproduct_index'|routeArgs(entity, {website: website.id, page: backPage}) %}
                 <a href="{{ path('admin_catalogproduct_index', routeArgs) }}"
-                   class="back-link d-inline-flex align-items-center nav-link btn btn-info save small py-2 px-4 text-white">
+                   class="back-link btn-app">
                     <i class="icm-reply"></i><span>{{ "Retourner à la liste"|trans|raw }}</span>
                 </a>
                 {% if isMainEntity %}
-                    <div class="save-buttons d-flex">
+                    <div class="save-buttons d-flex gap-2">
                         {% set lastRoute = app.request.session.get('last_route_back') %}
                         {% set haveSaveBack = lastRoute.name is defined and lastRoute.params is defined %}
-                        <span id="save-entity" class="nav-link save small bg-info cursor text-white{% if haveSaveBack %} border-right{% endif %}">
+                        <span id="save-entity" class="btn-app save">
                             <i class="icm-save"></i><span>{{ "Enregistrer"|trans }}</span>
                         </span>
-                        <span id="save-back-entity" class="nav-link save small bg-info cursor text-white" data-path="{{ path('admin_catalogproduct_index', routeArgs) }}">
+                        <span id="save-back-entity" class="btn-app save" data-path="{{ path('admin_catalogproduct_index', routeArgs) }}">
                             <i class="icm-save"></i><span>{{ "Enregistrer et retourner à la liste"|trans }}</span>
                         </span>
                     </div>

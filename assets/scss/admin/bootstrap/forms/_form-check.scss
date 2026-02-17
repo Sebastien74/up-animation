@@ -134,18 +134,19 @@
         @include border-radius($form-switch-border-radius, 0);
         @include transition($form-switch-transition);
 
-        &:focus {
-            --#{$prefix}form-switch-bg: #{escape-svg($form-switch-focus-bg-image)};
-        }
+        //&:focus {
+        //    --#{$prefix}form-switch-bg: #{escape-svg($form-switch-focus-bg-image)};
+        //}
 
         &:checked {
+
             background-position: $form-switch-checked-bg-position;
 
-            @if $enable-gradients {
-                --#{$prefix}form-switch-bg: #{escape-svg($form-switch-checked-bg-image)}, var(--#{$prefix}gradient);
-            } @else {
-                --#{$prefix}form-switch-bg: #{escape-svg($form-switch-checked-bg-image)};
-            }
+            //@if $enable-gradients {
+            //    --#{$prefix}form-switch-bg: #{escape-svg($form-switch-checked-bg-image)}, var(--#{$prefix}gradient);
+            //} @else {
+            //    --#{$prefix}form-switch-bg: #{escape-svg($form-switch-checked-bg-image)};
+            //}
         }
     }
 

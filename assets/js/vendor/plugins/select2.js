@@ -218,7 +218,7 @@ export default function (selectId = null, containerId = null) {
                 return "<span class='select-2-background-wrap'><i class='select-2-background' style='background: url(" + element.data('background') + ");'></i></span>";
             } else if (typeof element.data('color') !== 'undefined') {
                 let color = element.data('color');
-                return "<span class='color-wrapper me-2'><span class='color " + element.data('class') + "' style='background-color:" + color + "; border: 1px solid " + color + ";'></span></span>" + icon.text;
+                return "<span class='color-wrapper me-3'><span class='color " + element.data('class') + "' style='background-color:" + color + "; border: 1px solid " + color + ";'></span></span>" + icon.text;
             } else if (typeof element.data('image') !== 'undefined' && typeof element.data('text') !== 'undefined') {
                 let width = element.data('width') !== 'undefined' ? element.data('width') : 'auto';
                 let height = element.data('height') !== 'undefined' ? element.data('height') : 'auto';

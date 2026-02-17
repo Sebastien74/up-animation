@@ -38,9 +38,9 @@ export default function () {
             let a = new RegExp(e, "i");
 
             if (!a.test(l)) {
-                item.addClass('text-muted');
+                item.addClass('mark-muted');
             } else {
-                item.removeClass('text-muted');
+                item.removeClass('mark-muted');
             }
         });
     });

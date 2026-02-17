@@ -210,19 +210,6 @@
     }
 }
 
-.dd3-content {
-
-    mark {
-        color: $warning !important;
-        padding: 0;
-        font-weight: 700;
-    }
-
-    .text-muted {
-        color: transparentize($white, .9) !important;
-    }
-}
-
 .dd-dragel .dd3-content, .dd-dragel .dd3-handle {
     border-radius: 12px !important;
 }

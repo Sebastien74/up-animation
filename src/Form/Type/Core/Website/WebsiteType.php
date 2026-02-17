@@ -40,7 +40,11 @@ class WebsiteType extends AbstractType
         $isNew = !$builder->getData()->getId();
 
         $adminName = new AdminNameType($this->coreLocator);
-        $adminName->add($builder);
+        $adminName->add($builder, [
+            'adminNameGroup' => 'col-lg-6',
+            'slugGroup' => 'col-lg-6',
+            'slug-internal' => true
+        ]);
 
         $builder->add('configuration', ConfigurationType::class, [
             'label' => false,

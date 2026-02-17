@@ -133,9 +133,6 @@ class Configuration extends BaseEntity
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $charset = 'UTF-8';
 
-    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    private ?string $backgroundColor = null;
-
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private array $emailsDev = ['dev@agence-felix.fr'];
 
@@ -532,18 +529,6 @@ class Configuration extends BaseEntity
     public function setCharset(?string $charset): static
     {
         $this->charset = $charset;
-
-        return $this;
-    }
-
-    public function getBackgroundColor(): ?string
-    {
-        return $this->backgroundColor;
-    }
-
-    public function setBackgroundColor(?string $backgroundColor): static
-    {
-        $this->backgroundColor = $backgroundColor;
 
         return $this;
     }

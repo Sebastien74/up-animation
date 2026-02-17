@@ -118,12 +118,12 @@ class UrlType extends AbstractType
             'choice_attr' => function ($boolean, $key, $value) {
                 if (true === $boolean) {
                     return [
-                        'data-svg' => $this->iconRuntime->icon('check', 17, 17, 'me-2 success', [], null, false),
+                        'data-svg' => '<span class="btn-icon success small me-2"><i class="icm-wifi success"></i></span>',
                         'data-text' => true,
                     ];
                 } else {
                     return [
-                        'data-svg' => $this->iconRuntime->icon('ban', 17, 17, 'me-2 danger', [], null, false),
+                        'data-svg' => '<span class="btn-icon danger small me-2"><i class="icm-snooze success"></i></span>',
                         'data-text' => true,
                     ];
                 }

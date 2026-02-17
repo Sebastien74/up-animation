@@ -199,10 +199,10 @@
     {% endif -%}
     {% set attrGroup = attr.group is defined ? attr.group : (attr['data-group'] is defined ? attr['data-group'] : null) %}
     {% if 'password-generator' in attrGroup %}
-        <small id="help_{{ id }}" class="form-text text-info cursor generator-password">{{ 'far sync'|icon(null, 11, 'info me-1') }}{{ "Générer un mot de passe"|trans([], 'admin')|raw }}</small>
+        <small id="help_{{ id }}" class="form-text generator-password"><i class="icm-sync"></i>{{ "Générer un mot de passe"|trans([], 'admin')|raw }}</small>
     {% endif %}
     {% if bytes is defined and bytes %}
-        <small id="help_{{ id }}" class="form-text text-info cursor generate-bytes">{{ 'far sync'|icon(null, 11, 'info me-1') }}{{ "Générer"|trans([], 'admin')|raw }}</small>
+        <small id="help_{{ id }}" class="form-text generate-bytes"><i class="icm-sync"></i>{{ "Générer"|trans([], 'admin')|raw }}</small>
     {% endif %}
     {% set dataHelp = attr['data-help'] is defined ? attr['data-help'] : false %}
     {% if 'no-alt' == dataHelp %}
@@ -524,9 +524,9 @@
                 {{- form_widget(form, widget_attr) -}}
             {%- endif -%}
             {%- if counterExist -%}
-                {%- set counter_class = data|length > counter ? 'bg-danger' : (data|length > 0 ? 'bg-success' : 'bg-info') -%}
-                <small class="char-counter mt-1 form-text px-2 py-1 d-inline-block text-white w-100 {{ counter_class }}" data-limit="{{ counter }}">
-                    <span class="count">{{ value|striptags|length }}</span> / {{ counter }} {{ "caractères recommandés"|trans([], 'admin')|raw }}
+                {%- set counter_class = data|length > counter ? 'bg-danger' : (data|length > 0 ? 'alert-success' : 'alert-warning') -%}
+                <small class="char-counter d-inline-flex align-items-center mt-1 text-white-50 w-100 alert {{ counter_class }}" data-limit="{{ counter }}">
+                    <span class="count">{{ value|striptags|length }}</span>/{{ counter }} {{ "caractères recommandés"|trans([], 'admin')|raw }}
                 </small>
             {%- endif -%}
             {%- if 'tinymce' in class_attr -%}

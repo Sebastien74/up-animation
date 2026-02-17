@@ -33,6 +33,43 @@ $dash-surface-2: mix(#ffffff, $dash-surface, 4%) !default;
     overflow: initial !important;
 }
 
+form {
+
+    .form-check-inline {
+        input {
+            margin-right: .5rem;
+        }
+    }
+
+    .form-check-input {
+        box-shadow: none !important;
+    }
+
+    .form-check-input:checked {
+        background-color: transparentize($primary, .65) !important;
+        border-color: transparentize($primary, .45) !important;
+        box-shadow: none !important;
+    }
+
+    .form-group-instagram {
+        padding: 0 !important;
+    }
+
+    .generate-bytes,
+    .generator-password {
+
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        cursor: pointer;
+
+        i {
+            font-size: 13px;
+        }
+    }
+}
+
 .input-group {
 
     border: 1px solid $input-border-color !important;
@@ -110,6 +147,14 @@ $dash-surface-2: mix(#ffffff, $dash-surface, 4%) !default;
 }
 
 .select2-group {
+    &.floating-form-choice {
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            margin-top: 26px;
+        }
+    }
+}
+
+.select2-group {
 
     .form-floating > label {
         left: 0;
@@ -131,10 +176,19 @@ $dash-surface-2: mix(#ffffff, $dash-surface, 4%) !default;
     }
 
     .select2-container .select2-selection--single .select2-selection__rendered {
+
         font-size: $input-font-size;
         color: $input-color;
-        margin-top: 26px;
         padding-left: 1rem;
+
+        .color-wrapper {
+
+            margin-right: .5rem !important;
+
+            .square {
+                border-radius: 5px;
+            }
+        }
     }
 
     &:not(.selected) {
@@ -238,7 +292,17 @@ form {
                     transition: all .3s linear;
                     border-radius: 8px;
                     border: 1px solid transparent;
-                    padding: 7px 1rem;
+                    padding: 5px 1rem;
+                    display: flex;
+                    align-items: center;
+                    line-height: 1.3;
+                    font-size: 13px;
+
+                    .color-wrapper {
+                        .square {
+                            border-radius: 5px;
+                        }
+                    }
 
                     &:hover {
                         background: $bg-gradient-primary !important;
@@ -249,6 +313,14 @@ form {
                 }
             }
         }
+    }
+
+    .char-counter {
+        font-size: 11px !important;
+        border-radius: 7px !important;
+        padding: 10px 1rem 8px 1rem !important;
+        border: 0 !important;
+        line-height: 1 !important;
     }
 }
 
@@ -278,9 +350,6 @@ form {
         }
 
         .select2-selection--multiple .select2-search--inline {
-
-            width: 100% !important;
-
             textarea {
                 color: $input-color !important;
             }
@@ -450,39 +519,99 @@ form {
     background: $bg-gradient-primary;
 }
 
-form .btn-group-toggle label {
+form .btn-group-toggle {
 
-    min-height: 52px;
-    justify-content: center;
-    border: 1px solid $btn-border !important;
-    color: $btn-text !important;
-    background: $btn-surface !important;
-    transform: initial !important;
+    width: 100%;
 
-    &.active {
-        box-shadow: 0 0 15px 0.05rem rgba(111, 66, 193, 0.25);
+    label {
+
+        min-height: 52px;
+        justify-content: center;
+        border: 1px solid $btn-border !important;
+        color: $btn-text !important;
+        background: $btn-surface !important;
+        transform: initial !important;
+
+        &.active {
+            box-shadow: 0 0 15px 0.05rem rgba(111, 66, 193, 0.25);
+        }
+
+        &:not(.active) {
+            i {
+                display: none;
+            }
+        }
+    }
+}
+
+.url-edit-group {
+
+    .url-style {
+        color: $white-lighten;
     }
 
-    &:not(.active) {
+    .url-group {
+
+        max-width: 300px;
+
+        .form-control {
+            padding-right: 1rem !important;
+            padding-left: 1rem !important;
+            height: 40px !important;
+            border-radius: 10px !important;
+        }
+
+        .input-group-text {
+            img {
+                opacity: .8;
+            }
+        }
+    }
+
+    .generate-code {
+
+        font-size: 12px;
+
         i {
+            font-size: 12px;
+        }
+    }
+
+    .input-group {
+        .generate-code {
             display: none;
         }
     }
 
-    .url-edit-group {
+    .select2-group {
 
-        .url-style {
-            color: #006621;
-        }
+        > .select2-container {
 
-        .input-group {
-            .generate-code {
-                display: none;
+            width: 200px !important;
+
+            .select2-selection--single .select2-selection__rendered {
+                line-height: 40px;
+            }
+
+            .btn-icon {
+
+                width: 25px;
+                height: 25px;
+                border-radius: 9px;
+
+                i {
+                    font-size: 12px !important;
+                }
             }
         }
+    }
 
-        i {
-            font-size: 13px;
+    .btn-group-toggle {
+        .form-check-input {
+            &:not(.active) {
+                padding-right: 1.25rem !important;
+                padding-left: 1.25rem !important;
+            }
         }
     }
 }

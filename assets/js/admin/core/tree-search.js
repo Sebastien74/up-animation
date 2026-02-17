@@ -55,9 +55,9 @@ export default function () {
             const l = title.textContent.toLowerCase();
 
             if (term !== '' && l.indexOf(termLower) === -1) {
-                title.classList.add('text-muted');
+                title.classList.add('mark-muted');
             } else {
-                title.classList.remove('text-muted');
+                title.classList.remove('mark-muted');
             }
         });
 

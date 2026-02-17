@@ -67,26 +67,16 @@
 
             {% if asMediaScreen %}
                 <div class="col-md-3 screen-card">
-                    {% set parameters = {
-                        type: 'single',
-                        mediaRelationId: mediaRelation.vars.value.id,
-                        classname: classname|url_encode,
-                        entityId: entity.id,
-                        btnId: "#open-modal-"~mediaRelation.vars.value.id,
-                    }|json_encode %}
-                    <span class="open-modal-medias me-auto btn-app w-100 mb-3 single">
-                        <span id="open-modal-{{ mediaRelation.vars.value.id }}"
-                              class="open-modal-medias me-auto d-inline-flex align-items-center gap-3"
-                              data-options="{{ parameters }}">
-                            <i class="icm-photo-video"></i>{{ "Choisir dans la bibliothèque"|trans }}
-                        </span>
-                        <a href="https://tinypng.com/"
-                           target="_blank" class="optimize-media-btn"
-                           data-bs-toggle="tooltip"
-                           title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
-                            <i class="icm-file-archive"></i>
-                        </a>
-                    </span>
+                    {% include 'admin/core/form/medias-modal.html.twig' with {
+                        modalId: mediaRelation.vars.value.id,
+                        parameters: {
+                            type: 'single',
+                            mediaRelationId: mediaRelation.vars.value.id,
+                            classname: classname|url_encode,
+                            entityId: entity.id,
+                            btnId: "#open-modal-"~mediaRelation.vars.value.id,
+                        },
+                    } only %}
             {% else %}
                 <div class="col-md-{% if onlyMedia %}12{% else %}7{% endif %}">
                     {% if libraryBtnPosition == 'top' %}
@@ -170,26 +160,17 @@
                 {% for screen in mediaRelation.media.mediaScreens %}
                     {% set displayScreen = screenSize != 'poster' or screenSize == 'poster' and screen.vars.value.screen in videoFormats ? '' : ' d-none' %}
                     <div class="col-md-3 screen-card{{ displayScreen }}">
-                        {% set parameters = {
-                            type: 'single',
-                            classname: 'App\\Entity\\Media\\Media'|url_encode,
-                            mediaId: screen.vars.value.id,
-                            entityId: screen.vars.value.id,
-                            btnId: "#open-screen-modal-"~screen.vars.value.id,
-                        }|json_encode %}
-                        <span class="open-modal-medias me-auto btn-app w-100 mb-3 single">
-                            <span id="open-screen-modal-{{ screen.vars.value.id }}"
-                                  class="open-modal-medias me-auto d-inline-flex align-items-center gap-3"
-                                  data-options="{{ parameters }}">
-                                <i class="icm-photo-video"></i>{{ "Choisir dans la bibliothèque"|trans }}
-                            </span>
-                            <a href="https://tinypng.com/"
-                               target="_blank" class="optimize-media-btn"
-                               data-bs-toggle="tooltip"
-                               title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
-                                <i class="icm-file-archive"></i>
-                            </a>
-                        </span>
+                        {% include 'admin/core/form/medias-modal.html.twig' with {
+                            modalId: screen.vars.value.id,
+                            btnModalId: 'open-screen-modal-'~screen.vars.value.id,
+                            parameters: {
+                                type: 'single',
+                                classname: 'App\\Entity\\Media\\Media'|url_encode,
+                                mediaId: screen.vars.value.id,
+                                entityId: screen.vars.value.id,
+                                btnId: "#open-screen-modal-"~screen.vars.value.id,
+                            },
+                        } only %}
                         {{ form_row(screen.uploadedFile) }}
                         <h4 class="text-center text-uppercase screen-title mb-3">{{ screen.vars.value.screen }}{% if 'vtt' == screen.vars.value.screen %} {{ '(Sous-titres)'|trans|raw }}{% endif %}</h4>
                     </div>

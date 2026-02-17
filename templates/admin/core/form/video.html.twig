@@ -10,26 +10,16 @@
     {% set formatsVideo = ['poster', 'mp4', 'm4v', 'vtt', 'webm'] %}
     {% set forVideo = screen in formatsVideo %}
     <div class="col-md-3 screen-card{% if not forVideo %} d-none{% endif %}">
-        {% set parameters = {
-            type: 'single',
-            (entityTypeId): entity.id,
-            classname: class|url_encode,
-            entityId: entity.id,
-            btnId: "#open-modal-"~entity.id,
-        }|json_encode %}
-        <span class="open-modal-medias me-auto btn-app w-100 mb-3 single">
-            <span id="open-modal-{{ entity.id }}"
-                  class="open-modal-medias me-auto d-inline-flex align-items-center gap-3"
-                  data-options="{{ parameters }}">
-                <i class="icm-photo-video"></i>{{ "Choisir dans la bibliothèque"|trans }}
-            </span>
-            <a href="https://tinypng.com/"
-               target="_blank" class="optimize-media-btn"
-               data-bs-toggle="tooltip"
-               title="{{ "Optimisez vos médias avant de les télécharger"|trans|striptags }}">
-                <i class="icm-file-archive"></i>
-            </a>
-        </span>
+        {% include 'admin/core/form/medias-modal.html.twig' with {
+            modalId: entity.id,
+            parameters: {
+                type: 'single',
+                (entityTypeId): entity.id,
+                classname: class|url_encode,
+                entityId: entity.id,
+                btnId: "#open-modal-"~entity.id,
+            },
+        } only %}
         {{ form_row(field) }}
         <h4 class="text-center text-uppercase screen-title mb-3">{{ screen }}{% if 'vtt' == screen %} {{ '(Sous-titres)'|trans|raw }}{% endif %}</h4>
     </div>

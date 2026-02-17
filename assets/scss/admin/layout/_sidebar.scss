@@ -78,11 +78,11 @@
         &:not(.bigger) {
 
             &:not(.active)::after {
-                top: 18px;
+                top: 24px;
             }
 
             &.active::after {
-                top: 17px;
+                top: 22px;
             }
         }
 
@@ -106,20 +106,28 @@
 .left-sidebar .scroll-sidebar > nav > ul > li > ul > li,
 .right-sidebar .scroll-sidebar > nav > ul > li {
 
-    padding: .4rem 0;
+    padding: 0;
+    margin-bottom: .25rem;
 
     a {
 
+        padding: .4rem 0;
         font-size: 14px;
+        transition: all .3s linear;
+        border-radius: 12px;
 
         &:hover, &:active, &:focus, &.active {
-            color: $dash-lighten !important;
+            background: $bg-gradient-primary;
+            border: $border-color;
+            padding-right: .25rem;
+            padding-left: .75rem;
+            transition: all .3s linear;
         }
     }
 
-    &:hover, &:active, &:focus, &.active {
-        .btn-icon {
-            background: rgba($dash-accent, 0.4);
+    ul > li a {
+        &:hover, &:active, &:focus, &.active {
+            padding-left: 1.25rem;
         }
     }
 }
@@ -133,7 +141,15 @@
     padding-bottom: .3rem;
 
     > li {
-        padding: .3rem 0;
+
+        padding: 0 !important;
+
+        > a {
+            padding: .3rem 0;
+            border-radius: 9px;
+            margin-bottom: 0.3rem;
+            font-size: 13px;
+        }
     }
 }
 
@@ -159,7 +175,7 @@
     }
 
     > nav > ul > li > ul > li {
-        padding: .3rem 0;
+        padding: 0 !important;
     }
 }
 

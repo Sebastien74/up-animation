@@ -28,40 +28,30 @@
         {% for url in urls %}
             {% set locale = url.vars.value.locale %}
             {% set urlId = url.vars.value.id %}
-            <div class="{% if locale not in allLocales %}d-none{% else %}d-flex align-items-center gap-3{% endif %}">
-                <div class="d-flex align-items-center me-auto mb-3">
-                    <label class="my-auto">
-                        {% set domain = app.request.locale|domain %}
-                        <small class="url-style{% if not domain %} text-danger{% endif %}">
-                            {% if not domain %}
-                                {{ "Non configuré"|trans }}
-                            {% else %}
-                                {{ domain|trim('/', 'right')~"/" }}
-                            {% endif %}
-                        </small>
-                    </label>
+            <div class="url-edit-group {% if locale not in allLocales %}d-none{% else %}d-flex align-items-center gap-3{% endif %} mb-3">
+                <div class="d-flex align-items-center w-100 me-4">
                     {% set urlId = url.vars.value.id is defined and url.vars.value.id ? url.vars.value.id : null %}
-                    <div class="col input-group{% if allLocales|length == 1 %} unique-locale{% endif %}" data-url-id="{{ urlId }}">
+                    <div class="input-group url-group{% if allLocales|length == 1 %} unique-locale{% endif %}" data-url-id="{{ urlId }}">
                         {{ form_widget(url.code) }}
                         {% if allLocales|length > 1 %}
                             <div class="input-group-append">
-                            <span class="input-group-text h-100" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
-                                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
-                            </span>
+                                <span class="input-group-text h-100" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
+                                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                                </span>
                             </div>
                         {% endif %}
                         {{ form_errors(url.code) }}
                     </div>
-                    <small class="form-text text-info cursor generate-code d-flex align-items-center"
+                    <small class="form-text text-white-50 cursor generate-code d-flex align-items-center flex-shrink-0 ms-3 me-4"
                            data-url-id="{{ urlId }}"
                            data-classname="{{ classname|url_encode }}"
                            data-entity-id="{{ entity.id }}">
                         <i class="icm-sync me-1"></i>{{ "Générer l'url"|trans([], 'admin') }}
                     </small>
-                    <div class="">{{ form_widget(url.online) }}</div>
+                    <div class="select2-group">{{ form_widget(url.online) }}</div>
                 </div>
-                <div class="">{{ form_widget(url.hideInSitemap) }}</div>
-                <div class="">
+                <div class="flex-shrink-0">{{ form_widget(url.hideInSitemap) }}</div>
+                <div class="flex-shrink-0 d-flex gap-2 align-items-center">
                     {% set path = interface is defined and urlId and routeExist('front_'~interface.name~'_preview') ? path('front_'~interface.name~'_preview', {website: websiteId(), url: urlId}) : '' %}
                     {% set title = path ? "Prévisualisation"|trans : "Vous devez génrerer une URL"|trans %}
                     {% if interface is defined and not routeExist('front_'~interface.name~'_preview') %}
@@ -77,7 +67,7 @@
                     <span>
                         <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: locale, url: urlId}) }}"
                            data-bs-toggle="tooltip" title="{{ "Référencement avancé"|trans }}"
-                           class="btn btn-outline-info-darken standard">
+                           class="btn-icon">
                             <i class="icm-chart-line"></i>
                         </a>
                     </span>

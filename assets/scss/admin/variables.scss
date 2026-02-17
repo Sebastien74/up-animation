@@ -329,6 +329,7 @@ $input-border-width: 1px !default;
 $input-placeholder-color: transparentize($white, .6) !default;
 $form-invalid-border-color: $input-bg !default;
 $input-group-addon-bg: transparent !default;
+$form-text-color: $white-lighten;
 
 $input-border-color: $border-color;
 $input-group-addon-border-color: $gray-200;
@@ -342,7 +343,7 @@ $form-switch-padding-start: 1.5rem;
 /*-- l - Borders --*/
 
 $border-width: 1px !default;
-$border-color: $gray-200 !default;
+//$border-color: $gray-200 !default;
 
 $border-radius: 16px !default;
 $border-radius-lg: .3rem !default;
