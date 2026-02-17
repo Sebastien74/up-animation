@@ -91,10 +91,10 @@ export default function () {
             new activeAdminPlugins();
         }).catch(error => console.error(error.message));
 
-        /** Touch spin */
-        import('../../vendor/plugins/touchspin').then(({default: touchSpin}) => {
-            new touchSpin();
-        }).catch(error => console.error(error.message));
+        // /** Touch spin */
+        // import('../../vendor/plugins/touchspin').then(({default: touchSpin}) => {
+        //     new touchSpin();
+        // }).catch(error => console.error(error.message));
 
         import('./../form/btn-group-toggle').then(({default: btnToggle}) => {
             new btnToggle();

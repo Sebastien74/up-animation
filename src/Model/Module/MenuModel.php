@@ -61,7 +61,6 @@ final class MenuModel extends BaseModel
                 'tree' => self::tree($website, $menu, $links, $url),
                 'interface' => $coreLocator->interfaceHelper()->getInterface(),
                 'template' => self::template($menu, $template),
-                'anonymousTheme' => !$configuration->adminTheme,
                 'expand' => $menu->getExpand(),
                 'size' => $menu->getSize(),
                 'isFooter' => $menu->isFooter(),

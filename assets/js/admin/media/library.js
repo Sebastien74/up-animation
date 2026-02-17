@@ -66,10 +66,11 @@ body.on('click', '.open-media-edit', function (e) {
                 modal.modal('show');
 
                 dropifyJS();
-                /** Touch spin */
-                import('../../vendor/plugins/touchspin').then(({default: touchSpin}) => {
-                    new touchSpin();
-                }).catch(error => console.error(error.message));
+
+                // /** Touch spin */
+                // import('../../vendor/plugins/touchspin').then(({default: touchSpin}) => {
+                //     new touchSpin();
+                // }).catch(error => console.error(error.message));
 
                 $('[data-toggle="tooltip"]').tooltip();
                 modal.on('hidden.bs.modal', function () {

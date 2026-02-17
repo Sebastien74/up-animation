@@ -144,12 +144,12 @@
                                     {% for name, infos in website.networks %}
                                         {% if infos.link and infos.dirname %}
                                             {% set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags %}
-                                            <span role="button" class="{{ name }} p-0 d-inline-flex js-open-window"
-                                                  data-url="{{ infos.link }}"
-                                                  aria-label="{{ label }}">
+                                            <a href="{{ infos.link }}" class="{{ name }} p-0 d-inline-flex"
+                                                rel="noopener noreferrer" target="_blank"
+                                                aria-label="{{ label }}">
                                                 <i class="icon-{{ name|lower }} text-white" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ label }}</span>
-                                            </span>
+                                            </a>
                                         {% endif %}
                                     {% endfor %}
                                 </nav>

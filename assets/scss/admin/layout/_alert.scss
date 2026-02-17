@@ -31,12 +31,17 @@
 .alert {
 
     border-radius: $border-radius;
+    text-align: left !important;
 
     .btn-close {
         background: none;
         position: absolute;
         right: 12px;
         top: 7px;
+    }
+
+    &.small {
+        font-size: .8em;
     }
 
     small {

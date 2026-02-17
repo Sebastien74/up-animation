@@ -283,30 +283,6 @@
 
 {% endblock %}
 
-{% block _website_configuration_adminTheme_widget %}
-    <div id="{{ id }}_fields" class="row themes-group">
-        {% for choice in choices %}
-            {% set isChecked = choice.value == value %}
-            <div class="col-md-3 text-center mb-2">
-                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="admin-theme-{{ choice.data }}">
-                    {% set src = choice.data ? choice.data : 'anonymous' %}
-                    <img src="{{ asset('build/admin/images/theme/admin-theme-'~src~'.jpg', 'admin')|imagine_filter('admin_theme') }}" class="img-fluid" alt="theme">
-                    <div class="vertical-align w-100 p-4">
-                        <div class="content p-3">
-                            <h5 class="m-0">{{ choice.label }}</h5>
-                        </div>
-                    </div>
-                    <input type="radio"
-                           id="admin-theme-{{ choice.data }}"
-                           name="{{ full_name }}"
-                           class="input-theme d-none{% if isChecked %} active{% endif %}"
-                           value="{{ choice.value }}"{% if required %} required{% endif %}{% if isChecked %} checked{% endif %}>
-                </label>
-            </div>
-        {% endfor %}
-    </div>
-{% endblock %}
-
 {% block _website_configuration_buildTheme_widget %}
     <div id="{{ id }}_fields" class="row themes-group">
         {% for choice in choices %}

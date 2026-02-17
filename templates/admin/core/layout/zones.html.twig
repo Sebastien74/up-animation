@@ -7,7 +7,7 @@
     <ul id="zones-sortable" class="reset">
         {% for zone in layout.zones %}
             <li class="zone{% if zone.hide %} hide-zone{% endif %}" id="zone-{{ zone.id }}" data-id="{{ zone.id }}" data-position="{{ zone.position }}">
-                <div class="zone-sidebar d-flex flex-column align-items-center gap-2 py-3">
+                <div class="zone-sidebar d-flex flex-shrink-0 flex-column align-items-center gap-2 py-3">
 
                     {% if 'edit'|moduleActive(configuration) %}
                         <span class="item handle-zone btn-icon grabbable btn-action"

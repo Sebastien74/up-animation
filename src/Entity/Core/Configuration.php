@@ -149,9 +149,6 @@ class Configuration extends BaseEntity
     private array $ipsBan = [];
 
     #[ORM\Column(type: Types::STRING, length: 30, nullable: true)]
-    private ?string $adminTheme = 'default';
-
-    #[ORM\Column(type: Types::STRING, length: 30, nullable: true)]
     private ?string $buildTheme = 'diagonals';
 
     #[ORM\OneToOne(targetEntity: Website::class, mappedBy: 'configuration', fetch: 'EAGER')]
@@ -593,18 +590,6 @@ class Configuration extends BaseEntity
     public function setIpsBan(?array $ipsBan): static
     {
         $this->ipsBan = $ipsBan;
-
-        return $this;
-    }
-
-    public function getAdminTheme(): ?string
-    {
-        return $this->adminTheme;
-    }
-
-    public function setAdminTheme(?string $adminTheme): static
-    {
-        $this->adminTheme = $adminTheme;
 
         return $this;
     }

@@ -67,7 +67,7 @@
             </ul>
             <div class="tab-content">
                 {% for tabId, config in tabs %}
-                    <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab">
+                    <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab">
                         {% include 'admin/page/website/include/website/'~tabId~'.html.twig' %}
                     </div>
                 {% endfor %}

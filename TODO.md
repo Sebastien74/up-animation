@@ -4,6 +4,15 @@ Revoir toutes les requêtes depuis le debut
 
 Faire faire le responsive des FormType a Juni
 
+Dans édition site principale, styliser les Themes
+
+Des element de site mettre les favions du générateur
+
+Sur la page ci dessous revoir l'affichage des blocs en utilisant flex
+https://up-animation.local/admin-b2cba79269c9e51dfb69f1eedf4732f6d47e7ec5/1/module/catalogs/catalogs/layout/1
+
+Dans l'edition site principale, si je soumet le form avec durée du cache vide je n'ai pas de message d'erreur
+
 JS Natif Layout back
 Mettre un moteur de recherche sur le site et laisser faire Juni pour le script
 

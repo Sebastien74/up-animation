@@ -45,6 +45,8 @@
 
 {% endmacro %}
 
+{{ dump(form.colors.vars.value.values) }}
+
 <div id="colors-collection"
      data-index="{{form.colors|length}}"
      class="collection accordion row m-0"
@@ -71,9 +73,9 @@
                     <i class="icm-ravelry"></i>{% set label = 'Favicons'|trans %}
                 {% endif %}
                 {% if category %}{{ label }}{% endif %}
-                <i class="icm-chevron-down"></i>
+                <i class="icm-chevron-down ms-auto"></i>
             </h4>
-            <div id="collapse-{{ category }}" class="collapse row" aria-labelledby="heading{{ category }}" data-parent="#colors-collection">
+            <div id="collapse-{{ category }}" class="collapse row m-0" aria-labelledby="heading{{ category }}" data-parent="#colors-collection">
             {% if first %}
                 {% set first = false %}
             {% endif %}

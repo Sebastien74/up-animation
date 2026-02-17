@@ -3,7 +3,7 @@ import Tooltip from '../../bootstrap/dist/tooltip';
 
 import resetModal from "../../../vendor/components/reset-modal";
 import select2 from "../../../vendor/plugins/select2";
-import touchspin from "../../../vendor/plugins/touchspin";
+// import touchspin from "../../../vendor/plugins/touchspin";
 import dropify from "../../form/dropify";
 
 /**
@@ -202,7 +202,7 @@ export default function (Routing) {
 
                             select2();
                             dropify();
-                            touchspin();
+                            // touchspin();
 
                             let layoutPreloader = document.getElementById("layout-preloader");
                             if (layoutPreloader) {

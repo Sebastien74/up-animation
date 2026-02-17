@@ -89,11 +89,11 @@
                                 {% set category = mediaRelation.vars.value.categorySlug %}
                                 {% set mediaCaregory = mediaCaregories[category] is defined ? mediaCaregories[category] : category|capitalize %}
                                 {% if locale == localeConfig and category == categorySlug %}
-                                    <div class="col-md-6 col-lg-3{% if category == 'webmanifest' %} d-none{% endif %}">
-                                        <div class="card default-media-card">
+                                    <div class="col-lg-6 col-xxl-3 mb-3{% if category == 'webmanifest' %} d-none{% endif %}">
+                                        <div class="card default-media-card h-100">
                                             <div class="card-body text-center pb-0">
+                                                <span class="text-center h5 text-white-50 mb-3 d-inline-block">{{ mediaCaregory }}</span>
                                                 {{ form_row(mediaRelation.media.uploadedFile) }}
-                                                <h4 class="text-center">{{ mediaCaregory }}</h4>
                                                 {% include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: mediaRelation.vars.data.id, classname: class} %}
                                                 <div class="row">
                                                     {{ form_row(mediaRelation.active) }}

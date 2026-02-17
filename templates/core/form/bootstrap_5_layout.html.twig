@@ -264,13 +264,13 @@
             {%- if ('/admin-' in app.request.uri and display) or '/admin-' in app.request.uri and '.pdf' in filename -%}
                 <div class="position-relative">
                     {%- if '/admin-' in app.request.uri and display -%}
-                        <a class="dropify-popup glightbox position-absolute btn btn-outline-dark btn-xs" href="{{ filename }}">
-                            {{ 'fal search-plus'|icon(10, 10) }}
+                        <a class="dropify-popup glightbox position-absolute btn-icon small" href="{{ filename }}">
+                            <i class="icm-search"></i>
                         </a>
                     {%- endif -%}
                     {%- if '/admin-' in app.request.uri and '.pdf' in filename -%}
-                        <a class="dropify-popup position-absolute btn btn-outline-dark btn-xs" target="_blank" href="{{ filename }}">
-                            {{ 'fal search-plus'|icon(10, 10) }}
+                        <a class="dropify-popup position-absolute btn-icon small" target="_blank" href="{{ filename }}">
+                            <i class="icm-search"></i>
                         </a>
                     {%- endif -%}
             {%- endif -%}
@@ -291,9 +291,12 @@
                     {% set filename = form.parent.parent.vars.data.media.filename is defined and form.parent.parent.vars.data.media.filename ? form.parent.parent.vars.data.media.filename : null %}
                     {% set infoFile = website()|fileInfo(filename) %}
                     {%- if infoFile.size is defined and infoFile.size > 500000 -%}
-                        <small class="too-heavy-badge form-text px-3 py-2 d-inline-flex align-items-center text-white w-100 bg-warning fw-600 radius">{{ 'far exclamation-triangle'|icon(null, 12, 'white me-2') }}
-                            {{ "Le fichier ci-dessus devrait être optimsé %bytes% > 500k."|trans({'%bytes%': infoFile.formatBytes}, 'admin')|raw }}
-                        </small>
+                        {% include 'admin/include/alert.html.twig' with {
+                            alert: "warning",
+                            display: "alert",
+                            size: "small",
+                            message: "Le fichier ci-dessus devrait être optimsé %bytes% > 500k."|trans({'%bytes%': infoFile.formatBytes}, 'admin')
+                        } only %}
                     {%- endif -%}
                 </div>
             {%- endif -%}

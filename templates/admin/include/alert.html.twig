@@ -17,27 +17,33 @@
 {% set iconColor = icons[alert].iconColor is defined ? icons[alert].iconColor : icons['undefined'].iconColor %}
 {% set help = help is defined ? help : null %}
 {% set id = id is defined ? id : null %}
-{% set class = class is defined ? class : null %}
+{% set paddings = 'small' == size ? 'py-2 ps-3 pe-3' : 'p-3' %}
+{% set class = class is defined ? paddings~' '~class : paddings %}
+{% set badge = badge is defined ? badge : null %}
+{% set size = size is defined ? size : null %}
 
 {% if 'alert' == display %}
-    <div{% if id %} id="{{ id }}"{% endif %} class="alert alert-{{ bgColor }} position-relative d-flex p-3 my-3 {% if class %} {{ class }}{% endif %}">
+    <div{% if id %} id="{{ id }}"{% endif %} class="alert alert-{{ bgColor }} position-relative d-flex mb-3 {{ class }}{% if size %} {{ size }}{% endif %}">
         <div class="btn-icon d-flex align-items-center justify-content-center position-relative {{ bgColor }} me-3">
             <i class="icm-{{ icon }} text-{{ iconColor }}"></i>
         </div>
         <div class="message w-100 d-flex align-items-center text-{{ iconColor }}">
             <div class="content">
                 {% if 'small' == size %}
-                <small class="d-inline-block text-{{ iconColor }}">
-                    {% endif %}
-                        {{ message|raw }}
+                    <small class="d-inline-block text-{{ iconColor }}">
+                {% endif %}
+                    {{ message|raw }}
                     {% if help %}
                         <br>{{ help|raw }}
                     {% endif %}
-                    {% if 'small' == size %}
-                </small>
+                {% if 'small' == size %}
+                    </small>
                 {% endif %}
             </div>
         </div>
+        {% if badge %}
+            <small class="d-inline-block text-white-50">{{ badge|raw }}</small>
+        {% endif %}
     </div>
 {% else %}
     <div{% if id %} id="{{ id }}"{% endif %} class="toast-container position-fixed top-0 end-0 p-3">

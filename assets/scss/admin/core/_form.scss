@@ -53,6 +53,7 @@ form {
 
     .form-group-instagram {
         padding: 0 !important;
+        margin-bottom: 0 !important;
     }
 
     .generate-bytes,
@@ -505,6 +506,19 @@ form {
             border-color: $input-border-color-invalid;
         }
     }
+
+    /* Hide number input arrows (Chrome, Edge, Safari) */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Hide number input arrows (Firefox) */
+    input[type="number"] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
 }
 
 .form-label {
@@ -636,6 +650,12 @@ form .btn-group-toggle {
 
 form {
 
+    .dropify-popup {
+        z-index: 10;
+        top: 10px;
+        left: 10px;
+    }
+
     .dropify-preview {
 
         background: $bg-gradient-primary !important;
@@ -643,6 +663,8 @@ form {
         .dropify-render {
             img {
                 max-height: 80% !important;
+                max-width: 75% !important;
+                background: transparent !important;
             }
         }
     }

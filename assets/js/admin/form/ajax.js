@@ -116,9 +116,9 @@ export default function () {
                         new btnToggle();
                     }).catch(error => console.error(error.message));
 
-                    import('../../vendor/plugins/touchspin').then(({default: touchSpin}) => {
-                        new touchSpin();
-                    }).catch(error => console.error(error.message));
+                    // import('../../vendor/plugins/touchspin').then(({default: touchSpin}) => {
+                    //     new touchSpin();
+                    // }).catch(error => console.error(error.message));
 
                     /** Tinymce */
                     tinymcePlugin();

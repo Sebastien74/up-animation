@@ -24,8 +24,6 @@
         {% set bodyClass = block('bodyClass') is defined ? ' '~block('bodyClass')~' '~urlize(app.request.get('_route'))  : ' '~urlize(masterRequestGet('_route')) %}
         {% set adminInformation = website.information %}
         {% set defaultTitle = isCustomPath and adminInformation.title is defined and adminInformation.title ? adminInformation.title : "Up Animations CMS"|trans|striptags %}
-        {% set adminTheme = app.user.theme is defined and app.user.theme ? app.user.theme : (configuration.adminTheme ? configuration.adminTheme : 'default') %}
-        {% set customAdmin = configuration.adminTheme is not empty %}
         {% set cmsAuthorTitle = 'Up Animations!'|trans %}
 
         <!-- Metas -->
@@ -62,7 +60,7 @@
             {% if (app.request.cookies.get('ADMIN_LIGHT_THEME') or masterRequest().get('admin_light_theme')) %}
                 {{ encore_entry_link_tags('admin-vendor-dark', null, 'admin') }}
             {% else %}
-                {{ encore_entry_link_tags('admin-vendor-'~adminTheme, null, 'admin') }}
+                {{ encore_entry_link_tags('admin-vendor-default', null, 'admin') }}
             {% endif %}
             <link rel="preload" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
             <noscript><link rel="stylesheet" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}"></noscript>
@@ -99,15 +97,6 @@
                 <div class="container-fluid px-5">
                     {% include 'admin/include/breadcrumb.html.twig' %}
                     <div id="admin-body" class="mt-4">
-                        {% if adminTheme == 'clouds' %}
-                            <div id="clouds">
-                                <div class="cloud x1"></div>
-                                <div class="cloud x2"></div>
-                                <div class="cloud x3"></div>
-                                <div class="cloud x4"></div>
-                                <div class="cloud x5"></div>
-                            </div>
-                        {% endif %}
                         {% if disabledFlashBag is not defined %}
                             {% include 'admin/include/flashbag.html.twig' %}
                         {% endif %}
@@ -141,7 +130,7 @@
                     {{ encore_entry_script_tags(webpackEntry, null,  webpackName, {defer: true}) }}
                 {% endfor %}
             {% endif %}
-            {{ encore_entry_script_tags('admin-vendor-'~adminTheme, null, 'admin', {defer: true}) }}
+            {{ encore_entry_script_tags('admin-vendor-default', null, 'admin', {defer: true}) }}
         {% endblock %}
 
         {% if app.request.cookies.get('IS_IMPERSONATOR_FRONT') %}

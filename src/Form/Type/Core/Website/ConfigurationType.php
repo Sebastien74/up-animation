@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ConfigurationType.
@@ -57,18 +58,30 @@ class ConfigurationType extends AbstractType
                 'display' => false,
             ]);
 
-            $builder->add('adminTheme', WidgetType\AdminThemeType::class);
-
             $builder->add('buildTheme', WidgetType\BuildThemeType::class);
 
             $builder->add('cacheExpiration', Type\IntegerType::class, [
                 'label' => $this->translator->trans('Durée du cache (en minutes)', [], 'admin'),
-                'attr' => ['placeholder' => $this->translator->trans('Saisissez une durée', [], 'admin')],
+                'attr' => [
+                    'type' => 'text',
+                    'placeholder' => $this->translator->trans('Saisissez une durée', [], 'admin')
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Type(type: 'integer'),
+                ],
             ]);
 
             $builder->add('gdprFrequency', Type\IntegerType::class, [
                 'label' => $this->translator->trans('Validité données RGPD (nbr jours)', [], 'admin'),
-                'attr' => ['placeholder' => $this->translator->trans('Saisissez une durée', [], 'admin')],
+                'attr' => [
+                    'type' => 'text',
+                    'placeholder' => $this->translator->trans('Saisissez une durée', [], 'admin')
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Type(type: 'integer'),
+                ],
             ]);
 
             $builder->add('onlineStatus', Type\CheckboxType::class, [
@@ -330,7 +343,6 @@ class ConfigurationType extends AbstractType
         foreach ($charsetsList as $charset) {
             $charsets[$charset] = $charset;
         }
-
         return $charsets;
     }
 

@@ -1,7 +1,15 @@
 @charset "UTF-8";
 
 .card {
+
     border: 1px solid $input-border-color !important;
     border-radius: $border-radius;
     background: $bg-gradient-primary;
+
+    &.default-media-card {
+        .open-modal-medias {
+            font-size: 12px;
+            line-height: 1.2;
+        }
+    }
 }

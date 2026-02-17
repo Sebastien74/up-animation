@@ -26,21 +26,21 @@ if (popupImages.length > 0) {
     }).catch(error => console.error(error.message));
 }
 
-/** 3 - Lottie */
-let icons = body.querySelectorAll('.ai')
-if (icons.length > 0) {
-    import('./lottie-icon').then(({default: lottiePlugin}) => {
-        new lottiePlugin();
-    }).catch(error => console.error(error.message));
-}
-
-/** 4 - Touch spin */
-let inputs = body.querySelectorAll("input[type='number']")
-if (inputs.length > 0) {
-    import('./touchspin').then(({default: touchspin}) => {
-        new touchspin(inputs);
-    }).catch(error => console.error(error.message));
-}
+// /** 3 - Lottie */
+// let icons = body.querySelectorAll('.ai')
+// if (icons.length > 0) {
+//     import('./lottie-icon').then(({default: lottiePlugin}) => {
+//         new lottiePlugin();
+//     }).catch(error => console.error(error.message));
+// }
+//
+// /** 4 - Touch spin */
+// let inputs = body.querySelectorAll("input[type='number']")
+// if (inputs.length > 0) {
+//     import('./touchspin').then(({default: touchspin}) => {
+//         new touchspin(inputs);
+//     }).catch(error => console.error(error.message));
+// }
 
 /** 5 - Masonry */
 let columns = body.querySelectorAll('.grid-columns');

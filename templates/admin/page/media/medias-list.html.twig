@@ -87,7 +87,14 @@
                             {% endif %}
                         {% endif %}
                         {% if tooHeavyFile %}
-                            <span class="vertical-align"><small class="too-heavy-badge bg-danger px-2 text-white fw-300">{{ tooHeavyFilesSizes[media.filename]|formatBytes }}</small></span>
+                            <span class="vertical-align">
+                                {% include 'admin/include/alert.html.twig' with {
+                                    alert: "warning",
+                                    display: "alert",
+                                    size: "small",
+                                    message: tooHeavyFilesSizes[media.filename]|formatByte
+                                } only %}
+                            </span>
                         {% endif %}
                     </div>
                 {% endif %}
