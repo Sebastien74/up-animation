@@ -54,15 +54,15 @@
                                 <span class="to-copy">{{ app.request.getSchemeAndHttpHost()~info.path }}</span>
                                 <div class="row mt-2 gap-2 mx-0">
                                     <div class="col px-0">
-                                        <span class="btn-app small secondary copy-link cursor w-100 center"
+                                            <span class="btn-app small secondary copy-link cursor w-100 center"
                                               data-bs-toggle="tooltip" title="{{ "Copier l'URL"|trans }}">
-                                            <i class="icm-copy m-0"></i>
-                                        </span>
+                                                <i class="icm-copy"></i><span>{{ "Copier l'URL"|trans }}</span>
+                                            </span>
                                     </div>
                                     <div class="col px-0">
                                         <a href="{{ app.request.getSchemeAndHttpHost()~info.path }}" download="{{ info.filename }}" class="btn-app small secondary w-100 center"
                                            data-bs-toggle="tooltip" title="{{ "Télécharger"|trans }}">
-                                            <i class="icm-upload m-0"></i>
+                                            <i class="icm-upload"></i><span>{{ "Télécharger"|trans }}</span>
                                         </a>
                                     </div>
                                 </div>

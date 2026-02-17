@@ -31,7 +31,7 @@
                     {% if granted('ROLE_INTERNAL') %}
                         <span id="reorder-medias-btn" class="btn-app info-darken cursor me-2"
                               data-path="{{ path('admin_medias_reorder', { website: websiteId }) }}">
-                            <i class="icm-folders"></i>{{ "Ranger les médias"|trans|raw }}
+                            <i class="icm-folders"></i><span>{{ "Ranger les médias"|trans|raw }}</span>
                         </span>
                     {% endif %}
                     <button class="btn-app success"
@@ -39,7 +39,7 @@
                             href="#collapseFormMedias"
                             aria-expanded="false"
                             aria-controls="collapseFormMedias">
-                        <i class="icm-plus me-1"></i>{{ "Ajouter des medias"|trans }}</button>
+                        <i class="icm-plus"></i><span>{{ "Ajouter des medias"|trans }}</span></button>
                 </div>
             </div>
             {{ render_esi(path('admin_medias_uploader', {website: websiteId})) }}
@@ -126,19 +126,19 @@
                                                 data-path="{{ path('admin_folder_select', {website: websiteId}) }}"
                                                 class="btn-app small warning"
                                                 data-bs-toggle="tooltip" title="{{ "Déplacer"|trans }}">
-                                            <i class="icm-share-square m-0"></i>
+                                            <i class="icm-share-square"></i><span>{{ "Déplacer"|trans }}</span>
                                         </button>
                                     {% endif %}
                                     {% if granted('ROLE_MEDIA_COMPRESS') %}
                                         <button id="media-compress-btn" class="btn-app small info"
                                                 data-bs-toggle="tooltip" title="{{ "Compresser"|trans }}">
-                                            <i class="icm-compress-alt m-0"></i>
+                                            <i class="icm-compress-alt"></i><span>{{ "Compresser"|trans }}</span>
                                         </button>
                                     {% endif %}
                                     {% if 'delete'|moduleActive(configuration) %}
                                         <button class="btn-app small danger sa-warning sa-warning-delete-medias"
                                                 data-bs-toggle="tooltip" title="{{ "Supprimer"|trans }}">
-                                            <i class="icm-trash m-0"></i>
+                                            <i class="icm-trash"></i><span>{{ "Supprimer"|trans }}</span>
                                         </button>
                                     {% endif %}
                                 </div>

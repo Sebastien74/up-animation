@@ -29,10 +29,10 @@
             <div class="collapse col-12 collapseOG" id="collapse-open-graph">
                 <div class="row pt-3">
                     <div class="col-md-8">
-                        <button class="autocomplete btn btn-info w-100 mb-3">{{ "Saisie automatique"|trans }}</button>
+                        <button class="autocomplete btn-app info w-100 mb-3"><i class="icm-magic"></i><span>{{ "Saisie automatique"|trans }}</span></button>
                     </div>
                     <div class="col-md-4">
-                        <button class="resetautocomplete btn btn-secondary w-100 mb-3">{{ "Réinitialiser"|trans }}</button>
+                        <button class="resetautocomplete btn-app secondary w-100 mb-3"><i class="icm-retweet"></i><span>{{ "Réinitialiser"|trans }}</span></button>
                     </div>
                     <div class="row pt-3">
                         {{ form_row(form.metaOgTitle) }}
@@ -100,7 +100,7 @@
             {% endif %}
 
             <div class="form-group text-end mb-0 mt-3">
-                <button type="submit" id="submit-seo" class="btn btn-info w-100">{{ "Enregistrer"|trans }}</button>
+                <button type="submit" id="submit-seo" class="btn-app info w-100"><i class="icm-save"></i><span>{{ "Enregistrer"|trans }}</span></button>
             </div>
 
         {{ form_end(form) }}

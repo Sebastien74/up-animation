@@ -16,42 +16,47 @@
     <div id="user-profile-card" class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-2">
-                    <div class="img-user-container d-inline-block">
+                <div class="col-md-2 text-center text-md-start mb-4 mb-md-0">
+                    <div class="img-user-container d-inline-block border rounded-4 overflow-hidden shadow-sm bg-light">
                         {% set src = user.picture.path is defined and user.picture.path ? user.picture.path : '/medias/placeholder.jpg' %}
-                        <img src="{{ asset(src) }}" id="user-picture" class="img-fluid" height="200" width="auto" />
+                        <img src="{{ asset(src) }}" id="user-picture" class="img-fluid" height="200" width="auto" style="object-fit: cover; aspect-ratio: 1/1;" />
                     </div>
                 </div>
                 <div class="col-md-10">
-                    <h1 class="mb-4">
-                        {{ user.username }} <small class="text-italic">{{ user.login }}</small>
+                    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+                        <h1 class="mb-0 h3">
+                            {{ user.username }} <small class="text-italic opacity-50">{{ user.login }}</small>
+                        </h1>
                         <a href="{{ path('admin_user_edit', {website: websiteId(), user: user.id}) }}"
                            data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}"
-                           id="edit-user-btn" class="float-end text-dark"><i class="icm-pen-alt"></i>
+                           id="edit-user-btn" class="btn-icon small"><i class="icm-pencil-alt"></i>
                         </a>
-                    </h1>
+                    </div>
+
                     <div class="row">
                         <div class="{% if granted('ROLE_INTERNAL') %}col-md-5{% else %}col-12{% endif %}">
-                            <h2 class="pb-2 mb-3 border-bottom"><i class="icm-info"></i>{{ "Information"|trans }}</h2>
-                            <p><strong class="me-2">{{ "Dernière connexion :"|trans }}</strong> {{ user.lastLogin|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</p>
-                            <p>
-                                <strong class="me-2">{{ "Langue :"|trans }}</strong>
-                                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                     data-src="{{ asset('/medias/icons/flags/'~user.locale~'.svg') }}" class="img-fluid img-locale lazy-load me-2" height="14" width="19">
-                                {{ user.locale|languageName }}
-                            </p>
-                            <p><strong class="me-2">{{ "Email :"|trans }}</strong> <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+                            <h2 class="main-subtitle small mb-3"><i class="icm-info"></i>{{ "Information"|trans }}</h2>
+                            <div class="ps-1">
+                                <p class="mb-2"><strong class="me-2 text-dark">{{ "Dernière connexion :"|trans }}</strong> <span class="text-muted">{{ user.lastLogin|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</span></p>
+                                <p class="mb-2 d-flex align-items-center">
+                                    <strong class="me-2 text-dark">{{ "Langue :"|trans }}</strong>
+                                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                         data-src="{{ asset('/medias/icons/flags/'~user.locale~'.svg') }}" class="img-fluid img-locale lazy-load me-2 rounded-1" height="14" width="19">
+                                    <span class="text-muted">{{ user.locale|languageName }}</span>
+                                </p>
+                                <p class="mb-2"><strong class="me-2 text-dark">{{ "Email :"|trans }}</strong> <a href="mailto:{{ user.email }}" class="text-info text-underline">{{ user.email }}</a></p>
 
-                            {% if granted('ROLE_INTERNAL') %}
-                                <p><strong class="me-2">{{ "Groupe :"|trans }}</strong> {{ user.group.adminName }}</p>
-                            {% endif %}
+                                {% if granted('ROLE_INTERNAL') %}
+                                    <p class="mb-2"><strong class="me-2 text-dark">{{ "Groupe :"|trans }}</strong> <span class="text-muted">{{ user.group.adminName }}</span></p>
+                                {% endif %}
+                            </div>
                         </div>
                         {% if granted('ROLE_INTERNAL') %}
-                            <div class="col-md-7">
-                                <h2 class="pb-2 mb-3 border-bottom"><i class="icm-user-tag"></i>{{ "Rôles"|trans }}</h2>
-                                <div class="row">
+                            <div class="col-md-7 mt-4 mt-md-0">
+                                <h2 class="main-subtitle small mb-3"><i class="icm-user-tag"></i>{{ "Rôles"|trans }}</h2>
+                                <div class="row ps-1">
                                     {% for role in user.group.roles %}
-                                        <div class="col-md-6">{{ role.adminName }}</div>
+                                        <div class="col-md-6 mb-1 text-muted"><i class="icm-check small text-success me-2"></i>{{ role.adminName }}</div>
                                     {% endfor %}
                                 </div>
                             </div>

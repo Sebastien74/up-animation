@@ -19,39 +19,35 @@
     {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
         <div id="edit-form-{{ interface.name }}" class="card radius-top">
             <div class="card-body radius-top p-0">
-                <ul class="nav nav-tabs custom-tab large radius-top" role="tablist">
+                <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" role="tablist">
                     <li class="nav-item">
-                        <a id="nav-seo-tab" class="nav-link active" data-bs-toggle="tab" href="#seo" role="tab" aria-selected="true">
-                            <i class="icm-chart-line"></i>
-                            <span class="d-none d-sm-inline-block">{{ 'Référencement'|trans }}</span>
+                        <a class="btn-app active" id="nav-seo-tab" data-bs-toggle="tab" href="#seo" role="tab" aria-selected="true">
+                            <i class="icm-chart-line"></i><span>{{ 'Référencement'|trans }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a id="nav-social-tab" class="nav-link" data-bs-toggle="tab" href="#social" role="tab" aria-selected="false">
-                            <i class="icm-share-alt"></i>
-                            <span class="d-none d-sm-inline-block">{{ 'Réseaux sociaux'|trans }}</span>
+                        <a class="btn-app" id="nav-social-tab" data-bs-toggle="tab" href="#social" role="tab" aria-selected="false">
+                            <i class="icm-share-alt"></i><span>{{ 'Réseaux sociaux'|trans }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         {% set sitemap = defaultLocale|domain~"/sitemap.xml?preview=true" %}
-                        <a href="{{ sitemap }}" target="_blank" class="nav-link">
-                            <i class="icm-sitemap"></i>
-                            <span class="d-none d-sm-inline-block">{{ 'sitemap.xml'|trans }}</span>
+                        <a href="{{ sitemap }}" target="_blank" class="btn-app">
+                            <i class="icm-sitemap"></i><span>{{ 'sitemap.xml'|trans }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         {% set robots = defaultLocale|domain~"/robots.txt?preview=true" %}
-                        <a href="{{ robots }}" target="_blank" class="nav-link">
-                            <i class="icm-robot"></i>
-                            <span class="d-none d-sm-inline-block">{{ 'robots.txt'|trans }}</span>
+                        <a href="{{ robots }}" target="_blank" class="btn-app">
+                            <i class="icm-robot"></i><span>{{ 'robots.txt'|trans }}</span>
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane me-4 ms-4 pt-4 active" id="seo" role="tabpanel" aria-labelledby="nav-seo-tab">
+                    <div class="tab-pane fade show active pt-2" id="seo" role="tabpanel" aria-labelledby="nav-seo-tab">
                         {% include 'admin/page/seo/include/configuration.html.twig' %}
                     </div>
-                    <div class="tab-pane me-4 ms-4 pt-4" id="social" role="tabpanel" aria-labelledby="nav-social-tab">
+                    <div class="tab-pane fade pt-2" id="social" role="tabpanel" aria-labelledby="nav-social-tab">
                         {% include 'admin/page/seo/include/social-network.html.twig' with {socialsNetworks: form.website.information.socialNetworks} %}
                     </div>
                 </div>
