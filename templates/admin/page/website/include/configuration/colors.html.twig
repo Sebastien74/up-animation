@@ -73,7 +73,6 @@
         {% endif %}
     {% endfor %}
 
-    {# Gestion des éventuelles couleurs sans catégorie reconnue #}
     {% set others = form.colors|filter(c => categories[c.vars.value.category] is not defined) %}
     {% if others|length > 0 %}
         <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-others" aria-expanded="false" aria-controls="collapse-others">
