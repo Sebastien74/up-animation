@@ -45,46 +45,50 @@
 
 {% endmacro %}
 
-{{ dump(form.colors.vars.value.values) }}
-
 <div id="colors-collection"
      data-index="{{form.colors|length}}"
-     class="collection accordion row m-0"
+     class="collection accordion"
      data-prototype="{{ macro.color_prototype(form.colors.vars.prototype)|e('html_attr') }}">
-    {% set first = true %}
-    {% set category = null %}
-    {% for color in form.colors %}
-        {% if color.vars.value.category != category %}
-            {% set category = color.vars.value.category %}
-            {% if not first %}
-                </div>
-            {% endif %}
-            <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-{{ category }}" aria-expanded="false" aria-controls="collapse-{{ category }}">
-                {% set label = category|trans|capitalize %}
-                {% if category == 'background' %}
-                    <i class="icm-eye-dropper"></i>{% set label = 'Couleurs de fond'|trans %}
-                {% elseif category == 'button' %}
-                    <i class="icm-link"></i>{% set label = 'Boutons'|trans %}
-                {% elseif category == 'color' %}
-                    <i class="icm-tint"></i>{% set label = 'Couleurs'|trans %}
-                {% elseif category == 'alert' %}
-                    <i class="icm-exclamation-triangle"></i>{% set label = 'Alertes'|trans %}
-                {% elseif category == 'favicon' %}
-                    <i class="icm-ravelry"></i>{% set label = 'Favicons'|trans %}
-                {% endif %}
-                {% if category %}{{ label }}{% endif %}
+
+    {% set categories = {
+        'background': {icon: 'icm-eye-dropper', label: 'Couleurs de fond'|trans },
+        'button': { icon: 'icm-link', label: 'Boutons'|trans },
+        'color': { icon: 'icm-tint', label: 'Couleurs'|trans },
+        'alert': { icon: 'icm-exclamation-triangle', label: 'Alertes'|trans },
+        'favicon': { icon: 'icm-ravelry', label: 'Favicons'|trans }
+    } %}
+
+    {% for key, meta in categories %}
+        {% set items = form.colors|filter(c => c.vars.value.category == key) %}
+        {% if items|length > 0 %}
+            <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-{{ key }}" aria-expanded="false" aria-controls="collapse-{{ key }}">
+                <i class="{{ meta.icon }}"></i>{{ meta.label }}
                 <i class="icm-chevron-down ms-auto"></i>
             </h4>
-            <div id="collapse-{{ category }}" class="collapse row m-0" aria-labelledby="heading{{ category }}" data-parent="#colors-collection">
-            {% if first %}
-                {% set first = false %}
-            {% endif %}
-        {% endif %}
-        {{ macro.color_prototype(color) }}
-        {% if loop.last %}
+            <div id="collapse-{{ key }}" class="collapse row" aria-labelledby="heading{{ key }}" data-parent="#colors-collection">
+                {% for color in items %}
+                    {{ macro.color_prototype(color) }}
+                {% endfor %}
             </div>
         {% endif %}
     {% endfor %}
+
+    {# Gestion des éventuelles couleurs sans catégorie reconnue #}
+    {% set others = form.colors|filter(c => categories[c.vars.value.category] is not defined) %}
+    {% if others|length > 0 %}
+        <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-others" aria-expanded="false" aria-controls="collapse-others">
+            <i class="icm-folder"></i>{{ 'Autres'|trans }}
+            <i class="icm-chevron-down ms-auto"></i>
+        </h4>
+        <div id="collapse-others" class="collapse" aria-labelledby="headingOthers" data-parent="#colors-collection">
+            <div class="row">
+                {% for color in others %}
+                    {{ macro.color_prototype(color) }}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
 </div>
 
 <div class="w-100 text-end mt-4 mb-4">
