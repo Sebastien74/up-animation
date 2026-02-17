@@ -10,12 +10,12 @@
         <div id="select-folder" class="modal fade text-start" tabindex="-1" role="dialog" aria-labelledby="select-folder">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border pb-4">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-center w-100"><i class="icm-share-square"></i></h5>
-                        <button class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
-                            <i class="icm-times"></i>
-                        </button>
-                    </div>
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-center w-100"><i class="icm-share-square"></i></h5>
+                <button class="btn-icon small position-absolute end-0 me-3" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="icm-times"></i>
+                </button>
+            </div>
                     <div class="modal-body">
                         <h5 class="main-title text-dark text-center fw-bold mb-4">{{ "Sélectionnez un dossier de destination"|trans }}</h5>
                         {% for field in form.children %}

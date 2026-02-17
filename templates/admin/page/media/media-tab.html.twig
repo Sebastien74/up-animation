@@ -6,8 +6,9 @@
 
         <div class="position-relative">
             {{ form_row(media.uploadedFile) }}
-            <a class="tinypng-btn btn btn-dark"
-               href="https://tinypng.com/" target="_blank">
+            <a class="tinypng-btn btn-icon dark"
+               href="https://tinypng.com/" target="_blank"
+               data-bs-toggle="tooltip" title="{{ "Optimisez vos médias avant de les télécharger"|trans }}">
                 <i class="icm-file-archive"></i>
             </a>
         </div>
@@ -51,17 +52,17 @@
                             <small class="refer-copy">
                                 <strong>{{ "URL :"|trans}}</strong>
                                 <span class="to-copy">{{ app.request.getSchemeAndHttpHost()~info.path }}</span>
-                                <div class="row mt-2">
-                                    <div class="col-md-6">
-                                        <span class="btn btn-xs btn-outline-secondary copy-link cursor d-inline-block w-100"
+                                <div class="row mt-2 gap-2 mx-0">
+                                    <div class="col px-0">
+                                        <span class="btn-app small secondary copy-link cursor w-100 center"
                                               data-bs-toggle="tooltip" title="{{ "Copier l'URL"|trans }}">
-                                            <i class="icm-copy"></i>
+                                            <i class="icm-copy m-0"></i>
                                         </span>
                                     </div>
-                                    <div class="col-md-6">
-                                        <a href="{{ app.request.getSchemeAndHttpHost()~info.path }}" download="{{ info.filename }}" class="btn btn-xs btn-outline-secondary d-inline-block w-100"
+                                    <div class="col px-0">
+                                        <a href="{{ app.request.getSchemeAndHttpHost()~info.path }}" download="{{ info.filename }}" class="btn-app small secondary w-100 center"
                                            data-bs-toggle="tooltip" title="{{ "Télécharger"|trans }}">
-                                            <i class="icm-upload"></i>
+                                            <i class="icm-upload m-0"></i>
                                         </a>
                                     </div>
                                 </div>

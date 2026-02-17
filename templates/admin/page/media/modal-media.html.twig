@@ -8,9 +8,9 @@
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content border refer-preloader text-start pb-3 pt-3">
             {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
-            <div class="modal-header">
+            <div class="modal-header border-0">
                 <h5 class="modal-title text-center w-100"><i class="icm-images"></i></h5>
-                <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                <button class="btn-icon small position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
                     <i class="icm-times"></i>
                 </button>
             </div>
@@ -23,16 +23,21 @@
                         id: 'media-form-'~entity.id}}) }}
 
                         {% if form.mediaScreens|length > 0 %}
-                            <ul class="nav nav-tabs" id="media-tab" role="tablist">
+                            <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" id="media-tab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="desktop-tab" data-bs-toggle="tab" href="#desktop" role="tab" aria-controls="desktop" aria-selected="true">{{ "Ordinateur"|trans }}</a>
+                                    <a class="btn-app active" id="desktop-tab" data-bs-toggle="tab" href="#desktop" role="tab" aria-controls="desktop" aria-selected="true">
+                                        <i class="icm-monitor"></i><span>{{ "Ordinateur"|trans }}</span>
+                                    </a>
                                 </li>
                                 {% for screen in form.mediaScreens|reverse %}
                                     {% set screenSize = screen.vars.data.screen %}
                                     {% set label = screenSize == 'tablet' ? 'Tablette'|trans : 'Mobile'|trans %}
+                                    {% set icon = screenSize == 'tablet' ? 'tablet' : 'mobile' %}
                                     {% if screenSize not in disabledFormats %}
                                         <li class="nav-item">
-                                            <a class="nav-link" id="{{ screenSize }}-tab" data-bs-toggle="tab" href="#{{ screenSize }}" role="tab" aria-controls="{{ screenSize }}" aria-selected="false">{{ label }}</a>
+                                            <a class="btn-app" id="{{ screenSize }}-tab" data-bs-toggle="tab" href="#{{ screenSize }}" role="tab" aria-controls="{{ screenSize }}" aria-selected="false">
+                                                <i class="icm-{{ icon }}"></i><span>{{ label }}</span>
+                                            </a>
                                         </li>
                                     {% endif %}
                                 {% endfor %}

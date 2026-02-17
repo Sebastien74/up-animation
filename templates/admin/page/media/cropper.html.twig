@@ -4,7 +4,7 @@
     <div class="card-body media-body text-center">
         {{ media|file({desktop: thumbConfiguration}, {asMedia: true, lazyLoad: false, forceThumb: true}) }}
     </div>
-    <h5 class="card-title no-radius mb-0 bg-info-light p-3">
+    <h5 class="card-title no-radius mb-0 bg-light border p-3">
         {{ "Taille"|trans }} :
         {% if configuration.width != "" and configuration.height != "" %}
             {{ configuration.width }}px X {{ configuration.height }}px <small class="italic ms-2">{{ "(l x h)"|trans }}</small>
@@ -25,16 +25,16 @@
                 <li>{{ action.adminName }}</li>
             {% endfor  %}
         </ul>
-        <div class="row">
-            <div class="col-md-{% if thumb.id %}10{% else %}12{% endif %}">
-                <button class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#crop-modal-{{ configuration.id }}">
+        <div class="row gap-2 px-3 pb-3">
+            <div class="col my-auto">
+                <button class="btn-app info center w-100" data-bs-toggle="modal" data-bs-target="#crop-modal-{{ configuration.id }}">
                     <i class="icm-crop-alt"></i>{{ "Redimensionner"|trans }}
                 </button>
             </div>
             {% if thumb.id %}
-                <div class="col-md-2">
-                    <span class="d-inline-block w-100" data-bs-toggle="tooltip" title="{{ "Réinitialiser"|trans }}">
-                        <a href="{{ path('admin_thumb_delete', {website: websiteId(), thumb: thumb.id}) }}" class="btn btn-info w-100 swal-delete-link">
+                <div class="col-auto my-auto">
+                    <span class="d-inline-block" data-bs-toggle="tooltip" title="{{ "Réinitialiser"|trans }}">
+                        <a href="{{ path('admin_thumb_delete', {website: websiteId(), thumb: thumb.id}) }}" class="btn-icon info swal-delete-link">
                             <i class="icm-retweet"></i>
                         </a>
                     </span>
@@ -50,9 +50,9 @@
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content border refer-preloader text-start pb-5 pt-3">
             {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
-            <div class="modal-header">
+            <div class="modal-header border-0">
                 <h5 class="modal-title text-center w-100"><i class="icm-crop-alt"></i></h5>
-                <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                <button class="btn-icon small position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
                     <i class="icm-times"></i>
                 </button>
             </div>
@@ -76,55 +76,55 @@
                             <div class="img-container"><img src="{{ asset(fileInfo.path) }}" class="image img-fluid" alt="{{ "Image"|trans|striptags }}" /></div>
 
                             <div class="row mt-3">
-                                <div class="col-md-6 docs-buttons d-flex align-items-end">
-                                    <div class="btn-group me-2">
-                                        <span class="btn btn-secondary btn-outline cursor zoom-in" data-bs-toggle="tooltip" title="{{ "Zoomer"|trans }}">
+                                <div class="col-md-6 docs-buttons d-flex align-items-end gap-2">
+                                    <div class="btn-group">
+                                        <span class="btn-icon small info cursor zoom-in" data-bs-toggle="tooltip" title="{{ "Zoomer"|trans }}">
                                             <span class="docs-tooltip">
                                                 <i class="icm-search-plus"></i>
                                             </span>
                                         </span>
-                                        <span class="btn btn-secondary btn-outline cursor zoom-out" data-bs-toggle="tooltip" title="{{ "Dézoomer"|trans }}">
+                                        <span class="btn-icon small info cursor zoom-out" data-bs-toggle="tooltip" title="{{ "Dézoomer"|trans }}">
                                             <span class="docs-tooltip">
                                                 <i class="icm-search-minus"></i>
                                             </span>
                                         </span>
                                     </div>
-                                    <div class="btn-group me-2">
-                                        <span class="btn btn-secondary btn-outline cursor move-start" data-bs-toggle="tooltip" title="{{ "Décaler l'image à gauche"|trans }}">
+                                    <div class="btn-group">
+                                        <span class="btn-icon small info cursor move-start" data-bs-toggle="tooltip" title="{{ "Décaler l'image à gauche"|trans }}">
                                             <span class="docs-tooltip">
                                                 <i class="icm-arrow-left"></i>
                                             </span>
                                         </span>
-                                        <span class="btn btn-secondary btn-outline cursor move-end" data-bs-toggle="tooltip" title="{{ "Décaler l'image à droite"|trans }}">
+                                        <span class="btn-icon small info cursor move-end" data-bs-toggle="tooltip" title="{{ "Décaler l'image à droite"|trans }}">
                                             <span class="docs-tooltip">
                                                 <i class="icm-arrow-right"></i>
                                             </span>
                                         </span>
-                                        <span class="btn btn-secondary btn-outline cursor move-up" data-bs-toggle="tooltip" title="{{ "Monter l'image"|trans }}">
+                                        <span class="btn-icon small info cursor move-up" data-bs-toggle="tooltip" title="{{ "Monter l'image"|trans }}">
                                             <span class="docs-tooltip">
                                                 <i class="icm-arrow-up"></i>
                                             </span>
                                         </span>
-                                        <span class="btn btn-secondary btn-outline cursor move-down" data-bs-toggle="tooltip" title="{{ "Descendre l'image"|trans }}">
+                                        <span class="btn-icon small info cursor move-down" data-bs-toggle="tooltip" title="{{ "Descendre l'image"|trans }}">
                                             <span class="docs-tooltip">
                                                 <i class="icm-arrow-down"></i>
                                             </span>
                                         </span>
                                     </div>
-                                    <div class="btn-group me-2">
-                                            <span class="btn btn-secondary btn-outline cursor rotate-start" data-bs-toggle="tooltip" title="{{ "Retourner l'image vers la gauche"|trans }}">
+                                    <div class="btn-group">
+                                        <span class="btn-icon small info cursor rotate-start" data-bs-toggle="tooltip" title="{{ "Retourner l'image vers la gauche"|trans }}">
                                             <span class="docs-tooltip">
                                                 <i class="icm-redo"></i>
                                             </span>
                                         </span>
-                                        <span class="btn btn-secondary btn-outline cursor rotate-end" data-bs-toggle="tooltip" title="{{ "Retourner l'image vers la droite"|trans }}">
+                                        <span class="btn-icon small info cursor rotate-end" data-bs-toggle="tooltip" title="{{ "Retourner l'image vers la droite"|trans }}">
                                             <span class="docs-tooltip">
                                                 <i class="icm-redo"></i>
                                             </span>
                                         </span>
                                     </div>
                                     <div class="btn-group">
-                                        <span data-scale="-1" class="btn btn-secondary btn-outline cursor flip-horizontal" data-bs-toggle="tooltip" title="{{ "Inverser l'image"|trans }}">
+                                        <span data-scale="-1" class="btn-icon small info cursor flip-horizontal" data-bs-toggle="tooltip" title="{{ "Inverser l'image"|trans }}">
                                             <span class="docs-tooltip">
                                                 <i class="icm-arrows-h"></i>
                                             </span>
@@ -144,7 +144,7 @@
                                         </div>
                                         {% if isInfinite %}
                                             <div class="col-md-2 d-flex align-items-end">
-                                                <span class="btn btn-outline-white cursor refresh-cropper-sizes w-100" data-bs-toggle="tooltip" title="{{ "Rafraichir"|trans }}">
+                                                <span class="btn-icon info cursor refresh-cropper-sizes w-100" data-bs-toggle="tooltip" title="{{ "Rafraichir"|trans }}">
                                                     <i class="icm-sync"></i>
                                                 </span>
                                             </div>
