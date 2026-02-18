@@ -98,6 +98,8 @@ lazyLoadComponent('.step-form-ajax', () => import(/* webpackPreload: true */'./c
 lazyLoadComponent('[data-scroll-bar="1"]', () => import('./components/scrollbar'), (ScrollSpy, els) => new ScrollSpy(els));
 lazyLoadComponent('.fixed-news', () => import('./components/fixed-news'), (FixedNews, el) => new FixedNews(el));
 lazyLoadComponent('.dropdown-toggle', () => import('../bootstrap/modules/dropdown'), (Dropdown) => new Dropdown());
+lazyLoadComponent('.block-scroll-video', () => import('./components/video-scroll'), (Videos) => new Videos());
+
 document.addEventListener('DOMContentLoaded', function () {
 
     const body = document.body;

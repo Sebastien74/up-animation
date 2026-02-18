@@ -10,6 +10,10 @@ A une nouvelle connexion back faire le code chiffré par email
 
 Faire une search Console Google pour l'indexation
 
+Dans la gestion des indexes actues il manque la gestion des label pour les boutons.
+
+Faire des macros cards par type de contenu, news product, etc
+
 Dans édition site principale, styliser les Themes
 
 Revoir toutes les microdonnées

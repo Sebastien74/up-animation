@@ -112,7 +112,7 @@ class BreadcrumbRuntime implements RuntimeExtensionInterface
             unset($breadcrumbs[array_key_last($breadcrumbs)]);
         }
 
-        return count($breadcrumbs) > 1 || (self::DISPLAY_HOME && count($breadcrumbs) >= 1) ? $breadcrumbs : [];
+        return count($breadcrumbs) > 1 ? $breadcrumbs : [];
     }
 
     /**

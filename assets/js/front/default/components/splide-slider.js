@@ -207,10 +207,30 @@ export default function (sliders) {
                     // });
 
                     splide.on('mounted', function () {
+
                         let track = slider.querySelector('.splide__track');
                         let list = slider.querySelector('.splide__list');
                         slider.removeAttribute('role');
                         list.setAttribute('role', 'list');
+
+                        /**
+                         * Prevent parent <a> (like .glightbox) from opening when clicking on pagination
+                         */
+                        slider.addEventListener('click', (e) => {
+                            const pagination = e.target.closest('.splide__pagination');
+                            if (!pagination) {
+                                return;
+                            }
+                            const link = pagination.closest('a[href]');
+                            if (!link) {
+                                return;
+                            }
+                            e.stopPropagation();
+                            if (typeof e.stopImmediatePropagation === 'function') {
+                                e.stopImmediatePropagation();
+                            }
+                        }, true);
+
                         slider.querySelectorAll('.splide__slide').forEach(function (slide) {
                             slide.setAttribute('role', 'listitem');
                             slide.classList.add('loaded');
@@ -366,11 +386,12 @@ export default function (sliders) {
                             if (pluginBtn) {
                                 pluginBtn.classList.add('d-none');
                             }
-                            // if (btn && !arrows) {
-                            //     btn.classList.add('d-none');
-                            // }
                             btn.onclick = function (event) {
                                 event.preventDefault();
+                                event.stopPropagation();
+                                if (typeof event.stopImmediatePropagation === 'function') {
+                                    event.stopImmediatePropagation();
+                                }
                                 if (pluginBtn) {
                                     const direction = type === 'next' ? '+1' : '-1';
                                     if (!slider.classList.contains('clones-loaded')) {
@@ -415,13 +436,23 @@ export default function (sliders) {
                     // Accessibility
                     slider.querySelectorAll('.btn-pause').forEach(function (psBtn) {
                         if (psBtn.classList.contains('btn-pause')) {
-                            psBtn.onclick = function () {
+                            psBtn.onclick = function (event) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                if (typeof event.stopImmediatePropagation === 'function') {
+                                    event.stopImmediatePropagation();
+                                }
                                 const plyBtn = psBtn.closest('.arrows-wrap').querySelector('.btn-play');
                                 splide.Components.Autoplay.pause();
                                 psBtn.classList.add('d-none');
                                 plyBtn.classList.remove('d-none');
                                 if (plyBtn) {
-                                    plyBtn.onclick = function () {
+                                    plyBtn.onclick = function (event) {
+                                        event.preventDefault();
+                                        event.stopPropagation();
+                                        if (typeof event.stopImmediatePropagation === 'function') {
+                                            event.stopImmediatePropagation();
+                                        }
                                         splide.Components.Autoplay.play();
                                         psBtn.classList.remove('d-none');
                                         plyBtn.classList.add('d-none');
