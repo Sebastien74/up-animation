@@ -93,7 +93,9 @@ class ToolController extends AdminController
                         }
 
                         // Convert rows
-                        if (count($cells) === 2) {
+                        if (count($cells) === 1) {
+                            $phpinfo[$currentCategory][] = $cells[0];
+                        } elseif (count($cells) === 2) {
                             $phpinfo[$currentCategory][$cells[0]] = $cells[1];
                         } elseif (count($cells) === 3) {
                             // Typical: Directive | Local Value | Master Value
