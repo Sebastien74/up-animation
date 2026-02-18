@@ -34,7 +34,7 @@
             <div class="card-body">
                 <h4 class="card-title float-start">
                     {{ label }}
-                    <button class="index-delete-show btn btn-info-lighten btn-md ms-3" data-bs-toggle="tooltip"
+                    <button class="index-delete-show btn btn-app-lighten btn-md ms-3" data-bs-toggle="tooltip"
                             title="{{ "Afficher les cases à cocher de suppression"|trans|striptags }}"
                             data-display="{{ "Afficher les cases à cocher de suppression"|trans|striptags }}"
                             data-hide="{{ "Masquer"|trans|striptags }}"><i class="icm-trash"></i></button>
@@ -71,7 +71,7 @@
                                 <ul class="reset">
                                     {% for entityUrl in url.entity.urls %}
                                         <li class="italic">
-                                            <small class="text-info-darken">
+                                            <small>
                                                 {% if allLocales|length > 1 %}
                                                     <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
                                                          data-src="{{ asset('/medias/icons/flags/'~entityUrl.locale~'.svg') }}"

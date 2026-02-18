@@ -48,7 +48,28 @@
 
 #pages-list {
     li {
-        list-style-type: disc !important;
+        list-style-type: none !important;
+    }
+
+    .collapse-icon {
+        display: inline-block;
+        &[aria-expanded="true"] {
+            transform: rotate(90deg);
+        }
+    }
+
+    .inner {
+        padding: 2px 0;
+        &:hover {
+            background: rgba($info, 0.05);
+        }
+    }
+}
+
+.tree-toggle-actions {
+    .btn {
+        padding: 0.1rem 0.4rem;
+        font-size: 0.75rem;
     }
 }
 

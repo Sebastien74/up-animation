@@ -71,6 +71,22 @@
             font-weight: bold;
             transition: all .3s;
         }
+
+        .entities-list, .models-list {
+            .collapse-icon {
+                display: inline-block;
+                &[aria-expanded="true"] {
+                    transform: rotate(90deg);
+                }
+            }
+
+            .inner {
+                padding: 2px 0;
+                &:hover {
+                    background: rgba($info, 0.05);
+                }
+            }
+        }
     }
 }
 

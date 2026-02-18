@@ -58,7 +58,7 @@
                         </div>
                         {% if granted('ROLE_INTERNAL') and entity.id %}
                             <a href="{{ path('admin_module_edit', {website: website.id, module: entity.id}) }}"
-                               class="btn btn-info btn-circle btn-edit position-absolute" data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
+                               class="btn btn-app btn-circle btn-edit position-absolute" data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
                                 <i class="icm-pencil"></i>
                             </a>
                         {% endif %}

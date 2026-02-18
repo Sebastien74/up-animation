@@ -27,11 +27,11 @@
                             </div>
                             <div class="w-100 text-center modal-buttons mt-4">
                                 {% if '?filter' in app.request.uri %}
-                                    <a href="{{ path('admin_'~interface.name~'_index', args) }}" class="btn btn-info">
+                                    <a href="{{ path('admin_'~interface.name~'_index', args) }}" class="btn btn-app">
                                         {{ "Réinitialiser"|trans }}
                                     </a>
                                 {% endif %}
-                                <button type="submit" class="btn btn-info">{{ "Filtrer"|trans }}</button>
+                                <button type="submit" class="btn btn-app">{{ "Filtrer"|trans }}</button>
                             </div>
                         {{ form_end(searchFiltersForm) }}
                     </div>

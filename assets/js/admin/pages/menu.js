@@ -2,56 +2,88 @@ import removeErrors from "../../vendor/components/remove-errors";
 
 import '../../../scss/admin/pages/menu.scss';
 
-$('body').on('click', '#link_save', function (e) {
+document.addEventListener('click', function (e) {
 
-    e.preventDefault();
+    const saveButton = e.target.closest('#link_save');
+    if (saveButton) {
+        e.preventDefault();
 
-    let loader = $('body').find('.main-preloader');
-    let el = $(this);
-    let form = el.closest('form');
-    let formId = form.attr('id');
-    let formData = new FormData(document.getElementById(formId));
+        const loader = document.querySelector('.main-preloader');
+        const form = saveButton.closest('form');
+        const url = form.getAttribute('action') + (form.getAttribute('action').includes('?') ? '&' : '?') + 'ajax=true';
+        const formData = new FormData(form);
 
-    $.ajax({
-        url: form.attr('action') + '?ajax=true',
-        type: "POST",
-        data: formData,
-        processData: false,
-        contentType: false,
-        dataType: 'json',
-        async: true,
-        beforeSend: function () {
-            removeErrors();
-            loader.removeClass('d-none');
-        },
-        success: function (response) {
+        removeErrors();
+        if (loader) {
+            loader.classList.remove('d-none');
+        }
 
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(response => {
             if (response.html && !response.success) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = response.html;
+                const newContent = tempDiv.querySelector("#link-form-content");
+                let currentContent = form.querySelector("#link-form-content");
 
-                let html = $(response.html).find("#link-form-content")[0];
-                let ajaxContent = form.find("#link-form-content");
-
-                if (ajaxContent.length === 0) {
-                    ajaxContent = form.closest("#link-form-content");
+                if (!currentContent) {
+                    currentContent = form.closest("#link-form-content");
                 }
 
-                ajaxContent.replaceWith(html);
-                loader.addClass('d-none');
+                if (currentContent && newContent) {
+                    currentContent.replaceWith(newContent);
+                }
+                
+                if (loader) {
+                    loader.classList.add('d-none');
+                }
             }
 
             if (response.success) {
-                location.href = location.href;
+                window.location.reload();
             }
-        },
-        error: function (errors) {
-            /** Display errors */
+        })
+        .catch(errors => {
             import('../core/errors').then(({default: displayErrors}) => {
                 new displayErrors(errors);
             }).catch(error => console.error(error.message));
-            loader.addClass('d-none');
-        }
-    });
+            if (loader) {
+                loader.classList.add('d-none');
+            }
+        });
 
-    e.stopImmediatePropagation();
-    return false;
+        e.stopImmediatePropagation();
+        return false;
+    }
+
+    const expandAllBtn = e.target.closest('.expand-all-pages');
+    if (expandAllBtn) {
+        const list = document.getElementById('pages-list');
+        if (list) {
+            list.querySelectorAll('.collapse').forEach(el => el.classList.add('show'));
+            list.querySelectorAll('.collapse-icon').forEach(el => {
+                el.setAttribute('aria-expanded', 'true');
+                el.classList.remove('collapsed');
+            });
+        }
+    }
+
+    const collapseAllBtn = e.target.closest('.collapse-all-pages');
+    if (collapseAllBtn) {
+        const list = document.getElementById('pages-list');
+        if (list) {
+            list.querySelectorAll('.collapse').forEach(el => el.classList.remove('show'));
+            list.querySelectorAll('.collapse-icon').forEach(el => {
+                el.setAttribute('aria-expanded', 'false');
+                el.classList.add('collapsed');
+            });
+        }
+    }
 });

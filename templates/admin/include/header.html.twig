@@ -12,7 +12,7 @@
 )))) %}
 
 <header class="page-titles d-flex navbar w-100 p-0">
-    <a href="{{ path('admin_dashboard') }}" class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white d-flex align-items-center h-100">
+    <a href="{{ path('admin_dashboard') }}" class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 d-flex align-items-center h-100">
         <span class="btn-icon me-3">
             {{ asset('build/admin/images/theme/logo.svg', 'admin')|file({}, {width: 50, height: 50, class: 'img-white float-start', title: "Tableau de bord"|trans}) }}
         </span>
@@ -26,7 +26,7 @@
             <span class="btn-icon me-3">
                 <i class="icm-{{ pageIcon }}"></i>
             </span>
-            <h2 class="title fw-400 text-white mb-0">{{ pageTitle|raw }}</h2>
+            <h2 class="title fw-400 mb-0">{{ pageTitle|raw }}</h2>
         </div>
         <div class="actions ms-auto d-flex align-items-center gap-2">
             {% set asLightTheme = (app.request.cookies.get('ADMIN_LIGHT_THEME') or masterRequest().get('admin_light_theme')) %}

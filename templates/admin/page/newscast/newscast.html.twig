@@ -74,11 +74,11 @@
                 </li>
                 <li class="nav-item d-inline-flex right">
                     <a href="{{ path('admin_newscast_index', {website: website.id}) }}"
-                       class="back-link d-inline-flex align-items-center nav-link btn btn-info py-2 px-4 text-white">
+                       class="back-link d-inline-flex align-items-center nav-link btn btn-app py-2 px-4">
                         <i class="icm-reply"></i><span>{{ "Retourner à la liste"|trans|raw }}</span>
                     </a>
                     {% if isMainEntity %}
-                        <span id="save-entity" class="nav-link save bg-info cursor text-white">
+                        <span id="save-entity" class="nav-link save bg-info cursor">
                             <i class="icm-save"></i><span>{{ "Enregistrer"|trans }}</span>
                         </span>
                     {% endif %}

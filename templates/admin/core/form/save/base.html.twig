@@ -18,7 +18,7 @@
 {% if form.save is defined and saveAreaTpl == saveArea or not saveAreaTpl and form.save is defined %}
     {{ form_widget(form.save) }}
 {% elseif form.save is not defined and form.saveBack is not defined %}
-    <button type="submit" class="btn btn-info standard"><i class="icm-save"></i>{{ "Enregistrer"|trans }}</button>
+    <button type="submit" class="btn btn-app standard"><i class="icm-save"></i>{{ "Enregistrer"|trans }}</button>
 {% endif %}
 
 {% if form.saveEdit is defined %}

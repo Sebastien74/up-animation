@@ -58,12 +58,12 @@
 
         .glyphs div.item {
 
-            .align-items-center {
+            .icon-wrap {
 
                 position: relative;
                 padding: .8rem 1rem;
                 transition: all ease-in-out .15s;
-                background-color: #eee;
+                background-color: $white;
                 border-radius: .1875rem;
                 border: 1px solid #eee;
                 overflow: hidden;

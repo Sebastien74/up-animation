@@ -144,10 +144,41 @@ export default function () {
                 e.preventDefault();
                 e.stopPropagation();
 
+                const slideTo = e.target.closest('[data-bs-slide-to]');
+                if (slideTo) {
+                    const index = parseInt(slideTo.getAttribute('data-bs-slide-to'));
+                    bootstrapCarousel.to(index);
+                }
+
                 if (typeof e.stopImmediatePropagation === 'function') {
                     e.stopImmediatePropagation();
                 }
             }, true); // capture=true to intercept early
+
+            /**
+             * Prevent parent <a> navigation when clicking on carousel controls (prev/next/pause/play)
+             * so arrows work even if the carousel is wrapped in a link.
+             */
+            carousel.addEventListener('click', (e) => {
+                const control = e.target.closest('.carousel-control-prev, .carousel-control-next, .carousel-control-pause, .carousel-control-play');
+                if (!control) {
+                    return;
+                }
+                const link = control.closest('a[href]');
+                if (!link) {
+                    return;
+                }
+                e.preventDefault();
+                e.stopPropagation();
+                if (control.classList.contains('carousel-control-prev')) {
+                    bootstrapCarousel.prev();
+                } else if (control.classList.contains('carousel-control-next')) {
+                    bootstrapCarousel.next();
+                }
+                if (typeof e.stopImmediatePropagation === 'function') {
+                    e.stopImmediatePropagation();
+                }
+            }, true);
 
             // Pause Button
             carousel.querySelectorAll('.carousel-control-pause').forEach((btn) => {

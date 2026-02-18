@@ -20,18 +20,18 @@
             <div class="card-body">
                 <h4 class="main-subtitle"><i class="icm-copy"></i>{{ "Pages"|trans }}</h4>
                 <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
-                    <li><a href="{{ schemeAndHost~"/check.php" }}" target="_blank" class="text-white-50 d-flex align-items-center gap-2" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-shield-check"></i></span>{{ 'Recommandations'|trans }}</a></li>
-                    <li><a href="https://validator.schema.org/" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-shield-check"></i></span>{{ 'validator.schema.org'|trans }}</a></li>
-                    <li><a href="https://www.serpworx.com/check-security-headers?url={{ app.request.schemeAndHttpHost }}" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-shield-check"></i></span>{{ 'Check security headers'|trans }}</a></li>
-                    <li><a href="{{ schemeAndHost~"/phpinfo.php" }}" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-php"></i></span>{{ 'phpinfo.php'|trans }}</a></li>
-                    <li><a href="{{ schemeAndHost~"/sitemap.xml?preview=true" }}" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-sitemap"></i></span>{{ 'sitemap.xml'|trans }}</a></li>
-                    <li><a href="{{ schemeAndHost~"/robots.txt?preview=true" }}" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-robot"></i></span>{{ 'robots.txt'|trans }}</a></li>
-                    <li><a href="/_error/404" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-unlink"></i></span>{{ "Page 404"|trans }}</a></li>
-                    <li><a href="https://prompt.agence-felix.fr/security/login" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-alien"></i></span>{{ "Prompt AI"|trans }}</a></li>
+                    <li><a href="{{ schemeAndHost~"/check.php" }}" target="_blank" class="d-flex align-items-center gap-2" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-shield-check"></i></span>{{ 'Recommandations'|trans }}</a></li>
+                    <li><a href="https://validator.schema.org/" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-shield-check"></i></span>{{ 'validator.schema.org'|trans }}</a></li>
+                    <li><a href="https://www.serpworx.com/check-security-headers?url={{ app.request.schemeAndHttpHost }}" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-shield-check"></i></span>{{ 'Check security headers'|trans }}</a></li>
+                    <li><a href="{{ schemeAndHost~"/phpinfo.php" }}" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-php"></i></span>{{ 'phpinfo.php'|trans }}</a></li>
+                    <li><a href="{{ schemeAndHost~"/sitemap.xml?preview=true" }}" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-sitemap"></i></span>{{ 'sitemap.xml'|trans }}</a></li>
+                    <li><a href="{{ schemeAndHost~"/robots.txt?preview=true" }}" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-robot"></i></span>{{ 'robots.txt'|trans }}</a></li>
+                    <li><a href="/_error/404" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-unlink"></i></span>{{ "Page 404"|trans }}</a></li>
+                    <li><a href="https://prompt.agence-felix.fr/security/login" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-alien"></i></span>{{ "Prompt AI"|trans }}</a></li>
                     {% if not website.configuration.onlineStatus %}
                         {% set domain = app.user.locale is defined ? app.user.locale|domain() : null %}
                         {% set scheme = not domain ? path('front_index') : domain %}
-                        <li><a href="{{ scheme }}?disabled_ips=true" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-tools"></i></span>{{ "Vérifier la page de maintenance sans les IPS autorisées"|trans }}</a></li>
+                        <li><a href="{{ scheme }}?disabled_ips=true" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-tools"></i></span>{{ "Vérifier la page de maintenance sans les IPS autorisées"|trans }}</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -98,12 +98,12 @@
             <div class="card-body">
                 <h4 class="main-subtitle"><i class="icm-burn"></i>{{ "Audit"|trans }}</h4>
                 <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
-                    <li><a href="https://gtmetrix.com" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-tachometer-alt-slowest"></i></span>{{ 'GTmetrix'|trans }}</a></li>
-                    <li><a href="https://web.dev/measure/" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-tachometer-alt-slowest"></i></span>{{ 'Measure web.dev'|trans }}</a></li>
-                    <li><a href="https://validator.w3.org" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-file-code"></i></span>{{ 'W3C Validation'|trans }}</a></li>
-                    <li><a href="https://developers.google.com/search/reference/overview" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-chart-line"></i></span>{{ 'Microdata'|trans }}</a></li>
-                    <li><a href="https://search.google.com/test/rich-results" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-chart-line"></i></span>{{ 'Microdata Validator'|trans }}</a></li>
-                    <li><a href="https://search.google.com/structured-data/testing-tool?utm_campaign=devsite&utm_medium=jsonld&utm_source=paywalled-content" target="_blank" class="text-white-50 d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-chart-line"></i></span>{{ 'Microdata tests'|trans }}</a></li>
+                    <li><a href="https://gtmetrix.com" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-tachometer-alt-slowest"></i></span>{{ 'GTmetrix'|trans }}</a></li>
+                    <li><a href="https://web.dev/measure/" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-tachometer-alt-slowest"></i></span>{{ 'Measure web.dev'|trans }}</a></li>
+                    <li><a href="https://validator.w3.org" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-file-code"></i></span>{{ 'W3C Validation'|trans }}</a></li>
+                    <li><a href="https://developers.google.com/search/reference/overview" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-chart-line"></i></span>{{ 'Microdata'|trans }}</a></li>
+                    <li><a href="https://search.google.com/test/rich-results" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-chart-line"></i></span>{{ 'Microdata Validator'|trans }}</a></li>
+                    <li><a href="https://search.google.com/structured-data/testing-tool?utm_campaign=devsite&utm_medium=jsonld&utm_source=paywalled-content" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-chart-line"></i></span>{{ 'Microdata tests'|trans }}</a></li>
                 </ul>
             </div>
         </div>

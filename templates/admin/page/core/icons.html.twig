@@ -21,6 +21,10 @@
 
     <div class="card mb-3">
 
+        <h4 class="main-subtitle bg-white mb-0 border-bottom-0">
+            <i class="icm-{{ pageIcon }}"></i>{{ block('pageTitle') }}
+        </h4>
+
         <ul class="nav nav-tabs custom-tab large" role="tablist">
             {% for libraryName, icons in libraries %}
                 {% if libraryName != 'website' %}
@@ -56,8 +60,8 @@
             </li>
         </ul>
 
-        <div class="row m-md-0 bg-white">
-            <div class="col-md-10 my-auto p-md-0">
+        <div class="row m-md-0 bg-white border-top">
+            <div class="col-md-9 my-auto p-md-0">
                 <form role="search" class="icons-search bg-info-darken p-4 mb-0">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -67,8 +71,8 @@
                     </div>
                 </form>
             </div>
-            <div id="add-icon-btn" class="col-md-2 p-md-0 text-center bg-info">
-                <button class="btn btn-info"
+            <div id="add-icon-btn" class="col-md-3 p-md-0 text-center bg-info">
+                <button class="btn btn-app d-flex align-items-center justify-content-center"
                         data-bs-toggle="collapse"
                         href="#collapse-add-icons"
                         role="button"
@@ -86,7 +90,7 @@
             <div id="tab-pane-{{ library }}" class="tab-pane active">
                 <div class="card-body pb-0">
                     <div class="collapse" id="collapse-add-icons">
-                        <div class="card card-body">
+                        <div class="card card-body p-0 border-0">
                             {{ render_esi(path('admin_icons_add', {website: websiteId})) }}
                         </div>
                     </div>
@@ -104,8 +108,8 @@
                                                 {% set locale = icon.locale is defined and icon.locale ? icon.locale : null %}
                                                 <div class="search-icon">{% if locale and countryNames[locale|upper] is defined %}{{ countryNames[locale|upper] }}{% else %}{{ icon.filename }}{% endif %}</div>
                                             </div>
-                                            <div class="icon-actions text-info-darken">
-                                                <div class="icon-copy border-info-darken" data-bs-toggle="tooltip" title="{{ "Copier"|trans }}" data-placement="left">
+                                            <div class="icon-actions">
+                                                <div class="icon-copy border-info-darken" data-bs-toggle="tooltip" title="{{ "Copier"|trans }}">
                                                     <div class="inner h-100"><i class="icm-copy"></i></div>
                                                 </div>
                                                 {% set status = inWebsiteIcons ? 'true' : 'false' %}
@@ -115,7 +119,7 @@
                                                    data-status="{{ status }}"
                                                    data-add-txt="{{ "Ajouter"|trans }}"
                                                    data-remove-txt="{{ "Retirer"|trans }}"
-                                                   data-bs-toggle="tooltip" title="{{ tooltip|raw }}" data-placement="left">
+                                                   data-bs-toggle="tooltip" title="{{ tooltip|raw }}">
                                                     <div class="inner h-100">
                                                         {% set checkClass = inWebsiteIcons ? 'info-darken' : 'd-none' %}
                                                         <i class="icm-check"></i>

@@ -59,7 +59,7 @@
 
                                 {% if (blockTypeCode == 'title' or blockTypeCode == 'title-header') %}
                                     {% if intl.titleForce is defined and intl.titleForce %}
-                                        <span class="title-info text-info">H{{ intl.titleForce }}</span>
+                                        <span class="title-info">H{{ intl.titleForce }}</span>
                                     {% endif %}
                                     {% if intl.title is defined and intl.title %}
                                         <small class="info-text italic">{{ intl.title|truncate(35, false) }}</small>

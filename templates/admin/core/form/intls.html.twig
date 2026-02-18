@@ -111,7 +111,7 @@
                                                 {% set pathArgs = pathArgs|merge({entitylocale: website().configuration.locale}) %}
                                             {% endif %}
                                             <a href="{{ path('admin_'~entityInterfaceName~'_edit', pathArgs) }}"
-                                               data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}" class="btn btn-info w-100">
+                                               data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}" class="btn btn-app w-100">
                                                 <i class="icm-pencil-alt"></i>{{ "Éditer"|trans }}
                                             </a>
                                         </div>

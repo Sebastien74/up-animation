@@ -10,7 +10,7 @@
                 {% endif %}
                 <div {% if not loop.last %}class="mb-3"{% endif %}>
                     {% for metadata in metadatas %}
-                        <div class="item btn btn-outline-secondary mb-1">
+                        <div class="item btn mb-1">
                             <div class="d-flex align-items-center refer-copy">
                                 <div class="to-copy">[{{ metadata }}]</div>
                                 <div class="copy-link border-dark cursor ms-2" data-bs-toggle="tooltip" title="{{ "Copier"|trans|striptags }}">

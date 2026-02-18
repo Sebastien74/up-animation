@@ -23,7 +23,7 @@
 
 {% if haveMapFields or 'map' == interfaceName %}
     <div class="col-12">
-        <a href="https://www.openstreetmap.org" class="mb-3 mt-2 btn btn-info-darken standard" target="_blank"><i class="icm-search"></i>{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
+        <a href="https://www.openstreetmap.org" class="mb-3 mt-2 btn btn-app standard" target="_blank"><i class="icm-search"></i>{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
     </div>
 {% endif %}
 
@@ -43,7 +43,7 @@
                 <div class="col-12">
                     <h4 class="main-subtitle"><i class="icm-map-marked-alt"></i>{{ "Adresse"|trans }}</h4>
                     {% if haveMapFields %}
-                        <a href="https://www.openstreetmap.org" class="mb-4 mt-2 btn btn-info-darken standard" target="_blank"><i class="icm-search"></i>{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
+                        <a href="https://www.openstreetmap.org" class="mb-4 mt-2 btn btn-app standard" target="_blank"><i class="icm-search"></i>{{ "Rechercher les coordonnées en ligne"|trans|raw }}</a>
                     {% endif %}
                 </div>
             {% elseif field.vars.name == 'schedule' %}

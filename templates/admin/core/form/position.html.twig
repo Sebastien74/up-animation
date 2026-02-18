@@ -7,7 +7,7 @@
 {% set args = ('admin_'~interface['name']~'_position')|routeArgs(interface.entity, args) %}
 
 {% if not ajaxView %}
-    <span class="btn btn-outline-info position" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">
+    <span class="btn position" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">
         <a href="#" data-bs-toggle="modal" data-bs-target="#modal-position-{{ entity.id }}">
             {{ entity.position }}
         </a>
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="w-100 text-center modal-buttons mt-4 mb-4">
-                    <span class="btn-dismiss btn btn-secondary" data-bs-dismiss="modal">{{ "Annuler"|trans }}</span>
+                    <span class="btn-dismiss btn" data-bs-dismiss="modal">{{ "Annuler"|trans }}</span>
                     {{ form_widget(form.save) }}
                 </div>
             </div>

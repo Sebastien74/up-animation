@@ -29,12 +29,12 @@
 
         <ul id="domains-tabs" class="nav nav-tabs custom-tab w-100 bg-info-light shadow-light border-0 radius mb-4 text-center overflow-hidden" role="tablist">
             <li class="nav-item{% if toExtract %} w-50 bold{% endif %}">
-                <a class="translation-extract-btn text-center nav-link cursor text-info no-radius" data-domain="only_front">
+                <a class="translation-extract-btn text-center nav-link cursor no-radius" data-domain="only_front">
                     <i class="icm-sync-alt"></i><span>{{ "Extraire le front"|trans }}</span>
                 </a>
             </li>
             <li class="nav-item{% if toExtract %} w-50 bold{% endif %}">
-                <a class="translation-extract-btn text-center nav-link cursor text-info no-radius" data-domain="all">
+                <a class="translation-extract-btn text-center nav-link cursor no-radius" data-domain="all">
                     <i class="icm-sync-alt"></i><span>{{ "Extraire tout"|trans }}</span>
                 </a>
             </li>
@@ -81,7 +81,7 @@
                         {% set domainsPath = app.request.get('domains') ? path('admin_translationdomain_index', {website: website.id})
                             : path('admin_translationdomain_index', {website: website.id, domains: 'admin'}) %}
                         {% set domainslabel = app.request.get('domains') ? "Traductions front"|trans : "Traductions admin"|trans %}
-                        <a href="{{ domainsPath }}" class="btn btn-info d-flex align-items-center">
+                        <a href="{{ domainsPath }}" class="btn btn-app d-flex align-items-center">
                             <i class="icm-eye"></i><span>{{ domainslabel|raw }}</span>
                         </a>
                     </div>
@@ -133,27 +133,27 @@
                                                 {% if granted('ROLE_INTERNAL') %}
                                                     <span data-bs-toggle="tooltip" title="{{ "Éditer le groupe"|trans|striptags }}">
                                                         <a href="{{ path('admin_translationdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
-                                                           class="btn btn-info btn-circle btn-sm"
+                                                           class="btn btn-app btn-circle"
                                                           >
                                                             <i class="icm-pencil-alt"></i>
                                                         </a>
                                                     </span>
                                                     <span data-bs-toggle="tooltip" title="{{ "Extraire"|trans|striptags }}">
-                                                        <a class="translation-extract-btn btn btn-outline-info btn-circle btn-sm cursor" data-larges="1" data-domain="{{ entity.name }}">
+                                                        <a class="translation-extract-btn btn btn-circle cursor" data-larges="1" data-domain="{{ entity.name }}">
                                                             <i class="icm-retweet-alt"></i>
                                                         </a>
                                                     </span>
                                                 {% endif %}
                                                 <span data-bs-toggle="tooltip" title="{{ "Éditer les contenus"|trans|striptags }}">
                                                     <a href="{{ path('admin_translationsdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
-                                                       class="btn btn-outline-info btn-circle btn-sm"
+                                                       class="btn btn-circle"
                                                       >
                                                         <i class="icm-list-ul"></i>
                                                     </a>
                                                 </span>
                                                 {% if granted('ROLE_INTERNAL') %}
                                                     <span data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
-                                                        <a class="btn btn-outline-info btn-circle btn-sm cursor sa-warning swal-delete-link"
+                                                        <a class="btn btn-circle cursor sa-warning swal-delete-link"
                                                            href="{{ path('admin_translationsdomain_delete', {website: websiteId(), translationdomain: entity.id}) }}">
                                                             <i class="icm-trash"></i>
                                                         </a>

@@ -46,7 +46,7 @@
                              data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
                              class="img-fluid lazy-load me-1" height="10" width="14">
                         {{ "Vous devez regénérer les traductions du domaine"|trans|striptags~' "'~entity.domain.adminName~'"' }}
-                        {{ "ou"|trans|raw }} <a href="{{ path('admin_translationunit_regenerate', {website: websiteId(), translationUnit: entity.id}) }}" class="text-white text-underline">{{'regénérer la clé de traduction'|trans|raw }}</a>
+                        {{ "ou"|trans|raw }} <a href="{{ path('admin_translationunit_regenerate', {website: websiteId(), translationUnit: entity.id}) }}" class="text-underline">{{'regénérer la clé de traduction'|trans|raw }}</a>
                     </span>
                 {% endif %}
             {% endfor %}
@@ -54,7 +54,7 @@
 
         <td class="align-middle text-center actions-td">
             <div class="d-flex align-items-center justify-content-end">
-                <button class="btn btn-sm btn-info save-row-trans"
+                <button class="btn btn-app save-row-trans"
                         data-form-id="unit-form-{{ entity.id }}">
                     <i class="icm-save"></i>
                     <i class="icm-spinner-third"></i>

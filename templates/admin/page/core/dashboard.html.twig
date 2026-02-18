@@ -23,7 +23,7 @@
     <div id="dashboard" class="pt-4 pb-5 position-relative">
 
         <div class="header mb-1 d-inline-block px-4 py-4 shadow-item">
-            <h1 class="w-100 text-info d-flex align-items-center">{{ seasonIcon()|icon(25, 25, 'me-2 info-darken') }}{{ "Ravi de vous revoir !"|trans }}</h1>
+            <h1 class="w-100 d-flex align-items-center">{{ seasonIcon()|icon(25, 25, 'me-2 info-darken') }}{{ "Ravi de vous revoir !"|trans }}</h1>
             {% if app.user.lastLogin is defined and app.user.lastLogin %}
                 <p>{{ "Dernière connexion"|trans }} {{ app.user.lastLogin|ago }}</p>
             {% endif %}
@@ -40,7 +40,7 @@
                 <div class="row d-flex w-100">
                     {% if 'pages'|moduleActive(configuration) %}
                         <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_page_tree', {website: websiteId}) }}" class="text-info shadow-item d-flex flex-column h-100 p-4">
+                            <a href="{{ path('admin_page_tree', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin pages-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos pages"|trans }}</span>
                             </a>
@@ -48,7 +48,7 @@
                     {% endif %}
                     {% if 'medias'|moduleActive(configuration) %}
                         <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_medias_library', {website: websiteId}) }}" class="text-info shadow-item d-flex flex-column h-100 p-4">
+                            <a href="{{ path('admin_medias_library', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin images-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos médias"|trans }}</span>
                             </a>
@@ -56,7 +56,7 @@
                     {% endif %}
                     {% if 'newscast'|moduleActive(configuration) %}
                         <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" class="text-info shadow-item d-flex flex-column h-100 p-4">
+                            <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin news-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Publiez une actu"|trans }}</span>
                             </a>
@@ -66,7 +66,7 @@
                 <div class="row d-flex w-100">
                     {% if 'form'|moduleActive(configuration) %}
                         <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_form_index', {website: websiteId}) }}" class="text-info shadow-item d-flex flex-column h-100 p-4">
+                            <a href="{{ path('admin_form_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin form-color'|icon(70, 70, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos formulaires"|trans }}</span>
                             </a>
@@ -74,14 +74,14 @@
                     {% endif %}
                     {% if 'slider'|moduleActive(configuration) %}
                         <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_slider_index', {website: websiteId}) }}" class="text-info shadow-item d-flex flex-column h-100 p-4">
+                            <a href="{{ path('admin_slider_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin sliders-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Vos sliders"|trans }}</span>
                             </a>
                         </div>
                     {% endif %}
                     <div class="col-6 col-md-4 text-center py-2">
-                        <a href="{{ path('admin_support', {website: websiteId()}) }}" class="text-info d-flex shadow-item flex-column h-100 p-4">
+                        <a href="{{ path('admin_support', {website: websiteId()}) }}" class="d-flex shadow-item flex-column h-100 p-4">
                             <span class="d-inline-block w-100 mb-2">{{ 'admin headset-color'|icon(65, 65, 'info') }}</span>
                             <span class="entitled text-dark d-inline-flex align-items-center justify-content-center mt-auto">{{ "Besoin d’aide ?"|trans }}</span>
                         </a>
@@ -146,9 +146,9 @@
                             <table class="table table-striped table-bordered bg-white mb-0">
                                 <thead>
                                     <tr class="bg-info-darken">
-                                        <th class="text-white text-start" scope="col">{{ "Texte saisi"|trans|raw }}</th>
-                                        <th class="text-white text-start" scope="col">{{ "Infos"|trans|raw }}</th>
-                                        <th class="text-white text-end" scope="col">{{ "Action"|trans|raw }}</th>
+                                        <th class="text-start" scope="col">{{ "Texte saisi"|trans|raw }}</th>
+                                        <th class="text-start" scope="col">{{ "Infos"|trans|raw }}</th>
+                                        <th class="text-end" scope="col">{{ "Action"|trans|raw }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>

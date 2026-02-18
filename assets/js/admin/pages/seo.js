@@ -5,21 +5,67 @@ import '../../vendor/plugins/prism';
 import preview from './seo/preview';
 import search from './seo/search';
 
-$(function () {
-
+document.addEventListener('DOMContentLoaded', function () {
     search();
 
-    $(document).keyup(function () {
+    document.addEventListener('keyup', function () {
         preview();
     });
 
-    $('#v-pills-tab-tree .entities-list').find('.link-item.active').parents('.nested').addClass('active');
+    const activeLink = document.querySelector('#v-pills-tab-tree .entities-list .link-item.active');
+    if (activeLink) {
+        let parent = activeLink.closest('.collapse');
+        while (parent) {
+            parent.classList.add('show');
+            const toggle = document.querySelector(`[href="#${parent.id}"]`);
+            if (toggle) {
+                toggle.classList.remove('collapsed');
+                toggle.setAttribute('aria-expanded', 'true');
+            }
+            parent = parent.parentElement.closest('.collapse');
+        }
+    }
 
-    $('body').on('change', '.is-index', function () {
-        let el = $(this);
-        let prism = $('#highlight-preview');
-        let value = el.is(':checked') ? 'index' : 'noindex';
-        prism.find('.highlight-index').html('&lt;meta name="robots" content="' + value + '" />');
-        Prism.highlightElement($('.highlight-index')[0]);
+    document.addEventListener('change', function (e) {
+        const indexCheckbox = e.target.closest('.is-index');
+        if (indexCheckbox) {
+            const prism = document.getElementById('highlight-preview');
+            if (prism) {
+                const value = indexCheckbox.checked ? 'index' : 'noindex';
+                const highlightIndex = prism.querySelector('.highlight-index');
+                if (highlightIndex) {
+                    highlightIndex.innerHTML = '&lt;meta name="robots" content="' + value + '" />';
+                    if (window.Prism) {
+                        Prism.highlightElement(highlightIndex);
+                    }
+                }
+            }
+        }
+    });
+
+    document.addEventListener('click', function (e) {
+        const expandBtn = e.target.closest('.expand-all-entities');
+        if (expandBtn) {
+            const pane = expandBtn.closest('.tab-pane');
+            if (pane) {
+                pane.querySelectorAll('.collapse').forEach(el => el.classList.add('show'));
+                pane.querySelectorAll('.collapse-icon').forEach(el => {
+                    el.setAttribute('aria-expanded', 'true');
+                    el.classList.remove('collapsed');
+                });
+            }
+        }
+
+        const collapseBtn = e.target.closest('.collapse-all-entities');
+        if (collapseBtn) {
+            const pane = collapseBtn.closest('.tab-pane');
+            if (pane) {
+                pane.querySelectorAll('.collapse').forEach(el => el.classList.remove('show'));
+                pane.querySelectorAll('.collapse-icon').forEach(el => {
+                    el.setAttribute('aria-expanded', 'false');
+                    el.classList.add('collapsed');
+                });
+            }
+        }
     });
 });

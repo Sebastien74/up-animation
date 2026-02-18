@@ -23,7 +23,13 @@
             <div class="col-md-4">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h4 class="main-subtitle"><i class="icm-copy"></i>{{ "Pages du site"|trans }}</h4>
+                        <div class="main-subtitle">
+                            <i class="icm-copy"></i>{{ "Pages du site"|trans }}
+                            <div class="d-flex d-flex align-items-center gap-1 ms-auto">
+                                <i class="icm-arrow-alt-to-bottom info cursor expand-all-pages" data-bs-toggle="tooltip" title="{{ "Tout afficher"|trans }}"></i>
+                                <i class="icm-arrow-alt-to-top info cursor collapse-all-pages" data-bs-toggle="tooltip" title="{{ "Tout cacher"|trans }}"></i>
+                            </div>
+                        </div>
                         <form method="post" id="page-selector-menu"
                               action="{{ path('admin_link_add', {website: websiteId(), menu: entity.id, locale: entitylocale, multiple: 0}) }}" class="mb-4">
                             <div class="input-group mb-3">
@@ -41,7 +47,7 @@
                             </div>
                         </form>
                         <form id="pages-to-menu-form" action="{{ path('admin_link_add', {website: websiteId(), menu: entity.id, locale: entitylocale, multiple: 1}) }}" method="POST" >
-                            <ul id="pages-list" class="w-100 ps-3">
+                            <ul id="pages-list" class="w-100 ps-0 list-unstyled">
                                 {% set pages = treePages.main is defined ? treePages.main : [] %}
                                 {% for page in pages %}
                                     {% if page.template != "components.html.twig" and page.template != "error.html.twig" %}
@@ -49,7 +55,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </ul>
-                            <button type="submit" class="btn btn-info w-100">{{ "Ajouter au menu"|trans }}</button>
+                            <button type="submit" class="btn btn-app w-100">{{ "Ajouter au menu"|trans }}</button>
                         </form>
                     </div>
                 </div>
@@ -67,7 +73,7 @@
                                 {% include 'admin/core/form/edit-fields-base.html.twig' with {
                                     form: form,
                                     excludes: ['expand', 'size', 'alignment', 'maxLevel', 'main', 'footer', 'alwaysFixed', 'fixedOnScroll', 'dropdownHover', 'vertical', 'save']} only %}
-                                <button class="btn btn-outline-info-darken d-inline-flex align-items-center justify-content-center collapsed w-100 mb-3"
+                                <button class="btn-darken d-inline-flex align-items-center justify-content-center collapsed w-100 mb-3"
                                         type="button"
                                         data-bs-toggle="collapse"
                                         href="#collapseConfigForm"
@@ -101,14 +107,14 @@
                                 {% endif %}
                                 {% set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
                                     ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees %}
-                                <span id="nestable-expand-all" class="btn btn-outline-info-lighten cursor standard me-2{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
+                                <span id="nestable-expand-all" class="btn-lighten cursor standard me-2{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
                                     <i class="icm-arrow-alt-to-bottom"></i>
                                 </span>
                                 <span id="nestable-collapse-all" class="btn btn-dark cursor standard me-2{% if collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
                                     <i class="icm-arrow-alt-to-top"></i>
                                 </span>
                                 <span>
-                                    <a href="{{ lastRoute() }}" class="btn btn-white text-info standard"
+                                    <a href="{{ lastRoute() }}" class="btn btn-white standard"
                                        data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
                                        aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
                                         <i class="icm-reply"></i>
