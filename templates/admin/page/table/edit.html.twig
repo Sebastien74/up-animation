@@ -26,7 +26,7 @@
             {% for col in form.cols %}
                 <th class="align-middle p-0 bg-transparent">
                     <div class="actions bg-transparent">
-                        <div class="inner float-end bg-info-darken">
+                        <div class="inner float-end-darken">
                             {% if not loop.first %}
                                 <span class="active btn">
                                     <a href="{{ path('admin_tablecol_position', {website: websiteId, table: entity.id, col: col.vars.data.id, type: "down"}) }}"
@@ -58,7 +58,7 @@
                     {% if col.intls is defined %}
                         {% for intl in col.intls %}
                             {% set intlLocale = intl.vars.data.locale %}
-                            <div class="row m-0 bg-info-darken intls-row{% if intlLocale != entitylocale %} d-none{% endif %}">
+                            <div class="row m-0-darken intls-row{% if intlLocale != entitylocale %} d-none{% endif %}">
                                 <div class="col-md-4">{{ form_widget(intl.titleForce) }}</div>
                                 <div class="col-md-8">{{ form_widget(intl.title) }}</div>
                             </div>
@@ -100,14 +100,14 @@
                             </td>
                         {% endfor %}
                         <td class="actions bg-body text-center bg-transparent">
-                            <div class="inner bg-info-darken">
+                            <div class="inner-darken">
                                 <span {% if not loop.first %}{% endif %}>
                                     {% if not loop.first %}
                                         <a href="{{ path('admin_tablecell_position', {website: websiteId, table: entity.id, position: loop.index, type: "up"}) }}"
                                            class="btn" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}"><i class="icm-chevron-up"></i>
                                         </a>
                                     {% else %}
-                                        <span class="btn disabled"><i class="icm-chevron-up"></i></span>
+                                        <span class="disabled"><i class="icm-chevron-up"></i></span>
                                     {% endif %}
                                 </span>
                                 <span {% if not loop.last %}{% endif %}>
@@ -116,7 +116,7 @@
                                                class="btn" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}"><i class="icm-chevron-down"></i>
                                             </a>
                                         {% else %}
-                                            <span class="btn disabled" ><i class="icm-chevron-down"></i></span>
+                                            <span class="disabled" ><i class="icm-chevron-down"></i></span>
                                         {% endif %}
                                     </span>
                                 <span data-bs-toggle="tooltip" title="{{ "Enregistrer"|trans|striptags }}">
@@ -124,7 +124,7 @@
                                     </span>
                                 <a href="{{ path("admin_tablecell_delete", {website: websiteId, table: entity.id, position: loop.index}) }}"
                                    data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
-                                   class="btn swal-delete-link">
+                                   class="swal-delete-link">
                                     <i class="icm-trash"></i>
                                 </a>
                             </div>

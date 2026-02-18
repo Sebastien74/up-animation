@@ -139,13 +139,13 @@
             {% if 'search'|moduleActive(configuration) and searchValues.count > 0 and granted('ROLE_SEARCH_ENGINE') %}
                 <div id="stats-search" class="col-12 mt-4 pt-4">
                     <div class="table-card card">
-                        <div class="card-header bg-info-darken-dark">
+                        <div class="card-header-darken-dark">
                             <h3 class="title w-100 fw-400 mb-0">{{ "Recherches effectuées"|trans }}</h3>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered bg-white mb-0">
+                            <table class="table table-striped table-bordered mb-0">
                                 <thead>
-                                    <tr class="bg-info-darken">
+                                    <tr>
                                         <th class="text-start" scope="col">{{ "Texte saisi"|trans|raw }}</th>
                                         <th class="text-start" scope="col">{{ "Infos"|trans|raw }}</th>
                                         <th class="text-end" scope="col">{{ "Action"|trans|raw }}</th>
@@ -162,7 +162,7 @@
                                                 </ul>
                                             </td>
                                             <td class="align-middle text-end">
-                                                <span class="btn text-center">
+                                                <span class="text-center">
                                                     <a href="{{ path('admin_searchvalue_delete', {website: website.id, searchvalue: value.id}) }}"
                                                        data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
                                                        data-target="#entity-row-{{ value.id }}"

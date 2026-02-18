@@ -1,6 +1,6 @@
 {% trans_default_domain 'admin' %}
 
-<button class="btn btn-dark float-start me-2" data-bs-toggle="modal" data-bs-target="#filters-modal"><i class="icm-filter"></i>{{ "Filtrer"|trans }}</button>
+<button class="btn-icon danger float-start me-2" data-bs-toggle="modal" data-bs-target="#filters-modal"><i class="icm-filter"></i>{{ "Filtrer"|trans }}</button>
 
 <div class="modal-wrapper float-start">
     <div class="modal fade" id="filters-modal" tabindex="-1"
@@ -27,11 +27,11 @@
                             </div>
                             <div class="w-100 text-center modal-buttons mt-4">
                                 {% if '?filter' in app.request.uri %}
-                                    <a href="{{ path('admin_'~interface.name~'_index', args) }}" class="btn btn-app">
+                                    <a href="{{ path('admin_'~interface.name~'_index', args) }}" class="btn-app">
                                         {{ "Réinitialiser"|trans }}
                                     </a>
                                 {% endif %}
-                                <button type="submit" class="btn btn-app">{{ "Filtrer"|trans }}</button>
+                                <button type="submit" class="btn-app">{{ "Filtrer"|trans }}</button>
                             </div>
                         {{ form_end(searchFiltersForm) }}
                     </div>

@@ -27,12 +27,12 @@
                             <i class="icm-copy"></i>{{ "Pages du site"|trans }}
                             <div class="d-flex d-flex align-items-center gap-1 ms-auto">
                                 <i class="icm-arrow-alt-to-bottom info cursor expand-all-pages" data-bs-toggle="tooltip" title="{{ "Tout afficher"|trans }}"></i>
-                                <i class="icm-arrow-alt-to-top info cursor collapse-all-pages" data-bs-toggle="tooltip" title="{{ "Tout cacher"|trans }}"></i>
+                                <i class="icm-arrow-alt-to-top info cursor collapse-all-pages d-none" data-bs-toggle="tooltip" title="{{ "Tout cacher"|trans }}"></i>
                             </div>
                         </div>
                         <form method="post" id="page-selector-menu"
                               action="{{ path('admin_link_add', {website: websiteId(), menu: entity.id, locale: entitylocale, multiple: 0}) }}" class="mb-4">
-                            <div class="input-group mb-3">
+                            <div class="input-group select2-group mb-3">
                                 <select name="page" class="custom-select select-2">
                                     <option value="">{{ "Sélectionnez une page"|trans }}</option>
                                     {% for page in pages %}
@@ -42,7 +42,7 @@
                                     {% endfor %}
                                 </select>
                                 <div class="input-group-append">
-                                    <button type="submit" class="input-group-text bg-info cursor"><i class="icm-chevron-right"></i></button>
+                                    <button type="submit" class="input-group-text cursor"><i class="icm-chevron-right"></i></button>
                                 </div>
                             </div>
                         </form>
@@ -55,32 +55,34 @@
                                     {% endif %}
                                 {% endfor %}
                             </ul>
-                            <button type="submit" class="btn btn-app w-100">{{ "Ajouter au menu"|trans }}</button>
+                            <button type="submit" class="btn-app"><i class="icm-plus"></i>{{ "Ajouter au menu"|trans }}</button>
                         </form>
                     </div>
                 </div>
-                <div id="add-link-card" class="card">
-                    <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Ajouter un lien externe ou d'arborescence"|trans }}</h4>
-                    <div class="card-body pb-0 px-2">
+                <div id="add-link-card" class="card mb-3">
+                    <div class="card-body">
+                        <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Ajouter un lien externe ou d'arborescence"|trans }}</h4>
                         {{ render_esi(path('admin_link_new', {website: websiteId(), menu: entity.id, entitylocale: entitylocale} )) }}
                     </div>
                 </div>
                 <div class="card mb-3">
-                    <div class="card-body pb-0">
+                    <div class="card-body">
                         <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
                         <div class="row">
                             {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri}}) }}
                                 {% include 'admin/core/form/edit-fields-base.html.twig' with {
                                     form: form,
                                     excludes: ['expand', 'size', 'alignment', 'maxLevel', 'main', 'footer', 'alwaysFixed', 'fixedOnScroll', 'dropdownHover', 'vertical', 'save']} only %}
-                                <button class="btn-darken d-inline-flex align-items-center justify-content-center collapsed w-100 mb-3"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        href="#collapseConfigForm"
-                                        aria-expanded="false"
-                                        aria-controls="collapseForm">
-                                    <i class="icm-cog"></i>{{ "Options avancées"|trans }}
-                                </button>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn-app mb-3"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            href="#collapseConfigForm"
+                                            aria-expanded="false"
+                                            aria-controls="collapseForm">
+                                        <i class="icm-cog"></i>{{ "Options avancées"|trans }}
+                                    </button>
+                                </div>
                                 <div id="collapseConfigForm" class="collapse">
                                     {% include 'admin/core/form/edit-fields-base.html.twig' with {
                                         form: form,
@@ -92,39 +94,26 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="card radius-bottom">
-                    <h4 class="main-subtitle">
-                        <div class="row">
-                            <div class="col-md-6 d-inline-flex align-items-center">
-                                <i class="icm-bars"></i> {{ "Menu"|trans|striptags }}
-                            </div>
-                            <div class="col-md-6 d-inline-flex justify-content-end">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="main-subtitle">
+                            <i class="icm-bars"></i> {{ "Menu"|trans|striptags }}
+                            <div class="ms-auto d-flex gap-2">
                                 {% if 'delete'|moduleActive(configuration) %}
-                                    <button id="delete-pack-btn" class="btn btn-danger d-none"
-                                            data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
-                                        <i class="icm-trash"></i>
-                                    </button>
+                                    <i id="delete-pack-btn" class="icm-trash btn-icon danger small initial cursor d-none" data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"></i>
                                 {% endif %}
-                                {% set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
-                                    ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees %}
-                                <span id="nestable-expand-all" class="btn-lighten cursor standard me-2{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
-                                    <i class="icm-arrow-alt-to-bottom"></i>
-                                </span>
-                                <span id="nestable-collapse-all" class="btn btn-dark cursor standard me-2{% if collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
-                                    <i class="icm-arrow-alt-to-top"></i>
-                                </span>
-                                <span>
-                                    <a href="{{ lastRoute() }}" class="btn btn-white standard"
-                                       data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
-                                       aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
-                                        <i class="icm-reply"></i>
-                                    </a>
-                                </span>
+                                {% set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees %}
+                                <i id="nestable-expand-all" class="icm-arrow-alt-to-bottom initial small cursor{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}"></i>
+                                <i id="nestable-collapse-all" class="icm-arrow-alt-to-top initial small cursor{% if collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}"></i>
+                                <a href="{{ lastRoute() }}"
+                                   data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
+                                   aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                                    <i class="icm-reply initial small"></i>
+                                </a>
                                 {% include 'admin/include/intl-selector.html.twig' with {route: 'admin_menu_edit', args: { menu: entity.id, selectorClass: 'ms-2' }} %}
                             </div>
+                            {#                        </div>#}
                         </div>
-                    </h4>
-                    <div class="card-body bg-info-light radius-bottom">
                         {% set limit = entity.maxLevel > 0 ? entity.maxLevel : 1000 %}
                         {% include 'admin/core/include/nestable.html.twig' with {routenameInterface: "link", forceLimit: limit, infoUrl: true} %}
                     </div>

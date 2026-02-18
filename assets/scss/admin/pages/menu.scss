@@ -21,6 +21,7 @@
 -----------------------------------*/
 
 @import '../variables';
+@import '../../vendor/mixin/media-queries';
 
 /*-----------------------------------
    2 ) List of Pages
@@ -47,21 +48,30 @@
 }
 
 #pages-list {
-    li {
-        list-style-type: none !important;
-    }
 
     .collapse-icon {
+
         display: inline-block;
-        &[aria-expanded="true"] {
-            transform: rotate(90deg);
+
+        @include mediaQuery(min-lg) {
+            &:hover {
+                color: $dash-lighten;
+            }
+        }
+
+        &:not(.collapsed) {
+            transform: rotate(180deg);
         }
     }
 
     .inner {
+
         padding: 2px 0;
-        &:hover {
-            background: rgba($info, 0.05);
+
+        @include mediaQuery(min-lg) {
+            &:hover {
+                background: rgba($info, 0.05);
+            }
         }
     }
 }
@@ -88,13 +98,6 @@
 -----------------------------------*/
 
 #menu-edit-page {
-
-    .card {
-        button[type="submit"] {
-            width: 100%;
-        }
-    }
-
     #nestable-list {
         margin-bottom: 0 !important;
     }

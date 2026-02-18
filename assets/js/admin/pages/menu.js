@@ -72,6 +72,12 @@ document.addEventListener('click', function (e) {
                 el.setAttribute('aria-expanded', 'true');
                 el.classList.remove('collapsed');
             });
+
+            expandAllBtn.classList.add('d-none');
+            const collapseAllBtn = expandAllBtn.parentElement.querySelector('.collapse-all-pages');
+            if (collapseAllBtn) {
+                collapseAllBtn.classList.remove('d-none');
+            }
         }
     }
 
@@ -84,6 +90,12 @@ document.addEventListener('click', function (e) {
                 el.setAttribute('aria-expanded', 'false');
                 el.classList.add('collapsed');
             });
+
+            collapseAllBtn.classList.add('d-none');
+            const expandAllBtn = collapseAllBtn.parentElement.querySelector('.expand-all-pages');
+            if (expandAllBtn) {
+                expandAllBtn.classList.remove('d-none');
+            }
         }
     }
 });

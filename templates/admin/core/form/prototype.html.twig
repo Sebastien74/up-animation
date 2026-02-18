@@ -35,7 +35,7 @@
                             interfaceName: interfaceName
                         } %}
                     {% elseif deletableProperty %}
-                        <span class="btn btn-white delete-disabled" data-bs-toggle="tooltip" title="{{ "Donnée requise"|trans|striptags }}">
+                        <span class="delete-disabled" data-bs-toggle="tooltip" title="{{ "Donnée requise"|trans|striptags }}">
                             <i class="icm-trash"></i>
                         </span>
                     {% endif %}
@@ -85,7 +85,7 @@
 
     {% if displayBtn %}
         <div class="col-12 text-end mb-4">
-            <button role="button" class="add-collection standard btn {% if fullBtn is defined %}full-prototype-btn w-100{% else %}btn-app success{% endif %}"
+            <button role="button" class="add-collection btn {% if fullBtn is defined %}full-prototype-btn w-100{% else %}btn-app success{% endif %}"
                     data-collection-target="append"
                     data-target="#{{ field.vars.id }}_collection">
                 {% if fullBtn is defined %}

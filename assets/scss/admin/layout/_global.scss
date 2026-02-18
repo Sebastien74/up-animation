@@ -79,7 +79,8 @@ a {
 
 .main-subtitle {
 
-    display: flex;
+    display: inline-flex;
+    width: 100%;
     align-items: center;
     gap: .75rem;
     padding: .5rem 1rem;

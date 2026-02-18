@@ -35,7 +35,7 @@
                                                     <span style="background: url({{ asset(mediaRelation|file({}, {path: true})) }})" class="image-info-bulle"></span>
                                                 {% endif %}
                                                 <a href="{{ path('admin_col_edit', {website: websiteId(), zone: zone.id, col: col.id, interfaceName: interface.name, interfaceEntity: entity.id}) }}"
-                                                   class="btn position-relative btn-action" data-bs-toggle="tooltip" title="{{ "Image de fond"|trans|striptags }}">
+                                                   class="position-relative btn-action" data-bs-toggle="tooltip" title="{{ "Image de fond"|trans|striptags }}">
                                                     <i class="icm-image"></i>
                                                 </a>
                                             </span>
@@ -118,7 +118,7 @@
                                           }) }}">
                                         <i class="icm-plus"></i>{{ 'Ajouter un bloc'|trans|striptags }}
                                     </span>
-                                    <span class="btn-resize btn-resize-col btn-white btn-xs btn-circle"><i class="icm-arrow-from-right"></i></span>
+                                    <span class="btn-resize btn-resize-col"><i class="icm-arrow-from-right"></i></span>
                                 </div>
                             {% endif %}
                         </div>

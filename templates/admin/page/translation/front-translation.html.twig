@@ -2,7 +2,7 @@
 
 <div class="edit-trans-block position-relative">
     <span id="edit-trans-content-{{ id }}" class="d-inline-block result">{{ content }}</span>
-    <div id="edit-trans-btn-modal-{{ id }}" class="btn btn-icon edit-trans-btn-modal text-center position-absolute" data-bs-toggle="modal" data-bs-target="trans-edit-modal-{{ id }}">
+    <div id="edit-trans-btn-modal-{{ id }}" class="btn-icon edit-trans-btn-modal text-center position-absolute" data-bs-toggle="modal" data-bs-target="trans-edit-modal-{{ id }}">
         <span data-bs-toggle="tooltip" title="{{ "Éditer le texte"|trans|striptags }}">
             <i class="icm-pen-nib"></i>
         </span>
@@ -22,7 +22,7 @@
                                 <input type="hidden" name="key_name" value="{{ key_name }}">
                                 <input type="hidden" name="locale" value="{{ locale }}">
                                 <div class="input-group-append">
-                                    <span class="btn trans-edit-save h-100" data-result="edit-trans-content-{{ id }}">
+                                    <span class="trans-edit-save h-100" data-result="edit-trans-content-{{ id }}">
                                         <i class="icm-save"></i>
                                         <div class="spinner-border d-none" role="status"></div>
                                     </span>

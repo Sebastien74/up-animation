@@ -83,7 +83,7 @@ class LinkType extends AbstractType
 
         $saveOptions = [];
         if ($isNew) {
-            $saveOptions['class'] = 'px-4';
+            $saveOptions['class'] = 'mb-0';
             $saveOptions['btn_save'] = true;
             $saveOptions['btn_save_label'] = $this->translator->trans('Ajouter au menu', [], 'admin');
         } else {
@@ -94,11 +94,16 @@ class LinkType extends AbstractType
         $fieldsClass = $isNew ? 'col-12' : 'col-lg-6';
         $checkClass = $isNew ? 'col-12' : 'col-lg-4 my-auto';
 
+        $fields = ['title' => $fieldsClass, 'targetLink' => $fieldsClass, 'targetPage' => $fieldsClass, 'newTab' => $checkClass];
+        if (!$isNew) {
+            $fields = ['title' => $fieldsClass, 'subTitle' => $fieldsClass, 'introduction' => 'col-12', 'targetLink' => $fieldsClass, 'targetPage' => $fieldsClass, 'newTab' => $checkClass];
+        }
+
         $builder->add('intl', WidgetType\IntlType::class, [
             'label' => false,
             'data_class' => LinkIntl::class,
             'title_force' => false,
-            'fields' => ['title' => $fieldsClass, 'subTitle' => $fieldsClass, 'introduction' => 'col-12', 'targetLink' => $fieldsClass, 'targetPage' => $fieldsClass, 'newTab' => $checkClass],
+            'fields' => $fields,
             'excludes_fields' => ['targetStyle'],
             'label_fields' => [
                 'subTitle' => $this->translator->trans('Titre du sous-menu', [], 'admin'),
@@ -109,7 +114,7 @@ class LinkType extends AbstractType
                 'introduction' => $this->translator->trans('Saisissez une description', [], 'admin'),
             ],
             'required_fields' => ['title'],
-            'row_attr' => ['class' => $isNew ? 'px-4' : ''],
+            'row_attr' => ['class' => $isNew ? 'mb-0' : ''],
         ])->addEventSubscriber(new IntlListener($this->coreLocator));
 
         if (!$isNew) {

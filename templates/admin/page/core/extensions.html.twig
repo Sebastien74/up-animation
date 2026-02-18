@@ -42,7 +42,7 @@
                             {% else %}
                                 {{ icon|icon(null, 40) }}
                             {% endif %}
-                            <span class="show-more position-absolute btn btn-dark text-center p-0 cursor"
+                            <span class="show-more position-absolute btn-icon danger text-center p-0 cursor"
                                   data-bs-toggle="tooltip"
                                   title="{{ "En savoir plus"|trans|striptags }}">
                                 <span data-bs-toggle="modal"
@@ -58,7 +58,7 @@
                         </div>
                         {% if granted('ROLE_INTERNAL') and entity.id %}
                             <a href="{{ path('admin_module_edit', {website: website.id, module: entity.id}) }}"
-                               class="btn btn-app btn-circle btn-edit position-absolute" data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
+                               class="btn-app btn-edit position-absolute" data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
                                 <i class="icm-pencil"></i>
                             </a>
                         {% endif %}

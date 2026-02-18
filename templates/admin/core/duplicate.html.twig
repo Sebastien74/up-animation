@@ -28,7 +28,7 @@
                             </div>
                         </div>
                         <div class="modal-footer pt-0">
-                            <button type="submit" class="btn btn-app w-100 ajax-post remove-modal{% if refresh %} refresh{% endif %}">
+                            <button type="submit" class="btn-app w-100 ajax-post remove-modal{% if refresh %} refresh{% endif %}">
                                 {{ "Enregistrer"|trans }}
                             </button>
                         </div>
@@ -64,7 +64,7 @@
                                     {% include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only %}
                                 </div>
                                 <div class="w-100 text-center modal-buttons mt-4">
-                                    <button type="submit" class="btn btn-app ajax-post remove-modal{% if refresh %} refresh{% endif %}">{{ "Dupliquer"|trans }}</button>
+                                    <button type="submit" class="btn-app ajax-post remove-modal{% if refresh %} refresh{% endif %}">{{ "Dupliquer"|trans }}</button>
                                 </div>
                             {{ form_end(form) }}
                         </div>

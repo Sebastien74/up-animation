@@ -7,7 +7,7 @@
 {% set args = ('admin_'~interface['name']~'_position')|routeArgs(interface.entity, args) %}
 
 {% if not ajaxView %}
-    <span class="btn position" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">
+    <span class="position" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">
         <a href="#" data-bs-toggle="modal" data-bs-target="#modal-position-{{ entity.id }}">
             {{ entity.position }}
         </a>

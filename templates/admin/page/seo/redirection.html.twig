@@ -24,16 +24,16 @@
             <div class="card-header border-0 p-0 mb-4">
                 <div class="row align-items-center">
                     <div class="col-md-6 d-flex gap-2">
-                        <a href="{{ asset('build/admin/docs/redirections.xlsx') }}" class="btn-app secondary standard" download="redirection.xlsx">
+                        <a href="{{ asset('build/admin/docs/redirections.xlsx') }}" class="btn-app secondary" download="redirection.xlsx">
                             <i class="icm-upload"></i><span>{{ "Télécharger le modèle XLS"|trans }}</span>
                         </a>
-                        <span class="btn-app info-lighten standard cursor" data-bs-toggle="modal" data-bs-target="#import-modal">
+                        <span class="btn-app info-lighten cursor" data-bs-toggle="modal" data-bs-target="#import-modal">
                             <i class="icm-download"></i><span>{{ "Importer"|trans }}</span>
                         </span>
                         {{ render_esi(path('admin_redirection_export', {website: website.id} )) }}
                     </div>
                     <div class="col-md-6 text-end d-flex justify-content-end gap-2">
-                        <button type="submit" class="btn-app info standard"><i class="icm-save"></i><span>{{ "Enregistrer"|trans }}</span></button>
+                        <button type="submit" class="btn-app info"><i class="icm-save"></i><span>{{ "Enregistrer"|trans }}</span></button>
                         <button role="button" class="add-collection btn-app success"
                                 data-type="table"
                                 data-collection-target="prepend"
