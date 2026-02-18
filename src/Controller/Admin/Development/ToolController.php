@@ -47,42 +47,81 @@ class ToolController extends AdminController
     {
         ob_start();
         phpinfo();
-        $phpinfo = ob_get_clean();
+        $phpinfoHTML = ob_get_clean();
 
         $dom = new \DOMDocument();
-        @$dom->loadHTML('<?xml encoding="utf-8" ?>'.$phpinfo);
+        @$dom->loadHTML('<?xml encoding="utf-8" ?>' . $phpinfoHTML);
+
+        $phpinfo = [];
+        $currentCategory = 'General';
+
         $xpath = new \DOMXPath($dom);
+        $nodes = $xpath->query('//*[(self::h1 or self::h2 or self::table)]');
 
-        $tables = $dom->getElementsByTagName('table');
-        foreach ($tables as $table) {
-            $table->setAttribute('class', 'table table-striped table-hover table-bordered table-sm');
-            $table->setAttribute('style', 'width: 100%; margin-bottom: 2rem; border-collapse: collapse;');
-        }
+        if ($nodes !== false) {
+            foreach ($nodes as $node) {
+                if ($node->nodeName === 'h1' || $node->nodeName === 'h2') {
+                    $currentCategory = trim($node->nodeValue);
+                    if ($currentCategory === '') {
+                        $currentCategory = 'General';
+                    }
+                    if (!isset($phpinfo[$currentCategory])) {
+                        $phpinfo[$currentCategory] = [];
+                    }
+                    continue;
+                }
 
-        $headers = $dom->getElementsByTagName('th');
-        foreach ($headers as $header) {
-            $header->setAttribute('style', 'background-color: #dee2e6; color: #212529; padding: 0.5rem;');
-        }
+                if ($node->nodeName === 'table') {
+                    $rows = $node->getElementsByTagName('tr');
+                    foreach ($rows as $row) {
+                        $cells = [];
+                        foreach ($row->childNodes as $col) {
+                            if ($col->nodeName === 'td' || $col->nodeName === 'th') {
+                                $val = trim(preg_replace('/\s+/', ' ', $col->nodeValue ?? ''));
+                                if ($val !== '') {
+                                    $cells[] = $val;
+                                } else {
+                                    $cells[] = '';
+                                }
+                            }
+                        }
 
-        $cells = $dom->getElementsByTagName('td');
-        foreach ($cells as $cell) {
-            $cell->setAttribute('style', 'word-break: break-all; padding: 0.5rem;');
-        }
+                        // Ignore rows with no meaningful data
+                        $nonEmpty = array_filter($cells, static fn($v) => $v !== '' && $v !== null);
+                        if (count($nonEmpty) === 0) {
+                            continue;
+                        }
 
-        $body = $dom->getElementsByTagName('body')->item(0);
-        $content = '';
-        if ($body) {
-            foreach ($body->childNodes as $node) {
-                $content .= $dom->saveHTML($node);
+                        // Convert rows
+                        if (count($cells) === 2) {
+                            $phpinfo[$currentCategory][$cells[0]] = $cells[1];
+                        } elseif (count($cells) === 3) {
+                            // Typical: Directive | Local Value | Master Value
+                            $key = $cells[0];
+                            // Skip header row if it looks like a header
+                            $isHeader = in_array(strtolower($cells[0]), ['directive', 'variable'])
+                                && in_array(strtolower($cells[1]), ['local value', 'value'])
+                                && in_array(strtolower($cells[2]), ['master value', 'access']);
+                            if ($isHeader) {
+                                continue;
+                            }
+                            $phpinfo[$currentCategory][$key] = [
+                                'local' => $cells[1],
+                                'master' => $cells[2],
+                            ];
+                        } else {
+                            // Fallback: push as-is
+                            $phpinfo[$currentCategory][] = $cells;
+                        }
+                    }
+                }
             }
-        } else {
-            $content = $phpinfo;
         }
 
         parent::breadcrumb($request, []);
 
         return $this->adminRender('admin/page/development/phpinfo.html.twig', array_merge($this->arguments, [
-            'phpinfo' => $content,
+            'phpinfo' => $phpinfo,
         ]));
     }
 
