@@ -4,7 +4,7 @@
     <div class="card-body media-body text-center">
         {{ media|file({desktop: thumbConfiguration}, {asMedia: true, lazyLoad: false, forceThumb: true}) }}
     </div>
-    <h5 class="card-title no-radius mb-0 bg-light border p-3">
+    <h5 class="card-title no-radius mb-0 border p-3">
         {{ "Taille"|trans }} :
         {% if configuration.width != "" and configuration.height != "" %}
             {{ configuration.width }}px X {{ configuration.height }}px <small class="italic ms-2">{{ "(l x h)"|trans }}</small>
@@ -18,7 +18,7 @@
             {{ "Indéterminée"|trans }}
         {% endif  %}
     </h5>
-    <div class="card-body info-body border bg-light">
+    <div class="card-body info-body border">
         <strong>{{ "Utilisé dans :"|trans }}</strong>
         <ul>
             {% for action in configuration.actions %}

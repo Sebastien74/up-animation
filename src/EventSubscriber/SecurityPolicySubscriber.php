@@ -35,7 +35,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
     private const bool CSP_DISABLED_FOR_DEV = true;
     private const bool CSP_DISABLED = false;
     private const bool XSS_DENIED = true;
-    private const string XSS_PATTERN = '/(<\s*script|on\w+\s*=|javascript:|<svg|<img|<iframe|<object|data:text\/html)/i';
+    private const string XSS_PATTERN = '/(<\s*script|\bon(abort|afterprint|beforeprint|beforeunload|blur|canplay|canplaythrough|change|click|contextmenu|copy|cut|dblclick|drag|dragend|dragenter|dragleave|dragover|dragstart|drop|durationchange|ended|error|focus|focusin|focusout|hashchange|input|invalid|keydown|keypress|keyup|load|loadeddata|loadedmetadata|loadstart|message|mousedown|mouseenter|mouseleave|mousemove|mouseover|mouseout|mouseup|mousewheel|offline|online|open|pagehide|pageshow|paste|pause|play|playing|popstate|progress|ratechange|resize|reset|scroll|search|seeked|seeking|select|show|stalled|storage|submit|suspend|timeupdate|toggle|unload|volumechange|waiting|wheel)\s*=|javascript:|<svg|<img|<iframe|<object|data:text\/html)/i';
 
     private Request $request;
     private ?string $uri = null;

@@ -67,7 +67,7 @@
 
             {% if asMediaScreen %}
                 <div class="col-md-3 screen-card">
-                    <div class="card-body pb-0 border bg-light mb-4 radius">
+                    <div class="card-body pb-0 border mb-4 radius">
                         {% include 'admin/core/form/medias-modal.html.twig' with {
                             modalId: mediaRelation.vars.value.id,
                             parameters: {
@@ -82,7 +82,7 @@
                     </div>
             {% else %}
                 <div class="col-md-{% if onlyMedia %}12{% else %}7{% endif %}">
-                    <div class="card-body pb-0 border bg-light mb-4 radius">
+                    <div class="card-body pb-0 border mb-4 radius">
                         {% if libraryBtnPosition == 'top' %}
                             {% include 'admin/page/media/modal-btn.html.twig' %}
                         {% endif %}
@@ -105,7 +105,7 @@
                         <i class="icm-chevron-down ms-auto"></i>
                     </button>
                     <div id="collapseSubNavigation-{{ mediaRelationId }}" class="collapse">
-                        <div class="card-body pb-0 border bg-light mb-4 radius">
+                        <div class="card-body pb-0 border mb-4 radius">
                 {% endif %}
                 {% if onlyMedia and mediaRelation.intl.title is defined %}
                     {{ form_row(mediaRelation.intl.title) }}
@@ -127,7 +127,7 @@
                         <i class="icm-chevron-down ms-auto"></i>
                     </h4>
                     <div id="collapse-link-{{ mediaRelationId }}" class="collapse">
-                        <div class="card-body pb-0 border bg-light mb-4 radius">
+                        <div class="card-body pb-0 border mb-4 radius">
                             <div class="row">
                                 {% if mediaRelation.intl.targetStyle is defined %}
                                     {{ form_row(mediaRelation.intl.targetStyle) }}
@@ -181,7 +181,7 @@
                 {% for screen in mediaRelation.media.mediaScreens %}
                     {% set displayScreen = screenSize != 'poster' or screenSize == 'poster' and screen.vars.value.screen in videoFormats ? '' : ' d-none' %}
                     <div class="col-md-3 screen-card{{ displayScreen }}">
-                        <div class="card-body pb-0 border bg-light mb-4 radius">
+                        <div class="card-body pb-0 border mb-4 radius">
                             {% include 'admin/core/form/medias-modal.html.twig' with {
                                 modalId: screen.vars.value.id,
                                 btnModalId: 'open-screen-modal-'~screen.vars.value.id,
@@ -212,7 +212,7 @@
                             <i class="icm-chevron-down ms-auto"></i>
                         </h4>
                         <div id="collapse-config-{{ mediaRelationId }}" class="collapse show">
-                            <div class="card-body pb-0 border bg-light mb-4 radius">
+                            <div class="card-body pb-0 border mb-4 radius">
 
                                 {% if mediaRelation.maxWidth is defined or mediaRelation.maxHeight is defined %}
                                     <div class="row">

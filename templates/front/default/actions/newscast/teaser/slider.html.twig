@@ -84,7 +84,7 @@
 
 {% macro single(websiteTemplate, autoplay, teaser, entity, loopIndex, entities, thumbConfiguration) %}
     <li class="splide__slide col-12 p-0{% if loopIndex > teaser.itemsPerSlide %} d-none{% endif %}">
-        <div class="card bg-light d-inline-block border-0 h-100 w-100">
+        <div class="card d-inline-block border-0 h-100 w-100">
             {% if entity.showImage %}
                 <div class="card-header bg-transparent p-0 border-0 text-center">
                     {{ macro.mediaRelation(entity, thumbConfiguration) }}

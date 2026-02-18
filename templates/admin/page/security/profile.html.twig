@@ -17,7 +17,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-2 text-center text-md-start mb-4 mb-md-0">
-                    <div class="img-user-container d-inline-block border rounded-4 overflow-hidden shadow-sm bg-light">
+                    <div class="img-user-container d-inline-block border rounded-4 overflow-hidden shadow-sm">
                         {% set src = user.picture.path is defined and user.picture.path ? user.picture.path : '/medias/placeholder.jpg' %}
                         <img src="{{ asset(src) }}" id="user-picture" class="img-fluid" height="200" width="auto" style="object-fit: cover; aspect-ratio: 1/1;" />
                     </div>

@@ -61,7 +61,7 @@
                 <form role="search" class="icons-search bg-info-darken p-4 mb-0">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text h-100 bg-light"><i class="icm-search"></i></span>
+                            <span class="input-group-text h-100"><i class="icm-search"></i></span>
                         </div>
                         <input placeholder="{{ "Rechercher"|trans }}" class="form-control" type="text">
                     </div>
@@ -86,7 +86,7 @@
             <div id="tab-pane-{{ library }}" class="tab-pane active">
                 <div class="card-body pb-0">
                     <div class="collapse" id="collapse-add-icons">
-                        <div class="card card-body bg-light">
+                        <div class="card card-body">
                             {{ render_esi(path('admin_icons_add', {website: websiteId})) }}
                         </div>
                     </div>

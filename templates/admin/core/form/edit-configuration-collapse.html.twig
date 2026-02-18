@@ -1,7 +1,7 @@
 {% if configFields is defined and configFields %}
     <div class="col-12">
         <div id="collapseForm" class="collapse collapse-configuration">
-            <div class="card-body pb-0 border bg-light mb-4 radius">
+            <div class="card-body pb-0 border mb-4 radius">
                 <div class="row">
                     {% for field in form.children %}
                         {% if field.vars.name == 'urls' %}

@@ -85,7 +85,7 @@
         <div class="col-lg-6 d-flex">
             <div class="tab-content position-relative w-100">
                 {% for entity in entities %}
-                    <div class="tab-pane h-100 bg-light align-items-center py-5 px-5 fade{% if loop.first %} show active{% endif %}"
+                    <div class="tab-pane h-100 align-items-center py-5 px-5 fade{% if loop.first %} show active{% endif %}"
                          id="v-pills-{{ entity.slug }}"
                          role="tabpanel"
                          aria-labelledby="v-pills-{{ entity.slug }}-tab" tabindex="0">

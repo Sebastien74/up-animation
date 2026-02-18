@@ -33,7 +33,7 @@
     } only %}
 
     <div class="container-fluid">
-        <div class="btns-wrap row py-3 bg-light">
+        <div class="btns-wrap row py-3">
             <div class="col-lg-6">
                 {% if 'security_front_dashboard' != masterRequest().get('_route') %}
                     {% set backLink = backLink is defined ? backLink : path('security_front_dashboard') %}

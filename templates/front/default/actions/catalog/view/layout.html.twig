@@ -53,7 +53,7 @@
 {% elseif blockType == 'layout-intro'  %}
 
     {% if asAgency %}
-        <div class="introduction bg-light radius shadow px-5 py-5">
+        <div class="introduction radius shadow px-5 py-5">
             {% if not entity.intl.introduction %}
                 <p>Vous souhaitez<strong> animer votre prochain événement</strong>{% if entity.city %} dans la ville {{ entity.city|deCityPrefix }}{{ entity.city }}{% endif %}{% if entity.department %} {{ entity.department|deptPreposition }}{{ entity.department }}{% endif %}&nbsp;? Faites confiance à l'équipe Up&nbsp;Animations spécialiste {{ entity.city|deCityPrefix }}{{ entity.city }} et ses environs. Nous vous proposons des <strong>animations expertes</strong> pour séminaires, team building, soirées d'entreprises, anniversaires d'entreprises, arbres de noël, centres commerciaux et offices de tourisme. Avec Up&nbsp;Animations vous vous offrez des animations pour événements <strong>100% uniques et personnalisés</strong>.</p>
             {% else %}
@@ -361,7 +361,7 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="card radius bg-light h-100 px-3 py-2">
+                <div class="card radius h-100 px-3 py-2">
                     <div class="card-header d-flex flex-column px-4 pt-4 pb-0 mb-3 border-0">
                         <div class="inner d-flex align-items-center">
                             <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-dark me-3"><i class="icon-face-grin text-white"></i></span>
@@ -384,7 +384,7 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="card radius bg-light h-100 px-3 py-2">
+                <div class="card radius h-100 px-3 py-2">
                     <div class="card-header d-flex flex-column px-4 pt-4 pb-0 mb-3 border-0">
                         <div class="inner d-flex align-items-center">
                             <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-dark me-3"><i class="icon-thumbs-up text-white"></i></span>

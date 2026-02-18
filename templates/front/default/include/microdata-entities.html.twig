@@ -41,36 +41,36 @@
                     "@type": "ListItem",
                     "position": "{{ loop.index }}",
                     "item": {
-                        "@type": "{{ type }}",
-                        "name": "{{ seo.title }}",
+                        "@type": {{ type|json_encode|raw }},
+                        "name": {{ seo.title|json_encode|raw }},
                         "mainEntityOfPage": {
                             "@type": "WebPage",
-                            "@id": "{{ entity.url }}"
+                            "@id": {{ entity.url|json_encode|raw }}
                         },
-                        "url": "{{ entity.url }}",
-                        "headline": "{{ seo.title }}",
-                    {% if displayMedia and microImgs is not empty %}
-                    "image": [
-                        {% for filter, path in microImgs %}
-                        "{{ path }}"{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    ],
-                    {% endif %}
+                        "url": {{ entity.url|json_encode|raw }},
+                        "headline": {{ seo.title|json_encode|raw }},
                         "author": {
-                            "@type": "{{ seo.microdata.authorType }}",
-                            "name": "{{ seo.microdata.author }}",
-                            "url": "{{ app.request.getSchemeAndHttpHost() }}"
-                        },
-                        {% if seo.publishedDate %}"datePublished": "{{ seo.publishedDate|date('Y-m-d H:i:s P') }}",{% endif %}
-                        {% if seo.updatedAt %}"dateModified": "{{ seo.updatedAt|date('Y-m-d H:i:s P') }}",{% endif %}
-                        {% if seo.description %}"description": "{{ seo.description }}",{% endif %}
-                        {% if seo.keywords %}"keywords": "{{ seo.keywords }}",{% endif %}
+                            "@type": {{ seo.microdata.authorType|json_encode|raw }},
+                            "name": {{ seo.microdata.author|json_encode|raw }},
+                            "url": {{ app.request.getSchemeAndHttpHost()|json_encode|raw }}
+                        }
+                        {% if displayMedia and microImgs is not empty %},
+                        "image": [
+                            {% for filter, path in microImgs %}
+                            {{ path|json_encode|raw }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        ]
+                        {% endif %}
+                        {% if seo.publishedDate %}, "datePublished": "{{ seo.publishedDate|date('Y-m-d H:i:s P') }}"{% endif %}
+                        {% if seo.updatedAt %}, "dateModified": "{{ seo.updatedAt|date('Y-m-d H:i:s P') }}"{% endif %}
+                        {% if seo.description %}, "description": {{ seo.description|json_encode|raw }}{% endif %}
+                        {% if seo.keywords %}, "keywords": {{ seo.keywords|json_encode|raw }}{% endif %},
                         "publisher": {
-                            "@type": "{{ seo.microdata.companyType }}",
-                            "name": "{{ seo.microdata.companyName }}",
+                            "@type": {{ seo.microdata.companyType|json_encode|raw }},
+                            "name": {{ seo.microdata.companyName|json_encode|raw }},
                             "logo": {
                                 "@type": "ImageObject",
-                                "url": "{{ seo.microdata.companyLogo }}"
+                                "url": {{ seo.microdata.companyLogo|json_encode|raw }}
                             }
                         }
                     }

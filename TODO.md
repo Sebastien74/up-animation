@@ -4,7 +4,15 @@ Revoir toutes les requêtes depuis le debut
 
 Faire faire le responsive des FormType a Juni
 
+Faire un sélécteur icon pour backoffice
+
+A une nouvelle connexion back faire le code chiffré par email
+
+Faire une search Console Google pour l'indexation
+
 Dans édition site principale, styliser les Themes
+
+Revoir toutes les microdonnées
 
 Faire la modal déplacer les fiches medias dans bibliothèque
 

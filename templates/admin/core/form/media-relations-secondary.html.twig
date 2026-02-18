@@ -69,7 +69,7 @@
 
             <h6 class="section-title radius fw-500 mb-4">{{ colLabel|raw }}</h6>
 
-            <div class="card-body pb-0 border bg-light mb-4 radius">
+            <div class="card-body pb-0 border mb-4 radius">
                 {% include 'admin/core/form/medias-modal.html.twig' with {
                     modalId: mediaRelationId,
                     parameters: {
@@ -100,7 +100,7 @@
                 {% if mediaRelation.intl.targetLink is defined %}
                     <div class="col-12">
                         <div id="collapse-link-{{ mediaRelationId }}" class="collapse">
-                            <div class="card-body pb-0 border bg-light mb-4 radius">
+                            <div class="card-body pb-0 border mb-4 radius">
                                 <div class="row">
                                     {% if mediaRelation.intl.targetStyle is defined %}
                                         {{ form_row(mediaRelation.intl.targetStyle) }}
@@ -141,7 +141,7 @@
 
                 <div class="col-12">
                     <div id="collapse-configuration-{{ mediaRelationId }}" class="collapse">
-                        <div class="card-body pb-0 border bg-light mb-4 radius">
+                        <div class="card-body pb-0 border mb-4 radius">
                             <div class="row">
 
                                 {% if mediaRelation.maxWidth is defined or mediaRelation.maxHeight is defined %}

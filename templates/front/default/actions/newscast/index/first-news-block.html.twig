@@ -3,7 +3,7 @@
 {% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
 
 {% if lastEntity %}
-    <article class="first-news-block bg-light position-relative text-center text-lg-start">
+    <article class="first-news-block position-relative text-center text-lg-start">
         <div class="container position-relative {% if not displayFormFilters %}py-5{% else %} pb-5 pt-lg-5{% endif %}">
             {{ macroWebmaster.box({
                 title: "Éditer l'actualité"|trans([], 'front_webmaster'),
