@@ -68,6 +68,70 @@ importBoutons.forEach(function (btn) {
     }
 });
 
+/**
+ * Phpinfo search engine with highlight
+ */
+const phpinfoSearch = document.getElementById('phpinfo-search');
+if (phpinfoSearch) {
+    const handleSearch = function () {
+        const query = phpinfoSearch.value.toLowerCase().trim();
+        const sections = document.querySelectorAll('.phpinfo-section');
+
+        sections.forEach(function (section) {
+            const rows = section.querySelectorAll('tbody tr');
+            let sectionHasVisibleRow = false;
+
+            rows.forEach(function (row) {
+                const cells = row.querySelectorAll('td:not(.d-none)');
+                let rowMatches = false;
+
+                cells.forEach(function (cell) {
+                    // Store original text if not already stored
+                    if (!cell.dataset.originalContent) {
+                        cell.dataset.originalContent = cell.innerHTML;
+                    }
+
+                    const originalHTML = cell.dataset.originalContent;
+                    const text = cell.textContent.toLowerCase();
+
+                    if (query !== '' && text.includes(query)) {
+                        rowMatches = true;
+                        // Highlight matches
+                        const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                        cell.innerHTML = originalHTML.replace(regex, '<span class="text-primary fw-bold">$1</span>');
+                    } else {
+                        // Restore original content
+                        cell.innerHTML = originalHTML;
+                        if (text.includes(query) || query === '') {
+                            rowMatches = true;
+                        }
+                    }
+                });
+
+                if (rowMatches || query === '') {
+                    row.style.display = '';
+                    sectionHasVisibleRow = true;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            if (sectionHasVisibleRow || query === '') {
+                section.style.display = '';
+            } else {
+                section.style.display = 'none';
+            }
+        });
+    };
+
+    phpinfoSearch.addEventListener('input', handleSearch);
+
+    // Filter on load if value is present (e.g., on page refresh)
+    if (phpinfoSearch.value.trim() !== '') {
+        handleSearch();
+    }
+}
+
 // $('#cities-bio').find('.bio-places').each(function () {
 //
 //     let el = $(this);
