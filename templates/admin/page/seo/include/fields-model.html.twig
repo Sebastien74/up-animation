@@ -1,7 +1,7 @@
 {% trans_default_domain 'admin' %}
 
 <div class="card mb-3">
-    <div class="card-body">
+    <div class="card-body pb-2">
         <h5 class="main-subtitle mb-0"><i class="icm-database"></i>{{ "Champs"|trans }}</h5>
         {% if keywords %}
             {% for title, metadatas in keywords %}
@@ -27,7 +27,7 @@
 
 {% if haveCaption and labels %}
     <div class="card mb-3">
-        <div class="card-body">
+        <div class="card-body pb-2">
             <h5 class="main-subtitle mb-0"><i class="icm-list-ul"></i>{{ "Légende"|trans }}</h5>
             <ul class="reset">
                 {% for title, metadatas in keywords %}

@@ -19,7 +19,7 @@
     {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
         <div id="edit-form-{{ interface.name }}" class="card">
             {% include 'admin/core/form/save/header.html.twig' %}
-            <div class="card-body pb-0">
+            <div class="card-body pb-2">
                 <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration de l'entité"|trans }}</h4>
                 <div class="row">
                     {{ form_row(form.adminName) }}
@@ -60,3 +60,4 @@
     {{ form_end(form) }}
 
 {% endblock %}
+

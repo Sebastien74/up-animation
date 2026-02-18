@@ -88,9 +88,9 @@
         <!-- Tab panes -->
         <div id="icons-contents" class="tab-content mb-4" data-librairy="{{ library }}">
             <div id="tab-pane-{{ library }}" class="tab-pane active">
-                <div class="card-body pb-0">
+                <div class="card-body pb-2">
                     <div class="collapse" id="collapse-add-icons">
-                        <div class="card card-body p-0 border-0">
+                        <div class="card card-body p-0 border-0 pb-2">
                             {{ render_esi(path('admin_icons_add', {website: websiteId})) }}
                         </div>
                     </div>
@@ -145,3 +145,4 @@
     </div>
 
 {% endblock %}
+

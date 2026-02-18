@@ -1,4 +1,4 @@
-{% extends "admin/base.html.twig" %}
+﻿{% extends "admin/base.html.twig" %}
 
 {% trans_default_domain 'admin' %}
 
@@ -19,7 +19,7 @@
     {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
         <div id="edit-form-{{ interface.name }}" class="card">
             {% include 'admin/core/form/save/header.html.twig' %}
-            <div class="card-body pb-0">
+            <div class="card-body pb-2">
                 <div class="row">
                     <div class="col-md-9">
                         <h4 class="card-title main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
@@ -75,3 +75,4 @@
     {{ render_esi(path('admin_user_password', {website: websiteId(), user: entity.id} )) }}
 
 {% endblock %}
+

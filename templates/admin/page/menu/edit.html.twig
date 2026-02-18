@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="card mb-3">
-                    <div class="card-body">
+                    <div class="card-body pb-2">
                         <div class="main-subtitle">
                             <i class="icm-copy"></i>{{ "Pages du site"|trans }}
                             <div class="d-flex d-flex align-items-center gap-1 ms-auto">
@@ -60,13 +60,13 @@
                     </div>
                 </div>
                 <div id="add-link-card" class="card mb-3">
-                    <div class="card-body">
+                    <div class="card-body pb-2">
                         <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Ajouter un lien externe ou d'arborescence"|trans }}</h4>
                         {{ render_esi(path('admin_link_new', {website: websiteId(), menu: entity.id, entitylocale: entitylocale} )) }}
                     </div>
                 </div>
                 <div class="card mb-3">
-                    <div class="card-body">
+                    <div class="card-body pb-2">
                         <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
                         <div class="row">
                             {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri}}) }}
@@ -95,7 +95,7 @@
             </div>
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body pb-2">
                         <div class="main-subtitle">
                             <i class="icm-bars"></i> {{ "Menu"|trans|striptags }}
                             <div class="ms-auto d-flex gap-2">
@@ -123,3 +123,4 @@
     </div>
 
 {% endblock %}
+

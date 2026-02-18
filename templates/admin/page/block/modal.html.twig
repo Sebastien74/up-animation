@@ -1,4 +1,4 @@
-{% extends "admin/base.html.twig" %}
+﻿{% extends "admin/base.html.twig" %}
 
 {% trans_default_domain 'admin' %}
 
@@ -34,7 +34,7 @@
         <div id="edit-form-{{ interface.name }}" class="card refer-preloader">
             {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only %}
             {% include 'admin/core/form/save/header.html.twig' %}
-            <div class="card-body pb-0{% if not hideRadius %} top-radius{% endif %}">
+            <div class="card-body pb-2 if not hideRadius %} top-radius{% endif %}">
                 <div class="row">
                     <div class="col-md-8">
                         <div class="row">
@@ -65,3 +65,4 @@
         </div>
     {{ form_end(form) }}
 {% endblock %}
+

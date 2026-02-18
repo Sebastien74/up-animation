@@ -1,7 +1,7 @@
-<div class="row">
+﻿<div class="row">
     <div class="col-12">
         <div class="card mb-3">
-            <div class="card-body pb-0">
+            <div class="card-body pb-2">
                 <h4 class="main-subtitle"><i class="icm-chart-line"></i>{{ "Google"|trans }}</h4>
                 <div class="row">
                     {% include 'admin/page/api/google-intls.html.twig' with {googleIntls: form.website.api.google.intls} %}
@@ -11,7 +11,7 @@
     </div>
     <div class="col-md-6 mb-3">
         <div class="card h-100">
-            <div class="card-body pb-0">
+            <div class="card-body pb-2">
                 <h4 class="main-subtitle"><i class="icm-chart-line"></i>{{ "Matomo"|trans }}</h4>
                 <div class="row">
                     {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: ['matomoId', 'matomoUrl']} %}
@@ -21,7 +21,7 @@
     </div>
     <div class="col-md-6 mb-3">
         <div class="card h-100">
-            <div class="card-body pb-0">
+            <div class="card-body pb-2">
                 <h4 class="main-subtitle"><i class="icm-facebook-square"></i>{{ "Facebook"|trans }}</h4>
                 <div class="row">
                     {% include 'admin/page/api/facebook-intls.html.twig' with {facebookIntls: form.website.api.facebook.intls} %}

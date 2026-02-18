@@ -12,7 +12,7 @@
         <h4>{{ "Chargement en cours..."|trans }}</h4>
         {% if progress %}
             <div class="card progress-card mt-4{% if progress == 'hide' %} d-none{% endif %}">
-                <div class="card-body">
+                <div class="card-body pb-2">
                     <h6 class="title">{{ "Mise à jour"|trans|raw }}</h6>
                     <div class="progress">
                         <div class="progress-bar progress-bar-striped position-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>

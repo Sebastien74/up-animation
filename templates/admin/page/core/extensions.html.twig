@@ -1,4 +1,4 @@
-{% extends "admin/base.html.twig" %}
+﻿{% extends "admin/base.html.twig" %}
 
 {% trans_default_domain 'admin' %}
 
@@ -36,7 +36,7 @@
 
                 <div class="col-md-3">
                     <div class="card mb-3">
-                        <div class="card-body{% if extension.active %} active{% endif %}">
+                        <div class="card-body{% if extension.active %} active{% endif %} pb-2">
                             {% if 'medias' in icon %}
                                 <img data-src="{{ asset(icon) }}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="icon img-fluid lazy-load" height="40" alt="{{ title|striptags }}">
                             {% else %}

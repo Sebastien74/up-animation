@@ -1,4 +1,4 @@
-{% set excludes = ['save', 'saveEdit', 'saveBack'] %}
+﻿{% set excludes = ['save', 'saveEdit', 'saveBack'] %}
 {% if excludesFields is defined and excludesFields %}
     {% set excludes = excludes|merge(excludesFields) %}
 {% endif %}
@@ -63,7 +63,7 @@
             configFieldsIntls: configFieldsIntls
         } only %}
         <div class="card mb-3">
-            <div class="card-body pb-0">
+            <div class="card-body pb-2">
                 <div class="row">
                     {% if ('admin/page/edit/'~interface.name~'.html.twig')|fileExist %}
                         {% include 'admin/page/edit/'~interface.name~'.html.twig' with {

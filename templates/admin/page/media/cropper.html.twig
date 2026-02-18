@@ -1,7 +1,7 @@
 {% trans_default_domain 'admin' %}
 
 <div class="card crop-card mb-0">
-    <div class="card-body media-body text-center">
+    <div class="card-body media-body text-center pb-2">
         {{ media|file({desktop: thumbConfiguration}, {asMedia: true, lazyLoad: false, forceThumb: true}) }}
     </div>
     <h5 class="card-title no-radius mb-0 border p-3">
@@ -18,7 +18,7 @@
             {{ "Indéterminée"|trans }}
         {% endif  %}
     </h5>
-    <div class="card-body info-body border">
+    <div class="card-body info-body border pb-2">
         <strong>{{ "Utilisé dans :"|trans }}</strong>
         <ul>
             {% for action in configuration.actions %}

@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+﻿{% trans_default_domain 'admin' %}
 
 {% set configuration = website().configuration %}
 {% set defaultLocale = configuration.locale %}
@@ -18,7 +18,7 @@
     <div class="ajax-content">
         <div class="row">
             <div class="col-12">
-                <div class="card-body pb-0 border mb-4 radius">
+                <div class="card-body pb-2 border mb-4 radius">
                     {% include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: entity.id, classname: class} %}
                     {% if form.media.uploadedFile is defined %}
                         {{ form_row(form.media.uploadedFile) }}
@@ -33,7 +33,7 @@
                     </h4>
                 {% endif %}
                 <div id="collapse-description-{{ entity.id }}" class="collapse show">
-                    <div class="card-body pb-0 border mb-4 radius">
+                    <div class="card-body pb-2 border mb-4 radius">
                         <div class="row">
                             {% if form.intl.title is defined %}
                                 {{ form_row(form.intl.title) }}
@@ -60,7 +60,7 @@
                     </h4>
                 {% endif %}
                 <div id="collapse-link-{{ entity.id }}" class="collapse">
-                    <div class="card-body pb-0 border mb-4 radius">
+                    <div class="card-body pb-2 border mb-4 radius">
                         <div class="row">
                             {% if form.intl.targetLink is defined %}
                                 {{ form_row(form.intl.targetLink) }}
@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="col-md-4 d-inline-flex flex-column">
-                <div class="card-body pb-0 border mb-4 radius">
+                <div class="card-body pb-2 border mb-4 radius">
                     <div class="row">
                         {% if form.media.categories is defined %}
                             <div class="col-12">{{ form_row(form.media.categories) }}</div>
@@ -134,3 +134,4 @@
     </div>
 
 {{ form_end(form) }}
+

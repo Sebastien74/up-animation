@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+﻿{% trans_default_domain 'admin' %}
 
 {% if entity.mediaRelations|length > 0 %}
 
@@ -171,7 +171,7 @@
                         </div>
                         <div id="collapse-{{ mediaRelation.id }}" class="parent-preloader collapse" aria-labelledby="heading-{{ mediaRelation.id }}" data-parent="#medias-accordion">
                             {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'media-preloader-'~mediaRelation.id, preloaderClass: 'inner-preloader radius-preloader'} %}
-                            <div class="card-body position-relative pt-2 pb-3">
+                            <div class="card-body position-relative pb-2">
                                 <div class="progress medias-preloader-tab">
                                     <div class="bg-stripe-loader"></div>
                                     <div class="vertical-align">
@@ -189,3 +189,4 @@
     </div>
 
 {% endif %}
+

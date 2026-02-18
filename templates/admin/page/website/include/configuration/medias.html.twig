@@ -91,7 +91,7 @@
                                 {% if locale == localeConfig and category == categorySlug %}
                                     <div class="col-lg-6 col-xxl-3 mb-3{% if category == 'webmanifest' %} d-none{% endif %}">
                                         <div class="card default-media-card h-100">
-                                            <div class="card-body text-center pb-0">
+                                            <div class="card-body text-center pb-2">
                                                 <span class="text-center h5 mb-3 d-inline-block">{{ mediaCaregory }}</span>
                                                 {{ form_row(mediaRelation.media.uploadedFile) }}
                                                 {% include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: mediaRelation.vars.data.id, classname: class} %}

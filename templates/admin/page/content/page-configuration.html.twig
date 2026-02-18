@@ -1,4 +1,4 @@
-{% if configFields is defined and configFields %}
+﻿{% if configFields is defined and configFields %}
 
     {% trans_default_domain 'admin' %}
 
@@ -7,7 +7,7 @@
 
     <div id="collapseForm" class="collapse collapse-configuration">
         <div class="card mb-3">
-            <div class="card-body pb-0">
+            <div class="card-body pb-2">
                 <div class="row">
                     {% include 'admin/core/form/urls.html.twig' with {urls: form.urls} %}
                     {% if haveMedia %}
@@ -72,3 +72,4 @@
         </div>
     </div>
 {% endif %}
+

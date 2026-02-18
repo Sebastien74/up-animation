@@ -1,4 +1,4 @@
-{% extends "admin/base.html.twig" %}
+﻿{% extends "admin/base.html.twig" %}
 
 {% trans_default_domain 'admin' %}
 
@@ -69,7 +69,7 @@
 
         <div class="tab-content">
             <div class="tab-pane fade{% if activeTab == 'description' %} show active{% endif %}" id="description" role="tabpanel" aria-labelledby="description-tab">
-                <div class="card-body pb-0">
+                <div class="card-body pb-2">
                     <div class="row">
                         {% include 'admin/core/form/edit-fields-base.html.twig' with {
                             excludes: ['phones', 'emails', 'addresses', 'socialNetworks', 'legals', 'save'],
@@ -81,7 +81,7 @@
                 </div>
             </div>
             <div class="tab-pane fade{% if activeTab == 'phones' %} show active{% endif %}" id="phones" role="tabpanel" aria-labelledby="phones-tab">
-                <div class="card-body pb-0">
+                <div class="card-body pb-2">
                     <div class="row">
                         {% include 'admin/core/form/edit-fields-base.html.twig' with {
                             excludes: ['intls', 'emails', 'addresses', 'socialNetworks', 'legals', 'save'],
@@ -93,7 +93,7 @@
                 </div>
             </div>
             <div class="tab-pane fade{% if activeTab == 'emails' %} show active{% endif %}" id="emails" role="tabpanel" aria-labelledby="emails-tab">
-                <div class="card-body pb-0">
+                <div class="card-body pb-2">
                     <div class="row">
                         {% include 'admin/core/form/edit-fields-base.html.twig' with {
                             excludes: ['intls', 'phones', 'addresses', 'socialNetworks', 'legals', 'save'],
@@ -105,7 +105,7 @@
                 </div>
             </div>
             <div class="tab-pane fade{% if activeTab == 'addresses' %} show active{% endif %}" id="addresses" role="tabpanel" aria-labelledby="addresses-tab">
-                <div class="card-body pb-0">
+                <div class="card-body pb-2">
                     <div class="row">
                         {% include 'admin/core/form/edit-fields-base.html.twig' with {
                             excludes: ['intls', 'phones', 'socialNetworks', 'emails', 'legals', 'save'],
@@ -117,12 +117,12 @@
                 </div>
             </div>
             <div class="tab-pane fade{% if activeTab == 'networks' %} show active{% endif %}" id="networks" role="tabpanel" aria-labelledby="networks-tab">
-                <div class="card-body pb-0">
+                <div class="card-body pb-2">
                     {% include 'admin/page/information/social-network.html.twig' with {socialsNetworks: form.socialNetworks} %}
                 </div>
             </div>
             <div class="tab-pane fade{% if activeTab == 'legal-notice' %} show active{% endif %}" id="legal-notice" role="tabpanel" aria-labelledby="legal-notice-tab">
-                <div class="card-body pb-0">
+                <div class="card-body pb-2">
                     <div class="row">
                         {% include 'admin/core/form/edit-fields-base.html.twig' with {
                             excludes: ['intls', 'phones', 'emails', 'addresses', 'socialNetworks', 'save'],
