@@ -11,6 +11,9 @@ use App\Model\IntlModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
+use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 
 /**
  * SeoConfigurationModel.
@@ -29,15 +32,13 @@ final class SeoConfigurationModel extends BaseModel
         public readonly ?SeoConfiguration $entity = null,
         public readonly ?bool $microData = null,
         public readonly ?bool $disableAfterDash = null,
-        public readonly ?array $disabledIps = null,
         public readonly ?IntlModel $intl = null,
     ) {
     }
 
     /**
      * Get model.
-     *
-     * @throws NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public static function fromEntity(Website $website, CoreLocatorInterface $coreLocator, ?string $locale = null): self
     {
@@ -56,7 +57,6 @@ final class SeoConfigurationModel extends BaseModel
             entity: $seoConfiguration,
             microData: self::getContent('microData', $seoConfiguration, true),
             disableAfterDash: self::getContent('disableAfterDash', $seoConfiguration, true),
-            disabledIps: self::getContent('disableAfterDash', $seoConfiguration, false, true),
             intl: IntlModel::fromEntity($seoConfiguration, $coreLocator, false),
         );
 

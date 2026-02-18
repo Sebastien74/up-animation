@@ -9,6 +9,7 @@ use App\Entity\Api\CustomIntl;
 use App\Entity\Core\Website;
 use App\Model\Seo\SeoConfigurationModel;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
@@ -21,17 +22,19 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => CustomManager::class, 'key' => 'api_custom_manager'],
 ])]
-class CustomManager
+readonly class CustomManager
 {
     /**
      * CustomManager constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
     }
 
     /**
      * Synchronize locale entities.
+     *
+     * @throws ORMException
      */
     public function synchronizeLocales(Website $website, SeoConfigurationModel $seoConfiguration): void
     {
@@ -53,7 +56,7 @@ class CustomManager
     }
 
     /**
-     * Get default locale InstagramIntl.
+     * Get default locale.
      */
     private function getDefaultIntl(Custom $custom, string $defaultLocale): ?CustomIntl
     {
@@ -67,7 +70,7 @@ class CustomManager
     }
 
     /**
-     * Check if InstagramIntls locale exist.
+     * Check if a locale exists.
      */
     private function localeExist(Custom $custom, string $locale): bool
     {
@@ -81,7 +84,7 @@ class CustomManager
     }
 
     /**
-     * Add InstagramIntl.
+     * Add.
      */
     private function add(Custom $custom, string $locale, ?CustomIntl $defaultCustomIntl = null): CustomIntl
     {

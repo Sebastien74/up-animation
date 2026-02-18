@@ -36,7 +36,7 @@ class FacebookIntlType extends AbstractType
             'label' => $this->translator->trans('DomainModel verification', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin'),
-                'group' => 'col-12',
+                'group' => 'col-lg-6',
             ],
         ]);
 
@@ -45,7 +45,7 @@ class FacebookIntlType extends AbstractType
             'label' => $this->translator->trans('Pixel ID', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin'),
-                'group' => 'col-12',
+                'group' => 'col-lg-6',
             ],
         ]);
 

@@ -67,7 +67,6 @@ changes.rar
 
 npm-debug.log
 yarn-error.log
-blackfire.msi
 
 ###> symfony/phpunit-bridge ###
 .phpunit

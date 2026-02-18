@@ -53,39 +53,43 @@
     <div id="edit-form-{{ interface.name }}" class="refer-preloader">
         {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only %}
         {% include 'admin/core/form/save/header.html.twig' %}
-        <div class="row">
-            {% include templateConfig with {
-                form: form,
-                configFields: configFields,
-                entity: entity,
-                classname: interface.classname,
-                configsFieldsSet: configsFieldsSet,
-                interface: interface,
-                configFieldsIntls: configFieldsIntls
-            } only %}
-            {% if ('admin/page/edit/'~interface.name~'.html.twig')|fileExist %}
-                {% include 'admin/page/edit/'~interface.name~'.html.twig' with {
-                    form: form,
-                    excludes: excludes,
-                    configFields: configFields,
-                    configsFieldsSet: configsFieldsSet,
-                    entity: entity,
-                    classname: interface.classname
-                } only %}
-            {% else %}
-                {% include 'admin/core/form/edit-fields-base.html.twig' with {
-                    website: website is defined ? website : website(),
-                    mediaRelationsTabs: mediaRelationsTabs is defined ? mediaRelationsTabs : null,
-                    excludes: excludes,
-                    form: form,
-                    configFields: configFields,
-                    configsFieldsSet: configsFieldsSet,
-                    entity: entity,
-                    interfaceName: interface.name,
-                    classname: interface.classname
-                } only %}
-            {% endif %}
-            {% if innerCustomized is defined %}{{ innerCustomized }}{% endif %}
+        {% include templateConfig with {
+            form: form,
+            configFields: configFields,
+            entity: entity,
+            classname: interface.classname,
+            configsFieldsSet: configsFieldsSet,
+            interface: interface,
+            configFieldsIntls: configFieldsIntls
+        } only %}
+        <div class="card mb-3">
+            <div class="card-body pb-0">
+                <div class="row">
+                    {% if ('admin/page/edit/'~interface.name~'.html.twig')|fileExist %}
+                        {% include 'admin/page/edit/'~interface.name~'.html.twig' with {
+                            form: form,
+                            excludes: excludes,
+                            configFields: configFields,
+                            configsFieldsSet: configsFieldsSet,
+                            entity: entity,
+                            classname: interface.classname
+                        } only %}
+                    {% else %}
+                        {% include 'admin/core/form/edit-fields-base.html.twig' with {
+                            website: website is defined ? website : website(),
+                            mediaRelationsTabs: mediaRelationsTabs is defined ? mediaRelationsTabs : null,
+                            excludes: excludes,
+                            form: form,
+                            configFields: configFields,
+                            configsFieldsSet: configsFieldsSet,
+                            entity: entity,
+                            interfaceName: interface.name,
+                            classname: interface.classname
+                        } only %}
+                    {% endif %}
+                    {% if innerCustomized is defined %}{{ innerCustomized }}{% endif %}
+                </div>
+            </div>
         </div>
         {% include 'admin/core/form/save/footer.html.twig' %}
     </div>

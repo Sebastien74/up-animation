@@ -60,7 +60,6 @@ class ModuleFixtures extends BaseFixtures implements DependentFixtureInterface
     {
         return [
             [$this->translator->trans('Pages', [], 'admin'), 'pages', 'ROLE_PAGE', 'network-wired'],
-            [$this->translator->trans('Google analytics', [], 'admin'), 'google-analytics', 'ROLE_GOOGLE_ANALYTICS', 'chart-line'],
             [$this->translator->trans('Informations', [], 'admin'), 'information', 'ROLE_INFORMATION', 'info'],
             [$this->translator->trans('Formulaires', [], 'admin'), 'form', 'ROLE_FORM', 'wpforms'],
             [$this->translator->trans('Calendriers de formulaire', [], 'admin'), 'form-calendar', 'ROLE_FORM_CALENDAR', 'calendar-plus'],

@@ -26,7 +26,7 @@ class InformationRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get Information as array.
+     * Get Information as an array.
      */
     public function findArray(?int $id = null): array
     {

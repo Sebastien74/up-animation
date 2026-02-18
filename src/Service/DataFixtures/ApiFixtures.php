@@ -111,11 +111,6 @@ class ApiFixtures
     {
         $instagram = new ApiEntities\Instagram();
         $instagram->setApi($api);
-        foreach ($locales as $locale) {
-            $instagramIntl = new ApiEntities\InstagramIntl();
-            $instagramIntl->setLocale($locale);
-            $instagram->addIntl($instagramIntl);
-        }
         $api->setInstagram($instagram);
         $this->entityManager->persist($instagram);
     }

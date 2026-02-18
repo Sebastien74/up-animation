@@ -58,9 +58,6 @@ class CustomIntl
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $bottomBodyScriptSeo = null;
 
-    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    private ?string $aiFelixSiteId = null;
-
     #[ORM\ManyToOne(targetEntity: Custom::class, cascade: ['persist'], inversedBy: 'intls')]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     private ?Custom $custom = null;
@@ -212,16 +209,6 @@ class CustomIntl
         $this->bottomBodyScriptSeo = $bottomBodyScriptSeo;
 
         return $this;
-    }
-
-    public function getAiFelixSiteId(): ?string
-    {
-        return $this->aiFelixSiteId;
-    }
-
-    public function setAiFelixSiteId(?string $AiFelixSiteId): void
-    {
-        $this->aiFelixSiteId = $AiFelixSiteId;
     }
 
     public function getCustom(): ?Custom

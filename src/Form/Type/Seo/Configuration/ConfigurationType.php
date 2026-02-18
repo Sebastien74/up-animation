@@ -36,14 +36,6 @@ class ConfigurationType extends AbstractType
             'label' => false,
         ]);
 
-        $builder->add('disabledIps', WidgetType\TagInputType::class, [
-            'label' => $this->translator->trans('Désactiver IPS', [], 'admin'),
-            'required' => false,
-            'attr' => [
-                'placeholder' => $this->translator->trans('Ajouter des IPS', [], 'admin'),
-            ],
-        ]);
-
         $builder->add('microData', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',

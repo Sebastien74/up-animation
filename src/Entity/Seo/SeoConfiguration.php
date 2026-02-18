@@ -43,9 +43,6 @@ class SeoConfiguration extends BaseInterface
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $disableAfterDash = false;
 
-    #[ORM\Column(type: Types::JSON, nullable: true)]
-    private array $disabledIps = ['::1', '127.0.0.1', 'fe80::1', '194.51.155.21', '195.135.16.88'];
-
     #[ORM\OneToOne(targetEntity: Website::class, mappedBy: 'seoConfiguration')]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ?Website $website = null;
@@ -85,18 +82,6 @@ class SeoConfiguration extends BaseInterface
     public function setDisableAfterDash(bool $disableAfterDash): static
     {
         $this->disableAfterDash = $disableAfterDash;
-
-        return $this;
-    }
-
-    public function getDisabledIps(): ?array
-    {
-        return $this->disabledIps;
-    }
-
-    public function setDisabledIps(?array $disabledIps): static
-    {
-        $this->disabledIps = $disabledIps;
 
         return $this;
     }

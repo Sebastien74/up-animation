@@ -48,11 +48,6 @@ class InstagramType extends AbstractType
                 'group' => 'col-md-4',
             ],
         ]);
-
-        $builder->add('intls', CollectionType::class, [
-            'label' => false,
-            'entry_type' => InstagramIntlType::class,
-        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

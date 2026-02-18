@@ -33,6 +33,10 @@ $dash-surface-2: mix(#ffffff, $dash-surface, 4%) !default;
     overflow: initial !important;
 }
 
+textarea.form-control {
+    min-height: 150px !important;
+}
+
 form {
 
     .form-check-inline {

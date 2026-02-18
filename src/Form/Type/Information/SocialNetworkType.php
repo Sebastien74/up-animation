@@ -38,6 +38,7 @@ class SocialNetworkType extends AbstractType
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'facebook',
             ],
+            'row_attr' => ['class' => 'col-lg-6']
         ]);
 
         $builder->add('twitter', Type\TextType::class, [
@@ -47,6 +48,7 @@ class SocialNetworkType extends AbstractType
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'twitter',
             ],
+            'row_attr' => ['class' => 'col-lg-6']
         ]);
 
         $builder->add('google', Type\TextType::class, [
@@ -56,6 +58,7 @@ class SocialNetworkType extends AbstractType
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'google',
             ],
+            'row_attr' => ['class' => 'col-lg-6']
         ]);
 
         $builder->add('youtube', Type\TextType::class, [
@@ -65,6 +68,7 @@ class SocialNetworkType extends AbstractType
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'youtube',
             ],
+            'row_attr' => ['class' => 'col-lg-6']
         ]);
 
         $builder->add('tiktok', Type\TextType::class, [
@@ -74,6 +78,7 @@ class SocialNetworkType extends AbstractType
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'tiktok',
             ],
+            'row_attr' => ['class' => 'col-lg-6']
         ]);
 
         $builder->add('instagram', Type\TextType::class, [
@@ -83,6 +88,7 @@ class SocialNetworkType extends AbstractType
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'instagram',
             ],
+            'row_attr' => ['class' => 'col-lg-6']
         ]);
 
         $builder->add('linkedin', Type\TextType::class, [
@@ -92,6 +98,7 @@ class SocialNetworkType extends AbstractType
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'linkedin-in',
             ],
+            'row_attr' => ['class' => 'col-lg-6']
         ]);
 
         $builder->add('pinterest', Type\TextType::class, [
@@ -101,6 +108,7 @@ class SocialNetworkType extends AbstractType
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'pinterest-p',
             ],
+            'row_attr' => ['class' => 'col-lg-6']
         ]);
 
         $builder->add('tripadvisor', Type\TextType::class, [
@@ -110,6 +118,7 @@ class SocialNetworkType extends AbstractType
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'tripadvisor',
             ],
+            'row_attr' => ['class' => 'col-lg-6']
         ]);
     }
 

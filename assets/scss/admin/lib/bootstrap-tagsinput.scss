@@ -7,7 +7,8 @@
     background: $bg-gradient-primary;
     border: 1px solid $input-border-color;
     padding: 40px 1rem .75rem 1rem;
-    display: inline-block;
+    display: flex;
+    flex-wrap: wrap !important;
     color: $input-color;
     vertical-align: middle;
     max-width: 100%;

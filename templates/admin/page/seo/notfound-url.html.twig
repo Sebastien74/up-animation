@@ -22,29 +22,27 @@
         { title: 'Admin ressources'|trans, type: 'admin', category: 'resource', count: all['admin']['resource']|length }
     ] %}
 
-    <div id="notfound-urls-index" class="card d-inline-block w-100 border-0">
+    <div id="notfound-urls-index">
 
-        <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" role="tablist">
-            {% for page in pages %}
-                {% if granted('ROLE_INTERNAL') or loop.first %}
-                    <li class="nav-item">
+        <div class="d-flex gap-2 flex-wrap mb-4">
+            <div class="nav nav-tabs gap-2 border-0 me-auto" role="tablist">
+                {% for page in pages %}
+                    {% if granted('ROLE_INTERNAL') or loop.first %}
                         {% set active = page.type == type and page.category == category %}
                         <a href="{{ path("admin_notfoundurl_index", {website: websiteId(), type: page.type, category: page.category}) }}"
                            class="btn-app{% if active %} active{% endif %}">
                             <i class="icm-info"></i><span>{{ page.title }}</span>
                         </a>
-                    </li>
-                {% endif %}
-            {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
             {% if 'delete'|moduleActive(configuration) and pagination|length > 0 %}
-                <li class="nav-item ms-auto">
-                    <a href="{{ path("admin_notfoundurl_delete_all", {website: websiteId(), type: type, category: category}) }}"
-                       class="btn-app danger swal-delete-link">
-                        <i class="icm-trash"></i><span>{{ 'Tout supprimer'|trans }}</span>
-                    </a>
-                </li>
+                <a href="{{ path("admin_notfoundurl_delete_all", {website: websiteId(), type: type, category: category}) }}"
+                   class="btn-app danger swal-delete-link">
+                    <i class="icm-trash"></i><span>{{ 'Tout supprimer'|trans }}</span>
+                </a>
             {% endif %}
-        </ul>
+        </div>
 
         <div class="table-responsive app-table">
             <table class="table table-striped table-bordered table-dark responsive-cards mb-0">
@@ -82,7 +80,5 @@
         {% include 'admin/core/include/pagination.html.twig' %}
 
     </div>
-
-
 
 {% endblock %}

@@ -26,42 +26,27 @@
     {% set stats = domains|transStats %}
 
     {% if granted('ROLE_INTERNAL') %}
-
-        <ul id="domains-tabs" class="nav nav-tabs custom-tab w-100 shadow-light border-0 radius mb-4 text-center overflow-hidden" role="tablist">
-            <li class="nav-item{% if toExtract %} w-50 bold{% endif %}">
-                <a class="translation-extract-btn text-center nav-link cursor no-radius" data-domain="only_front">
-                    <i class="icm-sync-alt"></i><span>{{ "Extraire le front"|trans }}</span>
-                </a>
-            </li>
-            <li class="nav-item{% if toExtract %} w-50 bold{% endif %}">
-                <a class="translation-extract-btn text-center nav-link cursor no-radius" data-domain="all">
-                    <i class="icm-sync-alt"></i><span>{{ "Extraire tout"|trans }}</span>
-                </a>
-            </li>
+        <div class="d-flex align-items-center gap-2">
+            <a class="translation-extract-btn btn-app" data-domain="only_front">
+                <i class="icm-sync-alt"></i><span>{{ "Extraire le front"|trans }}</span>
+            </a>
+            <a class="translation-extract-btn btn-app" data-domain="all">
+                <i class="icm-sync-alt"></i><span>{{ "Extraire tout"|trans }}</span>
+            </a>
             {% if not toExtract %}
-                <li class="nav-item">
-                    <a href="{{ path('admin_intls_export', { website: websiteId }) }}" class="text-center nav-link no-radius">
-                        <i class="icm-upload"></i><span>{{ "Exporter les traductions"|trans }}</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="text-center nav-link no-radius" data-bs-toggle="modal" data-bs-target="#import-modal">
-                        <i class="icm-download"></i><span>{{ "Importer les traductions"|trans }}</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link no-radius" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}">
-                        <i class="icm-broom"></i><span>{{ "Vider le cache"|trans }}</span>
-                    </a>
-                </li>
-                <li class="nav-item right as-button no-radius">
-                    {{ render_esi(path("admin_translation_new", {website: websiteId()})) }}
-                </li>
+                <a href="{{ path('admin_intls_export', { website: websiteId }) }}" class=" btn-app">
+                    <i class="icm-upload"></i><span>{{ "Exporter les traductions"|trans }}</span>
+                </a>
+                <a href="#" class="btn-app" data-bs-toggle="modal" data-bs-target="#import-modal">
+                    <i class="icm-download"></i><span>{{ "Importer les traductions"|trans }}</span>
+                </a>
+                <a class="btn-app" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}">
+                    <i class="icm-broom"></i><span>{{ "Vider le cache"|trans }}</span>
+                </a>
+                {{ render_esi(path("admin_translation_new", {website: websiteId()})) }}
+                {{ render_esi(path('admin_intls_import', {website: websiteId()} )) }}
             {% endif %}
-        </ul>
-
-        {{ render_esi(path('admin_intls_import', {website: websiteId()} )) }}
-
+        </div>
     {% endif %}
 
     {% include 'admin/page/translation/generator.html.twig' %}

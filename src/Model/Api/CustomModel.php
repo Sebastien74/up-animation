@@ -37,7 +37,6 @@ final class CustomModel extends BaseModel
         public readonly ?string $headScriptSeo = null,
         public readonly ?string $topBodyScriptSeo = null,
         public readonly ?string $bottomBodyScriptSeo = null,
-        public readonly ?string $aiFelixSiteId = null,
     ) {
     }
 
@@ -72,7 +71,6 @@ final class CustomModel extends BaseModel
             headScriptSeo: self::getContentIntl('headScriptSeo', $locale, $custom),
             topBodyScriptSeo: self::getContentIntl('topBodyScriptSeo', $locale, $custom),
             bottomBodyScriptSeo: self::getContentIntl('bottomBodyScriptSeo', $locale, $custom),
-            aiFelixSiteId: self::getContentIntl('aiFelixSiteId', $locale, $custom),
         );
 
         return self::$cache['custom'][$api->getId()][$locale];

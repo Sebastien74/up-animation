@@ -37,7 +37,7 @@ class CustomIntlType extends AbstractType
             'label' => $this->translator->trans('Matomo ID', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin'),
-                'group' => 'col-12',
+                'group' => 'col-lg-6',
             ],
         ]);
 
@@ -47,7 +47,7 @@ class CustomIntlType extends AbstractType
             'label' => $this->translator->trans('Matomo URL (Sans protocol)', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez le nom du cookie', [], 'admin'),
-                'group' => 'col-12',
+                'group' => 'col-lg-6',
             ],
         ]);
 
@@ -107,16 +107,6 @@ class CustomIntlType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Activer Axeptio GTM', [], 'admin'),
             'attr' => ['group' => 'col-12 d-flex align-items-end', 'class' => 'w-100'],
-        ]);
-
-        $builder->add('aiFelixSiteId', Type\TextType::class, [
-            'required' => false,
-            'editor' => false,
-            'label' => $this->translator->trans('Site ID', [], 'admin'),
-            'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin'),
-                'group' => 'col-12',
-            ],
         ]);
     }
 

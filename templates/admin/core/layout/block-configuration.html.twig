@@ -48,7 +48,7 @@
                         </ul>
 
                         <div class="tab-content config-tabs-content" id="col-configuration-tab-content">
-                            <div class="tab-pane tab-pane-config fade pt-4 pe-4 ps-4 pb-0 show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                            <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0 show active" id="general" role="tabpanel" aria-labelledby="general-tab">
                                 <div class="row">
                                     <div class="col-md-7">
                                         {% include 'admin/core/layout/margins.html.twig' %}
@@ -86,7 +86,7 @@
                                 </div>
                             </div>
                             {% if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 %}
-                                <div class="tab-pane tab-pane-config fade pt-4 pe-4 ps-4 pb-0" id="animation" role="tabpanel" aria-labelledby="animation-tab">
+                                <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="animation" role="tabpanel" aria-labelledby="animation-tab">
                                     <div class="row">
                                         <h4 class="text-dark w-100 text-center mb-3">{{ "Animation"|trans }}</h4>
                                         {{ form_row(form.transition) }}
@@ -107,10 +107,10 @@
                                     {{ form_row(form.duration) }}
                                 </div>
                             {% endif %}
-                            <div class="tab-pane tab-pane-config fade pt-4 pe-4 ps-4 pb-0" id="fingerprint" role="tabpanel" aria-labelledby="fingerprint-tab">
+                            <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="fingerprint" role="tabpanel" aria-labelledby="fingerprint-tab">
                                 {% include 'admin/core/layout/custom-identifiers.html.twig' %}
                             </div>
-                            <div class="tab-pane tab-pane-config fade pt-4 pe-4 ps-4 pb-0" id="screens" role="tabpanel" aria-labelledby="screens-tab">
+                            <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="screens" role="tabpanel" aria-labelledby="screens-tab">
                                 <h4 class="text-dark w-100 text-center mb-3">{{ "Cacher"|trans }}</h4>
                                 <div class="row">
                                     {% if form.hideMobile is defined %}

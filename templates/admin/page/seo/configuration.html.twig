@@ -15,45 +15,83 @@
 {% endblock %}
 
 {% block body %}
-
     {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
-        <div id="edit-form-{{ interface.name }}" class="card radius-top">
-            <div class="card-body radius-top p-0">
-                <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" role="tablist">
-                    <li class="nav-item">
-                        <a class="btn-app active" id="nav-seo-tab" data-bs-toggle="tab" href="#seo" role="tab" aria-selected="true">
-                            <i class="icm-chart-line"></i><span>{{ 'Référencement'|trans }}</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn-app" id="nav-social-tab" data-bs-toggle="tab" href="#social" role="tab" aria-selected="false">
-                            <i class="icm-share-alt"></i><span>{{ 'Réseaux sociaux'|trans }}</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        {% set sitemap = defaultLocale|domain~"/sitemap.xml?preview=true" %}
-                        <a href="{{ sitemap }}" target="_blank" class="btn-app">
-                            <i class="icm-sitemap"></i><span>{{ 'sitemap.xml'|trans }}</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        {% set robots = defaultLocale|domain~"/robots.txt?preview=true" %}
-                        <a href="{{ robots }}" target="_blank" class="btn-app">
-                            <i class="icm-robot"></i><span>{{ 'robots.txt'|trans }}</span>
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane fade show active pt-2" id="seo" role="tabpanel" aria-labelledby="nav-seo-tab">
-                        {% include 'admin/page/seo/include/configuration.html.twig' %}
-                    </div>
-                    <div class="tab-pane fade pt-2" id="social" role="tabpanel" aria-labelledby="nav-social-tab">
-                        {% include 'admin/page/seo/include/social-network.html.twig' with {socialsNetworks: form.website.information.socialNetworks} %}
+        <div id="edit-form-{{ interface.name }}">
+            <div class="d-flex gap-2 flex-wrap mb-4">
+                <div class="nav nav-tabs gap-2 border-0 me-auto" role="tablist">
+                    <a class="btn-app active" id="nav-seo-tab" data-bs-toggle="tab" href="#seo" role="tab" aria-selected="true">
+                        <i class="icm-code"></i><span>{{ 'Métas'|trans }}</span>
+                    </a>
+                    <a class="btn-app" id="nav-seo-analytics" data-bs-toggle="tab" href="#analytics" role="tab" aria-selected="false">
+                        <i class="icm-share-alt"></i><span>{{ 'Trackings'|trans }}</span>
+                    </a>
+                    <a class="btn-app" id="nav-seo-axeptio" data-bs-toggle="tab" href="#axeptio" role="tab" aria-selected="false">
+                        <i class="icm-share-alt"></i><span>{{ 'Axeptio'|trans }}</span>
+                    </a>
+                    <a class="btn-app" id="nav-social-tab" data-bs-toggle="tab" href="#social" role="tab" aria-selected="false">
+                        <i class="icm-share-alt"></i><span>{{ 'Réseaux sociaux'|trans }}</span>
+                    </a>
+                    <a class="btn-app" id="nav-other-tab" data-bs-toggle="tab" href="#other" role="tab" aria-selected="false">
+                        <i class="icm-share-alt"></i><span>{{ 'Autres'|trans }}</span>
+                    </a>
+                </div>
+                {% set sitemap = defaultLocale|domain~"/sitemap.xml?preview=true" %}
+                <a href="{{ sitemap }}" target="_blank" class="btn-app info">
+                    <i class="icm-sitemap"></i><span>{{ 'sitemap.xml'|trans }}</span>
+                </a>
+                {% set robots = defaultLocale|domain~"/robots.txt?preview=true" %}
+                <a href="{{ robots }}" target="_blank" class="btn-app info">
+                    <i class="icm-robot"></i><span>{{ 'robots.txt'|trans }}</span>
+                </a>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="seo" role="tabpanel" aria-labelledby="nav-seo-tab">
+                    {% include 'admin/page/seo/include/configuration.html.twig' %}
+                </div>
+                <div class="tab-pane fade" id="analytics" role="tabpanel" aria-labelledby="nav-analytics-tab">
+                    {% include 'admin/page/seo/include/analytics.html.twig' %}
+                </div>
+                <div class="tab-pane fade" id="axeptio" role="tabpanel" aria-labelledby="nav-axeptio-tab">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body pb-0">
+                                    <h4 class="main-subtitle"><i class="icm-chart-line"></i>{{ "Axeptio"|trans }}</h4>
+                                    <div class="row">
+                                        {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: ['axeptioId', 'axeptioCookieVersion', 'axeptioExternal']} %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {% include 'admin/core/form/save/footer-only.html.twig' %}
+                <div class="tab-pane fade" id="social" role="tabpanel" aria-labelledby="nav-social-tab">
+                    {% include 'admin/page/seo/include/social-network.html.twig' with {socialsNetworks: form.website.information.socialNetworks} %}
+                </div>
+                <div class="tab-pane fade" id="other" role="tabpanel" aria-labelledby="nav-other-tab">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="card">
+                                <div class="card-body pb-0">
+                                    <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Scripts"|trans }}</h4>
+                                    <div class="row">
+                                        {% set customOthers = [] %}
+                                        {% for customField in form.website.api.custom.intls %}
+                                            {% for field in customField.children %}
+                                                {% if 'matomo' not in field.vars.name and 'aiFelixSiteId' not in field.vars.name and 'keywords' not in field.vars.name and 'axeptio' not in field.vars.name %}
+                                                    {% set customOthers = customOthers|merge([field.vars.name]) %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                        {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: customOthers} %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            {% include 'admin/core/form/save/footer-only.html.twig' %}
         </div>
     {{ form_end(form) }}
-
 {% endblock %}

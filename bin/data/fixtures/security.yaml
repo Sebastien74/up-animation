@@ -67,9 +67,6 @@ ROLE_TRANSLATOR:
 ROLE_INTERNAL:
     en: 'Internal role (agency)'
     fr: 'Rôle interne (agence)'
-ROLE_GOOGLE_ANALYTICS:
-    en: 'Google Analytics Access'
-    fr: 'Accès Google Analytics'
 ROLE_GALLERY:
     en: 'Galleries management'
     fr: 'Gestion des galeries'

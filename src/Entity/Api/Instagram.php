@@ -37,19 +37,6 @@ class Instagram
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ?Api $api = null;
 
-    #[ORM\OneToMany(targetEntity: InstagramIntl::class, mappedBy: 'instagram', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[ORM\OrderBy(['locale' => 'ASC'])]
-    #[Assert\Valid(['groups' => ['form_submission']])]
-    private ArrayCollection|PersistentCollection $intls;
-
-    /**
-     * Facebook constructor.
-     */
-    public function __construct()
-    {
-        $this->intls = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -97,36 +84,6 @@ class Instagram
         }
 
         $this->api = $api;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, InstagramIntl>
-     */
-    public function getIntls(): Collection
-    {
-        return $this->intls;
-    }
-
-    public function addIntl(InstagramIntl $intl): static
-    {
-        if (!$this->intls->contains($intl)) {
-            $this->intls->add($intl);
-            $intl->setInstagram($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIntl(InstagramIntl $intl): static
-    {
-        if ($this->intls->removeElement($intl)) {
-            // set the owning side to null (unless already changed)
-            if ($intl->getInstagram() === $this) {
-                $intl->setInstagram(null);
-            }
-        }
 
         return $this;
     }
