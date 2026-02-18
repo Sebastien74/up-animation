@@ -1,12 +1,8 @@
 {% trans_default_domain 'admin' %}
 
-<h5 class="main-subtitle mb-3 large">
-    <div class="row">
-        <div class="col-sm-6 my-auto"><i class="icm-search"></i>{{ "Filtres"|trans }}</div>
-        <div class="col-sm-6">
-            <div class="float-end">
-                {% include 'admin/include/intl-selector.html.twig' with {route: 'admin_seo_edit'} %}
-            </div>
-        </div>
-    </div>
-</h5>
+<h4 class="main-subtitle">
+    <span class="title-wrap d-flex align-items-center gap-2 me-auto">
+        <i class="icm-search"></i>{{ "Filtres"|trans }}
+    </span>
+    {% include 'admin/include/intl-selector.html.twig' with {route: 'admin_seo_edit'} %}
+</h4>

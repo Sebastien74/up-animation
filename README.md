@@ -14,7 +14,7 @@
 #### Preprod:
 #### Preprod serveur:
 
-#### Bundles Packagist : https://packagist.org/users/seybi74/packages
+#### Bundles Packagist: https://packagist.org/users/seybi74/packages
 
 ---
 
@@ -32,7 +32,7 @@
 
 > Change scss variables in ```./assets/scss/front/default/variables.scss``` file
 
-#### 2. Run this commands
+#### 2. Run this command
 
 ```bash
 # Composer dev mode
@@ -102,18 +102,18 @@ git commit -m ".gitignore update"
 
 ### MySQL
 
-#### To load large SQL file
+#### To load a large SQL file
 ```bash
 Get-Content "C:\Users\fourn\Downloads\filename.sql" -Raw | & "C:\wamp64\bin\mysql\mysql5.7.44\bin\mysql.exe" -u root -p -h 127.0.0.1 -P 3306 db_ame
 ```
 
-#### To change length limit of characters to search word with fulltext
+#### To change the length limit of characters to search word with fulltext
 ```bash
 # To mysql my.ini set this variable:
 innodb_ft_max_token_size: 100
 ```
 
-#### Deletion of too large git history file after commit and push doesn't work:
+#### Deletion of a too large git history file after commit and push doesn't work:
 ```bash
 git filter-branch --index-filter "git rm -rf --cached --ignore-unmatch assets/medias/images/front/default/video.m4v" HEAD
 git update-ref -d refs/original/refs/heads/master
@@ -149,7 +149,7 @@ v=spf1 a mx include:spf.jabatus.fr ~all
 ```
 
 ### NodeJS
-#### To switch NodeJS version: run PowerShell as administrator
+#### To switch Node.js version: run PowerShell as administrator
 [https://github.com/coreybutler/nvm-windows](https://github.com/coreybutler/nvm-windows)
 
 ```bash

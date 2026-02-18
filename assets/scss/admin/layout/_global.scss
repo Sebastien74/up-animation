@@ -91,7 +91,7 @@ a {
     font-size: 1rem;
     color: transparentize($white, .5);
 
-    i {
+    i:not(.initial) {
         width: 30px !important;
         height: 30px !important;
         flex: 0 0 30px !important;

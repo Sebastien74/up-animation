@@ -23,24 +23,21 @@
     <div id="media-library-page" class="position-relative">
 
         {% if 'edit'|moduleActive(configuration) %}
-            <div class="row align-items-center">
-                <div class="col-md-4">
-                    {{ render_esi(path('admin_folder_new', {website: websiteId})) }}
-                </div>
-                <div class="col-md-8 text-md-end">
-                    {% if granted('ROLE_INTERNAL') %}
-                        <span id="reorder-medias-btn" class="btn-app info-darken cursor me-2"
-                              data-path="{{ path('admin_medias_reorder', { website: websiteId }) }}">
+            <div class="d-flex gap-2">
+                {{ render_esi(path('admin_folder_new', {website: websiteId})) }}
+                {% if granted('ROLE_INTERNAL') %}
+                    <span id="reorder-medias-btn" class="btn-app info cursor"
+                          data-path="{{ path('admin_medias_reorder', { website: websiteId }) }}">
                             <i class="icm-folders"></i><span>{{ "Ranger les médias"|trans|raw }}</span>
                         </span>
-                    {% endif %}
-                    <button class="btn-app success"
-                            data-bs-toggle="collapse"
-                            href="#collapseFormMedias"
-                            aria-expanded="false"
-                            aria-controls="collapseFormMedias">
-                        <i class="icm-plus"></i><span>{{ "Ajouter des medias"|trans }}</span></button>
-                </div>
+                {% endif %}
+                <button class="btn-app success"
+                        data-bs-toggle="collapse"
+                        href="#collapseFormMedias"
+                        aria-expanded="false"
+                        aria-controls="collapseFormMedias">
+                    <i class="icm-plus"></i><span>{{ "Ajouter des medias"|trans }}</span>
+                </button>
             </div>
             {{ render_esi(path('admin_medias_uploader', {website: websiteId})) }}
         {% endif %}
@@ -64,40 +61,36 @@
 
         <div class="row mt-3">
             <div class="col-md-5">
-                <h4 class="main-subtitle">
-                    <div class="row w-100">
-                        <div class="col-md-6 my-auto d-flex align-items-center gap-2">
-                            <i class="icm-folder-tree"></i>{{ "Dossiers"|trans }}
-                        </div>
-                        <div class="col-md-6 text-end my-auto">
-                            {% if 'delete'|moduleActive(configuration) %}
-                                <button id="delete-pack-btn" class="btn-icon danger d-none"
-                                        data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
-                                    <i class="icm-trash"></i>
-                                </button>
-                            {% endif %}
-                            {% set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
-                                ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees %}
-                            <span id="nestable-expand-all"
-                                  class="btn-icon info-lighten cursor me-2{% if not collapsedAdminTrees %} d-none{% endif %}"
-                                  data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
-                                <i class="icm-arrow-alt-to-bottom"></i>
-                            </span>
-                            <span id="nestable-collapse-all"
-                                  class="btn-icon info-lighten cursor me-2{% if collapsedAdminTrees %} d-none{% endif %}"
-                                  data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
-                                <i class="icm-arrow-alt-to-top"></i>
-                            </span>
-                            <a href="{{ path('admin_medias_library', {website: websiteId}) }}"
-                               class="ajax-get-refresh btn-icon info"
-                               data-target="#medias-results"
-                               data-target-loader="#medias-preloader"
-                               data-bs-toggle="tooltip" title="{{ "Racine"|trans|striptags }}">
-                                <i class="icm-eye"></i>
-                            </a>
-                        </div>
+                <div class="main-subtitle">
+                    <div class="title-wrap d-flex align-items-center gap-2 me-auto">
+                        <i class="icm-folder-tree"></i>{{ "Dossiers"|trans }}
                     </div>
-                </h4>
+                    {% if 'delete'|moduleActive(configuration) %}
+                        <button id="delete-pack-btn" class="btn-icon danger d-none"
+                                data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
+                            <i class="icm-trash initial"></i>
+                        </button>
+                    {% endif %}
+                    {% set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
+                        ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees %}
+                    <span id="nestable-expand-all"
+                          class="btn-icon cursor{% if not collapsedAdminTrees %} d-none{% endif %}"
+                          data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
+                            <i class="icm-arrow-alt-to-bottom initial"></i>
+                        </span>
+                    <span id="nestable-collapse-all"
+                          class="btn-icon info-lighten cursor{% if collapsedAdminTrees %} d-none{% endif %}"
+                          data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
+                            <i class="icm-arrow-alt-to-top initial"></i>
+                        </span>
+                    <a href="{{ path('admin_medias_library', {website: websiteId}) }}"
+                       class="ajax-get-refresh btn-icon info"
+                       data-target="#medias-results"
+                       data-target-loader="#medias-preloader"
+                       data-bs-toggle="tooltip" title="{{ "Racine"|trans|striptags }}">
+                        <i class="icm-eye initial"></i>
+                    </a>
+                </div>
                 {% include 'admin/core/include/nestable.html.twig' with {
                     history: history is defined ? history : false,
                     routenameInterface: "folder",
@@ -116,29 +109,29 @@
                     <div class="d-none">
                         {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'medias-preloader', full: true} only %}
                     </div>
-                    <h4 class="card-header mb-0">
+                    <div class="card-header mb-0 pb-0">
                         <div class="row align-items-center">
-                            <div class="col-md-7 my-auto d-flex align-items-center">
-                                <i class="icm-photo-video me-2"></i>{{ "Médias"|trans }}
+                            <div class="col-md-7 my-auto d-flex align-items-center gap-2">
+                                <i class="icm-photo-video btn-icon"></i>{{ "Médias"|trans }}
                                 <div id="media-management-buttons" class="d-none ms-3 d-flex gap-2">
                                     {% if 'edit'|moduleActive(configuration) %}
                                         <button id="select-folder-btn"
                                                 data-path="{{ path('admin_folder_select', {website: websiteId}) }}"
-                                                class="btn-app small warning"
+                                                class="btn-icon warning"
                                                 data-bs-toggle="tooltip" title="{{ "Déplacer"|trans }}">
-                                            <i class="icm-share-square"></i><span>{{ "Déplacer"|trans }}</span>
+                                            <i class="icm-share-square"></i>
                                         </button>
                                     {% endif %}
                                     {% if granted('ROLE_MEDIA_COMPRESS') %}
-                                        <button id="media-compress-btn" class="btn-app small info"
+                                        <button id="media-compress-btn" class="btn-icon info"
                                                 data-bs-toggle="tooltip" title="{{ "Compresser"|trans }}">
-                                            <i class="icm-compress-alt"></i><span>{{ "Compresser"|trans }}</span>
+                                            <i class="icm-compress-alt"></i>
                                         </button>
                                     {% endif %}
                                     {% if 'delete'|moduleActive(configuration) %}
-                                        <button class="btn-app small danger sa-warning sa-warning-delete-medias"
+                                        <button class="btn-icon danger sa-warning sa-warning-delete-medias"
                                                 data-bs-toggle="tooltip" title="{{ "Supprimer"|trans }}">
-                                            <i class="icm-trash"></i><span>{{ "Supprimer"|trans }}</span>
+                                            <i class="icm-trash"></i>
                                         </button>
                                     {% endif %}
                                 </div>
@@ -147,7 +140,7 @@
                                 {{ render_esi(path('admin_folders_medias_search', { website: websiteId })) }}
                             </div>
                         </div>
-                    </h4>
+                    </div>
                     <div class="card-body pb-2">
                         {% include 'admin/page/media/medias-list.html.twig' %}
                     </div>

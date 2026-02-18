@@ -4,7 +4,7 @@
 {% set scheme = not domain ? "Non configuré"|trans : domain %}
 
 <div id="google-preview"
-     class="card"
+     class="card mb-3"
      data-title="{{ seo.title|striptags }}"
      data-description="{{ seo.description|striptags }}"
      data-og-title="{{ seo.ogFullTitle|striptags }}"
@@ -15,9 +15,8 @@
      data-dash="{{ seo.afterDash|striptags }}"
      data-dash-active="{{ seo.haveAfterDash }}">
 
-    <h5 class="main-subtitle mb-0"><i class="icm-google"></i>{{ "Aperçu Google"|trans }}</h5>
-
     <div class="card-body">
+        <h5 class="main-subtitle"><i class="icm-google"></i>{{ "Aperçu Google"|trans }}</h5>
         <div class="seo-title mb-0 ellipsis">
             <span class="title">{{ seo.title }}</span>
             <span class="title-dash">{% if seo.title|striptags|length > 0 %} - {% endif %}{% if seo.afterDash %}{{ seo.afterDash }}{% endif %}</span>
@@ -37,7 +36,9 @@
 {% set ogImage = ogImage and app.request.getSchemeAndHttpHost() not in ogImage ? app.request.getSchemeAndHttpHost()~ogImage : ogImage %}
 
 <div id="highlight-preview" class="card">
-    <h5 class="main-subtitle mb-0"><i class="icm-code"></i>{{ "Métas"|trans }}</h5>
+    <div class="card-body">
+        <h5 class="main-subtitle mb-0"><i class="icm-code"></i>{{ "Métas"|trans }}</h5>
+    </div>
     <section id="highlight-metas" class="language-markup">
 <pre>&lt;!-- Metas --/>
 <code class="highlight highlight-title">&lt;title>{{ seo.title|striptags }}{% if seo.title|striptags|length > 0 %} - {{ seo.afterDash }}{% endif %}{% if seo.afterDash %}{{ seo.afterDash }}{% endif %}&lt;/title></code>

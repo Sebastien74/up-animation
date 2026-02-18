@@ -6,6 +6,13 @@ Faire faire le responsive des FormType a Juni
 
 Dans édition site principale, styliser les Themes
 
+Faire la modal déplacer les fiches medias dans bibliothèque
+
+Dans backoffice supprimer les variables sass qui ne servent pas
+Dans backoffice demander à Juni de supprimer les variables sass qui ne servent pas
+Dans backoffice demander à Juni de supprimer les class  info-darken
+Dans backoffice demander à Juni de nettorer les elements sass qui ne servent pas
+
 Des element de site mettre les favions du générateur
 
 Sur la page ci dessous revoir l'affichage des blocs en utilisant flex

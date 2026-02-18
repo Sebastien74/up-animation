@@ -40,8 +40,8 @@
     {% endif %}
 
     {% if 'delete'|moduleActive(configuration) %}
-        <button id="delete-pack-btn" class="btn btn-danger d-none"
-                data-bs-toggle="tooltip" data-placement="left" title="{{ "Supprimer"|trans|striptags }}" aria-label="{{ "Supprimer"|trans|striptags }}">
+        <button id="delete-pack-btn" class="btn-icon danger d-none"
+                data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}" aria-label="{{ "Supprimer"|trans|striptags }}">
             <i class="icm-trash"></i>
         </button>
     {% endif %}
@@ -125,7 +125,7 @@
                             <div class="col-4 text-end my-auto">
                                 {% if 'edit'|moduleActive(configuration) %}
                                     <span data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
-                                        <span class="btn btn-info btn-circle cursor media-tab-content-loader{% if not removeMedia %} me-3{% endif %}"
+                                        <span class="btn-icon small info cursor media-tab-content-loader{% if not removeMedia %} me-3{% endif %}"
                                               data-path="{{ path('admin_mediarelations_edit', {
                                                   website: websiteId(),
                                                   mediaRelation: mediaRelation.id,
@@ -137,7 +137,8 @@
                                               data-bs-toggle="collapse"
                                               href="#collapse-{{ mediaRelation.id }}"
                                               aria-expanded="false"
-                                              aria-controls="collapse-{{ mediaRelation.id }}"><i class="icm-pencil-alt"></i>
+                                              aria-controls="collapse-{{ mediaRelation.id }}">
+                                            <i class="icm-pencil-alt"></i>
                                         </span>
                                     </span>
                                 {% endif %}
@@ -148,7 +149,7 @@
                                         entityId: entity.id,
                                         entityNamespace: class|url_encode}) }}"
                                        data-target="#ui-media-relation-{{ mediaRelation.id }}"
-                                       class="btn btn-transparent btn-circle swal-delete-link"
+                                       class="btn-icon small danger swal-delete-link"
                                        data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
                                         <i class="icm-trash"></i>
                                     </a>

@@ -181,16 +181,11 @@ $theme-colors: (
 
 /*-- b - Card --*/
 
-$card-cap-bg: $info-light;
-$card-cap-color: $info-darken;
-$card-cap-btn-outline: $gray-800;
-$card-cap-bg-subtitle: $info-light;
-$card-cap-color-subtitle: $info-darken;
-
-/*-- c - Modal --*/
-
-$modal-border-color: $info;
-$modal-border-btn: $theme-color;
+$card-cap-bg: transparent;
+$card-cap-color: $white-lighten;
+$card-cap-btn-outline: $white-lighten;
+$card-cap-bg-subtitle: $white-lighten;
+$card-cap-color-subtitle: $white-lighten;
 
 /*-- d - Link --*/
 
