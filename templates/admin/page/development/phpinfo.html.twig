@@ -16,7 +16,20 @@
 {% endblock %}
 
 {% block body %}
-    <div id="phpinfo-container" class="py-4">
-        {{ phpinfo|raw }}
+    <style>
+        #phpinfo-container a { color: #0056b3; text-decoration: none; }
+        #phpinfo-container a:hover { text-decoration: underline; }
+        #phpinfo-container h1 { font-size: 1.5rem; margin-top: 2rem; border-bottom: 2px solid #dee2e6; padding-bottom: 0.5rem; }
+        #phpinfo-container h2 { font-size: 1.25rem; margin-top: 1.5rem; background: #f8f9fa; padding: 0.5rem; border-left: 4px solid #007bff; }
+        #phpinfo-container .v { word-break: break-all; }
+        #phpinfo-container .h { background-color: #dee2e6; font-weight: bold; }
+        #phpinfo-container img { float: right; border: 0; }
+    </style>
+    <div id="phpinfo-container" class="py-4 container-fluid">
+        <div class="card">
+            <div class="card-body">
+                {{ phpinfo|raw }}
+            </div>
+        </div>
     </div>
 {% endblock %}

@@ -43,16 +43,46 @@ class ToolController extends AdminController
      * Phpinfo view.
      */
     #[Route('/phpinfo', name: 'admin_phpinfo', methods: 'GET')]
-    public function phpinfo(Request $request, AppRuntime $appRuntime): Response
+    public function phpinfo(Request $request): Response
     {
         ob_start();
         phpinfo();
         $phpinfo = ob_get_clean();
-        $phpinfo = $appRuntime->removeBetween($phpinfo, ['style']);
+
+        $dom = new \DOMDocument();
+        @$dom->loadHTML('<?xml encoding="utf-8" ?>'.$phpinfo);
+        $xpath = new \DOMXPath($dom);
+
+        $tables = $dom->getElementsByTagName('table');
+        foreach ($tables as $table) {
+            $table->setAttribute('class', 'table table-striped table-hover table-bordered table-sm');
+            $table->setAttribute('style', 'width: 100%; margin-bottom: 2rem; border-collapse: collapse;');
+        }
+
+        $headers = $dom->getElementsByTagName('th');
+        foreach ($headers as $header) {
+            $header->setAttribute('style', 'background-color: #dee2e6; color: #212529; padding: 0.5rem;');
+        }
+
+        $cells = $dom->getElementsByTagName('td');
+        foreach ($cells as $cell) {
+            $cell->setAttribute('style', 'word-break: break-all; padding: 0.5rem;');
+        }
+
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $content = '';
+        if ($body) {
+            foreach ($body->childNodes as $node) {
+                $content .= $dom->saveHTML($node);
+            }
+        } else {
+            $content = $phpinfo;
+        }
+
         parent::breadcrumb($request, []);
 
         return $this->adminRender('admin/page/development/phpinfo.html.twig', array_merge($this->arguments, [
-            'phpinfo' => $phpinfo,
+            'phpinfo' => $content,
         ]));
     }
 
