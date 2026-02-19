@@ -10,13 +10,21 @@ A une nouvelle connexion back faire le code chiffré par email
 
 Faire une search Console Google pour l'indexation
 
-Dans la gestion des indexes actues il manque la gestion des label pour les boutons.
+Dans la gestion des indexes actues il manque la gestion du label pour les boutons.
 
 Faire des macros cards par type de contenu, news product, etc
 
 Demander à Juni de renforcer la sécurité dans le subscriber
 
-Demander à Juni d'optimiser le htacess
+Demander à Juni d'optimiser le .htaccess
+
+Demander à Juni de revoir le media Service 
+
+Demander à Juni de factoriser les scss back
+
+Demander à Juni de factoriser les scss front
+
+Demander de faire remonter les erreurs de login quand aucun champs n'est rempli
 
 Dans édition site principale, styliser les Themes
 
