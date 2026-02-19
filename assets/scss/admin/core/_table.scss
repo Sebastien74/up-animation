@@ -22,11 +22,16 @@ $tbl-muted: rgba(255, 255, 255, .70) !default;
 $tbl-shadow: 0 18px 45px rgba(0, 0, 0, .55) !default;
 
 .app-table {
+
     position: relative;
     overflow: hidden;
     border-radius: $border-radius;
     background: $tbl-surface;
     border: 1px solid $tbl-border;
+
+    tbody {
+        border-color: transparent !important;
+    }
 }
 
 /* Subtle corner glow like your cards */
@@ -72,8 +77,12 @@ $tbl-shadow: 0 18px 45px rgba(0, 0, 0, .55) !default;
 .app-table tbody td {
     color: $tbl-text;
     border-top-color: rgba(255, 255, 255, .06) !important;
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+}
+
+.app-table tbody tr:not(:last-child) {
+    border-bottom: rgba(255, 255, 255, .06) !important;
 }
 
 /* Hover row (subtle) */

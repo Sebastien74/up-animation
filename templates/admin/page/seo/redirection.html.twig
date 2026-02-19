@@ -89,7 +89,7 @@
             {% endmacro %}
 
             <div class="table-responsive app-table">
-                <table class="table table-striped table-bordered table-dark responsive-cards mb-0 editable-table collection" data-index="{{ form.redirections|length }}" data-prototype="{{ macro.redirection_prototype(form.redirections.vars.prototype)|e('html_attr') }}">
+                <table class="table table-striped responsive-cards mb-0 editable-table collection" data-index="{{ form.redirections|length }}" data-prototype="{{ macro.redirection_prototype(form.redirections.vars.prototype)|e('html_attr') }}">
                 <thead>
                     <tr>
                         <th class="col-locale px-4{% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans }}</th>

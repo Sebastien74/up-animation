@@ -16,20 +16,25 @@
 {% endblock %}
 
 {% block body %}
-    <div id="phpinfo-search-wrapper" class="mb-4">
+
+    <div id="phpinfo-search-wrapper" class="mb-4 pages-search">
         <div class="input-group">
-            <span class="input-group-text bg-dark text-white border-secondary"><i class="icm-search"></i></span>
-            <input type="text" id="phpinfo-search" class="form-control bg-dark text-white border-secondary" placeholder="{{ "Rechercher une directive ou une valeur..."|trans }}">
+            <div class="input-group-text left">
+                <button type="submit" class="search-btn btn-icon" data-bs-toggle="tooltip" title="{{ "Rechercher"|trans|striptags }}">
+                    <i class="icm-search"></i>
+                </button>
+            </div>
+            <input type="text" id="phpinfo-search" class="form-control" placeholder="{{ "Rechercher une directive ou une valeur..."|trans }}">
         </div>
     </div>
 
     <div id="phpinfo-container" class="mt-4">
         {% for category, items in phpinfo %}
             {% if items is not empty %}
-                <div class="phpinfo-section mb-5">
+                <div class="phpinfo-section mb-4">
                     <h4 class="main-subtitle"><i class="icm-cog"></i>{{ category }}</h4>
                     <div class="table-responsive app-table">
-                        <table class="table table-striped table-bordered table-dark responsive-cards">
+                        <table class="table table-striped responsive-cards">
                         <thead>
                             <tr>
                                 <th class="d-none"></th>

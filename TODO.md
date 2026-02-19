@@ -14,6 +14,10 @@ Dans la gestion des indexes actues il manque la gestion des label pour les bouto
 
 Faire des macros cards par type de contenu, news product, etc
 
+Demander à Juni de renforcer la sécurité dans le subscriber
+
+Demander à Juni d'optimiser le htacess
+
 Dans édition site principale, styliser les Themes
 
 Revoir toutes les microdonnées

@@ -2,14 +2,8 @@
 
 {% trans_default_domain 'admin' %}
 
-{% set pageTitle = "Fichier de log"|trans~" : "~file %}
-
-{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ pageTitle }}{% endblock %}
-
 {% block stylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('admin-development', null, 'admin') }}
 {% endblock %}
 
 {% block javascripts %}
@@ -19,39 +13,48 @@
 {% block body %}
 
     {% set categories = {
+        success: {bg: 'success', color: 'white', icon: 'check-circle'},
         critical: {bg: 'danger', color: 'white', icon: 'exclamation-triangle'},
-        warning: {bg: 'warning', color: 'white', icon: 'whistle'},
+        warning: {bg: 'warning', color: 'dark', icon: 'whistle'},
         error: {bg: 'warning', color: 'dark', icon: 'whistle'},
         alert: {bg: 'warning', color: 'dark', icon: 'whistle'}
     } %}
 
-    <div id="log-page">
+    <div id="log-page" class="pt-4 pb-5 position-relative">
         {% for log in logs|reverse %}
             {% if log %}
                 {% set category = categories[log.status] is defined ? categories[log.status] : null %}
                 {% set bg = category and category['bg'] is defined ? category['bg'] : 'info' %}
                 {% set color = category and category['color'] is defined ? category['color'] : 'white' %}
                 {% set icon = category and category['icon'] is defined ? category['icon'] : 'info-circle' %}
-                <div class="card log-card">
-                    <div class="card-header card-title bg-{{ bg }} text-{{ color }}">
+                <div class="card-shadow card-{{ bg }} no-hover card bg-transparent h-100 text-decoration-none shadow-sm{% if not loop.last %} mb-3{% endif %}">
+                    <div class="card-header py-3">
                         <div class="row">
-                            <div class="col-md-4">
-                                {{ icon|icon(null, 14, color~' me-2') }}{{ log.code }}
+                            <div class="col-sm-4 d-flex align-items-center my-2 my-sm-0">
+                                <small class="d-flex align-items-center text-white fz-sm"><span class="btn-icon me-3"><i class="icm-{{ icon }}"></i></span><span class="lh-1">{{ log.code }}</span></small>
                             </div>
-                            <div class="col-md-8 text-end">
+                            <div class="col-sm-8 text-sm-end justify-content-sm-end d-flex align-items-center mb-2 mb-sm-0">
                                 {% if log.date|isDateTime %}
-                                    <i class="icm-calendar-alt ms-2"></i>{{ log.date|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}
-                                    <i class="icm-clock ms-2"></i>{{ log.date|format_datetime(pattern='HH:mm', locale=app.request.locale)|capitalize }}
+                                    <small class="d-flex align-items-end fz-sm text-white">
+                                        <i class="icon-calendar-alt fz-sm me-2"></i>
+                                        <span class="lh-1">{{ log.date|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</span>
+                                    </small>
+                                    <small class="d-flex align-items-end fz-sm text-white">
+                                        <i class="icon-clock fz-sm mx-2"></i>
+                                        <span class="lh-1">{{ log.date|format_datetime(pattern='HH:mm', locale=app.request.locale)|capitalize }}</span>
+                                    </small>
                                 {% endif %}
-                                <span data-bs-toggle="tooltip" title="{{ "Retourner à la liste des logs"|trans|striptags }}">
-                                    <a href="{{ path('admin_logs') }}" class="ms-2 text-{{ color }}">
-                                        <i class="icm-reply"></i>
+                                <span data-bs-toggle="tooltip" title="{{ 'Back to logs list'|trans|striptags }}">
+                                    <a href="{{ path('admin_logs') }}" class="ms-3 text-{{ color }}">
+                                        <span class="small-icon"><i class="icon-reply fz-sm"></i></span>
                                     </a>
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body pb-2">{{ log.message }}</div>
+                    <div class="card-body no-card-footer text-white pt-0 pb-3 px-3">
+                        <small class="fz-sm d-inline-block mw-100">{{ log.message }}</small>
+                    </div>
                 </div>
             {% endif %}
         {% endfor %}

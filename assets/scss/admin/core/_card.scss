@@ -13,3 +13,89 @@
         }
     }
 }
+
+.card-shadow {
+
+    position: relative;
+    overflow: hidden;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 1rem;
+    background: radial-gradient(900px 520px at 82% 100%, rgba(111, 66, 193, 0.045), transparent 62%),
+    radial-gradient(1100px 780px at 30% 65%, rgba(255, 255, 255, 0.012), transparent 68%),
+    linear-gradient(0deg, #121726, #0e1219 48%, #0a0d12);
+
+    &:before {
+
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: {
+            /* radial glow */
+        };
+        background: radial-gradient(
+                520px 220px at 18% 0%,
+                rgba(124, 108, 255, 0.22),
+                transparent 62%
+        );
+        opacity: 0.95;
+        pointer-events: none;
+    }
+
+    &:after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.04),
+                rgba(255, 255, 255, 0.00) 40%,
+                rgba(0, 0, 0, 0.08)
+        );
+        mix-blend-mode: overlay;
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    &.card-danger::before {
+        background: radial-gradient(
+                520px 220px at 18% 0%,
+                rgba(255, 92, 92, 0.18),
+                transparent 62%
+        );
+    }
+
+    &.card-warning::before {
+        background: radial-gradient(
+                520px 220px at 18% 0%,
+                rgba(241, 196, 15, 0.16),
+                transparent 62%
+        );
+    }
+
+    &.card-info::before {
+        background: radial-gradient(
+                520px 220px at 18% 0%,
+                rgba(56, 139, 253, 0.16),
+                transparent 62%
+        );
+    }
+
+    &.card-success::before {
+        background: radial-gradient(
+                520px 220px at 18% 0%,
+                rgba(46, 204, 113, 0.16),
+                transparent 62%
+        );
+    }
+
+    &:hover:not(.no-hover) {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55) !important;
+    }
+
+    &:focus-visible {
+        outline: 2px solid rgba(124, 108, 255, 0.55);
+        outline-offset: 3px;
+    }
+}

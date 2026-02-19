@@ -94,12 +94,12 @@
                                     </div>
                                 {% endif %}
                                 {% if question.intl.title or question.intl.subTitle %}
-                                    <div class="content">
+                                    <div class="content d-flex flex-column">
                                         {% if question.intl.title %}
                                             <strong class="question d-inline-flex align-items-center lh-1 pe-4">{{ question.intl.title|unescape|raw }}</strong>{% if question.intl.subTitle %}<br>{% endif %}
                                         {% endif %}
                                         {% if question.intl.subTitle %}
-                                            <p class="info mb-0 fw-300 text-italic lh-1 mt-{{ loop.index }}">{{ question.intl.subTitle|unescape|raw }}</p>
+                                            <p class="info mb-0 fw-300 text-italic lh-1 mt-2">{{ question.intl.subTitle|unescape|raw }}</p>
                                         {% endif %}
                                     </div>
                                 {% endif %}

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
@@ -80,8 +81,11 @@ class LogController extends AdminController
     public function log(Request $request, string $logDir): Response
     {
         $logs = [];
-        $fileDir = $logDir.'/'.$request->get('file');
+        $fileDir = $logDir.'/'.$request->attributes->get('file');
         $fileSystem = new Filesystem();
+
+        $items[$this->coreLocator->translator()->trans('Logs', [], 'back')] = $this->coreLocator->router()->generate('admin_logs', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $this->breadcrumb($request, $items);
 
         if ($fileSystem->exists($fileDir)) {
             $logsContent = file_get_contents($fileDir);
@@ -99,7 +103,7 @@ class LogController extends AdminController
                         $status = 'critical';
                     }
                     $logs[] = [
-                        'date' => $date ? new \DateTime($date) : $date,
+                        'date' => new \DateTime($date),
                         'code' => $code,
                         'status' => str_contains($log, 'Deprecated') ? 'warning' : $status,
                         'message' => trim(htmlspecialchars_decode($log)),
@@ -109,7 +113,8 @@ class LogController extends AdminController
         }
 
         return $this->adminRender('admin/page/development/log.html.twig', [
-            'file' => $request->get('file'),
+            'breadcrumb' => $this->arguments['breadcrumb'],
+            'file' => $request->attributes->get('file'),
             'logs' => array_slice($logs, 0, 50),
         ]);
     }

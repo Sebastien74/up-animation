@@ -23,7 +23,7 @@
 
         {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only %}
 
-        <table class="table editable-table table-bordered table-striped mb-0">
+        <table class="table editable-table table-striped mb-0">
             <thead>
                 <tr>
                     <th class="col-locale{% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans }}</th>
