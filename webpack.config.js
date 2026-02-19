@@ -26,6 +26,7 @@ const {PurgeCSSPlugin} = require('purgecss-webpack-plugin');
 function safeList() {
     let patterns = [
         'html', 'body', 'img', 'svg', 'picture', 'sup', 'a', 'button', 'address', 'badge', 'ended', 'no-backdrop', 'no-webp', 'support-webp', 'standardize-medias', 'as-btn',
+        'is-invalid', 'invalid-feedback', 'form-floating', 'form-control', 'was-validated',
         /start$/, /end$/, /next$/, /prev$/, /open$/, /text$/, /modal$/, /card$/, /carousel$/, /tooltip$/, /collapsed$/, /collapsing$/, /navigation$/,
         /img$/, /svg$/, /active$/, /show$/, /link$/, /address$/,
         /-body/, /-footer/, /-style/, /m-/, /mx-/, /my-/, /mb-/, /mt-/, /ms-/, /me-/, /p-/, /px-/, /py-/, /pb-/, /pt-/, /ps-/, /pe-/, /fw-/, /fz-/, /-none/, /h-0/,
@@ -550,6 +551,14 @@ Encore.setOutputPath('public/build/security')
         };
     })
     .addPlugin(new CleanWebpackPlugin())
+    .addPlugin(new PurgeCSSPlugin({
+        paths: [
+            ...glob.sync(`${path.join(__dirname, 'templates/security')}/**/*.html.twig`, {nodir: true}),
+            ...glob.sync(`${path.join(__dirname, 'assets/js/security')}/**/*.js`, {nodir: true}),
+        ],
+        safelist: safeList,
+        blocklist: blockList,
+    }))
     .enableSingleRuntimeChunk()
     .enableSassLoader();
 
