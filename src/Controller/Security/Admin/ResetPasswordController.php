@@ -11,6 +11,7 @@ use App\Form\Type\Security\Admin\PasswordRequestType;
 use App\Form\Type\Security\Admin\PasswordResetType;
 use App\Repository\Security\UserRepository;
 use App\Security\BaseAuthenticator;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,7 +30,7 @@ class ResetPasswordController extends AdminController
     /**
      * Request password.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('/request', name: 'security_password_request', methods: 'GET|POST')]
     public function request(Request $request, BaseAuthenticator $baseAuthenticator, ResetPasswordManager $manager)
@@ -57,7 +58,7 @@ class ResetPasswordController extends AdminController
     /**
      * Reset password.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('/confirm/{token}', name: 'security_password_confirm', methods: 'GET|POST')]
     public function confirm(
