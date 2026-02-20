@@ -57,11 +57,10 @@
         &.alert-#{$s} {
 
             border-color: transparentize($c, .7) !important;
-            background:
-                    radial-gradient(900px 520px at 82% 100%, rgba($c, 0.18), transparent 62%),
-                    radial-gradient(900px 520px at 82% 100%, rgba($primary, 0.10), transparent 62%),
-                    radial-gradient(1100px 780px at 30% 65%, rgba($white, 0.04), transparent 68%),
-                    linear-gradient(180deg, rgba(16, 18, 28, 0.72), rgba(10, 11, 18, 0.62));
+            background: radial-gradient(900px 520px at 82% 100%, rgba($c, 0.18), transparent 62%),
+            radial-gradient(900px 520px at 82% 100%, rgba($primary, 0.10), transparent 62%),
+            radial-gradient(1100px 780px at 30% 65%, rgba($white, 0.04), transparent 68%),
+            linear-gradient(180deg, rgba(16, 18, 28, 0.72), rgba(10, 11, 18, 0.62));
 
             .icon.bg-#{$s} {
                 background-color: rgba($c, 0.22) !important;
