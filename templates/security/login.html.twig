@@ -44,11 +44,11 @@
             {% include 'security/includes/alert.html.twig' with {alert: 'danger', message: error.messageKey|trans(error.messageData, 'security')|raw} only %}
         {% endif %}
         {% include "security/includes/flashbag.html.twig" %}
-{#        {% if website.entity.security.adminRegistration %}#}
+        {% if website.entity.security.adminRegistration %}
             <a href="{{ path('security_register') }}"
                class="text-uppercase btn-app center w-100 mt-3">
                 <i class="icon-person-circle-plus"></i>{{ 'Inscrivez-vous'|trans|raw }}
             </a>
-{#        {% endif %}#}
+        {% endif %}
     {{ form_end(form) }}
 {% endblock %}
