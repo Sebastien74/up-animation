@@ -117,21 +117,19 @@ export default function (sliders) {
                     });
 
                     let clones = isMobile && itemsLength > 1 ? 3 : (isMobile && perPageMobile === 1 ? 1 : perPage);
-                    if (!useClones || (itemsCount <= perPage)) {
+                    if (itemsCount <= perPage) {
                         clones = 0;
                     }
 
                     let type = 'slide';
-                    if (items.length <= perPage && perPage !== 1) {
-                        type = 'slide';
-                    } else if (items.length > 1 && perPage !== 1) {
+                    if (asFade) {
+                        type = 'fade';
+                    } else if (items.length > 1) {
                         type = 'loop';
                     }
 
-                    if (asFade) {
-                        type = 'fade';
-                    } else if (clones) {
-                        type = 'loop';
+                    if (items.length <= perPage && perPage !== 1) {
+                        type = 'slide';
                     }
 
                     const configBase = {
@@ -191,8 +189,13 @@ export default function (sliders) {
                         };
                     }
 
+                    slider.classList.add('is-initialized');
                     const config = getConfig();
                     let splide = new Splide(slider, config);
+
+                    if (config.type === 'loop') {
+                        imgSizes(slider);
+                    }
 
                     if (!config.arrows || itemsCount <= config.perPage) {
                         slider.querySelectorAll('.arrows-wrap').forEach((wrap) => {
@@ -315,12 +318,7 @@ export default function (sliders) {
                         }
                     });
 
-                    if (!config.arrows && config.autoplay && !slider.classList.contains('clones-loaded')) {
-                        slider.classList.add('clones-loaded');
-                        init(slider, true);
-                    }
-
-                    /** To go to center focus image if perPage === items numbers */
+                    /** To go to the center focus image if perPage === items numbers */
                     splide.on('mounted', function () {
                         if (items.length === perPage && focus === 'center') {
                             let centerIndex = Math.floor(items.length / 2);
@@ -394,19 +392,7 @@ export default function (sliders) {
                                 }
                                 if (pluginBtn) {
                                     const direction = type === 'next' ? '+1' : '-1';
-                                    if (!slider.classList.contains('clones-loaded')) {
-                                        slider.classList.add('clones-loaded');
-                                        imgSizes(slider);
-                                        splide.destroy(true);
-                                        setTimeout(() => {
-                                            init(slider, true);
-                                        }, 25);
-                                        setTimeout(() => {
-                                            btn.click();
-                                        }, 25);
-                                    } else {
-                                        splide.go(direction);
-                                    }
+                                    splide.go(direction);
                                 }
                             }
                         }
@@ -469,12 +455,15 @@ export default function (sliders) {
 
         sliders.forEach(function (slider) {
             if (!slider.classList.contains('is-initialized') && isInViewport(slider, 300)) {
+                slider.classList.add('is-initialized');
                 init(slider);
             } else if (!slider.classList.contains('is-initialized') && isInViewport(slider, 0)) {
+                slider.classList.add('is-initialized');
                 init(slider);
             }
             window.addEventListener('scroll', function () {
                 if (!slider.classList.contains('is-initialized') && isInViewport(slider, 300)) {
+                    slider.classList.add('is-initialized');
                     init(slider);
                 }
             });

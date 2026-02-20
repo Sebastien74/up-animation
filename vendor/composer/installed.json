@@ -13664,6 +13664,7 @@
         "squizlabs/php_codesniffer",
         "symfony/debug-bundle",
         "symfony/maker-bundle",
+        "symfony/requirements-checker",
         "symfony/web-profiler-bundle"
     ]
 }

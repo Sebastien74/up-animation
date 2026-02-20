@@ -23,7 +23,7 @@
 {% set mediaAuthor = infos.author is defined and infos.author ? infos.author : null  %}
 {% set notContractual = infos.notContractual is defined and infos.notContractual ? infos.notContractual : null  %}
 {% set haveInfos = not inAdmin and (mediaAuthor or displayTitle or notContractual) %}
-{% set haveLightBox = fullPopup and popupGallery and not isInBox %}
+{% set haveLightBox = (fullPopup and popupGallery and not isInBox) or popupWithoutBox %}
 {% set originalSrc = thumbnails.originalSrc is defined ? thumbnails.originalSrc : null %}
 
 {% extends isInBox ? 'front/'~configuration.template~'/include/img-hover.html.twig' : 'core/image-block.html.twig' %}

@@ -7,6 +7,7 @@
         "php": ">=8.3",
         "ext-ctype": "*",
         "ext-curl": "*",
+        "ext-dom": "*",
         "ext-gd": "*",
         "ext-iconv": "*",
         "ext-openssl": "*",
@@ -44,7 +45,6 @@
         "symfony/monolog-bundle": "^3.8",
         "symfony/notifier": "7.4.*",
         "symfony/rate-limiter": "7.4.*",
-        "symfony/requirements-checker": "^2.0",
         "symfony/runtime": "7.4.*",
         "symfony/security-bundle": "7.4.*",
         "symfony/twig-bundle": "7.4.*",
@@ -59,8 +59,7 @@
         "tinify/tinify": "^1.6",
         "twig/cache-extra": "^3.21",
         "twig/extra-bundle": "^3.21",
-        "twig/intl-extra": "^3.21",
-        "ext-dom": "*"
+        "twig/intl-extra": "^3.21"
     },
     "config": {
         "platform": {
@@ -100,8 +99,7 @@
             "app:copy:bundle": "symfony-cmd",
             "app:clear:bundle": "symfony-cmd",
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "requirements-checker": "script"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -124,6 +122,7 @@
         "nunomaduro/phpinsights": "^2.13",
         "symfony/debug-bundle": "7.4.*",
         "symfony/maker-bundle": "^1.64",
+        "symfony/requirements-checker": "^2.0",
         "symfony/stopwatch": "7.4.*",
         "symfony/web-profiler-bundle": "7.4.*"
     }

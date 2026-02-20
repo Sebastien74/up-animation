@@ -2,11 +2,23 @@ Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
 Revoir toutes les requêtes depuis le debut
 
+Message d'erreur LOgin sont en anglais
+
 Faire faire le responsive des FormType a Juni
+
+Ajouter dans les variables getsion de fonts pour mobile max sm
+
+Demander à Juni de revoir le mix qui gere la duplication et noter le soucis quand bg-primary dans bg-white par exemple
 
 Faire un sélécteur icon pour backoffice
 
 A une nouvelle connexion back faire le code chiffré par email
+
+Dépréciation 8.5
+
+Faire le popupWithoutBox comme isacar
+
+Faire un truc comme hx pour les background et img path:true
 
 Faire une search Console Google pour l'indexation
 

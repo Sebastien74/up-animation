@@ -255,6 +255,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         $this->arguments['media'] = $mediaModel;
         $this->arguments['mediaRelation'] = $options['mediaRelation'] = $mediaModel instanceof MediaModel ? $mediaModel->mediaRelation : null;
         $this->arguments['popupGallery'] = $options['popupGallery'] = !empty($options['popupGallery']) ? $options['popupGallery'] : false;
+        $this->arguments['popupWithoutBox'] = $options['popupWithoutBox'] = !empty($options['popupWithoutBox']) ? $options['popupWithoutBox'] : false;
         $this->arguments['parentEntity'] = !empty($options['parentEntity']) ? $options['parentEntity'] : null;
         $this->arguments['block'] = !empty($options['block']) ? $options['block'] : $this->arguments['parentEntity'];
         $this->arguments['lazyLoad'] = $options['lazyLoad'] ?? true;

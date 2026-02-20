@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '9f52e4fdb4cc524ca1e70218dd8844ce9ba8df0b',
+        'reference' => 'eaa142be5ec62670e05273577fe95a76a6ef04b6',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '9f52e4fdb4cc524ca1e70218dd8844ce9ba8df0b',
+            'reference' => 'eaa142be5ec62670e05273577fe95a76a6ef04b6',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1410,7 +1410,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/requirements-checker',
             'aliases' => array(),
-            'dev_requirement' => false,
+            'dev_requirement' => true,
         ),
         'symfony/routing' => array(
             'pretty_version' => 'v7.4.4',
