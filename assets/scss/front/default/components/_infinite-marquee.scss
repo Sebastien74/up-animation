@@ -19,15 +19,22 @@
         display: flex;
         flex-wrap: nowrap;
         will-change: transform;
+        pointer-events: none; // Permet de ne pas bloquer le scroll tactile sur mobile
 
         .marquee-content {
 
             display: flex;
             white-space: nowrap;
+            pointer-events: auto; // Réactive les événements sur le contenu si besoin
 
             .marquee-item {
 
                 flex: 1 0 auto;
+
+                .img-loader-wrap {
+                    display: flex !important;
+                    align-items: center;
+                }
 
                 img {
 
@@ -40,7 +47,8 @@
         }
     }
 
-    &:hover .marquee-inner {
+    &:hover .marquee-inner,
+    &:active .marquee-inner {
         animation-play-state: paused !important;
     }
 }

@@ -1,6 +1,6 @@
 {
-    "2026-01-23 17:25:11": {
+    "2026-02-20 18:10:47": {
         "type": "email",
-        "message": "Unable to find template \"@images\/medias\/logo-email.png\" (looked into: C:\\wamp64\\www\\up-animation\/public) in \"core\/email\/base-felix.html.twig\" at line 80. in App\\Service\\Core\\MailerService at line 80"
+        "message": "Connection could not be established with host \"localhost:1025\": stream_socket_client(): Unable to connect to localhost:1025 (Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée) in App\\Service\\Core\\MailerService at line 154"
     }
 }

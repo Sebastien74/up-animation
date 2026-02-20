@@ -57,12 +57,13 @@
         position: relative;
         width: 34px;
         height: 34px;
+        font-size: 1rem;
         border-radius: $card-icon-radius;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: rgba($dash-accent, 0.14);
-        border: 1px solid rgba($dash-accent, 0.28);
+        background: rgba($primary, 0.14);
+        border: 1px solid rgba($primary, 0.28);
         color: $btn-text;
     }
 
@@ -78,24 +79,18 @@
 
     &:focus-visible {
         outline: 0;
-        box-shadow: 0 0 0 4px rgba($dash-accent, 0.18);
+        box-shadow: 0 0 0 4px rgba($primary, 0.18);
     }
 
-    $variants: (
-        "danger": #ff5c5c,
-        "info": #3b82f6,
-        "warning": #f59e0b,
-        "teal": #0d9488,
-        "success": #0d9488
-    );
-
     @each $name, $color in $variants {
+
         &.#{$name} {
             background: rgba($color, .12);
             border-color: rgba($color, .30);
         }
 
         &.#{$name}-darken {
+
             background: rgba($color, .7);
             border-color: rgba($color, .6);
 

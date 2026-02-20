@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Module : App
+    Copyright : 2026
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+------------------------------------------------------------------ */
+
+.square-badge-primary {
+    align-items: center;
+    background: transparentize($primary, .78);
+    border-color: transparentize($primary, .45);
+    border-radius: $card-icon-radius;
+    color: transparentize($white, .5);
+    display: flex;
+    flex: 0 0 auto;
+    height: $card-icon-size;
+    justify-content: center;
+    width: $card-icon-size;
+    font-size: 1.5rem;
+}
+
+@each $name, $color in $variants {
+    .square-badge-#{$name} {
+        align-items: center;
+        background: transparentize($color, .78);
+        border-color: transparentize($color, .45);
+        border-radius: $card-icon-radius;
+        color: transparentize($color, .2);
+        display: flex;
+        flex: 0 0 auto;
+        height: $card-icon-size;
+        justify-content: center;
+        width: $card-icon-size;
+        font-size: 1rem;
+        font-size: 1.5rem;
+    }
+}

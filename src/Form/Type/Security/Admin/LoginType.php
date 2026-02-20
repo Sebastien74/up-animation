@@ -100,7 +100,7 @@ class LoginType extends AbstractType
             'label' => $this->translator->trans('Se connecter', [], 'security_cms'),
             'attr' => [
                 'class' => 'btn-app w-100 center',
-                'data-icon' => 'save',
+                'data-icon' => 'sign-in',
                 'data-icon-side' => 'left',
             ],
         ]);

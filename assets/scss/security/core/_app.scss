@@ -131,19 +131,6 @@ a {
     }
 }
 
-.square-badge-primary {
-    align-items: center;
-    background: transparentize($primary, .78);
-    border-color: transparentize($primary, .45);
-    border-radius: $card-icon-radius;
-    color: transparentize($white, .5);
-    display: flex;
-    flex: 0 0 auto;
-    height: $card-icon-size;
-    justify-content: center;
-    width: $card-icon-size;
-}
-
 /*-----------------------------------
    3 ) Responsive
 -----------------------------------*/

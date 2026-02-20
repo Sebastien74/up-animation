@@ -1,0 +1,58 @@
+/* -----------------------------------------------------------------
+    Module : Video scroll
+    Copyright : 2025
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+------------------------------------------------------------------ */
+
+/*! purgecss start ignore */
+
+@import '../variables';
+@import '../../../vendor/mixin/media-queries';
+
+.container.is-scroll-video-container {
+
+    transition: none; /* driven by JS */
+    will-change: max-width;
+
+    @include mediaQuery(max-md) {
+        video {
+            height: 400px;
+        }
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: opacity .7s ease-in-out;
+        background: linear-gradient(180deg, #FFF 39.26%, rgba(58, 50, 86, 0.00) 100%) no-repeat top center;
+        background-size: 100% 50% !important;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .row-container {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    &.is-scroll-video-100 {
+
+        position: relative;
+
+        &:after {
+            transition: opacity .7s ease-in-out;
+            opacity: 1;
+        }
+
+        .html-video {
+            border-radius: 0;
+            transition: border-radius .3s ease-in-out;
+        }
+    }
+}
+
+/*! purgecss end ignore */

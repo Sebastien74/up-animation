@@ -21,10 +21,10 @@ header.navbar {
     height: 70px;
     position: fixed;
     z-index: 5000;
-    background: radial-gradient(900px 220px at 15% 0%, rgba($dash-accent, 0.10), transparent 55%),
+    background: radial-gradient(900px 220px at 15% 0%, rgba($primary, 0.10), transparent 55%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 48%),
     $dash-dark;
-    border-bottom: 1px solid $dash-border;
+    border-bottom: 1px solid $border-color-transparent;
 
     .navbar-brand {
 

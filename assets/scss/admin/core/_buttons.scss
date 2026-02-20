@@ -6,8 +6,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba($dash-accent, 0.14);
-    border: 1px solid rgba($dash-accent, 0.28);
+    background: rgba($primary, 0.14);
+    border: 1px solid rgba($primary, 0.28);
     color: $btn-text;
 
     @include mediaQuery(min-lg) {
@@ -102,8 +102,8 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: rgba($dash-accent, 0.14);
-        border: 1px solid rgba($dash-accent, 0.28);
+        background: rgba($primary, 0.14);
+        border: 1px solid rgba($primary, 0.28);
         color: $btn-text;
     }
 
@@ -119,7 +119,7 @@
 
     &:focus-visible {
         outline: 0;
-        box-shadow: 0 0 0 4px rgba($dash-accent, 0.18);
+        box-shadow: 0 0 0 4px rgba($primary, 0.18);
     }
 }
 
@@ -241,8 +241,8 @@
     a.btn-icon:hover {
 
         transition: all .3s ease;
-        background: rgba($dash-accent, .22);
-        border-color: rgba($dash-accent, .55);
+        background: rgba($primary, .22);
+        border-color: rgba($primary, .55);
         opacity: 1 !important;
 
         i {

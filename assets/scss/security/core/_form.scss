@@ -16,7 +16,7 @@ html body form .form-field-none {
     .progress {
         height: 6px;
         border-radius: 5px;
-        background-color: $dash-surface-2 !important;
+        background-color: $surface-bg-light !important;
     }
 
     #strength-bar {
@@ -53,6 +53,10 @@ html body form .form-field-none {
             justify-content: center;
             width: $card-icon-size;
             transition: color .3s ease-in-out;
+
+            i {
+                font-size: 1rem;
+            }
 
             @include mediaQuery(min-lg) {
 

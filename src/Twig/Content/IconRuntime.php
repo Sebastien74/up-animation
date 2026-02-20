@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Content;
 
+use App\Service\Interface\CoreLocatorInterface;
 use App\Twig\Core\NonceRuntime;
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
@@ -19,7 +20,7 @@ class IconRuntime implements RuntimeExtensionInterface
     /**
      * IconRuntime constructor.
      */
-    public function __construct(private readonly string $projectDir, private readonly NonceRuntime $nonceRuntime)
+    public function __construct(private readonly string $projectDir, private readonly NonceRuntime $nonceRuntime, private readonly CoreLocatorInterface $coreLocator)
     {
     }
 
@@ -66,7 +67,8 @@ class IconRuntime implements RuntimeExtensionInterface
             $iconsDirname = $this->projectDir.'/assets/lib/fonts/icomoon-admin.scss';
             $content = file_get_contents($iconsDirname);
             if (str_contains($content, $iconClass.':before')) {
-                echo '<i class="icm-'.$iconClass.' '.$options['class'].'"></i>';
+                $prefix = $this->coreLocator->inAdmin() ? 'icm' : 'icon';
+                echo '<i class="'.$prefix.'-'.$iconClass.' '.$options['class'].'"></i>';
                 $iconExist = true;
             }
         }
