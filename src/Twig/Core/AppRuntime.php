@@ -575,11 +575,27 @@ class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
+     * Check if in Front.
+     */
+    public function inFront(): bool
+    {
+        return $this->coreLocator->inFront();
+    }
+
+    /**
      * Check if in Admin.
      */
     public function inAdmin(): bool
     {
         return $this->coreLocator->inAdmin();
+    }
+
+    /**
+     * Check if in Admin.
+     */
+    public function inSecurity(): bool
+    {
+        return $this->coreLocator->inSecurity();
     }
 
     /**
@@ -599,7 +615,7 @@ class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * File get content in project dir.
+     * File get content in the project dir.
      */
     public function fileGetContent(?string $dirname = null): ?string
     {

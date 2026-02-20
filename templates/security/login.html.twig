@@ -41,11 +41,11 @@
             {% include 'security/includes/alert.html.twig' with {alert: 'danger', message: error.messageKey|trans(error.messageData, 'security')|raw} only %}
         {% endif %}
         {% include "security/includes/flashbag.html.twig" %}
-        {% if website.entity.security.adminRegistration %}
+{#        {% if website.entity.security.adminRegistration %}#}
             <a href="{{ path('security_register') }}"
-               class="btn btn-lg btn-outline-info btn-block text-uppercase w-100 mt-3">
-                {{ 'Inscrivez-vous'|trans|raw }}
+               class="text-uppercase btn-app center w-100 mt-3">
+                <i class=""></i>{{ 'Inscrivez-vous'|trans|raw }}
             </a>
-        {% endif %}
+{#        {% endif %}#}
     {{ form_end(form) }}
 {% endblock %}

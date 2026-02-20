@@ -187,7 +187,7 @@ class BaseAuthenticator
             || $authException instanceof SecurityException\AuthenticationCredentialsNotFoundException;
 
         if ($authException instanceof SecurityException\InsufficientAuthenticationException) {
-            $indAmin = preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $request->getUri());
+            $indAmin = $this->coreLocator->inAdmin();
             $routeName = $indAmin ? 'security_login' : 'security_front_login';
             return new RedirectResponse($this->coreLocator->router()->generate('app_logout', ['route_name' => $routeName]));
         }

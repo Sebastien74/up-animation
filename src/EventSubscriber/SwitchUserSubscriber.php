@@ -9,14 +9,13 @@ use App\Entity\Security\User;
 use App\Entity\Security\UserFront;
 use App\Model\ViewModel;
 use App\Service\Interface\CoreLocatorInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Event\SwitchUserEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
@@ -25,22 +24,19 @@ use Symfony\Component\Security\Http\SecurityEvents;
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-class SwitchUserSubscriber implements EventSubscriberInterface
+readonly class SwitchUserSubscriber implements EventSubscriberInterface
 {
     /**
      * SwitchUserSubscriber constructor.
      */
-    public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly UrlGeneratorInterface $urlGenerator,
-    ) {
+    public function __construct(private CoreLocatorInterface $coreLocator)
+    {
     }
 
     /**
      * On switch User Event.
      *
-     * @throws NonUniqueResultException|MappingException|QueryException
+     * @throws NonUniqueResultException|MappingException|QueryException|InvalidArgumentException
      */
     public function onSwitchUser(SwitchUserEvent $event): void
     {
@@ -50,7 +46,7 @@ class SwitchUserSubscriber implements EventSubscriberInterface
 
         if ($request->hasSession() && ($session = $request->getSession())) {
             $session->set('_locale', $user->getLocale());
-            $inAdmin = preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $request->getUri());
+            $inAdmin = $this->coreLocator->inAdmin();
             $redirection = $inAdmin ? $request->getSchemeAndHttpHost().'/admin-'.$_ENV['SECURITY_TOKEN'].'/dashboard' : $request->getUri();
             $response = new RedirectResponse($redirection);
             if ('_exit' === $request->query->get('_switch_user')) {
@@ -61,7 +57,7 @@ class SwitchUserSubscriber implements EventSubscriberInterface
             } else {
                 if (!$inAdmin) {
                     $website = $this->coreLocator->website();
-                    $pageRepository = $this->entityManager->getRepository(Page::class);
+                    $pageRepository = $this->coreLocator->em()->getRepository(Page::class);
                     $securityPage = $website->security->getFrontPageRedirection();
                     $securityPage = !$securityPage ? $pageRepository->findOneBy([
                         'website' => $website->entity,
@@ -69,7 +65,7 @@ class SwitchUserSubscriber implements EventSubscriberInterface
                     ]) : $securityPage;
                     if ($securityPage instanceof Page) {
                         $page = ViewModel::fromEntity($securityPage, $this->coreLocator);
-                        $response = new RedirectResponse($this->urlGenerator->generate('front_index_security', ['url' => $page->urlCode]));
+                        $response = new RedirectResponse($this->coreLocator->router()->generate('front_index_security', ['url' => $page->urlCode]));
                     }
                     $response->headers->setCookie(Cookie::create('IS_IMPERSONATOR_FRONT', '1'));
                 }

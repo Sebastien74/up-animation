@@ -551,14 +551,14 @@ Encore.setOutputPath('public/build/security')
         };
     })
     .addPlugin(new CleanWebpackPlugin())
-    .addPlugin(new PurgeCSSPlugin({
-        paths: [
-            ...glob.sync(`${path.join(__dirname, 'templates/security')}/**/*.html.twig`, {nodir: true}),
-            ...glob.sync(`${path.join(__dirname, 'assets/js/security')}/**/*.js`, {nodir: true}),
-        ],
-        safelist: safeList,
-        blocklist: blockList,
-    }))
+    // .addPlugin(new PurgeCSSPlugin({
+    //     paths: [
+    //         ...glob.sync(`${path.join(__dirname, 'templates/security')}/**/*.html.twig`, {nodir: true}),
+    //         ...glob.sync(`${path.join(__dirname, 'assets/js/security')}/**/*.js`, {nodir: true}),
+    //     ],
+    //     safelist: safeList,
+    //     blocklist: blockList,
+    // }))
     .enableSingleRuntimeChunk()
     .enableSassLoader();
 

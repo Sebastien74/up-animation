@@ -1,17 +1,9 @@
 @charset "UTF-8";
 
 /* -----------------------------------------------------------------
-
-    Created on : 2019-02-05, 2:56 PM
-    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
-
-    SECURITY APP :
-    =============
-
-    1 ) Core
-    2 ) Base theme
-    3 ) Responsive
-
+    Module : App
+    Copyright : 2026
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 ------------------------------------------------------------------ */
 
 /*-----------------------------------
@@ -107,15 +99,6 @@ a {
         linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 42%),
         $bg-body;
         opacity: .6;
-    }
-
-    .btn {
-        font-weight: 300;
-        border-radius: 14px;
-        background: transparentize($primary, .82) !important;
-        border-color: transparentize($primary, .45) !important;
-        box-shadow: 0 20px 55px transparentize($black, .25), 0 0 0 4px transparentize($primary, .84);
-        transition: all .3s ease-in-out;
     }
 
     .login-box {

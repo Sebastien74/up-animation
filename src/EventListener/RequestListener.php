@@ -72,13 +72,6 @@ class RequestListener
         }
 
         $this->session = $this->request->getSession();
-
-        $securityToken = $_ENV['SECURITY_TOKEN'] ?? '';
-        $isAdminPath = str_contains($this->uri, '/admin-'.$securityToken.'/');
-        $isLogin = str_contains($this->uri, '/secure/user');
-        $isPreview = str_contains($this->uri, '/preview/');
-        $isFront = (!$isAdminPath && !$isLogin) || $isPreview;
-
         $this->website = $this->coreLocator->website();
         $this->coreLocator->lastRoute()->execute($event);
         $this->coreLocator->cacheService()->generateRoutes();
@@ -87,12 +80,12 @@ class RequestListener
             $this->session->remove('mainExceptionMessage');
         }
 
-        if ($isFront) {
+        if ($this->coreLocator->inFront()) {
             $this->checkDisabledUris();
             if (!$this->event->getResponse()) {
                 $this->frontRequest();
             }
-        } elseif (!$isLogin) {
+        } elseif (!$this->coreLocator->inSecurity()) {
             $this->adminRequest();
         }
 

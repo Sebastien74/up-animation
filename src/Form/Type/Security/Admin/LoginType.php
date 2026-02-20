@@ -51,8 +51,6 @@ class LoginType extends AbstractType
                 'placeholder' => $loginPlaceholder,
                 'autocomplete' => 'off',
                 'autofocus' => false,
-                'class' => 'pt-2 pb-2 material',
-                'group' => 'col-12 mb-3',
             ],
             'row_attr' => ['class' => 'form-floating'],
             'constraints' => $constraints,
@@ -64,8 +62,6 @@ class LoginType extends AbstractType
                 'placeholder' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                 'autocomplete' => 'off',
                 'autofocus' => false,
-                'class' => 'pt-2 pb-2',
-                'group' => 'col-12 mb-3',
             ],
             'row_attr' => ['class' => 'form-floating'],
             'constraints' => [new NotBlank()],
@@ -103,8 +99,9 @@ class LoginType extends AbstractType
         $builder->add('submit', Type\SubmitType::class, [
             'label' => $this->translator->trans('Se connecter', [], 'security_cms'),
             'attr' => [
-                'group' => 'col-lg-12',
-                'class' => 'btn btn-lg btn-info btn-block text-uppercase w-100',
+                'class' => 'btn-app w-100 center',
+                'data-icon' => 'save',
+                'data-icon-side' => 'left',
             ],
         ]);
     }

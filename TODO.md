@@ -20,9 +20,15 @@ Demander à Juni d'optimiser le .htaccess
 
 Demander à Juni de revoir le media Service 
 
+Demander à Juni d'alleger lehtml front, nottament les zones.html.twig
+
+Demander à Juni si renderBlock c'est bien pour le rendu ?
+
 Demander à Juni de factoriser les scss back
 
 Demander à Juni de factoriser les scss front
+
+Demander à Juni de faire en sorte que les webp ou autre soient plis léger que l'image originale ex background-security sur la page de login:
 
 Demander de faire remonter les erreurs de login quand aucun champs n'est rempli
 

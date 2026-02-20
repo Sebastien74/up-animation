@@ -2,20 +2,24 @@
 
 /* -----------------------------------------------------------------
 
-    Created on : 2019-08-07, 9:43 AM
-    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Module : Vendor
+    Copyright : 2026
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
     SECURITY VENDOR :
     =================
 
-    1 ) Breakpoints
+    1 ) Sizes
     2 ) Colors
-    3 ) Imports
+    3 ) Buttons
+    4 ) Elements
+    5 ) Form
+    6 ) Imports
 
 ------------------------------------------------------------------ */
 
 /*-----------------------------------
-   1 ) Breakpoints
+   1 ) Sizes
 -----------------------------------*/
 
 $xs: 320px !default;
@@ -60,19 +64,28 @@ $dash-surface-3: mix(#000000, $dash-surface, 6%) !default;
 
 $dash-border: transparentize($white, .9) !default;
 $dash-invalid: transparentize($red, .9) !default;
+$dash-accent: $primary !default;
 
 $component-active-color: transparentize($white, .25) !default;
 
 /*-----------------------------------
-   2 ) Elements
+   3 ) Buttons
+-----------------------------------*/
+
+$btn-surface: rgba(255, 255, 255, 0.02) !default;
+$btn-border: rgba(255, 255, 255, 0.07) !default;
+$btn-border-radius: 16px !default;
+$btn-text: transparentize($white, .3) !default;
+$btn-surface-hover: rgba(255, 255, 255, 0.04) !default;
+$btn-border-hover: rgba(255, 255, 255, 0.12) !default;
+$btn-shadow: 0 18px 45px rgba(0, 0, 0, 0.55) !default;
+
+/*-----------------------------------
+   4 ) Elements
 -----------------------------------*/
 
 $fonts-weights: (100, 200, 300, 400, 500, 600, 700, 800, 900);
 $font-family-sans-serif: 'Poppins', sans-serif;
-
-/*-----------------------------------
-   6 ) Form
------------------------------------*/
 
 @each $size in $fonts-weights {
     .fw-#{$size}, .fw-#{$size} *:not(strong):not(b) {
@@ -81,7 +94,7 @@ $font-family-sans-serif: 'Poppins', sans-serif;
 }
 
 /*-----------------------------------
-   6 ) Form
+   5 ) Form
 -----------------------------------*/
 
 $form-label-color: $gray-600 !default;
@@ -99,7 +112,7 @@ $input-font-size: 14px !default;
 $input-group-addon-bg: transparent !default;
 
 /*-----------------------------------
-   3 ) Imports
+   6 ) Imports
 -----------------------------------*/
 
 @import './bootstrap/bootstrap';
@@ -110,4 +123,5 @@ $input-group-addon-bg: transparent !default;
 @import 'core/app';
 @import 'core/preloader';
 @import 'core/form';
+@import 'core/button';
 @import 'core/alert';

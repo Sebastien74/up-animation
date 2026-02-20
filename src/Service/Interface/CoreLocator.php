@@ -205,13 +205,30 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
-     * To check if url is in admin render.
+     * To check if the url is in front render.
+     */
+    public function inFront(): bool
+    {
+        return $this->inAdmin() && !$this->inSecurity();
+    }
+
+    /**
+     * To check if the url is in admin render.
      */
     public function inAdmin(): bool
     {
         $uri = $this->request() instanceof HttpFoundation\Request ? $this->request()->getUri() : false;
         return $uri && preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $uri)
             && !str_contains($uri, '/preview/');
+    }
+
+    /**
+     * To check if the url is in security, render.
+     */
+    public function inSecurity(): bool
+    {
+        $uri = $this->request() instanceof HttpFoundation\Request ? $this->request()->getUri() : false;
+        return $uri && str_contains($uri, '/secure/user');
     }
 
     /**

@@ -148,7 +148,7 @@ readonly class ExceptionListener
 
         if ($register) {
             $website = $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($request->getHost());
-            $type = preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $request->getUri()) ? 'admin' : 'front';
+            $type = $this->coreLocator->inAdmin() ? 'admin' : 'front';
             $category = $this->asResources($request->getUri()) ? 'resource' : 'url';
             $existing = $this->coreLocator->em()->getRepository(NotFoundUrl::class)->findOneBy([
                 'website' => $website->entity,

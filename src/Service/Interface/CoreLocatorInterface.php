@@ -48,7 +48,11 @@ interface CoreLocatorInterface
 
     public function locale(): ?string;
 
+    public function inFront(): bool;
+
     public function inAdmin(): bool;
+
+    public function inSecurity(): bool;
 
     public function translator(): TranslatorInterface;
 

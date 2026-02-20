@@ -336,9 +336,11 @@
     {% set icon = attr['data-icon'] is defined and attr['data-icon'] ? attr['data-icon'] : null %}
     {% set iconSide = attr['data-icon-side'] is defined and attr['data-icon-side'] ? attr['data-icon-side'] : 'right' %}
     {% set iconSize = attr['data-icon-size'] is defined and attr['data-icon-size'] ? attr['data-icon-size'] : 17 %}
+    {% set iconMarginSrart = 'btn-app' not in block('button_attributes') ? 'me-2' : '' %}
+    {% set iconMarginEnd = 'btn-app' not in block('button_attributes') ? 'ms-2' : '' %}
     <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
         {% if icon and 'left' == iconSide %}
-            {{ icon|icon(null, iconSize, 'me-2', {icon: 'admin-' in app.request.uri}) }}
+            {{ icon|icon(null, iconSize, iconMarginSrart, {icon: 'admin-' in app.request.uri}) }}
         {% endif %}
         {%- if translation_domain is same as(false) -%}
             {%- if label_html is same as(false) -%}
@@ -354,7 +356,7 @@
             {%- endif -%}
         {%- endif -%}
         {% if icon and 'right' == iconSide %}
-            {{ icon|icon(null, iconSize, 'ms-2') }}
+            {{ icon|icon(null, iconSize, iconMarginEnd) }}
         {% endif %}
     </button>
 {%- endblock button_widget -%}

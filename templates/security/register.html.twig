@@ -32,7 +32,7 @@
                 {% include "security/includes/recaptcha-fields.html.twig" %}
             </div>
             <div class="form-group text-center">
-                <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{ "S'inscrire"|trans|raw }}</button>
+                <button class="" type="submit">{{ "S'inscrire"|trans|raw }}</button>
                 <a href="{{ path("security_login", {_locale: app.request.locale}) }}" class="text-dark d-inline-block mt-2" data-toggle="preloader">
                     {{ 'fas reply'|icon(null, 17, 'dark me-2') }}{{ 'Retourner à la page de connexion'|trans|raw }}
                 </a>

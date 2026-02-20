@@ -56,13 +56,10 @@ class RedirectionService
     {
         $host = $request->getHost();
         $repository = $this->coreLocator->em()->getRepository(CoreEntities\Website::class);
-        $websiteId = $request->get('website') ? intval($request->get('website')) : null;
+        $websiteId = $request->attributes->getInt('website') ? $request->attributes->getInt('website') : $request->query->getInt('website');
         $uri = $request->getUri();
         
-        $website = str_contains($uri, '/preview/')
-            ? $repository->findObject($websiteId)
-            : $repository->findOneByHost($host);
-
+        $website = str_contains($uri, '/preview/') ? $repository->findObject($websiteId) : $repository->findOneByHost($host);
         $configuration = null;
         $domainRedirection = false;
         $urlRedirection = false;

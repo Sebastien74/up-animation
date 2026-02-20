@@ -26,25 +26,25 @@
 }
 
 .icon-check:before {
-    content: "\e902";
+    content: "\e900";
 }
 
 .icon-exclamation:before {
-    content: "\e903";
+    content: "\e901";
 }
 
 .icon-exclamation-triangle:before {
+    content: "\e902";
+}
+
+.icon-eye:before {
+    content: "\e903";
+}
+
+.icon-eye-slash:before {
     content: "\e904";
 }
 
 .icon-info:before {
     content: "\e905";
-}
-
-.icon-eye:before {
-    content: "\e900";
-}
-
-.icon-eye-slash:before {
-    content: "\e901";
 }

@@ -60,9 +60,7 @@ class BaseModel extends FunctionModel
      */
     protected static function cachePool(mixed $entity, string $method, mixed $response = null): mixed
     {
-        $uri = self::$coreLocator->request() ? self::$coreLocator->request()->getUri() : null;
-        $isLogin = $uri && str_contains($uri, '/secure/user');
-        $isFront = $uri && !str_contains($uri, '/admin-'.$_ENV['SECURITY_TOKEN'].'/') && !$isLogin || ($uri && str_contains($uri, '/preview/'));
+        $isFront = self::$coreLocator->inFront();
 
         if ($isFront) {
             $cacheKey = Urlizer::urlize(get_class($entity)).'-'.$entity->getId();

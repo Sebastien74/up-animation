@@ -8,13 +8,11 @@ use App\Command\JsRoutingCommand;
 use App\Entity\Core\Website;
 use App\Entity\Layout\Block;
 use App\Entity\Layout\Page;
-use App\Entity\Module\Catalog\Catalog;
 use App\Entity\Module\Catalog\Product;
 use App\Entity\Security\User;
 use App\Entity\Seo\Seo;
 use App\Entity\Seo\Url;
 use App\Model\Core\WebsiteModel;
-use App\Model\Module\ProductModel;
 use App\Service\Content\MenuServiceInterface;
 use App\Service\Content\SeoService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,8 +45,6 @@ class ExceptionController extends BaseController
 {
     protected int $statusCode = 0;
     protected bool $isDebug = false;
-    protected EntityManagerInterface $entityManager;
-    protected ?Request $request;
     protected ?WebsiteModel $website;
 
     /**
@@ -65,9 +61,10 @@ class ExceptionController extends BaseController
         string $projectDir,
         ?DebugLoggerInterface $logger = null,
     ): Response {
+
         $this->isDebug = $isDebug;
 
-        if (!$this->isDebug && preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $request->getUri()) && !$this->getUser() instanceof User) {
+        if (!$this->isDebug && $this->coreLocator->inAdmin() && !$this->getUser() instanceof User) {
             return $this->redirect($request->getSchemeAndHttpHost());
         }
 
@@ -188,7 +185,7 @@ class ExceptionController extends BaseController
         $arguments['allowedIP'] = $allowedIP;
         $arguments['currentContent'] = null;
 
-        if (preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $request->getUri()) && !str_contains($request->getUri(), '/preview/')) {
+        if ($this->coreLocator->inAdmin()) {
             if (!$request->attributes->get('website')) {
                 $website = $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($request->getHost());
             } else {
