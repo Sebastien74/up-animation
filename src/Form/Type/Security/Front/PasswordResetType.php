@@ -48,7 +48,6 @@ class PasswordResetType extends AbstractType
                 'attr' => [
                     'placeholder' => $this->translator->trans('Confirmez votre mot de passe', [], 'security_cms'),
                 ],
-                'help' => $this->translator->trans('Votre mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule.', [], 'security_cms'),
             ],
             'constraints' => [
                 new Assert\Regex([

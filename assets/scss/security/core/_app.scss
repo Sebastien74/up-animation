@@ -37,6 +37,13 @@ body {
             }
         }
     }
+
+    .info-request {
+        h5 {
+            @include rfs(20px);
+            font-weight: 600;
+        }
+    }
 }
 
 * {
@@ -82,6 +89,7 @@ a {
         background-size: cover !important;
         background-repeat: no-repeat !important;
         background-position: center center !important;
+        background: url(../../../medias/images/security/background-security.jpg);
         top: 0;
         left: 0;
         bottom: 0;

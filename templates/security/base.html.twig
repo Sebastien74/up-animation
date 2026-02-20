@@ -4,7 +4,6 @@
 
 {% set companyName = "Up Animations!"|trans|striptags %}
 {% set logoPath = asset('build/security/images/logo.svg', 'security') %}
-{% set bgImgStyle = asset('build/security/images/background-security.jpg', 'security')|file({}, {style: true, maxWidth: 1520, maxHeight: 919, placeholder: true }) %}
 
 <html lang="{{ app.request.locale }}" data-nonce="{{ csp_nonce() }}">
 
@@ -36,7 +35,7 @@
 
     <body>
         <section id="wrapper" class="login-register login-sidebar">
-            <div id="bg-container" data-style="{{ bgImgStyle }}"></div>
+            <div id="bg-container"></div>
             <aside class="login-box">
                 <div class="inner position-relative h-100 d-flex">
                     {% include 'security/includes/preloader.html.twig' %}
