@@ -25,6 +25,10 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-floppy-disk:before {
+    content: "\e909";
+}
+
 .icon-check:before {
     content: "\e900";
 }

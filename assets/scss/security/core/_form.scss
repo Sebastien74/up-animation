@@ -92,10 +92,15 @@ html body form .form-field-none {
     }
 }
 
-.form-check-input:checked {
-    background-color: transparentize($primary, .65) !important;
-    border-color: transparentize($primary, .45) !important;
-    box-shadow: 0 20px 55px transparentize($black, .25), 0 0 0 4px transparentize($primary, .84);
+.form-check-input {
+
+    border-color: $input-border-color;
+
+    &:checked {
+        background-color: transparentize($primary, .65) !important;
+        border-color: transparentize($primary, .45) !important;
+        box-shadow: 0 20px 55px transparentize($black, .25), 0 0 0 4px transparentize($primary, .84);
+    }
 }
 
 .form-check-label {
