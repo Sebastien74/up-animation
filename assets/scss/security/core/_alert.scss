@@ -8,7 +8,7 @@
 
 .alert {
 
-    border-radius: 16px;
+    border-radius: $card-border-radius;
 
     .btn-close {
         background: none;
@@ -23,10 +23,10 @@
 
     .icon {
 
-        flex: 0 0 38px;
-        height: 38px;
+        flex: 0 0 $card-icon-size;
+        height: $card-icon-size;
         margin: auto auto auto 1rem;
-        border-radius: 14px;
+        border-radius: $card-icon-radius;
 
         i {
             font-size: 1rem;
@@ -59,8 +59,8 @@
             border-color: transparentize($c, .7) !important;
             background:
                     radial-gradient(900px 520px at 82% 100%, rgba($c, 0.18), transparent 62%),
-                    radial-gradient(900px 520px at 82% 100%, rgba(111, 66, 193, 0.10), transparent 62%),
-                    radial-gradient(1100px 780px at 30% 65%, rgba(255, 255, 255, 0.04), transparent 68%),
+                    radial-gradient(900px 520px at 82% 100%, rgba($primary, 0.10), transparent 62%),
+                    radial-gradient(1100px 780px at 30% 65%, rgba($white, 0.04), transparent 68%),
                     linear-gradient(180deg, rgba(16, 18, 28, 0.72), rgba(10, 11, 18, 0.62));
 
             .icon.bg-#{$s} {

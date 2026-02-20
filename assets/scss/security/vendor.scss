@@ -38,15 +38,12 @@ $bg-body: #07090d;
 $primary: #6f42c1;
 $info: $primary;
 $danger: #7f1200;
-$danger-color: #7f1200;
 $link-color: $primary;
 $success: #5D7808;
-$ribbon-danger-bookmark: $primary;
-$ribbon-danger-color: #fff;
-$preloader-bg: $primary;
 
-$red: #dc3545 !default
+$red: #dc3545 !default;
 $white: #fff !default;
+$black: #000 !default;
 
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
@@ -72,13 +69,21 @@ $component-active-color: transparentize($white, .25) !default;
    3 ) Buttons
 -----------------------------------*/
 
-$btn-surface: rgba(255, 255, 255, 0.02) !default;
-$btn-border: rgba(255, 255, 255, 0.07) !default;
+$btn-surface: rgba($white, 0.02) !default;
+$btn-border: rgba($white, 0.07) !default;
 $btn-border-radius: 16px !default;
 $btn-text: transparentize($white, .3) !default;
-$btn-surface-hover: rgba(255, 255, 255, 0.04) !default;
-$btn-border-hover: rgba(255, 255, 255, 0.12) !default;
-$btn-shadow: 0 18px 45px rgba(0, 0, 0, 0.55) !default;
+$btn-surface-hover: rgba($white, 0.04) !default;
+$btn-border-hover: rgba($white, 0.12) !default;
+$btn-shadow: 0 18px 45px rgba($black, 0.55) !default;
+
+$card-bg-gradient: radial-gradient(900px 600px at 20% 0%, rgba($primary, 0.08), transparent 55%), linear-gradient(180deg, rgba($white, 0.015), transparent 42%), $bg-body !default;
+$card-shadow: -3px 0 5px 0 rgba($black, 0.1) !default;
+$card-border-radius: 16px !default;
+$card-icon-size: 38px !default;
+$card-icon-radius: 14px !default;
+$card-icon-bg: rgba($primary, 0.22) !default;
+$card-icon-border: rgba($primary, 0.55) !default;
 
 /*-----------------------------------
    4 ) Elements

@@ -95,9 +95,7 @@ a {
         left: 0;
         bottom: 0;
         width: calc(100% - 400px);
-        background: radial-gradient(900px 600px at 20% 0%, rgba($primary, 0.08), transparent 55%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 42%),
-        $bg-body;
+        background: $card-bg-gradient;
         opacity: .6;
     }
 
@@ -105,16 +103,14 @@ a {
 
         width: 400px;
         margin: 0 auto;
-        background: radial-gradient(900px 600px at 20% 0%, rgba($primary, 0.08), transparent 55%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 42%),
-        $bg-body;
+        background: $card-bg-gradient;
         min-height: 100%;
         position: absolute;
         right: 0;
         bottom: 0;
         top: 0;
         height: 100%;
-        box-shadow: -3px 0 5px 0 rgba(0, 0, 0, 0.1);
+        box-shadow: $card-shadow;
 
         #logo {
 
@@ -139,13 +135,13 @@ a {
     align-items: center;
     background: transparentize($primary, .78);
     border-color: transparentize($primary, .45);
-    border-radius: 14px;
+    border-radius: $card-icon-radius;
     color: transparentize($white, .5);
     display: flex;
     flex: 0 0 auto;
-    height: 38px;
+    height: $card-icon-size;
     justify-content: center;
-    width: 38px;
+    width: $card-icon-size;
 }
 
 /*-----------------------------------

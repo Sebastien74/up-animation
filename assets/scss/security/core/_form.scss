@@ -43,15 +43,15 @@ html body form .form-field-none {
         .show-icon, .hide-icon {
 
             align-items: center;
-            background: transparentize($primary, .78);
-            border-color: transparentize($primary, .45);
-            border-radius: 14px;
+            background: $card-icon-bg;
+            border-color: $card-icon-border;
+            border-radius: $card-icon-radius;
             color: transparentize($white, .5);
             display: flex;
             flex: 0 0 auto;
-            height: 38px;
+            height: $card-icon-size;
             justify-content: center;
-            width: 38px;
+            width: $card-icon-size;
             transition: color .3s ease-in-out;
 
             @include mediaQuery(min-lg) {
@@ -60,7 +60,6 @@ html body form .form-field-none {
 
                 &:hover {
                     color: transparentize($white, .25);
-                    transition: color .3s ease-in-out;
                 }
             }
         }
@@ -105,7 +104,6 @@ html body form .form-field-none {
     @include mediaQuery(min-lg) {
         &:hover {
             cursor: pointer;
-            transition: color 0.3s ease-in-out;
             color: transparentize($white, .25);
         }
     }
