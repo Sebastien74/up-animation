@@ -23,8 +23,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class RecaptchaAuthenticator
 {
-    private Session $session;
-
     /**
      * RecaptchaAuthenticator constructor.
      */
@@ -34,7 +32,6 @@ class RecaptchaAuthenticator
         private readonly EntityManagerInterface $entityManager,
         private readonly string $logDir,
     ) {
-        $this->session = new Session();
     }
 
     /**
@@ -57,7 +54,7 @@ class RecaptchaAuthenticator
             }
         }
 
-        $this->session->getFlashBag()->add('error_form', $this->translator->trans('Erreur de sécurité !! Rechargez la page et réessayez.', [], 'front_form'));
+        $request->getSession()->getFlashBag()->add('error_form', $this->translator->trans('Erreur de sécurité !! Rechargez la page et réessayez.', [], 'front_form'));
 
         $logger = new Logger('SECURITY_FORM');
         $logger->pushHandler(new RotatingFileHandler($this->logDir.'/security-cms.log', 10, Level::Critical));

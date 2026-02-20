@@ -168,7 +168,7 @@ class BaseAuthenticator
                     $request->getSession()->remove($key);
                 }
             }
-            $session = new Session();
+            $session = $request->getSession();
             $session->getFlashBag()->clear();
         }
 
@@ -195,7 +195,7 @@ class BaseAuthenticator
         if ($isInvalid || is_object($authException) && !$request->getUser() && 403 === $authException->getPrevious()->getCode()) {
             if ($request->isMethod('POST') && $authException instanceof SecurityException\AuthenticationCredentialsNotFoundException) {
                 $response = new RedirectResponse($this->coreLocator->router()->generate($loginRoute));
-                $session = new Session();
+                $session = $request->getSession();
                 $session->getFlashBag()->add('error', $authException->getMessageKey());
                 return $response;
             }

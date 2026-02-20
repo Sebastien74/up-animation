@@ -95,7 +95,7 @@ class SecurityController extends FrontController
         }
 
         if ($request->get('validation')) {
-            $session = new Session();
+            $session = $request->getSession();
             $session->getFlashBag()->add('success', $this->coreLocator->translator()->trans("Merci pour inscription. Votre compte dois être validé par l'administrateur.", [], 'security_cms'));
         }
 

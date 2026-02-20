@@ -85,8 +85,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
 
         /** @var User $user */
         $user = $token->getUser();
-
-        $this->clearAdminSession();
+        $this->clearAdminSession($request);
 
         if (self::REGISTER_ROUTE === $request->attributes->get('_route')) {
             return new RedirectResponse($this->coreLocator->router()->generate(self::REGISTER_ROUTE));
@@ -124,10 +123,10 @@ class LoginFormAuthenticator extends AbstractAuthenticator implements Authentica
     /**
      * Clear admin session.
      */
-    private function clearAdminSession(): void
+    private function clearAdminSession(Request $request): void
     {
         $sessionNames = ['social_networks', 'configuration_'];
-        $sessionRequest = new Session();
+        $sessionRequest = $request->getSession();
         foreach ($sessionRequest->all() as $name => $value) {
             foreach ($sessionNames as $sessionName) {
                 if (preg_match('/'.$sessionName.'/', $name)) {

@@ -168,7 +168,7 @@ class SecurityController extends FrontController
         ], $this->defaultArgs($website));
 
         if ($request->cookies->get('SECURITY_ERROR')) {
-            $session = new Session();
+            $session = $request->getSession();
             $session->getFlashBag()->add('error', $request->cookies->get('SECURITY_ERROR'));
         }
 
@@ -229,7 +229,7 @@ class SecurityController extends FrontController
         } elseif (!$userByToken->isActive()) {
             $website = $this->getWebsite();
             $message = $baseAuthenticator->getInactiveMessage($website);
-            $session = new Session();
+            $session = $request->getSession();
             $session->getFlashBag()->add('warning', $message);
 
             return $this->redirectToRoute('security_front_forms');

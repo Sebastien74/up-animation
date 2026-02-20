@@ -2,7 +2,7 @@
 
 {% trans_default_domain 'security_cms' %}
 
-{% for label, flashes in app.session.flashbag.all %}
+{% for label, flashes in app.flashes %}
     {% for flash in flashes %}
         {% set alertType = label == 'error' ? 'danger' : label %}
         {% include 'security/includes/alert.html.twig' with {alert: alertType, message: flash} only %}
