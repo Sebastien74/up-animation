@@ -35,11 +35,11 @@ class LoginType extends AbstractType
         $loginType = 'email' == $options['login_type'] ? Type\EmailType::class : Type\TextType::class;
         $loginInputName = 'email' == $options['login_type'] ? 'email' : 'login';
         $loginLabel = 'email' == $options['login_type']
-            ? $this->translator->trans('E-mail', [], 'security_cms')
-            : $this->translator->trans('Idendifiant', [], 'security_cms');
+            ? $this->translator->trans('Adresse e-mail', [], 'security_cms')
+            : $this->translator->trans('Identifiant', [], 'security_cms');
         $loginPlaceholder = 'email' == $options['login_type']
-            ? $this->translator->trans('Saisissez votre e-mail', [], 'security_cms')
-            : $this->translator->trans('Saisissez votre idendifiant', [], 'security_cms');
+            ? $this->translator->trans('Saisissez votre adresse e-mail', [], 'security_cms')
+            : $this->translator->trans('Saisissez votre identifiant', [], 'security_cms');
         $constraints = [new NotBlank()];
         if (Type\EmailType::class === $loginType) {
             $constraints[] = new Email();

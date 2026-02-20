@@ -132,9 +132,13 @@ $input-group-addon-bg: transparent !default;
 
 @import "../vendor/mixin/media-queries";
 
+/*! purgecss start ignore */
+
 @import 'core/app';
 @import 'core/preloader';
 @import 'core/form';
 @import 'core/button';
 @import 'core/alert';
 @import 'core/badge';
+
+/*! purgecss end ignore */

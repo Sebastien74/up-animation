@@ -43,7 +43,29 @@ function safeList() {
     }
 }
 
+function safeListSecurity() {
+    let patterns = [
+        'html', 'body', 'img', 'svg', 'picture', 'sup', 'a', 'button', 'badge',
+        'is-invalid', 'invalid-feedback', 'form-floating', 'form-control',
+        'form-check', 'form-check-input', 'form-check-label', 'input-group', 'input-group-text',
+        'preloader', 'login-register', 'login-sidebar', 'login-box', 'inner', 'fountainG', 'fountainG_1', 'fountainG_2', 'fountainG_3', 'fountainG_4', 'fountainG_5', 'fountainG_6', 'fountainG_7', 'fountainG_8',
+        'row', 'header', 'message', 'progress', 'icon', 'strength-', '-icon', 'show-password',
+        /active$/, /show$/,
+        /m-/, /mx-/, /my-/, /mb-/, /mt-/, /ms-/, /me-/, /p-/, /px-/, /py-/, /pb-/, /pt-/, /ps-/, /pe-/, /fw-/, /fz-/, /h-0/,
+        /h-100/, /d-/, /align-/, /flex-/, /justify-/, /alert-/, /badge-/, /text-/, /col-/, /btn-/, /bg-/, /icon-/,
+    ];
+    return {
+        standard: patterns,
+    }
+}
+
 function blockList() {
+    return [
+        'code', 'lead'
+    ];
+}
+
+function blockListSecurity() {
     return [
         'code', 'lead'
     ];
@@ -556,8 +578,8 @@ Encore.setOutputPath('public/build/security')
             ...glob.sync(`${path.join(__dirname, 'templates/security')}/**/*.html.twig`, {nodir: true}),
             ...glob.sync(`${path.join(__dirname, 'assets/js/security')}/**/*.js`, {nodir: true}),
         ],
-        safelist: safeList,
-        blocklist: blockList,
+        safelist: safeListSecurity,
+        blocklist: blockListSecurity,
     }))
     .enableSingleRuntimeChunk()
     .enableSassLoader();

@@ -38,15 +38,15 @@ class PasswordResetType extends AbstractType
             'first_options' => [
                 'label' => $this->translator->trans('Nouveau mot de passe', [], 'security_cms'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez un mot de passe', [], 'security_cms'),
+                    'placeholder' => $this->translator->trans('Saisissez votre nouveau mot de passe', [], 'security_cms'),
                     'group' => 'col-12 mb-3',
                     'class' => 'pt-2 pb-2 password-checker',
                 ],
             ],
             'second_options' => [
-                'label' => $this->translator->trans('Confirmez le mot de passe', [], 'security_cms'),
+                'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms'),
+                    'placeholder' => $this->translator->trans('Confirmez votre mot de passe', [], 'security_cms'),
                     'group' => 'col-12 mb-3',
                     'class' => 'pt-2 pb-2',
                 ],

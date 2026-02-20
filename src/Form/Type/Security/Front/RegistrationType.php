@@ -85,9 +85,9 @@ class RegistrationType extends AbstractType
 
         if ('login' === $_ENV['SECURITY_FRONT_LOGIN_TYPE']) {
             $builder->add('login', Type\TextType::class, [
-                'label' => $this->translator->trans("Nom d'utilisateur", [], 'security_cms'),
+                'label' => $this->translator->trans("Identifiant", [], 'security_cms'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez un nom', [], 'security_cms'),
+                    'placeholder' => $this->translator->trans('Saisissez votre identifiant', [], 'security_cms'),
                     'class' => 'login',
                     'group' => 'col-lg-6',
                 ],
@@ -100,9 +100,9 @@ class RegistrationType extends AbstractType
 
         if (in_array('email', $fields)) {
             $builder->add('email', Type\EmailType::class, [
-                'label' => $this->translator->trans('E-mail', [], 'security_cms'),
+                'label' => $this->translator->trans('Adresse e-mail', [], 'security_cms'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'security_cms'),
+                    'placeholder' => $this->translator->trans('Saisissez votre adresse e-mail', [], 'security_cms'),
                     'class' => 'email',
                     'group' => 'col-lg-6',
                 ],
@@ -121,7 +121,7 @@ class RegistrationType extends AbstractType
                 'first_options' => [
                     'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                     'attr' => [
-                        'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms'),
+                        'placeholder' => $this->translator->trans('Saisissez votre mot de passe', [], 'security_cms'),
                         'group' => 'col-lg-6',
                         'class' => 'password-checker',
                     ],
@@ -132,7 +132,7 @@ class RegistrationType extends AbstractType
                 'second_options' => [
                     'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                     'attr' => [
-                        'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms'),
+                        'placeholder' => $this->translator->trans('Confirmez votre mot de passe', [], 'security_cms'),
                         'group' => 'col-lg-6',
                     ],
                     'constraints' => [

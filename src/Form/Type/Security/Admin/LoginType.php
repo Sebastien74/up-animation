@@ -35,11 +35,11 @@ class LoginType extends AbstractType
         $loginType = 'email' == $options['login_type'] ? Type\EmailType::class : Type\TextType::class;
         $loginInputName = 'email' == $options['login_type'] ? 'email' : 'login';
         $loginLabel = 'email' == $options['login_type']
-            ? $this->translator->trans('E-mail', [], 'security_form')
-            : $this->translator->trans("Username", [], 'security_form');
+            ? $this->translator->trans('Adresse e-mail', [], 'security_cms')
+            : $this->translator->trans("Identifiant", [], 'security_cms');
         $loginPlaceholder = 'email' == $options['login_type']
-            ? $this->translator->trans('Enter your e-mail', [], 'security_form')
-            : $this->translator->trans("Enter your username", [], 'security_form');
+            ? $this->translator->trans('Saisissez votre adresse e-mail', [], 'security_cms')
+            : $this->translator->trans("Saisissez votre identifiant", [], 'security_cms');
         $constraints = [new NotBlank()];
         if (Type\EmailType::class === $loginType) {
             $constraints[] = new Email();
@@ -57,9 +57,9 @@ class LoginType extends AbstractType
         ]);
 
         $builder->add('_password', Type\PasswordType::class, [
-            'label' => $this->translator->trans('Password', [], 'security_form'),
+            'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Mot de passe', [], 'security_cms'),
+                'placeholder' => $this->translator->trans('Saisissez votre mot de passe', [], 'security_cms'),
                 'autocomplete' => 'off',
                 'autofocus' => false,
             ],

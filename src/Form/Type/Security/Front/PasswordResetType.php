@@ -39,14 +39,14 @@ class PasswordResetType extends AbstractType
             'first_options' => [
                 'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms'),
+                    'placeholder' => $this->translator->trans('Saisissez votre nouveau mot de passe', [], 'security_cms'),
                     'class' => 'password-checker',
                 ],
             ],
             'second_options' => [
                 'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms'),
+                    'placeholder' => $this->translator->trans('Confirmez votre mot de passe', [], 'security_cms'),
                 ],
                 'help' => $this->translator->trans('Votre mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule.', [], 'security_cms'),
             ],

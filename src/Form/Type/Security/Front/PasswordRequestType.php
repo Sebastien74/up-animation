@@ -32,9 +32,9 @@ class PasswordRequestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('email', Type\EmailType::class, [
-            'label' => $this->translator->trans('E-mail', [], 'security_cms'),
+            'label' => $this->translator->trans('Adresse e-mail', [], 'security_cms'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez votre e-mail', [], 'security_cms'),
+                'placeholder' => $this->translator->trans('Saisissez votre adresse e-mail', [], 'security_cms'),
             ],
             'constraints' => [
                 new Assert\NotBlank(),

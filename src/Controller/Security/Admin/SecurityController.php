@@ -81,6 +81,7 @@ class SecurityController extends FrontController
         BaseAuthenticator $baseAuthenticator,
         RegisterManager $manager,
     ): RedirectResponse|string|Response|null {
+
         $website = $websiteRepository->findOneByHost($request->getHost());
         $security = $website->entity->getSecurity();
 

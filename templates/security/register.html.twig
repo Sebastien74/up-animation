@@ -24,17 +24,18 @@
                     {{ form_row(form[field.vars.name]) }}
                     {% if field.vars.name == 'plainPassword' %}
                         {% include "core/password-checker.html.twig" %}
-                        <small class="form-group col-12 form-text text-muted mt-0 mb-3">
-                            {{ "Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule."|trans|raw }}
-                        </small>
+                        <div class="form-group col-12 mt-0 mb-3 fz-small text-white-50 d-flex align-items-start">
+                            <i class="icon-info square-badge-info me-2"></i>
+                            <span>{{ "Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule."|trans|raw }}</span>
+                        </div>
                     {% endif %}
                 {% endfor %}
                 {% include "security/includes/recaptcha-fields.html.twig" %}
             </div>
             <div class="form-group text-center">
                 <button class="btn-app center w-100" type="submit"><i class="icon-paper-plane"></i>{{ "S'inscrire"|trans|raw }}</button>
-                <a href="{{ path("security_login", {_locale: app.request.locale}) }}" class="text-dark d-inline-block mt-2" data-toggle="preloader">
-                    {{ 'fas reply'|icon(null, 17, 'dark me-2') }}{{ 'Retourner à la page de connexion'|trans|raw }}
+                <a href="{{ path("security_login", {_locale: app.request.locale}) }}" class="text-white-50 fz-small d-inline-block mt-3" data-toggle="preloader">
+                    {{ 'Retourner à la page de connexion'|trans|raw }}
                 </a>
             </div>
         {{ form_end(form) }}

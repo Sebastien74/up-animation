@@ -33,37 +33,33 @@ class RegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('login', Type\TextType::class, [
-            'label' => false,
+            'label' => $this->translator->trans('Identifiant', [], 'security_cms'),
             'required' => true,
             'attr' => [
-                'placeholder' => $this->translator->trans('Identifiant *', [], 'security_cms'),
-                'class' => 'pt-2 pb-2 material',
+                'placeholder' => $this->translator->trans('Saisissez votre identifiant', [], 'security_cms'),
             ],
         ]);
 
         $builder->add('email', Type\EmailType::class, [
-            'label' => false,
+            'label' => $this->translator->trans('Adresse e-mail', [], 'security_cms'),
             'attr' => [
-                'placeholder' => $this->translator->trans('E-mail *', [], 'security_cms'),
-                'class' => 'pt-2 pb-2 material',
+                'placeholder' => $this->translator->trans('Saisissez votre adresse e-mail', [], 'security_cms'),
             ],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
-        $builder->add('lastName', Type\EmailType::class, [
-            'label' => false,
+        $builder->add('lastName', Type\TextType::class, [
+            'label' => $this->translator->trans('Nom', [], 'security_cms'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Nom *', [], 'security_cms'),
-                'class' => 'pt-2 pb-2 material',
+                'placeholder' => $this->translator->trans('Saisissez votre nom', [], 'security_cms'),
             ],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
-        $builder->add('firstName', Type\EmailType::class, [
-            'label' => false,
+        $builder->add('firstName', Type\TextType::class, [
+            'label' => $this->translator->trans('Prénom', [], 'security_cms'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Prénom *', [], 'security_cms'),
-                'class' => 'pt-2 pb-2 material',
+                'placeholder' => $this->translator->trans('Saisissez votre prénom', [], 'security_cms'),
             ],
             'constraints' => [new Assert\NotBlank()],
         ]);
@@ -73,18 +69,17 @@ class RegistrationType extends AbstractType
             'type' => Type\PasswordType::class,
             'invalid_message' => $this->translator->trans('Les mots de passe sont différents', [], 'validators_cms'),
             'first_options' => [
-                'label' => false,
+                'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez un mot de passe *', [], 'security_cms'),
-                    'class' => 'pt-2 pb-2 material password-checker',
+                    'placeholder' => $this->translator->trans('Saisissez un mot de passe', [], 'security_cms'),
+                    'class' => 'password-checker',
                 ],
                 'constraints' => [new Assert\NotBlank()],
             ],
             'second_options' => [
-                'label' => false,
+                'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Confirmez le mot de passe *', [], 'security_cms'),
-                    'class' => 'pt-2 pb-2 material',
+                    'placeholder' => $this->translator->trans('Confirmez le mot de passe', [], 'security_cms'),
                 ],
                 'constraints' => [new Assert\NotBlank()],
             ],
@@ -92,6 +87,9 @@ class RegistrationType extends AbstractType
 
         $builder->add('agreeTerms', Type\CheckboxType::class, [
             'label' => $this->translator->trans('Conditions générales', [], 'security_cms'),
+            'attr' => [
+                'class' => 'pt-2 pb-2 material',
+            ],
         ]);
     }
 
