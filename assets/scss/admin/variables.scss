@@ -89,6 +89,7 @@ $cyan: #3C91E6 !default;
 $warning: rgba(245, 158, 11, .7) !default;
 $text-muted: $gray-600 !default;
 
+$border-color-transparent: transparentize($white, .9) !default;
 $border-color: rgba(255, 255, 255, 0.08) !default;
 
 $backdrop-bg: rgba($black, .5) !default;
