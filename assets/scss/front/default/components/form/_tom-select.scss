@@ -517,14 +517,14 @@
     }
 
     .ts-wrapper.is-invalid:not(.single), .was-validated .invalid:not(.single), .was-validated :invalid + .ts-wrapper:not(.single) {
-        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545'%3E%3Ccircle cx='6' cy='6' r='4.5'/%3E%3Cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3E%3Ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545'>%3Ccircle cx='6' cy='6' r='4.5'/>%3Cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/>%3Ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/>%3C/svg>");
         background-position: right calc(.375em + .1875rem) center;
         background-repeat: no-repeat;
         background-size: calc(.75em + .375rem) calc(.75em + .375rem)
     }
 
     .ts-wrapper.is-invalid.single, .was-validated .invalid.single, .was-validated :invalid + .ts-wrapper.single {
-        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E"), url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545'%3E%3Ccircle cx='6' cy='6' r='4.5'/%3E%3Cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3E%3Ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'>%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/>%3C/svg>"), url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545'>%3Ccircle cx='6' cy='6' r='4.5'/>%3Cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/>%3Ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/>%3C/svg>");
         background-position: right .75rem center, center right 2.25rem;
         background-repeat: no-repeat;
         background-size: 16px 12px, calc(.75em + .375rem) calc(.75em + .375rem)
@@ -540,14 +540,14 @@
     }
 
     .ts-wrapper.is-valid:not(.single), .was-validated .valid:not(.single), .was-validated :valid + .ts-wrapper:not(.single) {
-        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'>%3Cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/>%3C/svg>");
         background-position: right calc(.375em + .1875rem) center;
         background-repeat: no-repeat;
         background-size: calc(.75em + .375rem) calc(.75em + .375rem)
     }
 
     .ts-wrapper.is-valid.single, .was-validated .valid.single, .was-validated :valid + .ts-wrapper.single {
-        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E"), url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'>%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/>%3C/svg>"), url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'>%3Cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/>%3C/svg>");
         background-position: right .75rem center, center right 2.25rem;
         background-repeat: no-repeat;
         background-size: 16px 12px, calc(.75em + .375rem) calc(.75em + .375rem)
@@ -608,7 +608,7 @@
     }
 
     .ts-wrapper:not(.form-control,.form-select).single .ts-control {
-        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'>%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/>%3C/svg>");
         background-position: right .75rem center;
         background-repeat: no-repeat;
         background-size: 16px 12px

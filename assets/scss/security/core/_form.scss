@@ -140,8 +140,16 @@ html body form .form-field-none {
 }
 
 .form-floating {
+
+    > .form-control-plaintext,
+    > .form-control,
+    > .input-group > .form-control {
+        padding-bottom: .25rem !important;
+        padding-top: 1.625rem !important;
+    }
+
     .form-label {
-        transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+        transform: scale(.85) translateY(-.35rem) translateX(.15rem);
     }
 }
 
