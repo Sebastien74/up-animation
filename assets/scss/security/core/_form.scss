@@ -141,15 +141,18 @@ html body form .form-field-none {
 
 .form-floating {
 
-    > .form-control-plaintext,
-    > .form-control,
-    > .input-group > .form-control {
+    .form-control-plaintext,
+    .form-control,
+    .input-group > .form-control,
+    .form-control-plaintext:not(:placeholder-shown),
+    .form-control:not(:placeholder-shown),
+    .input-group > .form-control:not(:placeholder-shown) {
         padding-bottom: .25rem !important;
         padding-top: 1.625rem !important;
     }
 
     .form-label {
-        transform: scale(.85) translateY(-.35rem) translateX(.15rem);
+        transform: scale(.85) translateY(-.35rem) translateX(.15rem) !important;
     }
 }
 

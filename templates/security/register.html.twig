@@ -18,7 +18,7 @@
             </a>
         </div>
     {% else %}
-        {{ form_start(form, {attr: {id: "user-register-form", novalidate: "novalidate", class: "form-horizontal form-material security"}}) }}
+        {{ form_start(form, {attr: {id: "user-register-form", novalidate: "novalidate", class: "security"}}) }}
             <div class="row">
                 {% for field in form.children %}
                     {{ form_row(form[field.vars.name]) }}

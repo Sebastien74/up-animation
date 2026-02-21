@@ -3,7 +3,6 @@
 {% trans_default_domain 'security_cms' %}
 
 {% set companyName = "Up Animations!"|trans|striptags %}
-{% set logoPath = asset('build/security/images/logo.svg', 'security') %}
 
 <html lang="{{ app.request.locale }}" data-nonce="{{ csp_nonce() }}">
 
@@ -35,14 +34,21 @@
 
     <body>
         <section id="wrapper" class="login-register login-sidebar">
-            <div id="bg-container"></div>
+            <div id="bg-container">
+                {{ asset('build/security/images/background-security-compress.jpg', 'security')|file({}, {
+                    id: 'background-security',
+                    maxWidth: 1520,
+                    maxHeight: 919,
+                    priority: 'high'
+                }) }}
+            </div>
             <aside class="login-box">
                 <div class="inner position-relative h-100 d-flex">
                     {% include 'security/includes/preloader.html.twig' %}
                     <div id="content" class="col-12 p-3 p-sm-4 my-auto">
                         <header>
                             <a href="{{ app.request.getSchemeAndHttpHost() }}" class="header w-100 d-inline-block text-center mb-5 mt-5 mt-md-0">
-                                {{ logoPath|file({}, {id: 'logo', maxHeight: 130, priority: 'high'}) }}
+                                {{ asset('build/security/images/logo.svg', 'security')|file({}, {id: 'logo', maxHeight: 130, priority: 'high'}) }}
                             </a>
                         </header>
                         <div class="row">
