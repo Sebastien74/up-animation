@@ -42,7 +42,7 @@
                     <div id="content" class="col-12 p-3 p-sm-4 my-auto">
                         <header>
                             <a href="{{ app.request.getSchemeAndHttpHost() }}" class="header w-100 d-inline-block text-center mb-5 mt-5 mt-md-0">
-                                {{ logoPath|file({}, {id: 'logo', maxHeight: 130}) }}
+                                {{ logoPath|file({}, {id: 'logo', maxHeight: 130, priority: 'high'}) }}
                             </a>
                         </header>
                         <div class="row">

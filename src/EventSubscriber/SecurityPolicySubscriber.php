@@ -365,11 +365,12 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
      */
     private function securityPolicy(): string
     {
-        $nonce = $this->nonceGenerator->getNonce();
+        $nonceValue = $this->nonceGenerator->getNonce();
+        $nonce = "'nonce-{$nonceValue}'";
         $matomo = 'https://matomo.agence-felix.fr';
 
         $allowedScriptDomains = [
-            "'nonce-{$nonce}'",
+            $nonce,
             "'strict-dynamic'",
             "'unsafe-inline'",
             "'self'",
@@ -409,7 +410,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
 
         // Allowed script els
         $scriptEls = [
-            "'nonce-{$nonce}'",
+            $nonce,
             "'strict-dynamic'",
             "'unsafe-inline'",
             "'self'",
@@ -425,7 +426,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
 
         $styleSrc = [
             "'self'",
-            "'nonce-{$nonce}'",
+            $nonce,
             "'unsafe-hashes'",   // permet d'autoriser des attributs style="" via hash
             'https://fonts.googleapis.com',
             'https://*.typekit.net',
@@ -468,7 +469,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             "frame-src ".implode(' ', $allowedFrame)."; ".
             "script-src ".implode(' ', $allowedScriptDomains)."; ".
             "script-src-elem ".implode(' ', $scriptEls)."; ".
-            "script-src-attr 'unsafe-hashes'; ".
+            "script-src-attr ".implode(' ', ["'unsafe-hashes'", "'sha256-1jAmyYXcRq6zFldLe/GCgIDJBiOONdXjTLgEFMDnDSM='", $nonce])."; ".
             "connect-src ".implode(' ', $allowedConnectDomains)."; ".
             "img-src ".implode(' ', $allowedImageDomains)."; ".
             "media-src 'self' data:; ".

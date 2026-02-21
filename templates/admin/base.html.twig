@@ -62,16 +62,16 @@
             {% else %}
                 {{ encore_entry_link_tags('admin-vendor-default', null, 'admin') }}
             {% endif %}
-            <link rel="preload" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-            <noscript><link rel="stylesheet" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}"></noscript>
+            <link rel="preload" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" as="style" onload="this.onload=null;this.rel='stylesheet'" nonce="{{ csp_nonce() }}">
+            <noscript><link rel="stylesheet" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" nonce="{{ csp_nonce() }}"></noscript>
             {% if displayFrontFonts is defined and displayFrontFonts %}
                 <!-- Front fonts -->
                 {% if (configuration.template)|asGoogleFont %}
                     <link rel="preconnect" href="https://fonts.googleapis.com">
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
                 {% endif %}
-                <link rel="preload" href="{{ asset('build/front/'~configuration.template~'/front-'~configuration.template~'-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-                <noscript><link rel="stylesheet" href="{{ asset('build/front/'~configuration.template~'/front-'~configuration.template~'-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}"></noscript>
+                <link rel="preload" href="{{ asset('build/front/'~configuration.template~'/front-'~configuration.template~'-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}" as="style" onload="this.onload=null;this.rel='stylesheet'" nonce="{{ csp_nonce() }}">
+                <noscript><link rel="stylesheet" href="{{ asset('build/front/'~configuration.template~'/front-'~configuration.template~'-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}" nonce="{{ csp_nonce() }}"></noscript>
             {% endif %}
             {% if stylesSrc is defined %}
                 {% for webpackEntry, webpackName in stylesSrc %}

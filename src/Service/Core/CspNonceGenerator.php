@@ -37,7 +37,7 @@ class CspNonceGenerator
         if (!empty($this->cache[$cacheKey])) {
             return $this->cache[$cacheKey];
         } elseif (!$request->attributes->has(self::ATTRIBUTE_KEY)) {
-            $nonce = 'nonce-'.hash('crc32', random_bytes(4)).'/'.base64_encode(random_bytes(16));
+            $nonce = hash('crc32', random_bytes(4)).'/'.base64_encode(random_bytes(16));
             $this->cache[$cacheKey] = $nonce;
             $request->attributes->set(self::ATTRIBUTE_KEY, $nonce);
         }
