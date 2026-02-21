@@ -77,6 +77,8 @@ final class InformationModel extends BaseModel
         $addresses = self::addresses($information);
         $emails = self::emails($information);
         $phones = self::phones($information);
+        $networks = !empty($logos['social-networks']) && is_array($logos['social-networks'])
+            ? (object)$logos['social-networks'] : (!empty($logos['social-networks']) ? $logos['social-networks'] : (object)[]);
 
         self::$cache['response'][$website->getId()][$locale] = new self(
             id: self::getContent('id', $information),
@@ -84,7 +86,7 @@ final class InformationModel extends BaseModel
             companyName: $intl->title,
             logos: $logos,
             intl: $intl,
-            networks: !empty($logos['social-networks']) ? $logos['social-networks'] : (object)[],
+            networks: $networks,
             addresses: $addresses->all,
             address: $addresses->main,
             schedule: $intl->body,
