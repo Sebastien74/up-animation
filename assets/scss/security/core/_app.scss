@@ -84,25 +84,6 @@ a {
     min-height: 100vh;
     width: calc(100% - 400px);
 
-    #bg-container {
-
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: calc(100% - 400px);
-        z-index: -1;
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-    }
-
     &:after {
         content: '';
         position: fixed;
@@ -112,6 +93,28 @@ a {
         width: calc(100% - 400px);
         background: $card-bg-gradient;
         opacity: .6;
+    }
+
+    @include mediaQuery(min-lg) {
+
+        #bg-container {
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: calc(100% - 400px);
+            z-index: -1;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
     }
 
     .login-box {

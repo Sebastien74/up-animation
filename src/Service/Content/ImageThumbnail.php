@@ -806,6 +806,10 @@ class ImageThumbnail implements ImageThumbnailInterface
                         $img = 'png' === $extension ? @imagecreatefrompng($copyDirname) : @imagecreatefromjpeg($copyDirname);
                         $function = $imagineWebp ? 'imagewebp' : ('png' === $extension ? 'imagepng' : 'imagejpeg');
                         $quality = 'png' === $extension ? 101 : 100;
+                        if ($imagineWebp && 'png' !== $extension) {
+                            $originalQuality = $media ? $media->getQuality() : 100;
+                            $quality = min(80, $originalQuality);
+                        }
                         if ($this->avifSupport) {
                             $function = 'imageavif';
                             $quality = 72;
@@ -829,6 +833,10 @@ class ImageThumbnail implements ImageThumbnailInterface
                                 $function($image, $newDirname, $quality);
                             }
                             imagedestroy($image);
+                            if ($this->filesystem->exists($copyDirname) && $this->filesystem->exists($newDirname)
+                                && filesize($newDirname) > filesize($copyDirname)) {
+                                $this->filesystem->copy($copyDirname, $newDirname, true);
+                            }
                             $path = $newPath;
                         }
                     } catch (\Exception $e) {

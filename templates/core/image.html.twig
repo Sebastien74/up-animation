@@ -51,7 +51,8 @@
                  {% if 'width' not in attributes and infos.width %} width="{{ infos.width }}"{% endif %}
                  {% if 'height' not in attributes and infos.height %} height="{{ infos.height }}"{% endif %}
                  {% if attributes %} {{ attributes|raw }}{% endif %}
-                 fetchpriority="{% if lazyLoad %}low{% else %}high{% endif %}"
+                 {% if priority != 'high' and lazyLoad %} loading="lazy" decoding="async"{% elseif priority != 'high' %} loading="eager" decoding="async"{% else %} decoding="sync" loading="eager"{% endif %}
+                 fetchpriority="{{ priority }}"
                 {% if infos.width or infos.height %} style="{% if infos.height %} max-height: {{ infos.height }}px;{% endif %}{% if infos.width %} width: {{ infos.width }}px;{% endif %}"{% endif %}>
         {% else %}
             {% set pictureClass = thumbnails['pictureClass'] is defined and thumbnails['pictureClass'] ? thumbnails['pictureClass'] : null %}
