@@ -20,11 +20,11 @@
     <div id="phpinfo-search-wrapper" class="mb-4 pages-search">
         <div class="input-group">
             <div class="input-group-text left">
-                <button type="submit" class="search-btn btn-icon" data-bs-toggle="tooltip" title="{{ "Rechercher"|trans|striptags }}">
+                <button type="submit" class="search-btn btn-icon" data-bs-toggle="tooltip" title="{{"Rechercher"|trans|striptags }}">
                     <i class="icm-search"></i>
                 </button>
             </div>
-            <input type="text" id="phpinfo-search" class="form-control" placeholder="{{ "Rechercher une directive ou une valeur..."|trans }}">
+            <input type="text" id="phpinfo-search" class="form-control" placeholder="{{"Rechercher une directive ou une valeur..."|trans }}">
         </div>
     </div>
 
@@ -72,7 +72,7 @@
                                             {{ value.master }}
                                         </td>
                                     {%- else -%}
-                                        <td class="align-middle px-4" {%- if key matches '/^\\d+$/' -%}colspan="2"{%- endif -%}>
+                                        <td class="align-middle px-4" {%- if key matches '/^\\d+$/' -%}colspan="2" {%- endif -%}>
                                             <div class="d-flex align-items-center">
                                                 {%- if key matches '/^\\d+$/' == false -%}
                                                     {{ key }}

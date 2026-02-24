@@ -84,20 +84,20 @@
                 <div class="right-side d-flex align-items-center flex-wrap ms-md-auto w-100-max-lg">
                     <div class="item-header mb-2 pe-lg-0">
                         <a href="{{ lastRoute() }}" class="btn-icon"
-                           data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
-                           aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                           data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}"
+                           aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
                             <i class="icm-reply"></i>
                         </a>
                     </div>
                     {%- if deleteActive and routeExist('admin_'~interface['name']~'_delete') -%}
                         <div class="item-header mb-2 pe-lg-0">
                             <button class="index-delete-show btn-icon danger" data-bs-toggle="tooltip"
-                                    title="{{ "Afficher les cases à cocher de suppression"|trans|striptags }}"
-                                    data-display="{{ "Afficher les cases à cocher de suppression"|trans|striptags }}"
-                                    data-hide="{{ "Masquer"|trans|striptags }}">
+                                    title="{{"Afficher les cases à cocher de suppression"|trans|striptags }}"
+                                    data-display="{{"Afficher les cases à cocher de suppression"|trans|striptags }}"
+                                    data-hide="{{"Masquer"|trans|striptags }}">
                                 <i class="icm-trash"></i>
                             </button>
-                            <button class="index-delete-submit btn-icon danger-darken d-none" data-bs-toggle="tooltip" title="{{ "Supprimer la sélection"|trans }}">
+                            <button class="index-delete-submit btn-icon danger-darken d-none" data-bs-toggle="tooltip" title="{{"Supprimer la sélection"|trans }}">
                                 <i class="icm-trash"></i>
                             </button>
                         </div>
@@ -145,7 +145,7 @@
                                         {%- set columnTitle = column|trans([], transDomain) and column|trans([], transDomain) != 'plural'
                                             ? column|trans([], transDomain) : column -%}
                                         {%- set centerText = fieldValue|isBool or column == 'locale' or 'status' in column|lower or 'count' in column|lower or column in centerColumns -%}
-                                        <th class="px-4{%- if centerText -%} text-center{%- endif -%}">{{ columnTitle|removeBetween(['(', ')']) }}</th>
+                                        <th class="px-4 {% if centerText %} text-center{% endif %}">{{ columnTitle|removeBetween(['(', ')']) }}</th>
                                     {%- endif -%}
                                     {%- if column == 'active' -%}
                                         {%- set haveActiveColumn = true -%}
@@ -178,9 +178,9 @@
 
                                 <th class="text-end px-4">
                                     <div class="delete-index-all-wrap custom-control custom-checkbox float-end ms-3 d-none" data-bs-toggle="tooltip"
-                                         title="{{ "Tout cocher"|trans|striptags }}"
-                                         data-checked="{{ "Tout cocher"|trans|striptags }}"
-                                         data-unchecked="{{ "Tout décocher"|trans|striptags }}">
+                                         title="{{"Tout cocher"|trans|striptags }}"
+                                         data-checked="{{"Tout cocher"|trans|striptags }}"
+                                         data-unchecked="{{"Tout décocher"|trans|striptags }}">
                                         <input type="checkbox" class="custom-control-input delete-index-all" id="delete-index-all">
                                         <label class="custom-control-label" for="delete-index-all"></label>
                                     </div>
@@ -195,7 +195,7 @@
                                 {%- set args = args|merge({(interface['name']): entity.id}) -%}
 
                                 {%- if not disabledRow -%}
-                                    <tr id="entity-row-{{ entity.id }}" data-id="{{ entity.id }}">
+                                    <tr id="entity-row- {{ entity.id }}" data-id="{{ entity.id }}">
 
                                         <td class="d-none">
                                             {%- set orderBy = entity|methodInit(orderBy) -%}
@@ -221,10 +221,10 @@
                                                 {%- set haveProperty = entityArray[property] is defined -%}
                                                 {%- set fieldValue = haveProperty ? entityValue(entity, property) : null -%}
                                                 {%- set centerText = fieldValue|isBool or property == 'locale' or 'status' in property|lower or 'count' in property|lower or property in centerColumns -%}
-                                                <td class="align-middle px-4{%- if centerText -%} text-center{%- endif -%}">
-                                                    <div class="d-flex align-items-center{%- if centerText -%} justify-content-center{%- endif -%}">
+                                                <td class="align-middle px-4{% if centerText %} text-center{% endif %}">
+                                                    <div class="d-flex align-items-center{% if centerText %} justify-content-center{% endif %}">
                                                         {%- if 'adminName' == property and entity.noSeo is defined and entity.noSeo -%}
-                                                            <span class="btn-icon small me-2" data-bs-toggle="tooltip" title="{{ "SEO non récupéré"|trans|striptags }}"><i class="icm-lock-alt"></i></span>
+                                                            <span class="btn-icon small me-2" data-bs-toggle="tooltip" title="{{"SEO non récupéré"|trans|striptags }}"><i class="icm-lock-alt"></i></span>
                                                         {%- endif -%}
                                                         {%- if fieldValue|isBool and editActive and property not in noSwitcher -%}
                                                             {%- include 'admin/core/form/boolean-switcher.html.twig' -%}
@@ -257,9 +257,9 @@
                                         {%- if positionActive -%}
                                             <td class="text-center align-middle px-4">
                                                 {%- if routeExist('admin_'~interface['name']~'_position') -%}
-                                                    <span class="position" data-bs-toggle="tooltip" title="{{ "Modifier la position"|trans|striptags }}">
+                                                    <span class="position" data-bs-toggle="tooltip" title="{{"Modifier la position"|trans|striptags }}">
                                                         {%- set positionArgs = ('admin_'~interface['name']~'_position')|routeArgs(interface.entity, args) -%}
-                                                        <a href="{{ path('admin_'~interface['name']~'_position', positionArgs) }}" class="modal-btn-position-ajax btn-icon small" data-modal="modal-position-{{ entity.id }}">
+                                                        <a href="{{ path('admin_'~interface['name']~'_position', positionArgs) }}" class="modal-btn-position-ajax btn-icon small" data-modal="modal-position- {{ entity.id }}">
                                                             {{ entity.position }}
                                                         </a>
                                                     </span>
@@ -306,7 +306,7 @@
                                                 {%- if routeExist('admin_'~interface['name']~'_edit') and editActive -%}
                                                     {%- set editArgs = ('admin_'~interface['name']~'_edit')|routeArgs(interface.entity, args) -%}
                                                     <a href="{{ path('admin_'~interface['name']~'_edit', editArgs) }}"
-                                                       data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}" class="btn-icon small">
+                                                       data-bs-toggle="tooltip" title="{{"Éditer"|trans|striptags }}" class="btn-icon small">
                                                         <i class="icm-pencil-alt"></i>
                                                     </a>
                                                 {%- endif -%}
@@ -314,7 +314,7 @@
                                                 {%- if routeExist('admin_'~interface['name']~'_layout') and editActive and entity.customLayout is not defined -%}
                                                     {%- set layoutArgs = ('admin_'~interface['name']~'_layout')|routeArgs(interface.entity, args) -%}
                                                     <a href="{{ path('admin_'~interface['name']~'_layout', layoutArgs) }}"
-                                                       data-bs-toggle="tooltip" title="{{ "Mise en page"|trans|striptags }}" class="btn-icon small">
+                                                       data-bs-toggle="tooltip" title="{{"Mise en page"|trans|striptags }}" class="btn-icon small">
                                                         <i class="icm-pencil-alt"></i>
                                                     </a>
                                                 {%- endif -%}
@@ -323,7 +323,7 @@
                                                     <span class="btn-circle-wrap">
                                                         {%- set treeArgs = ('admin_'~interface['name']~'_tree')|routeArgs(interface.entity, args) -%}
                                                         <a href="{{ path('admin_'~interface['name']~'_tree', args) }}"
-                                                           data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}" class="btn-icon small">
+                                                           data-bs-toggle="tooltip" title="{{"Éditer"|trans|striptags }}" class="btn-icon small">
                                                             <i class="icm-pencil-alt"></i>
                                                         </a>
                                                     </span>
@@ -334,8 +334,8 @@
                                                     {%- set haveZonesInLayout = entity.layout.zones is defined and entity.layout.zones|length > 0 -%}
                                                     {%- if not haveLayout or haveZonesInLayout -%}
                                                         <button class="btn-icon small duplicate-btn"
-                                                                aria-label="{{ "Dupliquer"|trans|striptags }}"
-                                                                data-bs-toggle="tooltip" title="{{ "Dupliquer"|trans|striptags }}"
+                                                                aria-label="{{"Dupliquer"|trans|striptags }}"
+                                                                data-bs-toggle="tooltip" title="{{"Dupliquer"|trans|striptags }}"
                                                                 data-path="{{ path('admin_'~interface['name']~'_duplicate', {website: websiteId(), (interface['name']): entity.id, refresh: true}) }}">
                                                             <i class="icm-copy"></i>
                                                         </button>
@@ -344,13 +344,13 @@
 
                                                 {%- if routeExist('admin_'~interface['name']~'_profile') -%}
                                                     <a href="{{ path('admin_'~interface['name']~'_profile', args) }}"
-                                                       data-bs-toggle="tooltip" title="{{ "Afficher le profil"|trans|striptags }}" class="btn-icon small info">
+                                                       data-bs-toggle="tooltip" title="{{"Afficher le profil"|trans|striptags }}" class="btn-icon small info">
                                                         <i class="icm-address-card"></i>
                                                     </a>
                                                 {%- elseif routeExist('admin_'~interface['name']~'_show') -%}
                                                     {%- set showArgs = ('admin_'~interface['name']~'_show')|routeArgs(interface.entity, args) -%}
                                                     <a href="{{ path('admin_'~interface['name']~'_show', showArgs) }}"
-                                                       data-bs-toggle="tooltip" title="{{ "Afficher les informations"|trans|striptags }}" class="btn-icon small info">
+                                                       data-bs-toggle="tooltip" title="{{"Afficher les informations"|trans|striptags }}" class="btn-icon small info">
                                                         <i class="icm-info"></i>
                                                     </a>
                                                 {%- endif -%}
@@ -358,22 +358,22 @@
                                                 {%- if routeExist('admin_'~interface['name']~'_delete') and deleteActive -%}
                                                     {%- set deleteArgs = ('admin_'~interface['name']~'_delete')|routeArgs(interface.entity, args) -%}
                                                         <a href="{{ path('admin_'~interface['name']~'_delete', args) }}"
-                                                           data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
-                                                           data-target="#entity-row-{{ entity.id }}"
+                                                           data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
+                                                           data-target="#entity-row- {{ entity.id }}"
                                                            class="btn-icon small danger swal-delete-link">
                                                             <i class="icm-trash"></i>
                                                         </a>
                                                     <div class="custom-control custom-checkbox delete-input-index-wrap d-none">
-                                                        <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ entity.id }}"
+                                                        <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input- {{ entity.id }}"
                                                                data-path="{{ path('admin_'~interface['name']~'_delete', args) }}">
-                                                        <label class="custom-control-label" for="delete-input-{{ entity.id }}"></label>
+                                                        <label class="custom-control-label" for="delete-input- {{ entity.id }}"></label>
                                                     </div>
                                                 {%- endif -%}
 
                                                 {%- if routeExist('admin_'~interface['name']~'_reset') and deleteActive -%}
                                                     <a href="{{ path('admin_'~interface['name']~'_reset', args) }}"
-                                                       data-bs-toggle="tooltip" title="{{ "Réinitialiser"|trans|striptags }}"
-                                                       data-target="#entity-row-{{ entity.id }}"
+                                                       data-bs-toggle="tooltip" title="{{"Réinitialiser"|trans|striptags }}"
+                                                       data-target="#entity-row- {{ entity.id }}"
                                                        class="btn-icon small success swal-delete-link">
                                                         <i class="icm-sync"></i>
                                                     </a>

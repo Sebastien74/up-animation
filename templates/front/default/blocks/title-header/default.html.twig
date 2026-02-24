@@ -28,7 +28,7 @@
     {%- set displayBreadcrumb = (isIndexPage and configuration.breadcrumb and not isIndex) or (forceBreadcrumb is defined and forceBreadcrumb) -%}
     {%- set styleClass = styleClass is defined and styleClass ? styleClass : '' -%}
     {%- set styleClass = large and styleClass ? styleClass~' align-items-start as-large' : (large ? 'align-items-start as-large' : 'align-items-end') -%}
-    <div class="title-header-block w-100 pt-5 pb-5 position-relative d-flex{%- if large -%} as-large{%- endif -%}{%- if backgroundColor -%} {{ backgroundColor }}{%- endif -%}{%- if styleClass -%} {{ styleClass }}{%- endif -%}">
+    <div class="title-header-block w-100 pt-5 pb-5 position-relative d-flex{% if large %} as-large{% endif %}{% if backgroundColor %} {{ backgroundColor }}{% endif %}{% if styleClass %} {{ styleClass }}{% endif %}">
         {%- if mediaPath or displayMedia -%}
             <div class="media-content position-absolute">
                 {%- if mediaPath -%}
@@ -58,13 +58,13 @@
                         </div>
                         <div class="content-wrap">
                 {%- endif -%}
-                <div class="title-wrap{%- if displayBreadcrumb -%} mb-3{%- endif -%}">
-                    <h{{ titleForce }} class="title mb-0{%- if style is defined and style -%} {{ style }}{%- endif -%}{%- if anim.title.class -%} {{ anim.title.class|raw }}{%- endif -%}"
+                <div class="title-wrap {% if displayBreadcrumb %} mb-3{% endif %}">
+                    <h {{ titleForce }} class="title mb-0{% if style is defined and style %} {{ style }}{% endif %}{% if anim.title.class %} {{ anim.title.class|raw }}{% endif %}"
                         {%- if anim.title.attr -%} {{ anim.title.attr|raw }}{%- endif -%}>
                         {{ title|unescape|raw }}
                     </h{{ titleForce }}>
                     {%- if subTitle -%}
-                        <div class="w-100{%- if anim.subtitle.class -%} {{ anim.subtitle.class|raw }}{%- endif -%}"
+                        <div class="w-100 {% if anim.subtitle.class %} {{ anim.subtitle.class|raw }}{% endif %}"
                             {%- if anim.subtitle.attr -%} {{ anim.subtitle.attr|raw }}{%- endif -%}>
                             <strong class="sub-title text-white d-inline-block fw-300 w-100 sub-title-h{{ titleForce }}">{{ subTitle|raw }}</strong>
                         </div>

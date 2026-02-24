@@ -30,7 +30,7 @@
                     {%- if granted('ROLE_INTERNAL') or loop.first -%}
                         {%- set active = page.type == type and page.category == category -%}
                         <a href="{{ path("admin_notfoundurl_index", {website: websiteId(), type: page.type, category: page.category}) }}"
-                           class="btn-app{%- if active -%} active{%- endif -%}">
+                           class="btn-app {% if active %} active{% endif %}">
                             <i class="icm-info"></i><span>{{ page.title }}</span>
                         </a>
                     {%- endif -%}
@@ -55,16 +55,16 @@
                 </thead>
                 <tbody>
                     {%- for entity in pagination -%}
-                        <tr id="entity-row-{{ entity.id }}">
-                            <td class="align-middle px-4" data-label="{{ "Jour"|trans }}">{{ entity.createdAt|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</td>
-                            <td class="align-middle px-4" data-label="{{ "URL"|trans }}">{{ entity.url }}</td>
-                            <td class="align-middle text-end px-4" data-label="{{ "Actions"|trans }}">
+                        <tr id="entity-row- {{ entity.id }}">
+                            <td class="align-middle px-4" data-label="{{"Jour"|trans }}">{{ entity.createdAt|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</td>
+                            <td class="align-middle px-4" data-label="{{"URL"|trans }}">{{ entity.url }}</td>
+                            <td class="align-middle text-end px-4" data-label="{{"Actions"|trans }}">
                                 <div class="d-flex justify-content-end align-items-center gap-2">
                                     {{ render_esi(path('admin_notfoundurl_redirection', {website: websiteId(), notfoundUrl: entity.id} )) }}
                                     {%- if routeExist('admin_notfoundurl_delete') and 'delete'|moduleActive(configuration) -%}
                                         <a href="{{ path('admin_notfoundurl_delete', {website: websiteId(), notfoundurl: entity.id}) }}"
-                                           data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
-                                           data-target="#entity-row-{{ entity.id }}"
+                                           data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
+                                           data-target="#entity-row- {{ entity.id }}"
                                            class="btn-icon small danger swal-delete-link">
                                             <i class="icm-trash"></i>
                                         </a>

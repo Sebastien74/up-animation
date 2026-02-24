@@ -47,7 +47,7 @@
 
     {%- include 'admin/include/alerts.html.twig' -%}
 
-    <div id="entity-edition" class="card{%- if isMainEntity -%} is-entity{%- endif -%}">
+    <div id="entity-edition" class="card {% if isMainEntity %} is-entity{% endif %}">
         <div class="card-body p-0 bottom-radius top-radius pb-2">
 
             {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'entity-preloader', full: true, progress: 'hide', preloaderClass: 'progress-fixed'} only -%}
@@ -55,9 +55,9 @@
             <ul class="nav nav-tabs custom-tab large" role="tablist">
                 {%- for tabId, config in tabs -%}
                     <li class="nav-item">
-                        <a {%- if not isMainEntity -%}href="{{ path('admin_newscast_edit', {website: websiteId, newscast: entity.id, tab: tabId} ) }}"{%- endif -%}
-                           id="nav-{{ tabId }}-tab" class="nav-link{%- if activeTab == tabId or not activeTab and loop.first and isMainEntity -%} active{%- endif -%}"
-                            {%- if isMainEntity -%}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}"{%- else -%}{%- endif -%}>
+                        <a {% if not isMainEntity -%}href="{{ path('admin_newscast_edit', {website: websiteId, newscast: entity.id, tab: tabId} ) }}" {%- endif -%}
+                           id="nav- {{ tabId }}-tab" class="nav-link {% if activeTab == tabId or not activeTab and loop.first and isMainEntity %} active{% endif %}"
+                            {%- if isMainEntity -%}data-bs-toggle="tab" href="# {{ tabId }}" role="tab" aria-selected="{{ loop.first }}" {%- else -%}{%- endif -%}>
                             {{ config.icon|icon(17, 17, 'me-sm-2') }}
                             <span class="d-none d-sm-inline-block">{{ config.title }}</span>
                         </a>
@@ -66,7 +66,7 @@
                 <li class="nav-item">
                     <a href="{{ path('admin_newscast_medias', {website: websiteId, newscast: entity.id} ) }}"
                        id="medias-path"
-                       class="nav-link{%- if not isMainEntity -%} active{%- endif -%}">
+                       class="nav-link {% if not isMainEntity %} active{% endif %}">
                         <i class="icm-photo-video"></i>
                         <span class="d-none d-sm-inline-block">{{ "Médias"|trans }}</span>
                     </a>
@@ -90,11 +90,11 @@
     </div>
 
     <div id="entity-translations"
-         data-swal-entity-title="{{ "Pensez à enregistrer vos modifications"|trans }}"
+         data-swal-entity-title="{{"Pensez à enregistrer vos modifications"|trans }}"
          data-swal-entity-text=""
-         data-swal-entity-cancel-text="{{ "Annuler"|trans }}"
-         data-swal-media-confirm-text="{{ "Aller aux médias"|trans }}"
-         data-swal-value-confirm-text="{{ "Éditer la valeur"|trans }}">
+         data-swal-entity-cancel-text="{{"Annuler"|trans }}"
+         data-swal-media-confirm-text="{{"Aller aux médias"|trans }}"
+         data-swal-value-confirm-text="{{"Éditer la valeur"|trans }}">
     </div>
 
 {%- endblock -%}

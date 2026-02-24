@@ -199,10 +199,10 @@
     {%- endif -%}
     {%- set attrGroup = attr.group is defined ? attr.group : (attr['data-group'] is defined ? attr['data-group'] : null) -%}
     {%- if 'password-generator' in attrGroup -%}
-        <small id="help_{{ id }}" class="form-text generator-password"><i class="icm-sync"></i>{{ "Générer un mot de passe"|trans([], 'admin')|raw }}</small>
+        <small id="help_ {{ id }}" class="form-text generator-password"><i class="icm-sync"></i>{{ "Générer un mot de passe"|trans([], 'admin')|raw }}</small>
     {%- endif -%}
     {%- if bytes is defined and bytes -%}
-        <small id="help_{{ id }}" class="form-text generate-bytes"><i class="icm-sync"></i>{{ "Générer"|trans([], 'admin')|raw }}</small>
+        <small id="help_ {{ id }}" class="form-text generate-bytes"><i class="icm-sync"></i>{{ "Générer"|trans([], 'admin')|raw }}</small>
     {%- endif -%}
     {%- set dataHelp = attr['data-help'] is defined ? attr['data-help'] : false -%}
     {%- if 'no-alt' == dataHelp -%}
@@ -277,9 +277,9 @@
         {%- endif -%}
                 <input type="{{ type }}" id="{{ id }}"
                        name="{{ full_name }}"
-                       {%- if accept -%}accept="{{ accept }}"{%- endif -%}
-                       {%- if maxSize -%}data-max-size="{{ maxSize }}"{%- endif -%}
-                       {%- if placeholder -%}placeholder="{{ placeholder }}"{%- endif -%}
+                       {%- if accept -%}accept="{{ accept }}" {%- endif -%}
+                       {%- if maxSize -%}data-max-size="{{ maxSize }}" {%- endif -%}
+                       {%- if placeholder -%}placeholder="{{ placeholder }}" {%- endif -%}
                        class="dropify custom-file-input"
                        data-height="{{ dataHeight }}"
                        {%- if dataScreen -%}{{ dataScreen|raw }}{%- endif -%}
@@ -344,16 +344,16 @@
         {%- set attr_data = ' data-bs-toggle="buttons"' -%}
     {%- endif -%}
     {%- if row_class is not empty -%}
-        <div class="{{ row_class }}"{{ attr_data|raw }}>
+        <div class="{{ row_class }}" {{ attr_data|raw }}>
     {%- endif -%}
         {%- if 'button' in parent_label_class -%}
             {%- set color = attr['data-color'] is defined ? attr['data-color'] : 'primary' -%}
             {%- set values = attr['data-values'] is defined ? attr['data-values'] : false -%}
             {%- set class = attr['class'] is defined ? attr['class'] : null -%}
-            <label for="{{ id }}" class="cursor btn btn-{{ color }}{%- if class -%} {{ class }}{%- endif -%}{%- if checked -%} active{%- endif -%}">
+            <label for="{{ id }}" class="cursor btn btn-{{ color }}{% if class %} {{ class }}{% endif %}{% if checked %} active{% endif %}">
                 <i class="icm-check"></i>{{ label }}
             </label>
-            <input id="{{ id }}" type="checkbox" class="btn-check" value="{{ checked }}" name="{{ full_name }}"{%- if checked -%} checked{%- endif -%}{%- if values -%} data-values="{{ values }}"{%- endif -%}>
+            <input id="{{ id }}" type="checkbox" class="btn-check" value="{{ checked }}" name="{{ full_name }}" {%- if checked -%} checked{%- endif -%}{%- if values -%} data-values="{{ values }}" {%- endif -%}>
         {%- else -%}
             {{- form_label(form, null, { widget: parent() }) -}}
         {%- endif -%}
@@ -442,7 +442,7 @@
             {%- set label_attr = label_attr|merge({class: (label_attr.class|default('')~' '~parent_label_class)|replace({'checkbox-inline': '', 'radio-inline': ''})|trim}) -%}
         {%- endif -%}
         {{ widget|raw }}
-        <label{%- with { attr: label_attr } -%}{{ block('attributes') }}{%- endwith -%}>
+        <label {% with { attr: label_attr } -%}{{ block('attributes') }}{%- endwith -%}>
             {%- if label is not same as(false) -%}
                 {{- block('form_label_content') -}}
             {%- endif -%}
@@ -505,7 +505,7 @@
         {%- endif -%}
         <{{ element|default('div') }}{%- with {attr: row_attr|merge({class: row_class|replace({'form-floating': ''})|trim})} -%}{{ block('attributes') }}{%- endwith -%}>
             {%- if 'form-floating' in row_class -%}
-                <div class="position-relative form-floating{%- if 'select-icons' in class_attr -%} icons-group{%- endif -%}{%- if 'img-pictograms' in class_attr -%} img-pictograms-group{%- endif -%}{%- if isSelected -%} selected{%- endif -%}{%- if not valid -%} is-invalid{%- endif -%}">
+                <div class="position-relative form-floating{% if 'select-icons' in class_attr %} icons-group{% endif %}{% if 'img-pictograms' in class_attr %} img-pictograms-group{% endif %}{% if isSelected %} selected{% endif %}{% if not valid %} is-invalid{% endif %}">
                     {{- form_widget(form, widget_attr) -}}
                     {{- form_label(form) -}}
                 </div>
@@ -516,7 +516,7 @@
                 {{- form_label(form) -}}
                 {%- if modalMediaCopy -%}
                         <span class="ps-4 ms-auto">
-                            <span id="open-modal-{{ full_name }}"
+                            <span id="open-modal- {{ full_name }}"
                                   data-options="{{ {type: 'copy'}|json_encode }}"
                                   class="open-modal-medias me-auto btn btn-info d-flex align-items-center">
                                 {{ 'fal photo-video'|icon(null, 15, 'white me-2') }}{{ "Afficher la librairie"|trans|raw }}
@@ -546,7 +546,7 @@
 
 {%- block button_row -%}
     {%- set group_size = attr['data-group'] is defined and attr['data-group'] ? attr['data-group'] : '' -%}
-    <div{%- with {attr: row_attr|merge({class: row_attr.class|default('mb-3 '~group_size)|trim})} -%}{{ block('attributes') }}{%- endwith -%}>
+    <div {% with {attr: row_attr|merge({class: row_attr.class|default('mb-3 '~group_size)|trim})} -%}{{ block('attributes') }}{%- endwith -%}>
         {{- form_widget(form) -}}
     </div>
 {%- endblock button_row -%}
@@ -556,7 +556,7 @@
 {%- block form_errors -%}
     {%- if errors|length > 0 -%}
         {%- for error in errors -%}
-            <div class="{%- if form is not rootform -%}invalid-feedback{%- else -%}alert alert-danger{%- endif -%} d-block" role="alert">{{ error.message|raw }}</div>
+            <div class="{% if form is not rootform %}invalid-feedback{% else %}alert alert-danger{% endif %} d-block" role="alert">{{ error.message|raw }}</div>
         {%- endfor -%}
     {%- endif -%}
 {%- endblock form_errors -%}

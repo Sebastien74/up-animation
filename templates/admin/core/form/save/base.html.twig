@@ -3,10 +3,10 @@
 {%- set saveAreaTpl = saveAreaTpl is defined ? saveAreaTpl : null -%}
 {%- set saveArea = interface.configuration.saveArea is defined ? interface.configuration.saveArea : null -%}
 
-<span data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}">
+<span data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}">
     <a href="{{ lastRoute() }}"
        class="btn-icon"
-       aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+       aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
         <i class="icm-reply"></i>
     </a>
 </span>

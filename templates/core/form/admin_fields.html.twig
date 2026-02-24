@@ -38,7 +38,7 @@
             {%- set color = 'background'|color(website(), choice.data) -%}
             {%- set hexa = color ? color.color : choice.data -%}
             {%- set hexa = hexa ? hexa : 'transparent' -%}
-            <span class="background-input-label-active d-inline-block mb-2{%- if value == choice.value -%} active{%- endif -%}">
+            <span class="background-input-label-active d-inline-block mb-2{% if value == choice.value %} active{% endif %}">
                 <span class="background-input-label-border d-inline-block">
                     <label for="{{ filedId }}"
                            class="background-input-label btn btn-circle cursor mb-0"
@@ -50,10 +50,10 @@
                         <input type="radio"
                                id="{{ filedId }}"
                                name="{{ full_name }}"
-                               {%- if required -%}required="required"{%- endif -%}
+                               {%- if required -%}required="required" {%- endif -%}
                                class="background-input d-none"
                                data-hexa="{{ hexa }}"
-                               value="{{ choice.value }}"{%- if value == choice.value -%} checked="checked"{%- endif -%}>
+                               value="{{ choice.value }}" {%- if value == choice.value -%} checked="checked" {%- endif -%}>
                     </label>
                 </span>
             </span>
@@ -68,7 +68,7 @@
             {%- set color = 'background'|color(website(), choice.data) -%}
             {%- set hexa = color ? color.color : choice.data -%}
             {%- set hexa = hexa ? hexa : 'transparent' -%}
-            <span class="background-input-label-active d-inline-block mb-2{%- if value == choice.value -%} active{%- endif -%}">
+            <span class="background-input-label-active d-inline-block mb-2{% if value == choice.value %} active{% endif %}">
                 <span class="background-input-label-border d-inline-block">
                     <label for="{{ filedId }}" class="background-input-label btn btn-circle cursor mb-0"
                            data-hexa="{{ hexa }}"
@@ -79,10 +79,10 @@
                         <input type="radio"
                                id="{{ filedId }}"
                                name="{{ full_name }}"
-                               {%- if required -%}required="required"{%- endif -%}
+                               {%- if required -%}required="required" {%- endif -%}
                                class="background-input d-none"
                                data-hexa="{{ hexa }}"
-                               value="{{ choice.value }}"{%- if value == choice.value -%} checked="checked"{%- endif -%}>
+                               value="{{ choice.value }}" {%- if value == choice.value -%} checked="checked" {%- endif -%}>
                     </label>
                 </span>
             </span>
@@ -97,7 +97,7 @@
             {%- set color = 'background'|color(website(), choice.data) -%}
             {%- set hexa = color ? color.color : choice.data -%}
             {%- set hexa = hexa ? hexa : 'transparent' -%}
-            <span class="background-input-label-active d-inline-block mb-2{%- if value == choice.value -%} active{%- endif -%}">
+            <span class="background-input-label-active d-inline-block mb-2{% if value == choice.value %} active{% endif %}">
                 <span class="background-input-label-border d-inline-block">
                     <label for="{{ filedId }}" class="background-input-label btn btn-circle cursor mb-0"
                            data-hexa="{{ hexa }}"
@@ -108,10 +108,10 @@
                         <input type="radio"
                                id="{{ filedId }}"
                                name="{{ full_name }}"
-                               {%- if required -%}required="required"{%- endif -%}
+                               {%- if required -%}required="required" {%- endif -%}
                                class="background-input d-none"
                                data-hexa="{{ hexa }}"
-                               value="{{ choice.value }}"{%- if value == choice.value -%} checked="checked"{%- endif -%}>
+                               value="{{ choice.value }}" {%- if value == choice.value -%} checked="checked" {%- endif -%}>
                     </label>
                 </span>
             </span>
@@ -128,7 +128,7 @@
             multiple>
         {%- for choice in choices -%}
             {%- if choice.data.slug not in disabled -%}
-                <option value="{{ choice.value }}"{%- if choice.value in value -%} selected="selected"{%- endif -%}>{{ choice.label }}</option>
+                <option value="{{ choice.value }}" {%- if choice.value in value -%} selected="selected" {%- endif -%}>{{ choice.label }}</option>
             {%- endif -%}
         {%- endfor -%}
     </select>
@@ -141,24 +141,24 @@
             class="{{ attr.class }} form-control"
             multiple>
         {%- for choice in choices -%}
-            <option value="{{ choice.value }}"{%- if choice.value in value -%} selected="selected"{%- endif -%}>{{ choice.label }}</option>
+            <option value="{{ choice.value }}" {%- if choice.value in value -%} selected="selected" {%- endif -%}>{{ choice.label }}</option>
         {%- endfor -%}
     </select>
 {%- endblock -%}
 
 {%- block _website_configuration_blockTypes_widget -%}
     {%- set disabled = ["action"] -%}
-    <div id="{{ id }}" class="row {%- if attr.class is defined -%} {{ attr.class }}{%- endif -%}">
+    <div id="{{ id }}" class="row {% if attr.class is defined %} {{ attr.class }}{% endif %}">
         {%- for choiceId, choice in choices -%}
             {%- if choice.data.slug not in disabled -%}
                 <div class="col-md-6">
                     <div class="form-check form-check-inline form-switch mb-1 me-0">
                         <input type="checkbox"
-                               id="block-type-{{ choice.value }}"
+                               id="block-type- {{ choice.value }}"
                                name="{{ full_name }}[]"
                                class="form-check-input cursor"
-                               value="{{ choice.value }}"{%- if choice.value in value -%} checked="checked"{%- endif -%}>
-                        <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="block-type-{{ choice.value }}">{{ choice.label }}</label>
+                               value="{{ choice.value }}" {%- if choice.value in value -%} checked="checked" {%- endif -%}>
+                        <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="block-type- {{ choice.value }}">{{ choice.label }}</label>
                     </div>
                 </div>
             {%- endif -%}
@@ -168,17 +168,17 @@
 
 {%- block _website_configuration_modules_widget -%}
     {%- set disabled = ["secure-module", "customs-actions"] -%}
-    <div id="{{ id }}" class="row {%- if attr.class is defined -%} {{ attr.class }}{%- endif -%}">
+    <div id="{{ id }}" class="row {% if attr.class is defined %} {{ attr.class }}{% endif %}">
         {%- for choiceId, choice in choices -%}
             {%- if choice.data.slug not in disabled -%}
                 <div class="col-md-6">
                     <div class="form-check form-check-inline form-switch mb-1 me-0">
                         <input type="checkbox"
-                               id="modules-input-{{ choice.value }}"
+                               id="modules-input- {{ choice.value }}"
                                name="{{ full_name }}[]"
                                class="form-check-input cursor"
-                               value="{{ choice.value }}"{%- if choice.value in value -%} checked="checked"{%- endif -%}>
-                        <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="modules-input-{{ choice.value }}">{{ choice.label }}</label>
+                               value="{{ choice.value }}" {%- if choice.value in value -%} checked="checked" {%- endif -%}>
+                        <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="modules-input- {{ choice.value }}">{{ choice.label }}</label>
                     </div>
                 </div>
             {%- endif -%}
@@ -201,7 +201,7 @@
             <div class="{{ prototypeGroup }} mb-4 prototype prototype-block-group">
         {%- endif -%}
 
-        <div class="prototype-block {%- if prototypeGroup -%}h-100{%- else -%}prototype mb-4{%- endif -%}">
+        <div class="prototype-block {% if prototypeGroup %}h-100{% else %}prototype mb-4{% endif %}">
 
             {%- set slug = entity.slug is defined and entity.slug -%}
             {%- set haveTitle = slug == ('support' or 'no-reply') -%}
@@ -237,7 +237,7 @@
                             interfaceName: interfaceName
                         } -%}
                     {%- else -%}
-                        <span class="btn btn-transparent delete-disabled" data-toggle="tooltip" title="{{ "Donnée requise"|trans }}">
+                        <span class="btn btn-transparent delete-disabled" data-toggle="tooltip" title="{{"Donnée requise"|trans }}">
                             {{ 'fas trash'|icon(null, 14, 'dark') }}
                         </span>
                     {%- endif -%}
@@ -258,7 +258,7 @@
 
     <div id="{{ id }}_collection"
          data-index="{{ form.children|length }}"
-         class="collection{%- if prototypePosition -%} prototype-sortable{%- endif -%} {%- if prototypeGroup -%}row w-100{%- else -%}col-12{%- endif -%}"
+         class="collection {% if prototypePosition %} prototype-sortable{% endif %} {% if prototypeGroup %}row w-100{% else %}col-12{% endif %}"
          data-prototype="{{ macro.field_prototype(form.vars.prototype, prototypeGroup)|e('html_attr') }}">
         {%- include 'admin/include/stripe-preloader.html.twig' -%}
         {%- for property in form.children -%}
@@ -269,7 +269,7 @@
     <div class="col-12 text-end mb-4">
         <button role="button" class="add-collection btn-app success"
                 data-collection-target="append"
-                data-target="#{{ id }}_collection">
+                data-target="# {{ id }}_collection">
                 <i class="icm-plus"></i>
             <span class="d-inline-block">
                 {%- if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] -%}
@@ -288,7 +288,7 @@
         {%- for choice in choices -%}
             {%- set isChecked = choice.value == value -%}
             <div class="col-md-3 text-center mb-2">
-                <label class="card cursor p-0{%- if isChecked -%} active{%- endif -%}" for="build-theme-{{ choice.data }}">
+                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="build-theme- {{ choice.data }}">
                     {%- set src = choice.data ? choice.data : 'anonymous' -%}
                     <img src="{{ asset('build/admin/images/theme/build-theme-'~src~'.jpg', 'admin')|imagine_filter('admin_theme') }}" class="img-fluid" alt="theme">
                     <div class="vertical-align w-100 p-4">
@@ -296,10 +296,10 @@
                             <h5 class="m-0">{{ choice.label }}</h5>
                         </div>
                     </div>
-                    <input type="radio" id="build-theme-{{ choice.data }}"
+                    <input type="radio" id="build-theme- {{ choice.data }}"
                            name="{{ full_name }}"
-                           class="input-theme d-none{%- if isChecked -%} active{%- endif -%}"
-                           value="{{ choice.value }}"{%- if required -%} required{%- endif -%}{%- if isChecked -%} checked{%- endif -%}>
+                           class="input-theme d-none{% if isChecked %} active{% endif %}"
+                           value="{{ choice.value }}" {%- if required -%} required{%- endif -%}{%- if isChecked -%} checked{%- endif -%}>
                 </label>
             </div>
         {%- endfor -%}
@@ -311,7 +311,7 @@
         {%- for choice in choices -%}
             {%- set isChecked = choice.value == value -%}
             <div class="col-md-3 text-center mb-2">
-                <label class="card cursor p-0{%- if isChecked -%} active{%- endif -%}" for="front-theme-{{ choice.data }}">
+                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="front-theme- {{ choice.data }}">
                     {%- set src = choice.data ? choice.data : 'anonymous' -%}
                     <img src="{{ asset('build/admin/images/theme/theme-'~src~'.jpg', 'admin')|imagine_filter('admin_theme') }}" class="img-fluid" alt="theme">
                     <div class="vertical-align w-100 p-4">
@@ -319,10 +319,10 @@
                             <h5 class="m-0">{{ choice.label }}</h5>
                         </div>
                     </div>
-                    <input type="radio" id="front-theme-{{ choice.data }}"
+                    <input type="radio" id="front-theme- {{ choice.data }}"
                            name="{{ full_name }}"
-                           class="input-theme d-none{%- if isChecked -%} active{%- endif -%}"
-                           value="{{ choice.value }}"{%- if required -%} required{%- endif -%}{%- if isChecked -%} checked{%- endif -%}>
+                           class="input-theme d-none{% if isChecked %} active{% endif %}"
+                           value="{{ choice.value }}" {%- if required -%} required{%- endif -%}{%- if isChecked -%} checked{%- endif -%}>
                 </label>
             </div>
         {%- endfor -%}
@@ -356,8 +356,8 @@
 {#        {%- set pup = not pup ? index : pup~'1' -%}#}
 
 {#        <option value="{{ entity.id }}"#}
-{#                {%- if not isMain -%}data-pup="{{ pup|slice(0, pup|length - 1) }}"{%- endif -%}#}
-{#                class="l{{ entity.level }}{%- if children -%} non-leaf{%- endif -%}">#}
+{#                {%- if not isMain -%}data-pup="{{ pup|slice(0, pup|length - 1) }}" {%- endif -%}#}
+{#                class="l {{ entity.level }}{% if children %} non-leaf{% endif %}">#}
 {#            {{ entity.adminName }}#}
 {#        </option>#}
 

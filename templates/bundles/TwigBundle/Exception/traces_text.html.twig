@@ -1,7 +1,7 @@
 <table class="trace trace-as-text">
     <thead class="trace-head">
         <tr>
-            <th class="sf-toggle" data-toggle-selector="#trace-text-{{ index }}" data-toggle-initial="{{ 1 == index ? 'display' }}">
+            <th class="sf-toggle" data-toggle-selector="#trace-text- {{ index }}" data-toggle-initial="{{ 1 == index ? 'display' }}">
                 <h3 class="trace-class">
                     {%- if num_exceptions > 1 -%}
                         <span class="text-muted">[{{ num_exceptions - index + 1 }}/{{ num_exceptions }}]</span>
@@ -17,7 +17,7 @@
             </th>
         </tr>
     </thead>
-    <tbody id="trace-text-{{ index }}">
+    <tbody id="trace-text- {{ index }}">
         <tr>
             <td>
                 {%- if exception.trace|length -%}

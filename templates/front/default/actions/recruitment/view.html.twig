@@ -51,7 +51,7 @@
     {#            <a itemprop="item" itemscope itemtype="https://schema.org/WebPage"#}
     {#               itemid="{{ url }}" href="{{ url }}" data-position="{{ position }}">#}
     {#                {%- endif -%}#}
-    {#                <span itemprop="name" class="text-secondary text-uppercase{%- if not divider -%} active fw-700"{%- endif -%}" aria-label="{{ title|striptags }}">{{ title|striptags }}</span>#}
+    {#                <span itemprop="name" class="text-secondary text-uppercase{% if not divider %} active fw-700" {%- endif -%}" aria-label="{{ title|striptags }}">{{ title|striptags }}</span>#}
     {#                {%- if divider -%}#}
     {#            </a>#}
     {#            {%- endif -%}#}
@@ -82,13 +82,13 @@
     {#    </div>#}
 
     {%- macro linksSocial() -%}
-        <a class="d-block me-1" href="https://www.linkedin.com/sharing/share-offsite/?url={{ app.request.uri }}" rel="noreferrer noopener" target="_blank">
+        <a class="d-block me-1" href="https://www.linkedin.com/sharing/share-offsite/?url= {{ app.request.uri }}" rel="noreferrer noopener" target="_blank">
             {{ "cms linkedin"|icon(25, 25) }}
         </a>
-        <a class="d-block me-1" href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" rel="noreferrer noopener" target="_blank">
+        <a class="d-block me-1" href="https://www.facebook.com/sharer/sharer.php?u= {{ app.request.uri }}" rel="noreferrer noopener" target="_blank">
             {{ "cms facebook"|icon(25, 25) }}
         </a>
-        <a class="d-block" href="https://twitter.com/intent/tweet?url={{ app.request.uri }}" rel="noreferrer noopener" target="_blank">
+        <a class="d-block" href="https://twitter.com/intent/tweet?url= {{ app.request.uri }}" rel="noreferrer noopener" target="_blank">
             {{ "cms twitter"|icon(25, 25) }}
         </a>
     {%- endmacro -%}

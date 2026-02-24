@@ -4,13 +4,13 @@
 {%- set groups = configuration|blockTypesActionsGroups(entity) -%}
 
 <div class="modal-wrapper">
-    <div id="block-modal-{{ col.id }}" class="modal fade add-block-modal edit-element-form layout-modal" tabindex="-1" role="dialog" aria-labelledby="block-modal-{{ col.id }}">
+    <div id="block-modal- {{ col.id }}" class="modal fade add-block-modal edit-element-form layout-modal" tabindex="-1" role="dialog" aria-labelledby="block-modal- {{ col.id }}">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content border refer-preloader">
                 {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'add-block-preloader', preloaderClass: 'radius-preloader', full: true} only -%}
                 <div class="modal-header">
                     <h5 class="modal-title text-center w-100"><i class="icm-th-large"></i></h5>
-                    <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                    <button class="btn-close" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
                         <i class="icm-times"></i>
                     </button>
                 </div>
@@ -25,7 +25,7 @@
                             {%- set displayNav = false -%}
                         {%- endif -%}
 
-                        <h2 class="main-title text-center fw-bold{%- if displayNav -%} mb-5{%- endif -%}">{{ modalTitle }}</h2>
+                        <h2 class="main-title text-center fw-bold{% if displayNav %} mb-5{% endif %}">{{ modalTitle }}</h2>
 
                         {%- set titles = {
                             "block-layout": "Blocs de fiche"|trans,
@@ -43,12 +43,12 @@
                                     {%- for category, blocksActions in group -%}
                                         {%- set isActive = isActive and loop.first -%}
                                         <li class="nav-item col text-center">
-                                            <a class="nav-link d-flex align-items-center{%- if isActive -%} active{%- endif -%}"
+                                            <a class="nav-link d-flex align-items-center{% if isActive %} active{% endif %}"
                                                id="{{ type~'-'~category~'-'~col.id }}-tab"
                                                data-bs-toggle="tab"
-                                               href="#{{ type~'-'~category~'-'~col.id }}"
+                                               href="# {{ type~'-'~category~'-'~col.id }}"
                                                role="tab" aria-controls="{{ type~'-'~category~'-'~col.id }}"
-                                               aria-selected="{%- if isActive -%}true{%- else -%}false{%- endif -%}">
+                                               aria-selected="{% if isActive %}true{% else %}false{% endif %}">
                                                 <span class="mx-auto">
                                                     {%- if titles[type~'-'~category] is defined -%}
                                                         {{ titles[type~'-'~category] }}
@@ -68,7 +68,7 @@
                                 {%- set isActive = loop.first -%}
                                 {%- for category, blocksActions in group -%}
                                     {%- set isActive = isActive and loop.first -%}
-                                    <div class="tab-pane fade{%- if isActive -%} show active{%- endif -%}" id="{{ type~'-'~category~'-'~col.id }}" role="tabpanel" aria-labelledby="{{ type~'-'~category~'-'~col.id }}-tab">
+                                    <div class="tab-pane fade{% if isActive %} show active{% endif %}" id="{{ type~'-'~category~'-'~col.id }}" role="tabpanel" aria-labelledby="{{ type~'-'~category~'-'~col.id }}-tab">
                                         <div class="row justify-content-center">
                                             {%- for blockAction in blocksActions -%}
                                                 {%- set path = "#" -%}

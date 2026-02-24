@@ -28,15 +28,15 @@
         {%- for url in urls -%}
             {%- set locale = url.vars.value.locale -%}
             {%- set urlId = url.vars.value.id -%}
-            <div class="url-edit-group {%- if locale not in allLocales -%}d-none{%- else -%}d-flex align-items-center gap-3{%- endif -%} mb-3">
+            <div class="url-edit-group {% if locale not in allLocales %}d-none{% else %}d-flex align-items-center gap-3{% endif %} mb-3">
                 <div class="d-flex align-items-center w-100 me-4">
                     {%- set urlId = url.vars.value.id is defined and url.vars.value.id ? url.vars.value.id : null -%}
-                    <div class="input-group url-group{%- if allLocales|length == 1 -%} unique-locale{%- endif -%}" data-url-id="{{ urlId }}">
+                    <div class="input-group url-group{% if allLocales|length == 1 %} unique-locale{% endif %}" data-url-id="{{ urlId }}">
                         {{ form_widget(url.code) }}
                         {%- if allLocales|length > 1 -%}
                             <div class="input-group-append">
                                 <span class="input-group-text h-100" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
-                                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
                                 </span>
                             </div>
                         {%- endif -%}
@@ -66,7 +66,7 @@
                     </a>
                     <span>
                         <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: locale, url: urlId}) }}"
-                           data-bs-toggle="tooltip" title="{{ "Référencement avancé"|trans }}"
+                           data-bs-toggle="tooltip" title="{{"Référencement avancé"|trans }}"
                            class="btn-icon">
                             <i class="icm-chart-line"></i>
                         </a>

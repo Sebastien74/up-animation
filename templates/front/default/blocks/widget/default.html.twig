@@ -5,7 +5,7 @@
 {%- set asSocialWall = 'elfsight' in slug or 'elfsight' in intl.introduction -%}
 {%- set code = asSocialWall ? 'elfsight' : (slug ? slug : 'iframe') -%}
 
-<div class="widget-block{%- if asSocialWall -%} social-wall-wrap{%- endif -%}">
+<div class="widget-block {% if asSocialWall %} social-wall-wrap{% endif %}">
     {%- if asSocialWall -%}
         {%- set content = intl.introduction|htmlEntities(false) -%}
         {%- set split = content|split('</script>') -%}

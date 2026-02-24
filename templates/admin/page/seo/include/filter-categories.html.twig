@@ -5,12 +5,12 @@
 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
     {%- for category, item in entities -%}
         {%- set label = item['main'][1].classname is defined ? item['main'][1].classname : (item[0].classname is defined ? item[0].classname : null) -%}
-        <a id="v-pills-{{ category }}-tab"
-           class="nav-link{%- if currentCategory == category -%} active{%- endif -%}"
+        <a id="v-pills- {{ category }}-tab"
+           class="nav-link {% if currentCategory == category %} active{% endif %}"
            data-bs-toggle="pill"
-           href="#v-pills-{{ category }}"
+           href="#v-pills- {{ category }}"
            role="tab"
-           aria-controls="v-pills-{{ category }}"
+           aria-controls="v-pills- {{ category }}"
            aria-selected="false">
             {%- set entityDomain = 'entity_'~category -%}
             {%- set label = 'plural'|trans([], entityDomain) and 'plural'|trans([], entityDomain) != 'plural'
@@ -20,7 +20,7 @@
     {%- endfor -%}
     {%- if models is defined -%}
         <a id="v-pills-models-tab"
-           class="nav-link{%- if currentCategory == 'models' -%} active{%- endif -%}"
+           class="nav-link {% if currentCategory == 'models' %} active{% endif %}"
            data-bs-toggle="pill"
            href="#v-pills-models"
            role="tab"
@@ -34,19 +34,19 @@
 <div class="tab-content" id="v-pills-tab-tree">
 
     {%- for category, item in entities -%}
-        <div class="tab-pane fade no-border{%- if currentCategory == category -%} show active{%- endif -%}" id="v-pills-{{ category }}" role="tabpanel" aria-labelledby="v-pills-{{ category }}-tab">
+        <div class="tab-pane fade no-border{% if currentCategory == category %} show active{% endif %}" id="v-pills- {{ category }}" role="tabpanel" aria-labelledby="v-pills- {{ category }}-tab">
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <form role="search" class="seo-search d-inline-block w-100 me-2">
                     <div class="input-group">
                         <span class="input-group-text"><i class="icm-search"></i></span>
-                        <input placeholder="{{ "Rechercher"|trans }}" class="form-control" type="text" data-target=".entities-list">
+                        <input placeholder="{{"Rechercher"|trans }}" class="form-control" type="text" data-target=".entities-list">
                     </div>
                 </form>
                 <div class="tree-toggle-actions d-flex align-items-center">
-                    <span class="expand-all-entities me-1" data-bs-toggle="tooltip" title="{{ "Tout afficher"|trans }}">
+                    <span class="expand-all-entities me-1" data-bs-toggle="tooltip" title="{{"Tout afficher"|trans }}">
                         <i class="icm-arrow-alt-to-bottom"></i>
                     </span>
-                    <span class="collapse-all-entities" data-bs-toggle="tooltip" title="{{ "Tout cacher"|trans }}">
+                    <span class="collapse-all-entities" data-bs-toggle="tooltip" title="{{"Tout cacher"|trans }}">
                         <i class="icm-arrow-alt-to-top"></i>
                     </span>
                 </div>
@@ -63,11 +63,11 @@
     {%- set isModel = currentCategory == 'models' -%}
 
     {%- if models is defined -%}
-        <div class="tab-pane fade no-border{%- if isModel -%} show active{%- endif -%}" id="v-pills-models" role="tabpanel" aria-labelledby="v-pills-models-tab">
+        <div class="tab-pane fade no-border{% if isModel %} show active{% endif %}" id="v-pills-models" role="tabpanel" aria-labelledby="v-pills-models-tab">
             <form role="search" class="seo-search d-inline-block w-100 mb-3">
                 <div class="input-group">
                     <span class="input-group-text"><i class="icm-search"></i></span>
-                    <input placeholder="{{ "Rechercher"|trans }}" class="form-control" type="text" data-target=".models-list">
+                    <input placeholder="{{"Rechercher"|trans }}" class="form-control" type="text" data-target=".models-list">
                 </div>
             </form>
             <ul class="models-list tree-list mb-0">
@@ -75,7 +75,7 @@
                     <li class="item">
                         <span class="item-link">
                             <a href="{{ path('admin_seo_model_edit', {website: websiteId(), model: model.id, entitylocale: entitylocale}) }}"
-                               class="link-item{%- if isModel and entity.id == model.id -%} active bold{%- endif -%}">
+                               class="link-item {% if isModel and entity.id == model.id %} active bold{% endif %}">
                                 {%- set modelInterface = model.className|interface -%}
                                 {%- set entityDomain = 'entity_'~modelInterface.name -%}
                                 {%- set label = 'plural'|trans([], entityDomain) and 'plural'|trans([], entityDomain) != 'plural'

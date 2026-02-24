@@ -43,7 +43,7 @@
     {%- set updatedAt = updatedAt ? updatedAt|format_datetime(pattern='dd/MM/Y', locale=app.request.locale) : null -%}
     {%- set isCookiePage = 'cookies' in app.request.uri -%}
 
-    <div id="content-{{ templateName }}" class="template-page{%- if not isCookiePage -%} pb-lg-5{%- endif -%}">
+    <div id="content- {{ templateName }}" class="template-page {% if not isCookiePage %} pb-lg-5{% endif %}">
         {%- include 'front/'~websiteTemplate~'/layout.html.twig' -%}
         {%- if templateExist -%}
             <section class="layout-zone text-block pt-lg pb-lg">

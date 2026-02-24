@@ -26,14 +26,14 @@
         <ul class="nav nav-tabs w-100" role="tablist">
             {%- for url in form.urls -%}
                 {%- set locale = url.vars.value.locale -%}
-                <li class="nav-item{%- if locale not in allLocales -%} d-none{%- endif -%}" data-bs-toggle="tooltip"
+                <li class="nav-item {% if locale not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip"
                     title="{{ languageName(locale, app.user.locale) }}">
-                    <a class="nav-link{%- if locale == defaultLocale -%} active{%- endif -%}" data-bs-toggle="tab"
-                       id="seo-basic-{{ locale }}-tab"
-                       aria-selected="{%- if locale == defaultLocale -%}true{%- else -%}false{%- endif -%}"
-                       href="#seo-basic-tab-{{ locale }}" role="tab">
+                    <a class="nav-link {% if locale == defaultLocale %} active{% endif %}" data-bs-toggle="tab"
+                       id="seo-basic- {{ locale }}-tab"
+                       aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}"
+                       href="#seo-basic-tab- {{ locale }}" role="tab">
                         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                             data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load"
+                             data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load"
                              height="14" width="19">
                     </a>
                 </li>
@@ -51,9 +51,9 @@
                 <div class="d-none">
             {%- endif -%}
             {%- if allLocales|length > 1 -%}
-                <div id="seo-basic-tab-{{ locale }}"
-                     class="tab-pane fade{%- if locale == defaultLocale -%} show active{%- endif -%}" role="tabpanel"
-                     aria-labelledby="seo-basic-{{ locale }}-tab">
+                <div id="seo-basic-tab- {{ locale }}"
+                     class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}" role="tabpanel"
+                     aria-labelledby="seo-basic- {{ locale }}-tab">
                     <div class="p-20 pb-0">
                         <div class="row">
             {%- endif -%}

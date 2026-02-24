@@ -36,7 +36,7 @@
 
 {#            https://www.svgrepo.com/collection/responsive-flat-icons #}
 
-            <div class="{%- if granted('ROLE_INTERNAL') -%}col-lg-8 internal{%- else -%}col-12{%- endif -%} left d-flex flex-column my-auto">
+            <div class="{% if granted('ROLE_INTERNAL') %}col-lg-8 internal{% else %}col-12{% endif %} left d-flex flex-column my-auto">
                 <div class="row d-flex w-100">
                     {%- if 'pages'|moduleActive(configuration) -%}
                         <div class="col-6 col-md-4 text-center py-2">
@@ -118,7 +118,7 @@
                                                     <li class="small-count text-dark d-inline-block">
                                                         <span class="flag d-inline-block" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
                                                             <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                                                 data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}"
+                                                                 data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}"
                                                                  width="15" height="15"
                                                                  class="img-fluid fit-cover lazy-load">
                                                         </span>
@@ -153,7 +153,7 @@
                                 </thead>
                                 <tbody>
                                     {%- for value in searchValues -%}
-                                        <tr id="value-row-{{ value.id }}">
+                                        <tr id="value-row- {{ value.id }}">
                                             <td class="align-middle text-start">{{ value.text }}</td>
                                             <td class="align-middle text-start">
                                                 <ul class="reset">
@@ -164,8 +164,8 @@
                                             <td class="align-middle text-end">
                                                 <span class="text-center">
                                                     <a href="{{ path('admin_searchvalue_delete', {website: website.id, searchvalue: value.id}) }}"
-                                                       data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
-                                                       data-target="#entity-row-{{ value.id }}"
+                                                       data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
+                                                       data-target="#entity-row- {{ value.id }}"
                                                        class="text-dark swal-delete-link cursor">
                                                         <i class="icm-trash"></i>
                                                     </a>

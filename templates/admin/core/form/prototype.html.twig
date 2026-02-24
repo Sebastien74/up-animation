@@ -22,7 +22,7 @@
         {%- if prototypeGroup -%}
             <div class="{{ prototypeGroup }} mb-4 prototype prototype-block-group">
         {%- endif -%}
-            <div class="prototype-block p-3 {%- if prototypeGroup -%}h-100{%- else -%}prototype mb-4{%- endif -%}">
+            <div class="prototype-block p-3 {% if prototypeGroup %}h-100{% else %}prototype mb-4{% endif %}">
                 <div class="row">
                     {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: property, excludes: excluded} only -%}
                     {%- if prototypePosition -%}
@@ -35,7 +35,7 @@
                             interfaceName: interfaceName
                         } -%}
                     {%- elseif deletableProperty -%}
-                        <span class="delete-disabled" data-bs-toggle="tooltip" title="{{ "Donnée requise"|trans|striptags }}">
+                        <span class="delete-disabled" data-bs-toggle="tooltip" title="{{"Donnée requise"|trans|striptags }}">
                             <i class="icm-trash"></i>
                         </span>
                     {%- endif -%}
@@ -51,7 +51,7 @@
         <div class="col-12">
             <h4 class="main-subtitle">
                 {%- if prototypeOptions['attr']['icon'] is defined and prototypeOptions['attr']['icon'] -%}
-                    <i class="icm-{{ prototypeOptions['attr']['icon'] }}"></i>
+                    <i class="icm- {{ prototypeOptions['attr']['icon'] }}"></i>
                 {%- else -%}
                     <i class="icm-list-ul"></i>
                 {%- endif -%}
@@ -75,7 +75,7 @@
 
     <div id="{{ field.vars.id }}_collection"
          data-index="{{ form[field.vars.name]|length }}"
-         class="collection{%- if prototypePosition -%} prototype-sortable{%- endif -%}{%- if not displayBtn -%} no-shadow{%- endif -%} {%- if prototypeGroup -%}row m-0 px-0 w-100{%- else -%}col-12{%- endif -%}"
+         class="collection {% if prototypePosition %} prototype-sortable{% endif %}{% if not displayBtn %} no-shadow{% endif %} {% if prototypeGroup %}row m-0 px-0 w-100{% else %}col-12{% endif %}"
          data-prototype="{{ macro.field_prototype(field.vars.prototype, prototypeGroup)|e('html_attr') }}">
         {%- include 'admin/include/stripe-preloader.html.twig' -%}
         {%- for property in form[field.vars.name] -%}
@@ -85,9 +85,9 @@
 
     {%- if displayBtn -%}
         <div class="col-12 text-end mb-4">
-            <button role="button" class="add-collection btn {%- if fullBtn is defined -%}full-prototype-btn w-100{%- else -%}btn-app success{%- endif -%}"
+            <button role="button" class="add-collection btn {% if fullBtn is defined %}full-prototype-btn w-100{% else %}btn-app success{% endif %}"
                     data-collection-target="append"
-                    data-target="#{{ field.vars.id }}_collection">
+                    data-target="# {{ field.vars.id }}_collection">
                 {%- if fullBtn is defined -%}
                     <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
                          src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="

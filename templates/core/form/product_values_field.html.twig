@@ -59,7 +59,7 @@
                     <li class="ui-feature" data-id="{{ featureId }}" data-product="{{ entity.id }}"
                         data-pos-path="{{ path('admin_catalogfeaturevalueproduct_feature_position', {website: websiteId(), product: entity.id, feature: featureId}) }}">
                         <h5 class="card-subtitle mb-0">
-                            <span class="handle-feature cursor" data-toggle="tooltip" title="{{ "Déplacer"|trans|raw }}">
+                            <span class="handle-feature cursor" data-toggle="tooltip" title="{{"Déplacer"|trans|raw }}">
                                 {{ 'far arrows-alt'|icon(null, 14, 'info-darken') }}
                             </span>
                             <span class="entitled">{{ feature.adminName }}</span>
@@ -92,16 +92,16 @@
                                     {%- endfor -%}
                                 {%- endif -%}
                                 {%- set bgRow = asDefault ? 'bg-info-darken' : (asCustom ? 'bg-info' : 'bg-gray') -%}
-                                <li id="ui-value-{{ value.id }}" class="ui-value {{ bgRow }} d-flex align-items-center py-2{%- if asDefault -%} as-default{%- endif -%}"
+                                <li id="ui-value- {{ value.id }}" class="ui-value {{ bgRow }} d-flex align-items-center py-2{% if asDefault %} as-default{% endif %}"
                                     data-position="{{ value.position }}" data-id="{{ value.id }}"
                                     data-pos-path="{{ path('admin_catalogfeaturevalueproduct_position', {website: websiteId(), catalogfeaturevalueproduct: value.id}) }}">
                                     {%- if draggable -%}
-                                        <span class="handle-value handle-circle d-inline-flex{%- if asDefault -%} as-default{%- endif -%}" data-toggle="tooltip" title="{{ "Déplacer"|trans|striptags }}">
+                                        <span class="handle-value handle-circle d-inline-flex{% if asDefault %} as-default{% endif %}" data-toggle="tooltip" title="{{"Déplacer"|trans|striptags }}">
                                             {{ 'far arrows-alt'|icon(null, 14, 'info') }}
                                         </span>
                                     {%- endif -%}
-                                    <div class="d-flex align-items-center ui-value-row not-editable mb-0 me-2 {%- if draggable -%}ms-auto as-draggable{%- else -%}mx-4{%- endif -%}">
-                                        <strong class="my-auto me-4 feature-col{%- if asDefault or asCustom -%} text-info-light{%- endif -%}">
+                                    <div class="d-flex align-items-center ui-value-row not-editable mb-0 me-2 {% if draggable %}ms-auto as-draggable{% else %}mx-4{% endif %}">
+                                        <strong class="my-auto me-4 feature-col{% if asDefault or asCustom %} text-info-light{% endif %}">
                                             {{ entitled }}
                                             {%- if value.value.isCustomized is defined and value.value.isCustomized -%}
                                                 <small class="value-info text-italic d-inline-block d-inline-block w-100">{{ "Personnalisée"|trans|raw }} </small>
@@ -111,7 +111,7 @@
                                             {%- endif -%}
                                         </strong>
 {#                                        {%- if not asDefault -%}#}
-                                            <span class="my-auto value-col me-5{%- if asDefault or asCustom -%} text-info-light{%- endif -%}">{%- if value.value.adminName is defined and value.value.adminName -%}{{ value.value.adminName }}{%- endif -%}</span>
+                                            <span class="my-auto value-col me-5{% if asDefault or asCustom %} text-info-light{% endif %}">{%- if value.value.adminName is defined and value.value.adminName -%}{{ value.value.adminName }}{%- endif -%}</span>
 {#                                        {%- endif -%}#}
                                         <span class="my-auto edit-col">
                                             {%- if property.displayInArray is defined -%}
@@ -135,7 +135,7 @@
 {#                                                {%- set feature = feature is defined ? feature : (value.feature is defined ? value.feature : null) -%}#}
 {#                                                {%- if feature and value.value.id is defined and value.value.id -%}#}
 {#                                                    <a href="{{ path('admin_catalogfeaturevalue_edit', {website: websiteId(), catalogfeature: feature.id, catalogfeaturevalue: value.value.id}) }}"#}
-{#                                                       data-toggle="tooltip" title="{{ "Éditer la valeur"|trans }}"#}
+{#                                                       data-toggle="tooltip" title="{{"Éditer la valeur"|trans }}"#}
 {#                                                       class="swal-product-value btn btn-transparent btn-circle">#}
 {#                                                        {{ 'fas pencil-alt'|icon(null, 14, 'info') }}#}
 {#                                                    </a>#}
@@ -173,7 +173,7 @@
     <div class="col-12 text-end mb-4">
         <button role="button" class="add-collection btn full-prototype-btn w-100"
                 data-collection-target="append"
-                data-target="#{{ id }}-collection">
+                data-target="# {{ id }}-collection">
             <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
                  class="img-fluid rounded-add-img lazy-load"

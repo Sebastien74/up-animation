@@ -9,11 +9,11 @@
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['translation']['entity'].adminName is defined ? intlsModules['translation']['entity'].adminName : 'Traductions'|trans) -%}
     {%- set icon = intlsModules['translation']['entity'].iconClass is defined and intlsModules['translation']['entity'].iconClass ? intlsModules['translation']['entity'].iconClass : '/medias/icons/light/globe-stand.svg' -%}
     {%- if granted('ROLE_INTERNAL') -%}
-        <li{%- if active -%} class="active"{%- endif -%}>
-            <a class="as-arrow{%- if active -%} active{%- endif -%}" href="javascript:void(0)" aria-expanded="false">
+        <li {% if active -%} class="active" {%- endif -%}>
+            <a class="as-arrow {% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
                 <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
             </a>
-            <ul aria-expanded="false" class="collapse{%- if active -%} in{%- endif -%}">
+            <ul aria-expanded="false" class="collapse {% if active %} in{% endif %}">
                 <li class="mb-2 w-100">
                     {%- include 'admin/page/translation/translation-search.html.twig' -%}
                 </li>
@@ -21,16 +21,16 @@
                     <li><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}">{{ transDomain.adminName }}</a></li>
                 {%- endfor -%}
                 <li>
-                    <a href="{{ path('admin_translationdomain_index', {website: websiteId}) }}"{%- if 'translations/domains' in uri-%} class="active" {%- endif -%}>{{ "Groupes de traductions"|trans }}</a>
+                    <a href="{{ path('admin_translationdomain_index', {website: websiteId}) }}" {%- if 'translations/domains' in uri-%} class="active" {%- endif -%}>{{ "Groupes de traductions"|trans }}</a>
                 </li>
             </ul>
         </li>
     {%- else -%}
-        <li{%- if '/translations/' in uri -%} class="active"{%- endif -%}>
-            <a class="as-arrow{%- if active -%} active{%- endif -%}" href="javascript:void(0)" aria-expanded="{%- if active -%}true{%- else -%}false{%- endif -%}">
+        <li {% if '/translations/' in uri -%} class="active" {%- endif -%}>
+            <a class="as-arrow {% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="{% if active %}true{% else %}false{% endif %}">
                 <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
             </a>
-            <ul aria-expanded="false" class="collapse{%- if active -%} in{%- endif -%}{%- if transDomains|length == 0 -%} pb-3{%- endif -%}">
+            <ul aria-expanded="false" class="collapse {% if active %} in{% endif %}{% if transDomains|length == 0 %} pb-3{% endif %}">
                 <li class="mb-2 w-100">
                     {%- include 'admin/page/translation/translation-search.html.twig' -%}
                 </li>

@@ -6,13 +6,13 @@
 
     <ul id="zones-sortable" class="reset">
         {%- for zone in layout.zones -%}
-            <li class="zone{%- if zone.hide -%} hide-zone{%- endif -%}" id="zone-{{ zone.id }}" data-id="{{ zone.id }}" data-position="{{ zone.position }}">
+            <li class="zone {% if zone.hide %} hide-zone{% endif %}" id="zone- {{ zone.id }}" data-id="{{ zone.id }}" data-position="{{ zone.position }}">
                 <div class="zone-sidebar d-flex flex-shrink-0 flex-column align-items-center gap-2 py-3">
 
                     {%- if 'edit'|moduleActive(configuration) -%}
                         <span class="item handle-zone btn-icon grabbable btn-action"
                               data-bs-toggle="tooltip"
-                              data-placement="right" title="{{ "Déplacer"|trans|striptags }}">
+                              data-placement="right" title="{{"Déplacer"|trans|striptags }}">
                             <i class="icm-arrows-alt"></i>
                         </span>
                     {%- endif -%}
@@ -22,7 +22,7 @@
                         {%- if zone.hide -%}
                             <span class="item btn-action"
                               data-bs-toggle="tooltip"
-                              data-placement="right" title="{{ "Zone désactivée"|trans|striptags }}">
+                              data-placement="right" title="{{"Zone désactivée"|trans|striptags }}">
                                 <i class="icm-ban text-danger"></i>
                             </span>
                         {%- endif -%}
@@ -34,12 +34,12 @@
                                 <a class="zone-resize cursor btn-action"
                                    data-zone="{{ zone.id }}"
                                    data-size="{{ size }}"
-                                   data-compress="{{ "Étendre"|trans }}"
-                                   data-expand="{{ "Rétrécir"|trans }}">
-                                    <span class="icon-wrap{%- if zone.fullSize -%} d-none{%- endif -%}">
+                                   data-compress="{{"Étendre"|trans }}"
+                                   data-expand="{{"Rétrécir"|trans }}">
+                                    <span class="icon-wrap {% if zone.fullSize %} d-none{% endif %}">
                                         <i class="icm-expand-arrows-alt"></i>
                                     </span>
-                                    <span class="icon-wrap{%- if not zone.fullSize -%} d-none{%- endif -%}">
+                                    <span class="icon-wrap {% if not zone.fullSize %} d-none{% endif %}">
                                         <i class="icm-compress-arrows-alt"></i>
                                     </span>
                                 </a>
@@ -53,7 +53,7 @@
                                    class="position-relative btn-action"
                                    data-bs-toggle="tooltip"
                                    data-placement="right"
-                                   title="{{ "Image de fond"|trans|striptags }}">
+                                   title="{{"Image de fond"|trans|striptags }}">
                                     {%- if mediaRelation and mediaRelation.media and mediaRelation.media.filename -%}
                                         <span style="background: url({{ asset(mediaRelation|file({}, {path: true})) }})" class="image-info-bulle"></span>
                                     {%- endif -%}
@@ -66,12 +66,12 @@
                             <span class="item background-item">
                                 {%- set color = 'background'|color(website, zone.backgroundColor) -%}
                                 {%- set hexa = color.color is defined and color.color ? color.color : zone.hexadecimalCode -%}
-                                <span class="color-info-bulle"{%- if hexa -%} style="background-color: {{ hexa }}" {%- endif -%}></span>
+                                <span class="color-info-bulle" {%- if hexa -%} style="background-color: {{ hexa }}" {%- endif -%}></span>
                                 <span class="edit-layout-element-btn btn-palette cursor btn-action"
                                    data-path="{{ path('admin_zone_background', {website: websiteId(), zone: zone.id}) }}"
                                    data-bs-toggle="tooltip"
                                    data-placement="right"
-                                   title="{{ "Couleur de fond"|trans|striptags }}">
+                                   title="{{"Couleur de fond"|trans|striptags }}">
                                     <i class="icm-palette"></i>
                                 </span>
                             </span>
@@ -85,12 +85,12 @@
                                 <a class="zone-cols-standardize cursor btn-action"
                                    data-zone="{{ zone.id }}"
                                    data-standardize="{{ standardize }}"
-                                   data-cols-default="{{ "Largeur par défaut des colonnes"|trans }}"
-                                   data-cols-standardize="{{ "Uniformiser la largeur des colonnes"|trans }}">
-                                    <span class="icon-wrap{%- if isStandardize -%} d-none{%- endif -%}">
+                                   data-cols-default="{{"Largeur par défaut des colonnes"|trans }}"
+                                   data-cols-standardize="{{"Uniformiser la largeur des colonnes"|trans }}">
+                                    <span class="icon-wrap {% if isStandardize %} d-none{% endif %}">
                                         <i class="icm-indent"></i>
                                     </span>
-                                    <span class="icon-wrap{%- if not isStandardize -%} d-none{%- endif -%}">
+                                    <span class="icon-wrap {% if not isStandardize %} d-none{% endif %}">
                                         <i class="icm-outdent"></i>
                                     </span>
                                 </a>
@@ -104,7 +104,7 @@
                                       data-preloader="#layout-preloader"
                                       data-bs-toggle="tooltip"
                                       data-placement="right"
-                                      title="{{ "Dupliquer"|trans|striptags }}">
+                                      title="{{"Dupliquer"|trans|striptags }}">
                                     <i class="icm-copy"></i>
                                 </span>
                             </span>
@@ -113,7 +113,7 @@
                         {%- if 'edit'|moduleActive(configuration) -%}
                             <span data-bs-toggle="tooltip"
                                   data-placement="right"
-                                  title="{{ "Configuration"|trans|striptags }}"
+                                  title="{{"Configuration"|trans|striptags }}"
                                   data-path="{{ path('admin_zone_configuration', {website: websiteId(), zone: zone.id}) }}"
                                   class="item edit-layout-element-btn btn-action">
                                 <i class="icm-cog-reg"></i>
@@ -124,8 +124,8 @@
 
                     {%- if 'delete'|moduleActive(configuration) -%}
                         <span href="{{ path('admin_zone_delete', {website: websiteId(), layout: layout.id, zone: zone.id}) }}"
-                           data-bs-toggle="tooltip" data-placement="right" title="{{ "Supprimer"|trans|striptags }}"
-                           data-target="#zone-{{ zone.id }}"
+                           data-bs-toggle="tooltip" data-placement="right" title="{{"Supprimer"|trans|striptags }}"
+                           data-target="#zone- {{ zone.id }}"
                            data-type="stay"
                            class="swal-delete-link cursor btn-action btn-icon danger mt-auto">
                             <i class="icm-trash"></i>

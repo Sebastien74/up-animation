@@ -29,11 +29,11 @@
                         {%- if category.slug != "functional" -%}
                             {%- set intl = intl(group) -%}
                             <tr>
-                                <td data-title="{{ "Groupe"|trans|striptags }}">
+                                <td data-title="{{"Groupe"|trans|striptags }}">
                                     <div class="content text-bold">
                                         <span class="img-wrap float-start me-2">
                                             <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                                 data-src="{{ asset('build/gdpr/images/'~group.slug~'-gdpr.svg', 'gdpr') }}"
+                                                 data-src=" {{ asset('build/gdpr/images/'~group.slug~'-gdpr.svg', 'gdpr') }}"
                                                  class="lazy-load"
                                                  width="25" height="auto"
                                                  alt="{{ group.adminName|striptags }}" title="{{ group.adminName|striptags }}" />
@@ -41,7 +41,7 @@
                                         {{ group.adminName|unescape|raw }}
                                     </div>
                                 </td>
-                                <td data-title="{{ "Description"|trans|striptags }}">
+                                <td data-title="{{"Description"|trans|striptags }}">
                                     <div class="content">
                                         <div class="row">
                                             <div class="col-lg-9 my-auto">
@@ -57,12 +57,12 @@
                                             </div>
                                             <div class="col-lg-3 my-auto">
                                                 <div class="material-switch float-end">
-                                                    <input id="table-gdpr-{{ group.slug }}"
+                                                    <input id="table-gdpr- {{ group.slug }}"
                                                            type="checkbox"
                                                            class="cookie-group-checkbox"
                                                            data-service="{{ group.service }}"
-                                                           data-code="{{ group.slug }}"{%- if cookie(group.slug) -%} checked{%- endif -%} />
-                                                    <label for="table-gdpr-{{ group.slug }}" class="label-primary"></label>
+                                                           data-code="{{ group.slug }}" {%- if cookie(group.slug) -%} checked{%- endif -%} />
+                                                    <label for="table-gdpr- {{ group.slug }}" class="label-primary"></label>
                                                 </div>
                                             </div>
                                         </div>

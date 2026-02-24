@@ -34,7 +34,7 @@
                 <i class="icm-sync-alt"></i><span>{{ "Extraire tout"|trans }}</span>
             </a>
             {%- if not toExtract -%}
-                <a href="{{ path('admin_intls_export', { website: websiteId }) }}" class=" btn-app">
+                <a href="{{ path('admin_intls_export', { website: websiteId }) }}" class="btn-app">
                     <i class="icm-upload"></i><span>{{ "Exporter les traductions"|trans }}</span>
                 </a>
                 <a href="#" class="btn-app" data-bs-toggle="modal" data-bs-target="#import-modal">
@@ -84,7 +84,7 @@
                             {%- for transLocale in allLocales -%}
                                 <th class="align-middle">
                                     {%- if allLocales|length > 1 -%}
-                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
+                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
                                              data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
                                              class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">
                                     {%- endif -%}
@@ -100,36 +100,36 @@
                             {%- set name = 'singular'|trans([], entity.name) and 'singular'|trans([], entity.name) != 'singular'
                                 ? 'singular'|trans([], entity.name) : entity.adminName -%}
                             {%- if name != '_undefined' -%}
-                                <tr class="{%- if loop.index is even -%}even{%- else -%}odd{%- endif -%}">
+                                <tr class="{% if loop.index is even %}even{% else %}odd{% endif %}">
                                     <td class="align-middle">
                                         <div class="row">
                                             <div class="col-7 my-auto">
                                                 {{ name }}
                                                 {%- if granted('ROLE_INTERNAL') -%}
                                                     {%- if entity.forTranslator -%}
-                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{ "Pour le traducteur"|trans|striptags }}"><i class="icm-globe ms-2"></i></span>
+                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{"Pour le traducteur"|trans|striptags }}"><i class="icm-globe ms-2"></i></span>
                                                     {%- endif -%}
                                                     {%- if entity.extract -%}
-                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{ "À exporter"|trans|striptags }}"><i class="icm-upload ms-2"></i></span>
+                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{"À exporter"|trans|striptags }}"><i class="icm-upload ms-2"></i></span>
                                                     {%- endif -%}
                                                 {%- endif -%}
                                             </div>
                                             <div class="col-5 text-end">
                                                 {%- if granted('ROLE_INTERNAL') -%}
-                                                    <span data-bs-toggle="tooltip" title="{{ "Éditer le groupe"|trans|striptags }}">
+                                                    <span data-bs-toggle="tooltip" title="{{"Éditer le groupe"|trans|striptags }}">
                                                         <a href="{{ path('admin_translationdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
                                                            class="btn-app"
                                                           >
                                                             <i class="icm-pencil-alt"></i>
                                                         </a>
                                                     </span>
-                                                    <span data-bs-toggle="tooltip" title="{{ "Extraire"|trans|striptags }}">
+                                                    <span data-bs-toggle="tooltip" title="{{"Extraire"|trans|striptags }}">
                                                         <a class="translation-extract-btn btn cursor" data-larges="1" data-domain="{{ entity.name }}">
                                                             <i class="icm-retweet-alt"></i>
                                                         </a>
                                                     </span>
                                                 {%- endif -%}
-                                                <span data-bs-toggle="tooltip" title="{{ "Éditer les contenus"|trans|striptags }}">
+                                                <span data-bs-toggle="tooltip" title="{{"Éditer les contenus"|trans|striptags }}">
                                                     <a href="{{ path('admin_translationsdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
                                                        class="btn"
                                                       >
@@ -137,7 +137,7 @@
                                                     </a>
                                                 </span>
                                                 {%- if granted('ROLE_INTERNAL') -%}
-                                                    <span data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
+                                                    <span data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}">
                                                         <a class="cursor sa-warning swal-delete-link"
                                                            href="{{ path('admin_translationsdomain_delete', {website: websiteId(), translationdomain: entity.id}) }}">
                                                             <i class="icm-trash"></i>

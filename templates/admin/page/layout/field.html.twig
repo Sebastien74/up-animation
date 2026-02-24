@@ -16,7 +16,7 @@
 {%- block body -%}
 
     {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
-        <div id="edit-form-{{ interface.name }}" class="card">
+        <div id="edit-form- {{ interface.name }}" class="card">
 
             {%- include 'admin/core/form/save/header.html.twig' -%}
 
@@ -68,7 +68,7 @@
                             {%- set asChild = not isNew and property.vars.data.value -%}
                             {%- set asLabel = not isNew and property.vars.data.values.count > 0 -%}
                             {%- set interfaceName = property.vars.errors.form.config.dataClass|interfaceName -%}
-                            <div id="{{ interfaceName~"-"~entityId }}" class="prototype prototype-block p-3 mb-3{%- if asChild -%} ms-4{%- endif -%}{%- if asLabel -%} as-field-label{%- endif -%}">
+                            <div id="{{ interfaceName~"-"~entityId }}" class="prototype prototype-block p-3 mb-3{% if asChild %} ms-4{% endif %}{% if asLabel %} as-field-label{% endif %}">
                                 <div class="row">
                                     {%- if property.intls|length > 0 -%}
                                         <div class="d-none">{{ form_row(property.adminName) }}</div>
@@ -103,7 +103,7 @@
                         </div>
 
                         <div class="col-12 text-end mb-4">
-                            <button role="button" class="add-collection btn-app success{%- if isCheckboxType -%} d-none{%- endif -%}"
+                            <button role="button" class="add-collection btn-app success{% if isCheckboxType %} d-none{% endif %}"
                                     data-collection-target="append"
                                     data-target="#configuration-values-collection">
                                 <i class="icm-plus"></i>

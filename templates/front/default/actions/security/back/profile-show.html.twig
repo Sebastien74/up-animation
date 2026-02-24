@@ -41,7 +41,7 @@
                                 {%- set emailValidMessage = user.confirmEmail ? 'E-mail confirmé'|trans : 'E-mail non confirmé'|trans -%}
                                 {%- set iconEmailValid = user.confirmEmail ? 'check-circle' : 'times-circle' -%}
                                 {%- set iconEmailColor = user.confirmEmail ? 'success' : 'danger' -%}
-                                <i class="icon-{{ iconEmailValid }} fz-xs ms-2 text-{{ iconEmailColor }}" data-bs-toggle="tooltip" title="{{ emailValidMessage|striptags }}"></i>
+                                <i class="icon- {{ iconEmailValid }} fz-xs ms-2 text-{{ iconEmailColor }}" data-bs-toggle="tooltip" title="{{ emailValidMessage|striptags }}"></i>
                             </li>
                             <li><strong>{{ "Langue :"|trans|raw }}</strong> {{ user.locale|languageName }}</li>
                         </ul>
@@ -52,7 +52,7 @@
                         <section class="user-address-container mb-4 mt-4">
                             <h3>
                                 {{ "Adresse de facturation"|trans|raw }}
-                                <span class="d-inline-block ms-3" data-bs-toggle="tooltip" title="{{ "Éditer mes informations"|trans }}">
+                                <span class="d-inline-block ms-3" data-bs-toggle="tooltip" title="{{"Éditer mes informations"|trans }}">
                                     <a href="{{ path('security_front_profile_edit') }}">
                                         {{ 'fal pencil'|icon(null, 20) }}
                                     </a>
@@ -65,7 +65,7 @@
                         <section class="user-address-container">
                             <h3>
                                 {{ "Adresse de livraison"|trans|raw }}
-                                <span class="d-inline-block ms-3" data-bs-toggle="tooltip" title="{{ "Éditer mes informations"|trans|striptags }}">
+                                <span class="d-inline-block ms-3" data-bs-toggle="tooltip" title="{{"Éditer mes informations"|trans|striptags }}">
                                     <a href="{{ path('security_front_profile_edit') }}">
                                         {{ 'fal pencil'|icon(null, 20) }}
                                     </a>

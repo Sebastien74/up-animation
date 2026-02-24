@@ -44,7 +44,7 @@
     {%- set haveBg = background and 'transparent' not in background -%}
     {%- set displayMedia = (media and showThumbnail) or (thumbPlaceholder and showThumbnail) -%}
 
-    <{{ card }} class="card-block bg-transparent card h-100 border-0 {%- if targetLink -%} have-link{%- endif -%}{%- if class -%} {{ class }}{%- endif -%}{%- if haveBg -%} have-bg{%- endif -%}">
+    <{{ card }} class="card-block bg-transparent card h-100 border-0 {% if targetLink %} have-link{% endif %}{% if class %} {{ class }}{% endif %}{% if haveBg %} have-bg{% endif %}">
         {%- if vars.webmaster is defined -%}
             {%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
             {{ macroWebmaster.box(vars.webmaster) }}
@@ -59,14 +59,14 @@
                 {%- endif -%}
             </div>
         {%- endif -%}
-        <div class="card-body border-0 pt-{%- if displayMedia -%}4{%- else -%}0 no-media{%- endif -%} {{ paddingX~' '~background }} {%- if showLink and targetLink -%}pb-0{%- else -%}pb-4{%- endif -%}{%- if showLink and targetLink -%} have-link{%- endif -%}{%- if showLink and targetLink -%} have-link{%- endif -%}">
+        <div class="card-body border-0 pt-{% if displayMedia %}4{% else %}0 no-media{% endif %} {{ paddingX~' '~background }} {% if showLink and targetLink %}pb-0{% else %}pb-4{% endif %}{% if showLink and targetLink %} have-link{% endif %}{% if showLink and targetLink %} have-link{% endif %}">
             {%- if title -%}
                 {%- if targetLink -%}
                     <a href="{{ targetLink }}" class="d-inline-block w-100"
-                    {%- if newTab -%} target="_blank"{%- else -%}{%- endif -%}
-                    {%- if externalLink -%} rel="noopener noreferrer"{%- endif -%}>
+                    {%- if newTab -%} target="_blank" {%- else -%}{%- endif -%}
+                    {%- if externalLink -%} rel="noopener noreferrer" {%- endif -%}>
                 {%- endif -%}
-                    <h{{ titleForce }} class="title text-bold mb-3">{{ title|unescape|raw }}</h{{ titleForce }}>
+                    <h {{ titleForce }} class="title text-bold mb-3">{{ title|unescape|raw }}</h{{ titleForce }}>
                 {%- if targetLink -%}
                     </a>
                 {%- endif -%}
@@ -89,7 +89,7 @@
                 {%- if showCategory -%}
                     {%- set category = entity.category -%}
                     {%- if category and category.intl.title -%}
-                        <h{{ titleForce + 1 }} class="news-category-title">{{ category.intl.title|raw }}</h{{ titleForce + 1 }}>
+                        <h {{ titleForce + 1 }} class="news-category-title">{{ category.intl.title|raw }}</h{{ titleForce + 1 }}>
                     {%- endif -%}
                 {%- endif -%}
                 <div class="text-block">
@@ -120,7 +120,7 @@
         {%- if showLink and targetLink -%}
             {%- set showLinkLabel = vars.showLinkLabel is defined ? vars.showLinkLabel : (intl.linkLabel is defined and intl.linkLabel ? intl.linkLabel : "En savoir plus"|trans) -%}
             {%- set linkStyle = vars.linkStyle is defined ? vars.linkStyle : (intl.linkStyle is defined and intl.linkStyle ? intl.linkStyle : 'btn btn-primary') -%}
-            <div class="card-footer border-0 {{ paddingX~' '~background }} pb-{%- if haveBg -%}4{%- else -%}0{%- endif -%}">
+            <div class="card-footer border-0 {{ paddingX~' '~background }} pb-{% if haveBg %}4{% else %}0{% endif %}">
                 {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                     link: targetLink,
                     intl: intl,
@@ -191,7 +191,7 @@
                 <i class="icon-headset text-white"></i>
             </div>
             <div class="content position-relative px-4 py-4">
-                <h{{ titleForce }} class="card-title text-uppercase h4 fw-700 mb-0">{{ title|raw }}</h{{ titleForce }}>
+                <h {{ titleForce }} class="card-title text-uppercase h4 fw-700 mb-0">{{ title|raw }}</h{{ titleForce }}>
             </div>
         </div>
     </a>
@@ -199,7 +199,7 @@
 
 {%- macro eventCard(entity, websiteTemplate = 'default') -%}
     {%- set color = entity.pastDate ? 'black' : 'white' -%}
-    <a href="{{ entity.url }}" class="card-event w-100 d-inline-flex flex-column radius px-4 p-4 h-100 position-relative bg-{%- if entity.pastDate -%}light{%- else -%}primary{%- endif -%}">
+    <a href="{{ entity.url }}" class="card-event w-100 d-inline-flex flex-column radius px-4 p-4 h-100 position-relative bg-{% if entity.pastDate %}light{% else %}primary{% endif %}">
         <div class="top">
             {%- if entity.dates.startDate or entity.pastDate -%}
                 <div class="row">
@@ -217,7 +217,7 @@
                         </div>
                     {%- endif -%}
                     {%- if entity.pastDate -%}
-                        <div class="col-2{%- if entity.dates.startDate -%} d-flex justify-content-end{%- endif -%}">
+                        <div class="col-2 {% if entity.dates.startDate %} d-flex justify-content-end{% endif %}">
                             <span class="past-badge d-inline-block ms-auto badge bg-primary text-white">{{ "Passé"|trans|raw }}</span>
                         </div>
                     {%- endif -%}

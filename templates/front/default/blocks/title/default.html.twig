@@ -12,9 +12,9 @@
         title: animActive ? ('block-title-title-h'~titleForce) : null,
         subtitle: animActive ? 'block-title-subtitle' : null
     }) -%}
-    <div class="title-block w-100{%- if blockClasses -%} {{ blockClasses }}{%- endif -%}">
+    <div class="title-block w-100{% if blockClasses %} {{ blockClasses }}{% endif %}">
         {%- if intl.subTitlePosition is defined and intl.subTitlePosition == 'top' and intl.subTitle -%}
-            <strong class="sub-title sub-title-h{{ titleForce }} mb-3 d-inline-block w-100{%- if anim.subtitle.class -%} {{ anim.subtitle.class|raw }}{%- endif -%}"
+            <strong class="sub-title sub-title-h{{ titleForce }} mb-3 d-inline-block w-100{% if anim.subtitle.class %} {{ anim.subtitle.class|raw }}{% endif %}"
                 {%- if anim.subtitle.attr -%} {{ anim.subtitle.attr|raw }}{%- endif -%}>
                 {{ intl.subTitle|unescape|raw }}
             </strong>
@@ -22,10 +22,10 @@
         {%- if icon and iconBackground -%}
             <div class="title-icon-wrap position-relative d-inline-flex">
         {%- endif -%}
-        <h{{ titleForce }} class="title position-relative mb-0{%- if style -%} {{ style }}{%- endif -%}{%- if anim.title.class -%} {{ anim.title.class|raw }}{%- endif -%}"
+        <h {{ titleForce }} class="title position-relative mb-0{% if style %} {{ style }}{% endif %}{% if anim.title.class %} {{ anim.title.class|raw }}{% endif %}"
             {%- if anim.title.attr -%} {{ anim.title.attr|raw }}{%- endif -%}>
             {%- if intl.link is defined and intl.link -%}
-                <a href="{{ intl.link }}"{%- if intl.linkExternal -%} rel="noopener noreferrer"{%- endif -%}{%- if intl.linkBlank -%} target="_blank" {%- endif -%}>
+                <a href="{{ intl.link }}" {%- if intl.linkExternal -%} rel="noopener noreferrer" {%- endif -%}{%- if intl.linkBlank -%} target="_blank" {%- endif -%}>
             {%- endif -%}
                 {{ intl.title|raw }}
             {%- if intl.link is defined and intl.link -%}
@@ -46,7 +46,7 @@
             </div>
         {%- endif -%}
         {%- if intl.subTitlePosition is defined and intl.subTitlePosition == 'bottom' and intl.subTitle -%}
-            <strong class="sub-title sub-title-h{{ titleForce }} mt-2 d-inline-block w-100{%- if anim.subtitle.class -%} {{ anim.subtitle.class|raw }}{%- endif -%}"
+            <strong class="sub-title sub-title-h{{ titleForce }} mt-2 d-inline-block w-100{% if anim.subtitle.class %} {{ anim.subtitle.class|raw }}{% endif %}"
                 {%- if anim.subtitle.attr -%} {{ anim.subtitle.attr|raw }}{%- endif -%}>
                 {{ intl.subTitle|unescape|raw }}
             </strong>

@@ -1,4 +1,4 @@
-{%- extends "admin/base.html.twig" -%}
+﻿{%- extends "admin/base.html.twig" -%}
 
 {%- trans_default_domain 'admin' -%}
 
@@ -16,7 +16,7 @@
 
 {%- block body -%}
     {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
-        <div id="edit-form-{{ interface.name }}" class="card">
+        <div id="edit-form- {{ interface.name }}" class="card">
             {%- include 'admin/core/form/save/header.html.twig' -%}
             <div class="card-body pb-2">
                 <h4 class="main-subtitle"><i class="icm-network-wired"></i>{{ "Administrateurs"|trans }}</h4>

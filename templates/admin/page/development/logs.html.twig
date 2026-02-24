@@ -35,7 +35,7 @@
                             {%- endif -%}
                             <li>
                                 <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}"
-                                   class="text-{{ color }}">{{ logFile }}
+                                   class="text- {{ color }}">{{ logFile }}
                                 </a>
                             </li>
                         {%- endfor -%}
@@ -60,7 +60,7 @@
                                 {%- endif -%}
                                 <li>
                                     <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}"
-                                       class="text-{{ color }}">{{ logFile }}
+                                       class="text- {{ color }}">{{ logFile }}
                                     </a>
                                 </li>
                             {%- endfor -%}

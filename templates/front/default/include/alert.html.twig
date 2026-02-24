@@ -21,9 +21,9 @@
 {%- set display = display is defined and display ? display : 'alert' -%}
 
 {%- if 'alert' == display -%}
-    <div class="alert alert-{{ alert }} d-flex p-0 {{ alignment }}{%- if alertClass -%} {{ alertClass }}{%- endif -%}">
+    <div class="alert alert-{{ alert }} d-flex p-0 {{ alignment }}{% if alertClass %} {{ alertClass }}{% endif %}">
         <div class="icon d-flex align-items-center justify-content-center position-relative initial">{{ icon|icon(25, 25) }}</div>
-        <div class="message d-inline-flex align-items-center flex-shrink-1 px-4 py-3 initial{%- if fullWith -%} w-100{%- endif -%}">
+        <div class="message d-inline-flex align-items-center flex-shrink-1 px-4 py-3 initial{% if fullWith %} w-100{% endif %}">
             {%- set message = message is defined and message ? message : "Que se passe-t-il ?"|trans -%}
             <div class="inner">{{ message|unescape|raw }}</div>
         </div>

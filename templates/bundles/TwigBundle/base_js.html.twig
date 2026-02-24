@@ -1,7 +1,7 @@
 {%- deprecated 'The template "'~_self~'" is deprecated since Symfony 4.4, will be removed in 5.0.' -%}
 {# This file is based on WebProfilerBundle/Resources/views/Profiler/base_js.html.twig.
    If you make any change in this file, verify the same change is needed in the other file. #}
-<script{%- if csp_script_nonce is defined and csp_script_nonce -%} nonce="{{ csp_script_nonce }}"{%- endif -%}>/*<![CDATA[*/
+<script {% if csp_script_nonce is defined and csp_script_nonce -%} nonce="{{ csp_script_nonce }}" {%- endif -%}>/*<![CDATA[*/
     /* This file is based on WebProfilerBundle/Resources/views/Profiler/base_js.html.twig.
       If you make any change in this file, verify the same change is needed in the other file. */
     /*<![CDATA[*/
@@ -16,7 +16,7 @@
         } else {
             var hasClass = function (el, cssClass) { return el.className.match(new RegExp('\\b' + cssClass + '\\b')); };
             var removeClass = function(el, cssClass) { el.className = el.className.replace(new RegExp('\\b' + cssClass + '\\b'), ' '); };
-            var addClass = function(el, cssClass) { if (!hasClass(el, cssClass)) { el.className += " " + cssClass; } };
+            var addClass = function(el, cssClass) { if (!hasClass(el, cssClass)) { el.className +=" " + cssClass; } };
             var toggleClass = function(el, cssClass) { hasClass(el, cssClass) ? removeClass(el, cssClass) : addClass(el, cssClass); };
         }
 

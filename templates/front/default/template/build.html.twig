@@ -32,7 +32,7 @@
 {%- endblock -%}
 
 {%- block body -%}
-    <div id="content-{{ templateName }}" class="template-page">
+    <div id="content- {{ templateName }}" class="template-page">
         {%- if zones is empty -%}
             {%- include 'front/'~websiteTemplate~'/template/include/build-base.html.twig' with {
                 website: website,

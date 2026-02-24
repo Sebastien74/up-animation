@@ -4,17 +4,17 @@
     <div class="row">
         <div class="col-md-4 pe-md-5">
             {%- if haveTitle -%}
-                <h{{ titleForce }} class="title{%- if linkUrl -%} mb-4{%- endif -%}">{{ title|unescape|raw }}</h{{ titleForce }}>
+                <h {{ titleForce }} class="title {% if linkUrl %} mb-4{% endif %}">{{ title|unescape|raw }}</h{{ titleForce }}>
             {%- endif -%}
             {%- if linkUrl and isDesktop() -%}
                 <a href="{{ linkUrl }}" class="{{ linkStyle }}">{{ linkLabel|raw }}</a>
             {%- endif -%}
             {%- if isDesktop() -%}
                 <div class="controls d-inline-flex w-100 d-flex justify-content-end mt-5 pt-5">
-                    <span class="cursor" id="gallery-btn-prev" aria-label="{{ "Précédent"|trans|striptags }}">
+                    <span class="cursor" id="gallery-btn-prev" aria-label="{{"Précédent"|trans|striptags }}">
                         <i class="icon-arrow-left text-white me-5"></i>
                     </span>
-                        <span class="cursor" id="gallery-btn-next" aria-label="{{ "Suivant"|trans|striptags }}">
+                        <span class="cursor" id="gallery-btn-next" aria-label="{{"Suivant"|trans|striptags }}">
                         <i class="icon-arrow-right text-primary ms-5"></i>
                     </span>
                 </div>
@@ -40,7 +40,7 @@
                  data-counter="0"
                  data-interval="3000">
                 <div class="splide__track">
-                    <ul class="splide__list{%- if entities|length < itemsPerSlide -%} d-lg-flex justify-content-lg-center{%- endif -%}">
+                    <ul class="splide__list {% if entities|length < itemsPerSlide %} d-lg-flex justify-content-lg-center{% endif %}">
                         {%- set isFirst = true -%}
                         {%- for gallery in entities -%}
                             {%- if isArray(gallery) -%}
@@ -76,10 +76,10 @@
         {%- if not isDesktop() -%}
             <div class="col-md-4 pe-md-5">
                 <div class="controls d-inline-flex w-100 d-flex mt-4">
-                    <span class="cursor" id="gallery-btn-prev" aria-label="{{ "Précédent"|trans|striptags }}">
+                    <span class="cursor" id="gallery-btn-prev" aria-label="{{"Précédent"|trans|striptags }}">
                         <i class="icon-arrow-left text-white me-4"></i>
                     </span>
-                    <span class="cursor" id="gallery-btn-next" aria-label="{{ "Suivant"|trans|striptags }}">
+                    <span class="cursor" id="gallery-btn-next" aria-label="{{"Suivant"|trans|striptags }}">
                         <i class="icon-arrow-right text-white ms-4"></i>
                     </span>
                 </div>

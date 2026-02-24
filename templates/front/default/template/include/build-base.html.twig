@@ -25,7 +25,7 @@
                                 <ul id="contact-info" class="reset p-0 m-0 d-inline-flex">
                                     {%- for network in networks -%}
                                         {%- if network.link is defined and network.link -%}
-                                            <li class="d-inline-flex{%- if not loop.last -%} me-3{%- endif -%}">
+                                            <li class="d-inline-flex {% if not loop.last %} me-3{% endif %}">
                                                 <a href="{{ network.link }}"
                                                    target="_blank"
                                                    rel="noopener noreferrer"
@@ -44,7 +44,7 @@
                     {%- if addresses or havePhones or haveEmails -%}
                         <div id="support-info" class="text-center mt-5">
                             {%- for address in addresses -%}
-                                <address class="address{%- if havePhones or haveEmails -%} mb-0{%- endif -%}">
+                                <address class="address {% if havePhones or haveEmails %} mb-0{% endif %}">
                                     {%- if address.name is defined and address.name -%}
                                         <strong class="name">{{ address.name|raw }}</strong>
                                     {%- endif -%}
@@ -108,7 +108,7 @@
 {#                </div>#}
             </div>
         </div>
-        <div class="right col-md-6 col-xl-7 px-0 column d-none d-lg-block"{%- if backgroundPath -%} style="background: url({{ backgroundPath }})"{%- endif -%}>
+        <div class="right col-md-6 col-xl-7 px-0 column d-none d-lg-block" {%- if backgroundPath -%} style="background: url({{ backgroundPath }})" {%- endif -%}>
             <div class="inner w-100 h-100"></div>
         </div>
     </div>

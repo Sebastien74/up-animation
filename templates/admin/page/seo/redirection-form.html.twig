@@ -4,31 +4,31 @@
 {%- set defaultLocale = configuration.locale -%}
 {%- set allLocales = configuration.allLocales -%}
 
-<tr id="entity-row-{{ entity.id }}">
+<tr id="entity-row- {{ entity.id }}">
     {{ form_start(form, {attr: {
         novalidate: "novalidate",
         action: path('admin_redirection_form', {website: websiteId(), redirection: entity.id}),
         id: 'redirection-form-'~entity.id
     }}) }}
-        <td id="group-locale-{{ entity.id }}" class="col-locale refresh-group{%- if allLocales|length <= 1 -%} d-none{%- endif -%}">
+        <td id="group-locale- {{ entity.id }}" class="col-locale refresh-group{% if allLocales|length <= 1 %} d-none{% endif %}">
             {{ form_row(form.locale, {id: 'redirection_locale_'~entity.id}) }}
         </td>
-        <td id="group-old-{{ entity.id }}" class="refresh-group align-middle">
+        <td id="group-old- {{ entity.id }}" class="refresh-group align-middle">
             {{ form_row(form.old, {id: 'redirection_locale_'~entity.id}) }}
         </td>
-        <td id="group-new-{{ entity.id }}" class="refresh-group align-middle">
+        <td id="group-new- {{ entity.id }}" class="refresh-group align-middle">
             {{ form_row(form.new, {id: 'redirection_locale_'~entity.id}) }}
         </td>
         <td class="align-middle text-end actions">
             <button class="btn-app ajax-save-row"
-                    data-form-id="redirection-form-{{ entity.id }}">
+                    data-form-id="redirection-form- {{ entity.id }}">
                 <i class="icm-save"></i>
                 <i class="icm-spinner-third"></i>
             </button>
             {%- if 'delete'|moduleActive(configuration) -%}
                 <a href="{{ path('admin_redirection_delete', {website: websiteId(), redirection: entity.id}) }}"
-                   data-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
-                   data-target="#entity-row-{{ entity.id }}"
+                   data-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
+                   data-target="#entity-row- {{ entity.id }}"
                    class="text-dark swal-delete-link">
                     <i class="icm-trash ms-3"></i>
                 </a>

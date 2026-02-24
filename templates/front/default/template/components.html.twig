@@ -25,7 +25,7 @@
 
     {%- if isComponentUser() -%}
 
-        <div id="content-{{ templateName }}" class="template-page">
+        <div id="content- {{ templateName }}" class="template-page">
 
             {%- if blockTypesActive('title-header') -%}
                 {%- for i in 1..1 -%}
@@ -127,20 +127,20 @@
                                 <div class="col-12 mb-4 text-start px-0">
                                     <h2 class="mb-4 mt-5">Textes</h2>
                                     {%- for color in mainColors -%}
-                                        <div class="text-{{ color }} d-inline-block{%- if not loop.last -%} me-3{%- endif -%}">.text-{{ color }}</div>
+                                        <div class="text- {{ color }} d-inline-block{% if not loop.last %} me-3{% endif %}">.text-{{ color }}</div>
                                     {%- endfor -%}
                                     {%- set activeBorders = false -%}
                                     {%- if activeBorders -%}
                                         <h2 class="mb-4 mt-5">Bordures</h2>
                                         {%- for color in mainColors -%}
-                                            <span class="border border-{{ color }} text-{{ color }} d-inline-block mb-4 pe-5 ps-5 pt-3 pb-3{%- if not loop.last -%} me-3{%- endif -%}">.border-{{ color }}</span>
+                                            <span class="border border-{{ color }} text-{{ color }} d-inline-block mb-4 pe-5 ps-5 pt-3 pb-3{% if not loop.last %} me-3{% endif %}">.border-{{ color }}</span>
                                         {%- endfor -%}
                                     {%- endif -%}
                                     {%- set activeBadges = false -%}
                                     {%- if activeBadges -%}
                                         <h2 class="mb-4 mt-5">Badges</h2>
                                         {%- for color in mainColors -%}
-                                            <span class="badge badge-{{ color }} d-inline-block mb-4{%- if not loop.last -%} me-3{%- endif -%}">.badge-{{ color }}</span>
+                                            <span class="badge badge-{{ color }} d-inline-block mb-4{% if not loop.last %} me-3{% endif %}">.badge-{{ color }}</span>
                                         {%- endfor -%}
                                     {%- endif -%}
                                     {%- if customModules.gradientColors -%}
@@ -149,7 +149,7 @@
                                             {%- set outlineSet = false -%}
                                             {%- for color in buttonColors -%}
                                                 {%- if 'outline' not in color and 'white' not in color -%}
-                                                    <div class="d-inline-flex{%- if not loop.last -%} me-md-3{%- endif -%} mb-4">
+                                                    <div class="d-inline-flex {% if not loop.last %} me-md-3{% endif %} mb-4">
                                                         {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                                             intl: null,
                                                             iconStart: 'far info',
@@ -168,7 +168,7 @@
                                     <div class="inner">
                                         {%- for color in buttonColors -%}
                                             {%- if 'outline' not in color -%}
-                                                <div class="d-inline-flex{%- if not loop.last -%} me-md-3{%- endif -%} mb-4">
+                                                <div class="d-inline-flex {% if not loop.last %} me-md-3{% endif %} mb-4">
                                                     {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                                         intl: null,
                                                         iconStart: 'far info',
@@ -186,7 +186,7 @@
                                     <div class="inner">
                                         {%- for color in buttonColors -%}
                                             {%- if 'outline' in color -%}
-                                                <div class="d-inline-flex{%- if not loop.last -%} me-md-3{%- endif -%} mb-4">
+                                                <div class="d-inline-flex {% if not loop.last %} me-md-3{% endif %} mb-4">
                                                     {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                                         intl: null,
                                                         iconStart: 'far info',
@@ -210,7 +210,7 @@
                 {%- endfor -%}
 
                 {%- for color in alertColors -%}
-                    <div class="container pb-5{%- if loop.first -%} pt-5{%- endif -%}">
+                    <div class="container pb-5{% if loop.first %} pt-5{% endif %}">
                         {{ website|newBlock(1, 'alert', { color: color }) }}
                     </div>
                 {%- endfor -%}

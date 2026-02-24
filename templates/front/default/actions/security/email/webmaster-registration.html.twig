@@ -1,4 +1,4 @@
-{%- extends 'core/email/base.html.twig' -%}
+﻿{%- extends 'core/email/base.html.twig' -%}
 
 {%- trans_default_domain 'email' -%}
 
@@ -22,7 +22,7 @@
                 <p style="font-size: 14px;"><strong>{{ "Prénom :"|trans|raw }}</strong> {{ user.firstName }}</p>
             {%- endif -%}
             {%- if user.email is defined and user.email -%}
-                <p style="font-size: 14px;"><strong>{{ "Email"|trans|raw }} :</strong> <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+                <p style="font-size: 14px;"><strong>{{ "Email"|trans|raw }} :</strong> <a href="mailto: {{ user.email }}">{{ user.email }}</a></p>
             {%- endif -%}
             {%- set phone = profile.phones[0] is defined ? profile.phones[0] : null -%}
             {%- if phone.number is defined and phone.number -%}

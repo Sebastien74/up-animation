@@ -21,7 +21,7 @@
              data-dots="0"
              data-interval="1500">
             <div class="splide__track">
-                <ul class="splide__list{%- if entities|length < itemsPerSlide -%} d-lg-flex justify-content-lg-center{%- endif -%}">
+                <ul class="splide__list {% if entities|length < itemsPerSlide %} d-lg-flex justify-content-lg-center{% endif %}">
                     {%- for entity in entities -%}
                         {%- set mediaRelation = entity|mainMedia -%}
                         {%- set intl = entity|intl -%}
@@ -54,7 +54,7 @@
                 {%- set mediaRelation = entity|mainMedia -%}
                 {%- set intl = entity|intl -%}
                 {%- set title = intl.title is defined and intl.title ? intl.title : entity.adminName -%}
-                <div class="col-md-{{ colSizes }} item mb-5">
+                <div class="col-md- {{ colSizes }} item mb-5">
                     <a href="{{ path('front_index', {url: productsPageUrl, categories: entity.slug}) }}" class="card ms-3 me-3">
                         {{ mediaRelation|file(thumbConfiguration, {
                             btnLink: false,

@@ -15,7 +15,7 @@
                             <a href="{{ path('admin_dashboard', {website: website.id}) }}">
                                 {{ website.adminName }}
                                 {%- if not website.active -%}
-                                    <span class="website-ban position-absolute text-dark" data-bs-toggle="tooltip" title="{{ "Site désactivé"|trans|raw }}">
+                                    <span class="website-ban position-absolute text-dark" data-bs-toggle="tooltip" title="{{"Site désactivé"|trans|raw }}">
                                         <i class="icm-ban"></i>
                                     </span>
                                 {%- endif -%}

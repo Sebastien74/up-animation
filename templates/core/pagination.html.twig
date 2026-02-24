@@ -12,7 +12,7 @@
             '%totalCount%': totalCount,
         }) -%}
         <span class="pagination-counter fw-300 me-md-4 order-2 order-md-1 text-center text-lg-start">{{ count|raw }}</span>
-        <nav class="pagination-nav me-auto me-md-0 ms-auto order-1 order-md-2{%- if class -%} {{ class }}{%- endif -%}" data-next="{%- if next is defined -%}{{ absolute_url(path(route, query|merge({(pageParameterName): next}))) }}{%- endif -%}">
+        <nav class="pagination-nav me-auto me-md-0 ms-auto order-1 order-md-2{% if class %} {{ class }}{% endif %}" data-next="{% if next is defined %}{{ absolute_url(path(route, query|merge({(pageParameterName): next}))) }}{% endif %}">
             {%- set classAlign = (align is not defined) ? '' : align=='center' ? ' justify-content-center' : (align=='right' ? ' justify-content-end' : '') -%}
             {%- set classSize = (size is not defined) ? '' : size=='large' ? ' pagination-lg' : (size=='small' ? ' pagination-sm' : '') -%}
             <ul class="pagination px-0 mb-0{{ classAlign }}{{ classSize }}">

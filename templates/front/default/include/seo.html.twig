@@ -37,7 +37,7 @@
     <meta property="og:site_name" content="{{ companyName|striptags }}">
     <meta property="og:locale" content="{{ app.request.locale }}">
     {%- if seo.ogFullTitle is defined -%}
-        <meta property="og:title" content="{%- if seo.ogFullTitle -%}{{ seo.ogFullTitle|htmlEntities }}{%- endif -%}">
+        <meta property="og:title" content="{% if seo.ogFullTitle %}{{ seo.ogFullTitle|htmlEntities }}{% endif %}">
     {%- endif -%}
     {%- if seo.ogDescription is defined -%}
         <meta property="og:description" content="{{ seo.ogDescription|htmlEntities }}">

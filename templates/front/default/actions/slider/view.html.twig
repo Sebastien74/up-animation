@@ -28,7 +28,7 @@
     {%- set customTemplateExist = (customTemplate)|fileExist -%}
     {%- set template = customTemplateExist ? 'front/'~websiteTemplate~'/actions/slider/template/'~slider.slug~'.html.twig'
         : ((selectedTemplate)|fileExist ? selectedTemplate : 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig') -%}
-    <div id="slider-container-{{ slider.slug }}" class="slider-container-{{ slider.slug }} slider-container{%- if slider.popup -%} popup-gallery{%- endif -%}{%- if isHomePage -%} is-home-page{%- endif -%}{%- if 'center' == focus -%} focus-center{%- endif -%}">
+    <div id="slider-container- {{ slider.slug }}" class="slider-container- {{ slider.slug }} slider-container{% if slider.popup %} popup-gallery{% endif %}{% if isHomePage %} is-home-page{% endif %}{% if 'center' == focus %} focus-center{% endif %}">
         {{ macroWebmaster.box({
             title: "Éditer le carrousel"|trans([], 'front_webmaster'),
             role: 'ROLE_SLIDER',

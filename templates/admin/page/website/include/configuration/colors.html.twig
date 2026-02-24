@@ -36,7 +36,7 @@
                     interfaceName: 'color'
                 } -%}
             {%- else -%}
-                <a class="btn-transparent delete-disabled" data-bs-toggle="tooltip" title="{{ "Suppression impossible"|trans }}">
+                <a class="btn-transparent delete-disabled" data-bs-toggle="tooltip" title="{{"Suppression impossible"|trans }}">
                     <i class="icm-trash"></i>
                 </a>
             {%- endif -%}
@@ -61,11 +61,11 @@
     {%- for key, meta in categories -%}
         {%- set items = form.colors|filter(c => c.vars.value.category == key) -%}
         {%- if items|length > 0 -%}
-            <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-{{ key }}" aria-expanded="false" aria-controls="collapse-{{ key }}">
+            <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse- {{ key }}" aria-expanded="false" aria-controls="collapse- {{ key }}">
                 <i class="{{ meta.icon }}"></i>{{ meta.label }}
                 <i class="icm-chevron-down ms-auto"></i>
             </h4>
-            <div id="collapse-{{ key }}" class="collapse row" aria-labelledby="heading{{ key }}" data-parent="#colors-collection">
+            <div id="collapse- {{ key }}" class="collapse row" aria-labelledby="heading {{ key }}" data-parent="#colors-collection">
                 {%- for color in items -%}
                     {{ macro.color_prototype(color) }}
                 {%- endfor -%}

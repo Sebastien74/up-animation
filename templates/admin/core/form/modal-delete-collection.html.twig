@@ -9,9 +9,9 @@
 
 {%- if entityId and 'delete'|moduleActive(website.configuration) and ('admin_'~interfaceName~'_delete')|routeExist -%}
     <a class="btn-icon danger sa-warning swal-delete-link"
-       href="{%- if not isNew -%}{{ path('admin_'~interfaceName~'_delete', arguments) }}{%- endif -%}"
+       href="{% if not isNew %}{{ path('admin_'~interfaceName~'_delete', arguments) }}{% endif %}"
        data-bs-toggle="tooltip"
-       title="{{ "Supprimer"|trans|striptags }}"
+       title="{{"Supprimer"|trans|striptags }}"
        data-type="collection">
         <i class="icm-trash"></i>
     </a>

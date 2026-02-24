@@ -28,23 +28,23 @@
                             {{ user.username }} <small class="text-italic opacity-50">{{ user.login }}</small>
                         </h1>
                         <a href="{{ path('admin_user_edit', {website: websiteId(), user: user.id}) }}"
-                           data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}"
+                           data-bs-toggle="tooltip" title="{{"Éditer"|trans|striptags }}"
                            id="edit-user-btn" class="btn-icon small"><i class="icm-pencil-alt"></i>
                         </a>
                     </div>
 
                     <div class="row">
-                        <div class="{%- if granted('ROLE_INTERNAL') -%}col-md-5{%- else -%}col-12{%- endif -%}">
+                        <div class="{% if granted('ROLE_INTERNAL') %}col-md-5{% else %}col-12{% endif %}">
                             <h2 class="main-subtitle small mb-3"><i class="icm-info"></i>{{ "Information"|trans }}</h2>
                             <div class="ps-1">
                                 <p class="mb-2"><strong class="me-2 text-dark">{{ "Dernière connexion :"|trans }}</strong> <span class="text-muted">{{ user.lastLogin|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</span></p>
                                 <p class="mb-2 d-flex align-items-center">
                                     <strong class="me-2 text-dark">{{ "Langue :"|trans }}</strong>
                                     <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                         data-src="{{ asset('/medias/icons/flags/'~user.locale~'.svg') }}" class="img-fluid img-locale lazy-load me-2 rounded-1" height="14" width="19">
+                                         data-src=" {{ asset('/medias/icons/flags/'~user.locale~'.svg') }}" class="img-fluid img-locale lazy-load me-2 rounded-1" height="14" width="19">
                                     <span class="text-muted">{{ user.locale|languageName }}</span>
                                 </p>
-                                <p class="mb-2"><strong class="me-2 text-dark">{{ "Email :"|trans }}</strong> <a href="mailto:{{ user.email }}" class="text-underline">{{ user.email }}</a></p>
+                                <p class="mb-2"><strong class="me-2 text-dark">{{ "Email :"|trans }}</strong> <a href="mailto: {{ user.email }}" class="text-underline">{{ user.email }}</a></p>
 
                                 {%- if granted('ROLE_INTERNAL') -%}
                                     <p class="mb-2"><strong class="me-2 text-dark">{{ "Groupe :"|trans }}</strong> <span class="text-muted">{{ user.group.adminName }}</span></p>

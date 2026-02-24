@@ -42,11 +42,11 @@
         {%- if vars.axeptioId -%}
             <script id="google-analytics-src" nonce="{{ csp_nonce() }}"
                     data-ua="{{ vars.analyticsUa }}"
-                    data-src="https://www.googletagmanager.com/gtag/js?id={{ vars.analyticsUa }}"
+                    data-src="https://www.googletagmanager.com/gtag/js?id= {{ vars.analyticsUa }}"
                     data-custom-script="{{ absolute_url(asset('build/gdpr/google-analytics.js', 'gdpr')) }}"
                     data-requires-vendor-consent="google_analytics"></script>
         {%- else -%}
-            <script async src="https://www.googletagmanager.com/gtag/js?id={{ vars.analyticsUa }}" nonce="{{ csp_nonce() }}"></script>
+            <script async src="https://www.googletagmanager.com/gtag/js?id= {{ vars.analyticsUa }}" nonce="{{ csp_nonce() }}"></script>
             <script nonce="{{ csp_nonce() }}">
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
@@ -78,7 +78,7 @@
 
     {%- if vars.noscriptTagManagerKey is defined and vars.noscriptTagManagerKey and (axeptioActive or not gdprActive) -%}
         <!-- Google Tag Manager (noscript) -->
-        <noscript nonce="{{ csp_nonce() }}"><iframe src="https://www.googletagmanager.com/ns.html?id={{ vars.noscriptTagManagerKey }}"
+        <noscript nonce="{{ csp_nonce() }}"><iframe src="https://www.googletagmanager.com/ns.html?id= {{ vars.noscriptTagManagerKey }}"
                           height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- End Google Tag Manager (noscript) -->
     {%- endif -%}
@@ -107,7 +107,7 @@
 
     {%- if vars.noscriptPixel is defined and vars.noscriptPixel and (axeptioActive or not gdprActive) -%}
         <!-- Facebook Pixel Code -->
-        <noscript nonce="{{ csp_nonce() }}"><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={{ vars.noscriptPixel }}&ev=PageView&noscript=1"></noscript>
+        <noscript nonce="{{ csp_nonce() }}"><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id= {{ vars.noscriptPixel }}&ev=PageView&noscript=1"></noscript>
         <!-- End Facebook Pixel Code -->
     {%- endif -%}
 

@@ -67,27 +67,27 @@
                     </div>
                     {%- if 'delete'|moduleActive(configuration) -%}
                         <button id="delete-pack-btn" class="btn-icon danger d-none"
-                                data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
+                                data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}">
                             <i class="icm-trash initial"></i>
                         </button>
                     {%- endif -%}
                     {%- set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
                         ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees -%}
                     <span id="nestable-expand-all"
-                          class="btn-icon cursor{%- if not collapsedAdminTrees -%} d-none{%- endif -%}"
-                          data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
+                          class="btn-icon cursor{% if not collapsedAdminTrees %} d-none{% endif %}"
+                          data-bs-toggle="tooltip" title="{{"Dépiler"|trans|raw }}">
                             <i class="icm-arrow-alt-to-bottom initial"></i>
                         </span>
                     <span id="nestable-collapse-all"
-                          class="btn-icon info-lighten cursor{%- if collapsedAdminTrees -%} d-none{%- endif -%}"
-                          data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
+                          class="btn-icon info-lighten cursor{% if collapsedAdminTrees %} d-none{% endif %}"
+                          data-bs-toggle="tooltip" title="{{"Empiler"|trans|raw }}">
                             <i class="icm-arrow-alt-to-top initial"></i>
                         </span>
                     <a href="{{ path('admin_medias_library', {website: websiteId}) }}"
                        class="ajax-get-refresh btn-icon info"
                        data-target="#medias-results"
                        data-target-loader="#medias-preloader"
-                       data-bs-toggle="tooltip" title="{{ "Racine"|trans|striptags }}">
+                       data-bs-toggle="tooltip" title="{{"Racine"|trans|striptags }}">
                         <i class="icm-eye initial"></i>
                     </a>
                 </div>
@@ -118,19 +118,19 @@
                                         <button id="select-folder-btn"
                                                 data-path="{{ path('admin_folder_select', {website: websiteId}) }}"
                                                 class="btn-icon warning"
-                                                data-bs-toggle="tooltip" title="{{ "Déplacer"|trans }}">
+                                                data-bs-toggle="tooltip" title="{{"Déplacer"|trans }}">
                                             <i class="icm-share-square"></i>
                                         </button>
                                     {%- endif -%}
                                     {%- if granted('ROLE_MEDIA_COMPRESS') -%}
                                         <button id="media-compress-btn" class="btn-icon info"
-                                                data-bs-toggle="tooltip" title="{{ "Compresser"|trans }}">
+                                                data-bs-toggle="tooltip" title="{{"Compresser"|trans }}">
                                             <i class="icm-compress-alt"></i>
                                         </button>
                                     {%- endif -%}
                                     {%- if 'delete'|moduleActive(configuration) -%}
                                         <button class="btn-icon danger sa-warning sa-warning-delete-medias"
-                                                data-bs-toggle="tooltip" title="{{ "Supprimer"|trans }}">
+                                                data-bs-toggle="tooltip" title="{{"Supprimer"|trans }}">
                                             <i class="icm-trash"></i>
                                         </button>
                                     {%- endif -%}

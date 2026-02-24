@@ -1,4 +1,4 @@
-{%- set excludes = ['save', 'saveEdit', 'saveBack'] -%}
+﻿{%- set excludes = ['save', 'saveEdit', 'saveBack'] -%}
 {%- if excludesFields is defined and excludesFields -%}
     {%- set excludes = excludes|merge(excludesFields) -%}
 {%- endif -%}
@@ -45,7 +45,7 @@
 {#{%- set hideRadius = interface.configuration.saveArea is not defined or interface.configuration.saveArea != 'bottom' or configFields is defined and configFields -%}#}
 
 {{ form_start(form, {attr: {
-    novalidate: "novalidate",
+    novalidate: 'novalidate',
     action: app.request.uri,
     class: displayUploader ? 'master-dropzone-form position-relative' : 'master-form d-inline-block position-relative w-100',
     id: 'form-'~entity.id }}) }}

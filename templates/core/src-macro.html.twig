@@ -11,10 +11,10 @@
 {#            <link rel="preload" href="{{ preload(absolute_url(asset(file)), { as: 'style', importance: 'low' }) }}" as="font">#}
             <link href="{{ absolute_url(asset(file)) }}" rel="stylesheet" nonce="{{ csp_nonce() }}">
         {%- elseif onload -%}
-            <link rel="stylesheet" href="{{ absolute_url(asset(file)) }}"{%- if 'print' in file -%} media="print"{%- endif -%} nonce="{{ csp_nonce() }}">
+            <link rel="stylesheet" href="{{ absolute_url(asset(file)) }}" {%- if 'print' in file -%} media="print" {%- endif -%} nonce="{{ csp_nonce() }}">
         {%- elseif preload -%}
             <link rel="preload" as="style" href="{{ preload(absolute_url(asset(file)), { as: 'style', importance: 'low' }) }}">
-            <link rel="stylesheet" href="{{ absolute_url(asset(file)) }}"{%- if 'print' in file -%} media="print"{%- endif -%}>
+            <link rel="stylesheet" href="{{ absolute_url(asset(file)) }}" {%- if 'print' in file -%} media="print" {%- endif -%}>
         {%- else -%}
             <link href="{{ absolute_url(asset(file))~params }}" rel="stylesheet">
         {%- endif -%}

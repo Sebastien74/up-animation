@@ -32,12 +32,12 @@
     <div class="infos-img w-100">
         <div class="d-flex align-items-start flex-wrap">
             {%- if mediaAuthor -%}
-                <small class="img-copyright text-italic d-inline-flex align-items-center{%- if mediaAuthor -%} ms-3{%- endif -%}">
+                <small class="img-copyright text-italic d-inline-flex align-items-center{% if mediaAuthor %} ms-3{% endif %}">
                     <i class="icon-copyright position-relative me-1"></i><span>{{ mediaAuthor|trans|raw }}</span>
                 </small>
             {%- endif -%}
             {%- if notContractual -%}
-                <small class="img-not-contractual text-italic{%- if mediaAuthor -%} ms-auto{%- endif -%}">{{ 'Image non contractuelle'|trans({}, 'front')|raw }}</small>
+                <small class="img-not-contractual text-italic{% if mediaAuthor %} ms-auto{% endif %}">{{ 'Image non contractuelle'|trans({}, 'front')|raw }}</small>
             {%- endif -%}
         </div>
         {%- if displayTitle -%}
@@ -48,7 +48,7 @@
 
 {%- block media -%}
     {%- if not inAdmin and not isInBox and imageLinkUrl and not btnLink and not disableLink -%}
-        <a href="{{ imageLinkUrl }}"{%- if imageLinkBlank -%} target="_blank"{%- endif -%}{%- if imageLinkExternal -%} rel="noopener noreferrer"{%- endif -%}>
+        <a href="{{ imageLinkUrl }}" {%- if imageLinkBlank -%} target="_blank" {%- endif -%}{%- if imageLinkExternal -%} rel="noopener noreferrer" {%- endif -%}>
     {%- endif -%}
         {%- include 'core/image.html.twig' with {
             website: website,

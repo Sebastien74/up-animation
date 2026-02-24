@@ -2,7 +2,7 @@
 
 {%- set allLocales = interface.website.configuration.allLocales -%}
 
-<tr id="entity-row-{{ entity.id }}">
+<tr id="entity-row- {{ entity.id }}">
 
     {{ form_start(form, {attr: {
         novalidate: "novalidate",
@@ -16,20 +16,20 @@
 
         <td class="align-middle keys-td">{{ entity.keyName }}</td>
 
-        <td class="align-middle forms-td{%- if allLocales|length > 1 -%} locales-groups{%- endif -%}">
+        <td class="align-middle forms-td{% if allLocales|length > 1 %} locales-groups{% endif %}">
             {%- for transLocale in allLocales -%}
                 {%- set exist = false -%}
                 {%- for translation in form.translations -%}
                     {%- if transLocale == translation.vars.data.locale -%}
                         {%- set exist = true -%}
                         {%- set isEmpty = translation.vars.data.content|striptags|length == 0 -%}
-                        <div class="form-group mb-0{%- if isEmpty -%} empty{%- endif -%}">
+                        <div class="form-group mb-0{% if isEmpty %} empty{% endif %}">
                             <span class="d-none">{{ translation.vars.value.content }}</span>
-                            <div class="translation-form-group position-relative{%- if allLocales|length > 1 -%} locales-group{%- endif -%}">
+                            <div class="translation-form-group position-relative{% if allLocales|length > 1 %} locales-group{% endif %}">
                                 {%- if allLocales|length > 1 -%}
                                     <span class="d-inline-flex justify-content-center align-items-center addon position-absolute">
                                         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                             data-src="{{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
+                                             data-src=" {{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
                                              data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
                                              class="img-fluid lazy-load" height="14" width="19">
                                     </span>
@@ -40,9 +40,9 @@
                     {%- endif -%}
                 {%- endfor -%}
                 {%- if not exist -%}
-                    <span class="badge badge-warning w-100{%- if not loop.last -%} mb-3{%- endif -%}">
+                    <span class="badge badge-warning w-100{% if not loop.last %} mb-3{% endif %}">
                         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                             data-src="{{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
+                             data-src=" {{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
                              data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
                              class="img-fluid lazy-load me-1" height="10" width="14">
                         {{ "Vous devez regénérer les traductions du domaine"|trans|striptags~' "'~entity.domain.adminName~'"' }}
@@ -55,14 +55,14 @@
         <td class="align-middle text-center actions-td">
             <div class="d-flex align-items-center justify-content-end">
                 <button class="btn-app save-row-trans"
-                        data-form-id="unit-form-{{ entity.id }}">
+                        data-form-id="unit-form- {{ entity.id }}">
                     <i class="icm-save"></i>
                     <i class="icm-spinner-third"></i>
                 </button>
                 {%- if 'delete'|moduleActive(configuration) -%}
                     <a href="{{ path('admin_translationunit_delete', {website: websiteId(), translationunit: entity.id}) }}"
-                       data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
-                       data-target="#entity-row-{{ entity.id }}"
+                       data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
+                       data-target="#entity-row- {{ entity.id }}"
                        class="text-dark swal-delete-link">
                         <i class="icm-trash ms-3"></i>
                     </a>

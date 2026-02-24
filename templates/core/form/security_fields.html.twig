@@ -8,8 +8,8 @@
 
     <select id="{{ id }}"
             name="{{ full_name }}"
-            {%- if required -%}required="required"{%- endif -%}
-            class="form-control{%- if attr.class is defined -%} {{ attr.class }}{%- endif -%}">
+            {%- if required -%}required="required" {%- endif -%}
+            class="form-control {% if attr.class is defined %} {{ attr.class }}{% endif %}">
 
         <option value="">{{ "Sélectionnez" }}</option>
 
@@ -27,7 +27,7 @@
             {%- set display = granted('ROLE_INTERNAL') ? true : display -%}
 
             {%- if display -%}
-                <option value="{{ choice.value }}"{%- if value == choice.value -%} selected="selected"{%- endif -%}>{{ choice.label }}</option>
+                <option value="{{ choice.value }}" {%- if value == choice.value -%} selected="selected" {%- endif -%}>{{ choice.label }}</option>
             {%- endif -%}
         {%- endfor -%}
 
@@ -41,7 +41,7 @@
         {%- for choice in choices -%}
             {%- set data = choice.data -%}
             {%- if granted('ROLE_INTERNAL') or granted(data.name) -%}
-                <option value="{{ choice.value }}"{%- if choice.value in value -%} selected="selected"{%- endif -%}>{{ choice.label }}</option>
+                <option value="{{ choice.value }}" {%- if choice.value in value -%} selected="selected" {%- endif -%}>{{ choice.label }}</option>
             {%- endif -%}
         {%- endfor -%}
     </select>
@@ -57,9 +57,9 @@
     <input type="file"
            id="{{ id }}"
            name="{{ full_name }}"
-           {%- if attr.accept is defined -%}accept="{{ attr.accept }}"{%- endif -%}
+           {%- if attr.accept is defined -%}accept="{{ attr.accept }}" {%- endif -%}
            data-default-file="{{ fileDirname }}"
-            {%- if fileId -%}data-delete-url="{{ path('admin_userpicture_delete', {website: websiteId(), picture: fileId}) }}"{%- endif -%}
+            {%- if fileId -%}data-delete-url="{{ path('admin_userpicture_delete', {website: websiteId(), picture: fileId}) }}" {%- endif -%}
            class="dropify custom-file-input">
 
 {%- endblock -%}
@@ -73,9 +73,9 @@
     <input type="file"
            id="{{ id }}"
            name="{{ full_name }}"
-           {%- if attr.accept is defined -%}accept="{{ attr.accept }}"{%- endif -%}
+           {%- if attr.accept is defined -%}accept="{{ attr.accept }}" {%- endif -%}
            data-default-file="{{ fileDirname }}"
-            {%- if fileId -%}data-delete-url="{{ path('admin_userpicture_delete', {website: websiteId(), picture: fileId}) }}"{%- endif -%}
+            {%- if fileId -%}data-delete-url="{{ path('admin_userpicture_delete', {website: websiteId(), picture: fileId}) }}" {%- endif -%}
            class="dropify custom-file-input">
 
 {%- endblock -%}
@@ -89,9 +89,9 @@
     <input type="file"
            id="{{ id }}"
            name="{{ full_name }}"
-           {%- if attr.accept is defined -%}accept="{{ attr.accept }}"{%- endif -%}
+           {%- if attr.accept is defined -%}accept="{{ attr.accept }}" {%- endif -%}
            data-default-file="{{ fileDirname }}"
-            {%- if fileId -%}data-delete-url="{{ path('admin_logo_delete', {website: websiteId(), logo: fileId}) }}"{%- endif -%}
+            {%- if fileId -%}data-delete-url="{{ path('admin_logo_delete', {website: websiteId(), logo: fileId}) }}" {%- endif -%}
            class="dropify custom-file-input">
 
 {%- endblock -%}

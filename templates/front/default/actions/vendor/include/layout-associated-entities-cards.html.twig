@@ -9,7 +9,7 @@
     {%- set disabledTitle = disabledTitle is defined ? disabledTitle : false -%}
     {%- set listingTitle = listingTitle is defined and listingTitle ? listingTitle : "Découvrez également"|trans -%}
     {%- set listingSlug = category.slug is defined ? category.slug : null -%}
-    <section class="associated-entities{%- if entities is empty -%} empty-associated-entities{%- endif -%}">
+    <section class="associated-entities {% if entities is empty %} empty-associated-entities{% endif %}">
         {%- if not disabledTitle -%}
             <div class="title-block w-100 mb-5">
                 <h2 class="title">{{ listingTitle|raw }}</h2>
@@ -17,7 +17,7 @@
         {%- endif -%}
         <div class="row">
             {%- for entity in entities -%}
-                <div class="col-md-4 position-relative{%- if not loop.last -%} mb-5{%- endif -%} mb-md-0">
+                <div class="col-md-4 position-relative{% if not loop.last %} mb-5{% endif %} mb-md-0">
                     {{ macroCard.standard({
                         website: website,
                         entity: entity,

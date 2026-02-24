@@ -28,7 +28,7 @@
     {%- set formClass = formClass~' floating-form' -%}
 {%- endif -%}
 
-<div id="form-container-{{ entity.slug }}" class="form-container keep-form-module position-relative{%- if formConfiguration.recaptcha -%} recaptcha-referer{%- endif -%}">
+<div id="form-container- {{ entity.slug }}" class="form-container keep-form-module position-relative{% if formConfiguration.recaptcha %} recaptcha-referer{% endif %}">
     {{ macroWebmaster.box({
         title: "Éditer le formulaire"|trans([], 'front_webmaster'),
         role: 'ROLE_FORM',

@@ -8,8 +8,8 @@
     {%- set displayCategory = false -%}
     {%- set asDarken = 'primary' == background -%}
     {%- set color = asDarken ? 'white' : 'primary' -%}
-    <a href="{{ job.url }}" class="card job-card border-0 shadow text-center h-100 bg-{{ background }} px-0 py-5{%- if haveFooter -%} have-footer{%- endif -%}">
-        <div class="card-body px-0 mx-5 pt-0 border-0 {%- if haveFooter -%}pb-0{%- else -%}pb-0{%- endif -%}">
+    <a href="{{ job.url }}" class="card job-card border-0 shadow text-center h-100 bg-{{ background }} px-0 py-5{% if haveFooter %} have-footer{% endif %}">
+        <div class="card-body px-0 mx-5 pt-0 border-0 {% if haveFooter %}pb-0{% else %}pb-0{% endif %}">
             {%- if (displayCategory and job.category.intl.title is defined and job.category.intl.title) or (displayCategory and job.category.icon is defined and job.category.icon) -%}
                 <div class="category-wrap d-flex justify-content-center align-items-center">
                     {%- if job.category.icon is defined and job.category.icon -%}

@@ -1,4 +1,4 @@
-{%- trans_default_domain 'front_default' -%}
+﻿{%- trans_default_domain 'front_default' -%}
 
 {%- import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard -%}
 {%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
@@ -12,7 +12,7 @@
         }) }}
         {%- if teaserIntl.title -%}
             {%- set titleForce = teaserIntl.titleForce ? teaserIntl.titleForce : 2 -%}
-            <h{{ titleForce }} class="title mb-4">{{ teaserIntl.title|raw }}</h{{ titleForce }}>
+            <h {{ titleForce }} class="title mb-4">{{ teaserIntl.title|raw }}</h{{ titleForce }}>
         {%- endif -%}
         <div class="posts row">
             {%- for post in entities -%}

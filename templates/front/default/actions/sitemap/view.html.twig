@@ -61,7 +61,7 @@
         {%- set title = categories[interfaceName].title is defined ? categories[interfaceName].title : interfaceName -%}
         {%- set disableTitle = categories[interfaceName].disableTitle is defined ? categories[interfaceName].disableTitle : false -%}
         {%- if title and not disableTitle -%}
-            <h2 class="title mb-3{%-if not loop.first -%} mt-4{%-endif-%}">{{ title|striptags }}</h2>
+            <h2 class="title mb-3{%if not loop.first %} mt-4{%endif%}">{{ title|striptags }}</h2>
         {%- endif -%}
         {%- if group is not empty -%}
             <ul class="ps-3 d-flex flex-column m-0">

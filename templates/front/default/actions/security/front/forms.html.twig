@@ -111,7 +111,7 @@
     {%- set frontRegistration = website.security.frontRegistration -%}
     <div class="container mt-5 mb-5">
         <div class="row d-flex">
-            <div class="col-lg-{%- if frontRegistration -%}5{%- else -%}4{%- endif -%}{%- if not frontRegistration -%} mx-auto{%- endif -%}">
+            <div class="col-lg- {% if frontRegistration %}5{% else %}4{% endif %}{% if not frontRegistration %} mx-auto{% endif %}">
                 {{ render_esi(path('security_front_login', {view: 'form'})) }}
             </div>
             {%- if frontRegistration -%}

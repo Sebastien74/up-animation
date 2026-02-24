@@ -16,7 +16,7 @@
             </div>
             {%- if userDashboardPageUrl -%}
                 <div class="modal-footer justify-content-center border-0">
-                    <a href="{{ path('security_front_profile', {url: userDashboardPageUrl}) }}" class="btn btn-primary" aria-label="{{ "Espace personnel"|trans|striptags }}" data-toggle="preloader">
+                    <a href="{{ path('security_front_profile', {url: userDashboardPageUrl}) }}" class="btn btn-primary" aria-label="{{"Espace personnel"|trans|striptags }}" data-toggle="preloader">
                         {{ 'fal user'|icon(null, 17, 'me-1') }}
                         <span class="d-inline-block">{{ "Espace personnel"|trans|raw }}</span>
                     </a>

@@ -38,8 +38,8 @@
                 {%- for page in pages.items -%}
                     {%- if page.title and page.url -%}
                         <a href="{{ page.url }}" class="nav-link text-bold d-flex align-items-center
-                           {%- if not page.active -%}text-dark{%- endif -%}
-                           {%- if page.active -%} active-item rounded-btn btn btn-primary mx-2{%- else -%} link{%- endif -%}"
+                           {% if not page.active %}text-dark{% endif %}
+                           {% if page.active %} active-item rounded-btn btn btn-primary mx-2{% else %} link{% endif %}"
                            >
                             {{ page.title|striptags }}
                         </a>

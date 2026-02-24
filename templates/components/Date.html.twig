@@ -19,7 +19,7 @@
     {%- if currentYear == newYear and currentYear in dateStr -%}
         {%- set dateStr = dateStr|replace({(currentYear): ''})|trim -%}
     {%- endif -%}
-    <time class="date d-inline-block w-100{%- if this.localize.class -%} {{ this.localize.class }}{%- endif -%}"
+    <time class="date d-inline-block w-100{% if this.localize.class %} {{ this.localize.class }}{% endif %}"
           datetime="{{ this.localize.date|date('Y-m-d') }}">
         {{ dateStr|raw }}
     </time>
@@ -29,7 +29,7 @@
     {%- set yearStart = currentYear != startEntityYear ? ' '~startEntityYear : '' -%}
     {%- set yearEnd = currentYear != endEntityYear ? ' '~endEntityYear : '' -%}
     {%- if this.localize.startDate and not this.localize.endDate -%}
-        <time class="date d-inline-block w-100{%- if this.localize.class -%} {{ this.localize.class }}{%- endif -%}"
+        <time class="date d-inline-block w-100{% if this.localize.class %} {{ this.localize.class }}{% endif %}"
               datetime="{{ this.localize.date|date('Y-m-d') }}">
             {{ "Le %date%%year%"|trans({
                 '%date%': this.localize.startDate|format_datetime(pattern=this.localize.formatDate, locale=app.request.locale),
@@ -50,7 +50,7 @@
             })|raw }}</p>
     {%- endif -%}
 {%- elseif this.localize.asHours -%}
-    <time class="hour d-inline-block w-100{%- if class -%} {{ class }}{%- endif -%}"
+    <time class="hour d-inline-block w-100{% if class %} {{ class }}{% endif %}"
           datetime="{{ this.localize.date|date('Y-m-d') }}T{{ this.localize.date|date('H:i') }}">
         {{ "%day% %dayMonth%"|trans({
             '%day%': this.localize.date|format_datetime(pattern='cccc', locale=app.request.locale),

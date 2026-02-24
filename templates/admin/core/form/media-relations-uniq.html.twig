@@ -27,12 +27,12 @@
         {%- for mediaRelation in mediaRelations -%}
             {%- set locale = mediaRelation.vars.value.locale -%}
             {%- if locale not in localesDisplay -%}
-                <li class="nav-item{%- if locale not in allLocales -%} d-none{%- endif -%}" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
-                    <a class="nav-link{%- if locale == defaultLocale -%} active{%- endif -%}" data-bs-toggle="tab"
-                       id="media-relation-{{ locale }}-tab"
-                       aria-selected="{%- if locale == defaultLocale -%}true{%- else -%}false{%- endif -%}"
-                       href="#media-relations-tab-{{ locale }}" role="tab">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                <li class="nav-item {% if locale not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
+                    <a class="nav-link {% if locale == defaultLocale %} active{% endif %}" data-bs-toggle="tab"
+                       id="media-relation- {{ locale }}-tab"
+                       aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}"
+                       href="#media-relations-tab- {{ locale }}" role="tab">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
                     </a>
                 </li>
             {%- endif -%}
@@ -60,7 +60,7 @@
         {%- endif -%}
 
         {%- if allLocales|length > 1 -%}
-            <div id="media-relations-tab-{{ locale }}" class="tab-pane fade{%- if locale == defaultLocale -%} show active{%- endif -%}" role="tabpanel" aria-labelledby="media-relation-{{ locale }}-tab">
+            <div id="media-relations-tab- {{ locale }}" class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}" role="tabpanel" aria-labelledby="media-relation- {{ locale }}-tab">
                 <div class="p-20 pb-0">
                     <div class="row">
         {%- endif -%}
@@ -81,7 +81,7 @@
                         {{ form_row(mediaRelation.media.uploadedFile) }}
                     </div>
             {%- else -%}
-                <div class="col-md-{%- if onlyMedia -%}12{%- else -%}7{%- endif -%}">
+                <div class="col-md- {% if onlyMedia %}12{% else %}7{% endif %}">
                     <div class="card-body pb-2 border mb-4 radius">
                         {%- if libraryBtnPosition == 'top' -%}
                             {%- include 'admin/page/media/modal-btn.html.twig' -%}
@@ -98,13 +98,13 @@
                     <button class="d-inline-flex align-items-center collapsed w-100 mb-3"
                             type="button"
                             data-bs-toggle="collapse"
-                            href="#collapseSubNavigation-{{ mediaRelationId }}"
+                            href="#collapseSubNavigation- {{ mediaRelationId }}"
                             aria-expanded="false"
-                            aria-controls="collapseSubNavigation-{{ mediaRelationId }}">
+                            aria-controls="collapseSubNavigation- {{ mediaRelationId }}">
                         <i class="icm-text me-2"></i>{{ "Contenus navigation"|trans }}
                         <i class="icm-chevron-down ms-auto"></i>
                     </button>
-                    <div id="collapseSubNavigation-{{ mediaRelationId }}" class="collapse">
+                    <div id="collapseSubNavigation- {{ mediaRelationId }}" class="collapse">
                         <div class="card-body pb-2 border mb-4 radius">
                 {%- endif -%}
                 {%- if onlyMedia and mediaRelation.intl.title is defined -%}
@@ -122,11 +122,11 @@
                 {%- endif -%}
 
                 {%- if mediaRelation.intl.targetLink is defined -%}
-                    <h4 class="main-subtitle" data-bs-toggle="collapse" href="#collapse-link-{{ mediaRelationId }}" role="button" aria-expanded="false" aria-controls="collapse-link-{{ mediaRelationId }}">
+                    <h4 class="main-subtitle" data-bs-toggle="collapse" href="#collapse-link- {{ mediaRelationId }}" role="button" aria-expanded="false" aria-controls="collapse-link- {{ mediaRelationId }}">
                         <i class="icm-link"></i>{{ "Lien"|trans }}
                         <i class="icm-chevron-down ms-auto"></i>
                     </h4>
-                    <div id="collapse-link-{{ mediaRelationId }}" class="collapse">
+                    <div id="collapse-link- {{ mediaRelationId }}" class="collapse">
                         <div class="card-body pb-2 border mb-4 radius">
                             <div class="row">
                                 {%- if mediaRelation.intl.targetStyle is defined -%}
@@ -205,13 +205,13 @@
             {%- if not onlyMedia -%}
                 {%- if screenSize is not defined or screenSize is defined and screenSize != 'poster' -%}
 
-                    <div class="col-md-5{%- if not granted('ROLE_INTERNAL') -%} my-auto{%- endif -%}">
+                    <div class="col-md-5 {% if not granted('ROLE_INTERNAL') %} my-auto{% endif %}">
 
-                        <h4 class="main-subtitle" data-bs-toggle="collapse" href="#collapse-config-{{ mediaRelationId }}" role="button" aria-expanded="true" aria-controls="collapse-config-{{ mediaRelationId }}">
+                        <h4 class="main-subtitle" data-bs-toggle="collapse" href="#collapse-config- {{ mediaRelationId }}" role="button" aria-expanded="true" aria-controls="collapse-config- {{ mediaRelationId }}">
                             <i class="icm-cog"></i>{{ "Configuration"|trans }}
                             <i class="icm-chevron-down ms-auto"></i>
                         </h4>
-                        <div id="collapse-config-{{ mediaRelationId }}" class="collapse show">
+                        <div id="collapse-config- {{ mediaRelationId }}" class="collapse show">
                             <div class="card-body pb-2 border mb-4 radius">
 
                                 {%- if mediaRelation.maxWidth is defined or mediaRelation.maxHeight is defined -%}
@@ -250,21 +250,21 @@
                                     {%- set groupSize = mediaRelation.media.copyright is defined and mediaRelation.media.titlePosition is defined ? 6 : 12 -%}
 
                                     {%- if mediaRelation.media.copyright is defined -%}
-                                        <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.media.copyright) }}</div>
+                                        <div class="col-md- {{ groupSize }}">{{ form_row(mediaRelation.media.copyright) }}</div>
                                     {%- endif -%}
 
                                     {%- if mediaRelation.media.titlePosition is defined -%}
-                                        <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.media.titlePosition) }}</div>
+                                        <div class="col-md- {{ groupSize }}">{{ form_row(mediaRelation.media.titlePosition) }}</div>
                                     {%- endif -%}
 
                                     {%- if mediaRelation.pictogram is defined -%}
-                                        <div class="col-md-{%- if mediaRelation.pictogramMaxWidth is defined -%}12{%- else -%}{{ groupSize }}{%- endif -%}">{{ form_row(mediaRelation.pictogram) }}</div>
+                                        <div class="col-md- {% if mediaRelation.pictogramMaxWidth is defined %}12{% else %}{{ groupSize }}{% endif %}">{{ form_row(mediaRelation.pictogram) }}</div>
                                     {%- endif -%}
                                     {%- if mediaRelation.pictogramMaxWidth is defined -%}
-                                        <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxWidth) }}</div>
+                                        <div class="col-md- {{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxWidth) }}</div>
                                     {%- endif -%}
                                     {%- if mediaRelation.pictogramMaxHeight is defined -%}
-                                        <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxHeight) }}</div>
+                                        <div class="col-md- {{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxHeight) }}</div>
                                     {%- endif -%}
 
                                 {%- if mediaRelation.media.copyright is defined or mediaRelation.media.titlePosition is defined -%}

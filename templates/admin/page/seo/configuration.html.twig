@@ -16,7 +16,7 @@
 
 {%- block body -%}
     {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
-        <div id="edit-form-{{ interface.name }}">
+        <div id="edit-form- {{ interface.name }}">
             <div class="d-flex gap-2 flex-wrap mb-4">
                 <div class="nav nav-tabs gap-2 border-0 me-auto" role="tablist">
                     <a class="btn-app active" id="nav-seo-tab" data-bs-toggle="tab" href="#seo" role="tab" aria-selected="true">

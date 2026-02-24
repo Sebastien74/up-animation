@@ -6,12 +6,12 @@
 {%- set visible = visible is defined and visible -%}
 {%- set progress = progress is defined and progress -%}
 
-<div id="{{ preloaderId }}" class="progress stripe-preloader progress-card-container prototype-preloader{%- if not visible -%} d-none{%- endif -%}{%- if asFull -%} full{%- endif -%}{%- if preloaderClass -%} {{ preloaderClass }}{%- endif -%}">
+<div id="{{ preloaderId }}" class="progress stripe-preloader progress-card-container prototype-preloader{% if not visible %} d-none{% endif %}{% if asFull %} full{% endif %}{% if preloaderClass %} {{ preloaderClass }}{% endif %}">
     <div class="bg-stripe-loader"></div>
     <div class="vertical-align">
         <h4>{{ "Chargement en cours..."|trans }}</h4>
         {%- if progress -%}
-            <div class="card progress-card mt-4{%- if progress == 'hide' -%} d-none{%- endif -%}">
+            <div class="card progress-card mt-4{% if progress == 'hide' %} d-none{% endif %}">
                 <div class="card-body pb-2">
                     <h6 class="title">{{ "Mise à jour"|trans|raw }}</h6>
                     <div class="progress">

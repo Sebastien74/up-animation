@@ -9,10 +9,10 @@
 
 {%- if haveEmails or havePhones or haveAddress -%}
     <div class="information-container">
-        <div class="card {%- if displayBg -%}bg-light{%- else -%}bg-transparent{%- endif -%}">
+        <div class="card {% if displayBg %}bg-light{% else %}bg-transparent{% endif %}">
             <div class="card-body py-4 px-4 px-lg-5">
                 {%- if haveEmails or havePhones -%}
-                    <div class="contact-information{%- if haveAddress -%} mb-4{%- endif -%}">
+                    <div class="contact-information {% if haveAddress %} mb-4{% endif %}">
                         <strong class="title d-inline-block fw-700 mb-3">{{ 'Contact'|trans|raw }}</strong>
                         {%- if haveEmails or havePhones -%}
                             <ul class="reset contacts">

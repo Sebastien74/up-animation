@@ -57,20 +57,20 @@
                 {%- set entityId = redirection.vars.data.id is defined and redirection.vars.data.id ? redirection.vars.data.id : redirection.vars.id -%}
                 {%- set locale = redirection.vars.data.locale is defined and redirection.vars.data.locale ? redirection.vars.data.locale : null -%}
 
-                <tr id="refer-col-domain-{{ entityId }}" class="prototype">
-                    <td class="col-locale align-middle px-4{%- if allLocales|length <= 1 -%} d-none{%- endif -%}" data-label="{{ "Langue"|trans }}">
+                <tr id="refer-col-domain- {{ entityId }}" class="prototype">
+                    <td class="col-locale align-middle px-4{% if allLocales|length <= 1 %} d-none{% endif %}" data-label="{{"Langue"|trans }}">
                         <span class="d-none">{{ locale }}</span>
                         {{ form_widget(redirection.locale) }}
                     </td>
-                    <td class="align-middle px-4" data-label="{{ "URL"|trans }}">
+                    <td class="align-middle px-4" data-label="{{"URL"|trans }}">
                         {{ form_widget(redirection.old) }}
                         {{ form_errors(redirection.old) }}
                     </td>
-                    <td class="align-middle px-4" data-label="{{ "Nouvelle URL"|trans }}">
+                    <td class="align-middle px-4" data-label="{{"Nouvelle URL"|trans }}">
                         {{ form_widget(redirection.new) }}
                         {{ form_errors(redirection.new) }}
                     </td>
-                    <td class="align-middle text-end actions px-4" data-label="{{ "Actions"|trans }}">
+                    <td class="align-middle text-end actions px-4" data-label="{{"Actions"|trans }}">
                         <div class="d-flex justify-content-end align-items-center gap-2">
                             {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
                                 isNew: redirection.vars.data.id is defined and redirection.vars.data.id ? false : true,
@@ -78,9 +78,9 @@
                                 interfaceName: 'redirection'
                             } -%}
                             <div class="custom-control custom-checkbox delete-input-index-wrap d-none">
-                                <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ entityId }}"
+                                <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input- {{ entityId }}"
                                        data-path="{{ path('admin_redirection_delete', {website: websiteId(), redirection: entityId}) }}">
-                                <label class="custom-control-label" for="delete-input-{{ entityId }}"></label>
+                                <label class="custom-control-label" for="delete-input- {{ entityId }}"></label>
                             </div>
                         </div>
                     </td>
@@ -92,14 +92,14 @@
                 <table class="table table-striped responsive-cards mb-0 editable-table collection" data-index="{{ form.redirections|length }}" data-prototype="{{ macro.redirection_prototype(form.redirections.vars.prototype)|e('html_attr') }}">
                 <thead>
                     <tr>
-                        <th class="col-locale px-4{%- if allLocales|length <= 1 -%} d-none{%- endif -%}">{{ "Langue"|trans }}</th>
+                        <th class="col-locale px-4{% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans }}</th>
                         <th class="px-4">{{ "URL"|trans }} <small class="ms-1">({{ "Ancienne URI / URL"|trans }})</small></th>
                         <th class="text-start px-4">{{ "Nouvelle URL"|trans }} <small class="ms-1">({{ "Avec protocol"|trans }})</small></th>
                         <th class="text-end px-4">
                             <div class="delete-index-all-wrap custom-control custom-checkbox float-end ms-3 d-none" data-toggle="tooltip"
-                                 title="{{ "Tout cocher"|trans|striptags }}"
-                                 data-checked="{{ "Tout cocher"|trans|striptags }}"
-                                 data-unchecked="{{ "Tout décocher"|trans|striptags }}">
+                                 title="{{"Tout cocher"|trans|striptags }}"
+                                 data-checked="{{"Tout cocher"|trans|striptags }}"
+                                 data-unchecked="{{"Tout décocher"|trans|striptags }}">
                                 <input type="checkbox" class="custom-control-input delete-index-all" id="delete-index-all">
                                 <label class="custom-control-label" for="delete-index-all"></label>
                             </div>

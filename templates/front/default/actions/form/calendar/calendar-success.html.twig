@@ -1,11 +1,11 @@
-{%- trans_default_domain 'front_default' -%}
+﻿{%- trans_default_domain 'front_default' -%}
 
 {%- set appointment = contact.appointment is defined and contact.appointment ? contact.appointment : null -%}
 {%- set calendar = appointment.formcalendar is defined ? appointment.formcalendar : null -%}
 {%- set intl = calendar|intl -%}
 {%- set calendarTitle = intl.title is defined and intl.title ? intl.title : (calendar.adminName is defined ? calendar.adminName : null) -%}
 
-<div id="form-calendar-container-{{ form.id }}"
+<div id="form-calendar-container- {{ form.id }}"
      class="form-calendar-container position-relative"
      data-component="form-calendar">
     <div class="row form-calendar-ajax-content">

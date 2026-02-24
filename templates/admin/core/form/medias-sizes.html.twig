@@ -20,9 +20,9 @@
         <ul class="nav nav-tabs custom-tab" role="tablist">
             {%- for tabId, config in tabs -%}
                 <li class="nav-item col p-0 text-center">
-                    <a id="nav-{{ tabId }}-tab-{{ locale }}" class="nav-link{%- if loop.first -%} active{%- endif -%}"
-                       aria-controls="tab-screen-{{ tabId }}-{{ locale }}"
-                       data-bs-toggle="tab" href="#tab-screen-{{ tabId }}-{{ locale }}" role="tab" aria-selected="{{ loop.first }}">
+                    <a id="nav- {{ tabId }}-tab-{{ locale }}" class="nav-link {% if loop.first %} active{% endif %}"
+                       aria-controls="tab-screen- {{ tabId }}-{{ locale }}"
+                       data-bs-toggle="tab" href="#tab-screen- {{ tabId }}-{{ locale }}" role="tab" aria-selected="{{ loop.first }}">
                         <span class="d-none d-sm-inline-block">{{ config.title }}</span>
                     </a>
                 </li>
@@ -30,7 +30,7 @@
         </ul>
         <div class="tab-content pt-4">
             {%- for tabId, config in tabs -%}
-                <div class="tab-pane w-100{%- if loop.first -%} active{%- endif -%}" id="tab-screen-{{ tabId }}-{{ locale }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab-{{ locale }}">
+                <div class="tab-pane w-100{% if loop.first %} active{% endif %}" id="tab-screen- {{ tabId }}-{{ locale }}" role="tabpanel" aria-labelledby="nav- {{ tabId }}-tab-{{ locale }}">
                     <div class="row">
                         {%- if tabId == 'desktop' -%}
                             {%- if form.maxWidth is defined -%}

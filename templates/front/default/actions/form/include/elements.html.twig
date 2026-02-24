@@ -8,7 +8,7 @@
         ? field.vars.attr.group : (field.vars.attr['data-group'] is defined and field.vars.attr['data-group'] ? field.vars.attr['data-group'] : null) -%}
     {%- set groupClass = 'btn' in class and 'justify-content-end' in block.elementsAlignment ? groupClass~'d-flex align-items-center' : groupClass -%}
     {%- set value = messages['field_'~block.id~'_value'][0] is defined ? messages['field_'~block.id~'_value'][0] : null -%}
-    <div class="form-group{%- if isInvalid -%} is-invalid{%- endif -%}{%- if groupClass -%} {{ groupClass }}{%- endif -%}">
+    <div class="form-group {% if isInvalid %} is-invalid{% endif %}{% if groupClass %} {{ groupClass }}{% endif %}">
         {%- if 'btn' in class and 'justify-content-end' in block.elementsAlignment -%}
             <small class="text-italic asterisk-group me-3 mb-3"><sup class="text-danger asterisk">*</sup>&nbsp;{{ "Champs obligatoires"|trans|raw }}</small>
         {%- endif -%}

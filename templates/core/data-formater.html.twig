@@ -25,11 +25,11 @@
         {%- set dataValue = entityValue(dataValue, property) -%}
     {%- endif -%}
     <span class="d-none">{{ dataValue }}</span>
-    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~dataValue~'.svg') }}" class="img-fluid lazy-load me-1" height="9" width="12" alt="image">
+    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~dataValue~'.svg') }}" class="img-fluid lazy-load me-1" height="9" width="12" alt="image">
 
 {%- elseif dataValue and dataValue|isEmail -%}
 
-    <a href="mailto:{{ dataValue }}">{{ dataValue }}</a>
+    <a href="mailto: {{ dataValue }}">{{ dataValue }}</a>
 
 {%- elseif dataValue|isBool -%}
 
@@ -72,7 +72,7 @@
                                 {%- set blockEntity = data.configuration.block is defined and data.configuration.block ? data.configuration.block : null -%}
                                 {%- set valueClassname = blockEntity.fieldConfiguration.className is defined and blockEntity.fieldConfiguration.className ? blockEntity.fieldConfiguration.className : null -%}
                                 {%- set isFile = metaProperty != 'label' and metaFieldValue|fileExist('public') -%}
-                                <li{%- if metaProperty == 'label' -%} class="bold" {%- endif -%}>
+                                <li {% if metaProperty == 'label' -%} class="bold" {%- endif -%}>
                                     {%- if metaProperty == 'label' -%}
                                         {%- set intl = blockEntity|intl -%}
                                         {%- set value = intl.title is defined and intl.title ? intl.title : (blockEntity.adminName is defined and blockEntity.adminName ? blockEntity.adminName : metaFieldValue) -%}
@@ -123,7 +123,7 @@
 
     {{ dataValue.username }}
     {%- if dataValue.email is defined and dataValue.email -%}
-        : <a href="mailto:{{ dataValue.email }}">{{ dataValue.email }}</a>
+        : <a href="mailto: {{ dataValue.email }}">{{ dataValue.email }}</a>
     {%- endif -%}
 
 {%- elseif dataValue|isObject and not dataValue|instanceof('DateTime') and 'User' not in dataValue|getClass -%}

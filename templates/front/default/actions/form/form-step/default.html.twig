@@ -5,7 +5,7 @@
     <div class="steps mb-4">
         <ul class="reset" role="tablist">
             {%- for stepform in entity.forms -%}
-                <li role="tab" class="step-tab{%- if loop.first -%} done{%- endif -%}" data-step="{{ loop.index }}">
+                <li role="tab" class="step-tab {% if loop.first %} done{% endif %}" data-step="{{ loop.index }}">
                     <a id="steps-uid-0-t-0" class="step-wrap">
                         <span class="step">{{ loop.index }}</span>
                         {%- set intl = stepform|intl -%}
@@ -35,7 +35,7 @@
             {%- include "front/"~websiteTemplate~"/include/recaptcha-fields.html.twig" with {form: form, entity: entity.configuration} only -%}
 
             {%- for stepform in entity.forms -%}
-                <div class="step-form-container {%- if not loop.first -%}d-none{%- endif -%}" data-step="{{ loop.index }}">
+                <div class="step-form-container {% if not loop.first %}d-none{% endif %}" data-step="{{ loop.index }}">
                     {%- include 'front/'~websiteTemplate~'/layout.html.twig' with {entity: stepform} -%}
                     <div class="row m-0">
                         <div class="col-md-6 text-center text-md-start">
@@ -44,10 +44,10 @@
                             {%- endif -%}
                         </div>
                         <div class="col-md-6 text-center text-md-end">
-                            <button type="submit" class="btn btn-primary {%- if loop.last -%} last{%- endif -%}"
+                            <button type="submit" class="btn btn-primary {% if loop.last %} last{% endif %}"
                                     data-step="{{ loop.index }}"
                                     data-next="{{ loop.index + 1 }}"
-                                    data-advancement="{%- if loop.index == entity.forms|length -%}finished{%- else -%}steps{%- endif -%}">
+                                    data-advancement="{% if loop.index == entity.forms|length %}finished{% else %}steps{% endif %}">
                                 {%- if not loop.last -%}{{ "Suivant"|trans|raw }}{%- else -%}{{ "Envoyer"|trans|raw }}{%- endif -%}
                             </button>
                         </div>

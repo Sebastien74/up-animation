@@ -21,7 +21,7 @@
 {%- endblock -%}
 
 {%- block body -%}
-    <div id="body-catalog-{{ entity.catalog.slug }}" class="product-view-container view-container position-relative">
+    <div id="body-catalog- {{ entity.catalog.slug }}" class="product-view-container view-container position-relative">
         {%- if entity.haveLayout -%}
             {%- include 'front/'~websiteTemplate~'/layout.html.twig' with {layout: entity.entityForLayout.layout, asLayout: true} -%}
         {%- else -%}

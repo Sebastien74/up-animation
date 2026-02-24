@@ -6,16 +6,16 @@
 {%- set selectorClass = args.selectorClass is defined ? args.selectorClass : false -%}
 
 {%- if entitylocale and allLocales|length > 1 -%}
-    <div class="btn-group{%- if selectorClass -%} {{ selectorClass }}{%- endif -%}" role="group">
+    <div class="btn-group {% if selectorClass %} {{ selectorClass }}{% endif %}" role="group">
         <button id="locales-dropdown" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~entitylocale~'.svg') }}" class="img-fluid lazy-load me-2" height="14" width="19">{{ entitylocale|languageName }}
+            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~entitylocale~'.svg') }}" class="img-fluid lazy-load me-2" height="14" width="19">{{ entitylocale|languageName }}
         </button>
         <div id="locales-dropdown-select" class="dropdown-menu" aria-labelledby="locales-dropdown">
             {%- for websiteLocale in allLocales -%}
                 {%- if websiteLocale != entitylocale and (route)|routeExist -%}
                     {%- set args = args|merge({website: websiteId(), entitylocale: websiteLocale}) -%}
                     <a class="dropdown-item" href="{{ path(route, args) }}">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~websiteLocale~'.svg') }}" class="img-fluid lazy-load me-2" height="14" width="19">{{ websiteLocale|languageName }}
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~websiteLocale~'.svg') }}" class="img-fluid lazy-load me-2" height="14" width="19">{{ websiteLocale|languageName }}
                     </a>
                 {%- endif -%}
             {%- endfor -%}

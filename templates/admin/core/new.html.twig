@@ -37,30 +37,30 @@
 
     {%- set modalId = modalId is defined ? modalId : (interface.name is defined ? interface.name : uniqId()) -%}
 
-    <button class="btn-app" data-bs-toggle="modal" data-bs-target="#new-modal-{{ modalId }}">
+    <button class="btn-app" data-bs-toggle="modal" data-bs-target="#new-modal- {{ modalId }}">
         <i class="icm-plus"></i>{{ addLabel|unescape|raw }}
     </button>
 
-    <div class="modal fade" id="new-modal-{{ modalId }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="new-modal- {{ modalId }}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content border refer-preloader text-start pb-3">
                 {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', preloaderClass: 'radius-preloader', full: true} only -%}
                 <div class="modal-header px-4 pt-4 pb-3">
                     <h2 class="main-title text-start h4 fw-bold ps-2"><i class="icm-plus btn-icon large me-3"></i>{{ addLabel }}</h2>
-                    <button class="btn-close btn ms-auto me-2" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                    <button class="btn-close btn ms-auto me-2" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
                         <i class="icm-times btn-icon"></i>
                     </button>
                 </div>
                 <div class="modal-body px-4">
                     {%- set asAjax = form.save.vars.attr.class is defined and 'ajax-post' in form.save.vars.attr.class -%}
-                    <div class="container my-auto{%- if asAjax -%} ajax-content{%- endif -%}">
+                    <div class="container my-auto{% if asAjax %} ajax-content{% endif %}">
                         {{ form_start(form, {attr: {novalidate: "novalidate", action: formAction, id: "new-form-"~modalId, class: "mb-0"}}) }}
                             <div class="row justify-content-center">
                                 {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: form, asNews: true, disableTitle: true} only -%}
                             </div>
                             <div id="password-generator-result" class="btn-copy btn-icon danger w-100 text-center refer-copy position-relative d-none cursor">
                                 <div class="to-copy"></div>
-                                <div class="copy-link position-absolute" data-bs-toggle="tooltip" data-title="{{ "Copier"|trans|striptags }}">
+                                <div class="copy-link position-absolute" data-bs-toggle="tooltip" data-title="{{"Copier"|trans|striptags }}">
                                     <div class="inner h-100"><i class="icm-copy"></i></div>
                                 </div>
                             </div>

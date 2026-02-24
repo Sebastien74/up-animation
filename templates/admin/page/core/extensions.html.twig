@@ -36,7 +36,7 @@
 
                 <div class="col-md-3">
                     <div class="card mb-3">
-                        <div class="card-body{%- if extension.active -%} active{%- endif -%} pb-2">
+                        <div class="card-body {% if extension.active %} active{% endif %} pb-2">
                             {%- if 'medias' in icon -%}
                                 <img data-src="{{ asset(icon) }}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="icon img-fluid lazy-load" height="40" alt="{{ title|striptags }}">
                             {%- else -%}
@@ -44,13 +44,13 @@
                             {%- endif -%}
                             <span class="show-more position-absolute btn-icon danger text-center p-0 cursor"
                                   data-bs-toggle="tooltip"
-                                  title="{{ "En savoir plus"|trans|striptags }}">
+                                  title="{{"En savoir plus"|trans|striptags }}">
                                 <span data-bs-toggle="modal"
-                                      data-bs-target="#modal-extension-{{ loop.index }}"
+                                      data-bs-target="#modal-extension- {{ loop.index }}"
                                       class="d-inline-block w-100 h-100"
                                       role="button"
                                       aria-expanded="false"
-                                      aria-controls="collapse-extension-{{ loop.index }}">
+                                      aria-controls="collapse-extension- {{ loop.index }}">
                                     <i class="icm-plus"></i>
                                 </span>
                             </span>
@@ -58,21 +58,21 @@
                         </div>
                         {%- if granted('ROLE_INTERNAL') and entity.id -%}
                             <a href="{{ path('admin_module_edit', {website: website.id, module: entity.id}) }}"
-                               class="btn-app btn-edit position-absolute" data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
+                               class="btn-app btn-edit position-absolute" data-bs-toggle="tooltip" title="{{"Éditer"|trans|striptags }}">
                                 <i class="icm-pencil"></i>
                             </a>
                         {%- endif -%}
                     </div>
                 </div>
 
-                <div class="modal fade" id="modal-extension-{{ loop.index }}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal fade" id="modal-extension- {{ loop.index }}" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                         <div class="modal-content border refer-preloader text-start pb-5 pt-3">
                             <div class="modal-header">
                                 <h5 class="modal-title text-center w-100">
                                     <img data-src="{{ asset(icon) }}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="icon img-fluid lazy-load" height="40" alt="{{ title|striptags }}">
                                 </h5>
-                                <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                                <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
                                     <i class="icm-times"></i>
                                 </button>
                             </div>

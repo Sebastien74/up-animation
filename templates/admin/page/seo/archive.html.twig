@@ -35,10 +35,10 @@
                 <h4 class="card-title float-start">
                     {{ label }}
                     <button class="index-delete-show btn-app-lighten btn-md ms-3" data-bs-toggle="tooltip"
-                            title="{{ "Afficher les cases à cocher de suppression"|trans|striptags }}"
-                            data-display="{{ "Afficher les cases à cocher de suppression"|trans|striptags }}"
-                            data-hide="{{ "Masquer"|trans|striptags }}"><i class="icm-trash"></i></button>
-                    <button class="index-delete-submit btn-icon danger ms-3 d-none" data-bs-toggle="tooltip" title="{{ "Supprimer la sélection"|trans|striptags }}"><i class="icm-trash"></i></button>
+                            title="{{"Afficher les cases à cocher de suppression"|trans|striptags }}"
+                            data-display="{{"Afficher les cases à cocher de suppression"|trans|striptags }}"
+                            data-hide="{{"Masquer"|trans|striptags }}"><i class="icm-trash"></i></button>
+                    <button class="index-delete-submit btn-icon danger ms-3 d-none" data-bs-toggle="tooltip" title="{{"Supprimer la sélection"|trans|striptags }}"><i class="icm-trash"></i></button>
                 </h4>
                 <table class="table table-striped mb-4">
                     <thead>
@@ -48,11 +48,11 @@
                             <th class="text-end">
                                 {%- if 'delete'|moduleActive(configuration) -%}
                                     <div class="delete-index-all-wrap custom-control custom-checkbox float-end ms-3 d-none" data-bs-toggle="tooltip"
-                                         title="{{ "Tout cocher"|trans|striptags }}"
-                                         data-checked="{{ "Tout cocher"|trans|striptags }}"
-                                         data-unchecked="{{ "Tout décocher"|trans|striptags }}">
-                                        <input type="checkbox" class="custom-control-input delete-index-all" id="delete-index-all-{{ loop.index }}">
-                                        <label class="custom-control-label" for="delete-index-all-{{ loop.index }}"></label>
+                                         title="{{"Tout cocher"|trans|striptags }}"
+                                         data-checked="{{"Tout cocher"|trans|striptags }}"
+                                         data-unchecked="{{"Tout décocher"|trans|striptags }}">
+                                        <input type="checkbox" class="custom-control-input delete-index-all" id="delete-index-all- {{ loop.index }}">
+                                        <label class="custom-control-label" for="delete-index-all- {{ loop.index }}"></label>
                                     </div>
                                 {%- endif -%}
                                 {{ "Actions"|trans }}
@@ -61,7 +61,7 @@
                     </thead>
                     <tbody>
                     {%- for url in urls -%}
-                        <tr id="entity-row-{{ url.entity.id }}" class="delete-pack-parent-row">
+                        <tr id="entity-row- {{ url.entity.id }}" class="delete-pack-parent-row">
                             <td class="align-middle">
                                 {%- if url.entity.adminName is defined and url.entity.adminName -%}
                                     {{ url.entity.adminName }}
@@ -74,7 +74,7 @@
                                             <small>
                                                 {%- if allLocales|length > 1 -%}
                                                     <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                                         data-src="{{ asset('/medias/icons/flags/'~entityUrl.locale~'.svg') }}"
+                                                         data-src=" {{ asset('/medias/icons/flags/'~entityUrl.locale~'.svg') }}"
                                                          data-bs-toggle="tooltip" title="{{ entityUrl.locale|languageName }}"
                                                          class="img-fluid lazy-load me-2" height="11" width="15">
                                                 {%- endif -%}
@@ -94,7 +94,7 @@
                                         }) -%}
                                         <a href="{{ path }}"
                                            data-bs-toggle="tooltip" title="{{ url.restore|striptags }}"
-                                           data-target="#entity-row-{{ url.entity.id }}">
+                                           data-target="#entity-row- {{ url.entity.id }}">
                                             <i class="icm-redo-alt"></i>
                                         </a>
                                     {%- endif -%}
@@ -106,14 +106,14 @@
                                         }) -%}
                                         <a href="{{ path }}"
                                            data-bs-toggle="tooltip" title="{{ url.delete|striptags }}"
-                                           data-target="#entity-row-{{ url.entity.id }}"
+                                           data-target="#entity-row- {{ url.entity.id }}"
                                            class="swal-delete-link ms-3">
                                             <i class="icm-trash"></i>
                                         </a>
                                         <div class="custom-control custom-checkbox delete-input-index-wrap ms-3 d-none position-relative">
-                                            <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ url.entity.id }}"
+                                            <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input- {{ url.entity.id }}"
                                                    data-path="{{ path }}">
-                                            <label class="custom-control-label" for="delete-input-{{ url.entity.id }}"></label>
+                                            <label class="custom-control-label" for="delete-input- {{ url.entity.id }}"></label>
                                         </div>
                                     {%- endif -%}
                                 </td>

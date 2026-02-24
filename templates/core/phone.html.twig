@@ -3,7 +3,7 @@
 {%- set phoneTrack = website.api.facebook.phoneTrack is defined ? website.api.facebook.phoneTrack : false -%}
 {%- set microDataActive = website.seoConfiguration.microData -%}
 {%- set asBtn = options.btn is defined or (options.class is defined and 'btn' in options.class) -%}
-{%- set btnClasses = asBtn and options.btn is defined ? " btn btn-"~options.btn : '' -%}
+{%- set btnClasses = asBtn and options.btn is defined ?" btn btn-"~options.btn : '' -%}
 {%- set btnClasses = options.class is defined ? btnClasses~' '~options.class : btnClasses -%}
 {%- set itemprop = phone.type == 'fixe' or phone.type == 'mobile' ? "telephone" : (phone.type == 'fax' ? 'faxNumber' : null) -%}
 {%- set label = phone.type == 'fixe' or phone.type == 'office' or phone.type == 'mobile' ? "Tel :"|trans : (phone.type == 'fax' ? "Fax :"|trans : null) -%}
@@ -23,17 +23,17 @@
     {%- elseif entitled -%}
         <span class="label fw-600 me-1">{{ label|raw }}</span>
     {%- endif -%}
-    <a href="{{ href }}"{%- if not only_href -%} data-tel="{{ phone.tagNumber|encrypt(website) }}"{%- endif -%}
-       class="phone-link position-relative{%- if class -%} {{ class }}{%- endif -%}{%- if not only_href -%} loading{%- endif -%}{%- if phoneTrack -%} fb-phone-track{%- endif -%} {%- if isMobile() -%}as-mobile{%- else -%}as-desktop{%- endif -%}{{ btnClasses }}"
-       aria-label="{{ "Téléphone"|trans|striptags }}"
-        {%- if not only_href -%}data-text="{{ phone.number|encrypt(website) }}"{%- endif -%}
-       data-id="{{ website.id }}"{%- if microDataActive and itemprop -%} itemscope="itemscope" itemtype="https://schema.org/Organization"{%- endif -%}>
+    <a href="{{ href }}" {%- if not only_href -%} data-tel="{{ phone.tagNumber|encrypt(website) }}" {%- endif -%}
+       class="phone-link position-relative{% if class %} {{ class }}{% endif %}{% if not only_href %} loading{% endif %}{% if phoneTrack %} fb-phone-track{% endif %} {% if isMobile() %}as-mobile{% else %}as-desktop{% endif %}{{ btnClasses }}"
+       aria-label="{{"Téléphone"|trans|striptags }}"
+        {%- if not only_href -%}data-text="{{ phone.number|encrypt(website) }}" {%- endif -%}
+       data-id="{{ website.id }}" {%- if microDataActive and itemprop -%} itemscope="itemscope" itemtype="https://schema.org/Organization" {%- endif -%}>
         {%- if options.text is defined -%}
             {{ options.text|raw }}
         {%- elseif only_href -%}
         {%- if icon or entitled -%}<span class="number">{%- endif -%}{{ phone.number }}{%- if icon or entitled -%}</span>{%- endif -%}
         {%- else -%}
-            <span class="phone-text d-inline-block"{%- if microDataActive and itemprop -%} itemprop="{{ itemprop }}"{%- endif -%}>
+            <span class="phone-text d-inline-block" {%- if microDataActive and itemprop -%} itemprop="{{ itemprop }}" {%- endif -%}>
             <div class="spinner-border me-1" role="status"></div>
             {{ "Chargement du numéro de téléphone"|trans|raw }}
         </span>

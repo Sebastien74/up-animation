@@ -2,7 +2,7 @@
 
 {%- if pagination.getTotalItemCount is defined and (pagination.getTotalItemCount / pagination.itemNumberPerPage) > 0 -%}
     {%- set class = class is defined and class ? class : false -%}
-    <div class="pagination-nav mt-3 mt-md-4{%- if class -%} {{ class }}{%- endif -%}">
+    <div class="pagination-nav mt-3 mt-md-4{% if class %} {{ class }}{% endif %}">
         <div class="row">
             <div class="col-md-4 my-auto d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
                 {%- set delta = (pagination.itemNumberPerPage - pagination|length) -%}

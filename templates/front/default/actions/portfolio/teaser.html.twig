@@ -1,4 +1,4 @@
-{%- trans_default_domain 'front_default' -%}
+﻿{%- trans_default_domain 'front_default' -%}
 
 {%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
 
@@ -34,7 +34,7 @@
             {%- endif -%}
         {%- endfor -%}
     {%- endfor -%}
-    <div id="teaser-news-container-{{ teaser.slug }}" class="teaser-news-container">
+    <div id="teaser-news-container- {{ teaser.slug }}" class="teaser-news-container">
         {{ macroWebmaster.box({
             title: "Éditer le teaser"|trans([], 'front_webmaster'),
             role: 'ROLE_PORTFOLIO',

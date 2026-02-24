@@ -13,7 +13,7 @@
 {%- set modalId = "newsletter-thanks-modal-"~campaign.id -%}
 {%- set extrenal = "newsletter-thanks-modal-"~campaign.id -%}
 
-<div id="newsletter-form-container-{{ campaign.slug }}" class="newsletter-form-container keep-form-module position-relative bg-primary pt-3 pb-4 pt-md-5 pb-md-5{%- if campaign.recaptcha -%} recaptcha-referer{%- endif -%}">
+<div id="newsletter-form-container- {{ campaign.slug }}" class="newsletter-form-container keep-form-module position-relative bg-primary pt-3 pb-4 pt-md-5 pb-md-5{% if campaign.recaptcha %} recaptcha-referer{% endif %}">
     {{ macroWebmaster.box({
         title: "Éditer la campagne"|trans([], 'front_webmaster'),
         role: 'ROLE_NEWSLETTER',

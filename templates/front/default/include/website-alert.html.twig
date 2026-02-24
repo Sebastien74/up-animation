@@ -23,10 +23,10 @@
          data-direction-mobile="left"
          data-speed="{{ speed }}"
          data-speed-mobile="20000">
-        <div class="d-flex justify-content-center py-3 py-xl-4 position-relative overflow-hidden{%- if asflip -%} flip-container{%- endif -%}{%- if not asMarquee -%} mx-4 mx-lg-5{%- endif -%}">
-            <div class="message body{%- if asMarquee -%} d-flex align-items-center{%- endif -%}{%- if asMarquee -%} marquee-container{%- elseif asflip -%} flip-wrapper w-100{%- endif -%}">
+        <div class="d-flex justify-content-center py-3 py-xl-4 position-relative overflow-hidden{% if asflip %} flip-container{% endif %}{% if not asMarquee %} mx-4 mx-lg-5{% endif %}">
+            <div class="message body{% if asMarquee %} d-flex align-items-center{% endif %}{% if asMarquee %} marquee-container{% elseif asflip %} flip-wrapper w-100{% endif %}">
                 {%- for message in websiteAlertmessage -%}
-                    <p class="mb-0 mx-3{%- if asflip -%} flip-face{%- endif -%}">{{ message|raw }}</p>
+                    <p class="mb-0 mx-3{% if asflip %} flip-face{% endif %}">{{ message|raw }}</p>
                 {%- endfor -%}
             </div>
         </div>

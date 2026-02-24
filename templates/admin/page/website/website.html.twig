@@ -56,8 +56,8 @@
             <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" role="tablist">
                 {%- for tabId, config in tabs -%}
                     <li class="nav-item">
-                        <a id="nav-{{ tabId }}-tab" class="btn-app{%- if loop.first -%} active{%- endif -%}" data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}">
-                            <i class="icm-{{ config.icon }}"></i>
+                        <a id="nav- {{ tabId }}-tab" class="btn-app {% if loop.first %} active{% endif %}" data-bs-toggle="tab" href="# {{ tabId }}" role="tab" aria-selected="{{ loop.first }}">
+                            <i class="icm- {{ config.icon }}"></i>
                             {{ config.icon|icon(17, 17, 'dark me-sm-2') }}
                             <span class="d-none d-sm-inline-block">{{ config.title }}</span>
                         </a>
@@ -66,7 +66,7 @@
             </ul>
             <div class="tab-content">
                 {%- for tabId, config in tabs -%}
-                    <div class="tab-pane {%- if loop.first -%} active{%- endif -%}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab">
+                    <div class="tab-pane {% if loop.first %} active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav- {{ tabId }}-tab">
                         {%- include 'admin/page/website/include/website/'~tabId~'.html.twig' -%}
                     </div>
                 {%- endfor -%}

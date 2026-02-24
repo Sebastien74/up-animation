@@ -1,7 +1,7 @@
 {%- trans_default_domain 'front' -%}
 
 {%- set asBtn = options.btn is defined or (options.class is defined and 'btn' in options.class) -%}
-{%- set btnClasses = asBtn and options.btn is defined ? " btn btn-"~options.btn : (options.class is defined ? ' '~options.class : null) -%}
+{%- set btnClasses = asBtn and options.btn is defined ?" btn btn-"~options.btn : (options.class is defined ? ' '~options.class : null) -%}
 {%- set btnClasses = options.class is defined ? btnClasses~' '~options.class : btnClasses -%}
 {%- set labelHTML = '' -%}
 {%- set email = only_href ? email : email|encrypt(website) -%}
@@ -13,12 +13,12 @@
     {%- elseif entitled -%}
         <span class="label fw-600 me-1">{{ "E-mail :"|trans|raw }}</span>
     {%- endif -%}
-    <a href="{{ mailto }}"{%- if not only_href -%} data-mailto="{{ email|encrypt(website) }}"{%- endif -%}
-       class="email-link position-relative d-inline-flex align-items-center{%- if class -%} {{ class }}{%- endif -%}{%- if not only_href -%} loading{%- else -%} only-href{%- endif -%}{{ btnClasses }}"
+    <a href="{{ mailto }}" {%- if not only_href -%} data-mailto="{{ email|encrypt(website) }}" {%- endif -%}
+       class="email-link position-relative d-inline-flex align-items-center{% if class %} {{ class }}{% endif %}{% if not only_href %} loading{% else %} only-href{% endif %}{{ btnClasses }}"
        data-id="{{ website.id }}"
-       aria-label="{{ "E-mail"|trans|striptags }}"
+       aria-label="{{"E-mail"|trans|striptags }}"
        data-toggle="tooltip"
-       title="{{ "Envoyer un email"|trans|raw }}">
+       title="{{"Envoyer un email"|trans|raw }}">
         {%- if asBtn and labelHTML -%}
             {{ labelHTML|raw }}
         {%- endif -%}

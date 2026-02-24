@@ -34,7 +34,7 @@
 {%- set multiLocales = allLocales > 1 -%}
 
 <div class="col-12">
-    <ul id="videos-sortable" class="reset w-100 {%- if multiLocales -%}multi-locales{%- else -%}single-locale{%- endif -%}">
+    <ul id="videos-sortable" class="reset w-100 {% if multiLocales %}multi-locales{% else %}single-locale{% endif %}">
         {%- for property in form.children -%}
             {%- set video = property.vars.data -%}
             {%- if video.id is defined -%}
@@ -47,11 +47,11 @@
                 {%- endif -%}
                 <li class="ui-video parent-item" data-position="{{ video.position }}"
                     data-id="{{ video.id }}" data-product="{{ entity.id }}"
-                    {%- if video.id and ('admin_'~interfaceName~'_position')|routeExist -%}data-pos-path="{{ path('admin_'~interfaceName~'_position', arguments) }}"{%- endif -%}>
+                    {%- if video.id and ('admin_'~interfaceName~'_position')|routeExist -%}data-pos-path="{{ path('admin_'~interfaceName~'_position', arguments) }}" {%- endif -%}>
                     <div class="position-relative">
                         <div class="side position-absolute">
                             {%- if video.id and ('admin_'~interfaceName~'_position')|routeExist -%}
-                                <div class="handle-video cursor btn btn-transparent" data-toggle="tooltip" title="{{ "Déplacer"|trans }}">{{ 'far arrows-alt'|icon(null, 15, 'dark') }}</div>
+                                <div class="handle-video cursor btn btn-transparent" data-toggle="tooltip" title="{{"Déplacer"|trans }}">{{ 'far arrows-alt'|icon(null, 15, 'dark') }}</div>
                             {%- endif -%}
                             <span class="delete-video">
                             {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
@@ -98,7 +98,7 @@
 <div class="col-12 text-end mb-4">
     <button role="button" class="add-collection btn full-prototype-btn w-100"
             data-collection-target="append"
-            data-target="#{{ id }}-collection">
+            data-target="# {{ id }}-collection">
         <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
              src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
              class="img-fluid rounded-add-img lazy-load"

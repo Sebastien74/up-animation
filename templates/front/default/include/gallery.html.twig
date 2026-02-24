@@ -12,8 +12,8 @@
 
 {%- if medias|length > 0 -%}
     <div class="masonry-wrap">
-        <div id="gallery-{{ slug~'-'~entity.id }}"
-             class="row position-relative {%- if popup -%} popup-gallery{%- endif -%}{%- if not isMobile() -%} masonry{%- endif -%}"
+        <div id="gallery- {{ slug~'-'~entity.id }}"
+             class="row position-relative {% if popup %} popup-gallery{% endif %}{% if not isMobile() %} masonry{% endif %}"
              data-masonry='{"percentPosition": true }' data-component="masonry">
             {%- for media in medias -%}
                 <div class="grid-item col-sm-6 col-md-6 col-lg-{{ colSize }} pb-4 text-center">
@@ -31,7 +31,7 @@
                         {%- if intlMedia.title or intlMedia.introduction or intlMedia.body -%}
                             <div class="card-body p-0">
                                 {%- if intlMedia.title -%}
-                                    <h{{ intlMedia.titleForce }} class="title mt-2 mb-0 fw-200 ff-primary d-inline-block text-italic w-100 text-gray-darken}}">
+                                    <h {{ intlMedia.titleForce }} class="title mt-2 mb-0 fw-200 ff-primary d-inline-block text-italic w-100 text-gray-darken}}">
                                         {{ intlMedia.title|unescape|raw }}
                                     </h{{ intlMedia.titleForce }}>
                                 {%- endif -%}

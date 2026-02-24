@@ -53,10 +53,10 @@
         {%- endfor -%}
 
         {%- if not hideDelete -%}
-            <span role="button" class="btn btn-primary p-0 position-absolute collection-open-modal" data-bs-toggle="modal" data-bs-target="#collection-delete-modal-{{ entityId }}">
+            <span role="button" class="btn btn-primary p-0 position-absolute collection-open-modal" data-bs-toggle="modal" data-bs-target="#collection-delete-modal- {{ entityId }}">
                 {{ 'fas trash'|icon(14, 14, 'dark') }}
             </span>
-            <div class="modal fade collection-delete-modal" id="collection-delete-modal-{{ entityId }}" tabindex="-1" aria-labelledby="collection-delete-modal-{{ entityId }}-label" aria-hidden="true">
+            <div class="modal fade collection-delete-modal" id="collection-delete-modal- {{ entityId }}" tabindex="-1" aria-labelledby="collection-delete-modal- {{ entityId }}-label" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content text-center">
                         <div class="modal-loader row text-center position-absolute d-none">
@@ -80,9 +80,9 @@
                                     </div>
                                     <div class="col-6">
                                         <a class="collection-delete btn btn-primary w-100"
-                                           href="{%- if not isNew -%}{{ path('front_'~interfaceName~'_delete', {(interfaceName): entityId}) }}{%- endif -%}"
+                                           href="{% if not isNew %}{{ path('front_'~interfaceName~'_delete', {(interfaceName): entityId}) }}{% endif %}"
                                            data-toggle="tooltip"
-                                           title="{{ "Supprimer"|trans|striptags }}"
+                                           title="{{"Supprimer"|trans|striptags }}"
                                            data-type="collection">{{ "Confirmer"|trans|raw }}
                                         </a>
                                     </div>

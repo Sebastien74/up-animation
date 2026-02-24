@@ -12,8 +12,8 @@
         <meta name="robots" content="noindex, nofollow" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>{{ status_code }} Error - {{ "Agence Félix CMS"|trans }}</title>
-        <meta name="description" content="{{ "Agence Félix CMS"|trans }}" />
-        <meta name="author" content="{{ "Agence Félix"|trans }}" />
+        <meta name="description" content="{{"Agence Félix CMS"|trans }}" />
+        <meta name="author" content="{{"Agence Félix"|trans }}" />
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('build/admin/images/theme/favicon.ico', 'admin') }}" />
         <style nonce="{{ csp_nonce() }}">{{ include('@Twig/exception.css.twig') }}</style>
         {%- block head -%}{%- endblock -%}
@@ -28,7 +28,7 @@
                     Symfony Exception
                 </h1>
                 <div class="help-link">
-                    <a href="https://symfony.com/doc/{{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }}/index.html" target="_blank">
+                    <a href="https://symfony.com/doc/ {{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }}/index.html" target="_blank">
                         <span class="icon">
                             <img src="{{ asset('build/vendor/images/symfony-documentation.png', 'vendor') }}" height="25" width="25" alt="Symfony" class="img-fluid header-logo" />
                         </span>
@@ -51,7 +51,7 @@
                 <div class="container">
                     <h2 class="exception-hierarchy">
                         {%- for previousException in exception.allPrevious|reverse -%}
-{#                            <a href="#trace-box-{{ loop.revindex + 1 }}" target="_blank">{{ previousException.class|abbr_class }}</a>#}
+{#                            <a href="#trace-box- {{ loop.revindex + 1 }}" target="_blank">{{ previousException.class|abbr_class }}</a>#}
                             <span class="icon">{{ include('@Twig/images/chevron-right.svg') }}</span>
                         {%- endfor -%}
 {#                        <a href="#trace-box-1" target="_blank">{{ exception.class|abbr_class }}</a>#}

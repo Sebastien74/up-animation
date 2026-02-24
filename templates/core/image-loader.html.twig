@@ -41,19 +41,19 @@
     })|raw }}
 {%- elseif generateThumbs or display -%}
     {%- set extension = extension is defined ? extension : '' -%}
-    <div class="img-loader-wrap position-relative{%- if radiusClass -%} {{ radiusClass }}{%- endif -%} {%- if not display -%}d-none{%- elseif not 'svg' in extension -%}d-inline-flex flex-column{%- endif -%}{%- if generateThumbs or (onlyLazy and activeIsGeneratedLoader) -%} generating{%- endif -%}">
+    <div class="img-loader-wrap position-relative{% if radiusClass %} {{ radiusClass }}{% endif %} {% if not display %}d-none{% elseif not 'svg' in extension %}d-inline-flex flex-column{% endif %}{% if generateThumbs or (onlyLazy and activeIsGeneratedLoader) %} generating{% endif %}">
         {%- if generateThumbs or onlyLazy -%}
             {%- set spinnerColor = spinnerColor is defined ? spinnerColor : 'primary' -%}
             {%- set class = class is defined ? class : '' -%}
             {%- if generateThumbs -%}
-                <div class="img-loader overflow-hidden d-flex align-items-center justify-content-center position-relative{%- if not display -%} d-none{%- endif -%}{%- if radiusClass -%} {{ radiusClass }}{%- endif -%}" style="max-width: {{ width }}px; max-height: {{ height }}px;">
+                <div class="img-loader overflow-hidden d-flex align-items-center justify-content-center position-relative{% if not display %} d-none{% endif %}{% if radiusClass %} {{ radiusClass }}{% endif %}" style="max-width: {{ width }}px; max-height: {{ height }}px;">
                     {%- if inAdmin and 'preview' not in app.request.uri -%}
                         <div class="spinner-wrap position-absolute">
                             <div class="spinner-border text-{{ spinnerColor }}" role="status"></div>
                         </div>
                     {%- endif -%}
-                    <div class="inner position-relative overflow-hidden{%- if radius -%} {{ radiusClass }}{%- endif -%}" style="background-image: url({{ absolute_url(asset(loaderSrc)) }});">
-                        <img src="{{ loaderSvgSrc }}" alt="SVG Loader" class="img-fluid force-size{%- if class -%} {{ class }}{%- endif -%}" width="{{ width }}">
+                    <div class="inner position-relative overflow-hidden{% if radius %} {{ radiusClass }}{% endif %}" style="background-image: url({{ absolute_url(asset(loaderSrc)) }});">
+                        <img src="{{ loaderSvgSrc }}" alt="SVG Loader" class="img-fluid force-size{% if class %} {{ class }}{% endif %}" width="{{ width }}">
                     </div>
                 </div>
             {%- endif -%}
@@ -72,7 +72,7 @@
                                             media="{{ config.media }}"
                                             data-size="{{ config.thumbSizes|first }}"
                                             width="{{ width }}" height="{{ height }}"
-                                            type="image/{{ source.extension }}">
+                                            type="image/ {{ source.extension }}">
                                 {%- endif -%}
                             {%- endfor -%}
                         {%- endfor -%}

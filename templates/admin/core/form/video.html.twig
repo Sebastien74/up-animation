@@ -9,7 +9,7 @@
 {%- macro card(entity, class, field, entityTypeId, screen) -%}
     {%- set formatsVideo = ['poster', 'mp4', 'm4v', 'vtt', 'webm'] -%}
     {%- set forVideo = screen in formatsVideo -%}
-    <div class="col-md-3 screen-card{%- if not forVideo -%} d-none{%- endif -%}">
+    <div class="col-md-3 screen-card{% if not forVideo %} d-none{% endif %}">
         {%- include 'admin/core/form/medias-modal.html.twig' with {
             modalId: entity.id,
             parameters: {

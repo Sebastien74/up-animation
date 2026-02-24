@@ -44,7 +44,7 @@
 
 {%- elseif blockType == 'layout-title' and entity.intl.title -%}
 
-    <h{{ entity.intl.titleForce }} class="title mt-4 mb-4">{{ entity.intl.title|raw }}</h{{ entity.intl.titleForce }}>
+    <h {{ entity.intl.titleForce }} class="title mt-4 mb-4">{{ entity.intl.title|raw }}</h{{ entity.intl.titleForce }}>
 
 {%- elseif blockType == 'layout-published-date' and entity.date -%}
 
@@ -61,7 +61,7 @@
             {%- endif -%}
         </div>
     {%- elseif entity.intl.introduction -%}
-        <p class="introduction {%- if not asAgency -%}text-bold{%- else -%}bg-light{%- endif -%}">{{ entity.intl.introduction|raw }}</p>
+        <p class="introduction {% if not asAgency %}text-bold{% else %}bg-light{% endif %}">{{ entity.intl.introduction|raw }}</p>
     {%- endif -%}
 
 {%- elseif blockType == 'layout-body' -%}
@@ -172,14 +172,14 @@
                         {%- if lot.reference -%}
                             {%- set reference = lot.reference -%}
                         {%- endif -%}
-                        <td data-title="{{ "Lot N°"|trans|raw~" "~reference }}">
+                        <td data-title="{{"Lot N°"|trans|raw~" "~reference }}">
                             {{ reference|raw  }}
                         </td>
                         {%- set type = "n/c"|trans -%}
                         {%- if lot.type -%}
                             {%- set type = lot.type -%}
                         {%- endif -%}
-                        <td data-title="{{ "Type :"|trans|raw~" "~type }}">
+                        <td data-title="{{"Type :"|trans|raw~" "~type }}">
                             {{ type|raw  }}
                         </td>
                         {%- set surface = "n/c"|trans -%}
@@ -189,7 +189,7 @@
                                 {%- set surface = surface~"m²" -%}
                             {%- endif -%}
                         {%- endif -%}
-                        <td data-title="{{ "Surface :"|trans|raw~" "~surface }}">
+                        <td data-title="{{"Surface :"|trans|raw~" "~surface }}">
                             {{ surface|raw }}
                         </td>
                         {%- set balconySurface = "n/c"|trans -%}
@@ -199,7 +199,7 @@
                                 {%- set balconySurface = balconySurface~"m²" -%}
                             {%- endif -%}
                         {%- endif -%}
-                        <td data-title="{{ "Surface balcon / terrasse :"|trans|raw~" "~balconySurface }}">
+                        <td data-title="{{"Surface balcon / terrasse :"|trans|raw~" "~balconySurface }}">
                             {{ balconySurface|raw }}
                         </td>
                         {%- set sold = "n/c"|trans -%}
@@ -208,7 +208,7 @@
                         {%- elseif lot.price > 0 -%}
                             {%- set sold = lot.price|format_currency('EUR', {rounding_mode: 'ceiling', fraction_digit: 0}) -%}
                         {%- endif -%}
-                        <td data-title="{{ "Prix (€) :"|trans|raw~" "~sold }}">
+                        <td data-title="{{"Prix (€) :"|trans|raw~" "~sold }}">
                             {{ sold|raw  }}
                         </td>
                     </tr>
@@ -247,7 +247,7 @@
 
     {%- if address.latitude and address.longitude -%}
         <div class="map-container">
-            <div id="product-map-{{ entity.id }}" class="map-box" data-layer="" data-multiple="">
+            <div id="product-map- {{ entity.id }}" class="map-box" data-layer="" data-multiple="">
                 <div class="data-map d-none"
                      data-zoom="{{ zoom }}"
                      data-min-zoom="{{ minZoom }}"
@@ -255,8 +255,8 @@
                      data-latitude="{{ address.latitude }}"
                      data-longitude="{{ address.longitude }}"
                      data-marker-clusters=""
-                     data-enlarge-txt="{{ "Agrandir le plan"|trans|raw }}"
-                     data-direction-txt="{{ "Itinéraire"|trans|raw }}">
+                     data-enlarge-txt="{{"Agrandir le plan"|trans|raw }}"
+                     data-direction-txt="{{"Itinéraire"|trans|raw }}">
                     <div class="point"
                          data-id="3"
                          data-category="category"
@@ -268,8 +268,8 @@
                          data-title=""
                          data-body=""
                          data-link=""
-                         data-link-label="{{ "En savoir plus"|trans|raw }}"
-                         data-link-label-icon="{{ "En savoir plus"|trans|raw }}"
+                         data-link-label="{{"En savoir plus"|trans|raw }}"
+                         data-link-label-icon="{{"En savoir plus"|trans|raw }}"
                          data-link-target=""
                          data-name="{{ entity.intl.link }}"
                          data-address="{{ address.address|unescape|raw }}"
@@ -306,7 +306,7 @@
     {%- if asAgency -%}
         {%- set listingTitle = 'Découvrez<br> <span>nos autres agences</span>'|trans -%}
     {%- endif -%}
-    <div class="associated-entities-container w-100{%- if associatedEntities.list is empty -%} empty-associated-entities{%- endif -%}">
+    <div class="associated-entities-container w-100{% if associatedEntities.list is empty %} empty-associated-entities{% endif %}">
         {%- if associatedEntities.list is empty -%}
             <p class="mb-0">{{ "Aucun produit associés."|trans|raw }}</p>
         {%- elseif 'slider' == display -%}

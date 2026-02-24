@@ -16,7 +16,7 @@
                     {%- set status = url.online and entity.asIndex is defined and entity.asIndex ? 'online' : status -%}
                     {%- set classname = interface.classname is defined ? interface.classname : null -%}
                     <a href="{{ path("admin_url_status", {website: websiteId(), url: url.id, classname: classname|url_encode, entityId: entity.id}) }}"
-                       class="{{ status }} btn-icon small {%- if 'offline' == status -%}muted{%- else -%}success{%- endif -%}"
+                       class="{{ status }} btn-icon small {% if 'offline' == status %}muted{% else %}success{% endif %}"
                        data-icon-offline="snooze"
                        data-icon-online="wifi"
                        data-color-offline="muted"
@@ -28,7 +28,7 @@
                         {%- if multiLocales -%}
                             <span class="language text-uppercase label">{{ url.locale }}</span>
                         {%- else -%}
-                            <i class="label icm-{%- if 'offline' == status -%}snooze{%- else -%}wifi{%- endif -%}"></i>
+                            <i class="label icm-{% if 'offline' == status %}snooze{% else %}wifi{% endif %}"></i>
                         {%- endif -%}
                         <i class="icm-sync-alt fa-spin refresh-icon d-none"></i>
                     </a>

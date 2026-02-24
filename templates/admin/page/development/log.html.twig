@@ -27,11 +27,11 @@
                 {%- set bg = category and category['bg'] is defined ? category['bg'] : 'info' -%}
                 {%- set color = category and category['color'] is defined ? category['color'] : 'white' -%}
                 {%- set icon = category and category['icon'] is defined ? category['icon'] : 'info-circle' -%}
-                <div class="card-shadow card-{{ bg }} no-hover card bg-transparent h-100 text-decoration-none shadow-sm{%- if not loop.last -%} mb-3{%- endif -%}">
+                <div class="card-shadow card-{{ bg }} no-hover card bg-transparent h-100 text-decoration-none shadow-sm{% if not loop.last %} mb-3{% endif %}">
                     <div class="card-header py-3">
                         <div class="row">
                             <div class="col-sm-4 d-flex align-items-center my-2 my-sm-0">
-                                <small class="d-flex align-items-center text-white fz-sm"><span class="btn-icon me-3"><i class="icm-{{ icon }}"></i></span><span class="lh-1">{{ log.code }}</span></small>
+                                <small class="d-flex align-items-center text-white fz-sm"><span class="btn-icon me-3"><i class="icm- {{ icon }}"></i></span><span class="lh-1">{{ log.code }}</span></small>
                             </div>
                             <div class="col-sm-8 text-sm-end justify-content-sm-end d-flex align-items-center mb-2 mb-sm-0">
                                 {%- if log.date|isDateTime -%}

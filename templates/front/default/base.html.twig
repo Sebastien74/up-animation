@@ -164,7 +164,7 @@
 
 {#        {%- if preloadFiles.images is defined -%}#}
 {#            {%- for preloadFile in preloadFiles.images -%}#}
-{#                <link rel="preload" fetchpriority="high" as="image" href="{{ preloadFile }}" nonce="{{ csp_nonce() }}" type="image/{{ preloadFile|split('.')|last }}">#}
+{#                <link rel="preload" fetchpriority="high" as="image" href="{{ preloadFile }}" nonce="{{ csp_nonce() }}" type="image/ {{ preloadFile|split('.')|last }}">#}
 {#            {%- endfor -%}#}
 {#        {%- endif -%}#}
 
@@ -187,8 +187,8 @@
 {#    </head>#}
 
 {#    <body id="{{ templateName }}-body" tabindex="-1"#}
-{#          class="{{ bodyClasses(configuration, customBodyClass, entity) }}{%- if websiteAlertIsActive -%} alert-active{%- endif -%}{%- if bodyBg -%} {{ bodyBg }}{%- endif -%}{%- if haveInternalError -%} internal-error-show{%- endif -%}{%- if axeptioActive -%} axeptio-active{%- endif -%}{%- if asAccessibility -%} as-accessibility{%- endif -%} back-row-toggle splat-toggle"#}
-{#          data-id="{{ website.id }}"{%- if isUserBack -%} data-userback="{{ isUserBack }}"{%- endif -%}#}
+{#          class="{{ bodyClasses(configuration, customBodyClass, entity) }}{% if websiteAlertIsActive %} alert-active{% endif %}{% if bodyBg %} {{ bodyBg }}{% endif %}{% if haveInternalError %} internal-error-show{% endif %}{% if axeptioActive %} axeptio-active{% endif %}{% if asAccessibility %} as-accessibility{% endif %} back-row-toggle splat-toggle"#}
+{#          data-id="{{ website.id }}" {%- if isUserBack -%} data-userback="{{ isUserBack }}" {%- endif -%}#}
 {#          data-gdpr="{{ gdprActive }}"#}
 {#          data-axeptio-external="{{ axeptioExternal }}"#}
 {#          data-axeptio-cookie="{{ axeptioCookie }}"#}
@@ -237,13 +237,13 @@
 {#            {%- include 'front/'~websiteTemplate~'/include/preloader.html.twig' with {logos: website.logos, companyName: companyName} only -%}#}
 {#        {%- endif -%}#}
 
-{#        <div id="content-page"{%- if not configuration.fullWidth or pageBg or pageSlug -%} class="{%- if not configuration.fullWidth -%}content-page-box{%- endif -%}{%- if pageBg -%} {{ pageBg }}{%- endif -%}{%- if pageSlug -%} {{ pageSlug }}{%- endif -%}"{%- endif -%}>#}
+{#        <div id="content-page" {%- if not configuration.fullWidth or pageBg or pageSlug -%} class="{% if not configuration.fullWidth %}content-page-box{% endif %}{% if pageBg %} {{ pageBg }}{% endif %}{% if pageSlug %} {{ pageSlug }}{% endif %}" {%- endif -%}>#}
 
 {#            {%- if app.session.get('as_switch_user') -%}#}
 {#                {%- include 'core/switcher-modal.html.twig' with {website: website} only -%}#}
 {#            {%- endif -%}#}
 
-{#            <main id="body-page" role="main" class="position-relative{%- if pageClass -%} {{ pageClass }}{%- endif -%}"{%- if bgImgStyle -%} style="{{ bgImgStyle }}"{%- endif -%}>#}
+{#            <main id="body-page" role="main" class="position-relative {% if pageClass %} {{ pageClass }}{% endif %}" {%- if bgImgStyle -%} style="{{ bgImgStyle }}" {%- endif -%}>#}
 {#                {%- block body -%}{%- endblock -%}#}
 {#                {{ component('LastNews') }}#}
 {#            </main>#}

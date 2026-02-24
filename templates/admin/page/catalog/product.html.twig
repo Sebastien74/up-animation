@@ -65,16 +65,16 @@
 
     {%- include 'admin/include/alerts.html.twig' -%}
 
-    <div id="entity-edition" class="{%- if isMainEntity -%} is-entity{%- endif -%}">
+    <div id="entity-edition" class="{% if isMainEntity %} is-entity{% endif %}">
         {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'entity-preloader', full: true, progress: 'hide', preloaderClass: 'progress-fixed'} only -%}
         <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" role="tablist">
             {%- for tabId, config in tabs -%}
                 {%- if tabId in activeTabs -%}
                     <li class="nav-item">
-                        <a {%- if not isMainEntity -%}href="{{ path('admin_catalogproduct_edit', {website: websiteId, catalogproduct: entity.id, catalog: entity.catalog.id, tab: tabId} ) }}"{%- endif -%}
-                           id="nav-{{ tabId }}-tab" class="btn-app{%- if activeTab == tabId or not activeTab and loop.first and isMainEntity -%} active{%- endif -%}"
-                                {%- if isMainEntity -%}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}"{%- else -%}{%- endif -%}>
-                            <i class="icm-{{ config.icon }}"></i>
+                        <a {% if not isMainEntity -%}href="{{ path('admin_catalogproduct_edit', {website: websiteId, catalogproduct: entity.id, catalog: entity.catalog.id, tab: tabId} ) }}" {%- endif -%}
+                           id="nav- {{ tabId }}-tab" class="btn-app {% if activeTab == tabId or not activeTab and loop.first and isMainEntity %} active{% endif %}"
+                                {%- if isMainEntity -%}data-bs-toggle="tab" href="# {{ tabId }}" role="tab" aria-selected="{{ loop.first }}" {%- else -%}{%- endif -%}>
+                            <i class="icm- {{ config.icon }}"></i>
                             <span class="d-none d-lg-inline-block">{{ config.title }}</span>
                         </a>
                     </li>
@@ -85,7 +85,7 @@
                     {%- set routeArgs = 'admin_catalogproduct_medias'|routeArgs(entity) -%}
                     <a href="{{ path('admin_catalogproduct_medias', routeArgs) }}"
                        id="medias-path"
-                       class="btn-app{%- if not isMainEntity -%} active{%- endif -%}">
+                       class="btn-app {% if not isMainEntity %} active{% endif %}">
                         <i class="icm-photo-video"></i>
                         <span class="d-none d-lg-inline-block">{{ "Médias"|trans }}</span>
                     </a>
@@ -123,11 +123,11 @@
     {%- endif -%}
 
     <div id="entity-translations"
-         data-swal-entity-title="{{ "Pensez à enregistrer vos modifications"|trans }}"
+         data-swal-entity-title="{{"Pensez à enregistrer vos modifications"|trans }}"
          data-swal-entity-text=""
-         data-swal-entity-cancel-text="{{ "Annuler"|trans }}"
-         data-swal-media-confirm-text="{{ "Aller aux médias"|trans }}"
-         data-swal-value-confirm-text="{{ "Éditer la valeur"|trans }}">
+         data-swal-entity-cancel-text="{{"Annuler"|trans }}"
+         data-swal-media-confirm-text="{{"Aller aux médias"|trans }}"
+         data-swal-value-confirm-text="{{"Éditer la valeur"|trans }}">
     </div>
 
 {%- endblock -%}

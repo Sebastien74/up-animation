@@ -3,8 +3,8 @@
     {%- import _self as macro -%}
 
     {%- macro dropdown(activeLocale, locales, routes, microDataActive, flags, class, currentFlag, fullName) -%}
-        <div class="dropdown switcher{%- if class -%} {{ class }}{%- endif -%}">
-            <a class="dropdown-toggle d-flex align-items-center justify-content-center" aria-label="{{ "Langues"|trans|striptags }}"
+        <div class="dropdown switcher{% if class %} {{ class }}{% endif %}">
+            <a class="dropdown-toggle d-flex align-items-center justify-content-center" aria-label="{{"Langues"|trans|striptags }}"
                href="#" role="button" id="locales-switcher" data-bs-toggle="dropdown" aria-expanded="false">
                 {%- if flags -%}
                     {{ ('flags '~activeLocale~'-round')|icon(25, 25, 'me-1 me-xl-2', {title: activeLocale|languageName}) }}
@@ -17,7 +17,7 @@
             <ul class="dropdown-menu bg-transparent p-0 border-0 no-min-width" aria-labelledby="locales-switcher">
                 {%- for locale in locales -%}
                     {%- if routes[locale] is defined and locale != activeLocale -%}
-                        <li class="pt-2 bg-transparent"{%- if microDataActive -%} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language"{%- endif -%}>
+                        <li class="pt-2 bg-transparent" {%- if microDataActive -%} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language" {%- endif -%}>
                             {%- set languageName = locale|languageName(locale) -%}
                             {%- if microDataActive -%}
                                 <span itemprop="name" class="d-none">{{ languageName }}</span>
@@ -41,18 +41,18 @@
 
     {%- macro inline(activeLocale, locales, routes, microDataActive, count, flags, class, currentFlag, fullName) -%}
         {%- set displayCount = 0 -%}
-        <ul class="navbar-nav locales-switcher align-items-center justify-content-center{%- if 'd-' not in class -%} d-inline-flex{%- endif -%}{%- if class -%} {{ class }}{%- endif -%}">
+        <ul class="navbar-nav locales-switcher align-items-center justify-content-center{% if 'd-' not in class %} d-inline-flex{% endif %}{% if class %} {{ class }}{% endif %}">
             {%- for locale in locales -%}
                 {%- set displayFlag = currentFlag or (app.request.locale != locale) -%}
                 {%- set active = locale == app.request.locale -%}
                 {%- if displayFlag and routes[locale] is defined -%}
-                    <li class="d-inline-flex {%- if active -%}active-locale{%- else -%}inactive{%- endif -%}"
-                        {%- if microDataActive -%} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language"{%- endif -%}>
+                    <li class="d-inline-flex {% if active %}active-locale{% else %}inactive{% endif %}"
+                        {%- if microDataActive -%} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language" {%- endif -%}>
                         {%- set languageName = locale|languageName(locale) -%}
                         {%- if microDataActive -%}
                             <span itemprop="name" class="d-none">{{ languageName }}</span>
                         {%- endif -%}
-                        <a href="{{ routes[locale] }}" class="{%- if active -%}active-locale{%- else -%}inactive{%- endif -%} ms-2"
+                        <a href="{{ routes[locale] }}" class="{% if active %}active-locale{% else %}inactive{% endif %} ms-2"
                            aria-label="{{ languageName }}"
                            hreflang="{{ locale }}" lang="{{ locale }}">
                             {%- if flags -%}

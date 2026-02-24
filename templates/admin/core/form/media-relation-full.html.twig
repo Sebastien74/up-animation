@@ -1,4 +1,4 @@
-{%- trans_default_domain 'admin' -%}
+﻿{%- trans_default_domain 'admin' -%}
 
 {%- set configuration = website().configuration -%}
 {%- set defaultLocale = configuration.locale -%}
@@ -17,12 +17,12 @@
         <div class="row">
             <div class="col-md-8">
                 {%- if intlCardTitle -%}
-                    <h4 class="main-subtitle" data-bs-toggle="collapse" href="#collapse-description-{{ entity.id }}" role="button" aria-expanded="true" aria-controls="collapse-description-{{ entity.id }}">
+                    <h4 class="main-subtitle" data-bs-toggle="collapse" href="#collapse-description- {{ entity.id }}" role="button" aria-expanded="true" aria-controls="collapse-description- {{ entity.id }}">
                         <i class="icm-align-center"></i>{%- if allLocales|length > 1 -%}{{ "Descriptions"|trans }}{%- else -%}{{ "Description"|trans }}{%- endif -%}
                         <i class="icm-chevron-down ms-auto"></i>
                     </h4>
                 {%- endif -%}
-                <div id="collapse-description-{{ entity.id }}" class="collapse show">
+                <div id="collapse-description- {{ entity.id }}" class="collapse show">
                     <div class="card-body pb-2 border mb-4 radius">
                         <div class="row">
                             {%- if form.intl.titleForce is defined -%}
@@ -53,12 +53,12 @@
                 </div>
 
                 {%- if linkCardTitle -%}
-                    <h4 class="main-subtitle" data-bs-toggle="collapse" href="#collapse-link-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-link-{{ entity.id }}">
+                    <h4 class="main-subtitle" data-bs-toggle="collapse" href="#collapse-link- {{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-link- {{ entity.id }}">
                         <i class="icm-link"></i>{{ "Lien"|trans }}
                         <i class="icm-chevron-down ms-auto"></i>
                     </h4>
                 {%- endif -%}
-                <div id="collapse-link-{{ entity.id }}" class="collapse">
+                <div id="collapse-link- {{ entity.id }}" class="collapse">
                     <div class="card-body pb-2 border mb-4 radius">
                         <div class="row">
                             {%- if form.intl.targetLink is defined -%}

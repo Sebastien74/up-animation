@@ -20,7 +20,7 @@
                 {%- if loop.first -%}
                     {%- set currentTitle = zone.intl.title -%}
                 {%- endif -%}
-                <a href="{{ masterRequest().requestUri~'#'~zoneId }}" class="item text-{%- if loop.first -%}secondary{%- else -%}light{%- endif -%} fw-600 mx-lg-2 mx-xl-3" data-section="{{ zoneId }}">{{ zone.intl.title|striptags }}</a>
+                <a href="{{ masterRequest().requestUri~'#'~zoneId }}" class="item text-{% if loop.first %}secondary{% else %}light{% endif %} fw-600 mx-lg-2 mx-xl-3" data-section="{{ zoneId }}">{{ zone.intl.title|striptags }}</a>
             {%- endfor -%}
         </div>
         <div class="dropdown dropdown-container w-100 d-lg-none px-0">

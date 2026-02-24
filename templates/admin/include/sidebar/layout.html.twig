@@ -40,7 +40,7 @@
         <div class="scroll-sidebar px-4">
             <nav class="sidebar-nav">
                 <ul id="sidebar-nav" class="list-unstyled">
-                    <li class="sidebar-top pt-3{%- if not isMultiWebsite -%} pb-3{%- endif -%}">
+                    <li class="sidebar-top pt-3{% if not isMultiWebsite %} pb-3{% endif %}">
                         <ul class="list-unstyled">
                             {%- set domain = app.user.locale is defined ? app.user.locale|domain() : null -%}
                             {%- set scheme = not domain ? path('front_index') : domain -%}

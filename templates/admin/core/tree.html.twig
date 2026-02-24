@@ -34,26 +34,26 @@
                             <i class="icm-search"></i>
                         </button>
                     </div>
-                    <input placeholder="{{ "Rechercher"|trans }}" class="form-control" type="text">
+                    <input placeholder="{{"Rechercher"|trans }}" class="form-control" type="text">
                 </div>
             </form>
             <div class="d-flex align-items-center gap-2">
                 {%- if 'delete'|moduleActive(configuration) -%}
                     <button id="delete-pack-btn" class="btn-icon danger d-none"
-                            data-bs-toggle="tooltip" data-placement="left" title="{{ "Supprimer"|trans|striptags }}" aria-label="{{ "Supprimer"|trans|striptags }}">
+                            data-bs-toggle="tooltip" data-placement="left" title="{{"Supprimer"|trans|striptags }}" aria-label="{{"Supprimer"|trans|striptags }}">
                         <i class="icm-trash"></i>
                     </button>
                 {%- endif -%}
-                <span id="nestable-expand-all" class="btn-icon cursor{%- if not collapsedAdminTrees -%} d-none{%- endif -%}" data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
+                <span id="nestable-expand-all" class="btn-icon cursor{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{"Dépiler"|trans|raw }}">
                     <i class="icm-arrow-alt-to-bottom"></i>
                 </span>
-                <span id="nestable-collapse-all" class="btn-icon cursor{%- if collapsedAdminTrees -%} d-none{%- endif -%}" data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
+                <span id="nestable-collapse-all" class="btn-icon cursor{% if collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{"Empiler"|trans|raw }}">
                     <i class="icm-arrow-alt-to-top"></i>
                 </span>
                 <span>
                     <a href="{{ lastRoute() }}" class="btn-icon"
-                       data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
-                       aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                       data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}"
+                       aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
                         <i class="icm-reply"></i>
                     </a>
                 </span>

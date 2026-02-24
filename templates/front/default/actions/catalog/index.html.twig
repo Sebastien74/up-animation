@@ -26,7 +26,7 @@
         </div>
     {%- endif -%}
 
-    <div class="col-lg-{%- if listing.display != 'disable' -%}12{%- else -%}12{%- endif -%}">
+    <div class="col-lg- {% if listing.display != 'disable' %}12{% else %}12{% endif %}">
 
         {%- set mainCatalog = listing.catalogs|first -%}
         {%- set mainCatalogSlug = mainCatalog.slug is defined ? mainCatalog.slug : false -%}
@@ -34,7 +34,7 @@
         {%- set oneResultTxt = 'exemple-one' == mainCatalogSlug ? "exemple-one trouvé"|trans : ('exemple-two' == mainCatalogSlug ? "exemple-two trouvé"|trans : "produit"|trans) -%}
         {%- set multiResultTxt = 'exemple-one' == mainCatalogSlug ? "exemple-one trouvés"|trans : ('exemple-two' == mainCatalogSlug ? "exemple-two trouvés"|trans : "produits"|trans) -%}
 
-        <div id="result-counter" class="text-white fw-600 d-flex align-items-center p-0 mb-4 mb-lg-5{%- if not listing.counter or not haveFilters -%} d-none{%- endif -%}">
+        <div id="result-counter" class="text-white fw-600 d-flex align-items-center p-0 mb-4 mb-lg-5{% if not listing.counter or not haveFilters %} d-none{% endif %}">
             {%- if count == 0 -%}
                 {{ noneResultTxt }}
             {%- elseif count == 1 -%}
@@ -47,7 +47,7 @@
         {%- if productsByCategories|length > 0 -%}
             {%- for categoryArgs in productsByCategories -%}
                 {%- set category = categoryArgs.entity -%}
-                <div class="category-section my-5 {%- if loop.index is odd -%}odd{%- else -%}even{%- endif -%}">
+                <div class="category-section my-5 {% if loop.index is odd %}odd{% else %}even{% endif %}">
                     <div class="container">
                         <h2 class="title category-title text-secondary mb-0">{{ category.intl.title|raw }}</h2>
                         {%- if category.intl.subTitle -%}
@@ -98,7 +98,7 @@
                     </div>
                 {%- endif -%}
                 {%- if showMoreBtn and maxPage > 1 -%}
-                    <div id="show-more-wrap" class="w-100 text-center mt-5{%- if maxPage >= 1 -%} d-none{%- endif -%}">
+                    <div id="show-more-wrap" class="w-100 text-center mt-5{% if maxPage >= 1 %} d-none{% endif %}">
                         <button type="button" id="show-more-index-btn" class="btn btn-secondary">{{ "Voir plus"|trans|raw }}</button>
                     </div>
                 {%- endif -%}

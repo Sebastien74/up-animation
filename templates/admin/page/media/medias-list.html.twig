@@ -30,9 +30,9 @@
                     {%- set icon = 'admin'|fileIcon(extension) -%}
                     {%- set icon = extension == 'svg' or extension == 'webp' ? null : icon -%}
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
-                        <div class="card h-100 file {{ extension }}-extension{%- if tooHeavyFile -%} too-heavy-file{%- endif -%}" data-id="{{ media.id }}" data-original-src="{{ uploadDirname }}">
+                        <div class="card h-100 file {{ extension }}-extension{% if tooHeavyFile %} too-heavy-file{% endif %}" data-id="{{ media.id }}" data-original-src="{{ uploadDirname }}">
                             <div class="card-body p-2 d-flex flex-column pb-2">
-                                <label for="check-pack-media-{{ media.id }}" class="mb-0 check-pack-media-label w-100 flex-grow-1 cursor-pointer">
+                                <label for="check-pack-media- {{ media.id }}" class="mb-0 check-pack-media-label w-100 flex-grow-1 cursor-pointer">
                                     <div class="file-data-wrap h-100" data-bs-toggle="tooltip" title="{{ media.filename }}">
                                         <div class="file-data media-selector h-100 d-flex align-items-center justify-content-center border rounded p-2">
                                             <div class="spinner-parent">
@@ -57,8 +57,8 @@
                                 <div class="mt-2 d-flex justify-content-center gap-1">
                                     {%- if not asCopy -%}
                                         <div class="check-pack-media-btn cursor d-none p-0">
-                                            <input id="check-pack-media-{{ media.id }}"
-                                                   name="check-pack-media-{{ media.id }}"
+                                            <input id="check-pack-media- {{ media.id }}"
+                                                   name="check-pack-media- {{ media.id }}"
                                                    class="check-pack-media d-none"
                                                    type="checkbox" />
                                         </div>
@@ -66,17 +66,17 @@
                                         {%- if 'edit'|moduleActive(configuration) -%}
                                             {%- if not icon -%}
                                                 <a href="{{ path('admin_media_crop', {website: website.id, media: media.id}) }}"
-                                                   class="open-media-crop btn-icon small" data-bs-toggle="tooltip" title="{{ "Redimensionner"|trans|striptags }}">
+                                                   class="open-media-crop btn-icon small" data-bs-toggle="tooltip" title="{{"Redimensionner"|trans|striptags }}">
                                                     <i class="icm-crop-alt"></i>
                                                 </a>
                                             {%- endif -%}
                                             <a href="{{ path('admin_media_edit', {website: websiteId(), media: media.id}) }}"
-                                               class="open-media-edit btn-icon small" data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
+                                               class="open-media-edit btn-icon small" data-bs-toggle="tooltip" title="{{"Éditer"|trans|striptags }}">
                                                 <i class="icm-pencil-alt"></i>
                                             </a>
                                             {%- if granted('ROLE_MEDIA_COMPRESS') -%}
                                                 <a href="{{ path('admin_media_compress_restore', {website: website.id, media: media.id}) }}"
-                                                   class="media-compress-restore btn-icon small{%- if not media.compress -%} d-none{%- endif -%}" data-bs-toggle="tooltip" title="{{ "Rétablir l'image d'origine"|trans|striptags }}">
+                                                   class="media-compress-restore btn-icon small{% if not media.compress %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{"Rétablir l'image d'origine"|trans|striptags }}">
                                                     <i class="icm-sync"></i>
                                                 </a>
                                             {%- endif -%}
@@ -86,7 +86,7 @@
                                         <div class="refer-copy refer-copy-wrap w-100">
                                             <span class="to-copy d-none">{{ app.request.getSchemeAndHttpHost()~info.path }}</span>
                                             <span class="copy-link btn-app small w-100 center cursor"
-                                                  data-bs-toggle="tooltip" title="{{ "Copier l'URL"|trans }}">
+                                                  data-bs-toggle="tooltip" title="{{"Copier l'URL"|trans }}">
                                                 <i class="icm-copy"></i><span>{{ "Copier l'URL"|trans }}</span>
                                             </span>
                                         </div>

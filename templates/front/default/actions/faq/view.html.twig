@@ -30,7 +30,7 @@
 </script>
 {%- endif -%}
 
-<div id="faq-container-{{ faq.slug }}" class="faq-container position-relative">
+<div id="faq-container- {{ faq.slug }}" class="faq-container position-relative">
     {{ macroWebmaster.box({
         title: "Éditer la FAQ"|trans([], 'front_webmaster'),
         role: 'ROLE_FAQ',
@@ -48,7 +48,7 @@
                 </div>
             {%- endif -%}
             {%- if faq.intl.link or faq.haveMainMedia -%}
-                <div class="col-lg-{%- if faq.intl.title -%}6{%- else -%}12{%- endif -%} d-flex align-items-end justify-content-lg-end">
+                <div class="col-lg- {% if faq.intl.title %}6{% else %}12{% endif %} d-flex align-items-end justify-content-lg-end">
                     <div class="inner d-flex flex-column align-items-lg-end mt-4 mt-lg-0">
                         {%- if faq.haveMainMedia -%}
                             {{ faq.mainMedia|file({}, {
@@ -68,13 +68,13 @@
         </div>
     {%- endif -%}
     {%- set accordionId = uniqId() -%}
-    <div class="faq-accordion accordion accordion-flush" id="accordion-teaser-{{ accordionId }}">
+    <div class="faq-accordion accordion accordion-flush" id="accordion-teaser- {{ accordionId }}">
         {%- for question in faq.questions -%}
             {%- set badge = question.intl.placeholder -%}
             {%- set marginTop = badge ? 'mt-5' : 'mt-4' -%}
-            <div class="accordion-item{%- if not loop.first -%} {{ marginTop }}{%- endif -%}">
+            <div class="accordion-item {% if not loop.first %} {{ marginTop }}{% endif %}">
                 <div class="accordion-header">
-                    <div class="accordion-button bg-secondary{%- if not question.open -%} collapsed{%- endif -%}" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-teaser-{{ accordionId }}-{{ loop.index }}" aria-expanded="false" aria-controls="accordion-teaser-{{ accordionId }}-{{ loop.index }}">
+                    <div class="accordion-button bg-secondary{% if not question.open %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-teaser- {{ accordionId }}-{{ loop.index }}" aria-expanded="false" aria-controls="accordion-teaser- {{ accordionId }}-{{ loop.index }}">
                         <div class="inner d-inline-flex flex-column">
                             {%- if badge -%}
                                 <div class="badge-wrap position-relative mb-2">
@@ -108,12 +108,12 @@
                     </div>
                 </div>
                 {%- if question.intl.introduction or question.intl.body or faq.haveMainMedia -%}
-                    <div id="accordion-teaser-{{ accordionId }}-{{ loop.index }}" class="accordion-collapse collapse{%- if question.open -%} show{%- endif -%}" data-bs-parent="#accordion-teaser-{{ accordionId }}">
+                    <div id="accordion-teaser- {{ accordionId }}-{{ loop.index }}" class="accordion-collapse collapse{% if question.open %} show{% endif %}" data-bs-parent="#accordion-teaser- {{ accordionId }}">
                         <div class="content bg-gray-400 pt-4 pb-4 px-3 px-md-4 row m-0">
                             {%- if question.intl.introduction or question.intl.body -%}
-                                <div class="order-2 order-lg-1 {%- if question.haveMedias -%}col-lg-7 pe-lg-5{%- else -%}col-lg-12{%- endif -%}">
+                                <div class="order-2 order-lg-1 {% if question.haveMedias %}col-lg-7 pe-lg-5{% else %}col-lg-12{% endif %}">
                                     {%- if question.intl.introduction -%}
-                                        <p class="introduction fw-700{%- if not question.intl.body -%} mb-0{%- endif -%}">{{ question.intl.introduction|unescape|raw }}</p>
+                                        <p class="introduction fw-700{% if not question.intl.body %} mb-0{% endif %}">{{ question.intl.introduction|unescape|raw }}</p>
                                     {%- endif -%}
                                     {%- if question.intl.body -%}
                                         <div class="body">{{ question.intl.body|unescape|raw }}</div>

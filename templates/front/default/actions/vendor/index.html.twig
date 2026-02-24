@@ -11,7 +11,7 @@
     {%- include 'front/'~websiteTemplate~'/include/microdata-entities.html.twig' with {allEntities: allEntities, url: url, website: website} only -%}
 {%- endif -%}
 
-<div id="listing-{{ interfaceName }}-container-{{ listing.slug }}" class="listing-{{ interfaceName }}-container listing-container">
+<div id="listing- {{ interfaceName }}-container-{{ listing.slug }}" class="listing- {{ interfaceName }}-container listing-container">
 
     {%- if asListing -%}
         {{ macroWebmaster.box({
@@ -40,7 +40,7 @@
              data-page="{{ pageNum }}"
              data-max="{{ maxPage }}"
              data-href="{{ ajaxPath }}"
-             class="{{ interfaceName }}-index-container index-container container {%- if entities|length > 0 -%} pt-4 pb-3 pt-md-5 pb-md-4{%- endif -%}">
+             class="{{ interfaceName }}-index-container index-container container {% if entities|length > 0 %} pt-4 pb-3 pt-md-5 pb-md-4{% endif %}">
 
             {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader'} only -%}
 
@@ -85,7 +85,7 @@
             {%- endif -%}
 
             {%- if maxPage > 1 -%}
-                <div class="pagination-container text-center text-md-end mt-3{%- if scrollInfinite or showMoreBtn -%} d-none{%- endif -%}">
+                <div class="pagination-container text-center text-md-end mt-3{% if scrollInfinite or showMoreBtn %} d-none{% endif %}">
                     {{ knp_pagination_render(entities, 'core/pagination.html.twig', [], {class: 'ajax-pagination'}) }}
                 </div>
             {%- endif -%}

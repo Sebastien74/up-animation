@@ -19,7 +19,7 @@
             <div class="h-100 d-flex align-items-center gap-3">
                 <div class="ua-contact-icon d-flex align-items-center justify-content-center rounded-3"
                      aria-hidden="true">
-                    <i class="icon-{{ icon }} text-white"></i>
+                    <i class="icon- {{ icon }} text-white"></i>
                 </div>
                 <div class="lh-sm">
                     <div class="ua-contact-title text-uppercase text-white-50">{{ title|raw }}</div>
@@ -140,14 +140,14 @@
                                 les <strong class="text-white-50">réseaux sociaux</strong> dès maintenant&nbsp;!</p>
                             <div class="d-flex flex-wrap">
                                 <nav class="socials-list d-inline-flex justify-content-center justify-content-sm-start gap-3"
-                                     aria-label="{{ "Navigation des liens sociaux"|trans|striptags }}">
+                                     aria-label="{{"Navigation des liens sociaux"|trans|striptags }}">
                                     {%- for name, infos in website.networks -%}
                                         {%- if infos.link and infos.dirname -%}
                                             {%- set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags -%}
                                             <a href="{{ infos.link }}" class="{{ name }} p-0 d-inline-flex"
                                                 rel="noopener noreferrer" target="_blank"
                                                 aria-label="{{ label }}">
-                                                <i class="icon-{{ name|lower }} text-white" aria-hidden="true"></i>
+                                                <i class="icon- {{ name|lower }} text-white" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ label }}</span>
                                             </a>
                                         {%- endif -%}

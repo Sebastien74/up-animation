@@ -44,9 +44,9 @@
 {%- endif -%}
 {%- set onlyOne = countLink == 1 -%}
 
-<div class="img-hover-buttons-wrap position-relative overflow-hidden{%- if media.radius -%} radius{%- endif -%}{%- if onlyOne -%} only-one{%- endif -%}">
+<div class="img-hover-buttons-wrap position-relative overflow-hidden{% if media.radius %} radius{% endif %}{% if onlyOne %} only-one{% endif %}">
     {%- block media -%}{%- endblock -%}
-    <div class="position-absolute inner d-flex align-items-center justify-content-center{%- if class -%} {{ class }}{%- endif -%}{%- if onlyOne -%} only-one{%- endif -%}">
+    <div class="position-absolute inner d-flex align-items-center justify-content-center{% if class %} {{ class }}{% endif %}{% if onlyOne %} only-one{% endif %}">
         <div class="links-wrap text-center">
             {%- if asDownloadable and originalSrc -%}
                 <a href="{{ absolute_url(originalSrc) }}"
@@ -66,10 +66,10 @@
             {%- set popupPath = desktopMedia.path is defined and desktopMedia.path ? desktopMedia.path : filepathDesktop -%}
             {%- if asPopup and originalSrc -%}
                 <a href="{{ absolute_url(originalSrc) }}"
-                   title="{{ title }}{%- if author -%} &#64;{{ author }}{%- endif -%}"
-                   data-title="{{ title }}{%- if author -%} &#64;{{ author }}{%- endif -%}"
-                   class="item d-inline-block{%- if popupClass -%} {{ popupClass }}{%- endif -%}"
-                   {%- if popupGallery -%} data-gallery="popup-gallery-{{ popupGallery }}"{%- endif -%}>
+                   title="{{ title }}{% if author %} &#64;{{ author }}{% endif %}"
+                   data-title="{{ title }}{% if author %} &#64;{{ author }}{% endif %}"
+                   class="item d-inline-block{% if popupClass %} {{ popupClass }}{% endif %}"
+                   {%- if popupGallery -%} data-gallery="popup-gallery- {{ popupGallery }}" {%- endif -%}>
                     <div class="wrap d-inline-flex align-items-center justify-content-center px-2">
                         <div class="d-inline-flex flex-column">
                             <i class="icon-search text-white"></i>
@@ -81,7 +81,7 @@
             {%- if haveLink -%}
                 {%- set title = mediaRelation.intl.targetLabel is defined and mediaRelation.intl.targetLabel ? mediaRelation.intl.targetLabel : null -%}
                 {%- set element = onlyLink ? "span" : "a" -%}
-                <{{ element }} class="link-box item d-inline-block"{%- if not onlyLink -%} href="{{ targetLink }}"{%- if targetBlank -%} target="_blank"{%- else -%}{%- endif -%}{%- if externalLink -%} rel="noopener noreferrer"{%- endif -%}{%- endif -%}>
+                <{{ element }} class="link-box item d-inline-block" {%- if not onlyLink -%} href="{{ targetLink }}" {%- if targetBlank -%} target="_blank" {%- else -%}{%- endif -%}{%- if externalLink -%} rel="noopener noreferrer" {%- endif -%}{%- endif -%}>
                     <div class="wrap d-inline-flex align-items-center justify-content-center px-2">
                         <div class="d-inline-flex flex-column">
                             <i class="icon-plus-circle text-white"></i>

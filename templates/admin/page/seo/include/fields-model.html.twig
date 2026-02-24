@@ -8,12 +8,12 @@
                 {%- if not haveCaption -%}
                     <h4>{{ title|capitalize }}</h4>
                 {%- endif -%}
-                <div {%- if not loop.last -%}class="mb-3"{%- endif -%}>
+                <div {% if not loop.last -%}class="mb-3" {%- endif -%}>
                     {%- for metadata in metadatas -%}
                         <div class="item btn mb-1">
                             <div class="d-flex align-items-center refer-copy">
                                 <div class="to-copy">[{{ metadata }}]</div>
-                                <div class="copy-link border-dark cursor ms-2" data-bs-toggle="tooltip" title="{{ "Copier"|trans|striptags }}">
+                                <div class="copy-link border-dark cursor ms-2" data-bs-toggle="tooltip" title="{{"Copier"|trans|striptags }}">
                                     <div class="inner h-100"><i class="icm-copy"></i></div>
                                 </div>
                             </div>

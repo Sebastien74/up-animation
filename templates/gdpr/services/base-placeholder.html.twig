@@ -11,13 +11,13 @@
             title="{{ label_btn|unescape|raw }}"
             data-placement="left"
             data-toggle="tooltip"
-            {%- if reload is defined -%}data-reload="{{ reload }}"{%- endif -%}
+            {%- if reload is defined -%}data-reload="{{ reload }}" {%- endif -%}
             data-code="{{ code }}"
             data-service="{{ service }}">
         {%- set label_btn = label_btn is defined ? label_btn : 'Activer'|trans|raw -%}
         <img data-src="{{ image }}"
              src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-             alt="{{ image_title|striptags }}"
+             alt=" {{ image_title|striptags }}"
              title="{{ image_title|striptags }}"
              height="30" width="auto"
              class="lazy-load img-fluid" />
@@ -49,8 +49,8 @@
             <div class="gdpr-activation-block">
                 <span class="info w-100 mb-4 d-inline-block px-4">{{ message }}</span>
                 <button class="btn btn-dark mx-auto active-gdpr-cookie mb-3" role="button"
-                        {%- if axeptioId or axeptioExternal -%}onclick="window.axeptioSDK.requestConsent('{{ code }}')"{%- endif -%}
-                        {%- if reload is defined -%}data-reload="{{ reload }}" data-toggle="preloader"{%- endif -%}
+                        {%- if axeptioId or axeptioExternal -%}onclick="window.axeptioSDK.requestConsent(' {{ code }}')" {%- endif -%}
+                        {%- if reload is defined -%}data-reload="{{ reload }}" data-toggle="preloader" {%- endif -%}
                         data-code="{{ code }}"
                         data-service="{{ service }}">
                     {%- set label_btn = label_btn is defined ? label_btn : 'Activer'|trans|raw -%}

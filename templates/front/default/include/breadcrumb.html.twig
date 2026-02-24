@@ -10,13 +10,13 @@
     {%- set paddingRight = paddingRight is defined and paddingRight ? paddingRight : 'ps-0' -%}
     {%- set paddings = paddingLeft~' '~paddingRight -%}
     {%- if microDataActive -%}
-        <ol id="breadcrumb" class="breadcrumb d-flex w-100 mb-0 {{ paddings }} bg-{{ background }} justify-content-start{%- if class -%} {{ class }}{%- endif -%}"
+        <ol id="breadcrumb" class="breadcrumb d-flex w-100 mb-0 {{ paddings }} bg-{{ background }} justify-content-start{% if class %} {{ class }}{% endif %}"
             itemscope itemtype="https://schema.org/BreadcrumbList">
             {%- for item in breadcrumbs -%}
                 {%- set haveUrl = item.url is defined and item.url -%}
                 <li itemprop="itemListElement" itemscope
                     itemtype="https://schema.org/ListItem"
-                    class="breadcrumb-item lh-1 d-inline-flex align-items-center item-{{ loop.index }}{%- if itemClass is defined and itemClass|length -%} {{ itemClass }}{%- endif -%}">
+                    class="breadcrumb-item lh-1 d-inline-flex align-items-center item-{{ loop.index }}{% if itemClass is defined and itemClass|length %} {{ itemClass }}{% endif %}">
                     {%- if haveUrl -%}
                         <a itemprop="item"
                            itemscope
@@ -26,7 +26,7 @@
                            class="text-white d-inline-flex"
                            data-position="{{ loop.index }}">
                     {%- endif -%}
-                            <span itemprop="name" class="text-white d-inline-block{%- if loop.last -%} active{%- endif -%}" aria-label="{{ item.title|striptags }}">
+                            <span itemprop="name" class="text-white d-inline-block{% if loop.last %} active{% endif %}" aria-label="{{ item.title|striptags }}">
                                 {{ item.title|truncate(75) }}
                             </span>
                     {%- if haveUrl -%}
@@ -38,14 +38,14 @@
             {%- endfor -%}
         </ol>
     {%- else -%}
-        <ol id="breadcrumb" class="breadcrumb d-flex w-100 mb-0 {{ paddings }} bg-{{ background }} justify-content-start{%- if class -%} {{ class }}{%- endif -%}">
+        <ol id="breadcrumb" class="breadcrumb d-flex w-100 mb-0 {{ paddings }} bg-{{ background }} justify-content-start{% if class %} {{ class }}{% endif %}">
             {%- for item in breadcrumbs -%}
                 {%- set haveUrl = item.url is defined and item.url -%}
-                <li class="breadcrumb-item lh-1 d-inline-flex align-items-center{%- if itemClass is defined and itemClass|length -%} {{ itemClass }}{%- endif -%}">
+                <li class="breadcrumb-item lh-1 d-inline-flex align-items-center{% if itemClass is defined and itemClass|length %} {{ itemClass }}{% endif %}">
                     {%- if haveUrl -%}
                         <a href="{{ absolute_url(item.url) }}">
                     {%- endif -%}
-                            <span class="{%- if loop.last -%} active{%- else -%}text-white{%- endif -%}">{{ item.title|truncate(30) }}</span>
+                            <span class="{% if loop.last %} active{% else %}text-white{% endif %}">{{ item.title|truncate(30) }}</span>
                     {%- if haveUrl -%}
                         </a>
                     {%- endif -%}

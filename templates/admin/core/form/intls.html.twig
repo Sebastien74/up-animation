@@ -26,15 +26,15 @@
         <ul class="nav nav-tabs w-100" role="tablist">
             {%- for intl in intls -%}
                 {%- set locale = intl.vars.value.locale -%}
-                <li class="nav-item{%- if locale not in allLocales -%} d-none{%- endif -%}" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
+                <li class="nav-item {% if locale not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
                     {%- set localesMatches = locale|split('_') -%}
                     {%- set subLocaleLabel = localesMatches|length > 1 ? languageName(locale, app.user.locale) : null -%}
                     {%- set linkActive = locale == defaultLocale -%}
-                    <a class="nav-link d-flex align-items-center{%- if linkActive -%} active{%- endif -%}" data-bs-toggle="tab"
-                       id="intl-{{ locale~tabUniqId }}-tab"
-                       aria-selected="{%- if locale == defaultLocale -%}true{%- else -%}false{%- endif -%}"
-                       href="#intl-tab-{{ locale~tabUniqId }}" role="tab">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                    <a class="nav-link d-flex align-items-center{% if linkActive %} active{% endif %}" data-bs-toggle="tab"
+                       id="intl- {{ locale~tabUniqId }}-tab"
+                       aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}"
+                       href="#intl-tab- {{ locale~tabUniqId }}" role="tab">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
                         {%- if subLocaleLabel -%}<span class="ms-2">{{ subLocaleLabel|raw }}</span>{%- endif -%}
                     </a>
                 </li>
@@ -51,7 +51,7 @@
             {%- set locale = intl.vars.value.locale -%}
 
             {%- if allLocales|length > 1 -%}
-                <div id="intl-tab-{{ locale~tabUniqId }}" class="tab-pane fade{%- if locale == defaultLocale -%} show active{%- endif -%}" role="tabpanel" aria-labelledby="intl-{{ locale~tabUniqId }}-tab">
+                <div id="intl-tab- {{ locale~tabUniqId }}" class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}" role="tabpanel" aria-labelledby="intl- {{ locale~tabUniqId }}-tab">
                     <div class="p-20 pb-0">
                         <div class="row">
             {%- endif -%}
@@ -90,7 +90,7 @@
                                 and entityModule|moduleActive(configuration) -%}
 
                             {%- if actionFilterButton or displayTemplates -%}
-                                <div class="col-md-{%- if displayTemplates and actionFilterButton and allLocales|length == 1 -%}5{%- elseif displayTemplates and actionFilterButton and allLocales|length > 1 -%}10{%- elseif displayTemplates -%}10{%- else -%}12{%- endif -%}">
+                                <div class="col-md- {% if displayTemplates and actionFilterButton and allLocales|length == 1 %}5{% elseif displayTemplates and actionFilterButton and allLocales|length > 1 %}10{% elseif displayTemplates %}10{% else %}12{% endif %}">
                             {%- endif -%}
 
                                 {%- set fieldRender = (disableFields is empty and enabledFields is empty)
@@ -110,7 +110,7 @@
                                                 {%- set pathArgs = pathArgs|merge({entitylocale: website().configuration.locale}) -%}
                                             {%- endif -%}
                                             <a href="{{ path('admin_'~entityInterfaceName~'_edit', pathArgs) }}"
-                                               data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}" class="btn-app w-100">
+                                               data-bs-toggle="tooltip" title="{{"Éditer"|trans|striptags }}" class="btn-app w-100">
                                                 <i class="icm-pencil-alt"></i>{{ "Éditer"|trans }}
                                             </a>
                                         </div>

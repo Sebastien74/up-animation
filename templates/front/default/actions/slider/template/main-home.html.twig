@@ -11,34 +11,34 @@
     {%- set iconClasses = not asBtn ? 'text-'~color : '' -%}
     {%- set icon = asBtn ? 'chevron' : 'arrow' -%}
     {%- set btnClasses = asBtn ? 'btn-circle btn btn-'~color : '' -%}
-    <div class="controls d-inline-flex align-items-start justify-content-{{ side }} w-100 {%- if 'top' == position -%}mb-4{%- else -%}mt-3{%- endif -%}{%- if 'end' == side -%} {%- endif -%}{%- if asBtn -%} as-btn{%- endif -%}">
-        <button class="carousel-control-prev position-relative cursor{%- if btnClasses -%} {{ btnClasses }}{%- endif -%} me-2"
+    <div class="controls d-inline-flex align-items-start justify-content-{{ side }} w-100 {% if 'top' == position %}mb-4{% else %}mt-3{% endif %}{% if 'end' == side %} {% endif %}{% if asBtn %} as-btn{% endif %}">
+        <button class="carousel-control-prev position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} me-2"
                 data-bs-slide="prev"
-                data-bs-target="#carousel-{{ sliderSlug }}"
-                aria-label="{{ "Précédent"|trans }}"
+                data-bs-target="#carousel- {{ sliderSlug }}"
+                aria-label="{{"Précédent"|trans }}"
                 tabindex="-1">
-            <i class="icon-{{ icon }}-left{%- if iconClasses -%} {{ iconClasses }}{%- endif -%}"></i>
+            <i class="icon- {{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
         </button>
         {%- if slider.autoplay and accessibility -%}
-            <button class="carousel-control-pause position-relative cursor{%- if btnClasses -%} {{ btnClasses }}{%- endif -%} mx-1" aria-label="{{ "Pause"|trans }}" tabindex="-1">
-                <i class="icon-pause{%- if iconClasses -%} {{ iconClasses }}{%- endif -%}"></i>
+            <button class="carousel-control-pause position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{"Pause"|trans }}" tabindex="-1">
+                <i class="icon-pause {% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
             </button>
-            <button class="carousel-control-play position-relative d-none cursor{%- if btnClasses -%} {{ btnClasses }}{%- endif -%} mx-1" aria-label="{{ "Pause"|trans }}" tabindex="-1">
-                <i class="icon-play{%- if iconClasses -%} {{ iconClasses }}{%- endif -%}"></i>
+            <button class="carousel-control-play position-relative d-none cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{"Pause"|trans }}" tabindex="-1">
+                <i class="icon-play {% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
             </button>
         {%- endif -%}
-        <button class="carousel-control-next position-relative cursor{%- if btnClasses -%} {{ btnClasses }}{%- endif -%} ms-2"
+        <button class="carousel-control-next position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} ms-2"
                 data-bs-slide="next"
-                data-bs-target="#carousel-{{ sliderSlug }}"
-                aria-label="{{ "Suivant"|trans }}"
+                data-bs-target="#carousel- {{ sliderSlug }}"
+                aria-label="{{"Suivant"|trans }}"
                 tabindex="-1">
-            <i class="icon-{{ icon }}-right{%- if iconClasses -%} {{ iconClasses }}{%- endif -%}"></i>
+            <i class="icon- {{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
         </button>
     </div>
 {%- endmacro -%}
 
-<div id="carousel-{{ sliderSlug }}"
-     class="carousel-{{ slider.slug }} carousel slide{%- if slider.effect == 'fade' -%} carousel-fade{%- endif -%}"
+<div id="carousel- {{ sliderSlug }}"
+     class="carousel- {{ slider.slug }} carousel slide{% if slider.effect == 'fade' %} carousel-fade{% endif %}"
      data-bs-interval="{{ slider.intervalDuration }}"
      data-bs-autoplay="{{ slider.autoplay }}"
      data-bs-pause="{{ slider.pause ? 'hover' : 0 }}"
@@ -63,7 +63,7 @@
             {%- set haveText = mediaIntro or mediaBody -%}
             {%- set display = (mediaType == 'video' and media.videoLink is not empty) or (media.media.filename is defined and media.media.filename) -%}
             {%- if display -%}
-                <div class="carousel-item{%- if isFirst -%} active{%- endif -%}">
+                <div class="carousel-item {% if isFirst %} active{% endif %}">
                     {%- if mediaType == 'video' -%}
                         {%- include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {
                             block: media,
@@ -92,13 +92,13 @@
                             {%- if haveContent -%}
                                 <div class="content flex-shrink-0">
                                     {%- if mediaTitle -%}
-                                        <h{{ mediaTitleForce }} class="caption-title mt-3 mb-0">{{ mediaTitle|unescape|raw }}</h{{ mediaTitleForce }}>
+                                        <h {{ mediaTitleForce }} class="caption-title mt-3 mb-0">{{ mediaTitle|unescape|raw }}</h{{ mediaTitleForce }}>
                                     {%- endif -%}
                                     {%- if mediaIntro -%}
-                                        <p class="introduction text-bold{%- if mediaTitle -%} mt-3{%- endif -%}">{{ mediaIntro|unescape|raw|nl2br }}</p>
+                                        <p class="introduction text-bold{% if mediaTitle %} mt-3{% endif %}">{{ mediaIntro|unescape|raw|nl2br }}</p>
                                     {%- endif -%}
                                     {%- if mediaBody -%}
-                                        <div class="body{%- if mediaTitle or mediaIntro -%} mt-3{%- endif -%}">{{ mediaBody|unescape|raw|nl2br }}</div>
+                                        <div class="body {% if mediaTitle or mediaIntro %} mt-3{% endif %}">{{ mediaBody|unescape|raw|nl2br }}</div>
                                     {%- endif -%}
                                     <div class="mt-4">
                                         {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: intlMedia} only -%}
@@ -120,10 +120,10 @@
             {%- set isFirst = true -%}
             {%- for media in medias -%}
                 {%- if media.media.filename is defined and media.media.filename -%}
-                    <li data-bs-target="#carousel-{{ sliderSlug }}"
+                    <li data-bs-target="#carousel- {{ sliderSlug }}"
                         data-bs-slide-to="{{ loop.index - 1 }}"
                         data-index="{{ loop.index }}"
-                        class="position-relative {%- if isFirst and loop.first -%}active{%- endif -%}">
+                        class="position-relative {% if isFirst and loop.first %}active{% endif %}">
                         {%- if slider.progress -%}
                             <span class="position-absolute loader left"></span>
                         {%- endif -%}

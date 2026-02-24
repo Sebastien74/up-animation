@@ -26,8 +26,8 @@
                         <div class="main-subtitle">
                             <i class="icm-copy"></i>{{ "Pages du site"|trans }}
                             <div class="d-flex d-flex align-items-center gap-1 ms-auto">
-                                <i class="icm-arrow-alt-to-bottom info cursor expand-all-pages" data-bs-toggle="tooltip" title="{{ "Tout afficher"|trans }}"></i>
-                                <i class="icm-arrow-alt-to-top info cursor collapse-all-pages d-none" data-bs-toggle="tooltip" title="{{ "Tout cacher"|trans }}"></i>
+                                <i class="icm-arrow-alt-to-bottom info cursor expand-all-pages" data-bs-toggle="tooltip" title="{{"Tout afficher"|trans }}"></i>
+                                <i class="icm-arrow-alt-to-top info cursor collapse-all-pages d-none" data-bs-toggle="tooltip" title="{{"Tout cacher"|trans }}"></i>
                             </div>
                         </div>
                         <form method="post" id="page-selector-menu"
@@ -100,14 +100,14 @@
                             <i class="icm-bars"></i> {{ "Menu"|trans|striptags }}
                             <div class="ms-auto d-flex gap-2">
                                 {%- if 'delete'|moduleActive(configuration) -%}
-                                    <i id="delete-pack-btn" class="icm-trash btn-icon danger small initial cursor d-none" data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"></i>
+                                    <i id="delete-pack-btn" class="icm-trash btn-icon danger small initial cursor d-none" data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"></i>
                                 {%- endif -%}
                                 {%- set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees -%}
-                                <i id="nestable-expand-all" class="icm-arrow-alt-to-bottom initial small cursor{%- if not collapsedAdminTrees -%} d-none{%- endif -%}" data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}"></i>
-                                <i id="nestable-collapse-all" class="icm-arrow-alt-to-top initial small cursor{%- if collapsedAdminTrees -%} d-none{%- endif -%}" data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}"></i>
+                                <i id="nestable-expand-all" class="icm-arrow-alt-to-bottom initial small cursor{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{"Dépiler"|trans|raw }}"></i>
+                                <i id="nestable-collapse-all" class="icm-arrow-alt-to-top initial small cursor{% if collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{"Empiler"|trans|raw }}"></i>
                                 <a href="{{ lastRoute() }}"
-                                   data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
-                                   aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                                   data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}"
+                                   aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
                                     <i class="icm-reply initial small"></i>
                                 </a>
                                 {%- include 'admin/include/intl-selector.html.twig' with {route: 'admin_menu_edit', args: { menu: entity.id, selectorClass: 'ms-2' }} -%}

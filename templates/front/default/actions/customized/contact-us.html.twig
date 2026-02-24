@@ -1,4 +1,4 @@
-{%- trans_default_domain 'front_default' -%}
+﻿{%- trans_default_domain 'front_default' -%}
 
 <div class="contact-us-containeren">
     <div class="container">
@@ -45,7 +45,7 @@
                             <span class="rounded-badge shadow-lg d-flex align-items-center justify-content-center bg-primary"><i class="icon-envelope-solid text-white"></i></span>
                             <span class="fw-900 text-uppercase my-2">Mail</span>
                             <strong>Équipe Up Animations{%- if city -%} {{ city }}{%- endif -%}</strong>
-                            <a href="mailto:{{ email.email }}">{{ email.email }}</a>
+                            <a href="mailto: {{ email.email }}">{{ email.email }}</a>
                         </div>
                     </div>
                 {%- endif -%}
@@ -54,7 +54,7 @@
                         <div class="inner d-flex align-items-center flex-column">
                             <span class="rounded-badge shadow-lg d-flex align-items-center justify-content-center bg-primary"><i class="icon-phone-alt-solid text-white"></i></span>
                             <span class="fw-900 text-uppercase my-2">Téléphone</span>
-                            <a href="tel:{{ phone.tagNumber }}">{{ phone.number }}</a>
+                            <a href="tel: {{ phone.tagNumber }}">{{ phone.number }}</a>
                         </div>
                     </div>
                 {%- endif -%}

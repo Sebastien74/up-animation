@@ -15,13 +15,13 @@
                             <a class="btn-transparent sa-warning swal-delete-link"
                                href="{{ path('admin_agendaperiod_delete', {website: websiteId(), agendaperiod: entity.id}) }}"
                                data-bs-toggle="tooltip"
-                               title="{{ "Supprimer"|trans|striptags }}"
+                               title="{{"Supprimer"|trans|striptags }}"
                                data-type="collection">
                                 <i class="icm-trash"></i>
                             </a>
                         {%- endif -%}
                         <h5 class="modal-title text-center w-100 mb-3 mt-3"><i class="icm-calendar"></i></h5>
-                        <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                        <button class="btn-close" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
                             <i class="icm-times"></i>
                         </button>
                     </div>

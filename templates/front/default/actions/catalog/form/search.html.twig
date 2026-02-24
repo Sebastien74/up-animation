@@ -7,7 +7,7 @@
 {%- if listing.display != 'disable' and haveFields -%}
     <div id="search-products-filters-container">
         {%- if not listing.combineFieldsText and listing.searchText -%}
-            <div id="search-text-container" class=" w-100 mb-4">
+            <div id="search-text-container" class="w-100 mb-4">
                 {{ form_start(formText, {attr: {id: "search-text-form", 'data-component': 'webpack-form'}}) }}
                 <div class="group d-inline-flex">
                     {{ form_widget(formText.text) }}
