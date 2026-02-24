@@ -1,20 +1,20 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% block title %}{{ "Infos projet"|trans|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ "Infos projet"|trans }}{% endblock %}
+{%- block title -%}{{ "Infos projet"|trans|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Infos projet"|trans }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-development', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
     <div class="card mb-3">
         <h4 class="main-subtitle"><i class="icm-exclamation-circle"></i>{{ "Infos"|trans }}</h4>
@@ -31,20 +31,20 @@
     </div>
 
     <ul id="files-sizes-ifo-list">
-        {% for directory, size in directoriesSizes %}
+        {%- for directory, size in directoriesSizes -%}
             <li class="mt-3">
                 <i class="icm-folder-open"></i>{{ directory }} : {{ size|formatBytes() }}
-                {% if subDirectoriesSizes[directory] is defined %}
+                {%- if subDirectoriesSizes[directory] is defined -%}
                     <ul>
-                        {% for subDirectory, subSize in subDirectoriesSizes[directory] %}
+                        {%- for subDirectory, subSize in subDirectoriesSizes[directory] -%}
                             <li>
                                 <i class="icm-folder"></i>{{ directory~'/'~subDirectory }} : {{ subSize|formatBytes() }}
                             </li>
-                        {% endfor %}
+                        {%- endfor -%}
                     </ul>
-                {% endif %}
+                {%- endif -%}
             </li>
-        {% endfor %}
+        {%- endfor -%}
     </ul>
 
-{% endblock %}
+{%- endblock -%}

@@ -1,7 +1,7 @@
-{% trans_default_domain 'gdpr' %}
+{%- trans_default_domain 'gdpr' -%}
 
-{% set cookiesInit = cookies()|length > 0 %}
-{% set cookiesPageUrl = website|intlUrl(cookiesPage) %}
+{%- set cookiesInit = cookies()|length > 0 -%}
+{%- set cookiesPageUrl = website|intlUrl(cookiesPage) -%}
 
 <div class="layout-zone bg-secondary">
     <div class="div container">
@@ -15,9 +15,9 @@
 
 <!-- #gdpr-modal -->
 <div class="modal fade" id="gdpr-modal" tabindex="-1" role="dialog" aria-labelledby="gdpr-modal" aria-hidden="true">
-    {% if cookiesInit %}
+    {%- if cookiesInit -%}
         <button type="button" class="btn-close p-0" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}"></button>
-    {% endif %}
+    {%- endif -%}
     <div class="modal-dialog modal-dialog-centered gdpr-management" role="document">
         <div class="modal-content">
             <!-- #gdpr-main -->
@@ -58,10 +58,10 @@
                     <h5 class="modal-title mb-4 mt-3 fw-bold">{{ "Paramétrage des cookies"|trans|raw }}</h5>
                     <form action="{{ path('front_gdpr_scripts', {_format: 'json'}) }}" id="gdpr-form-acceptation" method="GET">
                         <ul id="list-groups" class="reset text-start">
-                            {% for category in categories %}
-                                {% for group in category.gdprgroups %}
-                                    {% if category.slug != "functional" %}
-                                        {% set intl = intl(group) %}
+                            {%- for category in categories -%}
+                                {%- for group in category.gdprgroups -%}
+                                    {%- if category.slug != "functional" -%}
+                                        {%- set intl = intl(group) -%}
                                         <li>
                                             <div class="row m-0">
                                                 <div class="col-2 text-center">
@@ -69,9 +69,9 @@
                                                 </div>
                                                 <div class="col-8">
                                                     <b>{{ group.adminName|unescape|raw }}</b>
-                                                    {% set urlGroup = intl.targetLink is defined and intl.targetLink ? intl.targetLink : path('front_index', {url: cookiesPageUrl})~"#cookies-infos" %}
+                                                    {%- set urlGroup = intl.targetLink is defined and intl.targetLink ? intl.targetLink : path('front_index', {url: cookiesPageUrl})~"#cookies-infos" -%}
                                                     <span class="d-inline-block ms-2" data-bs-toggle="tooltip" title="{{ "En savoir plus"|trans|striptags }}">
-                                                        <a href="{{ urlGroup }}" {% if intl.targetLink is defined and intl.targetLink %}rel="noreferrer noopener" target="_blank" {% endif %}
+                                                        <a href="{{ urlGroup }}" {%- if intl.targetLink is defined and intl.targetLink -%}rel="noreferrer noopener" target="_blank" {%- endif -%}
                                                            class="info-link cookies-more-wrap"
                                                            data-toggle="preloader">{{ 'fas info-circle'|icon(null, 20) }}</a>
                                                     </span>
@@ -84,16 +84,16 @@
                                                                type="checkbox"
                                                                class="cookie-group-checkbox"
                                                                data-service="{{ group.service }}"
-                                                               data-code="{{ group.slug }}"{% if cookie(group.slug) %} checked{% endif %} />
+                                                               data-code="{{ group.slug }}"{%- if cookie(group.slug) -%} checked{%- endif -%} />
                                                         <label for="gdpr-{{ group.slug }}" class="label-primary"></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <hr>
                                         </li>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endfor %}
+                                    {%- endif -%}
+                                {%- endfor -%}
+                            {%- endfor -%}
                         </ul>
                     </form>
                 </div>

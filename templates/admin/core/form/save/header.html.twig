@@ -1,10 +1,10 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% if interface.configuration.saveArea is not defined
+{%- if interface.configuration.saveArea is not defined
     or interface.configuration.saveArea != 'bottom'
-    or configFields is defined and configFields %}
+    or configFields is defined and configFields -%}
     <div class="form-header d-flex justify-content-between mb-3">
-        {% if configFields is defined and configFields %}
+        {%- if configFields is defined and configFields -%}
             <button class="btn-app collapsed"
                     type="button"
                     data-bs-toggle="collapse"
@@ -13,9 +13,9 @@
                     aria-controls="collapseForm">
                 <i class="icm-cog-reg"></i>{{ "Configuration"|trans }}
             </button>
-        {% endif %}
+        {%- endif -%}
         <div class="save-base gap-2 d-flex align-self-center">
-            {% include 'admin/core/form/save/base.html.twig' with {saveAreaTpl: 'header'} %}
+            {%- include 'admin/core/form/save/base.html.twig' with {saveAreaTpl: 'header'} -%}
         </div>
     </div>
-{% endif %}
+{%- endif -%}

@@ -1,9 +1,9 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div class="card mb-3">
     <div class="card-body pb-2">
         <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Pages"|trans }}</h4>
-        {% include 'admin/page/information/social-network.html.twig' with {socialsNetworks: form.website.information.socialNetworks} %}
+        {%- include 'admin/page/information/social-network.html.twig' with {socialsNetworks: form.website.information.socialNetworks} -%}
     </div>
 </div>
 

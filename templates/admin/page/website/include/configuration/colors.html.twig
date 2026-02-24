@@ -1,12 +1,12 @@
-﻿{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% import _self as macro %}
+{%- import _self as macro -%}
 
-{% macro color_prototype(color) %}
+{%- macro color_prototype(color) -%}
 
-    {% set isNew = color.vars.data.id is defined and color.vars.data.id ? false : true %}
-    {% set entityId = isNew ? uniqId() : color.vars.data.id %}
-    {% set deletable = isNew ? true : color.vars.data.deletable %}
+    {%- set isNew = color.vars.data.id is defined and color.vars.data.id ? false : true -%}
+    {%- set entityId = isNew ? uniqId() : color.vars.data.id -%}
+    {%- set deletable = isNew ? true : color.vars.data.deletable -%}
 
     <div class="prototype col-md-6 col-lg-3">
         <div class="card mb-3">
@@ -15,9 +15,9 @@
                     {{ form_row(color.adminName) }}
                     {{ form_row(color.color) }}
                     {{ form_row(color.category) }}
-                    {% if deletable %}
+                    {%- if deletable -%}
                         {{ form_row(color.slug) }}
-                    {% else %}
+                    {%- else -%}
                         <div class="form-group col-12">
                             {{ form_label(color.slug) }}
                             {{ color.vars.data.slug }}
@@ -25,68 +25,68 @@
                         <div class="d-none">
                             {{ form_widget(color.slug) }}
                         </div>
-                    {% endif %}
+                    {%- endif -%}
                     {{ form_row(color.active) }}
                 </div>
             </div>
-            {% if deletable %}
-                {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+            {%- if deletable -%}
+                {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
                     isNew: color.vars.data.id is defined and color.vars.data.id ? false : true,
                     entityId: isNew ? uniqId() : color.vars.data.id,
                     interfaceName: 'color'
-                } %}
-            {% else %}
+                } -%}
+            {%- else -%}
                 <a class="btn-transparent delete-disabled" data-bs-toggle="tooltip" title="{{ "Suppression impossible"|trans }}">
                     <i class="icm-trash"></i>
                 </a>
-            {% endif %}
+            {%- endif -%}
         </div>
     </div>
 
-{% endmacro %}
+{%- endmacro -%}
 
 <div id="colors-collection"
      data-index="{{form.colors|length}}"
      class="collection accordion"
      data-prototype="{{ macro.color_prototype(form.colors.vars.prototype)|e('html_attr') }}">
 
-    {% set categories = {
+    {%- set categories = {
         'background': {icon: 'icm-eye-dropper', label: 'Couleurs de fond'|trans },
         'button': { icon: 'icm-link', label: 'Boutons'|trans },
         'color': { icon: 'icm-tint', label: 'Couleurs'|trans },
         'alert': { icon: 'icm-exclamation-triangle', label: 'Alertes'|trans },
         'favicon': { icon: 'icm-ravelry', label: 'Favicons'|trans }
-    } %}
+    } -%}
 
-    {% for key, meta in categories %}
-        {% set items = form.colors|filter(c => c.vars.value.category == key) %}
-        {% if items|length > 0 %}
+    {%- for key, meta in categories -%}
+        {%- set items = form.colors|filter(c => c.vars.value.category == key) -%}
+        {%- if items|length > 0 -%}
             <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-{{ key }}" aria-expanded="false" aria-controls="collapse-{{ key }}">
                 <i class="{{ meta.icon }}"></i>{{ meta.label }}
                 <i class="icm-chevron-down ms-auto"></i>
             </h4>
             <div id="collapse-{{ key }}" class="collapse row" aria-labelledby="heading{{ key }}" data-parent="#colors-collection">
-                {% for color in items %}
+                {%- for color in items -%}
                     {{ macro.color_prototype(color) }}
-                {% endfor %}
+                {%- endfor -%}
             </div>
-        {% endif %}
-    {% endfor %}
+        {%- endif -%}
+    {%- endfor -%}
 
-    {% set others = form.colors|filter(c => categories[c.vars.value.category] is not defined) %}
-    {% if others|length > 0 %}
+    {%- set others = form.colors|filter(c => categories[c.vars.value.category] is not defined) -%}
+    {%- if others|length > 0 -%}
         <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-others" aria-expanded="false" aria-controls="collapse-others">
             <i class="icm-folder"></i>{{ 'Autres'|trans }}
             <i class="icm-chevron-down ms-auto"></i>
         </h4>
         <div id="collapse-others" class="collapse" aria-labelledby="headingOthers" data-parent="#colors-collection">
             <div class="row">
-                {% for color in others %}
+                {%- for color in others -%}
                     {{ macro.color_prototype(color) }}
-                {% endfor %}
+                {%- endfor -%}
             </div>
         </div>
-    {% endif %}
+    {%- endif -%}
 
 </div>
 

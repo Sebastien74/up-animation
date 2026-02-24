@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div id="index-reorder-data">
 
@@ -12,8 +12,8 @@
         </div>
     </div>
 
-{#    {% set count = folders|length %}#}
-    {% set name = data|first.media.filename is defined ? data|first.media.filename : null %}
+{#    {%- set count = folders|length -%}#}
+    {%- set name = data|first.media.filename is defined ? data|first.media.filename : null -%}
     <div id="progress-card" class="card mt-5">
         <div class="card-body pb-2">
             <h6 class="title d-flex align-items-center">{{ "Tri en cours"|trans|raw }}</h6>
@@ -29,31 +29,31 @@
     <ul id="medias-to-reorder" class="d-none"
         data-items-length="{{ data|length }}"
         data-folders-length="{{ folders|length }}">
-        {% for item in data %}
-{#            {% if loop.index <= count %}#}
-                {% set path = path('admin_media_reorder_process', {
+        {%- for item in data -%}
+{#            {%- if loop.index <= count -%}#}
+                {%- set path = path('admin_media_reorder_process', {
                     website: website.id,
                     media: item.media.id,
                     entityId: item.entity.id,
                     folderName: item.name|url_encode,
                     classname: item.classname|url_encode
-                }) %}
+                }) -%}
                 <li class="item to-reorder"
                     data-path="{{ path }}"
                     data-name="{{ item.media.filename }}"><a href="{{ path }}">{{ item.entity.adminName }}</a></li>
-{#            {% endif %}#}
-        {% endfor %}
-        {% for folder in folders %}
-{#            {% if loop.index <= count %}#}
-                {% set path = path('admin_media_clear_empty_folder', {
+{#            {%- endif -%}#}
+        {%- endfor -%}
+        {%- for folder in folders -%}
+{#            {%- if loop.index <= count -%}#}
+                {%- set path = path('admin_media_clear_empty_folder', {
                     website: website.id,
                     folder: folder.id,
-                }) %}
+                }) -%}
                 <li class="item to-reorder"
                     data-path="{{ path }}"
                     data-name="{{ 'Verification du dossier '~folder.adminName }}"><a href="{{ path }}">{{ folder.adminName }}</a></li>
-{#            {% endif %}#}
-        {% endfor %}
+{#            {%- endif -%}#}
+        {%- endfor -%}
     </ul>
 
 </div>

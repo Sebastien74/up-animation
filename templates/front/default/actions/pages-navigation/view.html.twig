@@ -1,6 +1,6 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% if subNavigation is defined and subNavigation is not empty %}
+{%- if subNavigation is defined and subNavigation is not empty -%}
     <div class="splide no-arrows d-flex justify-content-center pages-navigation"
          data-lenght="{{ subNavigation|length }}"
          data-items="{{ subNavigation|length }}"
@@ -27,9 +27,9 @@
          data-interval="1500">
         <div class="splide__track">
             <ul class="splide__list">
-                {% for page in subNavigation %}
-                    {% set media = page.mainMedia %}
-                    {% if media %}
+                {%- for page in subNavigation -%}
+                    {%- set media = page.mainMedia -%}
+                    {%- if media -%}
                         <li class="splide__slide">
                             <a href="{{ page.url }}" class="item-page text-center d-inline-block mx-4">
                                 {{ media|file({}, {
@@ -37,14 +37,14 @@
                                     maxHeight: 200,
                                     popupGallery: false,
                                     fullPopup: false }) }}
-                                {% if media.intl.title %}
+                                {%- if media.intl.title -%}
                                     <h3 class="title mt-4 fw-800 text-black text-uppercase">{{ media.intl.title|raw }}</h3>
-                                {% endif %}
+                                {%- endif -%}
                             </a>
                         </li>
-                    {% endif %}
-                {% endfor %}
+                    {%- endif -%}
+                {%- endfor -%}
             </ul>
         </div>
     </div>
-{% endif %}
+{%- endif -%}

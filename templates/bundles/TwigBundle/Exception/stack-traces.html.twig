@@ -1,8 +1,8 @@
-{% trans_default_domain 'exception' %}
+{%- trans_default_domain 'exception' -%}
 
-{% block before_html %}{% endblock %}
+{%- block before_html -%}{%- endblock -%}
 
-{% set status_code = status_code is defined ? status_code : null %}
+{%- set status_code = status_code is defined ? status_code : null -%}
 
 <!DOCTYPE html>
 <html>
@@ -16,7 +16,7 @@
         <meta name="author" content="{{ "Agence Félix"|trans }}" />
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('build/admin/images/theme/favicon.ico', 'admin') }}" />
         <style nonce="{{ csp_nonce() }}">{{ include('@Twig/exception.css.twig') }}</style>
-        {% block head %}{% endblock %}
+        {%- block head -%}{%- endblock -%}
     </head>
 
     <body>
@@ -50,10 +50,10 @@
             <div class="exception-metadata">
                 <div class="container">
                     <h2 class="exception-hierarchy">
-                        {% for previousException in exception.allPrevious|reverse %}
+                        {%- for previousException in exception.allPrevious|reverse -%}
 {#                            <a href="#trace-box-{{ loop.revindex + 1 }}" target="_blank">{{ previousException.class|abbr_class }}</a>#}
                             <span class="icon">{{ include('@Twig/images/chevron-right.svg') }}</span>
-                        {% endfor %}
+                        {%- endfor -%}
 {#                        <a href="#trace-box-1" target="_blank">{{ exception.class|abbr_class }}</a>#}
                     </h2>
                     <h2 class="exception-http">
@@ -76,71 +76,71 @@
         <div class="container">
             <div class="sf-tabs">
                 <div class="tab">
-                    {% set exception_as_array = exception.toarray %}
-                    {% set _exceptions_with_user_code = [] %}
-                    {% for i, e in exception_as_array %}
-                        {% for trace in e.trace %}
-                            {% if (trace.file is not empty) and ('/vendor/' not in trace.file) and ('/var/cache/' not in trace.file) and not loop.last %}
-                                {% set _exceptions_with_user_code = _exceptions_with_user_code|merge([i]) %}
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
+                    {%- set exception_as_array = exception.toarray -%}
+                    {%- set _exceptions_with_user_code = [] -%}
+                    {%- for i, e in exception_as_array -%}
+                        {%- for trace in e.trace -%}
+                            {%- if (trace.file is not empty) and ('/vendor/' not in trace.file) and ('/var/cache/' not in trace.file) and not loop.last -%}
+                                {%- set _exceptions_with_user_code = _exceptions_with_user_code|merge([i]) -%}
+                            {%- endif -%}
+                        {%- endfor -%}
+                    {%- endfor -%}
                     <h3 class="tab-title">
-                        {% if exception_as_array|length > 1 %}
+                        {%- if exception_as_array|length > 1 -%}
                             Exceptions <span class="badge">{{ exception_as_array|length }}</span>
-                        {% else %}
+                        {%- else -%}
                             Exception
-                        {% endif %}
+                        {%- endif -%}
                     </h3>
 
                     <div class="tab-content">
-                        {% for i, e in exception_as_array %}
+                        {%- for i, e in exception_as_array -%}
                             {{ include('@Twig/Exception/traces.html.twig', { exception: e, index: loop.index, expand: i in _exceptions_with_user_code or (_exceptions_with_user_code is empty and loop.first) }, with_context = false) }}
-                        {% endfor %}
+                        {%- endfor -%}
                     </div>
                 </div>
 
-                {% if logger %}
+                {%- if logger -%}
                     <div class="tab {{ logger.logs is empty ? 'disabled' }}">
                         <h3 class="tab-title">
                             Logs
-                            {% if logger.counterrors ?? false %}<span class="badge status-error">{{ logger.counterrors }}</span>{% endif %}
+                            {%- if logger.counterrors ?? false -%}<span class="badge status-error">{{ logger.counterrors }}</span>{%- endif -%}
                         </h3>
 
                         <div class="tab-content">
-                            {% if logger.logs %}
+                            {%- if logger.logs -%}
                                 {{ include('@Twig/Exception/logs.html.twig', { logs: logger.logs }, with_context = false)  }}
-                            {% else %}
+                            {%- else -%}
                                 <div class="empty">
                                     <p>No log messages</p>
                                 </div>
-                            {% endif %}
+                            {%- endif -%}
                         </div>
                     </div>
-                {% endif %}
+                {%- endif -%}
 
                 <div class="tab">
                     <h3 class="tab-title">
-                        {% if exception_as_array|length > 1 %}
+                        {%- if exception_as_array|length > 1 -%}
                             Stack Traces <span class="badge">{{ exception_as_array|length }}</span>
-                        {% else %}
+                        {%- else -%}
                             Stack Trace
-                        {% endif %}
+                        {%- endif -%}
                     </h3>
 
                     <div class="tab-content">
-                        {% for e in exception_as_array %}
+                        {%- for e in exception_as_array -%}
                             {{ include('@Twig/Exception/traces_text.html.twig', { exception: e, index: loop.index, num_exceptions: loop.length }, with_context = false) }}
-                        {% endfor %}
+                        {%- endfor -%}
                     </div>
                 </div>
 
-                {% if currentContent is not empty %}
+                {%- if currentContent is not empty -%}
                     <div class="tab">
                         <h3 class="tab-title">Output content</h3>
                         <div class="tab-content">{{ currentContent }}</div>
                     </div>
-                {% endif %}
+                {%- endif -%}
             </div>
         </div>
 
@@ -149,4 +149,4 @@
     </body>
 </html>
 
-{% block after_html %}{% endblock %}
+{%- block after_html -%}{%- endblock -%}

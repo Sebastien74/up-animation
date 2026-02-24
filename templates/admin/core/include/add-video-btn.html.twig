@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <a href="{{ path('admin_'~interface.name~'_video', {website: website.id, (interface.name): entityId}) }}" id="add-video-btn"
    class="btn-app w-100 mb-4 d-flex justify-content-center align-items-center">

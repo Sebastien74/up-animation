@@ -1,31 +1,31 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set pageIcon = 'globe' %}
+{%- set pageIcon = 'globe' -%}
 
-{% block title %}{{ "Groupes de traductions"|trans|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ "Groupes de traductions"|trans }}{% endblock %}
+{%- block title -%}{{ "Groupes de traductions"|trans|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Groupes de traductions"|trans }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-translation', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin-translation', null,  'admin', {defer: true}) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
-    {% set toExtract = pagination.getTotalItemCount is defined and pagination.getTotalItemCount == 0 and not app.request.get('index_search')
-        or pagination|length == 0 and not app.request.get('index_search') %}
-    {% set allLocales = interface.website.configuration.allLocales %}
-    {% set defaultLocale = interface.website.configuration.locale %}
-    {% set stats = domains|transStats %}
+    {%- set toExtract = pagination.getTotalItemCount is defined and pagination.getTotalItemCount == 0 and not app.request.get('index_search')
+        or pagination|length == 0 and not app.request.get('index_search') -%}
+    {%- set allLocales = interface.website.configuration.allLocales -%}
+    {%- set defaultLocale = interface.website.configuration.locale -%}
+    {%- set stats = domains|transStats -%}
 
-    {% if granted('ROLE_INTERNAL') %}
+    {%- if granted('ROLE_INTERNAL') -%}
         <div class="d-flex align-items-center gap-2">
             <a class="translation-extract-btn btn-app" data-domain="only_front">
                 <i class="icm-sync-alt"></i><span>{{ "Extraire le front"|trans }}</span>
@@ -33,7 +33,7 @@
             <a class="translation-extract-btn btn-app" data-domain="all">
                 <i class="icm-sync-alt"></i><span>{{ "Extraire tout"|trans }}</span>
             </a>
-            {% if not toExtract %}
+            {%- if not toExtract -%}
                 <a href="{{ path('admin_intls_export', { website: websiteId }) }}" class=" btn-app">
                     <i class="icm-upload"></i><span>{{ "Exporter les traductions"|trans }}</span>
                 </a>
@@ -45,27 +45,27 @@
                 </a>
                 {{ render_esi(path("admin_translation_new", {website: websiteId()})) }}
                 {{ render_esi(path('admin_intls_import', {website: websiteId()} )) }}
-            {% endif %}
+            {%- endif -%}
         </div>
-    {% endif %}
+    {%- endif -%}
 
-    {% include 'admin/page/translation/generator.html.twig' %}
+    {%- include 'admin/page/translation/generator.html.twig' -%}
 
-    {% if not toExtract %}
+    {%- if not toExtract -%}
 
         <div id="translations-domains-index" class="card d-inline-block w-100">
 
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-8 my-auto">
-                        {% if searchForm %}
-                            {% include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} %}
-                        {% endif %}
+                        {%- if searchForm -%}
+                            {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} -%}
+                        {%- endif -%}
                     </div>
                     <div class="col-md-4 my-auto d-flex justify-content-end">
-                        {% set domainsPath = app.request.get('domains') ? path('admin_translationdomain_index', {website: website.id})
-                            : path('admin_translationdomain_index', {website: website.id, domains: 'admin'}) %}
-                        {% set domainslabel = app.request.get('domains') ? "Traductions front"|trans : "Traductions admin"|trans %}
+                        {%- set domainsPath = app.request.get('domains') ? path('admin_translationdomain_index', {website: website.id})
+                            : path('admin_translationdomain_index', {website: website.id, domains: 'admin'}) -%}
+                        {%- set domainslabel = app.request.get('domains') ? "Traductions front"|trans : "Traductions admin"|trans -%}
                         <a href="{{ domainsPath }}" class="btn-app d-flex align-items-center">
                             <i class="icm-eye"></i><span>{{ domainslabel|raw }}</span>
                         </a>
@@ -75,47 +75,47 @@
 
             <div id="result" class="position-relative">
 
-                {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only %}
+                {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only -%}
 
                 <table class="table table-striped mb-0">
                     <thead>
                         <tr>
                             <th class="align-middle">{{ "Groupe"|trans }}</th>
-                            {% for transLocale in allLocales %}
+                            {%- for transLocale in allLocales -%}
                                 <th class="align-middle">
-                                    {% if allLocales|length > 1 %}
+                                    {%- if allLocales|length > 1 -%}
                                         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
                                              data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
                                              class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">
-                                    {% endif %}
-                                    {% if stats[transLocale] is defined %}
+                                    {%- endif -%}
+                                    {%- if stats[transLocale] is defined -%}
                                         <strong class="d-inline-block">{{ stats[transLocale]['words'] }} {{ "mots"|trans }}</strong>
-                                    {% endif %}
+                                    {%- endif -%}
                                 </th>
-                            {% endfor %}
+                            {%- endfor -%}
                         </tr>
                     </thead>
                     <tbody>
-                        {% for entity in pagination %}
-                            {% set name = 'singular'|trans([], entity.name) and 'singular'|trans([], entity.name) != 'singular'
-                                ? 'singular'|trans([], entity.name) : entity.adminName  %}
-                            {% if name != '_undefined' %}
-                                <tr class="{% if loop.index is even %}even{% else %}odd{% endif %}">
+                        {%- for entity in pagination -%}
+                            {%- set name = 'singular'|trans([], entity.name) and 'singular'|trans([], entity.name) != 'singular'
+                                ? 'singular'|trans([], entity.name) : entity.adminName -%}
+                            {%- if name != '_undefined' -%}
+                                <tr class="{%- if loop.index is even -%}even{%- else -%}odd{%- endif -%}">
                                     <td class="align-middle">
                                         <div class="row">
                                             <div class="col-7 my-auto">
                                                 {{ name }}
-                                                {% if granted('ROLE_INTERNAL') %}
-                                                    {% if entity.forTranslator %}
+                                                {%- if granted('ROLE_INTERNAL') -%}
+                                                    {%- if entity.forTranslator -%}
                                                         <span class="cursor" data-bs-toggle="tooltip" title="{{ "Pour le traducteur"|trans|striptags }}"><i class="icm-globe ms-2"></i></span>
-                                                    {% endif %}
-                                                    {% if entity.extract %}
+                                                    {%- endif -%}
+                                                    {%- if entity.extract -%}
                                                         <span class="cursor" data-bs-toggle="tooltip" title="{{ "À exporter"|trans|striptags }}"><i class="icm-upload ms-2"></i></span>
-                                                    {% endif %}
-                                                {% endif %}
+                                                    {%- endif -%}
+                                                {%- endif -%}
                                             </div>
                                             <div class="col-5 text-end">
-                                                {% if granted('ROLE_INTERNAL') %}
+                                                {%- if granted('ROLE_INTERNAL') -%}
                                                     <span data-bs-toggle="tooltip" title="{{ "Éditer le groupe"|trans|striptags }}">
                                                         <a href="{{ path('admin_translationdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
                                                            class="btn-app"
@@ -128,7 +128,7 @@
                                                             <i class="icm-retweet-alt"></i>
                                                         </a>
                                                     </span>
-                                                {% endif %}
+                                                {%- endif -%}
                                                 <span data-bs-toggle="tooltip" title="{{ "Éditer les contenus"|trans|striptags }}">
                                                     <a href="{{ path('admin_translationsdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
                                                        class="btn"
@@ -136,42 +136,42 @@
                                                         <i class="icm-list-ul"></i>
                                                     </a>
                                                 </span>
-                                                {% if granted('ROLE_INTERNAL') %}
+                                                {%- if granted('ROLE_INTERNAL') -%}
                                                     <span data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
                                                         <a class="cursor sa-warning swal-delete-link"
                                                            href="{{ path('admin_translationsdomain_delete', {website: websiteId(), translationdomain: entity.id}) }}">
                                                             <i class="icm-trash"></i>
                                                         </a>
                                                     </span>
-                                                {% endif %}
+                                                {%- endif -%}
                                             </div>
                                         </div>
                                     </td>
-                                    {% for transLocale in interface.website.configuration.allLocales %}
+                                    {%- for transLocale in interface.website.configuration.allLocales -%}
                                         <td class="align-middle">
-                                            {% if stats[entity.name]['units'][transLocale] is defined %}
+                                            {%- if stats[entity.name]['units'][transLocale] is defined -%}
                                                 <h5>{{ stats[entity.name]['units'][transLocale] }}/{{ stats[entity.name]['units']['count'][transLocale] }} <small class="d-inline-block"> - {{ stats[entity.name][transLocale]['words'] }} {{ 'mots'|trans }}</small></h5>
                                                 <div class="progress">
-                                                    {% set percent = stats[entity.name]['units'][transLocale]|percent(stats[entity.name]['units']['count'][transLocale]) %}
-                                                    {% set color = percent < 100 ? 'danger' : 'success' %}
+                                                    {%- set percent = stats[entity.name]['units'][transLocale]|percent(stats[entity.name]['units']['count'][transLocale]) -%}
+                                                    {%- set color = percent < 100 ? 'danger' : 'success' -%}
                                                     <div class="progress-bar progress-bar-striped bg-{{ color }} wow animated progress-animated" style="width: {{ percent }}%; height:6px;" role="progressbar"></div>
                                                 </div>
-                                            {% else %}
+                                            {%- else -%}
                                                 <span class="badge warning">{{ "Vous devez regénérer les traductions !"|trans }}</span>
-                                            {% endif %}
+                                            {%- endif -%}
                                         </td>
-                                    {% endfor %}
+                                    {%- endfor -%}
                                 </tr>
-                            {% endif %}
-                        {% endfor %}
+                            {%- endif -%}
+                        {%- endfor -%}
                     </tbody>
                 </table>
 
-                {% include 'admin/core/include/pagination.html.twig' %}
+                {%- include 'admin/core/include/pagination.html.twig' -%}
 
             </div>
         </div>
 
-    {% endif %}
+    {%- endif -%}
 
-{% endblock %}
+{%- endblock -%}

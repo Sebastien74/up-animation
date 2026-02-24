@@ -1,27 +1,27 @@
-{% extends 'front/'~websiteTemplate~'/base.html.twig' %}
+{%- extends 'front/'~websiteTemplate~'/base.html.twig' -%}
 
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName, null, webpack) }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
     {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null,  webpack, {defer: true}) }}
-{% endblock %}
+{%- endblock -%}
 
-{% set seoTitle = "Merci pour votre message."|trans %}
-{% set message = entity.intl.placeholder is defined and entity.intl.placeholder ? entity.intl.placeholder : "Merci pour votre message !"|trans|raw %}
-{% set slug = entity.slug is defined ? entity.slug : uniqId() %}
+{%- set seoTitle = "Merci pour votre message."|trans -%}
+{%- set message = entity.intl.placeholder is defined and entity.intl.placeholder ? entity.intl.placeholder : "Merci pour votre message !"|trans|raw -%}
+{%- set slug = entity.slug is defined ? entity.slug : uniqId() -%}
 
-{% block body %}
-    {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+{%- block body -%}
+    {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
         titleForce: 1,
         pageTitle: 'Merci !'|trans,
         template: websiteTemplate,
-        thumbConfiguration: thumbConfigurationHeader } %}
+        thumbConfiguration: thumbConfigurationHeader } -%}
     <div id="form-thanks-container-{{ slug }}" class="form-thanks-container pt-5 pb-5 text-center d-flex align-items-center">
         <div class="row w-100">
             <div class="col-md-6 col-xl-4 mx-auto mt-5 mb-5 d-flex align-items-center">
@@ -39,4 +39,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
+{%- endblock -%}

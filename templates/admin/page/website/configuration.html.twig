@@ -1,21 +1,21 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set pageTitle = "Élements de site"|trans %}
-{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ pageTitle }}{% endblock %}
+{%- set pageTitle = "Élements de site"|trans -%}
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-icons-library', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
     {{ form_start(form, {attr: {id: "website-elements-form", novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
 
@@ -59,27 +59,27 @@
 
         <div class="tab-content">
             <div class="tab-pane fade show actives" id="media" role="tabpanel" aria-labelledby="media-tab">
-                {% include 'admin/page/website/include/configuration/medias.html.twig' %}
+                {%- include 'admin/page/website/include/configuration/medias.html.twig' -%}
             </div>
             <div class="tab-pane fade" id="social" role="tabpanel" aria-labelledby="social-tab">
-                {% include 'admin/page/website/include/configuration/social-network.html.twig' %}
+                {%- include 'admin/page/website/include/configuration/social-network.html.twig' -%}
             </div>
             <div class="tab-pane fade active show" id="color" role="tabpanel" aria-labelledby="color-tab">
-                {% include 'admin/page/website/include/configuration/colors.html.twig' %}
+                {%- include 'admin/page/website/include/configuration/colors.html.twig' -%}
             </div>
             <div class="tab-pane fade" id="css-classes" role="tabpanel" aria-labelledby="css-classes-tab">
-                {% include 'admin/page/website/include/configuration/style.html.twig' %}
+                {%- include 'admin/page/website/include/configuration/style.html.twig' -%}
             </div>
             <div class="tab-pane fade" id="icon" role="tabpanel" aria-labelledby="icon-tab">
-                {% include 'admin/page/website/include/configuration/libraries.html.twig' %}
+                {%- include 'admin/page/website/include/configuration/libraries.html.twig' -%}
             </div>
             <div class="tab-pane fade" id="others" role="tabpanel" aria-labelledby="icon-tab">
-                {% include 'admin/page/website/include/configuration/others.html.twig' %}
+                {%- include 'admin/page/website/include/configuration/others.html.twig' -%}
             </div>
         </div>
 
-        {% include 'admin/core/form/save/footer-only.html.twig' %}
+        {%- include 'admin/core/form/save/footer-only.html.twig' -%}
 
     {{ form_end(form) }}
 
-{% endblock %}
+{%- endblock -%}

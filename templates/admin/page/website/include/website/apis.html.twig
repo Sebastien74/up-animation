@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div class="card mb-3">
     <div class="card-body pb-2">
@@ -14,7 +14,7 @@
     <div class="card-body pb-2">
         <h4 class="main-subtitle"><i class="icm-google"></i>{{ "Google"|trans }}</h4>
         <div class="row">
-            {% include 'admin/page/api/google-intls.html.twig' with {googleIntls: form.api.google.intls} %}
+            {%- include 'admin/page/api/google-intls.html.twig' with {googleIntls: form.api.google.intls} -%}
         </div>
     </div>
 </div>
@@ -39,7 +39,7 @@
     <div class="card-body pb-2">
         <h4 class="main-subtitle"><i class="icm-plus-circle"></i>{{ "Autres"|trans }}</h4>
         <div class="row">
-            {% include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.api.custom.intls} %}
+            {%- include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.api.custom.intls} -%}
             {{ form_row(form.api.addThis) }}
             {{ form_row(form.api.tawkToId) }}
         </div>

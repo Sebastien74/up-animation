@@ -1,6 +1,6 @@
-{% trans_default_domain 'security_cms' %}
+{%- trans_default_domain 'security_cms' -%}
 
-{% set website = website is defined ? website : website() %}
+{%- set website = website is defined ? website : website() -%}
 
 <div class="form-group mb-0">
     <input type="text" id="field_ho" name="field_ho" required="required" placeholder="{{ "Saisissez une valeur"|trans|striptags }}" class="form-field-none field_ho form-control">

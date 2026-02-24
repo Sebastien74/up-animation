@@ -1,9 +1,9 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set uploadType = uploadType is defined ? uploadType : 'single' %}
-{% set btnModalId = btnModalId is defined ? btnModalId : 'open-modal-'~modalId %}
-{% set haveAddVideo = haveAddVideo is defined ? 'video-btn' : 'media-open-btn' %}
-{% set btnClass = uploadType~' '~ haveAddVideo %}
+{%- set uploadType = uploadType is defined ? uploadType : 'single' -%}
+{%- set btnModalId = btnModalId is defined ? btnModalId : 'open-modal-'~modalId -%}
+{%- set haveAddVideo = haveAddVideo is defined ? 'video-btn' : 'media-open-btn' -%}
+{%- set btnClass = uploadType~' '~ haveAddVideo -%}
 
 <div class="open-modal-medias-btn btn-app w-100 mb-3 p-0 {{ btnClass }}">
     <span id="{{ btnModalId }}"

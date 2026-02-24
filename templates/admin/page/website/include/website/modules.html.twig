@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div class="row">
 
@@ -16,10 +16,10 @@
                         </div>
                     </div>
                     <div class="w-100">
-                        {% include 'admin/include/alert.html.twig' with {
+                        {%- include 'admin/include/alert.html.twig' with {
                             alert: "info",
                             display: "alert",
-                            message: "Pensez à ajouter les modules actifs a vos configurations de mise en page."|trans} only %}
+                            message: "Pensez à ajouter les modules actifs a vos configurations de mise en page."|trans} only -%}
                     </div>
                 </div>
                 <div class="row m-0">
@@ -43,10 +43,10 @@
                         </div>
                     </div>
                     <div class="w-100">
-                        {% include 'admin/include/alert.html.twig' with {
+                        {%- include 'admin/include/alert.html.twig' with {
                             alert: "info",
                             display: "alert",
-                            message: "Pensez à ajouter les blocs actifs a vos configurations de mise en page."|trans} only %}
+                            message: "Pensez à ajouter les blocs actifs a vos configurations de mise en page."|trans} only -%}
                     </div>
                 </div>
                 <div class="row m-0">

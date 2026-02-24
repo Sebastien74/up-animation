@@ -1,21 +1,21 @@
-{% extends 'front/'~website.configuration.template~'/base.html.twig' %}
+{%- extends 'front/'~website.configuration.template~'/base.html.twig' -%}
 
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% block metaTitle %}{{ "Confirmation d'email"|trans|htmlEntities }}{% endblock %}
-{% block metaRobots %}noindex{% endblock %}
+{%- block metaTitle -%}{{ "Confirmation d'email"|trans|htmlEntities }}{%- endblock -%}
+{%- block metaRobots -%}noindex{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
     {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
     <div class="pt-5 pb-5 text-center d-flex align-items-center">
         <div class="row w-100">
             <div class="col-md-6 col-xl-4 mx-auto mt-5 mb-5 d-flex align-items-center">
@@ -38,4 +38,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
+{%- endblock -%}

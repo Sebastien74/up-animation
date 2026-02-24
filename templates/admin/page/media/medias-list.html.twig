@@ -1,36 +1,36 @@
-﻿{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set website = website() %}
-{% set configuration = website.configuration %}
-{% set tooHeavyFiles = masterRequest().get('too_heavy_files') %}
-{% set asCopy = asCopy is defined ? asCopy : false %}
+{%- set website = website() -%}
+{%- set configuration = website.configuration -%}
+{%- set tooHeavyFiles = masterRequest().get('too_heavy_files') -%}
+{%- set asCopy = asCopy is defined ? asCopy : false -%}
 
 <div id="medias-results">
 
     <h4 class="main-subtitle mb-2">
         <i class="icm-folder"></i>
-        {% if folder.adminName is defined and folder.adminName %}
+        {%- if folder.adminName is defined and folder.adminName -%}
             {{ folder.adminName }}
-        {% else %}
+        {%- else -%}
             {{ "Racine"|trans }}
-        {% endif %}
+        {%- endif -%}
     </h4>
 
     <div class="w-100 text-center d-flex flex-wrap justify-content-center">
         <div class="row w-100 mt-3" id="medias-results-container">
-            {% set excludesExtensions = ['ico', 'svg', 'gif'] %}
-            {% set excludesScreens = ['tablet', 'mobile'] %}
-            {% for media in medias %}
-                {% set extension = media.extension %}
-                {% set haveThumb = extension not in excludesExtensions %}
-                {% set uploadDirname = asset('uploads/'~media.website.uploadDirname~'/'~media.filename) %}
-                {% set tooHeavyFile = tooHeavyFiles and tooHeavyFilesSizes[media.filename] is defined %}
-                {% if media.filename and media.screen == ('desktop' or 'poster' or 'webm' or 'vtt' or 'mp4') and media.website.id == websiteId() and media.screen not in excludesScreens %}
-                    {% set extension = extension ? extension : media.filename|split('.')|last %}
-                    {% set icon = 'admin'|fileIcon(extension) %}
-                    {% set icon = extension == 'svg' or extension == 'webp' ? null : icon %}
+            {%- set excludesExtensions = ['ico', 'svg', 'gif'] -%}
+            {%- set excludesScreens = ['tablet', 'mobile'] -%}
+            {%- for media in medias -%}
+                {%- set extension = media.extension -%}
+                {%- set haveThumb = extension not in excludesExtensions -%}
+                {%- set uploadDirname = asset('uploads/'~media.website.uploadDirname~'/'~media.filename) -%}
+                {%- set tooHeavyFile = tooHeavyFiles and tooHeavyFilesSizes[media.filename] is defined -%}
+                {%- if media.filename and media.screen == ('desktop' or 'poster' or 'webm' or 'vtt' or 'mp4') and media.website.id == websiteId() and media.screen not in excludesScreens -%}
+                    {%- set extension = extension ? extension : media.filename|split('.')|last -%}
+                    {%- set icon = 'admin'|fileIcon(extension) -%}
+                    {%- set icon = extension == 'svg' or extension == 'webp' ? null : icon -%}
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
-                        <div class="card h-100 file {{ extension }}-extension{% if tooHeavyFile %} too-heavy-file{% endif %}" data-id="{{ media.id }}" data-original-src="{{ uploadDirname }}">
+                        <div class="card h-100 file {{ extension }}-extension{%- if tooHeavyFile -%} too-heavy-file{%- endif -%}" data-id="{{ media.id }}" data-original-src="{{ uploadDirname }}">
                             <div class="card-body p-2 d-flex flex-column pb-2">
                                 <label for="check-pack-media-{{ media.id }}" class="mb-0 check-pack-media-label w-100 flex-grow-1 cursor-pointer">
                                     <div class="file-data-wrap h-100" data-bs-toggle="tooltip" title="{{ media.filename }}">
@@ -38,16 +38,16 @@
                                             <div class="spinner-parent">
                                                 <div class="inner">
                                                     <div class="wrap text-center">
-                                                        {% if icon %}
+                                                        {%- if icon -%}
                                                             {{ icon|icon(null, 40, 'dark-50') }}
-                                                        {% else %}
+                                                        {%- else -%}
                                                             {{ media|file({}, {width: 100, height: 100, class: 'img-fluid rounded'}) }}
-                                                        {% endif %}
+                                                        {%- endif -%}
                                                     </div>
-                                                    {% if not asCopy %}
+                                                    {%- if not asCopy -%}
                                                         <div class="loader-media d-none"><i class="icm-circle-notch fa-spin"></i></div>
                                                         <div class="check-media d-none text-success"><i class="icm-check-circle"></i></div>
-                                                    {% endif %}
+                                                    {%- endif -%}
                                                 </div>
                                             </div>
                                         </div>
@@ -55,7 +55,7 @@
                                 </label>
 
                                 <div class="mt-2 d-flex justify-content-center gap-1">
-                                    {% if not asCopy %}
+                                    {%- if not asCopy -%}
                                         <div class="check-pack-media-btn cursor d-none p-0">
                                             <input id="check-pack-media-{{ media.id }}"
                                                    name="check-pack-media-{{ media.id }}"
@@ -63,26 +63,26 @@
                                                    type="checkbox" />
                                         </div>
 
-                                        {% if 'edit'|moduleActive(configuration) %}
-                                            {% if not icon %}
+                                        {%- if 'edit'|moduleActive(configuration) -%}
+                                            {%- if not icon -%}
                                                 <a href="{{ path('admin_media_crop', {website: website.id, media: media.id}) }}"
                                                    class="open-media-crop btn-icon small" data-bs-toggle="tooltip" title="{{ "Redimensionner"|trans|striptags }}">
                                                     <i class="icm-crop-alt"></i>
                                                 </a>
-                                            {% endif %}
+                                            {%- endif -%}
                                             <a href="{{ path('admin_media_edit', {website: websiteId(), media: media.id}) }}"
                                                class="open-media-edit btn-icon small" data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
                                                 <i class="icm-pencil-alt"></i>
                                             </a>
-                                            {% if granted('ROLE_MEDIA_COMPRESS') %}
+                                            {%- if granted('ROLE_MEDIA_COMPRESS') -%}
                                                 <a href="{{ path('admin_media_compress_restore', {website: website.id, media: media.id}) }}"
-                                                   class="media-compress-restore btn-icon small{% if not media.compress %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ "Rétablir l'image d'origine"|trans|striptags }}">
+                                                   class="media-compress-restore btn-icon small{%- if not media.compress -%} d-none{%- endif -%}" data-bs-toggle="tooltip" title="{{ "Rétablir l'image d'origine"|trans|striptags }}">
                                                     <i class="icm-sync"></i>
                                                 </a>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% else %}
-                                        {% set info = website()|fileInfo(media.filename) %}
+                                            {%- endif -%}
+                                        {%- endif -%}
+                                    {%- else -%}
+                                        {%- set info = website()|fileInfo(media.filename) -%}
                                         <div class="refer-copy refer-copy-wrap w-100">
                                             <span class="to-copy d-none">{{ app.request.getSchemeAndHttpHost()~info.path }}</span>
                                             <span class="copy-link btn-app small w-100 center cursor"
@@ -90,40 +90,40 @@
                                                 <i class="icm-copy"></i><span>{{ "Copier l'URL"|trans }}</span>
                                             </span>
                                         </div>
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
 
-                                {% if tooHeavyFile %}
+                                {%- if tooHeavyFile -%}
                                     <div class="mt-2">
-                                        {% include 'admin/include/alert.html.twig' with {
+                                        {%- include 'admin/include/alert.html.twig' with {
                                             alert: "warning",
                                             display: "alert",
                                             size: "small",
                                             class: "mb-0",
                                             message: tooHeavyFilesSizes[media.filename]|formatBytes
-                                        } only %}
+                                        } only -%}
                                     </div>
-                                {% endif %}
+                                {%- endif -%}
                             </div>
                         </div>
                     </div>
-                {% endif %}
-            {% else %}
+                {%- endif -%}
+            {%- else -%}
                 <div class="col-12 mt-3 text-start">
-                    {% include 'admin/include/alert.html.twig' with {display: 'alert', alert: 'info', class: 'w-100', message: "Aucun média."|trans} only %}
+                    {%- include 'admin/include/alert.html.twig' with {display: 'alert', alert: 'info', class: 'w-100', message: "Aucun média."|trans} only -%}
                 </div>
-            {% endfor %}
+            {%- endfor -%}
         </div>
 
         <div id="medias-pagination">
-            {% if medias.items|length < medias.getTotalItemCount %}
+            {%- if medias.items|length < medias.getTotalItemCount -%}
                 <div class="d-flex flex-column text-center justify-content-center mb-3">
                     <span class="show-more btn-app info cursor"><i class="icm-eye"></i>{{ "Voir plus"|trans|raw }}</span>
                     <div class="spinner-wrap d-none">
                         <div class="spinner-border" role="status"></div>
                     </div>
                 </div>
-            {% endif %}
+            {%- endif -%}
             <div class="d-none">
                 {{ knp_pagination_render(medias, 'core/pagination.html.twig') }}
             </div>

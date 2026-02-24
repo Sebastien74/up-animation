@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div class="card crop-card mb-0">
     <div class="card-body media-body text-center pb-2">
@@ -6,24 +6,24 @@
     </div>
     <h5 class="card-title no-radius mb-0 border p-3">
         {{ "Taille"|trans }} :
-        {% if configuration.width != "" and configuration.height != "" %}
+        {%- if configuration.width != "" and configuration.height != "" -%}
             {{ configuration.width }}px X {{ configuration.height }}px <small class="italic ms-2">{{ "(l x h)"|trans }}</small>
-        {% elseif configuration.width != "" and configuration.height == "" %}
+        {%- elseif configuration.width != "" and configuration.height == "" -%}
             {{ configuration.width }}px X {{ "Indéterminée"|trans }} <small class="italic ms-2">{{ "(l x h)"|trans }}</small>
-        {% elseif configuration.width == "" and configuration.height != "" %}
+        {%- elseif configuration.width == "" and configuration.height != "" -%}
             {{ "Indéterminée"|trans }} X {{ configuration.height }}px <small class="italic ms-2">{{ "(l x h)"|trans }}</small>
-        {% elseif configuration.height == "" and configuration.width != "" %}
+        {%- elseif configuration.height == "" and configuration.width != "" -%}
             {{ configuration.width }}px X {{ "Indéterminée"|trans }}px <small class="italic ms-2">{{ "(l x h)"|trans }}</small>
-        {% elseif configuration.width == "" and configuration.height == "" %}
+        {%- elseif configuration.width == "" and configuration.height == "" -%}
             {{ "Indéterminée"|trans }}
-        {% endif  %}
+        {%- endif -%}
     </h5>
     <div class="card-body info-body border pb-2">
         <strong>{{ "Utilisé dans :"|trans }}</strong>
         <ul>
-            {% for action in configuration.actions %}
+            {%- for action in configuration.actions -%}
                 <li>{{ action.adminName }}</li>
-            {% endfor  %}
+            {%- endfor -%}
         </ul>
         <div class="row gap-2 px-3 pb-3">
             <div class="col my-auto">
@@ -31,7 +31,7 @@
                     <i class="icm-crop-alt"></i>{{ "Redimensionner"|trans }}
                 </button>
             </div>
-            {% if thumb.id %}
+            {%- if thumb.id -%}
                 <div class="col-auto my-auto">
                     <span class="d-inline-block" data-bs-toggle="tooltip" title="{{ "Réinitialiser"|trans }}">
                         <a href="{{ path('admin_thumb_delete', {website: websiteId(), thumb: thumb.id}) }}" class="btn-icon info swal-delete-link">
@@ -39,7 +39,7 @@
                         </a>
                     </span>
                 </div>
-            {% endif %}
+            {%- endif -%}
         </div>
     </div>
 </div>
@@ -49,7 +49,7 @@
      tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content border refer-preloader text-start pb-5 pt-3">
-            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
+            {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
             <div class="modal-header border-0">
                 <h5 class="modal-title text-center w-100"><i class="icm-crop-alt"></i></h5>
                 <button class="btn-icon small position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
@@ -68,7 +68,7 @@
                             thumbConfiguration: configuration.id
                         })}}) }}
 
-                        {% set fileInfo = website()|fileInfo(media.filename) %}
+                        {%- set fileInfo = website()|fileInfo(media.filename) -%}
 
                         <div class="cropper-wrap"
                              data-width="{{ thumb.width }}"
@@ -135,27 +135,27 @@
                                     <div class="row">
                                         <div class="col-md-10">
                                             <div class="row">
-                                                {% for field in form.children %}
-                                                    {% if field.vars.name != 'save' and field.vars.name != 'saveEdit' %}
+                                                {%- for field in form.children -%}
+                                                    {%- if field.vars.name != 'save' and field.vars.name != 'saveEdit' -%}
                                                         {{ form_row(form[field.vars.name]) }}
-                                                    {% endif %}
-                                                {% endfor %}
+                                                    {%- endif -%}
+                                                {%- endfor -%}
                                             </div>
                                         </div>
-                                        {% if isInfinite %}
+                                        {%- if isInfinite -%}
                                             <div class="col-md-2 d-flex align-items-end">
                                                 <span class="btn-icon info cursor refresh-cropper-sizes w-100" data-bs-toggle="tooltip" title="{{ "Rafraichir"|trans }}">
                                                     <i class="icm-sync"></i>
                                                 </span>
                                             </div>
-                                        {% endif %}
+                                        {%- endif -%}
                                     </div>
                                 </div>
-{#                                {% if isInfinite %}#}
+{#                                {%- if isInfinite -%}#}
 {#                                    <div class="col-md-6 offset-md-6">#}
 {#                                        <small class="form-text">{{ "Un ratio peut être recalculé"|trans|raw }}</small>#}
 {#                                    </div>#}
-{#                                {% endif %}#}
+{#                                {%- endif -%}#}
                             </div>
 
                         </div>

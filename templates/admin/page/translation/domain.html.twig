@@ -1,36 +1,36 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set name = 'singular'|trans([], domain.name) and 'singular'|trans([], domain.name) != 'singular'
-    ? 'singular'|trans([], domain.name) : domain.adminName  %}
-{% set pageIcon = 'globe' %}
+{%- set name = 'singular'|trans([], domain.name) and 'singular'|trans([], domain.name) != 'singular'
+    ? 'singular'|trans([], domain.name) : domain.adminName -%}
+{%- set pageIcon = 'globe' -%}
 
-{% block title %}{{ "Contenus :"|trans~' '~name|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ "Contenus :"|trans~' '~name }}{% endblock %}
+{%- block title -%}{{ "Contenus :"|trans~' '~name|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Contenus :"|trans~' '~name }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-translation', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin-translation', null,  'admin', {defer: true}) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
-    {% set allLocales = website().configuration.allLocales %}
+    {%- set allLocales = website().configuration.allLocales -%}
 
     <div id="entities-index" class="card">
 
         <div class="card-header">
             <div class="row">
                 <div class="col-md-8 my-auto">
-                    {% if searchForm %}
-                        {% include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} %}
-                    {% endif %}
+                    {%- if searchForm -%}
+                        {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} -%}
+                    {%- endif -%}
                 </div>
                 <div class="col-md-4 text-end my-auto">
                     <span>
@@ -45,23 +45,23 @@
         </div>
 
         <div id="result" class="position-relative">
-            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only %}
+            {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only -%}
             <table class="table table-striped mb-0">
                 <thead>
                     <tr>
                         <th class="align-middle keys-td">{{ "Clé du contenu"|trans }}</th>
-                        <th class="align-middle forms-td">{% if allLocales|length > 1 %}{{ "Langues"|trans }}{% else %}{{ "Texte"|trans }}{% endif %}</th>
+                        <th class="align-middle forms-td">{%- if allLocales|length > 1 -%}{{ "Langues"|trans }}{%- else -%}{{ "Texte"|trans }}{%- endif -%}</th>
                         <th class="align-middle actions-td text-center">{{ "Actions"|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for unit in pagination %}
+                    {%- for unit in pagination -%}
                         {{ render_esi(path('admin_translationunit_edit', {website: websiteId(), translationunit: unit.id} )) }}
-                    {% endfor %}
+                    {%- endfor -%}
                 </tbody>
             </table>
-            {% include 'admin/core/include/pagination.html.twig' %}
+            {%- include 'admin/core/include/pagination.html.twig' -%}
         </div>
     </div>
 
-{% endblock %}
+{%- endblock -%}

@@ -1,25 +1,25 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set pageIcon = 'globe' %}
+{%- set pageIcon = 'globe' -%}
 
-{% block title %}{{ "Traductions"|trans|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ "Traductions"|trans|raw }}{% endblock %}
+{%- block title -%}{{ "Traductions"|trans|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Traductions"|trans|raw }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-translation', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin-translation', null,  'admin', {defer: true}) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
-    {% set allLocales = website().configuration.allLocales %}
+    {%- set allLocales = website().configuration.allLocales -%}
 
     <span>
         <a href="{{ lastRoute() }}" class="btn-back mb-3"
@@ -35,18 +35,18 @@
             <tr>
                 <th class="align-middle keys-td">{{ "Domaine"|trans }}</th>
                 <th class="align-middle keys-td">{{ "Clé du contenu"|trans }}</th>
-                <th class="align-middle forms-td">{% if allLocales|length > 1 %}{{ "Langues"|trans }}{% else %}{{ "Texte"|trans }}{% endif %}</th>
+                <th class="align-middle forms-td">{%- if allLocales|length > 1 -%}{{ "Langues"|trans }}{%- else -%}{{ "Texte"|trans }}{%- endif -%}</th>
                 <th class="align-middle actions-td text-center">{{ "Actions"|trans }}</th>
             </tr>
             </thead>
             <tbody>
-                {% for domain in domains %}
-                    {% for unit in domain.units %}
+                {%- for domain in domains -%}
+                    {%- for unit in domain.units -%}
                         {{ render_esi(path('admin_translationunit_edit', {website: websiteId(), translationunit: unit.id, displayDomain: true} )) }}
-                    {% endfor %}
-                {% endfor %}
+                    {%- endfor -%}
+                {%- endfor -%}
             </tbody>
         </table>
     </div>
 
-{% endblock %}
+{%- endblock -%}

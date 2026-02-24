@@ -1,19 +1,19 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% block title %}{{ "Redirections"|trans|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ "Redirections"|trans }}{% endblock %}
+{%- block title -%}{{ "Redirections"|trans|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Redirections"|trans }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
     {{ render_esi(path('admin_redirection_import', {website: websiteId()} )) }}
 
@@ -44,21 +44,21 @@
                 </div>
             </div>
 
-            {% import _self as macro %}
+            {%- import _self as macro -%}
 
-            {% set configuration = website().configuration %}
-            {% set defaultLocale = configuration.locale %}
-            {% set allLocales = configuration.allLocales %}
+            {%- set configuration = website().configuration -%}
+            {%- set defaultLocale = configuration.locale -%}
+            {%- set allLocales = configuration.allLocales -%}
 
-            {% macro redirection_prototype(redirection) %}
+            {%- macro redirection_prototype(redirection) -%}
 
-                {% set allLocales = website().configuration.allLocales %}
-                {% set isNew = redirection.vars.data.id is defined and redirection.vars.data.id ? false : true %}
-                {% set entityId = redirection.vars.data.id is defined and redirection.vars.data.id ? redirection.vars.data.id : redirection.vars.id %}
-                {% set locale = redirection.vars.data.locale is defined and redirection.vars.data.locale ? redirection.vars.data.locale : null %}
+                {%- set allLocales = website().configuration.allLocales -%}
+                {%- set isNew = redirection.vars.data.id is defined and redirection.vars.data.id ? false : true -%}
+                {%- set entityId = redirection.vars.data.id is defined and redirection.vars.data.id ? redirection.vars.data.id : redirection.vars.id -%}
+                {%- set locale = redirection.vars.data.locale is defined and redirection.vars.data.locale ? redirection.vars.data.locale : null -%}
 
                 <tr id="refer-col-domain-{{ entityId }}" class="prototype">
-                    <td class="col-locale align-middle px-4{% if allLocales|length <= 1 %} d-none{% endif %}" data-label="{{ "Langue"|trans }}">
+                    <td class="col-locale align-middle px-4{%- if allLocales|length <= 1 -%} d-none{%- endif -%}" data-label="{{ "Langue"|trans }}">
                         <span class="d-none">{{ locale }}</span>
                         {{ form_widget(redirection.locale) }}
                     </td>
@@ -72,11 +72,11 @@
                     </td>
                     <td class="align-middle text-end actions px-4" data-label="{{ "Actions"|trans }}">
                         <div class="d-flex justify-content-end align-items-center gap-2">
-                            {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                            {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
                                 isNew: redirection.vars.data.id is defined and redirection.vars.data.id ? false : true,
                                 entityId: isNew ? uniqId() : redirection.vars.data.id,
                                 interfaceName: 'redirection'
-                            } %}
+                            } -%}
                             <div class="custom-control custom-checkbox delete-input-index-wrap d-none">
                                 <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ entityId }}"
                                        data-path="{{ path('admin_redirection_delete', {website: websiteId(), redirection: entityId}) }}">
@@ -86,13 +86,13 @@
                     </td>
                 </tr>
 
-            {% endmacro %}
+            {%- endmacro -%}
 
             <div class="table-responsive app-table">
                 <table class="table table-striped responsive-cards mb-0 editable-table collection" data-index="{{ form.redirections|length }}" data-prototype="{{ macro.redirection_prototype(form.redirections.vars.prototype)|e('html_attr') }}">
                 <thead>
                     <tr>
-                        <th class="col-locale px-4{% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans }}</th>
+                        <th class="col-locale px-4{%- if allLocales|length <= 1 -%} d-none{%- endif -%}">{{ "Langue"|trans }}</th>
                         <th class="px-4">{{ "URL"|trans }} <small class="ms-1">({{ "Ancienne URI / URL"|trans }})</small></th>
                         <th class="text-start px-4">{{ "Nouvelle URL"|trans }} <small class="ms-1">({{ "Avec protocol"|trans }})</small></th>
                         <th class="text-end px-4">
@@ -108,9 +108,9 @@
                     </tr>
                 </thead>
                 <tbody id="redirections-collection">
-                    {% for redirection in form.redirections %}
+                    {%- for redirection in form.redirections -%}
                         {{ macro.redirection_prototype(redirection) }}
-                    {% endfor %}
+                    {%- endfor -%}
                 </tbody>
             </table>
         </div>
@@ -122,4 +122,4 @@
 
     {{ render_esi(path('admin_redirection_index', {website: website.id})) }}
 
-{% endblock %}
+{%- endblock -%}

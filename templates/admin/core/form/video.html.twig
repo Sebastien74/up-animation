@@ -1,16 +1,16 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% import _self as macro %}
+{%- import _self as macro -%}
 
-{% set configuration = website().configuration %}
-{% set defaultLocale = configuration.locale %}
-{% set allLocales = configuration.allLocales %}
+{%- set configuration = website().configuration -%}
+{%- set defaultLocale = configuration.locale -%}
+{%- set allLocales = configuration.allLocales -%}
 
-{% macro card(entity, class, field, entityTypeId, screen) %}
-    {% set formatsVideo = ['poster', 'mp4', 'm4v', 'vtt', 'webm'] %}
-    {% set forVideo = screen in formatsVideo %}
-    <div class="col-md-3 screen-card{% if not forVideo %} d-none{% endif %}">
-        {% include 'admin/core/form/medias-modal.html.twig' with {
+{%- macro card(entity, class, field, entityTypeId, screen) -%}
+    {%- set formatsVideo = ['poster', 'mp4', 'm4v', 'vtt', 'webm'] -%}
+    {%- set forVideo = screen in formatsVideo -%}
+    <div class="col-md-3 screen-card{%- if not forVideo -%} d-none{%- endif -%}">
+        {%- include 'admin/core/form/medias-modal.html.twig' with {
             modalId: entity.id,
             parameters: {
                 type: 'single',
@@ -19,11 +19,11 @@
                 entityId: entity.id,
                 btnId: "#open-modal-"~entity.id,
             },
-        } only %}
+        } only -%}
         {{ form_row(field) }}
-        <h4 class="text-center text-uppercase screen-title mb-3">{{ screen }}{% if 'vtt' == screen %} {{ '(Sous-titres)'|trans|raw }}{% endif %}</h4>
+        <h4 class="text-center text-uppercase screen-title mb-3">{{ screen }}{%- if 'vtt' == screen -%} {{ '(Sous-titres)'|trans|raw }}{%- endif -%}</h4>
     </div>
-{% endmacro %}
+{%- endmacro -%}
 
 <div class="ajax-content">
     {{ form_start(form, {attr: {
@@ -33,39 +33,39 @@
         <h4 class="main-subtitle"><i class="icm-video"></i>{{ "Vidéo"|trans }}</h4>
         <div class="row">
             {{ macro.card(entity, 'App\\Entity\\Media\\MediaRelation', form.media.uploadedFile, 'mediaRelationId', entity.media.screen) }}
-            {% for mediaScreen in form.media.mediaScreens %}
+            {%- for mediaScreen in form.media.mediaScreens -%}
                 {{ macro.card(mediaScreen.vars.data, 'App\\Entity\\Media\\Media', mediaScreen.uploadedFile, 'mediaId', mediaScreen.vars.data.screen) }}
-            {% endfor %}
+            {%- endfor -%}
         </div>
         <div class="row">
             <div class="col-md-7">
-                <h4 class="main-subtitle"><i class="icm-align-center"></i>{% if allLocales|length > 1 %}{{ "Descriptions"|trans }}{% else %}{{ "Description"|trans }}{% endif %}</h4>
+                <h4 class="main-subtitle"><i class="icm-align-center"></i>{%- if allLocales|length > 1 -%}{{ "Descriptions"|trans }}{%- else -%}{{ "Description"|trans }}{%- endif -%}</h4>
                 <div class="row">
-                    {% set fieldNames = ['titleForce', 'title', 'subTitle', 'pictogram', 'introduction', 'body'] %}
-                    {% for fieldName in fieldNames %}
-                        {% if form.intl[fieldName] is defined %}
+                    {%- set fieldNames = ['titleForce', 'title', 'subTitle', 'pictogram', 'introduction', 'body'] -%}
+                    {%- for fieldName in fieldNames -%}
+                        {%- if form.intl[fieldName] is defined -%}
                             {{ form_row(form.intl[fieldName]) }}
-                        {% endif %}
-                    {% endfor %}
+                        {%- endif -%}
+                    {%- endfor -%}
                 </div>
             </div>
             <div class="col-md-5">
                 <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Lien"|trans }}</h4>
                 <div class="row">
-                    {% set fieldNames = ['video', 'targetLink', 'targetPage', 'targetLabel', 'targetStyle'] %}
-                    {% for fieldName in fieldNames %}
-                        {% if form.intl[fieldName] is defined %}
+                    {%- set fieldNames = ['video', 'targetLink', 'targetPage', 'targetLabel', 'targetStyle'] -%}
+                    {%- for fieldName in fieldNames -%}
+                        {%- if form.intl[fieldName] is defined -%}
                             {{ form_row(form.intl[fieldName]) }}
-                        {% endif %}
-                    {% endfor %}
+                        {%- endif -%}
+                    {%- endfor -%}
                 </div>
                 <div class="row">
-                    {% set fieldNames = ['newTab', 'externalLink'] %}
-                    {% for fieldName in fieldNames %}
-                        {% if form.intl[fieldName] is defined %}
+                    {%- set fieldNames = ['newTab', 'externalLink'] -%}
+                    {%- for fieldName in fieldNames -%}
+                        {%- if form.intl[fieldName] is defined -%}
                             {{ form_row(form.intl[fieldName]) }}
-                        {% endif %}
-                    {% endfor %}
+                        {%- endif -%}
+                    {%- endfor -%}
                 </div>
                 {{ form_row(form.save) }}
             </div>

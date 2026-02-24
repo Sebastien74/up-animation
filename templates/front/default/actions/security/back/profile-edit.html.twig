@@ -1,26 +1,26 @@
-{% set website = website is defined and website ? website : website() %}
+{%- set website = website is defined and website ? website : website() -%}
 
-{% extends 'front/'~website.configuration.template~'/actions/security/back/base.html.twig' %}
+{%- extends 'front/'~website.configuration.template~'/actions/security/back/base.html.twig' -%}
 
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% block metaTitle %}{{ "Mon profil"|trans|htmlEntities }}{% endblock %}
-{% block metaRobots %}noindex{% endblock %}
+{%- block metaTitle -%}{{ "Mon profil"|trans|htmlEntities }}{%- endblock -%}
+{%- block metaRobots -%}noindex{%- endblock -%}
 
-{% set pageTitle = "Mon profil"|trans %}
-{% set backLink = path('security_front_profile') %}
-{% set breadcrumbs = [
+{%- set pageTitle = "Mon profil"|trans -%}
+{%- set backLink = path('security_front_profile') -%}
+{%- set breadcrumbs = [
     {title: "Tableau de bord"|trans, url: path('security_front_dashboard')},
     {title: pageTitle|trans, url: path('security_front_profile')},
     {title: "Édition"|trans},
-] %}
+] -%}
 
-{% block content %}
+{%- block content -%}
 
     <div class="form-container position-relative pt-lg pb-lg">
-        {% if form %}
+        {%- if form -%}
             <div class="form-ajax-container">
-                {% include 'front/'~websiteTemplate~'/include/loader.html.twig' only %}
+                {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' only -%}
                 <div class="container">
                     {{ form_start(form, {attr: {
                         novalidate: "novalidate",
@@ -33,50 +33,50 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="row">
-                                    {% if form.profile.gender is defined %}
+                                    {%- if form.profile.gender is defined -%}
                                         {{ form_row(form.profile.gender) }}
-                                    {% endif %}
-                                    {% if form.lastName is defined %}
+                                    {%- endif -%}
+                                    {%- if form.lastName is defined -%}
                                         {{ form_row(form.lastName) }}
-                                    {% endif %}
-                                    {% if form.firstName is defined %}
+                                    {%- endif -%}
+                                    {%- if form.firstName is defined -%}
                                         {{ form_row(form.firstName) }}
-                                    {% endif %}
-                                    {% if form.login is defined %}
+                                    {%- endif -%}
+                                    {%- if form.login is defined -%}
                                         {{ form_row(form.login) }}
-                                    {% endif %}
-                                    {% if form.email is defined %}
+                                    {%- endif -%}
+                                    {%- if form.email is defined -%}
                                         {{ form_row(form.email) }}
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
-                                {% if 'SECURITY_FRONT_ADDRESSES'|getEnv %}
+                                {%- if 'SECURITY_FRONT_ADDRESSES'|getEnv -%}
                                     <h3 class="mb-4 mt-4">{{ "Adresse de livraison"|trans }}</h3>
                                     <div class="row">
-                                        {% for address in form.profile.addresses %}
-                                            {% if address.vars.data.slug == 'basic' %}
+                                        {%- for address in form.profile.addresses -%}
+                                            {%- if address.vars.data.slug == 'basic' -%}
                                                 {{ form_row(address) }}
-                                            {% endif %}
-                                        {% endfor %}
+                                            {%- endif -%}
+                                        {%- endfor -%}
                                     </div>
-                                    {% if 'SECURITY_FRONT_ADDRESSES'|getEnv == 'full' %}
+                                    {%- if 'SECURITY_FRONT_ADDRESSES'|getEnv == 'full' -%}
                                         <h3 class="mb-4 mt-4">{{ "Adresse de facturation"|trans }}</h3>
                                         <div class="row">
-                                            {% for address in form.profile.addresses %}
-                                                {% if address.vars.data.slug == 'billing' %}
+                                            {%- for address in form.profile.addresses -%}
+                                                {%- if address.vars.data.slug == 'billing' -%}
                                                     {{ form_row(address) }}
-                                                {% endif %}
-                                            {% endfor %}
+                                                {%- endif -%}
+                                            {%- endfor -%}
                                         </div>
-                                    {% endif %}
-                                {% endif %}
+                                    {%- endif -%}
+                                {%- endif -%}
                             </div>
                             <div class="col-md-4">
-                                {% if form.profile.gender is defined %}
+                                {%- if form.profile.gender is defined -%}
                                     {{ form_row(form.file) }}
-                                {% endif %}
+                                {%- endif -%}
                             </div>
                         </div>
-                        {% include "front/"~websiteTemplate~"/include/flashbag.html.twig" %}
+                        {%- include "front/"~websiteTemplate~"/include/flashbag.html.twig" -%}
                         <button type="submit" class="btn btn-primary mt-3"><i class="icon-save me-2"></i>{{ "Enregistrer"|trans|raw }}</button>
                     {{ form_end(form) }}
 
@@ -102,7 +102,7 @@
 
                 </div>
             </div>
-        {% else %}
+        {%- else -%}
             <div class="container-fluid">
                 <div class="row w-100">
                     <div class="col-md-6 col-xl-4 mx-auto d-flex align-items-center">
@@ -129,6 +129,6 @@
                     </div>
                 </div>
             </div>
-        {% endif %}
+        {%- endif -%}
     </div>
-{% endblock %}
+{%- endblock -%}

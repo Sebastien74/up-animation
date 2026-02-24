@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div id="edition-container" class="card">
 
@@ -40,7 +40,7 @@
                         {{ form_row(form.metaOgTwitterCard) }}
                         {{ form_row(form.metaOgTwitterHandle) }}
                         <div class="col-12">
-                            {% include 'admin/page/media/modal-btn.html.twig' with {classname: class} %}
+                            {%- include 'admin/page/media/modal-btn.html.twig' with {classname: class} -%}
                             {{ form_row(form.mediaRelation.media.uploadedFile) }}
                         </div>
                     </div>
@@ -58,9 +58,9 @@
                 <div class="row pt-3">
                     {{ form_row(form.url.code) }}
                     {{ form_row(form.url.online) }}
-                    {% if form.url.indexPage is defined %}
+                    {%- if form.url.indexPage is defined -%}
                         {{ form_row(form.url.indexPage) }}
-                    {% endif %}
+                    {%- endif -%}
                 </div>
             </div>
 
@@ -81,7 +81,7 @@
                 </div>
             </div>
 
-            {% if website.seoConfiguration.microData %}
+            {%- if website.seoConfiguration.microData -%}
 
                 <div class="form-group col-12 ribbon-wrapper m-0">
                     <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
@@ -97,7 +97,7 @@
                     </div>
                 </div>
 
-            {% endif %}
+            {%- endif -%}
 
             <div class="form-group text-end mb-0 mt-3">
                 <button type="submit" id="submit-seo" class="btn-app info w-100"><i class="icm-save"></i><span>{{ "Enregistrer"|trans }}</span></button>

@@ -1,131 +1,131 @@
-﻿{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% if entity.mediaRelations|length > 0 %}
+{%- if entity.mediaRelations|length > 0 -%}
 
-    {% set mediasByPosition = entity|mediasIdsByPosition(website, interface) %}
+    {%- set mediasByPosition = entity|mediasIdsByPosition(website, interface) -%}
 
     <h4 class="main-subtitle position-relative mb-4"><i class="icm-photo-video"></i>{{ "Médias"|trans }}</h4>
 
-    {% set mediasInfos = {} %}
-    {% set errors = {} %}
-    {% set message = '' %}
-    {% set fileExtensions = ['pdf', 'docx', 'xlsx', 'txt', 'mp4'] %}
-    {% set mainMedias = {} %}
+    {%- set mediasInfos = {} -%}
+    {%- set errors = {} -%}
+    {%- set message = '' -%}
+    {%- set fileExtensions = ['pdf', 'docx', 'xlsx', 'txt', 'mp4'] -%}
+    {%- set mainMedias = {} -%}
 
-    {% for mediaRelation in entity.mediaRelations %}
-        {% if mediaRelation.main and mediasInfos['main'][mediaRelation.locale] is defined and errors['alreadyExistingMain'][mediaRelation.locale] is not defined %}
-            {% if allLocales|length > 1 %} {% set message = message~'<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                         data-src="'~asset('/medias/icons/flags/'~mediaRelation.locale~'.svg')~'" class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">' %} {% endif %}
-            {% set message = message~"L'image principale a été définie plusieurs fois !"|trans|raw~'<br>' %}
-            {% set errors = errors|merge({ alreadyExistingMain: { (mediaRelation.locale): true } }) %}
-        {% endif %}
-        {% if mediaRelation.main %}
-            {% set mainMedias = mainMedias|merge({ (mediaRelation.locale): mediaRelation }) %}
-        {% endif %}
-    {% endfor %}
-    {% set mediasInfos = mainMedias|length > 1 ? mediasInfos|merge({main: mainMedias}) : mainMedias %}
+    {%- for mediaRelation in entity.mediaRelations -%}
+        {%- if mediaRelation.main and mediasInfos['main'][mediaRelation.locale] is defined and errors['alreadyExistingMain'][mediaRelation.locale] is not defined -%}
+            {%- if allLocales|length > 1 -%} {%- set message = message~'<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                         data-src="'~asset('/medias/icons/flags/'~mediaRelation.locale~'.svg')~'" class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">' -%} {%- endif -%}
+            {%- set message = message~"L'image principale a été définie plusieurs fois !"|trans|raw~'<br>' -%}
+            {%- set errors = errors|merge({ alreadyExistingMain: { (mediaRelation.locale): true } }) -%}
+        {%- endif -%}
+        {%- if mediaRelation.main -%}
+            {%- set mainMedias = mainMedias|merge({ (mediaRelation.locale): mediaRelation }) -%}
+        {%- endif -%}
+    {%- endfor -%}
+    {%- set mediasInfos = mainMedias|length > 1 ? mediasInfos|merge({main: mainMedias}) : mainMedias -%}
 
-    {% if mediasInfos['main'] is defined %}
-        {% for locale in allLocales %}
-            {% if mediasInfos['main'][locale] is not defined %}
-                {% if allLocales|length > 1 %} {% set message = message~'<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                         data-src="'~asset('/medias/icons/flags/'~locale~'.svg')~'" class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">' %} {% endif %}
-                {% set message = message~"L'image principale n'a pas été définie !"|trans|raw~'<br>' %}
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+    {%- if mediasInfos['main'] is defined -%}
+        {%- for locale in allLocales -%}
+            {%- if mediasInfos['main'][locale] is not defined -%}
+                {%- if allLocales|length > 1 -%} {%- set message = message~'<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                         data-src="'~asset('/medias/icons/flags/'~locale~'.svg')~'" class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">' -%} {%- endif -%}
+                {%- set message = message~"L'image principale n'a pas été définie !"|trans|raw~'<br>' -%}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- endif -%}
 
-    {% if message %}
-        {% include 'admin/include/alert.html.twig' with {alert: 'error', message: message|trim('<br>', 'right') } only %}
-    {% endif %}
+    {%- if message -%}
+        {%- include 'admin/include/alert.html.twig' with {alert: 'error', message: message|trim('<br>', 'right') } only -%}
+    {%- endif -%}
 
-    {% if 'delete'|moduleActive(configuration) %}
+    {%- if 'delete'|moduleActive(configuration) -%}
         <button id="delete-pack-btn" class="btn-icon danger d-none"
                 data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}" aria-label="{{ "Supprimer"|trans|striptags }}">
             <i class="icm-trash"></i>
         </button>
-    {% endif %}
+    {%- endif -%}
 
-    {% set entityNamespace = interface.classname is defined ? interface.classname : null %}
+    {%- set entityNamespace = interface.classname is defined ? interface.classname : null -%}
 
     <div id="medias-accordion" class="position-relative">
 
-        {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'medias-sortable-preloader', full: true, progress: true} only %}
+        {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'medias-sortable-preloader', full: true, progress: true} only -%}
 
         <ul id="medias-sortable-container" class="reset mb-4">
-            {% set medias = medias is defined ? medias : entity.mediaRelations %}
-            {% set isFirst = true %}
-            {% for mediaRelation in medias %}
-                {% set disabledFirstMedia = disabledFirstMedia is defined and disabledFirstMedia and loop.first %}
-                {% if mediaRelation.locale == website.configuration.locale and not disabledFirstMedia %}
+            {%- set medias = medias is defined ? medias : entity.mediaRelations -%}
+            {%- set isFirst = true -%}
+            {%- for mediaRelation in medias -%}
+                {%- set disabledFirstMedia = disabledFirstMedia is defined and disabledFirstMedia and loop.first -%}
+                {%- if mediaRelation.locale == website.configuration.locale and not disabledFirstMedia -%}
                     <li id="ui-media-relation-{{ mediaRelation.id }}"
                         class="ui-state-default sortable-item parent-row"
                         data-id="{{ mediaRelation.id }}"
                         data-entity-id="{{ entity.id }}"
                         data-classname="{{ entityNamespace|url_encode }}"
-                        data-clear-cache="{% if loop.last %}1{% else %}0{% endif %}"
+                        data-clear-cache="{%- if loop.last -%}1{%- else -%}0{%- endif -%}"
                         data-position="{{ mediaRelation.position }}">
                         <div class="row">
                             <ul class="d-none data-locales">
-                                {% for mediaID in mediasByPosition[mediaRelation.position] %}
+                                {%- for mediaID in mediasByPosition[mediaRelation.position] -%}
                                     <li class="media-locale-data active" data-id="{{ mediaID }}"></li>
-                                {% endfor %}
+                                {%- endfor -%}
                             </ul>
                             <div class="title-block col-8 my-auto">
                                 <div class="handle-item float-start text-center cursor" data-bs-toggle="tooltip" title="{{ "Déplacer"|trans|striptags }}">
                                     <i class="icm-arrows-alt"></i>
                                 </div>
-                                {% set media = mediaRelation.media %}
-                                {% set extension = media.extension is defined and media.extension ? media.extension : (media.screen is defined and 'poster' == media.screen ? 'mp4' : null) %}
-                                {% if extension in fileExtensions %}
+                                {%- set media = mediaRelation.media -%}
+                                {%- set extension = media.extension is defined and media.extension ? media.extension : (media.screen is defined and 'poster' == media.screen ? 'mp4' : null) -%}
+                                {%- if extension in fileExtensions -%}
                                     <span class="file-icon d-inline-block" data-bs-toggle="tooltip" title="{{ extension|upper }}">
                                         {{ 'admin'|fileIcon(extension)|icon(null, 15, 'dark') }}
                                     </span>
-                                {% else %}
+                                {%- else -%}
                                     <a class="glightbox d-inline-block" href="{{ asset(mediaRelation|file({}, {path: true, placeholder: true})) }}">
                                         {{ mediaRelation|file({}, {width: 30, height: 30}) }}
                                     </a>
-                                {% endif %}
+                                {%- endif -%}
 
-                                {% set filename = mediaRelation.media.filename is defined ? mediaRelation.media.filename : null %}
-                                {% set asMediaWarning = tooHeavyFiles[filename] is defined or mediasAlert[filename] is defined %}
-                                <small id="heading-{{ mediaRelation.id }}" class="ms-2{% if asMediaWarning %} text-warning fw-700{% endif %}">
-                                    {% if mediaRelation.media.filename is defined %}{{ mediaRelation.media.filename }}{% endif %}
+                                {%- set filename = mediaRelation.media.filename is defined ? mediaRelation.media.filename : null -%}
+                                {%- set asMediaWarning = tooHeavyFiles[filename] is defined or mediasAlert[filename] is defined -%}
+                                <small id="heading-{{ mediaRelation.id }}" class="ms-2{%- if asMediaWarning -%} text-warning fw-700{%- endif -%}">
+                                    {%- if mediaRelation.media.filename is defined -%}{{ mediaRelation.media.filename }}{%- endif -%}
                                 </small>
-                                {% if mediaRelation.main %}
+                                {%- if mediaRelation.main -%}
                                     <span class="file-is-main d-inline-block">
                                         <span data-bs-toggle="tooltip" title="{{ "Image principale"|trans|striptags }}">
                                             <i class="icm-star ms-2"></i>
                                         </span>
                                     </span>
-                                {% endif %}
-                                {% if mediaRelation.header %}
+                                {%- endif -%}
+                                {%- if mediaRelation.header -%}
                                     <span class="file-is-main d-inline-block">
                                         <span data-bs-toggle="tooltip" title="{{ "Image d'entête"|trans|striptags }}">
                                             <i class="icm-text-width ms-2"></i>
                                         </span>
                                     </span>
-                                {% endif %}
-                                {% if media.categories is defined and media.categories|length > 0 %}
+                                {%- endif -%}
+                                {%- if media.categories is defined and media.categories|length > 0 -%}
                                     <span class="mytooltip tooltip-effect-4">
                                         <small class="tooltip-item tooltip-categories ms-3">{{ "Catégories"|trans }}</small>
                                         <span class="tooltip-content clearfix">
                                             <span class="tooltip-text p-3">
                                                 <ul class="p-0 ps-3">
-                                                    {% for category in media.categories %}
+                                                    {%- for category in media.categories -%}
                                                         <li>{{ category.adminName }}</li>
-                                                    {% endfor %}
+                                                    {%- endfor -%}
                                                 </ul>
                                             </span>
                                         </span>
                                     </span>
-                                {% endif %}
+                                {%- endif -%}
                             </div>
-                            {% set removeMedia = interface.removeMedia is defined ? interface.removeMedia : true %}
+                            {%- set removeMedia = interface.removeMedia is defined ? interface.removeMedia : true -%}
                             <div class="col-4 text-end my-auto">
-                                {% if 'edit'|moduleActive(configuration) %}
+                                {%- if 'edit'|moduleActive(configuration) -%}
                                     <span data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
-                                        <span class="btn-icon small info cursor media-tab-content-loader{% if not removeMedia %} me-3{% endif %}"
+                                        <span class="btn-icon small info cursor media-tab-content-loader{%- if not removeMedia -%} me-3{%- endif -%}"
                                               data-path="{{ path('admin_mediarelations_edit', {
                                                   website: websiteId(),
                                                   mediaRelation: mediaRelation.id,
@@ -141,8 +141,8 @@
                                             <i class="icm-pencil-alt"></i>
                                         </span>
                                     </span>
-                                {% endif %}
-                                {% if removeMedia and 'delete'|moduleActive(configuration) %}
+                                {%- endif -%}
+                                {%- if removeMedia and 'delete'|moduleActive(configuration) -%}
                                     <a href="{{ path('admin_mediarelation_delete', {
                                         website: websiteId(),
                                         mediaRelation: mediaRelation.id,
@@ -166,11 +166,11 @@
                                             <label class="custom-control-label delete-pack-label" for="delete-pack-{{ mediaRelation.id }}"></label>
                                         </div>
                                     </span>
-                                {% endif %}
+                                {%- endif -%}
                             </div>
                         </div>
                         <div id="collapse-{{ mediaRelation.id }}" class="parent-preloader collapse" aria-labelledby="heading-{{ mediaRelation.id }}" data-parent="#medias-accordion">
-                            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'media-preloader-'~mediaRelation.id, preloaderClass: 'inner-preloader radius-preloader'} %}
+                            {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'media-preloader-'~mediaRelation.id, preloaderClass: 'inner-preloader radius-preloader'} -%}
                             <div class="card-body position-relative pb-2">
                                 <div class="progress medias-preloader-tab">
                                     <div class="bg-stripe-loader"></div>
@@ -181,12 +181,12 @@
                             </div>
                         </div>
                     </li>
-                    {% set isFirst = false %}
-                {% endif %}
-            {% endfor %}
+                    {%- set isFirst = false -%}
+                {%- endif -%}
+            {%- endfor -%}
         </ul>
 
     </div>
 
-{% endif %}
+{%- endif -%}
 

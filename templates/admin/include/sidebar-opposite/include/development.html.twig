@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -45,12 +45,12 @@
                 <span class="hide-menu">{{ "Controller de développement"|trans }}</span>
             </a>
         </li>
-        {% if 'local' == app.environment %}
+        {%- if 'local' == app.environment -%}
             <li>
                 <a href="{{ path('admin_project_info', {website: websiteId}) }}">
                     <span class="hide-menu">{{ "Infos projet"|trans }}</span>
                 </a>
             </li>
-        {% endif %}
+        {%- endif -%}
     </ul>
 </li>

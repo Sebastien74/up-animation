@@ -1,16 +1,16 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 {%- block _product_values_widget -%}
 
-    {% import _self as macro %}
+    {%- import _self as macro -%}
 
-    {% macro field_prototype(property) %}
-        {% set data = property.vars.data is defined and property.vars.data ? property.vars.data : null %}
-        {% set isNew = data.id is defined and data.id ? false : true %}
-        {% set entityId = isNew ? uniqId() : property.vars.data.id %}
-        {% set position = isNew ? null : data.position %}
-        {% set interfaceName = property.vars.errors.form.config.dataClass|interfaceName %}
-        {% if isNew %}
+    {%- macro field_prototype(property) -%}
+        {%- set data = property.vars.data is defined and property.vars.data ? property.vars.data : null -%}
+        {%- set isNew = data.id is defined and data.id ? false : true -%}
+        {%- set entityId = isNew ? uniqId() : property.vars.data.id -%}
+        {%- set position = isNew ? null : data.position -%}
+        {%- set interfaceName = property.vars.errors.form.config.dataClass|interfaceName -%}
+        {%- if isNew -%}
             <div class="prototype-block prototype mb-4">
                 <div class="row m-0">
                     <div class="col-md-3 my-auto">{{ form_widget(property.value) }}</div>
@@ -19,43 +19,43 @@
                         <div class="row">
                             <div class="col-md-4 my-auto form-group feature-group select2-group">{{ form_widget(property.feature) }}</div>
                             <div class="col-md-4 my-auto form-group name-group">{{ form_widget(property.adminName) }}</div>
-                            {% if property.addToGlobal is defined %}
+                            {%- if property.addToGlobal is defined -%}
                                 <div class="col-md-4 my-auto form-group add-to-global-group">{{ form_widget(property.addToGlobal) }}</div>
-                            {% endif %}
+                            {%- endif -%}
                         </div>
                     </div>
                     <div class="d-none">
-                        {% if property.displayInArray is defined %}
+                        {%- if property.displayInArray is defined -%}
                             {{ form_widget(property.displayInArray) }}
-                        {% endif %}
+                        {%- endif -%}
                         {{ form_widget(property.position) }}
                     </div>
-                    {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                    {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
                         isNew: property.vars.data.id is defined and property.vars.data.id ? false : true,
                         entityId: isNew ? uniqId() : property.vars.data.id,
                         interfaceName: interfaceName
-                    } %}
+                    } -%}
                 </div>
             </div>
-        {% endif %}
-    {% endmacro %}
+        {%- endif -%}
+    {%- endmacro -%}
 
     {# Switch to true if you want display features values by feature groups #}
-    {% set displayByGroup = false %}
-    {% set entity = form.parent.vars.data %}
-    {% set featuresGroups = entity|productData %}
-    {% set features = displayByGroup ? featuresGroups['byGroupFeaturesPosition'] : featuresGroups['byPosition'] %}
-    {% set catalogId = masterRequest().get('catalog') %}
+    {%- set displayByGroup = false -%}
+    {%- set entity = form.parent.vars.data -%}
+    {%- set featuresGroups = entity|productData -%}
+    {%- set features = displayByGroup ? featuresGroups['byGroupFeaturesPosition'] : featuresGroups['byPosition'] -%}
+    {%- set catalogId = masterRequest().get('catalog') -%}
 
     <div class="col-12">
         <ul id="features-sortable" class="reset">
-            {% if not displayByGroup %}
+            {%- if not displayByGroup -%}
                 <ul class="feature-values-sortable reset px-0">
-            {% endif %}
-            {% for featurePosition, values in features %}
-                {% if displayByGroup %}
-                    {% set feature = featuresGroups['featuresByPosition'][featurePosition] %}
-                    {% set featureId = feature.id %}
+            {%- endif -%}
+            {%- for featurePosition, values in features -%}
+                {%- if displayByGroup -%}
+                    {%- set feature = featuresGroups['featuresByPosition'][featurePosition] -%}
+                    {%- set featureId = feature.id -%}
                     <li class="ui-feature" data-id="{{ featureId }}" data-product="{{ entity.id }}"
                         data-pos-path="{{ path('admin_catalogfeaturevalueproduct_feature_position', {website: websiteId(), product: entity.id, feature: featureId}) }}">
                         <h5 class="card-subtitle mb-0">
@@ -65,65 +65,65 @@
                             <span class="entitled">{{ feature.adminName }}</span>
                         </h5>
                     <ul class="feature-values-sortable reset">
-                {% endif %}
-                    {% set valuesArray = isArray(values) ? values : [values] %}
-                    {% for value in valuesArray %}
-                        {% for property in form.children %}
-                            {% set asCustom = value.value.product is defined and value.value.product %}
-                            {% set featureValue = value.value %}
-                            {% set draggable = property.vars.attr['data-draggable'] is defined and property.vars.attr['data-draggable'] %}
-                            {% if value.id == property.vars.data.id %}
-                                {% set entitled = value.feature.adminName %}
-                                {% set asDefault = false %}
-                                {% set asFeatureCustom = false %}
-                                {% if value.value is not empty %}
-                                    {% for valueCatalog in value.value.catalogs %}
-                                        {% if valueCatalog.id == catalogId and not asCustom %}
-                                            {% set asDefault = true %}
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                {% if value.feature is not empty %}
-                                    {% for featureCatalog in value.feature.catalogs %}
-                                        {% if featureCatalog.id == catalogId and not asCustom %}
-                                            {% set asFeatureCustom = true %}
-                                            {% set asDefault = true %}
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                                {% set bgRow = asDefault ? 'bg-info-darken' : (asCustom ? 'bg-info' : 'bg-gray') %}
-                                <li id="ui-value-{{ value.id }}" class="ui-value {{ bgRow }} d-flex align-items-center py-2{% if asDefault %} as-default{% endif %}"
+                {%- endif -%}
+                    {%- set valuesArray = isArray(values) ? values : [values] -%}
+                    {%- for value in valuesArray -%}
+                        {%- for property in form.children -%}
+                            {%- set asCustom = value.value.product is defined and value.value.product -%}
+                            {%- set featureValue = value.value -%}
+                            {%- set draggable = property.vars.attr['data-draggable'] is defined and property.vars.attr['data-draggable'] -%}
+                            {%- if value.id == property.vars.data.id -%}
+                                {%- set entitled = value.feature.adminName -%}
+                                {%- set asDefault = false -%}
+                                {%- set asFeatureCustom = false -%}
+                                {%- if value.value is not empty -%}
+                                    {%- for valueCatalog in value.value.catalogs -%}
+                                        {%- if valueCatalog.id == catalogId and not asCustom -%}
+                                            {%- set asDefault = true -%}
+                                        {%- endif -%}
+                                    {%- endfor -%}
+                                {%- endif -%}
+                                {%- if value.feature is not empty -%}
+                                    {%- for featureCatalog in value.feature.catalogs -%}
+                                        {%- if featureCatalog.id == catalogId and not asCustom -%}
+                                            {%- set asFeatureCustom = true -%}
+                                            {%- set asDefault = true -%}
+                                        {%- endif -%}
+                                    {%- endfor -%}
+                                {%- endif -%}
+                                {%- set bgRow = asDefault ? 'bg-info-darken' : (asCustom ? 'bg-info' : 'bg-gray') -%}
+                                <li id="ui-value-{{ value.id }}" class="ui-value {{ bgRow }} d-flex align-items-center py-2{%- if asDefault -%} as-default{%- endif -%}"
                                     data-position="{{ value.position }}" data-id="{{ value.id }}"
                                     data-pos-path="{{ path('admin_catalogfeaturevalueproduct_position', {website: websiteId(), catalogfeaturevalueproduct: value.id}) }}">
-                                    {% if draggable %}
-                                        <span class="handle-value handle-circle d-inline-flex{% if asDefault %} as-default{% endif %}" data-toggle="tooltip" title="{{ "Déplacer"|trans|striptags }}">
+                                    {%- if draggable -%}
+                                        <span class="handle-value handle-circle d-inline-flex{%- if asDefault -%} as-default{%- endif -%}" data-toggle="tooltip" title="{{ "Déplacer"|trans|striptags }}">
                                             {{ 'far arrows-alt'|icon(null, 14, 'info') }}
                                         </span>
-                                    {% endif %}
-                                    <div class="d-flex align-items-center ui-value-row not-editable mb-0 me-2 {% if draggable %}ms-auto as-draggable{% else %}mx-4{% endif %}">
-                                        <strong class="my-auto me-4 feature-col{% if asDefault or asCustom %} text-info-light{% endif %}">
+                                    {%- endif -%}
+                                    <div class="d-flex align-items-center ui-value-row not-editable mb-0 me-2 {%- if draggable -%}ms-auto as-draggable{%- else -%}mx-4{%- endif -%}">
+                                        <strong class="my-auto me-4 feature-col{%- if asDefault or asCustom -%} text-info-light{%- endif -%}">
                                             {{ entitled }}
-                                            {% if value.value.isCustomized is defined and value.value.isCustomized %}
+                                            {%- if value.value.isCustomized is defined and value.value.isCustomized -%}
                                                 <small class="value-info text-italic d-inline-block d-inline-block w-100">{{ "Personnalisée"|trans|raw }} </small>
-                                            {% elseif asDefault %}
-                                                {% set asDefaultLabel = asFeatureCustom ? 'Caractéristique par défaut'|trans : 'Valeur par défaut '|trans  %}
+                                            {%- elseif asDefault -%}
+                                                {%- set asDefaultLabel = asFeatureCustom ? 'Caractéristique par défaut'|trans : 'Valeur par défaut '|trans -%}
                                                 <small class="value-info text-italic d-inline-block d-inline-block w-100">{{ asDefaultLabel|raw }} </small>
-                                            {% endif %}
+                                            {%- endif -%}
                                         </strong>
-{#                                        {% if not asDefault %}#}
-                                            <span class="my-auto value-col me-5{% if asDefault or asCustom %} text-info-light{% endif %}">{% if value.value.adminName is defined and value.value.adminName %}{{ value.value.adminName }}{% endif %}</span>
-{#                                        {% endif %}#}
+{#                                        {%- if not asDefault -%}#}
+                                            <span class="my-auto value-col me-5{%- if asDefault or asCustom -%} text-info-light{%- endif -%}">{%- if value.value.adminName is defined and value.value.adminName -%}{{ value.value.adminName }}{%- endif -%}</span>
+{#                                        {%- endif -%}#}
                                         <span class="my-auto edit-col">
-                                            {% if property.displayInArray is defined %}
+                                            {%- if property.displayInArray is defined -%}
                                                 {{ form_widget(property.displayInArray) }}
-                                            {% endif %}
-                                            {% if asDefault and not asFeatureCustom %}
+                                            {%- endif -%}
+                                            {%- if asDefault and not asFeatureCustom -%}
                                                 <div class="d-none">
-                                            {% endif %}
+                                            {%- endif -%}
                                                 {{ form_row(property.value) }}
-                                            {% if asDefault and not asFeatureCustom %}
+                                            {%- if asDefault and not asFeatureCustom -%}
                                                 </div>
-                                            {% endif %}
+                                            {%- endif -%}
                                             <div class="d-none">
                                                 {{ form_row(property.adminName) }}
                                                 {{ form_row(property.position) }}
@@ -131,36 +131,36 @@
                                             </div>
                                         </span>
                                         <span class="my-auto ps-4 pe-2 ms-auto actions-col">
-                                            {% if not asDefault %}
-{#                                                {% set feature = feature is defined ? feature : (value.feature is defined ? value.feature : null) %}#}
-{#                                                {% if feature and value.value.id is defined and value.value.id %}#}
+                                            {%- if not asDefault -%}
+{#                                                {%- set feature = feature is defined ? feature : (value.feature is defined ? value.feature : null) -%}#}
+{#                                                {%- if feature and value.value.id is defined and value.value.id -%}#}
 {#                                                    <a href="{{ path('admin_catalogfeaturevalue_edit', {website: websiteId(), catalogfeature: feature.id, catalogfeaturevalue: value.value.id}) }}"#}
 {#                                                       data-toggle="tooltip" title="{{ "Éditer la valeur"|trans }}"#}
 {#                                                       class="swal-product-value btn btn-transparent btn-circle">#}
 {#                                                        {{ 'fas pencil-alt'|icon(null, 14, 'info') }}#}
 {#                                                    </a>#}
-{#                                                {% endif %}#}
-                                                {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+{#                                                {%- endif -%}#}
+                                                {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
                                                     isNew: false,
                                                     entityId: property.vars.data.id,
                                                     btnColor: asDefault or asCustom ? 'white' : 'info',
                                                     interfaceName: property.vars.errors.form.config.dataClass|interfaceName
-                                                } %}
-                                            {% endif %}
+                                                } -%}
+                                            {%- endif -%}
                                         </span>
                                     </div>
                                 </li>
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
-                {% if displayByGroup %}
+                            {%- endif -%}
+                        {%- endfor -%}
+                    {%- endfor -%}
+                {%- if displayByGroup -%}
                         </ul>
                     </li>
-                {% endif %}
-            {% endfor %}
-            {% if not displayByGroup %}
+                {%- endif -%}
+            {%- endfor -%}
+            {%- if not displayByGroup -%}
                 </ul>
-            {% endif %}
+            {%- endif -%}
         </ul>
     </div>
 

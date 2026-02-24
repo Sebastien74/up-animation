@@ -1,21 +1,21 @@
-{% trans_default_domain 'front' %}
+{%- trans_default_domain 'front' -%}
 
-{% macro box(vars) %}
-    {% if granted(vars.role) %}
-        {% set title = vars.title is defined ? vars.title : "Éditer"|trans|striptags %}
-        {% set path = vars.path is defined ? vars.path : "#" %}
-        {% set toolBoxClass = vars.toolBoxClass is defined ? vars.toolBoxClass : null %}
+{%- macro box(vars) -%}
+    {%- if granted(vars.role) -%}
+        {%- set title = vars.title is defined ? vars.title : "Éditer"|trans|striptags -%}
+        {%- set path = vars.path is defined ? vars.path : "#" -%}
+        {%- set toolBoxClass = vars.toolBoxClass is defined ? vars.toolBoxClass : null -%}
         <a href="{{ path }}"
-           class="webmaster-link-edit success d-none{% if toolBoxClass %} {{ toolBoxClass }}{% endif %}"
+           class="webmaster-link-edit success d-none{%- if toolBoxClass -%} {{ toolBoxClass }}{%- endif -%}"
            data-toggle="tooltip"
            data-placement="right"
            tabindex="-1" aria-hidden="true"
            title="{{ title|striptags }}" target="_blank">
-            {% if btnType is defined and btnType == 'eye' %}
+            {%- if btnType is defined and btnType == 'eye' -%}
                 <i class="icw-eye"></i>
-            {% else %}
+            {%- else -%}
                 <i class="icw-pencil-alt"></i>
-            {% endif %}
+            {%- endif -%}
         </a>
-    {% endif %}
-{% endmacro %}
+    {%- endif -%}
+{%- endmacro -%}

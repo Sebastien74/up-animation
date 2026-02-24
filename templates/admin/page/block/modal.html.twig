@@ -1,58 +1,58 @@
-﻿{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set excludes = ['save', 'saveEdit', 'saveBack', '_token', 'timer', 'width'] %}
-{% set hideRadius = interface.configuration.saveArea is not defined or interface.configuration.saveArea != 'bottom' or configFields is defined and configFields %}
-{% set haveCustomLayout = entity.customLayout is defined and entity.customLayout and entity.layout.id is defined and entity.layout.id %}
-{% set transDomain = interface.name is defined and interface.name
-    ? 'entity_'~interface.name : null %}
+{%- set excludes = ['save', 'saveEdit', 'saveBack', '_token', 'timer', 'width'] -%}
+{%- set hideRadius = interface.configuration.saveArea is not defined or interface.configuration.saveArea != 'bottom' or configFields is defined and configFields -%}
+{%- set haveCustomLayout = entity.customLayout is defined and entity.customLayout and entity.layout.id is defined and entity.layout.id -%}
+{%- set transDomain = interface.name is defined and interface.name
+    ? 'entity_'~interface.name : null -%}
 
-{% if pageTitle is not defined or pageTitle is defined and not pageTitle  %}
-    {% set title = 'singular'|trans([], transDomain) and 'singular'|trans([], transDomain) != 'singular'
-        ? 'singular'|trans([], transDomain) : 'Édition'|trans~" "~interface.name  %}
-    {% set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title %}
-{% endif %}
+{%- if pageTitle is not defined or pageTitle is defined and not pageTitle -%}
+    {%- set title = 'singular'|trans([], transDomain) and 'singular'|trans([], transDomain) != 'singular'
+        ? 'singular'|trans([], transDomain) : 'Édition'|trans~" "~interface.name -%}
+    {%- set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title -%}
+{%- endif -%}
 
-{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ pageTitle|truncate(50, false) }}{% endblock %}
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle|truncate(50, false) }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
     {{ form_start(form, {attr: {
         novalidate: "novalidate",
         action: app.request.uri,
         class: 'master-form d-inline-block position-relative',
         id: 'form-'~entity.id }}) }}
         <div id="edit-form-{{ interface.name }}" class="card refer-preloader">
-            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only %}
-            {% include 'admin/core/form/save/header.html.twig' %}
-            <div class="card-body pb-2 if not hideRadius %} top-radius{% endif %}">
+            {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only -%}
+            {%- include 'admin/core/form/save/header.html.twig' -%}
+            <div class="card-body pb-2 if not hideRadius -%} top-radius{%- endif -%}">
                 <div class="row">
                     <div class="col-md-8">
                         <div class="row">
-                            {% for field in form.children %}
-                                {% if field.vars.name not in excludes %}
-                                    {% if field.vars.name != 'mediaRelations' %}
-                                        {% if field.vars.name == 'intls' %}
-                                            {% include 'admin/core/form/intls.html.twig' with {intls: form.intls} %}
-                                        {% else %}
+                            {%- for field in form.children -%}
+                                {%- if field.vars.name not in excludes -%}
+                                    {%- if field.vars.name != 'mediaRelations' -%}
+                                        {%- if field.vars.name == 'intls' -%}
+                                            {%- include 'admin/core/form/intls.html.twig' with {intls: form.intls} -%}
+                                        {%- else -%}
                                             {{ form_row(form[field.vars.name]) }}
-                                        {% endif %}
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
+                                        {%- endif -%}
+                                    {%- endif -%}
+                                {%- endif -%}
+                            {%- endfor -%}
                         </div>
                     </div>
                     <div class="col-md-4">
-                        {% include 'admin/core/form/media-relations-uniq.html.twig' with {mediaRelations: form.mediaRelations, onlyMedia: true} %}
+                        {%- include 'admin/core/form/media-relations-uniq.html.twig' with {mediaRelations: form.mediaRelations, onlyMedia: true} -%}
                         <h4 class="main-subtitle media-subtitle">
                             <i class="icm-cog"></i>{{ "Configuration"|trans }}
                         </h4>
@@ -61,8 +61,8 @@
                     </div>
                 </div>
             </div>
-            {% include 'admin/core/form/save/footer.html.twig' %}
+            {%- include 'admin/core/form/save/footer.html.twig' -%}
         </div>
     {{ form_end(form) }}
-{% endblock %}
+{%- endblock -%}
 

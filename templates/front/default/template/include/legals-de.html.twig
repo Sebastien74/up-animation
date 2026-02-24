@@ -1,4 +1,4 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
 <h2>Definitionen</h2>
 
@@ -15,29 +15,29 @@
 <p>Gemäß Artikel 6 des Gesetzes Nr. 2004-575 vom 21. Juni 2004 über das Vertrauen in die digitale Wirtschaft werden die Nutzer der Website  <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> über die Identität der verschiedenen Akteure informiert, die an der Umsetzung und Überwachung des Gesetzes beteiligt sind:</p>
 <p>
     <strong>Eigentümer</strong>&nbsp;:
-    {% if companyName %}{{ companyName|raw }}{% else %}<span class="text-danger bold">Raison sociale</span>{% endif %}
-    {% if capital %} au capital de {{ capital|raw }}{% endif %}
-    {% if vatNumber %} - Numéro de TVA: {{ vatNumber|raw }}{% endif %}
-    {% if siretNumber %} - Numéro de SIRET: {{ siretNumber|raw }}{% endif %}
-    {% if commercialRegisterNumber %} - Numéro registre du commerce&nbsp;: {{ commercialRegisterNumber|raw }}{% endif %}
-    {% if companyAddress %} - {{ companyAddress|raw }}{% endif %}
+    {%- if companyName -%}{{ companyName|raw }}{%- else -%}<span class="text-danger bold">Raison sociale</span>{%- endif -%}
+    {%- if capital -%} au capital de {{ capital|raw }}{%- endif -%}
+    {%- if vatNumber -%} - Numéro de TVA: {{ vatNumber|raw }}{%- endif -%}
+    {%- if siretNumber -%} - Numéro de SIRET: {{ siretNumber|raw }}{%- endif -%}
+    {%- if commercialRegisterNumber -%} - Numéro registre du commerce&nbsp;: {{ commercialRegisterNumber|raw }}{%- endif -%}
+    {%- if companyAddress -%} - {{ companyAddress|raw }}{%- endif -%}
     <br>
     <strong>Publikationsleiter</strong>&nbsp;:
-    {% if managerName %}{{ managerName|raw }}{% else %}<span class="text-danger bold">Nom du responsable de la publication</span>{% endif %}
-    {% if managerEmail %}{% if managerName %} - {% endif %}{{ managerEmail|raw }}{% else %}<span class="text-danger bold">Email du responsable de la publication</span>{% endif %}
+    {%- if managerName -%}{{ managerName|raw }}{%- else -%}<span class="text-danger bold">Nom du responsable de la publication</span>{%- endif -%}
+    {%- if managerEmail -%}{%- if managerName -%} - {%- endif -%}{{ managerEmail|raw }}{%- else -%}<span class="text-danger bold">Email du responsable de la publication</span>{%- endif -%}
     <br>
     Le responsable publication est une personne physique ou une personne morale.<br>
     <strong>Webmaster</strong>&nbsp;:
-    {% if webmasterName %}{{ webmasterName|raw }}{% else %}<span class="text-danger bold">Nom du Webmaster</span>{% endif %}
-    {% if webmasterEmail %}{% if webmasterName %} - {% endif %}{{ webmasterEmail|raw }}{% endif %}
+    {%- if webmasterName -%}{{ webmasterName|raw }}{%- else -%}<span class="text-danger bold">Nom du Webmaster</span>{%- endif -%}
+    {%- if webmasterEmail -%}{%- if webmasterName -%} - {%- endif -%}{{ webmasterEmail|raw }}{%- endif -%}
     <br>
     <strong>Host-Anbieter</strong>&nbsp;:
-    {% if hostName %}{{ hostName|raw }}{% else %}<span class="text-danger bold">Nom de l'hébergeur</span>{% endif %}<br>
-    {% if hostAddress %}{{ hostAddress|raw }}{% else %}<span class="text-danger bold">Adresse hébergeur</span>{% endif %}
+    {%- if hostName -%}{{ hostName|raw }}{%- else -%}<span class="text-danger bold">Nom de l'hébergeur</span>{%- endif -%}<br>
+    {%- if hostAddress -%}{{ hostAddress|raw }}{%- else -%}<span class="text-danger bold">Adresse hébergeur</span>{%- endif -%}
     <br>
     <strong>Datenschutzbeauftragter</strong>&nbsp;:
-    {% if protectionOfficerName %}{{ protectionOfficerName|raw }}{% else %}<span class="text-danger bold">Nom du délégué à la protection des données</span>{% endif %}
-    {% if protectionOfficerEmail %}{% if protectionOfficerName %} - {% endif %}{{ protectionOfficerEmail|raw }}{% else %}<span class="text-danger bold">Email du délégué</span>{% endif %}
+    {%- if protectionOfficerName -%}{{ protectionOfficerName|raw }}{%- else -%}<span class="text-danger bold">Nom du délégué à la protection des données</span>{%- endif -%}
+    {%- if protectionOfficerEmail -%}{%- if protectionOfficerName -%} - {%- endif -%}{{ protectionOfficerEmail|raw }}{%- else -%}<span class="text-danger bold">Email du délégué</span>{%- endif -%}
     <br>
 </p>
 <h2 class="my-4 d-inline-block w-100">2. Allgemeine Bedingungen für die Nutzung der Website und der angebotenen Dienste.</h2>
@@ -61,7 +61,7 @@
 <h2 class="my-4 d-inline-block w-100">7. Verwaltung der personenbezogenen Daten.</h2>
 <p>Der Kunde wird über die Vorschriften zur Marketingkommunikation, das Gesetz vom 21. Juni 2014 über das Vertrauen in die digitale Wirtschaft, das Datenschutzgesetz vom 06. August 2004 und die allgemeine Datenschutzverordnung (GDPR: Nr. 2016-679) informiert.</p>
 <h3 class="mt-1 mb-3 d-inline-block w-100">7.1 Für die Erhebung personenbezogener Daten verantwortliche Personen</h3>
-<p>Für die persönlichen Daten, die im Zusammenhang mit der Erstellung des persönlichen Kontos des Nutzers und seiner Navigation auf der Website gesammelt werden, ist die Person, die für die Verarbeitung der persönlichen Daten verantwortlich ist: FIRMA. <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> wird vertreten durch {% if companyRepresentativeName %}{{ companyRepresentativeName|raw }}{% else %}<span class="text-danger bold">Nom du représentant légal de l’entreprise</span>{% endif %}, seinen gesetzlichen Vertreter</p>
+<p>Für die persönlichen Daten, die im Zusammenhang mit der Erstellung des persönlichen Kontos des Nutzers und seiner Navigation auf der Website gesammelt werden, ist die Person, die für die Verarbeitung der persönlichen Daten verantwortlich ist: FIRMA. <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> wird vertreten durch {%- if companyRepresentativeName -%}{{ companyRepresentativeName|raw }}{%- else -%}<span class="text-danger bold">Nom du représentant légal de l’entreprise</span>{%- endif -%}, seinen gesetzlichen Vertreter</p>
 <p>Als Verantwortlicher für die von ihm gesammelten Daten verpflichtet sich <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> zur Einhaltung.</p>
 <h3 class="mt-1 mb-3 d-inline-block w-100">7.2 Zweck der erhobenen Daten</h3>
 <p><a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> kann einige oder alle Daten verarbeiten:</p>
@@ -81,10 +81,10 @@
     <li>Recht auf Einschränkung der Verarbeitung von Nutzerdaten (Artikel 18 GDPR)</li>
     <li>das Recht, den Verbleib der Daten des Nutzers nach dessen Tod zu bestimmen und zu wählen, an wen <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> seine Daten weitergeben soll (oder nicht). Sobald <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> vom Tod eines Nutzers erfährt und in Ermangelung von Anweisungen seinerseits, verpflichtet sich <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a>, seine Daten zu vernichten, es sei denn, ihre Aufbewahrung ist zu Beweiszwecken oder zur Erfüllung einer gesetzlichen Verpflichtung erforderlich.</li>
 </ul>
-<p>Wenn der Nutzer wissen möchte, wie <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> seine personenbezogenen Daten verwendet, um deren Berichtigung ersucht oder sich ihrer Verarbeitung widersetzt, kann er sich schriftlich an die folgende Adresse wenden: {% if managerEmail %}{{ managerEmail }}{% else %} <span class="text-danger bold">Manager email</span>{% endif %}</p>
+<p>Wenn der Nutzer wissen möchte, wie <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> seine personenbezogenen Daten verwendet, um deren Berichtigung ersucht oder sich ihrer Verarbeitung widersetzt, kann er sich schriftlich an die folgende Adresse wenden: {%- if managerEmail -%}{{ managerEmail }}{%- else -%} <span class="text-danger bold">Manager email</span>{%- endif -%}</p>
 <p>COMPANY - DPO,
-    {% if protectionOfficerName %}{{ protectionOfficerName|raw }}{% else %}<span class="text-danger bold">Nom du délégué à la protection des données</span>{% endif %}
-    {% if protectionOfficerAddress %}{% if protectionOfficerName %} <br> {% endif %}{{ protectionOfficerAddress|raw }}{% endif %}
+    {%- if protectionOfficerName -%}{{ protectionOfficerName|raw }}{%- else -%}<span class="text-danger bold">Nom du délégué à la protection des données</span>{%- endif -%}
+    {%- if protectionOfficerAddress -%}{%- if protectionOfficerName -%} <br> {%- endif -%}{{ protectionOfficerAddress|raw }}{%- endif -%}
 </p>
 <p>In diesem Fall muss der Nutzer die personenbezogenen Daten angeben, die er <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> korrigieren, aktualisieren oder löschen lassen möchte, wobei er sich durch eine Kopie eines Ausweises (Personalausweis oder Reisepass) genau identifizieren muss.</p>
 <p>Anträge auf Löschung personenbezogener Daten unterliegen den Verpflichtungen, die für <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> auferlegt werden, insbesondere was die Aufbewahrung oder Archivierung von Dokumenten betrifft. Zum Schluss, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> eine Beschwerde bei den Aufsichtsbehörden einreichen, insbesondere bei der CNIL (<a

@@ -1,32 +1,32 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set pageIcon = 'tachometer-alt' %}
-{% set pageTitle = "Tableau de bord"|trans %}
+{%- set pageIcon = 'tachometer-alt' -%}
+{%- set pageTitle = "Tableau de bord"|trans -%}
 
-{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ pageTitle }}{% endblock %}
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-dashboard', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin-dashboard', null,  'admin', {defer: true}) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
     <div id="dashboard" class="pt-4 pb-5 position-relative">
 
         <div class="header mb-1 d-inline-block px-4 py-4 shadow-item">
             <h1 class="w-100 d-flex align-items-center">{{ seasonIcon()|icon(25, 25, 'me-2 info-darken') }}{{ "Ravi de vous revoir !"|trans }}</h1>
-            {% if app.user.lastLogin is defined and app.user.lastLogin %}
+            {%- if app.user.lastLogin is defined and app.user.lastLogin -%}
                 <p>{{ "Dernière connexion"|trans }} {{ app.user.lastLogin|ago }}</p>
-            {% endif %}
+            {%- endif -%}
             <div id="saying" class="mt-4">
                 <script language="javascript" charset="utf-8" src="https://dicocitations.lemonde.fr/dictonblog.js" defer></script>
             </div>
@@ -36,50 +36,50 @@
 
 {#            https://www.svgrepo.com/collection/responsive-flat-icons #}
 
-            <div class="{% if granted('ROLE_INTERNAL') %}col-lg-8 internal{% else %}col-12{% endif %} left d-flex flex-column my-auto">
+            <div class="{%- if granted('ROLE_INTERNAL') -%}col-lg-8 internal{%- else -%}col-12{%- endif -%} left d-flex flex-column my-auto">
                 <div class="row d-flex w-100">
-                    {% if 'pages'|moduleActive(configuration) %}
+                    {%- if 'pages'|moduleActive(configuration) -%}
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_page_tree', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin pages-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos pages"|trans }}</span>
                             </a>
                         </div>
-                    {% endif %}
-                    {% if 'medias'|moduleActive(configuration) %}
+                    {%- endif -%}
+                    {%- if 'medias'|moduleActive(configuration) -%}
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_medias_library', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin images-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos médias"|trans }}</span>
                             </a>
                         </div>
-                    {% endif %}
-                    {% if 'newscast'|moduleActive(configuration) %}
+                    {%- endif -%}
+                    {%- if 'newscast'|moduleActive(configuration) -%}
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin news-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Publiez une actu"|trans }}</span>
                             </a>
                         </div>
-                    {% endif %}
+                    {%- endif -%}
                 </div>
                 <div class="row d-flex w-100">
-                    {% if 'form'|moduleActive(configuration) %}
+                    {%- if 'form'|moduleActive(configuration) -%}
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_form_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin form-color'|icon(70, 70, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos formulaires"|trans }}</span>
                             </a>
                         </div>
-                    {% endif %}
-                    {% if 'slider'|moduleActive(configuration) %}
+                    {%- endif -%}
+                    {%- if 'slider'|moduleActive(configuration) -%}
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_slider_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin sliders-color'|icon(65, 65, 'info') }}</span>
                                 <span class="entitled text-dark d-inline-block mt-auto">{{ "Vos sliders"|trans }}</span>
                             </a>
                         </div>
-                    {% endif %}
+                    {%- endif -%}
                     <div class="col-6 col-md-4 text-center py-2">
                         <a href="{{ path('admin_support', {website: websiteId()}) }}" class="d-flex shadow-item flex-column h-100 p-4">
                             <span class="d-inline-block w-100 mb-2">{{ 'admin headset-color'|icon(65, 65, 'info') }}</span>
@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            {% if granted('ROLE_INTERNAL') %}
+            {%- if granted('ROLE_INTERNAL') -%}
                 <div class="col-lg-4 right d-flex flex-column my-auto ps-lg-3">
                     <div class="row ps-lg-3">
                         <div class="col-12 my-auto">
@@ -97,12 +97,12 @@
                                class="w-100 shadow-item text-center d-inline-flex align-items-center justify-content-center py-3 px-4 my-2">
                                 <div class="inner">
                                     <span class="count text-dark w-100 d-inline-block">
-                                        {% if notFoundUrls|length > notFoundsLimit %}
+                                        {%- if notFoundUrls|length > notFoundsLimit -%}
                                             <i class="icm-chevron-right"></i>
                                             {{ notFoundsLimit }}
-                                        {% else %}
+                                        {%- else -%}
                                             {{ notFoundUrls|length }}
-                                        {% endif %}
+                                        {%- endif -%}
                                     </span>
                                     <span class="entitled text-dark d-inline-flex align-items-center justify-content-center"><i class="icm-unlink"></i>{{ "Erreurs 404"|trans }}</span>
                                 </div>
@@ -111,10 +111,10 @@
                                class="w-100 shadow-item text-center d-inline-flex align-items-center justify-content-center py-3 px-4 my-2">
                                 <div class="inner">
                                     <span class="count text-dark w-100 d-inline-block">{{ noSeoCounts['total'] }}</span>
-                                    {% if allLocales|length > 1 %}
+                                    {%- if allLocales|length > 1 -%}
                                         <div class="w-100 mx-auto">
                                             <ul class="reset">
-                                                {% for locale, count in noSeoCounts|unset('total') %}
+                                                {%- for locale, count in noSeoCounts|unset('total') -%}
                                                     <li class="small-count text-dark d-inline-block">
                                                         <span class="flag d-inline-block" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
                                                             <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
@@ -124,19 +124,19 @@
                                                         </span>
                                                         <span class="seo-count">{{ noSeoCounts[locale] }}</span>
                                                     </li>
-                                                {% endfor %}
+                                                {%- endfor -%}
                                             </ul>
                                         </div>
-                                    {% endif %}
+                                    {%- endif -%}
                                     <span class="entitled text-dark w-100 d-inline-block"><i class="icm-search"></i>{{ "SEO manquant"|trans }}</span>
                                 </div>
                             </a>
                         </div>
                     </div>
                 </div>
-            {% endif %}
+            {%- endif -%}
 
-            {% if 'search'|moduleActive(configuration) and searchValues.count > 0 and granted('ROLE_SEARCH_ENGINE') %}
+            {%- if 'search'|moduleActive(configuration) and searchValues.count > 0 and granted('ROLE_SEARCH_ENGINE') -%}
                 <div id="stats-search" class="col-12 mt-4 pt-4">
                     <div class="table-card card">
                         <div class="card-header-darken-dark">
@@ -152,7 +152,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for value in searchValues %}
+                                    {%- for value in searchValues -%}
                                         <tr id="value-row-{{ value.id }}">
                                             <td class="align-middle text-start">{{ value.text }}</td>
                                             <td class="align-middle text-start">
@@ -172,16 +172,16 @@
                                                 </span>
                                             </td>
                                         </tr>
-                                    {% endfor %}
+                                    {%- endfor -%}
                                 </tbody>
                             </table>
                         </div>
-                        {% include 'admin/core/include/pagination.html.twig' with {pagination: searchValues} %}
+                        {%- include 'admin/core/include/pagination.html.twig' with {pagination: searchValues} -%}
                     </div>
                 </div>
-            {% endif %}
+            {%- endif -%}
 
         </div>
 
     </div>
-{% endblock %}
+{%- endblock -%}

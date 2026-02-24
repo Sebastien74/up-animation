@@ -1,43 +1,43 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set pageTitle = "Référencement : Modèles"|trans %}
-{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ pageTitle }}{% endblock %}
+{%- set pageTitle = "Référencement : Modèles"|trans -%}
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-seo', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin-seo', null,  'admin', {defer: true}) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
     <div class="row">
         <div class="col-md-4 mb-4">
             <div class="card p-0">
-                {% include 'admin/page/seo/include/filter-header.html.twig' %}
+                {%- include 'admin/page/seo/include/filter-header.html.twig' -%}
                 <div class="card-body pb-2">
-                    {% include 'admin/page/seo/include/filter-categories.html.twig' %}
+                    {%- include 'admin/page/seo/include/filter-categories.html.twig' -%}
                 </div>
             </div>
         </div>
         <div class="col-md-8 mb-4">
             <div class="row">
                 <div id="preview-container" class="col-md-6">
-                    {% include 'admin/page/seo/include/fields-model.html.twig' %}
+                    {%- include 'admin/page/seo/include/fields-model.html.twig' -%}
                 </div>
                 <div id="seo-form-container" class="col-md-6">
-                    {% include 'admin/page/seo/include/edition-model.html.twig' %}
+                    {%- include 'admin/page/seo/include/edition-model.html.twig' -%}
                 </div>
             </div>
         </div>
     </div>
 
-{% endblock %}
+{%- endblock -%}
 

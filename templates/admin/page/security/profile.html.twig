@@ -1,24 +1,24 @@
-﻿{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'security_cms' %}
+{%- trans_default_domain 'security_cms' -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-user-profile', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin-user-profile', null,  'admin', {defer: true}) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
     <div id="user-profile-card" class="card">
         <div class="card-body pb-2">
             <div class="row">
                 <div class="col-md-2 text-center text-md-start mb-4 mb-md-0">
                     <div class="img-user-container d-inline-block border rounded-4 overflow-hidden shadow-sm">
-                        {% set src = user.picture.path is defined and user.picture.path ? user.picture.path : '/medias/placeholder.jpg' %}
+                        {%- set src = user.picture.path is defined and user.picture.path ? user.picture.path : '/medias/placeholder.jpg' -%}
                         <img src="{{ asset(src) }}" id="user-picture" class="img-fluid" height="200" width="auto" style="object-fit: cover; aspect-ratio: 1/1;" />
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="{% if granted('ROLE_INTERNAL') %}col-md-5{% else %}col-12{% endif %}">
+                        <div class="{%- if granted('ROLE_INTERNAL') -%}col-md-5{%- else -%}col-12{%- endif -%}">
                             <h2 class="main-subtitle small mb-3"><i class="icm-info"></i>{{ "Information"|trans }}</h2>
                             <div class="ps-1">
                                 <p class="mb-2"><strong class="me-2 text-dark">{{ "Dernière connexion :"|trans }}</strong> <span class="text-muted">{{ user.lastLogin|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</span></p>
@@ -46,25 +46,25 @@
                                 </p>
                                 <p class="mb-2"><strong class="me-2 text-dark">{{ "Email :"|trans }}</strong> <a href="mailto:{{ user.email }}" class="text-underline">{{ user.email }}</a></p>
 
-                                {% if granted('ROLE_INTERNAL') %}
+                                {%- if granted('ROLE_INTERNAL') -%}
                                     <p class="mb-2"><strong class="me-2 text-dark">{{ "Groupe :"|trans }}</strong> <span class="text-muted">{{ user.group.adminName }}</span></p>
-                                {% endif %}
+                                {%- endif -%}
                             </div>
                         </div>
-                        {% if granted('ROLE_INTERNAL') %}
+                        {%- if granted('ROLE_INTERNAL') -%}
                             <div class="col-md-7 mt-4 mt-md-0">
                                 <h2 class="main-subtitle small mb-3"><i class="icm-user-tag"></i>{{ "Rôles"|trans }}</h2>
                                 <div class="row ps-1">
-                                    {% for role in user.group.roles %}
+                                    {%- for role in user.group.roles -%}
                                         <div class="col-md-6 mb-1 text-muted"><i class="icm-check small text-success me-2"></i>{{ role.adminName }}</div>
-                                    {% endfor %}
+                                    {%- endfor -%}
                                 </div>
                             </div>
-                        {% endif %}
+                        {%- endif -%}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
+{%- endblock -%}
 

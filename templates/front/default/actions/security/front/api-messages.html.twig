@@ -1,25 +1,25 @@
-{% extends 'front/'~website.configuration.template~'/base.html.twig' %}
+{%- extends 'front/'~website.configuration.template~'/base.html.twig' -%}
 
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% block metaTitle %}{{ "Erreur"|trans|htmlEntities }}{% endblock %}
-{% block metaRobots %}noindex{% endblock %}
+{%- block metaTitle -%}{{ "Erreur"|trans|htmlEntities }}{%- endblock -%}
+{%- block metaRobots -%}noindex{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
     {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
-    {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+{%- block body -%}
+    {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
         title: "Erreur"|trans,
         thumbConfiguration: thumbConfigurationHeader
-    } %}
+    } -%}
     <div class="row d-flex mt-5 mb-5">
         <div class="col-md-4 mx-auto">
             <div class="card">
@@ -33,4 +33,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
+{%- endblock -%}

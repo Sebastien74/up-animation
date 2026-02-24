@@ -1,45 +1,45 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set configuration = website().configuration %}
-{% set defaultLocale = configuration.locale %}
-{% set allLocales = configuration.allLocales %}
-{% set displaySeo = displaySeo is defined and displaySeo %}
+{%- set configuration = website().configuration -%}
+{%- set defaultLocale = configuration.locale -%}
+{%- set allLocales = configuration.allLocales -%}
+{%- set displaySeo = displaySeo is defined and displaySeo -%}
 
-{% if not form.vars.value.id %}
+{%- if not form.vars.value.id -%}
 
-    {% for url in urls %}
-        {% for field in url.children %}
-            {% if field.vars.name != 'code' %}
+    {%- for url in urls -%}
+        {%- for field in url.children -%}
+            {%- if field.vars.name != 'code' -%}
                 <div class="d-none">
-            {% endif %}
+            {%- endif -%}
                 {{ form_row(url[field.vars.name]) }}
-            {% if field.vars.name != 'code' %}
+            {%- if field.vars.name != 'code' -%}
                 </div>
-            {% endif %}
-        {% endfor %}
-    {% endfor %}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- endfor -%}
 
-{% else %}
+{%- else -%}
 
     <div class="col-12">
         <h4 class="main-subtitle">
-            <i class="icm-link"></i>{% if allLocales|length > 1 %}{{ "URLS"|trans }}{% else %}{{ "URL"|trans }}{% endif %}
+            <i class="icm-link"></i>{%- if allLocales|length > 1 -%}{{ "URLS"|trans }}{%- else -%}{{ "URL"|trans }}{%- endif -%}
         </h4>
-        {% for url in urls %}
-            {% set locale = url.vars.value.locale %}
-            {% set urlId = url.vars.value.id %}
-            <div class="url-edit-group {% if locale not in allLocales %}d-none{% else %}d-flex align-items-center gap-3{% endif %} mb-3">
+        {%- for url in urls -%}
+            {%- set locale = url.vars.value.locale -%}
+            {%- set urlId = url.vars.value.id -%}
+            <div class="url-edit-group {%- if locale not in allLocales -%}d-none{%- else -%}d-flex align-items-center gap-3{%- endif -%} mb-3">
                 <div class="d-flex align-items-center w-100 me-4">
-                    {% set urlId = url.vars.value.id is defined and url.vars.value.id ? url.vars.value.id : null %}
-                    <div class="input-group url-group{% if allLocales|length == 1 %} unique-locale{% endif %}" data-url-id="{{ urlId }}">
+                    {%- set urlId = url.vars.value.id is defined and url.vars.value.id ? url.vars.value.id : null -%}
+                    <div class="input-group url-group{%- if allLocales|length == 1 -%} unique-locale{%- endif -%}" data-url-id="{{ urlId }}">
                         {{ form_widget(url.code) }}
-                        {% if allLocales|length > 1 %}
+                        {%- if allLocales|length > 1 -%}
                             <div class="input-group-append">
                                 <span class="input-group-text h-100" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
                                     <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
                                 </span>
                             </div>
-                        {% endif %}
+                        {%- endif -%}
                         {{ form_errors(url.code) }}
                     </div>
                     <small class="form-text cursor generate-code d-flex align-items-center flex-shrink-0 ms-3 me-4"
@@ -52,12 +52,12 @@
                 </div>
                 <div class="flex-shrink-0">{{ form_widget(url.hideInSitemap) }}</div>
                 <div class="flex-shrink-0 d-flex gap-2 align-items-center">
-                    {% set path = interface is defined and urlId and routeExist('front_'~interface.name~'_preview') ? path('front_'~interface.name~'_preview', {website: websiteId(), url: urlId}) : '' %}
-                    {% set title = path ? "Prévisualisation"|trans : "Vous devez génrerer une URL"|trans %}
-                    {% if interface is defined and not routeExist('front_'~interface.name~'_preview') %}
-                        {% set title = "Prévisualisation indisponible"|trans %}
-                    {% endif %}
-                    {% set btn = path ? 'primary' : "muted" %}
+                    {%- set path = interface is defined and urlId and routeExist('front_'~interface.name~'_preview') ? path('front_'~interface.name~'_preview', {website: websiteId(), url: urlId}) : '' -%}
+                    {%- set title = path ? "Prévisualisation"|trans : "Vous devez génrerer une URL"|trans -%}
+                    {%- if interface is defined and not routeExist('front_'~interface.name~'_preview') -%}
+                        {%- set title = "Prévisualisation indisponible"|trans -%}
+                    {%- endif -%}
+                    {%- set btn = path ? 'primary' : "muted" -%}
                     <a href="{{ path }}"
                        data-bs-toggle="tooltip"
                        title="{{ title }}"
@@ -73,11 +73,11 @@
                     </span>
                 </div>
             </div>
-        {% endfor %}
+        {%- endfor -%}
     </div>
 
-    {% if displaySeo %}
-        {% include 'admin/page/seo/seo-basic.html.twig' with {urls: form.urls} %}
-    {% endif %}
+    {%- if displaySeo -%}
+        {%- include 'admin/page/seo/seo-basic.html.twig' with {urls: form.urls} -%}
+    {%- endif -%}
 
-{% endif %}
+{%- endif -%}

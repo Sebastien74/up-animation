@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 {{ form_start(form, {attr: {id: 'index-search-form', class: 'pages-search form-search d-inline-block mb-0', novalidate: 'novalidate', action: masterRequest().uri}}) }}
     <div class="input-group search-input-group">
@@ -8,12 +8,12 @@
             </button>
         </div>
         {{ form_widget(form.search) }}
-        {% if searchText %}
+        {%- if searchText -%}
             <div class="input-group-text right">
                 <a href="{{ searchClearPath }}" class="search-reset btn-icon danger" aria-label="{{ "Éffacer"|trans|striptags }}">
                     <i class="icm-times"></i>
                 </a>
             </div>
-        {% endif %}
+        {%- endif -%}
     </div>
 {{ form_end(form) }}

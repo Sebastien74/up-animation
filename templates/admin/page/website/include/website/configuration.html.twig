@@ -1,6 +1,6 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set schemeAndHost = defaultLocale|domain(website) %}
+{%- set schemeAndHost = defaultLocale|domain(website) -%}
 
 <div class="row">
     <div class="col-md-4 mb-4">
@@ -28,11 +28,11 @@
                     <li><a href="{{ schemeAndHost~"/robots.txt?preview=true" }}" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-robot"></i></span>{{ 'robots.txt'|trans }}</a></li>
                     <li><a href="/_error/404" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-unlink"></i></span>{{ "Page 404"|trans }}</a></li>
                     <li><a href="https://prompt.agence-felix.fr/security/login" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-alien"></i></span>{{ "Prompt AI"|trans }}</a></li>
-                    {% if not website.configuration.onlineStatus %}
-                        {% set domain = app.user.locale is defined ? app.user.locale|domain() : null %}
-                        {% set scheme = not domain ? path('front_index') : domain %}
+                    {%- if not website.configuration.onlineStatus -%}
+                        {%- set domain = app.user.locale is defined ? app.user.locale|domain() : null -%}
+                        {%- set scheme = not domain ? path('front_index') : domain -%}
                         <li><a href="{{ scheme }}?disabled_ips=true" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-tools"></i></span>{{ "Vérifier la page de maintenance sans les IPS autorisées"|trans }}</a></li>
-                    {% endif %}
+                    {%- endif -%}
                 </ul>
             </div>
         </div>

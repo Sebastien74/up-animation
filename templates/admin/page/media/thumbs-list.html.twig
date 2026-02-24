@@ -1,8 +1,8 @@
-﻿{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% if files is defined %}
-    {% set count = files|length %}
-    {% set filename = files[0].filename is defined ? files[0].filename : null %}
+{%- if files is defined -%}
+    {%- set count = files|length -%}
+    {%- set filename = files[0].filename is defined ? files[0].filename : null -%}
     <div id="progress-card" class="card mt-5">
         <div class="card-body pb-2">
             <h6 class="title d-flex align-items-center">{{ "Suppression en cours"|trans|raw }}</h6>
@@ -25,12 +25,12 @@
         </div>
     </div>
     <ul id="thumbs-to-delete" class="d-none">
-        {% for file in files %}
+        {%- for file in files -%}
             <li class="thumb to-clear"
                 data-filename="{{ file.filename }}"
                 data-url="{{ path('admin_thumbs_remove_cache_file', {website: website.id, path: file.path, relations: file.mediaRelations}) }}"
                 data-path="{{ file.path }}"
                 data-medias-relations="{{ file.mediaRelations }}"></li>
-        {% endfor %}
+        {%- endfor -%}
     </ul>
-{% endif %}
+{%- endif -%}

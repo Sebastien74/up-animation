@@ -1,32 +1,32 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set configuration = website().configuration %}
-{% set defaultLocale = configuration.locale %}
-{% set allLocales = configuration.allLocales %}
+{%- set configuration = website().configuration -%}
+{%- set defaultLocale = configuration.locale -%}
+{%- set allLocales = configuration.allLocales -%}
 
 <div id="entities-index" class="card d-inline-block w-100">
 
     <div class="card-header">
         <div class="row">
             <div class="col-md-8 my-auto">
-                {% if searchFiltersForm is defined and searchFiltersForm %}
-                    {% include 'admin/core/form/filters.html.twig' with {form: searchFiltersForm} %}
-                {% endif %}
-                {% if searchForm %}
-                    {% include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} %}
-                {% endif %}
+                {%- if searchFiltersForm is defined and searchFiltersForm -%}
+                    {%- include 'admin/core/form/filters.html.twig' with {form: searchFiltersForm} -%}
+                {%- endif -%}
+                {%- if searchForm -%}
+                    {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} -%}
+                {%- endif -%}
             </div>
         </div>
     </div>
 
     <div id="result" class="position-relative">
 
-        {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only %}
+        {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only -%}
 
         <table class="table editable-table table-striped mb-0">
             <thead>
                 <tr>
-                    <th class="col-locale{% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans }}</th>
+                    <th class="col-locale{%- if allLocales|length <= 1 -%} d-none{%- endif -%}">{{ "Langue"|trans }}</th>
                     <th>{{ "URL"|trans }} <small class="ms-1">({{ "Ancienne URI / URL"|trans }})</small></th>
                     <th class="text-start">{{ "Nouvelle URL"|trans }} <small class="ms-1">({{ "Avec protocol"|trans }})</small></th>
                     <th class="text-end">
@@ -42,13 +42,13 @@
                 </tr>
             </thead>
             <tbody>
-                {% for redirection in pagination %}
+                {%- for redirection in pagination -%}
                     {{ render_esi(path('admin_redirection_form', {website: website.id, redirection: redirection.id} )) }}
-                {% endfor %}
+                {%- endfor -%}
             </tbody>
         </table>
 
-        {% include 'admin/core/include/pagination.html.twig' %}
+        {%- include 'admin/core/include/pagination.html.twig' -%}
 
     </div>
 

@@ -1,6 +1,6 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% if template == 'layout' or interface.masterField is defined and interface.masterField == 'layout' %}
+{%- if template == 'layout' or interface.masterField is defined and interface.masterField == 'layout' -%}
 
     <div class="modal-wrapper">
         <div class="modal fade modal-duplicate-small layout-modal"
@@ -14,7 +14,7 @@
                     action: path('admin_'~interface.name~'_duplicate', {website: websiteId(), (interface.name): entity.id})
                 }}) }}
                     <div class="modal-content border refer-preloader">
-                        {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
+                        {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
                         <div class="modal-header">
                             <h5 class="modal-title text-center w-100" id="modal-duplicate-{{ interface['name']~'-'~entity.id }}-label"><i class="icm-copy"></i></h5>
                             <button class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
@@ -24,11 +24,11 @@
                         <div class="modal-body">
                             <div class="ajax-content ajax-html">
                                 <h2 class="main-title text-center fw-bold mb-5">{{ "Dupliquer"|trans|raw }}</h2>
-                                {% include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only %}
+                                {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only -%}
                             </div>
                         </div>
                         <div class="modal-footer pt-0">
-                            <button type="submit" class="btn-app w-100 ajax-post remove-modal{% if refresh %} refresh{% endif %}">
+                            <button type="submit" class="btn-app w-100 ajax-post remove-modal{%- if refresh -%} refresh{%- endif -%}">
                                 {{ "Enregistrer"|trans }}
                             </button>
                         </div>
@@ -38,14 +38,14 @@
         </div>
     </div>
 
-{% else %}
+{%- else -%}
 
     <div class="modal-wrapper">
         <div class="modal fade duplicate-modal" id="duplicate-modal" tabindex="-1"
              role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                 <div class="modal-content border refer-preloader text-start pb-5 pt-3">
-                    {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
+                    {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
                     <div class="modal-header">
                         <h5 class="modal-title text-center w-100"><i class="icm-copy"></i></h5>
                         <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
@@ -61,10 +61,10 @@
                                 action: path('admin_'~interface.name~'_duplicate', {website: websiteId(), (interface.name): entity.id})
                             }}) }}
                                 <div class="row">
-                                    {% include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only %}
+                                    {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only -%}
                                 </div>
                                 <div class="w-100 text-center modal-buttons mt-4">
-                                    <button type="submit" class="btn-app ajax-post remove-modal{% if refresh %} refresh{% endif %}">{{ "Dupliquer"|trans }}</button>
+                                    <button type="submit" class="btn-app ajax-post remove-modal{%- if refresh -%} refresh{%- endif -%}">{{ "Dupliquer"|trans }}</button>
                                 </div>
                             {{ form_end(form) }}
                         </div>
@@ -74,4 +74,4 @@
         </div>
     </div>
 
-{% endif %}
+{%- endif -%}

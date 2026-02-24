@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
-{% set website = website is defined and website ? website : website() %}
-{% set cacheClearDate = website.cacheClearDate is defined and website.cacheClearDate ? website.cacheClearDate|date('Y-m-d') : null %}
+{%- set website = website is defined and website ? website : website() -%}
+{%- set cacheClearDate = website.cacheClearDate is defined and website.cacheClearDate ? website.cacheClearDate|date('Y-m-d') : null -%}
 
 <html lang="{{ app.request.locale }}"
       data-debug="{{ isDebug() }}"
@@ -10,21 +10,21 @@
 
     <head>
 
-        {% trans_default_domain 'admin' %}
+        {%- trans_default_domain 'admin' -%}
 
-        {% set websiteId = website.id is defined and website.id ? website.id : websiteId() %}
-        {% set configuration = website.configuration %}
-        {% set defaultLocale = configuration.locale %}
-        {% set allLocales = configuration.allLocales %}
-        {% set logos = website.configuration.logos %}
-        {% set isCustomPath = logos['security-logo'] is defined and logos['security-logo'] %}
-        {% set intlsModules = website|intlsModules %}
-        {% set userClass = granted("ROLE_INTERNAL") ? 'internal' : 'admin' %}
-        {% set userEditClass = 'edit'|moduleActive(configuration) ? 'editor' : 'visitor' %}
-        {% set bodyClass = block('bodyClass') is defined ? ' '~block('bodyClass')~' '~urlize(app.request.get('_route'))  : ' '~urlize(masterRequestGet('_route')) %}
-        {% set adminInformation = website.information %}
-        {% set defaultTitle = isCustomPath and adminInformation.title is defined and adminInformation.title ? adminInformation.title : "Up Animations CMS"|trans|striptags %}
-        {% set cmsAuthorTitle = 'Up Animations!'|trans %}
+        {%- set websiteId = website.id is defined and website.id ? website.id : websiteId() -%}
+        {%- set configuration = website.configuration -%}
+        {%- set defaultLocale = configuration.locale -%}
+        {%- set allLocales = configuration.allLocales -%}
+        {%- set logos = website.configuration.logos -%}
+        {%- set isCustomPath = logos['security-logo'] is defined and logos['security-logo'] -%}
+        {%- set intlsModules = website|intlsModules -%}
+        {%- set userClass = granted("ROLE_INTERNAL") ? 'internal' : 'admin' -%}
+        {%- set userEditClass = 'edit'|moduleActive(configuration) ? 'editor' : 'visitor' -%}
+        {%- set bodyClass = block('bodyClass') is defined ? ' '~block('bodyClass')~' '~urlize(app.request.get('_route'))  : ' '~urlize(masterRequestGet('_route')) -%}
+        {%- set adminInformation = website.information -%}
+        {%- set defaultTitle = isCustomPath and adminInformation.title is defined and adminInformation.title ? adminInformation.title : "Up Animations CMS"|trans|striptags -%}
+        {%- set cmsAuthorTitle = 'Up Animations!'|trans -%}
 
         <!-- Metas -->
         <meta charset="utf-8"/>
@@ -44,73 +44,73 @@
         <meta property="og:image" content="{{ asset('build/admin/images/theme/favicons/share.jpg', 'admin') }}">
 
         <!-- Title -->
-        {% set metaTitle = block('title') is defined ? block('title') : "Bienvenue !!"|trans %}
+        {%- set metaTitle = block('title') is defined ? block('title') : "Bienvenue !!"|trans -%}
         <title>
-            {% block title %}
-                {% if metaTitle is defined %}
+            {%- block title -%}
+                {%- if metaTitle is defined -%}
                     {{ metaTitle|htmlEntities }}
-                {% else %}
+                {%- else -%}
                     {{ "Bienvenue !!"|trans }}
-                {% endif %}
-            {% endblock %}
+                {%- endif -%}
+            {%- endblock -%}
             | {{ defaultTitle }}
         </title>
 
-        {% block stylesheets %}
-            {% if (app.request.cookies.get('ADMIN_LIGHT_THEME') or masterRequest().get('admin_light_theme')) %}
+        {%- block stylesheets -%}
+            {%- if (app.request.cookies.get('ADMIN_LIGHT_THEME') or masterRequest().get('admin_light_theme')) -%}
                 {{ encore_entry_link_tags('admin-vendor-dark', null, 'admin') }}
-            {% else %}
+            {%- else -%}
                 {{ encore_entry_link_tags('admin-vendor-default', null, 'admin') }}
-            {% endif %}
+            {%- endif -%}
             <link rel="preload" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" as="style" onload="this.onload=null;this.rel='stylesheet'" nonce="{{ csp_nonce() }}">
             <noscript><link rel="stylesheet" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" nonce="{{ csp_nonce() }}"></noscript>
-            {% if displayFrontFonts is defined and displayFrontFonts %}
+            {%- if displayFrontFonts is defined and displayFrontFonts -%}
                 <!-- Front fonts -->
-                {% if (configuration.template)|asGoogleFont %}
+                {%- if (configuration.template)|asGoogleFont -%}
                     <link rel="preconnect" href="https://fonts.googleapis.com">
                     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                {% endif %}
+                {%- endif -%}
                 <link rel="preload" href="{{ asset('build/front/'~configuration.template~'/front-'~configuration.template~'-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}" as="style" onload="this.onload=null;this.rel='stylesheet'" nonce="{{ csp_nonce() }}">
                 <noscript><link rel="stylesheet" href="{{ asset('build/front/'~configuration.template~'/front-'~configuration.template~'-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}" nonce="{{ csp_nonce() }}"></noscript>
-            {% endif %}
-            {% if stylesSrc is defined %}
-                {% for webpackEntry, webpackName in stylesSrc %}
+            {%- endif -%}
+            {%- if stylesSrc is defined -%}
+                {%- for webpackEntry, webpackName in stylesSrc -%}
                     {{ encore_entry_link_tags(webpackEntry, null, 'admin') }}
-                {% endfor %}
-            {% endif %}
-        {% endblock %}
+                {%- endfor -%}
+            {%- endif -%}
+        {%- endblock -%}
 
     </head>
 
     <body id="skin-admin-body" class="skin-default fixed-header skin-admin {{ userClass~" "~userEditClass }}{{ bodyClass }}" data-id="{{ websiteId }}">
 
-        {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'main-preloader', preloaderClass: 'main-preloader', visible: false, full: true} only %}
+        {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'main-preloader', preloaderClass: 'main-preloader', visible: false, full: true} only -%}
 
         <div id="main-wrapper">
-            {% include 'admin/include/header.html.twig' with {
+            {%- include 'admin/include/header.html.twig' with {
                 pageIcon: pageIcon is defined ? pageIcon : null,
                 pageTitle: block('pageTitle') is defined ? block('pageTitle') : 'Administration'|trans,
                 breadcrumb: breadcrumb is defined ? breadcrumb : false,
-            } only %}
-            {% include 'admin/include/sidebar/layout.html.twig' %}
+            } only -%}
+            {%- include 'admin/include/sidebar/layout.html.twig' -%}
             <div class="page-wrapper">
                 <div class="container-fluid px-5 pt-4">
-                    {% include 'admin/include/breadcrumb.html.twig' %}
+                    {%- include 'admin/include/breadcrumb.html.twig' -%}
                     <div id="admin-body">
-                        {% if disabledFlashBag is not defined %}
-                            {% include 'admin/include/flashbag.html.twig' %}
-                        {% endif %}
-                        {% block body %}{% endblock %}
+                        {%- if disabledFlashBag is not defined -%}
+                            {%- include 'admin/include/flashbag.html.twig' -%}
+                        {%- endif -%}
+                        {%- block body -%}{%- endblock -%}
                     </div>
                 </div>
             </div>
-            {% if granted('ROLE_INTERNAL') %}
-                {% include 'admin/include/sidebar-opposite/layout.html.twig' %}
-            {% endif %}
+            {%- if granted('ROLE_INTERNAL') -%}
+                {%- include 'admin/include/sidebar-opposite/layout.html.twig' -%}
+            {%- endif -%}
             <footer id="admin-footer" class="footer position-relative text-xs-center px-5 d-flex align-items-center mt-4">
                 <span class="btn-icon small me-2"><i class="icm-copyright"></i></span>{{ 'now'|date('Y') }} - {{ cmsAuthorTitle|raw }}
             </footer>
-            {% include 'admin/include/translations.html.twig' %}
+            {%- include 'admin/include/translations.html.twig' -%}
             <span id="cms-plugins-data" class="d-none"
                   data-colors-editor="{{ website|appColors('color') }}"
                   data-fonts-css-editor="{{ asset('build/front/'~configuration.template~'/front-default-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}"
@@ -118,22 +118,22 @@
             </span>
         </div>
 
-        {% block javascripts %}
+        {%- block javascripts -%}
             {{ jsRouting() }}
             <script src="{{ asset('bundles/tinymce/ext/tinymce/tinymce.min.js') }}" defer></script>
             <script src="{{ asset('bundles/tinymce/ext/tinymce-webcomponent.js') }}" type="module" defer></script>
-            {% if isIE() %}
+            {%- if isIE() -%}
                 {{ encore_entry_script_tags('browsers', null,  'vendor', {defer: true}) }}
-            {% endif %}
-            {% if scriptsSrc is defined %}
-                {% for webpackEntry, webpackName in scriptsSrc %}
+            {%- endif -%}
+            {%- if scriptsSrc is defined -%}
+                {%- for webpackEntry, webpackName in scriptsSrc -%}
                     {{ encore_entry_script_tags(webpackEntry, null,  webpackName, {defer: true}) }}
-                {% endfor %}
-            {% endif %}
+                {%- endfor -%}
+            {%- endif -%}
             {{ encore_entry_script_tags('admin-vendor-default', null, 'admin', {defer: true}) }}
-        {% endblock %}
+        {%- endblock -%}
 
-        {% if app.request.cookies.get('IS_IMPERSONATOR_FRONT') %}
+        {%- if app.request.cookies.get('IS_IMPERSONATOR_FRONT') -%}
             <div class="toast fade show always-show top-right position-fixed" role="alert" aria-live="assertive"
                  aria-atomic="true">
                 <div class="toast-header bg-danger">
@@ -144,7 +144,7 @@
                     <small class="mb-2 d-inline-block w-100">{{ "Vous avez une session d'utlisateur front ouverte. Pensez à vous déconnecter"|trans|raw }}</small>
                 </div>
             </div>
-        {% endif %}
+        {%- endif -%}
 
     </body>
 

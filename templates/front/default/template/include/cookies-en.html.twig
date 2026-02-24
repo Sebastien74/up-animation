@@ -1,5 +1,5 @@
-<p>This cookie policy as updated on {% if updatedAt %}{{ updatedAt|raw }}{% else %}<span class="text-danger bold">../../....</span>{% endif %}.</p>
-<p>{% if companyName %}{{ companyName|raw }}{% else %}<span class="text-danger bold">Raison sociale</span>{% endif %} places great importance
+<p>This cookie policy as updated on {%- if updatedAt -%}{{ updatedAt|raw }}{%- else -%}<span class="text-danger bold">../../....</span>{%- endif -%}.</p>
+<p>{%- if companyName -%}{{ companyName|raw }}{%- else -%}<span class="text-danger bold">Raison sociale</span>{%- endif -%} places great importance
     on the protection of user’s privacy and its obligations in accordance with the legal provisions in force.</p><p>
     While visiting our site <a href="{{ app.request.getSchemeAndHttpHost() }}">{{ app.request.getSchemeAndHttpHost() }}</a>, information
     about the browsing data we receive from

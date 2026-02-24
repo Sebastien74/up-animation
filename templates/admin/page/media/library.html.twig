@@ -1,36 +1,36 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set websiteId = websiteId() %}
-{% set pageIcon = 'photo-video' %}
+{%- set websiteId = websiteId() -%}
+{%- set pageIcon = 'photo-video' -%}
 
-{% block title %}{{ "Bibliothèque de médias"|trans|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ "Bibliothèque de médias"|trans }}{% endblock %}
+{%- block title -%}{{ "Bibliothèque de médias"|trans|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Bibliothèque de médias"|trans }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-medias-library', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin-medias-library', null,  'admin', {defer: true}) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
     <div id="media-library-page" class="position-relative">
 
-        {% if 'edit'|moduleActive(configuration) %}
+        {%- if 'edit'|moduleActive(configuration) -%}
             <div class="d-flex gap-2">
                 {{ render_esi(path('admin_folder_new', {website: websiteId})) }}
-                {% if granted('ROLE_INTERNAL') %}
+                {%- if granted('ROLE_INTERNAL') -%}
                     <span id="reorder-medias-btn" class="btn-app info cursor"
                           data-path="{{ path('admin_medias_reorder', { website: websiteId }) }}">
                             <i class="icm-folders"></i><span>{{ "Ranger les médias"|trans|raw }}</span>
                         </span>
-                {% endif %}
+                {%- endif -%}
                 <button class="btn-app success"
                         data-bs-toggle="collapse"
                         href="#collapseFormMedias"
@@ -40,22 +40,22 @@
                 </button>
             </div>
             {{ render_esi(path('admin_medias_uploader', {website: websiteId})) }}
-        {% endif %}
+        {%- endif -%}
 
-        {% if tooHeavyFiles is defined and tooHeavyFiles is not empty %}
-            {% if not masterRequest().get('too_heavy_files') %}
-                {% set tooHeavyLink = path('admin_medias_library', {website: website.id, too_heavy_files: true}) %}
-                {% set tooHeavyMessageHelp = "Des images trop volumineuses auront un impact négatif sur les performances de votre site Internet. Le poid recommandé est de 200Ko maximum."|trans %}
-                {% set tooHeavyMessage = tooHeavyFilesCount > 1 ? 'Vous avez %count% images (> %limit%) qui devraient être optimsées ! Poids total : %weight%. <a href="%link%" class="text-underline">Voir les fichiers</a><br>%help%'|trans({'%count%': tooHeavyFilesCount, '%weight%': tooHeavyFilesSize|formatBytes, '%limit%': fileSizeLimit, '%link%': tooHeavyLink, '%help%': tooHeavyMessageHelp})
-                    : 'Vous avez 1 image (> %limit%) qui devrait être optimsée ! Poids %weight%. <a href="%link%" class="text-underline">Voir le fichier</a>'|trans({'%link%': tooHeavyLink, '%weight%': tooHeavyFilesSize|formatBytes, '%limit%': fileSizeLimit}) %}
-                {% include 'admin/include/alert.html.twig' with {alert: "warning", display: "alert", size: "small", class: "mt-3", message: tooHeavyMessage, '%help%': tooHeavyMessageHelp} only %}
-            {% else %}
-                {% set backMediasLink = path('admin_medias_library', {website: website.id}) %}
-                {% set tooHeavyMessageList = tooHeavyFilesCount > 1 ? 'Liste de vos %count% images (> %limit%) a optimiser ! Poids total : %weight%. <a href="%link%" class="text-underline">Retourner aux médias</a>'|trans({'%count%': tooHeavyFilesCount, '%weight%': tooHeavyFilesSize|formatBytes, '%limit%': fileSizeLimit, '%link%': backMediasLink})
-                    : 'Votre images (> %limit%) a optimiser ! Poids %weight%. <a href="%link%" class="text-underline">Retourner aux médias</a>'|trans({'%link%': backMediasLink, '%weight%': tooHeavyFilesSize|formatBytes, '%limit%': fileSizeLimit}) %}
-                {% include 'admin/include/alert.html.twig' with {alert: "warning", display: "alert", size: "small", class: "mt-3", message: tooHeavyMessageList} only %}
-            {% endif %}
-        {% endif %}
+        {%- if tooHeavyFiles is defined and tooHeavyFiles is not empty -%}
+            {%- if not masterRequest().get('too_heavy_files') -%}
+                {%- set tooHeavyLink = path('admin_medias_library', {website: website.id, too_heavy_files: true}) -%}
+                {%- set tooHeavyMessageHelp = "Des images trop volumineuses auront un impact négatif sur les performances de votre site Internet. Le poid recommandé est de 200Ko maximum."|trans -%}
+                {%- set tooHeavyMessage = tooHeavyFilesCount > 1 ? 'Vous avez %count% images (> %limit%) qui devraient être optimsées ! Poids total : %weight%. <a href="%link%" class="text-underline">Voir les fichiers</a><br>%help%'|trans({'%count%': tooHeavyFilesCount, '%weight%': tooHeavyFilesSize|formatBytes, '%limit%': fileSizeLimit, '%link%': tooHeavyLink, '%help%': tooHeavyMessageHelp})
+                    : 'Vous avez 1 image (> %limit%) qui devrait être optimsée ! Poids %weight%. <a href="%link%" class="text-underline">Voir le fichier</a>'|trans({'%link%': tooHeavyLink, '%weight%': tooHeavyFilesSize|formatBytes, '%limit%': fileSizeLimit}) -%}
+                {%- include 'admin/include/alert.html.twig' with {alert: "warning", display: "alert", size: "small", class: "mt-3", message: tooHeavyMessage, '%help%': tooHeavyMessageHelp} only -%}
+            {%- else -%}
+                {%- set backMediasLink = path('admin_medias_library', {website: website.id}) -%}
+                {%- set tooHeavyMessageList = tooHeavyFilesCount > 1 ? 'Liste de vos %count% images (> %limit%) a optimiser ! Poids total : %weight%. <a href="%link%" class="text-underline">Retourner aux médias</a>'|trans({'%count%': tooHeavyFilesCount, '%weight%': tooHeavyFilesSize|formatBytes, '%limit%': fileSizeLimit, '%link%': backMediasLink})
+                    : 'Votre images (> %limit%) a optimiser ! Poids %weight%. <a href="%link%" class="text-underline">Retourner aux médias</a>'|trans({'%link%': backMediasLink, '%weight%': tooHeavyFilesSize|formatBytes, '%limit%': fileSizeLimit}) -%}
+                {%- include 'admin/include/alert.html.twig' with {alert: "warning", display: "alert", size: "small", class: "mt-3", message: tooHeavyMessageList} only -%}
+            {%- endif -%}
+        {%- endif -%}
 
         <div id="ajax-reorder-wrap" class="d-none"></div>
 
@@ -65,21 +65,21 @@
                     <div class="title-wrap d-flex align-items-center gap-2 me-auto">
                         <i class="icm-folder-tree"></i>{{ "Dossiers"|trans }}
                     </div>
-                    {% if 'delete'|moduleActive(configuration) %}
+                    {%- if 'delete'|moduleActive(configuration) -%}
                         <button id="delete-pack-btn" class="btn-icon danger d-none"
                                 data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}">
                             <i class="icm-trash initial"></i>
                         </button>
-                    {% endif %}
-                    {% set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
-                        ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees %}
+                    {%- endif -%}
+                    {%- set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
+                        ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees -%}
                     <span id="nestable-expand-all"
-                          class="btn-icon cursor{% if not collapsedAdminTrees %} d-none{% endif %}"
+                          class="btn-icon cursor{%- if not collapsedAdminTrees -%} d-none{%- endif -%}"
                           data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|raw }}">
                             <i class="icm-arrow-alt-to-bottom initial"></i>
                         </span>
                     <span id="nestable-collapse-all"
-                          class="btn-icon info-lighten cursor{% if collapsedAdminTrees %} d-none{% endif %}"
+                          class="btn-icon info-lighten cursor{%- if collapsedAdminTrees -%} d-none{%- endif -%}"
                           data-bs-toggle="tooltip" title="{{ "Empiler"|trans|raw }}">
                             <i class="icm-arrow-alt-to-top initial"></i>
                         </span>
@@ -91,7 +91,7 @@
                         <i class="icm-eye initial"></i>
                     </a>
                 </div>
-                {% include 'admin/core/include/nestable.html.twig' with {
+                {%- include 'admin/core/include/nestable.html.twig' with {
                     history: history is defined ? history : false,
                     routenameInterface: "folder",
                     customTitle: 'Afficher les médias'|trans,
@@ -102,38 +102,38 @@
                     targetAjax: '#medias-results',
                     customRoute: 'admin_medias_library',
                     customRole: 'ROLE_EDIT'
-                } %}
+                } -%}
             </div>
             <div class="col-md-7">
                 <div id="medias-card" class="card scroll-to-response-ajax">
                     <div class="d-none">
-                        {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'medias-preloader', full: true} only %}
+                        {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'medias-preloader', full: true} only -%}
                     </div>
                     <div class="card-header mb-0 pb-0">
                         <div class="row align-items-center">
                             <div class="col-md-7 my-auto d-flex align-items-center gap-2">
                                 <i class="icm-photo-video btn-icon"></i>{{ "Médias"|trans }}
                                 <div id="media-management-buttons" class="d-none ms-3 d-flex gap-2">
-                                    {% if 'edit'|moduleActive(configuration) %}
+                                    {%- if 'edit'|moduleActive(configuration) -%}
                                         <button id="select-folder-btn"
                                                 data-path="{{ path('admin_folder_select', {website: websiteId}) }}"
                                                 class="btn-icon warning"
                                                 data-bs-toggle="tooltip" title="{{ "Déplacer"|trans }}">
                                             <i class="icm-share-square"></i>
                                         </button>
-                                    {% endif %}
-                                    {% if granted('ROLE_MEDIA_COMPRESS') %}
+                                    {%- endif -%}
+                                    {%- if granted('ROLE_MEDIA_COMPRESS') -%}
                                         <button id="media-compress-btn" class="btn-icon info"
                                                 data-bs-toggle="tooltip" title="{{ "Compresser"|trans }}">
                                             <i class="icm-compress-alt"></i>
                                         </button>
-                                    {% endif %}
-                                    {% if 'delete'|moduleActive(configuration) %}
+                                    {%- endif -%}
+                                    {%- if 'delete'|moduleActive(configuration) -%}
                                         <button class="btn-icon danger sa-warning sa-warning-delete-medias"
                                                 data-bs-toggle="tooltip" title="{{ "Supprimer"|trans }}">
                                             <i class="icm-trash"></i>
                                         </button>
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
                             </div>
                             <div class="col-md-5 text-end">
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                     <div class="card-body pb-2">
-                        {% include 'admin/page/media/medias-list.html.twig' %}
+                        {%- include 'admin/page/media/medias-list.html.twig' -%}
                     </div>
                 </div>
             </div>
@@ -150,5 +150,5 @@
 
     </div>
 
-{% endblock %}
+{%- endblock -%}
 

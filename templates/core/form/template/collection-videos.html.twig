@@ -1,65 +1,65 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% import _self as macro %}
+{%- import _self as macro -%}
 
-{% macro field_prototype(property) %}
+{%- macro field_prototype(property) -%}
 
-    {% set data = property.vars.data is defined and property.vars.data ? property.vars.data : null %}
-    {% set isNew = data.id is defined and data.id ? false : true %}
-    {% set entityId = isNew ? uniqId() : property.vars.data.id %}
-    {% set position = isNew ? null : data.position %}
-    {% set interface = property.vars.errors.form.config.dataClass|interface %}
+    {%- set data = property.vars.data is defined and property.vars.data ? property.vars.data : null -%}
+    {%- set isNew = data.id is defined and data.id ? false : true -%}
+    {%- set entityId = isNew ? uniqId() : property.vars.data.id -%}
+    {%- set position = isNew ? null : data.position -%}
+    {%- set interface = property.vars.errors.form.config.dataClass|interface -%}
 
-    {% if isNew %}
+    {%- if isNew -%}
         <div class="prototype-block prototype mb-4">
             <div class="row p-3 m-0">
                 <div class="col-md-12">
                     {{ form_widget(property.adminName) }}
                     {{ form_widget(property.position) }}
                 </div>
-                {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
                     isNew: property.vars.data.id is defined and property.vars.data.id ? false : true,
                     entityId: isNew ? uniqId() : property.vars.data.id,
                     interfaceName: interface.name,
                     masterField: interface.masterField
-                } %}
+                } -%}
             </div>
         </div>
-    {% endif %}
+    {%- endif -%}
 
-{% endmacro %}
+{%- endmacro -%}
 
-{% set entity = form.parent.vars.data %}
-{% set allLocales = entity.website.configuration.allLocales is defined ? entity.website.configuration.allLocales : 1 %}
-{% set multiLocales = allLocales > 1 %}
+{%- set entity = form.parent.vars.data -%}
+{%- set allLocales = entity.website.configuration.allLocales is defined ? entity.website.configuration.allLocales : 1 -%}
+{%- set multiLocales = allLocales > 1 -%}
 
 <div class="col-12">
-    <ul id="videos-sortable" class="reset w-100 {% if multiLocales %}multi-locales{% else %}single-locale{% endif %}">
-        {% for property in form.children %}
-            {% set video = property.vars.data %}
-            {% if video.id is defined %}
-                {% set interface = property.vars.errors.form.config.dataClass|interface %}
-                {% set interfaceName = interface.name %}
-                {% set masterField = interface.masterField %}
-                {% set arguments = {website: websiteId(), (interfaceName): video.id} %}
-                {% if masterField and masterRequest().get(masterField) %}
-                    {% set arguments = arguments|merge({(masterField): masterRequest().get(masterField)}) %}
-                {% endif %}
+    <ul id="videos-sortable" class="reset w-100 {%- if multiLocales -%}multi-locales{%- else -%}single-locale{%- endif -%}">
+        {%- for property in form.children -%}
+            {%- set video = property.vars.data -%}
+            {%- if video.id is defined -%}
+                {%- set interface = property.vars.errors.form.config.dataClass|interface -%}
+                {%- set interfaceName = interface.name -%}
+                {%- set masterField = interface.masterField -%}
+                {%- set arguments = {website: websiteId(), (interfaceName): video.id} -%}
+                {%- if masterField and masterRequest().get(masterField) -%}
+                    {%- set arguments = arguments|merge({(masterField): masterRequest().get(masterField)}) -%}
+                {%- endif -%}
                 <li class="ui-video parent-item" data-position="{{ video.position }}"
                     data-id="{{ video.id }}" data-product="{{ entity.id }}"
-                    {% if video.id and ('admin_'~interfaceName~'_position')|routeExist %}data-pos-path="{{ path('admin_'~interfaceName~'_position', arguments) }}"{% endif %}>
+                    {%- if video.id and ('admin_'~interfaceName~'_position')|routeExist -%}data-pos-path="{{ path('admin_'~interfaceName~'_position', arguments) }}"{%- endif -%}>
                     <div class="position-relative">
                         <div class="side position-absolute">
-                            {% if video.id and ('admin_'~interfaceName~'_position')|routeExist %}
+                            {%- if video.id and ('admin_'~interfaceName~'_position')|routeExist -%}
                                 <div class="handle-video cursor btn btn-transparent" data-toggle="tooltip" title="{{ "Déplacer"|trans }}">{{ 'far arrows-alt'|icon(null, 15, 'dark') }}</div>
-                            {% endif %}
+                            {%- endif -%}
                             <span class="delete-video">
-                            {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                            {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
                                 isNew: false,
                                 entityId: property.vars.data.id,
                                 interfaceName: interfaceName,
                                 masterField: masterField
-                            } %}
+                            } -%}
                         </span>
                         </div>
                         <div class="row item-video m-0">
@@ -67,25 +67,25 @@
                                 {{ form_widget(property.adminName) }}
                                 {{ form_widget(property.position) }}
                             </div>
-                            {% if property.intls is defined %}
-                                {% include 'admin/core/form/intls.html.twig' with {
+                            {%- if property.intls is defined -%}
+                                {%- include 'admin/core/form/intls.html.twig' with {
                                     intls: property.intls,
                                     disableTitle: true,
                                     disableVideoTitle: true
-                                } %}
-                            {% endif %}
-                            {% if property.mediaRelations is defined %}
-                                {% include 'admin/core/form/media-relations-uniq.html.twig' with {
+                                } -%}
+                            {%- endif -%}
+                            {%- if property.mediaRelations is defined -%}
+                                {%- include 'admin/core/form/media-relations-uniq.html.twig' with {
                                     mediaRelations: property.mediaRelations,
                                     entity: property.vars.data,
                                     classname: property.vars.errors.form.config.dataClass,
-                                } %}
-                            {% endif %}
+                                } -%}
+                            {%- endif -%}
                         </div>
                     </div>
-                {% endif %}
+                {%- endif -%}
             </li>
-        {% endfor %}
+        {%- endfor -%}
     </ul>
 </div>
 

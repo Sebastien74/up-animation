@@ -1,16 +1,16 @@
-{% trans_default_domain 'gdpr' %}
+{%- trans_default_domain 'gdpr' -%}
 
-{% set cookies = cookies() %}
-{% set videoActive = (cookies[player] is defined and cookies[player]) or not gdprActive %}
+{%- set cookies = cookies() -%}
+{%- set videoActive = (cookies[player] is defined and cookies[player]) or not gdprActive -%}
 
 <div class="gdpr-player-wrap"
      data-code="{{ player }}"
      data-prototype="{{ prototype|e('html_attr') }}"
      data-prototype-placeholder="{{ prototype_placeholder|e('html_attr') }}"
      data-axeptio-consent="{{ player }}">
-    {% if videoActive %}
+    {%- if videoActive -%}
         {{ prototype|raw }}
-    {% else %}
+    {%- else -%}
         {{ prototype_placeholder|raw }}
-    {% endif %}
+    {%- endif -%}
 </div>

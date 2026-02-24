@@ -1,4 +1,4 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
 <h2 class="mb-4">Définitions</h2>
 <p><b>Client&nbsp;:</b> tout professionnel ou personne physique capable au sens des articles 1123 et suivants du Code civil, ou personne morale, qui visite le Site objet des présentes conditions générales.<br>
@@ -13,29 +13,29 @@
 <p>En vertu de l'article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, il est précisé aux utilisateurs du site internet <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi:</p>
 <p>
     <strong>Propriétaire</strong>&nbsp;:
-    {% if companyName %}{{ companyName|raw }}{% else %}<span class="text-danger bold">Raison sociale</span>{% endif %}
-    {% if capital %} au capital de {{ capital|raw }}{% endif %}
-    {% if vatNumber %} - Numéro de TVA: {{ vatNumber|raw }}{% endif %}
-    {% if siretNumber %} - Numéro de SIRET: {{ siretNumber|raw }}{% endif %}
-    {% if commercialRegisterNumber %} - Numéro registre du commerce&nbsp;: {{ commercialRegisterNumber|raw }}{% endif %}
-    {% if companyAddress %} - {{ companyAddress|raw }}{% endif %}
+    {%- if companyName -%}{{ companyName|raw }}{%- else -%}<span class="text-danger bold">Raison sociale</span>{%- endif -%}
+    {%- if capital -%} au capital de {{ capital|raw }}{%- endif -%}
+    {%- if vatNumber -%} - Numéro de TVA: {{ vatNumber|raw }}{%- endif -%}
+    {%- if siretNumber -%} - Numéro de SIRET: {{ siretNumber|raw }}{%- endif -%}
+    {%- if commercialRegisterNumber -%} - Numéro registre du commerce&nbsp;: {{ commercialRegisterNumber|raw }}{%- endif -%}
+    {%- if companyAddress -%} - {{ companyAddress|raw }}{%- endif -%}
     <br>
     <strong>Responsable publication</strong>&nbsp;:
-    {% if managerName %}{{ managerName|raw }}{% else %}<span class="text-danger bold">Nom du responsable de la publication</span>{% endif %}
-    {% if managerEmail %}{% if managerName %} - {% endif %}{{ managerEmail|raw }}{% else %}<span class="text-danger bold">Email du responsable de la publication</span>{% endif %}
+    {%- if managerName -%}{{ managerName|raw }}{%- else -%}<span class="text-danger bold">Nom du responsable de la publication</span>{%- endif -%}
+    {%- if managerEmail -%}{%- if managerName -%} - {%- endif -%}{{ managerEmail|raw }}{%- else -%}<span class="text-danger bold">Email du responsable de la publication</span>{%- endif -%}
     <br>
     Le responsable publication est une personne physique ou une personne morale.<br>
     <strong>Webmaster</strong>&nbsp;:
-    {% if webmasterName %}{{ webmasterName|raw }}{% else %}<span class="text-danger bold">Nom du Webmaster</span>{% endif %}
-    {% if webmasterEmail %}{% if webmasterName %} - {% endif %}{{ webmasterEmail|raw }}{% endif %}
+    {%- if webmasterName -%}{{ webmasterName|raw }}{%- else -%}<span class="text-danger bold">Nom du Webmaster</span>{%- endif -%}
+    {%- if webmasterEmail -%}{%- if webmasterName -%} - {%- endif -%}{{ webmasterEmail|raw }}{%- endif -%}
     <br>
     <strong>Hébergeur</strong>&nbsp;:
-    {% if hostName %}{{ hostName|raw }}{% else %}<span class="text-danger bold">Nom de l'hébergeur</span>{% endif %}<br>
-    {% if hostAddress %}{{ hostAddress|raw }}{% else %}<span class="text-danger bold">Adresse hébergeur</span>{% endif %}
+    {%- if hostName -%}{{ hostName|raw }}{%- else -%}<span class="text-danger bold">Nom de l'hébergeur</span>{%- endif -%}<br>
+    {%- if hostAddress -%}{{ hostAddress|raw }}{%- else -%}<span class="text-danger bold">Adresse hébergeur</span>{%- endif -%}
     <br>
     <strong>Délégué à la protection des données</strong>&nbsp;:
-    {% if protectionOfficerName %}{{ protectionOfficerName|raw }}{% else %}<span class="text-danger bold">Nom du délégué à la protection des données</span>{% endif %}
-    {% if protectionOfficerEmail %}{% if protectionOfficerName %} - {% endif %}{{ protectionOfficerEmail|raw }}{% else %}<span class="text-danger bold">Email du délégué</span>{% endif %}
+    {%- if protectionOfficerName -%}{{ protectionOfficerName|raw }}{%- else -%}<span class="text-danger bold">Nom du délégué à la protection des données</span>{%- endif -%}
+    {%- if protectionOfficerEmail -%}{%- if protectionOfficerName -%} - {%- endif -%}{{ protectionOfficerEmail|raw }}{%- else -%}<span class="text-danger bold">Email du délégué</span>{%- endif -%}
     <br>
 </p>
 <h2 class="my-4 d-inline-block w-100">2. Conditions générales d’utilisation du site et des services proposés.</h2>
@@ -72,7 +72,7 @@
 <h2 class="my-4 d-inline-block w-100">7. Gestion des données personnelles.</h2>
 <p>Le Client est informé des réglementations concernant la communication marketing, la loi du 21 Juin 2014 pour la confiance dans l’Economie Numérique, la Loi Informatique et Liberté du 06 Août 2004 ainsi que du Règlement Général sur la Protection des Données (RGPD&nbsp;: n° 2016-679). </p>
 <h3 class="mt-1 mb-3 d-inline-block w-100">7.1 Responsables de la collecte des données personnelles</h3>
-<p>Pour les Données Personnelles collectées dans le cadre de la création du compte personnel de l’Utilisateur et de sa navigation sur le Site, le responsable du traitement des Données Personnelles est représenté par {% if companyRepresentativeName %}{{ companyRepresentativeName|raw }}{% else %}<span class="text-danger bold">Nom du représentant légal de l’entreprise</span>{% endif %}, son représentant légal</p>
+<p>Pour les Données Personnelles collectées dans le cadre de la création du compte personnel de l’Utilisateur et de sa navigation sur le Site, le responsable du traitement des Données Personnelles est représenté par {%- if companyRepresentativeName -%}{{ companyRepresentativeName|raw }}{%- else -%}<span class="text-danger bold">Nom du représentant légal de l’entreprise</span>{%- endif -%}, son représentant légal</p>
 <p>En tant que responsable du traitement des données qu’il collecte, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> s’engage à respecter le cadre des dispositions légales en vigueur. Il lui appartient notamment au Client d’établir les finalités de ses traitements de données, de fournir à ses prospects et clients, à partir de la collecte de leurs consentements, une information complète sur le traitement de leurs données personnelles et de maintenir un registre des traitements conforme à la réalité.
     Chaque fois que <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> traite des Données Personnelles, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> prend toutes les mesures raisonnables pour s’assurer de l’exactitude et de la pertinence des Données Personnelles au regard des finalités pour lesquelles <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> les traite.
 </p>
@@ -99,8 +99,8 @@
 <p>Dès que <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> a connaissance du décès d’un Utilisateur et à défaut d’instructions de sa part, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> s’engage à détruire ses données, sauf si leur conservation s’avère nécessaire à des fins probatoires ou pour répondre à une obligation légale.</p>
 <p>Si l’Utilisateur souhaite savoir comment <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> utilise ses Données Personnelles, demander à les rectifier ou s’oppose à leur traitement, l’Utilisateur peut contacter <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> par écrit à l’adresse suivante&nbsp;: </p>
 <p>ENTREPRISE – DPO,
-{% if protectionOfficerName %}{{ protectionOfficerName|raw }}{% else %}<span class="text-danger bold">Nom du délégué à la protection des données</span>{% endif %}
-{% if protectionOfficerAddress %}{% if protectionOfficerName %} <br> {% endif %}{{ protectionOfficerAddress|raw }}{% else %} <span class="text-danger bold">Adresse du délégué</span>{% endif %}</p>
+{%- if protectionOfficerName -%}{{ protectionOfficerName|raw }}{%- else -%}<span class="text-danger bold">Nom du délégué à la protection des données</span>{%- endif -%}
+{%- if protectionOfficerAddress -%}{%- if protectionOfficerName -%} <br> {%- endif -%}{{ protectionOfficerAddress|raw }}{%- else -%} <span class="text-danger bold">Adresse du délégué</span>{%- endif -%}</p>
 <p>Dans ce cas, l’Utilisateur doit indiquer les Données Personnelles qu’il souhaiterait que <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> corrige, mette à jour ou supprime, en s’identifiant précisément avec une copie d’une pièce d’identité (carte d’identité ou passeport). </p>
 <p>
     Les demandes de suppression de Données Personnelles seront soumises aux obligations qui sont imposées à <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> par la loi, notamment en matière de conservation ou d’archivage des documents. Enfin, les Utilisateurs de <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> peuvent déposer une réclamation auprès des autorités de contrôle, et notamment de la CNIL (<a

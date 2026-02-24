@@ -1,41 +1,41 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% if form is defined and form %}
+{%- if form is defined and form -%}
 
-    {% set args = {website: websiteId()} %}
-    {% if interface.masterField is defined and interface.masterField != 'configuration' and interface.masterField != 'website' %}
-        {% set args = args|merge({(interface.masterField): interface.masterFieldId}) %}
-    {% endif %}
-    {% if interface.parentMasterField is defined and interface.parentMasterField and interface.parentMasterFieldId is defined and interface.parentMasterFieldId %}
-        {% set args = args|merge({(interface.parentMasterField): interface.parentMasterFieldId}) %}
-    {% endif %}
+    {%- set args = {website: websiteId()} -%}
+    {%- if interface.masterField is defined and interface.masterField != 'configuration' and interface.masterField != 'website' -%}
+        {%- set args = args|merge({(interface.masterField): interface.masterFieldId}) -%}
+    {%- endif -%}
+    {%- if interface.parentMasterField is defined and interface.parentMasterField and interface.parentMasterFieldId is defined and interface.parentMasterFieldId -%}
+        {%- set args = args|merge({(interface.parentMasterField): interface.parentMasterFieldId}) -%}
+    {%- endif -%}
 
-    {% set transDomain = interface.name is defined and interface.name
-        ? 'entity_'~interface.name : null %}
+    {%- set transDomain = interface.name is defined and interface.name
+        ? 'entity_'~interface.name : null -%}
 
-    {% set addLabel = 'add'|trans([], transDomain) and 'add'|trans([], transDomain) != 'add'
-        ? 'add'|trans([], transDomain) : (interface.name is defined ? 'Ajouter'|trans~" "~interface.name : 'Ajouter'|trans)  %}
+    {%- set addLabel = 'add'|trans([], transDomain) and 'add'|trans([], transDomain) != 'add'
+        ? 'add'|trans([], transDomain) : (interface.name is defined ? 'Ajouter'|trans~" "~interface.name : 'Ajouter'|trans) -%}
 
-    {% set excludes = ['intls', 'save', 'saveEdit'] %}
+    {%- set excludes = ['intls', 'save', 'saveEdit'] -%}
 
-    {% if formAction is defined %}
-        {% set formAction = formAction %}
-    {% else %}
-        {% set formAction = app.request.uri %}
-        {% if interface['name'] is defined and routeExist('admin_'~interface['name']~'_index') and not masterRequest().get('debug') %}
-            {% set args = ('admin_'~interface['name']~'_index')|routeArgs(interface.entity, args) %}
-            {% set formAction = path('admin_'~interface['name']~'_index', args) %}
-        {% elseif interface['name'] is defined and routeExist('admin_'~interface['name']~'_tree') and not masterRequest().get('debug') %}
-            {% set args = ('admin_'~interface['name']~'_tree')|routeArgs(interface.entity, args) %}
-            {% set args = args|merge({(interface.masterField): interface.masterFieldId}) %}
-            {% set formAction = path('admin_'~interface['name']~'_tree', args) %}
-        {% elseif interface['name'] is defined and routeExist('admin_'~interface['name']~'_new') and not masterRequest().get('debug') %}
-            {% set args = ('admin_'~interface['name']~'_new')|routeArgs(interface.entity, args) %}
-            {% set formAction = path('admin_'~interface['name']~'_new', args) %}
-        {% endif %}
-    {% endif %}
+    {%- if formAction is defined -%}
+        {%- set formAction = formAction -%}
+    {%- else -%}
+        {%- set formAction = app.request.uri -%}
+        {%- if interface['name'] is defined and routeExist('admin_'~interface['name']~'_index') and not masterRequest().get('debug') -%}
+            {%- set args = ('admin_'~interface['name']~'_index')|routeArgs(interface.entity, args) -%}
+            {%- set formAction = path('admin_'~interface['name']~'_index', args) -%}
+        {%- elseif interface['name'] is defined and routeExist('admin_'~interface['name']~'_tree') and not masterRequest().get('debug') -%}
+            {%- set args = ('admin_'~interface['name']~'_tree')|routeArgs(interface.entity, args) -%}
+            {%- set args = args|merge({(interface.masterField): interface.masterFieldId}) -%}
+            {%- set formAction = path('admin_'~interface['name']~'_tree', args) -%}
+        {%- elseif interface['name'] is defined and routeExist('admin_'~interface['name']~'_new') and not masterRequest().get('debug') -%}
+            {%- set args = ('admin_'~interface['name']~'_new')|routeArgs(interface.entity, args) -%}
+            {%- set formAction = path('admin_'~interface['name']~'_new', args) -%}
+        {%- endif -%}
+    {%- endif -%}
 
-    {% set modalId = modalId is defined ? modalId : (interface.name is defined ? interface.name : uniqId()) %}
+    {%- set modalId = modalId is defined ? modalId : (interface.name is defined ? interface.name : uniqId()) -%}
 
     <button class="btn-app" data-bs-toggle="modal" data-bs-target="#new-modal-{{ modalId }}">
         <i class="icm-plus"></i>{{ addLabel|unescape|raw }}
@@ -44,7 +44,7 @@
     <div class="modal fade" id="new-modal-{{ modalId }}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content border refer-preloader text-start pb-3">
-                {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', preloaderClass: 'radius-preloader', full: true} only %}
+                {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', preloaderClass: 'radius-preloader', full: true} only -%}
                 <div class="modal-header px-4 pt-4 pb-3">
                     <h2 class="main-title text-start h4 fw-bold ps-2"><i class="icm-plus btn-icon large me-3"></i>{{ addLabel }}</h2>
                     <button class="btn-close btn ms-auto me-2" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
@@ -52,11 +52,11 @@
                     </button>
                 </div>
                 <div class="modal-body px-4">
-                    {% set asAjax = form.save.vars.attr.class is defined and 'ajax-post' in form.save.vars.attr.class %}
-                    <div class="container my-auto{% if asAjax %} ajax-content{% endif %}">
+                    {%- set asAjax = form.save.vars.attr.class is defined and 'ajax-post' in form.save.vars.attr.class -%}
+                    <div class="container my-auto{%- if asAjax -%} ajax-content{%- endif -%}">
                         {{ form_start(form, {attr: {novalidate: "novalidate", action: formAction, id: "new-form-"~modalId, class: "mb-0"}}) }}
                             <div class="row justify-content-center">
-                                {% include 'admin/core/form/edit-fields-base.html.twig' with {form: form, asNews: true, disableTitle: true} only %}
+                                {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: form, asNews: true, disableTitle: true} only -%}
                             </div>
                             <div id="password-generator-result" class="btn-copy btn-icon danger w-100 text-center refer-copy position-relative d-none cursor">
                                 <div class="to-copy"></div>
@@ -64,26 +64,26 @@
                                     <div class="inner h-100"><i class="icm-copy"></i></div>
                                 </div>
                             </div>
-                            {% if alertError is defined and alertError %}
-                                {% include 'admin/include/alert.html.twig' with {alert: 'error', message: alertError } only %}
-                            {% endif %}
+                            {%- if alertError is defined and alertError -%}
+                                {%- include 'admin/include/alert.html.twig' with {alert: 'error', message: alertError } only -%}
+                            {%- endif -%}
                             <div class="w-100 text-center modal-buttons mt-4 d-flex justify-content-center">
                                 <div class="mx-1">
-                                    {% if form.save is defined %}
+                                    {%- if form.save is defined -%}
                                         {{ form_row(form.save) }}
-                                    {% else %}
+                                    {%- else -%}
                                         <button type="submit" class="btn-app"><i class="icm-save"></i>{{ "Enregistrer"|trans }}</button>
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
                                 <div class="mx-1">
-                                    {% if form.saveEdit is defined %}
+                                    {%- if form.saveEdit is defined -%}
                                         {{ form_row(form.saveEdit) }}
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
                                 <div class="mx-1">
-                                    {% if form.saveAdd is defined %}
+                                    {%- if form.saveAdd is defined -%}
                                         {{ form_row(form.saveAdd) }}
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
                             </div>
                         {{ form_end(form) }}
@@ -93,4 +93,4 @@
         </div>
     </div>
 
-{% endif %}
+{%- endif -%}

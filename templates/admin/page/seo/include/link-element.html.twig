@@ -1,36 +1,36 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set entity = config.entity %}
-{% set children = tree[entity.id] is defined and tree['main'] is defined ? tree[entity.id] : [] %}
-{% set url = config.url %}
+{%- set entity = config.entity -%}
+{%- set children = tree[entity.id] is defined and tree['main'] is defined ? tree[entity.id] : [] -%}
+{%- set url = config.url -%}
 
-{% if not url.archived %}
-    <li class="item-seo{% if url == currentUrl %} active{% endif %}">
+{%- if not url.archived -%}
+    <li class="item-seo{%- if url == currentUrl -%} active{%- endif -%}">
         <div class="inner d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-                {% if children %}
+                {%- if children -%}
                     <i class="icm-chevron-right cursor me-2 transition-fast collapse-icon collapsed"
                        data-bs-toggle="collapse"
                        href="#nested-list-{{ url.id }}"
                        aria-expanded="false"
                        aria-controls="nested-list-{{ url.id }}"></i>
-                {% else %}
+                {%- else -%}
                     <span class="ms-4"></span>
-                {% endif %}
+                {%- endif -%}
                 <span class="item-link">
                     <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: entitylocale, url: url.id}) }}"
-                       class="link-item{% if url == currentUrl %} active bold{% endif %}">
+                       class="link-item{%- if url == currentUrl -%} active bold{%- endif -%}">
                         {{ entity.adminName|truncate(60, false) }}
                     </a>
                 </span>
             </div>
         </div>
-        {% if children %}
+        {%- if children -%}
             <ul id="nested-list-{{ url.id }}" class="w-100 ps-4 collapse list-unstyled">
-                {% for child in children %}
-                    {% include 'admin/page/seo/include/link-element.html.twig' with {config: child, tree: tree, currentUrl: currentUrl, entitylocale: entitylocale} only %}
-                {% endfor %}
+                {%- for child in children -%}
+                    {%- include 'admin/page/seo/include/link-element.html.twig' with {config: child, tree: tree, currentUrl: currentUrl, entitylocale: entitylocale} only -%}
+                {%- endfor -%}
             </ul>
-        {% endif %}
+        {%- endif -%}
     </li>
-{% endif %}
+{%- endif -%}

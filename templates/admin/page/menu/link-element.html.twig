@@ -1,24 +1,24 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set children = tree[page.id] is defined ? tree[page.id] : [] %}
+{%- set children = tree[page.id] is defined ? tree[page.id] : [] -%}
 <li class="item-page">
     <div class="inner d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
-            {% if children %}
+            {%- if children -%}
                 <i class="icm-arrow-alt-to-bottom cursor me-2 transition-fast collapse-icon collapsed"
                    data-bs-toggle="collapse"
                    href="#pages-list-{{ page.id }}"
                    aria-expanded="false"
                    aria-controls="pages-list-{{ page.id }}"></i>
-            {% else %}
+            {%- else -%}
                 <span class="ms-4"></span>
-            {% endif %}
-            {% set intlUrl = page.website|intlUrl(page, masterRequest().get('entitylocale'), true) %}
-            {% set isOnline = intlUrl.online is defined and intlUrl.online %}
-            {% set isArchived = intlUrl.archived is defined and intlUrl.archived %}
-            {% set tooltipTitle = isArchived ? "Page archivée"|trans : (not isOnline ? "Page non publiée"|trans : null) %}
-            <label for="item-page-{{ page.id }}" class="cursor mb-0{% if tooltipTitle %} text-muted opacity-50{% endif %}"
-                {% if tooltipTitle %} data-bs-toggle="tooltip" title="{{ tooltipTitle|striptags }}" {% endif %}>{{ page.adminName|truncate(40) }}</label>
+            {%- endif -%}
+            {%- set intlUrl = page.website|intlUrl(page, masterRequest().get('entitylocale'), true) -%}
+            {%- set isOnline = intlUrl.online is defined and intlUrl.online -%}
+            {%- set isArchived = intlUrl.archived is defined and intlUrl.archived -%}
+            {%- set tooltipTitle = isArchived ? "Page archivée"|trans : (not isOnline ? "Page non publiée"|trans : null) -%}
+            <label for="item-page-{{ page.id }}" class="cursor mb-0{%- if tooltipTitle -%} text-muted opacity-50{%- endif -%}"
+                {%- if tooltipTitle -%} data-bs-toggle="tooltip" title="{{ tooltipTitle|striptags }}" {%- endif -%}>{{ page.adminName|truncate(40) }}</label>
         </div>
         <div class="push">
             <div class="custom-control custom-checkbox">
@@ -27,11 +27,11 @@
             </div>
         </div>
     </div>
-    {% if children %}
+    {%- if children -%}
         <ul id="pages-list-{{ page.id }}" class="w-100 ps-4 collapse list-unstyled">
-            {% for child in children %}
-                {% include 'admin/page/menu/link-element.html.twig' with {page: child, tree: tree} only %}
-            {% endfor %}
+            {%- for child in children -%}
+                {%- include 'admin/page/menu/link-element.html.twig' with {page: child, tree: tree} only -%}
+            {%- endfor -%}
         </ul>
-    {% endif %}
+    {%- endif -%}
 </li>

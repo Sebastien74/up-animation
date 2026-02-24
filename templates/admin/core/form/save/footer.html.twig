@@ -1,29 +1,29 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% if interface.configuration.saveArea is not defined
+{%- if interface.configuration.saveArea is not defined
     or interface.configuration.saveArea != 'top'
-    or configsFieldsSet is defined and configsFieldsSet %}
+    or configsFieldsSet is defined and configsFieldsSet -%}
     <div class="save-bottom d-flex justify-content-end align-items-center gap-2">
-        {% set submitFields = ['save', 'saveBack', 'saveEdit'] %}
-        {% if interface.configuration.saveArea == 'bottom' %}
-            {% include 'admin/core/form/save/base.html.twig' %}
-        {% elseif interface.configuration.saveArea == 'both' %}
+        {%- set submitFields = ['save', 'saveBack', 'saveEdit'] -%}
+        {%- if interface.configuration.saveArea == 'bottom' -%}
+            {%- include 'admin/core/form/save/base.html.twig' -%}
+        {%- elseif interface.configuration.saveArea == 'both' -%}
             <span data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}">
                 <a href="{{ lastRoute() }}" class="btn-icon" aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
                     <i class="icm-reply"></i>
                 </a>
             </span>
-            {% if form.save is defined or form.saveBack is defined or form.saveEdit is defined %}
-                {% for field in form.children %}
-                    {% if field.vars.name in submitFields %}
+            {%- if form.save is defined or form.saveBack is defined or form.saveEdit is defined -%}
+                {%- for field in form.children -%}
+                    {%- if field.vars.name in submitFields -%}
                         <button type="submit"
                                 name="{{ field.vars.full_name }}"
-                                class="btn-icon{% if field.vars.attr.class is defined and field.vars.attr.class%} {{ field.vars.attr.class }}{% endif %}">
+                                class="btn-icon{%- if field.vars.attr.class is defined and field.vars.attr.class-%} {{ field.vars.attr.class }}{%- endif -%}">
                             <i class="icm-save"></i>{{ field.vars.label }}
                         </button>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        {% endif %}
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endif -%}
+        {%- endif -%}
     </div>
-{% endif %}
+{%- endif -%}

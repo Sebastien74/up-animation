@@ -1,6 +1,6 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% if form is defined %}
+{%- if form is defined -%}
 
     {{ form_start(form, {attr: {
         id: "select-folder-form",
@@ -18,20 +18,20 @@
             </div>
                     <div class="modal-body">
                         <h5 class="main-title text-dark text-center fw-bold mb-4">{{ "Sélectionnez un dossier de destination"|trans }}</h5>
-                        {% for field in form.children %}
-                            {% if field.vars.name != 'save' and field.vars.name != 'saveEdit' %}
+                        {%- for field in form.children -%}
+                            {%- if field.vars.name != 'save' and field.vars.name != 'saveEdit' -%}
                                 {{ form_row(form[field.vars.name]) }}
-                            {% endif %}
-                        {% endfor %}
+                            {%- endif -%}
+                        {%- endfor -%}
                     </div>
                     <div class="w-100 text-center modal-buttons mt-4">
-                        {% if form.save is defined %}
+                        {%- if form.save is defined -%}
                             {{ form_widget(form.save) }}
-                        {% endif %}
+                        {%- endif -%}
                     </div>
                 </div>
             </div>
         </div>
     {{ form_end(form) }}
 
-{% endif %}
+{%- endif -%}

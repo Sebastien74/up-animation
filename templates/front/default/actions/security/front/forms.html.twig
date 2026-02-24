@@ -1,21 +1,21 @@
-{% extends 'front/'~website.configuration.template~'/base.html.twig' %}
+{%- extends 'front/'~website.configuration.template~'/base.html.twig' -%}
 
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% block metaTitle %}{{ "Connectez-vous"|trans|htmlEntities }}{% endblock %}
-{% block metaRobots %}{{ "noindex" }}{% endblock %}
+{%- block metaTitle -%}{{ "Connectez-vous"|trans|htmlEntities }}{%- endblock -%}
+{%- block metaRobots -%}{{ "noindex" }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
 
     {{ parent() }}
     {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
 
-    {% if 'facebookConnect' in security.frontRegistrationFields %}
+    {%- if 'facebookConnect' in security.frontRegistrationFields -%}
         <script>
 
             (function (d, s, id) {
@@ -99,26 +99,26 @@
                 }
             }
         </script>
-    {% endif %}
+    {%- endif -%}
 
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
-    {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+{%- block body -%}
+    {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
         pageTitle: "Connectez-vous"|trans,
         thumbConfiguration: thumbConfigurationHeader
-    } %}
-    {% set frontRegistration = website.security.frontRegistration %}
+    } -%}
+    {%- set frontRegistration = website.security.frontRegistration -%}
     <div class="container mt-5 mb-5">
         <div class="row d-flex">
-            <div class="col-lg-{% if frontRegistration %}5{% else %}4{% endif %}{% if not frontRegistration %} mx-auto{% endif %}">
+            <div class="col-lg-{%- if frontRegistration -%}5{%- else -%}4{%- endif -%}{%- if not frontRegistration -%} mx-auto{%- endif -%}">
                 {{ render_esi(path('security_front_login', {view: 'form'})) }}
             </div>
-            {% if frontRegistration %}
+            {%- if frontRegistration -%}
                 <div class="col-lg-7 mt-5 mt-lg-0">
                     {{ render_esi(path('security_front_register', {view: 'form'})) }}
                 </div>
-            {% endif %}
+            {%- endif -%}
         </div>
     </div>
-{% endblock %}
+{%- endblock -%}

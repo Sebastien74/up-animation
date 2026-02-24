@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div class="row pt-4">
 
@@ -13,41 +13,41 @@
             </a>
         </div>
 
-        {% set info = website()|fileInfo(entity.filename) %}
+        {%- set info = website()|fileInfo(entity.filename) -%}
 
         <div class="card">
             <div class="card-body radius pb-2">
                 <h5 class="file-info-title text-dark text-italic">{{ "Informations"|trans }}</h5>
                 <ul class="reset text-italic text-dark">
-                    {% if info.width is defined and info.width and info.height is defined and info.height %}
+                    {%- if info.width is defined and info.width and info.height is defined and info.height -%}
                         <li>
                             <small>
                                 <strong>{{ "Taille originale (lxh) :"|trans}}</strong> {{ info.width }}px X {{ info.height }}px
                             </small>
                         </li>
-                    {% endif %}
-                    {% if info.formatBytes is defined and info.formatBytes %}
+                    {%- endif -%}
+                    {%- if info.formatBytes is defined and info.formatBytes -%}
                         <li>
                             <small>
                                 <strong>{{ "Poids original :"|trans}}</strong> {{ info.formatBytes }}
                             </small>
                         </li>
-                    {% endif %}
-                    {% if info.mime is defined and info.mime %}
+                    {%- endif -%}
+                    {%- if info.mime is defined and info.mime -%}
                         <li>
                             <small>
                                 <strong>{{ "MimeType :"|trans}}</strong> {{ info.mime }}
                             </small>
                         </li>
-                    {% endif %}
-                    {% if info.extension is defined and info.extension %}
+                    {%- endif -%}
+                    {%- if info.extension is defined and info.extension -%}
                         <li>
                             <small>
                                 <strong>{{ "Extension :"|trans}}</strong> {{ info.extension }}
                             </small>
                         </li>
-                    {% endif %}
-                    {% if info.path is defined and info.path %}
+                    {%- endif -%}
+                    {%- if info.path is defined and info.path -%}
                         <li>
                             <small class="refer-copy">
                                 <strong>{{ "URL :"|trans}}</strong>
@@ -68,7 +68,7 @@
                                 </div>
                             </small>
                         </li>
-                    {% endif %}
+                    {%- endif -%}
                 </ul>
             </div>
         </div>
@@ -77,19 +77,19 @@
 
     <div class="col-md-7">
         <div class="row">
-            {% if displayLabel %}
+            {%- if displayLabel -%}
                 <div class="col-12">
                     <h3 class="text-dark mb-3">{{ label }}</h3>
                 </div>
-            {% endif %}
+            {%- endif -%}
             <div class="col-md-12">{{ form_row(media.name) }}</div>
             <div class="col-md-6">{{ form_row(media.copyright) }}</div>
             <div class="col-md-6">{{ form_row(media.quality) }}</div>
         </div>
         {{ form_row(media.notContractual) }}
-        {% if media.intls is defined %}
-            {% include 'admin/core/form/intls.html.twig' with {intls: media.intls} %}
-        {% endif %}
+        {%- if media.intls is defined -%}
+            {%- include 'admin/core/form/intls.html.twig' with {intls: media.intls} -%}
+        {%- endif -%}
     </div>
 
 </div>

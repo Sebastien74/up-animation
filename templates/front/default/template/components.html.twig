@@ -1,34 +1,34 @@
-{% extends 'front/'~website.configuration.template~'/base.html.twig' %}
+{%- extends 'front/'~website.configuration.template~'/base.html.twig' -%}
 
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName, null, webpack) }}
     <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low">
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
     {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {defer: true, nonce: csp_nonce()}) }}
-{% endblock %}
+{%- endblock -%}
 
-{% set zonePosition = 1 %}
-{% set websiteColors = website|colors %}
-{% set customModules = website.configuration.customModules %}
-{% set mainColors = websiteColors.color is defined ? websiteColors.color : [] %}
-{% set backgroundColors = websiteColors.background is defined ? websiteColors.background : [] %}
-{% set buttonColors = websiteColors.button is defined ? websiteColors.button : [] %}
-{% set alertColors = websiteColors.alert is defined ? websiteColors.alert : [] %}
+{%- set zonePosition = 1 -%}
+{%- set websiteColors = website|colors -%}
+{%- set customModules = website.configuration.customModules -%}
+{%- set mainColors = websiteColors.color is defined ? websiteColors.color : [] -%}
+{%- set backgroundColors = websiteColors.background is defined ? websiteColors.background : [] -%}
+{%- set buttonColors = websiteColors.button is defined ? websiteColors.button : [] -%}
+{%- set alertColors = websiteColors.alert is defined ? websiteColors.alert : [] -%}
 
-{% block body %}
+{%- block body -%}
 
-    {% if isComponentUser() %}
+    {%- if isComponentUser() -%}
 
         <div id="content-{{ templateName }}" class="template-page">
 
-            {% if blockTypesActive('title-header') %}
-                {% for i in 1..1 %}
+            {%- if blockTypesActive('title-header') -%}
+                {%- for i in 1..1 -%}
                     <div id="first-components-section" class="w-100">
                         {{ website|newZone({
                             seo: seo,
@@ -41,49 +41,49 @@
                                 }
                             },
                         }) }}
-                        {% set zonePosition = zonePosition + 1 %}
+                        {%- set zonePosition = zonePosition + 1 -%}
                     </div>
-                {% endfor %}
-            {% endif %}
+                {%- endfor -%}
+            {%- endif -%}
 
             <div id="content">
 
-                {% set blockLeftPosition = 1 %}
-                {% set blockRightPosition = 1 %}
+                {%- set blockLeftPosition = 1 -%}
+                {%- set blockRightPosition = 1 -%}
 
-                {% for background in backgroundColors %}
+                {%- for background in backgroundColors -%}
 
-                    {% set currentColor = background|replace({'bg-': ''}) %}
+                    {%- set currentColor = background|replace({'bg-': ''}) -%}
 
-                    {% set blocksLeft = {} %}
-                    {% if blockTypesActive('title') %}
-                        {% for i in 1..6 %}
-                            {% set blocksLeft = blocksLeft|merge({ (blockLeftPosition): {title: { titleForce: i } }}) %}
-                            {% set blockLeftPosition = blockLeftPosition + 1 %}
-                        {% endfor %}
-                    {% endif %}
-                    {% if blockTypesActive('text') %}
-                        {% set blocksLeft = blocksLeft|merge({ (blockLeftPosition): {text: {} }}) %}
-                        {% set blockLeftPosition = blockLeftPosition + 1 %}
-                    {% endif %}
-                    {% if blockTypesActive('link') %}
-                        {% set blocksLeft = blocksLeft|merge({ (blockLeftPosition): {link: {} }}) %}
-                        {% set blockLeftPosition = blockLeftPosition + 1 %}
-                    {% endif %}
-                    {% if blockTypesActive('blockquote') %}
-                        {% set blocksLeft = blocksLeft|merge({ (blockLeftPosition): {blockquote: {} }}) %}
-                        {% set blockLeftPosition = blockLeftPosition + 1 %}
-                    {% endif %}
+                    {%- set blocksLeft = {} -%}
+                    {%- if blockTypesActive('title') -%}
+                        {%- for i in 1..6 -%}
+                            {%- set blocksLeft = blocksLeft|merge({ (blockLeftPosition): {title: { titleForce: i } }}) -%}
+                            {%- set blockLeftPosition = blockLeftPosition + 1 -%}
+                        {%- endfor -%}
+                    {%- endif -%}
+                    {%- if blockTypesActive('text') -%}
+                        {%- set blocksLeft = blocksLeft|merge({ (blockLeftPosition): {text: {} }}) -%}
+                        {%- set blockLeftPosition = blockLeftPosition + 1 -%}
+                    {%- endif -%}
+                    {%- if blockTypesActive('link') -%}
+                        {%- set blocksLeft = blocksLeft|merge({ (blockLeftPosition): {link: {} }}) -%}
+                        {%- set blockLeftPosition = blockLeftPosition + 1 -%}
+                    {%- endif -%}
+                    {%- if blockTypesActive('blockquote') -%}
+                        {%- set blocksLeft = blocksLeft|merge({ (blockLeftPosition): {blockquote: {} }}) -%}
+                        {%- set blockLeftPosition = blockLeftPosition + 1 -%}
+                    {%- endif -%}
 
-                    {% set blocksRight = {} %}
-                    {% if blockTypesActive('media') %}
-                        {% set blocksRight = blocksRight|merge({ (blockRightPosition): {media: {} }}) %}
-                        {% set blockRightPosition = blockRightPosition + 1 %}
-                    {% endif %}
-                    {% if blockTypesActive('media') %}
-                        {% set blocksRight = blocksRight|merge({ (blockRightPosition): {media: {type: 'file'} }}) %}
-                        {% set blockRightPosition = blockRightPosition + 1 %}
-                    {% endif %}
+                    {%- set blocksRight = {} -%}
+                    {%- if blockTypesActive('media') -%}
+                        {%- set blocksRight = blocksRight|merge({ (blockRightPosition): {media: {} }}) -%}
+                        {%- set blockRightPosition = blockRightPosition + 1 -%}
+                    {%- endif -%}
+                    {%- if blockTypesActive('media') -%}
+                        {%- set blocksRight = blocksRight|merge({ (blockRightPosition): {media: {type: 'file'} }}) -%}
+                        {%- set blockRightPosition = blockRightPosition + 1 -%}
+                    {%- endif -%}
 
                     {{ website|newZone({
                         background: background,
@@ -106,7 +106,7 @@
                     <div class="{{ background }} pb-lg">
                         <div class="container">
                             <div class="row">
-                                {% if 'slider'|moduleActive(configuration) %}
+                                {%- if 'slider'|moduleActive(configuration) -%}
                                     <div class="col-lg-6 ps-0 pe-lg">
                                         {{ website|newZone({
                                             seo: seo,
@@ -123,34 +123,34 @@
                                             },
                                         }) }}
                                     </div>
-                                {% endif %}
+                                {%- endif -%}
                                 <div class="col-12 mb-4 text-start px-0">
                                     <h2 class="mb-4 mt-5">Textes</h2>
-                                    {% for color in mainColors %}
-                                        <div class="text-{{ color }} d-inline-block{% if not loop.last %} me-3{% endif %}">.text-{{ color }}</div>
-                                    {% endfor %}
-                                    {% set activeBorders = false %}
-                                    {% if activeBorders %}
+                                    {%- for color in mainColors -%}
+                                        <div class="text-{{ color }} d-inline-block{%- if not loop.last -%} me-3{%- endif -%}">.text-{{ color }}</div>
+                                    {%- endfor -%}
+                                    {%- set activeBorders = false -%}
+                                    {%- if activeBorders -%}
                                         <h2 class="mb-4 mt-5">Bordures</h2>
-                                        {% for color in mainColors %}
-                                            <span class="border border-{{ color }} text-{{ color }} d-inline-block mb-4 pe-5 ps-5 pt-3 pb-3{% if not loop.last %} me-3{% endif %}">.border-{{ color }}</span>
-                                        {% endfor %}
-                                    {% endif %}
-                                    {% set activeBadges = false %}
-                                    {% if activeBadges %}
+                                        {%- for color in mainColors -%}
+                                            <span class="border border-{{ color }} text-{{ color }} d-inline-block mb-4 pe-5 ps-5 pt-3 pb-3{%- if not loop.last -%} me-3{%- endif -%}">.border-{{ color }}</span>
+                                        {%- endfor -%}
+                                    {%- endif -%}
+                                    {%- set activeBadges = false -%}
+                                    {%- if activeBadges -%}
                                         <h2 class="mb-4 mt-5">Badges</h2>
-                                        {% for color in mainColors %}
-                                            <span class="badge badge-{{ color }} d-inline-block mb-4{% if not loop.last %} me-3{% endif %}">.badge-{{ color }}</span>
-                                        {% endfor %}
-                                    {% endif %}
-                                    {% if customModules.gradientColors %}
+                                        {%- for color in mainColors -%}
+                                            <span class="badge badge-{{ color }} d-inline-block mb-4{%- if not loop.last -%} me-3{%- endif -%}">.badge-{{ color }}</span>
+                                        {%- endfor -%}
+                                    {%- endif -%}
+                                    {%- if customModules.gradientColors -%}
                                         <h2 class="mb-4 mt-5">Boutons dégradés</h2>
                                         <div class="inner">
-                                            {% set outlineSet = false %}
-                                            {% for color in buttonColors %}
-                                                {% if 'outline' not in color and 'white' not in color %}
-                                                    <div class="d-inline-flex{% if not loop.last %} me-md-3{% endif %} mb-4">
-                                                        {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                            {%- set outlineSet = false -%}
+                                            {%- for color in buttonColors -%}
+                                                {%- if 'outline' not in color and 'white' not in color -%}
+                                                    <div class="d-inline-flex{%- if not loop.last -%} me-md-3{%- endif -%} mb-4">
+                                                        {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                                             intl: null,
                                                             iconStart: 'far info',
                                                             iconStartWith: 20,
@@ -158,18 +158,18 @@
                                                             link: app.request.requestUri,
                                                             linkLabel: '.btn '~color|replace({'btn-': 'btn-gradient btn-gradient-'}),
                                                             linkStyle: 'btn '~color|replace({'btn-': 'btn-gradient btn-gradient-'})
-                                                        } %}
+                                                        } -%}
                                                     </div>
-                                                {% endif %}
-                                            {% endfor %}
+                                                {%- endif -%}
+                                            {%- endfor -%}
                                         </div>
-                                    {% endif %}
+                                    {%- endif -%}
                                     <h2 class="mb-4 mt-5">Boutons</h2>
                                     <div class="inner">
-                                        {% for color in buttonColors %}
-                                            {% if 'outline' not in color %}
-                                                <div class="d-inline-flex{% if not loop.last %} me-md-3{% endif %} mb-4">
-                                                    {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                        {%- for color in buttonColors -%}
+                                            {%- if 'outline' not in color -%}
+                                                <div class="d-inline-flex{%- if not loop.last -%} me-md-3{%- endif -%} mb-4">
+                                                    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                                         intl: null,
                                                         iconStart: 'far info',
                                                         iconStartWith: 20,
@@ -177,17 +177,17 @@
                                                         link: app.request.requestUri,
                                                         linkLabel: '.btn '~color,
                                                         linkStyle: 'btn '~color
-                                                    } %}
+                                                    } -%}
                                                 </div>
-                                            {% endif %}
-                                        {% endfor %}
+                                            {%- endif -%}
+                                        {%- endfor -%}
                                     </div>
                                     <h2 class="mb-4 mt-5">Boutons avec bordures</h2>
                                     <div class="inner">
-                                        {% for color in buttonColors %}
-                                            {% if 'outline' in color %}
-                                                <div class="d-inline-flex{% if not loop.last %} me-md-3{% endif %} mb-4">
-                                                    {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                        {%- for color in buttonColors -%}
+                                            {%- if 'outline' in color -%}
+                                                <div class="d-inline-flex{%- if not loop.last -%} me-md-3{%- endif -%} mb-4">
+                                                    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                                         intl: null,
                                                         iconStart: 'far info',
                                                         iconStartWith: 20,
@@ -195,31 +195,31 @@
                                                         link: app.request.requestUri,
                                                         linkLabel: '.btn '~color,
                                                         linkStyle: 'btn '~color
-                                                    } %}
+                                                    } -%}
                                                 </div>
-                                            {% endif %}
-                                        {% endfor %}
+                                            {%- endif -%}
+                                        {%- endfor -%}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {% set zonePosition = zonePosition + 1 %}
+                    {%- set zonePosition = zonePosition + 1 -%}
 
-                {% endfor %}
+                {%- endfor -%}
 
-                {% for color in alertColors %}
-                    <div class="container pb-5{% if loop.first %} pt-5{% endif %}">
+                {%- for color in alertColors -%}
+                    <div class="container pb-5{%- if loop.first -%} pt-5{%- endif -%}">
                         {{ website|newBlock(1, 'alert', { color: color }) }}
                     </div>
-                {% endfor %}
+                {%- endfor -%}
 
             </div>
 
         </div>
 
-    {% else %}
+    {%- else -%}
 
         <div class="container pt-5 pb-4">
             <div class="alert alert-info">
@@ -227,6 +227,6 @@
             </div>
         </div>
 
-    {% endif %}
+    {%- endif -%}
 
-{% endblock %}
+{%- endblock -%}

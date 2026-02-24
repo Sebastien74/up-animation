@@ -1,42 +1,42 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% set displayMicrodata = true %}
-{% set type  = type is defined ? type : 'Article' %}
-{% set filters = ['microdata_1x1', 'microdata_4x3', 'microdata_16x9'] %}
-{% set images = [] %}
-{% for entity in entities %}
-    {% if entity.mainMedia %}
-        {% set displayMedia = entity.mainMedia.extension is defined and entity.mainMedia.extension not in ['.svg', '.gif', '.mp3'] %}
-        {% if displayMedia %}
-            {% for filter in filters %}
-                {% set microdataFilter = entity.mainMedia|file({}, {beforeRender: true, path: true, filter: filter}) %}
-                {% if microdataFilter.path is defined and microdataFilter.path %}
-                    {% set images = images|merge([{filter: filter, entityId: entity.id, path: microdataFilter.path}]) %}
-                {% elseif microdataFilter.html is defined and microdataFilter.html %}
+{%- set displayMicrodata = true -%}
+{%- set type  = type is defined ? type : 'Article' -%}
+{%- set filters = ['microdata_1x1', 'microdata_4x3', 'microdata_16x9'] -%}
+{%- set images = [] -%}
+{%- for entity in entities -%}
+    {%- if entity.mainMedia -%}
+        {%- set displayMedia = entity.mainMedia.extension is defined and entity.mainMedia.extension not in ['.svg', '.gif', '.mp3'] -%}
+        {%- if displayMedia -%}
+            {%- for filter in filters -%}
+                {%- set microdataFilter = entity.mainMedia|file({}, {beforeRender: true, path: true, filter: filter}) -%}
+                {%- if microdataFilter.path is defined and microdataFilter.path -%}
+                    {%- set images = images|merge([{filter: filter, entityId: entity.id, path: microdataFilter.path}]) -%}
+                {%- elseif microdataFilter.html is defined and microdataFilter.html -%}
                     {{ microdataFilter.html|raw }}
-                    {% set displayMicrodata = false %}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-    {% endif %}
-{% endfor %}
+                    {%- set displayMicrodata = false -%}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endif -%}
+    {%- endif -%}
+{%- endfor -%}
 
-{% if displayMicrodata %}
+{%- if displayMicrodata -%}
     <!-- Microdata -->
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
             "@type": "ItemList",
             "itemListElement": [
-            {% for entity in entities %}
-                {% set seo = entity.urlEntity|seo(entity) %}
-                {% set displayMedia = entity.mainMedia.extension is defined and entity.mainMedia.extension not in ['.svg', '.gif', '.mp3'] %}
-                {% set microImgs = [] %}
-                {% for image in images %}
-                    {% if entity.id == image.entityId %}
-                        {% set microImgs = microImgs|merge({(image.filter): image.path}) %}
-                    {% endif %}
-                {% endfor %}
+            {%- for entity in entities -%}
+                {%- set seo = entity.urlEntity|seo(entity) -%}
+                {%- set displayMedia = entity.mainMedia.extension is defined and entity.mainMedia.extension not in ['.svg', '.gif', '.mp3'] -%}
+                {%- set microImgs = [] -%}
+                {%- for image in images -%}
+                    {%- if entity.id == image.entityId -%}
+                        {%- set microImgs = microImgs|merge({(image.filter): image.path}) -%}
+                    {%- endif -%}
+                {%- endfor -%}
                 {
                     "@type": "ListItem",
                     "position": "{{ loop.index }}",
@@ -54,17 +54,17 @@
                             "name": {{ seo.microdata.author|json_encode|raw }},
                             "url": {{ app.request.getSchemeAndHttpHost()|json_encode|raw }}
                         }
-                        {% if displayMedia and microImgs is not empty %},
+                        {%- if displayMedia and microImgs is not empty -%},
                         "image": [
-                            {% for filter, path in microImgs %}
-                            {{ path|json_encode|raw }}{% if not loop.last %},{% endif %}
-                            {% endfor %}
+                            {%- for filter, path in microImgs -%}
+                            {{ path|json_encode|raw }}{%- if not loop.last -%},{%- endif -%}
+                            {%- endfor -%}
                         ]
-                        {% endif %}
-                        {% if seo.publishedDate %}, "datePublished": "{{ seo.publishedDate|date('Y-m-d H:i:s P') }}"{% endif %}
-                        {% if seo.updatedAt %}, "dateModified": "{{ seo.updatedAt|date('Y-m-d H:i:s P') }}"{% endif %}
-                        {% if seo.description %}, "description": {{ seo.description|json_encode|raw }}{% endif %}
-                        {% if seo.keywords %}, "keywords": {{ seo.keywords|json_encode|raw }}{% endif %},
+                        {%- endif -%}
+                        {%- if seo.publishedDate -%}, "datePublished": "{{ seo.publishedDate|date('Y-m-d H:i:s P') }}"{%- endif -%}
+                        {%- if seo.updatedAt -%}, "dateModified": "{{ seo.updatedAt|date('Y-m-d H:i:s P') }}"{%- endif -%}
+                        {%- if seo.description -%}, "description": {{ seo.description|json_encode|raw }}{%- endif -%}
+                        {%- if seo.keywords -%}, "keywords": {{ seo.keywords|json_encode|raw }}{%- endif -%},
                         "publisher": {
                             "@type": {{ seo.microdata.companyType|json_encode|raw }},
                             "name": {{ seo.microdata.companyName|json_encode|raw }},
@@ -74,8 +74,8 @@
                             }
                         }
                     }
-                }{% if not loop.last %},{% endif %}
-            {% endfor %}
+                }{%- if not loop.last -%},{%- endif -%}
+            {%- endfor -%}
         ]}
     </script>
-{% endif %}
+{%- endif -%}

@@ -1,14 +1,14 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% set displayFilters = false %}
-{% set displayPointInfo = true %}
-{% set sidebarSize = 4 %}
+{%- set displayFilters = false -%}
+{%- set displayPointInfo = true -%}
+{%- set sidebarSize = 4 -%}
 
-{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
 
-{#{% if microDataActive %}#}
-{#    {% include 'front/'~websiteTemplate~'/include/microdata-entities.html.twig' with {entities: products, url: url, website: website} only %}#}
-{#{% endif %}#}
+{#{%- if microDataActive -%}#}
+{#    {%- include 'front/'~websiteTemplate~'/include/microdata-entities.html.twig' with {entities: products, url: url, website: website} only -%}#}
+{#{%- endif -%}#}
 
 <div class="position-relative">
     {{ macroWebmaster.box({
@@ -22,12 +22,12 @@
             <div class="loader position-absolute d-flex align-items-center justify-content-center p-4">
                 <span class="spinner-border" role="status"></span>
             </div>
-            {% if displayPointInfo %}
+            {%- if displayPointInfo -%}
                 <div class="map-sidebar col-lg-{{ sidebarSize }} bg-primary d-none"></div>
-            {% elseif displayFilters %}
-                {#    {% include 'front/'~websiteTemplate~'/actions/map/include/filters.html.twig' %}#}
-            {% endif %}
-            <div class="map-filter-box p-0 col-lg-{% if displayFilters %}{{ 12 - sidebarSize }}{% else %}12{% endif %}"
+            {%- elseif displayFilters -%}
+                {#    {%- include 'front/'~websiteTemplate~'/actions/map/include/filters.html.twig' -%}#}
+            {%- endif -%}
+            <div class="map-filter-box p-0 col-lg-{%- if displayFilters -%}{{ 12 - sidebarSize }}{%- else -%}12{%- endif -%}"
                  data-sidebar-size="{{ sidebarSize }}">
                 {#         data-category-length="{{ categories|length }}">#}
                 <div id="teams-map-{{ listing.slug }}"
@@ -45,7 +45,7 @@
                          data-marker-clusters="1"
                          data-enlarge-txt="{{ "Agrandir le plan"|trans|raw }}"
                          data-direction-txt="{{ "Itinéraire"|trans|raw }}">
-                        {% for product in products %}
+                        {%- for product in products -%}
                             <div class="point"
                                  data-id="{{ product.id }}"
                                  data-in-cluster="1"
@@ -63,7 +63,7 @@
                                     </div>
                                 </div>
                             </div>
-                        {% endfor %}
+                        {%- endfor -%}
                     </div>
                 </div>
             </div>

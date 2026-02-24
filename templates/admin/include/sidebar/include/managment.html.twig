@@ -1,6 +1,6 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set allowedRoles = [
+{%- set allowedRoles = [
     'ROLE_PAGE',
     'ROLE_USERS',
     'ROLE_INFORMATION',
@@ -8,28 +8,28 @@
     'ROLE_NAVIGATION',
     'ROLE_SEO',
     'ROLE_TRANSLATION'
-] %}
+] -%}
 
-{% set allowedManagment = false %}
-{% for allowedRole in allowedRoles %}
-    {% if granted(allowedRole) %}
-        {% set allowedManagment = true %}
-    {% endif %}
-{% endfor %}
+{%- set allowedManagment = false -%}
+{%- for allowedRole in allowedRoles -%}
+    {%- if granted(allowedRole) -%}
+        {%- set allowedManagment = true -%}
+    {%- endif -%}
+{%- endfor -%}
 
-{% if allowedManagment %}
+{%- if allowedManagment -%}
     <li>
-        <a class="as-arrow bigger py-2 fw-600{% if mainActive %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+        <a class="as-arrow bigger py-2 fw-600{%- if mainActive -%} active{%- endif -%}" href="javascript:void(0)" aria-expanded="false">
             {{ "Gestion du site"|trans }}
         </a>
-        <ul aria-expanded="true" class="collapse list-unstyled ps-0 py-3 {% if mainActive %} in{% endif %}">
-            {% include 'admin/include/sidebar/include/managment/page.html.twig' %}
-            {% include 'admin/include/sidebar/include/managment/medias.html.twig' %}
-            {% include 'admin/include/sidebar/include/managment/navigation.html.twig' %}
-            {% include 'admin/include/sidebar/include/managment/translation.html.twig' %}
-            {% include 'admin/include/sidebar/include/managment/seo.html.twig' %}
-            {% include 'admin/include/sidebar/include/managment/user.html.twig' %}
-            {% include 'admin/include/sidebar/include/managment/information.html.twig' %}
+        <ul aria-expanded="true" class="collapse list-unstyled ps-0 py-3 {%- if mainActive -%} in{%- endif -%}">
+            {%- include 'admin/include/sidebar/include/managment/page.html.twig' -%}
+            {%- include 'admin/include/sidebar/include/managment/medias.html.twig' -%}
+            {%- include 'admin/include/sidebar/include/managment/navigation.html.twig' -%}
+            {%- include 'admin/include/sidebar/include/managment/translation.html.twig' -%}
+            {%- include 'admin/include/sidebar/include/managment/seo.html.twig' -%}
+            {%- include 'admin/include/sidebar/include/managment/user.html.twig' -%}
+            {%- include 'admin/include/sidebar/include/managment/information.html.twig' -%}
         </ul>
     </li>
-{% endif %}
+{%- endif -%}

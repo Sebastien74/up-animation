@@ -1,4 +1,4 @@
-{% trans_default_domain 'exception' %}
+{%- trans_default_domain 'exception' -%}
 
 <!doctype html>
 <html lang="{{ app.request.locale }}">
@@ -10,12 +10,12 @@
         <meta name="robots" content="noindex, nofollow" />
         <title>{{ "Erreur"|trans|striptags~' '~status_code}}</title>
 
-        {% include 'core/page/include/favicon.html.twig' %}
+        {%- include 'core/page/include/favicon.html.twig' -%}
 
-        {% block stylesheets %}
+        {%- block stylesheets -%}
             <!-- Stylesheet -->
             {{ encore_entry_link_tags('exception', null, 'exception') }}
-        {% endblock %}
+        {%- endblock -%}
 
     </head>
 
@@ -25,9 +25,9 @@
             <div class="error">
                 <h1>{{ status_code }}</h1>
                 <h2>{{ "erreur"|trans }}</h2>
-                {% if granted('ROLE_INTERNAL') or is_debug %}
+                {%- if granted('ROLE_INTERNAL') or is_debug -%}
                     <p class="text-danger fw-300">{{ status_text }}</p>
-                {% endif %}
+                {%- endif -%}
             </div>
             <div class="stack-container">
                 <div class="card-container">
@@ -135,12 +135,12 @@
 
         </div>
 
-        {% block javascripts %}
+        {%- block javascripts -%}
             <!-- javaScript -->
-            {% for file in encore_entry_js_files('exception', 'exception') %}
+            {%- for file in encore_entry_js_files('exception', 'exception') -%}
                 <script src="{{ asset(file) }}" defer="defer" nonce="{{ csp_nonce() }}"></script>
-            {% endfor %}
-        {% endblock %}
+            {%- endfor -%}
+        {%- endblock -%}
 
     </body>
 

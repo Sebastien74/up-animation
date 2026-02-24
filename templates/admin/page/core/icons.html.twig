@@ -1,23 +1,23 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set pageIcon = 'books' %}
+{%- set pageIcon = 'books' -%}
 
-{% block title %}{{ "Blibliothèque d'icônes"|trans|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ "Blibliothèque d'icônes"|trans }}{% endblock %}
+{%- block title -%}{{ "Blibliothèque d'icônes"|trans|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Blibliothèque d'icônes"|trans }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-icons-library', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin-icons-library', null, 'admin', {defer: true}) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
     <div class="card mb-3">
 
@@ -26,22 +26,22 @@
         </h4>
 
         <ul class="nav nav-tabs custom-tab large" role="tablist">
-            {% for libraryName, icons in libraries %}
-                {% if libraryName != 'website' %}
+            {%- for libraryName, icons in libraries -%}
+                {%- if libraryName != 'website' -%}
                     <li class="nav-item">
-                        {% set active = libraryName == library %}
+                        {%- set active = libraryName == library -%}
                         <a href="{{ path("admin_icons", {website: websiteId, library: libraryName}) }}"
-                           class="nav-link{% if active %} active{% endif %}"
+                           class="nav-link{%- if active -%} active{%- endif -%}"
                           >
                             <span class="d-none d-sm-inline-block">{{ libraryName|capitalize|raw }}</span>
                         </a>
                     </li>
-                {% endif %}
-            {% endfor %}
+                {%- endif -%}
+            {%- endfor -%}
             <li class="nav-item">
-                {% set active = library == 'website' %}
+                {%- set active = library == 'website' -%}
                 <a href="{{ path("admin_icons", {website: websiteId, library: 'website'}) }}"
-                   class="nav-link{% if active %} active{% endif %}"
+                   class="nav-link{%- if active -%} active{%- endif -%}"
                   >
                     <span class="d-none d-sm-inline-block">{{ "Icônes du site"|trans|raw }}</span>
                 </a>
@@ -83,7 +83,7 @@
             </div>
         </div>
 
-        {% set countryNames = app.request.locale|countryNames %}
+        {%- set countryNames = app.request.locale|countryNames -%}
 
         <!-- Tab panes -->
         <div id="icons-contents" class="tab-content mb-4" data-librairy="{{ library }}">
@@ -95,48 +95,48 @@
                         </div>
                     </div>
                     <div class="row glyphs">
-                        {% for libraryName, icons in libraries %}
-                            {% if libraryName == library %}
-                                {% for icon in icons %}
-                                    {% set inWebsiteIcons = icon.src in websiteIcons %}
+                        {%- for libraryName, icons in libraries -%}
+                            {%- if libraryName == library -%}
+                                {%- for icon in icons -%}
+                                    {%- set inWebsiteIcons = icon.src in websiteIcons -%}
                                     <div class="item col-md-3 col-sm-4 mb-3">
-                                        <div class="d-flex align-items-center bg-hover-active-info-darken icon-wrap{% if inWebsiteIcons %} active{% endif %}">
+                                        <div class="d-flex align-items-center bg-hover-active-info-darken icon-wrap{%- if inWebsiteIcons -%} active{%- endif -%}">
                                             <img data-src="{{ asset(icon.src) }}"
                                                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                                 class="img-fluid img-icon me-3 lazy-load{% if libraryName != 'flags' %} icon-hover{% endif %}">
+                                                 class="img-fluid img-icon me-3 lazy-load{%- if libraryName != 'flags' -%} icon-hover{%- endif -%}">
                                             <div>
-                                                {% set locale = icon.locale is defined and icon.locale ? icon.locale : null %}
-                                                <div class="search-icon">{% if locale and countryNames[locale|upper] is defined %}{{ countryNames[locale|upper] }}{% else %}{{ icon.filename }}{% endif %}</div>
+                                                {%- set locale = icon.locale is defined and icon.locale ? icon.locale : null -%}
+                                                <div class="search-icon">{%- if locale and countryNames[locale|upper] is defined -%}{{ countryNames[locale|upper] }}{%- else -%}{{ icon.filename }}{%- endif -%}</div>
                                             </div>
                                             <div class="icon-actions">
                                                 <div class="icon-copy border-info-darken" data-bs-toggle="tooltip" title="{{ "Copier"|trans }}">
                                                     <div class="inner h-100"><i class="icm-copy"></i></div>
                                                 </div>
-                                                {% set status = inWebsiteIcons ? 'true' : 'false' %}
-                                                {% set tooltip = inWebsiteIcons ? "Retirer"|trans : "Ajouter"|trans %}
-                                                <a href="#" class="icon-add border-info-darken d-inline-block w-100{% if inWebsiteIcons %} active{% endif %}"
+                                                {%- set status = inWebsiteIcons ? 'true' : 'false' -%}
+                                                {%- set tooltip = inWebsiteIcons ? "Retirer"|trans : "Ajouter"|trans -%}
+                                                <a href="#" class="icon-add border-info-darken d-inline-block w-100{%- if inWebsiteIcons -%} active{%- endif -%}"
                                                    data-path="{{ icon.src|url_encode }}"
                                                    data-status="{{ status }}"
                                                    data-add-txt="{{ "Ajouter"|trans }}"
                                                    data-remove-txt="{{ "Retirer"|trans }}"
                                                    data-bs-toggle="tooltip" title="{{ tooltip|raw }}">
                                                     <div class="inner h-100">
-                                                        {% set checkClass = inWebsiteIcons ? 'info-darken' : 'd-none' %}
+                                                        {%- set checkClass = inWebsiteIcons ? 'info-darken' : 'd-none' -%}
                                                         <i class="icm-check"></i>
-                                                        {% set addClass = not inWebsiteIcons ? 'info-darken' : 'd-none' %}
+                                                        {%- set addClass = not inWebsiteIcons ? 'info-darken' : 'd-none' -%}
                                                         <i class="icm-plus"></i>
                                                     </div>
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
-                                {% endfor %}
-                            {% endif %}
-                        {% else %}
+                                {%- endfor -%}
+                            {%- endif -%}
+                        {%- else -%}
                             <div class="col-12">
-                                {% include 'admin/include/alert.html.twig' with {alert: "info", message: "Aucune icône enregistrée."|trans} only %}
+                                {%- include 'admin/include/alert.html.twig' with {alert: "info", message: "Aucune icône enregistrée."|trans} only -%}
                             </div>
-                        {% endfor %}
+                        {%- endfor -%}
                     </div>
                 </div>
             </div>
@@ -144,5 +144,5 @@
 
     </div>
 
-{% endblock %}
+{%- endblock -%}
 

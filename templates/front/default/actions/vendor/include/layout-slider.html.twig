@@ -1,8 +1,8 @@
-{% set slideType = 'thumbnails' %}
+{%- set slideType = 'thumbnails' -%}
 
-{% if entity.medias|length > 0 %}
-    {% if 'thumbnails' == slideType %}
-        {% include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
+{%- if entity.medias|length > 0 -%}
+    {%- if 'thumbnails' == slideType -%}
+        {%- include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
             medias: entity.medias,
             thumbConfiguration: thumbConfigurationView,
             arrowsSide: 'side',
@@ -28,9 +28,9 @@
                 itemsPerSlideTablet: 1,
                 itemsPerSlideMobile: 1,
             }
-        } %}
-    {% else %}
-        {% include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
+        } -%}
+    {%- else -%}
+        {%- include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
             arrows: true,
             autoplay: true,
             popup: true,
@@ -40,6 +40,6 @@
             medias: entity.medias,
             maxWidth: null,
             maxHeight: 475,
-        } %}
-    {% endif %}
-{% endif %}
+        } -%}
+    {%- endif -%}
+{%- endif -%}

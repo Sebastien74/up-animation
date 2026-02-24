@@ -1,14 +1,14 @@
-{%- block _subcategories_widget %}
-    {% set asGroup = attr['radios-groups'] is defined and attr['radios-groups'] %}
-    {% set placeholder = form.children.placeholder is defined ? form.children.placeholder : false %}
+{%- block _subcategories_widget -%}
+    {%- set asGroup = attr['radios-groups'] is defined and attr['radios-groups'] -%}
+    {%- set placeholder = form.children.placeholder is defined ? form.children.placeholder : false -%}
     {%- if asGroup -%}
         <div id="subcategories" class="form-check form-check-inline select-search">
             {%- if placeholder -%}
                 {{ form_widget(placeholder) }}
             {%- endif -%}
-            {%- for groupName, group in choices %}
+            {%- for groupName, group in choices -%}
                 <div class="choices-group-radios w-100 text-uppercase mb-2"><strong>{{ groupName|raw }}</strong></div>
-                {%- for child in group %}
+                {%- for child in group -%}
                     <div class="form-check">
                         <input type="radio" id="subcategories-{{ urlize(child.data) }}"
                                name="{{ name }}"

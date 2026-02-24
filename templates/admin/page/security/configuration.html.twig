@@ -1,39 +1,39 @@
-﻿{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set title = "Configuration utilisateurs"|trans %}
-{% block title %}{{ title|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ title }}{% endblock %}
+{%- set title = "Configuration utilisateurs"|trans -%}
+{%- block title -%}{{ title|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ title }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
     {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
         <div id="edit-form-{{ interface.name }}" class="card">
-            {% include 'admin/core/form/save/header.html.twig' %}
+            {%- include 'admin/core/form/save/header.html.twig' -%}
             <div class="card-body pb-2">
                 <h4 class="main-subtitle"><i class="icm-network-wired"></i>{{ "Administrateurs"|trans }}</h4>
                 <div class="row">
                     {{ form_row(form.adminRegistration) }}
                     {{ form_row(form.adminRegistrationValidation) }}
                 </div>
-                {% if form.frontRegistration is defined %}
+                {%- if form.frontRegistration is defined -%}
                     <h4 class="main-subtitle"><i class="icm-desktop"></i>{{ "Front"|trans }}</h4>
                     <div class="row">
                         {{ form_row(form.frontRegistration) }}
                         {{ form_row(form.frontRegistrationValidation) }}
                     </div>
-                {% endif %}
+                {%- endif -%}
             </div>
-            {% include 'admin/core/form/save/footer.html.twig' %}
+            {%- include 'admin/core/form/save/footer.html.twig' -%}
         </div>
     {{ form_end(form) }}
-{% endblock %}
+{%- endblock -%}
 

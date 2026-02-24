@@ -1,8 +1,8 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
 
-{% set slug = search.slug %}
+{%- set slug = search.slug -%}
 
 <div class="search-results-container position-relative">
 
@@ -33,23 +33,23 @@
 
     <div id="search-results" class="mt-2">
 
-        {% if search.counter and searchText %}
+        {%- if search.counter and searchText -%}
             <p class="search-infos mb-0 mt-4 d-flex align-items-center">
-                {% if counts.all is defined %}
+                {%- if counts.all is defined -%}
                     <strong class="count badge bg-primary-darken text-white me-2 fw-500 py-2 px-3">{{ counts.all }}</strong>
-                {% endif %}
-                {% set message = "Aucun résultat pour la recherche :"|trans %}
-                {% if counts.all is defined and counts.all == 1 %}
-                    {% set message = "Résultat trouvé pour la recherche :"|trans %}
-                {% elseif counts.all is defined and counts.all > 1 %}
-                    {% set message = "Résultats trouvés pour la recherche :"|trans %}
-                {% endif %}
+                {%- endif -%}
+                {%- set message = "Aucun résultat pour la recherche :"|trans -%}
+                {%- if counts.all is defined and counts.all == 1 -%}
+                    {%- set message = "Résultat trouvé pour la recherche :"|trans -%}
+                {%- elseif counts.all is defined and counts.all > 1 -%}
+                    {%- set message = "Résultats trouvés pour la recherche :"|trans -%}
+                {%- endif -%}
                 <span class="result-title text-primary">{{ message|raw }} <strong>"{{ searchText|raw }}"</strong></span>
             </p>
-        {% endif %}
+        {%- endif -%}
 
-        {% set pageNum = app.request.query.get('page') ? app.request.query.get('page') : 1 %}
-        {% set ajaxPath = path('front_search_results', {website: website.id, filter: filter, search: masterRequest().get('search')}) %}
+        {%- set pageNum = app.request.query.get('page') ? app.request.query.get('page') : 1 -%}
+        {%- set ajaxPath = path('front_search_results', {website: website.id, filter: filter, search: masterRequest().get('search')}) -%}
 
         <div id="scroll-wrapper"
              data-scroll-active="{{ scrollInfinite }}"
@@ -57,29 +57,29 @@
              data-max="{{ maxPage }}"
              data-href="{{ ajaxPath }}"
              class="search-index-container">
-            {% if results %}
+            {%- if results -%}
                 <div id="results" class="results row-container row mt-4">
-                    {% for entity, entityResults in results %}
-                        {% if search.filterGroup %}
+                    {%- for entity, entityResults in results -%}
+                        {%- if search.filterGroup -%}
                             <div class="item">
-                                {% include 'front/'~websiteTemplate~'/actions/search/template/groups.html.twig' %}
+                                {%- include 'front/'~websiteTemplate~'/actions/search/template/groups.html.twig' -%}
                             </div>
-                        {% else %}
-                            {% include 'front/'~websiteTemplate~'/actions/search/template/list.html.twig' %}
-                        {% endif %}
-                    {% endfor %}
+                        {%- else -%}
+                            {%- include 'front/'~websiteTemplate~'/actions/search/template/list.html.twig' -%}
+                        {%- endif -%}
+                    {%- endfor -%}
                 </div>
-                {% if scrollInfinite %}
+                {%- if scrollInfinite -%}
                     <div id="scroller-loader" class="w-100 pb-5 d-none text-center">
                         <div class="spinner-border" role="status"></div>
                     </div>
-                {% endif %}
-                {% if pagination.getTotalItemCount is defined and (pagination.getTotalItemCount / pagination.itemNumberPerPage) > 0 %}
+                {%- endif -%}
+                {%- if pagination.getTotalItemCount is defined and (pagination.getTotalItemCount / pagination.itemNumberPerPage) > 0 -%}
                     <div class="d-flex justify-content-end mt-5 mb-5">
                         {{ knp_pagination_render(pagination, 'core/pagination.html.twig') }}
                     </div>
-                {% endif %}
-            {% endif %}
+                {%- endif -%}
+            {%- endif -%}
         </div>
 
     </div>

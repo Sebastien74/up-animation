@@ -1,185 +1,185 @@
-{% set small = small is defined and small %}
-{% set span = span is defined and span %}
-{% set isIndex = view is defined and view == 'index' %}
-{% set inAdmin = inAdmin() %}
+{%- set small = small is defined and small -%}
+{%- set span = span is defined and span -%}
+{%- set isIndex = view is defined and view == 'index' -%}
+{%- set inAdmin = inAdmin() -%}
 
-{% if span %}
+{%- if span -%}
     <span>
-{% elseif small %}
+{%- elseif small -%}
     <small>
-{% endif %}
+{%- endif -%}
 
-{% if dataValue and dataValue|instanceof('DateTime') %}
+{%- if dataValue and dataValue|instanceof('DateTime') -%}
 
-    {% if property == 'birthday' %}
+    {%- if property == 'birthday' -%}
         {{ date().diff(date(dataValue)).y }}
-    {% elseif 'hour' in property|lower %}
+    {%- elseif 'hour' in property|lower -%}
         {{ dataValue|format_datetime(pattern="HH:mm"|trans, locale=app.request.locale) }}
-    {% else %}
+    {%- else -%}
         {{ dataValue|format_datetime(pattern="cccc d MMMM Y 'à' HH:mm"|trans, locale=app.request.locale) }}
-    {% endif %}
+    {%- endif -%}
 
-{% elseif property is defined and property == 'locale' or property is defined and '.locale' in property %}
+{%- elseif property is defined and property == 'locale' or property is defined and '.locale' in property -%}
 
-    {% if '.locale' in property and dataValue|isObject %}
-        {% set dataValue = entityValue(dataValue, property) %}
-    {% endif %}
+    {%- if '.locale' in property and dataValue|isObject -%}
+        {%- set dataValue = entityValue(dataValue, property) -%}
+    {%- endif -%}
     <span class="d-none">{{ dataValue }}</span>
     <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ asset('/medias/icons/flags/'~dataValue~'.svg') }}" class="img-fluid lazy-load me-1" height="9" width="12" alt="image">
 
-{% elseif dataValue and dataValue|isEmail %}
+{%- elseif dataValue and dataValue|isEmail -%}
 
     <a href="mailto:{{ dataValue }}">{{ dataValue }}</a>
 
-{% elseif dataValue|isBool %}
+{%- elseif dataValue|isBool -%}
 
-    {% if inAdmin and dataValue == false %}
+    {%- if inAdmin and dataValue == false -%}
         {{ 'fas ban'|icon(null, 14, 'danger') }}
-    {% elseif inAdmin %}
+    {%- elseif inAdmin -%}
         {{ 'fas check'|icon(null, 14, 'success') }}
-    {% elseif dataValue == false %}
+    {%- elseif dataValue == false -%}
         {{ "Non"|trans|raw }}
-    {% else %}
+    {%- else -%}
         {{ "Oui"|trans|raw }}
-    {% endif %}
+    {%- endif -%}
 
-{% elseif (dataValue|isObject and 'PersistentCollection' in dataValue|getClass) or dataValue|isArray or (property is defined and '.' in property) %}
+{%- elseif (dataValue|isObject and 'PersistentCollection' in dataValue|getClass) or dataValue|isArray or (property is defined and '.' in property) -%}
 
-    {% if '.' in property %}
-        {% set properties = property|split('.') %}
-        {% set data = attribute(dataValue, properties[0]) %}
+    {%- if '.' in property -%}
+        {%- set properties = property|split('.') -%}
+        {%- set data = attribute(dataValue, properties[0]) -%}
         <ul class="reset">
-            {% if data|isArray or data|isObject and 'PersistentCollection' in data|getClass %}
-                {% for value in data %}
-                    <li>{% include 'core/data-formater.html.twig' with {dataValue: attribute(value, properties[1])} only %}</li>
-                {% endfor %}
-            {% elseif data %}
-                {% set data = attribute(data, properties[1]) %}
-                <li>{% include 'core/data-formater.html.twig' with {dataValue: data} only %}</li>
-            {% endif %}
+            {%- if data|isArray or data|isObject and 'PersistentCollection' in data|getClass -%}
+                {%- for value in data -%}
+                    <li>{%- include 'core/data-formater.html.twig' with {dataValue: attribute(value, properties[1])} only -%}</li>
+                {%- endfor -%}
+            {%- elseif data -%}
+                {%- set data = attribute(data, properties[1]) -%}
+                <li>{%- include 'core/data-formater.html.twig' with {dataValue: data} only -%}</li>
+            {%- endif -%}
         </ul>
-    {% elseif dataValue %}
+    {%- elseif dataValue -%}
         <ul class="reset">
-            {% for data in dataValue %}
-                {% set isDisplay = false %}
-                {% if elementsToShow is defined %}
-                    {% for elementToShow in elementsToShow %}
-                        {% if property~'.' in elementToShow %}
-                            {% set metaProperty = elementToShow|replace({(property~'.'): ''}) %}
-                            {% set metaFieldValue = attribute(data, metaProperty) %}
-                            {% if metaFieldValue %}
-                                {% set stringToDate = metaFieldValue|stringToDate %}
-                                {% set blockEntity = data.configuration.block is defined and data.configuration.block ? data.configuration.block : null %}
-                                {% set valueClassname = blockEntity.fieldConfiguration.className is defined and blockEntity.fieldConfiguration.className ? blockEntity.fieldConfiguration.className : null %}
-                                {% set isFile = metaProperty != 'label' and metaFieldValue|fileExist('public') %}
-                                <li{% if metaProperty == 'label' %} class="bold" {% endif %}>
-                                    {% if metaProperty == 'label' %}
-                                        {% set intl = blockEntity|intl %}
-                                        {% set value = intl.title is defined and intl.title ? intl.title : (blockEntity.adminName is defined and blockEntity.adminName ? blockEntity.adminName : metaFieldValue) %}
+            {%- for data in dataValue -%}
+                {%- set isDisplay = false -%}
+                {%- if elementsToShow is defined -%}
+                    {%- for elementToShow in elementsToShow -%}
+                        {%- if property~'.' in elementToShow -%}
+                            {%- set metaProperty = elementToShow|replace({(property~'.'): ''}) -%}
+                            {%- set metaFieldValue = attribute(data, metaProperty) -%}
+                            {%- if metaFieldValue -%}
+                                {%- set stringToDate = metaFieldValue|stringToDate -%}
+                                {%- set blockEntity = data.configuration.block is defined and data.configuration.block ? data.configuration.block : null -%}
+                                {%- set valueClassname = blockEntity.fieldConfiguration.className is defined and blockEntity.fieldConfiguration.className ? blockEntity.fieldConfiguration.className : null -%}
+                                {%- set isFile = metaProperty != 'label' and metaFieldValue|fileExist('public') -%}
+                                <li{%- if metaProperty == 'label' -%} class="bold" {%- endif -%}>
+                                    {%- if metaProperty == 'label' -%}
+                                        {%- set intl = blockEntity|intl -%}
+                                        {%- set value = intl.title is defined and intl.title ? intl.title : (blockEntity.adminName is defined and blockEntity.adminName ? blockEntity.adminName : metaFieldValue) -%}
                                         {{ value|raw }}
-                                    {% elseif valueClassname and metaProperty != 'label' %}
-                                        {% if isNumeric(metaFieldValue) %}
-                                            {% set entity = valueClassname|find(metaFieldValue) %}
-                                            {% set intl = valueClassname|findIntl(metaFieldValue) %}
-                                            {% set value = intl.title is defined and intl.title ? intl.title : (entity.adminName is defined and entity.adminName ? entity.adminName : metaFieldValue) %}
+                                    {%- elseif valueClassname and metaProperty != 'label' -%}
+                                        {%- if isNumeric(metaFieldValue) -%}
+                                            {%- set entity = valueClassname|find(metaFieldValue) -%}
+                                            {%- set intl = valueClassname|findIntl(metaFieldValue) -%}
+                                            {%- set value = intl.title is defined and intl.title ? intl.title : (entity.adminName is defined and entity.adminName ? entity.adminName : metaFieldValue) -%}
                                             {{ value|raw }}
-                                        {% else %}
+                                        {%- else -%}
                                             {{ metaFieldValue|raw }}
-                                        {% endif %}
-                                    {% elseif isFile %}
-                                        {% set matches = metaFieldValue|split('/') %}
+                                        {%- endif -%}
+                                    {%- elseif isFile -%}
+                                        {%- set matches = metaFieldValue|split('/') -%}
                                         <a href="{{ path('admin_medias_downloader', {website: websiteId(), fileDirname: metaFieldValue|url_encode}) }}" download="{{ matches|last }}">{{ matches|last }}</a>
-                                    {% elseif stringToDate %}
+                                    {%- elseif stringToDate -%}
                                         {{ stringToDate.datetime|format_datetime(pattern="cccc dd MMMM Y", locale=app.request.locale) }}
-                                    {% elseif metaFieldValue == '["true"]' or metaFieldValue == 'true' %}
+                                    {%- elseif metaFieldValue == '["true"]' or metaFieldValue == 'true' -%}
                                         {{ 'fas check'|icon(null, 14, 'success') }}
-                                    {% elseif metaFieldValue == '["false"]' or metaFieldValue == 'false' %}
+                                    {%- elseif metaFieldValue == '["false"]' or metaFieldValue == 'false' -%}
                                         {{ 'fas ban'|icon(null, 14, 'danger') }}
-                                    {% else %}
+                                    {%- else -%}
                                         {{ metaFieldValue|raw }}
-                                    {% endif %}
+                                    {%- endif -%}
                                 </li>
-                                {% set isDisplay = true %}
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if not isDisplay %}
+                                {%- set isDisplay = true -%}
+                            {%- endif -%}
+                        {%- endif -%}
+                    {%- endfor -%}
+                {%- endif -%}
+                {%- if not isDisplay -%}
                     <li>
-                        {% if data.adminName is defined and data.adminName %}
+                        {%- if data.adminName is defined and data.adminName -%}
                             {{ data.adminName|raw }}
-                        {% elseif data.id is defined %}
+                        {%- elseif data.id is defined -%}
                             {{ data.id }}
-                        {% else %}
+                        {%- else -%}
                             {{ data|raw }}
-                        {% endif %}
+                        {%- endif -%}
                     </li>
-                {% endif %}
-            {% endfor %}
+                {%- endif -%}
+            {%- endfor -%}
         </ul>
-    {% endif %}
+    {%- endif -%}
 
-{% elseif dataValue|isObject and 'User' in dataValue|getClass and not isIndex %}
+{%- elseif dataValue|isObject and 'User' in dataValue|getClass and not isIndex -%}
 
     {{ dataValue.username }}
-    {% if dataValue.email is defined and dataValue.email %}
+    {%- if dataValue.email is defined and dataValue.email -%}
         : <a href="mailto:{{ dataValue.email }}">{{ dataValue.email }}</a>
-    {% endif %}
+    {%- endif -%}
 
-{% elseif dataValue|isObject and not dataValue|instanceof('DateTime') and 'User' not in dataValue|getClass %}
+{%- elseif dataValue|isObject and not dataValue|instanceof('DateTime') and 'User' not in dataValue|getClass -%}
 
-    {% if elementsToShow is defined %}
-        {% for element in elementsToShow %}
-            {% if property~"." in element %}
-                {% set subProperty = element|replace({(property~"."): ''}) %}
-                {% set subValue = attribute(dataValue, subProperty) %}
-                {% include 'core/data-formater.html.twig' with {elementsToShow: elementsToShow, dataValue: subValue, view: 'show'} only %}
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-    {% if dataValue.adminName is defined and dataValue.adminName %}
+    {%- if elementsToShow is defined -%}
+        {%- for element in elementsToShow -%}
+            {%- if property~"." in element -%}
+                {%- set subProperty = element|replace({(property~"."): ''}) -%}
+                {%- set subValue = attribute(dataValue, subProperty) -%}
+                {%- include 'core/data-formater.html.twig' with {elementsToShow: elementsToShow, dataValue: subValue, view: 'show'} only -%}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- endif -%}
+    {%- if dataValue.adminName is defined and dataValue.adminName -%}
         {{ dataValue.adminName|raw }}
-    {% elseif dataValue.id is defined %}
+    {%- elseif dataValue.id is defined -%}
         {{ dataValue.id }}
-    {% endif %}
+    {%- endif -%}
 
-{% elseif not dataValue|isObject %}
+{%- elseif not dataValue|isObject -%}
 
-    {% set property = property is defined ? property : null %}
-    {% set asBagde = property and dataValue and 'status' in property|lower %}
+    {%- set property = property is defined ? property : null -%}
+    {%- set asBagde = property and dataValue and 'status' in property|lower -%}
 
-    {% if asBagde %}
+    {%- if asBagde -%}
         <div class="label label-info-darken text-white">
-    {% endif %}
+    {%- endif -%}
 
-    {% set asUrl = 'http://' in dataValue or 'https://' in dataValue %}
-    {% if asUrl %}
+    {%- set asUrl = 'http://' in dataValue or 'https://' in dataValue -%}
+    {%- if asUrl -%}
         <a href="{{ dataValue }}" target="_blank">
-    {% endif %}
+    {%- endif -%}
 
-        {% if truncate is defined and truncate %}
-            {% if 'mediarelation' in dataValue|lower and '\\' in dataValue %}
-                {% set matches = dataValue|split('\\') %}
-                {% set dataValue = matches|last|replace({'MediaRelation': ' MediaRelation'}) %}
-            {% endif %}
-            {% set dotes = dotes is defined ? dotes : false %}
+        {%- if truncate is defined and truncate -%}
+            {%- if 'mediarelation' in dataValue|lower and '\\' in dataValue -%}
+                {%- set matches = dataValue|split('\\') -%}
+                {%- set dataValue = matches|last|replace({'MediaRelation': ' MediaRelation'}) -%}
+            {%- endif -%}
+            {%- set dotes = dotes is defined ? dotes : false -%}
             {{ dataValue|truncate(truncate, dotes) }}
-        {% else %}
+        {%- else -%}
             {{ dataValue|raw }}
-        {% endif %}
+        {%- endif -%}
 
-    {% if asUrl %}
+    {%- if asUrl -%}
         </a>
-    {% endif %}
+    {%- endif -%}
 
-    {% if asBagde %}
+    {%- if asBagde -%}
         </div>
-    {% endif %}
+    {%- endif -%}
 
-{% endif %}
+{%- endif -%}
 
-{% if small %}
+{%- if small -%}
     </small>
-{% elseif span %}
+{%- elseif span -%}
     </span>
-{% endif %}
+{%- endif -%}

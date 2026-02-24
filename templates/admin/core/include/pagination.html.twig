@@ -1,13 +1,13 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% if pagination.getTotalItemCount is defined and (pagination.getTotalItemCount / pagination.itemNumberPerPage) > 0 %}
-    {% set class = class is defined and class ? class : false %}
-    <div class="pagination-nav mt-3 mt-md-4{% if class %} {{ class }}{% endif %}">
+{%- if pagination.getTotalItemCount is defined and (pagination.getTotalItemCount / pagination.itemNumberPerPage) > 0 -%}
+    {%- set class = class is defined and class ? class : false -%}
+    <div class="pagination-nav mt-3 mt-md-4{%- if class -%} {{ class }}{%- endif -%}">
         <div class="row">
             <div class="col-md-4 my-auto d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
-                {% set delta = (pagination.itemNumberPerPage - pagination|length) %}
-                {% set itemsCountStart = pagination.currentPageNumber == 1 ? 1 : (pagination.itemNumberPerPage * pagination.currentPageNumber) - pagination.itemNumberPerPage + 1 %}
-                {% set itemsCountEnd = (pagination.itemNumberPerPage * pagination.currentPageNumber) - delta %}
+                {%- set delta = (pagination.itemNumberPerPage - pagination|length) -%}
+                {%- set itemsCountStart = pagination.currentPageNumber == 1 ? 1 : (pagination.itemNumberPerPage * pagination.currentPageNumber) - pagination.itemNumberPerPage + 1 -%}
+                {%- set itemsCountEnd = (pagination.itemNumberPerPage * pagination.currentPageNumber) - delta -%}
                 <span class="pagination-counter">
                     {{ 'Résultats de {countStart} à {countEnd} sur {totalCount}'|trans({
                         '{countStart}': itemsCountStart,
@@ -19,4 +19,4 @@
             <div class="col-md-8 my-auto d-flex justify-content-center justify-content-md-end">{{ knp_pagination_render(pagination) }}</div>
         </div>
     </div>
-{% endif %}
+{%- endif -%}

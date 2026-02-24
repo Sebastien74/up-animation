@@ -1,10 +1,10 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% set data = this.lastNews %}
+{%- set data = this.lastNews -%}
 
-{#{% if data %}#}
+{#{%- if data -%}#}
 {#    <a href="{{ path('front_newscast_view', {url: data.urlCode}) }}" class="fixed-news shadow position-fixed d-flex align-items-center justify-content-center">#}
-{#        {% if data.filename %}#}
+{#        {%- if data.filename -%}#}
 {#            <div class="media-wrap me-3">#}
 {#                {{ data.filename|file({}, {#}
 {#                    screensSizes: {#}
@@ -19,7 +19,7 @@
 {#                    priority: 'high'#}
 {#                }) }}#}
 {#            </div>#}
-{#        {% endif %}#}
+{#        {%- endif -%}#}
 {#        <div class="content d-flex flex-column justify-content-between pe-4 me-2">#}
 {#            {{ component('Date', {#}
 {#                date: data.dates.publicationStart,#}
@@ -32,4 +32,4 @@
 {#        </div>#}
 {#        <i class="icon-times text-secondary btn btn-primary btn-circle text-white position-absolute btn-close"></i>#}
 {#    </a>#}
-{#{% endif %}#}
+{#{%- endif -%}#}

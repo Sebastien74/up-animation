@@ -1,6 +1,6 @@
-{% set facebookMessengerChatId = api.facebookMessengerChatId is defined and api.facebookMessengerChatId ? api.facebookMessengerChatId : null %}
+{%- set facebookMessengerChatId = api.facebookMessengerChatId is defined and api.facebookMessengerChatId ? api.facebookMessengerChatId : null -%}
 
-{% if facebookMessengerChatId %}
+{%- if facebookMessengerChatId -%}
     <!-- Your Plugin de discussion code -->
     <script>
         var chatbox = document.getElementById('fb-customer-chat');
@@ -24,4 +24,4 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
-{% endif %}
+{%- endif -%}

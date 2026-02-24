@@ -1,22 +1,22 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% if not form %}
+{%- if not form -%}
 
-    {% set args = {website: websiteId(), export: true} %}
-    {% if interface.masterField is defined and interface.masterField != 'configuration' and interface.masterField != 'website' %}
-        {% set args = args|merge({(interface.masterField): interface.masterFieldId}) %}
-    {% endif %}
-    {% set haveParentMasterField = interface.parentMasterField is defined and interface.parentMasterField and interface.parentMasterFieldId is defined and interface.parentMasterFieldId %}
-    {% if haveParentMasterField %}
-        {% set args = args|merge({(interface.parentMasterField): interface.parentMasterFieldId}) %}
-    {% endif %}
-    {% if interface.configuration.uniqueLocale is defined and interface.configuration.uniqueLocale %}
-        {% set args = args|merge({entitylocale: interface.website.configuration.locale}) %}
-    {% endif %}
+    {%- set args = {website: websiteId(), export: true} -%}
+    {%- if interface.masterField is defined and interface.masterField != 'configuration' and interface.masterField != 'website' -%}
+        {%- set args = args|merge({(interface.masterField): interface.masterFieldId}) -%}
+    {%- endif -%}
+    {%- set haveParentMasterField = interface.parentMasterField is defined and interface.parentMasterField and interface.parentMasterFieldId is defined and interface.parentMasterFieldId -%}
+    {%- if haveParentMasterField -%}
+        {%- set args = args|merge({(interface.parentMasterField): interface.parentMasterFieldId}) -%}
+    {%- endif -%}
+    {%- if interface.configuration.uniqueLocale is defined and interface.configuration.uniqueLocale -%}
+        {%- set args = args|merge({entitylocale: interface.website.configuration.locale}) -%}
+    {%- endif -%}
 
     <a href="{{ path('admin_'~interface['name']~'_export', args) }}" class="btn-app"><i class="icm-upload"></i>{{ "Exporter"|trans }}</a>
 
-{% else %}
+{%- else -%}
 
     <button class="btn-app" data-bs-toggle="modal" data-bs-target="#export-modal"><i class="icm-upload"></i>{{ "Exporter"|trans }}</button>
 
@@ -25,7 +25,7 @@
              role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content border refer-preloader text-start pb-5 pt-3">
-                    {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only %}
+                    {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only -%}
                     <div class="modal-header">
                         <h5 class="modal-title text-center w-100"><i class="icm-upload"></i></h5>
                         <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
@@ -41,7 +41,7 @@
                                 action: path('admin_'~interface.name~'_export', {website: websiteId()})
                             }}) }}
                                 <div class="row">
-                                    {% include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only %}
+                                    {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only -%}
                                 </div>
                                 <div class="w-100 text-center modal-buttons">
                                     <button type="submit" class="btn-app">{{ "Exporter"|trans }}</button>
@@ -54,4 +54,4 @@
         </div>
     </div>
 
-{% endif %}
+{%- endif -%}

@@ -1,8 +1,8 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% for alert, flashes in app.session.flashbag.all %}
-    {% for flash in flashes %}
-        {% if alert == 'command' %}
+{%- for alert, flashes in app.session.flashbag.all -%}
+    {%- for flash in flashes -%}
+        {%- if alert == 'command' -%}
             <div id="coresphere_consolebundle_console" class="console mb-3">
                 <div class="console_info_bar">
                     {{ "Working directory"|trans }} : <strong id="dirname">{{ flash.dirname }}</strong>
@@ -17,8 +17,8 @@
                     </ol>
                 </div>
             </div>
-        {% else %}
-            {% include 'admin/include/alert.html.twig' with {alert: alert, message: flash} only %}
-        {% endif %}
-    {% endfor %}
-{% endfor %}
+        {%- else -%}
+            {%- include 'admin/include/alert.html.twig' with {alert: alert, message: flash} only -%}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endfor -%}

@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div id="index-import-data">
 
@@ -10,9 +10,9 @@
         </div>
     </div>
 
-    {% set count = entities|length %}
-    {#    {% set count = 30 %}#}
-    {% set name = entities[0][property_name] is defined ? entities[0][property_name]|striptags : null %}
+    {%- set count = entities|length -%}
+    {#    {%- set count = 30 -%}#}
+    {%- set name = entities[0][property_name] is defined ? entities[0][property_name]|striptags : null -%}
     <div id="progress-card" class="card mt-5">
         <div class="card-body pb-2">
             <h6 class="title d-flex align-items-center">{{ "Importation en cours"|trans|raw }}</h6>
@@ -26,13 +26,13 @@
     </div>
 
     <ul id="entities-to-import" class="d-none">
-        {% for entity in entities %}
-            {#            {% if loop.index <= count %}#}
+        {%- for entity in entities -%}
+            {#            {%- if loop.index <= count -%}#}
             <li class="item to-import"
                 data-path="{{ path(route, {website: website.id, id: entity.id, version: version, classname: classname, tables: tables}) }}"
                 data-name="{{ entity[property_name]|striptags }}">{{ entity.id }}</li>
-            {#            {% endif %}#}
-        {% endfor %}
+            {#            {%- endif -%}#}
+        {%- endfor -%}
     </ul>
 
 </div>

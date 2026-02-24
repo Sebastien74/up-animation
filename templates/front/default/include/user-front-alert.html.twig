@@ -1,6 +1,6 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% if not user.confirmEmail %}
+{%- if not user.confirmEmail -%}
     <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header bg-danger">
             <strong class="me-auto text-white">{{ "Confimez votre compte"|trans|raw }}</strong>
@@ -14,4 +14,4 @@
             </small>
         </div>
     </div>
-{% endif %}
+{%- endif -%}

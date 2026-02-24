@@ -1,9 +1,9 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{#{% set intl = block|intl %}#}
-{#{% set title = intl.placeholder is defined and intl.placeholder ? intl.placeholder : 'false' %}#}
-{#{% set file = file is defined and file ? file : (intl.video is defined ? intl.video : null) %}#}
-{#{% if file %}#}
+{#{%- set intl = block|intl -%}#}
+{#{%- set title = intl.placeholder is defined and intl.placeholder ? intl.placeholder : 'false' -%}#}
+{#{%- set file = file is defined and file ? file : (intl.video is defined ? intl.video : null) -%}#}
+{#{%- if file -%}#}
 {#    <div id="audio-player-{{ block.id }}"#}
 {#         class="audio-player"#}
 {#         data-theme="light"#}
@@ -14,4 +14,4 @@
 {#         data-speed-btn="false"#}
 {#         data-component="audio-player"#}
 {#         data-src="{{ file }}"></div>#}
-{#{% endif %}#}
+{#{%- endif -%}#}

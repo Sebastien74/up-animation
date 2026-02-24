@@ -1,11 +1,11 @@
-{% set website = website is defined and website ? website : website() %}
+{%- set website = website is defined and website ? website : website() -%}
 
-{% if website.api.facebook.pixel is defined and website.api.facebook.pixel %}
-    {% set pixel = website.api.facebook.pixel %}
+{%- if website.api.facebook.pixel is defined and website.api.facebook.pixel -%}
+    {%- set pixel = website.api.facebook.pixel -%}
     <!-- Facebook Pixel Code -->
-    {% if not status %}
+    {%- if not status -%}
 
-    {% elseif pixel %}
+    {%- elseif pixel -%}
         <script class="facebook-script" nonce="{{ csp_nonce() }}">
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -18,6 +18,6 @@
             fbq('init', '{{ pixel }}');
             fbq('track', 'PageView');
         </script>
-    {% endif %}
+    {%- endif -%}
     <!-- End Facebook Pixel Code -->
-{% endif %}
+{%- endif -%}

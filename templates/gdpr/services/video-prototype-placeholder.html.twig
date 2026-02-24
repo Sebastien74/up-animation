@@ -1,9 +1,9 @@
-{% trans_default_domain 'gdpr' %}
+{%- trans_default_domain 'gdpr' -%}
 
-{% extends "gdpr/services/base-placeholder.html.twig" %}
+{%- extends "gdpr/services/base-placeholder.html.twig" -%}
 
-{% set service = 'player' %}
-{% set code = player %}
-{% set image = asset('build/gdpr/images/'~player~'-gdpr.svg', 'gdpr') %}
-{% set image_title = player|capitalize %}
-{% set message = 'Pour afficher la vidéo vous devez activer les cookies.'|trans|raw %}
+{%- set service = 'player' -%}
+{%- set code = player -%}
+{%- set image = asset('build/gdpr/images/'~player~'-gdpr.svg', 'gdpr') -%}
+{%- set image_title = player|capitalize -%}
+{%- set message = 'Pour afficher la vidéo vous devez activer les cookies.'|trans|raw -%}

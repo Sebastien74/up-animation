@@ -1,37 +1,37 @@
-﻿{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set pageTitle = "Calendrier"|trans|raw %}
-{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ pageTitle }}{% endblock %}
+{%- set pageTitle = "Calendrier"|trans|raw -%}
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-agenda', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin-agenda', null,  'admin', {defer: true}) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
     <div id="entities-data" data-agenda="{{ agenda.id }}">
-        {% for data in entities %}
+        {%- for data in entities -%}
             <span class="event"
                   data-start="{{ data.publicationStart|date('Y-m-d')~'T'~data.publicationStart|date('H:i:s') }}"
                   data-end="{{ data.publicationEnd|date('Y-m-d')~'T'~data.publicationEnd|date('H:i:s') }}"></span>
-        {% endfor %}
+        {%- endfor -%}
     </div>
 
     <div id="events-days-data" data-agenda="{{ agenda.id }}">
-        {% for day, id in eventsDaysData %}
+        {%- for day, id in eventsDaysData -%}
             <span class="event"
                   data-id="{{ id }}"
                   data-day="{{ day }}"></span>
-        {% endfor %}
+        {%- endfor -%}
     </div>
 
     <div id="agenda-calendar-edition" class="d-inline-block w-100">
@@ -50,4 +50,4 @@
         </div>
     </div>
 
-{% endblock %}
+{%- endblock -%}

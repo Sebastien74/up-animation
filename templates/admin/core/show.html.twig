@@ -1,38 +1,38 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set transDomain = interface.name is defined and interface.name
-    ? 'entity_'~interface.name : null %}
+{%- set transDomain = interface.name is defined and interface.name
+    ? 'entity_'~interface.name : null -%}
 
-{% if pageTitle is not defined or pageTitle is defined and not pageTitle  %}
-    {% set title = 'singular'|trans([], transDomain) and 'singular'|trans([], transDomain) != 'singular'
-        ? 'singular'|trans([], transDomain) : 'Édition'|trans~" "~interface.name  %}
-    {% set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title %}
-{% endif %}
+{%- if pageTitle is not defined or pageTitle is defined and not pageTitle -%}
+    {%- set title = 'singular'|trans([], transDomain) and 'singular'|trans([], transDomain) != 'singular'
+        ? 'singular'|trans([], transDomain) : 'Édition'|trans~" "~interface.name -%}
+    {%- set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title -%}
+{%- endif -%}
 
-{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ pageTitle }}{% endblock %}
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
-    {% set fields = [] %}
-    {% set unsetElements = ['contactValues.label', 'contactValues.value'] %}
-    {% set elementsToShow = interface.configuration.showView is defined ? interface.configuration.showView : null %}
-    {% for element in elementsToShow %}
-        {% if element not in unsetElements %}
-            {% set fields = fields|merge([element]) %}
-        {% endif %}
-    {% endfor %}
-    {% set labels = {
+    {%- set fields = [] -%}
+    {%- set unsetElements = ['contactValues.label', 'contactValues.value'] -%}
+    {%- set elementsToShow = interface.configuration.showView is defined ? interface.configuration.showView : null -%}
+    {%- for element in elementsToShow -%}
+        {%- if element not in unsetElements -%}
+            {%- set fields = fields|merge([element]) -%}
+        {%- endif -%}
+    {%- endfor -%}
+    {%- set labels = {
         slug: 'Code'|trans,
         id: 'ID'|trans,
         createdAt: 'Créé le'|trans,
@@ -40,7 +40,7 @@
         createdBy: 'Créé par'|trans,
         updatedBy: 'Modifié par'|trans,
         position: 'Position'|trans,
-    } %}
+    } -%}
 
     <div id="entities-index" class="card">
 
@@ -56,31 +56,31 @@
 
         <table class="table table-striped mb-0">
             <tbody>
-                {% if granted('ROLE_INTERNAL') and entity.slug is defined and entity.slug %}
+                {%- if granted('ROLE_INTERNAL') and entity.slug is defined and entity.slug -%}
                     <tr>
                         <td class="align-middle">{{ 'Code'|trans }}</td>
                         <td class="align-middle">{{ entity.slug }}</td>
                     </tr>
-                {% endif %}
-                {% for field in fields %}
-                    {% if field in elementsToShow or elementsToShow is empty %}
-                        {% set labelName = labels[field] is defined ? labels[field] : (field|trans([], transDomain) and field|trans([], transDomain) != field
-                            ? field|trans([], transDomain) : field) %}
-                        {% set fieldValue = entityValue(entity, field) %}
-                        {% if not fieldValue %}
-                            {% set fieldValue = 'N/C' %}
-                        {% endif %}
+                {%- endif -%}
+                {%- for field in fields -%}
+                    {%- if field in elementsToShow or elementsToShow is empty -%}
+                        {%- set labelName = labels[field] is defined ? labels[field] : (field|trans([], transDomain) and field|trans([], transDomain) != field
+                            ? field|trans([], transDomain) : field) -%}
+                        {%- set fieldValue = entityValue(entity, field) -%}
+                        {%- if not fieldValue -%}
+                            {%- set fieldValue = 'N/C' -%}
+                        {%- endif -%}
                         <tr>
                             <td class="align-middle">{{ labelName|trans }}</td>
                             <td class="align-middle">
-                                {% include 'core/data-formater.html.twig' with {elementsToShow: elementsToShow, dataValue: fieldValue, property: field, view: 'show'} only %}
+                                {%- include 'core/data-formater.html.twig' with {elementsToShow: elementsToShow, dataValue: fieldValue, property: field, view: 'show'} only -%}
                             </td>
                         </tr>
-                    {% endif %}
-                {% endfor %}
+                    {%- endif -%}
+                {%- endfor -%}
             </tbody>
         </table>
 
     </div>
 
-{% endblock %}
+{%- endblock -%}

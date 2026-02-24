@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <button class="btn-icon danger float-start me-2" data-bs-toggle="modal" data-bs-target="#filters-modal"><i class="icm-filter"></i>{{ "Filtrer"|trans }}</button>
 
@@ -7,7 +7,7 @@
          role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content border refer-preloader text-start pb-5 pt-3">
-                {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only %}
+                {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
                 <div class="modal-header">
                     <h5 class="modal-title text-center w-100"><i class="icm-filter"></i></h5>
                     <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
@@ -23,14 +23,14 @@
                             action: path('admin_'~interface.name~'_index', args)
                         }}) }}
                             <div class="row">
-                                {% include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only %}
+                                {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only -%}
                             </div>
                             <div class="w-100 text-center modal-buttons mt-4">
-                                {% if '?filter' in app.request.uri %}
+                                {%- if '?filter' in app.request.uri -%}
                                     <a href="{{ path('admin_'~interface.name~'_index', args) }}" class="btn-app">
                                         {{ "Réinitialiser"|trans }}
                                     </a>
-                                {% endif %}
+                                {%- endif -%}
                                 <button type="submit" class="btn-app">{{ "Filtrer"|trans }}</button>
                             </div>
                         {{ form_end(searchFiltersForm) }}

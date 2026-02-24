@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div class="modal-wrapper">
     <div class="modal fade modal-block-configuration layout-modal"
@@ -28,13 +28,13 @@
                                     <i class="icm-star"></i>{{ "Général"|trans|raw }}
                                 </a>
                             </li>
-                            {% if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 %}
+                            {%- if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 -%}
                                 <li class="nav-item text-center">
                                     <a class="nav-link" id="animation-tab" data-bs-toggle="tab" href="#animation" role="tab" aria-controls="animation" aria-selected="false">
                                         <i class="icm-hurricane"></i>{{ "Animation / Styles"|trans|raw }}
                                     </a>
                                 </li>
-                            {% endif %}
+                            {%- endif -%}
                             <li class="nav-item text-center">
                                 <a class="nav-link" id="fingerprint-tab" data-bs-toggle="tab" href="#fingerprint" role="tab" aria-controls="fingerprint" aria-selected="false">
                                     <i class="icm-fingerprint"></i>{{ "Identifiants"|trans|raw }}
@@ -51,41 +51,41 @@
                             <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0 show active" id="general" role="tabpanel" aria-labelledby="general-tab">
                                 <div class="row">
                                     <div class="col-md-7">
-                                        {% include 'admin/core/layout/margins.html.twig' %}
-                                        {% if form.hideLocales is defined %}
+                                        {%- include 'admin/core/layout/margins.html.twig' -%}
+                                        {%- if form.hideLocales is defined -%}
                                             {{ form_row(form.hideLocales) }}
-                                        {% endif %}
+                                        {%- endif -%}
                                     </div>
                                     <div class="col-md-5">
                                         <h4 class="w-100 text-center mb-3">{{ "Alignement des contenus"|trans }}</h4>
                                         <div class="row">
-                                            {% include 'admin/core/layout/alignments.html.twig' %}
-                                            {% if form.elementsAlignment is defined %}
+                                            {%- include 'admin/core/layout/alignments.html.twig' -%}
+                                            {%- if form.elementsAlignment is defined -%}
                                                 {{ form_row(form.elementsAlignment) }}
-                                            {% endif %}
-                                            {% if form.zIndex is defined %}
+                                            {%- endif -%}
+                                            {%- if form.zIndex is defined -%}
                                                 {{ form_row(form.zIndex) }}
-                                            {% endif %}
-                                            {% if form.verticalAlign is defined %}
+                                            {%- endif -%}
+                                            {%- if form.verticalAlign is defined -%}
                                                 {{ form_row(form.verticalAlign) }}
-                                            {% endif %}
-                                            {% if form.endAlign is defined %}
+                                            {%- endif -%}
+                                            {%- if form.endAlign is defined -%}
                                                 {{ form_row(form.endAlign) }}
-                                            {% endif %}
+                                            {%- endif -%}
                                         </div>
                                         <h4 class="w-100 text-center mb-3">{{ "Autres"|trans }}</h4>
                                         <div class="row">
-                                            {% if form.hide is defined %}
+                                            {%- if form.hide is defined -%}
                                                 {{ form_row(form.hide) }}
-                                            {% endif %}
-                                            {% if form.useForThumb is defined %}
+                                            {%- endif -%}
+                                            {%- if form.useForThumb is defined -%}
                                                 {{ form_row(form.useForThumb) }}
-                                            {% endif %}
+                                            {%- endif -%}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {% if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 %}
+                            {%- if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 -%}
                                 <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="animation" role="tabpanel" aria-labelledby="animation-tab">
                                     <div class="row">
                                         <h4 class="text-dark w-100 text-center mb-3">{{ "Animation"|trans }}</h4>
@@ -94,64 +94,64 @@
                                         {{ form_row(form.duration) }}
                                         <h4 class="text-dark w-100 text-center mb-3">{{ "Styles"|trans }}</h4>
                                         <div class="d-flex justify-content-center">
-                                            {% if form.radius is defined %}
+                                            {%- if form.radius is defined -%}
                                                 {{ form_row(form.radius) }}
-                                            {% endif %}
+                                            {%- endif -%}
                                         </div>
                                     </div>
                                 </div>
-                            {% elseif form.transition is defined %}
+                            {%- elseif form.transition is defined -%}
                                 <div class="d-none">
                                     {{ form_row(form.transition) }}
                                     {{ form_row(form.delay) }}
                                     {{ form_row(form.duration) }}
                                 </div>
-                            {% endif %}
+                            {%- endif -%}
                             <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="fingerprint" role="tabpanel" aria-labelledby="fingerprint-tab">
-                                {% include 'admin/core/layout/custom-identifiers.html.twig' %}
+                                {%- include 'admin/core/layout/custom-identifiers.html.twig' -%}
                             </div>
                             <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="screens" role="tabpanel" aria-labelledby="screens-tab">
                                 <h4 class="text-dark w-100 text-center mb-3">{{ "Cacher"|trans }}</h4>
                                 <div class="row">
-                                    {% if form.hideMobile is defined %}
+                                    {%- if form.hideMobile is defined -%}
                                         {{ form_row(form.hideMobile) }}
-                                    {% endif %}
-                                    {% if form.hideTablet is defined %}
+                                    {%- endif -%}
+                                    {%- if form.hideTablet is defined -%}
                                         {{ form_row(form.hideTablet) }}
-                                    {% endif %}
-                                    {% if form.hideMiniPc is defined %}
+                                    {%- endif -%}
+                                    {%- if form.hideMiniPc is defined -%}
                                         {{ form_row(form.hideMiniPc) }}
-                                    {% endif %}
-                                    {% if form.hideDesktop is defined %}
+                                    {%- endif -%}
+                                    {%- if form.hideDesktop is defined -%}
                                         {{ form_row(form.hideDesktop) }}
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
                                 <h4 class="text-dark w-100 text-center mb-3">{{ "Autres"|trans }}</h4>
                                 <div class="row">
-                                    {% if form.reverse is defined %}
+                                    {%- if form.reverse is defined -%}
                                         {{ form_row(form.reverse) }}
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
                                 <h4 class="text-dark w-100 text-center mb-3">{{ "Ordres / Tailles du bloc"|trans }}</h4>
                                 <div class="row">
-                                    {% if form.mobilePosition is defined %}
+                                    {%- if form.mobilePosition is defined -%}
                                         {{ form_row(form.mobilePosition) }}
-                                    {% endif %}
-                                    {% if form.tabletPosition is defined %}
+                                    {%- endif -%}
+                                    {%- if form.tabletPosition is defined -%}
                                         {{ form_row(form.tabletPosition) }}
-                                    {% endif %}
-                                    {% if form.miniPcPosition is defined %}
+                                    {%- endif -%}
+                                    {%- if form.miniPcPosition is defined -%}
                                         {{ form_row(form.miniPcPosition) }}
-                                    {% endif %}
-                                    {% if form.mobileSize is defined %}
+                                    {%- endif -%}
+                                    {%- if form.mobileSize is defined -%}
                                         {{ form_row(form.mobileSize) }}
-                                    {% endif %}
-                                    {% if form.tabletSize is defined %}
+                                    {%- endif -%}
+                                    {%- if form.tabletSize is defined -%}
                                         {{ form_row(form.tabletSize) }}
-                                    {% endif %}
-                                    {% if form.miniPCSize is defined %}
+                                    {%- endif -%}
+                                    {%- if form.miniPCSize is defined -%}
                                         {{ form_row(form.miniPCSize) }}
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
                             </div>
                         </div>

@@ -1,21 +1,21 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
 
-{% set customTemplate = 'front/'~websiteTemplate~'/actions/faq/'~faq.slug~'.html.twig' %}
-{% set customTemplateExist = (customTemplate)|fileExist %}
-{% set template = customTemplateExist ? 'front/'~websiteTemplate~'/actions/faq/template/'~faq.slug~'.html.twig'
-    : 'front/'~websiteTemplate~'/actions/faq/template/default.html.twig' %}
+{%- set customTemplate = 'front/'~websiteTemplate~'/actions/faq/'~faq.slug~'.html.twig' -%}
+{%- set customTemplateExist = (customTemplate)|fileExist -%}
+{%- set template = customTemplateExist ? 'front/'~websiteTemplate~'/actions/faq/template/'~faq.slug~'.html.twig'
+    : 'front/'~websiteTemplate~'/actions/faq/template/default.html.twig' -%}
 
-{% if faq.microdata is not empty %}
+{%- if faq.microdata is not empty -%}
 <!-- Microdata -->
 <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
-        {% for item in faq.microdata %}
-            {% set answer = item.intl.body ? item.intl.body : item.intl.introduction %}
+        {%- for item in faq.microdata -%}
+            {%- set answer = item.intl.body ? item.intl.body : item.intl.introduction -%}
             {
                 "@type": "Question",
                 "name": "{{ item.intl.title|htmlEntities|raw }}",
@@ -23,12 +23,12 @@
                     "@type": "Answer",
                     "text": "{{ answer|htmlEntities|raw }}"
                 }
-            }{% if not loop.last %},{% endif %}
-        {% endfor %}
+            }{%- if not loop.last -%},{%- endif -%}
+        {%- endfor -%}
         ]
     }
 </script>
-{% endif %}
+{%- endif -%}
 
 <div id="faq-container-{{ faq.slug }}" class="faq-container position-relative">
     {{ macroWebmaster.box({
@@ -36,53 +36,53 @@
         role: 'ROLE_FAQ',
         path: path('admin_faqquestion_index', {website: website.id, faq: faq.id})
     }) }}
-    {% if faq.intl.title or faq.intl.link %}
+    {%- if faq.intl.title or faq.intl.link -%}
         <div class="faq-teasing-content row mb-5 pb-4 pb-lg-5">
-            {% if faq.intl.title %}
+            {%- if faq.intl.title -%}
                 <div class="col-lg-6">
-                    {% include 'front/'~websiteTemplate~'/blocks/title/default.html.twig' with {
+                    {%- include 'front/'~websiteTemplate~'/blocks/title/default.html.twig' with {
                         block: faq,
                         intl: faq.intl,
                         style: 'mb-2',
-                    } %}
+                    } -%}
                 </div>
-            {% endif %}
-            {% if faq.intl.link or faq.haveMainMedia %}
-                <div class="col-lg-{% if faq.intl.title %}6{% else %}12{% endif %} d-flex align-items-end justify-content-lg-end">
+            {%- endif -%}
+            {%- if faq.intl.link or faq.haveMainMedia -%}
+                <div class="col-lg-{%- if faq.intl.title -%}6{%- else -%}12{%- endif -%} d-flex align-items-end justify-content-lg-end">
                     <div class="inner d-flex flex-column align-items-lg-end mt-4 mt-lg-0">
-                        {% if faq.haveMainMedia %}
+                        {%- if faq.haveMainMedia -%}
                             {{ faq.mainMedia|file({}, {
 
                             }) }}
-                        {% endif %}
-                        {% if faq.intl.link %}
-                            {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                        {%- endif -%}
+                        {%- if faq.intl.link -%}
+                            {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                 block: faq,
                                 intl: faq.intl,
                                 style: faq.haveMainMedia ? 'mt-4 mt-lg-5' : '',
-                            } %}
-                        {% endif %}
+                            } -%}
+                        {%- endif -%}
                     </div>
                 </div>
-            {% endif %}
+            {%- endif -%}
         </div>
-    {% endif %}
-    {% set accordionId = uniqId() %}
+    {%- endif -%}
+    {%- set accordionId = uniqId() -%}
     <div class="faq-accordion accordion accordion-flush" id="accordion-teaser-{{ accordionId }}">
-        {% for question in faq.questions %}
-            {% set badge = question.intl.placeholder %}
-            {% set marginTop = badge ? 'mt-5' : 'mt-4' %}
-            <div class="accordion-item{% if not loop.first %} {{ marginTop }}{% endif %}">
+        {%- for question in faq.questions -%}
+            {%- set badge = question.intl.placeholder -%}
+            {%- set marginTop = badge ? 'mt-5' : 'mt-4' -%}
+            <div class="accordion-item{%- if not loop.first -%} {{ marginTop }}{%- endif -%}">
                 <div class="accordion-header">
-                    <div class="accordion-button bg-secondary{% if not question.open %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-teaser-{{ accordionId }}-{{ loop.index }}" aria-expanded="false" aria-controls="accordion-teaser-{{ accordionId }}-{{ loop.index }}">
+                    <div class="accordion-button bg-secondary{%- if not question.open -%} collapsed{%- endif -%}" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-teaser-{{ accordionId }}-{{ loop.index }}" aria-expanded="false" aria-controls="accordion-teaser-{{ accordionId }}-{{ loop.index }}">
                         <div class="inner d-inline-flex flex-column">
-                            {% if badge %}
+                            {%- if badge -%}
                                 <div class="badge-wrap position-relative mb-2">
                                     <span class="badge bg-primary d-inline-flex fw-300 lh-1 text-uppercase d-flex align-items-center">{{ badge|unescape|raw }}</span>
                                 </div>
-                            {% endif %}
+                            {%- endif -%}
                             <div class="d-flex">
-                                {% if question.pictogram %}
+                                {%- if question.pictogram -%}
                                     <div class="pictogram d-inline-block mt-1 me-3">
                                         {{ asset(question.pictogram)|file({}, {
                                             screensSizes: {
@@ -92,46 +92,46 @@
                                             },
                                         }) }}
                                     </div>
-                                {% endif %}
-                                {% if question.intl.title or question.intl.subTitle %}
+                                {%- endif -%}
+                                {%- if question.intl.title or question.intl.subTitle -%}
                                     <div class="content d-flex flex-column">
-                                        {% if question.intl.title %}
-                                            <strong class="question d-inline-flex align-items-center lh-1 pe-4">{{ question.intl.title|unescape|raw }}</strong>{% if question.intl.subTitle %}<br>{% endif %}
-                                        {% endif %}
-                                        {% if question.intl.subTitle %}
+                                        {%- if question.intl.title -%}
+                                            <strong class="question d-inline-flex align-items-center lh-1 pe-4">{{ question.intl.title|unescape|raw }}</strong>{%- if question.intl.subTitle -%}<br>{%- endif -%}
+                                        {%- endif -%}
+                                        {%- if question.intl.subTitle -%}
                                             <p class="info mb-0 fw-300 text-italic lh-1 mt-2">{{ question.intl.subTitle|unescape|raw }}</p>
-                                        {% endif %}
+                                        {%- endif -%}
                                     </div>
-                                {% endif %}
+                                {%- endif -%}
                             </div>
                         </div>
                     </div>
                 </div>
-                {% if question.intl.introduction or question.intl.body or faq.haveMainMedia %}
-                    <div id="accordion-teaser-{{ accordionId }}-{{ loop.index }}" class="accordion-collapse collapse{% if question.open %} show{% endif %}" data-bs-parent="#accordion-teaser-{{ accordionId }}">
+                {%- if question.intl.introduction or question.intl.body or faq.haveMainMedia -%}
+                    <div id="accordion-teaser-{{ accordionId }}-{{ loop.index }}" class="accordion-collapse collapse{%- if question.open -%} show{%- endif -%}" data-bs-parent="#accordion-teaser-{{ accordionId }}">
                         <div class="content bg-gray-400 pt-4 pb-4 px-3 px-md-4 row m-0">
-                            {% if question.intl.introduction or question.intl.body %}
-                                <div class="order-2 order-lg-1 {% if question.haveMedias %}col-lg-7 pe-lg-5{% else %}col-lg-12{% endif %}">
-                                    {% if question.intl.introduction %}
-                                        <p class="introduction fw-700{% if not question.intl.body %} mb-0{% endif %}">{{ question.intl.introduction|unescape|raw }}</p>
-                                    {% endif %}
-                                    {% if question.intl.body %}
+                            {%- if question.intl.introduction or question.intl.body -%}
+                                <div class="order-2 order-lg-1 {%- if question.haveMedias -%}col-lg-7 pe-lg-5{%- else -%}col-lg-12{%- endif -%}">
+                                    {%- if question.intl.introduction -%}
+                                        <p class="introduction fw-700{%- if not question.intl.body -%} mb-0{%- endif -%}">{{ question.intl.introduction|unescape|raw }}</p>
+                                    {%- endif -%}
+                                    {%- if question.intl.body -%}
                                         <div class="body">{{ question.intl.body|unescape|raw }}</div>
-                                    {% endif %}
-                                    {% if question.intl.link %}
-                                        {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: question.intl, style: 'mt-4'} only %}
-                                    {% endif %}
+                                    {%- endif -%}
+                                    {%- if question.intl.link -%}
+                                        {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: question.intl, style: 'mt-4'} only -%}
+                                    {%- endif -%}
                                 </div>
-                            {% endif %}
-                            {% if question.haveMedias %}
+                            {%- endif -%}
+                            {%- if question.haveMedias -%}
                                 <div class="order-1 order-lg-2 col-md-8 col-lg-5 pb-4 pb-lg-0">
                                     {{ question.mainMedia|file(thumbConfiguration) }}
                                 </div>
-                            {% endif %}
+                            {%- endif -%}
                         </div>
                     </div>
-                {% endif %}
+                {%- endif -%}
             </div>
-        {% endfor %}
+        {%- endfor -%}
     </div>
 </div>

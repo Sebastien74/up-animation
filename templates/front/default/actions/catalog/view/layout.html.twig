@@ -1,37 +1,37 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% set blockType = block.blockType is defined and block.blockType ? block.blockType.slug : null %}
-{% set catalogSlug = entity.catalog.slug is defined ? entity.catalog.slug : null %}
-{% set asAgency = entity.asAgency %}
+{%- set blockType = block.blockType is defined and block.blockType ? block.blockType.slug : null -%}
+{%- set catalogSlug = entity.catalog.slug is defined ? entity.catalog.slug : null -%}
+{%- set asAgency = entity.asAgency -%}
 
-{% if blockType == 'layout-title-header' %}
+{%- if blockType == 'layout-title-header' -%}
 
-    {% set pageTitle = entity.intl.title %}
-    {% if asAgency and not pageTitle %}
-        {% if entity.city or entity.department or entity.zipcodeSmall %}
-            {% set pageTitle = 'Animations événementielles' %}
-            {% if entity.city or entity.department or entity.zipcodeSmall %}
-                {% set pageTitle = pageTitle~'<br>' %}
-                {% if entity.city %}
-                    {% set pageTitle = pageTitle~' à <span class="text-primary">'~entity.city~'</span>' %}
-                {% endif %}
-                {% if entity.department %}
-                    {% set pageTitle = pageTitle~' '~entity.department|deptPreposition~entity.department %}
-                {% endif %}
-                {% if entity.zipcodeSmall %}
-                    {% set pageTitle = pageTitle~' '~entity.zipcodeSmall %}
-                {% endif %}
-                {% if entity.country != 'FR' %}
-                    {% set pageTitle = pageTitle~' en '~entity.country|countryName %}
-                {% endif %}
-            {% endif %}
-        {% else %}
-            {% set pageTitle = entity.adminName %}
-        {% endif %}
-    {% endif %}
+    {%- set pageTitle = entity.intl.title -%}
+    {%- if asAgency and not pageTitle -%}
+        {%- if entity.city or entity.department or entity.zipcodeSmall -%}
+            {%- set pageTitle = 'Animations événementielles' -%}
+            {%- if entity.city or entity.department or entity.zipcodeSmall -%}
+                {%- set pageTitle = pageTitle~'<br>' -%}
+                {%- if entity.city -%}
+                    {%- set pageTitle = pageTitle~' à <span class="text-primary">'~entity.city~'</span>' -%}
+                {%- endif -%}
+                {%- if entity.department -%}
+                    {%- set pageTitle = pageTitle~' '~entity.department|deptPreposition~entity.department -%}
+                {%- endif -%}
+                {%- if entity.zipcodeSmall -%}
+                    {%- set pageTitle = pageTitle~' '~entity.zipcodeSmall -%}
+                {%- endif -%}
+                {%- if entity.country != 'FR' -%}
+                    {%- set pageTitle = pageTitle~' en '~entity.country|countryName -%}
+                {%- endif -%}
+            {%- endif -%}
+        {%- else -%}
+            {%- set pageTitle = entity.adminName -%}
+        {%- endif -%}
+    {%- endif -%}
 
-    {% set displayMainMedia = false %}
-    {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+    {%- set displayMainMedia = false -%}
+    {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
         block: entity,
         customMedia: displayMainMedia ? intlMainMedia : entity.headerMedia,
         titleForce: 1,
@@ -40,58 +40,58 @@
         pageTitle: pageTitle,
         template: websiteTemplate,
         thumbConfiguration: thumbConfigurationHeader
-    } %}
+    } -%}
 
-{% elseif blockType == 'layout-title' and entity.intl.title %}
+{%- elseif blockType == 'layout-title' and entity.intl.title -%}
 
     <h{{ entity.intl.titleForce }} class="title mt-4 mb-4">{{ entity.intl.title|raw }}</h{{ entity.intl.titleForce }}>
 
-{% elseif blockType == 'layout-published-date' and entity.date %}
+{%- elseif blockType == 'layout-published-date' and entity.date -%}
 
-    {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-published-date.html.twig' with {entity: entity} only %}
+    {%- include 'front/'~websiteTemplate~'/actions/vendor/include/layout-published-date.html.twig' with {entity: entity} only -%}
 
-{% elseif blockType == 'layout-intro'  %}
+{%- elseif blockType == 'layout-intro' -%}
 
-    {% if asAgency %}
+    {%- if asAgency -%}
         <div class="introduction radius shadow px-5 py-5">
-            {% if not entity.intl.introduction %}
-                <p>Vous souhaitez<strong> animer votre prochain événement</strong>{% if entity.city %} dans la ville {{ entity.city|deCityPrefix }}{{ entity.city }}{% endif %}{% if entity.department %} {{ entity.department|deptPreposition }}{{ entity.department }}{% endif %}&nbsp;? Faites confiance à l'équipe Up&nbsp;Animations spécialiste {{ entity.city|deCityPrefix }}{{ entity.city }} et ses environs. Nous vous proposons des <strong>animations expertes</strong> pour séminaires, team building, soirées d'entreprises, anniversaires d'entreprises, arbres de noël, centres commerciaux et offices de tourisme. Avec Up&nbsp;Animations vous vous offrez des animations pour événements <strong>100% uniques et personnalisés</strong>.</p>
-            {% else %}
+            {%- if not entity.intl.introduction -%}
+                <p>Vous souhaitez<strong> animer votre prochain événement</strong>{%- if entity.city -%} dans la ville {{ entity.city|deCityPrefix }}{{ entity.city }}{%- endif -%}{%- if entity.department -%} {{ entity.department|deptPreposition }}{{ entity.department }}{%- endif -%}&nbsp;? Faites confiance à l'équipe Up&nbsp;Animations spécialiste {{ entity.city|deCityPrefix }}{{ entity.city }} et ses environs. Nous vous proposons des <strong>animations expertes</strong> pour séminaires, team building, soirées d'entreprises, anniversaires d'entreprises, arbres de noël, centres commerciaux et offices de tourisme. Avec Up&nbsp;Animations vous vous offrez des animations pour événements <strong>100% uniques et personnalisés</strong>.</p>
+            {%- else -%}
                 {{ entity.intl.introduction|raw }}
-            {% endif %}
+            {%- endif -%}
         </div>
-    {% elseif entity.intl.introduction %}
-        <p class="introduction {% if not asAgency %}text-bold{% else %}bg-light{% endif %}">{{ entity.intl.introduction|raw }}</p>
-    {% endif %}
+    {%- elseif entity.intl.introduction -%}
+        <p class="introduction {%- if not asAgency -%}text-bold{%- else -%}bg-light{%- endif -%}">{{ entity.intl.introduction|raw }}</p>
+    {%- endif -%}
 
-{% elseif blockType == 'layout-body' %}
+{%- elseif blockType == 'layout-body' -%}
 
-    {% if asAgency and not entity.intl.body %}
+    {%- if asAgency and not entity.intl.body -%}
         <div class="body">
-            <p class="mb-2">Votre partenaire Up&nbsp;Animations {% if entity.city %}<strong>basé dans la ville {{ entity.city|deCityPrefix }}{{ entity.city }}</strong> {% endif %}vous propose ses services d'<strong>animations pour tout événement</strong> d'entreprise. Offrez à vos invités des animations professionnelles uniques. Nous vous proposons de <strong>nombreuses animations</strong>{% if entity.department %} {{ entity.department|deptPreposition('all_in') }}{{ entity.department }}{% if entity.zipcodeSmall %}&nbsp;{{ entity.zipcodeSmall }}{% endif %}{% endif %}.</p>
+            <p class="mb-2">Votre partenaire Up&nbsp;Animations {%- if entity.city -%}<strong>basé dans la ville {{ entity.city|deCityPrefix }}{{ entity.city }}</strong> {%- endif -%}vous propose ses services d'<strong>animations pour tout événement</strong> d'entreprise. Offrez à vos invités des animations professionnelles uniques. Nous vous proposons de <strong>nombreuses animations</strong>{%- if entity.department -%} {{ entity.department|deptPreposition('all_in') }}{{ entity.department }}{%- if entity.zipcodeSmall -%}&nbsp;{{ entity.zipcodeSmall }}{%- endif -%}{%- endif -%}.</p>
             <p class="mb-2">Nous nous <strong>adaptons à toutes vos demandes</strong> et à tous vos besoins en terme d'animations et de thèmes. Nous vous offrons pour cela un large panel d'animations.</p>
-            <p class="mb-2">Choisissez votre prochaine <strong>animation en fonction de votre événement</strong>&nbsp;: team building, séminaire, soirée d'entreprise, anniversaire d'entreprise, arbre de Noël, centre commercial, événementiel, office de tourisme et même magie.{% if entity.department or entity.city %} Toutes nos animations sont disponibles{% if entity.department %} {{ entity.department|deptPreposition('all_in') }}{{ entity.department }}{% endif %}{% if entity.department and entity.city %} et{% elseif entity.city %} dans toutes les{% endif %}{% if entity.city %} <strong>villes proches {{ entity.city|deCityPrefix }}{{ entity.city }}</strong>{% endif %}{% endif %}&nbsp;!</p>
+            <p class="mb-2">Choisissez votre prochaine <strong>animation en fonction de votre événement</strong>&nbsp;: team building, séminaire, soirée d'entreprise, anniversaire d'entreprise, arbre de Noël, centre commercial, événementiel, office de tourisme et même magie.{%- if entity.department or entity.city -%} Toutes nos animations sont disponibles{%- if entity.department -%} {{ entity.department|deptPreposition('all_in') }}{{ entity.department }}{%- endif -%}{%- if entity.department and entity.city -%} et{%- elseif entity.city -%} dans toutes les{%- endif -%}{%- if entity.city -%} <strong>villes proches {{ entity.city|deCityPrefix }}{{ entity.city }}</strong>{%- endif -%}{%- endif -%}&nbsp;!</p>
             <p class="mb-0">Faites vite appel à votre partenaire événementiel Up&nbsp;Animations&nbsp;!</p>
         </div>
-    {% elseif entity.intl.body %}
+    {%- elseif entity.intl.body -%}
         <div class="body">{{ entity.intl.body|raw }}</div>
-    {% endif %}
+    {%- endif -%}
 
-{% elseif blockType == 'layout-video' and entity.mainVideo %}
+{%- elseif blockType == 'layout-video' and entity.mainVideo -%}
 
-    {% include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {media: entity.mainVideo} %}
+    {%- include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {media: entity.mainVideo} -%}
 
-{% elseif blockType == 'layout-gallery' and entity.medias is not empty %}
+{%- elseif blockType == 'layout-gallery' and entity.medias is not empty -%}
 
-    {% include 'front/'~websiteTemplate~'/include/gallery.html.twig' with {gallery: entity, slug: 'product'} %}
+    {%- include 'front/'~websiteTemplate~'/include/gallery.html.twig' with {gallery: entity, slug: 'product'} -%}
 
-{% elseif blockType == 'layout-slider' and entity.medias is not empty %}
+{%- elseif blockType == 'layout-slider' and entity.medias is not empty -%}
 
-    {% set slideType = 'thumbnails' %}
+    {%- set slideType = 'thumbnails' -%}
 
     <div class="mt-4 mt-lg-0">
-        {% if 'thumbnails' == slideType %}
-            {% include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
+        {%- if 'thumbnails' == slideType -%}
+            {%- include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
                 medias: entity.medias,
                 thumbConfiguration: thumbConfigurationView,
                 arrowsSide: 'side',
@@ -117,9 +117,9 @@
                     itemsPerSlideTablet: 1,
                     itemsPerSlideMobile: 1,
                 }
-            } %}
-        {% else %}
-            {% include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
+            } -%}
+        {%- else -%}
+            {%- include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
                 sliderSlug: 'product',
                 websiteTemplate: websiteTemplate,
                 entity: entity,
@@ -137,22 +137,22 @@
                     tablet: {width: null, height: 375},
                     desktop: {width: null, height: 375}
                 },
-            } only %}
-        {% endif %}
+            } only -%}
+        {%- endif -%}
     </div>
 
-{% elseif blockType == 'layout-link' and entity.intl.link %}
+{%- elseif blockType == 'layout-link' and entity.intl.link -%}
 
-    {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: entity.intl} %}
+    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: entity.intl} -%}
 
-{% elseif blockType == 'layout-image' %}
+{%- elseif blockType == 'layout-image' -%}
 
-    {% set mainMedia = entity.asAgency ? entity.mediasWithoutMain|first : entity.mainMedia %}
-    {% if mainMedia %}
+    {%- set mainMedia = entity.asAgency ? entity.mediasWithoutMain|first : entity.mainMedia -%}
+    {%- if mainMedia -%}
         <div class="image-wrap">{{ mainMedia|file(thumbConfiguration) }}</div>
-    {% endif %}
+    {%- endif -%}
 
-{% elseif blockType == 'layout-catalog-lots-table' %}
+{%- elseif blockType == 'layout-catalog-lots-table' -%}
 
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
@@ -166,86 +166,86 @@
                 </tr>
             </thead>
             <tbody>
-                {% for lot in entity.entity.lots %}
+                {%- for lot in entity.entity.lots -%}
                     <tr>
-                        {% set reference = "n/c"|trans %}
-                        {% if lot.reference %}
-                            {% set reference = lot.reference %}
-                        {% endif %}
+                        {%- set reference = "n/c"|trans -%}
+                        {%- if lot.reference -%}
+                            {%- set reference = lot.reference -%}
+                        {%- endif -%}
                         <td data-title="{{ "Lot N°"|trans|raw~" "~reference }}">
                             {{ reference|raw  }}
                         </td>
-                        {% set type = "n/c"|trans %}
-                        {% if lot.type %}
-                            {% set type = lot.type %}
-                        {% endif %}
+                        {%- set type = "n/c"|trans -%}
+                        {%- if lot.type -%}
+                            {%- set type = lot.type -%}
+                        {%- endif -%}
                         <td data-title="{{ "Type :"|trans|raw~" "~type }}">
                             {{ type|raw  }}
                         </td>
-                        {% set surface = "n/c"|trans %}
-                        {% if lot.surface %}
-                            {% set surface = lot.surface %}
-                            {% if 'm²' not in surface %}
-                                {% set surface = surface~"m²" %}
-                            {% endif %}
-                        {% endif %}
+                        {%- set surface = "n/c"|trans -%}
+                        {%- if lot.surface -%}
+                            {%- set surface = lot.surface -%}
+                            {%- if 'm²' not in surface -%}
+                                {%- set surface = surface~"m²" -%}
+                            {%- endif -%}
+                        {%- endif -%}
                         <td data-title="{{ "Surface :"|trans|raw~" "~surface }}">
                             {{ surface|raw }}
                         </td>
-                        {% set balconySurface = "n/c"|trans %}
-                        {% if lot.balconySurface %}
-                            {% set balconySurface = lot.balconySurface %}
-                            {% if 'm²' not in balconySurface %}
-                                {% set balconySurface = balconySurface~"m²" %}
-                            {% endif %}
-                        {% endif %}
+                        {%- set balconySurface = "n/c"|trans -%}
+                        {%- if lot.balconySurface -%}
+                            {%- set balconySurface = lot.balconySurface -%}
+                            {%- if 'm²' not in balconySurface -%}
+                                {%- set balconySurface = balconySurface~"m²" -%}
+                            {%- endif -%}
+                        {%- endif -%}
                         <td data-title="{{ "Surface balcon / terrasse :"|trans|raw~" "~balconySurface }}">
                             {{ balconySurface|raw }}
                         </td>
-                        {% set sold = "n/c"|trans %}
-                        {% if lot.sold %}
-                            {% set sold = "Vendu"|trans %}
-                        {% elseif lot.price > 0 %}
-                            {% set sold = lot.price|format_currency('EUR', {rounding_mode: 'ceiling', fraction_digit: 0}) %}
-                        {% endif %}
+                        {%- set sold = "n/c"|trans -%}
+                        {%- if lot.sold -%}
+                            {%- set sold = "Vendu"|trans -%}
+                        {%- elseif lot.price > 0 -%}
+                            {%- set sold = lot.price|format_currency('EUR', {rounding_mode: 'ceiling', fraction_digit: 0}) -%}
+                        {%- endif -%}
                         <td data-title="{{ "Prix (€) :"|trans|raw~" "~sold }}">
                             {{ sold|raw  }}
                         </td>
                     </tr>
-                {% endfor %}
+                {%- endfor -%}
             </tbody>
         </table>
     </div>
 
-{% elseif blockType == 'layout-contact' %}
+{%- elseif blockType == 'layout-contact' -%}
 
-    {% include 'front/'~websiteTemplate~'/actions/information/view.html.twig' with {website: website} only %}
+    {%- include 'front/'~websiteTemplate~'/actions/information/view.html.twig' with {website: website} only -%}
 
-{% elseif blockType == 'layout-catalog-features' and entity.values['byFeaturesSlugs'] is defined and entity.values['byFeaturesSlugs'] is not empty  %}
+{%- elseif blockType == 'layout-catalog-features' and entity.values['byFeaturesSlugs'] is defined and entity.values['byFeaturesSlugs'] is not empty -%}
 
-    {% set featureId = block.data.featureId is defined ? block.data.featureId : null %}
-    {% set feature = entity.values.featuresByIds[featureId] is defined ? entity.values.featuresByIds[featureId] : [] %}
-    {% set featureSlug = feature.slug is defined ? feature.slug : null %}
-    {% set values = entity.values.byFeaturesIds[featureId] is defined ? entity.values.byFeaturesIds[featureId] : [] %}
+    {%- set featureId = block.data.featureId is defined ? block.data.featureId : null -%}
+    {%- set feature = entity.values.featuresByIds[featureId] is defined ? entity.values.featuresByIds[featureId] : [] -%}
+    {%- set featureSlug = feature.slug is defined ? feature.slug : null -%}
+    {%- set values = entity.values.byFeaturesIds[featureId] is defined ? entity.values.byFeaturesIds[featureId] : [] -%}
 
-    {% if values is not empty %}
+    {%- if values is not empty -%}
         <h2 class="title fw-600 mb-5">{{ feature.intl.title|raw }}</h2>
         <ul>
-            {% for value in values %}
+            {%- for value in values -%}
                 <li>{{ value.value.intl.title|striptags }}</li>
-            {% endfor %}
+            {%- endfor -%}
         </ul>
-    {% endif %}
+    {%- endif -%}
 
-{% elseif blockType == 'layout-map' and entity.entity.informations[0].addresses[0] is defined %}
+{%- elseif blockType == 'layout-map' and entity.entity.informations[0].addresses[0] is defined -%}
 
-    {% set information = entity.entity.informations[0] %}
-    {% set address = information.addresses[0] %}
-    {% set zoom = address.zoom ? address.zoom : 11 %}
-    {% set minZoom = address.minZoom ? address.minZoom : 5 %}
-    {% set maxZoom = address.maxZoom ? address.maxZoom : 20 %}
+    {%- set information = entity.entity.informations[0] -%}
+    {%- set address = information.addresses[0] -%}
+    {%- set zoom = address.zoom ? address.zoom : 11 -%}
+    {%- set minZoom = address.minZoom ? address.minZoom : 5 -%}
+    {%- set maxZoom = address.maxZoom ? address.maxZoom : 20 -%}
 
-    {% if address.latitude and address.longitude %}
+    {%- if address.latitude and address.longitude -%}
         <div class="map-container">
             <div id="product-map-{{ entity.id }}" class="map-box" data-layer="" data-multiple="">
                 <div class="data-map d-none"
@@ -280,61 +280,61 @@
                          data-country="{{ address.country|countryName }}"
                          data-google-map-url="{{ address.googleMapUrl }}"
                          data-google-map-direction-url="{{ address.googleMapDirectionUrl }}">
-                        {% for phone in information.phones %}
+                        {%- for phone in information.phones -%}
                             <div class="phone" data-number="{{ phone.number }}" data-href="{{ phone.tagNumber }}"></div>
-                        {% endfor %}
+                        {%- endfor -%}
                     </div>
                 </div>
             </div>
         </div>
-    {% endif %}
+    {%- endif -%}
 
-{% elseif blockType == 'layout-back-button' %}
+{%- elseif blockType == 'layout-back-button' -%}
 
-    {% set pageUrl = pageUrl is defined ? pageUrl : null %}
-    {% if pageUrl %}
-        {% set btnLabel = entity.catalog.intl.linkLabel is defined and entity.catalog.intl.linkLabel
-            ? entity.catalog.intl.linkLabel : "Retourner à la liste des produits"|trans %}
+    {%- set pageUrl = pageUrl is defined ? pageUrl : null -%}
+    {%- if pageUrl -%}
+        {%- set btnLabel = entity.catalog.intl.linkLabel is defined and entity.catalog.intl.linkLabel
+            ? entity.catalog.intl.linkLabel : "Retourner à la liste des produits"|trans -%}
         <a href="{{ path('front_index', {url: pageUrl}) }}" class="link">
             <i class="icon-chevron-left me-2"></i>{{ btnLabel }}
         </a>
-    {% endif %}
+    {%- endif -%}
 
-{% elseif blockType == 'layout-associated-entities' %}
+{%- elseif blockType == 'layout-associated-entities' -%}
 
-    {% set display = layout.associatedEntitiesDisplay is defined and layout.associatedEntitiesDisplay ? layout.associatedEntitiesDisplay : 'slider' %}
-    {% if asAgency %}
-        {% set listingTitle = 'Découvrez<br> <span>nos autres agences</span>'|trans %}
-    {% endif %}
-    <div class="associated-entities-container w-100{% if associatedEntities.list is empty %} empty-associated-entities{% endif %}">
-        {% if associatedEntities.list is empty %}
+    {%- set display = layout.associatedEntitiesDisplay is defined and layout.associatedEntitiesDisplay ? layout.associatedEntitiesDisplay : 'slider' -%}
+    {%- if asAgency -%}
+        {%- set listingTitle = 'Découvrez<br> <span>nos autres agences</span>'|trans -%}
+    {%- endif -%}
+    <div class="associated-entities-container w-100{%- if associatedEntities.list is empty -%} empty-associated-entities{%- endif -%}">
+        {%- if associatedEntities.list is empty -%}
             <p class="mb-0">{{ "Aucun produit associés."|trans|raw }}</p>
-        {% elseif 'slider' == display %}
-            {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-slider.html.twig' %}
-        {% elseif 'list' == display %}
-            {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-list.html.twig' %}
-        {% else %}
-            {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-cards.html.twig' %}
-        {% endif %}
+        {%- elseif 'slider' == display -%}
+            {%- include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-slider.html.twig' -%}
+        {%- elseif 'list' == display -%}
+            {%- include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-list.html.twig' -%}
+        {%- else -%}
+            {%- include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-cards.html.twig' -%}
+        {%- endif -%}
     </div>
 
-{% elseif blockType == 'layout-secondary-title' %}
+{%- elseif blockType == 'layout-secondary-title' -%}
 
     <div class="block-secondary-title">
         <span class="subtitle text-uppercase d-inline-block mb-2">À la recherche d'un professionnel&nbsp;?</span>
-        <h2 class="title text-uppercase">Des animations pour<br> <span>tous vos événements{% if entity.department %} <br>{{ entity.department|deptPreposition }} {{ entity.department }}{% endif %}</span></h2>
+        <h2 class="title text-uppercase">Des animations pour<br> <span>tous vos événements{%- if entity.department -%} <br>{{ entity.department|deptPreposition }} {{ entity.department }}{%- endif -%}</span></h2>
     </div>
 
-{% elseif blockType == 'layout-agency-animations' %}
+{%- elseif blockType == 'layout-agency-animations' -%}
 
     <div class="agency-animations">
-        <h2 class="title text-uppercase">Découvrez nos animations<br> <span>séminaire, team building & soirée d'entreprise{% if entity.city %} à {{ entity.city }}{% endif %}</span></h2>
+        <h2 class="title text-uppercase">Découvrez nos animations<br> <span>séminaire, team building & soirée d'entreprise{%- if entity.city -%} à {{ entity.city }}{%- endif -%}</span></h2>
     </div>
 
-{% elseif blockType == 'layout-highlights-agency' %}
+{%- elseif blockType == 'layout-highlights-agency' -%}
 
     <div class="agency-highlights">
-        <h2 class="title text-uppercase mb-5">Pourquoi animer son événement<br> <span>professionnel{% if entity.city %} à {{ entity.city }}{% endif %}&nbsp;?</span></h2>
+        <h2 class="title text-uppercase mb-5">Pourquoi animer son événement<br> <span>professionnel{%- if entity.city -%} à {{ entity.city }}{%- endif -%}&nbsp;?</span></h2>
         <div class="row d-flex justify-content-center">
             <div class="col-lg-4">
                 <div class="card radius bg-primary h-100 px-3 py-2">
@@ -347,15 +347,15 @@
                     </div>
                     <div class="card-body px-4 pt-0 pb-4">
                         <div class="body">
-                            {% if entity.intl.gather %}
+                            {%- if entity.intl.gather -%}
                                 {{ entity.intl.gather|raw }}
-                            {% else %}
-                                <p class="mb-2">Up&nbsp;Animations vous propose des animations originales et festives pour tous vos événements{% if entity.city %} à {{ entity.city }}{% endif %}.</p>
+                            {%- else -%}
+                                <p class="mb-2">Up&nbsp;Animations vous propose des animations originales et festives pour tous vos événements{%- if entity.city -%} à {{ entity.city }}{%- endif -%}.</p>
                                 <p class="mb-2">Faites parler de vous et de votre événement autour de vous grâce à des animations qui sauront marquer les esprits.</p>
                                 <p class="mb-2">Notre équipe vous propose des animations hors du commun qui offrira surprise et interactivité. Nous vous offrons également la possibilité de créer votre animation événementielle 100% sur mesure pour répondre à tous vos objectifs.</p>
-                                <p class="mb-2">Vous avez une idée ? Nous nous chargeons de la mettre en œuvre{% if entity.department %} {{ entity.department|deptPreposition }}{{ entity.department }}{% endif %}. Pour que votre événement d'entreprise ne ressemble qu'à vous&nbsp;!</p>
+                                <p class="mb-2">Vous avez une idée ? Nous nous chargeons de la mettre en œuvre{%- if entity.department -%} {{ entity.department|deptPreposition }}{{ entity.department }}{%- endif -%}. Pour que votre événement d'entreprise ne ressemble qu'à vous&nbsp;!</p>
                                 <p class="mb-0">Alors qu'attendez-vous&nbsp;?</p>
-                            {% endif %}
+                            {%- endif -%}
                         </div>
                     </div>
                 </div>
@@ -371,14 +371,14 @@
                     </div>
                     <div class="card-body px-4 pt-0 pb-4">
                         <div class="body">
-                            {% if entity.intl.sympathise %}
+                            {%- if entity.intl.sympathise -%}
                                 {{ entity.intl.sympathise|raw }}
-                            {% else %}
-                                <p class="mb-2">La solution Up&nbsp;Animations c'est organiser des événements professionnels d'envergure{% if entity.city %} à {{ entity.city }}{% endif %}.</p>
+                            {%- else -%}
+                                <p class="mb-2">La solution Up&nbsp;Animations c'est organiser des événements professionnels d'envergure{%- if entity.city -%} à {{ entity.city }}{%- endif -%}.</p>
                                 <p class="mb-2">Nous nous occupons de tout&nbsp;: la logistique, l'organisation et la mise en place du matériel.</p>
                                 <p class="mb-2">Nous pouvons vous proposer la création d'olympiades&nbsp;: des jeux et des challenges vous attendent. De nombreuses animations vous sont proposées&nbsp;: la soirée casino, un après-midi modélisme ou encore faire la course en buggy téléguidé.</p>
-                                <p class="mb-0">Nos équipes restent disponibles pour prendre en main vos animations tout au long de votre Anniversaire d'entreprise. Faites confiance à Up&nbsp;Animations{% if entity.city %} {{ entity.city }}{% endif %} pour rendre votre événement unique aux yeux de vos invités&nbsp;!</p>
-                            {% endif %}
+                                <p class="mb-0">Nos équipes restent disponibles pour prendre en main vos animations tout au long de votre Anniversaire d'entreprise. Faites confiance à Up&nbsp;Animations{%- if entity.city -%} {{ entity.city }}{%- endif -%} pour rendre votre événement unique aux yeux de vos invités&nbsp;!</p>
+                            {%- endif -%}
                         </div>
                     </div>
                 </div>
@@ -394,15 +394,15 @@
                     </div>
                     <div class="card-body px-4 pt-0 pb-4">
                         <div class="body">
-                            {% if entity.intl.impress %}
+                            {%- if entity.intl.impress -%}
                                 {{ entity.intl.impress|raw }}
-                            {% else %}
-                                <p class="mb-2">Choisissez votre partenaire Up&nbsp;Animations pour l'animation de votre prochain événement{% if entity.city %} à {{ entity.city }}{% endif %}, c'est être sûr de marquer les esprits de vos invités.</p>
+                            {%- else -%}
+                                <p class="mb-2">Choisissez votre partenaire Up&nbsp;Animations pour l'animation de votre prochain événement{%- if entity.city -%} à {{ entity.city }}{%- endif -%}, c'est être sûr de marquer les esprits de vos invités.</p>
                                 <p class="mb-2">Nous répondons à tous vos objectifs&nbsp;: visibilité ou notoriété.</p>
-                                <p class="mb-2">Nos animateurs et magiciens se rendent sur votre événement dans n'importe quelle ville près de votre entreprise. Nous nous chargeons de toutes les animations de votre événement professionnel{% if entity.city %} dans la ville {{ entity.city|deCityPrefix }}{{ entity.city }}{% endif %}{% if entity.city and entity.department %} et{% endif %}{% if entity.department %} {{ entity.department|deptPreposition('all_in') }}{{ entity.department }}{% endif %}{% if entity.zipcodeSmall %}&nbsp;{{ entity.zipcodeSmall }}{% endif %}.</p>
+                                <p class="mb-2">Nos animateurs et magiciens se rendent sur votre événement dans n'importe quelle ville près de votre entreprise. Nous nous chargeons de toutes les animations de votre événement professionnel{%- if entity.city -%} dans la ville {{ entity.city|deCityPrefix }}{{ entity.city }}{%- endif -%}{%- if entity.city and entity.department -%} et{%- endif -%}{%- if entity.department -%} {{ entity.department|deptPreposition('all_in') }}{{ entity.department }}{%- endif -%}{%- if entity.zipcodeSmall -%}&nbsp;{{ entity.zipcodeSmall }}{%- endif -%}.</p>
                                 <p class="mb-2">Marquez les esprits et les journaux&nbsp;! Avec une animation originale pour des retombées médiatiques positives.</p>
                                 <p class="mb-0">Profitez d'un tel événement pour faire parler de vous et de votre enseigne.</p>
-                            {% endif %}
+                            {%- endif -%}
                         </div>
                     </div>
                 </div>
@@ -410,15 +410,15 @@
         </div>
     </div>
 
-{% elseif blockType == 'layout-agency-animations-city' %}
+{%- elseif blockType == 'layout-agency-animations-city' -%}
 
     <div class="agency-animations-city">
-        <h2 class="title text-uppercase">Découvrez toutes <br> <span>nos animations{% if entity.department %} {{ entity.department|deptPreposition }}{{ entity.department }}{% endif %}{% if entity.zipcodeSmall %}&nbsp;{{ entity.zipcodeSmall }}{% endif %}</span></h2>
+        <h2 class="title text-uppercase">Découvrez toutes <br> <span>nos animations{%- if entity.department -%} {{ entity.department|deptPreposition }}{{ entity.department }}{%- endif -%}{%- if entity.zipcodeSmall -%}&nbsp;{{ entity.zipcodeSmall }}{%- endif -%}</span></h2>
 
     </div>
 
-{% elseif blockType == 'layout-share' %}
+{%- elseif blockType == 'layout-share' -%}
 
-    {% include 'front/'~websiteTemplate~'/blocks/share/default.html.twig' %}
+    {%- include 'front/'~websiteTemplate~'/blocks/share/default.html.twig' -%}
 
-{% endif %}
+{%- endif -%}

@@ -1,7 +1,7 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set domain = entitylocale|domain %}
-{% set scheme = not domain ? "Non configuré"|trans : domain %}
+{%- set domain = entitylocale|domain -%}
+{%- set scheme = not domain ? "Non configuré"|trans : domain -%}
 
 <div id="google-preview"
      class="card mb-3"
@@ -19,7 +19,7 @@
         <h5 class="main-subtitle"><i class="icm-google"></i>{{ "Aperçu Google"|trans }}</h5>
         <div class="seo-title mb-0 ellipsis">
             <span class="title">{{ seo.title }}</span>
-            <span class="title-dash">{% if seo.title|striptags|length > 0 %} - {% endif %}{% if seo.afterDash %}{{ seo.afterDash }}{% endif %}</span>
+            <span class="title-dash">{%- if seo.title|striptags|length > 0 -%} - {%- endif -%}{%- if seo.afterDash -%}{{ seo.afterDash }}{%- endif -%}</span>
         </div>
         <div class="canonical ellipsis">
             <span class="seo-canonical">{{ seo.canonical }}</span>
@@ -31,9 +31,9 @@
 
 </div>
 
-{% set ogImage = seo.ogImage ? seo.ogImage : null %}
-{% set ogImage = not ogImage and logos.share is defined and logos.share ? logos.share : ogImage %}
-{% set ogImage = ogImage and app.request.getSchemeAndHttpHost() not in ogImage ? app.request.getSchemeAndHttpHost()~ogImage : ogImage %}
+{%- set ogImage = seo.ogImage ? seo.ogImage : null -%}
+{%- set ogImage = not ogImage and logos.share is defined and logos.share ? logos.share : ogImage -%}
+{%- set ogImage = ogImage and app.request.getSchemeAndHttpHost() not in ogImage ? app.request.getSchemeAndHttpHost()~ogImage : ogImage -%}
 
 <div id="highlight-preview" class="card">
     <div class="card-body pb-2">
@@ -41,25 +41,25 @@
     </div>
     <section id="highlight-metas" class="language-markup">
 <pre>&lt;!-- Metas --/>
-<code class="highlight highlight-title">&lt;title>{{ seo.title|striptags }}{% if seo.title|striptags|length > 0 %} - {{ seo.afterDash }}{% endif %}{% if seo.afterDash %}{{ seo.afterDash }}{% endif %}&lt;/title></code>
+<code class="highlight highlight-title">&lt;title>{{ seo.title|striptags }}{%- if seo.title|striptags|length > 0 -%} - {{ seo.afterDash }}{%- endif -%}{%- if seo.afterDash -%}{{ seo.afterDash }}{%- endif -%}&lt;/title></code>
 <code class="highlight highlight-description">&lt;meta name="description" content="{{ seo.description|striptags }}" /></code>
-{% if seo.author %}
+{%- if seo.author -%}
 <code class="highlight highlight-author">&lt;meta name="author" content="{{ seo.author|striptags }}" /></code>
-{% endif %}
+{%- endif -%}
 <code class="highlight highlight-index">&lt;meta name="robots" content="{{ seo.index }}" /></code>
-{% if website.api.google.searchConsoleKey is defined and website.api.google.searchConsoleKey %}
+{%- if website.api.google.searchConsoleKey is defined and website.api.google.searchConsoleKey -%}
 <meta name="google-site-verification" content="{{ website.api.google.searchConsoleKey }}" />
-{% endif %}
+{%- endif -%}
 
 &lt;!-- Canonical --/>
 <code class="highlight highlight-canonical">&lt;link rel="canonical" href="{{ seo.canonical|striptags }}" /></code>
-{% if seo.localesAlternate|length > 1 %}
+{%- if seo.localesAlternate|length > 1 -%}
 
 &lt;!--  Alternates links --/>
-{% for localeAlternate, alternate in seo.localesAlternate %}
+{%- for localeAlternate, alternate in seo.localesAlternate -%}
 <code class="highlight highlight-alternate">&lt;link rel="alternate" hreflang="{{ localeAlternate }}" href="{{ alternate }}" /></code>
-{% endfor %}
-{% endif %}
+{%- endfor -%}
+{%- endif -%}
 
 &lt;!-- Open Graph --/>
 <code class="highlight">&lt;meta property="og:locale" content="{{ seo.locale }}" /></code>
@@ -67,9 +67,9 @@
 <code class="highlight highlight-og-description">&lt;meta property="og:description" content="{{ seo.ogDescription|striptags }}" /></code>
 <code class="highlight highlight-og-url">&lt;meta property="og:url" content="{{ seo.canonical }}" /></code>
 <code class="highlight">&lt;meta property="og:type" content="{{ seo.ogType }}" /></code>
-{% if ogImage %}
+{%- if ogImage -%}
 <code class="highlight">&lt;meta property="og:image" content="{{ ogImage }}" /></code></pre>
-{% endif %}
+{%- endif -%}
 
     </section>
 </div>

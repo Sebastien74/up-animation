@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
 <div class="row">
@@ -15,7 +15,7 @@
     {{ form_row(form.security.adminPasswordDelay) }}
 </div>
 
-{% if form.security.frontRegistration is defined %}
+{%- if form.security.frontRegistration is defined -%}
     <h4 class="main-subtitle"><i class="icm-desktop"></i>{{ "Utilisateurs front"|trans }}</h4>
     <div class="row">
         {{ form_row(form.security.frontRegistration) }}
@@ -28,4 +28,4 @@
         {{ form_row(form.security.frontPasswordDelay) }}
         {{ form_row(form.security.frontRegistrationFields) }}
     </div>
-{% endif %}
+{%- endif -%}

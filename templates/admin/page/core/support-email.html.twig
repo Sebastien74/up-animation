@@ -1,14 +1,14 @@
-{% set base = base is defined ? 'core/email/'~base~'.html.twig' : 'core/email/base.html.twig' %}
-{% extends base %}
+{%- set base = base is defined ? 'core/email/'~base~'.html.twig' : 'core/email/base.html.twig' -%}
+{%- extends base -%}
 
-{% trans_default_domain 'email' %}
+{%- trans_default_domain 'email' -%}
 
-{% block body %}
+{%- block body -%}
 
-    {% set domain = app.request.locale|domain %}
-    {% if not domain %}
-        {% set domain = app.request.getSchemeAndHttpHost() %}
-    {% endif %}
+    {%- set domain = app.request.locale|domain -%}
+    {%- if not domain -%}
+        {%- set domain = app.request.getSchemeAndHttpHost() -%}
+    {%- endif -%}
 
     <tr>
         <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
@@ -20,4 +20,4 @@
         </td>
     </tr>
 
-{% endblock %}
+{%- endblock -%}

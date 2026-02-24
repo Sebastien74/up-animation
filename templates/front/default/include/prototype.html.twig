@@ -1,58 +1,58 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% import _self as macro %}
+{%- import _self as macro -%}
 
-{% set prototypeOptions = field.vars.form.vars.errors.form.config.attributes.prototype.config.options is defined
-    ? field.vars.form.vars.errors.form.config.attributes.prototype.config.options : [] %}
+{%- set prototypeOptions = field.vars.form.vars.errors.form.config.attributes.prototype.config.options is defined
+    ? field.vars.form.vars.errors.form.config.attributes.prototype.config.options : [] -%}
 
-{% macro field_prototype(property, hideDelete, websiteTemplate) %}
+{%- macro field_prototype(property, hideDelete, websiteTemplate) -%}
 
-    {% set entity = property.vars.data is defined ? property.vars.data : null %}
-    {% set isNew = entity.id is defined and entity.id ? false : true %}
-    {% set entityId = isNew ? uniqId() : entity.id %}
-    {% set interfaceName = property.vars.errors.form.config.dataClass|interfaceName %}
-    {% set deletableProperty = property.vars.attr.deletable is not defined or property.vars.attr.deletable is defined and property.vars.attr.deletable != false %}
-    {% set asSchedule = 'scheduleDays' in property.vars.id %}
-    {% set dayName = asSchedule and property.vars.data.dayName is defined ? property.vars.data.dayName : null %}
-    {% set dayName = dayName ? dayName|localeDayNameByEnglishName : null %}
+    {%- set entity = property.vars.data is defined ? property.vars.data : null -%}
+    {%- set isNew = entity.id is defined and entity.id ? false : true -%}
+    {%- set entityId = isNew ? uniqId() : entity.id -%}
+    {%- set interfaceName = property.vars.errors.form.config.dataClass|interfaceName -%}
+    {%- set deletableProperty = property.vars.attr.deletable is not defined or property.vars.attr.deletable is defined and property.vars.attr.deletable != false -%}
+    {%- set asSchedule = 'scheduleDays' in property.vars.id -%}
+    {%- set dayName = asSchedule and property.vars.data.dayName is defined ? property.vars.data.dayName : null -%}
+    {%- set dayName = dayName ? dayName|localeDayNameByEnglishName : null -%}
 
     <div class="item-collection position-relative row p-3 bg-gray-800 mb-3">
 
-        {% if dayName %}
+        {%- if dayName -%}
             <div class="col-12">
                 <h4 class="title border-bottom ps-0 pe-0 pb-2 mb-3">{{ dayName|capitalize }}</h4>
             </div>
-        {% endif %}
+        {%- endif -%}
 
-        {% for field in property.children %}
-            {% set customLabel = field.vars.attr['data-label'] is defined ? field.vars.attr['data-label'] : null %}
-            {% set asPrototype = field.vars.prototype is defined and field.vars.prototype %}
-            {% if customLabel %}
+        {%- for field in property.children -%}
+            {%- set customLabel = field.vars.attr['data-label'] is defined ? field.vars.attr['data-label'] : null -%}
+            {%- set asPrototype = field.vars.prototype is defined and field.vars.prototype -%}
+            {%- if customLabel -%}
                 <div class="col-12"><label>{{ customLabel|raw }}</label></div>
-            {% endif %}
-            {% if asPrototype %}
+            {%- endif -%}
+            {%- if asPrototype -%}
                 <div class="row m-0">
                     <div class="col-12">
-                        {% include 'front/'~websiteTemplate~'/include/prototype.html.twig' with {
+                        {%- include 'front/'~websiteTemplate~'/include/prototype.html.twig' with {
                             field: field,
                             hideDelete: false,
                             groupClass: 'col-12',
                             websiteTemplate: websiteTemplate,
-                        } %}
+                        } -%}
                     </div>
                 </div>
-            {% else %}
-                {% set group = field.vars.attr.group is defined ? field.vars.attr.group : 'col-12' %}
+            {%- else -%}
+                {%- set group = field.vars.attr.group is defined ? field.vars.attr.group : 'col-12' -%}
                 <div class="{{ group }} {{ field.vars.name }}">
                     <div class="inner w-100">
                         {{ form_label(property[field.vars.name]) }}
                         {{ form_widget(property[field.vars.name]) }}
                     </div>
                 </div>
-            {% endif %}
-        {% endfor %}
+            {%- endif -%}
+        {%- endfor -%}
 
-        {% if not hideDelete %}
+        {%- if not hideDelete -%}
             <span role="button" class="btn btn-primary p-0 position-absolute collection-open-modal" data-bs-toggle="modal" data-bs-target="#collection-delete-modal-{{ entityId }}">
                 {{ 'fas trash'|icon(14, 14, 'dark') }}
             </span>
@@ -80,7 +80,7 @@
                                     </div>
                                     <div class="col-6">
                                         <a class="collection-delete btn btn-primary w-100"
-                                           href="{% if not isNew %}{{ path('front_'~interfaceName~'_delete', {(interfaceName): entityId}) }}{% endif %}"
+                                           href="{%- if not isNew -%}{{ path('front_'~interfaceName~'_delete', {(interfaceName): entityId}) }}{%- endif -%}"
                                            data-toggle="tooltip"
                                            title="{{ "Supprimer"|trans|striptags }}"
                                            data-type="collection">{{ "Confirmer"|trans|raw }}
@@ -92,36 +92,36 @@
                     </div>
                 </div>
             </div>
-        {% endif %}
+        {%- endif -%}
 
     </div>
 
-{% endmacro %}
+{%- endmacro -%}
 
-{% set groupClass = groupClass is defined ? groupClass : 'col-12' %}
-{% set hideDelete = hideDelete is defined ? hideDelete : false %}
-{% set websiteTemplate = websiteTemplate is defined ? websiteTemplate : 'default' %}
+{%- set groupClass = groupClass is defined ? groupClass : 'col-12' -%}
+{%- set hideDelete = hideDelete is defined ? hideDelete : false -%}
+{%- set websiteTemplate = websiteTemplate is defined ? websiteTemplate : 'default' -%}
 
 <ul id="{{ field.vars.id }}-collection" class="collection reset row"
      data-index="{{ field.children|length }}"
      data-prototype="{{ macro.field_prototype(field.vars.prototype, hideDelete, websiteTemplate)|e('html_attr') }}">
-    {% for property in field.children %}
+    {%- for property in field.children -%}
         <li class="{{ groupClass }}">{{ macro.field_prototype(property, hideDelete, websiteTemplate) }}</li>
-    {% endfor %}
+    {%- endfor -%}
 </ul>
 
-{% set displayBtn = prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] != false or prototypeOptions['attr']['button'] is not defined %}
+{%- set displayBtn = prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] != false or prototypeOptions['attr']['button'] is not defined -%}
 
-{% if displayBtn %}
+{%- if displayBtn -%}
     <div class="col-12 d-flex justify-content-lg-end mt-4">
         <span role="button" class="add-to-collection btn btn-outline-white"
                 data-collection-target="{{ field.vars.id }}-collection">
-            {% if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] %}
+            {%- if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] -%}
                 {{ prototypeOptions['attr']['button'] }}
-            {% else %}
+            {%- else -%}
                 {{ 'Ajouter'|trans }}
-            {% endif %}
+            {%- endif -%}
             {{ 'fal plus'|icon(11, 15, 'ms-1') }}
         </span>
     </div>
-{% endif %}
+{%- endif -%}

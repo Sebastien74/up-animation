@@ -1,47 +1,47 @@
-﻿{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set pageIcon = 'list' %}
-{% set pageTitle = "Nos extensions"|trans %}
+{%- set pageIcon = 'list' -%}
+{%- set pageTitle = "Nos extensions"|trans -%}
 
-{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ pageTitle }}{% endblock %}
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-extensions', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
     <div id="extensions-cards" class="row">
 
-        {% for extension in extensions %}
+        {%- for extension in extensions -%}
 
-            {% set entity = extension.entity %}
+            {%- set entity = extension.entity -%}
 
-            {% if granted('ROLE_INTERNAL') and entity.inAdvert or not extension.active and entity.inAdvert %}
+            {%- if granted('ROLE_INTERNAL') and entity.inAdvert or not extension.active and entity.inAdvert -%}
 
-                {% set intl = entity|intl(app.request.locale, true) %}
-                {% set icon = entity.iconClass ? entity.iconClass : 'plus-square' %}
-                {% set title = intl.title is defined and intl.title|striptags|length > 0 ? intl.title : entity.adminName %}
-                {% set subTitle = intl.subTitle is defined and intl.subTitle|striptags|length > 0 ? intl.subTitle : null %}
-                {% set introduction = intl.introduction is defined and intl.introduction|striptags|length > 0 ? intl.introduction : null %}
-                {% set body = intl.body is defined and intl.body|striptags|length > 0 ? intl.body : null %}
+                {%- set intl = entity|intl(app.request.locale, true) -%}
+                {%- set icon = entity.iconClass ? entity.iconClass : 'plus-square' -%}
+                {%- set title = intl.title is defined and intl.title|striptags|length > 0 ? intl.title : entity.adminName -%}
+                {%- set subTitle = intl.subTitle is defined and intl.subTitle|striptags|length > 0 ? intl.subTitle : null -%}
+                {%- set introduction = intl.introduction is defined and intl.introduction|striptags|length > 0 ? intl.introduction : null -%}
+                {%- set body = intl.body is defined and intl.body|striptags|length > 0 ? intl.body : null -%}
 
                 <div class="col-md-3">
                     <div class="card mb-3">
-                        <div class="card-body{% if extension.active %} active{% endif %} pb-2">
-                            {% if 'medias' in icon %}
+                        <div class="card-body{%- if extension.active -%} active{%- endif -%} pb-2">
+                            {%- if 'medias' in icon -%}
                                 <img data-src="{{ asset(icon) }}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class="icon img-fluid lazy-load" height="40" alt="{{ title|striptags }}">
-                            {% else %}
+                            {%- else -%}
                                 {{ icon|icon(null, 40) }}
-                            {% endif %}
+                            {%- endif -%}
                             <span class="show-more position-absolute btn-icon danger text-center p-0 cursor"
                                   data-bs-toggle="tooltip"
                                   title="{{ "En savoir plus"|trans|striptags }}">
@@ -56,12 +56,12 @@
                             </span>
                             <h5 class="title text-uppercase mt-3">{{ title|raw }}</h5>
                         </div>
-                        {% if granted('ROLE_INTERNAL') and entity.id %}
+                        {%- if granted('ROLE_INTERNAL') and entity.id -%}
                             <a href="{{ path('admin_module_edit', {website: website.id, module: entity.id}) }}"
                                class="btn-app btn-edit position-absolute" data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}">
                                 <i class="icm-pencil"></i>
                             </a>
-                        {% endif %}
+                        {%- endif -%}
                     </div>
                 </div>
 
@@ -79,24 +79,24 @@
                             <div class="modal-body pe-4 ps-4 text-center">
                                 <div class="container my-auto">
                                     <h2 class="main-title text-dark text-center fw-bold mb-5">{{ title|raw }}</h2>
-                                    {% if subTitle %}
+                                    {%- if subTitle -%}
                                         <h6 class="subtitle mt-3">{{ subTitle|raw }}</h6>
-                                    {% endif %}
-                                    {% if introduction %}
+                                    {%- endif -%}
+                                    {%- if introduction -%}
                                         <p class="introduction bold mt-3">{{ introduction|raw }}</p>
-                                    {% endif %}
-                                    {% if body %}
+                                    {%- endif -%}
+                                    {%- if body -%}
                                         <div class="body mt-3">{{ body|raw }}</div>
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-            {% endif %}
+            {%- endif -%}
 
-        {% endfor %}
+        {%- endfor -%}
     </div>
 
-{% endblock %}
+{%- endblock -%}

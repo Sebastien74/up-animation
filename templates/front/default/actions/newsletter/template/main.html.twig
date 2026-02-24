@@ -1,6 +1,6 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% if not form.isRendered() %}
+{%- if not form.isRendered() -%}
     <div class="content">
         {{ form_start(form, {attr: {
             id: "newsletter-form-"~campaign.id,
@@ -9,7 +9,7 @@
             novalidate: "novalidate",
             'data-modal': modalId
         }}) }}
-            {% include 'front/'~websiteTemplate~'/include/recaptcha-fields.html.twig' with {entity: campaign} %}
+            {%- include 'front/'~websiteTemplate~'/include/recaptcha-fields.html.twig' with {entity: campaign} -%}
             <div class="container">
                 <div class="row">
                     <label class="col-lg-4 col-xl-3 my-auto pt-0 pb-2 pb-lg-0 col-form-label text-center text-md-center text-lg-start text-uppercase form-control-label required" for="front_newsletter_email">
@@ -27,23 +27,23 @@
                             </div>
                         </div>
                         {{ form_errors(form.email) }}
-                        {% for type, flashes in app.session.flashbag.all %}
-                            {% for flash in flashes %}
-                                <span class="{% if 'error' in type %}invalid{% else %}valid{% endif %}-feedback d-block">
+                        {%- for type, flashes in app.session.flashbag.all -%}
+                            {%- for flash in flashes -%}
+                                <span class="{%- if 'error' in type -%}invalid{%- else -%}valid{%- endif -%}-feedback d-block">
                                     <span class="mb-0 d-block">
-                                        <span class="form-{% if 'error' in type %}error{% else %}success{% endif %}-message">{{ flash|raw }}</span>
+                                        <span class="form-{%- if 'error' in type -%}error{%- else -%}success{%- endif -%}-message">{{ flash|raw }}</span>
                                     </span>
                                 </span>
-                            {% endfor %}
-                        {% endfor %}
+                            {%- endfor -%}
+                        {%- endfor -%}
                     </div>
                     <div class="col-12">
-                        {% if intro|striptags|length > 0 %}
+                        {%- if intro|striptags|length > 0 -%}
                             <p class="introduction text-white m-0 mt-4 text-center">{{ intro|unescape|raw|nl2br }}</p>
-                        {% endif %}
+                        {%- endif -%}
                     </div>
                 </div>
             </div>
         {{ form_end(form) }}
     </div>
-{% endif %}
+{%- endif -%}

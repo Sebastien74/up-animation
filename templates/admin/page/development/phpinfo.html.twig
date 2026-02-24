@@ -1,21 +1,21 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% block title %}{{ "PHP Info"|trans|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ "PHP Info"|trans }}{% endblock %}
+{%- block title -%}{{ "PHP Info"|trans|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "PHP Info"|trans }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-development', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin-development', null,  'admin', {defer: true}) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
     <div id="phpinfo-search-wrapper" class="mb-4 pages-search">
         <div class="input-group">
@@ -29,8 +29,8 @@
     </div>
 
     <div id="phpinfo-container" class="mt-4">
-        {% for category, items in phpinfo %}
-            {% if items is not empty %}
+        {%- for category, items in phpinfo -%}
+            {%- if items is not empty -%}
                 <div class="phpinfo-section mb-4">
                     <h4 class="main-subtitle"><i class="icm-cog"></i>{{ category }}</h4>
                     <div class="table-responsive app-table">
@@ -39,27 +39,27 @@
                             <tr>
                                 <th class="d-none"></th>
                                 <th class="px-4">{{ "Directive"|trans }}</th>
-                                {% set isDirectiveTable = false %}
-                                {% for item in items %}
-                                    {% if item.local is defined %}
-                                        {% set isDirectiveTable = true %}
-                                    {% endif %}
-                                {% endfor %}
+                                {%- set isDirectiveTable = false -%}
+                                {%- for item in items -%}
+                                    {%- if item.local is defined -%}
+                                        {%- set isDirectiveTable = true -%}
+                                    {%- endif -%}
+                                {%- endfor -%}
 
-                                {% if isDirectiveTable %}
+                                {%- if isDirectiveTable -%}
                                     <th class="text-center px-4">{{ "Local Value"|trans }}</th>
                                     <th class="text-center px-4">{{ "Master Value"|trans }}</th>
-                                {% else %}
+                                {%- else -%}
                                     <th class="text-end px-4">{{ "Value"|trans }}</th>
-                                {% endif %}
+                                {%- endif -%}
                                 <th class="text-end px-4 d-none">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for key, value in items %}
+                            {%- for key, value in items -%}
                                 <tr>
                                     <td class="d-none"></td>
-                                    {% if value.local is defined %}
+                                    {%- if value.local is defined -%}
                                         <td class="align-middle px-4">
                                             <div class="d-flex align-items-center">
                                                 {{ key }}
@@ -71,37 +71,37 @@
                                         <td class="text-center align-middle px-4">
                                             {{ value.master }}
                                         </td>
-                                    {% else %}
-                                        <td class="align-middle px-4" {% if key matches '/^\\d+$/' %}colspan="2"{% endif %}>
+                                    {%- else -%}
+                                        <td class="align-middle px-4" {%- if key matches '/^\\d+$/' -%}colspan="2"{%- endif -%}>
                                             <div class="d-flex align-items-center">
-                                                {% if key matches '/^\\d+$/' == false %}
+                                                {%- if key matches '/^\\d+$/' == false -%}
                                                     {{ key }}
-                                                {% else %}
+                                                {%- else -%}
                                                     {{ value }}
-                                                {% endif %}
+                                                {%- endif -%}
                                             </div>
                                         </td>
-                                        {% if key matches '/^\\d+$/' == false %}
+                                        {%- if key matches '/^\\d+$/' == false -%}
                                             <td class="text-end align-middle px-4">
-                                                {% if value is iterable %}
+                                                {%- if value is iterable -%}
                                                     {{ value|join(', ') }}
-                                                {% else %}
+                                                {%- else -%}
                                                     {{ value }}
-                                                {% endif %}
+                                                {%- endif -%}
                                             </td>
-                                        {% endif %}
-                                    {% endif %}
+                                        {%- endif -%}
+                                    {%- endif -%}
                                     <td class="text-end align-middle px-4 d-none">
                                         <div class="d-flex flex-lg-column flex-xl-row justify-content-end align-items-center gap-2">
                                         </div>
                                     </td>
                                 </tr>
-                            {% endfor %}
+                            {%- endfor -%}
                         </tbody>
                     </table>
                 </div>
                 </div>
-            {% endif %}
-        {% endfor %}
+            {%- endif -%}
+        {%- endfor -%}
     </div>
-{% endblock %}
+{%- endblock -%}

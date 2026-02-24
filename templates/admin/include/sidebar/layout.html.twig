@@ -1,73 +1,73 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% if granted('ROLE_ADMIN') %}
+{%- if granted('ROLE_ADMIN') -%}
 
-    {% set modules = [] %}
-    {% for module, status in website.configuration.modules %}
-        {% set isPlural = module|last == 's' %}
-        {% if not isPlural %}
-            {% set module = module|last == 'y' ? module|trim('y', 'right')~'ies' : module~'s' %}
-        {% endif %}
-        {% set modules = modules|merge([module]) %}
-    {% endfor %}
-    {% if granted('ROLE_INTERNAL') and 'map' not in modules %}
-        {% set modules = modules|merge(['maps', 'contacts', 'search']) %}
-    {% endif %}
+    {%- set modules = [] -%}
+    {%- for module, status in website.configuration.modules -%}
+        {%- set isPlural = module|last == 's' -%}
+        {%- if not isPlural -%}
+            {%- set module = module|last == 'y' ? module|trim('y', 'right')~'ies' : module~'s' -%}
+        {%- endif -%}
+        {%- set modules = modules|merge([module]) -%}
+    {%- endfor -%}
+    {%- if granted('ROLE_INTERNAL') and 'map' not in modules -%}
+        {%- set modules = modules|merge(['maps', 'contacts', 'search']) -%}
+    {%- endif -%}
 
-    {% set requestUri = app.request.uri %}
-    {% set moduleActive = false %}
-    {% set moduleTag = null %}
-    {% for tag in modules %}
-        {% if '/'~tag~'/' in requestUri and tag not in ['translations', 'users', 'pages', 'medias'] %}
-            {% set moduleActive = true %}
-            {% set moduleTag = tag %}
-        {% endif %}
-    {% endfor %}
+    {%- set requestUri = app.request.uri -%}
+    {%- set moduleActive = false -%}
+    {%- set moduleTag = null -%}
+    {%- for tag in modules -%}
+        {%- if '/'~tag~'/' in requestUri and tag not in ['translations', 'users', 'pages', 'medias'] -%}
+            {%- set moduleActive = true -%}
+            {%- set moduleTag = tag -%}
+        {%- endif -%}
+    {%- endfor -%}
 
-    {% set pages = modules|merge(['seo', 'gdpr', 'security']) %}
-    {% set pageTag = null %}
-    {% for tag in pages %}
-        {% if '/'~tag~'/' in requestUri %}
-            {% set pageTag = tag %}
-        {% endif %}
-    {% endfor %}
+    {%- set pages = modules|merge(['seo', 'gdpr', 'security']) -%}
+    {%- set pageTag = null -%}
+    {%- for tag in pages -%}
+        {%- if '/'~tag~'/' in requestUri -%}
+            {%- set pageTag = tag -%}
+        {%- endif -%}
+    {%- endfor -%}
 
-    {% set mainActive = not moduleActive %}
-    {% set website = website is defined ? website : website() %}
-    {% set isMultiWebsite = isMultiWebsite() %}
+    {%- set mainActive = not moduleActive -%}
+    {%- set website = website is defined ? website : website() -%}
+    {%- set isMultiWebsite = isMultiWebsite() -%}
 
     <aside class="left-sidebar">
         <div class="scroll-sidebar px-4">
             <nav class="sidebar-nav">
                 <ul id="sidebar-nav" class="list-unstyled">
-                    <li class="sidebar-top pt-3{% if not isMultiWebsite %} pb-3{% endif %}">
+                    <li class="sidebar-top pt-3{%- if not isMultiWebsite -%} pb-3{%- endif -%}">
                         <ul class="list-unstyled">
-                            {% set domain = app.user.locale is defined ? app.user.locale|domain() : null %}
-                            {% set scheme = not domain ? path('front_index') : domain %}
+                            {%- set domain = app.user.locale is defined ? app.user.locale|domain() : null -%}
+                            {%- set scheme = not domain ? path('front_index') : domain -%}
                             <li><a href="{{ scheme }}" target="_blank"><span class="btn-icon small me-3"><i class="icm-desktop"></i></span>{{ "Accéder au site"|trans }}</a></li>
                             <li class="d-lg-none"><a href="{{ path('app_logout') }}"><span class="btn-icon danger small me-3"><i class="icm-power-off"></i></span>{{ "Déconnexion"|trans }}</a></li>
                         </ul>
-                        {% if isMultiWebsite and app.user %}
+                        {%- if isMultiWebsite and app.user -%}
                             {{ render_esi(path('admin_site_selector', {website: websiteId()})) }}
                             <span class="sidebar-website-info d-inline-block w-100 ps-3 pt-2 pe-2 pb-2 mt-3">
                                 <i class="icm-pen-fancy"></i> {{ website.adminName }}
                             </span>
-                        {% endif %}
+                        {%- endif -%}
                     </li>
-                    {% if not configuration.onlineStatus %}
-                        {% set domain = app.user.locale is defined ? app.user.locale|domain() : null %}
-                        {% set scheme = not domain ? path('front_index') : domain %}
+                    {%- if not configuration.onlineStatus -%}
+                        {%- set domain = app.user.locale is defined ? app.user.locale|domain() : null -%}
+                        {%- set scheme = not domain ? path('front_index') : domain -%}
                         <li class="in-build-info">
                             <a href="{{ scheme }}?disabled_ips=true" target="_blank" class="d-flex align-items-center">
                                 <i class="icm-exclamation-triangle me-1"></i>{{ "Site en maintenance"|trans|raw }}
                             </a>
                         </li>
-                    {% endif %}
-                    {% include 'admin/include/sidebar/include/managment.html.twig' %}
-                    {% include 'admin/include/sidebar/include/modules.html.twig' %}
+                    {%- endif -%}
+                    {%- include 'admin/include/sidebar/include/managment.html.twig' -%}
+                    {%- include 'admin/include/sidebar/include/modules.html.twig' -%}
                 </ul>
             </nav>
         </div>
     </aside>
 
-{% endif %}
+{%- endif -%}

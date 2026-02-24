@@ -1,16 +1,16 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard %}
-{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+{%- import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard -%}
+{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
 
-{% set maxPage = maxPage is defined ? maxPage : 1 %}
-{% set pageNum = pageNum is defined ? pageNum : 1 %}
-{% set colSize = 'agencies' == listing.slug ? 4 : 4 %}
+{%- set maxPage = maxPage is defined ? maxPage : 1 -%}
+{%- set pageNum = pageNum is defined ? pageNum : 1 -%}
+{%- set colSize = 'agencies' == listing.slug ? 4 : 4 -%}
 
 <div id="results" class="results row row-container d-flex justify-content-center listing-{{ listing.slug }}" data-page="{{ pageNum }}" data-max="{{ maxPage }}">
-    {% for product in products %}
+    {%- for product in products -%}
         <div class="col-md-6 col-lg-4 col-xl-{{ colSize }} item my-3 position-relative">
-            {% if 'agencies' == listing.slug %}
+            {%- if 'agencies' == listing.slug -%}
                 {{ macroWebmaster.box({
                     title: "Éditer l'agence"|trans([], 'front_webmaster'),
                     role: 'ROLE_CATALOG',
@@ -24,7 +24,7 @@
                         desktop: {width: 456, height: 295}
                     },
                 }) }}
-            {% else %}
+            {%- else -%}
                 {{ macroCard.standard({
                     entity: product,
                     intl: product.intl,
@@ -42,7 +42,7 @@
                         role: 'ROLE_CATALOG',
                         path: path('admin_catalogproduct_edit', {website: website.id, catalogproduct: product.id})
                 }}) }}
-            {% endif %}
+            {%- endif -%}
         </div>
-    {% endfor %}
+    {%- endfor -%}
 </div>

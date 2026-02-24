@@ -1,47 +1,47 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% block title %}{{ "Erreurs 404"|trans|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ "Erreurs 404"|trans }}{% endblock %}
+{%- block title -%}{{ "Erreurs 404"|trans|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Erreurs 404"|trans }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 
-    {% set pages = [
+    {%- set pages = [
         { title: 'Front'|trans, type: 'front', category: 'url', count: all['front']['url']|length },
         { title: 'Front ressources'|trans, type: 'front', category: 'resource', count: all['front']['resource']|length },
         { title: 'Admin'|trans, type: 'admin', category: 'url', count: all['admin']['url']|length },
         { title: 'Admin ressources'|trans, type: 'admin', category: 'resource', count: all['admin']['resource']|length }
-    ] %}
+    ] -%}
 
     <div id="notfound-urls-index">
 
         <div class="d-flex gap-2 flex-wrap mb-4">
             <div class="nav nav-tabs gap-2 border-0 me-auto" role="tablist">
-                {% for page in pages %}
-                    {% if granted('ROLE_INTERNAL') or loop.first %}
-                        {% set active = page.type == type and page.category == category %}
+                {%- for page in pages -%}
+                    {%- if granted('ROLE_INTERNAL') or loop.first -%}
+                        {%- set active = page.type == type and page.category == category -%}
                         <a href="{{ path("admin_notfoundurl_index", {website: websiteId(), type: page.type, category: page.category}) }}"
-                           class="btn-app{% if active %} active{% endif %}">
+                           class="btn-app{%- if active -%} active{%- endif -%}">
                             <i class="icm-info"></i><span>{{ page.title }}</span>
                         </a>
-                    {% endif %}
-                {% endfor %}
+                    {%- endif -%}
+                {%- endfor -%}
             </div>
-            {% if 'delete'|moduleActive(configuration) and pagination|length > 0 %}
+            {%- if 'delete'|moduleActive(configuration) and pagination|length > 0 -%}
                 <a href="{{ path("admin_notfoundurl_delete_all", {website: websiteId(), type: type, category: category}) }}"
                    class="btn-app danger swal-delete-link">
                     <i class="icm-trash"></i><span>{{ 'Tout supprimer'|trans }}</span>
                 </a>
-            {% endif %}
+            {%- endif -%}
         </div>
 
         <div class="table-responsive app-table">
@@ -54,31 +54,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for entity in pagination %}
+                    {%- for entity in pagination -%}
                         <tr id="entity-row-{{ entity.id }}">
                             <td class="align-middle px-4" data-label="{{ "Jour"|trans }}">{{ entity.createdAt|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</td>
                             <td class="align-middle px-4" data-label="{{ "URL"|trans }}">{{ entity.url }}</td>
                             <td class="align-middle text-end px-4" data-label="{{ "Actions"|trans }}">
                                 <div class="d-flex justify-content-end align-items-center gap-2">
                                     {{ render_esi(path('admin_notfoundurl_redirection', {website: websiteId(), notfoundUrl: entity.id} )) }}
-                                    {% if routeExist('admin_notfoundurl_delete') and 'delete'|moduleActive(configuration) %}
+                                    {%- if routeExist('admin_notfoundurl_delete') and 'delete'|moduleActive(configuration) -%}
                                         <a href="{{ path('admin_notfoundurl_delete', {website: websiteId(), notfoundurl: entity.id}) }}"
                                            data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
                                            data-target="#entity-row-{{ entity.id }}"
                                            class="btn-icon small danger swal-delete-link">
                                             <i class="icm-trash"></i>
                                         </a>
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
                             </td>
                         </tr>
-                    {% endfor %}
+                    {%- endfor -%}
                 </tbody>
             </table>
         </div>
 
-        {% include 'admin/core/include/pagination.html.twig' %}
+        {%- include 'admin/core/include/pagination.html.twig' -%}
 
     </div>
 
-{% endblock %}
+{%- endblock -%}

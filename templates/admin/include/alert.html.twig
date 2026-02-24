@@ -1,52 +1,52 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set icons = {
+{%- set icons = {
     success: {icon: 'check', bgColor: 'success', color: 'success', iconColor: 'white-50'},
     info: {icon: 'info', bgColor: 'info', color: 'primary', iconColor: 'white-50'},
     warning: {icon: 'exclamation', bgColor: 'warning', color: 'warning', iconColor: 'white-50'},
     danger: {icon: 'exclamation-triangle', bgColor: 'danger', color: 'danger', iconColor: 'white-50'},
     error: {icon: 'exclamation-triangle', bgColor: 'danger', color: 'danger', iconColor: 'white-50'},
     undefined: {icon: 'info', bgColor: 'primary', color: 'primary', iconColor: 'white'},
-} %}
+} -%}
 
-{% set display = display is defined ? display : 'toast' %}
-{% set size = size is defined ? size : null %}
-{% set icon = icons[alert].icon is defined ? icons[alert].icon : icons['undefined'].icon %}
-{% set bgColor = icons[alert].bgColor is defined ? icons[alert].bgColor : icons['undefined'].bgColor %}
-{% set color = icons[alert].color is defined ? icons[alert].color : icons['undefined'].color %}
-{% set iconColor = icons[alert].iconColor is defined ? icons[alert].iconColor : icons['undefined'].iconColor %}
-{% set help = help is defined ? help : null %}
-{% set id = id is defined ? id : null %}
-{% set paddings = 'small' == size ? 'py-2 ps-3 pe-3' : 'p-3' %}
-{% set class = class is defined ? paddings~' '~class : paddings %}
-{% set badge = badge is defined ? badge : null %}
-{% set size = size is defined ? size : null %}
+{%- set display = display is defined ? display : 'toast' -%}
+{%- set size = size is defined ? size : null -%}
+{%- set icon = icons[alert].icon is defined ? icons[alert].icon : icons['undefined'].icon -%}
+{%- set bgColor = icons[alert].bgColor is defined ? icons[alert].bgColor : icons['undefined'].bgColor -%}
+{%- set color = icons[alert].color is defined ? icons[alert].color : icons['undefined'].color -%}
+{%- set iconColor = icons[alert].iconColor is defined ? icons[alert].iconColor : icons['undefined'].iconColor -%}
+{%- set help = help is defined ? help : null -%}
+{%- set id = id is defined ? id : null -%}
+{%- set paddings = 'small' == size ? 'py-2 ps-3 pe-3' : 'p-3' -%}
+{%- set class = class is defined ? paddings~' '~class : paddings -%}
+{%- set badge = badge is defined ? badge : null -%}
+{%- set size = size is defined ? size : null -%}
 
-{% if 'alert' == display %}
-    <div{% if id %} id="{{ id }}"{% endif %} class="alert alert-{{ bgColor }} position-relative d-flex mb-3 {{ class }}{% if size %} {{ size }}{% endif %}">
+{%- if 'alert' == display -%}
+    <div{%- if id -%} id="{{ id }}"{%- endif -%} class="alert alert-{{ bgColor }} position-relative d-flex mb-3 {{ class }}{%- if size -%} {{ size }}{%- endif -%}">
         <div class="btn-icon d-flex align-items-center justify-content-center position-relative {{ bgColor }} me-3">
             <i class="icm-{{ icon }} text-{{ iconColor }}"></i>
         </div>
         <div class="message w-100 d-flex align-items-center text-{{ iconColor }}">
             <div class="content">
-                {% if 'small' == size %}
+                {%- if 'small' == size -%}
                     <small class="d-inline-block text-{{ iconColor }}">
-                {% endif %}
+                {%- endif -%}
                     {{ message|raw }}
-                    {% if help %}
+                    {%- if help -%}
                         <br>{{ help|raw }}
-                    {% endif %}
-                {% if 'small' == size %}
+                    {%- endif -%}
+                {%- if 'small' == size -%}
                     </small>
-                {% endif %}
+                {%- endif -%}
             </div>
         </div>
-        {% if badge %}
+        {%- if badge -%}
             <small class="d-inline-block">{{ badge|raw }}</small>
-        {% endif %}
+        {%- endif -%}
     </div>
-{% else %}
-    <div{% if id %} id="{{ id }}"{% endif %} class="toast-container position-fixed top-0 end-0 p-3">
+{%- else -%}
+    <div{%- if id -%} id="{{ id }}"{%- endif -%} class="toast-container position-fixed top-0 end-0 p-3">
         <div class="toast toast-alert fade show border-0 bg-{{ color }}" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header d-flex border-0 no-radius py-3 px-3 text-{{ bgColor }}">
                 <div class="inner d-flex align-items-center">
@@ -57,4 +57,4 @@
             </div>
         </div>
     </div>
-{% endif %}
+{%- endif -%}

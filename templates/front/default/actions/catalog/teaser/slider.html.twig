@@ -1,19 +1,19 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard %}
-{% import 'core/webmaster-edit.html.twig' as macroWebmaster %}
+{%- import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard -%}
+{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
 
-{% if entities %}
+{%- if entities -%}
     <div class="products-teaser-container-slider position-relative">
         {{ macroWebmaster.box({
             title: "Éditer le tesaer"|trans([], 'front_webmaster'),
             role: 'ROLE_CATALOG',
             path: path('admin_productteaser_edit', {website: website.id, productteaser: teaser.id})
         }) }}
-        {% if teaserIntl.title %}
-            {% set titleForce = teaserIntl.titleForce ? teaserIntl.titleForce : 2 %}
+        {%- if teaserIntl.title -%}
+            {%- set titleForce = teaserIntl.titleForce ? teaserIntl.titleForce : 2 -%}
             <h{{ titleForce }} class="title mb-4">{{ teaserIntl.title|raw }}</h{{ titleForce }}>
-        {% endif %}
+        {%- endif -%}
         <div id="teaser-products-carousel-{{ teaser.slug }}"
              class="carousel slide carousel-fade"
              data-bs-interval="5000"
@@ -21,16 +21,16 @@
              data-bs-pause="hover"
              data-bs-ride="carousel"
              data-component="carousel-bootstrap">
-            {% if entities|length > 1 %}
+            {%- if entities|length > 1 -%}
                 <ol class="carousel-indicators d-none d-lg-inline-flex">
-                    {% for post in entities %}
-                        <li data-bs-target="#teaser-products-carousel-{{ teaser.slug }}" data-bs-slide-to="{{ loop.index - 1 }}"{% if loop.first %} class="active"{% endif %}></li>
-                    {% endfor %}
+                    {%- for post in entities -%}
+                        <li data-bs-target="#teaser-products-carousel-{{ teaser.slug }}" data-bs-slide-to="{{ loop.index - 1 }}"{%- if loop.first -%} class="active"{%- endif -%}></li>
+                    {%- endfor -%}
                 </ol>
-            {% endif %}
+            {%- endif -%}
             <div class="carousel-inner">
-                {% for post in entities %}
-                    <div class="carousel-item{% if loop.first %} active{% endif %}">
+                {%- for post in entities -%}
+                    <div class="carousel-item{%- if loop.first -%} active{%- endif -%}">
                         {{ macroCard.standard({
                             entity: post,
                             titleForce: 3,
@@ -45,8 +45,8 @@
                                 path: path('admin_catalogproduct_edit', {website: website.id, catalogproduct: post.id})
                             }}) }}
                     </div>
-                {% endfor %}
+                {%- endfor -%}
             </div>
         </div>
     </div>
-{% endif %}
+{%- endif -%}

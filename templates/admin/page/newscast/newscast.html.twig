@@ -1,33 +1,33 @@
-﻿{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set configFields = ['urls', 'publicationStart', 'publicationEnd'] %}
-{% set configsFieldsSet = configFields %}
-{% set haveCustomLayout = entity.customLayout is defined and entity.customLayout %}
-{% set transDomain = interface.name is defined and interface.name
-    ? 'entity_'~interface.name : null %}
+{%- set configFields = ['urls', 'publicationStart', 'publicationEnd'] -%}
+{%- set configsFieldsSet = configFields -%}
+{%- set haveCustomLayout = entity.customLayout is defined and entity.customLayout -%}
+{%- set transDomain = interface.name is defined and interface.name
+    ? 'entity_'~interface.name : null -%}
 
-{% if pageTitle is not defined or pageTitle is defined and not pageTitle  %}
-    {% set title = 'singular'|trans([], transDomain) and 'singular'|trans([], transDomain) != 'singular'
-        ? 'singular'|trans([], transDomain) : 'Édition'|trans~" "~interface.name  %}
-    {% set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title %}
-{% endif %}
+{%- if pageTitle is not defined or pageTitle is defined and not pageTitle -%}
+    {%- set title = 'singular'|trans([], transDomain) and 'singular'|trans([], transDomain) != 'singular'
+        ? 'singular'|trans([], transDomain) : 'Édition'|trans~" "~interface.name -%}
+    {%- set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title -%}
+{%- endif -%}
 
-{% block title %}{{ pageTitle|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ pageTitle|unescape|raw }}{% endblock %}
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle|unescape|raw }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-edit-in-tab', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ encore_entry_script_tags('admin-edit-in-tab', null,  'admin', {defer: true}) }}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% set tabs = {
+{%- set tabs = {
     intls: {
         title: "Description"|trans,
         icon: "align-center"
@@ -39,35 +39,34 @@
     seo: {
         title: "Référencement"|trans,
         icon: "chart-line"
-    }}
-%}
+    }} -%}
 
-{% block body %}
+{%- block body -%}
 
-    {% set isMainEntity = 'medias' not in app.request.uri %}
+    {%- set isMainEntity = 'medias' not in app.request.uri -%}
 
-    {% include 'admin/include/alerts.html.twig' %}
+    {%- include 'admin/include/alerts.html.twig' -%}
 
-    <div id="entity-edition" class="card{% if isMainEntity %} is-entity{% endif %}">
+    <div id="entity-edition" class="card{%- if isMainEntity -%} is-entity{%- endif -%}">
         <div class="card-body p-0 bottom-radius top-radius pb-2">
 
-            {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'entity-preloader', full: true, progress: 'hide', preloaderClass: 'progress-fixed'} only %}
+            {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'entity-preloader', full: true, progress: 'hide', preloaderClass: 'progress-fixed'} only -%}
 
             <ul class="nav nav-tabs custom-tab large" role="tablist">
-                {% for tabId, config in tabs %}
+                {%- for tabId, config in tabs -%}
                     <li class="nav-item">
-                        <a {% if not isMainEntity %}href="{{ path('admin_newscast_edit', {website: websiteId, newscast: entity.id, tab: tabId} ) }}"{% endif %}
-                           id="nav-{{ tabId }}-tab" class="nav-link{% if activeTab == tabId or not activeTab and loop.first and isMainEntity %} active{% endif %}"
-                            {% if isMainEntity %}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}"{% else %}{% endif %}>
+                        <a {%- if not isMainEntity -%}href="{{ path('admin_newscast_edit', {website: websiteId, newscast: entity.id, tab: tabId} ) }}"{%- endif -%}
+                           id="nav-{{ tabId }}-tab" class="nav-link{%- if activeTab == tabId or not activeTab and loop.first and isMainEntity -%} active{%- endif -%}"
+                            {%- if isMainEntity -%}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}"{%- else -%}{%- endif -%}>
                             {{ config.icon|icon(17, 17, 'me-sm-2') }}
                             <span class="d-none d-sm-inline-block">{{ config.title }}</span>
                         </a>
                     </li>
-                {% endfor %}
+                {%- endfor -%}
                 <li class="nav-item">
                     <a href="{{ path('admin_newscast_medias', {website: websiteId, newscast: entity.id} ) }}"
                        id="medias-path"
-                       class="nav-link{% if not isMainEntity %} active{% endif %}">
+                       class="nav-link{%- if not isMainEntity -%} active{%- endif -%}">
                         <i class="icm-photo-video"></i>
                         <span class="d-none d-sm-inline-block">{{ "Médias"|trans }}</span>
                     </a>
@@ -77,15 +76,15 @@
                        class="back-link d-inline-flex align-items-center nav-link btn-app py-2 px-4">
                         <i class="icm-reply"></i><span>{{ "Retourner à la liste"|trans|raw }}</span>
                     </a>
-                    {% if isMainEntity %}
+                    {%- if isMainEntity -%}
                         <span id="save-entity" class="nav-link save cursor">
                             <i class="icm-save"></i><span>{{ "Enregistrer"|trans }}</span>
                         </span>
-                    {% endif %}
+                    {%- endif -%}
                 </li>
             </ul>
 
-            {% block entityForm %}{% endblock %}
+            {%- block entityForm -%}{%- endblock -%}
 
         </div>
     </div>
@@ -98,5 +97,5 @@
          data-swal-value-confirm-text="{{ "Éditer la valeur"|trans }}">
     </div>
 
-{% endblock %}
+{%- endblock -%}
 

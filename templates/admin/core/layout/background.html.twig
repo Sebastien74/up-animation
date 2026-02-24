@@ -1,4 +1,4 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div class="modal-wrapper">
     <div class="modal fade modal-background-layout layout-modal"
@@ -19,15 +19,15 @@
                     </div>
                     <div class="modal-body">
                         {{ form_widget(form.backgroundColor) }}
-                        {% if form.hexadecimalCode is defined %}
+                        {%- if form.hexadecimalCode is defined -%}
                             {{ form_row(form.hexadecimalCode) }}
-                        {% endif %}
-                        {% if form.backgroundFullSize is defined %}
+                        {%- endif -%}
+                        {%- if form.backgroundFullSize is defined -%}
                             {{ form_row(form.backgroundFullSize) }}
-                        {% endif %}
-                        {% if form.backgroundFullHeight is defined %}
+                        {%- endif -%}
+                        {%- if form.backgroundFullHeight is defined -%}
                             {{ form_row(form.backgroundFullHeight) }}
-                        {% endif %}
+                        {%- endif -%}
                     </div>
                     <div class="modal-footer">
                         {{ form_widget(form.save) }}

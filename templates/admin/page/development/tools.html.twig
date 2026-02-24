@@ -1,20 +1,20 @@
-{% extends "admin/base.html.twig" %}
+{%- extends "admin/base.html.twig" -%}
 
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% block title %}{{ "Boite à outils"|trans|htmlEntities }}{% endblock %}
-{% block pageTitle %}{{ "Boite à outils"|trans }}{% endblock %}
+{%- block title -%}{{ "Boite à outils"|trans|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Boite à outils"|trans }}{%- endblock -%}
 
-{% block stylesheets %}
+{%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-development', null, 'admin') }}
-{% endblock %}
+{%- endblock -%}
 
-{% block javascripts %}
+{%- block javascripts -%}
     {{ parent() }}
-{% endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
     <div class="row">
         <div class="col-md-3">
             <div class="card mb-3">
@@ -60,12 +60,12 @@
                     <h4 class="main-subtitle"><i class="icm-database"></i>{{ "Doctrine"|trans }}</h4>
                     <a href="{{ path('doctrine_schema_update') }}" class="btn-app center no-icon w-100 mb-3">{{ "MAJ de la base de donnée"|trans }}</a>
                     <a href="{{ path('doctrine_schema_validate') }}" class="btn-app center no-icon w-100 mb-3">{{ "Vérification du schéma"|trans }}</a>
-                    {% if websiteId() %}
+                    {%- if websiteId() -%}
                         <a href="{{ path('admin_entities_generator', {website: websiteId()}) }}" class="btn-app center no-icon w-100">{{ "Générer la configuration des entités"|trans }}</a>
-                    {% endif %}
+                    {%- endif -%}
                 </div>
             </div>
         </div>
         {{ render(controller('App\\Controller\\Admin\\Development\\ToolController::fileRename' )) }}
     </div>
-{% endblock %}
+{%- endblock -%}

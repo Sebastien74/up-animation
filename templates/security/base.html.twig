@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
-{% trans_default_domain 'security_cms' %}
+{%- trans_default_domain 'security_cms' -%}
 
-{% set companyName = "Up Animations!"|trans|striptags %}
-{% set logoPath = asset('build/security/images/logo.svg', 'security') %}
+{%- set companyName = "Up Animations!"|trans|striptags -%}
+{%- set logoPath = asset('build/security/images/logo.svg', 'security') -%}
 
 <html lang="{{ app.request.locale }}" data-nonce="{{ csp_nonce() }}">
 
@@ -16,7 +16,7 @@
         <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
         <link rel="preconnect" href="https://www.google.com" crossorigin>
         <meta name="robots" content="noindex, nofollow">
-        <title>{% block title %}{{ "Bienvenue !!"|trans|htmlEntities }}{% endblock %} | {{ companyName }}</title>
+        <title>{%- block title -%}{{ "Bienvenue !!"|trans|htmlEntities }}{%- endblock -%} | {{ companyName }}</title>
         <meta name="description" content="{{ companyName }}" />
         <meta name="author" content="{{ companyName }}" />
         <link rel="icon" type="image/png" href="{{ asset('build/security/images/favicon-96x96.png', 'security') }}" sizes="96x96" />
@@ -28,9 +28,9 @@
         <meta property="og:image" content="{{ asset('build/security/images/share.jpg', 'security') }}">
         <link rel="preload" href="{{ asset('build/security/security-fonts.css', 'security') }}" as="style" onload="this.onload=null;this.rel='stylesheet'" nonce="{{ csp_nonce() }}">
         <noscript><link rel="stylesheet" href="{{ asset('build/security/security-fonts.css', 'security') }}" nonce="{{ csp_nonce() }}"></noscript>
-        {% block stylesheets %}
+        {%- block stylesheets -%}
             {{ encore_entry_link_tags('security', null, 'security', {nonce: csp_nonce()}) }}
-        {% endblock %}
+        {%- endblock -%}
     </head>
 
     <body>
@@ -46,7 +46,7 @@
             <aside class="login-box">
                 <div class="inner h-100 d-flex">
                     <div id="content" class="col-12 p-3 p-sm-4 d-flex position-relative">
-                        {% include 'security/includes/preloader.html.twig' %}
+                        {%- include 'security/includes/preloader.html.twig' -%}
                         <div class="my-auto w-100">
                             <header>
                                 <a href="{{ app.request.getSchemeAndHttpHost() }}" class="header w-100 d-inline-block text-center mb-5 mt-5 mt-md-0">
@@ -55,7 +55,7 @@
                             </header>
                             <div class="row">
                                 <div class="col-sm-8 col-md-6 col-lg-12 mx-auto">
-                                    {% block body %}{% endblock %}
+                                    {%- block body -%}{%- endblock -%}
                                 </div>
                             </div>
                         </div>
@@ -63,13 +63,13 @@
                 </div>
             </aside>
         </section>
-        {% include 'core/data-path.html.twig' only %}
-        {% block javascripts %}
-            {% if isIE() %}
+        {%- include 'core/data-path.html.twig' only -%}
+        {%- block javascripts -%}
+            {%- if isIE() -%}
                 {{ encore_entry_script_tags('browsers', null, 'vendor', {nonce: csp_nonce(), defer: true}) }}
-            {% endif %}
+            {%- endif -%}
             {{ encore_entry_script_tags('security', null, 'security', {nonce: csp_nonce(), defer: true}) }}
-        {% endblock %}
+        {%- endblock -%}
     </body>
 
 </html>

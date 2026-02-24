@@ -1,39 +1,39 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div class="card mb-3">
     <div class="card-body pb-2">
         <h4 class="main-subtitle"><i class="icm-css3-alt"></i>{{ "Classes personnalisées"|trans }}</h4>
 
-        {% import _self as macro %}
+        {%- import _self as macro -%}
 
-        {% macro cssclasses_prototype(cssClass) %}
+        {%- macro cssclasses_prototype(cssClass) -%}
 
-            {% set isNew = cssClass.vars.data.id is defined and cssClass.vars.data.id ? false : true %}
-            {% set entityId = isNew ? uniqId() : cssClass.vars.data.id %}
+            {%- set isNew = cssClass.vars.data.id is defined and cssClass.vars.data.id ? false : true -%}
+            {%- set entityId = isNew ? uniqId() : cssClass.vars.data.id -%}
 
             <div class="prototype prototype-block p-3">
                 <div class="row">
                     {{ form_row(cssClass.name) }}
                     {{ form_row(cssClass.description) }}
                 </div>
-                {% include 'admin/core/form/modal-delete-collection.html.twig' with {
+                {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
                     isNew: cssClass.vars.data.id is defined and cssClass.vars.data.id ? false : true,
                     entityId: isNew ? uniqId() : cssClass.vars.data.id,
                     interfaceName: 'cssclass'
-                } %}
+                } -%}
             </div>
 
-        {% endmacro %}
+        {%- endmacro -%}
 
         <div id="cssclasses-collection"
              data-index="{{ form.cssClasses|length }}"
              class="collection"
              data-prototype="{{ macro.cssclasses_prototype(form.cssClasses.vars.prototype)|e('html_attr') }}">
-            {% for cssClass in form.cssClasses %}
+            {%- for cssClass in form.cssClasses -%}
                 {{ macro.cssclasses_prototype(cssClass) }}
-            {% else %}
-                {% include 'admin/include/alert.html.twig' with {alert: "info", message: "Auncune classe personnalisée enregistrée."|trans} only %}
-            {% endfor %}
+            {%- else -%}
+                {%- include 'admin/include/alert.html.twig' with {alert: "info", message: "Auncune classe personnalisée enregistrée."|trans} only -%}
+            {%- endfor -%}
         </div>
 
         <div class="w-100 text-end mt-4 mb-4">

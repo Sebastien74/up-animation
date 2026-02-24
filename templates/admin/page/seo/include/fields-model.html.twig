@@ -1,15 +1,15 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
 <div class="card mb-3">
     <div class="card-body pb-2">
         <h5 class="main-subtitle mb-0"><i class="icm-database"></i>{{ "Champs"|trans }}</h5>
-        {% if keywords %}
-            {% for title, metadatas in keywords %}
-                {% if not haveCaption %}
+        {%- if keywords -%}
+            {%- for title, metadatas in keywords -%}
+                {%- if not haveCaption -%}
                     <h4>{{ title|capitalize }}</h4>
-                {% endif %}
-                <div {% if not loop.last %}class="mb-3"{% endif %}>
-                    {% for metadata in metadatas %}
+                {%- endif -%}
+                <div {%- if not loop.last -%}class="mb-3"{%- endif -%}>
+                    {%- for metadata in metadatas -%}
                         <div class="item btn mb-1">
                             <div class="d-flex align-items-center refer-copy">
                                 <div class="to-copy">[{{ metadata }}]</div>
@@ -18,26 +18,26 @@
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
+                    {%- endfor -%}
                 </div>
-            {% endfor %}
-        {% endif %}
+            {%- endfor -%}
+        {%- endif -%}
     </div>
 </div>
 
-{% if haveCaption and labels %}
+{%- if haveCaption and labels -%}
     <div class="card mb-3">
         <div class="card-body pb-2">
             <h5 class="main-subtitle mb-0"><i class="icm-list-ul"></i>{{ "Légende"|trans }}</h5>
             <ul class="reset">
-                {% for title, metadatas in keywords %}
-                    {% for metadata in metadatas %}
-                        {% if labels[metadata] is defined %}
+                {%- for title, metadatas in keywords -%}
+                    {%- for metadata in metadatas -%}
+                        {%- if labels[metadata] is defined -%}
                             <li><strong>[{{ metadata }}]</strong> : {{ labels[metadata] }}</li>
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
+                        {%- endif -%}
+                    {%- endfor -%}
+                {%- endfor -%}
             </ul>
         </div>
     </div>
-{% endif %}
+{%- endif -%}

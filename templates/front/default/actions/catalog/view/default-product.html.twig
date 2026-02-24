@@ -1,11 +1,11 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
 {# thumbnails or boostrap #}
-{% set slideType = 'thumbnails' %}
+{%- set slideType = 'thumbnails' -%}
 
-{% if entity.intl.title %}
-    {% set displayMainMedia = false %}
-    {% include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+{%- if entity.intl.title -%}
+    {%- set displayMainMedia = false -%}
+    {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
         styleClass: 'text-center',
         block: entity,
         customMedia: entity.mainMediaInHeader ? entity.headerMedia : null,
@@ -14,46 +14,46 @@
         pageTitle: entity.intl.title,
         template: websiteTemplate,
         thumbConfiguration: thumbConfigurationHeader
-    } %}
-{% endif %}
+    } -%}
+{%- endif -%}
 
 <div id="product-view">
     <section id="product-content" class="container pt-lg pb-lg">
         <div class="row">
             <div class="col-lg-7">
-                {% if entity.category and entity.category.intl.title %}
+                {%- if entity.category and entity.category.intl.title -%}
                     <strong class="d-inline-block w-100">{{ entity.category.intl.title|raw }}</strong>
-                {% endif %}
-                {% if entity.intl.introduction %}
+                {%- endif -%}
+                {%- if entity.intl.introduction -%}
                     <p class="introduction text-bold">{{ entity.intl.introduction|raw|nl2br }}</p>
-                {% endif %}
-                {% if entity.intl.body %}
+                {%- endif -%}
+                {%- if entity.intl.body -%}
                     <div class="body">{{ entity.intl.body|raw }}</div>
-                {% endif %}
-                {% if entity.mainVideo %}
-                    {% include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {
+                {%- endif -%}
+                {%- if entity.mainVideo -%}
+                    {%- include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {
                         block: entity,
                         website: website,
                         intl: entity.intl,
                         media: entity.mainVideo,
-                    } only %}
-                {% endif %}
-                {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                    } only -%}
+                {%- endif -%}
+                {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                     intl: entity.intl
-                } %}
-                {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                } -%}
+                {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                     intl: {
                         link: path('front_index', {url: pageUrl}),
                         linkStyle: 'btn btn-primary mt-5',
                         linkLabel: "Retourner à la liste des produits"|trans,
                     }
-                } %}
+                } -%}
             </div>
-            {% if entity.medias is not empty %}
+            {%- if entity.medias is not empty -%}
                 <div class="col-lg-5">
                     <div class="carousel-wrap">
-                        {% if 'thumbnails' == slideType %}
-                            {% include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
+                        {%- if 'thumbnails' == slideType -%}
+                            {%- include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
                                 medias: entity.medias,
                                 thumbConfiguration: thumbConfigurationView,
                                 arrowsSide: 'side',
@@ -79,9 +79,9 @@
                                     itemsPerSlideTablet: 1,
                                     itemsPerSlideMobile: 1,
                                 }
-                            } %}
-                        {% else %}
-                            {% include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
+                            } -%}
+                        {%- else -%}
+                            {%- include 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig' with {
                                 sliderSlug: 'event',
                                 websiteTemplate: websiteTemplate,
                                 entity: entity,
@@ -96,17 +96,17 @@
                                 thumbConfiguration: thumbConfigurationView,
                                 maxWidth: not thumbConfigurationView ? null : null,
                                 maxHeight: not thumbConfigurationView ? 375 : null,
-                            } %}
-                        {% endif %}
+                            } -%}
+                        {%- endif -%}
                     </div>
                 </div>
-            {% endif %}
+            {%- endif -%}
         </div>
     </section>
-    {% if associatedEntities is not empty %}
+    {%- if associatedEntities is not empty -%}
         <section class="associated-entities-container pt-lg pb-lg">
             <div class="container-fluid-right">
-                {% include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-slider.html.twig' with {
+                {%- include 'front/'~websiteTemplate~'/actions/vendor/include/layout-associated-entities-slider.html.twig' with {
                     listingTitle: 'Découvrez également'|trans,
                     associatedEntities: associatedEntities,
                     entity: entity,
@@ -115,8 +115,8 @@
                     websiteTemplate: websiteTemplate,
                     pageUrl: pageUrl,
                     thumbConfiguration: associatedEntitiesThumbConfiguration
-                } only %}
+                } only -%}
             </div>
         </section>
-    {% endif %}
+    {%- endif -%}
 </div>

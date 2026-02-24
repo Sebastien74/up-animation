@@ -1,19 +1,19 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
 <!-- TO CHECK IF MACRO IS NOT EMPTY macro.name|trim is not empty -->
 
-{% macro view(media = null, seo = null, type = 'Article') %}
-    {% set displayMicrodata = true %}
-    {% set displayMedia = media.extension is defined and media.extension not in ['.svg', '.gif', '.mp3'] %}
-    {% if displayMedia %}
-        {% set microdata_1x1 = media|file({}, {beforeRender: true, path: true, filter: 'microdata_1x1'}) %}
-        {% set microdata_4x3 = media|file({}, {beforeRender: true, path: true, filter: 'microdata_4x3'}) %}
-        {% set microdata_16x9 = media|file({}, {beforeRender: true, path: true, filter: 'microdata_16x9'}) %}
-        {% if 'in-progress' == microdata_1x1 %}
-            {% set displayMicrodata = false %}
-        {% endif %}
-    {% endif %}
-    {% if displayMicrodata %}
+{%- macro view(media = null, seo = null, type = 'Article') -%}
+    {%- set displayMicrodata = true -%}
+    {%- set displayMedia = media.extension is defined and media.extension not in ['.svg', '.gif', '.mp3'] -%}
+    {%- if displayMedia -%}
+        {%- set microdata_1x1 = media|file({}, {beforeRender: true, path: true, filter: 'microdata_1x1'}) -%}
+        {%- set microdata_4x3 = media|file({}, {beforeRender: true, path: true, filter: 'microdata_4x3'}) -%}
+        {%- set microdata_16x9 = media|file({}, {beforeRender: true, path: true, filter: 'microdata_16x9'}) -%}
+        {%- if 'in-progress' == microdata_1x1 -%}
+            {%- set displayMicrodata = false -%}
+        {%- endif -%}
+    {%- endif -%}
+    {%- if displayMicrodata -%}
         <!-- Microdata -->
         <script type="application/ld+json">
             {
@@ -26,22 +26,22 @@
                 },
                 "url": "{{ seo.canonical }}",
                 "headline": "{{ seo.title|striptags|raw }}",
-                {% if displayMedia %}
+                {%- if displayMedia -%}
                 "image": [
                     "{{ media|imgFilter('microdata_1x1', true) }}",
                     "{{ media|imgFilter('microdata_4x3', true) }}",
                     "{{ media|imgFilter('microdata_16x9', true) }}"
                 ],
-                {% endif %}
+                {%- endif -%}
                 "author": {
                     "@type": "{{ seo.microdata.authorType }}",
                     "name": "{{ seo.microdata.author|striptags|raw }}",
                     "url": "{{ seo.microdata.companyLogo }}"
                 },
-                {% if seo.publishedDate %}"datePublished": "{{ seo.publishedDate|date('Y-m-d H:i:s P') }}",{% endif %}
-                {% if seo.updatedAt %}"dateModified": "{{ seo.updatedAt|date('Y-m-d H:i:s P') }}",{% endif %}
-                {% if seo.description %}"description": "{{ seo.description }}",{% endif %}
-                {% if seo.keywords %}"keywords": "{{ seo.keywords }}",{% endif %}
+                {%- if seo.publishedDate -%}"datePublished": "{{ seo.publishedDate|date('Y-m-d H:i:s P') }}",{%- endif -%}
+                {%- if seo.updatedAt -%}"dateModified": "{{ seo.updatedAt|date('Y-m-d H:i:s P') }}",{%- endif -%}
+                {%- if seo.description -%}"description": "{{ seo.description }}",{%- endif -%}
+                {%- if seo.keywords -%}"keywords": "{{ seo.keywords }}",{%- endif -%}
                 "publisher": {
                     "@type": "{{ seo.microdata.companyType }}",
                     "name": "{{ seo.microdata.companyName|striptags|raw }}",
@@ -52,5 +52,5 @@
                 }
             }
         </script>
-    {% endif %}
-{% endmacro %}
+    {%- endif -%}
+{%- endmacro -%}

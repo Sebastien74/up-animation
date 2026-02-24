@@ -1,4 +1,4 @@
-{% if form is defined %}
+{%- if form is defined -%}
     {{ form_start(form, {attr: {
         id: "search-medias-form",
         class: "d-inline-block",
@@ -10,10 +10,10 @@
             {{ form_widget(form.searchMedia) }}
         </div>
     {{ form_end(form) }}
-{% endif %}
+{%- endif -%}
 
-{% if medias is defined %}
+{%- if medias is defined -%}
     <div id="search-results">
-        {% include 'admin/page/media/medias-list.html.twig' %}
+        {%- include 'admin/page/media/medias-list.html.twig' -%}
     </div>
-{% endif %}
+{%- endif -%}

@@ -1,15 +1,15 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% set pageUrl = pageUrl is defined ? pageUrl : null %}
-{% if pageUrl %}
-    {% set class = class is defined ? class : null %}
-    {% set btnLabel = entity.category.intl.linkLabel is defined and entity.category.intl.linkLabel
-        ? entity.category.intl.linkLabel : "Retourner à la liste des publications"|trans %}
-    {% include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+{%- set pageUrl = pageUrl is defined ? pageUrl : null -%}
+{%- if pageUrl -%}
+    {%- set class = class is defined ? class : null -%}
+    {%- set btnLabel = entity.category.intl.linkLabel is defined and entity.category.intl.linkLabel
+        ? entity.category.intl.linkLabel : "Retourner à la liste des publications"|trans -%}
+    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
         intl: {
             link: path('front_index', {url: pageUrl}),
             linkStyle: 'btn btn-primary',
             linkLabel: btnLabel,
         }
-    } %}
-{% endif %}
+    } -%}
+{%- endif -%}

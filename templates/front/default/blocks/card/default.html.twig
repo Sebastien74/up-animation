@@ -1,14 +1,14 @@
-{% trans_default_domain 'front_default' %}
+{%- trans_default_domain 'front_default' -%}
 
-{% import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macro %}
+{%- import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macro -%}
 
-{% set template = customTemplate ?? 'standard' %}
-{% set args = _context|merge({truncate: null, showLink: true, intl: intl}) %}
+{%- set template = customTemplate ?? 'standard' -%}
+{%- set args = _context|merge({truncate: null, showLink: true, intl: intl}) -%}
 
-{% if 'standard' == template %}
+{%- if 'standard' == template -%}
     {{ macro.standard(args) }}
-{% elseif 'content-right' == template %}
+{%- elseif 'content-right' == template -%}
     {{ macro.contentRight(args) }}
-{% elseif 'content-left' == template %}
+{%- elseif 'content-left' == template -%}
     {{ macro.contentLeft(args) }}
-{% endif %}
+{%- endif -%}

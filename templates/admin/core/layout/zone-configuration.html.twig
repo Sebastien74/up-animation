@@ -1,6 +1,6 @@
-{% trans_default_domain 'admin' %}
+{%- trans_default_domain 'admin' -%}
 
-{% set allLocales = website.configuration.allLocales %}
+{%- set allLocales = website.configuration.allLocales -%}
 
 <div class="modal-wrapper">
     <div class="modal fade modal-zone-configuration layout-modal"
@@ -32,13 +32,13 @@
                                     <i class="icm-star"></i>{{ "Général"|trans|raw }}
                                 </a>
                             </li>
-                            {% if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 %}
+                            {%- if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 -%}
                                 <li class="nav-item text-center">
                                     <a class="nav-link" id="animation-tab" data-bs-toggle="tab" href="#animation" role="tab" aria-controls="animation" aria-selected="false">
                                         <i class="icm-hurricane"></i>{{ "Animation / Styles"|trans|raw }}
                                     </a>
                                 </li>
-                            {% endif %}
+                            {%- endif -%}
                             <li class="nav-item text-center">
                                 <a class="nav-link" id="medias-tab" data-bs-toggle="tab" href="#medias" role="tab" aria-controls="medias" aria-selected="false">
                                     <i class="icm-image"></i>{{ "Médias"|trans|raw }}
@@ -66,40 +66,40 @@
                                 <div class="row">
                                     <div class="row w-100 m-0">
                                         <div class="col-md-6">
-                                            {% include 'admin/core/layout/margins.html.twig' %}
+                                            {%- include 'admin/core/layout/margins.html.twig' -%}
                                         </div>
                                         <div class="col-md-6">
                                             <h4 class="text-dark w-100 text-center mb-3">{{ "Configuration"|trans }}</h4>
                                             <div class="row">
-                                                {% if form.alignment is defined %}
+                                                {%- if form.alignment is defined -%}
                                                     {{ form_row(form.alignment) }}
-                                                {% endif %}
-                                                {% if form.containerSize is defined %}
+                                                {%- endif -%}
+                                                {%- if form.containerSize is defined -%}
                                                     {{ form_row(form.containerSize) }}
-                                                {% endif %}
-                                                {% if form.fullSize is defined %}
+                                                {%- endif -%}
+                                                {%- if form.fullSize is defined -%}
                                                     {{ form_row(form.fullSize) }}
-                                                {% endif %}
-                                                {% if form.centerCol is defined %}
+                                                {%- endif -%}
+                                                {%- if form.centerCol is defined -%}
                                                     {{ form_row(form.centerCol) }}
-                                                {% endif %}
-                                                {% if form.colToRight is defined %}
+                                                {%- endif -%}
+                                                {%- if form.colToRight is defined -%}
                                                     {{ form_row(form.colToRight) }}
-                                                {% endif %}
-                                                {% if form.colToEnd is defined %}
+                                                {%- endif -%}
+                                                {%- if form.colToEnd is defined -%}
                                                     {{ form_row(form.colToEnd) }}
-                                                {% endif %}
-                                                {% if form.standardizeElements is defined %}
+                                                {%- endif -%}
+                                                {%- if form.standardizeElements is defined -%}
                                                     {{ form_row(form.standardizeElements) }}
-                                                {% endif %}
-                                                {% if form.hide is defined %}
+                                                {%- endif -%}
+                                                {%- if form.hide is defined -%}
                                                     {{ form_row(form.hide) }}
-                                                {% endif %}
+                                                {%- endif -%}
                                             </div>
                                             <div class="row">
-                                                {% if form.hideLocales is defined %}
+                                                {%- if form.hideLocales is defined -%}
                                                     {{ form_row(form.hideLocales) }}
-                                                {% endif %}
+                                                {%- endif -%}
                                             </div>
                                         </div>
                                     </div>
@@ -108,46 +108,46 @@
                             <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="screens" role="tabpanel" aria-labelledby="screens-tab">
                                 <h4 class="text-dark w-100 text-center mb-3">{{ "Cacher"|trans }}</h4>
                                 <div class="row">
-                                    {% if form.hideMobile is defined %}
+                                    {%- if form.hideMobile is defined -%}
                                         {{ form_row(form.hideMobile) }}
-                                    {% endif %}
-                                    {% if form.hideTablet is defined %}
+                                    {%- endif -%}
+                                    {%- if form.hideTablet is defined -%}
                                         {{ form_row(form.hideTablet) }}
-                                    {% endif %}
-                                    {% if form.hideMiniPc is defined %}
+                                    {%- endif -%}
+                                    {%- if form.hideMiniPc is defined -%}
                                         {{ form_row(form.hideMiniPc) }}
-                                    {% endif %}
-                                    {% if form.hideDesktop is defined %}
+                                    {%- endif -%}
+                                    {%- if form.hideDesktop is defined -%}
                                         {{ form_row(form.hideDesktop) }}
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
-                                {% include 'admin/core/layout/screens-entity.html.twig' with {cols: form.cols} %}
+                                {%- include 'admin/core/layout/screens-entity.html.twig' with {cols: form.cols} -%}
                             </div>
                             <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="medias" role="tabpanel" aria-labelledby="medias-tab">
                                 <h4 class="text-dark w-100 text-center mb-3">{{ "Image de fond"|trans }}</h4>
-                                {% if allLocales|length == 1 %}
+                                {%- if allLocales|length == 1 -%}
                                     <div class="row">
-                                {% endif %}
-                                    {% include 'admin/core/form/media-relations-uniq.html.twig' with {mediaRelations: form.mediaRelations, displayTitleCard: false} %}
-                                {% if allLocales|length == 1 %}
+                                {%- endif -%}
+                                    {%- include 'admin/core/form/media-relations-uniq.html.twig' with {mediaRelations: form.mediaRelations, displayTitleCard: false} -%}
+                                {%- if allLocales|length == 1 -%}
                                     </div>
-                                {% endif %}
+                                {%- endif -%}
                                 <div class="row">
-                                    {% if form.standardizeMedia is defined %}
+                                    {%- if form.standardizeMedia is defined -%}
                                         {{ form_row(form.standardizeMedia) }}
-                                    {% endif %}
-                                    {% if form.backgroundFixed is defined %}
+                                    {%- endif -%}
+                                    {%- if form.backgroundFixed is defined -%}
                                         {{ form_row(form.backgroundFixed) }}
-                                    {% endif %}
-                                    {% if form.backgroundParallax is defined %}
+                                    {%- endif -%}
+                                    {%- if form.backgroundParallax is defined -%}
                                         {{ form_row(form.backgroundParallax) }}
-                                    {% endif %}
+                                    {%- endif -%}
                                 </div>
                             </div>
                             <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="fingerprint" role="tabpanel" aria-labelledby="fingerprint-tab">
-                                {% include 'admin/core/layout/custom-identifiers.html.twig' %}
+                                {%- include 'admin/core/layout/custom-identifiers.html.twig' -%}
                             </div>
-                            {% if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 %}
+                            {%- if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 -%}
                                 <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="animation" role="tabpanel" aria-labelledby="animation-tab">
                                     <div class="row">
                                         <h4 class="text-dark w-100 text-center mb-3">{{ "Animation"|trans }}</h4>
@@ -156,38 +156,38 @@
                                         {{ form_row(form.duration) }}
                                         <h4 class="text-dark w-100 text-center mb-3">{{ "Styles"|trans }}</h4>
                                         <div class="row justify-content-center">
-                                            {% if form.shadow is defined %}
+                                            {%- if form.shadow is defined -%}
                                                 {{ form_row(form.shadow) }}
-                                            {% endif %}
-                                            {% if form.shadowMobile is defined %}
+                                            {%- endif -%}
+                                            {%- if form.shadowMobile is defined -%}
                                                 {{ form_row(form.shadowMobile) }}
-                                            {% endif %}
-                                            {% if form.zIndex is defined %}
+                                            {%- endif -%}
+                                            {%- if form.zIndex is defined -%}
                                                 {{ form_row(form.zIndex) }}
-                                            {% endif %}
+                                            {%- endif -%}
                                         </div>
-                                        {% if form.radius is defined %}
+                                        {%- if form.radius is defined -%}
                                             <div class="row justify-content-center">
                                                 {{ form_row(form.radius) }}
                                             </div>
-                                        {% endif %}
+                                        {%- endif -%}
                                     </div>
                                 </div>
-                            {% elseif form.transition is defined %}
+                            {%- elseif form.transition is defined -%}
                                 <div class="d-none">
                                     {{ form_row(form.transition) }}
                                     {{ form_row(form.delay) }}
                                     {{ form_row(form.duration) }}
                                 </div>
-                            {% endif %}
+                            {%- endif -%}
                             <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="content" role="tabpanel" aria-labelledby="content-tab">
                                 <div class="row">
-                                    {% if form.titlePosition is defined %}
+                                    {%- if form.titlePosition is defined -%}
                                         {{ form_row(form.titlePosition) }}
-                                    {% endif %}
-                                    {% if form.intls is defined %}
-                                        {% include 'admin/core/form/intls.html.twig' with {intls: form.intls, disableTitle: true} %}
-                                    {% endif %}
+                                    {%- endif -%}
+                                    {%- if form.intls is defined -%}
+                                        {%- include 'admin/core/form/intls.html.twig' with {intls: form.intls, disableTitle: true} -%}
+                                    {%- endif -%}
                                 </div>
                             </div>
                         </div>

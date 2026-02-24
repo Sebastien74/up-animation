@@ -1,13 +1,13 @@
-{% trans_default_domain 'front_webmaster' %}
+{%- trans_default_domain 'front_webmaster' -%}
 
-{% set bottom = true %}
-{% set website = website is defined ? website : website() %}
-{% set isUserFront = isUserFront(app.user) %}
+{%- set bottom = true -%}
+{%- set website = website is defined ? website : website() -%}
+{%- set isUserFront = isUserFront(app.user) -%}
 
-{% if this.toolbox.allowIp or this.toolbox.userAllowed %}
+{%- if this.toolbox.allowIp or this.toolbox.userAllowed -%}
     <div {{ attributes }}>
-        {% if this.toolbox.allowIp and not this.toolbox.userAllowed and not isUserFront %}
-            <div id="webmaster-box" class="d-none{% if bottom %} bottom{% endif %}">
+        {%- if this.toolbox.allowIp and not this.toolbox.userAllowed and not isUserFront -%}
+            <div id="webmaster-box" class="d-none{%- if bottom -%} bottom{%- endif -%}">
                 <a href="{{ path('security_login') }}"
                    class="btn btn-primary webmaster-btn btn-login align-items-center justify-content-center"
                    data-bs-toggle="tooltip"
@@ -19,8 +19,8 @@
                     <i class="icw-power-off"></i>
                 </a>
             </div>
-        {% elseif this.toolbox.userAllowed and not isUserFront %}
-            <div id="webmaster-box" class="d-none{% if bottom %} bottom{% endif %}">
+        {%- elseif this.toolbox.userAllowed and not isUserFront -%}
+            <div id="webmaster-box" class="d-none{%- if bottom -%} bottom{%- endif -%}">
                 <div class="btn-group">
                     <div id="webmaster-box-wrapper"
                           class="d-inline-block"
@@ -37,16 +37,16 @@
                         <i class="icw-times"></i>
                     </button>
                     <div class="dropdown-menu">
-                        {% set interfaceName = this.toolbox.interfaceName %}
-                        {% set website = this.toolbox.website %}
-                        {% set configuration = website.configuration %}
-                        {% set entityId = this.toolbox.entityId %}
-                        {% set layoutRoute = 'admin_'~interfaceName~'_layout' %}
-                        {% set editRoute = 'admin_'~interfaceName~'_edit' %}
-                        {% set layoutRouteExist = routeExist(layoutRoute) %}
-                        {% set editRouteExist = routeExist(editRoute) %}
-                        {% set btnRoute = layoutRouteExist ? layoutRoute : (editRouteExist ? editRoute : null) %}
-                        {% if interfaceName and btnRoute and entityId %}
+                        {%- set interfaceName = this.toolbox.interfaceName -%}
+                        {%- set website = this.toolbox.website -%}
+                        {%- set configuration = website.configuration -%}
+                        {%- set entityId = this.toolbox.entityId -%}
+                        {%- set layoutRoute = 'admin_'~interfaceName~'_layout' -%}
+                        {%- set editRoute = 'admin_'~interfaceName~'_edit' -%}
+                        {%- set layoutRouteExist = routeExist(layoutRoute) -%}
+                        {%- set editRouteExist = routeExist(editRoute) -%}
+                        {%- set btnRoute = layoutRouteExist ? layoutRoute : (editRouteExist ? editRoute : null) -%}
+                        {%- if interfaceName and btnRoute and entityId -%}
                             <a href="{{ path(btnRoute, this.toolbox.btnEditionArgs) }}"
                                class="btn btn-primary webmaster-btn align-items-center justify-content-center"
                                data-bs-toggle="tooltip"
@@ -57,7 +57,7 @@
                                target="_blank">
                                 <i class="icw-pencil-alt"></i>
                             </a>
-                        {% else %}
+                        {%- else -%}
                             <a href="{{ path('admin_dashboard', {website: website.id}) }}"
                                class="btn btn-primary webmaster-btn align-items-center justify-content-center"
                                data-bs-toggle="tooltip"
@@ -68,8 +68,8 @@
                                target="_blank">
                                 <i class="icw-briefcase"></i>
                             </a>
-                        {% endif %}
-                        {% if interfaceName not in ['catalogproduct', 'newscast'] %}
+                        {%- endif -%}
+                        {%- if interfaceName not in ['catalogproduct', 'newscast'] -%}
                             <a href="#" id="webmaster-edit-btn"
                                class="btn btn-primary webmaster-btn align-items-center justify-content-center"
                                data-bs-toggle="tooltip"
@@ -79,8 +79,8 @@
                                aria-label="{{ "Afficher les boutons d'éditions"|trans|striptags }}">
                                 <i class="icw-eye"></i>
                             </a>
-                        {% endif %}
-                        {% if granted('ROLE_SEO') and url.id is defined %}
+                        {%- endif -%}
+                        {%- if granted('ROLE_SEO') and url.id is defined -%}
                             <a href="{{ path('admin_seo_edit', {website: website.id, entitylocale: app.request.locale, url: url.id}) }}"
                                class="btn btn-primary webmaster-btn align-items-center justify-content-center"
                                data-bs-toggle="tooltip"
@@ -91,8 +91,8 @@
                                target="_blank">
                                 <i class="icw-chart-line"></i>
                             </a>
-                        {% endif %}
-                        {% if granted('ROLE_ALLOWED_TO_SWITCH') and 'secure-page'|moduleActive(configuration) %}
+                        {%- endif -%}
+                        {%- if granted('ROLE_ALLOWED_TO_SWITCH') and 'secure-page'|moduleActive(configuration) -%}
                             <a id="users-switcher-btn"
                                class="btn btn-primary webmaster-btn cursor align-items-center justify-content-center"
                                title="{{ "Afficher le commutateur d'utilsateurs"|trans|striptags }}"
@@ -103,8 +103,8 @@
                                data-bs-custom-class="webmaster-tooltip bs-tooltip-end">
                                 <i class="icw-users"></i>
                             </a>
-                        {% endif %}
-                        {% if is_granted('IS_IMPERSONATOR') %}
+                        {%- endif -%}
+                        {%- if is_granted('IS_IMPERSONATOR') -%}
                             <a href="{{ impersonation_exit_path(path('front_index')) }}"
                                class="btn btn-primary webmaster-btn align-items-center justify-content-center"
                                data-bs-toggle="tooltip"
@@ -114,7 +114,7 @@
                                aria-label="{{ "Reconnectez-vous en tant qu'administrateur"|trans|striptags }}">
                                 <i class="icw-repeat"></i>
                             </a>
-                        {% else %}
+                        {%- else -%}
                             <a href="{{ path('app_logout') }}"
                                class="btn btn-primary webmaster-btn align-items-center justify-content-center"
                                title="{{ "Déconnectez-vous"|trans|striptags }}"
@@ -124,13 +124,13 @@
                                data-bs-custom-class="webmaster-tooltip bs-tooltip-end">
                                 <i class="icw-power-off"></i>
                             </a>
-                        {% endif %}
+                        {%- endif -%}
                         </div>
                     </div>
                 </div>
             </div>
-        {% elseif is_granted('IS_IMPERSONATOR') %}
-            <div id="webmaster-box"{% if bottom %} class="bottom"{% endif %}>
+        {%- elseif is_granted('IS_IMPERSONATOR') -%}
+            <div id="webmaster-box"{%- if bottom -%} class="bottom"{%- endif -%}>
                 <a href="{{ impersonation_exit_path(path('front_index')) }}"
                    class="btn btn-primary webmaster-btn align-items-center justify-content-center"
                    data-bs-toggle="tooltip"
@@ -141,8 +141,8 @@
                     <i class="icw-repeat"></i>
                 </a>
             </div>
-        {% elseif granted('ROLE_SECURE_PAGE') and isUserFront %}
-            <div id="webmaster-box" class="as-user-front d-none{% if bottom %} bottom{% endif %}">
+        {%- elseif granted('ROLE_SECURE_PAGE') and isUserFront -%}
+            <div id="webmaster-box" class="as-user-front d-none{%- if bottom -%} bottom{%- endif -%}">
                 <div class="btn-group">
                     <div id="webmaster-box-wrapper"
                          class="d-inline-block"
@@ -181,6 +181,6 @@
                     </div>
                 </div>
             </div>
-        {% endif %}
+        {%- endif -%}
     </div>
-{% endif %}
+{%- endif -%}
