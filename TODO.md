@@ -1,5 +1,7 @@
 Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
+DANS GUIDE.MD pour cms non versionné ajouter pour JUni "Retirer La présence des **BOM (Byte Order Mark) UTF-8** "
+
 Revoir toutes les requêtes depuis le debut
 
 Message d'erreur LOgin sont en anglais

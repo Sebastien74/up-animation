@@ -1,8 +1,9 @@
-﻿{%- set excludes = ['save', 'saveEdit', 'saveBack'] -%}
+{%- set excludes = ['save', 'saveEdit', 'saveBack'] -%}
 {%- if excludesFields is defined and excludesFields -%}
     {%- set excludes = excludes|merge(excludesFields) -%}
 {%- endif -%}
 {%- set configFieldsBase = ['urls', 'publicationStart', 'publicationEnd', 'subTitlePosition'] -%}
+
 {%- set configFields = {} -%}
 {%- set configFieldsIntls = false -%}
 {%- set templateConfig = templateConfig is defined and templateConfig|fileExist ? templateConfig : 'admin/core/form/edit-configuration-collapse.html.twig' -%}
@@ -42,7 +43,7 @@
     and entity.id is defined and entity.id -%}
 
 {%- set displayUploader = multiMedia and not haveCustomLayout -%}
-{#{%- set hideRadius = interface.configuration.saveArea is not defined or interface.configuration.saveArea != 'bottom' or configFields is defined and configFields -%}#}
+{%- set hideRadius = interface.configuration.saveArea is not defined or interface.configuration.saveArea != 'bottom' or configFields is defined and configFields -%}
 
 {{ form_start(form, {attr: {
     novalidate: 'novalidate',

@@ -1,4 +1,4 @@
-{%- extends "admin/base.html.twig" -%}
+﻿{%- extends "admin/base.html.twig" -%}
 
 {%- trans_default_domain 'admin' -%}
 
@@ -24,22 +24,22 @@
         {%- if logFiles -%}
             <div class="col-md-4 mb-3">
                 <div class="card h-100">
-                    <div class="card-header mb-3"><i class="icm-copy"></i>{{ "Files"|trans }}</div>
-                    <ul class="m-0">
-                        {%- for logFile in logFiles -%}
-                            {%- set color = 'info' -%}
-                            {%- if 'critical' in logFile or 'error' in logFile -%}
-                                {%- set color = 'danger' -%}
-                            {%- elseif 'deprecations' in logFile -%}
-                                {%- set color = 'warning' -%}
-                            {%- endif -%}
-                            <li>
-                                <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}"
-                                   class="text- {{ color }}">{{ logFile }}
-                                </a>
-                            </li>
-                        {%- endfor -%}
-                    </ul>
+                    <div class="card-body">
+                        <div class="main-subtitle"><i class="icm-copy"></i>{{ "Files"|trans }}</div>
+                        <ul class="m-0 list-unstyled">
+                            {%- for logFile in logFiles -%}
+                                {%- set color = 'info' -%}
+                                {%- if 'critical' in logFile or 'error' in logFile -%}
+                                    {%- set color = 'danger' -%}
+                                {%- elseif 'deprecations' in logFile -%}
+                                    {%- set color = 'warning' -%}
+                                {%- endif -%}
+                                <li class="lh-1{% if not loop.last %} mb-1{% endif %}">
+                                    <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}" class="text-{{ color }} lh-1 fz-sm">{{ logFile }}</a>
+                                </li>
+                            {%- endfor -%}
+                        </ul>
+                    </div>
                 </div>
             </div>
         {%- endif -%}
@@ -49,22 +49,22 @@
             {%- for logDay, logFiles in logDay -%}
                 <div class="col-md-4 mb-3">
                     <div class="card h-100">
-                        <div class="card-header mb-3"><i class="icm-calendar"></i>{{ logDay|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</div>
-                        <ul class="m-0">
-                            {%- for logFile in logFiles -%}
-                                {%- set color = 'info' -%}
-                                {%- if 'critical' in logFile or 'error' in logFile -%}
-                                    {%- set color = 'danger' -%}
-                                {%- elseif 'deprecations' in logFile -%}
-                                    {%- set color = 'warning' -%}
-                                {%- endif -%}
-                                <li>
-                                    <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}"
-                                       class="text- {{ color }}">{{ logFile }}
-                                    </a>
-                                </li>
-                            {%- endfor -%}
-                        </ul>
+                        <div class="card-body">
+                            <div class="main-subtitle"><i class="icm-calendar"></i>{{ logDay|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</div>
+                            <ul class="m-0 list-unstyled">
+                                {%- for logFile in logFiles -%}
+                                    {%- set color = 'info' -%}
+                                    {%- if 'critical' in logFile or 'error' in logFile -%}
+                                        {%- set color = 'danger' -%}
+                                    {%- elseif 'deprecations' in logFile -%}
+                                        {%- set color = 'warning' -%}
+                                    {%- endif -%}
+                                    <li class="lh-1{% if not loop.last %} mb-1{% endif %}">
+                                        <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}" class="text-{{ color }} lh-1 fz-sm">{{ logFile }}</a>
+                                    </li>
+                                {%- endfor -%}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             {%- endfor -%}
