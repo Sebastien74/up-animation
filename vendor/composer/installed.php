@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'eaa142be5ec62670e05273577fe95a76a6ef04b6',
+        'reference' => '09f2aa2637aedb800787c6f51e8bfdfb70cce754',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'eaa142be5ec62670e05273577fe95a76a6ef04b6',
+            'reference' => '09f2aa2637aedb800787c6f51e8bfdfb70cce754',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -272,9 +272,9 @@
             'dev_requirement' => true,
         ),
         'friendsofphp/php-cs-fixer' => array(
-            'pretty_version' => 'v3.94.1',
-            'version' => '3.94.1.0',
-            'reference' => 'd1a3634e29916367b885250e1fc4dfd5ffe3b091',
+            'pretty_version' => 'v3.94.2',
+            'version' => '3.94.2.0',
+            'reference' => '7787ceff91365ba7d623ec410b8f429cdebb4f63',
             'type' => 'application',
             'install_path' => __DIR__ . '/../friendsofphp/php-cs-fixer',
             'aliases' => array(),
@@ -299,9 +299,9 @@
             'dev_requirement' => false,
         ),
         'giggsey/libphonenumber-for-php' => array(
-            'pretty_version' => '9.0.23',
-            'version' => '9.0.23.0',
-            'reference' => 'c415b68b44f8f6d7bb0de79769de8b2189d8a055',
+            'pretty_version' => '9.0.24',
+            'version' => '9.0.24.0',
+            'reference' => '6c31b050e667641cdc1cd1dc38497901f62c1d3c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../giggsey/libphonenumber-for-php',
             'aliases' => array(),
@@ -310,7 +310,7 @@
         'giggsey/libphonenumber-for-php-lite' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '9.0.23',
+                0 => '9.0.24',
             ),
         ),
         'giggsey/locale' => array(
@@ -521,9 +521,9 @@
             'dev_requirement' => false,
         ),
         'nette/schema' => array(
-            'pretty_version' => 'v1.3.4',
-            'version' => '1.3.4.0',
-            'reference' => '086497a2f34b82fede9b5a41cc8e131d087cd8f7',
+            'pretty_version' => 'v1.3.5',
+            'version' => '1.3.5.0',
+            'reference' => 'f0ab1a3cda782dbc5da270d28545236aa80c4002',
             'type' => 'library',
             'install_path' => __DIR__ . '/../nette/schema',
             'aliases' => array(),
@@ -548,9 +548,9 @@
             'dev_requirement' => true,
         ),
         'nunomaduro/phpinsights' => array(
-            'pretty_version' => 'v2.13.3',
-            'version' => '2.13.3.0',
-            'reference' => 'ae780a92e2b15d8cf64d2e0c1cd2b86e16a2e882',
+            'pretty_version' => 'v2.14.0',
+            'version' => '2.14.0.0',
+            'reference' => '609826e31d4914edbc94eb28f4f6ec4d229cf292',
             'type' => 'library',
             'install_path' => __DIR__ . '/../nunomaduro/phpinsights',
             'aliases' => array(),

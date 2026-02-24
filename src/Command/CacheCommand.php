@@ -22,16 +22,32 @@ class CacheCommand extends BaseCommand
     {
         if ($asFilesystem) {
             $filesystem = new Filesystem();
+            $env = $this->kernel->getEnvironment();
             $cacheDirname = $this->kernel->getCacheDir();
-            $tmpDirname = $this->kernel->getProjectDir().'/var/cache/__'.$this->kernel->getEnvironment().'_'.uniqid('', true);
-            $tmpDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $tmpDirname);
-            if ($filesystem->exists($tmpDirname)) {
-                $filesystem->remove($tmpDirname);
+            $cacheParentDir = dirname($cacheDirname);
+
+            // Find an available temporary name by adding underscores recursively
+            $prefix = '_';
+            $tmpDirname = $cacheParentDir . DIRECTORY_SEPARATOR . $prefix . $env;
+            while ($filesystem->exists($tmpDirname)) {
+                $prefix .= '_';
+                $tmpDirname = $cacheParentDir . DIRECTORY_SEPARATOR . $prefix . $env;
             }
-            $filesystem->rename($cacheDirname, $tmpDirname);
-            if (!$onlyRename && $filesystem->exists($cacheDirname)) {
-                $filesystem->remove($tmpDirname);
+
+            if ($filesystem->exists($cacheDirname)) {
+                $filesystem->rename($cacheDirname, $tmpDirname);
             }
+
+            if (!$onlyRename) {
+                $finder = new \Symfony\Component\Finder\Finder();
+                if ($filesystem->exists($cacheParentDir)) {
+                    $finder->directories()->in($cacheParentDir)->depth('== 0')->name('/^_+'.preg_quote($env, '/').'$/');
+                    foreach ($finder as $dir) {
+                        $filesystem->remove($dir->getRealPath());
+                    }
+                }
+            }
+
             return 'Cache successfully cleared.';
         }
 

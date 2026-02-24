@@ -330,8 +330,8 @@ final class Configuration
             foreach ($values as $metric => $insights) {
                 if (
                     ! class_exists($metric) ||
-                    class_implements($metric) === false ||
-                    ! in_array(Metric::class, class_implements($metric), true)
+                    !is_array($interfaces = class_implements($metric)) ||
+                    ! in_array(Metric::class, $interfaces, true)
                 ) {
                     throw new InvalidConfiguration(sprintf(
                         'Unable to use "%s" class as metric in section add.',

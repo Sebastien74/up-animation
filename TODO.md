@@ -4,6 +4,8 @@ Revoir toutes les requêtes depuis le debut
 
 Message d'erreur LOgin sont en anglais
 
+Juni m'a réexecuter un moule JS sans avoir besoin de le rappeler apès Ajax, voir si faisable sur les forms et autres
+
 Faire faire le responsive des FormType a Juni
 
 Ajouter dans les variables getsion de fonts pour mobile max sm
@@ -17,6 +19,8 @@ A une nouvelle connexion back faire le code chiffré par email
 Dépréciation 8.5
 
 Faire le popupWithoutBox comme isacar
+
+SUPPRIMER LES IPS AUTRE QUE LES DEV ET MIENNES
 
 Faire un truc comme hx pour les background et img path:true
 

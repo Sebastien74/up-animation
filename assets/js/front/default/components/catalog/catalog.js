@@ -111,7 +111,7 @@ export default function () {
     AjaxPagination(indexProducts);
 
     /**
-     * Bind "Enter" key on search inputs and click on submit icon (delegated).
+     * Bind the "Enter" key on search inputs and click on submitted icon (delegated).
      */
     const bindSearchEnter = () => {
 
@@ -372,6 +372,15 @@ export default function () {
             const rspContainer = html.querySelector('#results');
             if (container && rspContainer) {
                 container.innerHTML = rspContainer.innerHTML;
+            }
+
+            const paginationContainer = document.querySelector('.pagination-container-ajax');
+            const rspPaginationContainer = html.querySelector('.pagination-container-ajax');
+
+            if (paginationContainer && rspPaginationContainer && rspPaginationContainer.innerHTML.trim() !== '') {
+                paginationContainer.innerHTML = rspPaginationContainer.innerHTML;
+            } else if (paginationContainer) {
+                paginationContainer.innerHTML = '';
             }
 
             // URL

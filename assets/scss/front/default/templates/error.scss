@@ -107,14 +107,18 @@ $enable-alert: true;
     h1, .h1 {
 
         font-family: $font-secondary;
-        font-size: rem(140px);
         line-height: rem(130px);
         font-weight: 900 !important;
         margin-bottom: 10px;
         color: $primary-darken !important;
         text-transform: uppercase;
 
+        @include mediaQuery(max-md) {
+            font-size: rem(100px);
+        }
+
         @include mediaQuery(min-lg) {
+            font-size: rem(140px);
             margin-top: -1rem;
         }
     }

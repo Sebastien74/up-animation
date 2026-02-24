@@ -45,16 +45,18 @@
             </div>
             <aside class="login-box">
                 <div class="inner h-100 d-flex">
-                    <div id="content" class="col-12 p-3 p-sm-4 my-auto position-relative">
+                    <div id="content" class="col-12 p-3 p-sm-4 d-flex position-relative">
                         {% include 'security/includes/preloader.html.twig' %}
-                        <header>
-                            <a href="{{ app.request.getSchemeAndHttpHost() }}" class="header w-100 d-inline-block text-center mb-5 mt-5 mt-md-0">
-                                {{ logoPath|file({}, {id: 'logo', maxHeight: 130, priority: 'high'}) }}
-                            </a>
-                        </header>
-                        <div class="row">
-                            <div class="col-sm-8 col-md-6 col-lg-12 mx-auto">
-                                {% block body %}{% endblock %}
+                        <div class="my-auto w-100">
+                            <header>
+                                <a href="{{ app.request.getSchemeAndHttpHost() }}" class="header w-100 d-inline-block text-center mb-5 mt-5 mt-md-0">
+                                    {{ logoPath|file({}, {id: 'logo', maxHeight: 130, priority: 'high'}) }}
+                                </a>
+                            </header>
+                            <div class="row">
+                                <div class="col-sm-8 col-md-6 col-lg-12 mx-auto">
+                                    {% block body %}{% endblock %}
+                                </div>
                             </div>
                         </div>
                     </div>

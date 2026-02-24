@@ -29,7 +29,7 @@
     {{ form_start(form, {attr: {
         novalidate: "novalidate",
         action: app.request.uri,
-        class: 'master-form position-relative',
+        class: 'master-form d-inline-block position-relative',
         id: 'form-'~entity.id }}) }}
     <div id="edit-form-{{ interface.name }}" class="card refer-preloader">
         {% include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only %}

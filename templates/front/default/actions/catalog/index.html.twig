@@ -102,13 +102,15 @@
                         <button type="button" id="show-more-index-btn" class="btn btn-secondary">{{ "Voir plus"|trans|raw }}</button>
                     </div>
                 {% endif %}
-                {% if maxPage > 1 %}
-                    <div class="pagination-container row mx-0 mt-3">
-                        <div class="col-12 d-flex justify-content-end">
-                            {{ knp_pagination_render(products, 'core/pagination.html.twig', [], {class: 'ajax-pagination'}) }}
+                <div class="pagination-container-ajax">
+                    {% if maxPage > 1 %}
+                        <div class="pagination-container row mx-0 mt-3">
+                            <div class="col-12 d-flex justify-content-end">
+                                {{ knp_pagination_render(products, 'core/pagination.html.twig', [], {class: 'ajax-pagination'}) }}
+                            </div>
                         </div>
-                    </div>
-                {% endif %}
+                    {% endif %}
+                </div>
             </div>
         {% endif %}
     </div>

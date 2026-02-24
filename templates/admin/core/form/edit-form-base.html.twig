@@ -47,7 +47,7 @@
 {{ form_start(form, {attr: {
     novalidate: "novalidate",
     action: app.request.uri,
-    class: displayUploader ? 'master-dropzone-form position-relative' : 'master-form position-relative',
+    class: displayUploader ? 'master-dropzone-form position-relative' : 'master-form d-inline-block position-relative w-100',
     id: 'form-'~entity.id }}) }}
 
     <div id="edit-form-{{ interface.name }}" class="refer-preloader">
