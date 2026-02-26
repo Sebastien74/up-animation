@@ -25,45 +25,44 @@ export default function () {
      */
     let dataTableIntl = function () {
 
-        let trans = $('#data-translation');
+        let trans = document.getElementById('data-translation');
 
         return {
-            processing: trans.data("processing"),
-            search: trans.data("search"),
-            lengthMenu: trans.data("datatable-display"),
-            info: trans.data("datatable-info"),
-            infoEmpty: trans.data("datatable-info-empty"),
-            infoFiltered: trans.data('datatable-info-filtered'),
+            processing: trans.getAttribute("data-processing"),
+            search: trans.getAttribute("data-search"),
+            lengthMenu: trans.getAttribute("data-datatable-display"),
+            info: trans.getAttribute("data-datatable-info"),
+            infoEmpty: trans.getAttribute("data-datatable-info-empty"),
+            infoFiltered: trans.getAttribute('data-datatable-info-filtered'),
             infoPostFix: "",
-            loadingRecords: trans.data("processing"),
-            zeroRecords: trans.data("datatable-zero-records"),
-            emptyTable: trans.data("datatable-empty-table"),
+            loadingRecords: trans.getAttribute("data-processing"),
+            zeroRecords: trans.getAttribute("data-datatable-zero-records"),
+            emptyTable: trans.getAttribute("data-datatable-empty-table"),
             paginate: {
-                first: trans.data("first"),
-                previous: trans.data("previous"),
-                next: trans.data("next"),
-                last: trans.data("last")
+                first: trans.getAttribute("data-first"),
+                previous: trans.getAttribute("data-previous"),
+                next: trans.getAttribute("data-next"),
+                last: trans.getAttribute("data-last")
             },
             aria: {
-                sortAscending: trans.data("datatable-sort-ascending"),
-                sortDescending: trans.data("datatable-sort-descending")
+                sortAscending: trans.getAttribute("data-datatable-sort-ascending"),
+                sortDescending: trans.getAttribute("data-datatable-sort-descending")
             }
         };
     };
 
-    let tables = $('body').find('.data-table');
+    let tables = document.querySelectorAll('body .data-table');
 
-    tables.each(function () {
+    tables.forEach(function (tableEl) {
 
-        let table = $(this);
-        let pageLength = table.data('length');
-        let limit = typeof pageLength != 'undefined' ? pageLength : 15;
-        let pageHeight = table.data('height');
-        let height = typeof pageHeight != 'undefined' ? pageHeight : null;
-        let exportData = table.data('export');
+        let pageLength = tableEl.getAttribute('data-length');
+        let limit = pageLength !== null ? parseInt(pageLength) : 15;
+        let pageHeight = tableEl.getAttribute('data-height');
+        let height = pageHeight !== null ? pageHeight : null;
+        let exportData = tableEl.getAttribute('data-export');
         let buttons = [];
 
-        if (typeof exportData != "undefined") {
+        if (exportData !== null) {
             let exportDataExplode = exportData.split(',');
             for (let i = 0; i < exportDataExplode.length; i++) {
                 if (exportDataExplode[i].trim() !== '') {
@@ -72,13 +71,15 @@ export default function () {
             }
         }
 
-        table.removeClass('data-table');
-        table.DataTable({
-            scrollY: height,
-            pageLength: limit,
-            dom: 'Bfrtip',
-            buttons: buttons,
-            language: dataTableIntl()
-        });
+        tableEl.classList.remove('data-table');
+        if (typeof jQuery !== 'undefined' && typeof jQuery.fn.DataTable !== 'undefined') {
+            jQuery(tableEl).DataTable({
+                scrollY: height,
+                pageLength: limit,
+                dom: 'Bfrtip',
+                buttons: buttons,
+                language: dataTableIntl()
+            });
+        }
     });
 }

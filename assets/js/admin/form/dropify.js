@@ -13,99 +13,100 @@ import route from "../../vendor/components/routing";
  */
 export default function () {
 
-    let trans = $('#data-translation');
+    let trans = document.getElementById('data-translation');
+    let dropifyElements = document.querySelectorAll('.dropify');
 
-    let drEvent = $('.dropify').dropify({
+    if (dropifyElements.length === 0) {
+        return;
+    }
+
+    let $dropifyElements = jQuery(dropifyElements);
+    let drEvent = $dropifyElements.dropify({
         messages: {
-            'default': trans.data('dropify-default'),
-            'replace': trans.data('dropify-replace'),
-            'remove': trans.data('dropify-remove'),
-            'error': trans.data('dropify-error'),
+            'default': trans.getAttribute('data-dropify-default'),
+            'replace': trans.getAttribute('data-dropify-replace'),
+            'remove': trans.getAttribute('data-dropify-remove'),
+            'error': trans.getAttribute('data-dropify-error'),
         },
         error: {
-            'fileSize': trans.data('dropify-file-size'),
-            'minWidth': trans.data('dropify-min-width'),
-            'maxWidth': trans.data('dropify-max-width'),
-            'minHeight': trans.data('dropify-min-height'),
-            'maxHeight': trans.data('dropify-max-height'),
-            'imageFormat': trans.data('dropify-image-format'),
-            'fileExtension': trans.data('dropify-file-extension')
+            'fileSize': trans.getAttribute('data-dropify-file-size'),
+            'minWidth': trans.getAttribute('data-dropify-min-width'),
+            'maxWidth': trans.getAttribute('data-dropify-max-width'),
+            'minHeight': trans.getAttribute('data-dropify-min-height'),
+            'maxHeight': trans.getAttribute('data-dropify-max-height'),
+            'imageFormat': trans.getAttribute('data-dropify-image-format'),
+            'fileExtension': trans.getAttribute('data-dropify-file-extension')
         }
     });
 
-    let indexPage = $('#entities-index');
+    let indexPage = document.getElementById('entities-index');
 
-    if (indexPage.length === 0) {
+    if (!indexPage) {
 
         drEvent.on('dropify.beforeClear', function (event, element) {
 
             event.result = false;
 
             return swal({
-                title: trans.data('swal-delete-title'),
-                text: trans.data('swal-delete-text'),
+                title: trans.getAttribute('data-swal-delete-title'),
+                text: trans.getAttribute('data-swal-delete-text'),
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
-                confirmButtonText: trans.data('swal-delete-confirm-text'),
-                cancelButtonText: trans.data('swal-delete-cancel-text'),
+                confirmButtonText: trans.getAttribute('data-swal-delete-confirm-text'),
+                cancelButtonText: trans.getAttribute('data-swal-delete-cancel-text'),
                 closeOnConfirm: false
             }, function () {
 
-                let body = $('body');
-
-                body.find('.sa-button-container .confirm').attr('disabled', '');
-                body.find('.sa-button-container .cancel').attr('disabled', '');
+                let body = document.body;
+                let confirmBtn = document.querySelector('.sa-button-container .confirm');
+                let cancelBtn = document.querySelector('.sa-button-container .cancel');
+                if (confirmBtn) confirmBtn.setAttribute('disabled', '');
+                if (cancelBtn) cancelBtn.setAttribute('disabled', '');
 
                 setTimeout(function () {
 
                     let input = element.input;
-                    let customUrl = input.data('delete-url');
-                    let screen = input.data('screen');
-                    let media = input.data('media');
+                    let customUrl = input.dataset.deleteUrl;
+                    let screen = input.dataset.screen;
+                    let media = input.dataset.media;
                     let url = route('admin_mediarelation_reset_media', {
-                        "website": body.data('id'),
-                        "mediaRelationId": input.data('media-relation'),
-                        "mediaClassname": input.data('media-classname'),
+                        "website": body.getAttribute('data-id'),
+                        "mediaRelationId": input.dataset.mediaRelation,
+                        "mediaClassname": input.dataset.mediaClassname,
                     });
 
                     if (typeof customUrl != 'undefined') {
                         url = customUrl;
                     } else if (typeof media != 'undefined') {
-                        url = route('admin_media_delete', {"website": body.data('id'), "media": media});
+                        url = route('admin_media_delete', {"website": body.getAttribute('data-id'), "media": media});
                     }
 
-                    let ajaxUrl = url + "?ajax=true";
-                    if (url.indexOf('?') > -1) {
-                        ajaxUrl = url + "&ajax=true";
-                    }
+                    let ajaxUrl = url + (url.indexOf('?') > -1 ? "&ajax=true" : "?ajax=true");
 
-                    $.ajax({
-                        url: ajaxUrl,
-                        type: "DELETE",
-                        processData: false,
-                        contentType: false,
-                        dataType: 'json',
-                        success: function (response) {
+                    fetch(ajaxUrl, {
+                        method: "DELETE"
+                    })
+                        .then(response => response.json())
+                        .then(response => {
                             if (response.success) {
                                 element.resetFile();
-                                input.val('');
+                                input.value = '';
                                 element.resetPreview();
-                                input.trigger($.Event("dropify.afterClear"), [this]);
+                                input.dispatchEvent(new CustomEvent("dropify.afterClear", { detail: [this] }));
                             }
                             swal.close();
                             if (typeof media != 'undefined' && typeof screen == 'undefined') {
                                 location.reload();
                             }
-                        },
-                        error: function (errors) {
+                        })
+                        .catch(errors => {
                             swal.close();
                             /** Display errors */
                             import('../core/errors').then(({default: displayErrors}) => {
                                 new displayErrors(errors);
                             }).catch(error => console.error(error.message));
-                        }
-                    });
+                        });
 
                     event.stopImmediatePropagation();
                     return false;

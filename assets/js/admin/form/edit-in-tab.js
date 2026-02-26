@@ -13,16 +13,18 @@ import '../../../scss/admin/lib/sweetalert.scss';
 import '../lib/sweetalert/sweetalert.min';
 import {tinymcePlugin} from "../plugins/tinymce";
 
-$(function () {
+document.addEventListener('DOMContentLoaded', function () {
 
-    let body = $('body');
-    let trans = body.find('#entity-translations');
-    let preloader = $("#entity-preloader");
-    let form = $('#form-entity');
+    const body = document.body;
+    const trans = body.querySelector('#entity-translations');
+    const preloader = document.querySelector('#entity-preloader');
+    const form = document.querySelector('#form-entity');
 
-    body.on('click', '#save-entity', function () {
-        preloader.removeClass('d-none');
-        form.submit();
+    body.addEventListener('click', function (e) {
+        const saveBtn = e.target.closest('#save-entity');
+        if (!saveBtn) return;
+        if (preloader) preloader.classList.remove('d-none');
+        if (form) form.submit();
     });
 
     const saveBack = document.querySelector('#save-back-entity');
@@ -50,142 +52,146 @@ $(function () {
         }
     }
 
-    body.on('click', '#medias-path', function (e) {
+    body.addEventListener('click', function (e) {
+        const mediasPath = e.target.closest('#medias-path');
+        if (!mediasPath) return;
         e.preventDefault();
-        let path = $(this).attr('href');
-        if ($('#entity-edition').hasClass('is-entity')) {
+        const path = mediasPath.getAttribute('href');
+        const entityEdition = document.getElementById('entity-edition');
+        if (entityEdition && entityEdition.classList.contains('is-entity')) {
             return swal({
-                title: trans.data('swal-entity-title'),
-                text: trans.data('swal-entity-text'),
+                title: trans?.dataset.swalEntityTitle,
+                text: trans?.dataset.swalEntityText,
                 type: "info",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
-                confirmButtonText: trans.data('swal-media-confirm-text'),
-                cancelButtonText: trans.data('swal-entity-cancel-text'),
+                confirmButtonText: trans?.dataset.swalMediaConfirmText,
+                cancelButtonText: trans?.dataset.swalEntityCancelText,
                 closeOnConfirm: false
             }, function () {
                 document.location.href = path;
-                preloader.removeClass('d-none');
+                if (preloader) preloader.classList.remove('d-none');
             });
         }
     });
 
-    body.on('click', '.swal-entity-value', function (e) {
-
+    body.addEventListener('click', function (e) {
+        const valueBtn = e.target.closest('.swal-entity-value');
+        if (!valueBtn) return;
         e.preventDefault();
-
-        let path = $(this).attr('href');
-
+        const path = valueBtn.getAttribute('href');
         return swal({
-            title: trans.data('swal-entity-title'),
-            text: trans.data('swal-entity-text'),
+            title: trans?.dataset.swalEntityTitle,
+            text: trans?.dataset.swalEntityText,
             type: "info",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            confirmButtonText: trans.data('swal-value-confirm-text'),
-            cancelButtonText: trans.data('swal-entity-cancel-text'),
+            confirmButtonText: trans?.dataset.swalValueConfirmText,
+            cancelButtonText: trans?.dataset.swalEntityCancelText,
             closeOnConfirm: false
         }, function () {
             document.location.href = path;
-            preloader.removeClass('d-none');
+            if (preloader) preloader.classList.remove('d-none');
         });
     });
 
-    let featuresSortable = $('#features-sortable').sortable({
-        placeholder: "ui-state-highlight",
-        items: '.ui-feature',
-        handle: ".handle-feature",
-        start: function (e, ui) {
-            ui.placeholder.height(ui.item.height());
-        },
-        update: function (event, ui) {
+    let featuresSortableEl = document.getElementById('features-sortable');
+    if (featuresSortableEl && typeof jQuery !== 'undefined' && typeof jQuery.fn.sortable !== 'undefined') {
+        let featuresSortable = jQuery(featuresSortableEl).sortable({
+            placeholder: "ui-state-highlight",
+            items: '.ui-feature',
+            handle: ".handle-feature",
+            start: function (e, ui) {
+                ui.placeholder.height(ui.item.height());
+            },
+            update: function (event, ui) {
 
-            let loader = body.find('.main-preloader');
-            let loaderContent = body.find('#entity-preloader');
-            let sortables = $('body').find('.ui-feature');
-            let length = sortables.length;
-            let progressBarCard = loaderContent.find(".progress-card")
-            let progressBar = progressBarCard.find(".position-progress-bar")
+                const loader = document.querySelector('.main-preloader');
+                const loaderContent = document.querySelector('#entity-preloader');
+                const sortables = Array.from(featuresSortableEl.querySelectorAll('.ui-feature'));
+                const length = sortables.length;
+                const progressBarCard = loaderContent ? loaderContent.querySelector('.progress-card') : null;
+                const progressBar = progressBarCard ? progressBarCard.querySelector('.position-progress-bar') : null;
 
-            loader.removeClass('d-none');
-            loaderContent.removeClass('d-none');
-            progressBarCard.removeClass('d-none');
+                if (loader) loader.classList.remove('d-none');
+                if (loaderContent) loaderContent.classList.remove('d-none');
+                if (progressBarCard) progressBarCard.classList.remove('d-none');
 
-            sortables.each(function (i, el) {
+                sortables.forEach((el, i) => {
+                    const newPosition = i + 1;
+                    const path = el.getAttribute('data-pos-path');
+                    const url = path + (path.indexOf('?') > -1 ? '&' : '?') + 'position=' + newPosition;
 
-                let newPosition = i + 1;
-                let path = $(el).data('pos-path');
-
-                $.ajax({
-                    url: path + "?position=" + newPosition,
-                    type: "GET",
-                    processData: false,
-                    contentType: false,
-                    dataType: 'json',
-                    async: false,
-                    beforeSend: function () {
-                    },
-                    success: function (response) {
-
-                        let progress = Math.ceil((i * 100) / length)
-                        progressBar.attr('style', 'width:' + progress + '%');
-                        progressBar.attr('aria-valuenow', progress + '%');
-                        progressBar.html(progress + '%');
-
-                        if ((i + 1) === length) {
-                            loader.addClass('d-none');
-                            loaderContent.addClass('d-none');
-                            progressBarCard.addClass('d-none');
-                            progressBar.attr('style', '0%');
-                            progressBar.attr('aria-valuenow', '0%');
-                            progressBar.html('0%');
-                        }
-                    },
-                    error: function (errors) {
-                        /** Display errors */
-                        import('../core/errors').then(({default: displayErrors}) => {
-                            new displayErrors(errors);
-                        }).catch(error => console.error(error.message));
-                    }
+                    fetch(url, { method: 'GET', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                        .then(r => r.ok ? r.json().catch(() => ({})) : Promise.reject(r))
+                        .then(() => {
+                            if (progressBar) {
+                                const progress = Math.ceil((i * 100) / length);
+                                progressBar.style.width = progress + '%';
+                                progressBar.setAttribute('aria-valuenow', progress + '%');
+                                progressBar.innerHTML = progress + '%';
+                            }
+                            if ((i + 1) === length) {
+                                if (loader) loader.classList.add('d-none');
+                                if (loaderContent) loaderContent.classList.add('d-none');
+                                if (progressBarCard) progressBarCard.classList.add('d-none');
+                                if (progressBar) {
+                                    progressBar.style.width = '0%';
+                                    progressBar.setAttribute('aria-valuenow', '0%');
+                                    progressBar.innerHTML = '0%';
+                                }
+                            }
+                        })
+                        .catch(errors => {
+                            import('../core/errors').then(({default: displayErrors}) => {
+                                new displayErrors(errors);
+                            }).catch(error => console.error(error.message));
+                        });
                 });
-            });
-            event.stopImmediatePropagation();
-        }
-    });
+                event.stopImmediatePropagation();
+            }
+        });
 
-    featuresSortable.disableSelection();
+        featuresSortable.disableSelection();
+    }
 
-    let featureValuesSortable = $('.feature-values-sortable').sortable({
-        placeholder: "ui-state-highlight",
-        items: '.ui-value',
-        handle: ".handle-value",
-        start: function (e, ui) {
-            ui.placeholder.height(ui.item.height());
-        },
-        update: function (event, ui) {
-            let items = $('body').find('#features-sortable .ui-value');
-            setPositions(items);
-            event.stopImmediatePropagation();
-        }
-    });
+    let featureValuesSortableEls = document.querySelectorAll('#features-sortable .feature-values-sortable');
+    if (featureValuesSortableEls.length > 0 && typeof jQuery !== 'undefined' && typeof jQuery.fn.sortable !== 'undefined') {
+        let featureValuesSortable = jQuery(featureValuesSortableEls).sortable({
+            placeholder: "ui-state-highlight",
+            items: '.ui-value',
+            handle: ".handle-value",
+            start: function (e, ui) {
+                ui.placeholder.height(ui.item.height());
+            },
+            update: function (event, ui) {
+                const items = document.querySelectorAll('#features-sortable .ui-value');
+                setPositions(items);
+                event.stopImmediatePropagation();
+            }
+        });
 
-    featureValuesSortable.disableSelection();
+        featureValuesSortable.disableSelection();
+    }
 
-    let videoValuesSortable = $('#videos-sortable').sortable({
-        placeholder: "ui-state-highlight",
-        items: '.ui-video',
-        handle: ".handle-video",
-        start: function (e, ui) {
-            ui.placeholder.height(ui.item.height());
-        },
-        update: function (event, ui) {
-            let items = $('body').find('#videos-sortable .ui-video');
-            setPositions(items);
-            event.stopImmediatePropagation();
-        }
-    });
+    let videoValuesSortableEl = document.getElementById('videos-sortable');
+    if (videoValuesSortableEl && typeof jQuery !== 'undefined' && typeof jQuery.fn.sortable !== 'undefined') {
+        let videoValuesSortable = jQuery(videoValuesSortableEl).sortable({
+            placeholder: "ui-state-highlight",
+            items: '.ui-video',
+            handle: ".handle-video",
+            start: function (e, ui) {
+                ui.placeholder.height(ui.item.height());
+            },
+            update: function (event, ui) {
+                const items = videoValuesSortableEl.querySelectorAll('.ui-video');
+                setPositions(items);
+                event.stopImmediatePropagation();
+            }
+        });
 
-    videoValuesSortable.disableSelection();
+        videoValuesSortable.disableSelection();
+    }
 });
 
 document.addEventListener("DOMContentLoaded", function () {

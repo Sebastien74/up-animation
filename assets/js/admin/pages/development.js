@@ -2,12 +2,6 @@ import '../../../scss/admin/pages/development.scss';
 
 // import places from 'places.js';
 
-// let locale = $('html').attr('lang');
-
-$.fn.simulateKeyPress = function (character) {
-    $(this).trigger({type: 'keypress', which: character.charCodeAt(0)});
-};
-
 let importData = function (progress) {
     let indexLinks = document.getElementById('import-index-links');
     let index = document.getElementById('index-import-data');

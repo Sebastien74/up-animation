@@ -24,9 +24,10 @@ export default function (el) {
         document.body.appendChild(downloadLink);
 
         downloadLink.click();
+        downloadLink.remove();
     }
 
-    function exportTableToCsv(html, filename) {
+    function exportTableToCsv(filename) {
 
         let csv = [];
         let rows = document.querySelectorAll("table tr");
@@ -45,7 +46,6 @@ export default function (el) {
         downloadCsv(csv.join("\n"), filename);
     }
 
-    let tableId = el.data('table');
-    let html = $('#' + tableId).outerHTML;
-    exportTableToCsv(html, "table.csv");
+    let tableId = el instanceof jQuery ? el.data('table') : el.getAttribute('data-table');
+    exportTableToCsv("table.csv");
 }

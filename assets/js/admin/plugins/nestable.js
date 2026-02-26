@@ -7,163 +7,187 @@ import 'nestable2';
  */
 export default function () {
 
-    let body = $('body');
-    let isActive = body.hasClass('editor');
+    const body = document.body;
+    const isActive = body.classList.contains('editor');
 
-    $('.nestable-list-container').each(function () {
+    document.querySelectorAll('.nestable-list-container').forEach(function (el) {
 
-        let el = $(this);
-        let elId = el.attr('id');
-        let outputField = el.data('output-field');
-        let limit = el.data('limit');
+        const elId = el.getAttribute('id');
+        const outputFieldSelector = el.dataset.outputField;
+        const limit = el.dataset.limit;
 
         /** Nestable */
-        let updateOutput = function (e) {
+        const updateOutput = function (e) {
 
-            let body = $('body');
-            let windowLoadEl = body.find('.nestable-window-load');
-            let isFirstLoad = windowLoadEl.length <= 0;
-            let list = e.length ? e : $(e.target),
-                output = list.data('output');
-            let form = el.find('form.nestable-outpout-form');
-            let formID = form.attr('id');
-            let preloader = body.find('#nestable-list-preloader');
+            const windowLoadEl = body.querySelector('.nestable-window-load');
+            const isFirstLoad = !windowLoadEl;
+            const list = e instanceof HTMLElement ? e : e.target;
+            const outputSelector = list.dataset.output;
+            const output = document.querySelector(outputSelector);
+            const form = el.querySelector('form.nestable-outpout-form');
+            const formID = form ? form.getAttribute('id') : undefined;
+            const preloader = body.querySelector('#nestable-list-preloader');
 
-            if (typeof output != "undefined" && typeof formID != "undefined") {
+            if (output && formID && typeof jQuery !== 'undefined' && typeof jQuery.fn.nestable !== 'undefined') {
 
-                output.val(JSON.stringify(list.nestable('serialize'))); //, null, 2));
+                output.value = JSON.stringify(jQuery(list).nestable('serialize'));
 
-                let formData = new FormData(document.getElementById(formID));
+                const formData = new FormData(document.getElementById(formID));
 
-                $.ajax({
-                    url: form.attr('action'),
-                    type: "POST",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    dataType: 'json',
-                    async: true,
-                    beforeSend: function () {
-                        if (!isFirstLoad) {
-                            preloader.removeClass('d-none');
+                fetch(form.getAttribute('action'), {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw response;
                         }
-                    },
-                    success: function (response) {
-                        if (!isFirstLoad) {
-                            preloader.addClass('d-none');
+                        return response.json();
+                    })
+                    .then(response => {
+                        if (!isFirstLoad && preloader) {
+                            preloader.classList.add('d-none');
                         }
-                    },
-                    error: function (errors) {
+                    })
+                    .catch(errors => {
+                        if (!isFirstLoad && preloader) {
+                            preloader.classList.add('d-none');
+                        }
                         /** Display errors */
                         import('../core/errors').then(({default: displayErrors}) => {
                             new displayErrors(errors);
                         }).catch(error => console.error(error.message));
-                    }
-                });
+                    });
+
+                if (!isFirstLoad && preloader) {
+                    preloader.classList.remove('d-none');
+                }
             }
         };
 
         if (isActive) {
 
-            let nestableEl = $('#' + elId);
+            const nestableEl = document.getElementById(elId);
 
             document.querySelectorAll('.custom-control-label').forEach(label => {
                 label.addEventListener('click', function (e) {
-                    if (!nestableEl.hasClass('disabled-nestable')) {
-                        nestableEl.addClass('disabled-nestable');
+                    if (!nestableEl.classList.contains('disabled-nestable')) {
+                        nestableEl.classList.add('disabled-nestable');
                     }
                 });
             });
 
-            nestableEl.nestable({
-                maxDepth: limit
-            });
+            if (typeof jQuery !== 'undefined' && typeof jQuery.fn.nestable !== 'undefined') {
 
-            nestableEl.on('change', function () {
-                let element = $('#' + elId);
-                if (!element.hasClass('disabled-nestable')) {
-                    updateOutput(element.data('output', $(outputField)));
-                }
-                element.removeClass('disabled-nestable');
-            });
+                const $nestableEl = jQuery(nestableEl);
+
+                $nestableEl.nestable({
+                    maxDepth: limit
+                });
+
+                $nestableEl.on('change', function () {
+                    if (!nestableEl.classList.contains('disabled-nestable')) {
+                        nestableEl.dataset.output = outputFieldSelector;
+                        updateOutput(nestableEl);
+                    }
+                    nestableEl.classList.remove('disabled-nestable');
+                });
+            }
         }
 
         /** To use loader only if not the first load */
-        el.append('<span class="nestable-window-load"></span>');
+        el.insertAdjacentHTML('beforeend', '<span class="nestable-window-load"></span>');
     });
 
     let mouseY;
-    let speed = 0.15;
-    let zone = 50;
+    const speed = 0.15;
+    const zone = 50;
 
-    $(document).mousemove(function (e) {
-        mouseY = e.pageY - $(window).scrollTop();
-    }).mouseover();
+    document.addEventListener('mousemove', function (e) {
+        mouseY = e.pageY - window.scrollY;
+    });
 
-    let dragInterval = setInterval(function () {
+    const dragInterval = setInterval(function () {
+        const ddDragel = document.querySelector('.dd-dragel');
 
-        if ($('.dd-dragel') && $('.dd-dragel').length > 0 && !$('html, body').is(':animated')) {
+        if (ddDragel && !body.classList.contains('is-animated')) {
 
-            let bottom = $(window).height() - zone;
+            const windowHeight = window.innerHeight;
+            const bottom = windowHeight - zone;
+            const scrollTop = window.scrollY;
+            const documentHeight = document.documentElement.scrollHeight;
 
-            if (mouseY > bottom && ($(window).scrollTop() + $(window).height() < $(document).height() - zone)) {
-                $('html, body').animate({scrollTop: $(window).scrollTop() + ((mouseY + zone - $(window).height()) * speed)}, 0);
-            } else if (mouseY < zone && $(window).scrollTop() > 0) {
-                $('html, body').animate({scrollTop: $(window).scrollTop() + ((mouseY - zone) * speed)}, 0);
-
-            } else {
-                $('html, body').finish();
+            if (mouseY > bottom && (scrollTop + windowHeight < documentHeight - zone)) {
+                window.scrollTo({
+                    top: scrollTop + ((mouseY + zone - windowHeight) * speed),
+                    behavior: 'auto'
+                });
+            } else if (mouseY < zone && scrollTop > 0) {
+                window.scrollTo({
+                    top: scrollTop + ((mouseY - zone) * speed),
+                    behavior: 'auto'
+                });
             }
         }
     }, 16);
 
     /** Collapsed items event */
-    $('.btn-collapsed-group').each(function () {
+    document.querySelectorAll('.btn-collapsed-group').forEach(function (group) {
 
-        let group = $(this);
-        let collapseBtn = group.find('.collapse-btn');
-        let expandBtn = group.find('.expand-btn');
-        let parent = group.closest('.parent-row');
+        const collapseBtn = group.querySelector('.collapse-btn');
+        const expandBtn = group.querySelector('.expand-btn');
+        const parent = group.closest('.parent-row');
 
-        collapseBtn.on('click', function () {
-            if (!collapseBtn.hasClass('d-flex')) {
-                collapseBtn.removeClass('d-none');
-                collapseBtn.addClass('d-flex');
-                expandBtn.addClass('d-none');
-                expandBtn.removeClass('d-flex');
-            } else {
-                collapseBtn.addClass('d-none');
-                collapseBtn.removeClass('d-flex');
-                expandBtn.removeClass('d-none');
-                expandBtn.addClass('d-flex');
-            }
-            parent.toggleClass('dd-collapsed');
-        });
+        if (collapseBtn && expandBtn && parent) {
+            collapseBtn.addEventListener('click', function () {
+                if (!collapseBtn.classList.contains('d-flex')) {
+                    collapseBtn.classList.remove('d-none');
+                    collapseBtn.classList.add('d-flex');
+                    expandBtn.classList.add('d-none');
+                    expandBtn.classList.remove('d-flex');
+                } else {
+                    collapseBtn.classList.add('d-none');
+                    collapseBtn.classList.remove('d-flex');
+                    expandBtn.classList.remove('d-none');
+                    expandBtn.classList.add('d-flex');
+                }
+                parent.classList.toggle('dd-collapsed');
+            });
 
-        expandBtn.on('click', function () {
-            collapseBtn.click();
-        });
+            expandBtn.addEventListener('click', function () {
+                collapseBtn.click();
+            });
+        }
     });
 
     /** Expand all */
-    body.on('click', '#nestable-expand-all', function () {
-        let expandBtn = $('body').find('.expand-btn');
-        expandBtn.trigger('click');
-        if (!expandBtn.hasClass('active')) {
-            expandBtn.addClass('active');
+    body.addEventListener('click', function (e) {
+        if (e.target && e.target.id === 'nestable-expand-all') {
+            const expandBtns = body.querySelectorAll('.expand-btn');
+            expandBtns.forEach(btn => {
+                btn.click();
+                btn.classList.add('active');
+            });
+            e.target.classList.add('d-none');
+            const collapseAll = document.getElementById('nestable-collapse-all');
+            if (collapseAll) {
+                collapseAll.classList.remove('d-none');
+            }
         }
-        $('#nestable-expand-all').addClass('d-none');
-        $('#nestable-collapse-all').removeClass('d-none');
     });
 
     /** Collapse all */
-    body.on('click', '#nestable-collapse-all', function () {
-        let body = $('body');
-        let collapseBtn = body.find('.collapse-btn');
-        let expandBtn = body.find('.expand-btn');
-        collapseBtn.click();
-        expandBtn.removeClass('active');
-        $('#nestable-expand-all').removeClass('d-none');
-        $('#nestable-collapse-all').addClass('d-none');
+    body.addEventListener('click', function (e) {
+        if (e.target && e.target.id === 'nestable-collapse-all') {
+            const collapseBtns = body.querySelectorAll('.collapse-btn');
+            const expandBtns = body.querySelectorAll('.expand-btn');
+            collapseBtns.forEach(btn => btn.click());
+            expandBtns.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('d-none');
+            const expandAll = document.getElementById('nestable-expand-all');
+            if (expandAll) {
+                expandAll.classList.remove('d-none');
+            }
+        }
     });
 }

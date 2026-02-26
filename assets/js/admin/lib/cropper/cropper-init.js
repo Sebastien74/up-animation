@@ -5,49 +5,57 @@ import '../../bootstrap/dist/modal';
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-$(function () {
+document.addEventListener('DOMContentLoaded', function () {
+
     /** Init modals */
-    $('.crop-modal').each(function () {
-        let modal = $(this);
-        modal.on('shown.bs.modal', function () {
-            initCropper(modal);
+    document.querySelectorAll('.crop-modal').forEach(function (modalEl) {
+        modalEl.addEventListener('shown.bs.modal', function () {
+            initCropper(modalEl);
         });
     });
-    $('body').on('click', '.refresh-cropper-sizes', function () {
-        let modal = $(this).closest('.modal');
-        let wrap = modal.find('.cropper-wrap');
-        wrap.data('width', modal.find('input.dataWidth').val());
-        wrap.data('height', modal.find('input.dataHeight').val());
-        initCropper(modal, true);
+
+    document.body.addEventListener('click', function (e) {
+        let refreshBtn = e.target.closest('.refresh-cropper-sizes');
+        if (refreshBtn) {
+            let modal = refreshBtn.closest('.modal');
+            let wrap = modal.querySelector('.cropper-wrap');
+            wrap.dataset.width = modal.querySelector('input.dataWidth').value;
+            wrap.dataset.height = modal.querySelector('input.dataHeight').value;
+            initCropper(modal, true);
+        }
     });
 
     /** Init cropper */
     function initCropper(modal, refresh = false) {
-        let idModal = modal.attr('id');
-        let wrap = modal.find('.cropper-wrap');
-        let image = wrap.find('.image');
-        let dataWidth = wrap.data('width');
-        let dataHeight = wrap.data('height');
-        let preview = wrap.find('.img-preview');
-        if (refresh) {
-            image.cropper('destroy');
-            image = wrap.find('.image');
+        let idModal = modal.getAttribute('id');
+        let wrap = modal.querySelector('.cropper-wrap');
+        let imageEl = wrap.querySelector('.image');
+        let dataWidth = wrap.dataset.width;
+        let dataHeight = wrap.dataset.height;
+        let preview = wrap.querySelector('.img-preview');
+
+        if (refresh && typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+            jQuery(imageEl).cropper('destroy');
+            imageEl = wrap.querySelector('.image');
         }
+
         if (parseInt(dataWidth) === 0) {
             dataWidth = '';
         }
         if (parseInt(dataHeight) === 0) {
             dataHeight = '';
         }
-        let fieldX = wrap.find('.dataX');
-        let fieldY = wrap.find('.dataY');
-        let fieldWidth = wrap.find('.dataWidth');
-        let fieldHeight = wrap.find('.dataHeight');
-        let fieldRotate = wrap.find('.dataRotate');
-        let fieldScaleX = wrap.find('.dataScaleX');
-        let fieldScaleY = wrap.find('.dataScaleY');
-        let txtWidth = wrap.find('.txtWidth');
-        let txtHeight = wrap.find('.txtHeight');
+
+        let fieldX = wrap.querySelector('.dataX');
+        let fieldY = wrap.querySelector('.dataY');
+        let fieldWidth = wrap.querySelector('.dataWidth');
+        let fieldHeight = wrap.querySelector('.dataHeight');
+        let fieldRotate = wrap.querySelector('.dataRotate');
+        let fieldScaleX = wrap.querySelector('.dataScaleX');
+        let fieldScaleY = wrap.querySelector('.dataScaleY');
+        let txtWidth = wrap.querySelector('.txtWidth');
+        let txtHeight = wrap.querySelector('.txtHeight');
+
         //VAR FOR CORNER CALC
         let tempImageHeight = 0;
         let tempImageWidth = 0;
@@ -55,30 +63,32 @@ $(function () {
         let tempContainerDataWidth = 0;
         let tempOffsetX = 0;
         let tempOffsetY = 0;
+
         let options = {
             viewMode: 1,
             responsive: true,
-            preview: preview.attr('class'),
+            preview: preview.getAttribute('class'),
             zoomOnWheel: true,
             crop: function (e) {
                 let modalINJS = document.querySelector('#' + idModal);
                 let canvasINJS = modalINJS.querySelector('.cropper-canvas');
                 tempContainerDataHeight = canvasINJS.offsetHeight;
                 tempContainerDataWidth = canvasINJS.offsetWidth;
-                fieldX.val(Math.round(e.x));
-                fieldY.val(Math.round(e.y));
-                fieldWidth.val(Math.round(e.width));
-                fieldHeight.val(Math.round(e.height));
-                fieldRotate.val(e.rotate);
-                fieldScaleX.val(e.scaleX);
-                fieldScaleY.val(e.scaleY);
-                txtWidth.text(Math.round(e.width));
-                txtHeight.text(Math.round(e.height));
+                if (fieldX) fieldX.value = Math.round(e.detail.x);
+                if (fieldY) fieldY.value = Math.round(e.detail.y);
+                if (fieldWidth) fieldWidth.value = Math.round(e.detail.width);
+                if (fieldHeight) fieldHeight.value = Math.round(e.detail.height);
+                if (fieldRotate) fieldRotate.value = e.detail.rotate;
+                if (fieldScaleX) fieldScaleX.value = e.detail.scaleX;
+                if (fieldScaleY) fieldScaleY.value = e.detail.scaleY;
+                if (txtWidth) txtWidth.textContent = Math.round(e.detail.width);
+                if (txtHeight) txtHeight.textContent = Math.round(e.detail.height);
+
                 //TEMP FOR CORNER CALC
-                tempImageHeight = Math.round(e.height);
-                tempImageWidth = Math.round(e.width);
-                tempOffsetX = Math.round(e.x);
-                tempOffsetY = Math.round(e.y);
+                tempImageHeight = Math.round(e.detail.height);
+                tempImageWidth = Math.round(e.detail.width);
+                tempOffsetX = Math.round(e.detail.x);
+                tempOffsetY = Math.round(e.detail.y);
             },
             cropend: function (e) {
                 //CALC CORNER
@@ -87,7 +97,7 @@ $(function () {
                 let inBottomCorner = tempOffsetY + tempImageHeight >= (tempContainerDataHeight - 2);
                 let inRightCorner = tempOffsetX + tempImageWidth >= (tempContainerDataWidth - 2);
                 //REWRITE IF COLLAPSED BORDER
-                if (inLeftCorner || inTopCorner || inBottomCorner || inRightCorner) {
+                if ((inLeftCorner || inTopCorner || inBottomCorner || inRightCorner) && typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
                     let xPosition = tempOffsetX;
                     let yPosition = tempOffsetY;
                     let widthImage = tempImageWidth;
@@ -116,7 +126,7 @@ $(function () {
                             widthImage = widthImage - 1;
                         }
                     }
-                    image.cropper("setData", {
+                    jQuery(imageEl).cropper("setData", {
                         "x": xPosition,
                         "y": yPosition,
                         "width": widthImage,
@@ -125,6 +135,7 @@ $(function () {
                 }
             }
         };
+
         if (dataWidth !== "" && dataHeight !== "") {
             let ratio = dataWidth / dataHeight;
             options['aspectRatio'] = ratio;
@@ -133,62 +144,103 @@ $(function () {
         } else if (dataWidth !== "" && dataHeight === "") {
             options['aspectRatio'] = 9 / 16;
         }
-        image.cropper(options);
-        let moveImg = wrap.find('.move-img');
-        moveImg.on('click', function () {
-            image.cropper("setDragMode", "move");
+
+        if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+            jQuery(imageEl).cropper(options);
+        }
+
+        wrap.querySelectorAll('.move-img').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+                    jQuery(imageEl).cropper("setDragMode", btn.classList.contains('move-img') ? "move" : "crop");
+                }
+            });
         });
-        let cropImg = wrap.find('.move-img');
-        cropImg.on('click', function () {
-            image.cropper("setDragMode", "crop");
+
+        wrap.querySelectorAll('.zoom-in').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+                    jQuery(imageEl).cropper("zoom", 0.1);
+                }
+            });
         });
-        let zoomIn = wrap.find('.zoom-in');
-        zoomIn.on('click', function () {
-            image.cropper("zoom", 0.1);
+
+        wrap.querySelectorAll('.zoom-out').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+                    jQuery(imageEl).cropper("zoom", -0.1);
+                }
+            });
         });
-        let zoomOut = wrap.find('.zoom-out');
-        zoomOut.on('click', function () {
-            image.cropper("zoom", -0.1);
+
+        wrap.querySelectorAll('.move-left').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+                    jQuery(imageEl).cropper("move", -10, 0);
+                }
+            });
         });
-        let moveLeft = wrap.find('.move-left');
-        moveLeft.on('click', function () {
-            image.cropper("move", -10, 0);
+
+        wrap.querySelectorAll('.move-right').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+                    jQuery(imageEl).cropper("move", 10, 0);
+                }
+            });
         });
-        let moveRight = wrap.find('.move-right');
-        moveRight.on('click', function () {
-            image.cropper("move", 10, 0);
+
+        wrap.querySelectorAll('.move-up').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+                    jQuery(imageEl).cropper("move", 0, -10);
+                }
+            });
         });
-        let moveUp = wrap.find('.move-up');
-        moveUp.on('click', function () {
-            image.cropper("move", 0, -10);
+
+        wrap.querySelectorAll('.move-down').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+                    jQuery(imageEl).cropper("move", 0, 10);
+                }
+            });
         });
-        let moveDown = wrap.find('.move-down');
-        moveDown.on('click', function () {
-            image.cropper("move", 0, 10);
+
+        wrap.querySelectorAll('.rotate-left').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+                    jQuery(imageEl).cropper("rotate", -90);
+                }
+            });
         });
-        let rotateLeft = wrap.find('.rotate-left');
-        rotateLeft.on('click', function () {
-            image.cropper("rotate", -90);
+
+        wrap.querySelectorAll('.rotate-right').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+                    jQuery(imageEl).cropper("rotate", 90);
+                }
+            });
         });
-        let rotateRight = wrap.find('.rotate-right');
-        rotateRight.on('click', function () {
-            image.cropper("rotate", 90);
+
+        wrap.querySelectorAll('.flip-horizontal').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+                    let scale = parseFloat(btn.dataset.scale || "1");
+                    let resetScale = scale === -1 ? 1 : -1;
+                    btn.dataset.scale = String(resetScale);
+                    jQuery(imageEl).cropper("scaleX", scale);
+                }
+            });
         });
-        let flipHorizontal = wrap.find('.flip-horizontal');
-        flipHorizontal.on('click', function () {
-            let el = $(this);
-            let scale = el.data('scale');
-            let resetScale = scale === -1 ? 1 : -1;
-            el.data('scale', resetScale);
-            image.cropper("scaleX", scale);
-        });
-        let flipVertical = wrap.find('.flip-vertical');
-        flipVertical.on('click', function () {
-            let el = $(this);
-            let scale = el.data('scale');
-            let resetScale = scale === -1 ? 1 : -1;
-            el.data('scale', resetScale);
-            image.cropper("scaleY", scale);
+
+        wrap.querySelectorAll('.flip-vertical').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
+                    let scale = parseFloat(btn.dataset.scale || "1");
+                    let resetScale = scale === -1 ? 1 : -1;
+                    btn.dataset.scale = String(resetScale);
+                    jQuery(imageEl).cropper("scaleY", scale);
+                }
+            });
         });
     }
 });

@@ -7,8 +7,8 @@ import 'jquery-asColorPicker';
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 export default function () {
-    let colorPickers = document.getElementsByClassName('colorpicker');
-    if (colorPickers.length > 0) {
-        $(".colorpicker").asColorPicker();
+    let colorPickers = document.querySelectorAll('.colorpicker');
+    if (colorPickers.length > 0 && typeof jQuery !== 'undefined' && typeof jQuery.fn.asColorPicker !== 'undefined') {
+        jQuery(colorPickers).asColorPicker();
     }
 }

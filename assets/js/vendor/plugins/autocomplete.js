@@ -8,35 +8,36 @@ import autocomplete from 'autocomplete.js/dist/autocomplete.jquery.min';
 
 export default function () {
 
-    let el = $('.js-autocomplete');
+    let el = document.querySelectorAll('.js-autocomplete');
 
     if (el.length > 0) {
 
-        el.each(function () {
+        el.forEach(function (element) {
 
-            let el = $(this);
-            let autocompleteUrl = el.data('autocomplete-url');
-            let autocompleteKey = el.data('autocomplete-key');
+            let autocompleteUrl = element.dataset.autocompleteUrl;
+            let autocompleteKey = element.dataset.autocompleteKey;
 
-            el.autocomplete({hint: false}, [
-                {
-                    source: function (query, response) {
-                        $.ajax({
-                            url: autocompleteUrl + '?query=' + query,
-                            type: "GET",
-                            dataType: 'json',
-                            // data: {
-                            //     term: request.term
-                            // },
-                            success: function (data) {
-                                response(data);
-                            }
-                        });
-                    },
-                    displayKey: autocompleteKey,
-                    debounce: 500 // only request every 1/2 second
-                }
-            ])
+            if (typeof jQuery !== 'undefined' && typeof jQuery.fn.autocomplete !== 'undefined') {
+                jQuery(element).autocomplete({hint: false}, [
+                    {
+                        source: function (query, response) {
+                            fetch(autocompleteUrl + '?query=' + query, {
+                                method: 'GET',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                                .then(res => res.json())
+                                .then(data => {
+                                    response(data);
+                                })
+                                .catch(err => console.error(err));
+                        },
+                        displayKey: autocompleteKey,
+                        debounce: 500 // only request every 1/2 second
+                    }
+                ]);
+            }
         });
     }
 };

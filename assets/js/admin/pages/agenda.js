@@ -9,64 +9,66 @@ import {Calendar} from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
-$('.alert').remove();
+document.querySelectorAll('.alert').forEach(alert => alert.remove());
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    let entitiesData = $('#entities-data');
-    let eventsDaysData = $('#events-days-data');
-    let agenda = entitiesData.data('agenda');
+    let entitiesData = document.getElementById('entities-data');
+    let eventsDaysData = document.getElementById('events-days-data');
+    let agenda = entitiesData ? entitiesData.dataset.agenda : null;
     let calendarEl = document.getElementById('calendar');
 
     let events = [];
-    if (entitiesData.length > 0) {
-        entitiesData.find('.event').each(function () {
-            let event = $(this);
+    if (entitiesData) {
+        entitiesData.querySelectorAll('.event').forEach(function (event) {
             events.push({
-                'start': event.data('start'),
-                'end': event.data('end')
+                'start': event.dataset.start,
+                'end': event.dataset.end
             });
         });
     }
 
     let ajaxModal = function (action) {
 
-        $.ajax({
-            url: action + "?ajax=true",
-            type: "GET",
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            beforeSend: function () {
-                $('.modal-event-agenda').remove();
-            },
-            success: function (response) {
+        fetch(action + "?ajax=true", {
+            method: "GET",
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+            .then(response => response.json())
+            .then(response => {
 
                 if (response.html) {
 
-                    let modalEl = $(response.html);
+                    document.querySelectorAll('.modal-event-agenda').forEach(modal => modal.remove());
 
-                    $('body').append(modalEl);
-                    modalEl.modal('show');
+                    document.body.insertAdjacentHTML('beforeend', response.html);
+                    let modalEl = document.body.lastElementChild;
+                    if (!modalEl.classList.contains('modal')) {
+                        modalEl = modalEl.querySelector('.modal');
+                    }
+                    
+                    let modal = new bootstrap.Modal(modalEl);
+                    modal.show();
 
                     /** Refresh select2 */
                     import('../../vendor/plugins/select2').then(({default: select2}) => {
                         new select2();
                     }).catch(error => console.error(error.message));
 
-                    modalEl.on("hide.bs.modal", function () {
+                    modalEl.addEventListener("hidden.bs.modal", function () {
                         resetModal(modalEl, true);
-                        $('.modal-event-agenda').remove();
+                        modalEl.remove();
                     });
                 }
-            },
-            error: function (errors) {
+            })
+            .catch(errors => {
                 /** Display errors */
                 import('../core/errors').then(({default: displayErrors}) => {
                     new displayErrors(errors);
                 }).catch(error => console.error(error.message));
-            }
-        });
+            });
     };
 
     let calendar = new Calendar(calendarEl, {
@@ -74,23 +76,23 @@ document.addEventListener('DOMContentLoaded', function () {
         locales: allLocales,
         events: events,
         editable: false,
-        locale: $('html').attr('lang'),
+        locale: document.documentElement.lang,
         contentHeight: 500,
         dateClick: function (info) {
 
             let day = info.dateStr;
             let dayEl = info.dayEl;
-            let eventData = eventsDaysData.find(".event[data-day='" + day + "']");
+            let eventData = eventsDaysData ? eventsDaysData.querySelector(".event[data-day='" + day + "']") : null;
 
-            if (eventData.length > 0 && !$(dayEl).hasClass('fc-day-past')) {
+            if (eventData && !dayEl.classList.contains('fc-day-past')) {
                 ajaxModal(route('admin_agendaperiod_edit_item', {
-                    "website": $('body').data('id'),
+                    "website": document.body.dataset.id,
                     "agenda": agenda,
-                    "period": eventData.data('id')
+                    "period": eventData.dataset.id
                 }));
-            } else if (!$(dayEl).hasClass('fc-day-past')) {
+            } else if (!dayEl.classList.contains('fc-day-past')) {
                 ajaxModal(route('admin_agendaperiod_new', {
-                    "website": $('body').data('id'),
+                    "website": document.body.dataset.id,
                     "agenda": agenda,
                     "date": info.dateStr
                 }));
@@ -102,14 +104,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let event = info.el;
             let dayEl = event.closest('.fc-daygrid-day');
-            let day = $(dayEl).data('date');
-            let eventData = eventsDaysData.find(".event[data-day='" + day + "']");
+            let day = dayEl.dataset.date;
+            let eventData = eventsDaysData ? eventsDaysData.querySelector(".event[data-day='" + day + "']") : null;
 
-            ajaxModal(route('admin_agendaperiod_edit_item', {
-                "website": $('body').data('id'),
-                "agenda": agenda,
-                "period": eventData.data('id')
-            }));
+            if (eventData) {
+                ajaxModal(route('admin_agendaperiod_edit_item', {
+                    "website": document.body.dataset.id,
+                    "agenda": agenda,
+                    "period": eventData.dataset.id
+                }));
+            }
         }
     });
 

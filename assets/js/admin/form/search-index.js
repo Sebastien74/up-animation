@@ -8,77 +8,93 @@ import ajaxRowProcess from "./ajax-row";
  */
 export default function () {
 
-    let body = $('body');
+    let body = document.querySelector('body');
 
-    body.on('keydown', 'input#index_search_search', function (e) {
-        if (e.which === 13) {
+    body.addEventListener('keydown', function (e) {
+        if (e.target.matches('input#index_search_search') && e.which === 13) {
             e.preventDefault();
-            $('#index-search-submit').trigger('click');
+            let submitBtn = document.getElementById('index-search-submit');
+            if (submitBtn) {
+                submitBtn.click();
+            }
         }
     });
 
-    body.on('click', '#index-search-submit', function (e) {
+    body.addEventListener('click', function (e) {
 
-        let loader = $('body').find('#index-preloader');
-        loader.toggleClass('d-none');
+        let submitBtn = e.target.closest('#index-search-submit');
+        if (!submitBtn) {
+            return;
+        }
 
-        let el = $(this);
-        let input = el.closest('.form-group').find('input');
-        let value = input.val();
+        let loader = document.getElementById('index-preloader');
+        if (loader) {
+            loader.classList.toggle('d-none');
+        }
+
+        let input = submitBtn.closest('.form-group').querySelector('input');
+        let value = input.value;
         let form = input.closest('form');
-        let formId = form.attr('id');
+        let formId = form.getAttribute('id');
         let uri = location.pathname.substr(1) + "?index_search[search]=" + value;
         let formData = new FormData(document.getElementById(formId));
 
-        $.ajax({
-            url: '/' + uri + "&ajax=true",
-            type: "GET",
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            async: true,
-            beforeSend: function () {
-                history.replaceState("", "", '/' + uri);
-            },
-            success: function (response) {
+        let url = '/' + uri + "&ajax=true";
+        history.replaceState("", "", '/' + uri);
 
-                let body = $('body');
-                let html = $(response.html).find("#result")[0];
-                let ajaxContent = body.find("#result");
-                ajaxContent.replaceWith(html);
+        fetch(url, {
+            method: 'GET',
+            // Note: FormData as GET body is not standard, usually you'd append to URL.
+            // But the original code was doing: data: formData, type: "GET".
+            // jQuery actually converts formData to query string for GET.
+            // For simplicity and to match jQuery behavior for GET:
+        })
+            .then(response => response.json())
+            .then(response => {
 
-                body.find('#index-preloader').removeClass('d-none');
-
-                let showBtnDelete = body.find('#index-delete-show');
-                if (showBtnDelete.hasClass('d-none')) {
-                    showBtnDelete.removeClass('d-none');
+                let tempDiv = document.createElement('div');
+                tempDiv.innerHTML = response.html;
+                let html = tempDiv.querySelector("#result");
+                let ajaxContent = document.getElementById("result");
+                if (ajaxContent && html) {
+                    ajaxContent.replaceWith(html);
                 }
 
-                let removeBtn = body.find('#index-delete-submit');
-                if (!removeBtn.hasClass('d-none')) {
-                    removeBtn.addClass('d-none');
+                let body = document.body;
+                let preloader = body.querySelector('#index-preloader');
+                if (preloader) {
+                    preloader.classList.remove('d-none');
                 }
 
-                let pagination = body.find('#entities-index .pagination .page-link');
+                let showBtnDelete = body.querySelector('#index-delete-show');
+                if (showBtnDelete && showBtnDelete.classList.contains('d-none')) {
+                    showBtnDelete.classList.remove('d-none');
+                }
 
-                pagination.each(function () {
-                    let link = $(this);
-                    let href = link.attr('href');
-                    if (typeof href != "undefined") {
+                let removeBtn = body.querySelector('#index-delete-submit');
+                if (removeBtn && !removeBtn.classList.contains('d-none')) {
+                    removeBtn.classList.add('d-none');
+                }
+
+                let pagination = body.querySelectorAll('#entities-index .pagination .page-link');
+                pagination.forEach(function (link) {
+                    let href = link.getAttribute('href');
+                    if (href) {
                         let newHref = href.replace('&ajax=true', '');
-                        link.attr('href', newHref);
+                        link.setAttribute('href', newHref);
                     }
                 });
 
-                body.find('#index-preloader').addClass('d-none');
+                if (preloader) {
+                    preloader.classList.add('d-none');
+                }
 
                 select2();
                 ajaxRowProcess();
-            },
-            error: function (error) {
-            }
-        });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
         e.stopImmediatePropagation();
         return false;

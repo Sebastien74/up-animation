@@ -7,72 +7,71 @@ import select2 from '../../vendor/plugins/select2'
 export default function () {
 
     /** Show duplicate modal */
-    $('body').on('click', '.duplicate-btn', function (e) {
+    document.body.addEventListener('click', function (e) {
+        const target = e.target.closest('.duplicate-btn');
+        if (!target) return;
 
-        let btn = $(this);
-        let body = $('body');
-        let loader = body.find('#main-preloader');
-        let loaderData = btn.data('preloader');
-        if (typeof loaderData != 'undefined') {
-            loader = $(loaderData);
+        const body = document.body;
+        let loader = body.querySelector('#main-preloader');
+        const loaderData = target.getAttribute('data-preloader');
+        if (typeof loaderData !== 'undefined' && loaderData) {
+            loader = document.querySelector(loaderData) || loader;
         }
 
-        let path = btn.data('path');
-        let url = path + '?ajax=true';
-        if (path.indexOf('?') > -1) {
-            url = path + '&ajax=true'
-        }
+        const path = target.getAttribute('data-path');
+        let url = path + (path.indexOf('?') > -1 ? '&ajax=true' : '?ajax=true');
 
-        $.ajax({
-            url: url,
-            type: "GET",
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            beforeSend: function () {
-                loader.toggleClass('d-none');
-            },
-            success: function (response) {
+        if (loader) loader.classList.toggle('d-none');
+
+        fetch(url, {
+            method: 'GET',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+            .then(response => response.json())
+            .then(response => {
 
                 if (response.redirection) {
                     window.location.href = response.redirection;
                     return;
                 }
 
-                let html = response.html;
-                let modal = $(html).find('.modal');
-                let container = $('body');
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = response.html;
+                const modal = tempDiv.querySelector('.modal');
+                document.body.insertAdjacentHTML('beforeend', response.html);
 
-                container.append(response.html);
+                const modalEl = document.getElementById(modal ? modal.getAttribute('id') : '');
 
-                let modalEl = container.find('#' + modal.attr('id'));
-
-                modalEl.modal('show');
-                loader.toggleClass('d-none');
+                if (modalEl && typeof bootstrap !== 'undefined') {
+                    const bsModal = new bootstrap.Modal(modalEl);
+                    bsModal.show();
+                }
+                if (loader) loader.classList.toggle('d-none');
 
                 select2();
                 import('./ajax').then(({default: ajaxForm}) => {
                     new ajaxForm();
                 }).catch(error => console.error(error.message));
 
-                modalEl.on("hide.bs.modal", function () {
-                    resetModal(modalEl, true);
-                    $('.modal-wrapper').remove();
-                });
-            },
-            error: function (errors) {
-
-                let body = $('body');
-                let modal = body.find('.modal');
-
+                if (modalEl) {
+                    modalEl.addEventListener('hide.bs.modal', function () {
+                        resetModal(modalEl, true);
+                        const wrapper = document.querySelector('.modal-wrapper');
+                        if (wrapper) wrapper.remove();
+                    });
+                }
+            })
+            .catch(errors => {
                 /** Display errors */
                 import('../core/errors').then(({default: displayErrors}) => {
                     new displayErrors(errors);
                 }).catch(error => console.error(error.message));
 
-                resetModal(modal, true);
-            }
-        });
+                const modal = document.querySelector('.modal');
+                if (modal) {
+                    resetModal(modal, true);
+                }
+            });
 
         e.stopImmediatePropagation();
         return false;

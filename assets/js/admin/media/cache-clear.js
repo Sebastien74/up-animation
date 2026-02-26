@@ -18,7 +18,7 @@ if (buttonToClear) {
             progressCard.querySelector('.filename').innerText = filename;
         }
         progressBar.setAttribute('aria-valuenow', percent.toString());
-        progressBar.setAttribute('style', "width: " + percent + "%");
+        progressBar.style.width = percent + "%";
         counterWrap.innerHTML = progress.toString();
     }
 
@@ -32,33 +32,33 @@ if (buttonToClear) {
         let thumbsLength = parseInt(counterWrap.dataset.count);
         if (thumb) {
             let filename = thumb.dataset.filename;
-            let xHttp = new XMLHttpRequest();
-            xHttp.open("DELETE", thumb.dataset.url, true);
-            xHttp.send();
-            xHttp.onload = function (e) {
-                if (this.readyState === 4 && this.status === 200) {
-                    thumb.remove();
-                    let percent = (progress * 100) / thumbsLength;
-                    progress++;
-                    progressAction(progressCard, progressBar, counterWrap, progress, percent, filename);
-                    clear(container, progress);
-                }
-            }
+            fetch(thumb.dataset.url, {
+                method: "DELETE"
+            })
+                .then(response => {
+                    if (response.ok) {
+                        thumb.remove();
+                        let percent = (progress * 100) / thumbsLength;
+                        progress++;
+                        progressAction(progressCard, progressBar, counterWrap, progress, percent, filename);
+                        clear(container, progress);
+                    }
+                });
         } else {
             progressAction(progressCard, progressBar, counterWrap, thumbsLength, 100);
             progressCard.classList.add('d-none');
             endProcessWrap.classList.remove('d-none');
-            let xHttp = new XMLHttpRequest();
-            xHttp.open("DELETE", endProcessWrap.dataset.url, true);
-            xHttp.send();
-            xHttp.onload = function (e) {
-                if (this.readyState === 4 && this.status === 200) {
-                    endProcessWrap.classList.add('d-none');
-                    if (loader) {
-                        loader.classList.add('d-none');
+            fetch(endProcessWrap.dataset.url, {
+                method: "DELETE"
+            })
+                .then(response => {
+                    if (response.ok) {
+                        endProcessWrap.classList.add('d-none');
+                        if (loader) {
+                            loader.classList.add('d-none');
+                        }
                     }
-                }
-            }
+                });
         }
     }
 
@@ -81,19 +81,15 @@ if (buttonToClear) {
                 buttonGenerate.remove();
             }
             buttonToClear.remove();
-            let xHttp = new XMLHttpRequest();
-            xHttp.open("DELETE", buttonToClear.dataset.url, true);
-            xHttp.send();
-            xHttp.onload = function (e) {
-                if (this.readyState === 4 && this.status === 200) {
-                    let response = this.response;
-                    response = '{' + response.substring(response.indexOf("{") + 1, response.lastIndexOf("}")) + '}';
-                    response = JSON.parse(response);
+            fetch(buttonToClear.dataset.url, {
+                method: "DELETE"
+            })
+                .then(response => response.json())
+                .then(response => {
                     let container = document.getElementById('medias-cache-clear-index');
                     container.innerHTML = response.html;
                     clear(container, 1);
-                }
-            }
+                });
         });
     }
 }

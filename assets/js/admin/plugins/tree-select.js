@@ -7,9 +7,9 @@ import '../lib/select2totree';
  */
 export default function () {
 
-    let treeSelects = $('body').find('.tree-select');
+    let treeSelects = document.querySelectorAll('.tree-select');
 
-    if (treeSelects.length > 0) {
-        $('.tree-select').select2ToTree();
+    if (treeSelects.length > 0 && typeof jQuery !== 'undefined' && typeof jQuery.fn.select2ToTree !== 'undefined') {
+        jQuery(treeSelects).select2ToTree();
     }
 }

@@ -5,30 +5,33 @@
  */
 export default function () {
 
-    let masterForm = $('body').find('.master-dropzone-form');
+    let masterForm = document.body.querySelector('.master-dropzone-form');
 
-    if (masterForm.length > 0 && !masterForm.hasClass('is-submit')) {
+    if (masterForm && !masterForm.classList.contains('is-submit')) {
 
-        let masterFormId = masterForm.attr('id');
+        let masterFormId = masterForm.getAttribute('id');
         let formData = new FormData(document.getElementById(masterFormId));
-        masterForm.addClass('is-submit');
+        masterForm.classList.add('is-submit');
 
-        $.ajax({
-            url: masterForm.attr('action') + "?ajax=true",
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            async: true,
-            beforeSend: function () {
-            },
-            success: function (response) {
-            },
-            error: function (error) {
-                displayErrors(error);
+        fetch(masterForm.getAttribute('action') + "?ajax=true", {
+            method: "POST",
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
             }
-        });
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw text; });
+                }
+                return response.json();
+            })
+            .then(response => {
+                // Success
+            })
+            .catch(error => {
+                displayErrors(error);
+            });
     }
 
     function displayErrors(errors) {
@@ -40,8 +43,10 @@ export default function () {
         message += errors;
         message += '</div>';
         message += '</div>';
-        let dropzoneErrorsEl = $('#dropzone-errors');
-        let errorsEl = dropzoneErrorsEl.length > 0 ? dropzoneErrorsEl : $('#admin-body');
-        errorsEl.prepend(message);
+        let dropzoneErrorsEl = document.getElementById('dropzone-errors');
+        let errorsEl = dropzoneErrorsEl ? dropzoneErrorsEl : document.getElementById('admin-body');
+        if (errorsEl) {
+            errorsEl.insertAdjacentHTML('afterbegin', message);
+        }
     }
 }

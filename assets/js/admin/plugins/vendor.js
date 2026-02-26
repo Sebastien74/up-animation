@@ -52,31 +52,40 @@ export default function () {
     let prototypesSortableEls = body.querySelectorAll('.prototype-sortable');
     if (prototypesSortableEls.length > 0) {
         import('./prototype-sortable').then(({default: prototypesSortable}) => {
-            new prototypesSortable($(body));
+            new prototypesSortable();
         }).catch(error => console.error(error.message));
     }
 
     /** 5 - CSV Table export */
-    $(body).on('click', '.csv-export', function () {
-        import('./csv-table').then(({default: csvTable}) => {
-            new csvTable($(this));
-        }).catch(error => console.error(error.message));
+    document.body.addEventListener('click', function (e) {
+        const csvExportBtn = e.target.closest('.csv-export');
+        if (csvExportBtn) {
+            import('./csv-table').then(({default: csvTable}) => {
+                new csvTable(csvExportBtn);
+            }).catch(error => console.error(error.message));
+        }
     });
 
     /** 6 - Sweet alert on delete */
-    $(body).on('click', '.swal-delete-link', function (e) {
-        e.preventDefault();
-        import('./sweet-alert').then(({default: sweetAlert}) => {
-            new sweetAlert(e, $(this));
-        }).catch(error => console.error(error.message));
+    document.body.addEventListener('click', function (e) {
+        const swalDeleteBtn = e.target.closest('.swal-delete-link');
+        if (swalDeleteBtn) {
+            e.preventDefault();
+            import('./sweet-alert').then(({default: sweetAlert}) => {
+                new sweetAlert(e, swalDeleteBtn);
+            }).catch(error => console.error(error.message));
+        }
     });
 
     /** 7 - Sweet alert on click */
-    $(body).on('click', '.swal-link-confirm', function (e) {
-        e.preventDefault();
-        import('./sweet-alert-link').then(({default: sweetAlert}) => {
-            new sweetAlert(e, $(this));
-        }).catch(error => console.error(error.message));
+    document.body.addEventListener('click', function (e) {
+        const swalLinkBtn = e.target.closest('.swal-link-confirm');
+        if (swalLinkBtn) {
+            e.preventDefault();
+            import('./sweet-alert-link').then(({default: sweetAlert}) => {
+                new sweetAlert(e, swalLinkBtn);
+            }).catch(error => console.error(error.message));
+        }
     });
 
     /** 8 - Data table */

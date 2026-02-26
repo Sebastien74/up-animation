@@ -9,9 +9,11 @@ export default function () {
     let inputs = document.querySelectorAll("input[type='number']")
     for (let i = 0; i < inputs.length; i++) {
         let input = inputs[i]
-        $(input).TouchSpin({
-            min: input.getAttribute('min') ? input.getAttribute('min') : 0,
-            max: input.getAttribute('max') ? input.getAttribute('max') : 1000000000
-        })
+        if (typeof jQuery !== 'undefined' && typeof jQuery.fn.TouchSpin !== 'undefined') {
+            jQuery(input).TouchSpin({
+                min: input.getAttribute('min') ? input.getAttribute('min') : 0,
+                max: input.getAttribute('max') ? input.getAttribute('max') : 1000000000
+            })
+        }
     }
 }

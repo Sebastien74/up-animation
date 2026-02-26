@@ -48,7 +48,7 @@ if (openModal && modalBtn) {
 //         if (mutation.addedNodes) {
 //             mutation.addedNodes.forEach((node) => {
 //                 console.log(node)
-//                 if ($(node).is(".ui-helper-hidden-accessible")) {
+//                 if (node.classList.contains("ui-helper-hidden-accessible")) {
 //                     console.log("Div d'accessibilité ajoutée par :", node);
 //                 }
 //             });

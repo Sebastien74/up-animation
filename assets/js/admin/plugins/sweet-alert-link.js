@@ -8,57 +8,52 @@ import '../lib/sweetalert/sweetalert.min';
  */
 export default function (e, el) {
 
-    let body = $('body');
-    let trans = $('#data-translation');
-    let href = el.attr('href');
-    let reload = el.data('reload');
+    let trans = document.getElementById('data-translation');
+    let href = el instanceof jQuery ? el.attr('href') : el.getAttribute('href');
+    let reload = el instanceof jQuery ? el.data('reload') : el.getAttribute('data-reload');
 
     swal({
-        title: trans.data('swal-title'),
-        text: trans.data('swal-text'),
+        title: trans.getAttribute('data-swal-title'),
+        text: trans.getAttribute('data-swal-text'),
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: trans.data('swal-confirm-text'),
-        cancelButtonText: trans.data('swal-cancel-text'),
+        confirmButtonText: trans.getAttribute('data-swal-confirm-text'),
+        cancelButtonText: trans.getAttribute('data-swal-cancel-text'),
         closeOnConfirm: false
     }, function () {
 
-        body.find('.sa-button-container .confirm').attr('disabled', '');
-        body.find('.sa-button-container .cancel').attr('disabled', '');
+        let confirmBtn = document.querySelector('.sa-button-container .confirm');
+        let cancelBtn = document.querySelector('.sa-button-container .cancel');
+        if (confirmBtn) confirmBtn.setAttribute('disabled', '');
+        if (cancelBtn) cancelBtn.setAttribute('disabled', '');
 
-        let url = href + '?ajax=true';
-        if (href.indexOf('?') > -1) {
-            url = href + '&ajax=true'
-        }
+        let url = href + (href.indexOf('?') > -1 ? '&ajax=true' : '?ajax=true');
 
-        $.ajax({
-            url: url,
-            type: "GET",
-            processData: false,
-            contentType: false,
-            async: true,
-            dataType: 'json',
-            beforeSend: function () {
-            },
-            success: function (response) {
+        fetch(url, {
+            method: "GET",
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+            .then(response => response.json())
+            .then(response => {
 
-                swal(trans.data('swal-success'), trans.data('swal-success-text'), "success");
+                swal(trans.getAttribute('data-swal-success'), trans.getAttribute('data-swal-success-text'), "success");
 
-                if (response.success && response.reload || reload !== '') {
+                if (response.success && response.reload || (reload !== undefined && reload !== null && reload !== '')) {
                     swal.close();
                     location.reload();
                 }
-            },
-            error: function (errors) {
+            })
+            .catch(errors => {
                 /** Display errors */
                 import('../core/errors').then(({default: displayErrors}) => {
                     new displayErrors(errors);
                 }).catch(error => console.error(error.message));
-            }
-        });
+            });
 
-        e.stopImmediatePropagation();
+        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
         return false;
     });
 }

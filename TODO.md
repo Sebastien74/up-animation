@@ -6,6 +6,8 @@ Faire par page un fichier scss pour les premiere lames du site. Y mettre le menu
 
 Ajouter au blocs form le SIRET et récupérer le SIRET validator de rezup
 
+Une fois le refactor JS fait vire les plugins non utilisés comme data-datables par exemple
+
 Dans le phone validator faire un test pour la longueur du numéro (par langue)
 
 DANS GUIDE.MD pour cms non versionné ajouter pour JUni "Retirer La présence des **BOM (Byte Order Mark) UTF-8** "

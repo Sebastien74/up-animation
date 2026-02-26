@@ -12,318 +12,317 @@ import '../media/cache-clear';
 import '../../../scss/admin/pages/library.scss';
 import '../../../scss/admin/lib/sweetalert.scss';
 
-let body = $('body');
-
-let folderModal = $('#new-modal-folder');
-folderModal.on('show.bs.modal', function () {
-    folderModal.find('form')[0].reset();
-    let select = folderModal.find('#folder_parent');
-    select.find("option").removeAttr("selected");
-    select.trigger("change");
-});
-
-body.on('click', '#reorder-medias-btn', function () {
-    let trans = $('#data-translation');
-    return swal({
-        title: trans.data('swal-delete-title'),
-        text: trans.data('swal-delete-text'),
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: trans.data('swal-delete-confirm-text'),
-        cancelButtonText: trans.data('swal-delete-cancel-text'),
-        closeOnConfirm: false
-    }, function () {
-        import(/* webpackPreload: true */ '../media/reorder-medias').then(({default: reorder}) => {
-            new reorder();
-        }).catch(error => console.error(error.message));
-    });
-});
-
-body.on('click', '.open-media-edit', function (e) {
-
-    e.preventDefault();
-
-    let el = $(this);
-    let loader = $('#medias-preloader');
-
-    $.ajax({
-        url: el.attr('href') + "?ajax=1",
-        type: "GET",
-        processData: false,
-        contentType: false,
-        dataType: 'json',
-        beforeSend: function () {
-            loader.removeClass('d-none');
-            loader.parent().removeClass('d-none');
-        },
-        success: function (response) {
-            if (response.html) {
-
-                let body = $('body');
-                body.append(response.html);
-                let modal = body.find('#media-edition-modal');
-                modal.modal('show');
-
-                dropifyJS();
-
-                // /** Touch spin */
-                // import('../../vendor/plugins/touchspin').then(({default: touchSpin}) => {
-                //     new touchSpin();
-                // }).catch(error => console.error(error.message));
-
-                $('[data-toggle="tooltip"]').tooltip();
-                modal.on('hidden.bs.modal', function () {
-                    modal.remove();
-                });
-            }
-            loader.addClass('d-none');
-            loader.parent().addClass('d-none');
-        },
-        error: function (errors) {
-            /** Display errors */
-            import('../core/errors').then(({default: displayErrors}) => {
-                new displayErrors(errors);
-            }).catch(error => console.error(error.message));
+let folderModalEl = document.getElementById('new-modal-folder');
+if (folderModalEl) {
+    folderModalEl.addEventListener('show.bs.modal', function () {
+        let form = folderModalEl.querySelector('form');
+        if (form) form.reset();
+        let select = folderModalEl.querySelector('#folder_parent');
+        if (select) {
+            select.querySelectorAll("option").forEach(option => option.removeAttribute("selected"));
+            select.dispatchEvent(new Event('change'));
         }
     });
+}
 
-    e.stopImmediatePropagation();
-    return false;
+document.body.addEventListener('click', function (e) {
+    let reorderBtn = e.target.closest('#reorder-medias-btn');
+    if (reorderBtn) {
+        let trans = document.getElementById('data-translation');
+        return swal({
+            title: trans.dataset.swalDeleteTitle,
+            text: trans.dataset.swalDeleteText,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: trans.dataset.swalDeleteConfirmText,
+            cancelButtonText: trans.dataset.swalDeleteCancelText,
+            closeOnConfirm: false
+        }, function () {
+            import(/* webpackPreload: true */ '../media/reorder-medias').then(({default: reorder}) => {
+                new reorder();
+            }).catch(error => console.error(error.message));
+        });
+    }
+
+    let editBtn = e.target.closest('.open-media-edit');
+    if (editBtn) {
+        e.preventDefault();
+        let loader = document.getElementById('medias-preloader');
+        let loaderParent = loader ? loader.parentElement : null;
+
+        if (loader) loader.classList.remove('d-none');
+        if (loaderParent) loaderParent.classList.remove('d-none');
+
+        fetch(editBtn.getAttribute('href') + "?ajax=1", {
+            method: "GET",
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+            .then(response => response.json())
+            .then(response => {
+                if (response.html) {
+                    document.body.insertAdjacentHTML('beforeend', response.html);
+                    let modalEl = document.getElementById('media-edition-modal');
+                    let modal = new bootstrap.Modal(modalEl);
+                    modal.show();
+
+                    dropifyJS();
+
+                    modalEl.querySelectorAll('[data-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+                    modalEl.addEventListener('hidden.bs.modal', function () {
+                        modalEl.remove();
+                    });
+                }
+                if (loader) loader.classList.add('d-none');
+                if (loaderParent) loaderParent.classList.add('d-none');
+            })
+            .catch(errors => {
+                import('../core/errors').then(({default: displayErrors}) => {
+                    new displayErrors(errors);
+                }).catch(error => console.error(error.message));
+            });
+
+        e.stopImmediatePropagation();
+        return false;
+    }
 });
 
 activeSearch();
 
-body.on('click', '.check-pack-media-label', function () {
+document.body.addEventListener('click', function (e) {
 
-    let el = $(this);
-    let inModal = el.closest('#medias-library-modal');
-
-    if (inModal.length === 0) {
-
-        let file = el.closest('.file');
-
-        file.toggleClass('active');
-
-        let body = $('body');
-        let inputsChecked = body.find(".file.active");
-        let brnWrapper = body.find("#media-management-buttons");
-
-        if (inputsChecked.length > 0) {
-            brnWrapper.removeClass('d-none').addClass('d-inline-block');
-        } else {
-            brnWrapper.addClass('d-none').removeClass('d-inline-block');
+    let packLabel = e.target.closest('.check-pack-media-label');
+    if (packLabel) {
+        let inModal = packLabel.closest('#medias-library-modal');
+        if (!inModal) {
+            let file = packLabel.closest('.file');
+            file.classList.toggle('active');
+            let inputsChecked = document.querySelectorAll(".file.active");
+            let btnWrapper = document.getElementById("media-management-buttons");
+            if (btnWrapper) {
+                if (inputsChecked.length > 0) {
+                    btnWrapper.classList.remove('d-none');
+                    btnWrapper.classList.add('d-inline-block');
+                } else {
+                    btnWrapper.classList.add('d-none');
+                    btnWrapper.classList.remove('d-inline-block');
+                }
+            }
         }
     }
-});
 
-/** Show move to folder modal */
-body.on('click', '#select-folder-btn', function (e) {
+    /** Show move to folder modal */
+    let selectFolderBtn = e.target.closest('#select-folder-btn');
+    if (selectFolderBtn) {
+        let loader = document.getElementById('medias-preloader');
+        let path = selectFolderBtn.dataset.path;
+        let url = path + (path.indexOf('?') > -1 ? '&ajax=true' : '?ajax=true');
 
-    let btn = $(this);
-    let loader = body.find('#medias-preloader');
-    let path = btn.data('path');
-    let url = path + '?ajax=true';
-    if (path.indexOf('?') > -1) {
-        url = path + '&ajax=true'
-    }
+        if (loader) {
+            loader.classList.toggle('d-none');
+            loader.parentElement.classList.toggle('d-none');
+        }
 
-    $.ajax({
-        url: url,
-        type: "GET",
-        processData: false,
-        contentType: false,
-        dataType: 'json',
-        beforeSend: function () {
-            loader.toggleClass('d-none');
-            loader.parent().toggleClass('d-none');
-        },
-        success: function (response) {
-
-            let html = response.html;
-            let modal = $(html).find('.modal');
-            let container = $('body');
-
-            container.append(response.html);
-
-            let modalEl = container.find('#' + modal.attr('id'));
-
-            modalEl.modal('show');
-            loader.toggleClass('d-none');
-            loader.parent().toggleClass('d-none');
-
-            select2();
-
-            modalEl.on("hide.bs.modal", function () {
-                resetModal(modalEl, true);
-                $('.modal-wrapper').remove();
+        fetch(url, {
+            method: "GET",
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+            .then(response => response.json())
+            .then(response => {
+                document.body.insertAdjacentHTML('beforeend', response.html);
+                let modalEl = document.body.lastElementChild.querySelector('.modal');
+                if (!modalEl && document.body.lastElementChild.classList.contains('modal')) {
+                    modalEl = document.body.lastElementChild;
+                }
+                if (modalEl) {
+                    let modal = new bootstrap.Modal(modalEl);
+                    modal.show();
+                    select2();
+                    modalEl.addEventListener("hidden.bs.modal", function () {
+                        resetModal(modalEl, true);
+                        let wrapper = modalEl.closest('.modal-wrapper');
+                        if (wrapper) wrapper.remove();
+                        else modalEl.remove();
+                    });
+                }
+                if (loader) {
+                    loader.classList.toggle('d-none');
+                    loader.parentElement.classList.toggle('d-none');
+                }
             });
-        },
-        error: function (errors) {
-        }
-    });
 
-    e.stopImmediatePropagation();
-    return false;
-});
-
-/** To move media in folder */
-body.on('click', '#select_folder_save', function (e) {
-
-    e.preventDefault();
-
-    let el = $(this);
-    let select = el.closest('form').find('select');
-    let folder = select.val();
-    let modal = body.find('#select-folder');
-
-    resetModal(modal, true);
-
-    $('#media-management-buttons').addClass('d-none').removeClass('d-inline-block');
-
-    body.find('.file.active').each(function () {
-        let file = $(this);
-        ajaxManagement(file, route('admin_folder_media_move', {
-            "website": body.data('id'),
-            "media": file.data('id'),
-            "folderId": folder
-        }));
-    });
-});
-
-/** To compress images */
-body.on('click', '#media-compress-btn', function () {
-
-    let loader = $('#medias-card').find('#medias-preloader');
-    if (loader) {
-        loader.removeClass('d-none');
-        loader.parent().removeClass('d-none');
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
     }
 
-    let activeFiles = body.find('.file.active');
-    activeFiles.each(function () {
-        let file = $(this);
-        let tooHeavyFile = !!file.hasClass('too-heavy-file');
-        ajaxManagement(file, route('admin_media_compress', {
-            "website": body.data('id'),
-            "media": file.data('id'),
-        }), tooHeavyFile);
-        file.find('.media-compress-restore').removeClass('d-none');
-    });
+    /** To move media in folder */
+    let folderSaveBtn = e.target.closest('#select_folder_save');
+    if (folderSaveBtn) {
+        e.preventDefault();
+        let form = folderSaveBtn.closest('form');
+        let select = form.querySelector('select');
+        let folder = select.value;
+        let modalEl = document.getElementById('select-folder');
 
-    if (activeFiles.length === 0) {
-        loader.addClass('d-none');
-        loader.parent().addClass('d-none');
-    }
-});
+        resetModal(modalEl, true);
 
-/** To restore original media */
-body.on('click', '.media-compress-restore', function (e) {
-
-    e.preventDefault();
-
-    let el = $(this);
-    let loader = $('#medias-card').find('#medias-preloader');
-
-    $.ajax({
-        url: el.attr('href'),
-        type: "GET",
-        processData: false,
-        contentType: false,
-        dataType: 'json',
-        beforeSend: function () {
-            loader.removeClass('d-none');
-            loader.parent().removeClass('d-none');
-        },
-        success: function () {
-            el.addClass('d-none');
-            loader.addClass('d-none');
-            loader.parent().addClass('d-none');
-        },
-        error: function (errors) {
-            /** Display errors */
-            import('../core/errors').then(({default: displayErrors}) => {
-                new displayErrors(errors);
-            }).catch(error => console.error(error.message));
+        let mgmtBtns = document.getElementById('media-management-buttons');
+        if (mgmtBtns) {
+            mgmtBtns.classList.add('d-none');
+            mgmtBtns.classList.remove('d-inline-block');
         }
-    });
 
-    e.stopImmediatePropagation();
-    return false;
-});
+        document.querySelectorAll('.file.active').forEach(function (file) {
+            ajaxManagement(file, route('admin_folder_media_move', {
+                "website": document.body.dataset.id,
+                "media": file.dataset.id,
+                "folderId": folder
+            }));
+        });
+    }
 
-/** Warning Message delete */
-body.on('click', '.sa-warning-delete-medias', function () {
+    /** To compress images */
+    let compressBtn = e.target.closest('#media-compress-btn');
+    if (compressBtn) {
+        let loader = document.querySelector('#medias-card #medias-preloader');
+        if (loader) {
+            loader.classList.remove('d-none');
+            loader.parentElement.classList.remove('d-none');
+        }
 
-    let trans = $('#data-translation');
-
-    body.find('#media-management-buttons').addClass('d-none').removeClass('d-inline-block');
-
-    swal({
-        title: trans.data('swal-title'),
-        text: '',
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: trans.data('swal-confirm-text'),
-        cancelButtonText: trans.data('swal-delete-cancel-text'),
-        closeOnConfirm: false
-    }, function () {
-
-        $('.alert').remove();
-
-        body.find('.sa-button-container .confirm').attr('disabled', '');
-        body.find('.sa-button-container .cancel').attr('disabled', '');
-
-        body.find('.file.active').each(function () {
-            let file = $(this);
-            ajaxManagement(file, route('admin_media_remove', {
-                "website": body.data('id'),
-                "media": file.data('id')
-            }), true, 'DELETE');
+        let activeFiles = document.querySelectorAll('.file.active');
+        activeFiles.forEach(function (file) {
+            let tooHeavyFile = file.classList.contains('too-heavy-file');
+            ajaxManagement(file, route('admin_media_compress', {
+                "website": document.body.dataset.id,
+                "media": file.dataset.id
+            }), tooHeavyFile);
+            let restoreBtn = file.querySelector('.media-compress-restore');
+            if (restoreBtn) restoreBtn.classList.remove('d-none');
         });
 
-        swal(trans.data('deletion-completed'), "", "success");
+        if (activeFiles.length === 0) {
+            if (loader) {
+                loader.classList.add('d-none');
+                loader.parentElement.classList.add('d-none');
+            }
+        }
+    }
 
-        setTimeout(function () {
-            swal.close();
-        }, 1500);
-    });
+    /** To restore original media */
+    let restoreBtn = e.target.closest('.media-compress-restore');
+    if (restoreBtn) {
+        e.preventDefault();
+        let loader = document.querySelector('#medias-card #medias-preloader');
+
+        if (loader) {
+            loader.classList.remove('d-none');
+            loader.parentElement.classList.remove('d-none');
+        }
+
+        fetch(restoreBtn.getAttribute('href'), {
+            method: "GET",
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+            .then(response => {
+                restoreBtn.classList.add('d-none');
+                if (loader) {
+                    loader.classList.add('d-none');
+                    loader.parentElement.classList.add('d-none');
+                }
+            })
+            .catch(errors => {
+                import('../core/errors').then(({default: displayErrors}) => {
+                    new displayErrors(errors);
+                }).catch(error => console.error(error.message));
+            });
+
+        e.stopImmediatePropagation();
+        return false;
+    }
+
+    /** Warning Message delete */
+    let warningDeleteBtn = e.target.closest('.sa-warning-delete-medias');
+    if (warningDeleteBtn) {
+        let trans = document.getElementById('data-translation');
+        let managementBtns = document.getElementById('media-management-buttons');
+        if (managementBtns) {
+            managementBtns.classList.add('d-none');
+            managementBtns.classList.remove('d-inline-block');
+        }
+
+        swal({
+            title: trans.dataset.swalTitle,
+            text: '',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: trans.dataset.swalConfirmText,
+            cancelButtonText: trans.dataset.swalDeleteCancelText,
+            closeOnConfirm: false
+        }, function () {
+
+            document.querySelectorAll('.alert').forEach(alert => alert.remove());
+
+            document.querySelectorAll('.sa-button-container .confirm, .sa-button-container .cancel').forEach(btn => btn.setAttribute('disabled', ''));
+
+            document.querySelectorAll('.file.active').forEach(function (file) {
+                ajaxManagement(file, route('admin_media_remove', {
+                    "website": document.body.dataset.id,
+                    "media": file.dataset.id
+                }), true, 'DELETE');
+            });
+
+            swal(trans.dataset.deletionCompleted, "", "success");
+
+            setTimeout(function () {
+                swal.close();
+            }, 1500);
+        });
+    }
 });
 
 let ajaxManagement = function (file, url, remove = true, type = "GET") {
-    $.ajax({
-        url: url,
-        type: type,
-        processData: false,
-        contentType: false,
-        dataType: 'json',
-        beforeSend: function () {
-        },
-        success: function (response) {
+    fetch(url, {
+        method: type,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+        .then(response => response.json())
+        .then(response => {
             if (response.success) {
                 if (remove) {
-                    file.fadeOut(200).remove();
+                    file.style.transition = 'opacity 0.2s';
+                    file.style.opacity = '0';
+                    setTimeout(() => file.remove(), 200);
+                } else {
+                    file.classList.remove('active');
                 }
             } else {
                 displayAlert(response.message, 'danger', null, false);
             }
-            file.removeClass('active');
-            if (body.find('.file.active').length === 0) {
-                let loader = $('#medias-card').find('#medias-preloader');
-                if (loader && !loader.hasClass('d-none')) {
-                    loader.addClass('d-none');
-                    loader.parent().addClass('d-none');
+
+            if (document.querySelectorAll('.file.active').length === 0) {
+                let loader = document.querySelector('#medias-card #medias-preloader');
+                if (loader && !loader.classList.contains('d-none')) {
+                    loader.classList.add('d-none');
+                    loader.parentElement.classList.add('d-none');
                 }
             }
-        },
-        error: function (errors) {
-            /** Display errors */
+        })
+        .catch(errors => {
             import('../core/errors').then(({default: displayErrors}) => {
                 new displayErrors(errors);
             }).catch(error => console.error(error.message));
-        }
-    });
+        });
 };
 
 export default function activeSearch() {
@@ -381,15 +380,16 @@ export default function activeSearch() {
         }
     }
 
-    showMoreMedias();
-
-    $('#search-medias-form').on('keyup keypress', function (e) {
-        let keyCode = e.keyCode || e.which;
-        if (keyCode === 13) {
-            e.preventDefault();
-            return false;
-        }
-    });
+    let searchForm = document.getElementById('search-medias-form');
+    if (searchForm) {
+        searchForm.addEventListener('keydown', function (e) {
+            let keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    }
 
     /** Refresh medias on search */
     let searchField = document.getElementById('searchMedia');
@@ -417,7 +417,7 @@ export default function activeSearch() {
                     let response = JSON.parse(this.response);
                     let html = document.createElement('div');
                     html.innerHTML = response.html;
-                    html.querySelector('.card-subtitle').remove();
+                    html.querySelector('.main-subtitle').remove();
                     let ajaxContent = document.querySelector('#medias-results');
                     ajaxContent.innerHTML = html.innerHTML
                     if (loader) {

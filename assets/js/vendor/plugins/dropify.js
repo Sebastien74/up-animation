@@ -8,35 +8,38 @@ import "dropify";
  */
 export default function () {
 
-    let trans = $('#data-translation');
+    let trans = document.getElementById('data-translation');
+    let dropifyElements = document.querySelectorAll('.dropify');
 
-    let drEvent = $('.dropify').dropify({
-        messages: {
-            'default': trans.data('dropify-default'),
-            'replace': trans.data('dropify-replace'),
-            'remove': trans.data('dropify-remove'),
-            'error': trans.data('dropify-error'),
-        },
-        error: {
-            'fileSize': trans.data('dropify-file-size'),
-            'minWidth': trans.data('dropify-min-width'),
-            'maxWidth': trans.data('dropify-max-width'),
-            'minHeight': trans.data('dropify-min-height'),
-            'maxHeight': trans.data('dropify-max-height'),
-            'imageFormat': trans.data('dropify-image-format'),
-            'fileExtension': trans.data('dropify-file-extension')
-        }
-    });
+    if (dropifyElements.length > 0 && typeof jQuery !== 'undefined' && typeof jQuery.fn.dropify !== 'undefined') {
+        let drEvent = jQuery(dropifyElements).dropify({
+            messages: {
+                'default': trans.dataset.dropifyDefault,
+                'replace': trans.dataset.dropifyReplace,
+                'remove': trans.dataset.dropifyRemove,
+                'error': trans.dataset.dropifyError,
+            },
+            error: {
+                'fileSize': trans.dataset.dropifyFileSize,
+                'minWidth': trans.dataset.dropifyMinWidth,
+                'maxWidth': trans.dataset.dropifyMaxWidth,
+                'minHeight': trans.dataset.dropifyMinHeight,
+                'maxHeight': trans.dataset.dropifyMaxHeight,
+                'imageFormat': trans.dataset.dropifyImageFormat,
+                'fileExtension': trans.dataset.dropifyFileExtension
+            }
+        });
 
-    drEvent.on('dropify.beforeClear', function (event, element) {
-        // alert('File beforeClear');
-    });
+        drEvent.on('dropify.beforeClear', function (event, element) {
+            // alert('File beforeClear');
+        });
 
-    drEvent.on('dropify.afterClear', function (event, element) {
-        // alert('File afterClear');
-    });
+        drEvent.on('dropify.afterClear', function (event, element) {
+            // alert('File afterClear');
+        });
 
-    drEvent.on('dropify.errors', function (event, element) {
-        console.log('Dropify errors');
-    });
+        drEvent.on('dropify.errors', function (event, element) {
+            console.log('Dropify errors');
+        });
+    }
 }

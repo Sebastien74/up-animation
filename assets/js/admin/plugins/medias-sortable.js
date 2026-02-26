@@ -16,32 +16,40 @@ export default function () {
         let progressBar = loader.querySelector(".position-progress-bar");
         let elementToScroll = progressBarCardContainer != null && typeof progressBarCardContainer != 'undefined' ? progressBarCardContainer : progressBarCard;
 
-        let sortable = $('#medias-sortable-container').sortable({
-            placeholder: "ui-state-highlight",
-            items: '.sortable-item',
-            handle: ".handle-item",
-            start: function (e, ui) {
-                ui.placeholder.height(ui.item.height());
-            },
-            update: function (event, ui) {
+        let sortableEl = document.getElementById('medias-sortable-container');
+        if (typeof jQuery !== 'undefined' && typeof jQuery.fn.sortable !== 'undefined' && sortableEl) {
+            jQuery(sortableEl).sortable({
+                placeholder: "ui-state-highlight",
+                items: '.sortable-item',
+                handle: ".handle-item",
+                start: function (e, ui) {
+                    ui.placeholder.height(ui.item.height());
+                },
+                update: function (event, ui) {
 
-                loader.classList.remove('d-none')
-                progressBarCard.classList.remove('d-none')
+                    loader.classList.remove('d-none')
+                    progressBarCard.classList.remove('d-none')
 
-                let body = $('body');
-                let items = body.find('.sortable-item');
-                let website = body.data('id');
+                    let body = document.body;
+                    let items = body.querySelectorAll('.sortable-item');
+                    let website = body.dataset.id;
 
-                $('[data-bs-toggle="tooltip"]').tooltip('hide');
+                    if (typeof bootstrap !== 'undefined') {
+                        let tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+                        tooltips.forEach(t => {
+                            let instance = bootstrap.Tooltip.getInstance(t);
+                            if (instance) instance.hide();
+                        });
+                    }
 
-                items.each(function (i, el) {
-                    let elementId = $(el).attr('id');
-                    $('#' + elementId).attr('data-position', (i + 1));
-                });
+                    items.forEach(function (el, i) {
+                        el.setAttribute('data-position', (i + 1).toString());
+                    });
 
-                setPosition(website);
-            }
-        });
+                    setPosition(website);
+                }
+            });
+        }
 
         // sortable.disableSelection();
 

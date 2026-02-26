@@ -4,61 +4,69 @@
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 
-let tables = $('body').find('table');
+let tables = document.querySelectorAll('body table');
 
 responsiveTables(tables);
 
-$(window).resize(function () {
+window.addEventListener('resize', function () {
     responsiveTables(tables);
 });
 
 function responsiveTables(tables) {
 
-    tables.each(function () {
+    tables.forEach(function (table) {
 
-        let table = $(this);
         let inBody = table.closest('.body.header-table');
 
-        if (inBody.length > 0 && $(window).width() < 992) {
+        if (inBody && window.innerWidth < 992) {
 
-            let head = table.find('tr:first-child');
-            let cols = head.find('td');
+            let head = table.querySelector('tr:first-child');
+            let cols = head ? head.querySelectorAll('td') : [];
             let colsCount = cols.length;
             let width = 100 / colsCount;
 
             let headElements = {};
-            for (let i = 0; i < cols.length; i++) {
-                if (typeof headElements['td' + i] === "object") {
-                    headElements['td' + i].push($(cols[i]).text());
+            cols.forEach(function (col, i) {
+                let text = col.textContent.trim();
+                if (Array.isArray(headElements['td' + i])) {
+                    headElements['td' + i].push(text);
                 } else if (headElements['td' + i]) {
-                    headElements['td' + i] = [];
-                    headElements['td' + i].push($(cols[i]).text());
+                    let oldVal = headElements['td' + i];
+                    headElements['td' + i] = [oldVal, text];
                 } else {
-                    headElements['td' + i] = $(cols[i]).text();
+                    headElements['td' + i] = text;
                 }
-            }
+            });
 
-            table.find('tr').each(function (i) {
+            table.querySelectorAll('tr').forEach(function (row, i) {
                 if (i > 0) {
-                    $(this).find('td').each(function (j) {
-
-                        let col = $(this);
-                        let html = '<div class="content">' + col.html() + '</div>';
-
-                        col.html(html);
-                        col.attr('data-title', headElements['td' + j]);
+                    row.querySelectorAll('td').forEach(function (col, j) {
+                        if (!col.querySelector('.content')) {
+                            let html = '<div class="content">' + col.innerHTML + '</div>';
+                            col.innerHTML = html;
+                        }
+                        col.setAttribute('data-title', headElements['td' + j]);
                     });
                 }
             });
 
-            table.addClass('table-responsive body-table');
-            table.find('td').attr('scope', 'col').css('width', width + '%').addClass('d-inline-block');
+            table.classList.add('table-responsive', 'body-table');
+            table.querySelectorAll('td').forEach(function (col) {
+                col.setAttribute('scope', 'col');
+                col.style.width = width + '%';
+                col.classList.add('d-inline-block');
+            });
         } else {
-
-            table.closest('.table-responsive').removeClass('table-responsive');
-            table.removeClass('table-responsive');
-            table.removeClass('body-table');
-            table.find('td').attr('scope', 'col').css('width', 'initial').removeClass('d-inline-block');
+            let responsiveParent = table.closest('.table-responsive');
+            if (responsiveParent) {
+                responsiveParent.classList.remove('table-responsive');
+            }
+            table.classList.remove('table-responsive', 'body-table');
+            table.querySelectorAll('td').forEach(function (col) {
+                col.setAttribute('scope', 'col');
+                col.style.width = 'initial';
+                col.classList.remove('d-inline-block');
+            });
         }
     });
 }

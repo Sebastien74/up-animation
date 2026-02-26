@@ -5,11 +5,14 @@
  */
 export default function () {
 
-    $('.bootstrap-tagsinput input').keydown(function (event) {
-        if (event.which == 13) {
-            $(this).blur();
-            $(this).focus();
-            return false;
-        }
+    document.querySelectorAll('.bootstrap-tagsinput input').forEach(function (input) {
+        input.addEventListener('keydown', function (event) {
+            if (event.which === 13 || event.key === 'Enter') {
+                input.blur();
+                input.focus();
+                event.preventDefault();
+                return false;
+            }
+        });
     });
 }

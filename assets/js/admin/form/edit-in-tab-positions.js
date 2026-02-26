@@ -5,47 +5,64 @@
  */
 export default function (items) {
 
-    let body = $('body');
-    let loader = body.find('#entity-preloader');
+    const loader = document.body.querySelector('#entity-preloader');
+    if (loader) loader.classList.remove('d-none');
 
-    loader.removeClass('d-none');
-    let ArrayOfDate = [];
-    let firstItem = $(items)[0];
+    const dataToSend = [];
+
+    // Normalize items: accept jQuery collection, NodeList, or Array
+    let list = [];
+    if (items) {
+        if (typeof items.length !== 'undefined' && !items.nodeType) {
+            // Likely a collection
+            list = Array.from(items instanceof NodeList || Array.isArray(items) ? items : items);
+        } else if (items.nodeType === 1) {
+            list = [items];
+        }
+    }
+
+    const firstItem = list[0];
 
     if (firstItem) {
 
-        let pathAjax = $(firstItem).data('pos-path');
-        items.each(function (i, el) {
-            let newPosition = i + 1;
-            let elementId = $(el).data('id');
-            let inputPosition = $(el).find('.input-position');
-            inputPosition.val(newPosition);
-            $('#' + elementId).attr('data-position', newPosition);
-            ArrayOfDate.push({
-                'id': elementId,
-                'position': newPosition
-            });
+        const pathAjax = firstItem.dataset ? firstItem.dataset.posPath : (items[0] && items[0].getAttribute ? items[0].getAttribute('data-pos-path') : null);
+
+        list.forEach((el, i) => {
+            const newPosition = i + 1;
+            const elementId = el.dataset ? el.dataset.id : el.getAttribute('data-id');
+            const inputPosition = el.querySelector('.input-position');
+            if (inputPosition) {
+                inputPosition.value = newPosition;
+            }
+            const target = document.getElementById(elementId);
+            if (target) {
+                target.setAttribute('data-position', String(newPosition));
+            }
+            dataToSend.push({ id: elementId, position: newPosition });
         });
 
-        $.ajax({
-            url: pathAjax,
-            type: "POST",
-            dataType: 'json',
-            data: {
-                'data': JSON.stringify(ArrayOfDate)
-            },
-            async: true,
-            beforeSend: function () {
-            },
-            success: function () {
-                loader.addClass('d-none');
-            },
-            error: function (errors) {
-                /** Display errors */
-                import('../core/errors').then(({default: displayErrors}) => {
-                    new displayErrors(errors);
-                }).catch(error => console.error(error.message));
-            }
-        });
+        if (pathAjax) {
+            const body = 'data=' + encodeURIComponent(JSON.stringify(dataToSend));
+            fetch(pathAjax, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: body
+            })
+                .then(response => {
+                    if (!response.ok) throw response;
+                    return response.json().catch(() => ({}));
+                })
+                .then(() => {
+                    if (loader) loader.classList.add('d-none');
+                })
+                .catch(errors => {
+                    import('../core/errors').then(({default: displayErrors}) => {
+                        new displayErrors(errors);
+                    }).catch(error => console.error(error.message));
+                });
+        }
     }
 }

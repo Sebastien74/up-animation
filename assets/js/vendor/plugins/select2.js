@@ -8,21 +8,29 @@ import 'select2/dist/js/select2.full.min';
  */
 export default function (selectId = null, containerId = null) {
 
-    let language = $('html').attr('lang');
+    let html = document.querySelector('html');
+    let language = html ? html.getAttribute('lang') : 'en';
 
-    $.fn.select2.amd.define('select2/i18n/' + language, [], require("select2/src/js/select2/i18n/" + language));
+    if (typeof jQuery !== 'undefined' && typeof jQuery.fn.select2 !== 'undefined') {
+        jQuery.fn.select2.amd.define('select2/i18n/' + language, [], require("select2/src/js/select2/i18n/" + language));
+    }
 
     /**
      *  Set by element ID
      */
-    if (selectId) {
-        let body = $('body');
-        let selectById = body.find('#' + selectId);
-        selectById.select2();
-        if (containerId) {
-            selectById.on('select2:open', function () {
-                $('span.select2-container--open').attr('id', containerId);
-            });
+    if (selectId && typeof jQuery !== 'undefined' && typeof jQuery.fn.select2 !== 'undefined') {
+        let selectById = document.getElementById(selectId);
+        if (selectById) {
+            let $selectById = jQuery(selectById);
+            $selectById.select2();
+            if (containerId) {
+                $selectById.on('select2:open', function () {
+                    let openContainer = document.querySelector('span.select2-container--open');
+                    if (openContainer) {
+                        openContainer.setAttribute('id', containerId);
+                    }
+                });
+            }
         }
     }
 
@@ -30,11 +38,13 @@ export default function (selectId = null, containerId = null) {
      *  To add custom class to dropdown
      */
     function dropdownClass(select) {
-        let dropdownClass = select.data('dropdown-class') ? select.data('dropdown-class') : 'select2-dropdown-container';
-        let dropdownBelow = $('body').find('.select2-dropdown--below');
-        let dropdown = dropdownBelow.parent();
-        if (!dropdown.hasClass(dropdownClass)) {
-            dropdown.addClass(dropdownClass);
+        let dropdownClassName = select.dataset.dropdownClass ? select.dataset.dropdownClass : 'select2-dropdown-container';
+        let dropdownBelow = document.querySelector('body .select2-dropdown--below');
+        if (dropdownBelow) {
+            let dropdown = dropdownBelow.parentElement;
+            if (dropdown && !dropdown.classList.contains(dropdownClassName)) {
+                dropdown.classList.add(dropdownClassName);
+            }
         }
     }
 
@@ -43,32 +53,33 @@ export default function (selectId = null, containerId = null) {
      */
     let selects2Update = function () {
 
-        let body = $('body');
+        if (typeof jQuery === 'undefined' || typeof jQuery.fn.select2 === 'undefined') {
+            return;
+        }
 
         /** In visible DOM */
-        let selects = body.find('.select-2');
+        let selects = document.querySelectorAll('body .select-2');
 
-        selects.each(function () {
-            generateSerial($(this));
-            let select = $(this);
+        selects.forEach(function (select) {
+            generateSerial(select);
             let group = select.closest('.select2-group');
-            if (!select.hasClass('select2-active') && !select.hasClass('select-icons')) {
-                let allowClear = group.length > 0 && group.hasClass('allow-clear');
-                select.select2({
+            if (!select.classList.contains('select2-active') && !select.classList.contains('select-icons')) {
+                let allowClear = group && group.classList.contains('allow-clear');
+                jQuery(select).select2({
                     allowClear: allowClear,
                     language: language,
-                    dropdownParent: $(this).parent(),
-                    minimumResultsForSearch: select.hasClass('disable-search') ? Infinity : false /** Hide search box */
+                    dropdownParent: jQuery(select).parent(),
+                    minimumResultsForSearch: select.classList.contains('disable-search') ? Infinity : false /** Hide search box */
                 });
-                select.on('select2:open', function (e) {
+                jQuery(select).on('select2:open', function (e) {
                     dropdownClass(select);
                 });
-                select.addClass('select2-active');
-                if (select.val() && !select.hasClass('selected')) {
-                    group.addClass('selected');
+                select.classList.add('select2-active');
+                if (select.value && !select.classList.contains('selected')) {
+                    if (group) group.classList.add('selected');
                 }
             }
-            select.on("change", function (e) {
+            select.addEventListener("change", function (e) {
                 const removeCardsBtn = document.querySelector('.remove-cards');
                 if (removeCardsBtn) {
                     const inputElement = removeCardsBtn.parentNode.querySelector('input');
@@ -76,7 +87,7 @@ export default function (selectId = null, containerId = null) {
                         const startCatalogsIds = inputElement.dataset.values;
                         try {
                             const parsedIds = JSON.parse(startCatalogsIds).map(Number); // Convertir en nombres
-                            const selectedValues = [...e.target.options]
+                            const selectedValues = Array.from(e.target.options)
                                 .filter(option => option.selected)
                                 .map(option => Number(option.value)); // Convertir en nombres
                             // Vérifie si les tableaux sont identiques (mêmes valeurs, ordre non pris en compte)
@@ -94,34 +105,30 @@ export default function (selectId = null, containerId = null) {
                     }
                 }
                 if (this.value) {
-                    group.addClass('selected');
+                    if (group) group.classList.add('selected');
                 } else {
-                    group.removeClass('selected');
+                    if (group) group.classList.remove('selected');
                 }
             });
         });
 
         /** In modal */
-        let modals = body.find('.modal');
-        modals.each(function () {
-            let modal = $(this);
-            let modalId = modal.attr('id');
-            let selects = modal.find('.select-2');
-            if (selects.length > 0) {
-                let modalEl = $('#' + modalId);
-                modalEl.on('show.bs.modal', function (e) {
-                    selects.each(function () {
-                        let select = $(this);
-                        if (!select.hasClass('select2-active') && !select.hasClass('select-icons')) {
-                            select.select2({
+        let modals = document.querySelectorAll('body .modal');
+        modals.forEach(function (modalEl) {
+            let selectsInModal = modalEl.querySelectorAll('.select-2');
+            if (selectsInModal.length > 0) {
+                modalEl.addEventListener('show.bs.modal', function (e) {
+                    selectsInModal.forEach(function (select) {
+                        if (!select.classList.contains('select2-active') && !select.classList.contains('select-icons')) {
+                            jQuery(select).select2({
                                 language: language,
-                                dropdownParent: modalEl,
-                                minimumResultsForSearch: select.hasClass('disable-search') ? Infinity : false /** Hide search box */
+                                dropdownParent: jQuery(modalEl),
+                                minimumResultsForSearch: select.classList.contains('disable-search') ? Infinity : false /** Hide search box */
                             });
-                            select.on('select2:open', function (e) {
+                            jQuery(select).on('select2:open', function (e) {
                                 dropdownClass(select);
                             });
-                            select.addClass('select2-active');
+                            select.classList.add('select2-active');
                         }
                     });
                 });
@@ -134,69 +141,69 @@ export default function (selectId = null, containerId = null) {
      */
     let selectsIconUpdate = function () {
 
-        let body = $('body');
+        if (typeof jQuery === 'undefined' || typeof jQuery.fn.select2 === 'undefined') {
+            return;
+        }
 
         /** In visible DOM */
-        let selectsIcon = body.find('.select-icons');
-        selectsIcon.each(function () {
-            generateSerial($(this));
-            let select = $(this);
-            if (!select.hasClass('select2-active')) {
-                select.select2({
+        let selectsIcon = document.querySelectorAll('body .select-icons');
+        selectsIcon.forEach(function (select) {
+            generateSerial(select);
+            if (!select.classList.contains('select2-active')) {
+                jQuery(select).select2({
                     language: language,
                     templateResult: iconFormat,
-                    dropdownParent: $(this).parent(),
-                    minimumResultsForSearch: select.hasClass('disable-search') ? Infinity : false,
+                    dropdownParent: jQuery(select).parent(),
+                    minimumResultsForSearch: select.classList.contains('disable-search') ? Infinity : false,
                     /** Hide search box */
                     templateSelection: iconFormat,
                     escapeMarkup: function (m) {
                         return m;
                     }
                 });
-                select.on('select2:open', function (e) {
+                jQuery(select).on('select2:open', function (e) {
                     dropdownClass(select);
                 });
-                select.on("change", function (e) {
+                select.addEventListener("change", function (e) {
                     let group = select.closest('.form-floating');
                     if (this.value) {
-                        group.addClass('selected');
+                        if (group) group.classList.add('selected');
                     } else {
-                        group.removeClass('selected');
+                        if (group) group.classList.remove('selected');
                     }
                 });
-                // select.addClass('select2-active');
+                // select.classList.add('select2-active');
             }
         });
 
         /** In modal */
-        let modals = body.find('.modal');
-        modals.each(function () {
-
-            let modal = $(this);
-            let modalId = modal.attr('id');
-            let select = modal.find('.select-icons');
-
-            generateSerial(select);
-
-            $('#' + modalId).on('shown.bs.modal', function (e) {
-                if (!select.hasClass('select2-active')) {
-                    $(select).select2({
-                        language: language,
-                        dropdownParent: $('#' + modalId),
-                        templateResult: iconFormat,
-                        minimumResultsForSearch: select.hasClass('disable-search') ? Infinity : false,
-                        /** Hide search box */
-                        templateSelection: iconFormat,
-                        escapeMarkup: function (m) {
-                            return m;
+        let modals = document.querySelectorAll('body .modal');
+        modals.forEach(function (modalEl) {
+            let selectsIconInModal = modalEl.querySelectorAll('.select-icons');
+            if (selectsIconInModal.length > 0) {
+                modalEl.addEventListener('shown.bs.modal', function (e) {
+                    selectsIconInModal.forEach(function (select) {
+                        generateSerial(select);
+                        if (!select.classList.contains('select2-active')) {
+                            jQuery(select).select2({
+                                language: language,
+                                dropdownParent: jQuery(modalEl),
+                                templateResult: iconFormat,
+                                minimumResultsForSearch: select.classList.contains('disable-search') ? Infinity : false,
+                                /** Hide search box */
+                                templateSelection: iconFormat,
+                                escapeMarkup: function (m) {
+                                    return m;
+                                }
+                            });
+                            jQuery(select).on('select2:open', function (e) {
+                                dropdownClass(select);
+                            });
+                            select.classList.add('select2-active');
                         }
                     });
-                    select.on('select2:open', function (e) {
-                        dropdownClass(select);
-                    });
-                    select.addClass('select2-active');
-                }
-            });
+                });
+            }
         });
 
         /** Format icon */
@@ -206,30 +213,35 @@ export default function (selectId = null, containerId = null) {
                 return icon.text;
             }
 
-            let element = $(icon.element);
+            let element = icon.element;
+            if (!element) {
+                return icon.text;
+            }
 
-            if (typeof element.data('fz') !== 'undefined') {
-                return "<span class='fz-" + element.data('fz') + "'>" + icon.text + "</span>";
-            } else if (typeof element.data('fw') !== 'undefined') {
-                return "<span class='fw-" + element.data('fw') + "'>" + icon.text + "</span>";
-            } else if (typeof element.data('ff') !== 'undefined') {
-                return "<span class='ff-" + element.data('ff') + "'>" + icon.text + "</span>";
-            } else if (typeof element.data('background') !== 'undefined') {
-                return "<span class='select-2-background-wrap'><i class='select-2-background' style='background: url(" + element.data('background') + ");'></i></span>";
-            } else if (typeof element.data('color') !== 'undefined') {
-                let color = element.data('color');
-                return "<span class='color-wrapper me-3'><span class='color " + element.data('class') + "' style='background-color:" + color + "; border: 1px solid " + color + ";'></span></span>" + icon.text;
-            } else if (typeof element.data('image') !== 'undefined' && typeof element.data('text') !== 'undefined') {
-                let width = element.data('width') !== 'undefined' ? element.data('width') : 'auto';
-                let height = element.data('height') !== 'undefined' ? element.data('height') : 'auto';
-                let classname = element.data('class') !== 'undefined' ? element.data('class') : null;
-                return "<img data-src='" + element.data('image') + "' class='img-fluid img-icon lazy-load me-2 " + classname + "' width='" + width + "' height='" + height + "'/>" + icon.text;
-            } else if (typeof element.data('svg') !== 'undefined' && typeof element.data('text') !== 'undefined') {
-                return element.data('svg') + icon.text;
-            } else if (typeof element.data('image') !== 'undefined') {
-                return "<img data-src='" + element.data('image') + "' class='img-fluid img-icon lazy-load' />";
+            if (typeof element.dataset.fz !== 'undefined') {
+                return "<span class='fz-" + element.dataset.fz + "'>" + icon.text + "</span>";
+            } else if (typeof element.dataset.fw !== 'undefined') {
+                return "<span class='fw-" + element.dataset.fw + "'>" + icon.text + "</span>";
+            } else if (typeof element.dataset.ff !== 'undefined') {
+                return "<span class='ff-" + element.dataset.ff + "'>" + icon.text + "</span>";
+            } else if (typeof element.dataset.background !== 'undefined') {
+                return "<span class='select-2-background-wrap'><i class='select-2-background' style='background: url(" + element.dataset.background + ");'></i></span>";
+            } else if (typeof element.dataset.color !== 'undefined') {
+                let color = element.dataset.color;
+                return "<span class='color-wrapper me-3'><span class='color " + element.dataset.class + "' style='background-color:" + color + "; border: 1px solid " + color + ";'></span></span>" + icon.text;
+            } else if (typeof element.dataset.image !== 'undefined' && typeof element.dataset.text !== 'undefined') {
+                let width = typeof element.dataset.width !== 'undefined' ? element.dataset.width : 'auto';
+                let height = typeof element.dataset.height !== 'undefined' ? element.dataset.height : 'auto';
+                let classname = typeof element.dataset.class !== 'undefined' ? element.dataset.class : '';
+                return "<img data-src='" + element.dataset.image + "' class='img-fluid img-icon lazy-load me-2 " + classname + "' width='" + width + "' height='" + height + "'/>" + icon.text;
+            } else if (typeof element.dataset.svg !== 'undefined' && typeof element.dataset.text !== 'undefined') {
+                return element.dataset.svg + icon.text;
+            } else if (typeof element.dataset.image !== 'undefined') {
+                return "<img data-src='" + element.dataset.image + "' class='img-fluid img-icon lazy-load' />";
+            } else if (typeof element.dataset.icon !== 'undefined') {
+                return "<i class='" + element.dataset.icon + "'></i>" + icon.text;
             } else {
-                return "<i class='" + element.data('icon') + "'></i>" + icon.text;
+                return icon.text;
             }
         }
     };
@@ -251,10 +263,16 @@ export default function (selectId = null, containerId = null) {
             }
         }
 
-        let id = el.attr('id');
-        if (typeof id == 'undefined' || id === false || id === "false" || !id) {
-            el.attr('id', randomString);
-            el.closest('.form-group').find('label').attr('for', randomString);
+        let id = el.getAttribute('id');
+        if (!id || id === "false") {
+            el.setAttribute('id', randomString);
+            let group = el.closest('.form-group');
+            if (group) {
+                let label = group.querySelector('label');
+                if (label) {
+                    label.setAttribute('for', randomString);
+                }
+            }
         }
     }
 

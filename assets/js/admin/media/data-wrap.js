@@ -6,23 +6,23 @@
 export default function (e, el) {
 
     let setSingleMedia = function (el, mediasList) {
-        mediasList.find('.file').removeClass('active');
-        el.closest('.file').addClass('active');
+        mediasList.querySelectorAll('.file').forEach(file => file.classList.remove('active'));
+        el.closest('.file').classList.add('active');
     };
 
     let setMultiples = function (el) {
         let file = el.closest('.file');
-        if (file.hasClass('active')) {
-            file.removeClass('active');
+        if (file.classList.contains('active')) {
+            file.classList.remove('active');
         } else {
-            file.addClass('active');
+            file.classList.add('active');
         }
     };
 
-    let body = $('body');
-    let mediasList = body.find('#medias-results');
-    let mediasModal = body.find('#medias-library-modal');
-    let type = mediasModal.data('type');
+    let body = document.body;
+    let mediasList = body.querySelector('#medias-results');
+    let mediasModal = body.querySelector('#medias-library-modal');
+    let type = mediasModal ? mediasModal.dataset.type : null;
 
     if (type === 'single') {
         setSingleMedia(el, mediasList);

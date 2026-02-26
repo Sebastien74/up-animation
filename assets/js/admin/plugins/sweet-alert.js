@@ -8,17 +8,17 @@ import '../lib/sweetalert/sweetalert.min';
  */
 export default function (e, el) {
 
-    let body = $('body');
-    let trans = $('#data-translation');
-    let href = el.attr('href');
-    let type = el.data('type');
-    let reload = el.data('reload');
-    let stripePreloader = el.closest('.refer-preloader').find('.stripe-preloader');
-    let loader = stripePreloader.length > 0 ? stripePreloader : body.find('.main-preloader');
-    let target = type === 'collection' ? el.closest('.prototype') : $(el.data('target'));
-    let postForm = typeof el.data('post-form') !== 'undefined' ? el.data('post-form') : true;
+    let body = document.body;
+    let trans = document.getElementById('data-translation');
+    let href = el.getAttribute('href');
+    let type = el.dataset.type;
+    let reload = el.dataset.reload || el.dataset.count;
+    let stripePreloader = el.closest('.refer-preloader')?.querySelector('.stripe-preloader');
+    let loader = stripePreloader || body.querySelector('.main-preloader');
+    let target = type === 'collection' ? el.closest('.prototype') : document.querySelector(el.dataset.target);
+    let postForm = el.dataset.postForm !== 'undefined' ? el.dataset.postForm === 'true' : true;
 
-    if (target.length === 0) {
+    if (!target) {
         target = el.closest('.ui-value');
     }
 
@@ -26,52 +26,58 @@ export default function (e, el) {
 
         let parentForm = el.closest('form');
 
-        if (parentForm.length > 0) {
+        if (parentForm) {
 
-            let masterFormId = parentForm.attr('id');
+            let masterFormId = parentForm.getAttribute('id');
             let formData = new FormData(document.getElementById(masterFormId));
-            parentForm.addClass('is-submit');
+            parentForm.classList.add('is-submit');
 
-            $.ajax({
-                url: parentForm.attr('action') + "?ajax=true",
-                type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                dataType: 'json',
-                async: true,
-                beforeSend: function () {
-                },
-                success: function (response) {
-                },
-                error: function (errors) {
+            let action = parentForm.getAttribute('action');
+
+            fetch(action + "?ajax=true", {
+                method: "POST",
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw text; });
+                    }
+                    return response.json();
+                })
+                .then(response => {
+                    // Success
+                })
+                .catch(errors => {
                     /** Display errors */
                     import('../core/errors').then(({default: displayErrors}) => {
                         new displayErrors(errors);
                     }).catch(error => console.error(error.message));
-                }
-            });
+                });
         }
     }
 
     swal({
-        title: trans.data('swal-delete-title'),
-        text: trans.data('swal-delete-text'),
+        title: trans.dataset.swalDeleteTitle,
+        text: trans.dataset.swalDeleteText,
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: trans.data('swal-delete-confirm-text'),
-        cancelButtonText: trans.data('swal-delete-cancel-text'),
+        confirmButtonText: trans.dataset.swalDeleteConfirmText,
+        cancelButtonText: trans.dataset.swalDeleteCancelText,
         closeOnConfirm: false
     }, function () {
 
-        body.find('.sa-button-container .confirm').attr('disabled', '');
-        body.find('.sa-button-container .cancel').attr('disabled', '');
+        let confirmBtn = body.querySelector('.sa-button-container .confirm');
+        let cancelBtn = body.querySelector('.sa-button-container .cancel');
+        if (confirmBtn) confirmBtn.setAttribute('disabled', '');
+        if (cancelBtn) cancelBtn.setAttribute('disabled', '');
 
-        if (href === '') {
-            target.remove();
+        if (href === '' || href === '#') {
+            if (target) {
+                target.remove();
+            }
             setTimeout(function () {
-                swal(trans.data('swal-delete-success'), trans.data('swal-delete-success-text'), "success");
+                swal(trans.dataset.swalDeleteSuccess, trans.dataset.swalDeleteSuccessText, "success");
                 swal.close();
             }, 1500);
             return true;
@@ -82,18 +88,17 @@ export default function (e, el) {
             url = href + '&ajax=true'
         }
 
-        $.ajax({
-            url: url,
-            type: "DELETE",
-            processData: false,
-            contentType: false,
-            async: true,
-            dataType: 'json',
-            beforeSend: function () {
-                el.closest('.parent-item').remove();
-            },
-            success: function (response) {
-                swal(trans.data('swal-delete-success'), trans.data('swal-delete-success-text'), "success");
+        fetch(url, {
+            method: "DELETE"
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw text; });
+                }
+                return response.json();
+            })
+            .then(response => {
+                swal(trans.dataset.swalDeleteSuccess, trans.dataset.swalDeleteSuccessText, "success");
                 if (response.success && target) {
                     target.remove();
                     document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
@@ -105,29 +110,34 @@ export default function (e, el) {
                 if (response.success && postForm) {
                     postParentForm(el);
                 }
-                if (response.success && response.reload || reload !== '') {
-                    loader.removeClass('d-none');
+                if (response.success && response.reload || (reload !== undefined && reload !== null && reload !== '')) {
+                    if (loader instanceof HTMLElement) {
+                        loader.classList.remove('d-none');
+                    }
                     swal.close();
-                    if ('stay' === el.data('type')) {
+                    let elType = el.dataset.type;
+                    if ('stay' === elType) {
                         if (loader) {
-                            loader.addClass('d-none');
+                            loader.classList.add('d-none');
                         }
                     } else {
-                        $('#main-preloader').removeClass('d-none');
+                        let mainPreloader = document.getElementById('main-preloader');
+                        if (mainPreloader) {
+                            mainPreloader.classList.remove('d-none');
+                        }
                         setTimeout(function () {
                             window.location.href = typeof response.redirection !== 'undefined' ? response.redirection : window.location.href;
                         }, 100);
                     }
                 }
                 swal.close();
-            },
-            error: function (errors) {
+            })
+            .catch(errors => {
                 /** Display errors */
                 import('../core/errors').then(({default: displayErrors}) => {
                     new displayErrors(errors);
                 }).catch(error => console.error(error.message));
-            }
-        });
+            });
 
         e.stopImmediatePropagation();
         return false;

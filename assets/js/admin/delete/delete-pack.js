@@ -11,15 +11,27 @@ export default function () {
 
     function setRows(element) {
         let parentRow = element.closest('.parent-row');
-        if (typeof parentRow.data('level') !== 'undefined') {
-            if (element.is(':checked')) {
-                $('ol', parentRow).children('.parent-row').each(function () {
-                    $(this).find('.delete-pack').prop('checked', true);
+        if (parentRow && parentRow.dataset.level !== undefined) {
+            if (element.checked) {
+                parentRow.querySelectorAll('ol .parent-row').forEach(row => {
+                    let checkbox = row.querySelector('.delete-pack');
+                    if (checkbox) checkbox.checked = true;
                 });
             } else {
-                parentRow.parents('.parent-row').each(function () {
-                    $(this).children('.dd3-content').find('.delete-pack').prop('checked', false);
-                });
+                let current = parentRow;
+                while (current) {
+                    let parent = current.parentElement.closest('.parent-row');
+                    if (parent) {
+                        let content = parent.querySelector('.dd3-content');
+                        if (content) {
+                            let checkbox = content.querySelector('.delete-pack');
+                            if (checkbox) checkbox.checked = false;
+                        }
+                        current = parent;
+                    } else {
+                        current = null;
+                    }
+                }
             }
         }
     }
@@ -28,88 +40,91 @@ export default function () {
     function showBtn() {
 
         let hideBtn = true;
-        $('.delete-pack').each(function () {
-            let isCurrentCheck = $(this).is(':checked');
-            if (isCurrentCheck) {
+        document.querySelectorAll('.delete-pack').forEach(el => {
+            if (el.checked) {
                 hideBtn = false;
             }
         });
 
-        let deleteBtn = $('#delete-pack-btn');
-        if (hideBtn) {
-            deleteBtn.addClass('d-none');
-        } else {
-            deleteBtn.removeClass('d-none');
+        let deleteBtn = document.getElementById('delete-pack-btn');
+        if (deleteBtn) {
+            if (hideBtn) {
+                deleteBtn.classList.add('d-none');
+            } else {
+                deleteBtn.classList.remove('d-none');
+            }
         }
     }
 
     function removeItems() {
 
-        let body = $('body');
+        let body = document.body;
 
-        body.on('click', '#delete-pack-btn', function (e) {
+        body.addEventListener('click', function (e) {
+
+            let target = e.target.closest('#delete-pack-btn');
+            if (!target) return;
 
             e.preventDefault();
 
-            $('#delete-pack-btn').addClass('d-none');
+            target.classList.add('d-none');
 
-            let trans = $('#data-translation');
+            let trans = document.getElementById('data-translation');
 
             swal({
-                title: trans.data('swal-delete-title'),
-                text: trans.data('swal-delete-text'),
+                title: trans.getAttribute('data-swal-delete-title'),
+                text: trans.getAttribute('data-swal-delete-text'),
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
-                confirmButtonText: trans.data('swal-delete-confirm-text'),
-                cancelButtonText: trans.data('swal-delete-cancel-text'),
+                confirmButtonText: trans.getAttribute('data-swal-delete-confirm-text'),
+                cancelButtonText: trans.getAttribute('data-swal-delete-cancel-text'),
                 closeOnConfirm: false
             }, function () {
 
-                body.find('.sa-button-container .confirm').attr('disabled', '');
-                body.find('.sa-button-container .cancel').attr('disabled', '');
+                body.querySelectorAll('.sa-button-container .confirm, .sa-button-container .cancel').forEach(btn => btn.disabled = true);
 
-                $('.delete-pack').each(function () {
+                document.querySelectorAll('.delete-pack').forEach(function (el) {
 
-                    let el = $(this);
+                    if (el.checked) {
 
-                    if (el.is(':checked')) {
+                        let path = el.getAttribute('data-path');
+                        let url = path + (path.indexOf('?') > -1 ? '&ajax=true' : '?ajax=true');
 
-                        let path = el.data('path');
-                        let url = path + '?ajax=true';
-                        if (path.indexOf('?') > -1) {
-                            url = path + '&ajax=true'
-                        }
-
-                        $.ajax({
-                            url: url,
-                            type: "DELETE",
-                            processData: false,
-                            contentType: false,
-                            async: true,
-                            dataType: 'json',
-                            beforeSend: function () {
-                            },
-                            success: function (response) {
+                        fetch(url, {
+                            method: "DELETE",
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(response => {
                                 if (response.alert && response.alert === 'error') {
                                     displayAlert(response.message, 'danger', null, false);
-                                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                                    window.scrollTo({ top: 0, behavior: 'slow' });
                                 } else {
-                                    el.closest('li.parent-row').fadeOut(200);
-                                    el.closest('.delete-pack-parent-row').fadeOut(200);
+                                    let li = el.closest('li.parent-row');
+                                    let otherParent = el.closest('.delete-pack-parent-row');
+                                    if (li) {
+                                        li.style.transition = 'opacity 0.2s';
+                                        li.style.opacity = '0';
+                                        setTimeout(() => li.remove(), 200);
+                                    }
+                                    if (otherParent) {
+                                        otherParent.style.transition = 'opacity 0.2s';
+                                        otherParent.style.opacity = '0';
+                                        setTimeout(() => otherParent.remove(), 200);
+                                    }
                                 }
-                            },
-                            error: function (errors) {
+                            })
+                            .catch(errors => {
                                 /** Display errors */
                                 import('../core/errors').then(({default: displayErrors}) => {
                                     new displayErrors(errors);
                                 }).catch(error => console.error(error.message));
-                            }
-                        });
+                            });
                     }
                 });
-
-                // swal(trans.data('deletion-completed'), "", "success");
 
                 setTimeout(function () {
                     swal.close();
@@ -121,14 +136,17 @@ export default function () {
         });
     }
 
-    $(function () {
+    document.addEventListener('DOMContentLoaded', function () {
 
-        $('.delete-pack').prop('checked', false);
+        document.querySelectorAll('.delete-pack').forEach(el => el.checked = false);
 
-        $('body').on('change', '.delete-pack', function (e) {
-            setRows($(this));
-            showBtn();
-            removeItems();
+        document.body.addEventListener('change', function (e) {
+            let el = e.target.closest('.delete-pack');
+            if (el) {
+                setRows(el);
+                showBtn();
+                removeItems();
+            }
         });
     });
 }

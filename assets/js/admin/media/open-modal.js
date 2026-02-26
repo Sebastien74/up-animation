@@ -8,38 +8,44 @@ import activeSearch from "./library";
  */
 export default function (Routing, e, el) {
 
-    let body = $('body');
-    let stripePreloader = $(el).closest('.refer-preloader').find('.stripe-preloader');
-    let loader = stripePreloader.length > 0 ? stripePreloader : body.find('.main-preloader');
-    loader.removeClass('d-none');
-    loader.attr('style', 'opacity: 1;');
+    let body = document.body;
+    let referPreloader = el.closest('.refer-preloader');
+    let stripePreloader = referPreloader ? referPreloader.querySelector('.stripe-preloader') : null;
+    let loader = stripePreloader ? stripePreloader : body.querySelector('.main-preloader');
+    if (loader) {
+        loader.classList.remove('d-none');
+        loader.setAttribute('style', 'opacity: 1;');
+    }
 
     /** Open modal */
 
+    let options = el.dataset.options;
     let url = route(Routing, 'admin_medias_modal', {
-        "website": body.data('id'),
-        "options": JSON.stringify($(el).data('options'))
+        "website": body.dataset.id,
+        "options": JSON.stringify(options)
     });
-    let xHttp = new XMLHttpRequest();
-    xHttp.open("GET", url, true);
-    xHttp.send();
-    xHttp.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
 
-            let response = this.response;
-            response = '{' + response.substring(response.indexOf("{") + 1, response.lastIndexOf("}")) + '}';
-            response = JSON.parse(response);
+    fetch(url, {
+        method: "GET",
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+        .then(response => response.json())
+        .then(response => {
 
-            let body = $('body');
-            body.append(response.html);
+            body.insertAdjacentHTML('beforeend', response.html);
 
-            loader.addClass('d-none');
-            loader.attr('style', 'opacity: 0;');
+            if (loader) {
+                loader.classList.add('d-none');
+                loader.setAttribute('style', 'opacity: 0;');
+            }
 
-            let modal = body.find('#medias-library-modal');
-            modal.modal('show');
-            modal.find('.btn-edit').remove();
-            modal.find('.btn-zip').remove();
+            let modalEl = body.querySelector('#medias-library-modal');
+            let modal = new bootstrap.Modal(modalEl);
+            modal.show();
+
+            modalEl.querySelectorAll('.btn-edit, .btn-zip').forEach(btn => btn.remove());
 
             import('../plugins/nestable').then(({default: nestable}) => {
                 new nestable();
@@ -55,38 +61,48 @@ export default function (Routing, e, el) {
                 new mediaLoader();
             }).catch(error => console.error(error.message));
 
-            modal.on('hidden.bs.modal', function (e) {
-                modal.remove();
+            modalEl.addEventListener('hidden.bs.modal', function (e) {
+                modalEl.remove();
             });
 
-            modal.on('click', '#save-file-library', function (e) {
-                e.preventDefault();
-                let loader = $('body').find('#modal-preloader');
-                loader.removeClass('d-none');
-                import('./save-file').then(({default: saveFile}) => {
-                    new saveFile(Routing, e, $(this));
-                }).catch(error => console.error(error.message));
-            });
+            modalEl.addEventListener('click', function (e) {
+                let saveBtn = e.target.closest('#save-file-library');
+                if (saveBtn) {
+                    e.preventDefault();
+                    let modalLoader = body.querySelector('#modal-preloader');
+                    if (modalLoader) {
+                        modalLoader.classList.remove('d-none');
+                    }
+                    import('./save-file').then(({default: saveFile}) => {
+                        new saveFile(Routing, e, saveBtn);
+                    }).catch(error => console.error(error.message));
+                }
 
-            modal.on('click', '.file-data-wrap', function (e) {
-                e.preventDefault();
-                import('./data-wrap').then(({default: dataWrap}) => {
-                    new dataWrap(e, $(this));
-                }).catch(error => console.error(error.message));
-            });
+                let dataWrapBtn = e.target.closest('.file-data-wrap');
+                if (dataWrapBtn) {
+                    e.preventDefault();
+                    import('./data-wrap').then(({default: dataWrap}) => {
+                        new dataWrap(e, dataWrapBtn);
+                    }).catch(error => console.error(error.message));
+                }
 
-            modal.on('click', '#medias-library-modal .ajax-get-refresh', function (e) {
-                e.preventDefault();
-                $('body').find('#medias-library-modal .ajax-get-refresh').removeClass('btn-outline-info').addClass('btn-info');
-                $(this).removeClass('btn-info').addClass('btn-outline-info');
+                let refreshBtn = e.target.closest('#medias-library-modal .ajax-get-refresh');
+                if (refreshBtn) {
+                    e.preventDefault();
+                    modalEl.querySelectorAll('.ajax-get-refresh').forEach(btn => {
+                        btn.classList.remove('btn-outline-info');
+                        btn.classList.add('btn-info');
+                    });
+                    refreshBtn.classList.remove('btn-info');
+                    refreshBtn.classList.add('btn-outline-info');
+                }
             });
-        }
-    }
-    xHttp.onerror = function (errors) {
-        import('../core/errors').then(({default: displayErrors}) => {
-            new displayErrors(errors);
-        }).catch(error => console.error(error.message));
-    };
+        })
+        .catch(errors => {
+            import('../core/errors').then(({default: displayErrors}) => {
+                new displayErrors(errors);
+            }).catch(error => console.error(error.message));
+        });
 
     e.stopImmediatePropagation();
     return false;

@@ -12,7 +12,6 @@ export default function () {
     }
 
     let importData = function (progress) {
-        let index = document.getElementById('index-reorder-data');
         let list = document.getElementById('medias-to-reorder');
         let item = list.querySelector('.item.to-reorder');
         let progressCard = document.getElementById('progress-card');
@@ -22,21 +21,21 @@ export default function () {
         let nameWrap = progressCard.querySelector('.name');
         let itemsLength = parseInt(counterWrap.dataset.count);
         if (item) {
-            let xHttp = new XMLHttpRequest()
-            xHttp.open("GET", item.dataset.path, true)
-            xHttp.send()
-            xHttp.onload = function (e) {
-                if (this.readyState === 4 && this.status === 200) {
-                    nameWrap.innerHTML = item.dataset.name;
-                    item.remove();
-                    let percent = (progress * 100) / itemsLength;
-                    progressBar.setAttribute('aria-valuenow', percent.toString());
-                    progressBar.setAttribute('style', "width: " + percent + "%");
-                    counterWrap.innerHTML = progress.toString();
-                    progress++;
-                    importData(progress);
-                }
-            }
+            fetch(item.dataset.path, {
+                method: "GET"
+            })
+                .then(response => {
+                    if (response.ok) {
+                        nameWrap.innerHTML = item.dataset.name;
+                        item.remove();
+                        let percent = (progress * 100) / itemsLength;
+                        progressBar.setAttribute('aria-valuenow', percent.toString());
+                        progressBar.style.width = percent + "%";
+                        counterWrap.innerHTML = progress.toString();
+                        progress++;
+                        importData(progress);
+                    }
+                });
         } else {
             setTimeout(function () {
                 progressCard.remove();
@@ -46,16 +45,14 @@ export default function () {
         }
     }
 
-    let xHttp = new XMLHttpRequest();
-    xHttp.open("GET", btn.dataset.path, true);
-    xHttp.send();
-    xHttp.onload = function (e) {
-        if (this.readyState === 4 && this.status === 200) {
-            let response = JSON.parse(this.response);
+    fetch(btn.dataset.path, {
+        method: "GET"
+    })
+        .then(response => response.json())
+        .then(response => {
             let importWrap = document.getElementById('ajax-reorder-wrap');
             importWrap.innerHTML = response.html;
             importWrap.classList.remove('d-none');
             importData(1);
-        }
-    }
+        });
 }

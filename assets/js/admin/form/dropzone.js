@@ -10,19 +10,19 @@ import masterDropzoneForm from "../media/master-dropzone-form";
  */
 export default function () {
 
-    let trans = $('#data-translation');
+    let trans = document.getElementById('data-translation');
     let referenceClass = '.js-reference-dropzone';
-    let form = $('body').find(referenceClass);
+    let form = document.querySelector('body ' + referenceClass);
 
-    if (form.length === 0) {
+    if (!form) {
         return;
     }
 
     Dropzone.autoDiscover = false;
 
-    let field = form.find('.dropzone-field');
+    let field = form.querySelector('.dropzone-field');
 
-    let url = form.attr('action');
+    let url = form.getAttribute('action');
     if (url.indexOf('?') > -1) {
         url = url + "&ajax=1";
     } else {
@@ -31,19 +31,19 @@ export default function () {
 
     let dropzone = new Dropzone(referenceClass, {
         url: url,
-        paramName: field.attr('name'),
+        paramName: field.getAttribute('name'),
         maxFilesize: 100,
-        acceptedFiles: field.attr('accept'),
-        dictDefaultMessage: '<img src="/medias/icons/light/download.svg" class="img-fluid mb-4"><br>' + trans.data('dropzone-default-message'),
-        dictFallbackMessage: trans.data('dropzone-fallback-message'),
-        dictFallbackText: trans.data('dropzone-invalid-file-type'),
-        dictFileTooBig: trans.data('dropzone-file-too-big'),
-        dictInvalidFileType: trans.data('dropzone-invalid-file-type'),
-        dictResponseError: trans.data('dropzone-response-error'),
-        dictCancelUpload: trans.data('dropzone-cancel-upload'),
-        dictCancelUploadConfirmation: trans.data('dropzone-cancel-upload-confirmation'),
-        dictRemoveFile: trans.data('dropzone-remove-file'),
-        dictMaxFilesExceeded: trans.data('dropzone-max-files-exceeded')
+        acceptedFiles: field.getAttribute('accept'),
+        dictDefaultMessage: '<i class="icm-download mb-2 d-inline-block"></i><br>' + trans.getAttribute('data-dropzone-default-message'),
+        dictFallbackMessage: trans.getAttribute('data-dropzone-fallback-message'),
+        dictFallbackText: trans.getAttribute('data-dropzone-invalid-file-type'),
+        dictFileTooBig: trans.getAttribute('data-dropzone-file-too-big'),
+        dictInvalidFileType: trans.getAttribute('data-dropzone-invalid-file-type'),
+        dictResponseError: trans.getAttribute('data-dropzone-response-error'),
+        dictCancelUpload: trans.getAttribute('data-dropzone-cancel-upload'),
+        dictCancelUploadConfirmation: trans.getAttribute('data-dropzone-cancel-upload-confirmation'),
+        dictRemoveFile: trans.getAttribute('data-dropzone-remove-file'),
+        dictMaxFilesExceeded: trans.getAttribute('data-dropzone-max-files-exceeded')
     });
 
     dropzone.on("sending", function (file, response) {
@@ -53,7 +53,7 @@ export default function () {
     dropzone.on("success", function (file, response) {
         if (response.errors) {
             displayErrors(response);
-            $('body').attr('data-dropzone-success', false);
+            document.body.setAttribute('data-dropzone-success', 'false');
         }
     });
 
@@ -62,13 +62,16 @@ export default function () {
     });
 
     dropzone.on("queuecomplete", function (file, response) {
-        let body = $('body');
-        let success = body.attr('data-dropzone-success');
-        if (typeof success == "undefined") {
-            body.find('.main-preloader').removeClass('d-none');
+        let body = document.body;
+        let success = body.getAttribute('data-dropzone-success');
+        if (success === null) {
+            let preloader = body.querySelector('.main-preloader');
+            if (preloader) {
+                preloader.classList.remove('d-none');
+            }
             window.location.href = window.location.href;
         }
-        body.removeAttr('data-dropzone-success');
+        body.removeAttribute('data-dropzone-success');
     });
 
     function displayErrors(errors) {

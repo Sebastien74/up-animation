@@ -7,76 +7,70 @@ import {tinymcePlugin} from '../plugins/tinymce';
  */
 export default function () {
 
-    $('body').on('click', '.add-collection', function (e) {
+    document.body.addEventListener('click', function (e) {
+        const trigger = e.target.closest('.add-collection');
+        if (!trigger) return;
 
         e.preventDefault();
 
-        let el = $(this);
-        let collectionTarget = el.attr('data-collection-target');
-        let beforeTarget = $(el.attr('data-before'));
-        let collectionHolder = $(el.attr('data-target'));
-        let newIndex = collectionHolder.attr('data-index');
-        let prototype = collectionHolder.attr('data-prototype');
-        let form = prototype.replace(/__name__/g, newIndex);
+        const collectionTarget = trigger.getAttribute('data-collection-target');
+        const beforeSelector = trigger.getAttribute('data-before');
+        const targetSelector = trigger.getAttribute('data-target');
+        const collectionHolder = targetSelector ? document.querySelector(targetSelector) : null;
+        const beforeTarget = beforeSelector ? document.querySelector(beforeSelector) : null;
+        if (!collectionHolder) return false;
 
-        collectionHolder.attr('data-index', parseInt(newIndex) + 1);
+        const newIndex = collectionHolder.getAttribute('data-index');
+        const prototype = collectionHolder.getAttribute('data-prototype');
+        let form = prototype ? prototype.replace(/__name__/g, newIndex) : '';
 
-        // Form second level collection
-        // if (form.match("data-prototype")) {
-        //
-        //     // Convert NODE list to array with (toArray) return by (htmlToElements) form to HTML elements
-        //     let elements = toArray(htmlToElements(form));
-        //
-        //     $(elements).each(function (i, e) {
-        //
-        //         let prototypeExist = $(e).data('prototype');
-        //
-        //         // Check if prototype exist
-        //         if (typeof prototypeExist != "undefined") {
-        //             let secondIndex = 0;
-        //             let secondPrototype = prototypeExist;
-        //             form = secondPrototype.replace(/__second_name__/g, secondIndex);
-        //         }
-        //     });
-        // }
+        collectionHolder.setAttribute('data-index', String(parseInt(newIndex || '0') + 1));
 
-        let body = $('body');
-        let type = $(this).attr('data-type');
-        if (typeof type != "undefined" && type === "table") {
-            body.find('table .dataTables_empty').closest('tr').remove();
+        const type = trigger.getAttribute('data-type');
+        if (typeof type !== 'undefined' && type === 'table') {
+            const empty = document.querySelector('table .dataTables_empty');
+            const tr = empty ? empty.closest('tr') : null;
+            if (tr) tr.remove();
         }
 
-        let formEl = $(form);
-        let formCheckboxes = formEl.find('input[type="checkbox"]');
-
-        if (beforeTarget.length > 0) {
-            beforeTarget.before(form);
-        } else if (typeof collectionTarget != "undefined") {
-            if (collectionTarget === "prepend") {
-                collectionHolder.prepend(form);
-            } else if (collectionTarget === "append") {
-                collectionHolder.append(form);
+        // Insert HTML
+        if (beforeTarget) {
+            beforeTarget.insertAdjacentHTML('beforebegin', form);
+        } else if (typeof collectionTarget !== 'undefined' && collectionTarget) {
+            if (collectionTarget === 'prepend') {
+                collectionHolder.insertAdjacentHTML('afterbegin', form);
+            } else if (collectionTarget === 'append') {
+                collectionHolder.insertAdjacentHTML('beforeend', form);
             }
         } else {
-            collectionHolder.prepend(form);
+            collectionHolder.insertAdjacentHTML('afterbegin', form);
         }
 
-        let inputsPosition = collectionHolder.find('.input-position-collection').last();
-        let inputPosition = inputsPosition.length > 0 ? inputsPosition.last() : null;
-        if (inputPosition && !inputPosition.val()) {
-            inputPosition.val(parseInt(newIndex) + 1)
+        // Work on the newly inserted node
+        const temp = document.createElement('div');
+        temp.innerHTML = form;
+        const inserted = temp.firstElementChild;
+
+        // Update position if needed
+        const inputsPosition = collectionHolder.querySelectorAll('.input-position-collection');
+        const inputPosition = inputsPosition.length > 0 ? inputsPosition[inputsPosition.length - 1] : null;
+        if (inputPosition && !inputPosition.value) {
+            inputPosition.value = String(parseInt(newIndex || '0') + 1);
         }
 
-        if (formCheckboxes.length > 0) {
-            let collections = $('body').find('.collection');
-            collections.each(function () {
-                let block = $(this).find('.prototype').last();
-                let checkboxes = block.find('input[type="checkbox"]');
-                checkboxes.each(function () {
-                    let checkbox = $(this);
-                    let uniqId = 'input-' + Math.floor(Math.random() * 10000);
-                    checkbox.attr('id', uniqId);
-                    checkbox.parent().find('label').attr('for', uniqId);
+        // Ensure unique IDs for any checkboxes inside collections
+        if (inserted && inserted.querySelector('input[type="checkbox"]')) {
+            document.querySelectorAll('.collection').forEach(function (collection) {
+                const block = collection.querySelectorAll('.prototype');
+                const lastBlock = block.length > 0 ? block[block.length - 1] : collection;
+                lastBlock.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+                    const uniqId = 'input-' + Math.floor(Math.random() * 10000);
+                    checkbox.setAttribute('id', uniqId);
+                    const parent = checkbox.parentElement;
+                    if (parent) {
+                        const label = parent.querySelector('label');
+                        if (label) label.setAttribute('for', uniqId);
+                    }
                 });
             });
         }
@@ -91,17 +85,12 @@ export default function () {
             new activeAdminPlugins();
         }).catch(error => console.error(error.message));
 
-        // /** Touch spin */
-        // import('../../vendor/plugins/touchspin').then(({default: touchSpin}) => {
-        //     new touchSpin();
-        // }).catch(error => console.error(error.message));
-
         import('./../form/btn-group-toggle').then(({default: btnToggle}) => {
             new btnToggle();
         }).catch(error => console.error(error.message));
 
         /** Code generator */
-        if (body.find(".generate-code").length > 0) {
+        if (document.querySelector('.generate-code')) {
             import('../core/code-generator').then(({default: codeGenerator}) => {
                 new codeGenerator();
             }).catch(error => console.error(error.message));

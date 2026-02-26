@@ -33,37 +33,37 @@ if (buttonToGenerate) {
         progressCard.classList.toggle('d-none')
 
         let generate = function () {
-            let thumb = progressCard.querySelector('.thumb.to-generate')
-            let path = thumb.closest('.filename')
-            let xHttp = new XMLHttpRequest()
-            xHttp.open("GET", thumb.dataset.url, true)
-            xHttp.send()
-            xHttp.onload = function (e) {
-                if (this.readyState === 4 && this.status === 200) {
-                    filenameWrap.innerHTML = path.dataset.filename
-                    thumbWrap.innerHTML = thumb.dataset.name
-                    thumb.remove()
-                    let percent = (progress * 100) / thumbsLength
-                    progressBar.setAttribute('aria-valuenow', percent.toString())
-                    progressBar.setAttribute('style', "width: " + percent + "%")
-                    counterWrap.innerHTML = progress.toString()
-                    progress++
-                    if (progress === (thumbsLength + 1)) {
-                        setTimeout(function () {
-                            progressCard.classList.add('d-none')
-                            successCard.classList.remove('d-none')
+            let thumb = progressCard.querySelector('.thumb.to-generate');
+            let path = thumb.closest('.filename');
+            fetch(thumb.dataset.url, {
+                method: "GET"
+            })
+                .then(response => {
+                    if (response.ok) {
+                        filenameWrap.innerHTML = path.dataset.filename;
+                        thumbWrap.innerHTML = thumb.dataset.name;
+                        thumb.remove();
+                        let percent = (progress * 100) / thumbsLength;
+                        progressBar.setAttribute('aria-valuenow', percent.toString());
+                        progressBar.style.width = percent + "%";
+                        counterWrap.innerHTML = progress.toString();
+                        progress++;
+                        if (progress === (thumbsLength + 1)) {
                             setTimeout(function () {
-                                successCard.classList.add('d-none')
-                                if (preloader) {
-                                    preloader.classList.toggle('d-none')
-                                }
-                            }, 1500)
-                        }, 1000)
-                    } else {
-                        generate();
+                                progressCard.classList.add('d-none');
+                                successCard.classList.remove('d-none');
+                                setTimeout(function () {
+                                    successCard.classList.add('d-none');
+                                    if (preloader) {
+                                        preloader.classList.toggle('d-none');
+                                    }
+                                }, 1500);
+                            }, 1000);
+                        } else {
+                            generate();
+                        }
                     }
-                }
-            }
+                });
         }
         generate();
     }

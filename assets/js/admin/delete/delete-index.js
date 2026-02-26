@@ -3,131 +3,160 @@ import '../lib/sweetalert/sweetalert.min';
 
 export default function () {
 
-    let body = $('body');
+    let body = document.body;
 
-    $(function () {
+    document.addEventListener('DOMContentLoaded', function () {
 
-        let removeAllBtn = body.find('.delete-index-all');
+        let removeAllBtns = body.querySelectorAll('.delete-index-all');
 
-        body.find('.delete-input-index').prop('checked', false);
-        removeAllBtn.prop('checked', false);
+        body.querySelectorAll('.delete-input-index').forEach(input => input.checked = false);
+        removeAllBtns.forEach(btn => btn.checked = false);
 
-        body.on('click', '.index-delete-show', function (e) {
+        body.addEventListener('click', function (e) {
+
+            let target = e.target.closest('.index-delete-show');
+            if (!target) return;
 
             e.preventDefault();
 
-            let el = $(this);
-            let isActive = el.hasClass('active');
+            let el = target;
+            let isActive = el.classList.contains('active');
             let container = el.closest('.index-container');
-            let inputs = container.find('.delete-input-index');
-            let removeAllBtn = container.find('.delete-index-all');
+            let inputs = container.querySelectorAll('.delete-input-index');
+            let removeAllBtn = container.querySelector('.delete-index-all');
 
             if (isActive) {
-                inputs.parent().removeClass('d-inline-block').addClass('d-none');
-                removeAllBtn.parent().addClass('d-none');
-                el.attr('data-original-title', el.data('display')).tooltip();
-                el.removeClass('active');
+                inputs.forEach(input => {
+                    let parent = input.parentElement;
+                    parent.classList.remove('d-inline-block');
+                    parent.classList.add('d-none');
+                });
+                if (removeAllBtn) {
+                    removeAllBtn.parentElement.classList.add('d-none');
+                }
+                el.setAttribute('data-original-title', el.getAttribute('data-display'));
+                if (typeof bootstrap !== 'undefined') {
+                    let tooltip = bootstrap.Tooltip.getOrCreateInstance(el);
+                    tooltip.show();
+                }
+                el.classList.remove('active');
             } else {
-                inputs.parent().removeClass('d-none').addClass('d-inline-block');
-                removeAllBtn.parent().removeClass('d-none');
-                el.attr('data-original-title', el.data('hide')).tooltip();
-                el.addClass('active');
+                inputs.forEach(input => {
+                    let parent = input.parentElement;
+                    parent.classList.remove('d-none');
+                    parent.classList.add('d-inline-block');
+                });
+                if (removeAllBtn) {
+                    removeAllBtn.parentElement.classList.remove('d-none');
+                }
+                el.setAttribute('data-original-title', el.getAttribute('data-hide'));
+                if (typeof bootstrap !== 'undefined') {
+                    let tooltip = bootstrap.Tooltip.getOrCreateInstance(el);
+                    tooltip.show();
+                }
+                el.classList.add('active');
             }
         });
 
         let inputChecked = function (card) {
 
-            let inputsChecked = card.find('.delete-input-index:checkbox:checked');
-            let removeBtn = card.find('.index-delete-submit');
-            let showBtn = card.find('.index-delete-show');
+            let inputsChecked = card.querySelectorAll('.delete-input-index:checked');
+            let removeBtn = card.querySelector('.index-delete-submit');
+            let showBtn = card.querySelector('.index-delete-show');
 
             if (inputsChecked.length > 0) {
-                removeBtn.removeClass('d-none');
-                showBtn.addClass('d-none');
+                if (removeBtn) removeBtn.classList.remove('d-none');
+                if (showBtn) showBtn.classList.add('d-none');
             } else {
-                removeBtn.addClass('d-none');
-                showBtn.removeClass('d-none');
+                if (removeBtn) removeBtn.classList.add('d-none');
+                if (showBtn) showBtn.classList.remove('d-none');
             }
         };
 
-        body.on('change', '.delete-index-all', function (e) {
+        body.addEventListener('change', function (e) {
 
-            let el = $(this);
+            let el = e.target.closest('.delete-index-all');
+            if (!el) return;
+
             let container = el.closest('.index-container');
-            let isChecked = container.find('.delete-index-all').is(':checked');
-            let allInputs = container.find('.delete-input-index');
-            let removeAllBtn = container.find('.delete-index-all');
-            let parent = removeAllBtn.parent();
+            let isChecked = el.checked;
+            let allInputs = container.querySelectorAll('.delete-input-index');
+            let parent = el.parentElement;
 
             if (isChecked) {
-                parent.attr('data-original-title', parent.data('unchecked')).tooltip();
-                allInputs.prop('checked', true);
+                parent.setAttribute('data-original-title', parent.getAttribute('data-unchecked'));
+                allInputs.forEach(input => input.checked = true);
             } else {
-                parent.attr('data-original-title', parent.data('checked')).tooltip();
-                allInputs.prop('checked', false);
+                parent.setAttribute('data-original-title', parent.getAttribute('data-checked'));
+                allInputs.forEach(input => input.checked = false);
+            }
+
+            if (typeof bootstrap !== 'undefined') {
+                let tooltip = bootstrap.Tooltip.getOrCreateInstance(parent);
+                tooltip.show();
             }
 
             inputChecked(container);
         });
 
-        body.on('change', '.delete-input-index', function (e) {
-            let container = $(this).closest('.index-container');
+        body.addEventListener('change', function (e) {
+            let el = e.target.closest('.delete-input-index');
+            if (!el) return;
+            let container = el.closest('.index-container');
             inputChecked(container);
         });
 
-        body.on('click', '.index-delete-submit', function (e) {
+        body.addEventListener('click', function (e) {
+
+            let target = e.target.closest('.index-delete-submit');
+            if (!target) return;
 
             e.preventDefault();
 
-            let trans = $('#data-translation');
-            let container = $(this).closest('.index-container');
+            let trans = document.getElementById('data-translation');
+            let container = target.closest('.index-container');
 
             swal({
-                title: trans.data('swal-delete-title'),
-                text: trans.data('swal-delete-text'),
+                title: trans.getAttribute('data-swal-delete-title'),
+                text: trans.getAttribute('data-swal-delete-text'),
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
-                confirmButtonText: trans.data('swal-delete-confirm-text'),
-                cancelButtonText: trans.data('swal-delete-cancel-text'),
+                confirmButtonText: trans.getAttribute('data-swal-delete-confirm-text'),
+                cancelButtonText: trans.getAttribute('data-swal-delete-cancel-text'),
                 closeOnConfirm: false
             }, function () {
 
-                body.find('.sa-button-container .confirm').attr('disabled', '');
-                body.find('.sa-button-container .cancel').attr('disabled', '');
+                body.querySelectorAll('.sa-button-container .confirm, .sa-button-container .cancel').forEach(btn => btn.disabled = true);
 
-                card.find('.delete-input-index').each(function () {
+                container.querySelectorAll('.delete-input-index').forEach(function (el) {
 
-                    let el = $(this);
+                    if (el.checked) {
 
-                    if (el.is(':checked')) {
+                        let path = el.getAttribute('data-path');
+                        let url = path + (path.indexOf('?') > -1 ? '&ajax=true' : '?ajax=true');
 
-                        let path = el.data('path');
-                        let url = path + '?ajax=true';
-                        if (path.indexOf('?') > -1) {
-                            url = path + '&ajax=true'
-                        }
-
-                        $.ajax({
-                            url: url,
-                            type: "DELETE",
-                            processData: false,
-                            contentType: false,
-                            async: true,
-                            dataType: 'json',
-                            beforeSend: function () {
-                            },
-                            success: function (response) {
-                                el.closest('tr').fadeOut(200);
-                            },
-                            error: function (errors) {
-
+                        fetch(url, {
+                            method: "DELETE",
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(response => {
+                                let tr = el.closest('tr');
+                                if (tr) {
+                                    tr.style.transition = 'opacity 0.2s';
+                                    tr.style.opacity = '0';
+                                    setTimeout(() => tr.remove(), 200);
+                                }
+                            })
+                            .catch(errors => {
                                 /** Display errors */
                                 import('../core/errors').then(({default: displayErrors}) => {
                                     new displayErrors(errors);
                                 }).catch(error => console.error(error.message));
-                            }
-                        });
+                            });
                     }
                 });
 
@@ -135,13 +164,23 @@ export default function () {
                     swal.close();
                 }, 1500);
 
-                let inputs = container.find('.delete-input-index');
-                let removeBtn = container.find('.index-delete-submit');
-                let showBtn = container.find('.index-delete-show');
+                let inputs = container.querySelectorAll('.delete-input-index');
+                let removeBtn = container.querySelector('.index-delete-submit');
+                let showBtn = container.querySelector('.index-delete-show');
 
-                removeBtn.addClass('d-none');
-                showBtn.removeClass('d-none').attr('data-original-title', showBtn.data('display')).tooltip();
-                inputs.parent().addClass('d-none').removeClass('d-inline-block');
+                if (removeBtn) removeBtn.classList.add('d-none');
+                if (showBtn) {
+                    showBtn.classList.remove('d-none');
+                    showBtn.setAttribute('data-original-title', showBtn.getAttribute('data-display'));
+                    if (typeof bootstrap !== 'undefined') {
+                        let tooltip = bootstrap.Tooltip.getOrCreateInstance(showBtn);
+                        tooltip.show();
+                    }
+                }
+                inputs.forEach(input => {
+                    input.parentElement.classList.add('d-none');
+                    input.parentElement.classList.remove('d-inline-block');
+                });
             });
 
             e.stopImmediatePropagation();

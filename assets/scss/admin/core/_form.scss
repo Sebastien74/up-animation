@@ -750,4 +750,48 @@ form {
             }
         }
     }
+
+    &.js-reference-dropzone {
+
+        border: 1px dashed $input-border-color !important;
+        border-radius: $border-radius;
+        background: $bg-gradient-primary !important;
+        min-height: 150px;
+        position: relative;
+        overflow: hidden;
+
+        .dz-message {
+            padding: 2% 0;
+            margin: 0 !important;
+            font-size: 13px;
+        }
+
+        .icm-download {
+            font-size: 35px;
+        }
+
+        &:hover {
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1;
+                background: linear-gradient(
+                        -45deg,
+                        rgba($dash-surface-4, 0.2) 25%,
+                        transparent 25%,
+                        transparent 50%,
+                        rgba($dash-surface-4, 0.2) 50%,
+                        rgba($dash-surface-4, 0.2) 75%,
+                        transparent 75%,
+                        transparent
+                ) 0 0 / 30px 30px repeat;
+                animation: stripes-move 1s linear infinite;
+                pointer-events: none;
+            }
+        }
+    }
 }

@@ -7,23 +7,22 @@ import lottie from "lottie-web";
  */
 export default function () {
 
-    $(function () {
+    document.addEventListener('DOMContentLoaded', function () {
 
-        let icons = $('body').find('.ai');
+        let icons = document.querySelectorAll('body .ai');
 
-        icons.each(function () {
+        icons.forEach(function (icon) {
 
-            let icon = $(this);
-            let name = icon.data('name');
-            let loop = typeof icon.data('loop') != 'undefined' ? icon.data('loop') : false;
-            let autoplay = typeof icon.data('autoplay') != 'undefined' ? icon.data('autoplay') : false;
-            let hover = typeof icon.data('hover') != 'undefined' ? icon.data('hover') : false;
-            let speed = typeof icon.data('speed') != 'undefined' ? icon.data('speed') : .5;
+            let name = icon.dataset.name;
+            let loop = typeof icon.dataset.loop != 'undefined' ? icon.dataset.loop === 'true' : false;
+            let autoplay = typeof icon.dataset.autoplay != 'undefined' ? icon.dataset.autoplay === 'true' : false;
+            let hover = typeof icon.dataset.hover != 'undefined' ? icon.dataset.hover === 'true' : false;
+            let speed = typeof icon.dataset.speed != 'undefined' ? icon.dataset.speed : .5;
             let parent = icon.closest('.ai-parent');
-            let hoverEl = parent.length > 0 ? parent[0] : icon[0];
+            let hoverEl = parent ? parent : icon;
 
             let anim = lottie.loadAnimation({
-                container: icon[0],
+                container: icon,
                 renderer: 'svg',
                 loop: loop,
                 autoplay: autoplay,
