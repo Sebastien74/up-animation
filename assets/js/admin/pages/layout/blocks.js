@@ -1,4 +1,5 @@
 import setPositions from "./positions";
+import Tooltip from '../../bootstrap/dist/tooltip';
 
 /**
  * Sortable activation: Blocks order
@@ -8,46 +9,50 @@ export default function (Routing) {
 
     /** Blocks order */
 
-    let blocks = $(".block-sortable");
+    let blocks = document.querySelectorAll(".block-sortable");
 
-    if (typeof blocks !== 'undefined') {
-
-        let sortableBlock = blocks.sortable({
-            placeholder: "highlight-block",
-            connectWith: ".block-sortable",
-            items: '.block',
-            handle: ".handle-block",
-            start: function (event, ui) {
-                ui.placeholder.height(ui.item.height());
-                ui.placeholder.width(ui.item.width());
-            },
-            change: function (event, ui) {
-                let width = $(event.target).closest('.portlet-content').innerWidth() - 30;
-                ui.item.width(width);
-                ui.placeholder.width(width);
-            },
-            update: function (event, ui) {
-                let blocksSortableOriginal = $(event.target).find('.block');
-                setPositions(Routing, blocksSortableOriginal, 'admin_blocks_positions', true);
-                event.stopPropagation();
-            }
+    if (blocks.length > 0) {
+        import('sortablejs').then(({default: Sortable}) => {
+            blocks.forEach(el => {
+                Sortable.create(el, {
+                    animation: 150,
+                    group: 'blocks',
+                    handle: ".handle-block",
+                    draggable: ".block",
+                    ghostClass: "highlight-block",
+                    onEnd: function (evt) {
+                        let blocksSortableOriginal = Array.from(evt.to.querySelectorAll('.block'));
+                        setPositions(Routing, blocksSortableOriginal, 'admin_blocks_positions', true);
+                    }
+                });
+            });
         });
-
-        sortableBlock.disableSelection();
     }
 
     /** Blocks modal */
-    $('body').on('click', '.open-block-modal', function() {
-        let btn = $(this);
-        let modal = $(btn.data('target'));
-        let icons = btn.find('.icon-wrap');
-        if(!modal.hasClass('active')) {
-            modal.addClass('active');
+    document.body.addEventListener('click', function(e) {
+        let btn = e.target.closest('.open-block-modal');
+        if (!btn) return;
+
+        let targetSelector = btn.getAttribute('data-target');
+        let modal = document.querySelector(targetSelector);
+        let icons = btn.querySelectorAll('.icon-wrap');
+
+        if (modal) {
+            if(!modal.classList.contains('active')) {
+                modal.classList.add('active');
+            }
+            else {
+                modal.classList.remove('active');
+            }
         }
-        else {
-            modal.removeClass('active');
-        }
-        icons.toggleClass('d-none');
-        icons.tooltip('hide');
+
+        icons.forEach(icon => {
+            icon.classList.toggle('d-none');
+            let tooltip = Tooltip.getInstance(icon);
+            if (tooltip) {
+                tooltip.hide();
+            }
+        });
     });
 }

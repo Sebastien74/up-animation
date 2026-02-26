@@ -1,87 +1,94 @@
 import layoutActivation from './vendor';
-
-import '../../bootstrap/dist/modal';
-import '../../bootstrap/dist/tooltip';
+import Tooltip from '../../bootstrap/dist/tooltip';
 
 /**
  * Refresh layout
  */
 export default function (Routing, form, modal, event) {
 
-    let body = $('body');
-    let formID = form.attr('id');
-    let formDataEl = document.getElementById(formID);
+    let body = document.body;
+    let formEl = form instanceof HTMLElement ? form : form[0];
+    if (!formEl) return;
 
-    if (formDataEl) {
+    let formData = new FormData(formEl);
+    let action = formEl.getAttribute('action') || '';
+    let loader = body.querySelector('#layout-preloader');
+    let scrollElementSelector = formEl.getAttribute('data-scroll-to');
 
-        let formData = new FormData(formDataEl);
-        let action = form.attr('action');
-        let loader = body.find('#layout-preloader');
-        let scrollElement = form.data('scroll-to');
-
-        if (modal) {
-            body.find('#' + modal.attr('id')).remove();
-            body.removeClass('modal-open').removeAttr('style');
-            $('.modal-backdrop').remove();
+    if (modal) {
+        let modalEl = modal instanceof HTMLElement ? modal : modal[0];
+        if (modalEl) {
+            modalEl.remove();
         }
-
-        $.ajax({
-            url: action.indexOf('?') > -1 ? action + '&ajax=true' : action + '?ajax=true',
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            async: true,
-            beforeSend: function () {
-                loader.toggleClass('d-none');
-            },
-            success: function () {
-                let url = window.location.href;
-                $.ajax({
-                    url: url.indexOf('?') > -1 ? url + '&ajax=true' : url + '?ajax=true',
-                    type: "GET",
-                    processData: false,
-                    contentType: false,
-                    dataType: 'json',
-                    async: true,
-                    beforeSend: function () {
-                    },
-                    success: function (response) {
-                        let html = $(response.html).find("#layout-grid")[0];
-                        $("#layout-grid").replaceWith(html);
-                        if (typeof $(scrollElement) != "undefined" && $(scrollElement).length > 0) {
-                            $("body, html").animate({
-                                scrollTop: $(scrollElement).offset().top
-                            }, 'slow');
-                        }
-                        layoutActivation(Routing);
-                        $('[data-bs-toggle=tooltip]').tooltip({trigger: "hover"});
-                        loader.toggleClass('d-none');
-                        let popupImages = document.querySelectorAll('.glightbox')
-                        if (popupImages.length > 0) {
-                            import('../../../vendor/plugins/popup').then(({default: popup}) => {
-                                new popup();
-                            }).catch(error => console.error(error.message));
-                        }
-                    },
-                    error: function (errors) {
-                        /** Display errors */
-                        import('../../core/errors').then(({default: displayErrors}) => {
-                            new displayErrors(errors);
-                        }).catch(error => console.error(error.message));
-                    }
-                });
-            },
-            error: function (errors) {
-                /** Display errors */
-                import('../../core/errors').then(({default: displayErrors}) => {
-                    new displayErrors(errors);
-                }).catch(error => console.error(error.message));
-            }
-        });
+        body.classList.remove('modal-open');
+        body.removeAttribute('style');
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
     }
 
-    event.stopPropagation();
+    let urlWithAjax = action.indexOf('?') > -1 ? action + '&ajax=true' : action + '?ajax=true';
+
+    if (loader) {
+        loader.classList.toggle('d-none');
+    }
+
+    fetch(urlWithAjax, {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(() => {
+            let currentUrl = window.location.href;
+            let refreshUrl = currentUrl.indexOf('?') > -1 ? currentUrl + '&ajax=true' : currentUrl + '?ajax=true';
+
+            return fetch(refreshUrl);
+        })
+        .then(response => response.json())
+        .then(response => {
+            let tempDiv = document.createElement('div');
+            tempDiv.innerHTML = response.html;
+            let newLayoutGrid = tempDiv.querySelector("#layout-grid");
+            let currentLayoutGrid = document.querySelector("#layout-grid");
+
+            if (newLayoutGrid && currentLayoutGrid) {
+                currentLayoutGrid.replaceWith(newLayoutGrid);
+            }
+
+            if (scrollElementSelector) {
+                let scrollElement = document.querySelector(scrollElementSelector);
+                if (scrollElement) {
+                    window.scrollTo({
+                        top: scrollElement.getBoundingClientRect().top + window.scrollY,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            layoutActivation(Routing);
+
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                new Tooltip(el, {trigger: "hover"});
+            });
+
+            if (loader) {
+                loader.classList.toggle('d-none');
+            }
+
+            let popupImages = document.querySelectorAll('.glightbox');
+            if (popupImages.length > 0) {
+                import('../../../vendor/plugins/popup').then(({default: popup}) => {
+                    new popup();
+                }).catch(error => console.error(error.message));
+            }
+        })
+        .catch(errors => {
+            /** Display errors */
+            import('../../core/errors').then(({default: displayErrors}) => {
+                new displayErrors(errors);
+            }).catch(error => console.error(error.message));
+        });
+
+    if (event) {
+        event.stopPropagation();
+    }
     return false;
 }

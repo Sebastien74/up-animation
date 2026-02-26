@@ -5,47 +5,54 @@ import route from "../../core/routing";
  */
 export default function (Routing) {
 
-    $('body').on('click', '.zone-resize', function handler(e) {
+    document.body.addEventListener('click', function handler(e) {
+
+        let el = e.target.closest('.zone-resize');
+        if (!el) return;
 
         e.preventDefault();
 
-        let el = $(this);
-        let body = $('body');
-        let website = body.data('id');
-        let titleBlock = el.parent();
-        let iconWrap = el.find('.icon-wrap');
-        let zone = el.attr('data-zone');
-        let newSize = el.attr('data-size') === 'true' ? 0 : 1;
+        let body = document.body;
+        let website = body.dataset.id;
+        let titleBlock = el.parentElement;
+        let iconWraps = el.querySelectorAll('.icon-wrap');
+        let zone = el.getAttribute('data-zone');
+        let newSize = el.getAttribute('data-size') === 'true' ? 0 : 1;
         let size = newSize === 1 ? 'true' : 'false';
-        let loader = body.find('#layout-preloader');
+        let loader = body.querySelector('#layout-preloader');
 
-        $.ajax({
-            url: route(Routing, 'admin_zone_size', {website: website, zone: zone, size: newSize}) + "&ajax=true",
-            type: "GET",
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            async: true,
-            beforeSend: function () {
-                loader.toggleClass('d-none');
-                el.attr('data-size', size);
-            },
-            success: function () {
+        if (loader) {
+            loader.classList.toggle('d-none');
+        }
+        el.setAttribute('data-size', size);
+
+        fetch(route(Routing, 'admin_zone_size', {website: website, zone: zone, size: newSize}) + "&ajax=true")
+            .then(response => response.json())
+            .then(() => {
                 if (size === 'false') {
-                    titleBlock.attr('data-original-title', el.data('compress')).parent().find('.tooltip-inner').html(el.data('compress'));
+                    titleBlock.setAttribute('data-original-title', el.dataset.compress);
+                    let tooltipInner = titleBlock.parentElement.querySelector('.tooltip-inner');
+                    if (tooltipInner) {
+                        tooltipInner.innerHTML = el.dataset.compress;
+                    }
                 } else {
-                    titleBlock.attr('data-original-title', el.data('expand')).parent().find('.tooltip-inner').html(el.data('expand'));
+                    titleBlock.setAttribute('data-original-title', el.dataset.expand);
+                    let tooltipInner = titleBlock.parentElement.querySelector('.tooltip-inner');
+                    if (tooltipInner) {
+                        tooltipInner.innerHTML = el.dataset.expand;
+                    }
                 }
-                iconWrap.toggleClass('d-none');
-                loader.toggleClass('d-none');
-            },
-            error: function (errors) {
+                iconWraps.forEach(iconWrap => iconWrap.classList.toggle('d-none'));
+                if (loader) {
+                    loader.classList.toggle('d-none');
+                }
+            })
+            .catch(errors => {
                 /** Display errors */
                 import('../../core/errors').then(({default: displayErrors}) => {
                     new displayErrors(errors);
                 }).catch(error => console.error(error.message));
-            }
-        });
+            });
 
         e.stopPropagation();
         return false;

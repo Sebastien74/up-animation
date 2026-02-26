@@ -764,14 +764,17 @@
         }
     }
 
-    .ui-resizable-e {
-
+    .ui-resizable-handle {
         cursor: e-resize;
-        width: 20px;
+        width: 15px;
         right: -5px;
         top: 0;
         height: 100%;
         position: absolute;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
@@ -918,8 +921,10 @@
             }
         }
 
-        .btn-resize {
-            top: 15px;
+        .ui-resizable-handle {
+            top: 0;
+            height: 100%;
+            z-index: 100;
         }
 
         &.col-md-2,

@@ -5,85 +5,85 @@ import route from "../../core/routing";
  */
 export default function (Routing) {
 
-    let body = $('body');
-    let loader = body.find('#layout-preloader');
-    let cols = body.find('.col-sortable');
+    let body = document.body;
+    let loader = body.querySelector('#layout-preloader');
+    let cols = body.querySelectorAll('.col-sortable');
 
-    cols.each(function () {
+    cols.forEach(col => {
+        let blocksSortable = col.querySelector('.block-sortable');
+        if (!blocksSortable) return;
 
-        let col = $(this);
-        let blocksContainerWidth = parseInt(col.find('.block-sortable').width());
+        let blocksContainerWidth = blocksSortable.offsetWidth;
         let gridWidth = Math.floor((blocksContainerWidth - 240) / 12);
-        gridWidth = gridWidth < 0 ? Math.floor((blocksContainerWidth) / 12) : gridWidth;
-        let resizableEls = col.find('.block-resizable');
+        gridWidth = gridWidth < 0 ? Math.floor(blocksContainerWidth / 12) : gridWidth;
+        let resizableEls = col.querySelectorAll('.block-resizable');
 
-        resizableEls.each(function () {
+        resizableEls.forEach(resizable => {
+            let blockRow = resizable.querySelector('.block-row');
+            let blockHeight = blockRow ? blockRow.offsetHeight : 0;
+            resizable.style.height = blockHeight + "px";
 
-            let resizable = $(this);
-            let body = $('body');
-            let blockHeight = resizable.find('.block-row').height();
+            let handle = resizable.querySelector('.btn-resize-block');
+            if (!handle) {
+                handle = document.createElement('span');
+                handle.className = 'btn-resize btn-resize-block ui-resizable-handle ui-resizable-e';
+                handle.innerHTML = '<i class="icm-arrow-from-right"></i>';
+                resizable.appendChild(handle);
+            } else {
+                handle.classList.add('ui-resizable-handle', 'ui-resizable-e');
+            }
 
-            resizable.css('height', blockHeight + "px");
+            let startX, startWidth, parent, blockClass, blockId;
 
-            resizable.resizable({
-                handles: 'e',
-                containment: "#block-sortable-" + col.data('id'),
-                grid: gridWidth,
-                resize: function (event, ui) {
+            const onMouseMove = (e) => {
+                let deltaX = e.clientX - startX;
+                let newWidth = startWidth + deltaX;
+                let blockSize = Math.round(newWidth / gridWidth);
+                let size = Math.min(12, Math.max(1, blockSize));
 
-                    let parent = resizable.parent();
-                    let blockClass = parent.attr('data-size-class');
-                    let blockSize = Math.floor(ui.size.width / gridWidth);
-                    let size = blockSize > 12 ? 12 : blockSize;
+                parent.classList.remove(blockClass);
+                parent.classList.add('col-md-' + size);
+                parent.setAttribute('data-size-class', 'col-md-' + size);
+                blockClass = 'col-md-' + size;
+                resizable.style.height = blockHeight + "px";
+            };
 
-                    if(size > 0) {
-                        parent.removeClass(blockClass).addClass('col-md-' + size).attr('data-size-class', 'col-md-' + size);
-                        resizable.css('height', blockHeight + "px");
-                    }
-                },
-                stop: function (event, ui) {
+            const onMouseUp = (e) => {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
 
-                    loader.removeClass('d-none');
+                if (loader) loader.classList.remove('d-none');
 
-                    let parent = resizable.parent();
-                    let blockClass = parent.attr('data-size-class');
-                    let blockId = parent.attr('data-id');
-                    let blockSize = Math.floor(ui.size.width / gridWidth);
-                    let size = blockSize > 12 ? 12 : blockSize;
+                let finalWidth = startWidth + (e.clientX - startX);
+                let blockSize = Math.round(finalWidth / gridWidth);
+                let size = Math.min(12, Math.max(1, blockSize));
 
-                    if(size > 0) {
+                fetch(route(Routing, 'admin_block_size', {
+                    website: body.dataset.id,
+                    block: blockId,
+                    size: size
+                }) + "?ajax=true")
+                .then(response => response.json())
+                .then(() => {
+                    if (loader) loader.classList.add('d-none');
+                })
+                .catch(errors => {
+                    import('../../core/errors').then(({default: displayErrors}) => {
+                        new displayErrors(errors);
+                    }).catch(error => console.error(error.message));
+                });
+            };
 
-                        parent.removeClass(blockClass).addClass('col-md-' + size).attr('data-size-class', 'col-md-' + size);
-                        resizable.css('height', blockHeight + "px");
+            handle.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                startX = e.clientX;
+                startWidth = resizable.offsetWidth;
+                parent = resizable.parentElement;
+                blockClass = parent.getAttribute('data-size-class');
+                blockId = parent.getAttribute('data-id');
 
-                        $.ajax({
-                            url: route(Routing, 'admin_block_size', {
-                                website: body.data('id'),
-                                block: blockId,
-                                size: size
-                            }) + "?ajax=true",
-                            type: "GET",
-                            processData: false,
-                            contentType: false,
-                            dataType: 'json',
-                            async: true,
-                            beforeSend: function () {
-                            },
-                            success: function (response) {
-                                loader.addClass('d-none');
-                            },
-                            error: function (errors) {
-                                /** Display errors */
-                                import('../../core/errors').then(({default: displayErrors}) => {
-                                    new displayErrors(errors);
-                                }).catch(error => console.error(error.message));
-                            }
-                        });
-                    }
-
-                    event.stopPropagation();
-                    return false;
-                }
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
             });
         });
     });

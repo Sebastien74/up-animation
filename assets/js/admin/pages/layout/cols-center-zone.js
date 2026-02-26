@@ -5,47 +5,54 @@ import route from "../../core/routing";
  */
 export default function (Routing) {
 
-    $('body').on('click', '.zone-cols-standardize', function handler(e) {
+    document.body.addEventListener('click', function handler(e) {
+
+        let el = e.target.closest('.zone-cols-standardize');
+        if (!el) return;
 
         e.preventDefault();
 
-        let el = $(this);
-        let body = $('body');
-        let website = body.data('id');
-        let titleBlock = el.parent();
-        let iconWrap = el.find('.icon-wrap');
-        let zone = el.attr('data-zone');
-        let newStandardize = el.attr('data-standardize') === 'true' ? 0 : 1;
+        let body = document.body;
+        let website = body.dataset.id;
+        let titleBlock = el.parentElement;
+        let iconWraps = el.querySelectorAll('.icon-wrap');
+        let zone = el.getAttribute('data-zone');
+        let newStandardize = el.getAttribute('data-standardize') === 'true' ? 0 : 1;
         let standardize = newStandardize === 1 ? 'true' : 'false';
-        let loader = body.find('#layout-preloader');
+        let loader = body.querySelector('#layout-preloader');
 
-        $.ajax({
-            url: route(Routing, 'admin_cols_standardize', {website: website, zone: zone, standardize: newStandardize}),
-            type: "GET",
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            async: true,
-            beforeSend: function () {
-                loader.toggleClass('d-none');
-                el.attr('data-standardize', standardize);
-            },
-            success: function () {
+        if (loader) {
+            loader.classList.toggle('d-none');
+        }
+        el.setAttribute('data-standardize', standardize);
+
+        fetch(route(Routing, 'admin_cols_standardize', {website: website, zone: zone, standardize: newStandardize}))
+            .then(response => response.json())
+            .then(() => {
                 if (standardize === 'false') {
-                    titleBlock.attr('data-original-title', el.data('cols-standardize')).parent().find('.tooltip-inner').html(el.data('cols-default'));
+                    titleBlock.setAttribute('data-original-title', el.dataset.colsStandardize);
+                    let tooltipInner = titleBlock.parentElement.querySelector('.tooltip-inner');
+                    if (tooltipInner) {
+                        tooltipInner.innerHTML = el.dataset.colsDefault;
+                    }
                 } else {
-                    titleBlock.attr('data-original-title', el.data('cols-default')).parent().find('.tooltip-inner').html(el.data('cols-standardize'));
+                    titleBlock.setAttribute('data-original-title', el.dataset.colsDefault);
+                    let tooltipInner = titleBlock.parentElement.querySelector('.tooltip-inner');
+                    if (tooltipInner) {
+                        tooltipInner.innerHTML = el.dataset.colsStandardize;
+                    }
                 }
-                iconWrap.toggleClass('d-none');
-                loader.toggleClass('d-none');
-            },
-            error: function (errors) {
+                iconWraps.forEach(iconWrap => iconWrap.classList.toggle('d-none'));
+                if (loader) {
+                    loader.classList.toggle('d-none');
+                }
+            })
+            .catch(errors => {
                 /** Display errors */
                 import('../../core/errors').then(({default: displayErrors}) => {
                     new displayErrors(errors);
                 }).catch(error => console.error(error.message));
-            }
-        });
+            });
 
         e.stopPropagation();
         return false;

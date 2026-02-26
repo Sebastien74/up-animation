@@ -4,18 +4,19 @@ import setPositions from "./positions";
  * Sortable activation: Zones order
  */
 export default function (Routing) {
-    let sortableZone = $('#zones-sortable').sortable({
-        placeholder: "ui-state-highlight",
-        items: '.zone',
-        handle: ".handle-zone",
-        start: function (e, ui) {
-            ui.placeholder.height(ui.item.height());
-        },
-        update: function (event, ui) {
-            let zonesSortable = ui.item.parent().find('.zone');
-            setPositions(Routing, zonesSortable, 'admin_zones_positions');
-            event.stopPropagation();
-        }
-    });
-    sortableZone.disableSelection();
+    let el = document.getElementById('zones-sortable');
+    if (el) {
+        import('sortablejs').then(({default: Sortable}) => {
+            Sortable.create(el, {
+                animation: 150,
+                handle: ".handle-zone",
+                draggable: ".zone",
+                ghostClass: "ui-state-highlight",
+                onUpdate: function (evt) {
+                    let zonesSortable = Array.from(evt.to.querySelectorAll('.zone'));
+                    setPositions(Routing, zonesSortable, 'admin_zones_positions');
+                }
+            });
+        });
+    }
 }

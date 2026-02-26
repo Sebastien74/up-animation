@@ -40,11 +40,11 @@ export default function (Routing) {
                 let body = document.body;
                 let modal = body.querySelector('.layout-modal');
                 if (!body.classList.contains('ajax-posted')) {
-                    let form = submitBtn.closest('.edit-element-form');
-                    /** Refresh layout */
-                    import('./refresh-layout').then(({default: refreshLayout}) => {
-                        new refreshLayout(Routing, $(form), $(modal), e);
-                    }).catch(error => console.error(error.message));
+                let form = submitBtn.closest('.edit-element-form');
+                /** Refresh layout */
+                import('./refresh-layout').then(({default: refreshLayout}) => {
+                    new refreshLayout(Routing, form, modal, e);
+                }).catch(error => console.error(error.message));
                 }
             }
         });
@@ -240,13 +240,13 @@ export default function (Routing) {
                                 if (resetBtn) {
                                     e.preventDefault();
                                     import('./../../plugins/sweet-alert').then(({default: sweetAlert}) => {
-                                        new sweetAlert(e, $(resetBtn));
+                                        new sweetAlert(e, resetBtn);
                                     }).catch(error => console.error(error.message));
                                 }
                             });
 
                             modalEl.addEventListener('hide.bs.modal', function () {
-                                resetModal($(modalEl), true);
+                                resetModal(modalEl, true);
                                 document.querySelectorAll('.modal-wrapper').forEach(wrapper => wrapper.remove());
                             });
                         }
@@ -261,7 +261,7 @@ export default function (Routing) {
                     }).catch(error => console.error(error.message));
 
                     if (modal) {
-                        resetModal($(modal), true);
+                        resetModal(modal, true);
                     }
                 });
         });

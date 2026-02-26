@@ -5,80 +5,84 @@ import route from "../../core/routing";
  */
 export default function (Routing) {
 
-    let body = $('body');
-    let loader = body.find('#layout-preloader');
-    let zones = body.find('.zone');
+    let body = document.body;
+    let loader = body.querySelector('#layout-preloader');
+    let zones = body.querySelectorAll('.zone');
 
-    zones.each(function () {
-
-        let zone = $(this);
-        let zoneWidth = parseInt(zone.width());
+    zones.forEach(zone => {
+        let zoneWidth = zone.offsetWidth;
         let gridWidth = Math.floor(zoneWidth / 12);
-        let resizableEls = zone.find('.resizable');
+        let resizableEls = zone.querySelectorAll('.resizable');
 
-        resizableEls.each(function () {
+        resizableEls.forEach(resizable => {
+            let column = resizable.querySelector('.column');
+            let columnHeight = column ? column.offsetHeight : 0;
+            resizable.style.height = columnHeight + "px";
 
-            let resizable = $(this);
-            let body = $('body');
-            let columnHeight = resizable.find('.column').height();
+            let handle = resizable.querySelector('.btn-resize-col');
+            if (!handle) {
+                handle = document.createElement('span');
+                handle.className = 'btn-resize btn-resize-col ui-resizable-handle ui-resizable-e';
+                handle.innerHTML = '<i class="icm-arrow-from-right"></i>';
+                resizable.appendChild(handle);
+            } else {
+                handle.classList.add('ui-resizable-handle', 'ui-resizable-e');
+            }
 
-            resizable.css('height', columnHeight + "px");
+            let startX, startWidth, parent, colClass, colId;
 
-            resizable.resizable({
-                handles: 'e',
-                containment: ".zone",
-                grid: gridWidth,
-                resize: function (event, ui) {
-                    let parent = resizable.parent();
-                    let colClass = parent.attr('data-size-class');
-                    let colSize = Math.ceil(ui.size.width / gridWidth);
-                    let size = colSize > 12 ? 12 : colSize;
-                    parent.removeClass(colClass).addClass('col-md-' + size).attr('data-size-class', 'col-md-' + size);
-                    resizable.css('height', columnHeight + "px");
-                },
-                stop: function (event, ui) {
+            const onMouseMove = (e) => {
+                let deltaX = e.clientX - startX;
+                let newWidth = startWidth + deltaX;
+                let colSize = Math.round(newWidth / gridWidth);
+                let size = Math.min(12, Math.max(1, colSize));
 
-                    loader.removeClass('d-none');
+                parent.classList.remove(colClass);
+                parent.classList.add('col-md-' + size);
+                parent.setAttribute('data-size-class', 'col-md-' + size);
+                colClass = 'col-md-' + size;
+                resizable.style.height = columnHeight + "px";
+            };
 
-                    let parent = resizable.parent();
-                    let colClass = parent.attr('data-size-class');
-                    let colId = parent.attr('data-id');
-                    let colSize = Math.ceil(ui.size.width / gridWidth);
-                    let size = colSize > 12 ? 12 : colSize;
+            const onMouseUp = (e) => {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
 
-                    parent.removeClass(colClass).addClass('col-md-' + size).attr('data-size-class', 'col-md-' + size);
-                    resizable.css('height', columnHeight + "px");
+                if (loader) loader.classList.remove('d-none');
 
-                    $.ajax({
-                        url: route(Routing, 'admin_col_size', {
-                            website: body.data('id'),
-                            col: colId,
-                            size: size
-                        }) + "?ajax=true",
-                        type: "GET",
-                        processData: false,
-                        contentType: false,
-                        dataType: 'json',
-                        async: true,
-                        beforeSend: function () {
-                        },
-                        success: function (response) {
-                            loader.addClass('d-none');
-                            import('./resize-blocks').then(({default: resizeBlocks}) => {
-                                new resizeBlocks(Routing);
-                            }).catch(error => console.error(error.message));
-                        },
-                        error: function (errors) {
-                            /** Display errors */
-                            import('../../core/errors').then(({default: displayErrors}) => {
-                                new displayErrors(errors);
-                            }).catch(error => console.error(error.message));
-                        }
-                    });
+                let finalWidth = startWidth + (e.clientX - startX);
+                let colSize = Math.round(finalWidth / gridWidth);
+                let size = Math.min(12, Math.max(1, colSize));
 
-                    event.stopPropagation();
-                    return false;
-                }
+                fetch(route(Routing, 'admin_col_size', {
+                    website: body.dataset.id,
+                    col: colId,
+                    size: size
+                }) + "?ajax=true")
+                .then(response => response.json())
+                .then(() => {
+                    if (loader) loader.classList.add('d-none');
+                    import('./resize-blocks').then(({default: resizeBlocks}) => {
+                        new resizeBlocks(Routing);
+                    }).catch(error => console.error(error.message));
+                })
+                .catch(errors => {
+                    import('../../core/errors').then(({default: displayErrors}) => {
+                        new displayErrors(errors);
+                    }).catch(error => console.error(error.message));
+                });
+            };
+
+            handle.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                startX = e.clientX;
+                startWidth = resizable.offsetWidth;
+                parent = resizable.parentElement;
+                colClass = parent.getAttribute('data-size-class');
+                colId = parent.getAttribute('data-id');
+
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
             });
         });
     });
