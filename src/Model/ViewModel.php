@@ -510,9 +510,14 @@ final class ViewModel extends BaseModel
                                 if ($video->videoLink) {
                                     $videosFiles[] = $video->videoLink;
                                     $linkProvider = self::$coreLocator->request()->attributes->get('_links', new GenericLinkProvider());
-                                    self::$coreLocator->request()->attributes->set('_links', $linkProvider->withLink(
-                                        (new Link('preload', $video->videoLink))->withAttribute('as', 'video')
-                                    ));
+                                    $link = (new Link('preload', $video->videoLink))
+                                        ->withAttribute('as', 'video')
+                                        ->withAttribute('fetchpriority', 'high');
+                                    $extension = pathinfo($video->videoLink, PATHINFO_EXTENSION);
+                                    if ($extension) {
+                                        $link = $link->withAttribute('type', 'video/' . $extension);
+                                    }
+                                    self::$coreLocator->request()->attributes->set('_links', $linkProvider->withLink($link));
                                 }
                             } elseif (!empty($mediasList[0])) {
                                 $thumbConfiguration = self::$coreLocator->thumbService()->thumbConfiguration(self::$coreLocator->website(), $firstBlock->getAction()->getEntity(), $firstBlock->getAction()->getAction(), $entity);

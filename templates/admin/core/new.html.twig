@@ -37,11 +37,11 @@
 
     {%- set modalId = modalId is defined ? modalId : (interface.name is defined ? interface.name : uniqId()) -%}
 
-    <button class="btn-app" data-bs-toggle="modal" data-bs-target="#new-modal- {{ modalId }}">
+    <button class="btn-app" data-bs-toggle="modal" data-bs-target="#new-modal-{{ modalId }}">
         <i class="icm-plus"></i>{{ addLabel|unescape|raw }}
     </button>
 
-    <div class="modal fade" id="new-modal- {{ modalId }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="new-modal-{{ modalId }}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content border refer-preloader text-start pb-3">
                 {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', preloaderClass: 'radius-preloader', full: true} only -%}

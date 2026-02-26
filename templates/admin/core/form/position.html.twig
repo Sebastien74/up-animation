@@ -8,15 +8,15 @@
 
 {%- if not ajaxView -%}
     <span class="position" data-bs-toggle="tooltip" title="{{"Modifier la position"|trans|striptags }}">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-position- {{ entity.id }}">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-position-{{ entity.id }}">
             {{ entity.position }}
         </a>
     </span>
 {%- endif -%}
 
 {{ form_start(form, {attr: {id: "modal-position-form-"~entity.id, class: 'mb-0',action: path("admin_"~interface.name~"_position", args)}}) }}
-    <div class="modal fade modal-position{% if ajaxView %} d-block show{% endif %}" id="modal-position- {{ entity.id }}" tabindex="-1" role="dialog"
-         aria-labelledby="modal-position- {{ entity.id }}-label" aria-hidden="true">
+    <div class="modal fade modal-position{% if ajaxView %} d-block show{% endif %}" id="modal-position-{{ entity.id }}" tabindex="-1" role="dialog"
+         aria-labelledby="modal-position-{{ entity.id }}-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
             <div class="modal-content border">
                 <div class="modal-header">

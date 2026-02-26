@@ -1,10 +1,10 @@
-{%- extends 'front/'~website.configuration.template~'/base.html.twig' -%}
+﻿{%- extends 'front/'~website.configuration.template~'/base.html.twig' -%}
 
 {%- trans_default_domain 'front_default' -%}
 
 {%- block stylesheets -%}
     {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {nonce: csp_nonce()}) }}
-    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low">
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
     {{ parent() }}
 {%- endblock -%}
 
@@ -14,7 +14,7 @@
 {%- endblock -%}
 
 {%- block body -%}
-    <div id="content- {{ templateName }}" class="template-page">
+    <div id="content-{{ templateName }}" class="template-page">
 {#        {%- include 'front/'~websiteTemplate~'/layout.html.twig' -%}#}
     </div>
 {%- endblock -%}

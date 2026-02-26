@@ -29,6 +29,7 @@ header.navbar {
     .navbar-brand {
 
         font-size: 14px !important;
+        color: $body-color !important;
 
         @include mediaQuery(max-lg) {
             width: auto;
@@ -36,6 +37,12 @@ header.navbar {
 
         @include mediaQuery(min-lg) {
             width: 300px;
+        }
+
+        .btn-icon {
+            opacity: .85 !important;
+            background-color: #ff7100 !important;
+            border: 0 !important;
         }
 
         img, picture {
@@ -60,7 +67,6 @@ header.navbar {
         .title-wrap {
             .title {
                 font-size: 15px;
-                opacity: .7;
             }
         }
     }
@@ -72,7 +78,7 @@ header.navbar {
     top: 7px;
     right: 1px;
 
-    .heartbit {
+    .heart-bit {
         position: absolute;
         top: -20px;
         right: -4px;

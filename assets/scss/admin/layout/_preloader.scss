@@ -78,11 +78,7 @@ body.preloader-active {
     }
 
     h4 {
-        background-color: transparentize($info-darken, .3) !important;
         font-weight: 300 !important;
-        color: $white;
-        padding: 1rem 1.75rem;
-        opacity: .5;
     }
 
     .progress-card {

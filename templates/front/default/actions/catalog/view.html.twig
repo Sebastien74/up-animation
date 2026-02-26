@@ -1,4 +1,4 @@
-{%- extends 'front/'~websiteTemplate~'/base.html.twig' -%}
+﻿{%- extends 'front/'~websiteTemplate~'/base.html.twig' -%}
 
 {%- trans_default_domain 'front_default' -%}
 
@@ -12,7 +12,7 @@
 {%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('front-'~websiteTemplate~'-catalog', null, webpack) }}
-    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-catalog.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low">
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-catalog.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
 {%- endblock -%}
 
 {%- block javascripts -%}
@@ -21,7 +21,7 @@
 {%- endblock -%}
 
 {%- block body -%}
-    <div id="body-catalog- {{ entity.catalog.slug }}" class="product-view-container view-container position-relative">
+    <div id="body-catalog-{{ entity.catalog.slug }}" class="product-view-container view-container position-relative">
         {%- if entity.haveLayout -%}
             {%- include 'front/'~websiteTemplate~'/layout.html.twig' with {layout: entity.entityForLayout.layout, asLayout: true} -%}
         {%- else -%}

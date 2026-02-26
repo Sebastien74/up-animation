@@ -34,7 +34,7 @@
 
             {%- if calendars|length > 1 -%}
                 <div class="row">
-                    <div class="col-lg- {{ colSize }} mx-auto">
+                    <div class="col-lg-{{ colSize }} mx-auto">
                         <div id="calendars-selector-group" class="form-group calendars-selector-group text-center">
                             <label for="calendars-selector" class="text-primary text-bold">{{ "Choisissez"|trans|raw }}</label>
                             <select class="form-control text-center" id="calendars-selector">
@@ -65,7 +65,7 @@
                 {%- set title = intl.title is defined and intl.title ? intl.title : calendar.adminName -%}
 
                 <div class="row">
-                    <div class="col-lg- {{ colSize }} mx-auto">
+                    <div class="col-lg-{{ colSize }} mx-auto">
 
                         {%- if not calendars -%}
                             <h2 class="title text-center">{{ title }}</h2>

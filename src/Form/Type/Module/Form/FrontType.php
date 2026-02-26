@@ -22,6 +22,9 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
+use Exception;
+use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -69,7 +72,7 @@ class FrontType extends AbstractType
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception|InvalidArgumentException
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -92,7 +95,7 @@ class FrontType extends AbstractType
     /**
      * Generate Form.
      *
-     * @throws \Exception
+     * @throws Exception|InvalidArgumentException
      */
     private function setForm(FormEntities\Form $form, FormBuilderInterface $builder): void
     {
@@ -102,7 +105,7 @@ class FrontType extends AbstractType
     /**
      * Generate StepForm.
      *
-     * @throws \Exception
+     * @throws Exception|InvalidArgumentException
      */
     private function setStepForm(FormEntities\StepForm $stepForm, FormBuilderInterface $builder): void
     {
@@ -114,7 +117,7 @@ class FrontType extends AbstractType
     /**
      * Generate Layout fields.
      *
-     * @throws \Exception
+     * @throws Exception|InvalidArgumentException
      */
     private function addLayoutFields(Layout\Layout $layout, FormBuilderInterface $builder): void
     {
@@ -133,7 +136,7 @@ class FrontType extends AbstractType
     /**
      * Generate field.
      *
-     * @throws \Exception
+     * @throws Exception|InvalidArgumentException
      */
     public function setField(string $fieldType, string $fieldName, Layout\Block $block, FormBuilderInterface $builder, ?FormEntities\ContactValue $value = null, bool $setGroup = false, bool $disablePicker = false): void
     {
@@ -149,7 +152,7 @@ class FrontType extends AbstractType
     /**
      * Get options.
      *
-     * @throws NonUniqueResultException|MappingException|\Exception
+     * @throws NonUniqueResultException|MappingException|Exception|InvalidArgumentException
      */
     private function getOptions(string $fieldType, Layout\Block $block, ?FormEntities\ContactValue $value = null): void
     {
@@ -180,7 +183,7 @@ class FrontType extends AbstractType
     }
 
     /**
-     * Set required field.
+     * Set the required field.
      */
     private function setRequired(string $fieldType, Layout\FieldConfiguration $configuration, ?Layout\BlockIntl $intl): void
     {
@@ -242,7 +245,7 @@ class FrontType extends AbstractType
     /**
      * Get label.
      *
-     * @throws NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     private function setLabel(string $fieldType, Layout\Block $block, ?Layout\BlockIntl $intl): void
     {
@@ -280,7 +283,7 @@ class FrontType extends AbstractType
     /**
      * Set classes.
      *
-     * @throws NonUniqueResultException|MappingException|QueryException
+     * @throws NonUniqueResultException|MappingException
      */
     private function setClasses(string $fieldType, Layout\FieldConfiguration $configuration, string $blockType): void
     {
@@ -358,7 +361,7 @@ class FrontType extends AbstractType
     /**
      * Get value.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function setValue(string $fieldType, ?Layout\BlockIntl $intl, ?FormEntities\ContactValue $value): void
     {
@@ -379,7 +382,7 @@ class FrontType extends AbstractType
     /**
      * Get placeholder.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function setPlaceholder(string $fieldType, ?Layout\BlockIntl $intl, Layout\FieldConfiguration $configuration): void
     {
@@ -422,7 +425,7 @@ class FrontType extends AbstractType
     /**
      * Get field Date options.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function getDatesOptions(Layout\FieldConfiguration $configuration, string $fieldType): void
     {
@@ -501,20 +504,16 @@ class FrontType extends AbstractType
                 }
                 if ($isInteger) {
                     if ($configuration->getMin()) {
-                        $this->options['constraints'][] = new Assert\GreaterThanOrEqual([
-                            'value' => $configuration->getMin(),
-                        ]);
+                        $this->options['constraints'][] = new Assert\GreaterThanOrEqual(value: $configuration->getMin());
                     }
                     if ($configuration->getMax()) {
-                        $this->options['constraints'][] = new Assert\LessThanOrEqual([
-                            'value' => $configuration->getMax(),
-                        ]);
+                        $this->options['constraints'][] = new Assert\LessThanOrEqual(value: $configuration->getMax());
                     }
                 } else {
-                    $this->options['constraints'][] = new Assert\Length([
-                        'min' => is_numeric($configuration->getMin()) ? intval($configuration->getMin()) : false,
-                        'max' => is_numeric($configuration->getMax()) ? intval($configuration->getMax()) : false,
-                    ]);
+                    $this->options['constraints'][] = new Assert\Length(
+                        min: is_numeric($configuration->getMin()) ? intval($configuration->getMin()) : false,
+                        max: is_numeric($configuration->getMax()) ? intval($configuration->getMax()) : false
+                    );
                 }
             }
         }
@@ -565,7 +564,7 @@ class FrontType extends AbstractType
     /**
      * Set field as picker.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function setPicker(string $fieldType, Layout\FieldConfiguration $configuration): void
     {
@@ -616,11 +615,11 @@ class FrontType extends AbstractType
         $firstValid = $regex ? str_starts_with($regex, '/') : null;
         $lastValid = $regex ? str_ends_with($regex, '/') : null;
         if ($regex && $firstValid && $lastValid) {
-            $message = $intl instanceof Layout\BlockIntl && $intl->getError() ? $intl->getError() : $this->translator->trans('This value is not valid.', [], 'validators');
-            $this->options['constraints'][] = new Assert\Regex([
-                'message' => $message,
-                'pattern' => $regex,
-            ]);
+            $message = in_array($regex, ["/^[0-9]*$/", "/^[0-9]+$/"])
+                ? $this->translator->trans('This value should be a valid number.', [], 'validators')
+                : $this->translator->trans('This value is not valid.', [], 'validators');
+            $message = $intl instanceof Layout\BlockIntl && $intl->getError() ? $intl->getError() : $message;
+            $this->options['constraints'][] = new Assert\Regex(pattern: $regex, message: $message);
         } elseif ('form-zip-code' === $blockType) {
             $this->options['constraints'][] = new Validator\ZipCode();
         }
@@ -629,7 +628,7 @@ class FrontType extends AbstractType
     /**
      * Set Choices.
      *
-     * @throws NonUniqueResultException|MappingException|QueryException
+     * @throws NonUniqueResultException|MappingException|QueryException|InvalidArgumentException
      */
     private function setChoices(string $fieldType, string $blockType, Layout\FieldConfiguration $configuration): void
     {
@@ -749,7 +748,7 @@ class FrontType extends AbstractType
     /**
      * Get intl.
      *
-     * @throws NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     private function getIntl(mixed $entity): ?object
     {

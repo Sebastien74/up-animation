@@ -15,13 +15,13 @@
                         {%- set categoryIds = categoryIds|merge([category.id]) -%}
                         {%- set categoryMarker = category.marker ? category.marker : 'uploads/'~website.uploadDirname~'/marker-orange.svg' -%}
                         <li class="marker-select ps-0 text-white marker-select-{{ category.id }} active overflow-hidden w-100 {% if not map.multiFilters %}cursor{% else %}multiple{% endif %}"
-                            data-category="category- {{ category.id }}"
+                            data-category="category-{{ category.id }}"
                             data-multiple="{{ map.multiFilters }}">
                             <div class="category-label d-flex align-items-center">
                                 {%- if map.multiFilters -%}
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" id="map-filter- {{ category.id }}" name="map_filter_ {{ category.id }}" required="required" class="map-filter-checkbox custom-control-input d-none" checked>
-                                        <label class="cursor custom-control-label required d-flex align-items-center" for="map-filter- {{ category.id }}">
+                                        <input type="checkbox" id="map-filter-{{ category.id }}" name="map_filter_{{ category.id }}" required="required" class="map-filter-checkbox custom-control-input d-none" checked>
+                                        <label class="cursor custom-control-label required d-flex align-items-center" for="map-filter-{{ category.id }}">
                                             <span class="me-3">{{ asset(categoryMarker)|file({}, {width: 40, height: 40, title: title}) }}</span>
                                             <span>{{ title|raw }}</span>
                                         </label>
@@ -53,11 +53,11 @@
             <a class="rounded-btn btn btn-primary dropdown-toggle w-100"
                href="#"
                role="button"
-               id="dropdown-map- {{ map.id }}"
+               id="dropdown-map-{{ map.id }}"
                data-bs-toggle="dropdown"
                aria-haspopup="true"
                aria-expanded="false">{{ "Filtrez la carte"|trans|raw }}</a>
-            <ul class="dropdown-menu dropdown-initial radius pt-3 pb-3 mt-4 mb-4" aria-labelledby="dropdown-map- {{ map.id }}">
+            <ul class="dropdown-menu dropdown-initial radius pt-3 pb-3 mt-4 mb-4" aria-labelledby="dropdown-map-{{ map.id }}">
                 {%- set categoryIds = {} -%}
                 {%- for category in categories -%}
                     {%- if category.id not in categoryIds -%}
@@ -66,12 +66,12 @@
                         {%- set categoryIds = categoryIds|merge([category.id]) -%}
                         {%- set categoryMarker = category.marker ? category.marker : 'uploads/'~website.uploadDirname~'/marker-orange.svg' -%}
                         <li class="dropdown-item marker-select marker-select-{{ category.id }} active overflow-hidden w-100 {% if not map.multiFilters %}cursor{% else %}multiple{% endif %}"
-                            data-category="category- {{ category.id }}"
+                            data-category="category-{{ category.id }}"
                             data-multiple="{{ map.multiFilters }}">
                             {%- if map.multiFilters -%}
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" id="map-filter- {{ category.id }}" name="map_filter_ {{ category.id }}" required="required" class="map-filter-checkbox custom-control-input" checked>
-                                    <label class="cursor custom-control-label required" for="map-filter- {{ category.id }}">
+                                    <input type="checkbox" id="map-filter-{{ category.id }}" name="map_filter_{{ category.id }}" required="required" class="map-filter-checkbox custom-control-input" checked>
+                                    <label class="cursor custom-control-label required" for="map-filter-{{ category.id }}">
                                         <span class="float-start me-2">{{ asset(categoryMarker)|file({}, {width: 40, height: 40, title: title}) }}</span>
                                         <span class="float-start">{{ title|raw }}</span>
                                     </label>

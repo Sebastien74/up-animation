@@ -171,7 +171,7 @@
 {%- endblock percent_widget -%}
 
 {%- block form_widget_simple -%}
-    {%- if 'placeholder' in full_name|lower and 'relation' in full_name|lower  and 'media' in full_name|lower -%}
+    {%- if 'placeholder' in full_name|lower and 'relation' in full_name|lower and 'media' in full_name|lower -%}
         <div class="ia-form-group position-relative">
     {%- endif -%}
     {%- set isDropzone = false -%}
@@ -199,17 +199,18 @@
     {%- endif -%}
     {%- set attrGroup = attr.group is defined ? attr.group : (attr['data-group'] is defined ? attr['data-group'] : null) -%}
     {%- if 'password-generator' in attrGroup -%}
-        <small id="help_ {{ id }}" class="form-text generator-password"><i class="icm-sync"></i>{{ "Générer un mot de passe"|trans([], 'admin')|raw }}</small>
+        <small id="help_{{ id }}" class="form-text generator-password"><i class="icm-sync"></i>{{ "Générer un mot de passe"|trans([], 'admin')|raw }}</small>
     {%- endif -%}
     {%- if bytes is defined and bytes -%}
-        <small id="help_ {{ id }}" class="form-text generate-bytes"><i class="icm-sync"></i>{{ "Générer"|trans([], 'admin')|raw }}</small>
+        <small id="help_{{ id }}" class="form-text generate-bytes"><i class="icm-sync"></i>{{ "Générer"|trans([], 'admin')|raw }}</small>
     {%- endif -%}
     {%- set dataHelp = attr['data-help'] is defined ? attr['data-help'] : false -%}
+    {%- if 'placeholder' in full_name|lower and 'relation' in full_name|lower and 'media' in full_name|lower -%}
+        </div>
+    {%- endif -%}
     {%- if 'no-alt' == dataHelp -%}
-        <small class="mt-1 form-text px-3 py-2 d-inline-flex align-items-center text-white w-100 bg-warning fw-600 radius">
-            <span class="flex-grow-1">{{ 'far exclamation-triangle'|icon(null, 12, 'white me-2') }}</span>
-            {{ "Ajoutez un titre pour optimser votre référencement. Par défault le nom du fichier sera pris en compte."|trans([], 'admin')|raw }}
-        </small>
+        {%- set messageAlert = "Ajoutez un titre pour optimser votre référencement. Par défault le nom du fichier sera pris en compte."|trans([], 'admin') -%}
+        {%- include 'admin/include/alert.html.twig' with {alert: 'warning', badge: false, display: 'alert', size: 'small', class: 'mt-2', message: messageAlert } only -%}
     {%- endif -%}
 {%- endblock form_widget_simple -%}
 
@@ -516,7 +517,7 @@
                 {{- form_label(form) -}}
                 {%- if modalMediaCopy -%}
                         <span class="ps-4 ms-auto">
-                            <span id="open-modal- {{ full_name }}"
+                            <span id="open-modal-{{ full_name }}"
                                   data-options="{{ {type: 'copy'}|json_encode }}"
                                   class="open-modal-medias me-auto btn btn-info d-flex align-items-center">
                                 {{ 'fal photo-video'|icon(null, 15, 'white me-2') }}{{ "Afficher la librairie"|trans|raw }}
@@ -533,10 +534,8 @@
                 </small>
             {%- endif -%}
             {%- if 'tinymce' in class_attr -%}
-                <small class="table-alert mt-1 form-text px-3 py-2 d-inline-flex align-items-center text-white w-100 bg-warning fw-600 radius d-none">
-                    {{ 'far exclamation-triangle'|icon(14, 14, 'white me-2') }}
-                    {{ "Pour l'accessiblité pensez à ajouter un texte descriptif ou un titre devant chacun de vos tableaux et des intitulés à vos colonnes."|trans([], 'admin')|raw }}
-                </small>
+                {%- set messageAlert = "Pour l'accessiblité pensez à ajouter un texte descriptif ou un titre devant chacun de vos tableaux et des intitulés à vos colonnes."|trans([], 'admin') -%}
+                {%- include 'admin/include/alert.html.twig' with {alert: 'warning', badge: false, display: 'alert', size: 'small', class: 'table-alert mt-2 d-none', message: messageAlert } only -%}
             {%- endif -%}
             {{- form_help(form) -}}
             {{- form_errors(form) -}}
@@ -575,9 +574,7 @@
     {%- endif -%}
     {%- set alert = attr['data-help-alert'] is defined and attr['data-help-alert'] ? attr['data-help-alert'] : false -%}
     {%- if alert and help is not empty -%}
-        <small class="table-alert mt-1 form-text px-3 py-2 d-inline-flex align-items-center text-white w-100 bg-{{ alert }} fw-600 radius">
-            {{ 'far exclamation-triangle'|icon(14, 14, 'white me-2') }}{{ help|raw }}
-        </small>
+        {%- include 'admin/include/alert.html.twig' with {alert: 'warning', badge: false, display: 'alert', size: 'small', class: 'mt-2', message: help } only -%}
     {%- else -%}
         {{- parent() -}}
     {%- endif -%}

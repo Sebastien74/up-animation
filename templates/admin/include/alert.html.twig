@@ -25,7 +25,7 @@
 {%- if 'alert' == display -%}
     <div {% if id -%} id="{{ id }}" {%- endif -%} class="alert alert-{{ bgColor }} position-relative d-flex mb-3 {{ class }}{% if size %} {{ size }}{% endif %}">
         <div class="btn-icon d-flex align-items-center justify-content-center position-relative {{ bgColor }} me-3">
-            <i class="icm- {{ icon }} text-{{ iconColor }}"></i>
+            <i class="icm-{{ icon }} text-{{ iconColor }}"></i>
         </div>
         <div class="message w-100 d-flex align-items-center text-{{ iconColor }}">
             <div class="content">
@@ -50,7 +50,7 @@
         <div class="toast toast-alert fade show border-0 bg-{{ color }}" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header d-flex border-0 no-radius py-3 px-3 text-{{ bgColor }}">
                 <div class="inner d-flex align-items-center">
-                    <span class="dash-action dash-{{ bgColor }} dash-accent me-3"><i class="icm- {{ icon }}"></i></span>
+                    <span class="dash-action dash-{{ bgColor }} dash-accent me-3"><i class="icm-{{ icon }}"></i></span>
                     <div class="message">{{ message|raw }}</div>
                 </div>
                 <button type="button" class="btn-close ms-3" data-bs-dismiss="toast" aria-label="{{"Close"|trans|striptags }}"></button>

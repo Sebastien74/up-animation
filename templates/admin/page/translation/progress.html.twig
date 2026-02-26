@@ -25,7 +25,7 @@
                 {%- for locale, localeTranslations in locales -%}
                     {%- if locale in allLocales -%}
                         <div class="{% if not multiCols %}col-12{% else %}col-md-6 col-lg-4 col-xl-3{% endif %}">
-                            <div class="progress-bloc mb-3" data-progress-href="#progress- {{ loop.index~"-"~locale }}">
+                            <div class="progress-bloc mb-3" data-progress-href="#progress-{{ loop.index~"-"~locale }}">
                                 <strong class="w-100 d-inline-block mb-1">
                                     {%- if allLocales|length > 1 -%}
                                         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
@@ -37,7 +37,7 @@
                                         <span class="counter">0</span>/{{ localeTranslations|length }}
                                     </small>
                                 </strong>
-                                <ul id="domain- {{ domain~"-"~locale }}"
+                                <ul id="domain-{{ domain~"-"~locale }}"
                                     data-count="{{ localeTranslations|length }}"
                                     data-progress="0"
                                     class="translation-list reset undo"
@@ -50,7 +50,7 @@
                                     {%- endfor -%}
                                     {%- set isFirst = false -%}
                                 </ul>
-                                <div id="progress- {{ loop.index~"-"~locale }}" class="progress">
+                                <div id="progress-{{ loop.index~"-"~locale }}" class="progress">
                                     <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>

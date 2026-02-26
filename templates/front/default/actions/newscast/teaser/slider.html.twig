@@ -25,7 +25,7 @@
     {%- set btnClasses = asBtn ? 'btn-circle btn btn-'~color : '' -%}
     <div class="arrows-wrap d-flex justify-content-{{ side }} {% if 'top' == position %}mb-5{% else %}mt-5{% endif %}{% if 'end' == side %} me-4 me-md-5{% endif %}{% if asBtn %} as-btn{% endif %}{% if classes %} {{ classes }}{% endif %}">
         <button class="btn-arrow btn-prev cursor me-2{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'previous' not in buttons %} d-none{% endif %}" aria-label="{{"Précédent"|trans }}" tabindex="-1">
-            <i class="icon- {{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            <i class="icon-{{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
         </button>
         {%- if autoplay and accessibility -%}
             <button class="btn-arrow btn-pause cursor mx-1{% if btnClasses %} {{ btnClasses }}{% endif %}" aria-label="{{"Pause"|trans }}" tabindex="-1">
@@ -36,7 +36,7 @@
             </button>
         {%- endif -%}
         <button class="btn-arrow btn-next cursor ms-2{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'next' not in buttons %} d-none{% endif %}" aria-label="{{"Suivant"|trans }}" tabindex="-1">
-            <i class="icon- {{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            <i class="icon-{{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
         </button>
     </div>
 {%- endmacro -%}
@@ -183,7 +183,7 @@
         {%- endif -%}
         {%- set autoplay = 1 -%}
         <div class="{{ containerClasses }}">
-            <div id="newscast-teaser- {{ teaser.slug }}" class="newscast-teaser splide length-{{ entities|length }}"
+            <div id="newscast-teaser-{{ teaser.slug }}" class="newscast-teaser splide length-{{ entities|length }}"
                  data-items="{{ teaser.itemsPerSlide }}"
                  data-lenght="{{ entities|length }}"
                  data-items-medium-pc="3"

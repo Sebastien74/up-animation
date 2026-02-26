@@ -19,7 +19,7 @@
 {%- set linkUriInfos = linkUrl|uriInfos -%}
 {%- set linkLabel = link.label is defined and link.label ? link.label : "Voir toute la galerie"|trans -%}
 
-<div id="teaser-gallery-container- {{ teaser.slug }}" class="teaser-gallery-container">
+<div id="teaser-gallery-container-{{ teaser.slug }}" class="teaser-gallery-container">
     {{ macroWebmaster.box({
         title: "Éditer le teaser"|trans([], 'front_webmaster'),
         role: 'ROLE_GALLERY',

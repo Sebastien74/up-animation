@@ -21,6 +21,7 @@ class CacheCommand extends BaseCommand
     public function clear(bool $asFilesystem = false, bool $onlyRename = false): string
     {
         if ($asFilesystem) {
+
             $filesystem = new Filesystem();
             $env = $this->kernel->getEnvironment();
             $cacheDirname = $this->kernel->getCacheDir();

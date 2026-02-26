@@ -71,7 +71,7 @@
         <tbody>
             {%- if table.body is defined -%}
                 {%- for rows in table.body -%}
-                    <tr id="cells-row- {{ loop.index }}" class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
+                    <tr id="cells-row-{{ loop.index }}" class="{% if loop.index is odd %}odd{% else %}even{% endif %}">
                         {%- for row in rows -%}
                             <td class="edition">
                                 {%- for col in form.cols -%}

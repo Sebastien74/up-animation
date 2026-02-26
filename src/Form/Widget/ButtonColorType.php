@@ -39,6 +39,7 @@ class ButtonColorType extends AbstractType
         $resolver->setDefaults([
             'label' => $this->translator->trans('Style du lien', [], 'admin'),
             'required' => false,
+            'display' => 'search',
             'linkColors' => $this->customModules->linkColors,
             'cta' => $this->customModules->cta,
             'ctaColors' => $this->customModules->ctaColors,

@@ -75,13 +75,15 @@ class PageController extends AdminController
     #[Route('/layout/{page}', name: 'admin_page_layout', methods: 'GET|POST')]
     public function layout(Request $request)
     {
-        $this->templateConfig = 'admin/page/content/page-configuration.html.twig';
+        $this->templateConfig = 'admin/page/layout/page-configuration.html.twig';
 
         return parent::layout($request);
     }
 
     /**
      * Duplicate Page.
+     *
+     * @throws ContainerExceptionInterface
      */
     #[Route('/duplicate/{page}', name: 'admin_page_duplicate', methods: 'GET|POST')]
     public function duplicate(Request $request)

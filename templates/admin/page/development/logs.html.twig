@@ -18,9 +18,7 @@
 {%- endblock -%}
 
 {%- block body -%}
-
     <div class="row">
-
         {%- if logFiles -%}
             <div class="col-md-4 mb-3">
                 <div class="card h-100">
@@ -43,7 +41,6 @@
                 </div>
             </div>
         {%- endif -%}
-
         {%- set day = null -%}
         {%- for key, logDay in dailyLogs -%}
             {%- for logDay, logFiles in logDay -%}
@@ -69,7 +66,5 @@
                 </div>
             {%- endfor -%}
         {%- endfor -%}
-
     </div>
-
 {%- endblock -%}

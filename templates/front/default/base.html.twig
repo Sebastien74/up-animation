@@ -78,6 +78,10 @@
 {#            <link rel="dns-prefetch" href="https://api.axept.io">#}
 {#        {%- endif -%}#}
 
+{#A CONDITIONER SI GA OU GTM#}
+{#<link rel="preconnect" href="https://www.google-analytics.com" crossorigin>#}
+{#<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>#}
+
 {#        <!-- Metas -->#}
 {#        <meta charset="{{ configuration.charset }}">#}
 {#        <meta name="viewport" content="width=device-width, initial-scale=1">#}
@@ -140,9 +144,19 @@
 {#        <!-- Main Stylesheets -->#}
 {#        {%- block stylesheets -%}{%- endblock -%}#}
 
-{#        <!-- Fonts -->#}
-{#        <link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" rel="preload" as="style" nonce="{{ csp_nonce() }}" onload="this.onload=null;this.rel='stylesheet'">#}
-{#        <noscript><link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" rel="stylesheet" nonce="{{ csp_nonce() }}"></noscript>#}
+{#REGARDER ISACAR POR LES PRELOAD FONT ETC #}
+{#REGARDER ISACAR POR LES PRELOAD FONT ETC #}
+{#REGARDER ISACAR POR LES PRELOAD FONT ETC #}
+{#REGARDER ISACAR POR LES PRELOAD FONT ETC #}
+
+{#<!-- Fonts -->#}
+{#<link rel="preload" href="{{ asset('fonts/Sora-Regular.woff2') }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">#}
+{#<link rel="preload" href="{{ asset('fonts/Sora-SemiBold.woff2') }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">#}
+{#<link rel="preload" href="{{ asset('fonts/Sora-Bold.woff2') }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">#}
+{#<link rel="preload" href="{{ asset('fonts/Sora-ExtraBold.woff2') }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">#}
+{#<link rel="preload" href="{{ asset('build/front/'~websiteTemplate~'/fonts/icomoon.ttf', webpack) }}" as="font" type="font/truetype" crossorigin nonce="{{ csp_nonce() }}">#}
+{#<link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" rel="preload" as="style" class="preload-css" nonce="{{ csp_nonce() }}" onload="this.onload=null;this.rel='stylesheet'">#}
+{#<noscript><link rel="stylesheet" href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" nonce="{{ csp_nonce() }}"></noscript>#}
 
 {#        <!-- Stylesheets -->#}
 {#        {{ encore_entry_link_tags('front-'~websiteTemplate~'-vendor-mobile', null, webpack, {media: 'screen and (max-width: 575px)', nonce: csp_nonce()}) }}#}
@@ -167,6 +181,28 @@
 {#                <link rel="preload" fetchpriority="high" as="image" href="{{ preloadFile }}" nonce="{{ csp_nonce() }}" type="image/ {{ preloadFile|split('.')|last }}">#}
 {#            {%- endfor -%}#}
 {#        {%- endif -%}#}
+{#            OU #}
+{#            OU #}
+{#            OU #}
+{#            OU #}
+{#        {% if preloadFiles.images is defined %}#}
+{#            {% set mediaQueries = {#}
+{#                618: '(max-width: 575px)',#}
+{#                991: '(min-width: 576px) and (max-width: 991px)',#}
+{#                992: '(min-width: 992px) and (max-width: 1199px)',#}
+{#                1200: '(min-width: 1200px) and (max-width: 1399px)',#}
+{#                1920: '(min-width: 1400px)'#}
+{#            } %}#}
+{#            {% for size, preloadFile in preloadFiles.images %}#}
+{#                {% if size == 991 %}#}
+{#                    <link rel="preload" fetchpriority="high" as="image" href="{{ preloadFile }}" nonce="{{ csp_nonce() }}" type="image/{{ preloadFile|split('.')|last }}" media="{{ mediaQueries[991] }}">#}
+{#                    <link rel="preload" fetchpriority="high" as="image" href="{{ preloadFile }}" nonce="{{ csp_nonce() }}" type="image/{{ preloadFile|split('.')|last }}" media="{{ mediaQueries[992] }}">#}
+{#                {% else %}#}
+{#                    <link rel="preload" fetchpriority="high" as="image" href="{{ preloadFile }}" nonce="{{ csp_nonce() }}" type="image/{{ preloadFile|split('.')|last }}"#}
+{#                            {% if mediaQueries[size] is defined %} media="{{ mediaQueries[size] }}"{% endif %}>#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#        {% endif %}#}
 
 {#        {{ macroApi.render({#}
 {#            gdprActive: gdprActive,#}

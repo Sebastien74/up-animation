@@ -19,9 +19,9 @@
             {%- for localeName, mediaRelationsTab in mediaRelationsTabs -%}
                 <li class="nav-item {% if localeName not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ languageName(localeName, app.user.locale) }}">
                     <a class="nav-link {% if localeName == defaultLocale %} active{% endif %}" data-bs-toggle="tab"
-                       id="media-relation- {{ localeName }}-tab"
+                       id="media-relation-{{ localeName }}-tab"
                        aria-selected="{% if localeName == defaultLocale %}true{% else %}false{% endif %}"
-                       href="#media-relations-tab- {{ localeName }}" role="tab">
+                       href="#media-relations-tab-{{ localeName }}" role="tab">
                         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
                              data-src=" {{ asset('/medias/icons/flags/'~localeName~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
                     </a>
@@ -43,7 +43,7 @@
         {%- endif -%}
 
         {%- if allLocales|length > 1 -%}
-            <div id="media-relations-tab- {{ localeName }}" class="tab-pane fade{% if localeName == defaultLocale %} show active{% endif %}" role="tabpanel" aria-labelledby="media-relation- {{ localeName }}-tab">
+            <div id="media-relations-tab-{{ localeName }}" class="tab-pane fade{% if localeName == defaultLocale %} show active{% endif %}" role="tabpanel" aria-labelledby="media-relation-{{ localeName }}-tab">
                 <div class="p-20 pb-0">
                     <div class="row">
         {%- endif -%}
@@ -65,7 +65,7 @@
         {%- set colLabel = loop.index == 1 ? "Image principale"|trans : "Image secondaire"|trans -%}
         {%- set mediaRelationId = mediaRelation.vars.value.id -%}
 
-        <div class="col-md- {{ colSize }} media-col-{{ loop.index }}">
+        <div class="col-md-{{ colSize }} media-col-{{ loop.index }}">
 
             <h6 class="section-title radius fw-500 mb-4">{{ colLabel|raw }}</h6>
 
@@ -88,7 +88,7 @@
                 <button class="collapsed w-100 mb-3 d-flex align-items-center"
                         type="button"
                         data-bs-toggle="collapse"
-                        href="#collapse-link- {{ mediaRelationId }}"
+                        href="#collapse-link-{{ mediaRelationId }}"
                         aria-expanded="false">
                     <i class="icm-link me-2"></i>{{ "Lien"|trans }}
                     <i class="icm-chevron-down ms-auto"></i>
@@ -99,7 +99,7 @@
 
                 {%- if mediaRelation.intl.targetLink is defined -%}
                     <div class="col-12">
-                        <div id="collapse-link- {{ mediaRelationId }}" class="collapse">
+                        <div id="collapse-link-{{ mediaRelationId }}" class="collapse">
                             <div class="card-body pb-2 border mb-4 radius">
                                 <div class="row">
                                     {%- if mediaRelation.intl.targetStyle is defined -%}
@@ -133,14 +133,14 @@
                 <button class="collapsed w-100 mb-3 d-flex align-items-center"
                         type="button"
                         data-bs-toggle="collapse"
-                        href="#collapse-configuration- {{ mediaRelationId }}"
+                        href="#collapse-configuration-{{ mediaRelationId }}"
                         aria-expanded="false">
                     <i class="icm-cog me-2"></i>{{ "Configuration / Contenu"|trans }}
                     <i class="icm-chevron-down ms-auto"></i>
                 </button>
 
                 <div class="col-12">
-                    <div id="collapse-configuration- {{ mediaRelationId }}" class="collapse">
+                    <div id="collapse-configuration-{{ mediaRelationId }}" class="collapse">
                         <div class="card-body pb-2 border mb-4 radius">
                             <div class="row">
 
@@ -175,19 +175,19 @@
                                         {{ form_row(mediaRelation.categorySlug) }}
                                     {%- endif -%}
                                     {%- if mediaRelation.media.copyright is defined -%}
-                                        <div class="col-md- {{ groupSize }}">{{ form_row(mediaRelation.media.copyright) }}</div>
+                                        <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.media.copyright) }}</div>
                                     {%- endif -%}
                                     {%- if mediaRelation.media.titlePosition is defined -%}
-                                        <div class="col-md- {{ groupSize }}">{{ form_row(mediaRelation.media.titlePosition) }}</div>
+                                        <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.media.titlePosition) }}</div>
                                     {%- endif -%}
                                     {%- if mediaRelation.pictogram is defined -%}
                                         <div class="col-md- {% if mediaRelation.pictogramMaxWidth is defined %}12{% else %}{{ groupSize }}{% endif %}">{{ form_row(mediaRelation.pictogram) }}</div>
                                     {%- endif -%}
                                     {%- if mediaRelation.pictogramMaxWidth is defined -%}
-                                        <div class="col-md- {{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxWidth) }}</div>
+                                        <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxWidth) }}</div>
                                     {%- endif -%}
                                     {%- if mediaRelation.pictogramMaxHeight is defined -%}
-                                        <div class="col-md- {{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxHeight) }}</div>
+                                        <div class="col-md-{{ groupSize }}">{{ form_row(mediaRelation.pictogramMaxHeight) }}</div>
                                     {%- endif -%}
                                 {%- if mediaRelation.media.copyright is defined or mediaRelation.media.titlePosition is defined -%}
                                     </div>

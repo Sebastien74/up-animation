@@ -14,7 +14,7 @@
             {%- set titleForce = teaserIntl.titleForce ? teaserIntl.titleForce : 2 -%}
             <h {{ titleForce }} class="title mb-4">{{ teaserIntl.title|raw }}</h{{ titleForce }}>
         {%- endif -%}
-        <div id="teaser-products-carousel- {{ teaser.slug }}"
+        <div id="teaser-products-carousel-{{ teaser.slug }}"
              class="carousel slide carousel-fade"
              data-bs-interval="5000"
              data-bs-autoplay="true"
@@ -24,7 +24,7 @@
             {%- if entities|length > 1 -%}
                 <ol class="carousel-indicators d-none d-lg-inline-flex">
                     {%- for post in entities -%}
-                        <li data-bs-target="#teaser-products-carousel- {{ teaser.slug }}" data-bs-slide-to="{{ loop.index - 1 }}" {%- if loop.first -%} class="active" {%- endif -%}></li>
+                        <li data-bs-target="#teaser-products-carousel-{{ teaser.slug }}" data-bs-slide-to="{{ loop.index - 1 }}" {%- if loop.first -%} class="active" {%- endif -%}></li>
                     {%- endfor -%}
                 </ol>
             {%- endif -%}

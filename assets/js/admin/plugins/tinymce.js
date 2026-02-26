@@ -145,6 +145,7 @@ export function tinymcePlugin() {
                     extended_valid_elements: 'script[src|async|defer|type|charset]',
                     menubar: false,
                     statusbar: false,
+                    contextmenu: false,
                     height: 400,
                     max_height: 500,
                     language: 'fr_FR', /** https://www.tiny.cloud/get-tiny/language-packages/ */

@@ -39,14 +39,14 @@
     <a {% if samePage -%}data-href{%- else -%}href{%- endif -%}=" {{ link }}"
        class="{{ linkStyle }} d-inline-flex align-items-center{% if samePage %} scroll-link{% endif %}{{ trackClass }}"
         {%- if linkBlank -%} target="_blank" {%- endif -%}
-        {%- if samePage -%} data-target="# {{ uriInfos.anchor }}" {%- endif -%}
+        {%- if samePage -%} data-target="#{{ uriInfos.anchor }}" {%- endif -%}
         {%- if linkExternal -%} rel="noopener noreferrer" {%- endif -%}>
         {%- if 'start' == iconSide and iconCustom -%}
-            <i class="icon- {{ iconCustom }} me-2" aria-hidden="true"></i>
+            <i class="icon-{{ iconCustom }} me-2" aria-hidden="true"></i>
         {%- endif -%}
             <span class="initial">{{ linkLabel|unescape|raw }}</span>
         {%- if 'end' == iconSide and iconCustom -%}
-            <i class="icon- {{ iconCustom }} ms-2" aria-hidden="true"></i>
+            <i class="icon-{{ iconCustom }} ms-2" aria-hidden="true"></i>
         {%- endif -%}
     </a>
 {%- endmacro -%}
@@ -79,7 +79,7 @@
             <a {% if samePage -%}data-href{%- else -%}href{%- endif -%}=" {{ link }}"
                class="{{ linkStyle }}{% if samePage %} scroll-link{% endif %}{% if not linkContent and background %} {{ background }}{% endif %} d-inline-block{{ trackClass }}"
                 {%- if linkBlank -%} target="_blank" {%- endif -%}
-                {%- if samePage -%} data-target="# {{ uriInfos.anchor }}" {%- endif -%}
+                {%- if samePage -%} data-target="#{{ uriInfos.anchor }}" {%- endif -%}
                 {%- if linkExternal -%} rel="noopener noreferrer" {%- endif -%}>
                 {{ linkLabel|unescape|raw }} <i class="icon-chevron-right"></i>
             </a>

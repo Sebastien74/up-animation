@@ -41,14 +41,15 @@ class ImageThumbnail implements ImageThumbnailInterface
     private const array ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
     private const array EXCEPTIONS_EXTENSIONS = ['svg', 'gif', 'tiff', 'raw', 'heic'];
     private const array CONTAINER_SIZE = [
+        1200 => 869,
         1920 => 1391,
     ];
-    private const array SIZES = [618, 991, 1920];
-    private const array RETINA_SIZES = [1236, 1982, 3840];
+    private const array SIZES = [618, 991, 1200, 1920];
+    private const array RETINA_SIZES = [1236, 1982, 2400, 3840];
     private const array SCREENS_SIZES = [
         'mobile' => [618, 1236],
         'tablet' => [991, 1982],
-        'desktop' => [1920, 3840],
+        'desktop' => [1200, 2400, 1920, 3840],
     ];
     private const array SCREENS_SIZES_ATTR = [
         'mobile' => 618,
@@ -294,14 +295,7 @@ class ImageThumbnail implements ImageThumbnailInterface
             $this->coreLocator->em()->flush();
         }
 
-        if (!empty($options['screensSizes']) && !empty($options['priority']) && 'high' === $options['priority'] && !empty($thumbnails['files'])) {
-            foreach ($thumbnails['files'] as $file) {
-                $linkProvider = $this->coreLocator->request()->attributes->get('_links', new GenericLinkProvider());
-                $this->coreLocator->request()->attributes->set('_links', $linkProvider->withLink(
-                    (new Link('preload', $file))->withAttribute('as', 'image')
-                ));
-            }
-        }
+        $this->preload($thumbnails, $options);
 
         return $this->attributes($mediaRelation, $thumbnails, $currentSize, $options);
     }
@@ -805,14 +799,22 @@ class ImageThumbnail implements ImageThumbnailInterface
                     try {
                         $img = 'png' === $extension ? @imagecreatefrompng($copyDirname) : @imagecreatefromjpeg($copyDirname);
                         $function = $imagineWebp ? 'imagewebp' : ('png' === $extension ? 'imagepng' : 'imagejpeg');
-                        $quality = 'png' === $extension ? 101 : 100;
-                        if ($imagineWebp && 'png' !== $extension) {
-                            $originalQuality = $media ? $media->getQuality() : 100;
-                            $quality = min(80, $originalQuality);
+                        // Définir des qualités adaptées par format/fonction
+                        if ($imagineWebp) {
+                            // Pour WebP, rester sous 80 pour éviter des fichiers plus lourds que l'original
+                            $originalQuality = $media ? (int) $media->getQuality() : 80;
+                            $quality = min(80, max(0, $originalQuality));
+                        } elseif ('png' === $extension) {
+                            // imagepng: niveau de compression 0-9 (6 = équilibre)
+                            $quality = 6;
+                        } else {
+                            // JPEG: 0-100
+                            $quality = min(85, (int) ($media ? $media->getQuality() : 85));
                         }
                         if ($this->avifSupport) {
                             $function = 'imageavif';
-                            $quality = 72;
+                            // Valeur recommandée pour AVIF (0-100), rester modéré
+                            $quality = 60;
                         }
                         if ($img instanceof \GdImage) {
                             $imgWidth = imagesx($img);
@@ -824,16 +826,18 @@ class ImageThumbnail implements ImageThumbnailInterface
                             imagefilledrectangle($image, 0, 0, $imgWidth - 1, $imgHeight - 1, $trans);
                             imagecopy($image, $img, 0, 0, 0, 0, $imgWidth, $imgHeight);
                             if ('media1' === $filter) {
-                                for ($i = 0; $i < 20; ++$i) {
+                                for ($i = 0; $i < 12; ++$i) {
                                     imagefilter($image, IMG_FILTER_GAUSSIAN_BLUR);
-                                    imagefilter($image, IMG_FILTER_SMOOTH, 10); // Ajoute un effet lissant
+                                    imagefilter($image, IMG_FILTER_SMOOTH, 6);
                                 }
-                                $function($image, $newDirname, 'png' === $extension ? 0 : 50);
+                                $function($image, $newDirname, 'png' === $extension ? 2 : 50);
                             } else {
                                 $function($image, $newDirname, $quality);
                             }
                             imagedestroy($image);
+                            // Si la version générée est plus lourde que la source, préférer la source
                             if ($this->filesystem->exists($copyDirname) && $this->filesystem->exists($newDirname)
+                                && @filesize($newDirname) !== false && @filesize($copyDirname) !== false
                                 && filesize($newDirname) > filesize($copyDirname)) {
                                 $this->filesystem->copy($copyDirname, $newDirname, true);
                             }
@@ -1134,7 +1138,7 @@ class ImageThumbnail implements ImageThumbnailInterface
     }
 
     /**
-     * To get Yaml sizes.
+     * To get YAML sizes.
      */
     private function getYamlSizes(string $filter): array
     {
@@ -1145,6 +1149,63 @@ class ImageThumbnail implements ImageThumbnailInterface
             'width' => !empty($filter[0]) ? $filter[0] : null,
             'height' => !empty($filter[1]) ? $filter[1] : null,
         ];
+    }
+
+    /**
+     * To preload media.
+     */
+    private function preload(array $thumbnails = [], array $options = []): void
+    {
+        if (!empty($options['screensSizes']) && !empty($options['priority']) && 'high' === $options['priority'] && !empty($thumbnails['files'])) {
+
+            // Map file extensions to valid MIME types
+            $mimeByExt = [
+                'jpg'  => 'image/jpeg',
+                'jpeg' => 'image/jpeg',
+                'png'  => 'image/png',
+                'webp' => 'image/webp',
+                'avif' => 'image/avif',
+                'gif'  => 'image/gif',
+                'svg'  => 'image/svg+xml',
+                'ico'  => 'image/x-icon',
+            ];
+
+            $mediaQueries = [
+                618  => '(max-width: 575px)',
+                991  => '(min-width: 576px) and (max-width: 991px)',
+                992  => '(min-width: 992px) and (max-width: 1199px)',
+                1200 => '(min-width: 1200px) and (max-width: 1399px)',
+                1920 => '(min-width: 1400px)',
+            ];
+
+            $linkProvider = $this->coreLocator->request()->attributes->get('_links', new GenericLinkProvider());
+            $providerByHref = [];
+            foreach ($linkProvider->getLinks() as $link) {
+                $providerByHref[$link->getHref()] = $link;
+            }
+
+            $inPreload = [];
+            foreach ($thumbnails['files'] as $size => $file) {
+                if (!isset($mediaQueries[$size])) {
+                    continue;
+                }
+                $ext = strtolower(pathinfo(parse_url($file, PHP_URL_PATH) ?? $file, PATHINFO_EXTENSION));
+                $attrMedia = $ext !== 'svg' && isset($mimeByExt[$ext]) ? $mediaQueries[$size] : 'all';
+                if (!array_key_exists($file, $inPreload) && !array_key_exists($file, $providerByHref)) {
+                    $link = (new Link('preload', $file))
+                        ->withAttribute('as', 'image')
+                        ->withAttribute('media', $attrMedia)
+                        ->withAttribute('fetchpriority', 'high');
+                    if ($ext !== '' && isset($mimeByExt[$ext])) {
+                        $link = $link->withAttribute('type', $mimeByExt[$ext]);
+                    }
+                    $linkProvider = $linkProvider->withLink($link);
+                    $inPreload[$file] = $link;
+                }
+            }
+
+            $this->coreLocator->request()->attributes->set('_links', $linkProvider);
+        }
     }
 
     /**

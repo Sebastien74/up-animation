@@ -3,7 +3,7 @@
 <div class="modal-wrapper">
     <div class="modal fade modal-background-layout layout-modal"
          id="modal-background" tabindex="-1" role="dialog"
-         aria-labelledby="modal-background- {{ interface['name']~'-'~entity.id }}-label" aria-hidden="true">
+         aria-labelledby="modal-background-{{ interface['name']~'-'~entity.id }}-label" aria-hidden="true">
         {{ form_start(form, {attr: {
             id: "background-form",
             action: path("admin_"~interface.name~"_background", {website: websiteId(), (interface['name']): entity.id}),
@@ -12,7 +12,7 @@
             <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                 <div class="modal-content border">
                     <div class="modal-header">
-                        <h5 class="modal-title text-center w-100" id="modal-background- {{ interface['name']~'-'~entity.id }}-label"><i class="icm-palette"></i></h5>
+                        <h5 class="modal-title text-center w-100" id="modal-background-{{ interface['name']~'-'~entity.id }}-label"><i class="icm-palette"></i></h5>
                         <button class="btn-close" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
                             <i class="icm-times"></i>
                         </button>

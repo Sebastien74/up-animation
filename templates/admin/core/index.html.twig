@@ -195,7 +195,7 @@
                                 {%- set args = args|merge({(interface['name']): entity.id}) -%}
 
                                 {%- if not disabledRow -%}
-                                    <tr id="entity-row- {{ entity.id }}" data-id="{{ entity.id }}">
+                                    <tr id="entity-row-{{ entity.id }}" data-id="{{ entity.id }}">
 
                                         <td class="d-none">
                                             {%- set orderBy = entity|methodInit(orderBy) -%}
@@ -259,7 +259,7 @@
                                                 {%- if routeExist('admin_'~interface['name']~'_position') -%}
                                                     <span class="position" data-bs-toggle="tooltip" title="{{"Modifier la position"|trans|striptags }}">
                                                         {%- set positionArgs = ('admin_'~interface['name']~'_position')|routeArgs(interface.entity, args) -%}
-                                                        <a href="{{ path('admin_'~interface['name']~'_position', positionArgs) }}" class="modal-btn-position-ajax btn-icon small" data-modal="modal-position- {{ entity.id }}">
+                                                        <a href="{{ path('admin_'~interface['name']~'_position', positionArgs) }}" class="modal-btn-position-ajax btn-icon small" data-modal="modal-position-{{ entity.id }}">
                                                             {{ entity.position }}
                                                         </a>
                                                     </span>
@@ -359,21 +359,21 @@
                                                     {%- set deleteArgs = ('admin_'~interface['name']~'_delete')|routeArgs(interface.entity, args) -%}
                                                         <a href="{{ path('admin_'~interface['name']~'_delete', args) }}"
                                                            data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
-                                                           data-target="#entity-row- {{ entity.id }}"
+                                                           data-target="#entity-row-{{ entity.id }}"
                                                            class="btn-icon small danger swal-delete-link">
                                                             <i class="icm-trash"></i>
                                                         </a>
                                                     <div class="custom-control custom-checkbox delete-input-index-wrap d-none">
-                                                        <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input- {{ entity.id }}"
+                                                        <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ entity.id }}"
                                                                data-path="{{ path('admin_'~interface['name']~'_delete', args) }}">
-                                                        <label class="custom-control-label" for="delete-input- {{ entity.id }}"></label>
+                                                        <label class="custom-control-label" for="delete-input-{{ entity.id }}"></label>
                                                     </div>
                                                 {%- endif -%}
 
                                                 {%- if routeExist('admin_'~interface['name']~'_reset') and deleteActive -%}
                                                     <a href="{{ path('admin_'~interface['name']~'_reset', args) }}"
                                                        data-bs-toggle="tooltip" title="{{"Réinitialiser"|trans|striptags }}"
-                                                       data-target="#entity-row- {{ entity.id }}"
+                                                       data-target="#entity-row-{{ entity.id }}"
                                                        class="btn-icon small success swal-delete-link">
                                                         <i class="icm-sync"></i>
                                                     </a>

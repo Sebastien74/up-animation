@@ -154,11 +154,11 @@
                 <div class="col-md-6">
                     <div class="form-check form-check-inline form-switch mb-1 me-0">
                         <input type="checkbox"
-                               id="block-type- {{ choice.value }}"
+                               id="block-type-{{ choice.value }}"
                                name="{{ full_name }}[]"
                                class="form-check-input cursor"
                                value="{{ choice.value }}" {%- if choice.value in value -%} checked="checked" {%- endif -%}>
-                        <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="block-type- {{ choice.value }}">{{ choice.label }}</label>
+                        <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="block-type-{{ choice.value }}">{{ choice.label }}</label>
                     </div>
                 </div>
             {%- endif -%}
@@ -174,11 +174,11 @@
                 <div class="col-md-6">
                     <div class="form-check form-check-inline form-switch mb-1 me-0">
                         <input type="checkbox"
-                               id="modules-input- {{ choice.value }}"
+                               id="modules-input-{{ choice.value }}"
                                name="{{ full_name }}[]"
                                class="form-check-input cursor"
                                value="{{ choice.value }}" {%- if choice.value in value -%} checked="checked" {%- endif -%}>
-                        <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="modules-input- {{ choice.value }}">{{ choice.label }}</label>
+                        <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="modules-input-{{ choice.value }}">{{ choice.label }}</label>
                     </div>
                 </div>
             {%- endif -%}
@@ -269,7 +269,7 @@
     <div class="col-12 text-end mb-4">
         <button role="button" class="add-collection btn-app success"
                 data-collection-target="append"
-                data-target="# {{ id }}_collection">
+                data-target="#{{ id }}_collection">
                 <i class="icm-plus"></i>
             <span class="d-inline-block">
                 {%- if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] -%}
@@ -288,7 +288,7 @@
         {%- for choice in choices -%}
             {%- set isChecked = choice.value == value -%}
             <div class="col-md-3 text-center mb-2">
-                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="build-theme- {{ choice.data }}">
+                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="build-theme-{{ choice.data }}">
                     {%- set src = choice.data ? choice.data : 'anonymous' -%}
                     <img src="{{ asset('build/admin/images/theme/build-theme-'~src~'.jpg', 'admin')|imagine_filter('admin_theme') }}" class="img-fluid" alt="theme">
                     <div class="vertical-align w-100 p-4">
@@ -296,7 +296,7 @@
                             <h5 class="m-0">{{ choice.label }}</h5>
                         </div>
                     </div>
-                    <input type="radio" id="build-theme- {{ choice.data }}"
+                    <input type="radio" id="build-theme-{{ choice.data }}"
                            name="{{ full_name }}"
                            class="input-theme d-none{% if isChecked %} active{% endif %}"
                            value="{{ choice.value }}" {%- if required -%} required{%- endif -%}{%- if isChecked -%} checked{%- endif -%}>
@@ -311,7 +311,7 @@
         {%- for choice in choices -%}
             {%- set isChecked = choice.value == value -%}
             <div class="col-md-3 text-center mb-2">
-                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="front-theme- {{ choice.data }}">
+                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="front-theme-{{ choice.data }}">
                     {%- set src = choice.data ? choice.data : 'anonymous' -%}
                     <img src="{{ asset('build/admin/images/theme/theme-'~src~'.jpg', 'admin')|imagine_filter('admin_theme') }}" class="img-fluid" alt="theme">
                     <div class="vertical-align w-100 p-4">
@@ -319,7 +319,7 @@
                             <h5 class="m-0">{{ choice.label }}</h5>
                         </div>
                     </div>
-                    <input type="radio" id="front-theme- {{ choice.data }}"
+                    <input type="radio" id="front-theme-{{ choice.data }}"
                            name="{{ full_name }}"
                            class="input-theme d-none{% if isChecked %} active{% endif %}"
                            value="{{ choice.value }}" {%- if required -%} required{%- endif -%}{%- if isChecked -%} checked{%- endif -%}>

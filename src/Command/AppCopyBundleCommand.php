@@ -36,7 +36,7 @@ class AppCopyBundleCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ('local' !== $this->coreLocator->envName()) {
-            $output->writeln('<info>Command app:copy:bundle skipped (not in dev environment).</info>');
+            $output->writeln('<info>Command app:copy:bundle skipped (not in local environment).</info>');
             return Command::SUCCESS;
         }
 

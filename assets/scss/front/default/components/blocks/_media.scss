@@ -30,6 +30,33 @@ $mediaGap: 60px;
    2 ) Core
 ----------------------------------------------*/
 
+body {
+
+    picture, .img-loader-wrap, .img-hover-buttons-wrap {
+        max-width: 100% !important;
+    }
+
+    /*! purgecss start ignore */
+
+    .glightbox-container .ginner-container {
+        max-height: 100dvh !important;
+    }
+
+    .gslide-media {
+
+        box-shadow: none !important;
+
+        img {
+            border-radius: $border-radius !important;
+            max-height: 90%;
+            max-width: none !important;
+            width: auto !important;
+        }
+    }
+
+    /*! purgecss end ignore */
+}
+
 .media-block {
 
     &.img-rotation {

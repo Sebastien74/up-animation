@@ -2,7 +2,7 @@
 
 {%- set allLocales = interface.website.configuration.allLocales -%}
 
-<tr id="entity-row- {{ entity.id }}">
+<tr id="entity-row-{{ entity.id }}">
 
     {{ form_start(form, {attr: {
         novalidate: "novalidate",
@@ -55,14 +55,14 @@
         <td class="align-middle text-center actions-td">
             <div class="d-flex align-items-center justify-content-end">
                 <button class="btn-app save-row-trans"
-                        data-form-id="unit-form- {{ entity.id }}">
+                        data-form-id="unit-form-{{ entity.id }}">
                     <i class="icm-save"></i>
                     <i class="icm-spinner-third"></i>
                 </button>
                 {%- if 'delete'|moduleActive(configuration) -%}
                     <a href="{{ path('admin_translationunit_delete', {website: websiteId(), translationunit: entity.id}) }}"
                        data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
-                       data-target="#entity-row- {{ entity.id }}"
+                       data-target="#entity-row-{{ entity.id }}"
                        class="text-dark swal-delete-link">
                         <i class="icm-trash ms-3"></i>
                     </a>

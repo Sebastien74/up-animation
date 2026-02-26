@@ -153,7 +153,7 @@
                                 </thead>
                                 <tbody>
                                     {%- for value in searchValues -%}
-                                        <tr id="value-row- {{ value.id }}">
+                                        <tr id="value-row-{{ value.id }}">
                                             <td class="align-middle text-start">{{ value.text }}</td>
                                             <td class="align-middle text-start">
                                                 <ul class="reset">
@@ -165,7 +165,7 @@
                                                 <span class="text-center">
                                                     <a href="{{ path('admin_searchvalue_delete', {website: website.id, searchvalue: value.id}) }}"
                                                        data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
-                                                       data-target="#entity-row- {{ value.id }}"
+                                                       data-target="#entity-row-{{ value.id }}"
                                                        class="text-dark swal-delete-link cursor">
                                                         <i class="icm-trash"></i>
                                                     </a>

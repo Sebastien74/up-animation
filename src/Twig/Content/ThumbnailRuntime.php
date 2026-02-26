@@ -504,10 +504,11 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             $mediaQueries = [
                 1236 => 'mobile',
                 1982 => 'tablet',
+                2400 => 'desktop',
                 3840 => 'desktop',
             ];
             foreach ($thumbnails['files'] as $size => $path) {
-                if (in_array($size, $retinaSize)) {
+                if (in_array($size, $retinaSize) && isset($mediaQueries[$size])) {
                     if (!empty($options[$mediaQueries[$size]]) && !is_object($options[$mediaQueries[$size]])) {
                         $filesystem = new Filesystem();
                         $fileDirname = $this->projectDirname.'/public'.$options[$mediaQueries[$size]];

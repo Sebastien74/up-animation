@@ -5,7 +5,7 @@
 
 <div id="login-nav" class="navbar-nav mx-auto ms-{{ expand }}-auto me-{{ expand }}-0 mt-4 mt-{{ expand }}-0 text-center">
     {%- if not isUserFront(app.user) -%}
-        <a href="{{ path('security_front_forms') }}" class="ms- {{ expand }}-4 mb-3 mb-{{ expand }}-0 btn btn-outline-primary d-flex align-items-center" aria-label="{{ 'Connectez-vous'|trans|striptags }}">
+        <a href="{{ path('security_front_forms') }}" class="ms-{{ expand }}-4 mb-3 mb-{{ expand }}-0 btn btn-outline-primary d-flex align-items-center" aria-label="{{ 'Connectez-vous'|trans|striptags }}">
             {{ 'fal sign-in'|icon(null, 17, 'me-2', {decor: true}) }} {{ "Connectez-vous"|trans|raw }}
         </a>
         {%- if haveRegistration -%}

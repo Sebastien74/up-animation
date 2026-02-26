@@ -11,7 +11,7 @@
     {%- set class = class is defined ? class : null -%}
     <div class="block-icon {% if class %} {{ class }}{% endif %}">
         {%- if link -%}
-            <a href="{{ link }}" class="text- {{ color }}{% if colorHover %} hover-{{ colorHover }}{% endif %}" {%- if linkBlank -%} target="_blank" {%- endif -%}{%- if linkExternal -%} rel="noopener noreferrer" {%- endif -%}>
+            <a href="{{ link }}" class="text-{{ color }}{% if colorHover %} hover-{{ colorHover }}{% endif %}" {%- if linkBlank -%} target="_blank" {%- endif -%}{%- if linkExternal -%} rel="noopener noreferrer" {%- endif -%}>
         {%- endif -%}
                 {{ block.icon|icon(null, null, "block-svg-"~size~"-icon "~color, {title: title|striptags}) }}
             {%- if title -%}

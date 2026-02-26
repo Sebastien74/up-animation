@@ -13,74 +13,78 @@
 {%- if haveFields -%}
 
     <div class="col-12">
-        <h4 class="main-subtitle">
+        <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-edit-seo-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-edit-seo-{{ entity.id }}">
             <i class="icm-code"></i>{{ "Référencement"|trans }}
+            <i class="icm-chevron-down ms-auto"></i>
         </h4>
     </div>
 
-    {%- if allLocales|length > 1 -%}
-        <div class="locales-tab-container">
-    {%- endif -%}
+    <div id="collapse-edit-seo-{{ entity.id }}" class="collapse">
 
-    {%- if allLocales|length > 1 -%}
-        <ul class="nav nav-tabs w-100" role="tablist">
+        {%- if allLocales|length > 1 -%}
+            <div class="locales-tab-container">
+        {%- endif -%}
+
+        {%- if allLocales|length > 1 -%}
+            <ul class="nav nav-tabs border-0 d-flex w-100 mb-3 mt-1 gap-2" role="tablist">
+                {%- for url in form.urls -%}
+                    {%- set locale = url.vars.value.locale -%}
+                    <li class="{% if locale not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip"
+                        title="{{ languageName(locale, app.user.locale) }}">
+                        <a class="btn-locale {% if locale == defaultLocale %} active{% endif %}" data-bs-toggle="tab"
+                           id="seo-basic-{{ locale }}-tab"
+                           aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}"
+                           href="#seo-basic-tab-{{ locale }}" role="tab">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}"
+                                 alt="{{ languageName(locale, app.user.locale) }}"
+                                 class="img-fluid lazy-load" height="14" width="19">
+                        </a>
+                    </li>
+                {%- endfor -%}
+            </ul>
+        {%- endif -%}
+
+        {%- if allLocales|length > 1 -%}
+            <div class="tab-content tab-content-border w-100 seo-basic-tab">
+        {%- endif -%}
             {%- for url in form.urls -%}
                 {%- set locale = url.vars.value.locale -%}
-                <li class="nav-item {% if locale not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip"
-                    title="{{ languageName(locale, app.user.locale) }}">
-                    <a class="nav-link {% if locale == defaultLocale %} active{% endif %}" data-bs-toggle="tab"
-                       id="seo-basic- {{ locale }}-tab"
-                       aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}"
-                       href="#seo-basic-tab- {{ locale }}" role="tab">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                             data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load"
-                             height="14" width="19">
-                    </a>
-                </li>
+                {%- if allLocales|length == 1 and locale != configuration.locale -%}
+                    <div class="d-none">
+                {%- endif -%}
+                {%- if allLocales|length > 1 -%}
+                    <div id="seo-basic-tab-{{ locale }}"
+                         class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}" role="tabpanel"
+                         aria-labelledby="seo-basic-{{ locale }}-tab">
+                        <div class="p-20 pb-0">
+                            <div class="row">
+                {%- endif -%}
+                    {%- if url.seo.metaTitle is defined -%}
+                        {{ form_row(url.seo.metaTitle) }}
+                    {%- endif -%}
+                    {%- if url.seo.metaDescription is defined -%}
+                        {{ form_row(url.seo.metaDescription) }}
+                    {%- endif -%}
+                    {%- if seoModels[locale] is defined -%}
+                        <div class="col-12">
+                            {%- include 'admin/include/alert.html.twig' with {alert: "info", badge: null, display: "alert", message: 'Un modèle existe.'} only -%}
+                        </div>
+                    {%- endif -%}
+                {%- if allLocales|length > 1 -%}
+                        </div>
+                    </div>
+                </div>
+                {%- endif -%}
+                {%- if allLocales|length == 1 and locale != configuration.locale -%}
+                    </div>
+                {%- endif -%}
             {%- endfor -%}
-        </ul>
-    {%- endif -%}
-
-    {%- if allLocales|length > 1 -%}
-        <div class="tab-content tab-content-border w-100 seo-basic-tab">
-    {%- endif -%}
-        {%- for url in form.urls -%}
-
-            {%- set locale = url.vars.value.locale -%}
-            {%- if allLocales|length == 1 and locale != configuration.locale -%}
-                <div class="d-none">
-            {%- endif -%}
             {%- if allLocales|length > 1 -%}
-                <div id="seo-basic-tab- {{ locale }}"
-                     class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}" role="tabpanel"
-                     aria-labelledby="seo-basic- {{ locale }}-tab">
-                    <div class="p-20 pb-0">
-                        <div class="row">
-            {%- endif -%}
-                {%- if url.seo.metaTitle is defined -%}
-                    {{ form_row(url.seo.metaTitle) }}
-                {%- endif -%}
-                {%- if url.seo.metaDescription is defined -%}
-                    {{ form_row(url.seo.metaDescription) }}
-                {%- endif -%}
-                {%- if seoModels[locale] is defined -%}
-                    <div class="col-12">
-                        {%- include 'admin/include/alert.html.twig' with {alert: "info", badge: null, display: "alert", message: 'Un modèle existe.'} only -%}
-                    </div>
-                {%- endif -%}
-            {%- if allLocales|length > 1 -%}
-                    </div>
-                </div>
-            </div>
-            {%- endif -%}
-            {%- if allLocales|length == 1 and locale != configuration.locale -%}
                 </div>
             {%- endif -%}
-        {%- endfor -%}
         {%- if allLocales|length > 1 -%}
             </div>
         {%- endif -%}
-    {%- if allLocales|length > 1 -%}
-        </div>
-    {%- endif -%}
+    </div>
+
 {%- endif -%}

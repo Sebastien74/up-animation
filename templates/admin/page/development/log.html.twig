@@ -20,7 +20,7 @@
         alert: {bg: 'warning', color: 'dark', icon: 'whistle'}
     } -%}
 
-    <div id="log-page" class="pt-4 pb-5 position-relative">
+    <div id="log-page" class="position-relative">
         {%- for log in logs|reverse -%}
             {%- if log -%}
                 {%- set category = categories[log.status] is defined ? categories[log.status] : null -%}
@@ -31,7 +31,7 @@
                     <div class="card-header py-3">
                         <div class="row">
                             <div class="col-sm-4 d-flex align-items-center my-2 my-sm-0">
-                                <small class="d-flex align-items-center text-white fz-sm"><span class="btn-icon me-3"><i class="icm- {{ icon }}"></i></span><span class="lh-1">{{ log.code }}</span></small>
+                                <small class="d-flex align-items-center text-white fz-sm"><span class="btn-icon me-3"><i class="icm-{{ icon }}"></i></span><span class="lh-1">{{ log.code }}</span></small>
                             </div>
                             <div class="col-sm-8 text-sm-end justify-content-sm-end d-flex align-items-center mb-2 mb-sm-0">
                                 {%- if log.date|isDateTime -%}
@@ -46,14 +46,14 @@
                                 {%- endif -%}
                                 <span data-bs-toggle="tooltip" title="{{ 'Back to logs list'|trans|striptags }}">
                                     <a href="{{ path('admin_logs') }}" class="ms-3 text-{{ color }}">
-                                        <span class="small-icon"><i class="icon-reply fz-sm"></i></span>
+                                        <span class="btn-icon"><i class="icm-reply fz-sm"></i></span>
                                     </a>
                                 </span>
                             </div>
                         </div>
                     </div>
                     <div class="card-body no-card-footer text-white pt-0 pb-3 px-3">
-                        <small class="fz-sm d-inline-block mw-100">{{ log.message }}</small>
+                        <small class="fz-xs d-inline-block mw-100">{{ log.message }}</small>
                     </div>
                 </div>
             {%- endif -%}

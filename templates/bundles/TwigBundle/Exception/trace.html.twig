@@ -1,4 +1,4 @@
-<div class="trace-line-header break-long-words {{ trace.file|default(false) ? 'sf-toggle' }}" data-toggle-selector="#trace-html- {{ prefix }}-{{ i }}" data-toggle-initial="{{ style == 'expanded' ? 'display' }}">
+<div class="trace-line-header break-long-words {{ trace.file|default(false) ? 'sf-toggle' }}" data-toggle-selector="#trace-html-{{ prefix }}-{{ i }}" data-toggle-initial="{{ style == 'expanded' ? 'display' }}">
     {%- if trace.file|default(false) -%}
         <span class="icon icon-close">{{ include('@Twig/images/icon-minus-square.svg') }}</span>
         <span class="icon icon-open">{{ include('@Twig/images/icon-plus-square.svg') }}</span>
@@ -20,7 +20,7 @@
     {%- endif -%}
 </div>
 {%- if trace.file|default(false) -%}
-    <div id="trace-html- {{ prefix~'-'~i }}" class="trace-code sf-toggle-content">
+    <div id="trace-html-{{ prefix~'-'~i }}" class="trace-code sf-toggle-content">
         {{ trace.file|file_excerpt(trace.line, 5)|replace({
             '#DD0000': 'var(--highlight-string)',
             '#007700': 'var(--highlight-keyword)',

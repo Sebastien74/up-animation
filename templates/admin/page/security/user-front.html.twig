@@ -18,7 +18,7 @@
 
     {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
 
-        <div id="edit-form- {{ interface.name }}" class="card small-dropify">
+        <div id="edit-form-{{ interface.name }}" class="card small-dropify">
 
             {%- include 'admin/core/form/save/header.html.twig' -%}
 

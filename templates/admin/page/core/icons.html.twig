@@ -22,10 +22,10 @@
     <div class="card mb-3">
 
         <h4 class="main-subtitle mb-0 border-bottom-0">
-            <i class="icm- {{ pageIcon }}"></i>{{ block('pageTitle') }}
+            <i class="icm-{{ pageIcon }}"></i>{{ block('pageTitle') }}
         </h4>
 
-        <ul class="nav nav-tabs custom-tab large" role="tablist">
+        <ul class="nav nav-tabs" role="tablist">
             {%- for libraryName, icons in libraries -%}
                 {%- if libraryName != 'website' -%}
                     <li class="nav-item">
@@ -87,7 +87,7 @@
 
         <!-- Tab panes -->
         <div id="icons-contents" class="tab-content mb-4" data-librairy="{{ library }}">
-            <div id="tab-pane- {{ library }}" class="tab-pane active">
+            <div id="tab-pane-{{ library }}" class="tab-pane active">
                 <div class="card-body pb-2">
                     <div class="collapse" id="collapse-add-icons">
                         <div class="card card-body p-0 border-0 pb-2">

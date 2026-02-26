@@ -4,20 +4,20 @@
 
     {%- if zone.cols|length > 0 -%}
         {%- for col in zone.cols -%}
-            <div id="col- {{ col.id }}" class="col-sortable col-md-{{ col.size }} mb-3"
-                 data-size-class="col-md- {{ col.size }}"
+            <div id="col-{{ col.id }}" class="col-sortable col-md-{{ col.size }} mb-3"
+                 data-size-class="col-md-{{ col.size }}"
                  data-position="{{ col.position }}"
                  data-id="{{ col.id }}">
                 <div class="resizable ui-widget-content h-100">
                     <div class="column h-100 ui-state-default"
-                         id="col_ {{ col.id }}"
+                         id="col_{{ col.id }}"
                          data-id="{{ col.id }}"
                          data-position="{{ col.position }}">
                         <div class="portlet h-100">
                             <div class="header w-100 d-flex justify-content-end">
                                 <div class="col-actions text-end">
 
-                                    <div class="d-flex align-items-center gap-2">
+                                    <div class="d-flex align-items-center gap-3">
 
                                         {%- if 'edit'|moduleActive(configuration) -%}
                                             <span data-bs-toggle="tooltip"
@@ -78,7 +78,7 @@
                                         {%- if 'delete'|moduleActive(configuration) -%}
                                             <span href="{{ path('admin_col_delete', {website: websiteId(), zone: zone.id, col: col.id}) }}"
                                                data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
-                                               data-target="#col- {{ col.id }}"
+                                               data-target="#col-{{ col.id }}"
                                                data-type="stay"
                                                class="btn-action swal-delete-link cursor">
                                                 <i class="icm-trash"></i>

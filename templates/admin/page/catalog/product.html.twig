@@ -72,9 +72,9 @@
                 {%- if tabId in activeTabs -%}
                     <li class="nav-item">
                         <a {% if not isMainEntity -%}href="{{ path('admin_catalogproduct_edit', {website: websiteId, catalogproduct: entity.id, catalog: entity.catalog.id, tab: tabId} ) }}" {%- endif -%}
-                           id="nav- {{ tabId }}-tab" class="btn-app {% if activeTab == tabId or not activeTab and loop.first and isMainEntity %} active{% endif %}"
-                                {%- if isMainEntity -%}data-bs-toggle="tab" href="# {{ tabId }}" role="tab" aria-selected="{{ loop.first }}" {%- else -%}{%- endif -%}>
-                            <i class="icm- {{ config.icon }}"></i>
+                           id="nav-{{ tabId }}-tab" class="btn-app {% if activeTab == tabId or not activeTab and loop.first and isMainEntity %} active{% endif %}"
+                                {%- if isMainEntity -%}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}" {%- else -%}{%- endif -%}>
+                            <i class="icm-{{ config.icon }}"></i>
                             <span class="d-none d-lg-inline-block">{{ config.title }}</span>
                         </a>
                     </li>

@@ -36,7 +36,7 @@ class MediaType extends AbstractType
         $website = $options['website'];
         $configuration = $website->getConfiguration();
         //        $haveSecondaryMedia = $configuration->isMediasSecondary();
-        //        $groupClass = $haveSecondaryMedia ? 'col-md-6' : 'col-md-6';
+        //        $groupClass = $haveSecondaryMedia ? 'col-lg-6' : 'col-lg-6';
 
         $builder->add('template', WidgetType\TemplateBlockType::class);
 
@@ -52,7 +52,7 @@ class MediaType extends AbstractType
                 'intlTitleForce' => false,
                 'hideHover' => true,
                 'fields' => [
-                    'intl' => ['title' => 'col-md-6', 'placeholder' => 'col-md-6', 'introduction', 'targetStyle' => 'col-md-6', 'targetLink' => 'col-md-6', 'targetPage' => 'col-md-6', 'targetLabel' => 'col-md-6'],
+                    'intl' => ['title' => 'col-lg-6', 'placeholder' => 'col-lg-6', 'introduction', 'targetStyle' => 'col-lg-6', 'targetLink' => 'col-lg-6', 'targetPage' => 'col-lg-6', 'targetLabel' => 'col-lg-6'],
                 ],
                 'label_fields' => [
                     'intl' => [

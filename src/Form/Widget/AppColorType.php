@@ -40,6 +40,7 @@ class AppColorType extends AbstractType
             'label' => $this->translator->trans('Couleur de la police', [], 'admin'),
             'expanded' => false,
             'required' => false,
+            'display' => 'search',
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'choices' => $this->getColors(),
             'attr' => [

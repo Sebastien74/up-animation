@@ -35,8 +35,8 @@
                                     {%- set icon = screenSize == 'tablet' ? 'tablet' : 'mobile' -%}
                                     {%- if screenSize not in disabledFormats -%}
                                         <li class="nav-item">
-                                            <a class="btn-app" id="{{ screenSize }}-tab" data-bs-toggle="tab" href="# {{ screenSize }}" role="tab" aria-controls="{{ screenSize }}" aria-selected="false">
-                                                <i class="icm- {{ icon }}"></i><span>{{ label }}</span>
+                                            <a class="btn-app" id="{{ screenSize }}-tab" data-bs-toggle="tab" href="#{{ screenSize }}" role="tab" aria-controls="{{ screenSize }}" aria-selected="false">
+                                                <i class="icm-{{ icon }}"></i><span>{{ label }}</span>
                                             </a>
                                         </li>
                                     {%- endif -%}

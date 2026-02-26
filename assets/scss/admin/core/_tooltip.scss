@@ -1,0 +1,149 @@
+@charset "UTF-8";
+
+/* --------------------------------------------------------------------------------------
+    Module : Back tooltip
+    Copyright : 2025
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+----------------------------------------------------------------------------------------- */
+
+/**
+ * IMPORTANT:
+ * $crumb-surface is transparent (rgba...0.015). If you use it in gradients, you will ALWAYS
+ * get transparency. We define an opaque surface for tooltips.
+ */
+
+/* Opaque base surface for tooltips (adjust if you want slightly lighter/darker) */
+$tooltip-surface: #14161e !default; /* close to your --bs-tooltip-bg base */
+$tooltip-surface-top: mix(#ffffff, $tooltip-surface, 4%) !default;
+$tooltip-surface-bottom: mix(#000000, $tooltip-surface, 6%) !default;
+
+.tooltip {
+
+    /* Core */
+    --bs-tooltip-zindex: 9999;
+    --bs-tooltip-max-width: 280px;
+    --bs-tooltip-padding-x: 12px;
+    --bs-tooltip-padding-y: 10px;
+    --bs-tooltip-margin: 8px;
+
+    /* Look & feel */
+    --bs-tooltip-font-size: 12px;
+    --bs-tooltip-color: rgba(255, 255, 255, 0.92);
+    --bs-tooltip-bg: #{$tooltip-surface}; /* now opaque */
+
+    /* Shape */
+    --bs-tooltip-border-radius: 12px;
+    --bs-tooltip-opacity: 1;
+
+    /* Force stacking above UI */
+    z-index: var(--bs-tooltip-zindex) !important;
+    pointer-events: none;
+
+    .tooltip-arrow {
+        display: none !important;
+    }
+
+    /* Tooltip body */
+    .tooltip-inner {
+        border: 1px solid rgba(124, 108, 255, 0.35);
+
+        /* FULL OPAQUE background (no rgba alpha, no transparent) */
+        background: radial-gradient(
+                520px 160px at 12% 0%,
+                mix($primary, $tooltip-surface, 18%),
+                $tooltip-surface 60%
+        ),
+        linear-gradient(
+                180deg,
+                $tooltip-surface-top,
+                $tooltip-surface 45%,
+                $tooltip-surface-bottom
+        );
+
+        font-weight: 400;
+        line-height: 1;
+        text-align: center;
+        white-space: normal;
+        position: relative;
+    }
+
+    /* Animation: smoother */
+    &.show {
+        opacity: 1;
+        animation: dash-tooltip-in 120ms ease-out;
+    }
+
+    /* Variants (border + same opaque background recipe) */
+    &[data-variant="danger"] .tooltip-inner {
+        border-color: rgba(255, 92, 92, 0.45);
+        background: radial-gradient(
+                520px 160px at 12% 0%,
+                mix($danger, $tooltip-surface, 18%),
+                $tooltip-surface 60%
+        ),
+        linear-gradient(
+                180deg,
+                $tooltip-surface-top,
+                $tooltip-surface 45%,
+                $tooltip-surface-bottom
+        );
+    }
+
+    &[data-variant="info"] .tooltip-inner {
+        border-color: rgba(59, 130, 246, 0.45);
+        background: radial-gradient(
+                520px 160px at 12% 0%,
+                mix($info, $tooltip-surface, 18%),
+                $tooltip-surface 60%
+        ),
+        linear-gradient(
+                180deg,
+                $tooltip-surface-top,
+                $tooltip-surface 45%,
+                $tooltip-surface-bottom
+        );
+    }
+
+    &[data-variant="warning"] .tooltip-inner {
+        border-color: rgba(245, 158, 11, 0.45);
+        background: radial-gradient(
+                520px 160px at 12% 0%,
+                mix($warning, $tooltip-surface, 18%),
+                $tooltip-surface 60%
+        ),
+        linear-gradient(
+                180deg,
+                $tooltip-surface-top,
+                $tooltip-surface 45%,
+                $tooltip-surface-bottom
+        );
+    }
+
+    &[data-variant="success"] .tooltip-inner,
+    &[data-variant="teal"] .tooltip-inner {
+        border-color: rgba(13, 148, 136, 0.45);
+        background: radial-gradient(
+                520px 160px at 12% 0%,
+                mix($teal, $tooltip-surface, 18%),
+                $tooltip-surface 60%
+        ),
+        linear-gradient(
+                180deg,
+                $tooltip-surface-top,
+                $tooltip-surface 45%,
+                $tooltip-surface-bottom
+        );
+    }
+}
+
+@keyframes dash-tooltip-in {
+    from {
+        opacity: 0;
+        transform: translateY(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

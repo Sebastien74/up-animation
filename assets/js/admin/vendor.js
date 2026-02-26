@@ -28,6 +28,7 @@
 
 import './bootstrap';
 import {Tooltip} from './bootstrap-modules';
+import {scrollToEL} from './functions';
 
 import Cookies from "js-cookie";
 
@@ -226,4 +227,14 @@ window.addEventListener("load", function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     Tooltip();
+    document.querySelectorAll('[data-scroll-to]').forEach(function (el) {
+        el.onclick = function (e) {
+            const targetId = el.getAttribute('data-scroll-to');
+            const target = targetId ? document.querySelector(targetId) : false;
+            if (target) {
+                e.preventDefault();
+                scrollToEL(target, false);
+            }
+        };
+    });
 });

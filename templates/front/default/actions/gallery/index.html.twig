@@ -7,7 +7,7 @@
 {%- set popup = listing.popup is defined ? listing.popup : true -%}
 {%- set imgClass = popup ? 'img-gallery-'~listing.id : null -%}
 
-<div id="listing-gallery-container- {{ listing.slug }}" class="listing-gallery-container masonry-wrap">
+<div id="listing-gallery-container-{{ listing.slug }}" class="listing-gallery-container masonry-wrap">
 
     {{ macroWebmaster.box({
         title: "Éditer l'index"|trans([], 'front_webmaster'),

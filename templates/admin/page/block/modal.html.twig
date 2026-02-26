@@ -31,7 +31,7 @@
         action: app.request.uri,
         class: 'master-form d-inline-block position-relative',
         id: 'form-'~entity.id }}) }}
-        <div id="edit-form- {{ interface.name }}" class="card refer-preloader">
+        <div id="edit-form-{{ interface.name }}" class="card refer-preloader">
             {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only -%}
             {%- include 'admin/core/form/save/header.html.twig' -%}
             <div class="card-body pb-2 if not hideRadius %} top-radius{% endif %}">

@@ -53,6 +53,19 @@ $gray-700: #4F5467 !global;
 $gray-800: #343a40 !global;
 $gray-900: #212529 !global;
 
+$blue: #00265f !default;
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #d63384 !default;
+$red: #dc3545 !default;
+$orange: #fd7e14 !default;
+$yellow: #ffc107 !default;
+$green: rgba(13, 148, 136, .50) !default;
+$teal: rgba(13, 148, 136, .50) !default;
+$cyan: #3c91e6 !default;
+$warning: rgba(245, 158, 11, .7) !default;
+$text-muted: $gray-600 !default;
+
 $black: #07090d !global;
 $dark: lighten($black, 5%) !global;
 $primary: #6f42c1 !default;
@@ -64,7 +77,7 @@ $theme-color-alt: $theme-color !global;
 $info-darken: $theme-color !global;
 $info-darken-dark: #1a1b21 !global;
 $info-darken-light: #30323d;
-$info: #383a45 !global;
+$info: $cyan !global;
 $info-light: $gray-200 !global;
 $info-lighten: $info-light !global;
 $info-lighten-light: $info-lighten !global;
@@ -75,19 +88,6 @@ $sidebar-alt: #f9f9f9 !global;
 $sidebar-text: #8d97ad !global;
 $sidebar-icons: #787f91 !global;
 $right-sidebar-bg: $info-darken-dark !global;
-
-$blue: #00265f !default;
-$indigo: #6610f2 !default;
-$purple: #6f42c1 !default;
-$pink: #d63384 !default;
-$red: #dc3545 !default;
-$orange: #fd7e14 !default;
-$yellow: #ffc107 !default;
-$green: rgba(13, 148, 136, .50) !default;
-$teal: rgba(13, 148, 136, .50) !default;
-$cyan: #3C91E6 !default;
-$warning: rgba(245, 158, 11, .7) !default;
-$text-muted: $gray-600 !default;
 
 $border-color-transparent: transparentize($white, .9) !default;
 $border-color: rgba(255, 255, 255, 0.08) !default;
@@ -170,7 +170,7 @@ $theme-colors: (
     primary: $orange,
     secondary: $gray-100,
     success: $green,
-    info: $blue,
+    info: $info,
     warning: $yellow,
     danger: $red,
     light: $gray-100,

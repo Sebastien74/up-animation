@@ -25,7 +25,7 @@
     {%- set formClass = formClass~' security' -%}
 {%- endif -%}
 
-<div id="steps-form-container- {{ entity.slug }}" class="steps-form-container keep-form-module form-wizard position-relative{% if formConfiguration.recaptcha %} recaptcha-referer{% endif %}">
+<div id="steps-form-container-{{ entity.slug }}" class="steps-form-container keep-form-module form-wizard position-relative{% if formConfiguration.recaptcha %} recaptcha-referer{% endif %}">
     {{ macroWebmaster.box({
         title: "Éditer le formulaire"|trans([], 'front_webmaster'),
         role: 'ROLE_FORM',

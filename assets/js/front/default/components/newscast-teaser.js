@@ -1,4 +1,5 @@
 import scrollToEl from "../../../vendor/components/scroll-to";
+import {debounce} from "../functions";
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -13,24 +14,34 @@ document.addEventListener("DOMContentLoaded", () => {
             if (screenWidth > 767) {
                 let catElWidth = 0;
                 let contentWidth = 0;
-                teaser.querySelectorAll('.nav-link').forEach((el) => {
+                
+                const linksData = Array.from(teaser.querySelectorAll('.nav-link')).map((el) => {
                     const catEl = el.querySelector('.category-wrap');
-                    let catWidth = catEl ? catEl.offsetWidth : 0;
-                    let width = el.offsetWidth;
-                    if (catWidth > catElWidth) {
-                        catElWidth = catWidth;
-                        contentWidth = width - catElWidth;
+                    return {
+                        el,
+                        catEl,
+                        catWidth: catEl ? catEl.offsetWidth : 0,
+                        width: el.offsetWidth,
+                        contentEl: el.querySelector('.content')
+                    };
+                });
+
+                linksData.forEach(data => {
+                    if (data.catWidth > catElWidth) {
+                        catElWidth = data.catWidth;
+                        contentWidth = data.width - catElWidth;
                     }
                 });
-                teaser.querySelectorAll('.nav-link').forEach((el) => {
-                    const catEl = el.querySelector('.category-wrap');
-                    const contentEl = el.querySelector('.content');
-                    if (catEl) {
-                        catEl.style.width = catElWidth + 'px';
-                    }
-                    if (contentEl) {
-                        contentEl.style.width = contentWidth + 'px';
-                    }
+
+                requestAnimationFrame(() => {
+                    linksData.forEach((data) => {
+                        if (data.catEl) {
+                            data.catEl.style.width = catElWidth + 'px';
+                        }
+                        if (data.contentEl) {
+                            data.contentEl.style.width = contentWidth + 'px';
+                        }
+                    });
                 });
             }
 
@@ -56,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     teaser();
-    window.addEventListener('resize', function () {
+    window.addEventListener('resize', debounce(function () {
         teaser();
-    });
+    }, 250));
 });

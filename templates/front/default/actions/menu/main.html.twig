@@ -36,7 +36,7 @@
             {%- set linkClass = 1 == link.level ? linkClass~' text-initial' : linkClass -%}
             {%- set linkClass = link.active ? linkClass~' active text-primary' : linkClass~' active text-dark' -%}
             <{%- if 'a' == element -%}a{%- else -%}div{%- endif -%} class="{{ linkClass }} text-center" {%- if link.dataAnchor -%} data-anchor="{{ link.dataAnchor }}" {%- endif -%}
-                href="{% if path %}{{ path }}{% else %}javascript:void(0){% endif %}" {%- if link.children and not dropdownHover -%} id="navbar-link- {{ link.id }}" {%- endif -%}
+                href="{% if path %}{{ path }}{% else %}javascript:void(0){% endif %}" {%- if link.children and not dropdownHover -%} id="navbar-link-{{ link.id }}" {%- endif -%}
                 {%- if link.children and not dropdownHover -%} role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" {%- elseif link.linkBlank -%} target="_blank" {%- else -%}{%- endif -%}
                 {%- if link.linkExternal -%} rel="noopener noreferrer" {%- endif -%}
                 {%- if pushMicroData -%} itemprop="url" {%- endif -%}>
@@ -48,14 +48,14 @@
                 {%- endif -%}
                 {%- if link.children -%}
                     <span class="caret position-absolute ms-2{% if dropdownHover %} dropdown-toggle{% endif %}"
-                        {%- if dropdownHover -%} id="navbar-link- {{ link.id }}" aria-label="{{"Voir plus"|trans|striptags }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" {%- endif -%}>
+                        {%- if dropdownHover -%} id="navbar-link-{{ link.id }}" aria-label="{{"Voir plus"|trans|striptags }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" {%- endif -%}>
                         {%- set icon = link.level == 1 ? 'down' : 'right' -%}
-                        <i class="icon-arrow- {{ icon }} position-relative" aria-label="{{"Voir plus"|trans|striptags }}"></i>
+                        <i class="icon-arrow-{{ icon }} position-relative" aria-label="{{"Voir plus"|trans|striptags }}"></i>
                     </span>
                 {%- endif -%}
             </{%- if 'a' == element -%}a{%- else -%}div{%- endif -%}>
             {%- if link.children -%}
-                <div class="dropdown-menu dropdown-menu-level-{{ link.level }}" aria-labelledby="navbar-link- {{ link.id }}" data-bs-popper="static">
+                <div class="dropdown-menu dropdown-menu-level-{{ link.level }}" aria-labelledby="navbar-link-{{ link.id }}" data-bs-popper="static">
                     <div class="dropdown-back mb-3 fw-600 nav-link text-primary text-center dropdown-item d-lg-none" aria-hidden="true">
                         <i class="icon-arrow-left text-primary me-3" aria-hidden="true"></i>
                         <span class="label-back text-warning position-relative fw-500 me-3">{{ link.title|unescape|raw }}</span>
@@ -71,7 +71,7 @@
     {%- endif -%}
 {%- endmacro -%}
 
-<div id="menu-container- {{ slug }}" class="menu-container w-100 {% if fixedOnScroll or alwaysFixed %} as-sticky sticky-top{% else %}position-relative{% endif %}{% if alwaysFixed %} always-sticky{% endif %} {{ dropdownClass }}"
+<div id="menu-container-{{ slug }}" class="menu-container w-100 {% if fixedOnScroll or alwaysFixed %} as-sticky sticky-top{% else %}position-relative{% endif %}{% if alwaysFixed %} always-sticky{% endif %} {{ dropdownClass }}"
      data-expand="{{ expand }}"
      tabindex="0">
     {{ macroWebmaster.box({

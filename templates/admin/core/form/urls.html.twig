@@ -21,14 +21,14 @@
 
 {%- else -%}
 
-    <div class="col-12">
+    <div class="col-12 mb-3">
         <h4 class="main-subtitle">
             <i class="icm-link"></i>{%- if allLocales|length > 1 -%}{{ "URLS"|trans }}{%- else -%}{{ "URL"|trans }}{%- endif -%}
         </h4>
         {%- for url in urls -%}
             {%- set locale = url.vars.value.locale -%}
             {%- set urlId = url.vars.value.id -%}
-            <div class="url-edit-group {% if locale not in allLocales %}d-none{% else %}d-flex align-items-center gap-3{% endif %} mb-3">
+            <div class="url-edit-group {% if locale not in allLocales %}d-none{% else %}d-flex align-items-center gap-3{% endif %}{% if not loop.last %} mb-2{% endif %}">
                 <div class="d-flex align-items-center w-100 me-4">
                     {%- set urlId = url.vars.value.id is defined and url.vars.value.id ? url.vars.value.id : null -%}
                     <div class="input-group url-group{% if allLocales|length == 1 %} unique-locale{% endif %}" data-url-id="{{ urlId }}">

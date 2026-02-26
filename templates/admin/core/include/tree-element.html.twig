@@ -159,10 +159,10 @@
                     <span class="delete-pack-control custom-checkbox d-flex align-items-center"
                           data-bs-toggle="tooltip" title="{{"Cocher pour supprimer"|trans|striptags }}">
                         <input class="custom-control-input delete-pack"
-                               id="delete-pack- {{ entity.id }}"
+                               id="delete-pack-{{ entity.id }}"
                                data-path="{{ path('admin_'~interfaceName~'_delete', args) }}"
                                type="checkbox">
-                        <label class="custom-control-label delete-pack-label danger" for="delete-pack- {{ entity.id }}"></label>
+                        <label class="custom-control-label delete-pack-label danger" for="delete-pack-{{ entity.id }}"></label>
                     </span>
                 {%- endif -%}
 

@@ -46,10 +46,18 @@ $enable-alert: true;
 
     background-color: $white;
     background-size: cover;
-    padding-top: 5rem;
-    padding-bottom: 7rem;
     position: relative;
     min-height: calc(100dvh - 70px - 169px);
+
+    @include mediaQuery(max-lg) {
+        padding-top: 5rem;
+        padding-bottom: 7rem;
+    }
+
+    @include mediaQuery(min-lg) {
+        padding-top: 5rem;
+        padding-bottom: 7rem;
+    }
 
     &:before {
         position: absolute;

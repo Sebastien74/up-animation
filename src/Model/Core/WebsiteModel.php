@@ -82,15 +82,7 @@ final class WebsiteModel extends BaseModel
         $configuration = ConfigurationModel::fromEntity(self::cache($website, 'configuration', self::$cache), $information, $coreLocator, $locale);
         $security = $website->getSecurity();
 
-        /** Preload logo */
-        $logo = !empty($information->logos['logo']) && $coreLocator->schemeAndHttpHost() && str_contains($information->logos['logo'], self::$coreLocator->schemeAndHttpHost())
-            ? $information->logos['logo'] : (!empty($information->logos['logo']) ? self::$coreLocator->schemeAndHttpHost().$information->logos['logo'] : null);
-        $linkProvider = self::$coreLocator->request() ? self::$coreLocator->request()->attributes->get('_links', new GenericLinkProvider()) : null;
-        if ($logo && $linkProvider) {
-            self::$coreLocator->request()->attributes->set('_links', $linkProvider->withLink(
-                (new Link('preload', $logo))->withAttribute('as', 'image')
-            ));
-        }
+        self::preloadLogo($information);
 
         $hosts = self::host($website);
 
@@ -160,5 +152,39 @@ final class WebsiteModel extends BaseModel
         $pageUrl = $page instanceof Page ? ViewModel::url($page) : false;
 
         return $pageUrl && $pageUrl->online && $pageUrl->path ? $pageUrl->path : $url;
+    }
+
+    /**
+     * To preload logo.
+     */
+    private static function preloadLogo(InformationModel $information): void
+    {
+        $logo = !empty($information->logos['logo']) ? $information->logos['logo'] : null;
+        $linkProvider = self::$coreLocator->request() ? self::$coreLocator->request()->attributes->get('_links', new GenericLinkProvider()) : null;
+        if ($logo && $linkProvider) {
+            $mimeByExt = [
+                'jpg'  => 'image/jpeg',
+                'jpeg' => 'image/jpeg',
+                'png'  => 'image/png',
+                'webp' => 'image/webp',
+                'avif' => 'image/avif',
+                'gif'  => 'image/gif',
+                'svg'  => 'image/svg+xml',
+                'ico'  => 'image/x-icon',
+            ];
+            $logo = !str_starts_with($logo, 'http') ? self::$coreLocator->schemeAndHttpHost().$logo : $logo;
+            $link = (new Link('preload', $logo))
+                ->withAttribute('as', 'image')
+                ->withAttribute('fetchpriority', 'high');
+            $ext = strtolower(pathinfo(parse_url($logo, PHP_URL_PATH) ?? $logo, PATHINFO_EXTENSION));
+            if ($ext === 'svg') {
+                $link = $link->withAttribute('media', 'all');
+            }
+            if ($ext !== '' && isset($mimeByExt[$ext])) {
+                $link = $link->withAttribute('type', $mimeByExt[$ext]);
+            }
+            $linkProvider = $linkProvider->withLink($link);
+            self::$coreLocator->request()->attributes->set('_links', $linkProvider);
+        }
     }
 }

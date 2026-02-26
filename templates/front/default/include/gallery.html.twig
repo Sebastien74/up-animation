@@ -12,7 +12,7 @@
 
 {%- if medias|length > 0 -%}
     <div class="masonry-wrap">
-        <div id="gallery- {{ slug~'-'~entity.id }}"
+        <div id="gallery-{{ slug~'-'~entity.id }}"
              class="row position-relative {% if popup %} popup-gallery{% endif %}{% if not isMobile() %} masonry{% endif %}"
              data-masonry='{"percentPosition": true }' data-component="masonry">
             {%- for media in medias -%}

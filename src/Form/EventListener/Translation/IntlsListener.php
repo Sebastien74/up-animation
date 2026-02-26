@@ -59,7 +59,7 @@ class IntlsListener extends BaseListener
                     }
                     $defaultIntl = $intl;
                     $defaultTitleForce = $intl->getTitleForce();
-                    $defaultTargetStyle = $intl;
+                    $defaultTargetStyle = $intl->getTargetStyle();
                 }
             }
         }

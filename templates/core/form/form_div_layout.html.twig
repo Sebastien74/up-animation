@@ -24,7 +24,7 @@
         <div class="input-group">
         {%- if addonSide == 'left' -%}
             <span class="input-group-text addon" data-addon="{{ attr.addon }}">
-                <i class="icm- {{ attr.addon }} btn-icon"></i>
+                <i class="icm-{{ attr.addon }} btn-icon"></i>
             </span>
         {%- endif -%}
     {%- endif -%}
@@ -60,7 +60,7 @@
     {%- endif -%}
     {%- if asEmoji -%}
         {%- set modalId = 'emoji-modal-'~uniqId() -%}
-            <span class="input-group-text addon bg-info cursor" data-bs-toggle="modal" data-bs-target="# {{ modalId }}">{{ 'fal plus'|icon(17, 17, 'white') }}</span>
+            <span class="input-group-text addon bg-info cursor" data-bs-toggle="modal" data-bs-target="#{{ modalId }}">{{ 'fal plus'|icon(17, 17, 'white') }}</span>
         </div>
         <div class="modal emoji-modal fade" id="{{ modalId }}" tabindex="-1" aria-labelledby="{{ modalId }}-label" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">

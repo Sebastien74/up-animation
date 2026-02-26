@@ -5,7 +5,7 @@
     <div class="modal-wrapper">
         <div class="modal fade modal-duplicate-small layout-modal"
              id="modal-background" tabindex="-1" role="dialog"
-             aria-labelledby="modal-duplicate- {{ interface['name']~'-'~entity.id }}-label" aria-hidden="true">
+             aria-labelledby="modal-duplicate-{{ interface['name']~'-'~entity.id }}-label" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                 {{ form_start(form, { attr: {
                     novalidate: "novalidate",
@@ -16,7 +16,7 @@
                     <div class="modal-content border refer-preloader">
                         {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
                         <div class="modal-header">
-                            <h5 class="modal-title text-center w-100" id="modal-duplicate- {{ interface['name']~'-'~entity.id }}-label"><i class="icm-copy"></i></h5>
+                            <h5 class="modal-title text-center w-100" id="modal-duplicate-{{ interface['name']~'-'~entity.id }}-label"><i class="icm-copy"></i></h5>
                             <button class="btn-close" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
                                 <i class="icm-times"></i>
                             </button>

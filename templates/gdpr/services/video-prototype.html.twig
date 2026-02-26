@@ -10,7 +10,7 @@
         {%- set height = thumbConfiguration.height is defined ? thumbConfiguration.height : 480 -%}
         {%- set poster = havePoster and width and height ? media|file({}, {maxWidth: width, maxHeight: height, path: true})
             : (havePoster ? media|file({}, {filter: 'youtube_poster', path: true})) -%}
-        <div id="youtube- {{ uniqId() }}"
+        <div id="youtube-{{ uniqId() }}"
              class="w-100 embed-youtube embed-data"
              data-title="{{ title|striptags }}"
              data-poster="{{ poster }}"

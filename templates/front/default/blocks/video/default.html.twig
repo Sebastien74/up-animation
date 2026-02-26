@@ -20,7 +20,7 @@
 {%- set radius = block.radius is defined ? block.radius : false -%}
 
 {%- if intlVideo -%}
-    <div id="video- {{ videoId }}" class="video-block {% if radius %} radius{% endif %}">
+    <div id="video-{{ videoId }}" class="video-block {% if radius %} radius{% endif %}">
         {{ intlVideo|video(media, {thumbConfiguration: thumbConfiguration}) }}
     </div>
 {%- elseif intlMedia.media is defined and intlMedia.media -%}
@@ -31,7 +31,7 @@
         {%- endif -%}
     {%- endfor -%}
     {%- if haveVideo -%}
-        <div id="video- {{ videoId }}" class="video-block-html position-relative w-100{% if radius %} radius{% endif %}">
+        <div id="video-{{ videoId }}" class="video-block-html position-relative w-100{% if radius %} radius{% endif %}">
             <div class="video-container position-relative w-100">
                 {%- set poster = havePoster ? intlMedia|file(thumbConfiguration, {path: true}) : null -%}
                 {%- if (havePoster and not isMain) or (havePoster and isMain and not isMobile()) -%}
@@ -62,7 +62,7 @@
                             {%- set haveTrack = true -%}
                         {%- endif -%}
                     {%- endfor -%}
-                    <video id="video- {{ block.id }}" data-elements-to-hide=""
+                    <video id="video-{{ block.id }}" data-elements-to-hide=""
                         {%- if title -%} aria-label="{{ title }}" {%- endif -%}
                            class="html-video video-fluid lazy-video w-100{% if autoplay %} autoplay playing{% endif %}{% if playInHover %} play-in-hover{% endif %}"
                            preload="none" inert

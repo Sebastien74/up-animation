@@ -7,9 +7,9 @@
             {%- if children -%}
                 <i class="icm-arrow-alt-to-bottom cursor me-2 transition-fast collapse-icon collapsed"
                    data-bs-toggle="collapse"
-                   href="#pages-list- {{ page.id }}"
+                   href="#pages-list-{{ page.id }}"
                    aria-expanded="false"
-                   aria-controls="pages-list- {{ page.id }}"></i>
+                   aria-controls="pages-list-{{ page.id }}"></i>
             {%- else -%}
                 <span class="ms-4"></span>
             {%- endif -%}
@@ -17,18 +17,18 @@
             {%- set isOnline = intlUrl.online is defined and intlUrl.online -%}
             {%- set isArchived = intlUrl.archived is defined and intlUrl.archived -%}
             {%- set tooltipTitle = isArchived ? "Page archivée"|trans : (not isOnline ? "Page non publiée"|trans : null) -%}
-            <label for="item-page- {{ page.id }}" class="cursor mb-0{% if tooltipTitle %} text-muted opacity-50{% endif %}"
+            <label for="item-page-{{ page.id }}" class="cursor mb-0{% if tooltipTitle %} text-muted opacity-50{% endif %}"
                 {%- if tooltipTitle -%} data-bs-toggle="tooltip" title="{{ tooltipTitle|striptags }}" {%- endif -%}>{{ page.adminName|truncate(40) }}</label>
         </div>
         <div class="push">
             <div class="custom-control custom-checkbox">
-                <input id="item-page- {{ page.id }}" name="page- {{ page.id }}" value="{{ page.id }}" class="custom-control-input ajax-get-loop-item" type="checkbox">
-                <label class="checkbox-custom custom-control-label" for="item-page- {{ page.id }}"></label>
+                <input id="item-page-{{ page.id }}" name="page-{{ page.id }}" value="{{ page.id }}" class="custom-control-input ajax-get-loop-item" type="checkbox">
+                <label class="checkbox-custom custom-control-label" for="item-page-{{ page.id }}"></label>
             </div>
         </div>
     </div>
     {%- if children -%}
-        <ul id="pages-list- {{ page.id }}" class="w-100 ps-4 collapse list-unstyled">
+        <ul id="pages-list-{{ page.id }}" class="w-100 ps-4 collapse list-unstyled">
             {%- for child in children -%}
                 {%- include 'admin/page/menu/link-element.html.twig' with {page: child, tree: tree} only -%}
             {%- endfor -%}

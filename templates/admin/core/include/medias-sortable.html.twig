@@ -1,4 +1,4 @@
-{%- trans_default_domain 'admin' -%}
+﻿{%- trans_default_domain 'admin' -%}
 
 {%- if entity.mediaRelations|length > 0 -%}
 
@@ -58,7 +58,7 @@
             {%- for mediaRelation in medias -%}
                 {%- set disabledFirstMedia = disabledFirstMedia is defined and disabledFirstMedia and loop.first -%}
                 {%- if mediaRelation.locale == website.configuration.locale and not disabledFirstMedia -%}
-                    <li id="ui-media-relation- {{ mediaRelation.id }}"
+                    <li id="ui-media-relation-{{ mediaRelation.id }}"
                         class="ui-state-default sortable-item parent-row"
                         data-id="{{ mediaRelation.id }}"
                         data-entity-id="{{ entity.id }}"
@@ -89,7 +89,7 @@
 
                                 {%- set filename = mediaRelation.media.filename is defined ? mediaRelation.media.filename : null -%}
                                 {%- set asMediaWarning = tooHeavyFiles[filename] is defined or mediasAlert[filename] is defined -%}
-                                <small id="heading- {{ mediaRelation.id }}" class="ms-2 {% if asMediaWarning %} text-warning fw-700{% endif %}">
+                                <small id="heading-{{ mediaRelation.id }}" class="ms-2 {% if asMediaWarning %} text-warning fw-700{% endif %}">
                                     {%- if mediaRelation.media.filename is defined -%}{{ mediaRelation.media.filename }}{%- endif -%}
                                 </small>
                                 {%- if mediaRelation.main -%}
@@ -135,9 +135,9 @@
                                                   formOptions: formOptions is defined ? formOptions : null
                                               }) }}"
                                               data-bs-toggle="collapse"
-                                              href="#collapse- {{ mediaRelation.id }}"
+                                              href="#collapse-{{ mediaRelation.id }}"
                                               aria-expanded="false"
-                                              aria-controls="collapse- {{ mediaRelation.id }}">
+                                              aria-controls="collapse-{{ mediaRelation.id }}">
                                             <i class="icm-pencil-alt"></i>
                                         </span>
                                     </span>
@@ -148,7 +148,7 @@
                                         mediaRelation: mediaRelation.id,
                                         entityId: entity.id,
                                         entityNamespace: class|url_encode}) }}"
-                                       data-target="#ui-media-relation- {{ mediaRelation.id }}"
+                                       data-target="#ui-media-relation-{{ mediaRelation.id }}"
                                        class="btn-icon small danger swal-delete-link"
                                        data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}">
                                         <i class="icm-trash"></i>
@@ -156,25 +156,25 @@
                                     <span data-bs-toggle="tooltip" title="{{"Cocher pour supprimer"|trans|striptags }}">
                                         <div class="delete-pack-control custom-checkbox d-none d-sm-inline-block">
                                             <input class="custom-control-input delete-pack"
-                                                   id="delete-pack- {{ mediaRelation.id }}"
+                                                   id="delete-pack-{{ mediaRelation.id }}"
                                                    data-path="{{ path('admin_mediarelation_delete', {
                                                        website: websiteId(),
                                                        mediaRelation: mediaRelation.id,
                                                        entityId: entity.id,
                                                        entityNamespace: class|url_encode}) }}"
                                                    type="checkbox">
-                                            <label class="custom-control-label delete-pack-label" for="delete-pack- {{ mediaRelation.id }}"></label>
+                                            <label class="custom-control-label delete-pack-label" for="delete-pack-{{ mediaRelation.id }}"></label>
                                         </div>
                                     </span>
                                 {%- endif -%}
                             </div>
                         </div>
-                        <div id="collapse- {{ mediaRelation.id }}" class="parent-preloader collapse" aria-labelledby="heading- {{ mediaRelation.id }}" data-parent="#medias-accordion">
+                        <div id="collapse-{{ mediaRelation.id }}" class="parent-preloader collapse" aria-labelledby="heading-{{ mediaRelation.id }}" data-parent="#medias-accordion">
                             {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'media-preloader-'~mediaRelation.id, preloaderClass: 'inner-preloader radius-preloader'} -%}
                             <div class="card-body position-relative pb-2">
                                 <div class="progress medias-preloader-tab">
                                     <div class="bg-stripe-loader"></div>
-                                    <div class="vertical-align">
+                                    <div class="d-flex flex-column justify-content-center align-items-center w-100">
                                         <h4>{{ "Chargement en cours..."|trans }}</h4>
                                     </div>
                                 </div>

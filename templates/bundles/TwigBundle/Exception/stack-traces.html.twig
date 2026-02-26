@@ -51,7 +51,7 @@
                 <div class="container">
                     <h2 class="exception-hierarchy">
                         {%- for previousException in exception.allPrevious|reverse -%}
-{#                            <a href="#trace-box- {{ loop.revindex + 1 }}" target="_blank">{{ previousException.class|abbr_class }}</a>#}
+{#                            <a href="#trace-box-{{ loop.revindex + 1 }}" target="_blank">{{ previousException.class|abbr_class }}</a>#}
                             <span class="icon">{{ include('@Twig/images/chevron-right.svg') }}</span>
                         {%- endfor -%}
 {#                        <a href="#trace-box-1" target="_blank">{{ exception.class|abbr_class }}</a>#}

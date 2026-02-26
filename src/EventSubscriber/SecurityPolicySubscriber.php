@@ -32,7 +32,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class SecurityPolicySubscriber implements EventSubscriberInterface
 {
-    private const bool CSP_DISABLED_FOR_DEV = true;
+    private const bool CSP_DISABLED_FOR_DEV = false;
     private const bool CSP_DISABLED = false;
     private const bool XSS_DENIED = true;
     private const string XSS_PATTERN = '/(<\s*script|\bon(abort|afterprint|beforeprint|beforeunload|blur|canplay|canplaythrough|change|click|contextmenu|copy|cut|dblclick|drag|dragend|dragenter|dragleave|dragover|dragstart|drop|durationchange|ended|error|focus|focusin|focusout|hashchange|input|invalid|keydown|keypress|keyup|load|loadeddata|loadedmetadata|loadstart|message|mousedown|mouseenter|mouseleave|mousemove|mouseover|mouseout|mouseup|mousewheel|offline|online|open|pagehide|pageshow|paste|pause|play|playing|popstate|progress|ratechange|resize|reset|scroll|search|seeked|seeking|select|show|stalled|storage|submit|suspend|timeupdate|toggle|unload|volumechange|waiting|wheel)\s*=|javascript:|<svg|<img|<iframe|<object|data:text\/html)/i';
@@ -366,7 +366,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
     private function securityPolicy(): string
     {
         $nonceValue = $this->nonceGenerator->getNonce();
-        $nonce = "'nonce-{$nonceValue}'";
+        $nonce = "'{$nonceValue}'";
         $matomo = 'https://matomo.agence-felix.fr';
 
         $allowedScriptDomains = [
@@ -398,7 +398,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             'https://*.google-analytics.com',
             'https://stats.g.doubleclick.net',
             'https://www.googletagmanager.com',
-            'https://*.googlesyndication.com*',
+            'https://*.googlesyndication.com',
             'https://cdn.matomo.cloud',
             $matomo,
             'https://*.clarity.ms',
@@ -408,10 +408,10 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             'https://www.google.com',
         ];
 
-        // Allowed script els
+        // Allowed script elements: do NOT use 'strict-dynamic' here so 'self' hosts remain allowed without nonce
         $scriptEls = [
             $nonce,
-            "'strict-dynamic'",
+//            "'strict-dynamic'",
             "'unsafe-inline'",
             "'self'",
             'https://www.googletagmanager.com',
@@ -449,7 +449,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             'https://*.basemaps.cartocdn.com',
             'https://www.google-analytics.com',
             'https://www.googletagmanager.com',
-            'https://*.googlesyndication.com*',
+            'https://*.googlesyndication.com',
             'https://www.google.com',
         ];
 
@@ -475,7 +475,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             "media-src 'self' data:; ".
             "style-src ".implode(' ', $styleSrcElem)."; ".
             "style-src-elem ".implode(' ', $styleSrcElem)."; ".
-            "style-src-attr 'unsafe-inline'; ".
+            "style-src-attr ".implode(' ', ["'unsafe-hashes'", "'unsafe-inline'"])."; ".
             "font-src ".implode(' ', $fontsDomains)."; ".
             "object-src 'none'; base-uri 'self'; form-action 'self'; ".
             "upgrade-insecure-requests;";

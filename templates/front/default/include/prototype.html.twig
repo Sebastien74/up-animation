@@ -53,10 +53,10 @@
         {%- endfor -%}
 
         {%- if not hideDelete -%}
-            <span role="button" class="btn btn-primary p-0 position-absolute collection-open-modal" data-bs-toggle="modal" data-bs-target="#collection-delete-modal- {{ entityId }}">
+            <span role="button" class="btn btn-primary p-0 position-absolute collection-open-modal" data-bs-toggle="modal" data-bs-target="#collection-delete-modal-{{ entityId }}">
                 {{ 'fas trash'|icon(14, 14, 'dark') }}
             </span>
-            <div class="modal fade collection-delete-modal" id="collection-delete-modal- {{ entityId }}" tabindex="-1" aria-labelledby="collection-delete-modal- {{ entityId }}-label" aria-hidden="true">
+            <div class="modal fade collection-delete-modal" id="collection-delete-modal-{{ entityId }}" tabindex="-1" aria-labelledby="collection-delete-modal-{{ entityId }}-label" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content text-center">
                         <div class="modal-loader row text-center position-absolute d-none">

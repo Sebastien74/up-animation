@@ -224,9 +224,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    document.querySelectorAll('link.preload-css[rel="preload"]').forEach(link => {
-        link.rel = 'stylesheet';
-    });
+    // document.querySelectorAll('link.preload-css[rel="preload"]').forEach(link => {
+    //     link.rel = 'stylesheet';
+    // });
 
     document.querySelectorAll('.js-open-window').forEach(button => {
         button.addEventListener('click', () => {

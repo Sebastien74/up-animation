@@ -11,7 +11,7 @@
     {%- include 'front/'~websiteTemplate~'/include/microdata-entities.html.twig' with {allEntities: allEntities, url: url, website: website} only -%}
 {%- endif -%}
 
-<div id="listing- {{ interfaceName }}-container-{{ listing.slug }}" class="listing- {{ interfaceName }}-container listing-container">
+<div id="listing-{{ interfaceName }}-container-{{ listing.slug }}" class="listing-{{ interfaceName }}-container listing-container">
 
     {%- if asListing -%}
         {{ macroWebmaster.box({

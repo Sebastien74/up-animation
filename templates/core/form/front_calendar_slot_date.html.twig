@@ -7,12 +7,12 @@
                     {%- for occurrence in date.occurrences -%}
                         <li {% if not loop.last -%} class="mb-2" {%- endif -%}>
                             {%- set slotId = date.datetime|date('Y-m-d')~'-'~loop.index -%}
-                            <label for="slot- {{ slotId }}"
+                            <label for="slot-{{ slotId }}"
                                    class="w-100 btn-block-slot btn-{{ occurrence.available~" "~occurrence.available }}">
                                 {{ occurrence.datetime|date('H:i') }}
                                 {%- for choice in choices -%}
                                     {%- if choice.value == occurrence.datetime|date('Y-m-d H:i:s') -%}
-                                        <input type="radio" id="slot- {{ slotId }}" class="d-none"
+                                        <input type="radio" id="slot-{{ slotId }}" class="d-none"
                                                name="{{ full_name }}"
                                                required="required"
                                                value="{{ occurrence.datetime|date('Y-m-d H:i:s') }}">

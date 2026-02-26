@@ -21,14 +21,23 @@ export default function () {
             const websiteAlert = document.getElementById('website-alert');
             const position = websiteAlert ? websiteAlert.dataset.position : false;
             if ('bottom' === position) {
-                body.style.marginBottom = websiteAlert.offsetHeight + 'px';
+                const alertHeight = websiteAlert.offsetHeight;
+                body.style.marginBottom = alertHeight + 'px';
                 body.style.position = 'relative';
                 body.style.bottom = '-2px';
             }
         }
     }
     websiteAlertDisplay();
-    window.addEventListener('resize', websiteAlertDisplay);
+    window.addEventListener('resize', () => {
+        if (websiteAlertDisplay._raf) {
+            cancelAnimationFrame(websiteAlertDisplay._raf);
+        }
+        websiteAlertDisplay._raf = requestAnimationFrame(() => {
+            websiteAlertDisplay();
+            websiteAlertDisplay._raf = null;
+        });
+    }, {passive: true});
 
     if (boxAlert) {
 
@@ -96,9 +105,17 @@ export default function () {
                     body.classList.remove('alert-active');
                     if ('top' === position && stickyNav) {
                         body.style.marginTop = '-' + height;
+                        if (navigation) {
+                            navigation.style.transition = 'top .5s ease-in-out';
+                            navigation.style.top = '0px';
+                        }
                     } else if ('top' === position) {
                         boxAlert.style.marginTop = '-' + height;
                         boxAlert.style.transition = 'margin-top .5s ease-in-out';
+                        if (navigation) {
+                            navigation.style.transition = 'top .5s ease-in-out';
+                            navigation.style.top = '0px';
+                        }
                     } else if ('bottom' === position) {
                         boxAlert.style.bottom = '-' + height;
                         body.style.marginBottom = '0';
@@ -112,21 +129,55 @@ export default function () {
     }
 
     /**
-     * Apply the top offset to fixed navigation based on alert height.
+     * Apply the top offset to fixed navigation based on the visible alert height (on scroll/resize).
      */
     function applyOffset() {
-        const alertHeight = boxAlert ? boxAlert.offsetHeight : 0;
-        const navStyle = window.getComputedStyle(navigation);
-        const isFixed = navStyle.position === 'fixed';
-        if (!isFixed) {
-            navigation.style.top = '';
-            body.style.paddingTop = '';
+
+        if (!navigation) {
             return;
         }
-        navigation.style.top = `${alertHeight}px`;
+
+        const navStyle = window.getComputedStyle(navigation);
+        const isFixed = navStyle.position === 'fixed';
+
+        if (!isFixed) {
+            return;
+        }
+
+        // If an alert is missing/removed or not a top alert, no offset.
+        if (!boxAlert || !boxAlert.isConnected || boxAlert.dataset.position !== 'top') {
+            navigation.style.top = '0px';
+            return;
+        }
+
+        // Visible part of the alert in viewport:
+        // - at the top of the page: rect.bottom ~= alertHeight
+        // - when scrolling down: rect.bottom decreases to 0
+        const rect = boxAlert.getBoundingClientRect();
+        const alertHeight = boxAlert.offsetHeight;
+
+        const visible = Math.max(0, Math.min(alertHeight, rect.bottom));
+        navigation.style.top = `${visible}px`;
     }
+
+    /**
+     * rAF throttle for scroll/resize callbacks.
+     */
+    function scheduleApplyOffset() {
+        if (scheduleApplyOffset._raf) {
+            return;
+        }
+        scheduleApplyOffset._raf = requestAnimationFrame(() => {
+            scheduleApplyOffset._raf = null;
+            applyOffset();
+        });
+    }
+
+    scheduleApplyOffset._raf = null;
+
     if (navigation) {
         applyOffset();
-        window.addEventListener('resize', applyOffset, { passive: true });
+        window.addEventListener('resize', scheduleApplyOffset, {passive: true});
+        window.addEventListener('scroll', scheduleApplyOffset, {passive: true});
     }
 }

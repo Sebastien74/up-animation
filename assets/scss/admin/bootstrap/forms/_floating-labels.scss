@@ -11,6 +11,7 @@
         line-height: $form-floating-line-height;
     }
 
+    .ia-form-group > label,
     > label {
         position: absolute;
         top: 0;
@@ -31,6 +32,7 @@
         @include transition($form-floating-transition);
     }
 
+    > .ia-form-group > .form-control,
     > .input-group > .form-control,
     > .form-control,
     > .form-control-plaintext {
@@ -54,6 +56,10 @@
         padding-top: $form-floating-input-padding-t !important;
         padding-bottom: $form-floating-input-padding-b !important;
         padding-left: $form-floating-padding-x;
+    }
+
+    .ia-form-group label {
+        transform: $form-floating-label-transform;
     }
 
     > .form-control:focus,

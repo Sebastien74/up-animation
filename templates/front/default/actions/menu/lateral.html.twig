@@ -60,7 +60,7 @@
                 <div class="link-wrap">
             {%- endif -%}
                 <{%- if 'a' == element -%}a{%- else -%}div{%- endif -%} class="{{ linkClass }}" {%- if link.dataAnchor -%} data-anchor="{{ link.dataAnchor }}" {%- endif -%}
-                    href="{% if path %}{{ path }}{% else %}javascript:void(0){% endif %}" {%- if link.children and not dropdownHover -%} id="navbar-link- {{ link.id }}" {%- endif -%}
+                    href="{% if path %}{{ path }}{% else %}javascript:void(0){% endif %}" {%- if link.children and not dropdownHover -%} id="navbar-link-{{ link.id }}" {%- endif -%}
                     {%- if link.linkBlank -%} target="_blank" {%- else -%}{%- endif -%}
                     {%- if link.linkExternal -%} rel="noopener noreferrer" {%- endif -%}
                     {%- if pushMicroData -%} itemprop="url" {%- endif -%}>
@@ -98,7 +98,7 @@
                             }) }}
                         </a>
                         {%- if link.level == 1 -%}
-                            <i class="close-menu-level- {{ link.level }} close-menu-submenu ms-auto icon-times text-primary cursor d-inline-block"></i>
+                            <i class="close-menu-level-{{ link.level }} close-menu-submenu ms-auto icon-times text-primary cursor d-inline-block"></i>
                         {%- endif -%}
                     </div>
                     {%- set subLabel = link.subTitle ? link.subTitle : link.title -%}
@@ -156,7 +156,7 @@
     {%- endif -%}
 {%- endmacro -%}
 
-<div id="menu-container- {{ slug }}" class="menu-container as-lateral w-100 {% if fixedOnScroll or alwaysFixed %} as-sticky sticky-top{% else %}position-relative{% endif %}{% if alwaysFixed %} always-sticky{% endif %} {{ dropdownClass }}"
+<div id="menu-container-{{ slug }}" class="menu-container as-lateral w-100 {% if fixedOnScroll or alwaysFixed %} as-sticky sticky-top{% else %}position-relative{% endif %}{% if alwaysFixed %} always-sticky{% endif %} {{ dropdownClass }}"
      data-expand="{{ expand }}"
      tabindex="0">
     {{ macroWebmaster.box({
@@ -194,7 +194,7 @@
                                             <a href="{{ infos.link }}" class="{{ name }} btn btn-transparent shadow basic p-0 d-inline-flex ms-2"
                                                rel="noopener noreferrer" target="_blank"
                                                aria-label="{{ label }}">
-                                                <i class="icon- {{ name|lower }} text-white" aria-hidden="true"></i>
+                                                <i class="icon-{{ name|lower }} text-white" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ label }}</span>
                                             </a>
                                         {%- endif -%}

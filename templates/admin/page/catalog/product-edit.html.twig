@@ -11,7 +11,7 @@
     {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-entity'}}) }}
         <div class="tab-content pb-2">
             {%- for tabId, config in tabs -%}
-                <div class="tab-pane pe-4 ps-4{% if activeTab == tabId or not activeTab and loop.first and isProduct %} active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav- {{ tabId }}-tab">
+                <div class="tab-pane pe-4 ps-4{% if activeTab == tabId or not activeTab and loop.first and isProduct %} active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab">
                     <div class="row">
                         {%- for field in form.children -%}
                             {%- if tabId not in configsSet -%}

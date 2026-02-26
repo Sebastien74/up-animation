@@ -14,10 +14,10 @@
     <div class="controls d-inline-flex align-items-start justify-content-{{ side }} w-100 {% if 'top' == position %}mb-4{% else %}mt-3{% endif %}{% if 'end' == side %} {% endif %}{% if asBtn %} as-btn{% endif %}">
         <button class="carousel-control-prev position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} me-2"
                 data-bs-slide="prev"
-                data-bs-target="#carousel- {{ sliderSlug }}"
+                data-bs-target="#carousel-{{ sliderSlug }}"
                 aria-label="{{"Précédent"|trans }}"
                 tabindex="-1">
-            <i class="icon- {{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            <i class="icon-{{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
         </button>
         {%- if slider.autoplay and accessibility -%}
             <button class="carousel-control-pause position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{"Pause"|trans }}" tabindex="-1">
@@ -29,16 +29,16 @@
         {%- endif -%}
         <button class="carousel-control-next position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} ms-2"
                 data-bs-slide="next"
-                data-bs-target="#carousel- {{ sliderSlug }}"
+                data-bs-target="#carousel-{{ sliderSlug }}"
                 aria-label="{{"Suivant"|trans }}"
                 tabindex="-1">
-            <i class="icon- {{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            <i class="icon-{{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
         </button>
     </div>
 {%- endmacro -%}
 
-<div id="carousel- {{ sliderSlug }}"
-     class="carousel- {{ slider.slug }} carousel slide{% if slider.effect == 'fade' %} carousel-fade{% endif %}"
+<div id="carousel-{{ sliderSlug }}"
+     class="carousel-{{ slider.slug }} carousel slide{% if slider.effect == 'fade' %} carousel-fade{% endif %}"
      data-bs-interval="{{ slider.intervalDuration }}"
      data-bs-autoplay="{{ slider.autoplay }}"
      data-bs-pause="{{ slider.pause ? 'hover' : 0 }}"
@@ -120,7 +120,7 @@
             {%- set isFirst = true -%}
             {%- for media in medias -%}
                 {%- if media.media.filename is defined and media.media.filename -%}
-                    <li data-bs-target="#carousel- {{ sliderSlug }}"
+                    <li data-bs-target="#carousel-{{ sliderSlug }}"
                         data-bs-slide-to="{{ loop.index - 1 }}"
                         data-index="{{ loop.index }}"
                         class="position-relative {% if isFirst and loop.first %}active{% endif %}">

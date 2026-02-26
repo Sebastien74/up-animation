@@ -1,0 +1,103 @@
+{%- if configFields is defined and configFields -%}
+
+    {%- trans_default_domain 'admin' -%}
+
+    {%- set configuration = website().configuration -%}
+    {%- set haveMedia = form.mediaRelations is defined -%}
+    {%- set haveIntls = form.intls is defined -%}
+    {%- set allLocales = configuration.allLocales -%}
+
+    <div id="collapseForm" class="collapse collapse-configuration">
+        <div class="card mb-3">
+            <div class="card-body pb-2">
+                <div class="row">
+                    {%- include 'admin/core/form/urls.html.twig' with {urls: form.urls} -%}
+                    {%- if haveMedia or (haveIntls and not entity.infill) -%}
+                        <div class="col-md-4">
+                            {%- if haveMedia -%}
+                                <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-page-medias-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-medias-{{ entity.id }}">
+                                    <i class="icm-image-polaroid"></i>{%- if allLocales|length > 1 -%}{{ "Médias"|trans }}{%- else -%}{{ "Média"|trans }}{%- endif -%}
+                                    <i class="icm-chevron-down ms-auto"></i>
+                                </h4>
+                                <div id="collapse-page-medias-{{ entity.id }}" class="collapse">
+                                    <div class="row">
+                                        {%- include 'admin/core/form/media-relations-uniq.html.twig' with {
+                                            mediaRelations: form.mediaRelations,
+                                            displayTitleCard: false,
+                                        } -%}
+                                    </div>
+                                </div>
+                            {%- endif -%}
+                            {%- if haveIntls and not entity.infill -%}
+                                <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-page-content-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-content-{{ entity.id }}">
+                                    <i class="icm-text"></i>{{ "Configuration des contenus"|trans }}
+                                    <i class="icm-chevron-down ms-auto"></i>
+                                </h4>
+                                <div id="collapse-page-content-{{ entity.id }}" class="collapse">
+                                    {%- include 'admin/core/form/intls-config.html.twig' with {
+                                        intls: form.intls,
+                                        configFields: configFields,
+                                        configFieldsIntls: configFieldsIntls,
+                                        disabledTitle: true
+                                    } only -%}
+                                </div>
+                            {%- endif -%}
+                        </div>
+                    {%- endif -%}
+                    <div class="col-md-4">
+                        <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-page-dates-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-dates-{{ entity.id }}">
+                            <i class="icm-calendar-alt"></i>{{ "Dates de publication"|trans }}
+                            <i class="icm-chevron-down ms-auto"></i>
+                        </h4>
+                        <div id="collapse-page-dates-{{ entity.id }}" class="collapse">
+                            <div class="row">
+                                {%- if form.publicationStart is defined -%}
+                                    {{ form_row(form.publicationStart) }}
+                                {%- endif -%}
+                                {%- if form.publicationEnd is defined -%}
+                                    {{ form_row(form.publicationEnd) }}
+                                {%- endif -%}
+                            </div>
+                        </div>
+                    {%- if not haveMedia -%}
+                        </div>
+                        <div class="col-md-4">
+                    {%- endif -%}
+                        <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-page-configuration-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-configuration-{{ entity.id }}">
+                            <i class="icm-cog"></i>{{ "Configuration"|trans }}
+                            <i class="icm-chevron-down ms-auto"></i>
+                        </h4>
+                        <div id="collapse-page-configuration-{{ entity.id }}" class="collapse">
+                            <div class="row">
+                                {%- if form.template is defined -%}
+                                    {{ form_row(form.template) }}
+                                {%- endif -%}
+                                {%- if form.backgroundColor is defined -%}
+                                    {{ form_row(form.backgroundColor) }}
+                                {%- endif -%}
+                                {%- if form.secure is defined -%}
+                                    {{ form_row(form.secure) }}
+                                {%- endif -%}
+                                {%- if form.asIndex is defined -%}
+                                    {{ form_row(form.asIndex) }}
+                                {%- endif -%}
+                                {%- if form.infill is defined -%}
+                                    {{ form_row(form.infill) }}
+                                {%- endif -%}
+                                {%- if form.pictogram is defined -%}
+                                    {{ form_row(form.pictogram) }}
+                                {%- endif -%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            {%- include 'admin/page/seo/seo-basic.html.twig' with {urls: form.urls} -%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endif -%}
+

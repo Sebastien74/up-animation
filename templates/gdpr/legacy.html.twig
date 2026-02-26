@@ -57,12 +57,12 @@
                                             </div>
                                             <div class="col-lg-3 my-auto">
                                                 <div class="material-switch float-end">
-                                                    <input id="table-gdpr- {{ group.slug }}"
+                                                    <input id="table-gdpr-{{ group.slug }}"
                                                            type="checkbox"
                                                            class="cookie-group-checkbox"
                                                            data-service="{{ group.service }}"
                                                            data-code="{{ group.slug }}" {%- if cookie(group.slug) -%} checked{%- endif -%} />
-                                                    <label for="table-gdpr- {{ group.slug }}" class="label-primary"></label>
+                                                    <label for="table-gdpr-{{ group.slug }}" class="label-primary"></label>
                                                 </div>
                                             </div>
                                         </div>

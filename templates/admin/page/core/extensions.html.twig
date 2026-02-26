@@ -46,11 +46,11 @@
                                   data-bs-toggle="tooltip"
                                   title="{{"En savoir plus"|trans|striptags }}">
                                 <span data-bs-toggle="modal"
-                                      data-bs-target="#modal-extension- {{ loop.index }}"
+                                      data-bs-target="#modal-extension-{{ loop.index }}"
                                       class="d-inline-block w-100 h-100"
                                       role="button"
                                       aria-expanded="false"
-                                      aria-controls="collapse-extension- {{ loop.index }}">
+                                      aria-controls="collapse-extension-{{ loop.index }}">
                                     <i class="icm-plus"></i>
                                 </span>
                             </span>
@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="modal-extension- {{ loop.index }}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal fade" id="modal-extension-{{ loop.index }}" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                         <div class="modal-content border refer-preloader text-start pb-5 pt-3">
                             <div class="modal-header">

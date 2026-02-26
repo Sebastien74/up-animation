@@ -11,7 +11,7 @@
 {%- set template = customTemplateExist ? 'front/'~websiteTemplate~'/actions/map/template/'~map.slug~'.html.twig'
     : 'front/'~websiteTemplate~'/actions/map/template/default.html.twig' -%}
 
-<div id="map-container- {{ map.slug }}" class="map-container position-relative">
+<div id="map-container-{{ map.slug }}" class="map-container position-relative">
     {{ macroWebmaster.box({
         title: "Éditer la carte"|trans([], 'front_webmaster'),
         role: 'ROLE_MAP',

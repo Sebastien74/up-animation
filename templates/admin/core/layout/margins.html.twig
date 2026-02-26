@@ -1,4 +1,4 @@
-{%- trans_default_domain 'admin' -%}
+﻿{%- trans_default_domain 'admin' -%}
 
 <h4 class="text-dark w-100 text-center mb-3 position-relative">
     {{ "Marges"|trans }}
@@ -33,12 +33,12 @@
         title: "Mobile"|trans
     }} -%}
 
-<ul class="nav nav-tabs custom-tab" role="tablist">
+<ul class="nav nav-tabs" role="tablist">
     {%- for tabId, config in tabs -%}
         <li class="nav-item">
-            <a id="nav- {{ tabId }}-tab-margin" class="nav-link {% if loop.first %} active{% endif %}"
+            <a id="nav-{{ tabId }}-tab-margin" class="nav-link {% if loop.first %} active{% endif %}"
                data-bs-toggle="tab"
-               data-bs-target="# {{ tabId }}-margin"
+               data-bs-target="#{{ tabId }}-margin"
                aria-controls="{{ tabId }}-margin"
                type="button"
                role="tab"
@@ -52,7 +52,7 @@
 <div id="margins-management-block" class="tab-content pt-4">
     {%- for tabId, config in tabs -%}
         {%- set suffix = tabId == 'desktop' ? '' : (config.field is defined ? config.field : tabId|capitalize) -%}
-        <div class="tab-pane fade text-center w-100 mb-4{% if loop.first %} active show{% endif %}" id="{{ tabId }}-margin" role="tabpanel" aria-labelledby="nav- {{ tabId }}-tab-margin">
+        <div class="tab-pane fade text-center w-100 mb-4{% if loop.first %} active show{% endif %}" id="{{ tabId }}-margin" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab-margin">
             <div class="margin-dashed d-inline-block mx-auto position-relative">
                 <small class="margin-info position-absolute">{{ "Marge extérieure"|trans }}</small>
                 <div class="row">

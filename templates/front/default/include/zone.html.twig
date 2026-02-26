@@ -64,7 +64,7 @@
 
             {%- if not fullSize and zone.containerSize -%}
                 <div class="custom-container row">
-                    <div class="col-md- {{ zone.containerSize }} mx-auto">
+                    <div class="col-md-{{ zone.containerSize }} mx-auto">
             {%- endif -%}
 
             {%- if intlZone.title is defined and intlZone.title|striptags|length > 0 -%}
@@ -122,7 +122,7 @@
                             {%- endfor -%}
                         {%- endif -%}
 
-                        <div id="layout-col- {{ colId }}" class="layout-col {{ colClasses }} {{ colSpaces }}{% if isColMedia %} media-col{% endif %}{% if colAlignment %} {{ colAlignment }}{% endif %}"
+                        <div id="layout-col-{{ colId }}" class="layout-col {{ colClasses }} {{ colSpaces }}{% if isColMedia %} media-col{% endif %}{% if colAlignment %} {{ colAlignment }}{% endif %}"
                              data-position="{{ col.position }}"
                             {%- if colEffects -%} {{ colEffects|raw }}{%- endif -%}
                             {%- if bgColorHexa -%} style="background: {{ bgColorHexa }};" data-hexadecimal="{{ bgColorHexa }}" {%- endif -%}>
@@ -165,7 +165,7 @@
                                             {%- set bgFullHeight = (block.backgroundFullHeight) or (blocks|length == 1 and innerBlockBackground) -%}
                                             {%- set innerBgPaddings = not block.backgroundFullSize and (bgColorHexaZone or 'bg-' in innerBlockBackground) ? block|paddings|trim : false -%}
 
-                                            <div id="layout-block- {{ blockId }}" class="layout-block position-relative {{ blockClasses }}" {%- if blockEffects -%} {{ blockEffects|raw }}{%- endif -%}
+                                            <div id="layout-block-{{ blockId }}" class="layout-block position-relative {{ blockClasses }}" {%- if blockEffects -%} {{ blockEffects|raw }}{%- endif -%}
                                                  {%- if bgColorHexaZone -%} style="background: {{ bgColorHexaZone }};" data-hexadecimal="{{ bgColorHexaZone }}" {%- endif -%}>
                                                 <div class="layout-block-content {{ margins(block) }}{% if bgFullHeight and 'align-items-end' not in blockClasses and 'zones-navigation' != blockSlug %} h-100{% endif %}">
                                                     {%- if innerBlockBackground or bgColorHexaInner -%}

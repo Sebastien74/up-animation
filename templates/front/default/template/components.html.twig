@@ -1,10 +1,10 @@
-{%- extends 'front/'~website.configuration.template~'/base.html.twig' -%}
+﻿{%- extends 'front/'~website.configuration.template~'/base.html.twig' -%}
 
 {%- trans_default_domain 'front_default' -%}
 
 {%- block stylesheets -%}
     {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName, null, webpack) }}
-    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low">
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
     {{ parent() }}
 {%- endblock -%}
 
@@ -25,7 +25,7 @@
 
     {%- if isComponentUser() -%}
 
-        <div id="content- {{ templateName }}" class="template-page">
+        <div id="content-{{ templateName }}" class="template-page">
 
             {%- if blockTypesActive('title-header') -%}
                 {%- for i in 1..1 -%}
@@ -127,7 +127,7 @@
                                 <div class="col-12 mb-4 text-start px-0">
                                     <h2 class="mb-4 mt-5">Textes</h2>
                                     {%- for color in mainColors -%}
-                                        <div class="text- {{ color }} d-inline-block{% if not loop.last %} me-3{% endif %}">.text-{{ color }}</div>
+                                        <div class="text-{{ color }} d-inline-block{% if not loop.last %} me-3{% endif %}">.text-{{ color }}</div>
                                     {%- endfor -%}
                                     {%- set activeBorders = false -%}
                                     {%- if activeBorders -%}

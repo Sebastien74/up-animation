@@ -41,7 +41,7 @@
                                 {%- set emailValidMessage = user.confirmEmail ? 'E-mail confirmé'|trans : 'E-mail non confirmé'|trans -%}
                                 {%- set iconEmailValid = user.confirmEmail ? 'check-circle' : 'times-circle' -%}
                                 {%- set iconEmailColor = user.confirmEmail ? 'success' : 'danger' -%}
-                                <i class="icon- {{ iconEmailValid }} fz-xs ms-2 text-{{ iconEmailColor }}" data-bs-toggle="tooltip" title="{{ emailValidMessage|striptags }}"></i>
+                                <i class="icon-{{ iconEmailValid }} fz-xs ms-2 text-{{ iconEmailColor }}" data-bs-toggle="tooltip" title="{{ emailValidMessage|striptags }}"></i>
                             </li>
                             <li><strong>{{ "Langue :"|trans|raw }}</strong> {{ user.locale|languageName }}</li>
                         </ul>

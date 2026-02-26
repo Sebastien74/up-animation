@@ -21,7 +21,7 @@
 {%- set class = class is defined ? class : null -%}
 
 <div class="alert alert-{{ bgColor }} position-relative d-flex p-0 {% if class %} {{ class }}{% endif %}">
-    <div class="icon d-flex align-items-center justify-content-center position-relative bg-{{ bgColor }}"><i class="icon- {{ icon }} text-{{ iconColor }}"></i></div>
+    <div class="icon d-flex align-items-center justify-content-center position-relative bg-{{ bgColor }}"><i class="icon-{{ icon }} text-{{ iconColor }}"></i></div>
     <div class="message px-3 py-3 w-100 text-start text-{{ iconColor }}">
         {%- if 'small' == size -%}
             <small class="d-inline-block text-{{ iconColor }}">

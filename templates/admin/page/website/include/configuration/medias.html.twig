@@ -60,7 +60,7 @@
         {%- for localeConfig in allLocales -%}
             <li class="nav-item" data-bs-toggle="tooltip" title="{{ languageName(localeConfig, app.user.locale) }}">
                 <a class="nav-link {% if localeConfig == formLocale %} active{% endif %}"
-                   id="media-relation- {{ localeConfig }}-tab"
+                   id="media-relation-{{ localeConfig }}-tab"
                    aria-selected="{% if localeConfig == formLocale %}true{% else %}false{% endif %}"
                    href="{{ path('admin_website_style', {website: website.id, form_locale: localeConfig}) }}" role="tab">
                     <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~localeConfig~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
@@ -75,9 +75,9 @@
 {%- endif -%}
 
     {%- for localeConfig in allLocales -%}
-        <div id="mediaRelation-tab- {{ localeConfig }}"
+        <div id="mediaRelation-tab-{{ localeConfig }}"
              class="tab-pane fade{% if localeConfig == formLocale %} show active{% endif %}"
-             role="tabpanel" aria-labelledby="media-relation- {{ localeConfig }}-tab">
+             role="tabpanel" aria-labelledby="media-relation-{{ localeConfig }}-tab">
             {%- if allLocales|length > 1 -%}
                 <div class="p-20 pb-0">
             {%- endif -%}

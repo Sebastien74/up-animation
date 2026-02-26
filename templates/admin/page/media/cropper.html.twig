@@ -27,7 +27,7 @@
         </ul>
         <div class="row gap-2 px-3 pb-3">
             <div class="col my-auto">
-                <button class="btn-app info center w-100" data-bs-toggle="modal" data-bs-target="#crop-modal- {{ configuration.id }}">
+                <button class="btn-app info center w-100" data-bs-toggle="modal" data-bs-target="#crop-modal-{{ configuration.id }}">
                     <i class="icm-crop-alt"></i>{{ "Redimensionner"|trans }}
                 </button>
             </div>
@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<div id="crop-modal- {{ configuration.id }}"
+<div id="crop-modal-{{ configuration.id }}"
      class="modal fade crop-modal"
      tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">

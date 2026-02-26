@@ -8,29 +8,27 @@
     or form.mobileMaxWidth is defined or form.mobileMaxHeight is defined -%}
 
 {%- set tabs = {
-    desktop: {title: "Ordinateur"|trans},
-    tablet: {title: "Tablette"|trans},
-    mobile: {title: "Mobile"|trans}} -%}
+    desktop: {title: "Ordinateur"|trans, icon: 'desktop'},
+    tablet: {title: "Tablette"|trans, icon: 'desktop'},
+    mobile: {title: "Mobile"|trans, icon: 'desktop'}} -%}
 
 {%- if displayTabs -%}
     <div class="col-12 col-md-{{ tabSize }}">
         {%- if displayTitle -%}
             <h4 class="main-subtitle"><i class="icm-expand"></i>{{ "Taille du médias"|trans }}</h4>
         {%- endif -%}
-        <ul class="nav nav-tabs custom-tab" role="tablist">
+        <nav class="nav nav-tabs gap-3 border-0" role="tablist">
             {%- for tabId, config in tabs -%}
-                <li class="nav-item col p-0 text-center">
-                    <a id="nav- {{ tabId }}-tab-{{ locale }}" class="nav-link {% if loop.first %} active{% endif %}"
-                       aria-controls="tab-screen- {{ tabId }}-{{ locale }}"
-                       data-bs-toggle="tab" href="#tab-screen- {{ tabId }}-{{ locale }}" role="tab" aria-selected="{{ loop.first }}">
-                        <span class="d-none d-sm-inline-block">{{ config.title }}</span>
-                    </a>
-                </li>
+                <a id="nav-{{ tabId }}-tab-{{ locale }}" class="btn-app {% if loop.first %} active{% endif %}"
+                   aria-controls="tab-screen-{{ tabId }}-{{ locale }}"
+                   data-bs-toggle="tab" href="#tab-screen-{{ tabId }}-{{ locale }}" role="tab" aria-selected="{{ loop.first }}">
+                    <i class="icm-{{ config.icon }}"></i><span class="d-none d-sm-inline-block">{{ config.title }}</span>
+                </a>
             {%- endfor -%}
-        </ul>
+        </nav>
         <div class="tab-content pt-4">
             {%- for tabId, config in tabs -%}
-                <div class="tab-pane w-100{% if loop.first %} active{% endif %}" id="tab-screen- {{ tabId }}-{{ locale }}" role="tabpanel" aria-labelledby="nav- {{ tabId }}-tab-{{ locale }}">
+                <div class="tab-pane w-100{% if loop.first %} active{% endif %}" id="tab-screen-{{ tabId }}-{{ locale }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab-{{ locale }}">
                     <div class="row">
                         {%- if tabId == 'desktop' -%}
                             {%- if form.maxWidth is defined -%}

@@ -10,7 +10,7 @@
         <div class="d-flex justify-content-center">
             <div id="animated-preloader" class="d-flex">
                 {%- for i in 1..6 -%}
-                    <div id="item- {{ i }}" class="item-loader {% if not loop.last %} me-2{% endif %}">{{ 'fas circle'|icon(null, 40) }}</div>
+                    <div id="item-{{ i }}" class="item-loader {% if not loop.last %} me-2{% endif %}">{{ 'fas circle'|icon(null, 40) }}</div>
                 {%- endfor -%}
             </div>
         </div>

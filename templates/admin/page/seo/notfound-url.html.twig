@@ -55,7 +55,7 @@
                 </thead>
                 <tbody>
                     {%- for entity in pagination -%}
-                        <tr id="entity-row- {{ entity.id }}">
+                        <tr id="entity-row-{{ entity.id }}">
                             <td class="align-middle px-4" data-label="{{"Jour"|trans }}">{{ entity.createdAt|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</td>
                             <td class="align-middle px-4" data-label="{{"URL"|trans }}">{{ entity.url }}</td>
                             <td class="align-middle text-end px-4" data-label="{{"Actions"|trans }}">
@@ -64,7 +64,7 @@
                                     {%- if routeExist('admin_notfoundurl_delete') and 'delete'|moduleActive(configuration) -%}
                                         <a href="{{ path('admin_notfoundurl_delete', {website: websiteId(), notfoundurl: entity.id}) }}"
                                            data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
-                                           data-target="#entity-row- {{ entity.id }}"
+                                           data-target="#entity-row-{{ entity.id }}"
                                            class="btn-icon small danger swal-delete-link">
                                             <i class="icm-trash"></i>
                                         </a>

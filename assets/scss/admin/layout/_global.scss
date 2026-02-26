@@ -21,7 +21,7 @@
 
 html body {
     font-family: $font-family;
-    color: transparentize($white, .5);
+    color: transparentize($white, .3);
 }
 
 #main-wrapper {
@@ -69,6 +69,14 @@ html body {
     margin-right: -1.25rem;
 }
 
+.fz-xs {
+    font-size: 10px;
+}
+
+.fz-sm {
+    font-size: 12px;
+}
+
 a {
     text-decoration: none;
 }
@@ -99,6 +107,28 @@ a {
         border-radius: 10px !important;
         font-size: 12px !important;
     }
+
+    i.icm-chevron-down {
+        &:before {
+            top: 1px;
+            position: relative;
+            transform-origin: center;
+            transition: all .3s linear;
+        }
+    }
+
+    &:not(.collapsed) {
+        i:before {
+            top: 0;
+            transform-origin: center;
+            transform: rotate(180deg);
+            transition: all .3s linear;
+        }
+    }
+}
+
+.main-subtitle[data-bs-toggle="collapse"] {
+    cursor: pointer;
 }
 
 [data-bs-toggle="collapse"] {

@@ -6,7 +6,7 @@
 
     <ul id="zones-sortable" class="reset">
         {%- for zone in layout.zones -%}
-            <li class="zone {% if zone.hide %} hide-zone{% endif %}" id="zone- {{ zone.id }}" data-id="{{ zone.id }}" data-position="{{ zone.position }}">
+            <li class="zone {% if zone.hide %} hide-zone{% endif %}" id="zone-{{ zone.id }}" data-id="{{ zone.id }}" data-position="{{ zone.position }}">
                 <div class="zone-sidebar d-flex flex-shrink-0 flex-column align-items-center gap-2 py-3">
 
                     {%- if 'edit'|moduleActive(configuration) -%}
@@ -115,7 +115,7 @@
                                   data-placement="right"
                                   title="{{"Configuration"|trans|striptags }}"
                                   data-path="{{ path('admin_zone_configuration', {website: websiteId(), zone: zone.id}) }}"
-                                  class="item edit-layout-element-btn btn-action">
+                                  class="item edit-layout-element-btn btn-action cursor">
                                 <i class="icm-cog-reg"></i>
                             </span>
                         {%- endif -%}
@@ -125,7 +125,7 @@
                     {%- if 'delete'|moduleActive(configuration) -%}
                         <span href="{{ path('admin_zone_delete', {website: websiteId(), layout: layout.id, zone: zone.id}) }}"
                            data-bs-toggle="tooltip" data-placement="right" title="{{"Supprimer"|trans|striptags }}"
-                           data-target="#zone- {{ zone.id }}"
+                           data-target="#zone-{{ zone.id }}"
                            data-type="stay"
                            class="swal-delete-link cursor btn-action btn-icon danger mt-auto">
                             <i class="icm-trash"></i>

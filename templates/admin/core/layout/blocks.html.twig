@@ -5,11 +5,11 @@
 {%- set defaultLocale = website.configuration.locale -%}
 
 {%- if zone.cols|length > 0 -%}
-    <ul id="block-sortable- {{ col.id }}" class="block-sortable reset ui-sortable row">
+    <ul id="block-sortable-{{ col.id }}" class="block-sortable reset ui-sortable row">
         {%- for block in col.blocks -%}
             <li class="block col-md-{{ block.size }}{% if block.hide %} block-hidden{% endif %}{% if block.useForThumb %} use-for-thumb{% endif %}"
-                id="block- {{ block.id }}"
-                data-size-class="col-md- {{ block.size }}"
+                id="block-{{ block.id }}"
+                data-size-class="col-md-{{ block.size }}"
                 data-col="{{ col.id }}"
                 data-id="{{ block.id }}"
                 data-position="{{ block.position }}">
@@ -54,7 +54,15 @@
                                 {%- endif -%}
 
                                 {%- if title -%}
-                                    <span class="block-title {% if asMediaWarning %} text-warning{% endif %}">{{ title|trans }}</span>
+                                    <span class="block-title {% if asMediaWarning %} text-warning cursor{% endif %}"
+                                        {% if asMediaWarning %}
+                                            data-bs-toggle="tooltip"
+                                            title="{{ "Consulter les alertes de votre page"|trans|striptags }}"
+                                            data-tooltip-variant="warning"
+                                            data-scroll-to="#accordion-alerts"
+                                        {% endif %}>
+                                        {{ title|trans }}
+                                    </span>
                                 {%- endif -%}
 
                                 {%- if (blockTypeCode == 'title' or blockTypeCode == 'title-header') -%}
@@ -94,7 +102,7 @@
                             {%- endif -%}
 
                             {%- if 'edit'|moduleActive(configuration) -%}
-                                <span class="item background-block-item background-item d-inline-block">
+                                <span class="item background-block-item cursor background-item d-inline-block">
                                     {%- set color = 'background'|color(website, block.backgroundColor) -%}
                                     {%- set hexa = color.color is defined and color.color ? color.color : block.hexadecimalCode -%}
                                     <span class="color-info-bulle" {%- if hexa -%} style="background-color: {{ hexa }}" {%- endif -%}></span>
@@ -122,7 +130,7 @@
                             {%- if 'delete'|moduleActive(configuration) -%}
                                 <span href="{{ path('admin_block_delete', {website: websiteId(), col: col.id, block: block.id}) }}"
                                       data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
-                                      data-target="#block- {{ block.id }}"
+                                      data-target="#block-{{ block.id }}"
                                       data-type="stay"
                                       class="btn-action swal-delete-link cursor">
                                     <i class="icm-trash"></i>

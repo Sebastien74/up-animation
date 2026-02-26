@@ -11,9 +11,9 @@
                 {%- if children -%}
                     <i class="icm-chevron-right cursor me-2 transition-fast collapse-icon collapsed"
                        data-bs-toggle="collapse"
-                       href="#nested-list- {{ url.id }}"
+                       href="#nested-list-{{ url.id }}"
                        aria-expanded="false"
-                       aria-controls="nested-list- {{ url.id }}"></i>
+                       aria-controls="nested-list-{{ url.id }}"></i>
                 {%- else -%}
                     <span class="ms-4"></span>
                 {%- endif -%}
@@ -26,7 +26,7 @@
             </div>
         </div>
         {%- if children -%}
-            <ul id="nested-list- {{ url.id }}" class="w-100 ps-4 collapse list-unstyled">
+            <ul id="nested-list-{{ url.id }}" class="w-100 ps-4 collapse list-unstyled">
                 {%- for child in children -%}
                     {%- include 'admin/page/seo/include/link-element.html.twig' with {config: child, tree: tree, currentUrl: currentUrl, entitylocale: entitylocale} only -%}
                 {%- endfor -%}

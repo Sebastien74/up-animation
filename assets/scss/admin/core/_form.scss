@@ -190,7 +190,7 @@ form {
 
             margin-right: .5rem !important;
 
-            .square {
+            .square, .square-outline {
                 border-radius: 5px;
             }
         }
@@ -304,7 +304,7 @@ form {
                     font-size: 13px;
 
                     .color-wrapper {
-                        .square {
+                        .square, .square-outline {
                             border-radius: 5px;
                         }
                     }
@@ -575,13 +575,17 @@ form .btn-group-toggle {
         .form-control {
             padding-right: 1rem !important;
             padding-left: 1rem !important;
-            height: 40px !important;
+            height: 45px !important;
             border-radius: 10px !important;
         }
 
         .input-group-text {
             img {
                 opacity: .8;
+                height: 22px;
+                width: 22px;
+                object-fit: cover;
+                border-radius: 7px;
             }
         }
     }
@@ -606,9 +610,14 @@ form .btn-group-toggle {
         > .select2-container {
 
             width: 200px !important;
+            height: 45px !important;
 
             .select2-selection--single .select2-selection__rendered {
-                line-height: 40px;
+                line-height: 43px;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                top: 10px !important;
             }
 
             .btn-icon {
@@ -616,16 +625,25 @@ form .btn-group-toggle {
                 width: 25px;
                 height: 25px;
                 border-radius: 9px;
+                flex: 0 0 25px;
 
                 i {
-                    font-size: 12px !important;
+                    font-size: 10px !important;
                 }
             }
         }
     }
 
     .btn-group-toggle {
+
+        .btn-app {
+            min-height: 45px;
+        }
+
         .form-check-input {
+
+            margin-top: 0 !important;
+
             &:not(.active) {
                 padding-right: 1.25rem !important;
                 padding-left: 1.25rem !important;

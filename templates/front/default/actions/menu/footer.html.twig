@@ -17,12 +17,12 @@
         role: 'ROLE_NAVIGATION',
         path: path('admin_menu_edit', {website: website.id, menu: id, entitylocale: app.request.locale})
     }) }}
-    <ul id="footer-menu- {{ slug }}" class="reset {% if alwaysHorizontal %}d-flex flex-wrap justify-content-center{% else %}d-inline-block{% endif %}{% if isHorizontal and not alwaysHorizontal %} d-md-flex{% endif %}">
+    <ul id="footer-menu-{{ slug }}" class="reset {% if alwaysHorizontal %}d-flex flex-wrap justify-content-center{% else %}d-inline-block{% endif %}{% if isHorizontal and not alwaysHorizontal %} d-md-flex{% endif %}">
         {%- for link in links -%}
             {%- if link.title and link.online -%}
                 {%- set linkClass = link.class~' text-white link position-relative' -%}
                 {%- set linkClass = isVertical ? linkClass~' d-inline-block mb-3' : linkClass -%}
-                <li id="item- {{ link.id }}" class="{% if isHorizontal %}mb-2 mb-md-0 d-flex align-items-center justify-content-center{% endif %}">
+                <li id="item-{{ link.id }}" class="{% if isHorizontal %}mb-2 mb-md-0 d-flex align-items-center justify-content-center{% endif %}">
                     {%- if link.link -%}
                         <a href="{{ link.link }}"
                            id="{{ link.id }}"

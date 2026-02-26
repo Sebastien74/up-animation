@@ -10,7 +10,15 @@
             thumbSizes: [991],
         },
         2: {
-            media: '(min-width: 992px)',
+            media: '(min-width: 992px) and (max-width: 1199px)',
+            thumbSizes: [991],
+        },
+        3: {
+            media: '(min-width: 1200px) and (max-width: 1399px)',
+            thumbSizes: [1200],
+        },
+        4: {
+            media: '(min-width: 1400px)',
             thumbSizes: [1920],
         }
     } -%}
@@ -39,7 +47,7 @@
     {%- endif -%}
 
     {%- if haveLightBox and originalSrc -%}
-        <a href="{{ originalSrc }}" class="glightbox" {%- if popupGallery -%} data-gallery="popup-gallery- {{ popupGallery }}" {%- endif -%}>
+        <a href="{{ originalSrc }}" class="glightbox" {%- if popupGallery -%} data-gallery="popup-gallery-{{ popupGallery }}" {%- endif -%}>
     {%- endif -%}
         {%- set sourceSize = null -%}
         {%- set defaultThumb = null -%}
@@ -61,6 +69,7 @@
                     {%- set width = '' -%}
                     {%- set height = '' -%}
                     {%- set sources = '' -%}
+                    {%- set currentSource = '' -%}
                     {%- set extension = null -%}
                     {%- for size in config.thumbSizes -%}
                         {%- set sourcesToDisplay = null -%}
@@ -68,13 +77,14 @@
                         {%- if defaultThumb -%}
                             {%- set sourceSize = size -%}
                             {%- set sourcesToDisplay = asset(defaultThumb) -%}
+                            {%- set currentSource = defaultThumb -%}
                             {%- set sources = sources~' '~sourcesToDisplay~' 1x,' -%}
                             {%- set sizes = thumbnails.thumbs[size].cropInfos is defined ? thumbnails.thumbs[size].cropInfos : null -%}
                             {%- set width = sizes.width is defined ? sizes.width : size -%}
                             {%- set height = sizes.height is defined ? sizes.height : 'auto' -%}
                         {%- endif -%}
-                        {%- if defaultThumb and not dataSource -%}
-                            {%- set dataSource = defaultThumb -%}
+                        {%- if defaultThumb and (not dataSource or priority == 'high') -%}
+                            {%- set dataSource = currentSource -%}
                         {%- endif -%}
                         {%- set retinaSize = size * 2 -%}
                         {%- set retinaThumb = thumbs[retinaSize] is defined and thumbs[retinaSize] ? thumbs[retinaSize] : null -%}

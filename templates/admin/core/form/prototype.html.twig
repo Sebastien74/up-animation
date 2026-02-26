@@ -51,7 +51,7 @@
         <div class="col-12">
             <h4 class="main-subtitle">
                 {%- if prototypeOptions['attr']['icon'] is defined and prototypeOptions['attr']['icon'] -%}
-                    <i class="icm- {{ prototypeOptions['attr']['icon'] }}"></i>
+                    <i class="icm-{{ prototypeOptions['attr']['icon'] }}"></i>
                 {%- else -%}
                     <i class="icm-list-ul"></i>
                 {%- endif -%}
@@ -87,7 +87,7 @@
         <div class="col-12 text-end mb-4">
             <button role="button" class="add-collection btn {% if fullBtn is defined %}full-prototype-btn w-100{% else %}btn-app success{% endif %}"
                     data-collection-target="append"
-                    data-target="# {{ field.vars.id }}_collection">
+                    data-target="#{{ field.vars.id }}_collection">
                 {%- if fullBtn is defined -%}
                     <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
                          src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="

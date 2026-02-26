@@ -30,15 +30,15 @@
     <div class="row">
         <div class="col-lg-6 pb-5">
             <div class="row row-container ps-tablet-xs pe-tablet-xs">
-                <div class="nav flex-column nav-pills me-lg-5 pe-lg-4 col-12" id="v-pills-tab- {{ teaser.id }}" role="tablist" aria-orientation="vertical">
+                <div class="nav flex-column nav-pills me-lg-5 pe-lg-4 col-12" id="v-pills-tab-{{ teaser.id }}" role="tablist" aria-orientation="vertical">
                     {%- for entity in entities -%}
                         <button class="nav-link text-start cursor bg-transparent position-relative d-md-inline-flex px-0 pt-4 pb-0{% if loop.first %} active{% endif %}"
-                                id="v-pills- {{ entity.slug }}-tab"
+                                id="v-pills-{{ entity.slug }}-tab"
                                 data-bs-toggle="pill"
-                                data-bs-target="#v-pills- {{ entity.slug }}"
+                                data-bs-target="#v-pills-{{ entity.slug }}"
                                 type="button"
                                 role="tab"
-                                aria-controls="v-pills- {{ entity.slug }}"
+                                aria-controls="v-pills-{{ entity.slug }}"
                                 aria-selected="{% if loop.first %}true{% else %}false{% endif %}">
                             {{ macroWebmaster.box({
                                 title: "Éditer l'actualité"|trans([], 'front_webmaster'),
@@ -86,9 +86,9 @@
             <div class="tab-content position-relative w-100">
                 {%- for entity in entities -%}
                     <div class="tab-pane h-100 align-items-center py-5 px-5 fade{% if loop.first %} show active{% endif %}"
-                         id="v-pills- {{ entity.slug }}"
+                         id="v-pills-{{ entity.slug }}"
                          role="tabpanel"
-                         aria-labelledby="v-pills- {{ entity.slug }}-tab" tabindex="0">
+                         aria-labelledby="v-pills-{{ entity.slug }}-tab" tabindex="0">
                         <div class="inner py-xl-5 px-xl-5">
                             {%- set haveContent = entity.haveContent and (entity.showIntro or entity.showBody or entity.showBody) -%}
                             {%- if entity.showImage and entity.haveMedias -%}

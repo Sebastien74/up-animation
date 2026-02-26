@@ -10,12 +10,12 @@
                 <div class="choices-group-radios w-100 text-uppercase mb-2"><strong>{{ groupName|raw }}</strong></div>
                 {%- for child in group -%}
                     <div class="form-check">
-                        <input type="radio" id="subcategories- {{ urlize(child.data) }}"
+                        <input type="radio" id="subcategories-{{ urlize(child.data) }}"
                                name="{{ name }}"
                                class="form-check-input"
                                value="{{ child.value }}"
                                {%- if data == child.data -%} checked{%- endif -%}>
-                        <label class="inline form-check-label" for="subcategories- {{ urlize(child.data) }}">{{ child.label|raw }}</label>
+                        <label class="inline form-check-label" for="subcategories-{{ urlize(child.data) }}">{{ child.label|raw }}</label>
                     </div>
                 {%- endfor -%}
             {%- endfor -%}

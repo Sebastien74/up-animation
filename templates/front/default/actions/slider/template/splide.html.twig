@@ -22,7 +22,7 @@
     {%- set icon = asBtn ? 'chevron' : 'arrow' -%}
     {%- set iconClasses = not asBtn ? 'text-'~color : '' -%}
     <button class="btn-arrow btn-prev cursor me-2{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'previous' not in buttons %} d-none{% endif %}" aria-label="{{"Précédent"|trans }}" tabindex="-1">
-        <i class="icon- {{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+        <i class="icon-{{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
     </button>
 {%- endmacro -%}
 
@@ -33,7 +33,7 @@
     {%- set icon = asBtn ? 'chevron' : 'arrow' -%}
     {%- set iconClasses = not asBtn ? 'text-'~color : '' -%}
     <button class="btn-arrow btn-next cursor ms-2{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'next' not in buttons %} d-none{% endif %}" aria-label="{{"Suivant"|trans }}" tabindex="-1">
-        <i class="icon- {{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+        <i class="icon-{{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
     </button>
 {%- endmacro -%}
 

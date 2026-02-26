@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 {%- trans_default_domain 'security_cms' -%}
 
@@ -16,7 +16,7 @@
         <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
         <link rel="preconnect" href="https://www.google.com" crossorigin>
         <meta name="robots" content="noindex, nofollow">
-        <title>{%- block title -%}{{ "Bienvenue !!"|trans|htmlEntities }}{%- endblock -%} | {{ companyName }}</title>
+        <title>{% block title %}{{ "Bienvenue !!"|trans|htmlEntities }}{% endblock %} | {{ companyName }}</title>
         <meta name="description" content="{{ companyName }}" />
         <meta name="author" content="{{ companyName }}" />
         <link rel="icon" type="image/png" href="{{ asset('build/security/images/favicon-96x96.png', 'security') }}" sizes="96x96" />

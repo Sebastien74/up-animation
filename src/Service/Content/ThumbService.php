@@ -45,38 +45,50 @@ readonly class ThumbService
     public function preload(mixed $mediaModel, array $thumbConfiguration = []): array
     {
         $thumbsRender = [];
-        $filename = $mediaModel->media->getFilename();
-        if (!$filename) {
-            return $thumbsRender;
-        }
-
         $filesystem = new Filesystem();
         $inAdmin = $this->coreLocator->inAdmin();
         $prefixCache = $inAdmin ? 'admin' : 'front';
-        $dirnameGenerated = $this->coreLocator->projectDir() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'thumbnails' . DIRECTORY_SEPARATOR . 'generated' . DIRECTORY_SEPARATOR;
-        $dirnameGenerated = $dirnameGenerated . $prefixCache . '-' . $mediaModel->media->getWebsite()->getUploadDirname() . '.cache.json';
-        
+        $dirnameGenerated = $this->coreLocator->projectDir().'/public/thumbnails/generated/';
+        $dirnameGenerated = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirnameGenerated);
+        $dirnameGenerated = $dirnameGenerated.$prefixCache.'-'.$mediaModel->media->getWebsite()->getUploadDirname().'.cache.json';
         $jsonData = $filesystem->exists($dirnameGenerated) ? file_get_contents($dirnameGenerated) : null;
 
-        if ($jsonData && str_contains($jsonData, $filename)) {
+        if ($jsonData && $mediaModel->media->getFilename() && preg_match('/'.$mediaModel->media->getFilename().'/', $jsonData)) {
             $files = $this->thumbnail->execute($mediaModel, $thumbConfiguration);
             $thumbs = !empty($files['lazyFile']) ? [$files['lazyFile']] : [];
             $thumbs = !empty($files['files']) ? array_replace($thumbs, $files['files']) : $thumbs;
             $sizesDisplay = !empty($files['sizesDisplay']) ? $files['sizesDisplay'] : $this->thumbnail->getSizes();
-            
-            $request = $this->coreLocator->request();
-            $linkProvider = $request->attributes->get('_links', new GenericLinkProvider());
-            $retinaSizes = $this->thumbnail->getRetinaSizes();
-
+            $mediaQueries = [
+                618 => '(max-width: 575px)',
+                991 => '(min-width: 576px) and (max-width: 991px)',
+                992 => '(min-width: 992px) and (max-width: 1199px)',
+                1200 => '(min-width: 1200px) and (max-width: 1399px)',
+                1920 => '(min-width: 1400px)',
+            ];
             foreach ($thumbs as $key => $thumb) {
-                if ('0' == $key || in_array($key, $sizesDisplay) && !in_array($key, $retinaSizes) && !str_contains($thumb, '-blur.')) {
+                if ('0' == $key || in_array($key, $sizesDisplay) && !in_array($key, $this->thumbnail->getRetinaSizes()) && !str_contains($thumb, '-blur.')) {
                     $thumbsRender[$key] = $thumb;
-                    $linkProvider = $linkProvider->withLink(
-                        (new Link('preload', $thumb))->withAttribute('as', 'image')
-                    );
+                    $linkProvider = $this->coreLocator->request()->attributes->get('_links', new GenericLinkProvider());
+                    $link = (new Link('preload', $thumb))
+                        ->withAttribute('as', 'image')
+                        ->withAttribute('fetchpriority', 'high');
+                    $mqKey = $key;
+                    if ($key == 991 && !isset($mediaQueries_991_done)) {
+                        $link->withAttribute('media', $mediaQueries[991]);
+                        $mediaQueries_991_done = true;
+                    } elseif ($key == 991) {
+                        $mqKey = 992;
+                    }
+                    if (isset($mediaQueries[$mqKey])) {
+                        $link = $link->withAttribute('media', $mediaQueries[$mqKey]);
+                    }
+                    $extension = pathinfo($thumb, PATHINFO_EXTENSION);
+                    if ($extension) {
+                        $link = $link->withAttribute('type', 'image/' . $extension);
+                    }
+                    $this->coreLocator->request()->attributes->set('_links', $linkProvider->withLink($link));
                 }
             }
-            $request->attributes->set('_links', $linkProvider);
         }
 
         return $thumbsRender;

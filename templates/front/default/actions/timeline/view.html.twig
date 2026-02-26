@@ -4,7 +4,7 @@
 {%- set displayNumbers = timeline.displayNumbers -%}
 
 {%- if steps|length > 0 -%}
-    <div id="timeline-container- {{ timeline.slug }}" class="timeline-container {% if displayNumbers %} display-number{% endif %}">
+    <div id="timeline-container-{{ timeline.slug }}" class="timeline-container {% if displayNumbers %} display-number{% endif %}">
         <ol class="step-list">
             {%- for step in steps -%}
                 {%- set intl = step|intl -%}

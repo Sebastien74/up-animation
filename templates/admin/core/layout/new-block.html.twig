@@ -4,7 +4,7 @@
 {%- set groups = configuration|blockTypesActionsGroups(entity) -%}
 
 <div class="modal-wrapper">
-    <div id="block-modal- {{ col.id }}" class="modal fade add-block-modal edit-element-form layout-modal" tabindex="-1" role="dialog" aria-labelledby="block-modal- {{ col.id }}">
+    <div id="block-modal-{{ col.id }}" class="modal fade add-block-modal edit-element-form layout-modal" tabindex="-1" role="dialog" aria-labelledby="block-modal-{{ col.id }}">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content border refer-preloader">
                 {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'add-block-preloader', preloaderClass: 'radius-preloader', full: true} only -%}
@@ -46,7 +46,7 @@
                                             <a class="nav-link d-flex align-items-center{% if isActive %} active{% endif %}"
                                                id="{{ type~'-'~category~'-'~col.id }}-tab"
                                                data-bs-toggle="tab"
-                                               href="# {{ type~'-'~category~'-'~col.id }}"
+                                               href="#{{ type~'-'~category~'-'~col.id }}"
                                                role="tab" aria-controls="{{ type~'-'~category~'-'~col.id }}"
                                                aria-selected="{% if isActive %}true{% else %}false{% endif %}">
                                                 <span class="mx-auto">

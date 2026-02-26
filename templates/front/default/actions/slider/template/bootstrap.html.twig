@@ -32,10 +32,10 @@
     <div class="controls d-inline-flex align-items-start justify-content-{{ side }}{% if 'end' == side %} w-100{% endif %} {% if 'top' == position %}mb-4{% else %}mt-4{% endif %}{% if 'end' == side %} {% endif %}{% if asBtn %} as-btn{% endif %}">
         <button class="carousel-control-prev position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'center' != position %}me-2{% endif %}"
                 data-bs-slide="prev"
-                data-bs-target="#carousel- {{ sliderSlug }}"
+                data-bs-target="#carousel-{{ sliderSlug }}"
                 aria-label="{{"Précédent"|trans }}"
                 tabindex="-1">
-            <i class="icon- {{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            <i class="icon-{{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
         </button>
         {%- if autoplay and accessibility and 'center' != position -%}
             <button class="carousel-control-pause position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{"Pause"|trans }}" tabindex="-1">
@@ -47,16 +47,16 @@
         {%- endif -%}
         <button class="carousel-control-next position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} {% if 'center' != position %}ms-2{% else %}ms-auto{% endif %}"
                 data-bs-slide="next"
-                data-bs-target="#carousel- {{ sliderSlug }}"
+                data-bs-target="#carousel-{{ sliderSlug }}"
                 aria-label="{{"Suivant"|trans }}"
                 tabindex="-1">
-            <i class="icon- {{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
+            <i class="icon-{{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
         </button>
     </div>
 {%- endmacro -%}
 
-<div id="carousel- {{ sliderSlug }}"
-     class="carousel- {{ sliderSlug }} carousel standard slide{% if effect == 'fade' %} carousel-fade{% endif %}"
+<div id="carousel-{{ sliderSlug }}"
+     class="carousel-{{ sliderSlug }} carousel standard slide{% if effect == 'fade' %} carousel-fade{% endif %}"
      data-bs-interval="{{ intervalDuration }}"
      data-bs-autoplay="{{ autoplay }}"
      data-bs-pause="{{ pause ? 'hover' : 0 }}"
@@ -161,7 +161,7 @@
             {%- set isFirst = true -%}
             {%- for media in medias -%}
                 {%- if media.media.filename is defined and media.media.filename -%}
-                    <li data-bs-target="#carousel- {{ sliderSlug }}"
+                    <li data-bs-target="#carousel-{{ sliderSlug }}"
                         data-bs-slide-to="{{ loop.index - 1 }}"
                         data-index="{{ loop.index }}"
                         class="position-relative {% if isFirst and loop.first %}active{% endif %}">

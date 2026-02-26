@@ -7,11 +7,9 @@
  */
 
 export function lazyLoadComponent(selector, importFn, init, useObserver = false) {
-
     const asId = selector.includes('#');
     const els = asId ? document.querySelector(selector) : document.querySelectorAll(selector);
     const haveEls = (asId && els) || (!asId && els.length > 0);
-
     if (haveEls) {
         if (useObserver && 'IntersectionObserver' in window) {
             const observer = new IntersectionObserver((entries) => {
@@ -35,13 +33,13 @@ export function lazyLoadComponent(selector, importFn, init, useObserver = false)
 }
 
 export function isInViewport(el, offset = 0) {
-    const bounding = el.getBoundingClientRect(),
-        myElementHeight = el.offsetHeight,
-        myElementWidth = el.offsetWidth;
-    return bounding.top >= -myElementHeight
-        && bounding.left >= -myElementWidth
-        && bounding.right <= (window.innerWidth + offset || document.documentElement.clientWidth + offset) + myElementWidth
-        && bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) + myElementHeight;
+    const bounding = el.getBoundingClientRect();
+    const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
+    const windowWidth = (window.innerWidth || document.documentElement.clientWidth);
+    return bounding.top >= -(bounding.height || 0)
+        && bounding.left >= -(bounding.width || 0)
+        && bounding.right <= (windowWidth + offset) + (bounding.width || 0)
+        && bounding.bottom <= windowHeight + (bounding.height || 0);
 }
 
 export function isElementInMiddleOfScreen(el) {
@@ -68,9 +66,10 @@ export function initialPosition(el) {
 
 export function scrollToEL(el, middle = true, offset = 0) {
     let mainMenu = document.getElementById('main-navigation');
+    const rect = el.getBoundingClientRect();
     let offsetTop = mainMenu && (mainMenu.classList.contains('sticky-top') || mainMenu.classList.contains('as-scroll')) ? mainMenu.getBoundingClientRect().height * 1.5 : 0;
-    let elOffset = el.getBoundingClientRect().top + window.scrollY;
-    let elHeight = el.offsetHeight;
+    let elOffset = rect.top + window.scrollY;
+    let elHeight = rect.height;
     let windowHeight = window.innerHeight;
     if (elHeight < windowHeight && middle) {
         offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
@@ -99,32 +98,35 @@ export function AjaxPagination(html) {
 }
 
 export function RemoveAttrsTitle() {
-    const selector = "[title]:not([data-bs-toggle])";
+    document.querySelectorAll("[title]:not([data-bs-toggle])").forEach(el => {
+        el.addEventListener("mouseover", () => {
+            const titleValue = el.getAttribute("title");
+            if (titleValue) {
+                el.setAttribute("data-tmp", titleValue);
+                el.removeAttribute("title");
+            }
+        });
+        el.addEventListener("mouseleave", () => {
+            const tmpTitle = el.getAttribute("data-tmp");
+            if (tmpTitle !== null) {
+                el.setAttribute("title", tmpTitle);
+                el.removeAttribute("data-tmp");
+            }
+        });
+    });
+}
 
-    // Use event delegation to avoid attaching many listeners
-    const onMouseOver = (e) => {
-        const el = e.target.closest(selector);
-        if (!el) return;
-        const titleValue = el.getAttribute("title");
-        if (titleValue) {
-            el.setAttribute("data-tmp", titleValue);
-            el.removeAttribute("title");
-        }
+/**
+ * Debounce function.
+ * @param {Function} func
+ * @param {number} wait
+ * @returns {Function}
+ */
+export function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        const context = this;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
     };
-
-    const onMouseOut = (e) => {
-        const el = e.target.closest(selector);
-        if (!el) return;
-        // Ensure the mouse actually left the element (and not moved to a child)
-        const related = e.relatedTarget;
-        if (related && el.contains(related)) return;
-        const tmpTitle = el.getAttribute("data-tmp");
-        if (tmpTitle !== null) {
-            el.setAttribute("title", tmpTitle);
-            el.removeAttribute("data-tmp");
-        }
-    };
-
-    document.body.addEventListener("mouseover", onMouseOver, true);
-    document.body.addEventListener("mouseout", onMouseOut, true);
 }

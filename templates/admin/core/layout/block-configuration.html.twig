@@ -3,7 +3,7 @@
 <div class="modal-wrapper">
     <div class="modal fade modal-block-configuration layout-modal"
          id="modal-block-configuration" tabindex="-1" role="dialog"
-         aria-labelledby="modal-block-configuration- {{ interface['name']~'-'~entity.id }}-label" aria-hidden="true">
+         aria-labelledby="modal-block-configuration-{{ interface['name']~'-'~entity.id }}-label" aria-hidden="true">
         {{ form_start(form, {attr: {
             novalidate: "novalidate",
             action: path('admin_block_configuration', {website: websiteId(), block: block.id}),
@@ -13,7 +13,7 @@
             <div class="modal-dialog modal-dialog-centered modal-xxl" role="document">
                 <div class="modal-content border">
                     <div class="modal-header">
-                        <h5 class="modal-title text-center w-100" id="modal-block-configuration- {{ interface['name']~'-'~entity.id }}-label"><i class="icm-cog"></i></h5>
+                        <h5 class="modal-title text-center w-100" id="modal-block-configuration-{{ interface['name']~'-'~entity.id }}-label"><i class="icm-cog"></i></h5>
                         <button class="btn-close" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
                             <i class="icm-times"></i>
                         </button>

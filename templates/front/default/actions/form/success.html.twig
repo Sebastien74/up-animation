@@ -7,7 +7,7 @@
     {%- set template = customTemplateExist ? customTemplate : 'front/'~websiteTemplate~'/actions/form/success/default.html.twig' -%}
     {%- set intl = form|intl -%}
     {%- set message = intl and intl.placeholder ? intl.placeholder : "Merci pour votre message !!"|trans|raw -%}
-    <div id="form-success-container- {{ form.slug }}" class="form-success-container mt-5 mb-5 text-center">
+    <div id="form-success-container-{{ form.slug }}" class="form-success-container mt-5 mb-5 text-center">
         {%- include template -%}
     </div>
 {%- endif -%}

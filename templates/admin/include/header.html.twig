@@ -24,7 +24,7 @@
     <div class="right d-flex align-items-center h-100 pe-3 pe-lg-4 ms-auto">
         <div class="title-wrap d-none d-lg-inline-flex align-items-center pe-4">
             <span class="btn-icon me-3">
-                <i class="icm- {{ pageIcon }}"></i>
+                <i class="icm-{{ pageIcon }}"></i>
             </span>
             <h2 class="title fw-400 mb-0">{{ pageTitle|raw }}</h2>
         </div>
@@ -39,7 +39,7 @@
                data-bs-placement="bottom"
                title="{{ themeLabel|striptags }}"
                class="btn-icon">
-                <i class="icm- {{ themeIcon }}"></i>
+                <i class="icm-{{ themeIcon }}"></i>
             </a>
             {%- if isAllowedToSwitch and not is_granted('IS_IMPERSONATOR') -%}
                 <a id="users-switcher-btn" data-path="{{ path('admin_user_switcher', {website: website.id, type: 'admin'}) }}"
@@ -61,7 +61,7 @@
                    data-bs-toggle="tooltip"
                    title="{{"Afficher les logs"|trans|striptags }}">
                     <i class="icm-bug"></i>
-                    <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+                    <div class="notify"><span class="heart-bit"></span><span class="point"></span></div>
                 </a>
             {%- endif -%}
             <a href="{{ path('app_logout') }}" class="btn-icon danger d-none d-lg-inline-flex">

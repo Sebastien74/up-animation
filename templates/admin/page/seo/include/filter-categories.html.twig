@@ -5,12 +5,12 @@
 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
     {%- for category, item in entities -%}
         {%- set label = item['main'][1].classname is defined ? item['main'][1].classname : (item[0].classname is defined ? item[0].classname : null) -%}
-        <a id="v-pills- {{ category }}-tab"
+        <a id="v-pills-{{ category }}-tab"
            class="nav-link {% if currentCategory == category %} active{% endif %}"
            data-bs-toggle="pill"
-           href="#v-pills- {{ category }}"
+           href="#v-pills-{{ category }}"
            role="tab"
-           aria-controls="v-pills- {{ category }}"
+           aria-controls="v-pills-{{ category }}"
            aria-selected="false">
             {%- set entityDomain = 'entity_'~category -%}
             {%- set label = 'plural'|trans([], entityDomain) and 'plural'|trans([], entityDomain) != 'plural'
@@ -34,7 +34,7 @@
 <div class="tab-content" id="v-pills-tab-tree">
 
     {%- for category, item in entities -%}
-        <div class="tab-pane fade no-border{% if currentCategory == category %} show active{% endif %}" id="v-pills- {{ category }}" role="tabpanel" aria-labelledby="v-pills- {{ category }}-tab">
+        <div class="tab-pane fade no-border{% if currentCategory == category %} show active{% endif %}" id="v-pills-{{ category }}" role="tabpanel" aria-labelledby="v-pills-{{ category }}-tab">
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <form role="search" class="seo-search d-inline-block w-100 me-2">
                     <div class="input-group">

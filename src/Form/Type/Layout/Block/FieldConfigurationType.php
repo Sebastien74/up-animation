@@ -216,9 +216,20 @@ class FieldConfigurationType extends AbstractType
     {
         $builder->add('regex', Type\TextType::class, [
             'required' => false,
-            'label' => $this->translator->trans('Expression regulière', [], 'admin'),
+            'display' => 'search',
+            'label' => $this->translator->trans('Type de validation', [], 'admin'),
+            'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+            'choices' => [
+                $this->translator->trans('Que des chiffres', [], 'admin') => '/^[0-9]*$/',
+                $this->translator->trans('Que des lettres', [], 'admin') => '/^[a-z-A-Z]*$/',
+                $this->translator->trans('Alphanumérique', [], 'admin') => '/^[a-z-A-Z0-9]*$/',
+                $this->translator->trans('Minuscules uniquement', [], 'admin') => '/^[a-z]*$/',
+                $this->translator->trans('Majuscules uniquement', [], 'admin') => '/^[A-Z]*$/',
+                $this->translator->trans('Sans espace', [], 'admin') => '/^\S*$/',
+                $this->translator->trans('URL (http/https)', [], 'admin') => '/^https?:\/\/.*/',
+                $this->translator->trans('Code couleur hexadécimal', [], 'admin') => '/^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/',
+            ],
             'attr' => [
-                'placeholder' => $this->translator->trans('Éditez une expression', [], 'admin'),
                 'group' => $groupClass ?: 'col-md-4',
             ],
             'help' => $this->translator->trans('Ex: /^[0-9]*$/', [], 'admin'),

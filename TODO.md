@@ -1,10 +1,49 @@
 Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
+Sur le favicon générator faire les favicon et arrondi 
+
+Faire par page un fichier scss pour les premiere lames du site. Y mettre le menu et les primere lame visble et charges les autre assets en onload rel
+
+Ajouter au blocs form le SIRET et récupérer le SIRET validator de rezup
+
+Dans le phone validator faire un test pour la longueur du numéro (par langue)
+
 DANS GUIDE.MD pour cms non versionné ajouter pour JUni "Retirer La présence des **BOM (Byte Order Mark) UTF-8** "
+
+La 404 bacck n'est pas OUF et il n'y aps le menu /admin-cd6058befb1ccb7910cca88a541ad3d85e07f179/1/information/edit/1 
 
 Revoir toutes les requêtes depuis le debut
 
 Message d'erreur LOgin sont en anglais
+
+Reprendre le JS catalog front search
+
+// webpack.config.js
+
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+
+Encore
+// ...
+.addPlugin(new ImageMinimizerPlugin({
+minimizer: {
+implementation: ImageMinimizerPlugin.imageminMinify,
+options: {
+plugins: [
+['optipng', { optimizationLevel: 5 }],
+],
+},
+},
+}));
+
+Remettre dans boostrap form exemple dans blac média édtion
+{#    {%- if 'no-alt' == dataHelp -%}#}
+{#        <small class="mt-1 form-text px-3 py-2 d-inline-flex align-items-center text-white w-100 bg-warning fw-600 radius">#}
+{#            <span class="flex-grow-1">{{ 'far exclamation-triangle'|icon(null, 12, 'white me-2') }}</span>#}
+{#            {{ "Ajoutez un titre pour optimser votre référencement. Par défault le nom du fichier sera pris en compte."|trans([], 'admin')|raw }}#}
+{#        </small>#}
+{#    {%- endif -%}#}
+
+websiteAlert en TwigComponent
 
 Juni m'a réexecuter un moule JS sans avoir besoin de le rappeler apès Ajax, voir si faisable sur les forms et autres
 

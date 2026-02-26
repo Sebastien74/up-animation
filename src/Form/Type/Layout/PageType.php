@@ -14,6 +14,7 @@ use App\Repository\Module\Menu\MenuRepository;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
@@ -51,6 +52,9 @@ class PageType extends AbstractType
         $this->haveBackgroundsRole = $this->isInternalUser || in_array('ROLE_BACKGROUND_PAGE', $user->getRoles());
     }
 
+    /**
+     * @throws Exception
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var Page $page */
@@ -111,6 +115,7 @@ class PageType extends AbstractType
             }
 
             if ($isNew) {
+
                 if ($mainMenu) {
                     $builder->add('inMenu', Type\CheckboxType::class, [
                         'required' => false,
@@ -143,11 +148,15 @@ class PageType extends AbstractType
 
             if (!$isNew) {
 
+                $fields = $intlNavActive ? ['title' => 'col-12', 'placeholder' => 'col-12'] : ['title'];
                 $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
                 $intls->add($builder, [
                     'website' => $options['website'],
-                    'fields' => ['title' => 'col-12'],
-                    'label_fields' => ['title' => $this->translator->trans('Titre du plan de site', [], 'admin')],
+                    'fields' => $fields,
+                    'label_fields' => [
+                        'title' => $this->translator->trans('Titre du plan de site', [], 'admin'),
+                        'placeholder' => $this->translator->trans('Titre de la sous navigation', [], 'admin'),
+                    ],
                     'title_force' => false,
                     'disableTitle' => true,
                     'data_config' => !$page->isInfill(),
@@ -203,19 +212,12 @@ class PageType extends AbstractType
 
                 if ($this->haveBackgroundsRole) {
                     $mediaRelations = new WidgetType\MediaRelationsCollectionType($this->coreLocator);
-                    $fields = $intlNavActive ? ['title'] : ['title'];
                     $mediaRelations->add($builder, [
                         'data_config' => true,
                         'entry_options' => [
                             'onlyMedia' => true,
                             'forceIntl' => true,
                             'intlTitleForce' => false,
-                            'label_fields' => ['intl' => [
-                                'title' => $intlNavActive
-                                    ? $this->translator->trans('Titre de la sous navigation', [], 'admin')
-                                    : $this->translator->trans('Titre', [], 'admin')
-                            ]],
-                            'fields' => ['intl' => $fields],
                             'excludes_fields' => ['intl' => ['targetStyle', 'newTab', 'externalLink']],
                         ],
                     ]);

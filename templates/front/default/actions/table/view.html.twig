@@ -11,13 +11,13 @@
     {%- if table.intl.title -%}
         <strong class="table-title text-uppercase text-center d-inline-block mb-3 w-100">{{ table.intl.title|raw }}</strong>
     {%- endif -%}
-    <table class="table table-bordered{% if table.entity.striped %} table-striped{% endif %}" data-bg="{{ table.entity.headBackgroundColor }}" data-color="text- {{ table.entity.headColor }}">
+    <table class="table table-bordered{% if table.entity.striped %} table-striped{% endif %}" data-bg="{{ table.entity.headBackgroundColor }}" data-color="text-{{ table.entity.headColor }}">
         {%- if render.haveColsTitles -%}
             <thead>
                 <tr class="{{ table.entity.headBackgroundColor }}">
                     {%- for col in render.head -%}
                         {%- set title = col.intl.title is defined ? col.intl.title|raw : null -%}
-                        <th scope="col" class="text- {{ table.entity.headColor }}">{{ title }}</th>
+                        <th scope="col" class="text-{{ table.entity.headColor }}">{{ title }}</th>
                     {%- endfor -%}
                 </tr>
             </thead>

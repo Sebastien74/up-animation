@@ -1,4 +1,4 @@
-{%- extends 'front/'~websiteTemplate~'/base.html.twig' -%}
+﻿{%- extends 'front/'~websiteTemplate~'/base.html.twig' -%}
 
 {%- trans_default_domain 'front_default' -%}
 
@@ -18,7 +18,7 @@
 {%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~assetFile, null, webpack) }}
-    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~assetFile~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low">
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~assetFile~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
 {%- endblock -%}
 
 {%- block javascripts -%}

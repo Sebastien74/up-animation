@@ -39,7 +39,7 @@
             {%- set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass -%}
             {%- set linkClass = 1 == link.level ? linkClass~' text-uppercase' : linkClass -%}
             <{%- if 'a' == element -%}a{%- else -%}div{%- endif -%} class="{{ linkClass }}" {%- if link.dataAnchor -%} data-anchor="{{ link.dataAnchor }}" {%- endif -%}
-                {%- if path -%}href="{{ path }}" {%- endif -%}{%- if link.children and not dropdownHover -%} id="navbar-link- {{ link.id }}" {%- endif -%}
+                {%- if path -%}href="{{ path }}" {%- endif -%}{%- if link.children and not dropdownHover -%} id="navbar-link-{{ link.id }}" {%- endif -%}
                 {%- if link.children and not dropdownHover -%} role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" {%- elseif link.linkBlank -%} target="_blank" {%- else -%}{%- endif -%}
                 {%- if link.linkExternal -%} rel="noopener noreferrer" {%- endif -%}
                 {%- if pushMicroData -%} itemprop="url" {%- endif -%}>
@@ -51,14 +51,14 @@
                 {%- endif -%}
                 {%- if link.children -%}
                     <span class="caret position-absolute ms-2{% if dropdownHover %} dropdown-toggle{% endif %}"
-                        {%- if dropdownHover -%} id="navbar-link- {{ link.id }}" role="button" aria-label="{{"Voir plus"|trans|striptags }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" {%- endif -%}>
+                        {%- if dropdownHover -%} id="navbar-link-{{ link.id }}" role="button" aria-label="{{"Voir plus"|trans|striptags }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" {%- endif -%}>
                         {%- set icon = link.level == 1 ? 'down' : 'right' -%}
                         {{ ('fal chevron-'~icon)|icon(null, 8) }}
                     </span>
                 {%- endif -%}
             </{%- if 'a' == element -%}a{%- else -%}div{%- endif -%}>
             {%- if link.children -%}
-                <ul class="dropdown-menu dropdown-menu-level-{{ link.level }}" aria-labelledby="navbar-link- {{ link.id }}">
+                <ul class="dropdown-menu dropdown-menu-level-{{ link.level }}" aria-labelledby="navbar-link-{{ link.id }}">
                     {%- for subLink in link.children -%}
                         {{ macro.element(subLink, tree, microDataActive, expand, dropdownHover, true, loop.last) }}
                     {%- endfor -%}
@@ -68,17 +68,17 @@
     {%- endif -%}
 {%- endmacro -%}
 
-<div id="menu-container- {{ slug }}" class="menu-container w-100 position-relative{% if fixedOnScroll or alwaysFixed %} as-sticky{% endif %}{% if alwaysFixed %} always-sticky{% endif %} {{ dropdownClass }}"
+<div id="menu-container-{{ slug }}" class="menu-container w-100 position-relative{% if fixedOnScroll or alwaysFixed %} as-sticky{% endif %}{% if alwaysFixed %} always-sticky{% endif %} {{ dropdownClass }}"
      data-expand="{{ expand }}">
     {{ macroWebmaster.box({
         title: "Éditer le menu"|trans([], 'front_webmaster'),
         role: 'ROLE_NAVIGATION',
         path: path('admin_menu_edit', {website: website.id, menu: id, entitylocale: app.request.locale})
     }) }}
-    <nav id="main-navigation- {{ slug }}" class="navbar navbar-expand-{{ expand }} pe-2 ps-2 pe-{{ expand }}-0 ps-{{ expand }}-0 pt-{{ expand }}-4 pb-{{ expand }}-4"
+    <nav id="main-navigation-{{ slug }}" class="navbar navbar-expand-{{ expand }} pe-2 ps-2 pe-{{ expand }}-0 ps-{{ expand }}-0 pt-{{ expand }}-4 pb-{{ expand }}-4"
          aria-label="{{"Navigation secondaire"|trans|striptags }}">
         <div class="{{ size }}{% if size == 'container-fluid' %} pe-sm-5 ps-sm-5{% endif %}">
-            <div id="main-navigation-nav- {{ slug }}" class="collapse navbar-collapse">
+            <div id="main-navigation-nav-{{ slug }}" class="collapse navbar-collapse">
                 {%- set class = 'mx-auto' == alignment ? 'px-3' : 'ps-'~expand~'-5' -%}
                 <ul class="navbar-nav {% if haveLogin %}w-100{% else %}{{ alignment }}{% endif %} pt-4 pb-4 pt-{{ expand }}-0 pb-{{ expand }}-0 {{ class }}">
                     {%- if displayHomePage -%}

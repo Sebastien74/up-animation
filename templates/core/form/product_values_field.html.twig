@@ -92,7 +92,7 @@
                                     {%- endfor -%}
                                 {%- endif -%}
                                 {%- set bgRow = asDefault ? 'bg-info-darken' : (asCustom ? 'bg-info' : 'bg-gray') -%}
-                                <li id="ui-value- {{ value.id }}" class="ui-value {{ bgRow }} d-flex align-items-center py-2{% if asDefault %} as-default{% endif %}"
+                                <li id="ui-value-{{ value.id }}" class="ui-value {{ bgRow }} d-flex align-items-center py-2{% if asDefault %} as-default{% endif %}"
                                     data-position="{{ value.position }}" data-id="{{ value.id }}"
                                     data-pos-path="{{ path('admin_catalogfeaturevalueproduct_position', {website: websiteId(), catalogfeaturevalueproduct: value.id}) }}">
                                     {%- if draggable -%}
@@ -173,7 +173,7 @@
     <div class="col-12 text-end mb-4">
         <button role="button" class="add-collection btn full-prototype-btn w-100"
                 data-collection-target="append"
-                data-target="# {{ id }}-collection">
+                data-target="#{{ id }}-collection">
             <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
                  class="img-fluid rounded-add-img lazy-load"

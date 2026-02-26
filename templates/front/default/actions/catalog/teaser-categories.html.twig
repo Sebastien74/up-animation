@@ -54,7 +54,7 @@
                 {%- set mediaRelation = entity|mainMedia -%}
                 {%- set intl = entity|intl -%}
                 {%- set title = intl.title is defined and intl.title ? intl.title : entity.adminName -%}
-                <div class="col-md- {{ colSizes }} item mb-5">
+                <div class="col-md-{{ colSizes }} item mb-5">
                     <a href="{{ path('front_index', {url: productsPageUrl, categories: entity.slug}) }}" class="card ms-3 me-3">
                         {{ mediaRelation|file(thumbConfiguration, {
                             btnLink: false,

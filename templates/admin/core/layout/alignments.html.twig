@@ -1,4 +1,4 @@
-{%- trans_default_domain 'admin' -%}
+﻿{%- trans_default_domain 'admin' -%}
 
 {%- set tabs = {
     "alignements-desktop": {
@@ -19,10 +19,10 @@
         name: "alignmentMobile",
     }} -%}
 
-<ul class="nav nav-tabs custom-tab" role="tablist">
+<ul class="nav nav-tabs" role="tablist">
     {%- for tabId, config in tabs -%}
         <li class="nav-item">
-            <a id="nav- {{ tabId }}-tab" class="nav-link {% if loop.first %} active{% endif %}" data-bs-toggle="tab" href="# {{ tabId }}" aria-controls="{{ tabId }}" role="tab" aria-selected="{{ loop.first }}">
+            <a id="nav-{{ tabId }}-tab" class="nav-link {% if loop.first %} active{% endif %}" data-bs-toggle="tab" href="#{{ tabId }}" aria-controls="{{ tabId }}" role="tab" aria-selected="{{ loop.first }}">
                 <span class="d-none d-sm-inline-block">{{ config.title }}</span>
             </a>
         </li>
@@ -32,7 +32,7 @@
 <div id="alignements-management-block" class="tab-content pt-4">
     {%- for tabId, config in tabs -%}
         {%- set suffix = tabId == 'desktop' ? '' : (config.field is defined ? config.field : tabId|capitalize) -%}
-        <div class="tab-pane text-center w-100 mb-4{% if loop.first %} active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav- {{ tabId }}-tab">
+        <div class="tab-pane text-center w-100 mb-4{% if loop.first %} active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab">
             {%- if form[config.name] is defined -%}
                 {{ form_row(form[config.name]) }}
             {%- endif -%}

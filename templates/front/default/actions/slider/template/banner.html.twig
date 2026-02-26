@@ -1,4 +1,4 @@
-{%- trans_default_domain 'front_default' -%}
+﻿{%- trans_default_domain 'front_default' -%}
 
 {%- set withThumbs = false -%}
 
@@ -10,7 +10,7 @@
             {%- for media in medias -%}
                 {%- set display = (mediaType == 'video' and media.videoLink is not empty) or (media.media.filename is defined and media.media.filename) -%}
                 {%- if display -%}
-                    <div class="marquee-item h-100 d-flex align-items-center justify-content-center ps-2 pe-2 ps-md-4 pe-md-4">
+                    <div class="marquee-item d-flex align-items-center justify-content-center px-2 h-100">
                         {%- if withThumbs -%}
                             {{ media|file(thumbConfiguration, {
                                 notInBox: true,

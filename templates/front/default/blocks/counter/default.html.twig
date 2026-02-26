@@ -22,7 +22,7 @@
                 {%- endif -%}
                 {%- set count = intl.title|striptags|length > 0 ? intl.title : false -%}
                 {%- if count -%}
-                    <span id="counter-block- {{ block.id }}"
+                    <span id="counter-block-{{ block.id }}"
                           class="counter-animation fw-700 {{ style }}"
                           data-component="counter"
                           data-counter-start="0"
