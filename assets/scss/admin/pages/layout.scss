@@ -31,6 +31,23 @@
     margin-bottom: 15px;
 }
 
+.grabbable {
+    cursor: grab;
+
+    &:active {
+        cursor: grabbing;
+    }
+}
+
+.sortable-drag {
+    cursor: grabbing !important;
+}
+
+body.sorting-active,
+body.sorting-active * {
+    cursor: grabbing !important;
+}
+
 #zones-sortable {
 
     padding-left: 0;

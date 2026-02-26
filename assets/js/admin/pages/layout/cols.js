@@ -15,6 +15,13 @@ export default function (Routing) {
                     handle: ".handle-col",
                     draggable: ".col-sortable",
                     ghostClass: "ui-state-highlight",
+                    dragClass: "sortable-drag",
+                    onStart: function() {
+                        document.body.classList.add('sorting-active');
+                    },
+                    onEnd: function() {
+                        document.body.classList.remove('sorting-active');
+                    },
                     onUpdate: function (evt) {
                         let colsSortable = Array.from(evt.to.querySelectorAll('.col-sortable'));
                         setPositions(Routing, colsSortable, 'admin_cols_positions');

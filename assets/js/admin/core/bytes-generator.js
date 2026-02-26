@@ -5,22 +5,28 @@
  */
 export default function (event, el, tokenLength = 30) {
 
-    let spinnerIcon = $(el).find('svg');
-    let group = $(el).closest('.form-group');
-    let input = group.find('input');
+    let spinnerIcon = el.querySelector('svg');
+    let group = el.closest('.form-group');
+    let input = group ? group.querySelector('input') : null;
 
-    group.removeClass('is-invalid');
-    group.find('.invalid-feedback').remove();
-    input.removeClass('is-invalid');
+    if (group) {
+        group.classList.remove('is-invalid');
+        group.querySelectorAll('.invalid-feedback').forEach(err => err.remove());
+    }
+    if (input) {
+        input.classList.remove('is-invalid');
+    }
 
-    spinnerIcon.toggleClass('fa-spin');
+    if (spinnerIcon) spinnerIcon.classList.toggle('fa-spin');
 
     const rand = () => Math.random().toString(36).substr(2);
     const token = (length) => (rand() + rand() + rand() + rand()).substr(0, length);
 
-    input.val(token(tokenLength));
+    if (input) {
+        input.value = token(tokenLength);
+    }
 
-    spinnerIcon.toggleClass('fa-spin');
+    if (spinnerIcon) spinnerIcon.classList.toggle('fa-spin');
 
     event.stopImmediatePropagation();
     return false;

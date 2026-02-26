@@ -5,39 +5,46 @@
  */
 export default function () {
 
-    $('.search-in-list input').keyup(function () {
+    document.querySelectorAll('.search-in-list input').forEach(input => {
+        input.addEventListener('keyup', function () {
 
-        let el = $(this);
-        let term = el.val();
-        let targetAttr = el.data('target');
-        let itemAttr = el.data('item');
-        let target = el.closest('div[role="search"]').find(targetAttr);
-        term = term.replace(/(\s+)/, "(<[^>]+>)*$1(<[^>]+>)*");
+            let term = this.value;
+            let targetSelector = this.dataset.target;
+            let itemSelector = this.dataset.item;
+            let searchWrapper = this.closest('div[role="search"]');
+            let target = searchWrapper ? searchWrapper.querySelector(targetSelector) : null;
 
-        target.find(itemAttr).each(function () {
+            if (!target) return;
 
-            let item = $(this);
-            let srcStr = item.text();
+            const termRegex = term.replace(/(\s+)/, "(<[^>]+>)*$1(<[^>]+>)*");
 
-            let pattern = new RegExp("(" + term + ")", "gi");
-            srcStr = srcStr.replace(pattern, "<mark class=\"bg-transparent\">$1</mark>");
-            srcStr = srcStr.replace(/(<mark class="bg-transparent">[^<>]*)((<[^>]+>)+)([^<>]*<\/mark>)/, "$1</mark>$2<mark>$4");
+            target.querySelectorAll(itemSelector).forEach(item => {
 
-            item.html(srcStr);
+                let srcStr = item.textContent;
 
-            if (term === '') {
-                item.find('mark').remove();
-            }
+                let pattern = new RegExp("(" + termRegex + ")", "gi");
+                srcStr = srcStr.replace(pattern, "<mark class=\"bg-transparent\">$1</mark>");
+                srcStr = srcStr.replace(/(<mark class="bg-transparent">[^<>]*)((<[^>]+>)+)([^<>]*<\/mark>)/, "$1</mark>$2<mark>$4");
 
-            let e = '(^| )' + term;
-            let l = $(this).text();
-            let a = new RegExp(e, "i");
+                item.innerHTML = srcStr;
 
-            if (!a.test(l)) {
-                item.addClass('mark-muted');
-            } else {
-                item.removeClass('mark-muted');
-            }
+                if (term === '') {
+                    item.querySelectorAll('mark').forEach(mark => {
+                        const text = document.createTextNode(mark.textContent);
+                        mark.replaceWith(text);
+                    });
+                }
+
+                let e = '(^| )' + term;
+                let l = item.textContent;
+                let a = new RegExp(e, "i");
+
+                if (!a.test(l)) {
+                    item.classList.add('mark-muted');
+                } else {
+                    item.classList.remove('mark-muted');
+                }
+            });
         });
     });
 }

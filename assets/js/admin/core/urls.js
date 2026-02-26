@@ -11,25 +11,27 @@ export default function (event, el) {
     const iconEl = el.querySelector('.label');
     const iconRefresh = el.querySelector('.refresh-icon');
 
-    let beforeSend = function () {
-        iconEl.classList.add('d-none');
-        iconRefresh.classList.remove('d-none');
+    const beforeSend = function () {
+        if (iconEl) iconEl.classList.add('d-none');
+        if (iconRefresh) iconRefresh.classList.remove('d-none');
     }
 
-    let xHttp = new XMLHttpRequest()
-    xHttp.open("GET", el.getAttribute('href'), true)
-    xHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8")
-    beforeSend()
-    xHttp.send()
-    xHttp.onload = function (e) {
+    beforeSend();
 
-        if (this.readyState === 4 && this.status === 200) {
-
-            let response = JSON.parse(this.response);
-
-            const iconEl = el.querySelector('.label');
-            const iconRefresh = el.querySelector('.refresh-icon');
-
+    fetch(el.getAttribute('href'), {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(response => {
             const status = response.status;
             const iconOffline = el.dataset.iconOffline;
             const iconOnline = el.dataset.iconOnline;
@@ -41,8 +43,10 @@ export default function (event, el) {
             const iconPrevious = status === 'offline' ? iconOnline : iconOffline;
             const iconCurrent = status === 'offline' ? iconOffline : iconOnline;
 
-            iconEl.classList.remove('icm-' + iconPrevious);
-            iconEl.classList.add('icm-' + iconCurrent);
+            if (iconEl) {
+                iconEl.classList.remove('icm-' + iconPrevious);
+                iconEl.classList.add('icm-' + iconCurrent);
+            }
 
             const colorPrevious = status === 'offline' ? colorOnline : colorOffline;
             const colorCurrent = status === 'offline' ? colorOffline : colorOnline;
@@ -54,12 +58,15 @@ export default function (event, el) {
             el.setAttribute('data-bs-original-title', title);
             el.setAttribute('aria-label', title);
 
-            iconEl.classList.remove('d-none');
-            iconRefresh.classList.add('d-none');
-        }
-    }
-    xHttp.onerror = function (errors) {}
+            if (iconEl) iconEl.classList.remove('d-none');
+            if (iconRefresh) iconRefresh.classList.add('d-none');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (iconEl) iconEl.classList.remove('d-none');
+            if (iconRefresh) iconRefresh.classList.add('d-none');
+        });
 
-    event.stopImmediatePropagation()
-    return false
+    event.stopImmediatePropagation();
+    return false;
 }

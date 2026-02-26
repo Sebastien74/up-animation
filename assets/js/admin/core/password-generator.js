@@ -7,36 +7,35 @@ import route from "../../vendor/components/routing";
  */
 export default function (event, el) {
 
-    let spinnerIcon = $(el).find('svg');
-    let referCopy = $('body').find('.refer-copy');
+    let spinnerIcon = el.querySelector('svg');
+    let referCopy = document.body.querySelector('.refer-copy');
 
-    $.ajax({
-        url: route('security_password_generator'),
-        type: "GET",
-        processData: false,
-        contentType: false,
-        dataType: 'json',
-        async: true,
-        beforeSend: function () {
-            if (!referCopy.hasClass('d-none')) {
-                referCopy.toggleClass('d-none');
-            }
-            spinnerIcon.toggleClass('fa-spin');
-        },
-        success: function (response) {
+    if (referCopy && !referCopy.classList.contains('d-none')) {
+        referCopy.classList.add('d-none');
+    }
+    if (spinnerIcon) spinnerIcon.classList.add('fa-spin');
+
+    fetch(route('security_password_generator'), {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+        .then(response => response.json())
+        .then(response => {
             if (response.password) {
-                referCopy.toggleClass('d-none');
-                $('body').find('.to-copy').text(response.password);
-                spinnerIcon.toggleClass('fa-spin');
+                if (referCopy) referCopy.classList.remove('d-none');
+                const toCopy = document.body.querySelector('.to-copy');
+                if (toCopy) toCopy.textContent = response.password;
+                if (spinnerIcon) spinnerIcon.classList.remove('fa-spin');
             }
-        },
-        error: function (errors) {
+        })
+        .catch(errors => {
             /** Display errors */
             import('../core/errors').then(({default: displayErrors}) => {
                 new displayErrors(errors);
             }).catch(error => console.error(error.message));
-        }
-    });
+        });
 
     event.stopImmediatePropagation();
     return false;

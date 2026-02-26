@@ -1,124 +1,207 @@
-$(function () {
+document.addEventListener('DOMContentLoaded', function () {
     "use strict";
-    $(function () {
-        $(".preloader").fadeOut();
+
+    const preloader = document.querySelector(".preloader");
+    if (preloader) {
+        preloader.style.display = 'none';
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.mega-dropdown')) {
+            e.stopPropagation();
+        }
     });
-    jQuery(document).on('click', '.mega-dropdown', function (e) {
-        e.stopPropagation()
-    });
+
     // ==============================================================
     // This is for the top header part and sidebar part
     // ==============================================================
-    var set = function () {
-        var width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width;
-        var topOffset = 55;
+    const set = function () {
+        const width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        const body = document.body;
+        const brandSpans = document.querySelectorAll('.navbar-brand span');
+        const sidebarIcons = document.querySelectorAll(".sidebartoggler i");
+
         if (width < 1170) {
-            $("body").addClass("mini-sidebar");
-            $('.navbar-brand span').hide();
-            $(".sidebartoggler i").addClass("ti-menu");
+            body.classList.add("mini-sidebar");
+            brandSpans.forEach(span => span.style.display = 'none');
+            sidebarIcons.forEach(i => i.classList.add("ti-menu"));
+        } else {
+            body.classList.remove("mini-sidebar");
+            brandSpans.forEach(span => span.style.display = 'inline');
         }
-        else {
-            $("body").removeClass("mini-sidebar");
-            $('.navbar-brand span').show();
-        }
-        // var height = ((window.innerHeight > 0) ? window.innerHeight : this.screen.height) - 1;
-        // height = height - topOffset;
-        // if (height < 1) height = 1;
-        // if (height > topOffset) {
-        //     $(".page-wrapper").css("min-height", (height - (parseInt($('#admin-footer').css("marginTop")))) + "px");
-        // }
     };
-    $(window).ready(set);
-    $(window).on("resize", set);
+
+    window.addEventListener('load', set);
+    window.addEventListener("resize", set);
+
     // ==============================================================
     // Theme options
     // ==============================================================
-    $(".sidebartoggler").on('click', function () {
-        if ($("body").hasClass("mini-sidebar")) {
-            $("body").trigger("resize");
-            $("body").removeClass("mini-sidebar");
-            $('.navbar-brand span').show();
-        }
-        else {
-            $("body").trigger("resize");
-            $("body").addClass("mini-sidebar");
-            $('.navbar-brand span').hide();
-        }
+    document.querySelectorAll(".sidebartoggler").forEach(el => {
+        el.addEventListener('click', function () {
+            const body = document.body;
+            const brandSpans = document.querySelectorAll('.navbar-brand span');
+
+            if (body.classList.contains("mini-sidebar")) {
+                window.dispatchEvent(new Event('resize'));
+                body.classList.remove("mini-sidebar");
+                brandSpans.forEach(span => span.style.display = 'inline');
+            } else {
+                window.dispatchEvent(new Event('resize'));
+                body.classList.add("mini-sidebar");
+                brandSpans.forEach(span => span.style.display = 'none');
+            }
+        });
     });
+
     // this is for close icon when navigation open in mobile view
-    $(".nav-toggler").click(function () {
-        $("body").toggleClass("show-sidebar");
-        $(".nav-toggler i").toggleClass("ti-menu");
-        $(".nav-toggler i").addClass("ti-close");
+    document.querySelectorAll(".nav-toggler").forEach(el => {
+        el.addEventListener('click', function () {
+            document.body.classList.toggle("show-sidebar");
+            const icons = this.querySelectorAll("i");
+            icons.forEach(i => {
+                i.classList.toggle("ti-menu");
+                i.classList.add("ti-close");
+            });
+        });
     });
-    $(".search-box a, .search-box .app-search .srh-btn").on('click', function () {
-        $(".app-search").toggle(200);
+
+    document.querySelectorAll(".search-box a, .search-box .app-search .srh-btn").forEach(el => {
+        el.addEventListener('click', function () {
+            const appSearch = document.querySelector(".app-search");
+            if (appSearch) {
+                if (window.getComputedStyle(appSearch).display === 'none') {
+                    appSearch.style.display = 'block';
+                } else {
+                    appSearch.style.display = 'none';
+                }
+            }
+        });
     });
+
     // ==============================================================
     // Right sidebar options
     // ==============================================================
-    $(".right-side-toggle").click(function () {
-        $(".right-sidebar").slideDown(50);
-        $(".right-sidebar").toggleClass("shw-rside");
+    document.querySelectorAll(".right-side-toggle").forEach(el => {
+        el.addEventListener('click', function () {
+            const rightSidebar = document.querySelector(".right-sidebar");
+            if (rightSidebar) {
+                rightSidebar.style.display = 'block';
+                rightSidebar.classList.toggle("shw-rside");
+            }
+        });
     });
+
     // ==============================================================
     // This is for the floating labels
     // ==============================================================
-    $('.floating-labels .form-control').on('focus blur', function (e) {
-        $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
-    }).trigger('blur');
+    document.querySelectorAll('.floating-labels .form-control').forEach(el => {
+        const toggleFocused = (e) => {
+            const group = el.closest('.form-group');
+            if (group) {
+                group.classList.toggle('focused', (e.type === 'focus' || el.value.length > 0));
+            }
+        };
+        el.addEventListener('focus', toggleFocused);
+        el.addEventListener('blur', toggleFocused);
+        // Trigger blur initially
+        toggleFocused({type: 'blur'});
+    });
 
     // ==============================================================
     //tooltip
     // ==============================================================
-    $(function () {
-        $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
     // ==============================================================
     //Popover
     // ==============================================================
-    $(function () {
-        $('[data-bs-toggle="popover"]').popover()
-    })
+    const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    });
 
     // ==============================================================
     // Perfact scrollbar
     // ==============================================================
-    $('.scroll-sidebar, .right-side-panel, .message-center, .right-sidebar').perfectScrollbar();
-    $('#chat, #msg, #comment, #todo').perfectScrollbar();
+    if (typeof PerfectScrollbar !== 'undefined') {
+        document.querySelectorAll('.scroll-sidebar, .right-side-panel, .message-center, .right-sidebar, #chat, #msg, #comment, #todo').forEach(el => {
+            new PerfectScrollbar(el);
+        });
+    }
+
     // ==============================================================
     // Resize all elements
     // ==============================================================
-    $("body").trigger("resize");
+    window.dispatchEvent(new Event('resize'));
+
     // ==============================================================
     // To do list
     // ==============================================================
-    $(".list-task li label").click(function () {
-        $(this).toggleClass("task-done");
+    document.querySelectorAll(".list-task li label").forEach(el => {
+        el.addEventListener('click', function () {
+            this.classList.toggle("task-done");
+        });
     });
+
     // ==============================================================
     // Collapsable cards
     // ==============================================================
-    $('a[data-action="collapse"]').on('click', function (e) {
-        e.preventDefault();
-        $(this).closest('.card').find('[data-action="collapse"] i').toggleClass('ti-minus ti-plus');
-        $(this).closest('.card').children('.card-body').collapse('toggle');
+    document.querySelectorAll('a[data-action="collapse"]').forEach(el => {
+        el.addEventListener('click', function (e) {
+            e.preventDefault();
+            const card = this.closest('.card');
+            if (card) {
+                const icon = card.querySelector('[data-action="collapse"] i');
+                if (icon) {
+                    icon.classList.toggle('ti-minus');
+                    icon.classList.toggle('ti-plus');
+                }
+                const cardBody = card.querySelector('.card-body');
+                if (cardBody && typeof bootstrap !== 'undefined') {
+                    const bsCollapse = bootstrap.Collapse.getOrCreateInstance(cardBody);
+                    bsCollapse.toggle();
+                }
+            }
+        });
     });
+
     // Toggle fullscreen
-    $('a[data-action="expand"]').on('click', function (e) {
-        e.preventDefault();
-        $(this).closest('.card').find('[data-action="expand"] i').toggleClass('mdi-arrow-expand mdi-arrow-compress');
-        $(this).closest('.card').toggleClass('card-fullscreen');
+    document.querySelectorAll('a[data-action="expand"]').forEach(el => {
+        el.addEventListener('click', function (e) {
+            e.preventDefault();
+            const card = this.closest('.card');
+            if (card) {
+                const icon = card.querySelector('[data-action="expand"] i');
+                if (icon) {
+                    icon.classList.toggle('mdi-arrow-expand');
+                    icon.classList.toggle('mdi-arrow-compress');
+                }
+                card.classList.toggle('card-fullscreen');
+            }
+        });
     });
+
     // Close Card
-    $('a[data-action="close"]').on('click', function () {
-        $(this).closest('.card').removeClass().slideUp('fast');
+    document.querySelectorAll('a[data-action="close"]').forEach(el => {
+        el.addEventListener('click', function () {
+            const card = this.closest('.card');
+            if (card) {
+                card.style.transition = 'opacity 0.5s ease-out';
+                card.style.opacity = '0';
+                setTimeout(() => card.remove(), 500);
+            }
+        });
     });
+
     // ==============================================================
     // Color variation
     // ==============================================================
 
-    var mySkins = [
+    const mySkins = [
         "skin-default",
         "skin-green",
         "skin-red",
@@ -132,71 +215,67 @@ $(function () {
         "skin-purple-dark",
         "skin-megna-dark"
     ]
-    /**
-     * Get a prestored setting
-     *
-     * @param String name Name of of the setting
-     * @returns String The value of the setting | null
-     */
+
     function get(name) {
         if (typeof (Storage) !== 'undefined') {
             return localStorage.getItem(name)
-        }
-        else {
+        } else {
             window.alert('Please use a modern browser to properly view this template!')
         }
     }
-    /**
-     * Store a new settings in the browser
-     *
-     * @param String name Name of the setting
-     * @param String val Value of the setting
-     * @returns void
-     */
+
     function store(name, val) {
         if (typeof (Storage) !== 'undefined') {
             localStorage.setItem(name, val)
-        }
-        else {
+        } else {
             window.alert('Please use a modern browser to properly view this template!')
         }
     }
 
-    /**
-     * Replaces the old skin with the new skin
-     * @param String cls the new skin class
-     * @returns Boolean false to prevent link's default action
-     */
     function changeSkin(cls) {
-        $.each(mySkins, function (i) {
-            $('body').removeClass(mySkins[i])
-        })
-        $('body').addClass(cls)
-        store('skin', cls)
-        return false
+        mySkins.forEach(skin => {
+            document.body.classList.remove(skin);
+        });
+        document.body.classList.add(cls);
+        store('skin', cls);
+        return false;
     }
 
     function setup() {
-        var tmp = get('skin')
-        if (tmp && $.inArray(tmp, mySkins)) changeSkin(tmp)
-        // Add the change skin listener
-        $('[data-skin]').on('click', function (e) {
-            if ($(this).hasClass('knob')) return
-            e.preventDefault()
-            changeSkin($(this).data('skin'))
-        })
+        const tmp = get('skin');
+        if (tmp && mySkins.includes(tmp)) {
+            changeSkin(tmp);
+        }
+        document.querySelectorAll('[data-skin]').forEach(el => {
+            el.addEventListener('click', function (e) {
+                if (this.classList.contains('knob')) return;
+                e.preventDefault();
+                changeSkin(this.dataset.skin);
+            });
+        });
     }
-    setup()
-    $("#themecolors").on("click", "a", function () {
-        $("#themecolors li a").removeClass("working"),
-            $(this).addClass("working")
-    })
+
+    setup();
+
+    const themeColors = document.querySelector("#themecolors");
+    if (themeColors) {
+        themeColors.addEventListener("click", function (e) {
+            const target = e.target.closest('a');
+            if (target) {
+                themeColors.querySelectorAll("li a").forEach(a => a.classList.remove("working"));
+                target.classList.add("working");
+            }
+        });
+    }
 
     // For Custom File Input
-    $('.custom-file-input').on('change',function(){
-        //get the file name
-        var fileName = $(this).val();
-        //replace the "Choose a file" label
-        $(this).next('.custom-file-label').html(fileName);
-    })
+    document.addEventListener('change', function (e) {
+        if (e.target.classList.contains('custom-file-input')) {
+            const fileName = e.target.value;
+            const nextLabel = e.target.nextElementSibling;
+            if (nextLabel && nextLabel.classList.contains('custom-file-label')) {
+                nextLabel.innerHTML = fileName;
+            }
+        }
+    });
 });

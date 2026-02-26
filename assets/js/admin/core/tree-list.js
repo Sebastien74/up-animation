@@ -1,10 +1,12 @@
-$('body .tree-list').on('click', '.caret', function () {
-
-    let child = $(this).closest('li.item').find('.nested').first();
-
-    if (child.hasClass('active')) {
-        child.removeClass('active');
-    } else {
-        child.addClass('active');
+document.addEventListener('click', function (e) {
+    const caret = e.target.closest('.tree-list .caret');
+    if (caret) {
+        const item = caret.closest('li.item');
+        if (item) {
+            const child = item.querySelector('.nested');
+            if (child) {
+                child.classList.toggle('active');
+            }
+        }
     }
 });

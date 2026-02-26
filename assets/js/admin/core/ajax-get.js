@@ -49,86 +49,99 @@ export default function () {
         }
     });
 
-    let body = $('body');
+    document.addEventListener('click', function (e) {
+        const refreshEl = e.target.closest('.ajax-get-refresh');
+        if (refreshEl) {
+            e.preventDefault();
 
-    body.on('click', '.ajax-get-refresh', function (e) {
+            const target = refreshEl.dataset.target;
+            const targetAttr = typeof target !== 'undefined' ? target : '.ajax-content';
+            const mainLoader = document.body.querySelector('.main-preloader');
+            const targetLoaderSelector = refreshEl.dataset.targetLoader;
+            let loader = targetLoaderSelector ? document.body.querySelector(targetLoaderSelector) : null;
+            let customPreloader = true;
+            const pushHistory = refreshEl.dataset.history;
 
-        e.preventDefault();
-
-        let el = $(this);
-        let target = el.data('target');
-        let targetAttr = typeof target != 'undefined' ? target : '.ajax-content';
-        let mainLoader = body.find('.main-preloader');
-        let loader = body.find(el.data('target-loader'));
-        let customPreloader = true;
-        let pushHistory = el.data('history');
-
-        if (loader.length < 1) {
-            loader = mainLoader;
-            customPreloader = false;
-        }
-
-        $.ajax({
-            url: el.attr('href') + "?ajax=true",
-            type: "GET",
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            beforeSend: function () {
-                $('.alert').remove();
-                if (loader.length >= 1) {
-                    if (customPreloader) {
-                        loader.parent().removeClass('d-none');
-                    }
-                    loader.removeClass('d-none');
-                }
-            },
-            success: function (response) {
-
-                if (response.html) {
-
-                    let html = $(response.html).find(targetAttr)[0];
-                    let body = $('body');
-                    let ajaxContent = body.find(targetAttr);
-                    ajaxContent.replaceWith(html);
-
-                    if (loader.length >= 1) {
-                        loader.addClass('d-none');
-                        if (customPreloader) {
-                            loader.parent().addClass('d-none');
-                        }
-                    }
-
-                    $('[data-bs-toggle=tooltip]').tooltip({trigger: "hover"});
-
-                    mainLoader.addClass('d-none');
-
-                    let scrollToEl = body.find('.scroll-to-response-ajax');
-                    if (scrollToEl.length >= 1) {
-                        $('html, body').animate({scrollTop: scrollToEl.offset().top}, 800);
-                    }
-
-                    const inModal = el.closest('.modal');
-                    if (!inModal && response.history && typeof pushHistory != 'undefined') {
-                        history.pushState({}, null, response.history);
-                    }
-
-                    activeSearch();
-
-                    import('../../vendor/components/medias-loader').then(({default: mediaLoader}) => {
-                        new mediaLoader();
-                    }).catch(error => console.error(error.message));
-                }
-            },
-            error: function (errors) {
-                /** Display errors */
-                import('../core/errors').then(({default: displayErrors}) => {
-                    new displayErrors(errors);
-                }).catch(error => console.error(error.message));
+            if (!loader) {
+                loader = mainLoader;
+                customPreloader = false;
             }
-        });
 
-        e.stopImmediatePropagation();
-        return false;
+            const url = refreshEl.getAttribute('href') + (refreshEl.getAttribute('href').includes('?') ? "&ajax=true" : "?ajax=true");
+
+            document.querySelectorAll('.alert').forEach(alert => alert.remove());
+            if (loader) {
+                if (customPreloader && loader.parentElement) {
+                    loader.parentElement.classList.remove('d-none');
+                }
+                loader.classList.remove('d-none');
+            }
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(response => {
+                    if (response.html) {
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = response.html;
+                        const newContent = tempDiv.querySelector(targetAttr);
+
+                        if (newContent) {
+                            const ajaxContent = document.body.querySelector(targetAttr);
+                            if (ajaxContent) {
+                                ajaxContent.replaceWith(newContent);
+                            }
+                        }
+
+                        if (loader) {
+                            loader.classList.add('d-none');
+                            if (customPreloader && loader.parentElement) {
+                                loader.parentElement.classList.add('d-none');
+                            }
+                        }
+
+                        const tooltips = document.querySelectorAll('[data-bs-toggle=tooltip]');
+                        tooltips.forEach(t => {
+                            if (typeof bootstrap !== 'undefined') {
+                                new bootstrap.Tooltip(t, {trigger: "hover"});
+                            }
+                        });
+
+                        if (mainLoader) mainLoader.classList.add('d-none');
+
+                        const scrollToEl = document.body.querySelector('.scroll-to-response-ajax');
+                        if (scrollToEl) {
+                            window.scrollTo({
+                                top: scrollToEl.getBoundingClientRect().top + window.pageYOffset,
+                                behavior: 'smooth'
+                            });
+                        }
+
+                        const inModal = refreshEl.closest('.modal');
+                        if (!inModal && response.history && typeof pushHistory !== 'undefined') {
+                            history.pushState({}, null, response.history);
+                        }
+
+                        activeSearch();
+
+                        import('../../vendor/components/medias-loader').then(({default: mediaLoader}) => {
+                            new mediaLoader();
+                        }).catch(error => console.error(error.message));
+                    }
+                })
+                .catch(errors => {
+                    /** Display errors */
+                    import('../core/errors').then(({default: displayErrors}) => {
+                        new displayErrors(errors);
+                    }).catch(error => console.error(error.message));
+                });
+
+            e.stopImmediatePropagation();
+        }
     });
 }

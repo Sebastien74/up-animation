@@ -1,14 +1,19 @@
 export default function () {
 
-    let websitesSelector = $('#websites-selector-form');
+    let websitesSelector = document.getElementById('websites-selector-form');
 
-    if (websitesSelector.length > 0) {
+    if (websitesSelector) {
 
-        let websiteId = websitesSelector.data('id');
-        websitesSelector.find('option[value=' + websiteId + ']').prop('selected', true);
+        let websiteId = websitesSelector.dataset.id;
+        let option = websitesSelector.querySelector('option[value="' + websiteId + '"]');
+        if (option) {
+            option.selected = true;
+        }
 
-        $('body').on('change', '#websites-selector-form select', function () {
-            $(this).closest('form').submit();
+        websitesSelector.addEventListener('change', function (e) {
+            if (e.target.tagName === 'SELECT') {
+                websitesSelector.submit();
+            }
         });
     }
 }

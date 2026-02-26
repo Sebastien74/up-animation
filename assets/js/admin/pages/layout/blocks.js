@@ -20,7 +20,12 @@ export default function (Routing) {
                     handle: ".handle-block",
                     draggable: ".block",
                     ghostClass: "highlight-block",
+                    dragClass: "sortable-drag",
+                    onStart: function() {
+                        document.body.classList.add('sorting-active');
+                    },
                     onEnd: function (evt) {
+                        document.body.classList.remove('sorting-active');
                         let blocksSortableOriginal = Array.from(evt.to.querySelectorAll('.block'));
                         setPositions(Routing, blocksSortableOriginal, 'admin_blocks_positions', true);
                     }

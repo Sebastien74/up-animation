@@ -12,6 +12,13 @@ export default function (Routing) {
                 handle: ".handle-zone",
                 draggable: ".zone",
                 ghostClass: "ui-state-highlight",
+                dragClass: "sortable-drag",
+                onStart: function() {
+                    document.body.classList.add('sorting-active');
+                },
+                onEnd: function() {
+                    document.body.classList.remove('sorting-active');
+                },
                 onUpdate: function (evt) {
                     let zonesSortable = Array.from(evt.to.querySelectorAll('.zone'));
                     setPositions(Routing, zonesSortable, 'admin_zones_positions');

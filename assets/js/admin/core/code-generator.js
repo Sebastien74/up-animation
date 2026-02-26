@@ -41,23 +41,37 @@ export default function () {
 
         spinnerIcon.classList.toggle('fa-spin');
 
-        let xHttp = new XMLHttpRequest()
-        xHttp.open("GET", url, true)
-        xHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8")
-        xHttp.send()
-        xHttp.onload = function (e) {
-            if (this.readyState === 4 && this.status === 200) {
-                let response = JSON.parse(this.response)
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(response => {
                 if (response.code && response.code !== 'undefined') {
                     if (el.classList.contains('has-code') || inModal) {
                         el.previousElementSibling.value = response.code;
                     } else {
-                        el.closest('.url-edit-group').querySelector("input[code='code']").value = response.code;
+                        const urlEditGroup = el.closest('.url-edit-group');
+                        if (urlEditGroup) {
+                            const inputCode = urlEditGroup.querySelector("input[code='code']");
+                            if (inputCode) inputCode.value = response.code;
+                        }
                     }
                 }
-                spinnerIcon.classList.toggle('fa-spin');
-            }
-        }
+                if (spinnerIcon) spinnerIcon.classList.toggle('fa-spin');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (spinnerIcon) spinnerIcon.classList.toggle('fa-spin');
+            });
         event.stopImmediatePropagation();
         return false;
     }

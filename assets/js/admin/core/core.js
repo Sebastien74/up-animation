@@ -29,7 +29,7 @@ import './tree-list';
 import route from "../../vendor/components/routing";
 
 /** 2 - Scroll to errors */
-let errors = $(document).find('.invalid-feedback');
+let errors = document.querySelectorAll('.invalid-feedback');
 if (errors.length > 0) {
     import('../../vendor/components/scroll-error').then(({default: scrollErrors}) => {
         new scrollErrors();
@@ -46,22 +46,28 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const cacheClear = urlParams.get('cache_clear');
 if (cacheClear) {
-    let body = $('body');
-    let website = body.data('id');
-    $.ajax({
-        url: route('cache_clear', {website: website, 'clear': true}),
-        type: "GET",
-        processData: false,
-        contentType: false,
-        async: true,
-        dataType: 'json',
-        complete: function (response) {
-            window.location = window.location.pathname;
+    let website = document.body.dataset.id;
+    fetch(route('cache_clear', {website: website, 'clear': true}), {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
         }
-    });
+    })
+        .then(() => {
+            window.location = window.location.pathname;
+        });
 }
 
 /** 6 - Close command console */
-$(document).on('click', '.close-console', function () {
-    $("#coresphere_consolebundle_console").fadeOut();
+document.addEventListener('click', function (e) {
+    if (e.target.closest('.close-console')) {
+        const consoleEl = document.getElementById("coresphere_consolebundle_console");
+        if (consoleEl) {
+            consoleEl.style.transition = 'opacity 0.5s ease-out';
+            consoleEl.style.opacity = '0';
+            setTimeout(() => {
+                consoleEl.style.display = 'none';
+            }, 500);
+        }
+    }
 });

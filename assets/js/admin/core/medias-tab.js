@@ -16,47 +16,56 @@ export default function (Routing, el) {
         tab.classList.remove('show', 'collapse');
     });
 
-    let body = $('body');
+    const rect = el.getBoundingClientRect();
+    window.scrollTo({
+        top: rect.top + window.pageYOffset - 50,
+        behavior: 'smooth'
+    });
 
-    $('html, body').animate({scrollTop: $(el).offset().top - 50}, 100);
+    if (!el.classList.contains('active')) {
 
-    if (!$(el).hasClass('active')) {
+        let targetSelector = el.getAttribute('href');
+        let targetEl = document.querySelector(targetSelector);
+        let contentWrap = targetEl ? targetEl.querySelector('.card-body') : null;
 
-        let target = $(el).attr('href');
-        let contentWrap = body.find(target).find('.card-body');
+        let path = el.dataset.path;
+        let url = path + (path.includes('?') ? '&ajax=true' : '?ajax=true');
 
-        let path = $(el).data('path');
-        let url = path + '?ajax=true';
-        if (path.indexOf('?') > -1) {
-            url = path + '&ajax=true'
-        }
+        el.classList.add('active');
 
-        $.ajax({
-            url: url,
-            type: "GET",
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            beforeSend: function () {
-                $(el).addClass('active');
-            },
-            success: function (response) {
-                if (response.html) {
-                    contentWrap.html(response.html);
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+            .then(response => response.json())
+            .then(response => {
+                if (response.html && contentWrap) {
+                    contentWrap.innerHTML = response.html;
                     dropifyJS();
                     tinymcePlugin();
                     select2();
                     import('./../form/btn-group-toggle').then(({default: btnToggle}) => {
                         new btnToggle();
                     }).catch(error => console.error(error.message));
-                    // import('../../vendor/plugins/touchspin').then(({default: touchSpin}) => {
-                    //     new touchSpin();
-                    // }).catch(error => console.error(error.message));
+
                     import('../form/ajax').then(({default: ajaxPost}) => {
                         new ajaxPost();
                     }).catch(error => console.error(error.message));
-                    $('[data-bs-toggle="tooltip"]').tooltip();
-                    $('html, body').animate({scrollTop: $(el).offset().top - 50}, 100);
+
+                    if (typeof bootstrap !== 'undefined') {
+                        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(t => {
+                            new bootstrap.Tooltip(t);
+                        });
+                    }
+
+                    const newRect = el.getBoundingClientRect();
+                    window.scrollTo({
+                        top: newRect.top + window.pageYOffset - 50,
+                        behavior: 'smooth'
+                    });
+
                     let mediasModals = document.querySelectorAll('.open-modal-medias')
                     for (let i = 0; i < mediasModals.length; i++) {
                         let modalEl = mediasModals[i]
@@ -68,13 +77,12 @@ export default function (Routing, el) {
                         }
                     }
                 }
-            },
-            error: function (errors) {
+            })
+            .catch(errors => {
                 /** Display errors */
                 import('./errors').then(({default: displayErrors}) => {
                     new displayErrors(errors);
                 }).catch(error => console.error(error.message));
-            }
-        });
+            });
     }
 }
