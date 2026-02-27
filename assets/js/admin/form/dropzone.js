@@ -70,7 +70,7 @@ export default function () {
             if (preloader) {
                 preloader.classList.remove('d-none');
             }
-            // window.location.href = window.location.href;
+            window.location.href = window.location.href;
         }
         body.removeAttribute('data-dropzone-success');
     });

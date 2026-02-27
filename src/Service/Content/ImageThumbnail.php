@@ -37,7 +37,7 @@ class ImageThumbnail implements ImageThumbnailInterface
     private const bool FORCE_QUALITY = false;
     private const int MAX_FILE_SIZE_OPTIMIZATION = 500 * 1024; // octets 500k
     private const int MAX_FILE_SIZE = 3145728; // octets 3145728 = 3M : https://www.convertworld.com/fr/mesures-informatiques/megaoctet-megabyte.html
-    private const int MAX_FILE_WIDTH = 4000; // pixels 4000
+    private const int MAX_FILE_WIDTH = 3840; // pixels 3840
     private const int MAX_FILE_HEIGHT = 6000; // pixels 6000
     private const array ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
     private const array EXCEPTIONS_EXTENSIONS = ['svg', 'gif', 'tiff', 'raw', 'heic'];
