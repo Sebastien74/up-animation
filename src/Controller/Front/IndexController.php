@@ -150,7 +150,7 @@ class IndexController extends FrontController
      */
     private function getLastUpdateDate(WebsiteModel $website, Page $page, Url $url): DateTimeInterface
     {
-        dd('Ajouter dans website un etag global et le persister dans Doctrine listener');
+//        dd('Ajouter dans website un etag global et le persister dans Doctrine listener');
 
         $dates = [
             $page->getUpdatedAt(),

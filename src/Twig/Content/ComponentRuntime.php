@@ -73,7 +73,7 @@ class ComponentRuntime implements RuntimeExtensionInterface
                                     $col->addBlock($block);
                                 }
                             } catch (LoaderError|SyntaxError|RuntimeError $exception) {
-                                dd($exception);
+//                                dd($exception);
                             }
                         }
                     }
@@ -91,7 +91,7 @@ class ComponentRuntime implements RuntimeExtensionInterface
                 'zone' => $zone,
             ]);
         } catch (LoaderError|RuntimeError|SyntaxError $exception) {
-            dd($exception);
+//            dd($exception);
         }
     }
 

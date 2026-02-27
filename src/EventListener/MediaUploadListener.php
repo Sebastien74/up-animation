@@ -23,7 +23,7 @@ class MediaUploadListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly ImageThumbnailInterface $imageThumbnail
+        private readonly ImageThumbnailInterface $imageThumbnail,
     ) {
     }
 
@@ -127,9 +127,10 @@ class MediaUploadListener implements EventSubscriberInterface
         }
 
         if ($mime === 'image/jpeg' || $mime === 'image/jpg') {
+            imageinterlace($newImage, true);
             imagejpeg($newImage, $path, $quality);
         } elseif ($mime === 'image/png') {
-            imagepng($newImage, $path, (int) round(9 * $quality / 100));
+            imagepng($newImage, $path, 9);
         } elseif ($mime === 'image/webp') {
             imagewebp($newImage, $path, $quality);
         }

@@ -59,7 +59,7 @@ class MediaLibraryManager
 
         $originalName = $filename ? str_replace('.'.$extension, '', $filename) : null;
 
-        if ($name !== $originalName && $filename) {
+        if ($name && $name !== $originalName && $filename) {
             $baseDirname = $this->projectDir.'/public/uploads/'.$website->getUploadDirname().'/';
             $baseDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $baseDirname);
             $filesystem = new Filesystem();
@@ -71,8 +71,10 @@ class MediaLibraryManager
                 $session->getFlashBag()->add('error', $message);
                 $session->set('same_file_error', $message);
             } else {
-                $filesystem->rename($baseDirname.$filename, $newFileDirname);
-                $media->setFilename($name.'.'.$extension);
+                if ($filesystem->exists($baseDirname.$filename)) {
+                    $filesystem->rename($baseDirname.$filename, $newFileDirname);
+                    $media->setFilename($name.'.'.$extension);
+                }
             }
         }
     }

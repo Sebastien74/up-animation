@@ -570,18 +570,24 @@ class MediaManager
      */
     private function setMedia(Media\Media $media): void
     {
-        $dbName = str_replace('.'.$media->getExtension(), '', $media->getFilename());
-        if ($media->getName() !== $dbName) {
+        $extension = $media->getExtension();
+        $filename = $media->getFilename();
+        if (!$extension || !$filename) {
+            return;
+        }
+
+        $dbName = str_replace('.'.$extension, '', $filename);
+        if ($media->getName() && $media->getName() !== $dbName) {
             $website = $media->getWebsite();
             $baseDirname = $this->coreLocator->projectDir().'/public/uploads/'.$website->getUploadDirname().'/';
             $baseDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $baseDirname);
             $filesystem = new Filesystem();
 
-            $originalDirname = $baseDirname.$media->getFilename();
+            $originalDirname = $baseDirname.$filename;
             $newFilename = Urlizer::urlize($media->getName()).'.'.$media->getExtension();
             $newDirname = $baseDirname.$newFilename;
 
-            if ($media->getName() && $media->getFilename() && $filesystem->exists($originalDirname) && !$filesystem->exists($newDirname)) {
+            if ($filesystem->exists($originalDirname) && !$filesystem->exists($newDirname)) {
                 $filesystem->rename($originalDirname, $newDirname);
                 $media->setFilename($newFilename);
             }
