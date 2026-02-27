@@ -54,7 +54,7 @@ class RegisterManager
     public function register(RegistrationFormModel $userModel, Security $security, Website $website): ?string
     {
         $user = $this->createUser($userModel, $website);
-        $session = new Session();
+        $session = $this->requestStack->getSession();
 
         if ($security->isAdminRegistrationValidation()) {
             $session->getFlashBag()->add('success', $this->translator->trans("Merci pour inscription. Votre compte dois être validé par l'administrateur", [], 'security_cms'));

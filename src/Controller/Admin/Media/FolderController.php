@@ -150,7 +150,7 @@ class FolderController extends AdminController
         $zipName = Urlizer::urlize($folder->getAdminName()).'.zip';
         $tmpDirname = $projectDir.'/public/uploads/tmp/medias-zip/';
         $tmpDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $tmpDirname);
-        $session = new Session();
+        $session = $request->getSession();
 
         if ($medias) {
             foreach ($medias as $media) {

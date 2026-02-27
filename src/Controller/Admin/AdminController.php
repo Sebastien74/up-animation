@@ -544,7 +544,7 @@ class AdminController extends BaseController
     /**
      * Forward edition view (new & edit).
      *
-     * @throws NonUniqueResultException|MappingException|ContainerExceptionInterface|NotFoundExceptionInterface|\ReflectionException|\Doctrine\ORM\Mapping\MappingException|InvalidArgumentException|InvalidArgumentException|InvalidArgumentException|InvalidArgumentException
+     * @throws NonUniqueResultException|MappingException|ContainerExceptionInterface|NotFoundExceptionInterface|\ReflectionException|\Doctrine\ORM\Mapping\MappingException|InvalidArgumentException|InvalidArgumentException|InvalidArgumentException|InvalidArgumentException|\Doctrine\ORM\Exception\ORMException
      */
     public function edition($params): JsonResponse|string|Response
     {
@@ -567,7 +567,7 @@ class AdminController extends BaseController
 
         $arguments = array_merge((array) $params, $arguments);
 
-        if (!empty($request->get('ajax'))) {
+        if (!empty($request->query->get('ajax'))) {
             $redirection = !empty($arguments['redirection']) ? $arguments['redirection'] : null;
             $redirectionHost = $redirection && !preg_match('/'.$request->getHost().'/', $redirection) ? $request->getSchemeAndHttpHost().$redirection : null;
             $success = $formHelper->getForm() && $formHelper->getForm()->isSubmitted() ? $formHelper->getForm()->isValid() : true;
@@ -575,13 +575,11 @@ class AdminController extends BaseController
             if (isset($arguments['history'])) {
                 $response['history'] = $arguments['history'];
             }
-
             return new JsonResponse($response);
         }
 
         if (!empty($formHelper->getRedirection())) {
-            header('Location:'.$formHelper->getRedirection());
-            exit;
+            return $this->redirect($formHelper->getRedirection());
         }
 
         ksort($arguments);

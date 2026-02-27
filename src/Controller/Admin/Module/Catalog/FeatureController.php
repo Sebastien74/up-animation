@@ -121,7 +121,7 @@ class FeatureController extends AdminController
     {
         $feature = $this->coreLocator->em()->getRepository(Feature::class)->find($request->get('catalogfeature'));
         if ($feature->getValues()->count() > 0) {
-            $session = new Session();
+            $session = $request->getSession();
             $message = $this->coreLocator->translator()->trans('Vous ne pouvez pas supprimer cette Caractéristique car des valeurs lui sont associées.', [], 'admin');
             $session->getFlashBag()->add('error', $message);
 

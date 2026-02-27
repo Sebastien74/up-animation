@@ -66,7 +66,7 @@ class NewscastDuplicateManager extends BaseDuplicateManager
         $newscastToDuplicate = $form->get('newscast')->getData();
         $duplicateToWebsite = $newscast->getWebsite();
 
-        $session = new Session();
+        $session = $this->requestStack->getSession();
         $session->set('DUPLICATE_TO_WEBSITE', $duplicateToWebsite);
 
         $this->setNewscast($newscast, $newscastToDuplicate, $duplicateToWebsite);

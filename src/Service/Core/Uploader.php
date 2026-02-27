@@ -51,8 +51,7 @@ class Uploader
 
         if (!$uploadedFile->guessExtension()) {
             $message = $this->coreLocator->translator()->trans("Une erreur est survenue : L'extension du ficher n'a pas pu être déterminée.", [], 'messages').' <strong>('.$uploadedFile->getClientOriginalName().')</strong>';
-            $session = new Session();
-            $session->getFlashBag()->add('error', $message);
+            $this->coreLocator->requestStack()->getSession()->getFlashBag()->add('error', $message);
 
             return false;
         }
@@ -139,8 +138,7 @@ class Uploader
         $this->extension = $uploadedFile->guessExtension();
 
         if ($existingFile) {
-            $session = new Session();
-            $session->getFlashBag()->add('warning', $uploadedFile->getClientOriginalName().' '.$this->coreLocator->translator()->trans('a été renommé car un fichier du même nom existe déja.', [], 'admin'));
+            $this->coreLocator->requestStack()->getSession()->getFlashBag()->add('warning', $uploadedFile->getClientOriginalName().' '.$this->coreLocator->translator()->trans('a été renommé car un fichier du même nom existe déja.', [], 'admin'));
         }
     }
 
@@ -268,8 +266,7 @@ class Uploader
             imagedestroy($sourceImage);
             imagedestroy($newImage);
 
-            $session = new Session();
-            $session->getFlashBag()->add('warning', $this->coreLocator->translator()->trans('Votre image %filename% a été redimensionnée car elle était trop grande.', [
+            $this->coreLocator->requestStack()->getSession()->getFlashBag()->add('warning', $this->coreLocator->translator()->trans('Votre image %filename% a été redimensionnée car elle était trop grande.', [
                 '%filename%' => $this->filename,
             ], 'admin'));
         }

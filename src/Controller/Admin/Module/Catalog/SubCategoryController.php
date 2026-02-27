@@ -96,7 +96,7 @@ class SubCategoryController extends AdminController
         $products = $subCategory ? $this->coreLocator->em()->getRepository(Product::class)->findBySubCategory($subCategory) : [];
 
         if ($products) {
-            $session = new Session();
+            $session = $request->getSession();
             if (1 === count($products)) {
                 $message = $this->coreLocator->translator()->trans('Cette sous-catégorie est utilisée dans le produit', [], 'admin').' <strong>'.$products[0]->getAdminName().'</strong>';
             } else {

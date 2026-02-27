@@ -28,6 +28,7 @@ class SupportManager
     public function __construct(
         private readonly MailerService $mailer,
         private readonly CoreLocatorInterface $coreLocator,
+        private readonly \Symfony\Component\HttpFoundation\RequestStack $requestStack,
     ) {
     }
 
@@ -53,7 +54,6 @@ class SupportManager
         ]);
         $this->mailer->send();
 
-        $session = new Session();
-        $session->getFlashBag()->add('success', $this->coreLocator->translator()->trans('Votre message a été envoyé avec succès. Nous y répondrons dès que possible', [], 'admin'));
+        $this->requestStack->getSession()->getFlashBag()->add('success', $this->coreLocator->translator()->trans('Votre message a été envoyé avec succès. Nous y répondrons dès que possible', [], 'admin'));
     }
 }

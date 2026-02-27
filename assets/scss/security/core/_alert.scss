@@ -25,7 +25,6 @@
 
         flex: 0 0 $card-icon-size;
         height: $card-icon-size;
-        margin: 1rem auto 0 1rem;
         border-radius: $card-icon-radius;
 
         i {
@@ -38,6 +37,7 @@
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
         font-size: 13px;
+        line-height: 1.1;
 
         * {
             color: transparentize($white, .3) !important;

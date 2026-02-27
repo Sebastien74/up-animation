@@ -58,7 +58,7 @@ class ZoneDuplicateManager extends BaseDuplicateManager
         }
 
         $layout = $destinationPage->getLayout();
-        $session = new Session();
+        $session = $this->requestStack->getSession();
 
         if (is_object($destinationPage) && method_exists($destinationPage, 'getWebsite')) {
             $session->set('DUPLICATE_TO_WEBSITE_FROM_ZONE', $destinationPage->getWebsite());

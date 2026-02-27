@@ -120,11 +120,11 @@ readonly class ExceptionListener
         $website = $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($request->getHost());
 
         if ($inAdmin && $this->coreLocator->authorizationChecker()->isGranted('IS_IMPERSONATOR')) {
-            $session = new Session();
+            $session = $request->getSession();
             $session->getFlashBag()->add('warning', 'You have been logged out for the user '.$user->getLogin());
             $event->setResponse(new RedirectResponse($request->getUri().'?_switch_user=_exit'));
         } elseif ($inAdmin && $user instanceof User && $website instanceof Website) {
-            $session = new Session();
+            $session = $request->getSession();
             $session->getFlashBag()->add('error', 'Access denied!!');
             $event->setResponse(new RedirectResponse($this->coreLocator->router()->generate('admin_dashboard', ['website' => $website->getId()])));
         }

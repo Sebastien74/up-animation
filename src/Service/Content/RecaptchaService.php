@@ -43,7 +43,6 @@ class RecaptchaService
         private readonly string $logDir,
     ) {
         $this->request = $this->requestStack->getCurrentRequest();
-        $this->session = new Session();
     }
 
     /**

@@ -46,7 +46,7 @@ class UniqUrlValidator extends ConstraintValidator
 
         if ($urlPost instanceof SeoEntities\Url && $parentEntity && $value) {
             $existingUrl = true;
-            $session = new Session();
+            $session = $this->requestStack->getSession();
             try {
                 $request = $this->requestStack->getMainRequest();
                 $website = $this->websiteRepository->find(intval($request->get('website')));

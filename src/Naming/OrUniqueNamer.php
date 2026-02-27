@@ -27,6 +27,9 @@ class OrUniqueNamer implements NamerInterface
         $basename = pathinfo($originalName, PATHINFO_FILENAME);
 
         $urlizedName = Urlizer::urlize($basename);
+        if (!$extension) {
+            $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+        }
         $filename = $urlizedName . '.' . $extension;
 
         $uploadDir = $mapping->getUploadDestination();

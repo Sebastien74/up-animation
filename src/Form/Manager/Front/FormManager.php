@@ -65,7 +65,7 @@ class FormManager
         private readonly MailerService $mailer,
         private readonly IntlRuntime $intlRuntime,
     ) {
-        $this->session = new Session();
+        $this->session = $this->coreLocator->requestStack()->getSession();
     }
 
     /**

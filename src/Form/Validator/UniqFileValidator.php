@@ -60,7 +60,7 @@ class UniqFileValidator extends ConstraintValidator
             }
             if ($violation) {
                 $message = rtrim($message, '<br/>');
-                $session = new Session();
+                $session = $this->coreLocator->requestStack()->getSession();
                 $session->set('same_file_error', $message);
                 $this->context->buildViolation($message)->addViolation();
             }

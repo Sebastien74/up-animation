@@ -79,7 +79,7 @@ class IndexController extends FrontController
         /* 404 & Redirection */
         if (!$page instanceof Page || 'components' === $pageSlug && !$this->isGranted('ROLE_INTERNAL')) {
             if ('components' === $pageSlug) {
-                $session = $request->hasSession() ? $request->getSession() : new Session();
+                $session = $request->hasSession() ? $request->getSession() : $this->coreLocator->requestStack()->getSession();
                 $session->getFlashBag()->add('info', 'Veuillez vous connecter pour visualiser cette page.');
                 $session->set('alert_error', true);
             } elseif (is_array($page) && !empty($page['redirection'])) {

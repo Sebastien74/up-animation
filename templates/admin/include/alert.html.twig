@@ -2,7 +2,8 @@
 
 {%- set icons = {
     success: {icon: 'check', bgColor: 'success', color: 'success', iconColor: 'white-50'},
-    info: {icon: 'info', bgColor: 'info', color: 'primary', iconColor: 'white-50'},
+    teal: {icon: 'check', bgColor: 'teal', color: 'teal', iconColor: 'white-50'},
+    info: {icon: 'info', bgColor: 'info', color: 'info', iconColor: 'white-50'},
     warning: {icon: 'exclamation', bgColor: 'warning', color: 'warning', iconColor: 'white-50'},
     danger: {icon: 'exclamation-triangle', bgColor: 'danger', color: 'danger', iconColor: 'white-50'},
     error: {icon: 'exclamation-triangle', bgColor: 'danger', color: 'danger', iconColor: 'white-50'},
@@ -21,6 +22,7 @@
 {%- set class = class is defined ? paddings~' '~class : paddings -%}
 {%- set badge = badge is defined ? badge : null -%}
 {%- set size = size is defined ? size : null -%}
+{%- set alwaysShow = alwaysShow is defined and alwaysShow ? 'always-show' : false -%}
 
 {%- if 'alert' == display -%}
     <div {% if id -%} id="{{ id }}" {%- endif -%} class="alert alert-{{ bgColor }} position-relative d-flex mb-3 {{ class }}{% if size %} {{ size }}{% endif %}">
@@ -46,14 +48,16 @@
         {%- endif -%}
     </div>
 {%- else -%}
-    <div {% if id -%} id="{{ id }}" {%- endif -%} class="toast-container position-fixed top-0 end-0 p-3">
-        <div class="toast toast-alert fade show border-0 bg-{{ color }}" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header d-flex border-0 no-radius py-3 px-3 text-{{ bgColor }}">
-                <div class="inner d-flex align-items-center">
-                    <span class="dash-action dash-{{ bgColor }} dash-accent me-3"><i class="icm-{{ icon }}"></i></span>
+    <div{% if id %} id="{{ id }}" {% endif %} class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast toast-alert fade show border-0 bg-{{ color }}{% if alwaysShow %} {{ alwaysShow }}{% endif %}" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header d-flex align-items-start border-0 no-radius py-3 px-3 text-{{ bgColor }}">
+                <div class="inner d-flex align-items-center gap-3">
+                    <span class="btn-icon {{ bgColor }}"><i class="icm-{{ icon }}"></i></span>
                     <div class="message">{{ message|raw }}</div>
                 </div>
-                <button type="button" class="btn-close ms-3" data-bs-dismiss="toast" aria-label="{{"Close"|trans|striptags }}"></button>
+                <span class="btn-close p-0 border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="toast" aria-label="{{ "Fermer"|trans|striptags }}">
+                    <i class="icm-times cursor"></i>
+                </span>
             </div>
         </div>
     </div>

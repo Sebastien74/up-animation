@@ -41,7 +41,6 @@ class SessionManager
         } elseif ($entity instanceof SeoConfiguration || $entity instanceof Information) {
             $session->remove('social_networks_'.$entity->getWebsite()->getId());
         } elseif ($entity instanceof ThumbConfiguration) {
-            $session = new Session();
             foreach ($session->all() as $key => $name) {
                 if (str_contains($key, 'thumbs_actions_')) {
                     $session->remove($key);

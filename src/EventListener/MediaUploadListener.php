@@ -7,6 +7,7 @@ namespace App\EventListener;
 use App\Entity\Media\Media;
 use App\Service\Content\ImageThumbnailInterface;
 use App\Service\Interface\CoreLocatorInterface;
+use App\Service\Media\Compressor;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
@@ -19,11 +20,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-class MediaUploadListener implements EventSubscriberInterface
+readonly class MediaUploadListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly ImageThumbnailInterface $imageThumbnail,
+        private CoreLocatorInterface $coreLocator,
+        private ImageThumbnailInterface $imageThumbnail,
+        private Compressor $compressor,
     ) {
     }
 
@@ -63,8 +65,6 @@ class MediaUploadListener implements EventSubscriberInterface
             return;
         }
 
-        $this->autoOrient($path, $mimeType);
-
         $sizes = getimagesize($path);
         if (!$sizes) {
             return;
@@ -74,26 +74,45 @@ class MediaUploadListener implements EventSubscriberInterface
         $maxWidth = $this->imageThumbnail->getMaxFileWidth();
         $maxHeight = $this->imageThumbnail->getMaxFileHeight();
 
-        $resize = false;
-        if ($width > $maxWidth) {
-            $resize = true;
-            $height = (int) (($height * $maxWidth) / $width);
-            $width = $maxWidth;
+        // Récupérer l'orientation si JPEG
+        $orientation = 1;
+        if (($mimeType === 'image/jpeg' || $mimeType === 'image/jpg') && function_exists('exif_read_data')) {
+            $exif = @exif_read_data($path);
+            $orientation = isset($exif['Orientation']) ? (int) $exif['Orientation'] : 1;
         }
-        if ($height > $maxHeight) {
+
+        // Si l'orientation indique une rotation de 90° ou 270°, on inverse les dimensions cibles pour le calcul du ratio
+        $swapped = in_array($orientation, [5, 6, 7, 8]);
+        $currentWidth = $swapped ? $height : $width;
+        $currentHeight = $swapped ? $width : $height;
+
+        $resize = false;
+        $targetWidth = $currentWidth;
+        $targetHeight = $currentHeight;
+
+        if ($currentWidth > $maxWidth) {
             $resize = true;
-            $width = (int) (($width * $maxHeight) / $height);
-            $height = $maxHeight;
+            $targetHeight = (int) (($currentHeight * $maxWidth) / $currentWidth);
+            $targetWidth = $maxWidth;
+        }
+        if ($targetHeight > $maxHeight) {
+            $resize = true;
+            $targetWidth = (int) (($targetWidth * $maxHeight) / $targetHeight);
+            $targetHeight = $maxHeight;
         }
 
         $mustCompress = $file->getSize() > 500 * 1024; // 500ko
 
-        if ($resize || $mustCompress) {
-            $this->resizeAndCompress($path, $mimeType, $width, $height, $media);
+        if ($resize || $mustCompress || $orientation !== 1) {
+            $this->resizeAndCompress($path, $mimeType, $targetWidth, $targetHeight, $media, $orientation);
+            // Compression adaptative si le fichier est toujours > 500ko après resize
+            if (file_exists($path) && filesize($path) > 500 * 1024) {
+                $this->compressor->optimize($path, $mimeType, $media->getQuality() ?? 85);
+            }
         }
     }
 
-    private function resizeAndCompress(string $path, string $mime, int $width, int $height, Media $media): void
+    private function resizeAndCompress(string $path, string $mime, int $width, int $height, Media $media, int $orientation = 1): void
     {
         $sourceImage = null;
         if ($mime === 'image/jpeg' || $mime === 'image/jpg') {
@@ -106,6 +125,19 @@ class MediaUploadListener implements EventSubscriberInterface
 
         if (!$sourceImage) {
             return;
+        }
+
+        // 1. Gérer l'orientation AVANT le redimensionnement si possible, ou pendant.
+        // On effectue la rotation sur l'image source pour avoir les bonnes dimensions de départ.
+        if ($orientation !== 1) {
+            if ($orientation === 3) {
+                $sourceImage = imagerotate($sourceImage, 180, 0);
+            } elseif ($orientation === 6) {
+                $sourceImage = imagerotate($sourceImage, -90, 0);
+            } elseif ($orientation === 8) {
+                $sourceImage = imagerotate($sourceImage, 90, 0);
+            }
+            // Note: les cas 2, 4, 5, 7 (miroirs) sont rares mais pourraient être gérés ici si besoin.
         }
 
         $origWidth = imagesx($sourceImage);
@@ -148,31 +180,6 @@ class MediaUploadListener implements EventSubscriberInterface
 
     private function autoOrient(string $path, string $mime): void
     {
-        if (($mime !== 'image/jpeg' && $mime !== 'image/jpg') || !function_exists('exif_read_data')) {
-            return;
-        }
-
-        $exif = @exif_read_data($path);
-        $orientation = isset($exif['Orientation']) ? (int) $exif['Orientation'] : 1;
-
-        if ($orientation === 1) {
-            return;
-        }
-
-        $img = @imagecreatefromjpeg($path);
-        if (!$img) {
-            return;
-        }
-
-        if ($orientation === 3) {
-            $img = imagerotate($img, 180, 0);
-        } elseif ($orientation === 6) {
-            $img = imagerotate($img, -90, 0);
-        } elseif ($orientation === 8) {
-            $img = imagerotate($img, 90, 0);
-        }
-
-        imagejpeg($img, $path, 95);
-        imagedestroy($img);
+        // Cette méthode est maintenant intégrée à resizeAndCompress pour plus d'efficacité
     }
 }

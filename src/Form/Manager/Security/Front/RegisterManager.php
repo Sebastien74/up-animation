@@ -86,7 +86,7 @@ class RegisterManager
         $disabledAccount = $form->getConfig()->getOption('disabled_account');
         $user = $this->setUser($form, $disabledAccount, $website);
         $user->setCategory($userCategory);
-        $session = new Session();
+        $session = $this->coreLocator->requestStack()->getSession();
 
         if ('email' === $_ENV['SECURITY_FRONT_LOGIN_TYPE'] && $user->getEmail()) {
             $user->setLogin($user->getEmail());

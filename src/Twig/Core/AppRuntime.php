@@ -371,7 +371,7 @@ class AppRuntime implements RuntimeExtensionInterface
     public function removeSession(?string $name = null): void
     {
         if ($name) {
-            $session = new Session();
+            $session = $this->coreLocator->requestStack()->getSession();
             $session->remove($name);
         }
     }

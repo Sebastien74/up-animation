@@ -213,7 +213,7 @@ toastElList.forEach(function (el) {
     if (!el.classList.contains('bg-danger') && !el.classList.contains('bg-warning') && !el.classList.contains('always-show')) {
         setTimeout(function () {
             el.classList.remove('show');
-        }, 5000);
+        }, 7500);
     }
 });
 

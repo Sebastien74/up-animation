@@ -32,6 +32,7 @@ class FileSizeValidator extends ConstraintValidator
         private readonly TranslatorInterface $translator,
         private readonly ImageThumbnailInterface $imageThumbnail,
         private readonly FileRuntime $fileRuntime,
+        private readonly \Symfony\Component\HttpFoundation\RequestStack $requestStack,
     ) {
     }
 
@@ -76,7 +77,7 @@ class FileSizeValidator extends ConstraintValidator
 
         if ($violation) {
             $message = rtrim($message, '<br/>');
-            $session = new Session();
+            $session = $this->requestStack->getSession();
             $session->set('same_file_error', $message);
             $this->context->buildViolation($message)->addViolation();
         }

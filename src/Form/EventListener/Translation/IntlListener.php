@@ -22,7 +22,7 @@ class IntlListener extends BaseListener
      */
     public function preSetData(FormEvent $event): void
     {
-        $session = new Session();
+        $session = $this->coreLocator->requestStack()->getSession();
         $entity = $event->getData();
         if (empty($entity->getIntl())) {
             $intlData = $this->coreLocator->metadata($entity, 'intl');

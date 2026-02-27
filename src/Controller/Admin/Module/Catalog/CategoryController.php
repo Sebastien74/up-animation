@@ -96,7 +96,7 @@ class CategoryController extends AdminController
         $products = $category ? $this->coreLocator->em()->getRepository(Product::class)->findByCategory($category) : [];
 
         if ($products) {
-            $session = new Session();
+            $session = $request->getSession();
             if (1 === count($products)) {
                 $message = $this->coreLocator->translator()->trans('Cette catégorie est utilisée dans le produit', [], 'admin').' <strong>'.$products[0]->getAdminName().'</strong>';
             } else {
@@ -113,7 +113,7 @@ class CategoryController extends AdminController
         }
 
         if ($category->getSubCategories()->count() > 0) {
-            $session = new Session();
+            $session = $request->getSession();
             $message = $this->coreLocator->translator()->trans('Vous ne pouvez pas supprimer cette catégorie car des sous-catégories lui sont associées.', [], 'admin');
             $session->getFlashBag()->add('error', $message);
             return new JsonResponse(['success' => true]);

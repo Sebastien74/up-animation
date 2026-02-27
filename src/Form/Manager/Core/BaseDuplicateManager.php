@@ -52,7 +52,7 @@ class BaseDuplicateManager
      */
     protected function addMediaRelations(mixed $entity, Collection $mediaRelationsToDuplicate): void
     {
-        $session = new Session();
+        $session = $this->requestStack->getSession();
         $duplicateToWebsiteSession = $session->get('DUPLICATE_TO_WEBSITE') ? $session->get('DUPLICATE_TO_WEBSITE') : $this->entityManager->getRepository(Website::class)->find($this->request->get('website'));
         $duplicateToWebsite = $duplicateToWebsiteSession instanceof Website ? $duplicateToWebsiteSession->getConfiguration()->isDuplicateMediasStatus() : self::DISABLE_DUPLICATION_MEDIA;
         $duplicateToWebsiteFromZoneSession = $session->get('DUPLICATE_TO_WEBSITE_FROM_ZONE');
@@ -251,7 +251,7 @@ class BaseDuplicateManager
             }
             $intl->setLocale($locale);
 
-            $session = new Session();
+            $session = $this->requestStack->getSession();
             $websiteSession = $session->get('DUPLICATE_TO_WEBSITE') ? $session->get('DUPLICATE_TO_WEBSITE')
                 : ($session->get('DUPLICATE_TO_WEBSITE_FROM_ZONE') ? $session->get('DUPLICATE_TO_WEBSITE_FROM_ZONE') : null);
             $website = $websiteSession instanceof Website ? $websiteSession : (!empty($intlToDuplicate) ? $intlToDuplicate->getWebsite() : $this->website);

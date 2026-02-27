@@ -22,16 +22,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-class LogoutListener
+readonly class LogoutListener
 {
     /**
      * LogoutListener constructor.
      */
     public function __construct(
-        private readonly TokenStorageInterface $tokenStorage,
-        private readonly RouterInterface $router,
-        private readonly TranslatorInterface $translator,
-        private readonly EntityManagerInterface $entityManager,
+        private TokenStorageInterface  $tokenStorage,
+        private RouterInterface        $router,
+        private TranslatorInterface    $translator,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -46,7 +46,7 @@ class LogoutListener
         $token = $this->tokenStorage->getToken();
 
         if (!empty($request->query->get('route_name'))) {
-            $session = new Session();
+            $session = $request->getSession();
             $session->getFlashBag()->add('error', $this->translator->trans('Une erreur de sécurité est survenue, veuillez réessayer de vous connecter.', [], 'security_cms'));
         }
 

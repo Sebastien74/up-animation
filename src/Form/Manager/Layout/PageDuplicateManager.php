@@ -63,7 +63,7 @@ class PageDuplicateManager extends BaseDuplicateManager
         $pageToDuplicate = $form instanceof Form ? $form->get('page')->getData() : $pageToDuplicate;
         $duplicateToWebsite = $page->getWebsite() instanceof Website ? $page->getWebsite() : $website;
 
-        $session = new Session();
+        $session = $this->requestStack->getSession();
         $session->set('DUPLICATE_TO_WEBSITE', $duplicateToWebsite);
 
         $this->setPage($pageToDuplicate, $page, $duplicateToWebsite);

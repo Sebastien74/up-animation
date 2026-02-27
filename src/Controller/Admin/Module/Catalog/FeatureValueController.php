@@ -114,7 +114,7 @@ class FeatureValueController extends AdminController
     {
         $values = $this->coreLocator->em()->getRepository(FeatureValueProduct::class)->findBy(['value' => $request->get('catalogfeaturevalue')]);
         if ($values) {
-            $session = new Session();
+            $session = $request->getSession();
             if (1 === count($values)) {
                 $message = $this->coreLocator->translator()->trans('Cette valeur est utilisée dans le produit', [], 'admin').' <strong>'.$values[0]->getProduct()->getAdminName().'</strong>';
             } else {

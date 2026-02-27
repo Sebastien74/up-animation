@@ -113,8 +113,7 @@ class GlobalManager
                 $clearMediasService->execute($this->interface['classname']);
             }
         } catch (\Exception $exception) {
-            $session = new Session();
-            $session->getFlashBag()->add('error', $this->coreLocator->translator()->trans('Une erreur est survenue : ', [], 'admin').$exception->getMessage());
+            $this->request->getSession()->getFlashBag()->add('error', $this->coreLocator->translator()->trans('Une erreur est survenue : ', [], 'admin').$exception->getMessage());
             $logger = new Logger('form.global.manager');
             $logger->pushHandler(new RotatingFileHandler($this->coreLocator->logDir().'/admin-critical.log', 10, Level::Info));
             $logger->info('[STACKTRACE] '.$exception->getTraceAsString());
@@ -127,7 +126,7 @@ class GlobalManager
      */
     public function invalid(FormInterface $form): void
     {
-        $session = new Session();
+        $session = $this->request->getSession();
         $message = $this->getErrors($form, $session, '');
         if ($message) {
             $session->getFlashBag()->add('error', rtrim($message, '<br>'));
@@ -353,8 +352,7 @@ class GlobalManager
         if (!$isDisabled) {
             $message = $isNew ? $this->coreLocator->translator()->trans('Créé avec succès !!', [], 'admin')
                 : $this->coreLocator->translator()->trans('Modifié avec succès !!', [], 'admin');
-            $session = new Session();
-            $session->getFlashBag()->add($type, $message);
+            $this->request->getSession()->getFlashBag()->add($type, $message);
         }
     }
 

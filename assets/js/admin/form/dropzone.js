@@ -34,6 +34,7 @@ export default function () {
         url: url,
         paramName: field.getAttribute('name'),
         maxFilesize: 100,
+        timeout: 300000,
         acceptedFiles: field.getAttribute('accept'),
         dictDefaultMessage: '<i class="icm-download mb-2 d-inline-block"></i><br>' + trans.getAttribute('data-dropzone-default-message'),
         dictFallbackMessage: trans.getAttribute('data-dropzone-fallback-message'),

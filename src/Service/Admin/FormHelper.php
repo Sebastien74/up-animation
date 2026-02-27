@@ -394,7 +394,7 @@ class FormHelper
                 }
             }
         } catch (\Exception $exception) {
-            $session = new Session();
+            $session = $this->request->getSession();
             $message = $exception->getMessage();
             $this->logger($exception);
             if (!$message && !is_string($message) && method_exists($exception, 'getPrevious')) {
@@ -433,7 +433,7 @@ class FormHelper
     public function setRedirection(?string $redirection = null, mixed $entity = null): void
     {
         try {
-            $session = new Session();
+            $session = $this->request->getSession();
             $clickedButton = $this->form->getClickedButton();
             $clickedButtonName = is_object($clickedButton) && method_exists($clickedButton, 'getName') ? $clickedButton->getName() : null;
             $saveEditRoute = 'admin_'.$this->interface['name'].'_edit';
@@ -548,7 +548,7 @@ class FormHelper
         $logger->pushHandler(new RotatingFileHandler($this->coreLocator->logDir().'/admin.log', 10, Level::Critical));
         $logger->critical($exception->getMessage().' at '.get_class($this).' line '.$exception->getLine());
         if (!str_contains($exception->getMessage(), 'saveEdit') && !str_contains($exception->getMessage(), 'save')) {
-            $session = new Session();
+            $session = $this->request->getSession();
             $session->getFlashBag()->add('error', $exception->getMessage());
         }
     }

@@ -46,7 +46,7 @@ class ResetPasswordController extends AdminController
         }
 
         if ($request->get('expire')) {
-            $session = new Session();
+            $session = $request->getSession();
             $session->getFlashBag()->add('warning', $this->coreLocator->translator()->trans('Votre mot de passe a expiré, vous devez le réinitialiser.', [], 'security_cms'));
         }
 

@@ -38,8 +38,7 @@ class BaseCommand extends AdminController
      */
     protected function setFlashBag(string $response, string $command, string $projectDir): void
     {
-        $session = new Session();
-        $session->getFlashBag()->add('command', [
+        $this->coreLocator->requestStack()->getSession()->getFlashBag()->add('command', [
             'dirname' => $projectDir,
             'command' => 'php bin/console '.$command,
             'output' => $response,

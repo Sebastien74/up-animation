@@ -27,8 +27,9 @@ class UniqFileNameValidator extends ConstraintValidator
      */
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly MediaRepository $mediaRepository)
-    {
+        private readonly MediaRepository $mediaRepository,
+        private readonly \Symfony\Component\HttpFoundation\RequestStack $requestStack,
+    ) {
     }
 
     /**
@@ -49,7 +50,7 @@ class UniqFileNameValidator extends ConstraintValidator
             if ($existingMedia && $existingMedia !== $entity) {
                 $message = $this->translator->trans('Un autre fichier porte déjà ce nom !', [], 'validators_cms').' ('.$filename.')';
                 $this->context->buildViolation(rtrim($message, '<br/>'))->addViolation();
-                $session = new Session();
+                $session = $this->requestStack->getSession();
                 $session->set('same_file_error', rtrim($message, '<br/>'));
             }
 

@@ -10,6 +10,7 @@ use App\Form\Interface\MediaFormManagerInterface;
 use App\Form\Type\Media\MediaUploadType;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
+use Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,7 +45,7 @@ class UploadController extends AdminController
     /**
      * Medias Uploader.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('/uploader/{entityId}', name: 'admin_medias_uploader', methods: 'GET|POST')]
     public function uploader(Request $request, Website $website, ?int $entityId = null): JsonResponse|Response

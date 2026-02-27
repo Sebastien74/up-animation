@@ -128,7 +128,7 @@ class FormController extends FrontController
         //            return $this->redirectToRoute('front_index');
         //        }
 
-        $session = new Session();
+        $session = $request->getSession();
         $contact = $form instanceof Form ? $contactFormRepository->findOneBy(['form' => $form, 'token' => $token])
             : $contactStepFormRepository->findOneBy(['stepform' => $form, 'token' => $token]);
         $validContact = $contact instanceof ContactForm || $contact instanceof ContactStepForm || $token === $session->get('form_success');
@@ -294,7 +294,7 @@ class FormController extends FrontController
         $entity = $arguments['entity'];
         $request = $arguments['request'];
         $configuration = $arguments['formConfiguration'];
-        $session = new Session();
+        $session = $request->getSession();
 
         /** @var Url $url */
         $url = $arguments['url'];
@@ -364,7 +364,7 @@ class FormController extends FrontController
         }
 
         if ($configuration->isThanksPage()) {
-            $session = new Session();
+            $session = $request->getSession();
             $session->set('form_success', $contact->getToken());
             $form = $configuration->getForm() ?: $configuration->getStepform();
             return $this->generateUrl('front_form_thanks', ['code' => $form->getSlug(), 'token' => $contact->getToken()]);

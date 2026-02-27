@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -36,8 +36,10 @@ class ExportCsvService
     /**
      * ExportCsvService constructor.
      */
-    public function __construct(private readonly string $projectDir)
-    {
+    public function __construct(
+        private readonly string $projectDir,
+        private readonly RequestStack $requestStack
+    ) {
     }
 
     /**
@@ -55,7 +57,7 @@ class ExportCsvService
         try {
             $this->sheet = $spreadsheet->getActiveSheet();
         } catch (\Exception $exception) {
-            $session = new Session();
+            $session = $this->requestStack->getSession();
             $session->getFlashBag()->add('error', $exception->getMessage());
         }
 
@@ -71,7 +73,7 @@ class ExportCsvService
         try {
             $writer->save($tempFile);
         } catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $exception) {
-            $session = new Session();
+            $session = $this->requestStack->getSession();
             $session->getFlashBag()->add('error', $exception->getMessage());
         }
 

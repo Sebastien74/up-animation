@@ -71,7 +71,7 @@ class NewsletterManager
         $this->sendEmailConfirmation($campaign, $email);
         $this->sendWebmasterEmail($campaign, $email);
 
-        $session = new Session();
+        $session = $this->coreLocator->requestStack()->getSession();
         $session->getFlashBag()->add('success', $this->coreLocator->translator()->trans('Merci pour votre inscription !!', [], 'front'));
 
         return $email;

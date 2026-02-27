@@ -42,6 +42,7 @@ class ImportRedirectionManager
         private readonly XlsxFileReader $fileReader,
         private readonly string $logDir,
         private readonly RedirectionManager $redirectionManager,
+        private readonly \Symfony\Component\HttpFoundation\RequestStack $requestStack,
     ) {
         $this->repository = $this->entityManager->getRepository(Redirection::class);
     }
@@ -101,8 +102,7 @@ class ImportRedirectionManager
         }
 
         if ($this->message) {
-            $session = new Session();
-            $session->getFlashBag()->add('error', "Une ou plusieurs redirections n'ont pas été générées. Consulter le fichier redirections.log.");
+            $this->requestStack->getSession()->getFlashBag()->add('error', "Une ou plusieurs redirections n'ont pas été générées. Consulter le fichier redirections.log.");
         }
     }
 
@@ -147,8 +147,7 @@ class ImportRedirectionManager
             }
         }
         if ($count != count($columns)) {
-            $session = new Session();
-            $session->getFlashBag()->add('error', "Les entêtes ont été retirées du fichier d'origine.");
+            $this->requestStack->getSession()->getFlashBag()->add('error', "Les entêtes ont été retirées du fichier d'origine.");
             return false;
         }
         return true;

@@ -41,8 +41,7 @@ class IntlController extends AdminController
         $zipName = $exportService->zip();
 
         if (!$zipName) {
-            $session = new Session();
-            $session->getFlashBag()->add('info', $this->coreLocator->translator()->trans("Vous n'avez aucun contenu à traduire.", [], 'admin'));
+            $request->getSession()->getFlashBag()->add('info', $this->coreLocator->translator()->trans("Vous n'avez aucun contenu à traduire.", [], 'admin'));
 
             return $this->redirect($request->headers->get('referer'));
         }
@@ -70,8 +69,7 @@ class IntlController extends AdminController
 
         if ($form->isSubmitted() && !empty($form->getData()['files'])) {
             $importService->execute($form->getData()['files']);
-            $session = new Session();
-            $session->getFlashBag()->add('success', $this->coreLocator->translator()->trans('Importation réussie.', [], 'admin'));
+            $request->getSession()->getFlashBag()->add('success', $this->coreLocator->translator()->trans('Importation réussie.', [], 'admin'));
 
             return $this->redirect($request->headers->get('referer'));
         }

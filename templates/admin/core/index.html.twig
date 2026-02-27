@@ -81,8 +81,8 @@
                         {%- endif -%}
                     </div>
                 </div>
-                <div class="right-side d-flex align-items-center flex-wrap ms-md-auto w-100-max-lg">
-                    <div class="item-header mb-2 pe-lg-0">
+                <div class="right-side d-flex align-items-center gap-2 flex-wrap ms-md-auto w-100-max-lg">
+                    <div class="item-header my-1 pe-lg-0">
                         <a href="{{ lastRoute() }}" class="btn-icon"
                            data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}"
                            aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
@@ -90,7 +90,7 @@
                         </a>
                     </div>
                     {%- if deleteActive and routeExist('admin_'~interface['name']~'_delete') -%}
-                        <div class="item-header mb-2 pe-lg-0">
+                        <div class="item-header my-1 pe-lg-0">
                             <button class="index-delete-show btn-icon danger" data-bs-toggle="tooltip"
                                     title="{{"Afficher les cases à cocher de suppression"|trans|striptags }}"
                                     data-display="{{"Afficher les cases à cocher de suppression"|trans|striptags }}"
@@ -103,7 +103,7 @@
                         </div>
                     {%- endif -%}
                     {%- if granted('ROLE_INTERNAL') and routeExist('admin_'~interface['name']~'_import') and not disabledImport -%}
-                        <div class="item-header mb-2 pe-lg-0 mb-2">
+                        <div class="item-header my-1">
 {#                            <a href="{{ path('admin_'~interface['name']~'_import', args) }}" class="btn-app">#}
 {#                                <i class="icm-download"></i>{{ "Importer"|trans|raw }}#}
 {#                            </a>#}
@@ -320,13 +320,11 @@
                                                 {%- endif -%}
 
                                                 {%- if routeExist('admin_'~interface['name']~'_tree') and editActive -%}
-                                                    <span class="btn-circle-wrap">
-                                                        {%- set treeArgs = ('admin_'~interface['name']~'_tree')|routeArgs(interface.entity, args) -%}
-                                                        <a href="{{ path('admin_'~interface['name']~'_tree', args) }}"
-                                                           data-bs-toggle="tooltip" title="{{"Éditer"|trans|striptags }}" class="btn-icon small">
-                                                            <i class="icm-pencil-alt"></i>
-                                                        </a>
-                                                    </span>
+                                                    {%- set treeArgs = ('admin_'~interface['name']~'_tree')|routeArgs(interface.entity, args) -%}
+                                                    <a href="{{ path('admin_'~interface['name']~'_tree', args) }}"
+                                                       data-bs-toggle="tooltip" title="{{"Éditer"|trans|striptags }}" class="btn-icon small">
+                                                        <i class="icm-pencil-alt"></i>
+                                                    </a>
                                                 {%- endif -%}
 
                                                 {%- if routeExist('admin_'~interface['name']~'_duplicate') and editActive -%}
@@ -350,7 +348,8 @@
                                                 {%- elseif routeExist('admin_'~interface['name']~'_show') -%}
                                                     {%- set showArgs = ('admin_'~interface['name']~'_show')|routeArgs(interface.entity, args) -%}
                                                     <a href="{{ path('admin_'~interface['name']~'_show', showArgs) }}"
-                                                       data-bs-toggle="tooltip" title="{{"Afficher les informations"|trans|striptags }}" class="btn-icon small info">
+                                                       data-bs-toggle="tooltip" title="{{"Afficher les informations"|trans|striptags }}" data-tooltip-variant="info"
+                                                       class="btn-icon small info">
                                                         <i class="icm-info"></i>
                                                     </a>
                                                 {%- endif -%}
@@ -358,7 +357,7 @@
                                                 {%- if routeExist('admin_'~interface['name']~'_delete') and deleteActive -%}
                                                     {%- set deleteArgs = ('admin_'~interface['name']~'_delete')|routeArgs(interface.entity, args) -%}
                                                         <a href="{{ path('admin_'~interface['name']~'_delete', args) }}"
-                                                           data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
+                                                           data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}" data-tooltip-variant="danger"
                                                            data-target="#entity-row-{{ entity.id }}"
                                                            class="btn-icon small danger swal-delete-link">
                                                             <i class="icm-trash"></i>

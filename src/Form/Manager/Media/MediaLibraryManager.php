@@ -8,7 +8,7 @@ use App\Entity\Core\Website;
 use App\Entity\Media\Media;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -28,8 +28,9 @@ class MediaLibraryManager
      */
     public function __construct(
         private readonly string $projectDir,
-        private readonly TranslatorInterface $translator)
-    {
+        private readonly TranslatorInterface $translator,
+        private readonly RequestStack $requestStack,
+    ) {
     }
 
     /**
@@ -67,7 +68,7 @@ class MediaLibraryManager
             if ($filesystem->exists($newFileDirname)) {
                 $media->setName($originalName);
                 $message = $this->translator->trans('Un autre fichier porte déjà ce nom', [], 'admin').' : '.$name.'.'.$extension;
-                $session = new Session();
+                $session = $this->requestStack->getSession();
                 $session->getFlashBag()->add('error', $message);
                 $session->set('same_file_error', $message);
             } else {

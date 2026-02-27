@@ -1,6 +1,6 @@
 {%- trans_default_domain 'admin' -%}
 
-{%- for alert, flashes in app.session.flashbag.all -%}
+{%- for alert, flashes in app.flashes -%}
     {%- for flash in flashes -%}
         {%- if alert == 'command' -%}
             <div id="coresphere_consolebundle_console" class="console mb-3">
