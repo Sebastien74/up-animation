@@ -2,6 +2,8 @@ Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
 Sur le favicon générator faire les favicon et arrondi 
 
+Js Front faire en sorte que les modules JS ne soient appelés que quand il y en a besoin set que les CSSS associés ne chargent que si les modules sont utilisés
+
 Faire par page un fichier scss pour les premiere lames du site. Y mettre le menu et les primere lame visble et charges les autre assets en onload rel
 
 Ajouter au blocs form le SIRET et récupérer le SIRET validator de rezup

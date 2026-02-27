@@ -62,10 +62,8 @@ export default function () {
                 response = '{' + response.substring(response.indexOf("{") + 1, response.lastIndexOf("}")) + '}';
                 response = JSON.parse(response);
 
-                if (response.flashBag) {
-                    loader.addClass('d-none');
-                } else if (asRefresh && response.success && response.redirection) {
-                    window.location.href = response.redirection;
+                if (asRefresh && response.success && response.redirection) {
+                    location.href = response.redirection;
                 } else if (asRefresh && response.success) {
                     location.reload();
                 } else if (response.html) {
@@ -104,16 +102,16 @@ export default function () {
 
                     /** Refresh dropify */
                     import('./dropify').then(({default: dropifyJS}) => {
-                        new dropifyJS();
+                        dropifyJS();
                     }).catch(error => console.error(error.message));
 
                     /** Refresh select2 */
                     import('../../vendor/plugins/select2').then(({default: select2}) => {
-                        new select2();
+                        select2();
                     }).catch(error => console.error(error.message));
 
                     import('./../form/btn-group-toggle').then(({default: btnToggle}) => {
-                        new btnToggle();
+                        btnToggle();
                     }).catch(error => console.error(error.message));
 
                     // import('../../vendor/plugins/touchspin').then(({default: touchSpin}) => {

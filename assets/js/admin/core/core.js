@@ -37,9 +37,11 @@ if (errors.length > 0) {
 }
 
 /** 3 - Ajax GET refresh */
-import('./ajax-get').then(({default: ajaxGet}) => {
-    new ajaxGet();
-}).catch(error => console.error(error.message));
+if (document.querySelectorAll('.modal-btn-position-ajax, .ajax-get-refresh').length > 0) {
+    import('./ajax-get').then(({default: ajaxGet}) => {
+        new ajaxGet();
+    }).catch(error => console.error(error.message));
+}
 
 /** 5 - To remove cache dir */
 const queryString = window.location.search;

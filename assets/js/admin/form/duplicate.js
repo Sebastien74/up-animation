@@ -50,7 +50,7 @@ export default function () {
 
                 select2();
                 import('./ajax').then(({default: ajaxForm}) => {
-                    new ajaxForm();
+                    ajaxForm();
                 }).catch(error => console.error(error.message));
 
                 if (modalEl) {

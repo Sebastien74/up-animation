@@ -80,10 +80,10 @@ import 'jquery-ui/dist/jquery-ui.min';
 import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 
 /** 4 - Layout management */
-import layoutManagement from './pages/layout/vendor';
-
 if (document.getElementById('zones-sortable')) {
-    layoutManagement(Routing);
+    import('./pages/layout/vendor').then(({default: layoutManagement}) => {
+        layoutManagement(Routing);
+    }).catch(error => console.error(error.message));
 }
 
 /** 5 - Core */
@@ -98,66 +98,75 @@ import pluginsVendor from './plugins/vendor';
 pluginsVendor();
 
 /** 6 - Active URL */
-document.querySelectorAll('.active-urls a').forEach(function (link) {
-    link.onclick = function (e) {
-        e.preventDefault()
-        import('./core/urls').then(({default: activeUrls}) => {
-            new activeUrls(e, link)
+    document.body.addEventListener('click', function (e) {
+        const link = e.target.closest('.active-urls a');
+        if (link) {
+            e.preventDefault();
+            import('./core/urls').then(({default: activeUrls}) => {
+                new activeUrls(e, link);
+            }).catch(error => console.error(error.message));
+        }
+    });
+
+/** 7 - Code generator */
+document.body.addEventListener('click', function (e) {
+    const link = e.target.closest('.generate-code');
+    if (link) {
+        e.preventDefault();
+        import('./core/code-generator').then(({default: codeGenerator}) => {
+            codeGenerator();
         }).catch(error => console.error(error.message));
     }
 });
 
-/** 7 - Code generator */
-let generateLinks = document.querySelectorAll('.generate-code')
-if (generateLinks.length > 0) {
-    import('./core/code-generator').then(({default: codeGenerator}) => {
-        new codeGenerator()
-    }).catch(error => console.error(error.message));
-}
-
 /** 8 - Bytes generator */
-document.querySelectorAll('.generate-bytes').forEach(function (link) {
-    link.onclick = function (e) {
-        e.preventDefault()
+document.body.addEventListener('click', function (e) {
+    const link = e.target.closest('.generate-bytes');
+    if (link) {
+        e.preventDefault();
         import('./core/bytes-generator').then(({default: bytesGenerator}) => {
-            new bytesGenerator(e, link)
+            new bytesGenerator(e, link);
         }).catch(error => console.error(error.message));
     }
 });
 
 /** 9 - Password generator */
-document.querySelectorAll('.generator-password').forEach(function (link) {
-    link.onclick = function (e) {
-        e.preventDefault()
+document.body.addEventListener('click', function (e) {
+    const link = e.target.closest('.generator-password');
+    if (link) {
+        e.preventDefault();
         import('./core/password-generator').then(({default: passwordGenerator}) => {
-            new passwordGenerator(e, link)
+            new passwordGenerator(e, link);
         }).catch(error => console.error(error.message));
     }
 });
 
 /** 10 - Tree search */
-if (document.querySelectorAll('.pages-search input').length > 0) {
+const treeSearchInput = document.querySelector('.pages-search input');
+if (treeSearchInput) {
     import('./core/tree-search').then(({default: treeSearch}) => {
-        new treeSearch()
+        treeSearch();
     }).catch(error => console.error(error.message));
 }
 
 /** 11 - Index search */
-if (document.querySelectorAll('.search-in-list input').length > 0) {
+const indexSearchInput = document.querySelector('.search-in-list input');
+if (indexSearchInput) {
     import('./core/search').then(({default: search}) => {
-        new search()
+        search();
     }).catch(error => console.error(error.message));
 }
 
 /** 12 - Medias modal library */
-document.querySelectorAll('.open-modal-medias').forEach(function (modalEl) {
-    modalEl.onclick = function (e) {
-        e.preventDefault()
-        import('./media/open-modal').then(({default: openModal}) => {
-            new openModal(Routing, e, modalEl)
-        }).catch(error => console.error(error.message));
-    }
-});
+    document.body.addEventListener('click', function (e) {
+        const modalEl = e.target.closest('.open-modal-medias');
+        if (modalEl) {
+            e.preventDefault();
+            import('./media/open-modal').then(({default: openModal}) => {
+                new openModal(Routing, e, modalEl);
+            }).catch(error => console.error(error.message));
+        }
+    });
 
 /** 13 - Map */
 // if (document.querySelectorAll('.input-places').length > 0) {
@@ -166,29 +175,29 @@ document.querySelectorAll('.open-modal-medias').forEach(function (modalEl) {
 //     }).catch(error => console.error(error.message));
 // }
 
-/** 14 - Delete pack */
-if (body.getElementsByClassName('delete-pack').length > 0
-    || document.getElementById('delete-pack-btn')) {
-    import('./delete/delete-pack').then(({default: deletePack}) => {
-        new deletePack()
-    }).catch(error => console.error(error.message));
-}
+    /** 14 - Delete pack */
+    if (body.querySelector('.delete-pack') || document.getElementById('delete-pack-btn')) {
+        import('./delete/delete-pack').then(({default: deletePack}) => {
+            deletePack();
+        }).catch(error => console.error(error.message));
+    }
 
-/** 15 - Delete index */
-if (document.getElementById('delete-index-all')
-    || document.getElementById('index-delete-show')
-    || body.getElementsByClassName('delete-input-index').length > 0
-    || document.getElementById('index-delete-submit')) {
-    import('./delete/delete-index').then(({default: deleteIndex}) => {
-        new deleteIndex()
-    }).catch(error => console.error(error.message));
-}
+    /** 15 - Delete index */
+    if (document.getElementById('delete-index-all')
+        || document.getElementById('index-delete-show')
+        || body.querySelector('.delete-input-index')
+        || document.getElementById('index-delete-submit')) {
+        import('./delete/delete-index').then(({default: deleteIndex}) => {
+            deleteIndex();
+        }).catch(error => console.error(error.message));
+    }
 
 /** 16 - Media Tab */
-document.querySelectorAll('.media-tab-content-loader').forEach(function (mediasTabEl) {
-    mediasTabEl.onclick = function () {
+document.body.addEventListener('click', function (e) {
+    const mediasTabEl = e.target.closest('.media-tab-content-loader');
+    if (mediasTabEl) {
         import('./core/medias-tab').then(({default: mediasTab}) => {
-            new mediasTab(Routing, mediasTabEl)
+            new mediasTab(Routing, mediasTabEl);
         }).catch(error => console.error(error.message));
     }
 });
@@ -211,15 +220,18 @@ toastElList.forEach(function (el) {
 window.addEventListener("load", function () {
 
     /** 17 - Websites selector */
-    if (document.getElementById('websites-selector-form')) {
-        websitesSelector()
-    }
+if (document.getElementById('websites-selector-form')) {
+    import('./core/websites-selector').then(({default: websitesSelector}) => {
+        websitesSelector();
+    }).catch(error => console.error(error.message));
+}
 
     /** 18 - Tab item click */
-    document.querySelectorAll('.nav-link').forEach(function (navLinkEl) {
-        navLinkEl.onclick = function () {
+    document.body.addEventListener('click', function (e) {
+        const navLinkEl = e.target.closest('.nav-link');
+        if (navLinkEl) {
             import('./core/tab').then(({default: tabPlugin}) => {
-                new tabPlugin()
+                new tabPlugin.call(navLinkEl);
             }).catch(error => console.error(error.message));
         }
     });

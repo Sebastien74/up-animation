@@ -43,60 +43,63 @@ if (forms.length > 0) {
 }
 
 /** 2 - Ajax Post */
-import ajax from "./ajax";
-ajax();
+if (document.querySelector('.ajax-post')) {
+    import('./ajax').then(({default: ajax}) => {
+        ajax();
+    }).catch(error => console.error(error.message));
+}
 
 /** 3 - Prototype */
-if (document.querySelectorAll('.add-collection').length > 0) {
+if (document.querySelector('.add-collection')) {
     import('./prototype').then(({default: prototype}) => {
         new prototype();
     }).catch(error => console.error(error.message));
 }
 
 /** 4 - Bootstrap Tags input */
-if (document.querySelectorAll('[data-role="tagsinput"]').length > 0) {
+if (document.querySelector('[data-role="tagsinput"]')) {
     import('./../lib/bootstrap-tagsinput.min').then(({default: tagsInputModule}) => {
         new tagsInputModule();
     }).catch(error => console.error(error.message));
 }
 
 /** 5 - Color Picker */
-if (document.querySelectorAll('.colorpicker').length > 0) {
+if (document.querySelector('.colorpicker')) {
     import('./../plugins/colorpicker').then(({default: asColorPicker}) => {
         new asColorPicker();
     }).catch(error => console.error(error.message));
 }
 
 /** 6 - Assert */
-if (document.querySelectorAll('.modal').length > 0) {
+if (document.querySelector('.modal')) {
     import('./assert').then(({default: assertModal}) => {
         new assertModal();
     }).catch(error => console.error(error.message));
 }
 
 /** 7 - Dropzone */
-if (document.querySelectorAll('.js-reference-dropzone').length > 0) {
+if (document.querySelector('.js-reference-dropzone')) {
     import('./dropzone').then(({default: dropzone}) => {
         new dropzone();
     }).catch(error => console.error(error.message));
 }
 
 /** 8 - Dropify */
-if (document.querySelectorAll('.dropify').length > 0) {
+if (document.querySelector('.dropify')) {
     import('./dropify').then(({default: dropify}) => {
         new dropify();
     }).catch(error => console.error(error.message));
 }
 
 /** 9 - Duplicate */
-if (document.querySelectorAll('.duplicate-btn').length > 0) {
+if (document.querySelector('.duplicate-btn')) {
     import('./duplicate').then(({default: duplicate}) => {
         new duplicate();
     }).catch(error => console.error(error.message));
 }
 
 /** 10 - Counter */
-if (document.querySelectorAll('.counter-form-group').length > 0) {
+if (document.querySelector('.counter-form-group')) {
     import('./counter').then(({default: counter}) => {
         new counter();
     }).catch(error => console.error(error.message));
@@ -111,9 +114,9 @@ if (document.querySelectorAll('.counter-form-group').length > 0) {
 // }
 
 /** 12 - Entities status switcher */
-if (document.querySelectorAll('.entity-switcher-status').length > 0) {
+if (document.querySelector('.entity-switcher-status')) {
     import('./entity-switcher').then(({default: switcher}) => {
-        new switcher();
+        switcher();
     }).catch(error => console.error(error.message));
 }
 
@@ -142,13 +145,15 @@ document.body.addEventListener('change', function (e) {
 });
 
 /** 15 - Date Picker */
-if (document.querySelectorAll('.datepicker').length > 0) {
+if (document.querySelector('.datepicker')) {
     import('./date-pickers').then(({default: datepickerPlugin}) => {
         new datepickerPlugin();
     }).catch(error => console.error(error.message));
 }
 
 /** 16 - Btn toggle */
-import('./btn-group-toggle').then(({default: btnToggle}) => {
-    new btnToggle();
-}).catch(error => console.error(error.message));
+if (document.querySelector('.btn-group-toggle')) {
+    import('./btn-group-toggle').then(({default: btnToggle}) => {
+        new btnToggle();
+    }).catch(error => console.error(error.message));
+}

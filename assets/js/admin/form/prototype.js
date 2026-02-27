@@ -77,22 +77,22 @@ export default function () {
 
         /** Plugins vendor */
         import('../../vendor/plugins/plugins').then(({default: activePlugins}) => {
-            new activePlugins();
+            activePlugins();
         }).catch(error => console.error(error.message));
 
         /** Plugins admin */
         import('../plugins/vendor').then(({default: activeAdminPlugins}) => {
-            new activeAdminPlugins();
+            activeAdminPlugins();
         }).catch(error => console.error(error.message));
 
         import('./../form/btn-group-toggle').then(({default: btnToggle}) => {
-            new btnToggle();
+            btnToggle();
         }).catch(error => console.error(error.message));
 
         /** Code generator */
         if (document.querySelector('.generate-code')) {
             import('../core/code-generator').then(({default: codeGenerator}) => {
-                new codeGenerator();
+                codeGenerator();
             }).catch(error => console.error(error.message));
         }
 

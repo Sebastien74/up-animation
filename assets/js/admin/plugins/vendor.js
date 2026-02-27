@@ -1,7 +1,3 @@
-import tagsInput from './bootstrap-tagsinput';
-import sortable from './sortable';
-import colorPicker from "./colorpicker";
-import treeSelect from "./tree-select";
 import {tinymcePlugin} from "./tinymce";
 // import tooltips from "./tooltips";
 
@@ -30,29 +26,28 @@ export default function () {
     let body = document.body
 
     /** 1 - Tinymce */
-    tinymcePlugin();
+    if (document.querySelector('.tinymce, .tinymce-simple')) {
+        tinymcePlugin();
+    }
 
     /** 2 - Nestable */
-    let nestableEls = body.querySelectorAll('.nestable-list-container');
-    if (nestableEls.length > 0) {
+    if (document.querySelector('.nestable-list-container')) {
         import('./nestable').then(({default: nestableModule}) => {
-            new nestableModule();
+            nestableModule();
         }).catch(error => console.error(error.message));
     }
 
     /** 3 - Medias sortable */
-    let mediasSortableEls = body.querySelectorAll('#medias-sortable-container');
-    if (mediasSortableEls.length > 0) {
+    if (document.querySelector('#medias-sortable-container')) {
         import('./medias-sortable').then(({default: mediasSortable}) => {
-            new mediasSortable();
+            mediasSortable();
         }).catch(error => console.error(error.message));
     }
 
     /** 4 - Prototypes sortable */
-    let prototypesSortableEls = body.querySelectorAll('.prototype-sortable');
-    if (prototypesSortableEls.length > 0) {
+    if (document.querySelector('.prototype-sortable')) {
         import('./prototype-sortable').then(({default: prototypesSortable}) => {
-            new prototypesSortable();
+            prototypesSortable();
         }).catch(error => console.error(error.message));
     }
 
@@ -61,7 +56,7 @@ export default function () {
         const csvExportBtn = e.target.closest('.csv-export');
         if (csvExportBtn) {
             import('./csv-table').then(({default: csvTable}) => {
-                new csvTable(csvExportBtn);
+                csvTable(csvExportBtn);
             }).catch(error => console.error(error.message));
         }
     });
@@ -89,32 +84,48 @@ export default function () {
     });
 
     /** 8 - Data table */
-    if (body.querySelectorAll('.data-table').length > 0) {
+    if (document.querySelector('.data-table')) {
         import('./data-tables').then(({default: dataTables}) => {
-            new dataTables();
+            dataTables();
         }).catch(error => console.error(error.message));
     }
 
     /** 9 - Color picker */
-    colorPicker();
+    if (document.querySelector('.colorpicker')) {
+        import('./colorpicker').then(({default: colorPicker}) => {
+            colorPicker();
+        }).catch(error => console.error(error.message));
+    }
 
     // /** 10 - Tooltips */
     // tooltips();
 
     /** 11 - Tree Select */
-    treeSelect();
+    if (document.querySelector('.tree-select')) {
+        import('./tree-select').then(({default: treeSelect}) => {
+            treeSelect();
+        }).catch(error => console.error(error.message));
+    }
 
     /** 12 - Sortable */
-    sortable();
+    if (document.querySelector('.ui-sortable')) {
+        import('./sortable').then(({default: sortable}) => {
+            sortable();
+        }).catch(error => console.error(error.message));
+    }
 
     /** 13 - Tag input */
-    tagsInput();
+    if (document.querySelector('.bootstrap-tagsinput input, [data-role="tagsinput"]')) {
+        import('./bootstrap-tagsinput').then(({default: tagsInput}) => {
+            tagsInput();
+        }).catch(error => console.error(error.message));
+    }
 
     /** 14 - Mc datepicker */
-    let mcDatepickerEls = document.querySelectorAll('input.mc-datepicker')
+    const mcDatepickerEls = document.querySelectorAll('input.mc-datepicker');
     if (mcDatepickerEls.length > 0) {
         import('./mc-datepicker').then(({default: flatDatepicker}) => {
-            new flatDatepicker(mcDatepickerEls)
+            new flatDatepicker(mcDatepickerEls);
         }).catch(error => console.error(error.message));
     }
 }

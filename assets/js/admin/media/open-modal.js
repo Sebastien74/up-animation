@@ -47,13 +47,13 @@ export default function (Routing, e, el) {
 
             modalEl.querySelectorAll('.btn-edit, .btn-zip').forEach(btn => btn.remove());
 
-            import('../plugins/nestable').then(({default: nestable}) => {
-                new nestable();
-            }).catch(error => console.error(error.message));
+                    import('../plugins/nestable').then(({default: nestable}) => {
+                        nestable();
+                    }).catch(error => console.error(error.message));
 
-            import('../plugins/tooltips').then(({default: tooltips}) => {
-                new tooltips();
-            }).catch(error => console.error(error.message));
+                    import('../plugins/tooltips').then(({default: tooltips}) => {
+                        tooltips();
+                    }).catch(error => console.error(error.message));
 
             activeSearch();
 

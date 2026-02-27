@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     /** Refresh select2 */
                     import('../../vendor/plugins/select2').then(({default: select2}) => {
-                        new select2();
+                        select2();
                     }).catch(error => console.error(error.message));
 
                     modalEl.addEventListener("hidden.bs.modal", function () {

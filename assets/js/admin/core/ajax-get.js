@@ -130,7 +130,7 @@ export default function () {
                         activeSearch();
 
                         import('../../vendor/components/medias-loader').then(({default: mediaLoader}) => {
-                            new mediaLoader();
+                            mediaLoader();
                         }).catch(error => console.error(error.message));
                     }
                 })
