@@ -172,7 +172,7 @@ class AppRuntime implements RuntimeExtensionInterface
      */
     public function hourBetweenTwoDates(?\DateTime $date = null, ?\DateTime $dateTo = null): ?int
     {
-        $dateTo = $this->isDateTime($dateTo) ? $dateTo : new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $dateTo = $this->isDateTime($dateTo) ? $dateTo : new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         if ($this->isDateTime($date)) {
             $interval = $date->diff($dateTo);
 
@@ -477,7 +477,7 @@ class AppRuntime implements RuntimeExtensionInterface
     public function age(?\DateTime $startDate = null): ?int
     {
         if ($startDate) {
-            $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             $interval = $now->diff($startDate);
             return $interval->y;
         }

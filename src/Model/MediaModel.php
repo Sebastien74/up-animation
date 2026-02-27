@@ -11,6 +11,9 @@ use App\Service\Core\FileInfo;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
+use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 
 /**
  * MediaModel.
@@ -74,7 +77,7 @@ final class MediaModel extends BaseModel
     }
 
     /**
-     * @throws NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public static function fromEntity(mixed $entity, CoreLocatorInterface $coreLocator, bool $query = true): self
     {

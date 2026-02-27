@@ -66,7 +66,7 @@ class ConfirmPasswordManager
             return null;
         }
 
-        $time = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $time = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $userTokenRequest = $user->getTokenRequestDate()->format('Y-m-d H:i:s');
         $userTokenRequest = new \DateTime($userTokenRequest, new \DateTimeZone('Europe/Paris'));
         $diff = $userTokenRequest->diff($time);
@@ -93,7 +93,7 @@ class ConfirmPasswordManager
             }
         }
 
-        $user->setResetPasswordDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $user->setResetPasswordDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         $user->setTokenRequest(null);
         $user->setTokenRequestDate(null);
         $user->setAlerts($alerts);

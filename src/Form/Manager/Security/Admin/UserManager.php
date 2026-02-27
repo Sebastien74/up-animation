@@ -43,7 +43,7 @@ class UserManager
     public function prePersist(User $user, Website $website): void
     {
         $user->setAgreeTerms(true);
-        $user->setAgreesTermsAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $user->setAgreesTermsAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         $user->setPassword(
             $this->passwordEncoder->hashPassword($user, $user->getPlainPassword())
         );
@@ -59,7 +59,7 @@ class UserManager
     {
         if ($user->getPlainPassword()) {
             $user->setPassword($this->passwordEncoder->hashPassword($user, $user->getPlainPassword()));
-            $user->setResetPasswordDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $user->setResetPasswordDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $user->setResetPassword(false);
         } else {
             $this->pictureManager->execute($user, $form);

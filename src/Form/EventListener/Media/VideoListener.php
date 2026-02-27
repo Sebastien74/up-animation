@@ -37,12 +37,12 @@ class VideoListener extends BaseListener
                     }
                 }
             }
-            if ($flush) {
+            /* if ($flush) {
                 $this->coreLocator->em()->persist($entity);
                 $this->coreLocator->em()->flush();
                 header('Location: ' . $this->coreLocator->request()->getUri());
                 exit;
-            }
+            } */
         }
     }
 

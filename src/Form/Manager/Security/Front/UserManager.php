@@ -45,7 +45,7 @@ class UserManager
     public function prePersist(UserFront $user, Website $website): void
     {
         $user->setAgreeTerms(true);
-        $user->setAgreesTermsAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $user->setAgreesTermsAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         $user->setPassword(
             $this->passwordEncoder->hashPassword($user, $user->getPlainPassword())
         );

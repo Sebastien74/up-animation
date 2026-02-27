@@ -12,7 +12,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Media.
@@ -23,6 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['filename'], flags: ['fulltext'])]
 #[ORM\Index(columns: ['name'], flags: ['fulltext'])]
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
+#[Vich\Uploadable]
 #[ORM\AssociationOverrides([
     new ORM\AssociationOverride(
         name: 'categories',
@@ -50,6 +53,9 @@ class Media extends BaseInterface
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $filename = null;
+
+    #[Vich\UploadableField(mapping: 'media', fileNameProperty: 'filename')]
+    private ?File $imageFile = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $extension = null;
@@ -155,6 +161,22 @@ class Media extends BaseInterface
         $this->filename = $filename;
 
         return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+        $this->extension = $imageFile?->guessExtension();
+        $this->name = $imageFile && $this->extension ? str_replace('.'.$this->extension, '', $imageFile->getFilename()) : null;
+
+        if (null !== $imageFile) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
     }
 
     public function getExtension(): ?string

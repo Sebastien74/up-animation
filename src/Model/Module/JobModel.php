@@ -45,7 +45,7 @@ final class JobModel extends BaseModel
         $model['contract']['title'] = !empty($model['contract']['intl']) ? $model['contract']['intl']->title : false;
         $model['form'] = self::getContent('form', $job);
 
-        $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $model['date'] = self::getContent('date', $job);
         if ($model['date'] instanceof \DateTime && $now >= $model['date']) {
             $model['date'] = $coreLocator->translator()->trans('Dès que possible', [], 'front');

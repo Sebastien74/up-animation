@@ -126,7 +126,7 @@ class Job extends BaseEntity
     public function prePersist(): void
     {
         if (empty($this->publicationStart)) {
-            $this->publicationStart = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $this->publicationStart = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         }
         parent::prePersist();
     }

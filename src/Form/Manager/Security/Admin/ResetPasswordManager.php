@@ -63,7 +63,7 @@ class ResetPasswordManager
     {
         $token = base64_encode(uniqid().password_hash($email, PASSWORD_BCRYPT).random_bytes(10));
         $token = substr(str_shuffle($token), 0, 30);
-        $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $token = str_replace(['%', '/'], '', $token);
 
         $user->setTokenRequest($token);

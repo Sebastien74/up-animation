@@ -72,7 +72,7 @@ class SecurityTokenCommand extends Command
 
         foreach ($users as $user) {
             /** @var User|UserFront $user */
-            $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             foreach ($tokenProperties as $property) {
                 $getter = 'get'.ucfirst($property);
                 $setter = 'set'.ucfirst($property);

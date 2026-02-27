@@ -1,5 +1,5 @@
 /**
- * Send master form on Dropzone process
+ * Send a master form on Dropzone process
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */

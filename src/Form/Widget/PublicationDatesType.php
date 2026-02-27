@@ -65,7 +65,7 @@ class PublicationDatesType
         if (empty($options['disabled_set_data'])) {
             $publicationStart = is_object($entity) && $entity->getPublicationStart() ? $entity->getPublicationStart() : null;
             if (empty($options['disabled_default'])) {
-                $publicationStart = is_object($entity) && $entity->getPublicationStart() ? $entity->getPublicationStart() : new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+                $publicationStart = is_object($entity) && $entity->getPublicationStart() ? $entity->getPublicationStart() : new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             }
             $arguments['data'] = $publicationStart;
         }
@@ -100,7 +100,7 @@ class PublicationDatesType
      */
     private function getYears(): array
     {
-        $today = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $currentYear = intval($today->format('Y'));
         $years = [$currentYear];
         for ($i = $currentYear; $i <= ($currentYear + 10); ++$i) {

@@ -44,7 +44,7 @@ abstract class BaseController extends AbstractController
             $cacheCommand->clear();
             $websites = $this->coreLocator->em()->getRepository(Website::class)->findAll();
             foreach ($websites as $website) {
-                $website->setCacheClearDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $website->setCacheClearDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $this->coreLocator->em()->persist($website);
             }
             $this->coreLocator->em()->flush();

@@ -101,7 +101,7 @@ class ActionController extends FrontController
         /** To order past events in bottom of array */
         $orderBy = explode('-', $listing->getOrderBy());
         if ( method_exists($listing, 'isAsEvents') && !empty($entities[0]) && 'startDate' === $orderBy[0] && method_exists($entities[0], 'getStartDate')) {
-            $today = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             $futureEntities = [];
             $pastEntities = [];
             if ($listing->isAsEvents()) {
@@ -306,7 +306,7 @@ class ActionController extends FrontController
         /** To order past events in bottom of array */
         $orderBy = explode('-', $teaser->getOrderBy());
         if (!empty($entities) && property_exists($teaser, 'pastEvents') && $teaser->isPastEvents() && 'startDate' === $orderBy[0]) {
-            $today = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             $futureEntities = [];
             $pastEntities = [];
             foreach ($entities as $entitiesGroup) {
@@ -594,7 +594,7 @@ class ActionController extends FrontController
      */
     public function setAssociatedEntitiesLastDate(int $limit): void
     {
-        $datetime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $datetime = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $datetime->modify('- '.$limit.' days');
         $this->associatedEntitiesLastDate = $datetime;
     }

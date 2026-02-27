@@ -152,7 +152,7 @@ class RegisterManager
      */
     public function confirmation(UserEntity\UserFront $user, ?string $status = null): ?string
     {
-        $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $tokenDate = $user->getTokenDate();
         $interval = $now->diff($tokenDate);
         $isExpired = ($now > $tokenDate) && ($interval->days >= 1 || $interval->h >= 24);

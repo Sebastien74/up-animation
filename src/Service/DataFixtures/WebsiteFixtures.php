@@ -120,7 +120,7 @@ class WebsiteFixtures
         }
 
         $website->setCreatedBy($user);
-        $website->setCacheClearDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $website->setCacheClearDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         $website->setUploadDirname(uniqid());
 
         $pagesParams = $this->getPagesParams();

@@ -50,7 +50,7 @@ class UploadController extends AdminController
     public function uploader(Request $request, Website $website, ?int $entityId = null): JsonResponse|Response
     {
         $entity = $website;
-        $entityNamespace = $request->get('entityNamespace');
+        $entityNamespace = $request->query->get('entityNamespace');
 
         if ($entityNamespace && $entityId) {
             $entity = $this->coreLocator->em()->getRepository(urldecode($entityNamespace))->find($entityId);
@@ -64,18 +64,20 @@ class UploadController extends AdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->mediaLocator->media()->post($form, $website);
             $this->coreLocator->em()->persist($entity);
-            $this->coreLocator->em()->flush();
-
+            try {
+                $this->coreLocator->em()->flush();
+            } catch (\Doctrine\DBAL\Exception\DeadlockException $e) {
+                $this->coreLocator->em()->flush();
+            }
             return new JsonResponse(['success' => true, 'form' => $form['medias']]);
         } elseif ($form->isSubmitted() && !$form->isValid()) {
             $errors = '';
             foreach ($form->getErrors() as $error) {
                 $errors .= $error->getMessage().'</br>';
             }
-            foreach ($form['medias']['uploadedFile']->getErrors() as $error) {
+            foreach ($form['medias']['imageFile']->getErrors() as $error) {
                 $errors .= $error->getMessage().'</br>';
             }
-
             return new JsonResponse(['success' => false, 'errors' => rtrim($errors, '</br>')]);
         }
 

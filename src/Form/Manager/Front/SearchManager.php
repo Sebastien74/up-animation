@@ -491,7 +491,7 @@ class SearchManager
         if (str_contains($orderBy, 'date')) {
             $publicationDate = method_exists($entity, 'getPublicationStart') && $entity->getPublicationStart() ? $entity->getPublicationStart()
                 : (method_exists($entity, 'getUpdatedAt') && $entity->getUpdatedAt() ? $entity->getUpdatedAt()
-                    : (method_exists($entity, 'getCreatedAt') && $entity->getCreatedAt() ? $entity->getCreatedAt() : new \DateTime('now', new \DateTimeZone('Europe/Paris'))));
+                    : (method_exists($entity, 'getCreatedAt') && $entity->getCreatedAt() ? $entity->getCreatedAt() : new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'))));
 
             return intval($publicationDate->format('YmdHis')).uniqid();
         } else {

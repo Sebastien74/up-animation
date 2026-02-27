@@ -88,7 +88,7 @@ class BetweenDatesType
      */
     private function getYears(): array
     {
-        $today = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $currentYear = intval($today->format('Y'));
         $years = [$currentYear];
 

@@ -109,7 +109,7 @@ class CoreRuntime implements RuntimeExtensionInterface
      */
     public function seasonIcon(): ?string
     {
-        $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $currentDate = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $year = $currentDate->format('Y');
         if ($currentDate >= new \DateTime($year.'-09-22 00:00:00', new \DateTimeZone('Europe/Paris'))
             && $currentDate <= new \DateTime($year.'-12-21 23:59:59', new \DateTimeZone('Europe/Paris'))) {

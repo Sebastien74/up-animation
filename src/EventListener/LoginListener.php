@@ -37,7 +37,7 @@ class LoginListener
         if ($user instanceof User || $user instanceof UserFront) {
             $user->setIsOnline(true);
             if (method_exists($user, 'setLastLogin')) {
-                $user->setLastLogin(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $user->setLastLogin(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             }
             $this->entityManager->persist($user);
             $this->entityManager->flush();

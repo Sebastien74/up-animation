@@ -192,8 +192,8 @@ readonly class ExceptionListener
             $this->coreLocator->em()->persist($log);
             $this->coreLocator->em()->flush();
         } else {
-            $lastLogDate = $lastLog->getCreatedAt() instanceof \DateTime ? $lastLog->getCreatedAt() : new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-            $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $lastLogDate = $lastLog->getCreatedAt() instanceof \DateTime ? $lastLog->getCreatedAt() : new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+            $currentDate = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             $diff = $lastLogDate->diff($currentDate);
             if ($diff->days > 0 && 0 === $diff->invert) {
                 $log = new Log();

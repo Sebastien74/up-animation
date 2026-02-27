@@ -84,7 +84,7 @@ class NewsletterManager
      */
     public function confirmation(Email $email, ?string $status = null): ?string
     {
-        $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $tokenDate = $email->getTokenDate();
         $interval = $now->diff($tokenDate);
         $isExpired = ($now > $tokenDate) && ($interval->days >= 1 || $interval->h >= 24);
@@ -95,7 +95,7 @@ class NewsletterManager
             $this->coreLocator->em()->flush();
         } elseif ('accept' === $status) {
             $email->setAccept(true);
-            $email->setAcceptDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $email->setAcceptDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $email->setToken(null);
             $email->setTokenDate(null);
             $this->coreLocator->em()->persist($email);

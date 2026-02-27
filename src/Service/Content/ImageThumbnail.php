@@ -11,6 +11,7 @@ use App\Model\MediaModel;
 use App\Service\Core\FileInfo;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Twig\Content\BrowserRuntime;
+use DateMalformedStringException;
 use Liip\ImagineBundle\Service\FilterService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
@@ -164,6 +165,8 @@ class ImageThumbnail implements ImageThumbnailInterface
 
     /**
      * To execute service.
+     *
+     * @throws DateMalformedStringException
      */
     public function execute(?MediaModel $mediaModel = null, array $thumbs = [], array $options = [], bool $generator = false): mixed
     {
@@ -290,7 +293,7 @@ class ImageThumbnail implements ImageThumbnailInterface
 
         if (!$this->inAdmin && !isset($options['filter']) && $mediaRelation && $execute && !$mediaRelation->getCacheDate() instanceof \DateTime && $mediaRelation->getId()) {
             $mediaRelation = $this->coreLocator->em()->getRepository(get_class($mediaRelation))->find($mediaRelation->getId());
-            $mediaRelation->setCacheDate(new \DateTime('now'));
+            $mediaRelation->setCacheDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $this->coreLocator->em()->persist($mediaRelation);
             $this->coreLocator->em()->flush();
         }

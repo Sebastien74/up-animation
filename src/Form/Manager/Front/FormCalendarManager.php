@@ -84,8 +84,8 @@ class FormCalendarManager
 
         $daysNumbers = $contact && $this->calendar->getDaysPerPage() ? $this->calendar->getDaysPerPage() : self::DAYS_NUMBER;
         $startRequest = $this->request->get('startDate');
-        $start = $startRequest ? new \DateTime($startRequest) : new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-        $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $start = $startRequest ? new \DateTime($startRequest) : new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        $currentDate = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $limitDates = $this->getLimitDates($currentDate, $start, $daysNumbers);
 
         $this->getDisableSlots($start, $daysNumbers);

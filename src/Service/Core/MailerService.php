@@ -89,7 +89,7 @@ class MailerService
             }
             foreach ($this->to as $emailAddress) {
                 $logger->pushHandler(new RotatingFileHandler($this->coreLocator->logDir().'/mailer.log', 10, Level::Info));
-                $logger->info('Send to '.$emailAddress.' from '.$this->from.' at '.(new \DateTime('now', new \DateTimeZone('Europe/Paris')))->format('Y-m-d H:i:s'));
+                $logger->info('Send to '.$emailAddress.' from '.$this->from.' at '.(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->format('Y-m-d H:i:s'));
             }
         } catch (TransportExceptionInterface|Exception $exception) {
             $errorMessage = $exception->getMessage().' in '.get_class($this).' at line '.$exception->getLine();
@@ -179,7 +179,7 @@ class MailerService
         $subject = $this->envName ? '['.$this->envName.'] - '.$this->subject : $this->subject;
 
         $email->subject($subject);
-        $email->date(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $email->date(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         $email->from(new Address($this->from, $this->name));
         foreach ($this->cc as $key => $emailAddress) {
             $method = $key > 0 ? 'addCc' : 'cc';

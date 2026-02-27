@@ -14,6 +14,7 @@ use App\Service\Content\ImageThumbnailInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -153,7 +154,8 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             $options['loaderFilename'] = $filename;
             $options['lazyFiles'] = $options['onlyLazy'] = !$generateThumbs;
             $thumbnails = !isset($options['beforeRender']) && ($generateThumbs || $options['lazyFiles']) ? $this->imageThumbnail->execute($media, $thumbs, $options) : [];
-            $options['loaderSrc'] = $options['dataSource'] = !empty($thumbnails['dataSource']) ? $thumbnails['dataSource'] : $src;
+            $options['loaderSrc'] = $options['dataSource'] = !empty($thumbnails['dataSource'])
+                ? $thumbnails['dataSource'] : (!is_object($src) ? $src : '/uploads/'.$this->coreLocator->website()->uploadDirname.'/'.$media->media->getFilename());
             $options['loaderSvgSrc'] = !empty($thumbnails['lazyFileSvg']) ? $thumbnails['lazyFileSvg'] : (is_string($src) ? $src : 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
             $options['entity'] = $src;
             $options['thumbs'] = $thumbnails['thumbs'] ?? null;
@@ -215,7 +217,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
     /**
      * Get thumbnail.
      *
-     * @throws LoaderError|RuntimeError|SyntaxError|NonUniqueResultException|MappingException
+     * @throws LoaderError|RuntimeError|SyntaxError|NonUniqueResultException|MappingException|Exception
      */
     public function thumb(mixed $media = null, array $thumbs = [], array $options = [])
     {
@@ -242,7 +244,6 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             if (!empty($options['style']) && !empty($options['entity'])) {
                 return $this->getAttributeStyle($mediaModel, $thumbs, $options);
             }
-
             return false;
         }
 
@@ -291,7 +292,6 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
                     $thumbnail = end($thumbnailsByService['files']);
                 }
             }
-
             return $thumbnail;
         }
 

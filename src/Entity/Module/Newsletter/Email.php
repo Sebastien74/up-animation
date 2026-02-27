@@ -57,7 +57,7 @@ class Email extends BaseInterface
     #[ORM\PrePersist]
     public function prePersist(): void
     {
-        $this->tokenDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $this->tokenDate = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
 
         parent::prePersist();
     }

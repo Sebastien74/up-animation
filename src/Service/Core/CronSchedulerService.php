@@ -85,7 +85,7 @@ class CronSchedulerService
                     $cron = CronExpression::factory($command->getCronExpression());
                     $nextRunDate = $cron->getNextRunDate($command->getLastExecution());
 
-                    if ($nextRunDate < new \DateTime('now', new \DateTimeZone('Europe/Paris'))) {
+                    if ($nextRunDate < new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'))) {
                         $noneExecution = false;
                         $this->executeCommand($command, $commandLogger, $logFilename);
                     }
@@ -201,7 +201,7 @@ class CronSchedulerService
                 throw new \Exception();
             }
             $scheduledCommand = $notLockedCommand;
-            $scheduledCommand->setLastExecution(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $scheduledCommand->setLastExecution(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $scheduledCommand->setLocked(true);
             $this->entityManager->persist($scheduledCommand);
             $this->entityManager->flush();
@@ -228,7 +228,7 @@ class CronSchedulerService
         $application->run($input, $output);
 
         if (!$scheduledCommand->isExecuteImmediately()) {
-            $scheduledCommand->setLastExecution(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $scheduledCommand->setLastExecution(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         }
 
         $scheduledCommand->setExecuteImmediately(false);

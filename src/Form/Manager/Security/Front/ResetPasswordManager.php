@@ -59,7 +59,7 @@ class ResetPasswordManager
 
         $resetToken = false;
         if ($user->getResetPasswordDate() instanceof \DateTime) {
-            $today = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             $tokenDate = $user->getResetPasswordDate();
             $interval = $today->diff($tokenDate);
             $hours = $interval->format('%a') > 0 ? $interval->format('%a') * 24 : 0;
@@ -88,7 +88,7 @@ class ResetPasswordManager
      */
     private function setToken(UserFront $user, string $email): string
     {
-        $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $token = $user->getEmail() ? bin2hex(random_bytes(45).md5($email)) : null;
         $user->setTokenRequest(str_replace('/', '', $token));
         $user->setTokenRequestDate($now);

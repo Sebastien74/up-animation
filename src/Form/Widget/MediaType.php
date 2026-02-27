@@ -77,9 +77,9 @@ class MediaType extends AbstractType
         $categoriesActivated = $configuration instanceof Configuration && $configuration->isMediasCategoriesStatus();
         $maxSize = $this->getMaxSize($options);
 
-        $builder->add('uploadedFile', FileType::class, [
+        $builder->add('imageFile', FileType::class, [
             'label' => false,
-            'mapped' => false,
+            'mapped' => !$options['multiple'],
             'multiple' => $options['multiple'],
             'required' => false,
             'attr' => [

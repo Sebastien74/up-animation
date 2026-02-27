@@ -132,12 +132,12 @@ class UserChecker implements UserCheckerInterface
 
         if ($delay) {
             if (!$user->getResetPasswordDate()) {
-                $user->setResetPasswordDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $user->setResetPasswordDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $this->coreLocator->em()->persist($user);
                 $this->coreLocator->em()->flush();
             }
 
-            $today = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             $interval = new \DateInterval('P'.$delay.'D');
 
             /** @var \DateTime $resetDate */
@@ -166,10 +166,10 @@ class UserChecker implements UserCheckerInterface
     private function setLastActivity(Security\User|Security\UserFront $user): void
     {
         if (self::ENABLE_LAST_ACTIVITY) {
-            $delay = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $delay = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             $delay->setTimestamp(strtotime('2 minutes ago'));
             if ($user->getLastActivity() < $delay) {
-                $user->setLastActivity(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+                $user->setLastActivity(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $this->coreLocator->em()->persist($user);
                 $this->coreLocator->em()->flush();
             }

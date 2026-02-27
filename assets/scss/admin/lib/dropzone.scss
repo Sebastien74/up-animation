@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Module : Dropzone
+    Copyright : 2026
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+------------------------------------------------------------------ */
+
+@import '../variables';
+
+.dropzone {
+
+    .form-group-media {
+        display: none !important;
+    }
+
+    .dz-preview {
+
+        margin: .5rem;
+        opacity: .9;
+
+        .dz-image {
+            border: 1px solid $crumb-border;
+        }
+
+        &.dz-image-preview {
+            background: none;
+        }
+
+        .dz-details {
+
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .dz-size {
+                font-size: .75rem;
+                border-radius: 5px;
+            }
+
+            .dz-filename {
+                font-size: .75rem;
+                border-radius: 5px;
+            }
+        }
+
+        .dz-progress {
+
+            height: 15px;
+            margin-top: -6px;
+            background: transparentize($primary, .3);
+            border: 2px solid transparentize($primary, .3);
+
+            .dz-upload {
+                background: $dash-surface-4;
+            }
+        }
+
+        .dz-success-mark {
+            background: $teal;
+        }
+
+        .dz-error-mark {
+            background: transparentize($danger, .8);
+        }
+
+        .dz-image-preview {
+            background: none;
+        }
+    }
+}

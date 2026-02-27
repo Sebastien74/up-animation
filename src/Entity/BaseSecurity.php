@@ -116,8 +116,8 @@ abstract class BaseSecurity extends BaseInterface implements UserInterface, Pass
     public function prePersist(): void
     {
         $this->secretKey = md5(uniqid().$this->login);
-        $this->tokenDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-        $this->resetPasswordDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $this->tokenDate = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        $this->resetPasswordDate = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
 
         parent::prePersist();
     }
@@ -389,7 +389,7 @@ abstract class BaseSecurity extends BaseInterface implements UserInterface, Pass
     public function agreeTerms(): bool
     {
         $this->agreeTerms = true;
-        $this->agreesTermsAt = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $this->agreesTermsAt = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
 
         return $this->agreeTerms;
     }

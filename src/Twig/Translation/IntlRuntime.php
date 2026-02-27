@@ -233,7 +233,7 @@ class IntlRuntime implements RuntimeExtensionInterface
      */
     public function localeDayNameByEnglishName(string $dayName, ?string $locale = null): ?string
     {
-        $today = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $datetime = new \DateTime(date('d-m-Y', strtotime('first '.$dayName.' '.$today->format('Y').'-01')));
         return $this->localeDayNameByDateTime($datetime);
     }

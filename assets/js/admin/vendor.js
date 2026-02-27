@@ -81,8 +81,8 @@ import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources
 
 /** 4 - Layout management */
 if (document.getElementById('zones-sortable')) {
-    import('./pages/layout/vendor').then(({default: layoutManagement}) => {
-        layoutManagement(Routing);
+    import('./pages/layout/vendor').then(({default: LayoutManagement}) => {
+        LayoutManagement(Routing);
     }).catch(error => console.error(error.message));
 }
 
@@ -98,23 +98,23 @@ import pluginsVendor from './plugins/vendor';
 pluginsVendor();
 
 /** 6 - Active URL */
-    document.body.addEventListener('click', function (e) {
-        const link = e.target.closest('.active-urls a');
-        if (link) {
-            e.preventDefault();
-            import('./core/urls').then(({default: activeUrls}) => {
-                new activeUrls(e, link);
-            }).catch(error => console.error(error.message));
-        }
-    });
+document.body.addEventListener('click', function (e) {
+    const link = e.target.closest('.active-urls a');
+    if (link) {
+        e.preventDefault();
+        import('./core/urls').then(({default: ActiveUrls}) => {
+            new ActiveUrls(e, link);
+        }).catch(error => console.error(error.message));
+    }
+});
 
 /** 7 - Code generator */
 document.body.addEventListener('click', function (e) {
     const link = e.target.closest('.generate-code');
     if (link) {
         e.preventDefault();
-        import('./core/code-generator').then(({default: codeGenerator}) => {
-            codeGenerator();
+        import('./core/code-generator').then(({default: CodeGenerator}) => {
+            CodeGenerator();
         }).catch(error => console.error(error.message));
     }
 });
@@ -124,8 +124,8 @@ document.body.addEventListener('click', function (e) {
     const link = e.target.closest('.generate-bytes');
     if (link) {
         e.preventDefault();
-        import('./core/bytes-generator').then(({default: bytesGenerator}) => {
-            new bytesGenerator(e, link);
+        import('./core/bytes-generator').then(({default: BytesGenerator}) => {
+            new BytesGenerator(e, link);
         }).catch(error => console.error(error.message));
     }
 });
@@ -135,8 +135,8 @@ document.body.addEventListener('click', function (e) {
     const link = e.target.closest('.generator-password');
     if (link) {
         e.preventDefault();
-        import('./core/password-generator').then(({default: passwordGenerator}) => {
-            new passwordGenerator(e, link);
+        import('./core/password-generator').then(({default: PasswordGenerator}) => {
+            new PasswordGenerator(e, link);
         }).catch(error => console.error(error.message));
     }
 });
@@ -144,29 +144,29 @@ document.body.addEventListener('click', function (e) {
 /** 10 - Tree search */
 const treeSearchInput = document.querySelector('.pages-search input');
 if (treeSearchInput) {
-    import('./core/tree-search').then(({default: treeSearch}) => {
-        treeSearch();
+    import('./core/tree-search').then(({default: TreeSearch}) => {
+        TreeSearch();
     }).catch(error => console.error(error.message));
 }
 
 /** 11 - Index search */
 const indexSearchInput = document.querySelector('.search-in-list input');
 if (indexSearchInput) {
-    import('./core/search').then(({default: search}) => {
-        search();
+    import('./core/search').then(({default: Search}) => {
+        Search();
     }).catch(error => console.error(error.message));
 }
 
 /** 12 - Medias modal library */
-    document.body.addEventListener('click', function (e) {
-        const modalEl = e.target.closest('.open-modal-medias');
-        if (modalEl) {
-            e.preventDefault();
-            import('./media/open-modal').then(({default: openModal}) => {
-                new openModal(Routing, e, modalEl);
-            }).catch(error => console.error(error.message));
-        }
-    });
+document.body.addEventListener('click', function (e) {
+    const modalEl = e.target.closest('.open-modal-medias');
+    if (modalEl) {
+        e.preventDefault();
+        import('./media/open-modal').then(({default: OpenModal}) => {
+            new OpenModal(Routing, e, modalEl);
+        }).catch(error => console.error(error.message));
+    }
+});
 
 /** 13 - Map */
 // if (document.querySelectorAll('.input-places').length > 0) {
@@ -175,29 +175,29 @@ if (indexSearchInput) {
 //     }).catch(error => console.error(error.message));
 // }
 
-    /** 14 - Delete pack */
-    if (body.querySelector('.delete-pack') || document.getElementById('delete-pack-btn')) {
-        import('./delete/delete-pack').then(({default: deletePack}) => {
-            deletePack();
-        }).catch(error => console.error(error.message));
-    }
+/** 14 - Delete pack */
+if (body.querySelector('.delete-pack') || document.getElementById('delete-pack-btn')) {
+    import('./delete/delete-pack').then(({default: DeletePack}) => {
+        DeletePack();
+    }).catch(error => console.error(error.message));
+}
 
-    /** 15 - Delete index */
-    if (document.getElementById('delete-index-all')
-        || document.getElementById('index-delete-show')
-        || body.querySelector('.delete-input-index')
-        || document.getElementById('index-delete-submit')) {
-        import('./delete/delete-index').then(({default: deleteIndex}) => {
-            deleteIndex();
-        }).catch(error => console.error(error.message));
-    }
+/** 15 - Delete index */
+if (document.getElementById('delete-index-all')
+    || document.getElementById('index-delete-show')
+    || body.querySelector('.delete-input-index')
+    || document.getElementById('index-delete-submit')) {
+    import('./delete/delete-index').then(({default: DeleteIndex}) => {
+        DeleteIndex();
+    }).catch(error => console.error(error.message));
+}
 
 /** 16 - Media Tab */
 document.body.addEventListener('click', function (e) {
     const mediasTabEl = e.target.closest('.media-tab-content-loader');
     if (mediasTabEl) {
-        import('./core/medias-tab').then(({default: mediasTab}) => {
-            new mediasTab(Routing, mediasTabEl);
+        import('./core/medias-tab').then(({default: MediasTab}) => {
+            new MediasTab(Routing, mediasTabEl);
         }).catch(error => console.error(error.message));
     }
 });
@@ -220,18 +220,18 @@ toastElList.forEach(function (el) {
 window.addEventListener("load", function () {
 
     /** 17 - Websites selector */
-if (document.getElementById('websites-selector-form')) {
-    import('./core/websites-selector').then(({default: websitesSelector}) => {
-        websitesSelector();
-    }).catch(error => console.error(error.message));
-}
+    if (document.getElementById('websites-selector-form')) {
+        import('./core/websites-selector').then(({default: WebsitesSelector}) => {
+            WebsitesSelector();
+        }).catch(error => console.error(error.message));
+    }
 
     /** 18 - Tab item click */
     document.body.addEventListener('click', function (e) {
         const navLinkEl = e.target.closest('.nav-link');
         if (navLinkEl) {
-            import('./core/tab').then(({default: tabPlugin}) => {
-                new tabPlugin.call(navLinkEl);
+            import('./core/tab').then(({default: TabPlugin}) => {
+                new TabPlugin.call(navLinkEl);
             }).catch(error => console.error(error.message));
         }
     });

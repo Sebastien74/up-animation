@@ -23,7 +23,7 @@ class AgendaService
      */
     public function eventsDaysData(Agenda $agenda): array
     {
-        $currentDay = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $currentDay = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $interval = new \DateInterval('P1D');
         $response['eventsDaysData'] = [];
 

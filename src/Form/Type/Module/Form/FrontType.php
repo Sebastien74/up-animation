@@ -450,8 +450,8 @@ class FrontType extends AbstractType
                 return;
             }
 
-            $startDatetime = $minData > 0 ? new \DateTime($minData.'-01-01') : new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-            $referDatetimeStart = $minData > 0 ? new \DateTime($minData.'-01-01') : new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $startDatetime = $minData > 0 ? new \DateTime($minData.'-01-01') : new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+            $referDatetimeStart = $minData > 0 ? new \DateTime($minData.'-01-01') : new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             $start = intval($startDatetime->format('Y'));
             $endDatetime = $maxData > 0 ? new \DateTime($maxData.'-01-01', new \DateTimeZone('Europe/Paris')) : $referDatetimeStart->add(new \DateInterval('P100Y'));
             $end = intval($endDatetime->format('Y'));
@@ -581,13 +581,13 @@ class FrontType extends AbstractType
                 $this->options['attr']['data-type'] = Type\DateType::class === $fieldType ? 'date' : (Type\DateTimeType::class === $fieldType ? 'datetime' : 'hour');
                 if ($type) {
                     if ('before-current-in' === $type) {
-                        $this->options['attr']['data-max'] = (new \DateTime('now', new \DateTimeZone('Europe/Paris')))->format('Y-m-d');
+                        $this->options['attr']['data-max'] = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->format('Y-m-d');
                     } elseif ('after-current-in' === $type) {
-                        $this->options['attr']['data-min'] = (new \DateTime('now', new \DateTimeZone('Europe/Paris')))->format('Y-m-d');
+                        $this->options['attr']['data-min'] = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->format('Y-m-d');
                     } elseif ('before-current-out' === $type) {
-                        $this->options['attr']['data-max'] = (new \DateTime('now', new \DateTimeZone('Europe/Paris')))->modify('-1 day')->format('Y-m-d');
+                        $this->options['attr']['data-max'] = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->modify('-1 day')->format('Y-m-d');
                     } elseif ('after-current-out' === $type) {
-                        $this->options['attr']['data-min'] = (new \DateTime('now', new \DateTimeZone('Europe/Paris')))->modify('+1 day')->format('Y-m-d');
+                        $this->options['attr']['data-min'] = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->modify('+1 day')->format('Y-m-d');
                     }
                 } else {
                     if ($configuration->getMin()) {

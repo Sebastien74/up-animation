@@ -48,7 +48,7 @@ class GdprService
         if ($frequency > 0) {
             $anonymized = [ContactForm::class, ContactStepForm::class];
             $namespaces = [ContactForm::class, ContactStepForm::class, Email::class];
-            $datetime = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $datetime = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             $interval = new \DateInterval('P'.$frequency.'D');
             $datetime->sub($interval);
             foreach ($namespaces as $namespace) {

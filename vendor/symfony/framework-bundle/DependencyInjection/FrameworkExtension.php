@@ -116,6 +116,7 @@ use Symfony\Component\HttpKernel\Log\DebugLoggerConfigurator;
 use Symfony\Component\HttpKernel\Profiler\ProfilerStateChecker;
 use Symfony\Component\JsonStreamer\Attribute\JsonStreamable;
 use Symfony\Component\JsonStreamer\JsonStreamWriter;
+use Symfony\Component\JsonStreamer\Mapping\PropertyMetadata;
 use Symfony\Component\JsonStreamer\StreamReaderInterface;
 use Symfony\Component\JsonStreamer\StreamWriterInterface;
 use Symfony\Component\JsonStreamer\ValueTransformer\ValueTransformerInterface;
@@ -179,6 +180,7 @@ use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\RateLimiter\Storage\CacheStorage;
 use Symfony\Component\RemoteEvent\Attribute\AsRemoteEventConsumer;
 use Symfony\Component\RemoteEvent\RemoteEvent;
+use Symfony\Component\Routing\Annotation\Route as LegacyRoute;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Loader\AttributeServicesLoader;
 use Symfony\Component\Routing\Loader\XmlFileLoader as RoutingXmlFileLoader;
@@ -791,6 +793,9 @@ class FrameworkExtension extends Extension
             $definition->addTag('controller.service_arguments');
         });
         $container->registerAttributeForAutoconfiguration(Route::class, static function (ChildDefinition $definition, Route $attribute, \ReflectionClass|\ReflectionMethod $reflection): void {
+            $definition->addTag('controller.service_arguments')->addTag('routing.controller');
+        });
+        $container->registerAttributeForAutoconfiguration(LegacyRoute::class, static function (ChildDefinition $definition, Route $attribute, \ReflectionClass|\ReflectionMethod $reflection): void {
             $definition->addTag('controller.service_arguments')->addTag('routing.controller');
         });
         $container->registerAttributeForAutoconfiguration(AsRemoteEventConsumer::class, static function (ChildDefinition $definition, AsRemoteEventConsumer $attribute): void {
@@ -2232,6 +2237,17 @@ class FrameworkExtension extends Extension
         if (\PHP_VERSION_ID >= 80400) {
             $container->removeDefinition('.json_streamer.cache_warmer.lazy_ghost');
         }
+
+        // forward compatibility with "symfony/json-streamer" 8.0+
+        if (!method_exists(PropertyMetadata::class, 'getNativeToStreamValueTransformer')) {
+            $reader = $container->getDefinition('json_streamer.stream_reader');
+
+            $args = $reader->getArguments();
+            unset($args[4]);
+
+            $reader->setArguments($args);
+            $container->removeDefinition('.json_streamer.cache_warmer.lazy_ghost');
+        }
     }
 
     private function registerPropertyInfoConfiguration(array $config, ContainerBuilder $container, PhpFileLoader $loader): void
@@ -2358,6 +2374,10 @@ class FrameworkExtension extends Extension
 
     private function registerSemaphoreConfiguration(array $config, ContainerBuilder $container, PhpFileLoader $loader): void
     {
+        if (!class_exists(Semaphore::class)) {
+            throw new LogicException('Semaphore support cannot be enabled as the Semaphore component is not installed. Try running "composer require symfony/semaphore".');
+        }
+
         $loader->load('semaphore.php');
 
         foreach ($config['resources'] as $resourceName => $resourceStore) {
@@ -2679,7 +2699,8 @@ class FrameworkExtension extends Extension
 
             $failureTransportsByTransportNameServiceLocator = ServiceLocatorTagPass::register($container, $failureTransportReferencesByTransportName);
             $container->getDefinition('messenger.failure.send_failed_message_to_failure_transport_listener')
-                ->replaceArgument(0, $failureTransportsByTransportNameServiceLocator);
+                ->replaceArgument(0, $failureTransportsByTransportNameServiceLocator)
+                ->replaceArgument(2, $failureTransportsByName);
         } else {
             $container->removeDefinition('messenger.failure.send_failed_message_to_failure_transport_listener');
             $container->removeDefinition('console.command.messenger_failed_messages_retry');

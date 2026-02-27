@@ -1,4 +1,5 @@
 import 'dropzone/dist/dropzone.css';
+import '../../../scss/admin/lib/dropzone.scss';
 
 import Dropzone from "dropzone";
 import masterDropzoneForm from "../media/master-dropzone-form";
@@ -69,13 +70,14 @@ export default function () {
             if (preloader) {
                 preloader.classList.remove('d-none');
             }
-            window.location.href = window.location.href;
+            // window.location.href = window.location.href;
         }
         body.removeAttribute('data-dropzone-success');
     });
 
     function displayErrors(errors) {
-        let error = typeof errors === 'string' ? errors : (typeof errors.errors === 'string' ? errors.errors : 'Une erreur est survenue !');
+
+        const error = typeof errors === 'string' ? errors : (typeof errors.errors === 'string' ? errors.errors : 'Une erreur est survenue !');
 
         let message = '<div class="internal-error-alert alert alert-danger position-relative d-flex p-0 mt-3">';
         message += '<div class="icon d-flex align-items-center justify-content-center position-relative">';

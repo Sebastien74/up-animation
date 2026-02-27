@@ -168,7 +168,7 @@ final class ViewModel extends BaseModel
             mainTitle: $titleInfos ? $titleInfos->title : null,
             intlCard: !$disabledLayout && $layout ? self::intlCard($layout, $locale, $intl, $medias) : null,
             haveContent: $intl && ($intl->body || $intl->introduction),
-            pastDate: $dates['startDate'] && $dates['startDate'] <= new \DateTime('now', new \DateTimeZone('Europe/Paris')),
+            pastDate: $dates['startDate'] && $dates['startDate'] <= new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')),
             date: $date,
             dates: $dates,
             formatDate: self::getContent('formatDate', $entity),

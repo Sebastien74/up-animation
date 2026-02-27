@@ -85,7 +85,7 @@ class ScheduledCommand extends BaseEntity
             $this->setLogFile(Urlizer::urlize($this->getCommand()).'.log');
         }
 
-        $this->setLastExecution(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $this->setLastExecution(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         $this->setLocked(false);
 
         parent::prePersist();

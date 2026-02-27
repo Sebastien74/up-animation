@@ -40,6 +40,7 @@ class BackgroundColorSelectType extends AbstractType
             'label' => $this->translator->trans('Couleur de fond', [], 'admin'),
             'expanded' => false,
             'required' => false,
+            'display' => 'search',
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'choices' => $this->getColors(),
             'attr' => ['class' => 'select-icons'],

@@ -1,4 +1,5 @@
 import 'nestable2';
+import '../../../scss/admin/lib/nestable.scss';
 
 /**
  * Nestable

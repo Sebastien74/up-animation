@@ -52,8 +52,9 @@
 
         {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'medias-sortable-preloader', full: true, progress: true} only -%}
 
-        <ul id="medias-sortable-container" class="reset mb-4">
-            {%- set medias = medias is defined ? medias : entity.mediaRelations -%}
+        <ul id="medias-sortable-container" class="reset list-unstyled mb-4">
+            {%- set medias = medias is defined and medias is not empty ? medias
+                : (entity.mediaRelations is defined ? entity.mediaRelations : []) -%}
             {%- set isFirst = true -%}
             {%- for mediaRelation in medias -%}
                 {%- set disabledFirstMedia = disabledFirstMedia is defined and disabledFirstMedia and loop.first -%}
@@ -86,7 +87,6 @@
                                         {{ mediaRelation|file({}, {width: 30, height: 30}) }}
                                     </a>
                                 {%- endif -%}
-
                                 {%- set filename = mediaRelation.media.filename is defined ? mediaRelation.media.filename : null -%}
                                 {%- set asMediaWarning = tooHeavyFiles[filename] is defined or mediasAlert[filename] is defined -%}
                                 <small id="heading-{{ mediaRelation.id }}" class="ms-2 {% if asMediaWarning %} text-warning fw-700{% endif %}">

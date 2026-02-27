@@ -80,7 +80,7 @@ class ProfileManager extends BaseManager
         if ($isUpdated) {
 
             $userRequest->setToken($this->token($userRequest->getEmail()));
-            $userRequest->setTokenDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+            $userRequest->setTokenDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
 
 //        $this->pictureManager->execute($user, $form);
             $this->coreLocator->em()->persist($userRequest);
@@ -124,7 +124,7 @@ class ProfileManager extends BaseManager
     {
         /** @var UserFront $user */
         $user->setTokenRemoveRequest($this->token($user->getEmail()));
-        $user->setTokenRemoveRequestDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $user->setTokenRemoveRequestDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         $this->coreLocator->em()->persist($user);
         $this->coreLocator->em()->flush();
 

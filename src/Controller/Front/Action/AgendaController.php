@@ -53,7 +53,7 @@ class AgendaController extends FrontController
         $entity->setUpdatedAt($agenda->getUpdatedAt());
 
         return $this->render('front/'.$websiteTemplate.'/actions/agenda/view.html.twig', array_merge($agendaService->eventsDaysData($agenda), [
-            'periodDate' => new \DateTime('now', new \DateTimeZone('Europe/Paris')),
+            'periodDate' => new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')),
             'agenda' => $agenda,
             'configuration' => $configuration,
             'websiteTemplate' => $websiteTemplate,

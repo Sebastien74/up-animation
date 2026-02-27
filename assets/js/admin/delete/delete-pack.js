@@ -101,7 +101,7 @@ export default function () {
                             .then(response => {
                                 if (response.alert && response.alert === 'error') {
                                     displayAlert(response.message, 'danger', null, false);
-                                    window.scrollTo({ top: 0, behavior: 'slow' });
+                                    window.scrollTo({top: 0, behavior: 'slow'});
                                 } else {
                                     let li = el.closest('li.parent-row');
                                     let otherParent = el.closest('.delete-pack-parent-row');
@@ -136,17 +136,14 @@ export default function () {
         });
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.delete-pack').forEach(el => el.checked = false);
 
-        document.querySelectorAll('.delete-pack').forEach(el => el.checked = false);
-
-        document.body.addEventListener('change', function (e) {
-            let el = e.target.closest('.delete-pack');
-            if (el) {
-                setRows(el);
-                showBtn();
-                removeItems();
-            }
-        });
+    document.body.addEventListener('change', function (e) {
+        let el = e.target.closest('.delete-pack');
+        if (el) {
+            setRows(el);
+            showBtn();
+            removeItems();
+        }
     });
 }

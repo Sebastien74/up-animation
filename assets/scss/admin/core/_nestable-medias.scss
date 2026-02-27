@@ -10,6 +10,8 @@
 
 ------------------------------------------------------------------ */
 
+@import "../variables";
+
 #medias-sortable-container {
 
     #main-preloader {
@@ -25,9 +27,9 @@
     .sortable-item {
 
         margin-bottom: .5rem;
-        border-radius: $card-border-radius;
-        border: 1px solid $white;
-        background: $white;
+        border-radius: 12px;
+        border: 1px solid $btn-border;
+        background: $bg-gradient-primary;
         color: $dark;
         box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
 
@@ -84,7 +86,7 @@
                 top: 14px;
                 bottom: 11px;
                 width: 1px;
-                background-color: $dark;
+                background-color: transparentize($body-color, .5);
             }
 
             i, svg {
@@ -92,6 +94,7 @@
                 margin-top: 19px;
                 float: left;
                 margin-left: 16px;
+                color: $body-color;
             }
         }
 

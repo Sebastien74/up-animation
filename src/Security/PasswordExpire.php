@@ -103,7 +103,7 @@ class PasswordExpire
     {
         $userDelay = $user instanceof UserFront ? $user->getWebsite()->getSecurity()->getFrontPasswordDelay() : $this->adminDelay;
         $delay = $userDelay - $delta;
-        $date = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $date = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $findDate = new \DateTimeImmutable($date->format('Y-m-d H:i:s'));
 
         return $findDate->modify('-'.$delay.' days');

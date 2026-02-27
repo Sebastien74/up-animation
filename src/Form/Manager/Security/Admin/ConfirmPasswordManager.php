@@ -50,7 +50,7 @@ class ConfirmPasswordManager
             }
         }
 
-        $user->setResetPasswordDate(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $user->setResetPasswordDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         $user->setTokenRequest(null);
         $user->setTokenRequestDate(null);
         $user->setAlerts($alerts);

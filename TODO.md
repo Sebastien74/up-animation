@@ -6,11 +6,25 @@ Js Front faire en sorte que les modules JS ne soient appelés que quand il y en 
 
 Faire par page un fichier scss pour les premiere lames du site. Y mettre le menu et les primere lame visble et charges les autre assets en onload rel
 
+Vickupload supprimer la mécanique cms de la suppression des medias
+            delete_on_update: true
+            delete_on_remove: true
+
 Ajouter au blocs form le SIRET et récupérer le SIRET validator de rezup
 
 Une fois le refactor JS fait vire les plugins non utilisés comme data-datables par exemple
 
+Dans le uplaoder media il faut faire la compression des medias. Utiliser Imagick si existant sinon par ordre de performance de libraises existantes
+
 Dans le phone validator faire un test pour la longueur du numéro (par langue)
+
+cursor: pointer les passer en min-lg
+
+pour les ... pour text trop long utiliser
+overflow: hidden;
+text-overflow: ellipsis;
+
+Dans JS back retirer les message += '<svg xmlns="http://www.w3.org/2000/svg" et refaire l'alerte HTML
 
 DANS GUIDE.MD pour cms non versionné ajouter pour JUni "Retirer La présence des **BOM (Byte Order Mark) UTF-8** "
 

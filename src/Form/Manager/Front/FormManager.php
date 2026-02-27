@@ -477,7 +477,7 @@ class FormManager
     {
         $configuration = $form->getConfiguration();
         $maxShipments = $configuration->getMaxShipments();
-        if ($configuration->getPublicationEnd() && new \DateTime('now', new \DateTimeZone('Europe/Paris')) > $configuration->getPublicationEnd()) {
+        if ($configuration->getPublicationEnd() && new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')) > $configuration->getPublicationEnd()) {
             return false;
         }
         if ($maxShipments && $form->getContacts()->count() >= $maxShipments) {

@@ -80,7 +80,7 @@ class SecurityRuntime implements RuntimeExtensionInterface
     public function getOnlineUsers(WebsiteModel $website, string $type): array
     {
         $userClass = 'admin' === $type ? User::class : UserFront::class;
-        $delay = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $delay = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $delay->setTimestamp(strtotime('2 minutes ago'));
 
         $qb = $this->entityManager->getRepository($userClass)->createQueryBuilder('u')

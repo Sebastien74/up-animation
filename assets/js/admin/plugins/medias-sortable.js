@@ -1,5 +1,7 @@
 import route from "../../vendor/components/routing";
 
+import '../../../scss/admin/core/_nestable-medias.scss';
+
 /**
  * Medias sortable
  *
