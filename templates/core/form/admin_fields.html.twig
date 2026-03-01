@@ -258,7 +258,7 @@
 
     <div id="{{ id }}_collection"
          data-index="{{ form.children|length }}"
-         class="collection {% if prototypePosition %} prototype-sortable{% endif %} {% if prototypeGroup %}row w-100{% else %}col-12{% endif %}"
+         class="collection {% if prototypePosition %} prototype-sortable{% endif %} {% if prototypeGroup %}row{% else %}col-12{% endif %}"
          data-prototype="{{ macro.field_prototype(form.vars.prototype, prototypeGroup)|e('html_attr') }}">
         {%- include 'admin/include/stripe-preloader.html.twig' -%}
         {%- for property in form.children -%}

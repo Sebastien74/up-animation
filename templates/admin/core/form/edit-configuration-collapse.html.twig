@@ -19,7 +19,7 @@
                         {%- elseif field.vars.name == 'mediaRelation' and 'mediaRelation' in configFields -%}
                             <div class="col-12">
                                 {%- include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: field.vars.value.id, classname: classname} -%}
-                                {{ form_row(form.mediaRelation.media.uploadedFile) }}
+                                {{ form_row(form.mediaRelation.media.imageFile) }}
                             </div>
                             {%- set configFields = configFields|unset('mediaRelation') -%}
                         {%- elseif field.vars.name == 'mediaRelations' and 'mediaRelations' in configFields -%}

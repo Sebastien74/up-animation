@@ -22,7 +22,7 @@
         {%- if prototypeGroup -%}
             <div class="{{ prototypeGroup }} mb-4 prototype prototype-block-group">
         {%- endif -%}
-            <div class="prototype-block p-3 {% if prototypeGroup %}h-100{% else %}prototype mb-4{% endif %}">
+            <div class="prototype-block pt-3 px-3 {% if prototypeGroup %}h-100{% else %}prototype mb-4{% endif %}">
                 <div class="row">
                     {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: property, excludes: excluded} only -%}
                     {%- if prototypePosition -%}
@@ -75,7 +75,7 @@
 
     <div id="{{ field.vars.id }}_collection"
          data-index="{{ form[field.vars.name]|length }}"
-         class="collection {% if prototypePosition %} prototype-sortable{% endif %}{% if not displayBtn %} no-shadow{% endif %} {% if prototypeGroup %}row m-0 px-0 w-100{% else %}col-12{% endif %}"
+         class="collection {% if prototypePosition %} prototype-sortable{% endif %}{% if not displayBtn %} no-shadow{% endif %} {% if prototypeGroup %}row{% else %}col-12{% endif %}"
          data-prototype="{{ macro.field_prototype(field.vars.prototype, prototypeGroup)|e('html_attr') }}">
         {%- include 'admin/include/stripe-preloader.html.twig' -%}
         {%- for property in form[field.vars.name] -%}

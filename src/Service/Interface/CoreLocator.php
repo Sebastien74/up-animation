@@ -23,6 +23,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -86,13 +87,13 @@ class CoreLocator implements CoreLocatorInterface
             if (!empty($this->cache['adminWebsite'])) {
                 return $this->cache['adminWebsite'];
             }
-            if (!is_object($this->request()->get('website')) && $this->request()->get('website')) {
-                $websiteId = $this->request()->get('website') ? intval($this->request()->get('website')) : null;
-                $this->cache['adminWebsite'] = $this->em()->getRepository(Website::class)->findObject($websiteId);
-            } elseif (!$this->request()->get('website')) {
-                $this->cache['adminWebsite'] = $this->em()->getRepository(Website::class)->findOneByHost($this->request()->getHost());
-            } else {
-                $this->cache['adminWebsite'] = $this->request()->get('website');
+            $websiteRequest = $this->request()->attributes->get('website') ?? $this->request()->query->get('website');
+            $websiteId = filter_var($websiteRequest, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            $this->cache['adminWebsite'] = $websiteId
+                ? $this->em()->getRepository(Website::class)->findObject($websiteId)
+                : $this->em()->getRepository(Website::class)->findOneByHost($this->request()->getHost());
+            if (!is_object($this->cache['adminWebsite'])) {
+                throw new NotFoundHttpException('Aucun site configuré pour cet ID.');
             }
             return $this->cache['adminWebsite'];
         } elseif ($this->request()) {

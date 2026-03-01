@@ -57,7 +57,7 @@ html body {
 
 .page-wrapper {
     margin-top: 70px;
-    min-height: calc(100dvh - (70px + 60px));
+    min-height: calc(100dvh - (70px + 84px));
 }
 
 .row.w-initial > * {
@@ -118,7 +118,7 @@ a {
     }
 
     &:not(.collapsed) {
-        i:before {
+        i.icm-chevron-down:before {
             top: 0;
             transform-origin: center;
             transform: rotate(180deg);

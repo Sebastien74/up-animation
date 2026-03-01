@@ -42,44 +42,44 @@
         position: 'Position'|trans,
     } -%}
 
-    <div id="entities-index" class="card">
+    <div id="entities-index">
 
-        <div class="card-header text-end">
-            <span>
-                <a href="{{ lastRoute() }}" class="btn-icon"
-                   data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}"
-                   aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
+        <div id="index-header" class="d-flex justify-content-end align-items-center">
+            <a href="{{ lastRoute() }}" class="btn-icon"
+               data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}"
+               aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
                 <i class="icm-reply"></i>
-                </a>
-            </span>
+            </a>
         </div>
 
-        <table class="table table-striped mb-0">
-            <tbody>
-                {%- if granted('ROLE_INTERNAL') and entity.slug is defined and entity.slug -%}
-                    <tr>
-                        <td class="align-middle">{{ 'Code'|trans }}</td>
-                        <td class="align-middle">{{ entity.slug }}</td>
-                    </tr>
-                {%- endif -%}
-                {%- for field in fields -%}
-                    {%- if field in elementsToShow or elementsToShow is empty -%}
-                        {%- set labelName = labels[field] is defined ? labels[field] : (field|trans([], transDomain) and field|trans([], transDomain) != field
-                            ? field|trans([], transDomain) : field) -%}
-                        {%- set fieldValue = entityValue(entity, field) -%}
-                        {%- if not fieldValue -%}
-                            {%- set fieldValue = 'N/C' -%}
-                        {%- endif -%}
+        <div class="table-responsive app-table mt-4">
+            <table class="table table-striped responsive-cards">
+                <tbody>
+                    {%- if granted('ROLE_INTERNAL') and entity.slug is defined and entity.slug -%}
                         <tr>
-                            <td class="align-middle">{{ labelName|trans }}</td>
-                            <td class="align-middle">
-                                {%- include 'core/data-formater.html.twig' with {elementsToShow: elementsToShow, dataValue: fieldValue, property: field, view: 'show'} only -%}
-                            </td>
+                            <td class="align-middle px-4">{{ 'Code'|trans }}</td>
+                            <td class="align-middle px-4">{{ entity.slug }}</td>
                         </tr>
                     {%- endif -%}
-                {%- endfor -%}
-            </tbody>
-        </table>
+                    {%- for field in fields -%}
+                        {%- if field in elementsToShow or elementsToShow is empty -%}
+                            {%- set labelName = labels[field] is defined ? labels[field] : (field|trans([], transDomain) and field|trans([], transDomain) != field
+                                ? field|trans([], transDomain) : field) -%}
+                            {%- set fieldValue = entityValue(entity, field) -%}
+                            {%- if not fieldValue -%}
+                                {%- set fieldValue = 'N/C' -%}
+                            {%- endif -%}
+                            <tr>
+                                <td class="align-middle px-4">{{ labelName|trans }}</td>
+                                <td class="align-middle px-4">
+                                    {%- include 'core/data-formater.html.twig' with {elementsToShow: elementsToShow, dataValue: fieldValue, property: field, view: 'show'} only -%}
+                                </td>
+                            </tr>
+                        {%- endif -%}
+                    {%- endfor -%}
+                </tbody>
+            </table>
+        </div>
 
     </div>
 

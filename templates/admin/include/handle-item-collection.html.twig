@@ -5,10 +5,10 @@
 {%- if not isNew and 'edit'|moduleActive(configuration) and (routeName)|routeExist -%}
     {%- set position = property.vars.data.position is defined and property.vars.data.position ? property.vars.data.position : 0 -%}
     <div id="handle-item-prototype-{{ uniqId() }}"
-         class="handle-item-prototype cursor"
+         class="handle-item-prototype"
          data-path="{{ path(routeName, {website: websiteId(), (interfaceName): entityId}) }}"
          data-position="{{ position }}">
-        <span data-bs-toggle="tooltip" title="{{"Déplacer"|trans|raw }}">
+        <span class="btn-icon cursor" data-bs-toggle="tooltip" title="{{"Déplacer"|trans|raw }}">
             <i class="icm-arrows-alt"></i>
         </span>
     </div>

@@ -14,7 +14,9 @@ use App\Service\Content\ImageThumbnailInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
 use Exception;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -217,7 +219,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
     /**
      * Get thumbnail.
      *
-     * @throws LoaderError|RuntimeError|SyntaxError|NonUniqueResultException|MappingException|Exception
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException|QueryException
      */
     public function thumb(mixed $media = null, array $thumbs = [], array $options = [])
     {
@@ -259,12 +261,12 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         $this->arguments['popupWithoutBox'] = $options['popupWithoutBox'] = !empty($options['popupWithoutBox']) ? $options['popupWithoutBox'] : false;
         $this->arguments['parentEntity'] = !empty($options['parentEntity']) ? $options['parentEntity'] : null;
         $this->arguments['block'] = !empty($options['block']) ? $options['block'] : $this->arguments['parentEntity'];
-        $this->arguments['lazyLoad'] = $options['lazyLoad'] ?? true;
+        $this->arguments['priority'] = $options['priority'] ?? null;
+        $this->arguments['lazyLoad'] = $this->arguments['priority'] === 'high' ? false : ($options['lazyLoad'] ?? true);
         $this->arguments['targetLink'] = array_key_exists('targetLink', $options) ? $options['targetLink'] : null;
         $this->arguments['targetBlank'] = $options['targetBlank'] ?? false;
         $this->arguments['fullPopup'] = $options['fullPopup'] = $options['fullPopup'] ?? true;
         $this->arguments['displayPage'] = $options['displayPage'] ?? true;
-        $this->arguments['priority'] = $options['priority'] ?? null;
         $this->arguments['disableLink'] = $options['disableLink'] ?? false;
         $this->arguments['targetPageIntl'] = isset($options['displayPage']) ? $options['targetPageIntl'] : null;
         $this->arguments['haveArrow'] = $options['haveArrow'] ?? null;

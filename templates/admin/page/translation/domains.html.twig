@@ -26,7 +26,7 @@
     {%- set stats = domains|transStats -%}
 
     {%- if granted('ROLE_INTERNAL') -%}
-        <div class="d-flex align-items-center gap-2">
+        <div class="d-flex align-items-center gap-2 mb-4">
             <a class="translation-extract-btn btn-app" data-domain="only_front">
                 <i class="icm-sync-alt"></i><span>{{ "Extraire le front"|trans }}</span>
             </a>
@@ -53,119 +53,114 @@
 
     {%- if not toExtract -%}
 
-        <div id="translations-domains-index" class="card d-inline-block w-100">
+        <div id="translations-domains-index">
 
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-md-8 my-auto">
-                        {%- if searchForm -%}
-                            {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} -%}
-                        {%- endif -%}
-                    </div>
-                    <div class="col-md-4 my-auto d-flex justify-content-end">
-                        {%- set domainsPath = app.request.get('domains') ? path('admin_translationdomain_index', {website: website.id})
-                            : path('admin_translationdomain_index', {website: website.id, domains: 'admin'}) -%}
-                        {%- set domainslabel = app.request.get('domains') ? "Traductions front"|trans : "Traductions admin"|trans -%}
-                        <a href="{{ domainsPath }}" class="btn-app d-flex align-items-center">
-                            <i class="icm-eye"></i><span>{{ domainslabel|raw }}</span>
-                        </a>
-                    </div>
-                </div>
+            <div class="d-flex align-items-center gap-2 mb-4">
+                {%- if searchForm -%}
+                    {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} -%}
+                {%- endif -%}
+                {%- set domainsPath = app.request.get('domains') ? path('admin_translationdomain_index', {website: website.id})
+                    : path('admin_translationdomain_index', {website: website.id, domains: 'admin'}) -%}
+                {%- set domainslabel = app.request.get('domains') ? "Traductions front"|trans : "Traductions admin"|trans -%}
+                <a href="{{ domainsPath }}" class="btn-app d-flex align-items-center ms-auto">
+                    <i class="icm-eye"></i><span>{{ domainslabel|raw }}</span>
+                </a>
             </div>
 
             <div id="result" class="position-relative">
 
                 {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only -%}
 
-                <table class="table table-striped mb-0">
-                    <thead>
-                        <tr>
-                            <th class="align-middle">{{ "Groupe"|trans }}</th>
-                            {%- for transLocale in allLocales -%}
-                                <th class="align-middle">
-                                    {%- if allLocales|length > 1 -%}
-                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
-                                             data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
-                                             class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">
-                                    {%- endif -%}
-                                    {%- if stats[transLocale] is defined -%}
-                                        <strong class="d-inline-block">{{ stats[transLocale]['words'] }} {{ "mots"|trans }}</strong>
-                                    {%- endif -%}
-                                </th>
-                            {%- endfor -%}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {%- for entity in pagination -%}
-                            {%- set name = 'singular'|trans([], entity.name) and 'singular'|trans([], entity.name) != 'singular'
-                                ? 'singular'|trans([], entity.name) : entity.adminName -%}
-                            {%- if name != '_undefined' -%}
-                                <tr class="{% if loop.index is even %}even{% else %}odd{% endif %}">
-                                    <td class="align-middle">
-                                        <div class="row">
-                                            <div class="col-7 my-auto">
-                                                {{ name }}
-                                                {%- if granted('ROLE_INTERNAL') -%}
-                                                    {%- if entity.forTranslator -%}
-                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{"Pour le traducteur"|trans|striptags }}"><i class="icm-globe ms-2"></i></span>
+                <div class="table-responsive app-table">
+                    <table class="table table-striped responsive-cards">
+                        <thead>
+                            <tr>
+                                <th class="align-middle px-4">{{ "Groupe"|trans }}</th>
+                                {%- for transLocale in allLocales -%}
+                                    <th class="align-middle px-4">
+                                        {%- if allLocales|length > 1 -%}
+                                            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
+                                                 data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
+                                                 class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">
+                                        {%- endif -%}
+                                        {%- if stats[transLocale] is defined -%}
+                                            <strong class="d-inline-block">{{ stats[transLocale]['words'] }} {{ "mots"|trans }}</strong>
+                                        {%- endif -%}
+                                    </th>
+                                {%- endfor -%}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%- for entity in pagination -%}
+                                {%- set name = 'singular'|trans([], entity.name) and 'singular'|trans([], entity.name) != 'singular'
+                                    ? 'singular'|trans([], entity.name) : entity.adminName -%}
+                                {%- if name != '_undefined' -%}
+                                    <tr class="{% if loop.index is even %}even{% else %}odd{% endif %}">
+                                        <td class="align-middle px-4">
+                                            <div class="row">
+                                                <div class="col-7 my-auto">
+                                                    {{ name }}
+                                                    {%- if granted('ROLE_INTERNAL') -%}
+                                                        {%- if entity.forTranslator -%}
+                                                            <span class="cursor" data-bs-toggle="tooltip" title="{{"Pour le traducteur"|trans|striptags }}"><i class="icm-globe ms-2"></i></span>
+                                                        {%- endif -%}
+                                                        {%- if entity.extract -%}
+                                                            <span class="cursor" data-bs-toggle="tooltip" title="{{"À exporter"|trans|striptags }}"><i class="icm-upload ms-2"></i></span>
+                                                        {%- endif -%}
                                                     {%- endif -%}
-                                                    {%- if entity.extract -%}
-                                                        <span class="cursor" data-bs-toggle="tooltip" title="{{"À exporter"|trans|striptags }}"><i class="icm-upload ms-2"></i></span>
-                                                    {%- endif -%}
-                                                {%- endif -%}
-                                            </div>
-                                            <div class="col-5 text-end">
-                                                {%- if granted('ROLE_INTERNAL') -%}
-                                                    <span data-bs-toggle="tooltip" title="{{"Éditer le groupe"|trans|striptags }}">
-                                                        <a href="{{ path('admin_translationdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
-                                                           class="btn-app"
-                                                          >
-                                                            <i class="icm-pencil-alt"></i>
-                                                        </a>
-                                                    </span>
-                                                    <span data-bs-toggle="tooltip" title="{{"Extraire"|trans|striptags }}">
-                                                        <a class="translation-extract-btn btn cursor" data-larges="1" data-domain="{{ entity.name }}">
-                                                            <i class="icm-retweet-alt"></i>
-                                                        </a>
-                                                    </span>
-                                                {%- endif -%}
-                                                <span data-bs-toggle="tooltip" title="{{"Éditer les contenus"|trans|striptags }}">
-                                                    <a href="{{ path('admin_translationsdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
-                                                       class="btn"
-                                                      >
-                                                        <i class="icm-list-ul"></i>
-                                                    </a>
-                                                </span>
-                                                {%- if granted('ROLE_INTERNAL') -%}
-                                                    <span data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}">
-                                                        <a class="cursor sa-warning swal-delete-link"
-                                                           href="{{ path('admin_translationsdomain_delete', {website: websiteId(), translationdomain: entity.id}) }}">
-                                                            <i class="icm-trash"></i>
-                                                        </a>
-                                                    </span>
-                                                {%- endif -%}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    {%- for transLocale in interface.website.configuration.allLocales -%}
-                                        <td class="align-middle">
-                                            {%- if stats[entity.name]['units'][transLocale] is defined -%}
-                                                <h5>{{ stats[entity.name]['units'][transLocale] }}/{{ stats[entity.name]['units']['count'][transLocale] }} <small class="d-inline-block"> - {{ stats[entity.name][transLocale]['words'] }} {{ 'mots'|trans }}</small></h5>
-                                                <div class="progress">
-                                                    {%- set percent = stats[entity.name]['units'][transLocale]|percent(stats[entity.name]['units']['count'][transLocale]) -%}
-                                                    {%- set color = percent < 100 ? 'danger' : 'success' -%}
-                                                    <div class="progress-bar progress-bar-striped bg-{{ color }} wow animated progress-animated" style="width: {{ percent }}%; height:6px;" role="progressbar"></div>
                                                 </div>
-                                            {%- else -%}
-                                                <span class="badge warning">{{ "Vous devez regénérer les traductions !"|trans }}</span>
-                                            {%- endif -%}
+                                                <div class="col-5 text-end">
+                                                    {%- if granted('ROLE_INTERNAL') -%}
+                                                        <span data-bs-toggle="tooltip" title="{{"Éditer le groupe"|trans|striptags }}">
+                                                            <a href="{{ path('admin_translationdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
+                                                               class="btn-app"
+                                                              >
+                                                                <i class="icm-pencil-alt"></i>
+                                                            </a>
+                                                        </span>
+                                                        <span data-bs-toggle="tooltip" title="{{"Extraire"|trans|striptags }}">
+                                                            <a class="translation-extract-btn btn cursor" data-larges="1" data-domain="{{ entity.name }}">
+                                                                <i class="icm-retweet-alt"></i>
+                                                            </a>
+                                                        </span>
+                                                    {%- endif -%}
+                                                    <span data-bs-toggle="tooltip" title="{{"Éditer les contenus"|trans|striptags }}">
+                                                        <a href="{{ path('admin_translationsdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
+                                                           class="btn">
+                                                            <i class="icm-list-ul"></i>
+                                                        </a>
+                                                    </span>
+                                                    {%- if granted('ROLE_INTERNAL') -%}
+                                                        <span data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}">
+                                                            <a class="cursor sa-warning swal-delete-link"
+                                                               href="{{ path('admin_translationsdomain_delete', {website: websiteId(), translationdomain: entity.id}) }}">
+                                                                <i class="icm-trash"></i>
+                                                            </a>
+                                                        </span>
+                                                    {%- endif -%}
+                                                </div>
+                                            </div>
                                         </td>
-                                    {%- endfor -%}
-                                </tr>
-                            {%- endif -%}
-                        {%- endfor -%}
-                    </tbody>
-                </table>
+                                        {%- for transLocale in interface.website.configuration.allLocales -%}
+                                            <td class="align-middle px-4">
+                                                {%- if stats[entity.name]['units'][transLocale] is defined -%}
+                                                    <h5>{{ stats[entity.name]['units'][transLocale] }}/{{ stats[entity.name]['units']['count'][transLocale] }} <small class="d-inline-block"> - {{ stats[entity.name][transLocale]['words'] }} {{ 'mots'|trans }}</small></h5>
+                                                    <div class="progress">
+                                                        {%- set percent = stats[entity.name]['units'][transLocale]|percent(stats[entity.name]['units']['count'][transLocale]) -%}
+                                                        {%- set color = percent < 100 ? 'danger' : 'success' -%}
+                                                        <div class="progress-bar progress-bar-striped bg-{{ color }} wow animated progress-animated" style="width: {{ percent }}%; height:6px;" role="progressbar"></div>
+                                                    </div>
+                                                {%- else -%}
+                                                    <span class="badge warning">{{ "Vous devez regénérer les traductions !"|trans }}</span>
+                                                {%- endif -%}
+                                            </td>
+                                        {%- endfor -%}
+                                    </tr>
+                                {%- endif -%}
+                            {%- endfor -%}
+                        </tbody>
+                    </table>
+                </div>
 
                 {%- include 'admin/core/include/pagination.html.twig' -%}
 

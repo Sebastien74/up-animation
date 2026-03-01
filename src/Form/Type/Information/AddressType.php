@@ -56,6 +56,7 @@ class AddressType extends AbstractType
         if ($multiLocales) {
             $builder->add('locale', Type\ChoiceType::class, [
                 'label' => !empty($labels['locale']) ? $labels['locale'] : $this->translator->trans('Langue', [], 'admin'),
+                'display' => 'search',
                 'choices' => $locales,
                 'choice_translation_domain' => false,
                 'attr' => ['class' => 'select-icons', 'group' => 'col-md-3'],

@@ -54,7 +54,7 @@
 
         {%- set locale = mediaRelation.vars.value.locale -%}
         {%- set mediaRelationId = mediaRelation.vars.value.id -%}
-        {%- set onlyMedia = mediaRelation.media.uploadedFile.vars.attr.onlyMedia is defined and mediaRelation.media.uploadedFile.vars.attr.onlyMedia -%}
+        {%- set onlyMedia = mediaRelation.media.imageFile.vars.attr.onlyMedia is defined and mediaRelation.media.imageFile.vars.attr.onlyMedia -%}
         {%- set asMediaScreen = onlyMedia and mediaRelation.media.mediaScreens is defined -%}
         {%- set screenSize = mediaRelation.vars.data.media.screen is defined ? mediaRelation.vars.data.media.screen : null -%}
 
@@ -81,7 +81,7 @@
                                 btnId: "#open-modal-"~mediaRelation.vars.value.id,
                             },
                         } only -%}
-                        {{ form_row(mediaRelation.media.uploadedFile) }}
+                        {{ form_row(mediaRelation.media.imageFile) }}
                     </div>
             {%- else -%}
                 <div class="col-md-{% if onlyMedia %}12{% else %}7{% endif %} mb-2">
@@ -89,7 +89,7 @@
                         {%- if libraryBtnPosition == 'top' -%}
                             {%- include 'admin/page/media/modal-btn.html.twig' -%}
                         {%- endif -%}
-                        {{ form_row(mediaRelation.media.uploadedFile) }}
+                        {{ form_row(mediaRelation.media.imageFile) }}
                         {%- if libraryBtnPosition == 'bottom' -%}
                             {%- include 'admin/page/media/modal-btn.html.twig' -%}
                         {%- endif -%}
