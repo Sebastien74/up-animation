@@ -108,9 +108,9 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             if ($user instanceof User || $user instanceof UserFront) {
                 $userKey = $user->getSecretKey();
                 if (empty($_COOKIE['SECURITY_USER_SECRET']) && $this->coreLocator->authorizationChecker()->isGranted('ROLE_ADMIN')) {
-                    $response->headers->setCookie(Cookie::create('SECURITY_USER_SECRET', $userKey));
-                    $response->headers->setCookie(Cookie::create('SECURITY_IS_ADMIN', '1'));
-                    $response->headers->setCookie(Cookie::create('SECURITY_TOKEN', $_ENV['SECURITY_TOKEN']));
+                    $response->headers->setCookie(Cookie::create('SECURITY_USER_SECRET', $userKey, 0, '/', null, true, true, false, Cookie::SAMESITE_LAX));
+                    $response->headers->setCookie(Cookie::create('SECURITY_IS_ADMIN', '1', 0, '/', null, true, true, false, Cookie::SAMESITE_LAX));
+                    $response->headers->setCookie(Cookie::create('SECURITY_TOKEN', $_ENV['SECURITY_TOKEN'], 0, '/', null, true, true, false, Cookie::SAMESITE_LAX));
                     $this->session->set('SECURITY_USER_SECRET', $userKey);
                     $this->session->set('SECURITY_IS_ADMIN', true);
                     $this->session->set('SECURITY_TOKEN', $_ENV['SECURITY_TOKEN']);
@@ -177,6 +177,9 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             'Via',
             'X-Cache',
             'CF-Cache-Status',
+            'X-Symfony-Cache',
+            'X-Debug-Token',
+            'X-Debug-Token-Link',
         ];
 
         foreach ($headersToRemove as $header) {
@@ -341,18 +344,19 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             'content-security-policy' => ['key' => 'Content-Security-Policy', 'values' => $this->securityPolicy()],
         ] : [
             'strict-transport-security' => ['key' => 'Strict-Transport-Security', 'values' => 'max-age=31536000; includeSubDomains; preload'],
-            'permissions-policy' => ['key' => 'Permissions-Policy', 'values' => 'geolocation=(), microphone=(), camera=(), payment=()'],
+            'permissions-policy' => ['key' => 'Permissions-Policy', 'values' => 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'],
             'referrer-policy' => ['key' => 'Referrer-Policy', 'values' => 'strict-origin-when-cross-origin'],
             'cross-origin-embedder-policy' => ['key' => 'Cross-Origin-Embedder-Policy', 'values' => 'unsafe-none'],
             'cross-origin-resource-policy' => ['key' => 'Cross-Origin-Resource-Policy', 'values' => 'cross-origin'],
-            'x-xss-protection' => ['key' => 'X-XSS-Protection', 'values' => '1; mode=block'], /* if not work uncomment line in .htaccess */
+            'x-xss-protection' => ['key' => 'X-XSS-Protection', 'values' => '1; mode=block'],
             'x-ua-compatible' => ['key' => 'X-UA-Compatible', 'values' => 'IE=edge,chrome=1'],
-            'content-type-options-nosniff' => ['key' => 'X-Content-Type-Options', 'values' => 'nosniff'], /* if not work uncomment line in .htaccess */
-            'x-frame-options-deny' => ['key' => 'X-Frame-Options', 'values' => 'DENY'],  /* if not work uncomment line in.htaccess */
-            'x-frame-options-sameorigin' => ['key' => 'X-Frame-Options', 'values' => 'SAMEORIGIN'],  /* if not work uncomment line in .htaccess */
+            'content-type-options-nosniff' => ['key' => 'X-Content-Type-Options', 'values' => 'nosniff'],
+            'x-frame-options-deny' => ['key' => 'X-Frame-Options', 'values' => 'DENY'],
+            'x-frame-options-sameorigin' => ['key' => 'X-Frame-Options', 'values' => 'SAMEORIGIN'],
             'x-permitted-cross-domain-policies' => ['key' => 'X-Permitted-Cross-Domain-Policies', 'values' => 'none'],
             'cross-origin-opener-policy' => ['key' => 'Cross-Origin-Opener-Policy', 'values' => 'same-origin'],
             'access-control-allow-origin' => ['key' => 'Access-Control-Allow-Origin', 'values' => $this->schemeAndHttpHost],
+            'x-content-type-options' => ['key' => 'X-Content-Type-Options', 'values' => 'nosniff'],
         ];
 
         return !empty($headers[$header]) ? $headers[$header] : [];
@@ -381,6 +385,8 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             'https://static.axept.io',
             'https://cdn.matomo.cloud',
             'https://*.clarity.ms',
+            'https://*.google.com',
+            'https://*.gstatic.com',
             $matomo,
             "'report-sample'",
         ];

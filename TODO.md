@@ -10,6 +10,13 @@ Vickupload supprimer la mécanique cms de la suppression des medias
             delete_on_update: true
             delete_on_remove: true
 
+Pour |file ne plus utiliser maxHeight maxWidth with height mais :
+screensSizes: {
+mobile: {width: null, height: 26},
+tablet: {width: null, height: 26},
+desktop: {width: null, height: 26}
+},
+
 Ajouter au blocs form le SIRET et récupérer le SIRET validator de rezup
 
 Une fois le refactor JS fait vire les plugins non utilisés comme data-datables par exemple
@@ -62,6 +69,8 @@ Remettre dans boostrap form exemple dans blac média édtion
 {#    {%- endif -%}#}
 
 websiteAlert en TwigComponent
+
+Juni lui faire implementer les test unitaires de tout le CMS
 
 Juni m'a réexecuter un moule JS sans avoir besoin de le rappeler apès Ajax, voir si faisable sur les forms et autres
 

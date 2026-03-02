@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.locale-badge {
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba($primary, 0.14);
+    border: 1px solid rgba($primary, 0.28);
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    border-radius: 7px;
+    transition: opacity .3s ease;
+    overflow: hidden;
+
+    img {
+        width: 20px;
+        height: 20px;
+        object-fit: cover;
+        max-width: initial;
+    }
+}

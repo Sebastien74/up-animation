@@ -11,60 +11,76 @@
     }}) }}
 
         {%- if displayDomain is defined and displayDomain -%}
-            <td class="align-middle keys-td">{{ entity.domain.adminName }}</td>
+            <td class="align-middle px-4">{{ entity.domain.adminName }}</td>
         {%- endif -%}
 
-        <td class="align-middle keys-td">{{ entity.keyName }}</td>
+        <td class="align-middle px-4">{{ entity.keyName }}</td>
 
-        <td class="align-middle forms-td{% if allLocales|length > 1 %} locales-groups{% endif %}">
+        <td class="align-middle px-4{% if allLocales|length > 1 %} locales-groups{% endif %}">
             {%- for transLocale in allLocales -%}
                 {%- set exist = false -%}
                 {%- for translation in form.translations -%}
                     {%- if transLocale == translation.vars.data.locale -%}
                         {%- set exist = true -%}
                         {%- set isEmpty = translation.vars.data.content|striptags|length == 0 -%}
-                        <div class="form-group mb-0{% if isEmpty %} empty{% endif %}">
+                        <div class="form-group my-1{% if isEmpty %} empty{% endif %}">
                             <span class="d-none">{{ translation.vars.value.content }}</span>
                             <div class="translation-form-group position-relative{% if allLocales|length > 1 %} locales-group{% endif %}">
-                                {%- if allLocales|length > 1 -%}
-                                    <span class="d-inline-flex justify-content-center align-items-center addon position-absolute">
-                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                             data-src=" {{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
-                                             data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
-                                             class="img-fluid lazy-load" height="14" width="19">
-                                    </span>
-                                {%- endif -%}
-                                {{ form_widget(translation.content) }}
+                                <div class="input-group">
+                                    {{ form_widget(translation.content, {attr: {class: 'translation-input'}}) }}
+                                    {%- if allLocales|length > 1 -%}
+                                        <div class="input-group-append">
+                                            <span class="input-group-text h-100" data-bs-toggle="tooltip" aria-label="espagnol" data-bs-original-title="{{ languageName(transLocale, app.user.locale) }}">
+                                                <span class="locale-badge">
+                                                  <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                                       alt="{{ languageName(transLocale, app.user.locale) }}"
+                                                       data-src=" {{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
+                                                       data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
+                                                       class="img-fluid lazy-load" height="20" width="20">
+                                                </span>
+                                            </span>
+                                        </div>
+                                    {%- endif -%}
+                                </div>
                             </div>
                         </div>
                     {%- endif -%}
                 {%- endfor -%}
                 {%- if not exist -%}
-                    <span class="badge badge-warning w-100{% if not loop.last %} mb-3{% endif %}">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                             data-src=" {{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
-                             data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
-                             class="img-fluid lazy-load me-1" height="10" width="14">
-                        {{ "Vous devez regénérer les traductions du domaine"|trans|striptags~' "'~entity.domain.adminName~'"' }}
-                        {{ "ou"|trans|raw }} <a href="{{ path('admin_translationunit_regenerate', {website: websiteId(), translationUnit: entity.id}) }}" class="text-underline">{{'regénérer la clé de traduction'|trans|raw }}</a>
+                    <span class="text-warning d-inline-flex align-items-center gap-2 w-100 my-1">
+                        <span class="locale-badge">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="{{ languageName(transLocale, app.user.locale) }}"
+                                 data-src=" {{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
+                                 data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
+                                 class="img-fluid lazy-load" height="20" width="20">
+                        </span>
+                        <span>
+                            {{ "Vous devez regénérer les traductions du domaine"|trans|striptags~' "'~entity.domain.adminName~'"' }}
+                            <span class="mx-1">{{ "ou"|trans|raw }}</span>
+                            <a href="{{ path('admin_translationunit_regenerate', {website: websiteId(), translationUnit: entity.id}) }}" class="text-primary-light">{{'regénérer la clé de traduction'|trans|raw }}</a>
+                        </span>
                     </span>
                 {%- endif -%}
             {%- endfor -%}
         </td>
 
-        <td class="align-middle text-center actions-td">
-            <div class="d-flex align-items-center justify-content-end">
-                <button class="btn-app save-row-trans"
+        <td class="align-middle text-center px-4">
+            <div class="d-flex align-items-center justify-content-end gap-2">
+                <button class="btn-icon small save-row-trans"
+                        data-bs-toggle="tooltip"
+                        title="{{"Enregistrer"|trans|striptags }}"
                         data-form-id="unit-form-{{ entity.id }}">
                     <i class="icm-save"></i>
-                    <i class="icm-spinner-third"></i>
+                    <i class="icm-spinner-third fa-spin d-none"></i>
                 </button>
                 {%- if 'delete'|moduleActive(configuration) -%}
                     <a href="{{ path('admin_translationunit_delete', {website: websiteId(), translationunit: entity.id}) }}"
-                       data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
+                       data-bs-toggle="tooltip"
+                       data-tooltip-variant="danger"
+                       title="{{"Supprimer"|trans|striptags }}"
                        data-target="#entity-row-{{ entity.id }}"
-                       class="text-dark swal-delete-link">
-                        <i class="icm-trash ms-3"></i>
+                       class="swal-delete-link small btn-icon danger">
+                        <i class="icm-trash"></i>
                     </a>
                 {%- endif -%}
                 <div class="d-none">{{ form_rest(form) }}</div>

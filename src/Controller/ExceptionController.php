@@ -191,6 +191,9 @@ class ExceptionController extends BaseController
             } else {
                 $website = $this->coreLocator->em()->getRepository(Website::class)->findObject(intval($request->attributes->get('website')));
             }
+            $label = $this->coreLocator->translator()->trans('Tableau de bord', [], 'admin_breadcrumb');
+            $dashboardArgs = $this->coreLocator->routeArgs('admin_dashboard');
+            $arguments['breadcrumb'][$label] = $this->coreLocator->router()->generate('admin_dashboard', $dashboardArgs);
             $arguments['website'] = $this->website = $website;
             $arguments['configuration'] = $website->configuration;
             $arguments['template'] = 'admin';

@@ -84,7 +84,7 @@
                                                  class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">
                                         {%- endif -%}
                                         {%- if stats[transLocale] is defined -%}
-                                            <strong class="d-inline-block">{{ stats[transLocale]['words'] }} {{ "mots"|trans }}</strong>
+                                            <span class="d-inline-block fw-500">{{ stats[transLocale]['words'] }} {{ "mots"|trans }}</span>
                                         {%- endif -%}
                                     </th>
                                 {%- endfor -%}
@@ -99,59 +99,70 @@
                                         <td class="align-middle px-4">
                                             <div class="row">
                                                 <div class="col-7 my-auto">
-                                                    {{ name }}
-                                                    {%- if granted('ROLE_INTERNAL') -%}
-                                                        {%- if entity.forTranslator -%}
-                                                            <span class="cursor" data-bs-toggle="tooltip" title="{{"Pour le traducteur"|trans|striptags }}"><i class="icm-globe ms-2"></i></span>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="domain-label">{{ name }}</span>
+                                                        {%- if granted('ROLE_INTERNAL') -%}
+                                                            <div class="d-flex gap-2 ms-auto ps-2">
+                                                                {%- if entity.forTranslator -%}
+                                                                    <span class="btn-icon info small"
+                                                                          data-bs-toggle="tooltip"
+                                                                          data-tooltip-variant="info"
+                                                                          title="{{"Pour le traducteur"|trans|striptags }}">
+                                                                        <i class="icm-globe"></i></span>
+                                                                {%- endif -%}
+                                                                {%- if entity.extract -%}
+                                                                    <span class="btn-icon info small"
+                                                                          data-bs-toggle="tooltip"
+                                                                          data-tooltip-variant="info"
+                                                                          title="{{"À exporter"|trans|striptags }}">
+                                                                        <i class="icm-upload"></i></span>
+                                                                {%- endif -%}
+                                                            </div>
                                                         {%- endif -%}
-                                                        {%- if entity.extract -%}
-                                                            <span class="cursor" data-bs-toggle="tooltip" title="{{"À exporter"|trans|striptags }}"><i class="icm-upload ms-2"></i></span>
-                                                        {%- endif -%}
-                                                    {%- endif -%}
+                                                    </div>
                                                 </div>
                                                 <div class="col-5 text-end">
-                                                    {%- if granted('ROLE_INTERNAL') -%}
-                                                        <span data-bs-toggle="tooltip" title="{{"Éditer le groupe"|trans|striptags }}">
+                                                    <div class="d-flex gap-2">
+                                                        {%- if granted('ROLE_INTERNAL') -%}
                                                             <a href="{{ path('admin_translationdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
-                                                               class="btn-app"
-                                                              >
+                                                               data-bs-toggle="tooltip" title="{{"Éditer le groupe"|trans|striptags }}"
+                                                               class="btn-icon small">
                                                                 <i class="icm-pencil-alt"></i>
                                                             </a>
-                                                        </span>
-                                                        <span data-bs-toggle="tooltip" title="{{"Extraire"|trans|striptags }}">
-                                                            <a class="translation-extract-btn btn cursor" data-larges="1" data-domain="{{ entity.name }}">
+                                                            <a class="translation-extract-btn btn-icon small cursor"
+                                                               data-bs-toggle="tooltip" title="{{"Extraire"|trans|striptags }}"
+                                                               data-larges="1"
+                                                               data-domain="{{ entity.name }}">
                                                                 <i class="icm-retweet-alt"></i>
                                                             </a>
-                                                        </span>
-                                                    {%- endif -%}
-                                                    <span data-bs-toggle="tooltip" title="{{"Éditer les contenus"|trans|striptags }}">
+                                                        {%- endif -%}
                                                         <a href="{{ path('admin_translationsdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
-                                                           class="btn">
+                                                           data-bs-toggle="tooltip" title="{{"Éditer les contenus"|trans|striptags }}"
+                                                           class="btn-icon small">
                                                             <i class="icm-list-ul"></i>
                                                         </a>
-                                                    </span>
-                                                    {%- if granted('ROLE_INTERNAL') -%}
-                                                        <span data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}">
-                                                            <a class="cursor sa-warning swal-delete-link"
+                                                        {%- if granted('ROLE_INTERNAL') -%}
+                                                            <a class="btn-icon danger small sa-warning swal-delete-link"
+                                                               data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
                                                                href="{{ path('admin_translationsdomain_delete', {website: websiteId(), translationdomain: entity.id}) }}">
                                                                 <i class="icm-trash"></i>
                                                             </a>
-                                                        </span>
-                                                    {%- endif -%}
+                                                        {%- endif -%}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>
                                         {%- for transLocale in interface.website.configuration.allLocales -%}
                                             <td class="align-middle px-4">
                                                 {%- if stats[entity.name]['units'][transLocale] is defined -%}
-                                                    <h5>{{ stats[entity.name]['units'][transLocale] }}/{{ stats[entity.name]['units']['count'][transLocale] }} <small class="d-inline-block"> - {{ stats[entity.name][transLocale]['words'] }} {{ 'mots'|trans }}</small></h5>
+                                                    <small>{{ stats[entity.name]['units'][transLocale] }}/{{ stats[entity.name]['units']['count'][transLocale] }} <span class="d-inline-block"> - {{ stats[entity.name][transLocale]['words'] }} {{ 'mots'|trans }}</span></small>
                                                     <div class="progress">
                                                         {%- set percent = stats[entity.name]['units'][transLocale]|percent(stats[entity.name]['units']['count'][transLocale]) -%}
                                                         {%- set color = percent < 100 ? 'danger' : 'success' -%}
                                                         <div class="progress-bar progress-bar-striped bg-{{ color }} wow animated progress-animated" style="width: {{ percent }}%; height:6px;" role="progressbar"></div>
                                                     </div>
                                                 {%- else -%}
-                                                    <span class="badge warning">{{ "Vous devez regénérer les traductions !"|trans }}</span>
+                                                    <small class="text-warning lh-1 d-inline-block">{{ "Vous devez regénérer les traductions !"|trans|unescape|raw }}</small>
                                                 {%- endif -%}
                                             </td>
                                         {%- endfor -%}

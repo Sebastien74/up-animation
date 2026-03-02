@@ -58,7 +58,7 @@ class UnitController extends AdminController
         }
 
         $this->template = 'admin/page/translation/unit.html.twig';
-        $this->arguments['displayDomain'] = $request->get('displayDomain');
+        $this->arguments['displayDomain'] = $request->attributes->get('displayDomain');
 
         return parent::edit($request);
     }
@@ -67,7 +67,7 @@ class UnitController extends AdminController
      * Regenerate TranslationUnit.
      */
     #[Route('/regenerate/{translationUnit}', name: 'admin_translationunit_regenerate', methods: 'GET')]
-    public function regenerate(Request $request, TranslationUnit $translationUnit)
+    public function regenerate(Request $request, TranslationUnit $translationUnit): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $website = $this->getWebsite();
 
@@ -92,8 +92,6 @@ class UnitController extends AdminController
 
     /**
      * Delete TranslationUnit.
-     *
-     * {@inheritdoc}
      */
     #[Route('/delete/{translationunit}', name: 'admin_translationunit_delete', methods: 'DELETE')]
     public function deleteUnit(Request $request, string $projectDir)

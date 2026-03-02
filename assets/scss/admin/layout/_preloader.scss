@@ -31,24 +31,6 @@ body.preloader-active {
     border-radius: var(--bs-border-radius);
 }
 
-@-webkit-keyframes stripes {
-    from {
-        -webkit-transform: translateX(0);
-    }
-    to {
-        -webkit-transform: translateX(46px);
-    }
-}
-
-@keyframes stripes {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(46px);
-    }
-}
-
 .bg-stripe-loader {
     position: absolute;
     top: 0;
@@ -56,10 +38,7 @@ body.preloader-active {
     bottom: 0;
     width: 150%;
     background: $bg-preloader !important;
-    animation-name: stripes !important;
-    animation-duration: .6s !important;
-    animation-timing-function: linear !important;
-    animation-iteration-count: infinite !important;
+    animation: stripes-preloader .6s linear infinite !important;
 }
 
 .stripe-preloader {
@@ -109,6 +88,24 @@ body.preloader-active {
 
     &.progress-fixed {
         position: fixed;
+    }
+}
+
+@-webkit-keyframes stripes-preloader {
+    from {
+        -webkit-transform: translateX(0);
+    }
+    to {
+        -webkit-transform: translateX(46px);
+    }
+}
+
+@keyframes stripes-preloader {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(46px);
     }
 }
 

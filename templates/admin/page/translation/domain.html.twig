@@ -5,6 +5,7 @@
 {%- set name = 'singular'|trans([], domain.name) and 'singular'|trans([], domain.name) != 'singular'
     ? 'singular'|trans([], domain.name) : domain.adminName -%}
 {%- set pageIcon = 'globe' -%}
+{%- set allLocales = website().configuration.allLocales -%}
 
 {%- block title -%}{{ "Contenus :"|trans~' '~name|htmlEntities }}{%- endblock -%}
 {%- block pageTitle -%}{{ "Contenus :"|trans~' '~name }}{%- endblock -%}
@@ -20,48 +21,36 @@
 {%- endblock -%}
 
 {%- block body -%}
-
-    {%- set allLocales = website().configuration.allLocales -%}
-
-    <div id="entities-index" class="card">
-
-        <div class="card-header">
-            <div class="row">
-                <div class="col-md-8 my-auto">
-                    {%- if searchForm -%}
-                        {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} -%}
-                    {%- endif -%}
-                </div>
-                <div class="col-md-4 text-end my-auto">
-                    <span>
-                        <a href="{{ lastRoute() }}" class="btn"
-                           data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}"
-                           aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
-                            <i class="icm-reply"></i>
-                        </a>
-                    </span>
-                </div>
-            </div>
+    <div id="entities-index" class="translations-domain">
+        <div class="d-flex align-items-center gap-2 mb-4">
+            {%- if searchForm -%}
+                {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} -%}
+            {%- endif -%}
+            <a href="{{ lastRoute() }}" class="btn-icon ms-auto"
+               data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}"
+               aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
+                <i class="icm-reply"></i>
+            </a>
         </div>
-
         <div id="result" class="position-relative">
             {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only -%}
-            <table class="table table-striped mb-0">
-                <thead>
-                    <tr>
-                        <th class="align-middle keys-td">{{ "Clé du contenu"|trans }}</th>
-                        <th class="align-middle forms-td">{%- if allLocales|length > 1 -%}{{ "Langues"|trans }}{%- else -%}{{ "Texte"|trans }}{%- endif -%}</th>
-                        <th class="align-middle actions-td text-center">{{ "Actions"|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {%- for unit in pagination -%}
-                        {{ render_esi(path('admin_translationunit_edit', {website: websiteId(), translationunit: unit.id} )) }}
-                    {%- endfor -%}
-                </tbody>
-            </table>
+            <div class="table-responsive app-table">
+                <table class="table table-striped responsive-cards">
+                    <thead>
+                        <tr>
+                            <th class="align-middle px-4">{{ "Clé du contenu"|trans }}</th>
+                            <th class="align-middle px-4">{%- if allLocales|length > 1 -%}{{ "Langues"|trans }}{%- else -%}{{ "Texte"|trans }}{%- endif -%}</th>
+                            <th class="align-middle px-4 text-end">{{ "Actions"|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%- for unit in pagination -%}
+                            {{ render_esi(path('admin_translationunit_edit', {website: websiteId(), translationunit: unit.id} )) }}
+                        {%- endfor -%}
+                    </tbody>
+                </table>
+            </div>
             {%- include 'admin/core/include/pagination.html.twig' -%}
         </div>
     </div>
-
 {%- endblock -%}

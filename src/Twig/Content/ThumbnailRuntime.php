@@ -140,8 +140,8 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
                 $dirname = $this->coreLocator->website()->uploadDirname;
                 $dirname = $this->coreLocator->projectDir().'/public/uploads/'.$dirname.'/'.$media->media->getFilename();
                 $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
-                if ($filesystem->exists($dirname)) {
-                    list($width, $height) = getimagesize($dirname);
+                if ($filesystem->exists($dirname) && ($size = getimagesize($dirname))) {
+                    list($width, $height) = $size;
                 }
             }
             $filter = !empty($options['filter']) ? $options['filter'] : '';

@@ -15,7 +15,7 @@
 #errorStatus {
 
     .h1 {
-        @include rfs(60px);
+        @include rfs(70px);
         font-weight: 900;
         color: $info-darken !important;
         line-height: 1;

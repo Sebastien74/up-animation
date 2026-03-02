@@ -176,8 +176,8 @@ saveEls.forEach(function (btn) {
             formControl.classList.remove('form-control-success');
         });
 
-        btn.querySelector('svg.save-svg').classList.add('d-none');
-        btn.querySelector('svg.spinner-svg').classList.remove('d-none');
+        btn.querySelector('i.icm-save').classList.add('d-none');
+        btn.querySelector('i.icm-spinner-third').classList.remove('d-none');
 
         fetch(form.getAttribute('action') + '?refresh=true', {
             method: "POST",
@@ -195,8 +195,8 @@ saveEls.forEach(function (btn) {
                     formControls.forEach(function (formControl) {
                         formControl.classList.add('form-control-success');
                     });
-                    btn.querySelector('svg.save-svg').classList.remove('d-none');
-                    btn.querySelector('svg.spinner-svg').classList.add('d-none');
+                    btn.querySelector('i.icm-save').classList.remove('d-none');
+                    btn.querySelector('i.icm-spinner-third').classList.add('d-none');
                 }
             });
     });
