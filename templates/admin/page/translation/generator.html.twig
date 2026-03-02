@@ -15,14 +15,16 @@
 <div id="translation-generator" class="mb-4 d-none">
     <div class="bg-stripe-loader"></div>
     <div class="refresh-container">
-        <div class="refresh-bloc text-center">
+        <div class="refresh-block text-center">
             <div class="inner">
                 <h4 class="extraction-title d-flex align-items-center justify-content-center gap-2">
                     {%- if allLocales|length > 1 -%}
-                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="{{ firstLocale|languageName }}"
-                             data-src=" {{ asset('/medias/icons/flags/'~firstLocale~'.svg') }}"
-                             data-bs-toggle="tooltip" title="{{ languageName(firstLocale, app.user.locale) }}"
-                             class="img-fluid lazy-load" height="20" width="27">
+                        <span class="locale-badge">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="{{ firstLocale|languageName }}"
+                                 data-src=" {{ asset('/medias/icons/flags/'~firstLocale~'.svg') }}"
+                                 data-bs-toggle="tooltip" title="{{ languageName(firstLocale, app.user.locale) }}"
+                                 class="img-fluid lazy-load" height="20" width="27">
+                        </span>
                     {%- endif -%}
                     {{ "Extraction des traductions en cours..."|trans }}
                 </h4>

@@ -157,21 +157,21 @@ class Extractor
         $disallowed = ['entity_', '_undefined', 'delete_'];
 
         if ($keyName && !in_array($domain, $disallowed)) {
-            $domain = $this->domain($domain);
+            $domainModel = $this->domain($domain);
             $isNew = $content ? str_starts_with($content, '__') : $content;
             $contentFormatted = $content ? ltrim($content, '__') : $content;
-            $unit = $this->unit($domain, $keyName);
+            $unit = $this->unit($domainModel, $keyName);
             $translation = $this->existingTranslation($unit, $locale);
-            $isEntityConfiguration = str_contains($domain->getName(), 'entity_');
+            $isEntityConfiguration = str_contains($domainModel->getName(), 'entity_');
             $asDefault = false;
             $isYamlConfig = false;
-            $contentLocale = $this->getAppYamlTranslation($domain, $keyName, $locale);
+            $contentLocale = $this->getAppYamlTranslation($domainModel, $keyName, $locale);
 
             if (!$contentLocale) {
                 $contentLocale = (!$translation && $isEntityConfiguration)
-                || (($isNew || !$translation) && !in_array($domain->getName(), $defaultDomains) && $locale == $defaultLocale)
-                || (($isNew || !$translation) && in_array($domain->getName(), $defaultDomains) && 'fr' == $locale)
-                || (!$translation && in_array($domain->getName(), $vendorDomains))
+                || (($isNew || !$translation) && !in_array($domainModel->getName(), $defaultDomains) && $locale == $defaultLocale)
+                || (($isNew || !$translation) && in_array($domainModel->getName(), $defaultDomains) && 'fr' == $locale)
+                || (!$translation && in_array($domainModel->getName(), $vendorDomains))
                     ? $contentFormatted : ($translation instanceof Translation ? $translation->getContent() : null);
             } else {
                 $contentFormatted = $contentLocale;
@@ -185,11 +185,9 @@ class Extractor
 
             if (!$translation) {
                 $this->translation($unit, $locale, $contentLocale);
-            }
-
-            if ($translation && !$translation->getContent()
-                && ($contentFormatted && !in_array($domain->getName(), $defaultDomains) && $locale == $defaultLocale
-                    || $contentFormatted && in_array($domain->getName(), $defaultDomains) && 'fr' == $locale
+            } else if (!$translation->getContent()
+                && ($contentFormatted && !in_array($domainModel->getName(), $defaultDomains) && $locale == $defaultLocale
+                    || $contentFormatted && in_array($domainModel->getName(), $defaultDomains) && 'fr' == $locale
                     || $isEntityConfiguration
                     || $isYamlConfig
                     || $asDefault

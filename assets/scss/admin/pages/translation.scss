@@ -81,10 +81,10 @@ table {
 
         position: initial;
 
-        .refresh-bloc {
+        .refresh-block {
 
             .extraction-title img {
-                max-height: 17px;
+                max-height: 20px;
             }
 
             .inner {
@@ -102,23 +102,27 @@ table {
             }
         }
     }
+}
 
-    .progress-bloc {
+.progress-block {
 
-        background-color: #eee;
-        padding: 10px 15px;
-
-        strong {
-            font-size: 12px;
-        }
-
-        .progress {
-            height: 6px;
-            border-radius: 0;
-        }
+    strong {
+        font-size: 11px;
     }
 
-    #translation-progress {
-        padding: 30px 30px 15px 30px;
+    .locale-badge {
+        width: 17px;
+        height: 17px;
+        flex: 0 0 17px;
+        border-radius: 6px;
     }
+
+    .progress {
+        height: 6px;
+        border-radius: 3px;
+    }
+}
+
+#translation-progress {
+    padding: 30px 30px 15px 30px;
 }

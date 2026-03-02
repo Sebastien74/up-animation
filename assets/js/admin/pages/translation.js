@@ -3,7 +3,6 @@ import '../../../scss/admin/pages/translation.scss';
 
 const body = document.body;
 const extractButtons = body.querySelectorAll('.translation-extract-btn');
-const loader = body.querySelector('#main-preloader');
 const generator = body.querySelector('#translation-generator');
 const progressBlock = body.querySelector('#progress-block');
 const indexEl = body.querySelector('#translations-domains-index');
@@ -13,7 +12,6 @@ extractButtons.forEach(function (button) {
     button.addEventListener('click', function (e) {
         e.preventDefault();
         const domain = button.dataset.domain;
-        loader.classList.remove('d-none');
         generator.classList.remove('d-none');
         if (indexEl) {
             indexEl.classList.add('d-none');
@@ -72,47 +70,43 @@ let progress = function (website, generator, domain) {
 
 let generateTranslation = function (list, website, generator) {
 
-    let translation = list.querySelector('li.translation.undo');
-
+    const translationsData = JSON.parse(list.querySelector('.domain-translations').textContent);
+    const batchUrl = list.dataset.batchUrl;
     const mainCounter = body.querySelector('#main-counter');
-    const translations = list.querySelectorAll('li');
-    const listId = list.getAttribute('id');
     const total = parseInt(mainCounter.dataset.total);
+    const listId = list.getAttribute('id');
 
-    if (translation) {
-        fetch(translation.dataset.href, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                "X-Requested-With": "XMLHttpRequest"
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    translation.classList.remove('undo');
-                    translation = list.querySelector('li.translation.undo');
-                    const count = document.querySelectorAll('li.translation:not(.undo)').length;
-                    mainCounter.dataset.count = count.toString();
-                    mainCounter.textContent = count.toString();
-                    if (count + 1 === total) {
-                        generateYaml(website, generator);
-                    } else {
-                        const progress = parseInt(list.dataset.progress) + 1;
-                        const progressBlockEl = document.getElementById(listId).closest('.progress-bloc');
-                        const progressBar = progressBlockEl.querySelector('.progress-bar');
-                        const percent = (progress * 100) / parseInt(translations.length);
-                        list.dataset.progress = progress.toString();
-                        progressBlockEl.querySelector('.counter').textContent = progress.toString();
-                        progressBar.setAttribute('aria-valuenow', percent.toString());
-                        progressBar.style.width = percent + "%";
-                        if (percent === 100) {
-                            progressBar.classList.add('bg-info');
-                        }
-                        generateTranslation(list, website, generator);
-                    }
+    fetch(batchUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "X-Requested-With": "XMLHttpRequest"
+        },
+        body: JSON.stringify({translations: translationsData})
+    })
+        .then(response => {
+            if (response.ok) {
+                list.classList.remove('undo');
+                let count = 0;
+                body.querySelectorAll('.translation-list:not(.undo)').forEach(function (listEl) {
+                    count += parseInt(listEl.dataset.count);
+                });
+                mainCounter.dataset.count = count.toString();
+                mainCounter.textContent = count.toString();
+
+                const progressBlockEl = document.getElementById(listId).closest('.progress-block');
+                const progressBar = progressBlockEl.querySelector('.progress-bar');
+                list.dataset.progress = list.dataset.count;
+                progressBlockEl.querySelector('.counter').textContent = list.dataset.count;
+                progressBar.setAttribute('aria-valuenow', "100");
+                progressBar.style.width = "100%";
+                progressBar.classList.add('bg-info');
+
+                if (count === total) {
+                    generateYaml(website, generator);
                 }
-            });
-    }
+            }
+        });
 };
 
 let generateYaml = function (website, generator) {

@@ -21,9 +21,6 @@ use App\Entity\Translation\TranslationDomain;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Exception;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -42,8 +39,10 @@ class ExportService
     /**
      * ExportService constructor.
      */
-    public function __construct(private readonly CoreLocatorInterface $coreLocator)
-    {
+    public function __construct(
+        private readonly CoreLocatorInterface $coreLocator,
+        private readonly TranslationExcelGenerator $excelGenerator
+    ) {
         $dirname = $this->coreLocator->projectDir().'/bin/export';
         $this->dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
     }
@@ -51,7 +50,7 @@ class ExportService
     /**
      * Execute exportation.
      *
-     * @throws Exception|MappingException|NonUniqueResultException|\PhpOffice\PhpSpreadsheet\Exception
+     * @throws MappingException|NonUniqueResultException
      */
     public function execute(Website $website): void
     {
@@ -63,12 +62,14 @@ class ExportService
         $locales = $website->getConfiguration()->getLocales();
 
         $intls = $this->getIntls();
-//        $intls = $this->generateSeo($intls, $defaultLocale, $locales);
+        $intls = $this->generateSeo($intls, $defaultLocale, $locales);
         $intls = $this->generateIntls($intls, $defaultLocale, $locales);
-        $this->generateCsvIntls($intls, $defaultLocale);
+        
+        $fileData = $this->getIntlFileData($intls, $defaultLocale);
+        $this->excelGenerator->generateIntlFiles($fileData, $this->website, $this->dirname);
 
         $translations = $this->getTranslations($defaultLocale);
-        $this->generateCsvTranslations($translations, $defaultLocale);
+        $this->excelGenerator->generateTranslationFiles($translations, $defaultLocale, $this->dirname);
     }
 
     /**
@@ -104,7 +105,7 @@ class ExportService
     }
 
     /**
-     * Get all intl.
+     * Get all internationalized entities.
      *
      * @throws NonUniqueResultException
      */
@@ -118,35 +119,49 @@ class ExportService
             SeoConfiguration::class,
             ConfigurationMediaRelation::class,
         ];
-        $metadata = $this->coreLocator->em()->getMetadataFactory()->getAllMetadata();
+        $em = $this->coreLocator->em();
+        $metadata = $em->getMetadataFactory()->getAllMetadata();
         $intls = [];
+
+        // Pre-load Pages of the current website to index Layouts (N+1 optimization for Blocks)
+        $pages = $em->getRepository(Page::class)->findBy(['website' => $this->website]);
+        $layoutToPage = [];
+        foreach ($pages as $page) {
+            if ($page->getLayout()) {
+                $layoutToPage[$page->getLayout()->getId()] = $page;
+            }
+        }
 
         foreach ($metadata as $data) {
             $namespace = $data->getName();
             if (0 === $data->getReflectionClass()->getModifiers() && !in_array($namespace, $excluded)) {
-                $referEntity = new $namespace();
-                $tableName = $this->coreLocator->em()->getClassMetadata($namespace)->getTableName();
-                if (method_exists($referEntity, 'getIntls') || method_exists($referEntity, 'getIntl')) {
-                    if (method_exists($referEntity, 'getWebsite')) {
-                        $entities = $this->coreLocator->em()->getRepository($namespace)->createQueryBuilder('e')
-                            ->andWhere('e.website = :website')
-                            ->setParameter('website', $this->website)
-                            ->getQuery()
-                            ->getResult();
+                $reflection = $data->getReflectionClass();
+                $tableName = $data->getTableName();
+                $hasGetIntls = $reflection->hasMethod('getIntls');
+                $hasGetIntl = $reflection->hasMethod('getIntl');
+
+                if ($hasGetIntls || $hasGetIntl) {
+                    $repository = $em->getRepository($namespace);
+                    if ($reflection->hasMethod('getWebsite')) {
+                        $entities = $repository->findBy(['website' => $this->website]);
                     } else {
-                        $entities = $this->coreLocator->em()->getRepository($namespace)->findAll();
+                        // For entities without getWebsite, try to filter by media if possible
+                        $entities = $repository->findAll();
                         foreach ($entities as $key => $entity) {
-                            if (method_exists($entity, 'getMedia') && $entity->getMedia() && $entity->getMedia()->getWebsite()->getId() !== $this->website->getId()) {
+                            if (method_exists($entity, 'getMedia') && $entity->getMedia() && $entity->getMedia()->getWebsite() && $entity->getMedia()->getWebsite()->getId() !== $this->website->getId()) {
                                 unset($entities[$key]);
                             }
                         }
                     }
-                    $isCollection = method_exists($referEntity, 'getIntls');
+
                     foreach ($entities as $entity) {
                         $export = true;
                         if ($entity instanceof Block) {
-                            $layout = $entity->getCol()->getZone()->getLayout();
-                            $layoutParent = $layout ? $this->coreLocator->em()->getRepository(Page::class)->findOneBy(['layout' => $layout]) : null;
+                            $col = $entity->getCol();
+                            $zone = $col ? $col->getZone() : null;
+                            $layout = $zone ? $zone->getLayout() : null;
+                            // Use pre-loaded map instead of findOneBy (optimization)
+                            $layoutParent = $layout && isset($layoutToPage[$layout->getId()]) ? $layoutToPage[$layout->getId()] : null;
                             if ($layoutParent instanceof Page) {
                                 foreach ($layoutParent->getUrls() as $url) {
                                     if ($url->isArchived()) {
@@ -157,30 +172,16 @@ class ExportService
                             }
                         }
                         if ($export) {
-                            if ($isCollection) {
+                            if ($hasGetIntls) {
                                 foreach ($entity->getIntls() as $intl) {
                                     $intls[$tableName][$entity->getId()][$intl->getLocale()] = (object) ['entity' => $entity, 'intl' => $intl, 'isCollection' => true];
                                 }
                             } else {
-                                $intl = $entity->getIntl() ? $entity->getIntl() : $this->addIntl(false, $tableName, $entity, $entity->getLocale());
+                                $intl = $entity->getIntl() ?: $this->addIntl(false, $entity, $entity->getLocale());
                                 if ($intl) {
                                     $intls[$tableName][$entity->getId()][$intl->getLocale()] = (object) ['entity' => $entity, 'intl' => $intl, 'isCollection' => false];
                                 }
                             }
-                        }
-                    }
-                }
-                if (!str_contains($namespace, 'MediaRelation') && method_exists($referEntity, 'getIntl')) {
-                    $entities = method_exists($referEntity, 'getWebsite') ? $this->coreLocator->em()->getRepository($namespace)
-                        ->createQueryBuilder('e')
-                        ->andWhere('e.website = :website')
-                        ->setParameter('website', $this->website)
-                        ->getQuery()
-                        ->getResult() : $this->coreLocator->em()->getRepository($namespace)->findAll();
-                    foreach ($entities as $entity) {
-                        if ($entity->getIntl()) {
-                            $intl = $entity->getIntl() ? $entity->getIntl() : $this->addIntl(false, $tableName, $entity, $entity->getLocale());
-                            $intls[$tableName][$entity->getId()][$intl->getLocale()] = (object) ['entity' => $entity, 'intl' => $intl, 'isCollection' => false];
                         }
                     }
                 }
@@ -197,20 +198,39 @@ class ExportService
      */
     private function generateSeo(array $intls, string $defaultLocale, array $websiteLocales): array
     {
-        $metadata = $this->coreLocator->em()->getMetadataFactory()->getAllMetadata();
+        $em = $this->coreLocator->em();
+        $metadata = $em->getMetadataFactory()->getAllMetadata();
         $namespaces = [];
         foreach ($metadata as $data) {
             $namespace = $data->getName();
             if (0 === $data->getReflectionClass()->getModifiers()) {
-                $referEntity = new $namespace();
-                if (method_exists($referEntity, 'getUrls')) {
+                if ($data->getReflectionClass()->hasMethod('getUrls')) {
                     $namespaces[] = $namespace;
                 }
             }
         }
 
-        $tableName = $this->coreLocator->em()->getClassMetadata(Seo::class)->getTableName();
-        $entities = $this->coreLocator->em()->getRepository(Seo::class)->createQueryBuilder('e')
+        // N+1 Optimization: Create a global map of Url ID -> Master Entity for ALL relevant namespaces.
+        // This avoids individual queries when looking for which entity an URL belongs to.
+        $urlIdToMaster = [];
+        foreach ($namespaces as $namespace) {
+            $entitiesWithUrls = $em->getRepository($namespace)->createQueryBuilder('e')
+                ->select('e, u')
+                ->join('e.urls', 'u')
+                ->andWhere('u.website = :website')
+                ->setParameter('website', $this->website)
+                ->getQuery()
+                ->getResult();
+            foreach ($entitiesWithUrls as $entity) {
+                foreach ($entity->getUrls() as $url) {
+                    $urlIdToMaster[$url->getId()] = $entity;
+                }
+            }
+        }
+
+        $seoMetadata = $em->getClassMetadata(Seo::class);
+        $tableName = $seoMetadata->getTableName();
+        $entities = $em->getRepository(Seo::class)->createQueryBuilder('e')
             ->leftJoin('e.url', 'u')
             ->andWhere('u.website = :website')
             ->andWhere('u.online = :online')
@@ -226,62 +246,59 @@ class ExportService
             $intls[$tableName][$entity->getId()][$entity->getUrl()->getLocale()] = (object) ['entity' => $entity, 'intl' => $entity, 'isCollection' => false];
         }
 
+        $urlMetadata = $em->getClassMetadata(Url::class);
+        $urlTableName = $urlMetadata->getTableName();
+
         foreach ($intls[$tableName] as $locales) {
 
-            $seoLocales = $urlLocales = [];
+            $urlLocales = [];
             $defaultSeo = !empty($locales[$defaultLocale]) ? $locales[$defaultLocale]->intl : null;
-            $defaultUrl = $defaultSeo?->getUrl();
-
-            /* Get master entity */
-            $masterEntity = null;
-            foreach ($namespaces as $namespace) {
-                $parentEntity = $this->coreLocator->em()->getRepository($namespace)->createQueryBuilder('e')
-                    ->leftJoin('e.urls', 'u')
-                    ->andWhere('u.id = :id')
-                    ->setParameter('id', $defaultUrl->getId())
-                    ->getQuery()
-                    ->getOneOrNullResult();
-                if ($parentEntity) {
-                    $masterEntity = $parentEntity;
-                    break;
-                }
+            if (!$defaultSeo) {
+                continue;
             }
+            $defaultUrl = $defaultSeo->getUrl();
 
-            /* Get default locale entity and check existing locale intl */
+            /* Get master entity from preloaded map */
+            $masterEntity = !empty($urlIdToMaster[$defaultUrl->getId()]) ? $urlIdToMaster[$defaultUrl->getId()] : null;
+
+            /* Get the default locale entity and check existing locale intl */
             if ($masterEntity) {
                 foreach ($masterEntity->getUrls() as $url) {
                     $urlLocales[$url->getLocale()] = $url;
                 }
             }
 
-            /* Check ans generate non-existent intl */
+            /* Check and generate non-existent intl */
+            $needsFlush = false;
             foreach ($websiteLocales as $locale) {
-                $flush = false;
-                $seo = !empty($seoLocales[$locale]) ? $seoLocales[$locale] : new Seo();
                 $url = !empty($urlLocales[$locale]) ? $urlLocales[$locale] : null;
                 if ($masterEntity && !$url) {
                     $url = new Url();
                     $url->setLocale($locale);
-                    $flush = true;
+                    $url->setWebsite($this->website);
                     $masterEntity->addUrl($url);
-                    $this->coreLocator->em()->persist($masterEntity);
-                    $this->coreLocator->em()->persist($url);
+                    $em->persist($masterEntity);
+                    $em->persist($url);
+                    $needsFlush = true;
                 }
-                if (!$url->getSeo()) {
+                if ($url && !$url->getSeo()) {
+                    $seo = new Seo();
                     $url->setSeo($seo);
-                    $flush = true;
-                    $this->coreLocator->em()->persist($url);
-                }
-                if ($flush) {
-                    $this->coreLocator->em()->flush();
+                    $em->persist($url);
+                    $em->persist($seo);
+                    $needsFlush = true;
                 }
             }
+            if ($needsFlush) {
+                $em->flush();
+            }
 
-            $urlTableName = $this->coreLocator->em()->getClassMetadata(Url::class)->getTableName();
-            foreach ($masterEntity->getUrls() as $url) {
-                if (empty($intls[$tableName][$defaultSeo->getId()][$url->getLocale()])) {
-                    $intls[$tableName][$defaultSeo->getId()][$url->getLocale()] = (object) ['entity' => $url->getSeo(), 'intl' => $url->getSeo(), 'isCollection' => false, 'defaultIntl' => $defaultSeo];
-                    $intls[$urlTableName][$url->getId()][$url->getLocale()] = (object) ['entity' => $url, 'intl' => $url, 'isCollection' => false, 'defaultIntl' => $defaultUrl];
+            if ($masterEntity) {
+                foreach ($masterEntity->getUrls() as $url) {
+                    if (empty($intls[$tableName][$defaultSeo->getId()][$url->getLocale()])) {
+                        $intls[$tableName][$defaultSeo->getId()][$url->getLocale()] = (object) ['entity' => $url->getSeo(), 'intl' => $url->getSeo(), 'isCollection' => false, 'defaultIntl' => $defaultSeo];
+                        $intls[$urlTableName][$url->getId()][$url->getLocale()] = (object) ['entity' => $url, 'intl' => $url, 'isCollection' => false, 'defaultIntl' => $defaultUrl];
+                    }
                 }
             }
         }
@@ -296,29 +313,54 @@ class ExportService
      */
     private function generateIntls(array $intls, string $defaultLocale, array $websiteLocales): array
     {
-        foreach ($intls as $tableName => $entity) {
-            $defaultEntity = null;
-            $existingLocales = [];
-            $intlsLocales = [];
-            foreach ($entity as $locales) {
+        $interfaceHelper = $this->coreLocator->interfaceHelper();
+        $em = $this->coreLocator->em();
+        $entityRepo = $em->getRepository(Entity::class);
+        $interfaces = [];
+        $entityConfigurations = [];
+
+        foreach ($intls as $tableName => $tableEntities) {
+            foreach ($tableEntities as $entityId => $locales) {
                 $defaultEntity = !empty($locales[$defaultLocale]) ? $locales[$defaultLocale] : null;
-                $defaultIntl = $defaultEntity ? $defaultEntity->intl : null;
-                $entity = $defaultEntity ? $defaultEntity->entity : null;
-                $interface = $defaultEntity ? $this->coreLocator->interfaceHelper()->generate(get_class($defaultEntity->entity)) : [];
+                if (!$defaultEntity) {
+                    continue;
+                }
+                
+                $defaultIntl = $defaultEntity->intl;
+                $entity = $defaultEntity->entity;
+                $entityClass = get_class($entity);
+
+                if (!isset($interfaces[$entityClass])) {
+                    $interfaces[$entityClass] = $interfaceHelper->generate($entityClass);
+                }
+                $interface = $interfaces[$entityClass];
+
                 $masterField = !empty($interface['masterField']) ? $interface['masterField'] : (!empty($interface['actionCode']) ? $interface['actionCode'] : null);
                 $masterFieldGetter = $masterField ? 'get'.ucfirst($masterField) : null;
-                $masterEntity = $masterFieldGetter && method_exists($entity, $masterFieldGetter) && $entity->$masterFieldGetter() ? $entity->$masterFieldGetter() : null;
-                $entityConfiguration = $masterEntity
-                    ? $this->coreLocator->em()->getRepository(Entity::class)->optimizedQuery(str_replace('Proxies\__CG__\\', '', get_class($masterEntity)), $this->coreLocator->website())
-                    : false;
-                $isMediaMulti = $entityConfiguration && $entityConfiguration->isMediaMulti() && str_contains($tableName, 'media');
-                /* Get default locale entity and check existing locale intl */
+                $masterEntity = $masterFieldGetter && method_exists($entity, $masterFieldGetter) ? $entity->$masterFieldGetter() : null;
+                
+                $isMediaMulti = false;
+                if ($masterEntity) {
+                    $masterClass = str_replace('Proxies\__CG__\\', '', get_class($masterEntity));
+                    if (!isset($entityConfigurations[$masterClass])) {
+                        $entityConfigurations[$masterClass] = $entityRepo->optimizedQuery($masterClass, $this->coreLocator->website());
+                    }
+                    $entityConfiguration = $entityConfigurations[$masterClass];
+                    $isMediaMulti = $entityConfiguration && $entityConfiguration->isMediaMulti() && str_contains($tableName, 'media');
+                }
+
+                $existingLocales = [];
+                $intlsLocales = [];
+
+                /* Get existing locale intl */
                 foreach ($locales as $locale => $infos) {
-                    if ($isMediaMulti) {
+                    if ($isMediaMulti && $masterEntity) {
                         foreach ($masterEntity->getMediaRelations() as $mediaRelation) {
                             if ($mediaRelation->getPosition() === $entity->getPosition()) {
                                 $intlsLocales[$mediaRelation->getLocale()] = $mediaRelation->getIntl();
-                                $existingLocales[] = $mediaRelation->getLocale();
+                                if (!in_array($mediaRelation->getLocale(), $existingLocales)) {
+                                    $existingLocales[] = $mediaRelation->getLocale();
+                                }
                             }
                         }
                     } else {
@@ -326,21 +368,21 @@ class ExportService
                         $intlsLocales[$locale] = $infos->intl;
                     }
                 }
-                /* Check ans generate non-existent intl */
+
+                /* Check and generate non-existent intl */
+                $needsFlush = false;
                 foreach ($websiteLocales as $locale) {
-                    if ($entity && $defaultEntity) {
-                        if ($defaultIntl && !in_array($locale, $existingLocales)) {
-                            $isCollection = $defaultEntity->isCollection;
-                            if ($isMediaMulti) {
-                                $intl = $this->addIntl(false, $tableName, $entity, $locale, $defaultIntl, $isMediaMulti);
-                            } else {
-                                $intl = $this->addIntl($isCollection, $tableName, $entity, $locale, $defaultIntl);
-                            }
-                            $intls[$tableName][$entity->getId()][$locale] = (object) ['entity' => $entity, 'intl' => $intl, 'isCollection' => false, 'defaultIntl' => $defaultIntl];
-                        } else {
-                            $intls[$tableName][$entity->getId()][$locale] = (object) ['entity' => $entity, 'intl' => $intlsLocales[$locale], 'isCollection' => false, 'defaultIntl' => $defaultIntl];
-                        }
+                    if (!in_array($locale, $existingLocales)) {
+                        $isCollection = $defaultEntity->isCollection;
+                        $intl = $this->addIntl($isCollection, $entity, $locale, $defaultIntl, $isMediaMulti, false);
+                        $intls[$tableName][$entityId][$locale] = (object) ['entity' => $entity, 'intl' => $intl, 'isCollection' => false, 'defaultIntl' => $defaultIntl];
+                        $needsFlush = true;
+                    } elseif (isset($intlsLocales[$locale])) {
+                        $intls[$tableName][$entityId][$locale] = (object) ['entity' => $entity, 'intl' => $intlsLocales[$locale], 'isCollection' => false, 'defaultIntl' => $defaultIntl];
                     }
+                }
+                if ($needsFlush) {
+                    $em->flush();
                 }
             }
         }
@@ -355,11 +397,11 @@ class ExportService
      */
     private function addIntl(
         bool $isCollection,
-        string $tableName,
         mixed $entity,
         string $locale,
         mixed $defaultIntl = null,
         bool $isMediaMulti = false,
+        bool $flush = true,
     ): mixed {
 
         $intlData = method_exists($entity, 'getIntls')
@@ -443,45 +485,11 @@ class ExportService
         $entity->$setter($newIntl);
 
         $this->coreLocator->em()->persist($entity);
-        $this->coreLocator->em()->flush();
+        if ($flush) {
+            $this->coreLocator->em()->flush();
+        }
 
         return $newIntl;
-    }
-
-    /**
-     * Generate intls CSV.
-     *
-     * @throws MappingException|\PhpOffice\PhpSpreadsheet\Exception|Exception
-     */
-    private function generateCsvIntls(array $intls, string $defaultLocale): void
-    {
-        $fileData = $this->getIntlFileData($intls, $defaultLocale);
-        foreach ($fileData as $tableName => $locales) {
-            foreach ($locales as $locale => $entities) {
-                $spreadsheet = new Spreadsheet();
-                $sheet = $spreadsheet->getActiveSheet();
-                $sheet->setCellValue($this->getCsvIntlsIndex('locale', $tableName). 1, 'locale');
-                $sheet->getColumnDimension($this->getCsvIntlsIndex('locale', $tableName))->setAutoSize(true);
-                $sheet->setCellValue($this->getCsvIntlsIndex('website', $tableName). 1, 'website');
-                $sheet->getColumnDimension($this->getCsvIntlsIndex('locale', $tableName))->setAutoSize(true);
-                $intlFields = !empty($entities[0]) ? $entities[0]['intlFields'] : [];
-                foreach ($intlFields as $field) {
-                    if (!empty($this->getCsvIntlsIndex($field->field, $tableName))) {
-                        $sheet->setCellValue($this->getCsvIntlsIndex($field->field, $tableName). 1, $field->field);
-                        $sheet->getColumnDimension($this->getCsvIntlsIndex($field->field, $tableName))->setAutoSize(true);
-                        foreach ($entities as $entityKey => $entity) {
-                            $sheet->setCellValue($this->getCsvIntlsIndex('locale', $tableName).($entityKey + 2), $locale);
-                            $sheet->setCellValue($this->getCsvIntlsIndex('website', $tableName).($entityKey + 2), $this->website->getId());
-                            $sheet->setCellValue($this->getCsvIntlsIndex($field->field, $tableName).($entityKey + 2), $this->normalizeAndDecode($entity[$field->field]));
-                        }
-                    }
-                }
-                $filename = $tableName.'-'.$locale.'.xlsx';
-                $excelFilepath = $this->dirname.'/'.$filename;
-                $writer = new Xlsx($spreadsheet);
-                $writer->save($excelFilepath);
-            }
-        }
     }
 
     /**
@@ -548,7 +556,7 @@ class ExportService
     }
 
     /**
-     * Check if have content to translate.
+     * Check if you have content to translate.
      */
     private function getIntlHaveContent(mixed $defaultIntl, mixed $localeIntl, array $intlFields): bool
     {
@@ -569,57 +577,6 @@ class ExportService
     }
 
     /**
-     * Get column index.
-     */
-    private function getCsvIntlsIndex(string $column, string $tableName): mixed
-    {
-        $tableName = str_replace($_ENV['DATABASE_PREFIX'].'_', '', $tableName);
-
-        $indexes = [
-            'locale' => 'A',
-            'website' => 'B',
-            'id' => 'C',
-            'title' => 'D',
-            'subTitle' => 'E',
-            'introduction' => 'F',
-            'body' => 'G',
-            'targetLink' => 'H',
-            'targetLabel' => 'I',
-            'placeholder' => 'J',
-            'help' => 'K',
-            'error' => 'L',
-        ];
-
-        if ('seo' === $tableName) {
-            $indexes = [
-                'locale' => 'A',
-                'website' => 'B',
-                'id' => 'C',
-                'metaTitle' => 'D',
-                'metaTitleSecond' => 'E',
-                'breadcrumbTitle' => 'F',
-                'metaDescription' => 'G',
-                'keywords' => 'H',
-                'author' => 'I',
-                'authorType' => 'J',
-                'footerDescription' => 'K',
-                'metaCanonical' => 'L',
-                'metaOgTitle' => 'M',
-                'metaOgDescription' => 'N',
-            ];
-        } elseif ('seo_url' === $tableName) {
-            $indexes = [
-                'locale' => 'A',
-                'website' => 'B',
-                'id' => 'C',
-                'code' => 'D',
-            ];
-        }
-
-        return !empty($indexes[$column]) ? $indexes[$column] : null;
-    }
-
-    /**
      * Get Translations.
      */
     private function getTranslations(string $defaultLocale): array
@@ -629,11 +586,17 @@ class ExportService
 
         foreach ($domains as $domain) {
             if ($domain->isExtract()) {
-                foreach ($domain->getUnits() as $unit) {
-                    foreach ($unit->getTranslations() as $translation) {
-                        if ($translation->getLocale() !== $defaultLocale && !$translation->getContent()) {
-                            $translations[$translation->getLocale()][] = $translation;
-                        }
+                $units = $this->coreLocator->em()->getRepository(Translation::class)->createQueryBuilder('t')
+                    ->select('t, u')
+                    ->join('t.unit', 'u')
+                    ->where('u.domain = :domain')
+                    ->setParameter('domain', $domain)
+                    ->getQuery()
+                    ->getResult();
+
+                foreach ($units as $translation) {
+                    if ($translation->getLocale() !== $defaultLocale && !$translation->getContent()) {
+                        $translations[$translation->getLocale()][] = $translation;
                     }
                 }
             }
@@ -643,56 +606,18 @@ class ExportService
     }
 
     /**
-     * Generate translations CSV.
-     *
-     * @throws Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     */
-    private function generateCsvTranslations(array $translations, string $defaultLocale): void
-    {
-        foreach ($translations as $locale => $localeTranslation) {
-
-            $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
-            $sheet->setCellValue('A1', 'locale');
-            $sheet->setCellValue('B1', 'domain');
-            $sheet->setCellValue('C1', 'id');
-            $sheet->setCellValue('D1', 'content');
-            $sheet->setCellValue('E1', 'translation');
-
-            foreach ($localeTranslation as $key => $translation) {
-                /** @var Translation $translation */
-                $defaultContent = null;
-                foreach ($translation->getUnit()->getTranslations() as $unitTranslation) {
-                    if ($unitTranslation->getLocale() === $defaultLocale) {
-                        $defaultContent = $this->normalizeAndDecode($unitTranslation->getContent());
-                        break;
-                    }
-                }
-                if ($defaultContent) {
-                    $sheet->setCellValue('A'.($key + 2), $translation->getLocale());
-                    $sheet->setCellValue('B'.($key + 2), $translation->getUnit()->getDomain()->getName());
-                    $sheet->setCellValue('C'.($key + 2), $translation->getId());
-                    $sheet->setCellValue('D'.($key + 2), $defaultContent);
-                    $sheet->setCellValue('E'.($key + 2), '');
-                }
-            }
-
-            $excelFilepath = $this->dirname.'/translations-'.$locale.'.xlsx';
-            $writer = new Xlsx($spreadsheet);
-            $writer->save($excelFilepath);
-        }
-    }
-
-    /**
      * Get intl text fields.
      *
      * @throws MappingException
      */
     private function getIntlFields(mixed $entity): array
     {
-        $referIntl = new (get_class($entity))();
-        $intlMetadata = $this->coreLocator->em()->getClassMetadata(get_class($entity));
+        if (!$entity) {
+            return [];
+        }
+
+        $entityClass = get_class($entity);
+        $intlMetadata = $this->coreLocator->em()->getClassMetadata($entityClass);
         $intlAllFields = $intlMetadata->getFieldNames();
         $allowedFields = ['string', 'text'];
         $disallowedFields = ['subTitlePosition', 'pictogram', 'video', 'associatedWords', 'authorType', 'targetStyle', 'slug'];
@@ -702,56 +627,13 @@ class ExportService
             $getter = 'get'.ucfirst($field);
             $mapping = $intlMetadata->getFieldMapping($field);
             $isText = in_array($mapping['type'], $allowedFields) && !str_contains(strtolower($mapping['fieldName']), 'alignment') && 'locale' !== $field;
-            if (method_exists($referIntl, $getter) && $isText && !in_array($field, $disallowedFields) || 'id' === $field) {
+            
+            // Check if method exists on the entity itself or reflection
+            if (($intlMetadata->getReflectionClass()->hasMethod($getter) || method_exists($entity, $getter)) && $isText && !in_array($field, $disallowedFields) || 'id' === $field) {
                 $intlFields[] = (object) ['getter' => $getter, 'field' => $field];
             }
         }
 
         return $intlFields;
-    }
-
-    /**
-     * Normalize a value to UTF-8 text and decode HTML entities.
-     * Returns original value for numbers, booleans, null, empty strings, or arrays (recursively processed).
-     */
-    function normalizeAndDecode($value): mixed
-    {
-        // If it's an array, process each element recursively
-        if (is_array($value)) {
-            return array_map('normalizeAndDecode', $value);
-        }
-
-        // Pass through numbers, booleans, null, and empty strings unchanged
-        if (is_int($value) || is_numeric($value) || is_bool($value) || $value === null || $value === '') return $value;
-
-        // Ensure we only handle strings below; if not a string (e.g., object without __toString), return as-is
-        if (!is_string($value)) {
-            return $value;
-        }
-
-        // 1) If it's not valid UTF-8, detect the source encoding and convert to UTF-8
-        if (!mb_check_encoding($value, 'UTF-8')) {
-            // Likely encodings for legacy French content
-            $enc = mb_detect_encoding($value, ['Windows-1252', 'ISO-8859-1', 'ISO-8859-15', 'UTF-8'], true) ?: 'Windows-1252';
-
-            // Convert with iconv (ignore invalid bytes); fallback to mb_convert_encoding
-            $converted = @iconv($enc, 'UTF-8//IGNORE', $value);
-            if ($converted === false) {
-                $converted = @mb_convert_encoding($value, 'UTF-8', $enc);
-            }
-            $value = $converted;
-        }
-
-        // 2) Strip non-printable ASCII control chars (safer for Excel/CSV consumers)
-        $value = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $value);
-
-        // 3) Decode HTML entities (named, decimal, hex). Up to 3 passes to handle double-encoding.
-        for ($i = 0; $i < 3; $i++) {
-            $decoded = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-            if ($decoded === $value) break; // nothing more to decode
-            $value = $decoded;
-        }
-
-        return $value;
     }
 }

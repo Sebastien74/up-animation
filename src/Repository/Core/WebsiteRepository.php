@@ -10,6 +10,7 @@ use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Cache\InvalidArgumentException;
@@ -72,7 +73,7 @@ class WebsiteRepository extends ServiceEntityRepository
     /**
      * Get WebsiteModel by Host name.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public function findOneByHost(?string $host = null, bool $forceByHost = false, bool $asObject = false)
     {

@@ -13,6 +13,7 @@ use App\Service\Development\EntityService;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Service\Translation\Extractor;
+use Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -126,7 +127,7 @@ class TranslationController extends AdminController
     /**
      * Extract translations.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('/extract/{locale}', name: 'admin_translation_extract', options: ['expose' => true], methods: 'GET')]
     public function extract(Request $request, WebsiteRepository $websiteRepository, EntityService $entityService, Extractor $extractor, string $locale): JsonResponse
@@ -136,10 +137,8 @@ class TranslationController extends AdminController
         if ($locale === $configuration->getLocale()) {
             $extractor->extractEntities($website, $configuration->getLocale(), $configuration->getAllLocales());
         }
-        foreach ($configuration->getAllLocales() as $locale) {
-            $extractor->extract($locale);
-            $entityService->execute($website, $locale);
-        }
+        $extractor->extract($locale);
+        $entityService->execute($website, $locale);
 
         return new JsonResponse(['success' => true]);
     }
@@ -177,6 +176,38 @@ class TranslationController extends AdminController
             'domainName' => $request->get('domain'),
             'multiCols' => count($translations) > 1,
         ])]);
+    }
+
+    /**
+     * Generate translation.
+     */
+    #[Route('/generate-batch/{locale}/{domain}', name: 'admin_translation_generate_batch', options: ['expose' => true], methods: 'GET|POST')]
+    public function batchGenerate(
+        Request $request,
+        Extractor $extractor,
+        WebsiteRepository $websiteRepository,
+        string $locale,
+        string $domain): JsonResponse
+    {
+        $website = $websiteRepository->find($request->get('website'));
+        $defaultLocale = $website->getConfiguration()->getLocale();
+        $translations = json_decode($request->getContent(), true)['translations'] ?? [];
+
+        if (empty($translations) && $request->isMethod('GET')) {
+            return new JsonResponse(['success' => true, 'message' => 'Empty translations for GET request']);
+        }
+
+        foreach ($translations as $item) {
+            $extractor->generateTranslation(
+                $defaultLocale,
+                $locale,
+                urldecode($domain),
+                $item['content'] ?? null,
+                $item['keyName'] ?? null
+            );
+        }
+
+        return new JsonResponse(['success' => true]);
     }
 
     /**

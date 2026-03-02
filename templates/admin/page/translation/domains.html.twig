@@ -27,12 +27,12 @@
 
     {%- if granted('ROLE_INTERNAL') -%}
         <div class="d-flex align-items-center gap-2 mb-4">
-            <a class="translation-extract-btn btn-app" data-domain="only_front">
+            <span class="translation-extract-btn cursor btn-app" data-domain="only_front">
                 <i class="icm-sync-alt"></i><span>{{ "Extraire le front"|trans }}</span>
-            </a>
-            <a class="translation-extract-btn btn-app" data-domain="all">
+            </span>
+            <span class="translation-extract-btn cursor btn-app" data-domain="all">
                 <i class="icm-sync-alt"></i><span>{{ "Extraire tout"|trans }}</span>
-            </a>
+            </span>
             {%- if not toExtract -%}
                 <a href="{{ path('admin_intls_export', { website: websiteId }) }}" class="btn-app">
                     <i class="icm-upload"></i><span>{{ "Exporter les traductions"|trans }}</span>

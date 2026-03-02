@@ -42,7 +42,6 @@ class IntlController extends AdminController
 
         if (!$zipName) {
             $request->getSession()->getFlashBag()->add('info', $this->coreLocator->translator()->trans("Vous n'avez aucun contenu à traduire.", [], 'admin'));
-
             return $this->redirect($request->headers->get('referer'));
         }
 

@@ -11,6 +11,7 @@ use App\Entity\Security\UserFront;
 use App\Model\Core\WebsiteModel;
 use App\Service\Core\CspNonceGenerator;
 use App\Service\Interface\CoreLocatorInterface;
+use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Random\RandomException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -43,7 +44,6 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
     private ?string $host = null;
     private ?string $schemeAndHttpHost = null;
     private ?string $routeName = null;
-    private Session $session;
     private bool $isMainRequest;
     private bool $inAdmin;
 
@@ -64,7 +64,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
     /**
      * Adds the Content Security Policy header.
      *
-     * @throws \Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     public function addSecurityToResponse(ResponseEvent $event): void
     {
@@ -74,7 +74,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
         $this->host = $this->request->getHost();
         $this->schemeAndHttpHost = $this->request->getSchemeAndHttpHost();
         $this->routeName = $this->request->attributes->get('_route');
-        $this->session = $this->request->getSession();
+        $session = $this->request->getSession();
         $this->isMainRequest = $event->isMainRequest();
         $this->inAdmin = (bool) preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $this->uri);
 
@@ -85,7 +85,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
         }
 
         if ('front_clear_cache' === $this->routeName) {
-            $nonce = $this->session->get('app_nonce');
+            $nonce = $session->get('app_nonce');
             $token = $this->request->query->get('token') ? $this->request->query->get('token') : $this->request->attributes->get('token');
             if ($nonce === $token) {
                 return;
@@ -111,9 +111,9 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
                     $response->headers->setCookie(Cookie::create('SECURITY_USER_SECRET', $userKey, 0, '/', null, true, true, false, Cookie::SAMESITE_LAX));
                     $response->headers->setCookie(Cookie::create('SECURITY_IS_ADMIN', '1', 0, '/', null, true, true, false, Cookie::SAMESITE_LAX));
                     $response->headers->setCookie(Cookie::create('SECURITY_TOKEN', $_ENV['SECURITY_TOKEN'], 0, '/', null, true, true, false, Cookie::SAMESITE_LAX));
-                    $this->session->set('SECURITY_USER_SECRET', $userKey);
-                    $this->session->set('SECURITY_IS_ADMIN', true);
-                    $this->session->set('SECURITY_TOKEN', $_ENV['SECURITY_TOKEN']);
+                    $session->set('SECURITY_USER_SECRET', $userKey);
+                    $session->set('SECURITY_IS_ADMIN', true);
+                    $session->set('SECURITY_TOKEN', $_ENV['SECURITY_TOKEN']);
                 }
             }
             if ($user instanceof User) {
@@ -159,7 +159,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Ti remove sensitive header sensitive information.
+     * Ti remove sensitive header-sensitive information.
      */
     private function removeSensitiveHeader(Response $response): void
     {
@@ -198,14 +198,14 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             header('Pragma: no-cache');
             /* HTTP 1.0 */
             header('Cache-Control: max-age=2592000');
-            /* 30days (60sec * 60min * 24hours * 30days) */
+            /* 30 days (60sec * 60min * 24 hours * 30 days) */
         }
     }
 
     /**
      * Check if is secure website & redirect if User isn't connected.
      */
-    private function isSecure(ResponseEvent $responseEvent, ?WebsiteModel $website = null, mixed $user = null): void
+    private function isSecure(ResponseEvent $responseEvent, WebsiteModel|Website|null $website = null, mixed $user = null): void
     {
         $allowedRoutes = [
             'security_front_login',
@@ -224,8 +224,10 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             return;
         }
 
-        $website = $website instanceof WebsiteModel ? $website : $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($this->host);
-        if ($website->entity->getSecurity()->isSecureWebsite() && !$user instanceof User) {
+        $website = $website instanceof WebsiteModel || $website instanceof Website ? $website : $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($this->host, false, true);
+        $security = $website instanceof WebsiteModel ? $website->security : ($website instanceof Website ? $website->getSecurity() : null);
+
+        if ($security instanceof Security && $security->isSecureWebsite() && !$user instanceof User) {
             $responseEvent->setResponse(new RedirectResponse($this->coreLocator->router()->generate('security_front_login')));
         }
     }
@@ -263,7 +265,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
      */
     private function xssProtection(): void
     {
-        // Skip protection in admin area or for trusted internal Symfony fragment
+        // Skip protection in the admin area or for trusted internal Symfony fragment
         if ($this->inAdmin || str_contains($this->requestUri, 'javascript-critical-errors')) {
             return;
         }
