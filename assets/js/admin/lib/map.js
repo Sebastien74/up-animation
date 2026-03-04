@@ -17,7 +17,7 @@ if (inputPlaces.length > 0) {
             appId: 'plIZX27D5L3L',
             apiKey: '61cd64b7ddb5453f558240e9e5a17bc0',
             language: locale,
-            container: document.querySelector('#' + input.getAttribute('id'))
+            container: document.getElementById(input.getAttribute('id'))
         });
 
         placesAutocomplete.on('change', function (e) {

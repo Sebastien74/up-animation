@@ -76,7 +76,7 @@ export default function (Routing) {
                 body.querySelectorAll('.background-input-label-active').forEach(label => {
                     label.classList.remove('active');
                 });
-                let targetInput = body.querySelector('input#' + elId);
+                let targetInput = document.getElementById(elId);
                 if (targetInput) {
                     let label = targetInput.closest('.background-input-label-active');
                     if (label) {
@@ -144,7 +144,7 @@ export default function (Routing) {
                         label.classList.remove('active');
                     }
                 });
-                let targetInput = body.querySelector('input#' + elId);
+                let targetInput = document.getElementById(elId);
                 if (targetInput) {
                     let label = targetInput.closest('label');
                     if (label) {

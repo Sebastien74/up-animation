@@ -17,7 +17,7 @@
                         {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
                         <div class="modal-header">
                             <h5 class="modal-title text-center w-100" id="modal-duplicate-{{ interface['name']~'-'~entity.id }}-label"><i class="icm-copy"></i></h5>
-                            <button class="btn-close" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
+                            <button class="btn-close btn-icon" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
                                 <i class="icm-times"></i>
                             </button>
                         </div>
@@ -48,7 +48,7 @@
                     {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
                     <div class="modal-header">
                         <h5 class="modal-title text-center w-100"><i class="icm-copy"></i></h5>
-                        <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
+                        <button class="btn-close btn-icon position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
                             <i class="icm-times"></i>
                         </button>
                     </div>

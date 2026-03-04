@@ -6,13 +6,13 @@
             <div class="modal-content border">
                 <div class="modal-header">
                     <h5 class="modal-title text-center w-100"><i class="icm-columns"></i></h5>
-                    <button class="btn-close" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
+                    <button class="btn-close btn-icon" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
                         <i class="icm-times"></i>
                     </button>
                 </div>
-                <div class="modal-body pe-5 ps-5">
+                <div class="modal-body px-5">
                     <div class="mx-auto">
-                        <h2 class="text-dark w-100 text-center fw-bold mb-5">{{ 'Ajouter une colonne'|trans }}</h2>
+                        <h2 class="w-100 text-center fw-bold mb-3">{{ 'Ajouter une colonne'|trans }}</h2>
                         {{ form_start(form, {attr: {
                             novalidate: "novalidate",
                             action: path('admin_col_new', {website: websiteId(), zone: zone.id}),

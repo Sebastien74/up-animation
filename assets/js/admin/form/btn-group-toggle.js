@@ -7,7 +7,7 @@ export default function () {
     document.querySelectorAll('.btn-group-toggle').forEach(btnToggle => {
         btnToggle.addEventListener('click', function (e) {
             const label = btnToggle.querySelector('label');
-            const input = document.querySelector('input#' + label.getAttribute('for'));
+            const input = document.getElementById(label.getAttribute('for'));
             if (input.checked) {
                 label.classList.add('active');
             } else {

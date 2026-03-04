@@ -1,21 +1,26 @@
 {%- trans_default_domain 'admin' -%}
 
+<div class="col-12">
+    <h4 class="main-subtitle"><i class="icm-rss"></i>{{ "Réseaux sociaux"|trans|raw }}</h4>
+</div>
+
 {%- if allLocales|length > 1 -%}
     <div class="locales-tab-container m-0">
 {%- endif -%}
 
     {%- if allLocales|length > 1 -%}
-        <ul class="nav nav-tabs w-100" id="social-tab" role="tablist">
+        <ul class="nav nav-tabs border-0 d-flex w-100 mb-3 mt-1 gap-2" role="tablist">
             {%- for intl in socialsNetworks -%}
                 {%- set locale = intl.vars.value.locale -%}
-                <li class="nav-item">
-                    <a class="nav-link {% if locale == defaultLocale %} active{% endif %}"
+                {%- set linkActive = locale == defaultLocale -%}
+                <li class="{% if locale not in allLocales %} d-none{% endif %}">
+                    <a class="btn-locale{% if linkActive %} active{% endif %}"
                        id="social-{{ locale }}-tab"
                        data-bs-toggle="tab"
                        href="#social-tab-{{ locale }}"
                        role="tab"
                        aria-controls="social-tab-{{ locale }}"
-                       aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}">
+                       aria-selected="{% if linkActive %}true{% else %}false{% endif %}">
                         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
                              data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
                     </a>

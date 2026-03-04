@@ -23,8 +23,7 @@
             <div class="{{ prototypeGroup }} mb-4 prototype prototype-block-group">
         {%- endif -%}
             <div class="prototype-block pt-3 px-3 {% if prototypeGroup %}h-100{% else %}prototype mb-4{% endif %}">
-                <div class="row">
-                    {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: property, excludes: excluded} only -%}
+                <div class="d-flex align-items-center gap-2 mb-3">
                     {%- if prototypePosition -%}
                         {%- include 'admin/include/handle-item-collection.html.twig' with {isNew: isNew} -%}
                     {%- endif -%}
@@ -35,10 +34,13 @@
                             interfaceName: interfaceName
                         } -%}
                     {%- elseif deletableProperty -%}
-                        <span class="delete-disabled" data-bs-toggle="tooltip" title="{{"Donnée requise"|trans|striptags }}">
+                        <span class="delete-disabled cursor-not-allowed btn-icon muted small ms-auto" data-bs-toggle="tooltip" title="{{"Donnée requise"|trans|striptags }}">
                             <i class="icm-trash"></i>
                         </span>
                     {%- endif -%}
+                </div>
+                <div class="row">
+                    {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: property, excludes: excluded} only -%}
                 </div>
             </div>
         {%- if prototypeGroup -%}

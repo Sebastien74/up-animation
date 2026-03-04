@@ -103,6 +103,10 @@ class Extractor
     public function domain(string $domainName): TranslationDomain
     {
         $domain = $this->domainRepository->findOneBy(['name' => $domainName]);
+        if ($domain) {
+            return $domain;
+        }
+
         $entityName = str_replace(['entity_', '+intl-icu'], ['', ''], $domainName);
         $toExtract = ['gdpr', 'build', 'ie_alert', 'email', 'exception', 'messages', 'security', 'security_cms'];
 
@@ -113,11 +117,9 @@ class Extractor
 
         $adminName = $this->getDomainAdminName($adminName);
 
-        if (!$domain) {
-            $domain = new TranslationDomain();
-            $domain->setName($domainName);
-            $domain->setAdminName(ltrim($adminName, '__'));
-        }
+        $domain = new TranslationDomain();
+        $domain->setName($domainName);
+        $domain->setAdminName(ltrim($adminName, '__'));
 
         if (in_array($domainName, $toExtract) || str_contains($domainName, 'front')) {
             $domain->setExtract(true);
@@ -136,13 +138,15 @@ class Extractor
     private function unit(TranslationDomain $domain, string $keyName): TranslationUnit
     {
         $unit = $this->unitRepository->findOneBy(['domain' => $domain, 'keyName' => $keyName]);
-        if (!$unit) {
-            $unit = new TranslationUnit();
-            $unit->setKeyname($keyName);
-            $unit->setDomain($domain);
-            $this->entityManager->persist($unit);
-            $this->entityManager->flush();
+        if ($unit) {
+            return $unit;
         }
+
+        $unit = new TranslationUnit();
+        $unit->setKeyname($keyName);
+        $unit->setDomain($domain);
+        $this->entityManager->persist($unit);
+        $this->entityManager->flush($unit);
 
         return $unit;
     }
@@ -163,6 +167,11 @@ class Extractor
             $unit = $this->unit($domainModel, $keyName);
             $translation = $this->existingTranslation($unit, $locale);
             $isEntityConfiguration = str_contains($domainModel->getName(), 'entity_');
+
+            if ($translation && $translation->getContent() && !$isNew) {
+                return true;
+            }
+
             $asDefault = false;
             $isYamlConfig = false;
             $contentLocale = $this->getAppYamlTranslation($domainModel, $keyName, $locale);
@@ -184,7 +193,12 @@ class Extractor
             }
 
             if (!$translation) {
-                $this->translation($unit, $locale, $contentLocale);
+                $content = $contentLocale ? str_replace(['{{', '}}'], ['{', '}'], $contentLocale) : $contentLocale;
+                $translation = new Translation();
+                $translation->setLocale($locale);
+                $translation->setContent($content);
+                $translation->setUnit($unit);
+                $this->entityManager->persist($translation);
             } else if (!$translation->getContent()
                 && ($contentFormatted && !in_array($domainModel->getName(), $defaultDomains) && $locale == $defaultLocale
                     || $contentFormatted && in_array($domainModel->getName(), $defaultDomains) && 'fr' == $locale
@@ -192,9 +206,9 @@ class Extractor
                     || $isYamlConfig
                     || $asDefault
                 )) {
+                $contentFormatted = $contentFormatted ? str_replace(['{{', '}}'], ['{', '}'], $contentFormatted) : $contentFormatted;
                 $translation->setContent($contentFormatted);
                 $this->entityManager->persist($translation);
-                $this->entityManager->flush();
             }
         }
 
@@ -263,9 +277,11 @@ class Extractor
                     $domainName = 'entity_'.$interfaceName.'+intl-icu.'.$locale.'.yaml';
                     $filePath = $this->projectDir.'/translations/'.$domainName;
                     $filePath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $filePath);
-                    ksort($translations);
-                    $yaml = Yaml::dump($translations);
-                    file_put_contents($filePath, $yaml);
+                    if (!empty($translations)) {
+                        ksort($translations);
+                        $yaml = Yaml::dump($translations);
+                        file_put_contents($filePath, $yaml);
+                    }
                 }
             }
         }
@@ -302,23 +318,19 @@ class Extractor
 
         if (!empty($interface['labels'])) {
             foreach ($interface['labels'] as $keyName => $value) {
-                $translations['fr'][$keyName] = $value;
+                if (in_array($keyName, $this->entityFields)) {
+                    $translations['fr'][$keyName] = $value;
+                }
             }
         }
 
         if (!empty($config['translations'])) {
             foreach ($config['translations'] as $keyName => $locales) {
-                foreach ($locales as $locale => $value) {
-                    $translations[$locale][$keyName] = $value;
-                }
-            }
-        }
-
-        foreach ($translations as $translation) {
-            foreach ($translation as $keyName => $content) {
-                foreach ($allLocales as $locale) {
-                    if (!isset($translations[$locale][$keyName])) {
-                        $translations[$locale][$keyName] = null;
+                if (in_array($keyName, $this->entityFields)) {
+                    foreach ($locales as $locale => $value) {
+                        if (in_array($locale, $allLocales)) {
+                            $translations[$locale][$keyName] = $value;
+                        }
                     }
                 }
             }

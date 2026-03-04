@@ -27,7 +27,7 @@ export default function (nav) {
         items.forEach(item => {
             item.classList.remove('selected', 'text-secondary');
             item.classList.add('text-light');
-            let section = document.querySelector('#' + item.dataset.section);
+            let section = document.getElementById(item.dataset.section);
             if (section && isElementInMiddleOfScreen(section) && !item.classList.contains('selected')) {
                 if (item.dataset.section === section.getAttribute('id')) {
                     item.classList.add('selected', 'text-secondary');
@@ -57,12 +57,12 @@ export default function (nav) {
                 item.classList.remove('selected', 'fw-700');
             });
             item.classList.add('selected', 'fw-700');
-            let section = document.querySelector('#' + item.dataset.section);
+            let section = document.getElementById(item.dataset.section);
             scrollToEL(section);
         };
         if (hashValue && item.dataset.section === hashValue && !item.classList.contains('selected')) {
             item.classList.add('selected', 'fw-700');
-            let section = document.querySelector('#' + item.dataset.section);
+            let section = document.getElementById(item.dataset.section);
             scrollToEL(section);
         }
     });

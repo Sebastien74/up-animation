@@ -23,11 +23,6 @@
    2 ) Main
 -----------------------------------*/
 
-//.profile-tab li a.nav-link,
-//.custom-tab li a.nav-link {
-//    padding: 25px 20px;
-//}
-
 #add-icon-btn {
     .btn {
         width: 100%;
@@ -54,96 +49,34 @@
 
     .tab-pane {
 
-        background-color: $white;
-
         .glyphs div.item {
 
             .icon-wrap {
 
                 position: relative;
-                padding: .8rem 1rem;
-                transition: all ease-in-out .15s;
-                background-color: $white;
-                border-radius: .1875rem;
-                border: 1px solid #eee;
+                padding: .5rem .75rem;
+                transition: all linear .15s;
+                background: $bg-gradient-primary;
+                border-radius: $border-radius;
+                border: 1px solid $crumb-border;
                 overflow: hidden;
                 min-height: 73px;
 
+                .img-wrap {
+                    width: 60px;
+                    height: 60px;
+                    flex: 0 0 60px;
+                    border-radius: 20px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: rgba($primary, 0.14);
+                    border: 1px solid rgba($primary, 0.28);
+                }
+
                 .img-icon {
-                    max-height: 45px;
-                    max-width: 50px;
-                }
-
-                i, svg {
-                    font-size: 25px;
-                    float: left;
-                }
-
-                .search-icon {
-                    float: left;
-                    margin-top: 4px;
-                }
-
-                .icon-actions {
-
-                    position: absolute;
-                    top: 0;
-                    bottom: 0;
-                    right: 0;
-                    background-color: $white;
-                    border-radius: .1875rem;
-                    width: 70px;
-                    cursor: pointer;
-                    opacity: 0;
-                    transition: all ease-in-out .15s;
-                    float: initial;
-                    padding: 2px;
-
-                    .icon-copy, .icon-add {
-
-                        border-radius: .1875rem;
-                        height: calc(50% - 1px);
-
-                        &.active {
-                            fill: $white !important;
-                        }
-                    }
-
-                    .icon-copy {
-                        margin-bottom: 2px;
-                    }
-
-                    .inner {
-
-                        position: relative;
-
-                        svg {
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            left: 24px;
-                            right: 0;
-                        }
-                    }
-                }
-
-                &:hover, &.active {
-
-                    transition: all ease-in-out .15s;
-
-                    img.icon-hover {
-                        filter: brightness(0) invert(1);
-                        transition: all ease-in-out .15s;
-                    }
-
-                    .icon-actions {
-                        opacity: 1;
-                        transition: all ease-in-out .15s;
-
-                        svg {
-                            fill: currentColor;
-                        }
-                    }
+                    max-height: 30px;
+                    max-width: 45px;
                 }
 
                 & > div {

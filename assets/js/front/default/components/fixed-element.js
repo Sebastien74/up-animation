@@ -8,14 +8,14 @@ export default function () {
     const STORAGE_KEY = 'fixed_news_closed';
 
     /**
-     * Close with animation then remove from DOM and persist the state.
+     * Close with animation, then remove from DOM and persist the state.
      * @param {HTMLElement} el
      */
     const closeFixedNews = (el) => {
         el.classList.add('is-closing');
         sessionStorage.setItem(STORAGE_KEY, '1');
 
-        // Remove after transition end (safe even if duration changes in CSS)
+        // Remove after the transition end (safe even if duration changes in CSS)
         const onEnd = (ev) => {
             if (ev.target !== el) return;
             el.removeEventListener('transitionend', onEnd);
@@ -61,14 +61,18 @@ export default function () {
     }
 
     /**
-     * Toggle a class on the fixed news banner when footer is visible in viewport.
+     * Toggle a class on elements when the footer is visible in the viewport.
+     *
+     * @param {string} selector
+     * @param {number} requiredRatio
+     * @param {Object} classConfig
      */
-    const bindFixedNewsFooterDetection = (requiredRatio = 0.9) => {
+    const bindFooterDetection = (selector, requiredRatio = 0.9, classConfig = {}) => {
 
-        const fixedNews = document.querySelector('.fixed-news');
+        const elements = document.querySelectorAll(selector);
         const footer = document.querySelector('footer');
 
-        if (!fixedNews || !footer) {
+        if (elements.length === 0 || !footer) {
             return;
         }
 
@@ -88,19 +92,34 @@ export default function () {
         };
 
         /**
-         * Update class based on overlap ratio.
+         * Update class based on an overlap ratio.
          */
         const update = () => {
             ticking = false;
-
-            const fixedRect = fixedNews.getBoundingClientRect();
             const footerRect = footer.getBoundingClientRect();
 
-            const fixedHeight = Math.max(1, fixedRect.height); // avoid division by zero
-            const overlap = getVerticalOverlap(fixedRect, footerRect);
-            const ratio = overlap / fixedHeight;
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const height = Math.max(1, rect.height); // avoid division by zero
+                const overlap = getVerticalOverlap(rect, footerRect);
+                const ratio = overlap / height;
+                const isNear = ratio >= requiredRatio;
 
-            fixedNews.classList.toggle('is-near-footer', ratio >= requiredRatio);
+                el.classList.toggle('is-near-footer', isNear);
+
+                if (classConfig.add || classConfig.remove) {
+                    const toAdd = Array.isArray(classConfig.add) ? classConfig.add : [classConfig.add];
+                    const toRemove = Array.isArray(classConfig.remove) ? classConfig.remove : [classConfig.remove];
+
+                    if (isNear) {
+                        toRemove.forEach(cls => cls && el.classList.remove(cls));
+                        toAdd.forEach(cls => cls && el.classList.add(cls));
+                    } else {
+                        toAdd.forEach(cls => cls && el.classList.remove(cls));
+                        toRemove.forEach(cls => cls && el.classList.add(cls));
+                    }
+                }
+            });
         };
 
         /**
@@ -119,5 +138,9 @@ export default function () {
         requestUpdate();
     };
 
-    bindFixedNewsFooterDetection(0.9);
+    bindFooterDetection('.fixed-news', 0.1);
+    // bindFooterDetection('.product-contact-btn', 0.1, {
+    //     add: 'btn-secondary',
+    //     remove: 'btn-primary'
+    // });
 }

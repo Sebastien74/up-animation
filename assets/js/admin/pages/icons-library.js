@@ -48,7 +48,7 @@ body.addEventListener('click', function (e) {
             }
 
             el.setAttribute('data-status', newStatus);
-            el.querySelectorAll('svg').forEach(svg => svg.classList.toggle('d-none'));
+            el.querySelectorAll('i').forEach(i => i.classList.toggle('d-none'));
 
             if (newStatus === 'true' && !el.classList.contains('active')) {
                 el.classList.add('active');

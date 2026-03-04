@@ -18,12 +18,19 @@
     {%- set addonWidth = attr.addonWidth is defined and attr.addonWidth ? attr.addonWidth : null -%}
     {%- set addonHeight = attr.addonHeight is defined and attr.addonHeight ? attr.addonHeight : 18 -%}
     {%- set haveAddon = attr.addon is defined and attr.addon -%}
+    {%- set addonTooltip = attr['addon-tooltip'] is defined and attr['addon-tooltip'] ? attr['addon-tooltip'] : null -%}
     {%- set asEmoji = attr.class is defined and 'emoji-input' in attr.class -%}
     {%- set asFileBtn = attr['data-type'] is defined and 'as-btn' in attr['data-type'] -%}
     {%- if haveAddon -%}
         <div class="input-group">
         {%- if addonSide == 'left' -%}
-            <span class="input-group-text addon" data-addon="{{ attr.addon }}">
+            <span class="input-group-text addon"
+                  data-addon="{{ attr.addon }}"
+                  {% if addonTooltip %}
+                      title="{{ addonTooltip }}"
+                      data-bs-toggle="tooltip"
+                      data-tooltip-variant="primary"
+                  {% endif %}>
                 <i class="icm-{{ attr.addon }} btn-icon"></i>
             </span>
         {%- endif -%}

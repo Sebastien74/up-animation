@@ -233,7 +233,7 @@ readonly class ExceptionListener
         }
 
         $patterns = ['Entity of type', 'SQLSTATE', 'Column not found'];
-        $excludedPatterns = ['Disk full', '42000', '23000', 'SQL syntax', 'Syntax error', 'server has gone away', 'Access denied', 'is not allowed to connect', 'check the manual', 'max_user_connections', 'connexion'];
+        $excludedPatterns = ['Disk full', 'Connection refused', '42000', '23000', 'SQL syntax', 'Syntax error', 'server has gone away', 'Access denied', 'is not allowed to connect', 'check the manual', 'max_user_connections', 'connexion'];
         if (method_exists($exception, 'getMessage')) {
             foreach ($excludedPatterns as $pattern) {
                 if (str_contains(strtolower($exception->getMessage()), strtolower($pattern))) {

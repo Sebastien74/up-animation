@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Translation;
 
 use App\Controller\Admin\AdminController;
+use App\Entity\Translation\Translation;
+use App\Entity\Translation\TranslationUnit;
 use App\Form\Interface\IntlFormManagerInterface;
 use App\Form\Type\Translation\AddTranslationType;
 use App\Repository\Core\WebsiteRepository;
@@ -137,7 +139,11 @@ class TranslationController extends AdminController
         if ($locale === $configuration->getLocale()) {
             $extractor->extractEntities($website, $configuration->getLocale(), $configuration->getAllLocales());
         }
-        $extractor->extract($locale);
+
+        if (!$request->query->get('skip_extract')) {
+            $extractor->extract($locale);
+        }
+
         $entityService->execute($website, $locale);
 
         return new JsonResponse(['success' => true]);
@@ -197,15 +203,25 @@ class TranslationController extends AdminController
             return new JsonResponse(['success' => true, 'message' => 'Empty translations for GET request']);
         }
 
+        $count = 0;
+        $entityManager = $this->coreLocator->em();
         foreach ($translations as $item) {
             $extractor->generateTranslation(
                 $defaultLocale,
                 $locale,
                 urldecode($domain),
                 $item['content'] ?? null,
-                $item['keyName'] ?? null
+                isset($item['keyName']) ? (string) $item['keyName'] : null
             );
+            $count++;
+            if ($count % 50 === 0) {
+                $entityManager->flush();
+                $entityManager->clear(Translation::class);
+                $entityManager->clear(TranslationUnit::class);
+            }
         }
+
+        $entityManager->flush();
 
         return new JsonResponse(['success' => true]);
     }
@@ -223,7 +239,14 @@ class TranslationController extends AdminController
     {
         $website = $websiteRepository->find($request->get('website'));
         $defaultLocale = $website->getConfiguration()->getLocale();
-        $extractor->generateTranslation($defaultLocale, $locale, urldecode($domain), urldecode($request->get('content')), urldecode($request->get('keyName')));
+        $keyName = $request->get('keyName');
+        $extractor->generateTranslation(
+            $defaultLocale,
+            $locale,
+            urldecode($domain),
+            urldecode($request->get('content')),
+            $keyName !== null ? (string) urldecode($keyName) : null
+        );
 
         return new JsonResponse(['success' => true]);
     }

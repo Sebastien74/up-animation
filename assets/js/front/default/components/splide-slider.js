@@ -471,7 +471,7 @@ export default function (sliders) {
 
         function playVideo(slider) {
             let sliderId = slider.getAttribute('id');
-            let sliderEl = document.querySelector('#' + sliderId);
+            let sliderEl = document.getElementById(sliderId);
             if (sliderEl) {
                 let parentSlider = sliderEl.parentNode;
                 let inViewport = isInViewport(parentSlider, 200);

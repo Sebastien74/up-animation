@@ -151,7 +151,7 @@ class InformationType extends AbstractType
             'entry_options' => [
                 'attr' => [
                     'class' => 'address',
-                    'icon' => 'map-marked-alt',
+                    'icon' => 'map-marked',
                     'group' => 'col-md-12',
                     'caption' => $this->translator->trans('Adresses', [], 'admin'),
                     'button' => $this->translator->trans('Ajouter une adresse', [], 'admin'),

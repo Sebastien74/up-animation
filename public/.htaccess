@@ -247,10 +247,12 @@ AddDefaultCharset UTF-8
 
 </IfModule>
 
-
-<Files *.twig.html>
-    SetOutputFilter DEFLATE
-</Files>
+# Compression pour les fichiers twig.html (si mod_deflate est disponible)
+<IfModule mod_deflate.c>
+    <FilesMatch "\.twig\.html$">
+        SetOutputFilter DEFLATE
+    </FilesMatch>
+</IfModule>
 
 # protect the htaccess file
 <files .htaccess>

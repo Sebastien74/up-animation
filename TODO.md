@@ -1,5 +1,44 @@
 Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
+pour les ul remplacer par 
+
+            ul {
+
+                padding-left: 0 !important;
+                margin-left: 0 !important;
+                list-style-type: none !important;
+
+                ul {
+                    list-style-type: none !important;
+                    padding-left: 0 !important;
+                    margin-left: 0 !important;
+                    margin-top: .25rem !important;
+                }
+
+                li, ul li {
+
+                    list-style-type: none !important;
+                    position: relative;
+                    padding-left: 1.25rem;
+                    margin-bottom: .25rem;
+
+                    &:before {
+                        font-family: 'icomoon', serif !important;
+                        content: "\e906";
+                        position: absolute !important;
+                        left: 0;
+                        top: 5px;
+                        font-size: 9px;
+                        color: $primary;
+                        background: none !important;
+                        width: auto !important;
+                        height: auto !important;
+                        border-radius: 0 !important;
+                        margin-left: 0 !important;
+                    }
+                }
+            }
+
 Sur le favicon générator faire les favicon et arrondi 
 
 Js Front faire en sorte que les modules JS ne soient appelés que quand il y en a besoin set que les CSSS associés ne chargent que si les modules sont utilisés

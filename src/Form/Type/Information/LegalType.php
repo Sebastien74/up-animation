@@ -195,6 +195,7 @@ class LegalType extends AbstractType
         if ($multiLocales) {
             $builder->add('locale', Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Langue', [], 'admin'),
+                'display' => 'search',
                 'choices' => $locales,
                 'choice_translation_domain' => false,
                 'attr' => ['class' => 'select-icons', 'group' => 'col-md-4'],

@@ -13,18 +13,12 @@
 
     $states: info;
 
-    color: $white-lighten;
-    border: 1px solid $border-color;
-    padding: .25rem 1rem;
-    border-radius: .45rem;
-    line-height: 1.2;
+    color: $body-color;
+    font-size: 11px;
 
     @each $s in $states {
         $c: theme-color($s);
-        background: radial-gradient(900px 520px at 82% 100%, rgba($c, 0.18), transparent 62%),
-        radial-gradient(900px 520px at 82% 100%, rgba(111, 66, 193, 0.10), transparent 62%),
-        radial-gradient(1100px 780px at 30% 65%, rgba(255, 255, 255, 0.04), transparent 68%),
-        linear-gradient(180deg, rgba(16, 18, 28, 0.72), rgba(10, 11, 18, 0.62));
+        color: $c;
     }
 }
 

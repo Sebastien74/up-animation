@@ -22,7 +22,7 @@
 {%- else -%}
 
     <div class="col-12 mb-3">
-        <h4 class="main-subtitle">
+        <h4 class="main-subtitle small">
             <i class="icm-link"></i>{%- if allLocales|length > 1 -%}{{ "URLS"|trans }}{%- else -%}{{ "URL"|trans }}{%- endif -%}
         </h4>
         {%- for url in urls -%}
@@ -60,17 +60,16 @@
                     {%- set btn = path ? 'primary' : "muted" -%}
                     <a href="{{ path }}"
                        data-bs-toggle="tooltip"
+                       data-tooltip-variant="info"
                        title="{{ title }}"
-                       class="btn-icon {{ btn }}"
+                       class="btn-icon info small {{ btn }}"
                        target="_blank"><i class="icm-eye"></i>
                     </a>
-                    <span>
-                        <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: locale, url: urlId}) }}"
-                           data-bs-toggle="tooltip" title="{{"Référencement avancé"|trans }}"
-                           class="btn-icon">
-                            <i class="icm-chart-line"></i>
-                        </a>
-                    </span>
+                    <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: locale, url: urlId}) }}"
+                       data-bs-toggle="tooltip" title="{{"Référencement avancé"|trans }}"
+                       class="btn-icon small">
+                        <i class="icm-chart-line"></i>
+                    </a>
                 </div>
             </div>
         {%- endfor -%}

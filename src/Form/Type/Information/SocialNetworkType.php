@@ -37,6 +37,7 @@ class SocialNetworkType extends AbstractType
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'facebook',
+                'addon-tooltip' => 'Facebook',
             ],
             'row_attr' => ['class' => 'col-lg-6']
         ]);
@@ -47,6 +48,7 @@ class SocialNetworkType extends AbstractType
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'twitter',
+                'addon-tooltip' => 'Twitter',
             ],
             'row_attr' => ['class' => 'col-lg-6']
         ]);
@@ -57,6 +59,7 @@ class SocialNetworkType extends AbstractType
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'google',
+                'addon-tooltip' => 'Google',
             ],
             'row_attr' => ['class' => 'col-lg-6']
         ]);
@@ -67,6 +70,7 @@ class SocialNetworkType extends AbstractType
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'youtube',
+                'addon-tooltip' => 'Youtube',
             ],
             'row_attr' => ['class' => 'col-lg-6']
         ]);
@@ -77,6 +81,7 @@ class SocialNetworkType extends AbstractType
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'tiktok',
+                'addon-tooltip' => 'TikTok',
             ],
             'row_attr' => ['class' => 'col-lg-6']
         ]);
@@ -87,6 +92,7 @@ class SocialNetworkType extends AbstractType
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'instagram',
+                'addon-tooltip' => 'Instagram',
             ],
             'row_attr' => ['class' => 'col-lg-6']
         ]);
@@ -97,6 +103,7 @@ class SocialNetworkType extends AbstractType
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'linkedin-in',
+                'addon-tooltip' => 'Linkedin',
             ],
             'row_attr' => ['class' => 'col-lg-6']
         ]);
@@ -106,7 +113,8 @@ class SocialNetworkType extends AbstractType
             'label' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'addon' => 'pinterest-p',
+                'addon' => 'pinterest',
+                'addon-tooltip' => 'Pinterest',
             ],
             'row_attr' => ['class' => 'col-lg-6']
         ]);
@@ -117,6 +125,7 @@ class SocialNetworkType extends AbstractType
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
                 'addon' => 'tripadvisor',
+                'addon-tooltip' => 'Tripadvisor',
             ],
             'row_attr' => ['class' => 'col-lg-6']
         ]);

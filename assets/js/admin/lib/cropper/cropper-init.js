@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
             preview: preview.getAttribute('class'),
             zoomOnWheel: true,
             crop: function (e) {
-                let modalINJS = document.querySelector('#' + idModal);
+                let modalINJS = document.getElementById(idModal);
                 let canvasINJS = modalINJS.querySelector('.cropper-canvas');
                 tempContainerDataHeight = canvasINJS.offsetHeight;
                 tempContainerDataWidth = canvasINJS.offsetWidth;

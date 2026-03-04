@@ -118,7 +118,6 @@ class EmailType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Email::class,
             'website' => null,
-            'custom_widget' => true,
             'prototypePosition' => true,
             'translation_domain' => 'admin',
         ]);

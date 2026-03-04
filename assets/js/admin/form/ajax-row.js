@@ -49,7 +49,7 @@ export default function () {
                         html.innerHTML = response;
                         refreshGroups.forEach(function (group) {
                             let input = group.querySelector('.form-control');
-                            let groupHtml = html.querySelector('#' + group.getAttribute('id'));
+                            let groupHtml = html.querySelector(`[id="${group.getAttribute('id')}"]`);
                             let invalid = groupHtml.querySelector('.invalid-feedback');
                             if (invalid && group && input) {
                                 group.append(invalid);

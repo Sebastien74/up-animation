@@ -15,7 +15,7 @@
                     {%- if haveMedia or (haveIntls and not entity.infill) -%}
                         <div class="col-md-4">
                             {%- if haveMedia -%}
-                                <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-page-medias-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-medias-{{ entity.id }}">
+                                <h4 class="main-subtitle small collapsed" data-bs-toggle="collapse" href="#collapse-page-medias-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-medias-{{ entity.id }}">
                                     <i class="icm-image-polaroid"></i>{%- if allLocales|length > 1 -%}{{ "Médias"|trans }}{%- else -%}{{ "Média"|trans }}{%- endif -%}
                                     <i class="icm-chevron-down ms-auto"></i>
                                 </h4>
@@ -29,7 +29,7 @@
                                 </div>
                             {%- endif -%}
                             {%- if haveIntls and not entity.infill -%}
-                                <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-page-content-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-content-{{ entity.id }}">
+                                <h4 class="main-subtitle small collapsed" data-bs-toggle="collapse" href="#collapse-page-content-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-content-{{ entity.id }}">
                                     <i class="icm-text"></i>{{ "Configuration des contenus"|trans }}
                                     <i class="icm-chevron-down ms-auto"></i>
                                 </h4>
@@ -45,7 +45,7 @@
                         </div>
                     {%- endif -%}
                     <div class="col-md-4">
-                        <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-page-dates-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-dates-{{ entity.id }}">
+                        <h4 class="main-subtitle small collapsed" data-bs-toggle="collapse" href="#collapse-page-dates-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-dates-{{ entity.id }}">
                             <i class="icm-calendar-alt"></i>{{ "Dates de publication"|trans }}
                             <i class="icm-chevron-down ms-auto"></i>
                         </h4>
@@ -63,7 +63,7 @@
                         </div>
                         <div class="col-md-4">
                     {%- endif -%}
-                        <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-page-configuration-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-configuration-{{ entity.id }}">
+                        <h4 class="main-subtitle small collapsed" data-bs-toggle="collapse" href="#collapse-page-configuration-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-configuration-{{ entity.id }}">
                             <i class="icm-cog"></i>{{ "Configuration"|trans }}
                             <i class="icm-chevron-down ms-auto"></i>
                         </h4>

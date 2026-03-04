@@ -1,10 +1,10 @@
 {%- trans_default_domain 'admin' -%}
 
 {%- block _col_size_size_widget -%}
-    <div id="{{ id }}" class="w-100 text-center">
+    <div id="{{ id }}" class="w-100 text-center d-flex justify-content-center flex-wrap gap-2">
         {%- for choice in choices -%}
             {%- set id = uniqId() -%}
-            <label for="{{ choice.value~''~id }}" class="btn btn-outline-dark cursor">
+            <label for="{{ choice.value~''~id }}" class="btn-icon cursor">
                 {{ choice.value }}
                 <input type="radio" id="{{ choice.value~''~id }}" name="{{ full_name }}" required="required" class="d-none input-btn" value="{{ choice.value }}">
             </label>

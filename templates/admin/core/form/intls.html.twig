@@ -23,14 +23,14 @@
     {%- set tabUniqId = uniqId() -%}
 
     {%- if allLocales|length > 1 -%}
-        <ul class="nav nav-tabs w-100" role="tablist">
+        <ul class="nav nav-tabs border-0 d-flex w-100 mb-3 mt-1 gap-2" role="tablist">
             {%- for intl in intls -%}
                 {%- set locale = intl.vars.value.locale -%}
-                <li class="nav-item {% if locale not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
+                <li class="{% if locale not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
                     {%- set localesMatches = locale|split('_') -%}
                     {%- set subLocaleLabel = localesMatches|length > 1 ? languageName(locale, app.user.locale) : null -%}
                     {%- set linkActive = locale == defaultLocale -%}
-                    <a class="nav-link d-flex align-items-center{% if linkActive %} active{% endif %}" data-bs-toggle="tab"
+                    <a class="btn-locale{% if linkActive %} active{% endif %}" data-bs-toggle="tab"
                        id="intl-{{ locale~tabUniqId }}-tab"
                        aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}"
                        href="#intl-tab-{{ locale~tabUniqId }}" role="tab">

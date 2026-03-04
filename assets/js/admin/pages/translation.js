@@ -23,29 +23,32 @@ extractButtons.forEach(function (button) {
 
 let extract = function (website, generator, item, domain) {
     const locale = item.dataset.locale;
-    fetch(route('admin_translation_extract', {website: website, locale: locale}), {
+    const isFirst = !body.querySelector('#translation-generator-locales li:not(.undo)');
+    const urlArgs = {website: website, locale: locale};
+    urlArgs.skip_extract = !isFirst;
+
+    fetch(route('admin_translation_extract', urlArgs), {
         method: "GET",
         headers: {
             "Content-Type": "application/json; charset=utf-8",
             "X-Requested-With": "XMLHttpRequest"
         }
-    })
-        .then(response => {
-            if (response.ok) {
-                item.classList.remove('undo');
-                const progressItem = body.querySelector('#translation-generator-locales li.undo');
-                if (progressItem) {
-                    const progressLocale = progressItem.dataset.locale;
-                    const flag = generator.querySelector('.extraction-title img');
-                    if (flag) {
-                        flag.setAttribute('src', '/medias/icons/flags/' + progressLocale + '.svg');
-                    }
-                    extract(website, generator, progressItem, domain);
-                } else {
-                    progress(website, generator, domain);
+    }).then(response => {
+        if (response.ok) {
+            item.classList.remove('undo');
+            const progressItem = body.querySelector('#translation-generator-locales li.undo');
+            if (progressItem) {
+                const progressLocale = progressItem.dataset.locale;
+                const flag = generator.querySelector('.extraction-title img');
+                if (flag) {
+                    flag.setAttribute('src', '/medias/icons/flags/' + progressLocale + '.svg');
                 }
+                extract(website, generator, progressItem, domain);
+            } else {
+                progress(website, generator, domain);
             }
-        });
+        }
+    });
 };
 
 let progress = function (website, generator, domain) {

@@ -313,7 +313,7 @@ $badge-pill-padding-y: 1em !default;
 
 /*-- k - Forms --*/
 
-$form-label-color: $gray-600 !default;
+$form-label-color: $body-color !default;
 $input-bg: radial-gradient(520px 160px at 12% 0%, mix($primary, $dash-surface, 10%), $dash-surface 62%), linear-gradient(180deg, $dash-surface-2, $dash-surface 45%, $dash-surface-3) !default;
 $input-invalid-bg: radial-gradient(520px 160px at 12% 0%, mix($red, $dash-surface, 10%), $dash-surface 62%), linear-gradient(180deg, $dash-surface-2, $dash-surface 45%, $dash-surface-3) !default;
 $input-height: 66px !default;

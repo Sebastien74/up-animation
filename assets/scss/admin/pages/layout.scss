@@ -144,12 +144,19 @@ body.sorting-active * {
 
 .layout-modal {
 
-    .modal-header i,
-    .modal-header svg {
-        font-size: 55px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        display: inline-block;
+    .modal-header .modal-title i {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 55px;
+        height: 55px;
+        flex: 0 0 55px;
+        border-radius: 14px;
+        margin: 0 auto;
+        font-size: 30px;
+        background: rgba($primary, 0.14);
+        border: 1px solid rgba($primary, 0.28);
+        color: $btn-text;
     }
 
     button.btn-close {
@@ -877,9 +884,17 @@ body.sorting-active * {
         margin-bottom: 30px;
 
         label {
-            min-height: 35px;
-            min-width: 35px;
-            line-height: 21px;
+
+            background: $btn-surface-hover;
+            border-color: $btn-border-hover;
+            box-shadow: $btn-shadow;
+            color: $btn-text !important;
+
+            &.active {
+                background: rgba($primary, 0.14);
+                border: 1px solid rgba($primary, 0.28);
+                color: $btn-text;
+            }
         }
     }
 

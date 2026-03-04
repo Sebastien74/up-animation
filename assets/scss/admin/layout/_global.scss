@@ -95,17 +95,34 @@ a {
     margin-bottom: 1rem;
     font-weight: 500;
     background: $bg-gradient-primary;
-    border-radius: 12px;
+    border-radius: $border-radius;
     border: 1px solid $crumb-border;
-    font-size: 1rem;
     color: transparentize($white, .5);
 
-    i:not(.initial) {
-        width: 30px !important;
-        height: 30px !important;
-        flex: 0 0 30px !important;
-        border-radius: 10px !important;
-        font-size: 12px !important;
+    &.small {
+
+        font-size: .75rem;
+
+        i:not(.initial) {
+            width: 30px !important;
+            height: 30px !important;
+            flex: 0 0 30px !important;
+            border-radius: 10px !important;
+            font-size: .85rem !important;
+        }
+    }
+
+    &:not(.small) {
+
+        font-size: 1rem;
+
+        i:not(.initial) {
+            width: 34px !important;
+            height: 34px !important;
+            flex: 0 0 34px !important;
+            border-radius: 10px !important;
+            font-size: 1rem !important;
+        }
     }
 
     i.icm-chevron-down {

@@ -19,21 +19,20 @@
 
 {%- block body -%}
 
-    <div class="card mb-3">
+    <div id="page-icons-library">
 
-        <h4 class="main-subtitle mb-0 border-bottom-0">
+        <h4 class="main-subtitle">
             <i class="icm-{{ pageIcon }}"></i>{{ block('pageTitle') }}
         </h4>
 
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" role="tablist">
             {%- for libraryName, icons in libraries -%}
                 {%- if libraryName != 'website' -%}
-                    <li class="nav-item">
+                    <li>
                         {%- set active = libraryName == library -%}
                         <a href="{{ path("admin_icons", {website: websiteId, library: libraryName}) }}"
-                           class="nav-link {% if active %} active{% endif %}"
-                          >
-                            <span class="d-none d-sm-inline-block">{{ libraryName|capitalize|raw }}</span>
+                           class="btn-app {% if active %} active{% endif %}">
+                            <i class="icm-fire"></i>{{ libraryName|capitalize|raw }}
                         </a>
                     </li>
                 {%- endif -%}
@@ -41,44 +40,45 @@
             <li class="nav-item">
                 {%- set active = library == 'website' -%}
                 <a href="{{ path("admin_icons", {website: websiteId, library: 'website'}) }}"
-                   class="nav-link {% if active %} active{% endif %}"
-                  >
-                    <span class="d-none d-sm-inline-block">{{ "Icônes du site"|trans|raw }}</span>
+                   class="btn-app  {% if active %} active{% endif %}">
+                    <i class="icm-fire"></i>{{ "Icônes du site"|trans|raw }}
                 </a>
             </li>
             <li class="nav-item">
                 <a href="https://www.toptal.com/designers/htmlarrows"
-                   class="nav-link" target="_blank">
-                    <span class="d-none d-sm-inline-block">Symbols</span>
+                   class="btn-app " target="_blank">
+                    <i class="icm-fire"></i>Symbols
                 </a>
             </li>
             <li class="nav-item">
                 <a href="https://thenounproject.com"
-                   class="nav-link" target="_blank">
-                    <span class="d-none d-sm-inline-block">Noun Project</span>
+                   class="btn-app " target="_blank">
+                    <i class="icm-fire"></i>Noun Project
                 </a>
             </li>
         </ul>
 
-        <div class="row m-md-0 border-top">
-            <div class="col-md-9 my-auto p-md-0">
-                <form role="search" class="icons-search-darken p-4 mb-0">
+        <div class="row mb-4">
+            <div class="col-md-9 my-auto">
+                <form role="search" class="icons-search">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text h-100"><i class="icm-search"></i></span>
                         </div>
-                        <input placeholder="{{"Rechercher"|trans }}" class="form-control" type="text">
+                        <label>
+                            <input placeholder="{{"Rechercher"|trans }}" class="form-control" type="text">
+                        </label>
                     </div>
                 </form>
             </div>
-            <div id="add-icon-btn" class="col-md-3 p-md-0 text-center">
-                <button class="btn-app d-flex align-items-center justify-content-center"
+            <div id="add-icon-btn" class="col-md-3 d-flex justify-content-end">
+                <button class="btn-app justify-content-center w-100"
                         data-bs-toggle="collapse"
                         href="#collapse-add-icons"
                         role="button"
                         aria-expanded="false"
                         aria-controls="collapse-add-icons">
-                    <i class="icm-plus me-3"></i>{{ "Ajouter des icônes"|trans|raw }}
+                    <i class="icm-plus"></i>{{ "Ajouter des icônes"|trans|raw }}
                 </button>
             </div>
         </div>
@@ -88,56 +88,54 @@
         <!-- Tab panes -->
         <div id="icons-contents" class="tab-content mb-4" data-librairy="{{ library }}">
             <div id="tab-pane-{{ library }}" class="tab-pane active">
-                <div class="card-body pb-2">
-                    <div class="collapse" id="collapse-add-icons">
-                        <div class="card card-body p-0 border-0 pb-2">
-                            {{ render_esi(path('admin_icons_add', {website: websiteId})) }}
-                        </div>
-                    </div>
-                    <div class="row glyphs">
-                        {%- for libraryName, icons in libraries -%}
-                            {%- if libraryName == library -%}
-                                {%- for icon in icons -%}
-                                    {%- set inWebsiteIcons = icon.src in websiteIcons -%}
-                                    <div class="item col-md-3 col-sm-4 mb-3">
-                                        <div class="d-flex align-items-center bg-hover-active-info-darken icon-wrap{% if inWebsiteIcons %} active{% endif %}">
-                                            <img data-src="{{ asset(icon.src) }}"
+                <div class="collapse mb-3" id="collapse-add-icons">
+                    {{ render_esi(path('admin_icons_add', {website: websiteId})) }}
+                </div>
+                <div class="row glyphs">
+                    {%- for libraryName, icons in libraries -%}
+                        {%- if libraryName == library -%}
+                            {%- for icon in icons -%}
+                                {%- set inWebsiteIcons = icon.src in websiteIcons -%}
+                                <div class="item col-md-3 col-sm-4 mb-3">
+                                    <div class="d-flex align-items-center gap-3 icon-wrap{% if inWebsiteIcons %} active{% endif %}">
+                                        <span class="img-wrap p-2">
+                                            <img data-src="{{ asset(icon.src) }}" alt="{{ icon.src }}"
                                                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                                 class="img-fluid img-icon me-3 lazy-load{% if libraryName != 'flags' %} icon-hover{% endif %}">
-                                            <div>
-                                                {%- set locale = icon.locale is defined and icon.locale ? icon.locale : null -%}
-                                                <div class="search-icon">{%- if locale and countryNames[locale|upper] is defined -%}{{ countryNames[locale|upper] }}{%- else -%}{{ icon.filename }}{%- endif -%}</div>
+                                                 class="img-fluid img-icon lazy-load{% if libraryName != 'flags' %} icon-hover{% endif %}">
+                                        </span>
+                                        <div class="me-2">
+                                            {%- set locale = icon.locale is defined and icon.locale ? icon.locale : null -%}
+                                            <div class="search-icon">{%- if locale and countryNames[locale|upper] is defined -%}{{ countryNames[locale|upper] }}{%- else -%}{{ icon.filename }}{%- endif -%}</div>
+                                        </div>
+                                        <div class="icon-actions ms-auto d-flex gap-2 flex-column">
+                                            <div class="icon-copy info btn-icon small cursor" data-bs-toggle="tooltip" title="{{"Copier"|trans }}">
+                                                <i class="icm-copy"></i>
                                             </div>
-                                            <div class="icon-actions">
-                                                <div class="icon-copy border-info-darken" data-bs-toggle="tooltip" title="{{"Copier"|trans }}">
-                                                    <div class="inner h-100"><i class="icm-copy"></i></div>
+                                            {%- set status = inWebsiteIcons ? 'true' : 'false' -%}
+                                            {%- set tooltip = inWebsiteIcons ? "Retirer"|trans : "Ajouter"|trans -%}
+                                            <a href="#" class="icon-add btn-icon small cursor{% if inWebsiteIcons %} active{% endif %}"
+                                               data-path="{{ icon.src|url_encode }}"
+                                               data-status="{{ status }}"
+                                               data-add-txt="{{"Ajouter"|trans }}"
+                                               data-remove-txt="{{"Retirer"|trans }}"
+                                               data-bs-toggle="tooltip" title="{{ tooltip|raw }}">
+                                                <div class="inner d-flex gap-2 flex-column">
+                                                    {%- set checkClass = inWebsiteIcons ? '' : 'd-none' -%}
+                                                    <i class="icm-check {{ checkClass }}"></i>
+                                                    {%- set addClass = not inWebsiteIcons ? '' : 'd-none' -%}
+                                                    <i class="icm-plus {{ addClass }}"></i>
                                                 </div>
-                                                {%- set status = inWebsiteIcons ? 'true' : 'false' -%}
-                                                {%- set tooltip = inWebsiteIcons ? "Retirer"|trans : "Ajouter"|trans -%}
-                                                <a href="#" class="icon-add border-info-darken d-inline-block w-100{% if inWebsiteIcons %} active{% endif %}"
-                                                   data-path="{{ icon.src|url_encode }}"
-                                                   data-status="{{ status }}"
-                                                   data-add-txt="{{"Ajouter"|trans }}"
-                                                   data-remove-txt="{{"Retirer"|trans }}"
-                                                   data-bs-toggle="tooltip" title="{{ tooltip|raw }}">
-                                                    <div class="inner h-100">
-                                                        {%- set checkClass = inWebsiteIcons ? 'info-darken' : 'd-none' -%}
-                                                        <i class="icm-check"></i>
-                                                        {%- set addClass = not inWebsiteIcons ? 'info-darken' : 'd-none' -%}
-                                                        <i class="icm-plus"></i>
-                                                    </div>
-                                                </a>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
-                                {%- endfor -%}
-                            {%- endif -%}
-                        {%- else -%}
-                            <div class="col-12">
-                                {%- include 'admin/include/alert.html.twig' with {alert: "info", message: "Aucune icône enregistrée."|trans} only -%}
-                            </div>
-                        {%- endfor -%}
-                    </div>
+                                </div>
+                            {%- endfor -%}
+                        {%- endif -%}
+                    {%- else -%}
+                        <div class="col-12">
+                            {%- include 'admin/include/alert.html.twig' with {alert: "info", message: "Aucune icône enregistrée."|trans} only -%}
+                        </div>
+                    {%- endfor -%}
                 </div>
             </div>
         </div>
