@@ -67,7 +67,7 @@ class LinkType extends AbstractType
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                 ],
-                'row_attr' => ['class' => 'col-lg-3'],
+                'row_attr' => ['class' => 'col-12 col-lg-3'],
                 'class' => Catalog::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
@@ -122,45 +122,35 @@ class LinkType extends AbstractType
             $builder->add('mediaRelation', WidgetType\MediaRelationType::class, [
                 'onlyMedia' => true,
                 'data_class' => LinkMediaRelation::class,
-                'attr' => [
-                    'data-config' => true,
-                    'group' => 'col-12',
-                ],
+                'attr' => ['data-config' => true],
+            'row_attr' => ['class' => 'col-12'],
             ]);
 
             $builder->add('icon', WidgetType\IconType::class, [
-                'attr' => [
-                    'class' => 'select-icons',
-                    'group' => 'col-lg-3',
-                    'data-config' => true,
-                ],
+                'attr' => ['class' => 'col-12 select-icons',
+                    'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-lg-3'],
             ]);
 
             if ($this->isInternalUser) {
 
                 $builder->add('color', WidgetType\AppColorType::class, [
-                    'attr' => [
-                        'data-config' => true,
-                        'class' => 'select-icons',
-                        'group' => 'col-lg-3',
-                    ],
+                    'attr' => ['data-config' => true,
+                        'class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-lg-3'],
                 ]);
 
                 $builder->add('backgroundColor', WidgetType\BackgroundColorSelectType::class, [
-                    'attr' => [
-                        'data-config' => true,
-                        'class' => 'select-icons',
-                        'group' => 'col-lg-3',
-                    ],
+                    'attr' => ['data-config' => true,
+                        'class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-lg-3'],
                 ]);
 
                 $builder->add('btnColor', WidgetType\ButtonColorType::class, [
                     'label' => $this->translator->trans('Style de bouton', [], 'admin'),
-                    'attr' => [
-                        'data-config' => true,
-                        'class' => 'select-icons',
-                        'group' => 'col-lg-3',
-                    ],
+                    'attr' => ['data-config' => true,
+                        'class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-lg-3'],
                 ]);
             }
 

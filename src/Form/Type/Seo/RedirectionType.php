@@ -49,7 +49,8 @@ class RedirectionType extends AbstractType
                 'label' => $options['labels'] ? $this->translator->trans('Langue', [], 'admin') : false,
                 'choices' => $locales,
                 'choice_translation_domain' => false,
-                'attr' => ['class' => 'select-icons', 'group' => $options['groups'] ?: 'col-md-3'],
+                'attr' => ['class' => 'col-12 select-icons'],
+            'row_attr' => ['class' => $options['groups'] ?: 'col-md-3'],
                 'choice_attr' => function ($iso, $key, $value) {
                     return [
                         'data-image' => '/medias/icons/flags/'.strtolower($iso).'.svg',
@@ -64,14 +65,14 @@ class RedirectionType extends AbstractType
         } else {
             $builder->add('locale', Type\HiddenType::class, [
                 'data' => $configuration->getLocale(),
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'col-12 form-control'],
             ]);
         }
 
         $oldArguments = [
             'label' => $options['labels'] ? $this->translator->trans('Ancienne URI / URL', [], 'admin') : false,
-            'attr' => [
-                'group' => $options['groups'] ?: ($multiLocales ? 'col-md-4' : 'col-md-6'),
+            
+            'row_attr' => ['class' => $options['groups'] ?: ($multiLocales ? 'col-md-4' : 'col-md-6'),
                 'placeholder' => $this->translator->trans('Saisissez une URI', [], 'admin'),
             ],
             'constraints' => [
@@ -88,8 +89,8 @@ class RedirectionType extends AbstractType
 
         $builder->add('new', Type\TextType::class, [
             'label' => $options['labels'] ? $this->translator->trans('Nouvelle URL', [], 'admin') : false,
-            'attr' => [
-                'group' => $options['groups'] ?: ($multiLocales ? 'col-md-4' : 'col-md-6'),
+            
+            'row_attr' => ['class' => $options['groups'] ?: ($multiLocales ? 'col-md-4' : 'col-md-6'),
                 'placeholder' => $this->translator->trans('Saisissez une nouvelle', [], 'admin'),
             ],
             'constraints' => [
@@ -103,7 +104,7 @@ class RedirectionType extends AbstractType
             $save->add($builder, [
                 'only_save' => true,
                 'as_ajax' => true,
-                'class' => 'btn-info close-modal refresh standard',
+                'class' => 'col-12 btn-info close-modal refresh standard',
             ]);
         }
     }

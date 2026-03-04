@@ -65,7 +65,7 @@ class ProductType extends AbstractType
         $adminName = new WidgetType\AdminNameType($this->coreLocator);
         $adminName->add($builder, [
             'adminNameGroup' => ($isNew && $displayCatalog) || (!$isNew && 'agencies' !== $catalogSlug) ? 'col-lg-9' : 'col-12',
-            'class' => 'refer-code',
+            'class' => 'col-12 refer-code',
         ]);
 
         if ($displayCatalog) {
@@ -76,9 +76,9 @@ class ProductType extends AbstractType
                 'display' => 'basic',
                 'placeholder' => count($catalogs) > 1 ? $this->translator->trans('Sélectionnez', [], 'admin') : false,
                 'attr' => [
-                    'data-placeholder' => count($catalogs) > 1 ? $this->translator->trans('Sélectionnez', [], 'admin') : false,
-                    'group' => 'd-none',
-                ],
+                    'data-placeholder' => count($catalogs) > 1 ? $this->translator->trans('Sélectionnez', [], 'admin') : false
+            ],
+            'row_attr' => ['class' => 'col-12 d-none'],
                 'class' => Catalog::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
@@ -100,10 +100,10 @@ class ProductType extends AbstractType
                     'display' => 'search',
                     'class' => Category::class,
                     'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    'attr' => [
-                        'group' => 'col-12',
-                        'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    ],
+                    'attr' => ['placeholder' => $this->translator->trans('Sélectionnez', [],
+             'admin')
+            ],
+            'row_attr' => ['class' => 'col-12'],
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('c')
                             ->where('c.website = :website')
@@ -120,10 +120,10 @@ class ProductType extends AbstractType
                     'required' => false,
                     'display' => 'search',
                     'class' => Category::class,
-                    'attr' => [
-                        'group' => 'col-12',
-                        'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    ],
+                    'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+             'admin')
+            ],
+            'row_attr' => ['class' => 'col-12'],
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('c')
                             ->where('c.website = :website')
@@ -144,7 +144,8 @@ class ProductType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
-                'attr' => ['group' => 'col-lg-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-lg-3'],
             ]);
         }
 
@@ -156,10 +157,10 @@ class ProductType extends AbstractType
                     'required' => false,
                     'display' => 'search',
                     'class' => SubCategory::class,
-                    'attr' => [
-                        'group' => 'col-12',
-                        'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    ],
+                    'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+             'admin')
+            ],
+            'row_attr' => ['class' => 'col-12'],
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('s')
                             ->leftJoin('s.catalogcategory', 'c')
@@ -183,7 +184,8 @@ class ProductType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
-                    'attr' => ['group' => 'col-lg-2 d-flex align-items-end', 'class' => 'w-100'],
+                    'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-lg-2 d-flex align-items-end'],
                 ]);
             }
 
@@ -218,7 +220,7 @@ class ProductType extends AbstractType
                     ],
                     'required' => false,
                     'display' => 'search',
-                    'row_attr' => ['class' => 'col-lg-3'],
+                    'row_attr' => ['class' => 'col-12 col-lg-3'],
                 ]);
             }
 
@@ -238,28 +240,28 @@ class ProductType extends AbstractType
                             'type' => Type\TextareaType::class,
                             'required' => false,
                             'label' => $this->translator->trans('Réunir', [], 'admin'),
-                            'attr' => [
-                                'group' => 'col-lg-4 editor',
-                                'placeholder' => $this->translator->trans('Saisissez une description', [], 'admin'),
-                            ],
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
                         ],
                         'sympathise' => [
                             'type' => Type\TextareaType::class,
                             'required' => false,
                             'label' => $this->translator->trans('Sympathiser', [], 'admin'),
-                            'attr' => [
-                                'group' => 'col-lg-4 editor',
-                                'placeholder' => $this->translator->trans('Saisissez une description', [], 'admin'),
-                            ],
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
                         ],
                         'impress' => [
                             'type' => Type\TextareaType::class,
                             'required' => false,
                             'label' => $this->translator->trans('Marquer', [], 'admin'),
-                            'attr' => [
-                                'group' => 'col-lg-4 editor',
-                                'placeholder' => $this->translator->trans('Saisissez une description', [], 'admin'),
-                            ],
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
                         ],
                     ];
                 }
@@ -277,7 +279,8 @@ class ProductType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
-                    'attr' => ['group' => 'col-lg-4', 'class' => 'w-100', 'data-config' => true],
+                    'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-lg-4'],
                 ]);
             }
 
@@ -291,7 +294,7 @@ class ProductType extends AbstractType
                 'entry_options' => [
                     'product' => $data,
                     'attr' => [
-                        'class' => 'value',
+                        'class' => 'col-12 value',
                         'data-draggable' => $options['isDraggable'],
                     ],
                     'website' => $this->website,
@@ -307,7 +310,7 @@ class ProductType extends AbstractType
                     'by_reference' => false,
                     'entry_options' => [
                         'attr' => [
-                            'class' => 'lots',
+                            'class' => 'col-12 lots',
                             'disableTitle' => true,
                             'button' => $this->translator->trans('Ajouter un lot', [], 'admin'),
                         ],

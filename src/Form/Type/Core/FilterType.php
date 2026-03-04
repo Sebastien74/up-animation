@@ -74,10 +74,10 @@ class FilterType extends AbstractType
                     $label = $labelTranslation && $labelTranslation !== $filterField ? $labelTranslation : ucfirst($filterField);
                     $arguments = [
                         'label' => $label,
-                        'attr' => [
-                            'group' => $groupClass,
-                            'placeholder' => $this->translator->trans('Saisissez votre recherche', [], 'admin'),
-                        ],
+                        'attr' => ['placeholder' => $this->translator->trans('Saisissez votre recherche', [],
+             'admin')
+            ],
+            'row_attr' => ['class' => 'col-12'],
                         'required' => false,
                     ];
                     if (Filters\BooleanFilterType::class === self::FIELD_TYPES[$mapping['type']]) {

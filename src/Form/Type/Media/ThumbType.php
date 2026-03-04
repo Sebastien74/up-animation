@@ -40,45 +40,47 @@ class ThumbType extends AbstractType
         $sizeFieldType = $isInfinite ? Type\IntegerType::class : Type\HiddenType::class;
 
         $builder->add('dataX', Type\HiddenType::class, [
-            'attr' => ['class' => 'dataX'],
+            'attr' => ['class' => 'col-12 dataX'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
         $builder->add('dataY', Type\HiddenType::class, [
-            'attr' => ['class' => 'dataY'],
+            'attr' => ['class' => 'col-12 dataY'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
         $builder->add('width', $sizeFieldType, [
             'label' => $isInfinite ? $this->translator->trans('Largeur', [], 'admin') : false,
-            'attr' => ['class' => 'dataWidth', 'group' => 'col-md-6 mb-0'],
+            'attr' => ['class' => 'col-12 dataWidth'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 mb-0'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
         $builder->add('height', $sizeFieldType, [
             'label' => $isInfinite ? $this->translator->trans('Hauteur', [], 'admin') : false,
-            'attr' => ['class' => 'dataHeight', 'group' => 'col-md-6 mb-0'],
+            'attr' => ['class' => 'col-12 dataHeight'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 mb-0'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
         $builder->add('rotate', Type\HiddenType::class, [
-            'attr' => ['class' => 'dataRotate'],
+            'attr' => ['class' => 'col-12 dataRotate'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
         $builder->add('scaleX', Type\HiddenType::class, [
-            'attr' => ['class' => 'dataScaleX'],
+            'attr' => ['class' => 'col-12 dataScaleX'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
         $builder->add('scaleY', Type\HiddenType::class, [
-            'attr' => ['class' => 'dataScaleY'],
+            'attr' => ['class' => 'col-12 dataScaleY'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => 'Enregistrer',
-            'attr' => ['class' => 'btn-info'],
+            'attr' => ['class' => 'col-12 btn-info'],
         ]);
     }
 

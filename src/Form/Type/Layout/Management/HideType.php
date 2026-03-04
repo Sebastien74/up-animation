@@ -34,7 +34,8 @@ class HideType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Cacher', [], 'admin'),
-            'attr' => ['group' => 'col-12', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => 'col-12'],
         ]);
     }
 

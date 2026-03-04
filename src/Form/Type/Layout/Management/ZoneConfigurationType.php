@@ -52,20 +52,20 @@ class ZoneConfigurationType extends AbstractType
         $builder->add('customClass', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Classes personnalisées', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-8',
-                'class' => 'input-css',
-                'placeholder' => $this->translator->trans('Éditer', [], 'admin'),
+            'attr' => ['class' => 'col-12 input-css',
+                'placeholder' => $this->translator->trans('Éditer', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
         ]);
 
         $builder->add('customId', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Id personnalisé', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-4',
-                'placeholder' => $this->translator->trans('Éditer', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Éditer', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('idAsAnchor', Type\CheckboxType::class, [
@@ -73,7 +73,8 @@ class ZoneConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Id pour ancre', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $margins = new MarginType($this->coreLocator);
@@ -83,7 +84,8 @@ class ZoneConfigurationType extends AbstractType
         $transitions->add($builder, ['website' => $website]);
 
         $builder->add('alignment', AlignmentType::class, [
-            'attr' => ['group' => $zone->isFullSize() ? 'col-12' : 'col-md-6'],
+            
+            'row_attr' => ['class' => $zone->isFullSize() ? 'col-12' : 'col-md-6'],
         ]);
 
         if (!$zone->isFullSize()) {
@@ -97,7 +99,7 @@ class ZoneConfigurationType extends AbstractType
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                 'choices' => $choices,
                 'display' => 'search',
-                'attr' => ['group' => 'col-md-6'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
         }
 
@@ -106,32 +108,38 @@ class ZoneConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Étendre', [], 'admin'),
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('hideMobile', HideType::class, [
             'label' => $this->translator->trans('Cacher la zone sur mobile', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideTablet', HideType::class, [
             'label' => $this->translator->trans('Cacher la zone sur tablette', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideMiniPc', HideType::class, [
             'label' => $this->translator->trans('Cacher la zone sur mini PC', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideDesktop', HideType::class, [
             'label' => $this->translator->trans('Cacher la zone sur PC', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hide', HideType::class, [
             'label' => $this->translator->trans('Cacher la zone', [], 'admin'),
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $centerColLabel = 1 === $zone->getCols()->count()
@@ -142,7 +150,8 @@ class ZoneConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $centerColLabel,
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $colToRightLabel = 1 === $zone->getCols()->count()
@@ -153,7 +162,8 @@ class ZoneConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $colToRightLabel,
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $colToRightLabel = 1 === $zone->getCols()->count()
@@ -164,7 +174,8 @@ class ZoneConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $colToRightLabel,
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         if ($zone->getCols()->count() > 1) {
@@ -173,7 +184,8 @@ class ZoneConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Uniformiser la largeur des colonnes', [], 'admin'),
-                'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
         }
 
@@ -185,7 +197,8 @@ class ZoneConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Uniformiser la hauteur des médias', [], 'admin'),
-            'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $radiusType = new RadiusType($this->coreLocator);
@@ -197,7 +210,8 @@ class ZoneConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Arrière-plan fixe ?', [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('backgroundParallax', Type\CheckboxType::class, [
@@ -205,7 +219,8 @@ class ZoneConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Arrière-plan avec effet de parallax ?', [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             //			$builder->add('titlePosition', Type\ChoiceType::class, [
@@ -221,7 +236,7 @@ class ZoneConfigurationType extends AbstractType
             //					$this->translator->trans("En en bas à gauche", [], 'admin') => "vertical-bottom-left"
             //				],
             //				'label' => $this->translator->trans("Position du titre", [], 'admin'),
-            //				'attr' => ['group' => 'col-md-4']
+            //				'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4']
             //			]);
 
             $builder->add('zIndex', WidgetType\ZIndexType::class);
@@ -243,7 +258,8 @@ class ZoneConfigurationType extends AbstractType
 
         if ($multiLocales) {
             $builder->add('hideLocales', WebsiteLocalesType::class, [
-                'attr' => ['group' => $this->isInternalUser ? 'col-md-6' : 'col-12'],
+                
+            'row_attr' => ['class' => $this->isInternalUser ? 'col-md-6' : 'col-12'],
             ]);
         }
 
@@ -252,14 +268,14 @@ class ZoneConfigurationType extends AbstractType
             'entry_options' => [
                 'zone' => $builder->getData(),
                 'website' => $website,
-                'attr' => ['class' => 'col-order'],
+                'attr' => ['class' => 'col-12 col-order'],
             ],
         ]);
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
             'attr' => [
-                'class' => 'btn-app edit-element-submit-btn',
+                'class' => 'col-12 btn-app edit-element-submit-btn',
                 'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],

@@ -54,7 +54,8 @@ class ScreensType
                 'label' => isset($options['mobilePositionLabel']) ? $this->translator->trans('Ordre sur mobile', [], 'admin') : false,
                 'display' => 'search',
                 'choices' => $choices,
-                'attr' => ['group' => $options['mobilePositionGroup'] ?? 'col-md-6'],
+                
+            'row_attr' => ['class' => $options['mobilePositionGroup'] ?? 'col-md-6'],
             ]);
 
             $builder->add('tabletPosition', ChoiceType::class, [
@@ -62,7 +63,8 @@ class ScreensType
                 'label' => isset($options['tabletPositionLabel']) ? $this->translator->trans('Ordre sur tablette', [], 'admin') : false,
                 'display' => 'search',
                 'choices' => $choices,
-                'attr' => ['group' => $options['tabletPositionGroup'] ?? 'col-md-6'],
+                
+            'row_attr' => ['class' => $options['tabletPositionGroup'] ?? 'col-md-6'],
             ]);
 
             $builder->add('miniPcPosition', ChoiceType::class, [
@@ -70,7 +72,8 @@ class ScreensType
                 'label' => isset($options['miniPcPositionLabel']) ? $this->translator->trans('Ordre sur mini PC', [], 'admin') : false,
                 'display' => 'search',
                 'choices' => $choices,
-                'attr' => ['group' => $options['miniPcPositionGroup'] ?? 'col-md-6'],
+                
+            'row_attr' => ['class' => $options['miniPcPositionGroup'] ?? 'col-md-6'],
             ]);
         }
 
@@ -85,7 +88,8 @@ class ScreensType
             'required' => false,
             'choices' => $sizeChoices,
             'display' => 'search',
-            'attr' => ['group' => $options['mobileSizeGroup'] ?? 'col-md-6'],
+            
+            'row_attr' => ['class' => $options['mobileSizeGroup'] ?? 'col-md-6'],
         ]);
 
         $builder->add('tabletSize', ChoiceType::class, [
@@ -93,7 +97,8 @@ class ScreensType
             'required' => false,
             'choices' => $sizeChoices,
             'display' => 'search',
-            'attr' => ['group' => $options['tabletSizeGroup'] ?? 'col-md-6'],
+            
+            'row_attr' => ['class' => $options['tabletSizeGroup'] ?? 'col-md-6'],
         ]);
 
         $builder->add('miniPCSize', ChoiceType::class, [
@@ -101,7 +106,8 @@ class ScreensType
             'required' => false,
             'choices' => $sizeChoices,
             'display' => 'search',
-            'attr' => ['group' => $options['miniPCSizeGroup'] ?? 'col-md-6'],
+            
+            'row_attr' => ['class' => $options['miniPCSizeGroup'] ?? 'col-md-6'],
         ]);
     }
 }

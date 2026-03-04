@@ -35,18 +35,18 @@ class FieldValueIntlType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('Label', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un label', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Saisissez un label', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('body', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Valeur', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez une valeur', [], 'admin'),
-                'group' => 'col-md-4 value-group',
+                'placeholder' => $this->translator->trans('Saisissez une valeur', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4 value-group'],
         ]);
     }
 

@@ -37,7 +37,7 @@ class LayoutType extends AbstractType
                 $this->translator->trans('Carrousel', [], 'admin') => 'slider',
                 $this->translator->trans('Mini-fiches', [], 'admin') => 'cards',
             ],
-            'row_attr' => ['class' => 'col-lg-4'],
+            'row_attr' => ['class' => 'col-12 col-lg-4'],
             'display' => 'search',
         ]);
     }

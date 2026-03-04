@@ -75,18 +75,18 @@ class SearchType extends AbstractType
                 'choice_label' => function ($entity) {
                     return strip_tags($entity->getAdminName());
                 },
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('itemsPerPage', Type\IntegerType::class, [
                 'label' => $this->translator->trans('Nombre de résultats par page', [], 'admin'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('orderBy', Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Ordonner par', [], 'admin'),
                 'display' => 'search',
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => [
                     $this->translator->trans('Pertinence', [], 'admin') => 'score',
                     $this->translator->trans('Dates (croissantes)', [], 'admin') => 'date-asc',
@@ -97,7 +97,7 @@ class SearchType extends AbstractType
             $builder->add('searchType', Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Type de recherche', [], 'admin'),
                 'display' => 'search',
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => [
                     $this->translator->trans('Phrase saisie', [], 'admin') => 'sentence',
                     $this->translator->trans('Tous les mots', [], 'admin') => 'words',
@@ -107,7 +107,7 @@ class SearchType extends AbstractType
             $builder->add('mode', Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Mode de recherche', [], 'admin'),
                 'display' => 'search',
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => [
                     $this->translator->trans('Boolean', [], 'admin') => 'boolean',
                     $this->translator->trans('Language', [], 'admin') => 'language',
@@ -129,7 +129,8 @@ class SearchType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher les résulats par groupes', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('modal', Type\CheckboxType::class, [
@@ -137,7 +138,8 @@ class SearchType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher une modal', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('registerSearch', Type\CheckboxType::class, [
@@ -145,7 +147,8 @@ class SearchType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Enregistrer les recherches', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('scrollInfinite', Type\CheckboxType::class, [
@@ -153,7 +156,8 @@ class SearchType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Scroll infinite', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('counter', Type\CheckboxType::class, [
@@ -161,7 +165,8 @@ class SearchType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Activer le compteur de résultats', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 

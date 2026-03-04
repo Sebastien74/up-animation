@@ -46,9 +46,8 @@ class AddressType extends AbstractType
             $builder->add('name', Type\TextType::class, [
                 'label' => !empty($labels['name']) ? $labels['name'] : $this->translator->trans('Raison sociale', [], 'admin'),
                 'required' => false,
-                'attr' => [
-                    'group' => $multiLocales ? 'col-md-9' : 'col-12',
-                    'placeholder' => $this->translator->trans('Saisissez une raison sociale', [], 'admin'),
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une raison sociale', [],
+            'row_attr' => ['class' => $multiLocales ? 'col-md-9' : 'col-12'], 'admin'),
                 ],
             ]);
         }
@@ -59,7 +58,8 @@ class AddressType extends AbstractType
                 'display' => 'search',
                 'choices' => $locales,
                 'choice_translation_domain' => false,
-                'attr' => ['class' => 'select-icons', 'group' => 'col-md-3'],
+                'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choice_attr' => function ($iso, $key, $value) {
                     return [
                         'data-image' => '/medias/icons/flags/'.strtolower($iso).'.svg',
@@ -100,10 +100,10 @@ class AddressType extends AbstractType
             $builder->add('address', Type\TextType::class, [
                 'label' => !empty($labels['address']) ? $labels['address'] : $this->translator->trans('Adresse', [], 'admin'),
                 'required' => false,
-                'attr' => [
-                    'group' => 'col-md-9',
-                    'placeholder' => $this->translator->trans('Saisissez une adresse', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une adresse', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
             ]);
         }
 
@@ -111,10 +111,10 @@ class AddressType extends AbstractType
             $builder->add('zipCode', Type\TextType::class, [
                 'label' => !empty($labels['zipCode']) ? $labels['zipCode'] : $this->translator->trans('Code postal', [], 'admin'),
                 'required' => false,
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'placeholder' => $this->translator->trans('Saisissez un code postal', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez un code postal', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Validator\ZipCode()],
             ]);
         }
@@ -123,10 +123,10 @@ class AddressType extends AbstractType
             $builder->add('city', Type\TextType::class, [
                 'label' => !empty($labels['city']) ? $labels['city'] : $this->translator->trans('Ville', [], 'admin'),
                 'required' => false,
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'placeholder' => $this->translator->trans('Saisissez une ville', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une ville', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 
@@ -134,10 +134,10 @@ class AddressType extends AbstractType
             $builder->add('department', Type\TextType::class, [
                 'label' => !empty($labels['department']) ? $labels['department'] : $this->translator->trans('Département', [], 'admin'),
                 'required' => false,
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'placeholder' => $this->translator->trans('Saisissez une département', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une département', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 
@@ -145,10 +145,10 @@ class AddressType extends AbstractType
             $builder->add('region', Type\TextType::class, [
                 'label' => !empty($labels['region']) ? $labels['region'] : $this->translator->trans('Région', [], 'admin'),
                 'required' => false,
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'placeholder' => $this->translator->trans('Saisissez une région', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une région', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 
@@ -158,7 +158,7 @@ class AddressType extends AbstractType
                 'required' => false,
                 'display' => 'search',
                 'placeholder' => $this->translator->trans('Sélectionnez un pays', [], 'admin'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 
@@ -183,7 +183,7 @@ class AddressType extends AbstractType
                 'by_reference' => false,
                 'entry_options' => [
                     'attr' => [
-                        'class' => 'address-phone',
+                        'class' => 'col-12 address-phone',
                         'icon' => 'phone',
                         'caption' => $this->translator->trans('Numéro de téléphone', [], 'admin'),
                         'button' => $this->translator->trans('Ajouter un numéro', [], 'admin'),
@@ -201,13 +201,13 @@ class AddressType extends AbstractType
                 'prototype' => true,
                 'by_reference' => false,
                 'entry_options' => [
-                    'attr' => [
-                        'group' => 'col-md-3',
-                        'class' => 'address-email',
+                    'attr' => ['class' => 'col-12 address-email',
                         'icon' => 'at',
-                        'caption' => $this->translator->trans('E-mails', [], 'admin'),
-                        'button' => $this->translator->trans('Ajouter un e-mail', [], 'admin'),
-                    ],
+                        'caption' => $this->translator->trans('E-mails', [],
+                 'admin'),
+                        'button' => $this->translator->trans('Ajouter un e-mail', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     'website' => $options['website'],
                 ],
             ]);

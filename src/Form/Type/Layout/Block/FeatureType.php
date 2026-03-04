@@ -40,7 +40,7 @@ class FeatureType extends AbstractType
             'label' => $this->translator->trans('Caractéristique', [], 'admin'),
             'mapped' => false,
             'data' => $feature,
-            'attr' => ['group' => 'col-md-4 mb-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4 mb-4'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 

@@ -38,7 +38,10 @@ class CalendarAppointmentType extends AbstractType
 
         $builder->add('appointmentDate', Type\DateTimeType::class, [
             'label' => $this->translator->trans('Heure du rendez-vous', [], 'admin'),
-            'attr' => ['group' => 'col-md-3'],
+            'attr' => [
+                
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 

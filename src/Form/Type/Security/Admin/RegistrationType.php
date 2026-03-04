@@ -72,7 +72,7 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un mot de passe', [], 'security_cms'),
-                    'class' => 'password-checker',
+                    'class' => 'col-12 password-checker',
                 ],
                 'constraints' => [new Assert\NotBlank()],
             ],
@@ -88,7 +88,7 @@ class RegistrationType extends AbstractType
         $builder->add('agreeTerms', Type\CheckboxType::class, [
             'label' => $this->translator->trans('Conditions générales', [], 'security_cms'),
             'attr' => [
-                'class' => 'pt-2 pb-2 material',
+                'class' => 'col-12 pt-2 pb-2 material',
             ],
         ]);
     }

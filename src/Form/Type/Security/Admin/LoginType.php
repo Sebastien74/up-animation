@@ -52,7 +52,7 @@ class LoginType extends AbstractType
                 'autocomplete' => 'off',
                 'autofocus' => false,
             ],
-            'row_attr' => ['class' => 'form-floating'],
+            'row_attr' => ['class' => 'col-12 form-floating'],
             'constraints' => $constraints,
         ]);
 
@@ -63,7 +63,7 @@ class LoginType extends AbstractType
                 'autocomplete' => 'off',
                 'autofocus' => false,
             ],
-            'row_attr' => ['class' => 'form-floating'],
+            'row_attr' => ['class' => 'col-12 form-floating'],
             'constraints' => [new NotBlank()],
         ]);
 
@@ -77,10 +77,10 @@ class LoginType extends AbstractType
             'mapped' => false,
             'label' => $this->translator->trans('Valeur'),
             'required' => true,
-            'label_attr' => ['class' => 'd-none'],
+            'label_attr' => ['class' => 'col-12 d-none'],
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une valeur', [], 'security_cms'),
-                'class' => 'form-field-none field_ho',
+                'class' => 'col-12 form-field-none field_ho',
                 'autocomplete' => 'off',
             ],
         ]);
@@ -88,10 +88,10 @@ class LoginType extends AbstractType
         $builder->add('field_ho_entitled', Type\TextType::class, [
             'mapped' => false,
             'label' => $this->translator->trans('Intitulé'),
-            'label_attr' => ['class' => 'd-none'],
+            'label_attr' => ['class' => 'col-12 d-none'],
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un intitulé', [], 'security_cms'),
-                'class' => 'form-field-none',
+                'class' => 'col-12 form-field-none',
                 'autocomplete' => 'off',
             ],
         ]);
@@ -99,7 +99,7 @@ class LoginType extends AbstractType
         $builder->add('submit', Type\SubmitType::class, [
             'label' => $this->translator->trans('Se connecter', [], 'security_cms'),
             'attr' => [
-                'class' => 'btn-app w-100 center',
+                'class' => 'col-12 btn-app w-100 center',
                 'data-icon' => 'sign-in',
                 'data-icon-side' => 'left',
             ],

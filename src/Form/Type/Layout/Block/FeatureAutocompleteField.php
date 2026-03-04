@@ -40,7 +40,8 @@ class FeatureAutocompleteField extends AbstractType
             'no_results_found_text' => $this->translator->trans('Aucun résultat trouvé', [], 'admin'),
             'no_more_results_text' => $this->translator->trans('Aucun résultat trouvé', [], 'admin'),
             'min_characters' => null,
-            'attr' => ['group' => 'mb-0'],
+            
+            'row_attr' => ['class' => 'col-12 mb-0'],
             'data' => null, // Option pour récupérer l'objet passé
             'choice_label' => fn ($entity) => strip_tags($entity->getAdminName()),
             'multiple' => false,

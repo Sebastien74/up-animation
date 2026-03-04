@@ -39,9 +39,9 @@ class RoleType extends AbstractType
         $builder->add('name', Type\TextType::class, [
             'label' => $this->translator->trans('Code', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un code', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Saisissez un code', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 

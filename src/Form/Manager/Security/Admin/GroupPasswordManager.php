@@ -41,10 +41,10 @@ class GroupPasswordManager
     {
         $plainPassword = $form->get('plainPassword')->getData();
 
-        $usersBack = $this->entityManager->getRepository(User::class)->findBy(['group' => $group]);
+        $usersBack = $this->entityManager->getRepository(User::class)->findBy(['row_attr' => ['class' => 'col-12'],]);
         $this->setPasswords($usersBack, $plainPassword);
 
-        $usersFront = $this->entityManager->getRepository(UserFront::class)->findBy(['group' => $group]);
+        $usersFront = $this->entityManager->getRepository(UserFront::class)->findBy(['row_attr' => ['class' => 'col-12'],]);
         $this->setPasswords($usersFront, $plainPassword);
 
         $this->entityManager->persist($group);

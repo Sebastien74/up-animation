@@ -74,7 +74,7 @@ class PageType extends AbstractType
         $adminName->add($builder, [
             'adminNameGroup' => $isNew ? 'col-md-4' : ($this->isInternalUser ? 'col-sm-9' : 'col-12'),
             'slug-internal' => $this->isInternalUser,
-            'class' => 'refer-code',
+            'class' => 'col-12 refer-code',
         ]);
 
         if (!$page->isInfill()) {
@@ -97,7 +97,7 @@ class PageType extends AbstractType
                     'choice_label' => function ($page) {
                         return strip_tags($page->getAdminName());
                     },
-                    'row_attr' => ['class' => 'col-md-4'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
             }
 
@@ -106,7 +106,8 @@ class PageType extends AbstractType
                 'label' => $this->translator->trans('Template', [], 'admin'),
                 'display' => 'search',
                 'choices' => $this->getTemplates($page),
-                'attr' => ['group' => $templateClass, 'data-config' => true],
+                'attr' => ['data-config' => true],
+            'row_attr' => ['class' => 'col-12'],
             ]);
 
             if (!$isNew) {
@@ -123,7 +124,8 @@ class PageType extends AbstractType
                         'display' => 'button',
                         'color' => 'app',
                         'label' => $this->translator->trans('Afficher dans le menu', [], 'admin'),
-                        'attr' => ['group' => $secureActive ? 'col-md-4 text-center' : 'col-md-6 text-center', 'class' => 'w-100'],
+                        'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => $secureActive ? 'col-md-4 text-center' : 'col-md-6 text-center'],
                     ]);
                 }
 
@@ -132,7 +134,8 @@ class PageType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Page intercalaire', [], 'admin'),
-                    'attr' => ['group' => $secureActive && $mainMenu ? 'col-md-4 text-center' : 'col-md-6 text-center', 'class' => 'w-100'],
+                    'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => $secureActive && $mainMenu ? 'col-md-4 text-center' : 'col-md-6 text-center'],
                 ]);
             }
 
@@ -142,7 +145,8 @@ class PageType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Page sécurisée', [], 'admin'),
-                    'attr' => ['group' => !$mainMenu ? 'col-md-6 text-center' : 'col-md-4 text-center', 'class' => 'w-100'],
+                    'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => 'col-12 !$mainMenu ?'col-md-12 col-lg-6 text-center' : 'col-md-12 col-lg-6 text-center'],
                 ]);
             }
 
@@ -171,11 +175,9 @@ class PageType extends AbstractType
                 if ($this->haveBackgroundsRole) {
                     $builder->add('backgroundColor', WidgetType\BackgroundColorSelectType::class, [
                         'label' => $this->translator->trans('Couleur de fond', [], 'admin'),
-                        'attr' => [
-                            'data-config' => true,
-                            'class' => 'select-icons',
-                            'group' => 'col-md-6',
-                        ],
+                        'attr' => ['data-config' => true,
+                            'class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                         'display' => 'search'
                     ]);
                 }
@@ -185,7 +187,8 @@ class PageType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans("Page d'accueil", [], 'admin'),
-                    'attr' => ['data-config' => true, 'group' => 'col-md-6', 'class' => 'w-100'],
+                    'attr' => ['data-config' => true, 'class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 ]);
 
                 $builder->add('infill', Type\CheckboxType::class, [
@@ -193,11 +196,12 @@ class PageType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Page intercalaire', [], 'admin'),
-                    'attr' => ['data-config' => true, 'group' => 'col-md-6', 'class' => 'w-100'],
+                    'attr' => ['data-config' => true, 'class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 ]);
 
                 $builder->add('pictogram', WidgetType\PictogramType::class, [
-                    'attr' => ['group' => 'col-md-6'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 ]);
 
                 if ($secureActive) {
@@ -206,7 +210,8 @@ class PageType extends AbstractType
                         'display' => 'button',
                         'color' => 'app',
                         'label' => $this->translator->trans('Page sécurisée', [], 'admin'),
-                        'attr' => ['data-config' => true, 'group' => 'col-md-6', 'class' => 'w-100'],
+                        'attr' => ['data-config' => true, 'class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                     ]);
                 }
 
@@ -229,7 +234,8 @@ class PageType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Page intercalaire', [], 'admin'),
-                'attr' => ['group' => 'col-md-3 text-center', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 text-center'],
             ]);
 
             if ($secureActive) {
@@ -238,7 +244,8 @@ class PageType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Page sécurisée', [], 'admin'),
-                    'attr' => ['group' => 'col-md-3 text-center', 'class' => 'w-100'],
+                    'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 text-center'],
                 ]);
             }
         }

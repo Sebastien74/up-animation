@@ -26,7 +26,7 @@ class WebsiteRedirectionType extends AbstractType
             'prototype' => true,
             'by_reference' => false,
             'entry_options' => [
-                'attr' => ['class' => 'redirection'],
+                'attr' => ['class' => 'col-12 redirection'],
                 'website' => $options['website'],
             ],
         ]);

@@ -53,26 +53,27 @@ class ColConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Toute la largeur', [], 'admin'),
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('customClass', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Classes personnalisées', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-8',
-                'class' => 'input-css',
-                'placeholder' => $this->translator->trans('Éditer', [], 'admin'),
+            'attr' => ['class' => 'col-12 input-css',
+                'placeholder' => $this->translator->trans('Éditer', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
         ]);
 
         $builder->add('customId', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Id personnalisé', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-4',
-                'placeholder' => $this->translator->trans('Éditer', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Éditer', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         if ($this->isInternalUser) {
@@ -89,7 +90,8 @@ class ColConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Centrer verticalement le contenu colonne', [], 'admin'),
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('endAlign', Type\CheckboxType::class, [
@@ -97,7 +99,8 @@ class ColConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Aligner en bas de la colonne', [], 'admin'),
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('reverse', Type\CheckboxType::class, [
@@ -105,7 +108,8 @@ class ColConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Afficher la colonne en première position sur mobile', [], 'admin'),
-            'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('sticky', Type\CheckboxType::class, [
@@ -113,27 +117,32 @@ class ColConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Colonne fixe', [], 'admin'),
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('hideMobile', HideType::class, [
             'label' => $this->translator->trans('Cacher la colonne sur mobile', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideTablet', HideType::class, [
             'label' => $this->translator->trans('Cacher la colonne sur tablette', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideMiniPc', HideType::class, [
             'label' => $this->translator->trans('Cacher la colonne sur mini PC', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideDesktop', HideType::class, [
             'label' => $this->translator->trans('Cacher la colonne sur PC', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hide', Type\CheckboxType::class, [
@@ -141,7 +150,8 @@ class ColConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Cacher la colonne', [], 'admin'),
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $ordersSizes = new ScreensType($this->coreLocator);
@@ -163,7 +173,7 @@ class ColConfigurationType extends AbstractType
         ]);
 
         $builder->add('alignment', AlignmentType::class, [
-            'attr' => ['group' => 'col-md-6'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('elementsAlignment', Type\ChoiceType::class, [
@@ -176,7 +186,7 @@ class ColConfigurationType extends AbstractType
                 $this->translator->trans('Centré', [], 'admin') => 'd-flex justify-content-center',
                 $this->translator->trans('À droite', [], 'admin') => 'd-flex justify-content-end',
             ],
-            'attr' => ['group' => 'col-md-6'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         if ($multiLocales) {
@@ -194,14 +204,14 @@ class ColConfigurationType extends AbstractType
             'entry_options' => [
                 'col' => $builder->getData(),
                 'website' => $website,
-                'attr' => ['class' => 'col-order'],
+                'attr' => ['class' => 'col-12 col-order'],
             ],
         ]);
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
             'attr' => [
-                'class' => 'btn-app edit-element-submit-btn',
+                'class' => 'col-12 btn-app edit-element-submit-btn',
                 'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],

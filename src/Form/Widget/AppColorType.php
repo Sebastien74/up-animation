@@ -44,7 +44,7 @@ class AppColorType extends AbstractType
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'choices' => $this->getColors(),
             'attr' => [
-                'class' => 'select-icons',
+                'class' => 'col-12 select-icons',
             ],
             'choice_attr' => function ($color, $key, $value) {
                 return [

@@ -67,7 +67,8 @@ class PeriodType extends AbstractType
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
-            'attr' => ['class' => 'btn-info ajax-post close-modal refresh', 'group' => 'mt-4 col-12 text-center'],
+            'attr' => ['class' => 'col-12 btn-info ajax-post close-modal refresh'],
+            'row_attr' => ['class' => 'col-12 mt-4 text-center'],
         ]);
     }
 

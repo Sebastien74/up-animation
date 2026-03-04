@@ -53,7 +53,10 @@ class GroupType extends AbstractType
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                 'display' => 'search',
                 'choices' => $this->getRoutes(),
-                'attr' => ['group' => 'col-md-3'],
+                'attr' => [
+                
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 

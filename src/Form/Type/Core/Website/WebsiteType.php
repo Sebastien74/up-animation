@@ -69,9 +69,9 @@ class WebsiteType extends AbstractType
                 'mapped' => false,
                 'display' => 'search',
                 'attr' => [
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    'group' => 'col-md-3',
-                ],
+                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => $this->getConfigFiles(),
                 'constraints' => [new Assert\NotBlank()],
             ]);
@@ -90,7 +90,7 @@ class WebsiteType extends AbstractType
                 'choice_label' => function ($entity) {
                     return strip_tags($entity->getAdminName());
                 },
-                'attr' => ['group' => 'col-md-4 mx-auto'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4 mx-auto'],
             ]);
         }
 

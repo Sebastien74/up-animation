@@ -45,9 +45,9 @@ class ThumbActionType extends AbstractType
         $builder->add('adminName', Type\TextType::class, [
             'label' => $this->translator->trans('Intitulé', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un intitulé', [], 'admin'),
-                'group' => 'col-md-8',
+                'placeholder' => $this->translator->trans('Saisissez un intitulé', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
         ]);
 
         $builder->add('namespace', Type\ChoiceType::class, [
@@ -55,9 +55,7 @@ class ThumbActionType extends AbstractType
             'choices' => $this->getNamespaces(),
             'display' => 'search',
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-4',
-            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
@@ -67,18 +65,16 @@ class ThumbActionType extends AbstractType
             'display' => 'search',
             'choices' => $this->getActions(),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-4',
-            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('actionFilter', Type\TextType::class, [
             'label' => $this->translator->trans('Filtre (id ou slug)', [], 'admin'),
             'required' => false,
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('blockType', EntityType::class, [
@@ -86,7 +82,7 @@ class ThumbActionType extends AbstractType
             'required' => false,
             'display' => 'search',
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            'attr' => ['group' => 'col-md-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'class' => BlockType::class,
             'query_builder' => function (EntityRepository $er) {
                 $slugs = ['title-header', 'modal', 'media', 'card', 'video'];

@@ -53,12 +53,10 @@ class FrontFiltersType extends AbstractType
             'display' => $isInline ? 'inline' : 'search',
             'class' => Category::class,
             'data' => !empty($filters['category']) ? $filters['category'] : null,
-            'attr' => [
-                'class' => $isInline ? 'form-check form-check-inline p-0 m-0' : '',
-                'group' => 'col-12 col-md-4 mb-0',
+            'attr' => ['class' => $isInline ? 'form-check form-check-inline p-0 m-0' : '',
                 'reset-btn' => false,
-                'display-label' => $isInline,
-            ],
+                'display-label' => $isInline],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4 mb-0'],
             'choice_label' => function ($entity) {
                 $entity = EntityModel::fromEntity($entity, $this->coreLocator, ['disabledMedias' => true, 'disabledLayout' => true])->response;
                 return strip_tags($entity->intl->title);

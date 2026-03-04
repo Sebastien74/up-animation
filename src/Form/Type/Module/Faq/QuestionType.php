@@ -70,7 +70,8 @@ class QuestionType extends AbstractType
             ]);
 
             $builder->add('pictogram', WidgetType\PictogramType::class, [
-                'attr' => ['group' => 'col-12'],
+                
+            'row_attr' => ['class' => 'col-12'],
             ]);
         }
 

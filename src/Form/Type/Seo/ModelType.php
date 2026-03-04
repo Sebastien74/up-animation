@@ -36,7 +36,7 @@ class ModelType extends AbstractType
             'counter' => 60,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin'),
-                'class' => 'meta-title',
+                'class' => 'col-12 meta-title',
             ],
             'required' => false,
         ]);
@@ -45,7 +45,7 @@ class ModelType extends AbstractType
             'label' => $this->translator->trans('Méta titre (après le tiret)', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin'),
-                'class' => 'meta-title-second',
+                'class' => 'col-12 meta-title-second',
             ],
             'required' => false,
         ]);
@@ -56,7 +56,7 @@ class ModelType extends AbstractType
             'editor' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Éditez une description', [], 'admin'),
-                'class' => 'meta-description',
+                'class' => 'col-12 meta-description',
             ],
             'required' => false,
         ]);
@@ -66,7 +66,7 @@ class ModelType extends AbstractType
             'editor' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Éditez une description', [], 'admin'),
-                'class' => 'footer-description',
+                'class' => 'col-12 footer-description',
             ],
             'required' => false,
         ]);
@@ -76,7 +76,8 @@ class ModelType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Désactiver après tiret', [], 'admin'),
-            'attr' => ['group' => 'col-12', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => 'col-12'],
         ]);
 
         $builder->add('metaOgTitle', Type\TextType::class, [
@@ -84,7 +85,7 @@ class ModelType extends AbstractType
             'counter' => 60,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin'),
-                'class' => 'meta-og-title',
+                'class' => 'col-12 meta-og-title',
             ],
             'required' => false,
         ]);
@@ -95,7 +96,7 @@ class ModelType extends AbstractType
             'editor' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Éditez une description', [], 'admin'),
-                'class' => 'meta-og-description',
+                'class' => 'col-12 meta-og-description',
             ],
             'required' => false,
         ]);

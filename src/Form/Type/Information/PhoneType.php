@@ -96,7 +96,7 @@ class PhoneType extends AbstractType
                 'display' => 'search',
                 'choices' => $locales,
                 'choice_translation_domain' => false,
-                'attr' => ['class' => 'select-icons'],
+                'attr' => ['class' => 'col-12 select-icons'],
                 'choice_attr' => function ($iso, $key, $value) {
                     return [
                         'data-image' => '/medias/icons/flags/'.strtolower($iso).'.svg',

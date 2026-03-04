@@ -36,17 +36,17 @@ class InstagramType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('API token', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez le token', [], 'admin'),
-                'group' => 'col-md-8',
+                'placeholder' => $this->translator->trans('Saisissez le token', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
         ]);
 
         $builder->add('nbrItems', Type\IntegerType::class, [
             'label' => $this->translator->trans('Nombre de posts', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
     }
 

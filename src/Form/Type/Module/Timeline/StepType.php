@@ -34,7 +34,7 @@ class StepType extends AbstractType
         $adminName = new WidgetType\AdminNameType($this->coreLocator);
         $adminName->add($builder, [
             'slug' => true,
-            'class' => 'refer-code',
+            'class' => 'col-12 refer-code',
         ]);
 
         if (!$isNew) {

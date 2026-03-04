@@ -34,7 +34,7 @@ class FrontType extends AbstractType
             'label' => false,
             'data' => $options['field_data'],
             'attr' => [
-                'class' => 'border-primary',
+                'class' => 'col-12 border-primary',
                 'placeholder' => $this->translator->trans('Saisissez votre recherche', [], 'front_form'),
             ],
         ]);

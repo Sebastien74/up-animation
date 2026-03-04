@@ -42,7 +42,7 @@ class SeoType extends AbstractType
             'counter' => 55,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin'),
-                'class' => 'meta-title refer-code',
+                'class' => 'col-12 meta-title refer-code',
             ],
             'required' => false,
         ]);
@@ -51,7 +51,7 @@ class SeoType extends AbstractType
             'label' => $this->translator->trans('Méta titre (après le tiret)', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin'),
-                'class' => 'meta-title-second',
+                'class' => 'col-12 meta-title-second',
             ],
             'required' => false,
         ]);
@@ -62,7 +62,7 @@ class SeoType extends AbstractType
             'editor' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Éditez une description', [], 'admin'),
-                'class' => 'meta-description',
+                'class' => 'col-12 meta-description',
             ],
             'required' => false,
         ]);
@@ -71,7 +71,7 @@ class SeoType extends AbstractType
             'label' => $this->translator->trans('URI Canonique', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URI', [], 'admin'),
-                'class' => 'meta-canonical',
+                'class' => 'col-12 meta-canonical',
             ],
             'help' => $this->translator->trans('Sans le nom de domaine Ex: /my-page-url', [], 'admin'),
             'required' => false,
@@ -90,7 +90,8 @@ class SeoType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Désactiver après tiret', [], 'admin'),
-            'attr' => ['group' => 'col-12', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => 'col-12'],
         ]);
 
         $fields = ['code', 'hideInSitemap' => 'col-md-6', 'online', 'asIndex' => 'col-md-6'];
@@ -106,7 +107,7 @@ class SeoType extends AbstractType
             'counter' => 55,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin'),
-                'class' => 'meta-og-title',
+                'class' => 'col-12 meta-og-title',
             ],
             'help' => $this->translator->trans('La méta "après tiret" ne sera pas prise en compte', [], 'admin'),
             'required' => false,
@@ -118,7 +119,7 @@ class SeoType extends AbstractType
             'editor' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Éditez une description', [], 'admin'),
-                'class' => 'meta-og-description',
+                'class' => 'col-12 meta-og-description',
             ],
             'required' => false,
         ]);
@@ -149,7 +150,7 @@ class SeoType extends AbstractType
             'editor' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Éditez une description', [], 'admin'),
-                'class' => 'footer-description',
+                'class' => 'col-12 footer-description',
             ],
             'required' => false,
         ]);
@@ -166,9 +167,9 @@ class SeoType extends AbstractType
             $builder->add('authorType', Type\TextType::class, [
                 'label' => $this->translator->trans("Type d'auteur", [], 'admin'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez un type', [], 'admin'),
-                    'group' => 'col-12',
-                ],
+                    'placeholder' => $this->translator->trans('Saisissez un type', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12'],
                 'required' => false,
             ]);
 
@@ -177,9 +178,10 @@ class SeoType extends AbstractType
                 'editor' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un script', [], 'admin'),
-                    'group' => 'col-12',
-                    'class' => 'metadata',
-                ],
+                    
+                    'class' => 'col-12 metadata'
+            ],
+            'row_attr' => ['class' => 'col-12'],
                 'help' => $this->translator->trans('Sans la balise <code>&lt;script></code>', [], 'admin'),
                 'required' => false,
             ]);

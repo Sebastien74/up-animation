@@ -35,9 +35,9 @@ class LotType extends AbstractType
         $builder->add('reference', Type\TextType::class, [
             'label' => $this->translator->trans('Lot N°', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez une référence', [], 'admin'),
-                'group' => 'col-md-2',
+                'placeholder' => $this->translator->trans('Saisissez une référence', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
@@ -45,36 +45,36 @@ class LotType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('Type', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez une type', [], 'admin'),
-                'group' => 'col-md-2',
+                'placeholder' => $this->translator->trans('Saisissez une type', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
         ]);
 
         $builder->add('surface', Type\NumberType::class, [
             'required' => false,
             'label' => $this->translator->trans('Surface', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez une surface', [], 'admin'),
-                'group' => 'col-md-2',
+                'placeholder' => $this->translator->trans('Saisissez une surface', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
         ]);
 
         $builder->add('balconySurface', Type\NumberType::class, [
             'required' => false,
             'label' => $this->translator->trans('Surface (Balcon/Terrasse)', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez une surface', [], 'admin'),
-                'group' => 'col-md-2',
+                'placeholder' => $this->translator->trans('Saisissez une surface', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
         ]);
 
         $builder->add('price', Type\NumberType::class, [
             'required' => false,
             'label' => $this->translator->trans('Prix', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un prix', [], 'admin'),
-                'group' => 'col-md-2',
+                'placeholder' => $this->translator->trans('Saisissez un prix', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
         ]);
 
         $builder->add('sold', Type\CheckboxType::class, [
@@ -82,7 +82,8 @@ class LotType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Vendu', [], 'admin'),
-            'attr' => ['group' => 'col-md-2 d-flex align-items-end', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 d-flex align-items-end'],
         ]);
     }
 

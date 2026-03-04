@@ -48,9 +48,9 @@ class BackgroundColorColType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Code couleur', [], 'admin'),
-                    'class' => 'colorpicker',
-                    'group' => 'col-12 mb-3 mt-3',
-                ],
+                    'class' => 'col-12 colorpicker'
+            ],
+            'row_attr' => ['class' => 'col-12 mb-3 mt-3'],
             ]);
         }
 
@@ -59,10 +59,8 @@ class BackgroundColorColType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Toute la largeur', [], 'admin'),
-            'attr' => [
-                'group' => $this->isInternalUser ? 'text-center mb-0' : 'text-center mt-4 mb-0',
-                'class' => 'w-100',
-            ],
+            'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => $this->isInternalUser ? 'text-center mb-0' : 'text-center mt-4 mb-0'],
         ]);
 
         $builder->add('backgroundFullHeight', Type\CheckboxType::class, [
@@ -70,16 +68,14 @@ class BackgroundColorColType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Toute la hauteur', [], 'admin'),
-            'attr' => [
-                'group' => 'text-center mt-2 mb-0',
-                'class' => 'w-100',
-            ],
+            'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => 'col-12 text-center mt-2 mb-0'],
         ]);
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
             'attr' => [
-                'class' => 'btn-app edit-element-submit-btn',
+                'class' => 'col-12 btn-app edit-element-submit-btn',
                 'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],

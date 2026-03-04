@@ -48,53 +48,64 @@ class CalendarType extends AbstractType
         if (!$isNew) {
             $builder->add('daysPerPage', Type\IntegerType::class, [
                 'label' => $this->translator->trans('Nombre de jour par page', [], 'admin'),
-                'attr' => ['data-config' => true, 'group' => 'col-md-3', 'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin')],
+                'attr' => ['data-config' => true, 'placeholder' => $this->translator->trans('Saisissez un chiffre', [],
+                 'admin')],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
 
             $builder->add('frequency', Type\IntegerType::class, [
                 'label' => $this->translator->trans('Fréquence', [], 'admin'),
-                'attr' => ['data-config' => true, 'group' => 'col-md-3', 'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin')],
+                'attr' => ['data-config' => true, 'placeholder' => $this->translator->trans('Saisissez un chiffre', [],
+                 'admin')],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
 
             $builder->add('minHours', Type\IntegerType::class, [
                 'required' => false,
                 'label' => $this->translator->trans("Nombre d'heures minimum avant RDV", [], 'admin'),
-                'attr' => ['data-config' => true, 'group' => 'col-md-3', 'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin')],
+                'attr' => ['data-config' => true, 'placeholder' => $this->translator->trans('Saisissez un chiffre', [],
+                 'admin')],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('maxHours', Type\IntegerType::class, [
                 'required' => false,
                 'label' => $this->translator->trans("Nombre d'heures maximum avant RDV", [], 'admin'),
-                'attr' => ['data-config' => true, 'group' => 'col-md-3', 'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin')],
+                'attr' => ['data-config' => true, 'placeholder' => $this->translator->trans('Saisissez un chiffre', [],
+                 'admin')],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('startHour', Type\TimeType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Heure de début', [], 'admin'),
-                'attr' => ['data-config' => true, 'group' => 'col-md-2'],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             ]);
 
             $builder->add('endHour', Type\TimeType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Heure de fin', [], 'admin'),
-                'attr' => ['data-config' => true, 'group' => 'col-md-2'],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             ]);
 
             $builder->add('receivingEmails', WidgetType\TagInputType::class, [
                 'label' => $this->translator->trans('E-mails de réception', [], 'admin'),
                 'required' => false,
-                'attr' => [
-                    'data-config' => true,
-                    'group' => 'col-md-8',
-                    'placeholder' => $this->translator->trans('Ajouter des e-mails', [], 'admin'),
-                ],
+                'attr' => ['data-config' => true,
+                    'placeholder' => $this->translator->trans('Ajouter des e-mails', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
             ]);
 
             $builder->add('controls', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Activer les boutons de controles ?', [], 'admin'),
-                'attr' => ['data-config' => true, 'group' => 'col-md-3'],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
@@ -133,7 +144,8 @@ class CalendarType extends AbstractType
                 'delete_empty' => true,
                 'prototype' => true,
                 'by_reference' => false,
-                'entry_options' => ['attr' => ['group' => 'col-md-4', 'icon' => 'concierge-bell']],
+                'entry_options' => ['attr' => ['icon' => 'concierge-bell'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4']],
             ]);
         }
 

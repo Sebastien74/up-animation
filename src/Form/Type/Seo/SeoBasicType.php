@@ -36,7 +36,7 @@ class SeoBasicType extends AbstractType
             'counter' => 60,
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin'),
-                'class' => 'meta-title refer-code',
+                'class' => 'col-12 meta-title refer-code',
             ],
             'required' => false,
         ]);
@@ -47,7 +47,7 @@ class SeoBasicType extends AbstractType
             'editor' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Éditez une description', [], 'admin'),
-                'class' => 'meta-description',
+                'class' => 'col-12 meta-description',
             ],
             'required' => false,
         ]);

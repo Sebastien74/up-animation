@@ -35,36 +35,36 @@ class GoogleIntlType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('User agent', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez le UA', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Saisissez le UA', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('tagManagerKey', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Tag manager key', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('searchConsoleKey', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Search console key', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('clientId', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Client id', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin'),
-                'group' => 'col-md-8',
+                'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
             'help' => $this->translator->trans('Create ID client AUTH identification in API account. Ex: xxxxxxxxxxxx-xxxxxxxxxx.apps.googleusercontent.com', [], 'admin'),
         ]);
 
@@ -72,9 +72,9 @@ class GoogleIntlType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('Analytics account id', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'help' => $this->translator->trans('Create ID client AUTH identification in API account and activate Analytics API. ga:xxxxxxx', [], 'admin'),
         ]);
 

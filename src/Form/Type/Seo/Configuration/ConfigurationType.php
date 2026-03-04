@@ -41,7 +41,8 @@ class ConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Activer les micros données', [], 'admin'),
-            'attr' => ['group' => 'col-md-6 d-flex align-items-end', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 d-flex align-items-end'],
         ]);
 
         $builder->add('disableAfterDash', Type\CheckboxType::class, [
@@ -49,7 +50,8 @@ class ConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Retirer toutes les métas après le tiret', [], 'admin'),
-            'attr' => ['group' => 'col-md-6 d-flex align-items-end', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 d-flex align-items-end'],
         ]);
 
         $intls = new WidgetType\IntlsCollectionType($this->coreLocator);

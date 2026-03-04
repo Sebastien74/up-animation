@@ -50,7 +50,7 @@ class LayoutConfigurationType extends AbstractType
             $builder->add('entity', ChoiceType::class, [
                 'label' => $this->translator->trans('Entité', [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-4'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 'constraints' => [new NotBlank()],
                 'display' => 'search',
                 'choices' => $this->getEntities(),
@@ -60,7 +60,7 @@ class LayoutConfigurationType extends AbstractType
             $builder->add('blockMarginBottom', ChoiceType::class, [
                 'label' => $this->translator->trans('Marge inférieure par défaut des blocs', [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-4'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 'constraints' => [new NotBlank()],
                 'display' => 'search',
                 'choices' => $this->getMargins(),
@@ -70,7 +70,7 @@ class LayoutConfigurationType extends AbstractType
             $builder->add('titleMarginBottom', ChoiceType::class, [
                 'label' => $this->translator->trans('Marge inférieure par défaut des titres', [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-4'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 'constraints' => [new NotBlank()],
                 'display' => 'search',
                 'choices' => $this->getMargins(),

@@ -37,9 +37,9 @@ class AddressPhoneType extends AbstractType
             'label' => $this->translator->trans('Numéro de téléphone', [], 'admin'),
             'required' => false,
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un numéro', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Saisissez un numéro', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'constraints' => [new Validator\Phone()],
         ]);
 
@@ -47,9 +47,9 @@ class AddressPhoneType extends AbstractType
             'label' => $this->translator->trans('Numéro de téléphone (href)', [], 'admin'),
             'required' => false,
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un numéro', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Saisissez un numéro', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'constraints' => [new Validator\Phone()],
         ]);
 
@@ -62,9 +62,9 @@ class AddressPhoneType extends AbstractType
                 $this->translator->trans('Fax', [], 'admin') => 'fax',
             ],
             'attr' => [
-                'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'constraints' => [new Assert\NotBlank()],
         ]);
     }

@@ -49,7 +49,8 @@ class CategoryType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('mainMediaInHeader', CheckboxType::class, [
@@ -57,7 +58,8 @@ class CategoryType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans("Afficher l'image principale dans les entêtes", [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $intls = new WidgetType\IntlsCollectionType($this->coreLocator);

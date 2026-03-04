@@ -35,18 +35,18 @@ class FacebookIntlType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('DomainModel verification', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin'),
-                'group' => 'col-lg-6',
+                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-lg-6'],
         ]);
 
         $builder->add('pixel', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Pixel ID', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin'),
-                'group' => 'col-lg-6',
+                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-lg-6'],
         ]);
 
         $builder->add('phoneTrack', Type\CheckboxType::class, [
@@ -54,7 +54,8 @@ class FacebookIntlType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Activer Phone track', [], 'admin'),
-            'attr' => ['group' => 'col-12 d-flex align-items-end', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => 'col-12 d-flex align-items-end'],
         ]);
     }
 

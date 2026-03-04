@@ -49,18 +49,20 @@ class CategoryType extends AbstractType
                 'label' => $this->translator->trans('Largeur du marker (px)', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-4',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('markerHeight', Type\IntegerType::class, [
                 'label' => $this->translator->trans('Hauteur du marker (px)', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-4',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('marker', Type\ChoiceType::class, [
@@ -69,10 +71,8 @@ class CategoryType extends AbstractType
                 'choice_attr' => function ($dir, $key, $value) {
                     return ['data-background' => strtolower($dir)];
                 },
-                'attr' => [
-                    'group' => 'col-md-2 markers-select',
-                    'class' => 'select-icons',
-                ],
+                'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 markers-select'],
             ]);
 
             $intls = new WidgetType\IntlsCollectionType($this->coreLocator);

@@ -57,9 +57,9 @@ class GalleryType extends AbstractType
             'label' => $this->translator->trans('Catégorie', [], 'admin'),
             'display' => 'search',
             'attr' => [
-                'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'group' => 'col-md-3',
+                'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'class' => Category::class,
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('c')
@@ -82,7 +82,7 @@ class GalleryType extends AbstractType
                 'label' => $this->translator->trans('Nombre de colonne', [], 'admin'),
                 'display' => 'search',
                 'choices' => $choices,
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 
@@ -91,7 +91,8 @@ class GalleryType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Afficher popup au clic des images', [], 'admin'),
-            'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $save = new WidgetType\SubmitType($this->coreLocator);

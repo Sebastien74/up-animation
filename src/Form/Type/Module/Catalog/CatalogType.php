@@ -68,7 +68,8 @@ class CatalogType extends AbstractType
                 ]);
 
                 $builder->add('formatDate', WidgetType\FormatDateType::class, [
-                    'attr' => ['group' => 'col-md-4', 'data-config' => true],
+                    'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
             }
 
@@ -85,7 +86,7 @@ class CatalogType extends AbstractType
             ]);
 
             $builder->add('layout', WidgetType\LayoutType::class, [
-                'row_attr' => ['class'=> 'px-0']
+                'row_attr' => ['class' => 'col-12 px-0']
             ]);
 
             $mediaRelations = new WidgetType\MediaRelationsCollectionType($this->coreLocator);

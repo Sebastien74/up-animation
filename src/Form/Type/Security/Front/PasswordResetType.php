@@ -40,7 +40,7 @@ class PasswordResetType extends AbstractType
                 'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre nouveau mot de passe', [], 'security_cms'),
-                    'class' => 'password-checker',
+                    'class' => 'col-12 password-checker',
                 ],
             ],
             'second_options' => [

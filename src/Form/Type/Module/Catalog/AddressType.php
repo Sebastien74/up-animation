@@ -42,100 +42,103 @@ class AddressType extends AbstractType
             $builder->add('name', Type\TextType::class, [
                 'label' => $this->translator->trans('Raison sociale', [], 'admin'),
                 'required' => false,
-                'attr' => [
-                    'group' => 'col-md-6',
-                    'placeholder' => $this->translator->trans('Saisissez une raison sociale', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une raison sociale', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
 
             $builder->add('latitude', Type\TextType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Latitude', [], 'admin'),
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'class' => 'latitude',
-                    'placeholder' => $this->translator->trans('Saisissez une latitude', [], 'admin'),
-                ],
+                'attr' => ['class' => 'col-12 latitude',
+                    'placeholder' => $this->translator->trans('Saisissez une latitude', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('longitude', Type\TextType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Longitude', [], 'admin'),
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'class' => 'longitude',
-                    'placeholder' => $this->translator->trans('Saisissez une longitude', [], 'admin'),
-                ],
+                'attr' => ['class' => 'col-12 longitude',
+                    'placeholder' => $this->translator->trans('Saisissez une longitude', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('zoom', Type\IntegerType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Zoom', [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'data-config' => true, 'min' => 1, 'max' => 16],
+                'attr' => ['data-config' => true, 'min' => 1, 'max' => 16],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('minZoom', Type\IntegerType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Zoom minimum', [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'data-config' => true, 'min' => 1, 'max' => 16],
+                'attr' => ['data-config' => true, 'min' => 1, 'max' => 16],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('maxZoom', Type\IntegerType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Zoom maximum', [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'data-config' => true, 'min' => 1, 'max' => 25],
+                'attr' => ['data-config' => true, 'min' => 1, 'max' => 25],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
         }
 
         $builder->add('address', Type\TextType::class, [
             'label' => $this->translator->trans('Adresse', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-9',
-                'class' => 'address',
-                'placeholder' => $this->translator->trans('Saisissez une adresse', [], 'admin'),
+            'attr' => ['class' => 'col-12 address',
+                'placeholder' => $this->translator->trans('Saisissez une adresse', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
         ]);
 
         $builder->add('city', Type\TextType::class, [
             'label' => $this->translator->trans('Ville', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-3',
-                'class' => 'city',
-                'placeholder' => $this->translator->trans('Saisissez une ville', [], 'admin'),
+            'attr' => ['class' => 'col-12 city',
+                'placeholder' => $this->translator->trans('Saisissez une ville', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('zipCode', Type\TextType::class, [
             'label' => $this->translator->trans('Code postal', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-3',
-                'class' => 'zip-code',
-                'placeholder' => $this->translator->trans('Saisissez un code postal', [], 'admin'),
+            'attr' => ['class' => 'col-12 zip-code',
+                'placeholder' => $this->translator->trans('Saisissez un code postal', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => [new ZipCode()],
         ]);
 
         $builder->add('department', Type\TextType::class, [
             'label' => $this->translator->trans('Département', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-3',
-                'class' => 'department',
-                'placeholder' => $this->translator->trans('Saisissez une département', [], 'admin'),
+            'attr' => ['class' => 'col-12 department',
+                'placeholder' => $this->translator->trans('Saisissez une département', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('region', Type\TextType::class, [
             'label' => $this->translator->trans('Région', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-3',
-                'class' => 'region',
-                'placeholder' => $this->translator->trans('Saisissez une région', [], 'admin'),
+            'attr' => ['class' => 'col-12 region',
+                'placeholder' => $this->translator->trans('Saisissez une région', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('country', Type\CountryType::class, [
@@ -144,7 +147,8 @@ class AddressType extends AbstractType
             'display' => 'search',
             'placeholder' => $this->translator->trans('Sélectionnez un pays', [], 'admin'),
             'preferred_choices' => ['FR', 'CH'],
-            'attr' => ['group' => 'col-md-3', 'class' => 'country'],
+            'attr' => ['class' => 'col-12 country'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         if ($options['google_fields']) {
@@ -152,19 +156,19 @@ class AddressType extends AbstractType
             $builder->add('googleMapUrl', Type\UrlType::class, [
                 'label' => $this->translator->trans('Google map URL', [], 'admin'),
                 'required' => false,
-                'attr' => [
-                    'group' => 'col-md-6',
-                    'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
 
             $builder->add('googleMapDirectionUrl', Type\UrlType::class, [
                 'label' => $this->translator->trans('Google map itinéraire URL', [], 'admin'),
                 'required' => false,
-                'attr' => [
-                    'group' => 'col-md-6',
-                    'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
         }
 
@@ -176,7 +180,7 @@ class AddressType extends AbstractType
             'by_reference' => false,
             'entry_options' => [
                 'attr' => [
-                    'class' => 'address-phone',
+                    'class' => 'col-12 address-phone',
                     'icon' => 'phone',
                     'caption' => $this->translator->trans('Numéro de téléphone', [], 'admin'),
                     'button' => $this->translator->trans('Ajouter un numéro', [], 'admin'),
@@ -192,13 +196,13 @@ class AddressType extends AbstractType
             'prototype' => true,
             'by_reference' => false,
             'entry_options' => [
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'class' => 'address-email',
+                'attr' => ['class' => 'col-12 address-email',
                     'icon' => 'at',
-                    'caption' => $this->translator->trans('E-mails', [], 'admin'),
-                    'button' => $this->translator->trans('Ajouter un e-mail', [], 'admin'),
-                ],
+                    'caption' => $this->translator->trans('E-mails', [],
+                 'admin'),
+                    'button' => $this->translator->trans('Ajouter un e-mail', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'website' => $options['website'],
             ],
         ]);

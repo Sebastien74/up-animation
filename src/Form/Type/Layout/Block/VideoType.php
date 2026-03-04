@@ -69,7 +69,8 @@ class VideoType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Lecture automatique', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('playInHover', CheckboxType::class, [
@@ -77,7 +78,8 @@ class VideoType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Lecture au survol', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('controls', CheckboxType::class, [
@@ -85,7 +87,8 @@ class VideoType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Afficher les boutons de contrôle', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('soundControls', CheckboxType::class, [
@@ -93,7 +96,8 @@ class VideoType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Afficher le bouton de contrôle du son', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('asLoop', CheckboxType::class, [
@@ -101,7 +105,8 @@ class VideoType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('En boucle', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $radiusType = new WidgetType\RadiusType($this->coreLocator);

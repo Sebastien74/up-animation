@@ -36,9 +36,9 @@ class ApiType extends AbstractType
             'bytes' => true,
             'label' => $this->translator->trans('Clé privée', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('securitySecretIv', Type\TextType::class, [
@@ -46,9 +46,9 @@ class ApiType extends AbstractType
             'bytes' => true,
             'label' => $this->translator->trans('Clé de décryptage', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('google', GoogleType::class, [
@@ -64,9 +64,9 @@ class ApiType extends AbstractType
             'editor' => false,
             'label' => $this->translator->trans('AddThis script', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Ajouter le script', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Ajouter le script', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('custom', CustomType::class, [
@@ -77,9 +77,9 @@ class ApiType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('TawkTo URL', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
     }
 

@@ -41,7 +41,7 @@ class FeatureType extends AbstractType
                 return $er->createQueryBuilder('f');
             },
             'choice_label' => 'adminName',
-            'form_row' => ['class' => 'feature-group'],
+            'form_row' => ['class' => 'col-12 feature-group'],
         ]);
     }
 

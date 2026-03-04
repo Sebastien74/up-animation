@@ -58,7 +58,8 @@ class ActionType extends AbstractType
                 'label' => $this->translator->trans('Template', [], 'admin'),
                 'display' => 'search',
                 'choices' => $templates,
-                'attr' => ['group' => count($allLocales) > 1 ? 'col-12' : 'col-md-2'],
+                
+            'row_attr' => ['class' => 'col-12 count($allLocales) > 1 ?'' : 'col-md-4 col-lg-2'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
         } elseif ($templates) {

@@ -193,7 +193,7 @@ class FrontSearchFiltersType extends AbstractType
                 $arguments['placeholder'] = $this->translator->trans('Supprimer la sélection', [], 'front_form');
             } elseif ($expanded) {
                 $arguments['placeholder'] = $this->translator->trans('Tout', [], 'front_form');
-                $arguments['row_attr'] = ['class' => 'disabled-floating d-lg-flex align-items-lg-start'];
+                $arguments['row_attr'] = ['class' => 'col-12 disabled-floating d-lg-flex align-items-lg-start'];
             }
             $selectedClass = $data ? ' selected' : '';
             $arguments['attr']['class'] = isset($configuration['multiple']) && !$configuration['multiple'] ? 'select-search'.$selectedClass : $selectedClass;

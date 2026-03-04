@@ -40,19 +40,15 @@ class TitleHeaderType extends AbstractType
 
         if ($this->isInternalUser) {
             $builder->add('backgroundColor', WidgetType\BackgroundColorSelectType::class, [
-                'attr' => [
-                    'group' => 'col-md-6',
-                    'class' => ' select-icons',
-                    'data-config' => true,
-                ],
+                'attr' => ['class' => 'col-12 select-icons',
+                    'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
 
             $builder->add('color', WidgetType\AppColorType::class, [
-                'attr' => [
-                    'group' => 'col-md-6',
-                    'class' => ' select-icons',
-                    'data-config' => true,
-                ],
+                'attr' => ['class' => 'col-12 select-icons',
+                    'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
         }
 
@@ -62,7 +58,8 @@ class TitleHeaderType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->coreLocator->translator()->trans('Grande entête', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 

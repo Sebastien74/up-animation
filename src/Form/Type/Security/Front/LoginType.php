@@ -47,12 +47,10 @@ class LoginType extends AbstractType
 
         $builder->add($loginInputName, $loginType, [
             'label' => $loginLabel,
-            'attr' => [
-                'placeholder' => $loginPlaceholder,
+            'attr' => ['placeholder' => $loginPlaceholder,
                 'autocomplete' => 'off',
-                'autofocus' => false,
-                'group' => 'col-lg-12',
-            ],
+                'autofocus' => false],
+                'row_attr' => ['class' => 'col-12 col-lg-12'],
             'constraints' => $constraints,
         ]);
 
@@ -61,9 +59,9 @@ class LoginType extends AbstractType
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez votre mot de passe', [], 'security_cms'),
                 'autocomplete' => 'off',
-                'autofocus' => false,
-                'group' => 'col-lg-12',
+                'autofocus' => false
             ],
+            'row_attr' => ['class' => 'col-12 col-lg-12'],
             'constraints' => [new NotBlank()],
         ]);
 
@@ -77,33 +75,33 @@ class LoginType extends AbstractType
             'mapped' => false,
             'label' => $this->translator->trans('Valeur'),
             'required' => true,
-            'label_attr' => ['class' => 'd-none'],
+            'label_attr' => ['class' => 'col-12 d-none'],
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une valeur', [], 'security_cms'),
-                'class' => 'form-field-none field_ho',
-                'group' => 'form-field-none col-12',
-                'autocomplete' => 'off',
+                'class' => 'col-12 form-field-none field_ho',
+                
+                'autocomplete' => 'off'
             ],
+            'row_attr' => ['class' => 'col-12 form-field-none'],
         ]);
 
         $builder->add('field_ho_entitled', Type\TextType::class, [
             'mapped' => false,
             'label' => $this->translator->trans('Intitulé'),
-            'label_attr' => ['class' => 'd-none'],
+            'label_attr' => ['class' => 'col-12 d-none'],
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un intitulé', [], 'security_cms'),
-                'group' => 'form-field-none col-12',
-                'class' => 'form-field-none',
-                'autocomplete' => 'off',
+                
+                'class' => 'col-12 form-field-none',
+                'autocomplete' => 'off'
             ],
+            'row_attr' => ['class' => 'col-12 form-field-none'],
         ]);
 
         $builder->add('submit', Type\SubmitType::class, [
             'label' => $this->translator->trans('Se connecter', [], 'security_cms'),
-            'attr' => [
-                'group' => 'col-lg-12',
-                'class' => 'btn btn-primary btn-block text-uppercase w-100 mt-3 d-flex justify-content-center',
-            ],
+            'attr' => ['class' => 'col-12 btn btn-primary btn-block text-uppercase w-100 mt-3 d-flex justify-content-center'],
+                'row_attr' => ['class' => 'col-12 col-lg-12'],
         ]);
     }
 

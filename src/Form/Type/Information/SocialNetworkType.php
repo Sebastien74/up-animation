@@ -39,7 +39,7 @@ class SocialNetworkType extends AbstractType
                 'addon' => 'facebook',
                 'addon-tooltip' => 'Facebook',
             ],
-            'row_attr' => ['class' => 'col-lg-6']
+            'row_attr' => ['class' => 'col-12 col-lg-6']
         ]);
 
         $builder->add('twitter', Type\TextType::class, [
@@ -50,7 +50,7 @@ class SocialNetworkType extends AbstractType
                 'addon' => 'twitter',
                 'addon-tooltip' => 'Twitter',
             ],
-            'row_attr' => ['class' => 'col-lg-6']
+            'row_attr' => ['class' => 'col-12 col-lg-6']
         ]);
 
         $builder->add('google', Type\TextType::class, [
@@ -61,7 +61,7 @@ class SocialNetworkType extends AbstractType
                 'addon' => 'google',
                 'addon-tooltip' => 'Google',
             ],
-            'row_attr' => ['class' => 'col-lg-6']
+            'row_attr' => ['class' => 'col-12 col-lg-6']
         ]);
 
         $builder->add('youtube', Type\TextType::class, [
@@ -72,7 +72,7 @@ class SocialNetworkType extends AbstractType
                 'addon' => 'youtube',
                 'addon-tooltip' => 'Youtube',
             ],
-            'row_attr' => ['class' => 'col-lg-6']
+            'row_attr' => ['class' => 'col-12 col-lg-6']
         ]);
 
         $builder->add('tiktok', Type\TextType::class, [
@@ -83,7 +83,7 @@ class SocialNetworkType extends AbstractType
                 'addon' => 'tiktok',
                 'addon-tooltip' => 'TikTok',
             ],
-            'row_attr' => ['class' => 'col-lg-6']
+            'row_attr' => ['class' => 'col-12 col-lg-6']
         ]);
 
         $builder->add('instagram', Type\TextType::class, [
@@ -94,7 +94,7 @@ class SocialNetworkType extends AbstractType
                 'addon' => 'instagram',
                 'addon-tooltip' => 'Instagram',
             ],
-            'row_attr' => ['class' => 'col-lg-6']
+            'row_attr' => ['class' => 'col-12 col-lg-6']
         ]);
 
         $builder->add('linkedin', Type\TextType::class, [
@@ -105,7 +105,7 @@ class SocialNetworkType extends AbstractType
                 'addon' => 'linkedin-in',
                 'addon-tooltip' => 'Linkedin',
             ],
-            'row_attr' => ['class' => 'col-lg-6']
+            'row_attr' => ['class' => 'col-12 col-lg-6']
         ]);
 
         $builder->add('pinterest', Type\TextType::class, [
@@ -116,7 +116,7 @@ class SocialNetworkType extends AbstractType
                 'addon' => 'pinterest',
                 'addon-tooltip' => 'Pinterest',
             ],
-            'row_attr' => ['class' => 'col-lg-6']
+            'row_attr' => ['class' => 'col-12 col-lg-6']
         ]);
 
         $builder->add('tripadvisor', Type\TextType::class, [
@@ -127,7 +127,7 @@ class SocialNetworkType extends AbstractType
                 'addon' => 'tripadvisor',
                 'addon-tooltip' => 'Tripadvisor',
             ],
-            'row_attr' => ['class' => 'col-lg-6']
+            'row_attr' => ['class' => 'col-12 col-lg-6']
         ]);
     }
 

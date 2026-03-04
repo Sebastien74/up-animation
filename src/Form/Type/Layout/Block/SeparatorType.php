@@ -38,29 +38,27 @@ class SeparatorType extends AbstractType
         $builder->add('height', Type\IntegerType::class, [
             'required' => false,
             'label' => $this->translator->trans('Hauteur du séparateur (px)', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-4',
-                'placeholder' => $this->translator->trans('Saisissez une hauteur', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez une hauteur', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
         $builder->add('width', Type\IntegerType::class, [
             'required' => false,
             'label' => $this->translator->trans('Largeur du séparateur (px)', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-4',
-                'placeholder' => $this->translator->trans('Saisissez une hauteur', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez une hauteur', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('color', WidgetType\BackgroundColorSelectType::class, [
             'label' => $this->translator->trans('Couleur de fond', [], 'admin'),
             'expanded' => false,
-            'attr' => [
-                'class' => 'select-icons',
-                'group' => 'col-md-4',
-            ],
+            'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('hideMobile', Type\CheckboxType::class, [
@@ -68,7 +66,8 @@ class SeparatorType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Cacher le séparateur en mobile', [], 'admin'),
-            'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
         ]);
 
         $radiusType = new WidgetType\RadiusType($this->coreLocator);

@@ -50,7 +50,7 @@ class ConfigurationType extends AbstractType
             'prototype' => true,
             'by_reference' => false,
             'entry_options' => [
-                'attr' => ['class' => 'color'],
+                'attr' => ['class' => 'col-12 color'],
                 'website' => $options['website'],
             ],
         ]);
@@ -62,13 +62,13 @@ class ConfigurationType extends AbstractType
             'prototype' => true,
             'by_reference' => false,
             'entry_options' => [
-                'attr' => [
-                    'class' => 'transition',
+                'attr' => ['class' => 'col-12 transition',
                     'icon' => 'hurricane',
-                    'group' => 'col-md-4',
-                    'caption' => $this->translator->trans('Transitions', [], 'admin'),
-                    'button' => $this->translator->trans('Ajouter une transition', [], 'admin'),
-                ],
+                    'caption' => $this->translator->trans('Transitions', [],
+                 'admin'),
+                    'button' => $this->translator->trans('Ajouter une transition', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 'website' => $options['website'],
             ],
         ]);
@@ -80,7 +80,7 @@ class ConfigurationType extends AbstractType
             'prototype' => true,
             'by_reference' => false,
             'entry_options' => [
-                'attr' => ['class' => 'cssclass'],
+                'attr' => ['class' => 'col-12 cssclass'],
                 'website' => $options['website'],
             ],
         ]);

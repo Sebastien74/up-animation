@@ -60,9 +60,9 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans('Nom', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre nom', [], 'security_cms'),
-                    'class' => 'last_name',
-                    'group' => 'col-lg-6',
-                ],
+                    'class' => 'col-12 last_name'
+            ],
+            'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
                     new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir votre nom.', [], 'security_cms')),
                 ],
@@ -74,9 +74,9 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans('Prénom', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre prénom', [], 'security_cms'),
-                    'class' => 'first_name',
-                    'group' => 'col-lg-6',
-                ],
+                    'class' => 'col-12 first_name'
+            ],
+            'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
                     new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir votre prénom.', [], 'security_cms')),
                 ],
@@ -88,9 +88,9 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans("Identifiant", [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre identifiant', [], 'security_cms'),
-                    'class' => 'login',
-                    'group' => 'col-lg-6',
-                ],
+                    'class' => 'col-12 login'
+            ],
+            'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
                     new Assert\NotBlank(message: $this->translator->trans("Veuillez saisir un nom d'utilisateur.", [], 'security_cms')),
                     new UniqUserLogin(),
@@ -103,9 +103,9 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans('Adresse e-mail', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre adresse e-mail', [], 'security_cms'),
-                    'class' => 'email',
-                    'group' => 'col-lg-6',
-                ],
+                    'class' => 'col-12 email'
+            ],
+            'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
                     new Assert\NotBlank(['message' => $this->translator->trans('Veuillez saisir un email.', [], 'security_cms')]),
                     new UniqUserEmail(),
@@ -122,9 +122,10 @@ class RegistrationType extends AbstractType
                     'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez votre mot de passe', [], 'security_cms'),
-                        'group' => 'col-lg-6',
-                        'class' => 'password-checker',
-                    ],
+                        
+                        'class' => 'col-12 password-checker'
+            ],
+            'row_attr' => ['class' => 'col-12 col-lg-6'],
                     'constraints' => [
                         new Assert\NotBlank(['message' => $this->translator->trans('Veuillez saisir un mot de passe.', [], 'security_cms')]),
                     ],
@@ -132,9 +133,9 @@ class RegistrationType extends AbstractType
                 'second_options' => [
                     'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                     'attr' => [
-                        'placeholder' => $this->translator->trans('Confirmez votre mot de passe', [], 'security_cms'),
-                        'group' => 'col-lg-6',
-                    ],
+                        'placeholder' => $this->translator->trans('Confirmez votre mot de passe', [], 'security_cms')
+            ],
+            'row_attr' => ['class' => 'col-12 col-lg-6'],
                     'constraints' => [
                         new Assert\NotBlank(['message' => $this->translator->trans('Veuillez confirmer votre mot de passe.', [], 'security_cms')]),
                     ],
@@ -153,11 +154,10 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans("J’accepte les <a href='".$cgv."' target='_blank'>Conditions Générales de Vente</a> et les <a href='".$legalNotice."' target='_blank'>Conditions générales d'utilisation</a>", [], 'security_cms'),
                 'help' => $this->translator->trans('Vous devez prendre connaissance des mentions légales et les accepter pour créer votre compte.', [], 'security_cms'),
                 'display' => 'custom',
-                'attr' => [
-                    'group' => 'col-12 agree-terms-group',
-                ],
+                
+            'row_attr' => ['class' => 'col-12 agree-terms-group'],
                 'label_attr' => [
-                    'class' => 'small',
+                    'class' => 'col-12 small',
                 ],
                 'constraints' => [
                     new Assert\IsTrue(['message' => $this->translator->trans('Vous devez accepter les conditions générales.', [], 'security_cms')]),

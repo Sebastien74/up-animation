@@ -36,18 +36,21 @@ class IconType extends AbstractType
         $builder->add('template', WidgetType\TemplateBlockType::class);
 
         $builder->add('icon', WidgetType\IconType::class, [
-            'attr' => ['class' => 'select-icons', 'group' => 'col-md-3'],
+            'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
         $builder->add('color', WidgetType\AppColorType::class, [
             'label' => $this->translator->trans("Couleur de l'icône", [], 'admin'),
-            'attr' => ['class' => 'select-icons', 'group' => 'col-md-3'],
+            'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('backgroundColorType', WidgetType\BackgroundColorSelectType::class, [
             'label' => $this->translator->trans("Couleur de l'icône au hover", [], 'admin'),
-            'attr' => ['class' => ' select-icons', 'group' => 'col-md-3'],
+            'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('iconSize', ChoiceType::class, [
@@ -55,7 +58,10 @@ class IconType extends AbstractType
             'display' => 'search',
             'label' => $this->translator->trans("Taille de l'icône", [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            'attr' => ['group' => 'col-md-3'],
+            'attr' => [
+                
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'choices' => ['XS' => 'xs', 'S' => 'sm', 'M' => 'md', 'L' => 'lg', 'XL' => 'xl', 'XXL' => 'xxl'],
         ]);
 

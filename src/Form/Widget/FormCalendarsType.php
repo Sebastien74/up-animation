@@ -61,7 +61,8 @@ class FormCalendarsType extends AbstractType
         $this->resolver->setNormalizer('form', function (Options $options, Form $form) {
             if (1 === $form->getCalendars()->count()) {
                 $this->resolver->setDefaults([
-                    'attr' => ['group' => 'd-none'],
+                    
+            'row_attr' => ['class' => 'col-12 d-none'],
                 ]);
             }
         });

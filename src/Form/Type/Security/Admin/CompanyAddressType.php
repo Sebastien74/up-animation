@@ -35,28 +35,28 @@ class CompanyAddressType extends AbstractType
         $builder->add('name', Type\TextType::class, [
             'label' => $this->translator->trans('Raison sociale', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-6',
-                'placeholder' => $this->translator->trans('Saisissez une raison sociale', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez une raison sociale', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('latitude', Type\TextType::class, [
             'label' => $this->translator->trans('Latitude', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-3',
-                'placeholder' => $this->translator->trans('Saisissez une latitude', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez une latitude', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('longitude', Type\TextType::class, [
             'label' => $this->translator->trans('Longitude', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-3',
-                'placeholder' => $this->translator->trans('Saisissez une longitude', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez une longitude', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('address', Type\TextType::class, [
@@ -70,29 +70,29 @@ class CompanyAddressType extends AbstractType
         $builder->add('zipCode', Type\TextType::class, [
             'label' => $this->translator->trans('Code postal', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-3',
-                'placeholder' => $this->translator->trans('Saisissez un code postal', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez un code postal', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => [new ZipCode()],
         ]);
 
         $builder->add('city', Type\TextType::class, [
             'label' => $this->translator->trans('Ville', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-3',
-                'placeholder' => $this->translator->trans('Saisissez une ville', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez une ville', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('department', Type\TextType::class, [
             'label' => $this->translator->trans('Département', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-3',
-                'placeholder' => $this->translator->trans('Saisissez une département', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez une département', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('country', Type\CountryType::class, [
@@ -100,25 +100,25 @@ class CompanyAddressType extends AbstractType
             'required' => false,
             'display' => 'search',
             'placeholder' => $this->translator->trans('Sélectionnez un pays', [], 'admin'),
-            'attr' => ['group' => 'col-md-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('googleMapUrl', Type\UrlType::class, [
             'label' => $this->translator->trans('Google map URL', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-6',
-                'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('googleMapDirectionUrl', Type\UrlType::class, [
             'label' => $this->translator->trans('Google map itinéraire URL', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-6',
-                'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
     }
 

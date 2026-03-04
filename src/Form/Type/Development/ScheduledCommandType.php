@@ -41,23 +41,22 @@ class ScheduledCommandType extends AbstractType
             'label' => $this->translator->trans('Commande', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'display' => 'search',
-            'attr' => ['group' => $isNew ? 'col-md-6' : 'col-md-4'],
+            
+            'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-md-4'],
         ]);
 
         $builder->add('cronExpression', Type\TextType::class, [
             'label' => $this->translator->trans('Expression cron', [], 'admin'),
-            'attr' => [
-                'group' => $isNew ? 'col-md-6' : 'col-md-4',
-                'placeholder' => $this->translator->trans('*/10 * * * *', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('*/10 * * * *', [],
+            'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-md-4'], 'admin'),
             ],
             'help' => '<a href="http://www.abunchofutils.com/utils/developer/cron-expression-helper/" target="_blank">'.$this->translator->trans('Générer', [], 'admin').'</a>',
         ]);
 
         $builder->add('description', Type\TextType::class, [
             'label' => $this->translator->trans('Description', [], 'admin'),
-            'attr' => [
-                'group' => $isNew ? 'col-md-6' : 'col-md-9',
-                'placeholder' => $this->translator->trans('Saisissez une description*', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description*', [],
+            'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-md-9'], 'admin'),
             ],
         ]);
 
@@ -65,10 +64,10 @@ class ScheduledCommandType extends AbstractType
             $builder->add('logFile', Type\TextType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Nom du fichier de log', [], 'admin'),
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez un nom', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('executeImmediately', Type\CheckboxType::class, [
@@ -76,7 +75,8 @@ class ScheduledCommandType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Exécuter maintenant', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('active', Type\CheckboxType::class, [
@@ -84,7 +84,8 @@ class ScheduledCommandType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Activer', [], 'admin'),
-                'attr' => ['group' => 'col-md-2', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             ]);
 
             $builder->add('locked', Type\CheckboxType::class, [
@@ -92,7 +93,8 @@ class ScheduledCommandType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Bloquée suite erreur', [], 'admin'),
-                'attr' => ['group' => 'col-md-2', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             ]);
         }
 

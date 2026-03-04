@@ -45,7 +45,7 @@ class TransitionType
                 'display' => 'search',
                 'class' => Transition::class,
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-4'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 'query_builder' => function (TransitionRepository $repository) {
                     return $repository->createQueryBuilder('t')
                         ->andWhere('t.active = :active')
@@ -63,20 +63,20 @@ class TransitionType
             $builder->add('delay', Type\IntegerType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Délai avant apparition', [], 'admin'),
-                'attr' => [
-                    'group' => 'col-md-4',
-                    'placeholder' => $this->translator->trans('Saisissez un délai', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez un délai', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 'help' => $this->translator->trans('Optionnel', [], 'admin'),
             ]);
 
             $builder->add('duration', Type\IntegerType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Durée de la transition', [], 'admin'),
-                'attr' => [
-                    'group' => 'col-md-4',
-                    'placeholder' => $this->translator->trans('Saisissez une durée', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une durée', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 'help' => $this->translator->trans('Optionnel', [], 'admin'),
             ]);
         }

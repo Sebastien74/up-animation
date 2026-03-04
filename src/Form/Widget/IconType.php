@@ -42,10 +42,8 @@ class IconType extends AbstractType
             'required' => false,
             'choices' => $this->getIcons(),
             'dropdown_class' => 'icons-selector',
-            'attr' => [
-                'class' => 'select-icons',
-                'group' => 'col-md-4',
-            ],
+            'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'choice_attr' => function ($icon, $key, $value) {
                 return ['data-image' => $icon];
             },

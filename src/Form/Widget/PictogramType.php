@@ -50,8 +50,8 @@ class PictogramType extends AbstractType
             'attr' => function (OptionsResolver $attr) {
                 $attr->setDefaults([
                     'data-config' => true,
-                    'group' => 'col-md-3',
-                    'class' => 'select-icons img-pictograms',
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'class' => 'col-12 select-icons img-pictograms',
                     'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                 ]);
             },

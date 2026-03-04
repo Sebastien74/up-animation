@@ -36,9 +36,9 @@ class CustomIntlType extends AbstractType
             'editor' => false,
             'label' => $this->translator->trans('Matomo ID', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin'),
-                'group' => 'col-lg-6',
+                'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-lg-6'],
         ]);
 
         $builder->add('matomoUrl', Type\TextType::class, [
@@ -46,9 +46,9 @@ class CustomIntlType extends AbstractType
             'editor' => false,
             'label' => $this->translator->trans('Matomo URL (Sans protocol)', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez le nom du cookie', [], 'admin'),
-                'group' => 'col-lg-6',
+                'placeholder' => $this->translator->trans('Saisissez le nom du cookie', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-lg-6'],
         ]);
 
         $builder->add('headScriptSeo', Type\TextareaType::class, [
@@ -56,9 +56,9 @@ class CustomIntlType extends AbstractType
             'editor' => false,
             'label' => $this->translator->trans('Script (head)', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Ajouter le script', [], 'admin'),
-                'group' => 'col-12',
+                'placeholder' => $this->translator->trans('Ajouter le script', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12'],
         ]);
 
         $builder->add('topBodyScriptSeo', Type\TextareaType::class, [
@@ -66,9 +66,9 @@ class CustomIntlType extends AbstractType
             'editor' => false,
             'label' => $this->translator->trans('Script (Top body)', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Ajouter le script', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Ajouter le script', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('bottomBodyScriptSeo', Type\TextareaType::class, [
@@ -76,9 +76,9 @@ class CustomIntlType extends AbstractType
             'editor' => false,
             'label' => $this->translator->trans('Script (Bottom body)', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Ajouter le script', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Ajouter le script', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('axeptioId', Type\TextType::class, [
@@ -86,9 +86,9 @@ class CustomIntlType extends AbstractType
             'editor' => false,
             'label' => $this->translator->trans('Axeptio ID', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin'),
-                'group' => 'col-12',
+                'placeholder' => $this->translator->trans('Saisissez un id', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12'],
         ]);
 
         $builder->add('axeptioCookieVersion', Type\TextType::class, [
@@ -96,9 +96,9 @@ class CustomIntlType extends AbstractType
             'editor' => false,
             'label' => $this->translator->trans('Axeptio Cookie Version', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez le nom du cookie', [], 'admin'),
-                'group' => 'col-12',
+                'placeholder' => $this->translator->trans('Saisissez le nom du cookie', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12'],
         ]);
 
         $builder->add('axeptioExternal', Type\CheckboxType::class, [
@@ -106,7 +106,8 @@ class CustomIntlType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Activer Axeptio GTM', [], 'admin'),
-            'attr' => ['group' => 'col-12 d-flex align-items-end', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => 'col-12 d-flex align-items-end'],
         ]);
     }
 

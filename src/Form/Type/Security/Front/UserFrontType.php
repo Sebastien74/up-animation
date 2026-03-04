@@ -37,9 +37,9 @@ class UserFrontType extends AbstractType
         $builder->add('lastName', Type\TextType::class, [
             'label' => $this->translator->trans('Nom', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             'constraints' => [
                 new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir votre nom.', [], 'admin')),
             ],
@@ -48,9 +48,9 @@ class UserFrontType extends AbstractType
         $builder->add('firstName', Type\TextType::class, [
             'label' => $this->translator->trans('Prénom', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un prénom', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Saisissez un prénom', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             'constraints' => [
                 new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir votre prénom.', [], 'admin')),
             ],
@@ -59,9 +59,9 @@ class UserFrontType extends AbstractType
         $builder->add('login', Type\TextType::class, [
             'label' => $this->translator->trans("Nom d'utilisateur", [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             'constraints' => [
                 new UniqUserLogin(),
                 new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir un identifiant.', [], 'admin')),
@@ -71,9 +71,9 @@ class UserFrontType extends AbstractType
         $builder->add('email', Type\EmailType::class, [
             'label' => $this->translator->trans('E-mail', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             'constraints' => [
                 new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir un email.', [], 'admin')),
                 new Assert\Email(),
@@ -88,7 +88,7 @@ class UserFrontType extends AbstractType
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
-                'attr' => ['accept' => 'image/*', 'class' => 'dropify'],
+                'attr' => ['accept' => 'image/*', 'class' => 'col-12 dropify'],
             ]);
         }
     }

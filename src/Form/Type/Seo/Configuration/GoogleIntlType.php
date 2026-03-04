@@ -35,36 +35,36 @@ class GoogleIntlType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('User agent', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez le UA', [], 'admin'),
-                'group' => 'col-md-3',
+                'placeholder' => $this->translator->trans('Saisissez le UA', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('tagManagerKey', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Tag manager key', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin'),
-                'group' => 'col-md-3',
+                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('searchConsoleKey', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Search console key', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin'),
-                'group' => 'col-md-3',
+                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('serverUrl', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('URL du serveur cloud', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),
-                'group' => 'col-md-3',
+                'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('tagManagerLayer', Type\TextareaType::class, [

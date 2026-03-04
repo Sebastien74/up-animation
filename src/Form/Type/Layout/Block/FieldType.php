@@ -67,12 +67,14 @@ class FieldType extends AbstractType
         if ($asBtnField) {
             $builder->add('color', WidgetType\ButtonColorType::class, [
                 'label' => 'form-file' === $blockTypeSlug ? $this->translator->trans('Couleur de fond "Parcourir"', [], 'admin') : $this->translator->trans('Style de bouton', [], 'admin'),
-                'attr' => ['class' => 'select-icons', 'group' => 'col-md-2'],
+                'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             ]);
 
             if ($this->isInternalUser) {
                 $builder->add('icon', WidgetType\IconType::class, [
-                    'attr' => ['class' => 'select-icons', 'group' => 'col-md-2'],
+                    'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
                     'choices' => $this->getIcons($options['website']),
                 ]);
             }
@@ -84,7 +86,8 @@ class FieldType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher un bouton', [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
         }
 

@@ -50,10 +50,8 @@ class SelectFolderType extends AbstractType
             'display' => 'search',
             'placeholder' => $this->translator->trans('Racine', [], 'admin'),
             'class' => Folder::class,
-            'attr' => [
-                'class' => 'folder-selector',
-                'group' => 'p-0',
-            ],
+            'attr' => ['class' => 'col-12 folder-selector'],
+            'row_attr' => ['class' => 'col-12 p-0'],
             'query_builder' => function (EntityRepository $er) {
                 if ($this->isInternalUser) {
                     return $er->createQueryBuilder('f')
@@ -76,7 +74,7 @@ class SelectFolderType extends AbstractType
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Déplacer', [], 'admin'),
-            'attr' => ['class' => 'btn-info disable-preloader'],
+            'attr' => ['class' => 'col-12 btn-info disable-preloader'],
         ]);
     }
 

@@ -41,18 +41,18 @@ class ThumbConfigurationType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('Largeur (px)', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez une largeur', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Saisissez une largeur', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('height', Type\IntegerType::class, [
             'required' => false,
             'label' => $this->translator->trans('Hauteur (px)', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez une hauteur', [], 'admin'),
-                'group' => 'col-md-4',
+                'placeholder' => $this->translator->trans('Saisissez une hauteur', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('screen', Type\ChoiceType::class, [
@@ -64,7 +64,7 @@ class ThumbConfigurationType extends AbstractType
                 $this->translator->trans('Mobile', [], 'admin') => 'mobile',
             ],
             'display' => 'search',
-            'attr' => ['group' => 'col-md-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         if (!$isNew) {
@@ -74,7 +74,7 @@ class ThumbConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Conserver la hauteur définie', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
 
             $builder->add('actions', Type\CollectionType::class, [
@@ -86,7 +86,7 @@ class ThumbConfigurationType extends AbstractType
                 'by_reference' => false,
                 'entry_options' => [
                     'attr' => [
-                        'class' => 'configuration',
+                        'class' => 'col-12 configuration',
                     ],
                     'website' => $options['website'],
                 ],

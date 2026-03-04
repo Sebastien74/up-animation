@@ -125,7 +125,7 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => array_merge($attributes, [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => 'col-12' === $groupClass && $this->options['title_force'] ? 'col-md-10' : $groupClass,
+                'row_attr' => ['class' => $groupClass === 'col-12' && $this->options['title_force'] ? 'col-12 col-md-10' : $groupClass],
             ]),
             'constraints' => $constraints['validators'],
             'help' => $this->getAttribute($field, 'help'),
@@ -166,7 +166,7 @@ class IntlType extends AbstractType
                     $this->translator->trans('Bas', [], 'admin') => 'bottom',
                 ],
                 'attr' => [
-                    'group' => !empty($this->options['fields']['subTitlePosition']) ? $this->options['fields']['subTitlePosition'] : 'col-md-3',
+                    'row_attr' => ['class' => !empty($this->options['fields']['subTitlePosition']) ? $this->options['fields']['subTitlePosition'] : 'col-12 col-md-3'],
                 ],
                 'constraints' => $constraints['validators'],
                 'help' => $this->getAttribute($field, 'help'),
@@ -189,7 +189,7 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => array_merge($attributes, [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => $groupClass,
+                'row_attr' => ['class' => 'col-12' . $groupClass],
             ]),
             'constraints' => $constraints['validators'],
             'help' => $this->getAttribute($field, 'help'),
@@ -234,7 +234,7 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => array_merge($attributes, [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12',
+                'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12'],
             ]),
             'help' => $this->getAttribute($field, 'help'),
             'constraints' => $constraints['validators'],
@@ -277,7 +277,7 @@ class IntlType extends AbstractType
             },
             'attr' => array_merge($attributes, [
                 //                'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-6',
+                'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12 col-md-6'],
             ]),
             'help' => $this->getAttribute($field, 'help'),
         ]);
@@ -294,7 +294,7 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => array_merge($attributes, [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-6',
+                'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12 col-md-6'],
             ]),
             'help' => $this->getAttribute($field, 'help'),
         ]);
@@ -308,9 +308,9 @@ class IntlType extends AbstractType
         $attributes = !empty($this->options['attributes_fields'][$field]) ? $this->options['attributes_fields'][$field] : [];
         $builder->add($field, ButtonColorType::class, [
             'attr' => array_merge($attributes, [
-                'class' => 'select-icons',
+                'class' => 'col-12 select-icons',
                 'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-6',
+                'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12 col-md-6'],
             ]),
         ]);
     }
@@ -324,8 +324,8 @@ class IntlType extends AbstractType
             $attributes = !empty($this->options['attributes_fields']['targetStyle']) ? $this->options['attributes_fields']['targetStyle'] : [];
             $builder->add('targetStyle', ButtonColorType::class, [
                 'attr' => array_merge($attributes, [
-                    'class' => 'select-icons',
-                    'group' => !empty($this->options['fields']['targetStyle']) ? $this->options['fields']['targetStyle'] : 'col-md-6',
+                    'class' => 'col-12 select-icons',
+                'row_attr' => ['class' => !empty($this->options['fields']['targetStyle']) ? $this->options['fields']['targetStyle'] : 'col-12 col-md-6'],
                 ]),
             ]);
         }
@@ -347,7 +347,7 @@ class IntlType extends AbstractType
             'editor' => $isEditor ? 'tinymce' : 'basic',
             'attr' => array_merge($attributes, [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-6',
+                'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12 col-md-6'],
             ]),
             'help' => $this->getAttribute($field, 'help'),
             'constraints' => $constraints['validators'],
@@ -401,7 +401,7 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => array_merge($attributes, [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-6',
+                'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12 col-md-6'],
             ]),
             'help' => $this->getAttribute($field, 'help'),
         ]);
@@ -419,7 +419,7 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => array_merge($attributes, [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-6',
+                'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12 col-md-6'],
             ]),
             'help' => $this->getAttribute($field, 'help'),
         ]);
@@ -439,7 +439,8 @@ class IntlType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->getAttribute($field, 'label'),
-                'attr' => ['group' => $groupClass, 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12' . $groupClass],
                 'help' => $this->getAttribute($field, 'help'),
             ]);
         }
@@ -452,7 +453,8 @@ class IntlType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Lien externe'),
-                'attr' => ['group' => $groupClass, 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12' . $groupClass],
                 'help' => $this->getAttribute('externalLink', 'help'),
             ]);
         }
@@ -470,7 +472,8 @@ class IntlType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->getAttribute($field, 'label'),
-                'attr' => ['group' => $groupClass, 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12' . $groupClass],
                 'help' => $this->getAttribute($field, 'help'),
             ]);
         }
@@ -491,8 +494,8 @@ class IntlType extends AbstractType
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12',
-                'class' => 'select-icons',
+                'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12'],
+                'class' => 'col-12 select-icons',
             ],
             'help' => $this->getAttribute($field, 'help'),
         ]);
@@ -509,7 +512,7 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12',
+                'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12'],
             ],
             'help' => array_key_exists($field, $this->options['help_fields']) ? $this->options['help_fields'][$field] : $this->getAttribute($field, 'help'),
             'constraints' => $constraints['validators'],
@@ -527,7 +530,7 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12',
+                'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12'],
             ],
             'help' => $this->getAttribute($field, 'help'),
             'constraints' => $constraints['validators'],
@@ -545,7 +548,7 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12',
+                'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12'],
             ],
             'help' => $this->getAttribute($field, 'help'),
         ]);

@@ -61,10 +61,10 @@ class FeatureValueType extends AbstractType
             $builder->add('catalogfeature', EntityType::class, [
                 'label' => $this->translator->trans('Caractéristique', [], 'admin'),
                 'class' => Feature::class,
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('p')
                         ->where('p.website = :website')
@@ -80,10 +80,8 @@ class FeatureValueType extends AbstractType
 
             $builder->add('iconClass', WidgetType\IconType::class, [
                 'required' => false,
-                'attr' => [
-                    'class' => 'select-icons',
-                    'group' => 'col-md-3',
-                ],
+                'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('featureBeforePost', Type\HiddenType::class, [
@@ -101,11 +99,11 @@ class FeatureValueType extends AbstractType
                 'required' => false,
                 'display' => 'search',
                 'class' => Catalog::class,
-                'attr' => [
-                    'class' => 'catalogs-selector',
-                    'group' => 'col-12',
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['class' => 'col-12 catalogs-selector',
+                    'data-placeholder' => $this->translator->trans('Sélectionnez', [],
+             'admin')
+            ],
+            'row_attr' => ['class' => 'col-12'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -130,7 +128,8 @@ class FeatureValueType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Supprimer les valeurs des fiches', [], 'admin'),
-                    'attr' => ['group' => 'col-md-4', 'class' => 'w-100 remove-cards d-none', 'data-values' => json_encode($catalogsIds)],
+                    'attr' => ['class' => 'col-12 w-100 remove-cards d-none', 'data-values' => json_encode($catalogsIds)],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
             }
 

@@ -71,10 +71,10 @@ class FieldConfigurationType extends AbstractType
             $builder->add('slug', Type\TextType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Code', [], 'admin'),
-                'attr' => [
-                    'group' => 'col-md-2',
-                    'placeholder' => $this->translator->trans('Saisissez un code', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez un code', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             ]);
         }
 
@@ -103,7 +103,8 @@ class FieldConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Anonymiser (RGPD)', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         //        $this->getSmallSize($builder, $fields);
@@ -119,7 +120,8 @@ class FieldConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Champs obligatoire', [], 'admin'),
-            'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
+            'attr' => ['class' => 'col-12 w-100 mb-0'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
         ]);
     }
 
@@ -135,7 +137,8 @@ class FieldConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $label,
-            'attr' => ['group' => $groupClass ?: 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
+            'attr' => ['class' => 'col-12 w-100 mb-0'],
+            'row_attr' => ['class' => $groupClass ?: 'col-md-3 d-flex align-items-end'],
         ]);
     }
 
@@ -152,11 +155,9 @@ class FieldConfigurationType extends AbstractType
         $builder->add('min', Type\IntegerType::class, [
             'required' => false,
             'label' => $label,
-            'attr' => [
-                'placeholder' => $placeholder,
-                'group' => $groupClass ?: 'col-md-4',
-                'min' => 0,
-            ],
+            'attr' => ['placeholder' => $placeholder,
+                'min' => 0],
+            'row_attr' => ['class' => $groupClass ?: 'col-md-4'],
         ]);
     }
 
@@ -173,11 +174,9 @@ class FieldConfigurationType extends AbstractType
         $builder->add('max', Type\IntegerType::class, [
             'required' => false,
             'label' => $label,
-            'attr' => [
-                'placeholder' => $placeholder,
-                'group' => $groupClass ?: 'col-md-4',
-                'min' => 0,
-            ],
+            'attr' => ['placeholder' => $placeholder,
+                'min' => 0],
+            'row_attr' => ['class' => $groupClass ?: 'col-md-4'],
         ]);
     }
 
@@ -202,10 +201,8 @@ class FieldConfigurationType extends AbstractType
                 $this->translator->trans('Avant la date en cours (non comprise)', [], 'admin') => 'before-current-out',
                 $this->translator->trans('Après la date en cours (non comprise)', [], 'admin') => 'after-current-out',
             ],
-            'attr' => [
-                'group' => $groupClass ?: 'col-md-4',
-                'min' => 0,
-            ],
+            'attr' => ['min' => 0],
+            'row_attr' => ['class' => $groupClass ?: 'col-md-4'],
         ]);
     }
 
@@ -229,9 +226,8 @@ class FieldConfigurationType extends AbstractType
                 $this->translator->trans('URL (http/https)', [], 'admin') => '/^https?:\/\/.*/',
                 $this->translator->trans('Code couleur hexadécimal', [], 'admin') => '/^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/',
             ],
-            'attr' => [
-                'group' => $groupClass ?: 'col-md-4',
-            ],
+            
+            'row_attr' => ['class' => $groupClass ?: 'col-md-4'],
             'help' => $this->translator->trans('Ex: /^[0-9]*$/', [], 'admin'),
         ]);
     }
@@ -246,7 +242,8 @@ class FieldConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Choix multiple', [], 'admin'),
-            'attr' => ['group' => $groupClass ?: 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
+            'attr' => ['class' => 'col-12 w-100 mb-0'],
+            'row_attr' => ['class' => $groupClass ?: 'col-md-3 d-flex align-items-end'],
         ]);
     }
 
@@ -260,7 +257,8 @@ class FieldConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Afficher les cases à cocher', [], 'admin'),
-            'attr' => ['group' => $groupClass ?: 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
+            'attr' => ['class' => 'col-12 w-100 mb-0'],
+            'row_attr' => ['class' => $groupClass ?: 'col-md-3 d-flex align-items-end'],
         ]);
     }
 
@@ -276,7 +274,8 @@ class FieldConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $label,
-            'attr' => ['group' => $groupClass ? $groupClass.' d-flex align-items-end' : 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
+            'attr' => ['class' => 'col-12 w-100 mb-0'],
+            'row_attr' => ['class' => $groupClass ? $groupClass.' d-flex align-items-end' : 'col-md-3 d-flex align-items-end'],
         ]);
     }
 
@@ -292,7 +291,8 @@ class FieldConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $label,
-            'attr' => ['group' => $groupClass ?: 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
+            'attr' => ['class' => 'col-12 w-100 mb-0'],
+            'row_attr' => ['class' => $groupClass ?: 'col-md-3 d-flex align-items-end'],
         ]);
     }
 
@@ -306,7 +306,8 @@ class FieldConfigurationType extends AbstractType
             'multiple' => true,
             'display' => 'search',
             'label' => $this->translator->trans('Types de fichiers', [], 'admin'),
-            'attr' => ['group' => $groupClass ?: 'col-12'],
+            
+            'row_attr' => ['class' => $groupClass ?: 'col-12'],
             'choices' => $this->getMimeTypes(),
         ]);
     }
@@ -321,7 +322,7 @@ class FieldConfigurationType extends AbstractType
             'label' => $this->translator->trans('Poid maximum en kilobyte', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                'group' => $groupClass ?: 'col-md-4',
+                'row_attr' => ['class' => $groupClass ?: 'col-md-4'],
                 'min' => 1,
             ],
         ]);
@@ -336,9 +337,8 @@ class FieldConfigurationType extends AbstractType
             'required' => false,
             'editor' => false,
             'label' => $this->translator->trans('Script', [], 'admin'),
-            'attr' => [
-                'group' => $groupClass ?: 'col-12',
-                'placeholder' => $this->translator->trans('Ajouter un script', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Ajouter un script', [],
+            'row_attr' => ['class' => $groupClass ?: 'col-12'], 'admin'),
             ],
         ]);
     }
@@ -367,9 +367,8 @@ class FieldConfigurationType extends AbstractType
             'display' => 'search',
             'label' => $this->translator->trans('Entité', [], 'admin'),
             'choices' => $choices,
-            'attr' => [
-                'group' => $groupClass ?: 'col-md-3',
-                'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+            'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+            'row_attr' => ['class' => $groupClass ?: 'col-md-3'], 'admin'),
             ],
             'constraints' => [new Assert\NotBlank()],
         ]);
@@ -388,9 +387,8 @@ class FieldConfigurationType extends AbstractType
                     'label' => $this->translator->trans('Catalogue', [], 'admin'),
                     'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                     'choices' => $choices,
-                    'attr' => [
-                        'group' => $groupClass ?: 'col-md-3',
-                    ],
+                    
+            'row_attr' => ['class' => $groupClass ?: 'col-md-3'],
                 ]);
             }
         }

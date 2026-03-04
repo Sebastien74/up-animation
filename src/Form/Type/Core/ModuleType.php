@@ -47,16 +47,14 @@ class ModuleType extends AbstractType
             'label' => $this->translator->trans('Rôle', [], 'admin'),
             'choices' => $this->getRoles(),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            'attr' => ['group' => 'col-md-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
         if (!$isNew) {
             $builder->add('iconClass', WidgetType\FontawesomeType::class, [
-                'attr' => [
-                    'class' => 'select-icons',
-                    'group' => 'col-md-2',
-                ],
+                'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
         }
@@ -66,7 +64,8 @@ class ModuleType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Afficher dans les extensions', [], 'admin'),
-            'attr' => ['group' => 'mx-auto col-md-4', 'class' => 'w-100', 'data-config' => true],
+            'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4 mx-auto'],
         ]);
 
         if (!$isNew) {

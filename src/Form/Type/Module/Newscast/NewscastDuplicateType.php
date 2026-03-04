@@ -67,14 +67,15 @@ class NewscastDuplicateType extends AbstractType
             'choice_label' => function ($entity) {
                 return strip_tags($entity->getAdminName());
             },
-            'attr' => ['group' => $multiSites ? 'col-md-6' : 'd-none'],
+            
+            'row_attr' => ['class' => $multiSites ? 'col-md-6' : 'd-none'],
         ]);
 
         $builder->add('newscast', EntityType::class, [
             'mapped' => false,
             'label' => false,
             'display' => false,
-            'attr' => ['class' => 'd-none'],
+            'attr' => ['class' => 'col-12 d-none'],
             'class' => Newscast::class,
             'data' => $options['duplicate_entity'],
             'choice_label' => function ($entity) {

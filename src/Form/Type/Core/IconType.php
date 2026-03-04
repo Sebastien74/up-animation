@@ -44,10 +44,11 @@ class IconType extends AbstractType
                 'accept' => self::ACCEPT,
                 'data-max-size' => self::MAX_SIZE,
                 'placeholder' => $this->translator->trans('Séléctionnez une image', [], 'admin'),
-                'class' => 'dropzone-field',
-                'group' => 'd-none',
-                'data-height' => 250,
+                'class' => 'col-12 dropzone-field',
+                
+                'data-height' => 250
             ],
+            'row_attr' => ['class' => 'col-12 d-none'],
             'constraints' => [
                 new File(maxSize: self::MAX_SIZE, mimeTypes: self::MIME_TYPES),
             ],

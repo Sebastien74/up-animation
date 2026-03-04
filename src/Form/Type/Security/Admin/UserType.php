@@ -55,7 +55,7 @@ class UserType extends AbstractType
             'label' => $this->translator->trans("Nom d'utilisateur", [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans("Saisissez un nom d'utilisateur", [], 'admin'),
-                'group' => $isNew ? 'col-md-3' : 'col-md-4',
+                'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
             ],
         ]);
 
@@ -63,7 +63,7 @@ class UserType extends AbstractType
             'label' => $this->translator->trans('E-mail', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin'),
-                'group' => $isNew ? 'col-md-3' : 'col-md-4',
+                'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
             ],
             'constraints' => [new Assert\Email()],
         ]);
@@ -73,18 +73,18 @@ class UserType extends AbstractType
                 'label' => $this->translator->trans('Nom de famille', [], 'admin'),
                 'required' => false,
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin'),
-                    'group' => 'col-md-4',
-                ],
+                    'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('firstName', Type\TextType::class, [
                 'label' => $this->translator->trans('Prénom', [], 'admin'),
                 'required' => false,
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez un prénom', [], 'admin'),
-                    'group' => 'col-md-4',
-                ],
+                    'placeholder' => $this->translator->trans('Saisissez un prénom', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
         }
 
@@ -108,14 +108,16 @@ class UserType extends AbstractType
                     return strip_tags($entity->getAdminName());
                 },
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => $isNew ? 'col-md-3' : 'col-md-4'],
+                
+            'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
         }
 
         $builder->add('locale', WidgetType\LanguageIconType::class, [
             'label' => $this->translator->trans('Langue', [], 'admin'),
-            'attr' => ['group' => $isNew ? 'col-md-3' : 'col-md-4'],
+            
+            'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
@@ -135,9 +137,9 @@ class UserType extends AbstractType
             'multiple' => true,
             'display' => 'search',
             'attr' => [
-                'data-placeholder' => $this->translator->trans('Séléctionnez', [], 'security_cms'),
-                'group' => $class,
+                'data-placeholder' => $this->translator->trans('Séléctionnez', [], 'security_cms')
             ],
+            'row_attr' => ['class' => 'col-12'],
             'constraints' => [new Assert\Count(min: 1, minMessage: $this->translator->trans('Vous devez sélctionner au moins un site.', [], 'security_cms'))],
         ]);
 
@@ -157,7 +159,7 @@ class UserType extends AbstractType
                 'display' => 'search',
                 'attr' => [
                     'placeholder' => $this->translator->trans('Séléctionnez', [], 'security_cms'),
-                    'group' => $isNew ? 'col-md-6' : 'col-12',
+                    'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-12'],
                 ],
             ]);
         }
@@ -170,9 +172,9 @@ class UserType extends AbstractType
                 'first_options' => [
                     'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                     'attr' => [
-                        'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms'),
-                        'group' => 'col-md-6 password-generator',
-                    ],
+                        'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 password-generator'],
                     'constraints' => [
                         new Assert\NotBlank(['message' => $this->translator->trans('Veuillez saisir un mot de passe.', [], 'security_cms')]),
                     ],
@@ -180,9 +182,9 @@ class UserType extends AbstractType
                 'second_options' => [
                     'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                     'attr' => [
-                        'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms'),
-                        'group' => 'col-md-6',
-                    ],
+                        'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                     'constraints' => [
                         new Assert\NotBlank(['message' => $this->translator->trans('Veuillez confirmer votre mot de passe.', [], 'security_cms')]),
                     ],
@@ -194,21 +196,22 @@ class UserType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Activer le compte', [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
 
             $builder->add('file', Type\FileType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
-                'attr' => ['accept' => 'image/*', 'class' => 'dropify'],
+                'attr' => ['accept' => 'image/*', 'class' => 'col-12 dropify'],
             ]);
         }
 
         if (!$isNew && $this->isInternalUser) {
             $builder->add('theme', WidgetType\AdminThemeType::class, [
                 'label' => $this->translator->trans('Thème', [], 'admin'),
-                'attr' => ['group' => 'col-md-4'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
         }
 

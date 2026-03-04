@@ -62,10 +62,10 @@ class TeaserType extends AbstractType
                 'required' => false,
                 'display' => 'search',
                 'class' => Category::class,
-                'attr' => [
-                    'group' => 'col-md-6',
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 'choice_label' => function ($entity) {
                     return strip_tags($entity->getAdminName());
                 },
@@ -76,9 +76,10 @@ class TeaserType extends AbstractType
                 'label' => $this->translator->trans("Nombre d'actualités par teaser", [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-4',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
         }
 

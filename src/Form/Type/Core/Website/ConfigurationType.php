@@ -87,20 +87,23 @@ class ConfigurationType extends AbstractType
             $builder->add('onlineStatus', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('En ligne', [], 'admin'),
                 'display' => 'switch',
-                'attr' => ['group' => 'mb-1'],
+                
+            'row_attr' => ['class' => 'col-12 mb-1'],
                 'help' => $this->translator->trans('Site en maintenace si hors ligne', [], 'admin'),
             ]);
 
             $builder->add('asDefault', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Site principal', [], 'admin'),
                 'display' => 'switch',
-                'attr' => ['group' => 'mb-1'],
+                
+            'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('fullWidth', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Plein écran', [], 'admin'),
                 'display' => 'switch',
-                'attr' => ['group' => 'mb-1'],
+                
+            'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('progressiveWebApp', Type\CheckboxType::class, [
@@ -111,25 +114,29 @@ class ConfigurationType extends AbstractType
             $builder->add('preloader', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Preloader', [], 'admin'),
                 'display' => 'switch',
-                'attr' => ['group' => 'mb-1'],
+                
+            'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('scrollTopBtn', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Bouton de retour haut de page', [], 'admin'),
                 'display' => 'switch',
-                'attr' => ['group' => 'mb-1'],
+                
+            'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('breadcrumb', Type\CheckboxType::class, [
                 'label' => $this->translator->trans("Activer les fils d'Ariane", [], 'admin'),
                 'display' => 'switch',
-                'attr' => ['group' => 'mb-1'],
+                
+            'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('subNavigation', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Activer les sous-navigations', [], 'admin'),
                 'display' => 'switch',
-                'attr' => ['group' => 'mb-1'],
+                
+            'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('seoStatus', Type\CheckboxType::class, [
@@ -146,13 +153,15 @@ class ConfigurationType extends AbstractType
             $builder->add('duplicateMediasStatus', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Activer la duplication des médias', [], 'admin'),
                 'display' => 'switch',
-                'attr' => ['group' => 'mb-1'],
+                
+            'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('mediasSecondary', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Activer 2<sup>ème</sup> image au block média', [], 'admin'),
                 'display' => 'switch',
-                'attr' => ['group' => 'mb-1'],
+                
+            'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('mediasCategoriesStatus', Type\CheckboxType::class, [
@@ -168,7 +177,8 @@ class ConfigurationType extends AbstractType
             $builder->add('adminAdvertising', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Activer la promotion des modules', [], 'admin'),
                 'display' => 'switch',
-                'attr' => ['group' => 'mb-1'],
+                
+            'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('locales', WidgetType\LanguageIconType::class, [
@@ -262,7 +272,7 @@ class ConfigurationType extends AbstractType
                 'prototype' => true,
                 'by_reference' => false,
                 'entry_options' => [
-                    'attr' => ['class' => 'domain'],
+                    'attr' => ['class' => 'col-12 domain'],
                     'website_edit' => $options['website_edit'],
                     'website' => $options['website'],
                 ],
@@ -323,9 +333,9 @@ class ConfigurationType extends AbstractType
                 'required' => false,
                 'label' => $this->translator->trans('Autres langues', [], 'admin'),
                 'attr' => [
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    'group' => 'col-md-6',
-                ],
+                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                 'multiple' => true,
             ]);

@@ -61,10 +61,10 @@ class CategoryType extends AbstractType
             'placeholder' => $this->translator->trans('Sélectionnez un module', [], 'admin'),
             'required' => false,
             'class' => Module::class,
-            'attr' => [
-                'group' => 'col-sm-3',
-                'placeholder' => $this->translator->trans('Sélectionnez un module', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Sélectionnez un module', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-sm-3'],
             'choices' => $this->getModules($options['website']),
             'choice_label' => function ($entity) {
                 return strip_tags($entity->getAdminName());

@@ -57,10 +57,10 @@ class CategoryType extends AbstractType
                 'class' => Category::class,
                 'label' => $this->translator->trans('Template', [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Sélectionnez', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -74,26 +74,23 @@ class CategoryType extends AbstractType
             ]);
 
             $builder->add('icon', WidgetType\IconType::class, [
-                'attr' => [
-                    'class' => 'select-icons',
-                    'group' => 'col-md-4',
-                    'data-config' => true,
-                ],
+                'attr' => ['class' => 'col-12 select-icons',
+                    'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('color', WidgetType\AppColorType::class, [
                 'label' => $this->translator->trans('Couleur', [], 'admin'),
-                'attr' => [
-                    'data-config' => true,
-                    'class' => 'select-icons',
-                    'group' => 'col-md-4',
-                ],
+                'attr' => ['data-config' => true,
+                    'class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('orderBy', Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Ordonner les actualités par', [], 'admin'),
                 'display' => 'search',
-                'attr' => ['group' => 'col-md-4', 'data-config' => true],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 'choices' => [
                     $this->translator->trans('Dates (croissantes)', [], 'admin') => 'publicationStart-asc',
                     $this->translator->trans('Dates (décroissantes)', [], 'admin') => 'publicationStart-desc',
@@ -103,13 +100,15 @@ class CategoryType extends AbstractType
             ]);
 
             $builder->add('formatDate', WidgetType\FormatDateType::class, [
-                'attr' => ['group' => 'col-md-4', 'data-config' => true],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('itemsPerPage', Type\IntegerType::class, [
                 'required' => false,
                 'label' => $this->translator->trans("Nombre d'actualités par page", [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'data-config' => true],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('useDefaultTemplate', Type\CheckboxType::class, [
@@ -117,7 +116,8 @@ class CategoryType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Utiliser le template de la catégorie principale', [], 'admin'),
-                'attr' => ['group' => 'col-md-4 d-flex align-items-end', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4 d-flex align-items-end'],
             ]);
 
             $builder->add('hideDate', Type\CheckboxType::class, [
@@ -125,7 +125,8 @@ class CategoryType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Cacher la date', [], 'admin'),
-                'attr' => ['group' => 'col-md-4 d-flex align-items-end', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4 d-flex align-items-end'],
             ]);
 
             $builder->add('displayCategory', Type\CheckboxType::class, [
@@ -133,7 +134,8 @@ class CategoryType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher le nom de la catégorie', [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('asDefault', Type\CheckboxType::class, [
@@ -141,7 +143,8 @@ class CategoryType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Catégorie principale', [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('mainMediaInHeader', Type\CheckboxType::class, [
@@ -149,7 +152,8 @@ class CategoryType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans("Afficher l'image principale dans les entêtes", [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
         }
 
@@ -160,7 +164,8 @@ class CategoryType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans("Type événement", [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
 
             $mediaRelations = new WidgetType\MediaRelationsCollectionType($this->coreLocator);

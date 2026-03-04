@@ -55,7 +55,10 @@ class TabType extends AbstractType
                     $this->translator->trans('Onglets verticaux', [], 'admin') => 'vertical',
                     $this->translator->trans('Accordéon', [], 'admin') => 'accordion',
                 ],
-                'attr' => ['group' => 'col-md-3'],
+                'attr' => [
+                
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 

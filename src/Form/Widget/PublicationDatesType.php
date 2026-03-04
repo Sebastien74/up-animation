@@ -53,8 +53,8 @@ class PublicationDatesType
             'widget' => $asDatePicker ? 'single_text' : null,
             'format' => $asDatePicker ? 'dd/MM/YYYY HH:mm' : DateTimeType::HTML5_FORMAT,
             'years' => $years,
-            'attr' => [
-                'group' => !empty($options['startGroup']) ? $options['startGroup'].'  datetime-group' : 'col-md-4 datetime-group',
+            
+            'row_attr' => ['class' => 'col-12 !empty($options['startGroup']) ? $options['startGroup'].'  datetime-group' : 'col-md-4 datetime-group',
                 'class' => $asDatePicker ? 'datepicker' : null,
                 'placeholder' => $asDatePicker ? $this->translator->trans('Sélectionnez une date', [], 'admin') : null,
                 'data-config' => $options['data-config'] ?? true,
@@ -83,8 +83,8 @@ class PublicationDatesType
             'widget' => $asDatePicker ? 'single_text' : null,
             'format' => $asDatePicker ? 'dd/MM/YYYY HH:mm' : DateTimeType::HTML5_FORMAT,
             'years' => $years,
-            'attr' => [
-                'group' => !empty($options['endGroup']) ? $options['endGroup'].'  datetime-group' : 'col-md-4 datetime-group',
+            
+            'row_attr' => ['class' => 'col-12 !empty($options['endGroup']) ? $options['endGroup'].'  datetime-group' : 'col-md-4 datetime-group',
                 'class' => $asDatePicker ? 'datepicker' : null,
                 'placeholder' => $asDatePicker ? $this->translator->trans('Sélectionnez une date', [], 'admin') : null,
                 'data-config' => $options['data-config'] ?? true,

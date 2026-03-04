@@ -60,18 +60,18 @@ class ConfigurationType extends AbstractType
         $builder->add('receivingEmails', WidgetType\TagInputType::class, [
             'label' => $this->translator->trans('E-mails de réception', [], 'admin'),
             'required' => false,
-            'attr' => [
-                'group' => 'col-md-8',
-                'placeholder' => $this->translator->trans('Ajouter des e-mails', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Ajouter des e-mails', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
         ]);
 
         $builder->add('sendingEmail', Type\EmailType::class, [
             'label' => $this->translator->trans("E-mail d'envoi", [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-4',
-                'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez un e-mail', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'constraints' => [
                 new Assert\NotBlank(),
                 new Assert\Email(),
@@ -84,18 +84,19 @@ class ConfigurationType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-2',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             ]);
 
             $builder->add('pageRedirection', EntityType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Page de redirection', [], 'admin'),
                 'attr' => [
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    'group' => 'col-md-2 allow-clear',
-                ],
+                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 allow-clear'],
                 'class' => Page::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('p')
@@ -125,7 +126,8 @@ class ConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Enregistrer les contacts', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('attachmentsInMail', Type\CheckboxType::class, [
@@ -133,7 +135,8 @@ class ConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Fichiers en pièces-jointes du mail', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('uniqueContact', Type\CheckboxType::class, [
@@ -141,7 +144,8 @@ class ConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Un seul envoi de mail possible', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('thanksModal', Type\CheckboxType::class, [
@@ -149,7 +153,8 @@ class ConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher modal de remerciement', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('thanksPage', Type\CheckboxType::class, [
@@ -157,7 +162,8 @@ class ConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Rediriger vers la page remerciement', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 
@@ -166,7 +172,8 @@ class ConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Envoyer un e-mail de confirmation', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+            'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         if ($this->isInternalUser) {
@@ -175,7 +182,8 @@ class ConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Activer le recaptcha', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('dynamic', Type\CheckboxType::class, [
@@ -183,7 +191,8 @@ class ConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Activer les champs dynamiques', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $module = $this->entityManager->getRepository(Module::class)->findOneBy(['slug' => 'form-calendar']);
@@ -194,7 +203,8 @@ class ConfigurationType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Activer les calendriers', [], 'admin'),
-                    'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                    'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
             }
 
@@ -204,7 +214,8 @@ class ConfigurationType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Soumission en ajax', [], 'admin'),
-                    'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                    'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
             }
 
@@ -213,7 +224,8 @@ class ConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Labels dans les champs', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
     }

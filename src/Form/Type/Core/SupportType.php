@@ -76,7 +76,7 @@ class SupportType extends AbstractType
         $builder->add('submit', Type\SubmitType::class, [
             'label' => $this->translator->trans('Envoyer', [], 'admin'),
             'attr' => [
-                'class' => 'btn-app',
+                'class' => 'col-12 btn-app',
                 'data-icon' => 'plane',
                 'data-icon-side' => 'left',
             ],

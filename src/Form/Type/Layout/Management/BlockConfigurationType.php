@@ -60,7 +60,7 @@ class BlockConfigurationType extends AbstractType
         foreach ($screens as $screen => $label) {
             $builder->add('alignment'.$screen, Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Alignement du contenu <small>('.$label.')</small>', [], 'admin'),
-                'label_attr' => ['class' => 'text-start'],
+                'label_attr' => ['class' => 'col-12 text-start'],
                 'required' => false,
                 'display' => 'search',
                 'placeholder' => $this->translator->trans('Par défaut', [], 'admin'),
@@ -77,7 +77,8 @@ class BlockConfigurationType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('Alignement du bloc', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            'attr' => ['group' => $this->isInternalUser ? 'col-md-6' : 'col-12'],
+            
+            'row_attr' => ['class' => $this->isInternalUser ? 'col-md-6' : 'col-12'],
             'display' => 'search',
             'choices' => [
                 $this->translator->trans('À gauche', [], 'admin') => 'd-flex justify-content-start',
@@ -87,7 +88,7 @@ class BlockConfigurationType extends AbstractType
         ]);
 
         if ($this->isInternalUser) {
-            $builder->add('zIndex', WidgetType\ZIndexType::class, ['attr' => ['group' => 'col-md-6']]);
+            $builder->add('zIndex', WidgetType\ZIndexType::class, ['row_attr' => ['class' => 'col-12 col-md-12 col-lg-6']]);
         }
 
         if ('media' === $blockTypeSlug || 'text' === $blockTypeSlug || 'title' === $blockTypeSlug) {
@@ -96,7 +97,8 @@ class BlockConfigurationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Utiliser pour les vignettes', [], 'admin'),
-                'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
         }
 
@@ -105,7 +107,8 @@ class BlockConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Centrer verticalement le contenu du bloc', [], 'admin'),
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('endAlign', Type\CheckboxType::class, [
@@ -113,32 +116,38 @@ class BlockConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Aligner le contenu en bas du bloc', [], 'admin'),
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('hide', HideType::class, [
             'label' => $this->translator->trans('Cacher le bloc', [], 'admin'),
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('hideDesktop', HideType::class, [
             'label' => $this->translator->trans('Cacher le bloc sur PC', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideMiniPc', HideType::class, [
             'label' => $this->translator->trans('Cacher le bloc sur mini PC', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideTablet', HideType::class, [
             'label' => $this->translator->trans('Cacher le bloc sur tablette', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideMobile', HideType::class, [
             'label' => $this->translator->trans('Cacher le bloc sur mobile', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $radiusType = new WidgetType\RadiusType($this->coreLocator);
@@ -149,7 +158,8 @@ class BlockConfigurationType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Afficher le bloc en première position sur mobile', [], 'admin'),
-            'attr' => ['group' => 'col-md-6', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $ordersSizes = new ScreensType($this->coreLocator);
@@ -179,26 +189,26 @@ class BlockConfigurationType extends AbstractType
         $builder->add('customClass', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Classes personnalisées', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-8',
-                'class' => 'input-css',
-                'placeholder' => $this->translator->trans('Éditer', [], 'admin'),
+            'attr' => ['class' => 'col-12 input-css',
+                'placeholder' => $this->translator->trans('Éditer', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
         ]);
 
         $builder->add('customId', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Id personnalisé', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-4',
-                'placeholder' => $this->translator->trans('Éditer', [], 'admin'),
+            'attr' => ['placeholder' => $this->translator->trans('Éditer', [],
+                 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
             'attr' => [
-                'class' => 'btn-app edit-element-submit-btn',
+                'class' => 'col-12 btn-app edit-element-submit-btn',
                 'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],

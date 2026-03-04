@@ -37,8 +37,8 @@ class CustomIntlType extends AbstractType
             'label' => $this->translator->trans('Script (head)', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Ajouter le script', [], 'admin'),
-                'group' => 'col-md-6',
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('topBodyScript', Type\TextareaType::class, [
@@ -47,8 +47,8 @@ class CustomIntlType extends AbstractType
             'label' => $this->translator->trans('Script (Top body)', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Ajouter le script', [], 'admin'),
-                'group' => 'col-md-6',
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('bottomBodyScript', Type\TextareaType::class, [
@@ -57,8 +57,8 @@ class CustomIntlType extends AbstractType
             'label' => $this->translator->trans('Script (Bottom body)', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Ajouter le script', [], 'admin'),
-                'group' => 'col-md-6',
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
     }
 

@@ -62,20 +62,16 @@ class TableType extends AbstractType
 
                 $builder->add('headBackgroundColor', WidgetType\BackgroundColorSelectType::class, [
                     'label' => $this->translator->trans("Couleur de fond de l'entête", [], 'admin'),
-                    'attr' => [
-                        'data-config' => true,
-                        'class' => 'select-icons',
-                        'group' => 'col-md-4',
-                    ],
+                    'attr' => ['data-config' => true,
+                        'class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
 
                 $builder->add('headColor', WidgetType\AppColorType::class, [
                     'label' => $this->translator->trans("Couleur de la police de l'entête", [], 'admin'),
-                    'attr' => [
-                        'data-config' => true,
-                        'class' => 'select-icons',
-                        'group' => 'col-md-4',
-                    ],
+                    'attr' => ['data-config' => true,
+                        'class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
 
                 $builder->add('striped', CheckboxType::class, [
@@ -83,7 +79,8 @@ class TableType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Striped', [], 'admin'),
-                    'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100', 'data-config' => true],
+                    'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
                 ]);
             }
         }

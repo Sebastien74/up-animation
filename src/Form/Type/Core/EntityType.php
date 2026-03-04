@@ -53,7 +53,7 @@ class EntityType extends AbstractType
             'display' => 'search',
             'choices' => $this->getNamespaces(),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            'attr' => ['group' => 'col-md-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         if (!$isNew) {
@@ -63,7 +63,7 @@ class EntityType extends AbstractType
                 'display' => 'search',
                 'choices' => $this->getFilters($data),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-4'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('card', Type\CheckboxType::class, [
@@ -71,7 +71,8 @@ class EntityType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Type fiche', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('mediaMulti', Type\CheckboxType::class, [
@@ -79,7 +80,8 @@ class EntityType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Multi médias', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('uniqueLocale', Type\CheckboxType::class, [
@@ -87,7 +89,8 @@ class EntityType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Langue unique', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('inFieldConfiguration', Type\CheckboxType::class, [
@@ -95,7 +98,8 @@ class EntityType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Ajouter au sélecteur du module formulaire', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('orderBy', Type\ChoiceType::class, [
@@ -103,7 +107,7 @@ class EntityType extends AbstractType
                 'display' => 'search',
                 'choices' => $properties,
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-4'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('orderSort', Type\ChoiceType::class, [
@@ -114,15 +118,15 @@ class EntityType extends AbstractType
                     $this->translator->trans('Décroissant', [], 'admin') => 'DESC',
                 ],
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-4'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('adminLimit', Type\IntegerType::class, [
                 'label' => $this->translator->trans('Admin limite', [], 'admin'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez une limite', [], 'admin'),
-                    'group' => 'col-md-4',
-                ],
+                    'placeholder' => $this->translator->trans('Saisissez une limite', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('columns', Type\ChoiceType::class, [

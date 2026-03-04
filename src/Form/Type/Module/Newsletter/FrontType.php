@@ -54,7 +54,7 @@ class FrontType extends AbstractType
             'label' => false,
             'attr' => [
                 'placeholder' => $this->translator->trans('Votre e-mail', [], 'front_form'),
-                'class' => 'text-center text-md-center text-lg-start newsletter-form-email',
+                'class' => 'col-12 text-center text-md-center text-lg-start newsletter-form-email',
                 'autocomplete' => 'off',
             ],
             'constraints' => $constraints,

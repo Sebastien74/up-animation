@@ -35,7 +35,7 @@ class SubmitDuplicateType extends AbstractType
         $builder->add('save', SymfonySubmitType::class, [
             'label' => $this->translator->trans('Dupliquer', [], 'admin'),
             'attr' => [
-                'class' => 'btn btn-outline-white',
+                'class' => 'col-12 btn btn-outline-white',
             ],
         ]);
     }

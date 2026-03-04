@@ -35,10 +35,8 @@ class FormatDateType extends AbstractType
             'display' => 'search',
             'empty_data' => 'dd/MM/Y',
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            'attr' => [
-                'group' => 'col-md-3',
-                'data-config' => true,
-            ],
+            'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'choices' => [
                 $this->translator->trans('jj/mm', [], 'admin') => 'dd/MM',
                 $this->translator->trans('jj/mm/aaaa', [], 'admin') => 'dd/MM/Y',

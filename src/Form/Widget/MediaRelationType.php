@@ -69,9 +69,9 @@ class MediaRelationType extends AbstractType
                 'label' => $this->translator->trans('Titre de la vidéo', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Veuillez saisir un titre', [], 'admin'),
-                    'data-help-alert' => 'warning',
-                    'group' => 'hide-ai',
-                ],
+                    'data-help-alert' => 'warning'
+            ],
+            'row_attr' => ['class' => 'col-12 hide-ai'],
                 'help' => $this->translator->trans("S'il ne s'agit pas d'une vidéo décorative, il est nécessaire d'ajouter un titre pour rendre le contenu accessible au personnes mal entendantes.", [], 'admin')
             ]);
 
@@ -81,9 +81,9 @@ class MediaRelationType extends AbstractType
                 'editor' => 'basic',
                 'attr' => [
                     'placeholder' => $this->translator->trans('Veuillez saisir une description', [], 'admin'),
-                    'data-help-alert' => 'warning',
-                    'group' => 'hide-ai',
-                ],
+                    'data-help-alert' => 'warning'
+            ],
+            'row_attr' => ['class' => 'col-12 hide-ai'],
                 'help' => $this->translator->trans("S'il ne s'agit pas d'une vidéo décorative, il est nécessaire d'ajouter une description pour rendre le contenu accessible au personnes mal entendantes.", [], 'admin')
             ]);
         }
@@ -99,7 +99,7 @@ class MediaRelationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Téléchargeable', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
 
             $builder->add('popup', Type\CheckboxType::class, [
@@ -107,7 +107,7 @@ class MediaRelationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher popup au clic', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
 
             $builder->add('main', Type\CheckboxType::class, [
@@ -117,7 +117,7 @@ class MediaRelationType extends AbstractType
                 'label' => 'agencies' === $slugEntity
                     ? $this->translator->trans('Image de vignette', [], 'admin')
                     : $this->translator->trans('Image principale', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
 
             if ($options['header']) {
@@ -126,7 +126,7 @@ class MediaRelationType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans("Image d'entête", [], 'admin'),
-                    'attr' => ['class' => 'w-100'],
+                    'attr' => ['class' => 'col-12 w-100'],
                 ]);
             }
 
@@ -136,20 +136,18 @@ class MediaRelationType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans("Rotation de l'image", [], 'admin'),
-                    'attr' => ['class' => 'w-100'],
+                    'attr' => ['class' => 'col-12 w-100'],
                 ]);
             }
 
             $radiusType = new RadiusType($this->coreLocator);
-            $radiusType->add($builder, ['group' => 'col-12']);
+            $radiusType->add($builder, ['row_attr' => ['class' => 'col-12'],]);
 
             if ($data && method_exists($data, 'setBackgroundColor')) {
                 $builder->add('backgroundColor', BackgroundColorSelectType::class, [
-                    'attr' => [
-                        'group' => 'col-12',
-                        'class' => ' select-icons',
-                        'data-config' => true,
-                    ],
+                    'attr' => ['class' => 'col-12 select-icons',
+                        'data-config' => true],
+            'row_attr' => ['class' => 'col-12'],
                 ]);
             }
 
@@ -203,16 +201,15 @@ class MediaRelationType extends AbstractType
                 'choices' => $choices,
                 'label' => $this->translator->trans('Catégorie', [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-12'],
+                
+            'row_attr' => ['class' => 'col-12'],
             ]);
         }
 
         if ($options['pictogram']) {
             $builder->add('pictogram', PictogramType::class, [
-                'attr' => [
-                    'group' => 'col-md-12',
-                    'class' => 'select-icons img-pictograms',
-                ],
+                'attr' => ['class' => 'col-12 select-icons img-pictograms'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-12'],
             ]);
         }
 
@@ -223,18 +220,18 @@ class MediaRelationType extends AbstractType
                 'label' => $this->translator->trans('Largeur (px) du picto', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez une largeur', [], 'admin'),
-                    'tabSize' => !empty($options['tabSize']) ? $options['tabSize'] : '12',
-                    'group' => 'col-md-12',
-                ],
+                    'tabSize' => !empty($options['tabSize']) ? $options['tabSize'] : '12'
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-12'],
             ]);
 
             $builder->add('pictogramMaxHeight', Type\IntegerType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Hauteur (px) du picto', [], 'admin'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez une hauteur', [], 'admin'),
-                    'group' => 'col-md-12',
-                ],
+                    'placeholder' => $this->translator->trans('Saisissez une hauteur', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-12'],
             ]);
         }
 
@@ -244,7 +241,7 @@ class MediaRelationType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Activer', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
         }
 
@@ -261,7 +258,7 @@ class MediaRelationType extends AbstractType
         $saveOptions = [
             'btn_save' => true,
             'force' => true,
-            'class' => 'btn-info-darken ajax-post inner-preloader-btn w-100 text-white standard medias',
+            'class' => 'col-12 btn-info-darken ajax-post inner-preloader-btn w-100 text-white standard medias',
         ];
         $save = new SubmitType($this->coreLocator);
         $save->add($builder, $saveOptions);

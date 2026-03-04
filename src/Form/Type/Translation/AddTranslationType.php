@@ -38,9 +38,9 @@ class AddTranslationType extends AbstractType
             'display' => 'search',
             'label' => $this->translator->trans('Domaine de traduction', [], 'admin'),
             'attr' => [
-                'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'group' => 'col-md-4',
+                'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'class' => TranslationDomain::class,
             'choice_label' => function ($entity) {
                 return strip_tags($entity->getAdminName());
@@ -51,9 +51,9 @@ class AddTranslationType extends AbstractType
         $builder->add('keyName', Type\TextType::class, [
             'label' => $this->translator->trans('Clé de traduction', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin'),
-                'group' => 'col-md-8',
+                'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 

@@ -72,7 +72,7 @@ class FeatureValueProductType extends AbstractType
                         return strip_tags($entity->getAdminName());
                     },
                     'display' => 'search',
-                    'row_attr' => ['class' => 'disabled-floating value-group mb-0'],
+                    'row_attr' => ['class' => 'col-12 disabled-floating value-group mb-0'],
                 ]);
             } else {
                 $form->add('value', FeatureValueAutocompleteField::class, ['data' => $this->featureValueProduct]);
@@ -94,11 +94,11 @@ class FeatureValueProductType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Ajouter aux principales', [], 'admin'),
-            'attr' => ['class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
         ]);
 
         $builder->add('position', Type\HiddenType::class, [
-            'attr' => ['class' => 'input-position input-position-collection'],
+            'attr' => ['class' => 'col-12 input-position input-position-collection'],
         ]);
 
         if (self::DISPLAY_ARRAY) {
@@ -107,7 +107,8 @@ class FeatureValueProductType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher dans un tableau', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
     }

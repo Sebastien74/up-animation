@@ -43,7 +43,7 @@ class BackgroundColorSelectType extends AbstractType
             'display' => 'search',
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'choices' => $this->getColors(),
-            'attr' => ['class' => 'select-icons'],
+            'attr' => ['class' => 'col-12 select-icons'],
             'choice_attr' => function ($color, $key, $value) {
                 return [
                     'data-class' => str_contains($color, 'outline') ? 'square-outline' : 'square',

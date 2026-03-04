@@ -70,16 +70,18 @@ class TeaserType extends AbstractType
                         $this->translator->trans('Slider', [], 'admin') => 'slider',
                         $this->translator->trans('Liste', [], 'admin') => 'list',
                     ],
-                    'attr' => ['group' => 'col-md-3', 'data-config' => true],
+                    'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
                 $builder->add('nbrItems', Type\IntegerType::class, [
                     'label' => $this->translator->trans('Nombre de produits par teaser', [], 'admin'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                        'group' => 'col-md-3',
-                        'data-config' => true,
-                    ],
+                        
+                        'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
                 $builder->add('itemsPerSlide', Type\IntegerType::class, [
@@ -87,15 +89,17 @@ class TeaserType extends AbstractType
                     'label' => $this->translator->trans('Nombre de produits par slide', [], 'admin'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                        'group' => 'col-md-3',
-                        'data-config' => true,
-                    ],
+                        
+                        'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
                 $builder->add('orderBy', Type\ChoiceType::class, [
                     'label' => $this->translator->trans('Ordonner les produits par', [], 'admin'),
                     'display' => 'search',
-                    'attr' => ['group' => 'col-md-3', 'data-config' => true],
+                    'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     'choices' => [
                         $this->translator->trans('Dates de publication (croissantes)', [], 'admin') => 'publicationStart-asc',
                         $this->translator->trans('Dates de publication (décroissantes)', [], 'admin') => 'publicationStart-desc',
@@ -112,7 +116,8 @@ class TeaserType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Afficher uniquement les produits mis en avant', [], 'admin'),
-                    'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
+                    'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
             }
 
@@ -121,10 +126,10 @@ class TeaserType extends AbstractType
                 'required' => false,
                 'display' => 'search',
                 'class' => Catalog::class,
-                'attr' => [
-                    'group' => 'col-md-6',
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -142,10 +147,10 @@ class TeaserType extends AbstractType
                 'required' => false,
                 'display' => 'search',
                 'class' => Category::class,
-                'attr' => [
-                    'group' => 'col-md-6',
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -173,10 +178,10 @@ class TeaserType extends AbstractType
                     'required' => false,
                     'display' => 'search',
                     'class' => SubCategory::class,
-                    'attr' => [
-                        'group' => 'col-12',
-                        'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    ],
+                    'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+             'admin')
+            ],
+            'row_attr' => ['class' => 'col-12'],
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('s')
                             ->leftJoin('s.catalogcategory', 'c')
@@ -196,7 +201,8 @@ class TeaserType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Appartenant à toutes les catégories', [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
 
             $intls = new WidgetType\IntlsCollectionType($this->coreLocator);

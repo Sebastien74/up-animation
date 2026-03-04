@@ -42,7 +42,7 @@ class ZIndexType extends AbstractType
             'display' => 'search',
             'attr' => function (OptionsResolver $attr) {
                 $attr->setDefaults([
-                    'group' => 'col-md-4',
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
             },
             'choices' => $choices,

@@ -44,7 +44,8 @@ class WebsitesSelectorType extends AbstractType
         $builder->add('websites', ChoiceType::class, [
             'label' => false,
             'display' => 'search',
-            'attr' => ['class' => 'websites-selector', 'group' => 'col-12 mb-0 mt-2'],
+            'attr' => ['class' => 'col-12 websites-selector'],
+            'row_attr' => ['class' => 'col-12 mb-0 mt-2'],
             'data' => $website->getId(),
             'choices' => $this->getUserWebsites(),
         ]);

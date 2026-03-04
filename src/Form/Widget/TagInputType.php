@@ -39,7 +39,7 @@ class TagInputType extends AbstractType
         $resolver->setDefaults([
             'role' => 'tagsinput',
             'label_attr' => [
-                'class' => 'w-100',
+                'class' => 'col-12 w-100',
             ],
             'attr' => [
                 'placeholder' => $this->translator->trans('Ajoutez', [], 'admin'),

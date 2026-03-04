@@ -73,7 +73,8 @@ class ZoneDuplicateType extends AbstractType
                 }
                 return $qb;
             },
-            'attr' => ['group' => 'disable-asterisk col-12 text-center'],
+            
+            'row_attr' => ['class' => 'col-12 disable-asterisk text-center'],
             'choice_label' => function ($page) {
                 if ($this->multiSites) {
                     return strip_tags($page->getAdminName()).' ('.$page->getWebsite()->getAdminName().')';
@@ -87,7 +88,7 @@ class ZoneDuplicateType extends AbstractType
         $builder->add('zone', EntityType::class, [
             'mapped' => false,
             'label' => false,
-            'attr' => ['class' => 'd-none'],
+            'attr' => ['class' => 'col-12 d-none'],
             'class' => Zone::class,
             'data' => $options['duplicate_entity'],
             'choice_label' => function ($entity) {

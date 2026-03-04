@@ -264,7 +264,7 @@ class RegisterManager
     public function sendWebmasterEmail(UserEntity\UserFront $user, WebsiteModel $website): void
     {
         $adminGroup = $this->coreLocator->em()->getRepository(UserEntity\Group::class)->findOneBy(['slug' => 'administrator']);
-        $webmasters = $this->coreLocator->em()->getRepository(UserEntity\User::class)->findOneBy(['group' => $adminGroup]);
+        $webmasters = $this->coreLocator->em()->getRepository(UserEntity\User::class)->findOneBy(['row_attr' => ['class' => 'col-12'],]);
 
         $emails = [];
         foreach ($webmasters as $webmaster) {

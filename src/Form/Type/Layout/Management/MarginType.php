@@ -32,14 +32,14 @@ class MarginType
     public function add(FormBuilderInterface $builder, array $options = []): void
     {
         $fields = [];
-        $fields['marginTop'] = ['sizes' => ['type' => 'm', 'position' => 't'], 'group' => 'col-md-6 mb-md-0'];
-        $fields['marginRight'] = ['sizes' => ['type' => 'm', 'position' => 'e'], 'group' => 'col-md-6 mb-md-0'];
-        $fields['marginBottom'] = ['sizes' => ['type' => 'm', 'position' => 'b'], 'group' => 'col-md-6 mb-md-0'];
-        $fields['marginLeft'] = ['sizes' => ['type' => 'm', 'position' => 's'], 'group' => 'col-md-6 mb-md-0'];
-        $fields['paddingTop'] = ['sizes' => ['type' => 'p', 'position' => 't'], 'group' => 'col-md-3 disable-asterisk'];
-        $fields['paddingRight'] = ['sizes' => ['type' => 'p', 'position' => 'e'], 'group' => 'col-md-3 disable-asterisk'];
-        $fields['paddingBottom'] = ['sizes' => ['type' => 'p', 'position' => 'b'], 'group' => 'col-md-3 disable-asterisk'];
-        $fields['paddingLeft'] = ['sizes' => ['type' => 'p', 'position' => 's'], 'group' => 'col-md-3 disable-asterisk'];
+        $fields['marginTop'] = ['sizes' => ['type' => 'm', 'position' => 't'], 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 mb-md-0']];
+        $fields['marginRight'] = ['sizes' => ['type' => 'm', 'position' => 'e'], 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 mb-md-0']];
+        $fields['marginBottom'] = ['sizes' => ['type' => 'm', 'position' => 'b'], 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 mb-md-0']];
+        $fields['marginLeft'] = ['sizes' => ['type' => 'm', 'position' => 's'], 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 mb-md-0']];
+        $fields['paddingTop'] = ['sizes' => ['type' => 'p', 'position' => 't'], 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 disable-asterisk']];
+        $fields['paddingRight'] = ['sizes' => ['type' => 'p', 'position' => 'e'], 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 disable-asterisk']];
+        $fields['paddingBottom'] = ['sizes' => ['type' => 'p', 'position' => 'b'], 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 disable-asterisk']];
+        $fields['paddingLeft'] = ['sizes' => ['type' => 'p', 'position' => 's'], 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 disable-asterisk']];
 
         foreach (['', 'MiniPc', 'Tablet', 'Mobile'] as $screen) {
             foreach ($fields as $name => $config) {
@@ -49,7 +49,8 @@ class MarginType
                     'placeholder' => $this->translator->trans('NULL', [], 'admin'),
                     'choices' => $this->getSizes($config['sizes']['type'], $config['sizes']['position']),
                     'label' => false,
-                    'attr' => ['group' => $config['group'], 'class' => 'disable-search'],
+                    
+            'row_attr' => ['class' => $config['group'], 'class' => 'col-12 disable-search'],
                 ]);
             }
         }

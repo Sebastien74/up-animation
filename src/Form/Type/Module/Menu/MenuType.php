@@ -98,7 +98,7 @@ class MenuType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Menu principal', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
 
             $builder->add('footer', Type\CheckboxType::class, [
@@ -106,7 +106,7 @@ class MenuType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Pied de page principal', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
 
             $builder->add('alwaysFixed', Type\CheckboxType::class, [
@@ -114,7 +114,7 @@ class MenuType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Fixe', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
 
             $builder->add('fixedOnScroll', Type\CheckboxType::class, [
@@ -122,7 +122,7 @@ class MenuType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Fixe au scroll', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
 
             $builder->add('dropdownHover', Type\CheckboxType::class, [
@@ -130,7 +130,7 @@ class MenuType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Ouvrir les sous-menus au survol', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
 
             $builder->add('vertical', Type\CheckboxType::class, [
@@ -138,7 +138,7 @@ class MenuType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Menu vertical', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
         }
 

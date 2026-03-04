@@ -43,7 +43,7 @@ class TransitionType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('Section', [], 'admin'),
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une section', [], 'admin')],
-            'row_attr' => ['class' => 'col-md-6'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('laxPreset', WidgetType\LaxEffectType::class, [
@@ -66,19 +66,19 @@ class TransitionType extends AbstractType
 
         $builder->add('duration', WidgetType\EffectDurationType::class, [
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une durée', [], 'admin')],
-            'row_attr' => ['class' => 'col-md-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('delay', WidgetType\EffectDelayType::class, [
             'attr' => ['placeholder' => $this->translator->trans('Saisissez un délai', [], 'admin')],
-            'row_attr' => ['class' => 'col-md-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('offsetData', Type\TextType::class, [
             'required' => false,
             'label' => $this->translator->trans('Offset', [], 'admin'),
             'attr' => ['placeholder' => $this->translator->trans('Saisissez un offset', [], 'admin')],
-            'row_attr' => ['class' => 'col-md-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('active', Type\CheckboxType::class, [
@@ -86,7 +86,7 @@ class TransitionType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Actif pour les sélecteurs', [], 'admin'),
-            'attr' => ['class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
         ]);
 
         $builder->add('activeForBlock', Type\CheckboxType::class, [
@@ -94,7 +94,7 @@ class TransitionType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Actif pour les blocks', [], 'admin'),
-            'attr' => ['class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
         ]);
     }
 

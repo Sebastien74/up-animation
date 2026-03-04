@@ -46,7 +46,7 @@ class UserSelectTextType extends AbstractType
     {
         $resolver->setDefaults([
             'attr' => [
-                'class' => 'js-autocomplete',
+                'class' => 'col-12 js-autocomplete',
                 'data-autocomplete-url' => $this->router->generate('admin_security_utility'),
                 'data-autocomplete-key' => 'email',
             ],

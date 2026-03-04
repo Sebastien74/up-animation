@@ -39,7 +39,7 @@ class CompanyType extends AbstractType
             'label' => $this->translator->trans("Nom de l'entreprise", [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin'),
-                'group' => $isNew ? 'col-12' : 'col-md-9',
+                'row_attr' => ['class' => $isNew ? 'col-12' : 'col-md-9'],
             ],
             'constraints' => [new Assert\NotBlank()],
         ]);
@@ -48,41 +48,41 @@ class CompanyType extends AbstractType
             $builder->add('locale', WidgetType\LanguageIconType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Langue', [], 'admin'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('email', Type\EmailType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('E-mail', [], 'admin'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin'),
-                    'group' => 'col-md-4',
-                ],
+                    'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('contactLastName', Type\EmailType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Nom du contact principal', [], 'admin'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin'),
-                    'group' => 'col-md-4',
-                ],
+                    'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('contactFirstName', Type\EmailType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Prénom du contact principal', [], 'admin'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin'),
-                    'group' => 'col-md-4',
-                ],
+                    'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('file', Type\FileType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
-                'attr' => ['accept' => 'image/*', 'class' => 'dropify'],
+                'attr' => ['accept' => 'image/*', 'class' => 'col-12 dropify'],
             ]);
 
             $builder->add('address', CompanyAddressType::class, ['label' => false]);

@@ -55,7 +55,7 @@ class ActionType extends AbstractType
                 'label' => $this->translator->trans('Controller', [], 'admin'),
                 'display' => 'search',
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Assert\NotBlank()],
                 'choices' => $files->controllers,
                 'choice_translation_domain' => false,
@@ -65,7 +65,7 @@ class ActionType extends AbstractType
                 'label' => $this->translator->trans('Action', [], 'admin'),
                 'display' => 'search',
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Assert\NotBlank()],
                 'choices' => $files->methods,
                 'choice_translation_domain' => false,
@@ -76,7 +76,7 @@ class ActionType extends AbstractType
                 'display' => 'search',
                 'label' => $this->translator->trans('Filtre', [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => $files->entities,
                 'choice_translation_domain' => false,
             ]);
@@ -86,7 +86,7 @@ class ActionType extends AbstractType
                 'display' => 'search',
                 'class' => Module::class,
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Assert\NotBlank()],
                 'choice_label' => function ($entity) {
                     return strip_tags($entity->getAdminName());
@@ -95,10 +95,8 @@ class ActionType extends AbstractType
 
             $builder->add('iconClass', WidgetType\FontawesomeType::class, [
                 'required' => false,
-                'attr' => [
-                    'class' => 'select-icons',
-                    'group' => 'col-md-3',
-                ],
+                'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('card', Type\CheckboxType::class, [
@@ -106,7 +104,8 @@ class ActionType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Activer le type fiche', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('dropdown', Type\CheckboxType::class, [
@@ -114,7 +113,8 @@ class ActionType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Ajouter à la zone non prioritaire', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 

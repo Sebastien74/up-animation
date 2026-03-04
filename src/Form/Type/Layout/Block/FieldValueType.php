@@ -71,7 +71,7 @@ class FieldValueType extends AbstractType
             'choice_label' => function ($page) {
                 return strip_tags($page->getAdminName());
             },
-            'row_attr' => ['class' => 'col-md-4 parent-group'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4 parent-group'],
         ]);
 
         if ($currentForm->getConfiguration() && $currentForm->getConfiguration()->isDynamic()) {

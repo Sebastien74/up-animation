@@ -47,9 +47,9 @@ class ButtonColorType extends AbstractType
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'attr' => function (OptionsResolver $attr) {
                 $attr->setDefaults([
-                    'class' => 'select-icons',
+                    'class' => 'col-12 select-icons',
                     'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    'group' => 'col-md-4',
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                     'data-config' => false,
                 ]);
             },

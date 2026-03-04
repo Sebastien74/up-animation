@@ -43,13 +43,13 @@ class ColSizeType extends AbstractType
             'choices' => $choices,
             'display' => 'classic',
             'expanded' => true,
-            'row_attr' => ['class' => 'disabled-floating'],
+            'row_attr' => ['class' => 'col-12 disabled-floating'],
         ]);
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Ajouter', [], 'admin'),
             'attr' => [
-                'class' => 'btn-app d-none edit-element-submit-btn disable-preloader',
+                'class' => 'col-12 btn-app d-none edit-element-submit-btn disable-preloader',
                 'data-icon' => 'plus',
                 'data-icon-side' => 'left',
             ],

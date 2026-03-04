@@ -63,10 +63,9 @@ class UrlType extends AbstractType
         $builder->add($field, Type\TextType::class, [
             'required' => in_array($field, $this->options['required_fields']),
             'label' => $this->getAttribute($field, 'label'),
-            'attr' => [
-                'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'code' => 'code',
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass,
+            'attr' => ['placeholder' => $this->getAttribute($field, 'placeholder'),
+                'code' => 'code'],
+            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass,
             ],
             'constraints' => [new UniqUrl()],
             'help' => $this->getAttribute($field, 'help'),
@@ -83,7 +82,8 @@ class UrlType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->getAttribute($field, 'label'),
-            'attr' => ['group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass, 'class' => 'w-100'],
+            
+            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass, 'class' => 'col-12 w-100'],
             'help' => $this->getAttribute($field, 'help'),
         ]);
     }
@@ -98,7 +98,8 @@ class UrlType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->getAttribute($field, 'label'),
-            'attr' => ['group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass, 'class' => 'w-100'],
+            
+            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass, 'class' => 'col-12 w-100'],
             'help' => $this->getAttribute($field, 'help'),
         ]);
     }
@@ -114,7 +115,7 @@ class UrlType extends AbstractType
                 $this->translator->trans('En ligne', [], 'admin') => true,
                 $this->translator->trans('Hors ligne', [], 'admin') => false,
             ],
-            'attr' => ['class' => 'select-icons'],
+            'attr' => ['class' => 'col-12 select-icons'],
             'choice_attr' => function ($boolean, $key, $value) {
                 if (true === $boolean) {
                     return [

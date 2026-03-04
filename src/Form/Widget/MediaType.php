@@ -88,7 +88,7 @@ class MediaType extends AbstractType
                 'data-max-size' => $maxSize,
                 'placeholder' => $this->translator->trans('Séléctionnez une image', [], 'admin'),
                 'class' => !$options['multiple'] ? 'dropify' : 'dropzone-field',
-                'group' => !$options['multiple'] ? 'dropify-group' : 'd-none',
+                'row_attr' => ['class' => 'col-12 !$options['multiple'],] ? 'dropify-group' : 'd-none',
                 'data-height' => $options['dataHeight'],
             ],
             'constraints' => [
@@ -112,7 +112,7 @@ class MediaType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Image non contractuelle', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
         }
 
@@ -122,7 +122,7 @@ class MediaType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Désactiver le hover', [], 'admin'),
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
             ]);
         }
 
@@ -209,7 +209,7 @@ class MediaType extends AbstractType
                 'label' => $this->translator->trans('Nom du fichier', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un nom de fichier', [], 'admin'),
-                    'group' => !empty($options['name']) ? $options['name'] : 'col-md-6',
+                    'row_attr' => ['class' => 'col-12 !empty($options['name'],]) ? $options['name'] : 'col-md-6',
                 ],
                 'constraints' => [
                     new UniqFileName(),
@@ -234,7 +234,7 @@ class MediaType extends AbstractType
             if ($options['screen']) {
                 $builder->add('save', Type\SubmitType::class, [
                     'label' => $this->translator->trans('Enregistrer', [], 'admin'),
-                    'attr' => ['class' => 'btn-info ajax-post refresh'],
+                    'attr' => ['class' => 'col-12 btn-info ajax-post refresh'],
                 ]);
             }
         }

@@ -53,7 +53,8 @@ class LinkType extends AbstractType
 
             $builder->add('icon', WidgetType\IconType::class, [
                 'required' => false,
-                'attr' => ['class' => 'select-icons', 'group' => 'col-md-3', 'data-config' => true],
+                'attr' => ['class' => 'col-12 select-icons', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('iconSize', ChoiceType::class, [
@@ -61,7 +62,8 @@ class LinkType extends AbstractType
                 'display' => 'search',
                 'label' => $this->translator->trans("Taille de l'icône", [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'data-config' => true],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => ['XS' => 'xs', 'S' => 'sm', 'M' => 'md', 'L' => 'lg', 'XL' => 'xl', 'XXL' => 'xxl'],
             ]);
 
@@ -70,7 +72,8 @@ class LinkType extends AbstractType
                 'display' => 'search',
                 'label' => $this->translator->trans("Position de l'icône", [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'data-config' => true],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => [
                     $this->translator->trans('En haut', [], 'admin') => 'top',
                     $this->translator->trans('À droite', [], 'admin') => 'right',
@@ -81,15 +84,14 @@ class LinkType extends AbstractType
 
             $builder->add('color', WidgetType\AppColorType::class, [
                 'label' => $this->translator->trans("Couleur de l'icône", [], 'admin'),
-                'attr' => ['class' => 'select-icons', 'group' => 'col-md-3', 'data-config' => true],
+                'attr' => ['class' => 'col-12 select-icons', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('backgroundColorType', WidgetType\ButtonColorType::class, [
                 'label' => $this->translator->trans('Style du lien du CTA', [], 'admin'),
-                'attr' => [
-                    'class' => 'select-icons',
-                    'group' => 'col-md-3',
-                ],
+                'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 

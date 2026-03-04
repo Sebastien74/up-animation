@@ -50,7 +50,8 @@ class CategoryType extends AbstractType
         if (!$isNew) {
 
             $builder->add('icon', WidgetType\IconType::class, [
-                'attr' => ['class' => 'select-icons', 'group' => 'col-md-3'],
+                'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $intls = new WidgetType\IntlsCollectionType($this->coreLocator);

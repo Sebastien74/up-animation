@@ -39,13 +39,13 @@ class ZoneGridType extends AbstractType
                 return strip_tags($entity->getAdminName());
             },
             'expanded' => true,
-            'row_attr' => ['class' => 'disabled-floating'],
+            'row_attr' => ['class' => 'col-12 disabled-floating'],
         ]);
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Ajouter', [], 'admin'),
             'attr' => [
-                'class' => 'btn-info d-none edit-element-submit-btn btn-lg disable-preloader',
+                'class' => 'col-12 btn-info d-none edit-element-submit-btn btn-lg disable-preloader',
             ],
         ]);
     }

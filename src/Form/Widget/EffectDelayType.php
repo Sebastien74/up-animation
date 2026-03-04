@@ -32,9 +32,9 @@ class EffectDelayType extends AbstractType
         $resolver->setDefaults([
             'required' => false,
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez un délai', [], 'admin'),
-                'group' => 'col-md-6 mb-md-0',
+                'placeholder' => $this->translator->trans('Saisissez un délai', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 mb-md-0'],
             'label' => $this->translator->trans('Délai', [], 'admin'),
         ]);
     }

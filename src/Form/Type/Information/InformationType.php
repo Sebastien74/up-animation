@@ -71,18 +71,16 @@ class InformationType extends AbstractType
                         $this->translator->trans("Rotation", [], 'admin') => 'flip',
                         $this->translator->trans("Classique", [], 'admin') => 'basic',
                     ],
-                    'attr' => [
-                        'group' => 'col-md-3',
-                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ],
                 'alertDuration' => [
                     'type' => Type\IntegerType::class,
                     'required' => false,
                     'label' => $this->translator->trans("Durée de défilement de l'alerte", [], 'admin'),
-                    'attr' => [
-                        'group' => 'col-md-3',
-                        'placeholder' => $this->translator->trans('Saisissez une durée', [], 'admin'),
-                    ],
+                    'attr' => ['placeholder' => $this->translator->trans('Saisissez une durée', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     'help' => $this->translator->trans("En secondes", [], 'admin'),
                 ],
             ],
@@ -113,13 +111,13 @@ class InformationType extends AbstractType
             'prototype' => true,
             'by_reference' => false,
             'entry_options' => [
-                'attr' => [
-                    'class' => 'phone',
+                'attr' => ['class' => 'col-12 phone',
                     'icon' => 'phone',
-                    'group' => 'col-md-3',
-                    'caption' => $this->translator->trans('Numéro de téléphone', [], 'admin'),
-                    'button' => $this->translator->trans('Ajouter un numéro', [], 'admin'),
-                ],
+                    'caption' => $this->translator->trans('Numéro de téléphone', [],
+                 'admin'),
+                    'button' => $this->translator->trans('Ajouter un numéro', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'website' => $website,
             ],
         ]);
@@ -131,13 +129,13 @@ class InformationType extends AbstractType
             'prototype' => true,
             'by_reference' => false,
             'entry_options' => [
-                'attr' => [
-                    'class' => 'email',
+                'attr' => ['class' => 'col-12 email',
                     'icon' => 'at',
-                    'group' => 'col-md-3',
-                    'caption' => $this->translator->trans('E-mails', [], 'admin'),
-                    'button' => $this->translator->trans('Ajouter un e-mail', [], 'admin'),
-                ],
+                    'caption' => $this->translator->trans('E-mails', [],
+                 'admin'),
+                    'button' => $this->translator->trans('Ajouter un e-mail', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'website' => $website,
             ],
         ]);
@@ -149,13 +147,13 @@ class InformationType extends AbstractType
             'prototype' => true,
             'by_reference' => false,
             'entry_options' => [
-                'attr' => [
-                    'class' => 'address',
+                'attr' => ['class' => 'col-12 address',
                     'icon' => 'map-marked',
-                    'group' => 'col-md-12',
-                    'caption' => $this->translator->trans('Adresses', [], 'admin'),
-                    'button' => $this->translator->trans('Ajouter une adresse', [], 'admin'),
-                ],
+                    'caption' => $this->translator->trans('Adresses', [],
+                 'admin'),
+                    'button' => $this->translator->trans('Ajouter une adresse', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-12'],
                 'website' => $website,
             ],
         ]);
@@ -167,14 +165,14 @@ class InformationType extends AbstractType
             'prototype' => true,
             'by_reference' => false,
             'entry_options' => [
-                'attr' => [
-                    'class' => 'legals',
+                'attr' => ['class' => 'col-12 legals',
                     'icon' => 'balance-scale-left',
-                    'group' => 'col-12',
                     'deletable' => $multiLocales,
-                    'caption' => $this->translator->trans('Mentions légales', [], 'admin'),
-                    'button' => $multiLocales ? $this->translator->trans('Ajouter des informations', [], 'admin') : false,
-                ],
+                    'caption' => $this->translator->trans('Mentions légales', [],
+             'admin'),
+                    'button' => $multiLocales ? $this->translator->trans('Ajouter des informations', [], 'admin') : false
+            ],
+            'row_attr' => ['class' => 'col-12'],
                 'website' => $website,
             ],
         ]);

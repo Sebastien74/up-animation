@@ -76,7 +76,7 @@ class AdminNameType extends AbstractType
                     'code' => true,
                     'placeholder' => 'Saisissez un code',
                 ],
-                'row_attr' => ['class' => $slugGroup],
+                'row_attr' => ['class' => 'col-12'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
         }

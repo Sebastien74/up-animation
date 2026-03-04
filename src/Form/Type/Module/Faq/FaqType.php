@@ -65,10 +65,10 @@ class FaqType extends AbstractType
                     $this->translator->trans('Premier volet ouvert', [], 'admin') => 'first-opened',
                 ],
                 'display' => 'search',
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Sélectionnez', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
 
@@ -84,7 +84,8 @@ class FaqType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Désactiver les microdatas', [], 'admin'),
-                'attr' => ['group' => 'col-md-4 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4 d-flex align-items-end'],
             ]);
         }
 

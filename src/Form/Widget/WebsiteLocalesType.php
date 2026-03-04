@@ -46,8 +46,8 @@ class WebsiteLocalesType extends AbstractType
             'attr' => function (OptionsResolver $attr) {
                 $attr->setDefaults([
                     'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    'class' => 'select-icons',
-                    'group' => 'col-12',
+                    'class' => 'col-12 select-icons',
+                    'row_attr' => ['class' => 'col-12'],
                 ]);
             },
             'display' => 'search',

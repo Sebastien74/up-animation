@@ -66,9 +66,10 @@ class TeaserType extends AbstractType
                     'label' => $this->translator->trans("Nombre d'actualités par teaser", [], 'admin'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                        'group' => 'col-md-3',
-                        'data-config' => true,
-                    ],
+                        
+                        'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
                 $builder->add('itemsPerSlide', Type\IntegerType::class, [
@@ -76,15 +77,17 @@ class TeaserType extends AbstractType
                     'label' => $this->translator->trans("Nombre d'actualités par slide", [], 'admin'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                        'group' => 'col-md-3',
-                        'data-config' => true,
-                    ],
+                        
+                        'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
                 $builder->add('orderBy', Type\ChoiceType::class, [
                     'label' => $this->translator->trans('Ordonner les actualités par', [], 'admin'),
                     'display' => 'search',
-                    'attr' => ['group' => 'col-md-3', 'data-config' => true],
+                    'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     'choices' => [
                         $this->translator->trans('Dates de publication (croissantes)', [], 'admin') => 'publicationStart-asc',
                         $this->translator->trans('Dates de publication (décroissantes)', [], 'admin') => 'publicationStart-desc',
@@ -97,7 +100,8 @@ class TeaserType extends AbstractType
 
                 $builder->add('formatDate', WidgetType\FormatDateType::class, [
                     'required' => true,
-                    'attr' => ['group' => 'col-md-3', 'data-config' => true],
+                    'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
                 $builder->add('fields', Type\ChoiceType::class, [
@@ -110,9 +114,10 @@ class TeaserType extends AbstractType
                     'attr' => [
                         'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                         'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                        'group' => 'col-md-9',
-                        'data-config' => true,
-                    ],
+                        
+                        'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                     'choices' => [
                         $this->translator->trans('Titre du teaser', [], 'admin') => 'teaser-title',
                         $this->translator->trans('Image', [], 'admin') => 'image',
@@ -135,7 +140,8 @@ class TeaserType extends AbstractType
                         $this->translator->trans('Liste', [], 'admin') => 'list',
                         $this->translator->trans('Onglets verticaux', [], 'admin') => 'vertical',
                     ],
-                    'attr' => ['group' => 'col-md-3', 'data-config' => true],
+                    'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
                 $builder->add('promote', Type\CheckboxType::class, [
@@ -143,7 +149,8 @@ class TeaserType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Afficher uniquement les actualités mis en avant', [], 'admin'),
-                    'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                    'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
                 $builder->add('promoteFirst', Type\CheckboxType::class, [
@@ -151,7 +158,8 @@ class TeaserType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Mettre en avant la première actualité', [], 'admin'),
-                    'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                    'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
                 $builder->add('displayFilters', Type\CheckboxType::class, [
@@ -159,7 +167,8 @@ class TeaserType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Afficher les filtres', [], 'admin'),
-                    'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                    'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
             }
 
@@ -188,7 +197,8 @@ class TeaserType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Appartenant à toutes les catégories', [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
 
             $builder->add('asEvents', Type\CheckboxType::class, [
@@ -196,7 +206,8 @@ class TeaserType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans("Teaser d'événements", [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
 
             $builder->add('pastEvents', Type\CheckboxType::class, [
@@ -204,7 +215,8 @@ class TeaserType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher les événements passés', [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
 
             $intls = new WidgetType\IntlsCollectionType($this->coreLocator);

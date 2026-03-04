@@ -56,7 +56,7 @@ class FolderType extends AbstractType
             'label' => $this->translator->trans('Dossier parent', [], 'admin'),
             'attr' => [
                 'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'group' => $this->isInternalUser && !$isNew ? 'col-md-3' : 'col-md-4',
+                'row_attr' => ['class' => $this->isInternalUser && !$isNew ? 'col-md-3' : 'col-md-4'],
             ],
             'class' => Folder::class,
             'query_builder' => function (EntityRepository $er) {

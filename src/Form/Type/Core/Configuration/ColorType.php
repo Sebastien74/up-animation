@@ -44,7 +44,7 @@ class ColorType extends AbstractType
             'label' => $this->translator->trans('Couleur', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une couleur', [], 'admin'),
-                'class' => 'colorpicker',
+                'class' => 'col-12 colorpicker',
             ],
         ]);
 
@@ -75,7 +75,7 @@ class ColorType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Actif', [], 'admin'),
-            'attr' => ['class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
         ]);
     }
 

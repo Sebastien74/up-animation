@@ -72,7 +72,8 @@ class PageDuplicateType extends AbstractType
             'choice_label' => function ($entity) {
                 return strip_tags($entity->getAdminName());
             },
-            'attr' => ['group' => $multiSites ? 'col-md-4' : 'col-md-6'],
+            
+            'row_attr' => ['class' => $multiSites ? 'col-md-4' : 'col-md-6'],
         ]);
 
         $builder->add('website', EntityType::class, [
@@ -93,14 +94,15 @@ class PageDuplicateType extends AbstractType
             'choice_label' => function ($entity) {
                 return strip_tags($entity->getAdminName());
             },
-            'attr' => ['group' => $multiSites ? 'col-md-4' : 'd-none'],
+            
+            'row_attr' => ['class' => $multiSites ? 'col-md-4' : 'd-none'],
         ]);
 
         $builder->add('page', EntityType::class, [
             'mapped' => false,
             'label' => false,
             'display' => false,
-            'attr' => ['class' => 'd-none'],
+            'attr' => ['class' => 'col-12 d-none'],
             'class' => Page::class,
             'data' => $options['duplicate_entity'],
             'choice_label' => function ($entity) {

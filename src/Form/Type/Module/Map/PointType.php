@@ -60,10 +60,8 @@ class PointType extends AbstractType
                 'choice_attr' => function ($dir, $key, $value) {
                     return ['data-background' => strtolower($dir)];
                 },
-                'attr' => [
-                    'group' => 'col-md-2 markers-select',
-                    'class' => 'select-icons',
-                ],
+                'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 markers-select'],
             ]);
 
             $builder->add('hide', Type\CheckboxType::class, [
@@ -71,7 +69,8 @@ class PointType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Cacher le point', [], 'admin'),
-                'attr' => ['group' => 'col-md-2 d-flex align-items-end', 'class' => 'w-100 mb-3'],
+                'attr' => ['class' => 'col-12 w-100 mb-3'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 d-flex align-items-end'],
             ]);
 
             if ($map && $map->isDisplayFilters()) {
@@ -96,10 +95,10 @@ class PointType extends AbstractType
                     'required' => false,
                     'multiple' => true,
                     'display' => 'search',
-                    'attr' => [
-                        'group' => 'col-md-6',
-                        'data-placeholder' => $this->translator->trans('Sélectionnez des pays', [], 'admin'),
-                    ],
+                    'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez des pays', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 ]);
             }
 
@@ -108,10 +107,10 @@ class PointType extends AbstractType
                     'label' => $this->translator->trans('Départements', [], 'admin'),
                     'required' => false,
                     'multiple' => true,
-                    'attr' => [
-                        'group' => 'col-md-6',
-                        'data-placeholder' => $this->translator->trans('Sélectionnez des départements', [], 'admin'),
-                    ],
+                    'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez des départements', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 ]);
             }
 
@@ -124,13 +123,13 @@ class PointType extends AbstractType
                 'prototype' => true,
                 'by_reference' => false,
                 'entry_options' => [
-                    'attr' => [
-                        'class' => 'phone',
+                    'attr' => ['class' => 'col-12 phone',
                         'icon' => 'phone',
-                        'group' => 'col-md-3',
-                        'caption' => $this->translator->trans('Numéro de téléphone', [], 'admin'),
-                        'button' => $this->translator->trans('Ajouter un numéro', [], 'admin'),
-                    ],
+                        'caption' => $this->translator->trans('Numéro de téléphone', [],
+                 'admin'),
+                        'button' => $this->translator->trans('Ajouter un numéro', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     'locale' => false,
                     'entitled' => false,
                     'type' => false,

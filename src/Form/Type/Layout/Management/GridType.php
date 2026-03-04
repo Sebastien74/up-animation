@@ -42,7 +42,7 @@ class GridType extends AbstractType
                 'prototype' => true,
                 'by_reference' => false,
                 'entry_options' => [
-                    'attr' => ['class' => 'grid-col'],
+                    'attr' => ['class' => 'col-12 grid-col'],
                 ],
             ]);
         }

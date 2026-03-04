@@ -72,9 +72,10 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Nombre de produits par page', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('orderBy', Type\ChoiceType::class, [
@@ -88,7 +89,8 @@ class ListingType extends AbstractType
                     $this->translator->trans('Date de début de publication', [], 'admin') => 'publicationStart',
                     $this->translator->trans('Aléatoire', [], 'admin') => 'random',
                 ],
-                'attr' => ['group' => 'col-md-3', 'data-config' => true],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('orderSort', Type\ChoiceType::class, [
@@ -98,7 +100,8 @@ class ListingType extends AbstractType
                     $this->translator->trans('Croissant', [], 'admin') => 'ASC',
                     $this->translator->trans('Décroissant', [], 'admin') => 'DESC',
                 ],
-                'attr' => ['group' => 'col-md-3', 'data-config' => true],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('display', Type\ChoiceType::class, [
@@ -109,17 +112,17 @@ class ListingType extends AbstractType
                     $this->translator->trans('Tout', [], 'admin') => 'all',
                     $this->translator->trans('Désactiver', [], 'admin') => 'disable',
                 ],
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('catalogs', EntityType::class, [
                 'label' => $this->translator->trans('Filtres des produits par catalogues', [], 'admin'),
                 'required' => false,
                 'class' => Catalog::class,
-                'attr' => [
-                    'group' => 'col-md-9',
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -137,17 +140,17 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Type de filtre (Catalogues)', [], 'admin'),
                 'display' => 'search',
                 'choices' => $this->getSelectChoices('searchCatalogs'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('products', EntityType::class, [
                 'label' => $this->translator->trans('Filtres par produits', [], 'admin'),
                 'required' => false,
                 'class' => Product::class,
-                'attr' => [
-                    'group' => 'col-md-9',
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -165,17 +168,17 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Type de filtre (Produits)', [], 'admin'),
                 'display' => 'search',
                 'choices' => $this->getSelectChoices('searchProducts'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('categories', EntityType::class, [
                 'label' => $this->translator->trans('Filtres des produits par catégories', [], 'admin'),
                 'required' => false,
                 'class' => Category::class,
-                'attr' => [
-                    'group' => 'col-md-9',
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -193,17 +196,17 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Type de filtre (Catégories)', [], 'admin'),
                 'display' => 'search',
                 'choices' => $this->getSelectChoices('searchCategories'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('subCategories', EntityType::class, [
                 'label' => $this->translator->trans('Filtres des produits par sous-catégories', [], 'admin'),
                 'required' => false,
                 'class' => SubCategory::class,
-                'attr' => [
-                    'group' => 'col-md-9',
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
                         ->leftJoin('s.catalogcategory', 'c')
@@ -223,17 +226,17 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Type de filtre (Sous-catégories)', [], 'admin'),
                 'display' => 'search',
                 'choices' => $this->getSelectChoices('searchSubCategories'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('features', EntityType::class, [
                 'label' => $this->translator->trans('Filtres des produits par caractéristiques', [], 'admin'),
                 'required' => false,
                 'class' => Feature::class,
-                'attr' => [
-                    'group' => 'col-md-9',
-                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -251,7 +254,7 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Type de filtre (Caractéristiques)', [], 'admin'),
                 'display' => 'search',
                 'choices' => $this->getSelectChoices('searchFeatures'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('updateFields', Type\CheckboxType::class, [
@@ -259,7 +262,8 @@ class ListingType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Mettre à jour les sélecteurs', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('counter', Type\CheckboxType::class, [
@@ -267,7 +271,8 @@ class ListingType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Activer le compteur de résultats', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('displayLabel', Type\CheckboxType::class, [
@@ -275,7 +280,8 @@ class ListingType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher les labels', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('searchText', Type\CheckboxType::class, [
@@ -283,7 +289,8 @@ class ListingType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Activer la recherche par mots-clés', [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
 
             $builder->add('groupByCategories', Type\CheckboxType::class, [
@@ -291,7 +298,8 @@ class ListingType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Grouper par catégories', [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
 
             $builder->add('scrollInfinite', Type\CheckboxType::class, [
@@ -299,7 +307,8 @@ class ListingType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Scroll infinite', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('showMoreBtn', Type\CheckboxType::class, [
@@ -307,7 +316,8 @@ class ListingType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Bouton voir plus', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('combineFieldsText', Type\CheckboxType::class, [
@@ -315,7 +325,8 @@ class ListingType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Recherche mots-clés et flitres combinés', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             if ($displayMapBtn) {
@@ -324,7 +335,8 @@ class ListingType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Aficher sur une carte', [], 'admin'),
-                    'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                    'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
             }
 
@@ -336,13 +348,13 @@ class ListingType extends AbstractType
                 'by_reference' => false,
                 'block_name' => 'values',
                 'entry_options' => [
-                    'attr' => [
-                        'class' => 'feature',
+                    'attr' => ['class' => 'col-12 feature',
                         'icon' => 'filter',
-                        'group' => 'col-md-4',
-                        'caption' => $this->translator->trans('Filtres des produits par valeurs', [], 'admin'),
-                        'button' => $this->translator->trans('Ajouter une valeur', [], 'admin'),
-                    ],
+                        'caption' => $this->translator->trans('Filtres des produits par valeurs', [],
+                 'admin'),
+                        'button' => $this->translator->trans('Ajouter une valeur', [], 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                     'website' => $options['website'],
                 ],
             ]);
@@ -356,12 +368,14 @@ class ListingType extends AbstractType
             $builder->add('icon', WidgetType\IconType::class, [
                 'label' => $this->translator->trans("Icône du titre", [], 'admin'),
                 'required' => false,
-                'attr' => ['class' => 'select-icons', 'group' => 'col-md-3'],
+                'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('iconBackground', WidgetType\BackgroundColorSelectType::class, [
                 'label' => $this->translator->trans("Couleur de fond de l'icône du titre", [], 'admin'),
-                'attr' => ['class' => ' select-icons', 'group' => 'col-md-3'],
+                'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 

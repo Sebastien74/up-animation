@@ -39,7 +39,8 @@ class ProfileRegistrationType extends AbstractType
                 'label' => false,
                 'expanded' => true,
                 'display' => 'inline',
-                'attr' => ['group' => 'mb-0'],
+                
+            'row_attr' => ['class' => 'col-12 mb-0'],
                 'choices' => [
                     $this->translator->trans('M.', [], 'security_cms') => 'mr',
                     $this->translator->trans('Mme', [], 'security_cms') => 'ms',

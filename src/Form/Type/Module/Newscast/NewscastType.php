@@ -61,7 +61,7 @@ class NewscastType extends AbstractType
         $adminName = new WidgetType\AdminNameType($this->coreLocator);
         $adminName->add($builder, [
             'adminNameGroup' => $adminNameClass,
-            'class' => 'refer-code',
+            'class' => 'col-12 refer-code',
         ]);
 
         $builder->add('category', EntityType::class, [
@@ -70,7 +70,7 @@ class NewscastType extends AbstractType
             'display' => 'search',
             'attr' => [
                 'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'group' => $displayCategory ? 'col-md-3' : 'd-none',
+                'row_attr' => ['class' => $displayCategory ? 'col-md-3' : 'd-none'],
             ],
             'class' => Category::class,
             'query_builder' => function (EntityRepository $er) {
@@ -91,7 +91,8 @@ class NewscastType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
-                'attr' => ['group' => 'col-md-4 mx-auto', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4 mx-auto'],
             ]);
         }
 
@@ -99,10 +100,10 @@ class NewscastType extends AbstractType
             $builder->add('author', Type\TextType::class, [
                 'label' => $this->translator->trans('Auteur', [], 'admin'),
                 'required' => false,
-                'attr' => [
-                    'group' => 'col-md-4',
-                    'placeholder' => $this->translator->trans('Saisissez un auteur', [], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez un auteur', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('promote', Type\CheckboxType::class, [
@@ -110,7 +111,8 @@ class NewscastType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
-                'attr' => ['group' => 'col-md-2 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 d-flex align-items-end'],
             ]);
 
             if ($data->getCategory() && $data->getCategory()->isAsEvents()) {
@@ -118,16 +120,16 @@ class NewscastType extends AbstractType
                 $builder->add('city', Type\TextType::class, [
                     'label' => $this->translator->trans('Localité', [], 'admin'),
                     'required' => false,
-                    'attr' => [
-                        'group' => 'col-md-4',
-                        'placeholder' => $this->translator->trans('Saisissez un lieu', [], 'admin'),
-                    ],
+                    'attr' => ['placeholder' => $this->translator->trans('Saisissez un lieu', [],
+                 'admin')
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
 
                 $builder->add('startDate', Type\DateTimeType::class, [
                     'required' => false,
                     'label' => $this->translator->trans("Date de début de l'événement", [], 'admin'),
-                    'attr' => ['group' => 'col-md-4'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                     'placeholder' => [
                         'year' => $this->translator->trans('Année', [], 'admin'),
                         'month' => $this->translator->trans('Mois', [], 'admin'),
@@ -141,7 +143,7 @@ class NewscastType extends AbstractType
                 $builder->add('endDate', Type\DateTimeType::class, [
                     'required' => false,
                     'label' => $this->translator->trans("Date de fin de l'événement", [], 'admin'),
-                    'attr' => ['group' => 'col-md-4'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                     'placeholder' => [
                         'year' => $this->translator->trans('Année', [], 'admin'),
                         'month' => $this->translator->trans('Mois', [], 'admin'),
@@ -186,7 +188,8 @@ class NewscastType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
-                    'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100', 'data-config' => true],
+                    'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
                 ]);
             }
         }

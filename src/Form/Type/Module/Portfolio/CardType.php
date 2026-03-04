@@ -55,7 +55,8 @@ class CardType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
         }
 
@@ -71,7 +72,8 @@ class CardType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
-                'attr' => ['group' => 'col-md-2 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 d-flex align-items-end'],
             ]);
 
             $builder->add('categories', EntityType::class, [
@@ -102,7 +104,8 @@ class CardType extends AbstractType
                     'display' => 'button',
                     'color' => 'app',
                     'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
-                    'attr' => ['group' => 'col-md-4', 'class' => 'w-100'],
+                    'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
             }
         }

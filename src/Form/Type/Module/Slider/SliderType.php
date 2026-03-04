@@ -58,9 +58,10 @@ class SliderType extends AbstractType
             'display' => 'search',
             'attr' => [
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'group' => 'col-md-3',
-                'data-config' => true,
+                
+                'data-config' => true
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'choices' => $this->getTemplates($options['website']),
         ]);
 
@@ -70,9 +71,10 @@ class SliderType extends AbstractType
                 'label' => $this->translator->trans('Intervalle en millisecondes', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('effect', Type\ChoiceType::class, [
@@ -80,9 +82,10 @@ class SliderType extends AbstractType
                 'display' => 'search',
                 'attr' => [
                     'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => [
                     'Fade' => 'fade',
                     'Slide' => 'slide',
@@ -90,11 +93,9 @@ class SliderType extends AbstractType
             ]);
 
             $builder->add('backgroundColor', WidgetType\BackgroundColorSelectType::class, [
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'class' => ' select-icons',
-                    'data-config' => true,
-                ],
+                'attr' => ['class' => 'col-12 select-icons',
+                    'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('itemsPerSlide', Type\IntegerType::class, [
@@ -102,9 +103,10 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('itemsPerSlideMiniPC', Type\IntegerType::class, [
@@ -112,9 +114,10 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('itemsPerSlideTablet', Type\IntegerType::class, [
@@ -122,18 +125,20 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('itemsPerSlideMobile', Type\IntegerType::class, [
                 'label' => $this->translator->trans("Nombre d'images par slide (Mobile)", [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('offsetDesktop', Type\IntegerType::class, [
@@ -141,9 +146,10 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('offsetMiniPC', Type\IntegerType::class, [
@@ -151,9 +157,10 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('offsetTablet', Type\IntegerType::class, [
@@ -161,9 +168,10 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('offsetMobile', Type\IntegerType::class, [
@@ -171,18 +179,17 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                    
+                    'data-config' => true
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('focus', Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Focus (Ordinateur)', [], 'admin'),
                 'display' => 'search',
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => [
                     $this->translator->trans('À gauche', [], 'admin') => 'left',
                     $this->translator->trans('Centré', [], 'admin') => 'center',
@@ -192,10 +199,8 @@ class SliderType extends AbstractType
             $builder->add('focusMiniPC', Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Focus (Mini PC)', [], 'admin'),
                 'display' => 'search',
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => [
                     $this->translator->trans('À gauche', [], 'admin') => 'left',
                     $this->translator->trans('Centré', [], 'admin') => 'center',
@@ -205,10 +210,8 @@ class SliderType extends AbstractType
             $builder->add('focusTablet', Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Focus (Tablette)', [], 'admin'),
                 'display' => 'search',
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => [
                     $this->translator->trans('À gauche', [], 'admin') => 'left',
                     $this->translator->trans('Centré', [], 'admin') => 'center',
@@ -218,10 +221,8 @@ class SliderType extends AbstractType
             $builder->add('focusMobile', Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Focus (Mobile)', [], 'admin'),
                 'display' => 'search',
-                'attr' => [
-                    'group' => 'col-md-3',
-                    'data-config' => true,
-                ],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => [
                     $this->translator->trans('À gauche', [], 'admin') => 'left',
                     $this->translator->trans('Centré', [], 'admin') => 'center',
@@ -233,7 +234,8 @@ class SliderType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher les points de navigation', [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
 
             $builder->add('autoplay', Type\CheckboxType::class, [
@@ -241,7 +243,8 @@ class SliderType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Lecture automatique', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('pause', Type\CheckboxType::class, [
@@ -249,7 +252,8 @@ class SliderType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Pause au survol', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('popup', Type\CheckboxType::class, [
@@ -257,7 +261,8 @@ class SliderType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher popup au clic des images', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('standardizeMedia', Type\CheckboxType::class, [
@@ -265,7 +270,8 @@ class SliderType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Uniformiser la hauteur des médias', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('progress', Type\CheckboxType::class, [
@@ -273,7 +279,8 @@ class SliderType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Barre de progression', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('control', Type\CheckboxType::class, [
@@ -281,7 +288,8 @@ class SliderType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher les flèches de navigation', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('thumbnails', Type\CheckboxType::class, [
@@ -289,7 +297,8 @@ class SliderType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher les vignettes', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('arrowColor', WidgetType\ButtonColorType::class, [
@@ -297,11 +306,9 @@ class SliderType extends AbstractType
                 'cta' => false,
                 'ctaColors' => false,
                 'gradientColors' => false,
-                'attr' => [
-                    'group' => 'col-md-4',
-                    'class' => ' select-icons',
-                    'data-config' => true,
-                ],
+                'attr' => ['class' => 'col-12 select-icons',
+                    'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('arrowAlignment', Type\ChoiceType::class, [
@@ -316,10 +323,8 @@ class SliderType extends AbstractType
                     $this->translator->trans('En bas à droite', [], 'admin') => 'bottom-end',
                     $this->translator->trans('En bas à centré', [], 'admin') => 'bottom-center',
                 ],
-                'attr' => [
-                    'group' => 'col-md-4',
-                    'data-config' => true,
-                ],
+                'attr' => ['data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
         }
 

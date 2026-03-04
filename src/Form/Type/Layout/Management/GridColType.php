@@ -35,9 +35,9 @@ class GridColType extends AbstractType
         $builder->add('position', Type\IntegerType::class, [
             'label' => $this->translator->trans('Position', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez une position', [], 'admin'),
-                'group' => 'col-md-6',
+                'placeholder' => $this->translator->trans('Saisissez une position', [], 'admin')
             ],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
@@ -48,7 +48,7 @@ class GridColType extends AbstractType
         $builder->add('size', Type\ChoiceType::class, [
             'label' => $this->translator->trans('Taille', [], 'admin'),
             'display' => 'search',
-            'attr' => ['group' => 'col-md-6'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             'choices' => $choices,
             'constraints' => [new Assert\NotBlank()],
         ]);

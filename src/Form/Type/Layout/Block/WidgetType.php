@@ -67,7 +67,7 @@ class WidgetType extends AbstractType
                     'Social wall' => 'apps-elfsight',
                     'Google maps' => 'gmaps',
                 ],
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 
@@ -77,7 +77,8 @@ class WidgetType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Activer la vérification RGPD', [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100 mb-0'],
+                'attr' => ['class' => 'col-12 w-100 mb-0'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
         }
 

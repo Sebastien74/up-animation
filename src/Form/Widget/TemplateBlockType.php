@@ -52,7 +52,8 @@ class TemplateBlockType extends AbstractType
                 'label' => $this->translator->trans('Template', [], 'admin'),
                 'display' => 'search',
                 'choices' => $templates,
-                'attr' => ['data-config' => $haveCustom, 'group' => $haveCustom ? 'col-md-4' : 'd-none'],
+                'attr' => ['data-config' => $haveCustom],
+            'row_attr' => ['class' => $haveCustom ? 'col-md-4' : 'd-none'],
             ]);
         }
     }

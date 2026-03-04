@@ -62,7 +62,7 @@ class ListingType extends AbstractType
                     $this->translator->trans('Date de début de publication', [], 'admin') => 'publicationStart',
                     $this->translator->trans('Aléatoire', [], 'admin') => 'random',
                 ],
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('orderSort', Type\ChoiceType::class, [
@@ -72,7 +72,7 @@ class ListingType extends AbstractType
                     $this->translator->trans('Croissant', [], 'admin') => 'ASC',
                     $this->translator->trans('Décroissant', [], 'admin') => 'DESC',
                 ],
-                'attr' => ['group' => 'col-md-2'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             ]);
 
             $builder->add('displayPromote', Type\CheckboxType::class, [
@@ -80,7 +80,8 @@ class ListingType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher les offres mises en avant', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('displayFilters', Type\CheckboxType::class, [
@@ -88,7 +89,8 @@ class ListingType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher les filtres', [], 'admin'),
-                'attr' => ['group' => 'col-md-3 d-flex align-items-end', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
         }
 

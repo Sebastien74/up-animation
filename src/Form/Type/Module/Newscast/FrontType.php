@@ -86,10 +86,8 @@ class FrontType extends AbstractType
 
         $builder->add('submit', Type\SubmitType::class, [
             'label' => $this->translator->trans('Soumettre', [], 'front_form'),
-            'attr' => [
-                'group' => 'col-lg-12',
-                'class' => 'btn btn-primary text-uppercase mt-3',
-            ],
+            'attr' => ['class' => 'col-12 btn btn-primary text-uppercase mt-3'],
+                'row_attr' => ['class' => 'col-12 col-lg-12'],
         ]);
     }
 

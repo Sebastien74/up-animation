@@ -48,7 +48,7 @@ class CategoryType extends AbstractType
         if (!$isNew && $this->isInternalUser) {
             $builder->add('itemsPerGallery', Type\IntegerType::class, [
                 'label' => $this->translator->trans("Nombre d'images par galerie", [], 'admin'),
-                'attr' => ['group' => 'col-md-3'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('displayCategory', Type\CheckboxType::class, [
@@ -56,7 +56,8 @@ class CategoryType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Afficher le nom de la catégorie', [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('scrollInfinite', Type\CheckboxType::class, [
@@ -64,7 +65,8 @@ class CategoryType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Scroll infinite', [], 'admin'),
-                'attr' => ['group' => 'col-md-4', 'class' => 'w-100', 'data-config' => true],
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
         }
 

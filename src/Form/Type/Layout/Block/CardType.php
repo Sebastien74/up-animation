@@ -41,16 +41,15 @@ class CardType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Mini-fiche large', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 
         $builder->add('backgroundColorType', WidgetType\BackgroundColorSelectType::class, [
             'label' => $this->translator->trans('Couleur de fond', [], 'admin'),
-            'attr' => [
-                'class' => 'select-icons',
-                'group' => 'col-lg-6',
-            ],
+            'attr' => ['class' => 'col-12 select-icons'],
+                'row_attr' => ['class' => 'col-12 col-lg-6'],
         ]);
 
         $builder->add('customTemplate', Type\ChoiceType::class, [
@@ -64,7 +63,7 @@ class CardType extends AbstractType
                 $this->translator->trans('Contenu à gauche', [], 'admin') => 'content-left',
             ],
             'row_attr' => [
-                'class' => 'col-lg-6',
+                'class' => 'col-12 col-lg-6',
                 'placeholder' => $this->translator->trans('Template', [], 'admin'),
             ],
         ]);

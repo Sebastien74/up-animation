@@ -22,7 +22,7 @@ class AnalyticsDateType extends AbstractType
             'widget' => 'single_text',
             'format' => $options['format'],
             'html5' => false,
-            'attr' => ['class' => 'js-datepicker'],
+            'attr' => ['class' => 'col-12 js-datepicker'],
         ]);
     }
 

@@ -51,7 +51,8 @@ class GroupType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Script dans le <head>', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('active', Type\CheckboxType::class, [
@@ -59,7 +60,8 @@ class GroupType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Activer', [], 'admin'),
-                'attr' => ['group' => 'col-md-2', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             ]);
 
             $builder->add('anonymize', Type\CheckboxType::class, [
@@ -67,7 +69,8 @@ class GroupType extends AbstractType
                 'display' => 'button',
                 'color' => 'app',
                 'label' => $this->translator->trans('Anonymiser le script', [], 'admin'),
-                'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $intls = new WidgetType\IntlsCollectionType($this->coreLocator);

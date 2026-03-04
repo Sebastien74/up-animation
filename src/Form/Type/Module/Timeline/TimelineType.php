@@ -40,7 +40,7 @@ class TimelineType extends AbstractType
         $adminName = new WidgetType\AdminNameType($this->coreLocator);
         $adminName->add($builder, [
             'slug' => true,
-            'class' => 'refer-code',
+            'class' => 'col-12 refer-code',
         ]);
 
         $builder->add('displayNumbers', CheckboxType::class, [
@@ -48,7 +48,8 @@ class TimelineType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Afficher les chiffres', [], 'admin'),
-            'attr' => ['group' => 'col-md-3', 'class' => 'w-100'],
+            'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $save = new WidgetType\SubmitType($this->coreLocator);
