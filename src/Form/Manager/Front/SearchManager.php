@@ -17,6 +17,8 @@ use App\Service\Content\SitemapService;
 use App\Service\Core\InterfaceHelper;
 use App\Service\Core\StopWords;
 use App\Service\Interface\CoreLocatorInterface;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -51,14 +53,15 @@ class SearchManager
      * SearchManager constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface   $coreLocator,
         private readonly EntityManagerInterface $entityManager,
-        private readonly InterfaceHelper $interfaceHelper,
-        private readonly SitemapService $sitemapService,
-        private readonly PaginatorInterface $paginator,
-        private readonly StopWords $stopWords,
-        private readonly TranslatorInterface $translator,
-    ) {
+        private readonly InterfaceHelper        $interfaceHelper,
+        private readonly SitemapService         $sitemapService,
+        private readonly PaginatorInterface     $paginator,
+        private readonly StopWords              $stopWords,
+        private readonly TranslatorInterface    $translator,
+    )
+    {
         $this->request = $this->coreLocator->request();
     }
 
@@ -150,8 +153,8 @@ class SearchManager
             fn($term) => preg_replace('/[\'"]/', '', strtolower(trim($term))),
             explode(' ', $searchQuery)
         );
-        $matchAgainst = '+'. implode(' +', array_map('strtolower', $searchTerms));
-        $likeSearch = '%'. implode('%', array_map('strtolower', $searchTerms)).'%';
+        $matchAgainst = '+'.implode(' +', array_map('strtolower', $searchTerms));
+        $likeSearch = '%'.implode('%', array_map('strtolower', $searchTerms)).'%';
 
         return $repository->createQueryBuilder('m')->select('m')
             ->andWhere('m.extension = :extension')
@@ -491,7 +494,7 @@ class SearchManager
         if (str_contains($orderBy, 'date')) {
             $publicationDate = method_exists($entity, 'getPublicationStart') && $entity->getPublicationStart() ? $entity->getPublicationStart()
                 : (method_exists($entity, 'getUpdatedAt') && $entity->getUpdatedAt() ? $entity->getUpdatedAt()
-                    : (method_exists($entity, 'getCreatedAt') && $entity->getCreatedAt() ? $entity->getCreatedAt() : new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'))));
+                    : (method_exists($entity, 'getCreatedAt') && $entity->getCreatedAt() ? $entity->getCreatedAt() : new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'))));
 
             return intval($publicationDate->format('YmdHis')).uniqid();
         } else {
@@ -641,7 +644,7 @@ class SearchManager
         $text = strip_tags($text);
         $text = preg_replace($tagFilter, ' ', $text);
         $text = preg_replace('/\s+/', ' ', $text);
-        
+
         $searchTerms = explode(' ', trim($searchQuery));
         $firstMatchPos = false;
         foreach ($searchTerms as $term) {

@@ -29,8 +29,9 @@ class ModuleType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly RoleRepository $roleRepository,
-    ) {
+        private readonly RoleRepository       $roleRepository,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
     }
 

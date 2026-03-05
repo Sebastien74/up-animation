@@ -24,22 +24,23 @@ class LayoutFormFormManagerLocator implements LayoutFormManagerInterface
      * LayoutFormFormManagerLocator constructor.
      */
     public function __construct(
-        #[AutowireLocator(LayoutManager\ActionManager::class, indexAttribute: 'key')] protected ServiceLocator $actionLocator,
-        #[AutowireLocator(LayoutManager\BlockDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator $blockDuplicateLocator,
-        #[AutowireLocator(LayoutManager\BlockManager::class, indexAttribute: 'key')] protected ServiceLocator $blockLocator,
-        #[AutowireLocator(LayoutManager\ColDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator $colDuplicateLocator,
-        #[AutowireLocator(LayoutManager\FieldConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator $fieldConfigurationLocator,
+        #[AutowireLocator(LayoutManager\ActionManager::class, indexAttribute: 'key')] protected ServiceLocator              $actionLocator,
+        #[AutowireLocator(LayoutManager\BlockDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator      $blockDuplicateLocator,
+        #[AutowireLocator(LayoutManager\BlockManager::class, indexAttribute: 'key')] protected ServiceLocator               $blockLocator,
+        #[AutowireLocator(LayoutManager\ColDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator        $colDuplicateLocator,
+        #[AutowireLocator(LayoutManager\FieldConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator  $fieldConfigurationLocator,
         #[AutowireLocator(LayoutManager\LayoutConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator $layoutConfigurationLocator,
-        #[AutowireLocator(LayoutManager\LayoutDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator $layoutDuplicateLocator,
-        #[AutowireLocator(LayoutManager\LayoutManager::class, indexAttribute: 'key')] protected ServiceLocator $layoutLocator,
-        #[AutowireLocator(LayoutManager\PageDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator $pageDuplicateLocator,
-        #[AutowireLocator(LayoutManager\PageManager::class, indexAttribute: 'key')] protected ServiceLocator $pageLocator,
-        #[AutowireLocator(LayoutManager\ZoneConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator $zoneConfigurationLocator,
-        #[AutowireLocator(LayoutManager\ColConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator $colConfigurationLocator,
-        #[AutowireLocator(LayoutManager\BlockConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator $blockConfigurationLocator,
-        #[AutowireLocator(LayoutManager\ZoneDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator $zoneDuplicateLocator,
-        #[AutowireLocator(LayoutManager\ZoneManager::class, indexAttribute: 'key')] protected ServiceLocator $zoneLocator,
-    ) {
+        #[AutowireLocator(LayoutManager\LayoutDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator     $layoutDuplicateLocator,
+        #[AutowireLocator(LayoutManager\LayoutManager::class, indexAttribute: 'key')] protected ServiceLocator              $layoutLocator,
+        #[AutowireLocator(LayoutManager\PageDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator       $pageDuplicateLocator,
+        #[AutowireLocator(LayoutManager\PageManager::class, indexAttribute: 'key')] protected ServiceLocator                $pageLocator,
+        #[AutowireLocator(LayoutManager\ZoneConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator   $zoneConfigurationLocator,
+        #[AutowireLocator(LayoutManager\ColConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator    $colConfigurationLocator,
+        #[AutowireLocator(LayoutManager\BlockConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator  $blockConfigurationLocator,
+        #[AutowireLocator(LayoutManager\ZoneDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator       $zoneDuplicateLocator,
+        #[AutowireLocator(LayoutManager\ZoneManager::class, indexAttribute: 'key')] protected ServiceLocator                $zoneLocator,
+    )
+    {
     }
 
     /**

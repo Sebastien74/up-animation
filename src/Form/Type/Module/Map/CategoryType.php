@@ -49,20 +49,20 @@ class CategoryType extends AbstractType
                 'label' => $this->translator->trans('Largeur du marker (px)', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('markerHeight', Type\IntegerType::class, [
                 'label' => $this->translator->trans('Hauteur du marker (px)', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('marker', Type\ChoiceType::class, [

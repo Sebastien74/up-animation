@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Development;
 
 use App\Service\Development\CommandParser;
+use Exception;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,7 +25,7 @@ class CommandChoiceType extends AbstractType
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function configureOptions(OptionsResolver $resolver): void
     {

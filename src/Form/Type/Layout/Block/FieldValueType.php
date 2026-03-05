@@ -31,8 +31,9 @@ class FieldValueType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly i18nRuntime $i18nRuntime,
-    ) {
+        private readonly i18nRuntime          $i18nRuntime,
+    )
+    {
     }
 
     /**

@@ -46,7 +46,7 @@ class FormType extends AbstractType
             if (!empty($options['fieldsHelp'])) {
                 $bodyHelp = $this->translator->trans('<span class="text-underline">Valeurs personnalisées :</span>', [], 'admin');
                 foreach ($options['fieldsHelp'] as $label => $slug) {
-                    $bodyHelp .= ' <strong class="fw-500">'.$label. ':</strong> %'.$slug.'%,';
+                    $bodyHelp .= ' <strong class="fw-500">'.$label.':</strong> %'.$slug.'%,';
                 }
             }
 

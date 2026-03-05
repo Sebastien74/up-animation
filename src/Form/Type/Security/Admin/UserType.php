@@ -36,10 +36,11 @@ class UserType extends AbstractType
      * UserType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-        private readonly CompanyRepository $companyRepository,
-    ) {
+        private readonly CompanyRepository     $companyRepository,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
@@ -74,8 +75,8 @@ class UserType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('firstName', Type\TextType::class, [
@@ -83,8 +84,8 @@ class UserType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un prénom', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
         }
 
@@ -108,15 +109,15 @@ class UserType extends AbstractType
                     return strip_tags($entity->getAdminName());
                 },
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                
-            'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
+
+                'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
         }
 
         $builder->add('locale', WidgetType\LanguageIconType::class, [
             'label' => $this->translator->trans('Langue', [], 'admin'),
-            
+
             'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
             'constraints' => [new Assert\NotBlank()],
         ]);
@@ -173,8 +174,8 @@ class UserType extends AbstractType
                     'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 password-generator'],
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 password-generator'],
                     'constraints' => [
                         new Assert\NotBlank(['message' => $this->translator->trans('Veuillez saisir un mot de passe.', [], 'security_cms')]),
                     ],
@@ -183,8 +184,8 @@ class UserType extends AbstractType
                     'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                     'constraints' => [
                         new Assert\NotBlank(['message' => $this->translator->trans('Veuillez confirmer votre mot de passe.', [], 'security_cms')]),
                     ],

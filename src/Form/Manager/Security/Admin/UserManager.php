@@ -7,6 +7,8 @@ namespace App\Form\Manager\Security\Admin;
 use App\Entity\Core\Website;
 use App\Entity\Security\User;
 use App\Form\Manager\Security\PictureManager;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -29,10 +31,11 @@ class UserManager
      * UserManager constructor.
      */
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private readonly EntityManagerInterface      $entityManager,
         private readonly UserPasswordHasherInterface $passwordEncoder,
-        private readonly PictureManager $pictureManager,
-    ) {
+        private readonly PictureManager              $pictureManager,
+    )
+    {
     }
 
     /**
@@ -43,7 +46,7 @@ class UserManager
     public function prePersist(User $user, Website $website): void
     {
         $user->setAgreeTerms(true);
-        $user->setAgreesTermsAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+        $user->setAgreesTermsAt(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
         $user->setPassword(
             $this->passwordEncoder->hashPassword($user, $user->getPlainPassword())
         );
@@ -59,7 +62,7 @@ class UserManager
     {
         if ($user->getPlainPassword()) {
             $user->setPassword($this->passwordEncoder->hashPassword($user, $user->getPlainPassword()));
-            $user->setResetPasswordDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+            $user->setResetPasswordDate(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
             $user->setResetPassword(false);
         } else {
             $this->pictureManager->execute($user, $form);

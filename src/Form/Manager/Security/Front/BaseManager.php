@@ -30,7 +30,7 @@ class BaseManager
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly MailerService $mailer,
+        private readonly MailerService        $mailer,
     )
     {
     }
@@ -58,7 +58,7 @@ class BaseManager
         $message = $message ? EntityModel::fromEntity($message, $this->coreLocator)->response : false;
         $message = $message && $message->intl->body ? $message->intl->body : false;
 
-        return (object) [
+        return (object)[
             'subject' => $message && $message->intl->title ? $message->intl->body : $subject,
             'content' => $message && $message->intl->body ? $message->intl->body : false,
         ];

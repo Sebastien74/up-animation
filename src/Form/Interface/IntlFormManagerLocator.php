@@ -21,9 +21,10 @@ class IntlFormManagerLocator implements IntlFormManagerInterface
      */
     public function __construct(
         #[AutowireLocator(Translation\FrontManager::class, indexAttribute: 'key')] protected ServiceLocator $frontLocator,
-        #[AutowireLocator(Translation\IntlManager::class, indexAttribute: 'key')] protected ServiceLocator $intlLocator,
-        #[AutowireLocator(Translation\UnitManager::class, indexAttribute: 'key')] protected ServiceLocator $unitLocator,
-    ) {
+        #[AutowireLocator(Translation\IntlManager::class, indexAttribute: 'key')] protected ServiceLocator  $intlLocator,
+        #[AutowireLocator(Translation\UnitManager::class, indexAttribute: 'key')] protected ServiceLocator  $unitLocator,
+    )
+    {
     }
 
     /**

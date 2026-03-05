@@ -35,9 +35,10 @@ class FeatureValueType extends AbstractType
      * FeatureValueType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
@@ -62,9 +63,9 @@ class FeatureValueType extends AbstractType
                 'label' => $this->translator->trans('Caractéristique', [], 'admin'),
                 'class' => Feature::class,
                 'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('p')
                         ->where('p.website = :website')
@@ -101,9 +102,9 @@ class FeatureValueType extends AbstractType
                 'class' => Catalog::class,
                 'attr' => ['class' => 'col-12 catalogs-selector',
                     'data-placeholder' => $this->translator->trans('Sélectionnez', [],
-             'admin')
-            ],
-            'row_attr' => ['class' => 'col-12'],
+                        'admin')
+                ],
+                'row_attr' => ['class' => 'col-12'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -129,7 +130,7 @@ class FeatureValueType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Supprimer les valeurs des fiches', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100 remove-cards d-none', 'data-values' => json_encode($catalogsIds)],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
             }
 

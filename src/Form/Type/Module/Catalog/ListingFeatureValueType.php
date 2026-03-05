@@ -43,7 +43,7 @@ class ListingFeatureValueType extends AbstractType
             'label' => false,
             'class' => FeatureValue::class,
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            
+
             'row_attr' => ['class' => 'col-12 mb-3'],
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('f')

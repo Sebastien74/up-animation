@@ -15,5 +15,6 @@ use App\Entity\Module\Newscast\Teaser;
 interface NewscastFiltersInterface
 {
     public function getFilters(): array;
+
     public function getResults(Listing|Teaser $entity, array $filters = []): array;
 }

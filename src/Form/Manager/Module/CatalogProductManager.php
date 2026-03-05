@@ -33,9 +33,10 @@ class CatalogProductManager
      * CatalogProductManager constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface     $coreLocator,
         private readonly CoreFormManagerInterface $baseCoreLocator,
-    ) {
+    )
+    {
     }
 
     /**
@@ -328,7 +329,7 @@ class CatalogProductManager
             $jsonData[$value->getPosition()] = [
                 'feature' => $feature?->getId(),
                 'featureName' => $feature?->getAdminName(),
-                'featureDefault' =>$featureDefault,
+                'featureDefault' => $featureDefault,
                 'value' => $mainValue?->getId(),
                 'valueName' => $mainValue?->getAdminName(),
                 'valueDefault' => $valueDefault,

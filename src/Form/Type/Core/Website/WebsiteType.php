@@ -70,8 +70,8 @@ class WebsiteType extends AbstractType
                 'display' => 'search',
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => $this->getConfigFiles(),
                 'constraints' => [new Assert\NotBlank()],
             ]);

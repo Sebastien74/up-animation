@@ -6,6 +6,7 @@ namespace App\Form\Validator;
 
 use App\Entity\Security\User;
 use App\Entity\Security\UserFront;
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::IS_REPEATABLE)]
 class UniqUserEmail extends Constraint
 {
     protected string $message = '';

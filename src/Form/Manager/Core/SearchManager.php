@@ -8,6 +8,7 @@ use App\Entity\Module\Catalog\FeatureValueProduct;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,8 +39,9 @@ class SearchManager
      */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly RequestStack $requestStack,
-    ) {
+        private readonly RequestStack           $requestStack,
+    )
+    {
         $this->request = $this->requestStack->getCurrentRequest();
     }
 
@@ -135,7 +137,7 @@ class SearchManager
                         'meta' => $metadata->getFieldMapping($fieldName),
                     ];
                 }
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 continue;
             }
         }

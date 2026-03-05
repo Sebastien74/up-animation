@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Validator;
 
 use App\Service\Core\InterfaceHelper;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Form\Form;
@@ -29,10 +30,10 @@ class UniqDateValidator extends ConstraintValidator
      * UniqDateValidator constructor.
      */
     public function __construct(
-        private readonly TranslatorInterface $translator,
+        private readonly TranslatorInterface    $translator,
         private readonly EntityManagerInterface $entityManager,
-        private readonly InterfaceHelper $interfaceHelper,
-        private readonly RequestStack $requestStack)
+        private readonly InterfaceHelper        $interfaceHelper,
+        private readonly RequestStack           $requestStack)
     {
         $this->request = $this->requestStack->getMainRequest();
     }
@@ -44,7 +45,7 @@ class UniqDateValidator extends ConstraintValidator
      */
     public function validate(mixed $value, Constraint $constraint): void
     {
-        if ($value instanceof \DateTime) {
+        if ($value instanceof DateTime) {
             /** @var $form Form */
             $form = $this->context->getRoot();
             $parentEntity = is_object($form) && method_exists($form, 'getNormData') ? $form->getNormData() : null;
@@ -70,7 +71,7 @@ class UniqDateValidator extends ConstraintValidator
      *
      * @throws NonUniqueResultException
      */
-    private function existing(\DateTime $date, mixed $parentEntity = null, $masterField = null, $masterFieldId = null): bool
+    private function existing(DateTime $date, mixed $parentEntity = null, $masterField = null, $masterFieldId = null): bool
     {
         $repository = $this->entityManager->getRepository(get_class($parentEntity));
 

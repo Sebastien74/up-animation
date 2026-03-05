@@ -25,8 +25,9 @@ class BackgroundColorType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly WebsiteRepository $websiteRepository,
-    ) {
+        private readonly WebsiteRepository    $websiteRepository,
+    )
+    {
         $this->website = $this->websiteRepository->find($this->coreLocator->requestStack()->getMainRequest()->get('website'));
     }
 

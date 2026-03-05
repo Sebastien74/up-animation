@@ -35,8 +35,9 @@ class ActionIntlType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly InterfaceHelper $interfaceHelper,
-    ) {
+        private readonly InterfaceHelper      $interfaceHelper,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->entityManager = $this->coreLocator->em();
     }

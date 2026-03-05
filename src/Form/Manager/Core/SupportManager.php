@@ -8,6 +8,7 @@ use App\Entity\Core\Website;
 use App\Service\Core\MailerService;
 use App\Service\Interface\CoreLocatorInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -26,10 +27,11 @@ class SupportManager
      * SupportManager constructor.
      */
     public function __construct(
-        private readonly MailerService $mailer,
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly \Symfony\Component\HttpFoundation\RequestStack $requestStack,
-    ) {
+        private readonly MailerService                                  $mailer,
+        private readonly CoreLocatorInterface                           $coreLocator,
+        private readonly RequestStack $requestStack,
+    )
+    {
     }
 
     /**

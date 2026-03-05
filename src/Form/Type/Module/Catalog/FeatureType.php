@@ -33,9 +33,10 @@ class FeatureType extends AbstractType
      * FeatureType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
         $this->translator = $this->coreLocator->translator();
@@ -75,9 +76,9 @@ class FeatureType extends AbstractType
                 'display' => 'search',
                 'class' => Catalog::class,
                 'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-             'admin')
-            ],
-            'row_attr' => ['class' => 'col-12'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -103,7 +104,7 @@ class FeatureType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Supprimer les caractéristiques des fiches', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100 remove-cards d-none', 'data-values' => json_encode($catalogsIds)],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
             }
         }

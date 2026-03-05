@@ -70,8 +70,8 @@ class MediaRelationType extends AbstractType
                 'attr' => [
                     'placeholder' => $this->translator->trans('Veuillez saisir un titre', [], 'admin'),
                     'data-help-alert' => 'warning'
-            ],
-            'row_attr' => ['class' => 'col-12 hide-ai'],
+                ],
+                'row_attr' => ['class' => 'col-12 hide-ai'],
                 'help' => $this->translator->trans("S'il ne s'agit pas d'une vidéo décorative, il est nécessaire d'ajouter un titre pour rendre le contenu accessible au personnes mal entendantes.", [], 'admin')
             ]);
 
@@ -82,8 +82,8 @@ class MediaRelationType extends AbstractType
                 'attr' => [
                     'placeholder' => $this->translator->trans('Veuillez saisir une description', [], 'admin'),
                     'data-help-alert' => 'warning'
-            ],
-            'row_attr' => ['class' => 'col-12 hide-ai'],
+                ],
+                'row_attr' => ['class' => 'col-12 hide-ai'],
                 'help' => $this->translator->trans("S'il ne s'agit pas d'une vidéo décorative, il est nécessaire d'ajouter une description pour rendre le contenu accessible au personnes mal entendantes.", [], 'admin')
             ]);
         }
@@ -147,7 +147,7 @@ class MediaRelationType extends AbstractType
                 $builder->add('backgroundColor', BackgroundColorSelectType::class, [
                     'attr' => ['class' => 'col-12 select-icons',
                         'data-config' => true],
-            'row_attr' => ['class' => 'col-12'],
+                    'row_attr' => ['class' => 'col-12'],
                 ]);
             }
 
@@ -201,8 +201,8 @@ class MediaRelationType extends AbstractType
                 'choices' => $choices,
                 'label' => $this->translator->trans('Catégorie', [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                
-            'row_attr' => ['class' => 'col-12'],
+
+                'row_attr' => ['class' => 'col-12'],
             ]);
         }
 
@@ -221,8 +221,8 @@ class MediaRelationType extends AbstractType
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez une largeur', [], 'admin'),
                     'tabSize' => !empty($options['tabSize']) ? $options['tabSize'] : '12'
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-12'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-12'],
             ]);
 
             $builder->add('pictogramMaxHeight', Type\IntegerType::class, [
@@ -230,8 +230,8 @@ class MediaRelationType extends AbstractType
                 'label' => $this->translator->trans('Hauteur (px) du picto', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez une hauteur', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-12'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-12'],
             ]);
         }
 

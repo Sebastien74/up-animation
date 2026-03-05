@@ -39,8 +39,8 @@ class FeatureValueAutocompleteField extends AbstractType
         $extraOptions = $this->coreLocator->request()->get('extra_options') ? $this->coreLocator->request()->get('extra_options') : null;
         $decodedJson = $extraOptions ? base64_decode($extraOptions) : null;
         $extraOptions = $decodedJson ? json_decode($decodedJson, true) : null;
-        $this->productId = $this->coreLocator->request()->get('catalogproduct') ? (int) $this->coreLocator->request()->get('catalogproduct')
-            : (!empty($extraOptions['catalogproduct']) ? (int) $extraOptions['catalogproduct'] : null);
+        $this->productId = $this->coreLocator->request()->get('catalogproduct') ? (int)$this->coreLocator->request()->get('catalogproduct')
+            : (!empty($extraOptions['catalogproduct']) ? (int)$extraOptions['catalogproduct'] : null);
 
         $resolver->setDefaults([
             'class' => FeatureValue::class,
@@ -50,10 +50,10 @@ class FeatureValueAutocompleteField extends AbstractType
             'no_more_results_text' => $this->translator->trans('Aucun résultat trouvé', [], 'admin'),
             'min_characters' => null,
             'group_by' => 'catalogfeature.adminName',
-            
+
             'row_attr' => ['class' => 'col-12 mb-0'],
             'data' => null, // Option pour récupérer l'objet passé
-            'choice_label' => fn ($entity) => strip_tags($entity->getAdminName()),
+            'choice_label' => fn($entity) => strip_tags($entity->getAdminName()),
             'multiple' => false,
             'searchable_fields' => ['id', 'adminName'],
             'max_results' => 20,

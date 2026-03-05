@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Module\Catalog;
 
+use App\Entity\Core\Configuration;
 use App\Entity\Core\Module;
 use App\Entity\Core\Website;
 use App\Entity\Module\Catalog\Catalog;
@@ -42,9 +43,10 @@ class ProductType extends AbstractType
      * ProductType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->entityManager = $this->coreLocator->em();
         $this->request = $this->coreLocator->request();
@@ -77,8 +79,8 @@ class ProductType extends AbstractType
                 'placeholder' => count($catalogs) > 1 ? $this->translator->trans('Sélectionnez', [], 'admin') : false,
                 'attr' => [
                     'data-placeholder' => count($catalogs) > 1 ? $this->translator->trans('Sélectionnez', [], 'admin') : false
-            ],
-            'row_attr' => ['class' => 'col-12 d-none'],
+                ],
+                'row_attr' => ['class' => 'col-12 d-none'],
                 'class' => Catalog::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
@@ -101,9 +103,9 @@ class ProductType extends AbstractType
                     'class' => Category::class,
                     'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                     'attr' => ['placeholder' => $this->translator->trans('Sélectionnez', [],
-             'admin')
-            ],
-            'row_attr' => ['class' => 'col-12'],
+                        'admin')
+                    ],
+                    'row_attr' => ['class' => 'col-12'],
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('c')
                             ->where('c.website = :website')
@@ -121,9 +123,9 @@ class ProductType extends AbstractType
                     'display' => 'search',
                     'class' => Category::class,
                     'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-             'admin')
-            ],
-            'row_attr' => ['class' => 'col-12'],
+                        'admin')
+                    ],
+                    'row_attr' => ['class' => 'col-12'],
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('c')
                             ->where('c.website = :website')
@@ -158,9 +160,9 @@ class ProductType extends AbstractType
                     'display' => 'search',
                     'class' => SubCategory::class,
                     'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-             'admin')
-            ],
-            'row_attr' => ['class' => 'col-12'],
+                        'admin')
+                    ],
+                    'row_attr' => ['class' => 'col-12'],
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('s')
                             ->leftJoin('s.catalogcategory', 'c')
@@ -169,7 +171,7 @@ class ProductType extends AbstractType
                             ->orderBy('s.adminName', 'ASC');
                     },
                     'group_by' => static function (SubCategory $entity): string {
-                        return (string) $entity->getCatalogCategory()?->getAdminName();
+                        return (string)$entity->getCatalogCategory()?->getAdminName();
                     },
                     'choice_label' => function ($entity) {
                         return strip_tags($entity->getAdminName().' ('.$entity->getCatalogCategory()->getAdminName().')');
@@ -185,7 +187,7 @@ class ProductType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-lg-2 d-flex align-items-end'],
+                    'row_attr' => ['class' => 'col-12 col-lg-2 d-flex align-items-end'],
                 ]);
             }
 
@@ -227,7 +229,7 @@ class ProductType extends AbstractType
             if (in_array('intls', $activesFields)) {
                 $extraFields = [];
                 $searchModule = $this->entityManager->getRepository(Module::class)->findOneBy(['slug' => 'search']);
-                $searchModuleActive = $this->entityManager->getRepository(\App\Entity\Core\Configuration::class)->moduleExist($options['website'], $searchModule);
+                $searchModuleActive = $this->entityManager->getRepository(Configuration::class)->moduleExist($options['website'], $searchModule);
                 $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introduction' => 'editor', 'body'];
                 if ($searchModuleActive) {
                     $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introduction' => 'editor', 'body', 'associatedWords'];
@@ -241,27 +243,27 @@ class ProductType extends AbstractType
                             'required' => false,
                             'label' => $this->translator->trans('Réunir', [], 'admin'),
                             'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
+                                'admin')
+                            ],
+                            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
                         ],
                         'sympathise' => [
                             'type' => Type\TextareaType::class,
                             'required' => false,
                             'label' => $this->translator->trans('Sympathiser', [], 'admin'),
                             'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
+                                'admin')
+                            ],
+                            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
                         ],
                         'impress' => [
                             'type' => Type\TextareaType::class,
                             'required' => false,
                             'label' => $this->translator->trans('Marquer', [], 'admin'),
                             'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
+                                'admin')
+                            ],
+                            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
                         ],
                     ];
                 }
@@ -280,7 +282,7 @@ class ProductType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
-                'row_attr' => ['class' => 'col-12 col-lg-4'],
+                    'row_attr' => ['class' => 'col-12 col-lg-4'],
                 ]);
             }
 

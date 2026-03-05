@@ -15,6 +15,7 @@ use Monolog\Logger;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -38,12 +39,13 @@ class ImportRedirectionManager
      * ImportRedirectionManager constructor.
      */
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly XlsxFileReader $fileReader,
-        private readonly string $logDir,
-        private readonly RedirectionManager $redirectionManager,
-        private readonly \Symfony\Component\HttpFoundation\RequestStack $requestStack,
-    ) {
+        private readonly EntityManagerInterface                         $entityManager,
+        private readonly XlsxFileReader                                 $fileReader,
+        private readonly string                                         $logDir,
+        private readonly RedirectionManager                             $redirectionManager,
+        private readonly RequestStack $requestStack,
+    )
+    {
         $this->repository = $this->entityManager->getRepository(Redirection::class);
     }
 

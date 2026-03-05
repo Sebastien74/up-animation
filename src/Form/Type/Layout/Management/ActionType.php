@@ -139,7 +139,7 @@ class ActionType extends AbstractType
         unset($options['methods']['trackEmails']);
         unset($options['methods']['preview']);
 
-        return (object) $options;
+        return (object)$options;
     }
 
     /**

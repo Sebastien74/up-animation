@@ -24,17 +24,18 @@ class CoreFormManagerLocator implements CoreFormManagerInterface
      * CoreFormManagerLocator constructor.
      */
     public function __construct(
-        #[AutowireLocator(CoreManager\BaseManager::class, indexAttribute: 'key')] protected ServiceLocator $baseLocator,
-        #[AutowireLocator(CoreManager\ConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator $configLocator,
+        #[AutowireLocator(CoreManager\BaseManager::class, indexAttribute: 'key')] protected ServiceLocator                $baseLocator,
+        #[AutowireLocator(CoreManager\ConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator       $configLocator,
         #[AutowireLocator(CoreManager\EntityConfigurationManager::class, indexAttribute: 'key')] protected ServiceLocator $entityConfigLocator,
-        #[AutowireLocator(CoreManager\GlobalManager::class, indexAttribute: 'key')] protected ServiceLocator $globalLocator,
-        #[AutowireLocator(CoreManager\IconManager::class, indexAttribute: 'key')] protected ServiceLocator $iconLocator,
-        #[AutowireLocator(CoreManager\SearchManager::class, indexAttribute: 'key')] protected ServiceLocator $searchLocator,
-        #[AutowireLocator(CoreManager\SessionManager::class, indexAttribute: 'key')] protected ServiceLocator $sessionLocator,
-        #[AutowireLocator(CoreManager\SupportManager::class, indexAttribute: 'key')] protected ServiceLocator $supportLocator,
-        #[AutowireLocator(CoreManager\TreeManager::class, indexAttribute: 'key')] protected ServiceLocator $treeLocator,
-        #[AutowireLocator(CoreManager\WebsiteManager::class, indexAttribute: 'key')] protected ServiceLocator $websiteLocator,
-    ) {
+        #[AutowireLocator(CoreManager\GlobalManager::class, indexAttribute: 'key')] protected ServiceLocator              $globalLocator,
+        #[AutowireLocator(CoreManager\IconManager::class, indexAttribute: 'key')] protected ServiceLocator                $iconLocator,
+        #[AutowireLocator(CoreManager\SearchManager::class, indexAttribute: 'key')] protected ServiceLocator              $searchLocator,
+        #[AutowireLocator(CoreManager\SessionManager::class, indexAttribute: 'key')] protected ServiceLocator             $sessionLocator,
+        #[AutowireLocator(CoreManager\SupportManager::class, indexAttribute: 'key')] protected ServiceLocator             $supportLocator,
+        #[AutowireLocator(CoreManager\TreeManager::class, indexAttribute: 'key')] protected ServiceLocator                $treeLocator,
+        #[AutowireLocator(CoreManager\WebsiteManager::class, indexAttribute: 'key')] protected ServiceLocator             $websiteLocator,
+    )
+    {
     }
 
     /**

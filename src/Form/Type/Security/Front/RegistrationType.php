@@ -8,10 +8,12 @@ use App\Entity\Core\Website;
 use App\Entity\Security\UserFront;
 use App\Form\Validator\UniqUserEmail;
 use App\Form\Validator\UniqUserLogin;
+use App\Model\Core\WebsiteModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,13 +42,13 @@ class RegistrationType extends AbstractType
     }
 
     /**
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var Website $website */
         $website = $options['website'];
-        $websiteModel = \App\Model\Core\WebsiteModel::fromEntity($website, $this->coreLocator);
+        $websiteModel = WebsiteModel::fromEntity($website, $this->coreLocator);
         $fields = $website->getSecurity()->getFrontRegistrationFields();
         $mainPages = $websiteModel->configuration->pages;
         $legalNotice = !empty($mainPages['legale']['url']) ? $this->request->getSchemeAndHttpHost().'/'.$mainPages['legale']['url'] : null;
@@ -61,8 +63,8 @@ class RegistrationType extends AbstractType
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre nom', [], 'security_cms'),
                     'class' => 'col-12 last_name'
-            ],
-            'row_attr' => ['class' => 'col-12 col-lg-6'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
                     new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir votre nom.', [], 'security_cms')),
                 ],
@@ -75,8 +77,8 @@ class RegistrationType extends AbstractType
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre prénom', [], 'security_cms'),
                     'class' => 'col-12 first_name'
-            ],
-            'row_attr' => ['class' => 'col-12 col-lg-6'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
                     new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir votre prénom.', [], 'security_cms')),
                 ],
@@ -89,8 +91,8 @@ class RegistrationType extends AbstractType
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre identifiant', [], 'security_cms'),
                     'class' => 'col-12 login'
-            ],
-            'row_attr' => ['class' => 'col-12 col-lg-6'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
                     new Assert\NotBlank(message: $this->translator->trans("Veuillez saisir un nom d'utilisateur.", [], 'security_cms')),
                     new UniqUserLogin(),
@@ -104,8 +106,8 @@ class RegistrationType extends AbstractType
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre adresse e-mail', [], 'security_cms'),
                     'class' => 'col-12 email'
-            ],
-            'row_attr' => ['class' => 'col-12 col-lg-6'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
                     new Assert\NotBlank(['message' => $this->translator->trans('Veuillez saisir un email.', [], 'security_cms')]),
                     new UniqUserEmail(),
@@ -122,10 +124,10 @@ class RegistrationType extends AbstractType
                     'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez votre mot de passe', [], 'security_cms'),
-                        
+
                         'class' => 'col-12 password-checker'
-            ],
-            'row_attr' => ['class' => 'col-12 col-lg-6'],
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-lg-6'],
                     'constraints' => [
                         new Assert\NotBlank(['message' => $this->translator->trans('Veuillez saisir un mot de passe.', [], 'security_cms')]),
                     ],
@@ -134,8 +136,8 @@ class RegistrationType extends AbstractType
                     'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Confirmez votre mot de passe', [], 'security_cms')
-            ],
-            'row_attr' => ['class' => 'col-12 col-lg-6'],
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-lg-6'],
                     'constraints' => [
                         new Assert\NotBlank(['message' => $this->translator->trans('Veuillez confirmer votre mot de passe.', [], 'security_cms')]),
                     ],
@@ -154,8 +156,8 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans("J’accepte les <a href='".$cgv."' target='_blank'>Conditions Générales de Vente</a> et les <a href='".$legalNotice."' target='_blank'>Conditions générales d'utilisation</a>", [], 'security_cms'),
                 'help' => $this->translator->trans('Vous devez prendre connaissance des mentions légales et les accepter pour créer votre compte.', [], 'security_cms'),
                 'display' => 'custom',
-                
-            'row_attr' => ['class' => 'col-12 agree-terms-group'],
+
+                'row_attr' => ['class' => 'col-12 agree-terms-group'],
                 'label_attr' => [
                     'class' => 'col-12 small',
                 ],

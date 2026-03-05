@@ -40,13 +40,14 @@ class PageDuplicateManager extends BaseDuplicateManager
      */
     public function __construct(
         private readonly LayoutFormManagerInterface $layoutManager,
-        private readonly UrlManager $urlManager,
-        protected string $projectDir,
-        protected CoreLocatorInterface $coreLocator,
-        protected EntityManagerInterface $entityManager,
-        protected Uploader $uploader,
-        protected RequestStack $requestStack,
-    ) {
+        private readonly UrlManager                 $urlManager,
+        protected string                            $projectDir,
+        protected CoreLocatorInterface              $coreLocator,
+        protected EntityManagerInterface            $entityManager,
+        protected Uploader                          $uploader,
+        protected RequestStack                      $requestStack,
+    )
+    {
         $this->repository = $entityManager->getRepository(Layout\Page::class);
 
         parent::__construct($projectDir, $coreLocator, $entityManager, $uploader, $requestStack);

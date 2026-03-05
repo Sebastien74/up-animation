@@ -9,6 +9,7 @@ use App\Entity\Module\Newscast\Listing;
 use App\Model\EntityModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityRepository;
+use Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,7 +36,7 @@ class FrontFiltersType extends AbstractType
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -43,7 +44,7 @@ class FrontFiltersType extends AbstractType
         $listing = $options['listing'];
         $filters = $builder->getData();
         $this->entities = $options['arguments']['allEntities'];
-        $isInline = $listing && method_exists($listing,'isFiltersInline') ? $listing->isFiltersInline() : true;
+        $isInline = $listing && method_exists($listing, 'isFiltersInline') ? $listing->isFiltersInline() : true;
 
         $builder->add('category', EntityType::class, [
             'required' => false,

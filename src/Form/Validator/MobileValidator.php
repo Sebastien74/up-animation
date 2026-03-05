@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Validator;
 
+use Exception;
 use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Validator\Constraint;
@@ -55,7 +56,7 @@ class MobileValidator extends ConstraintValidator
                 if ($phoneUtil->parse($value, strtoupper($code))) {
                     return true;
                 }
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
             }
         }
 

@@ -53,7 +53,7 @@ class ChoiceExtension implements FormTypeExtensionInterface
         }
 
         //        if (!empty($view->vars['attr']['group'])) {
-        //            $view->vars['attr']['class'] = $view->vars['attr']['class'] . ' ' . $view->vars['attr']['group'];
+        //            $view->vars['attr']['class'] = $view->vars['attr']['class'].' '.$view->vars['attr']['group'];
         //        }
 
         $view->vars['attr']['data-dropdown-class'] = 'select-dropdown-container' != $options['dropdown_class']

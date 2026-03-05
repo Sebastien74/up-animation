@@ -64,9 +64,9 @@ class TransitionType
                 'required' => false,
                 'label' => $this->translator->trans('Délai avant apparition', [], 'admin'),
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez un délai', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 'help' => $this->translator->trans('Optionnel', [], 'admin'),
             ]);
 
@@ -74,9 +74,9 @@ class TransitionType
                 'required' => false,
                 'label' => $this->translator->trans('Durée de la transition', [], 'admin'),
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez une durée', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 'help' => $this->translator->trans('Optionnel', [], 'admin'),
             ]);
         }

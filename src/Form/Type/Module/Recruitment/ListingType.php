@@ -28,19 +28,20 @@ class ListingType extends AbstractType
      * ListingType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
     }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options): void
-	{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
         $isNew = !$builder->getData()->getId();
 
         $adminName = new WidgetType\AdminNameType($this->coreLocator);
@@ -96,17 +97,17 @@ class ListingType extends AbstractType
 
         $save = new WidgetType\SubmitType($this->coreLocator);
         $save->add($builder, ['btn_both' => true]);
-	}
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function configureOptions(OptionsResolver $resolver): void
-	{
-		$resolver->setDefaults([
-			'data_class' => Listing::class,
-			'website' => null,
-			'translation_domain' => 'admin'
-		]);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Listing::class,
+            'website' => null,
+            'translation_domain' => 'admin'
+        ]);
+    }
 }

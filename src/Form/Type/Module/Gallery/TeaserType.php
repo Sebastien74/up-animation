@@ -30,9 +30,10 @@ class TeaserType extends AbstractType
      * TeaserType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
@@ -62,10 +63,10 @@ class TeaserType extends AbstractType
                     'label' => $this->translator->trans("Nombre d'images par teaser", [], 'admin'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                        
+
                         'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
                 $builder->add('itemsPerSlide', Type\IntegerType::class, [
@@ -73,10 +74,10 @@ class TeaserType extends AbstractType
                     'label' => $this->translator->trans("Nombre d'images par slide", [], 'admin'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                        
+
                         'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
                 $builder->add('template', Type\ChoiceType::class, [
@@ -87,7 +88,7 @@ class TeaserType extends AbstractType
                         $this->translator->trans('Slider', [], 'admin') => 'slider',
                     ],
                     'attr' => ['data-config' => true],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
             }
 
@@ -97,9 +98,9 @@ class TeaserType extends AbstractType
                 'display' => 'search',
                 'class' => Category::class,
                 'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 'choice_label' => function ($entity) {
                     return strip_tags($entity->getAdminName());
                 },

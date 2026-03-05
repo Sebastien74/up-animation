@@ -44,7 +44,7 @@ class SecurityType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Site sécurisé', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('headerData', Type\ChoiceType::class, [
@@ -78,7 +78,7 @@ class SecurityType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Modification des mots de passe par groupe', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('adminRegistration', Type\CheckboxType::class, [
@@ -87,7 +87,7 @@ class SecurityType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans("Activer l'inscription", [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
         ]);
 
         $builder->add('adminRegistrationValidation', Type\CheckboxType::class, [
@@ -96,7 +96,7 @@ class SecurityType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans("Activer la validation administrateur", [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
         ]);
 
         $builder->add('adminPasswordSecurity', Type\CheckboxType::class, [
@@ -105,7 +105,7 @@ class SecurityType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Activer la validaté des mots de passe', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
         ]);
 
         $builder->add('adminPasswordDelay', Type\IntegerType::class, [
@@ -180,8 +180,8 @@ class SecurityType extends AbstractType
                 'label' => $this->translator->trans('Pages de redirection', [], 'admin'),
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'class' => Page::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('p')

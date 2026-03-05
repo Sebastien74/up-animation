@@ -168,8 +168,8 @@ class SeoType extends AbstractType
                 'label' => $this->translator->trans("Type d'auteur", [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un type', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12'],
+                ],
+                'row_attr' => ['class' => 'col-12'],
                 'required' => false,
             ]);
 
@@ -178,10 +178,10 @@ class SeoType extends AbstractType
                 'editor' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un script', [], 'admin'),
-                    
+
                     'class' => 'col-12 metadata'
-            ],
-            'row_attr' => ['class' => 'col-12'],
+                ],
+                'row_attr' => ['class' => 'col-12'],
                 'help' => $this->translator->trans('Sans la balise <code>&lt;script></code>', [], 'admin'),
                 'required' => false,
             ]);

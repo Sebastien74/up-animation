@@ -7,6 +7,7 @@ namespace App\Form\Manager\Module;
 use App\Entity\Core\Website;
 use App\Entity\Module\Newsletter\Campaign;
 use App\Service\Interface\CoreLocatorInterface;
+use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
@@ -31,7 +32,7 @@ class CampaignManager
     /**
      * @prePersist
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function prePersist(Campaign $campaign, Website $website): void
     {

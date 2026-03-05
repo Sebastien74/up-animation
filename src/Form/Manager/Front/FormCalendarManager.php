@@ -11,6 +11,11 @@ use App\Entity\Module\Form\CalendarException;
 use App\Entity\Module\Form\CalendarSchedule;
 use App\Entity\Module\Form\ContactForm;
 use App\Service\Core\MailerService;
+use DateInterval;
+use DatePeriod;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -40,10 +45,11 @@ class FormCalendarManager
      */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly RequestStack $requestStack,
-        private readonly MailerService $mailer,
-        private readonly FormManager $formManager,
-    ) {
+        private readonly RequestStack           $requestStack,
+        private readonly MailerService          $mailer,
+        private readonly FormManager            $formManager,
+    )
+    {
         $this->request = $this->requestStack->getMainRequest();
     }
 
@@ -84,8 +90,8 @@ class FormCalendarManager
 
         $daysNumbers = $contact && $this->calendar->getDaysPerPage() ? $this->calendar->getDaysPerPage() : self::DAYS_NUMBER;
         $startRequest = $this->request->get('startDate');
-        $start = $startRequest ? new \DateTime($startRequest) : new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
-        $currentDate = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        $start = $startRequest ? new DateTime($startRequest) : new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
+        $currentDate = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
         $limitDates = $this->getLimitDates($currentDate, $start, $daysNumbers);
 
         $this->getDisableSlots($start, $daysNumbers);
@@ -93,16 +99,16 @@ class FormCalendarManager
         $dates[$start->format('Y-m-d')]['datetime'] = $start;
         $dates[$start->format('Y-m-d')]['occurrences'] = $this->getOccurrences($start, $limitDates->minDatetime, $limitDates->maxDatetime);
         for ($i = 1; $i <= ($daysNumbers - 1); ++$i) {
-            $date = new \DateTime($start->format('Y-m-d').' +'.$i.' day');
+            $date = new DateTime($start->format('Y-m-d').' +'.$i.' day');
             $dates[$date->format('Y-m-d')]['datetime'] = $date;
             $dates[$date->format('Y-m-d')]['occurrences'] = $this->getOccurrences($date, $limitDates->minDatetime, $limitDates->maxDatetime);
         }
 
         $previous = $start->format('Y-m-d') !== $currentDate->format('Y-m-d')
-            ? new \DateTime($start->format('Y-m-d').' -'.$daysNumbers.' day') : null;
-        $next = new \DateTime($start->format('Y-m-d').' +'.$daysNumbers.' day');
+            ? new DateTime($start->format('Y-m-d').' -'.$daysNumbers.' day') : null;
+        $next = new DateTime($start->format('Y-m-d').' +'.$daysNumbers.' day');
 
-        return (object) [
+        return (object)[
             'dates' => $dates,
             'start' => $start,
             'previous' => $previous,
@@ -119,7 +125,7 @@ class FormCalendarManager
     {
         if ($contact && $formCalendar->isSubmitted() && $formCalendar->isValid()) {
             $slotDate = $formCalendar->getData()['slot_date'];
-            $date = new \DateTime(urldecode($slotDate));
+            $date = new DateTime(urldecode($slotDate));
             $existing = $this->entityManager->getRepository(CalendarAppointment::class)->findOneBy([
                 'appointmentDate' => $date,
                 'formcalendar' => $this->calendar,
@@ -155,15 +161,15 @@ class FormCalendarManager
      *
      * @throws Exception
      */
-    private function getLimitDates(\DateTime $currentDate, \DateTime $startDate, int $daysNumbers): object
+    private function getLimitDates(DateTime $currentDate, DateTime $startDate, int $daysNumbers): object
     {
         $minHours = $this->calendar->getMinHours();
         $maxHours = $this->calendar->getMaxHours();
 
-        $start = new \DateTime($startDate->format('Y-m-d 00:00'));
-        $end = new \DateTime($start->format('Y-m-d').' +'.$daysNumbers.' day');
-        $interval = \DateInterval::createFromDateString('1 day');
-        $period = new \DatePeriod($start, $interval, $end);
+        $start = new DateTime($startDate->format('Y-m-d 00:00'));
+        $end = new DateTime($start->format('Y-m-d').' +'.$daysNumbers.' day');
+        $interval = DateInterval::createFromDateString('1 day');
+        $period = new DatePeriod($start, $interval, $end);
         foreach ($period as $datetime) {
             if ($maxHours && in_array($this->getDayCode($datetime->format('w')), self::UN_WORK_DAYS)) {
                 $maxHours = $maxHours + 24;
@@ -171,13 +177,13 @@ class FormCalendarManager
         }
 
         $minDatetime = $minHours
-            ? new \DateTime($currentDate->format('Y-m-d H:i:s').' +'.$minHours.' hours')
+            ? new DateTime($currentDate->format('Y-m-d H:i:s').' +'.$minHours.' hours')
             : null;
         $maxDatetime = $maxHours
-            ? new \DateTime($currentDate->format('Y-m-d H:i:s').' +'.$maxHours.' hours')
+            ? new DateTime($currentDate->format('Y-m-d H:i:s').' +'.$maxHours.' hours')
             : null;
 
-        return (object) [
+        return (object)[
             'minDatetime' => $minDatetime,
             'maxDatetime' => $maxDatetime,
         ];
@@ -188,12 +194,12 @@ class FormCalendarManager
      *
      * @throws Exception
      */
-    private function getDisableSlots(\DateTime $startDate, int $daysNumbers)
+    private function getDisableSlots(DateTime $startDate, int $daysNumbers)
     {
-        $start = new \DateTime($startDate->format('Y-m-d 00:00'));
-        $end = new \DateTime($start->format('Y-m-d').' +'.$daysNumbers.' day');
-        $interval = \DateInterval::createFromDateString('1 day');
-        $period = new \DatePeriod($start, $interval, $end);
+        $start = new DateTime($startDate->format('Y-m-d 00:00'));
+        $end = new DateTime($start->format('Y-m-d').' +'.$daysNumbers.' day');
+        $interval = DateInterval::createFromDateString('1 day');
+        $period = new DatePeriod($start, $interval, $end);
 
         /** Get Appointments */
         $appointmentsDb = $this->entityManager->getRepository(CalendarAppointment::class)->findBetweenDatesAndCalendar($this->calendar);
@@ -220,7 +226,7 @@ class FormCalendarManager
      *
      * @throws Exception
      */
-    private function getDisableSchedulesSlots(\DatePeriod $period, CalendarSchedule $schedule)
+    private function getDisableSchedulesSlots(DatePeriod $period, CalendarSchedule $schedule)
     {
         $currentDate = null;
         foreach ($period as $datetime) {
@@ -235,18 +241,18 @@ class FormCalendarManager
             $start = $timeRange->getStartHour();
             $end = $timeRange->getEndHour();
             if ($start && $end) {
-                $interval = \DateInterval::createFromDateString('1 minute');
-                $period = new \DatePeriod($start, $interval, $end);
+                $interval = DateInterval::createFromDateString('1 minute');
+                $period = new DatePeriod($start, $interval, $end);
                 foreach ($period as $datetime) {
                     $openingTimes[] = $currentDate->format('Y-m-d').' '.$datetime->format('H:i:s');
                 }
             }
         }
 
-        $start = new \DateTime($currentDate->format('Y-m-d 00:00'));
-        $end = new \DateTime($currentDate->format('Y-m-d 23:59'));
-        $interval = \DateInterval::createFromDateString('1 minute');
-        $period = new \DatePeriod($start, $interval, $end);
+        $start = new DateTime($currentDate->format('Y-m-d 00:00'));
+        $end = new DateTime($currentDate->format('Y-m-d 23:59'));
+        $interval = DateInterval::createFromDateString('1 minute');
+        $period = new DatePeriod($start, $interval, $end);
         foreach ($period as $datetime) {
             if (!in_array($datetime->format('Y-m-d H:i:s'), $openingTimes) || empty($openingTimes)) {
                 $this->disableSlots[] = $datetime->format('Y-m-d H:i:s');
@@ -270,17 +276,17 @@ class FormCalendarManager
 
             /* Close day */
             if ($exception->getIsClose() && $startDate) {
-                $start = new \DateTime($startDate->format('Y-m-d 00:00'));
-                $end = $endDate ? new \DateTime($endDate->format('Y-m-d 18:00')) : $startDate->format('Y-m-d 23:59');
+                $start = new DateTime($startDate->format('Y-m-d 00:00'));
+                $end = $endDate ? new DateTime($endDate->format('Y-m-d 18:00')) : $startDate->format('Y-m-d 23:59');
             } /* Schedules */
             elseif ($startDate && $endDate) {
-                $start = new \DateTime($startDate->format('Y-m-d H:i'));
-                $end = new \DateTime($endDate->format('Y-m-d H:i'));
+                $start = new DateTime($startDate->format('Y-m-d H:i'));
+                $end = new DateTime($endDate->format('Y-m-d H:i'));
             }
 
             if ($start && $end) {
-                $interval = \DateInterval::createFromDateString('1 minutes');
-                $period = new \DatePeriod($start, $interval, $end);
+                $interval = DateInterval::createFromDateString('1 minutes');
+                $period = new DatePeriod($start, $interval, $end);
                 foreach ($period as $datetime) {
                     $this->disableSlots[] = $datetime->format('Y-m-d H:i:s');
                 }
@@ -293,14 +299,14 @@ class FormCalendarManager
      *
      * @throws Exception
      */
-    private function getOccurrences(\DateTime $dateTime, ?\DateTime $minDatetime = null, ?\DateTime $maxDatetime = null): array
+    private function getOccurrences(DateTime $dateTime, ?DateTime $minDatetime = null, ?DateTime $maxDatetime = null): array
     {
-        $startHour = $this->calendar->getStartHour() instanceof \DateTime ? $this->calendar->getStartHour()->format('H:i') : '08:00';
-        $start = new \DateTime($dateTime->format('Y-m-d '.$startHour));
-        $endHour = $this->calendar->getEndHour() instanceof \DateTime ? $this->calendar->getEndHour()->format('H:i') : '20:00';
-        $end = new \DateTime($dateTime->format('Y-m-d '.$endHour));
-        $interval = \DateInterval::createFromDateString($this->calendar->getFrequency().' minutes');
-        $period = new \DatePeriod($start, $interval, $end);
+        $startHour = $this->calendar->getStartHour() instanceof DateTime ? $this->calendar->getStartHour()->format('H:i') : '08:00';
+        $start = new DateTime($dateTime->format('Y-m-d '.$startHour));
+        $endHour = $this->calendar->getEndHour() instanceof DateTime ? $this->calendar->getEndHour()->format('H:i') : '20:00';
+        $end = new DateTime($dateTime->format('Y-m-d '.$endHour));
+        $interval = DateInterval::createFromDateString($this->calendar->getFrequency().' minutes');
+        $period = new DatePeriod($start, $interval, $end);
 
         $occurrences = [];
         foreach ($period as $datetime) {

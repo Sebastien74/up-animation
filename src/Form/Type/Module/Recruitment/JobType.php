@@ -34,7 +34,8 @@ class JobType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
     }
 
@@ -96,8 +97,8 @@ class JobType extends AbstractType
                 'display' => 'search',
                 'attr' => [
                     'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'class' => Form::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
@@ -119,17 +120,17 @@ class JobType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un lieu', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('zipCode', Type\TextType::class, [
                 'label' => !empty($labels['zipCode']) ? $labels['zipCode'] : $this->translator->trans('Code postal', [], 'admin'),
                 'required' => false,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez un code postal', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Validator\ZipCode()],
             ]);
 
@@ -138,8 +139,8 @@ class JobType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un département', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
@@ -152,45 +153,45 @@ class JobType extends AbstractType
                         'required' => false,
                         'label' => $this->translator->trans('Durée du contrat', [], 'admin'),
                         'attr' => ['placeholder' => $this->translator->trans('Saisissez la durée', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                            'admin')
+                        ],
+                        'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     ],
                     'remuneration' => [
                         'type' => Type\TextType::class,
                         'required' => false,
                         'label' => $this->translator->trans('Rémuneration', [], 'admin'),
                         'attr' => ['placeholder' => $this->translator->trans('Saisissez la rémuneration', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                            'admin')
+                        ],
+                        'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     ],
                     'company' => [
                         'type' => Type\TextType::class,
                         'required' => false,
                         'label' => $this->translator->trans('Entreprise', [], 'admin'),
                         'attr' => ['placeholder' => $this->translator->trans('Saisissez une entreprise', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                            'admin')
+                        ],
+                        'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     ],
                     'diploma' => [
                         'type' => Type\TextType::class,
                         'required' => false,
                         'label' => $this->translator->trans('Diplôme', [], 'admin'),
                         'attr' => ['placeholder' => $this->translator->trans('Saisissez un diplôme', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                            'admin')
+                        ],
+                        'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     ],
                     'drivingLicence' => [
                         'type' => Type\TextType::class,
                         'required' => false,
                         'label' => $this->translator->trans('Permis de conduire', [], 'admin'),
                         'attr' => ['placeholder' => $this->translator->trans('Saisissez un diplôme', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                            'admin')
+                        ],
+                        'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     ],
                     'profil' => [
                         'type' => Type\TextareaType::class,
@@ -198,9 +199,9 @@ class JobType extends AbstractType
                         'editor' => true,
                         'label' => $this->translator->trans('Profil', [], 'admin'),
                         'attr' => ['placeholder' => $this->translator->trans('Décrivez le profil', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                            'admin')
+                        ],
+                        'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                     ],
                 ],
                 'label_fields' => [

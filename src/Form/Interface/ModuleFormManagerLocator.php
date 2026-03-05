@@ -24,21 +24,22 @@ class ModuleFormManagerLocator implements ModuleFormManagerInterface
      * ModuleFormManagerLocator constructor.
      */
     public function __construct(
-        #[AutowireLocator(Module\AddLinkManager::class, indexAttribute: 'key')] protected ServiceLocator $linkMenuLocator,
-        #[AutowireLocator(Module\CampaignManager::class, indexAttribute: 'key')] protected ServiceLocator $newsletterCampaignLocator,
+        #[AutowireLocator(Module\AddLinkManager::class, indexAttribute: 'key')] protected ServiceLocator             $linkMenuLocator,
+        #[AutowireLocator(Module\CampaignManager::class, indexAttribute: 'key')] protected ServiceLocator            $newsletterCampaignLocator,
         #[AutowireLocator(Module\CatalogFeatureValueManager::class, indexAttribute: 'key')] protected ServiceLocator $catalogFeatureValueLocator,
-        #[AutowireLocator(Module\CatalogFeatureManager::class, indexAttribute: 'key')] protected ServiceLocator $catalogFeatureLocator,
-        #[AutowireLocator(Module\CatalogProductManager::class, indexAttribute: 'key')] protected ServiceLocator $catalogProductLocator,
-        #[AutowireLocator(Module\FormCalendarManager::class, indexAttribute: 'key')] protected ServiceLocator $formCalendarLocator,
-        #[AutowireLocator(Module\FormManager::class, indexAttribute: 'key')] protected ServiceLocator $formLocator,
-        #[AutowireLocator(Module\NewscastDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator $newscastDuplicateLocator,
-        #[AutowireLocator(Module\NewscastManager::class, indexAttribute: 'key')] protected ServiceLocator $newscastLocator,
-        #[AutowireLocator(Module\NewscastListingManager::class, indexAttribute: 'key')] protected ServiceLocator $newscastListingLocator,
-        #[AutowireLocator(Module\NewscastTeaserManager::class, indexAttribute: 'key')] protected ServiceLocator $newscastTeaserLocator,
-        #[AutowireLocator(Module\StepFormManager::class, indexAttribute: 'key')] protected ServiceLocator $stepFormLocator,
-        #[AutowireLocator(Module\TableManager::class, indexAttribute: 'key')] protected ServiceLocator $tableLocator,
-        #[AutowireLocator(Module\JobManager::class, indexAttribute: 'key')] protected ServiceLocator $jobLocator,
-    ) {
+        #[AutowireLocator(Module\CatalogFeatureManager::class, indexAttribute: 'key')] protected ServiceLocator      $catalogFeatureLocator,
+        #[AutowireLocator(Module\CatalogProductManager::class, indexAttribute: 'key')] protected ServiceLocator      $catalogProductLocator,
+        #[AutowireLocator(Module\FormCalendarManager::class, indexAttribute: 'key')] protected ServiceLocator        $formCalendarLocator,
+        #[AutowireLocator(Module\FormManager::class, indexAttribute: 'key')] protected ServiceLocator                $formLocator,
+        #[AutowireLocator(Module\NewscastDuplicateManager::class, indexAttribute: 'key')] protected ServiceLocator   $newscastDuplicateLocator,
+        #[AutowireLocator(Module\NewscastManager::class, indexAttribute: 'key')] protected ServiceLocator            $newscastLocator,
+        #[AutowireLocator(Module\NewscastListingManager::class, indexAttribute: 'key')] protected ServiceLocator     $newscastListingLocator,
+        #[AutowireLocator(Module\NewscastTeaserManager::class, indexAttribute: 'key')] protected ServiceLocator      $newscastTeaserLocator,
+        #[AutowireLocator(Module\StepFormManager::class, indexAttribute: 'key')] protected ServiceLocator            $stepFormLocator,
+        #[AutowireLocator(Module\TableManager::class, indexAttribute: 'key')] protected ServiceLocator               $tableLocator,
+        #[AutowireLocator(Module\JobManager::class, indexAttribute: 'key')] protected ServiceLocator                 $jobLocator,
+    )
+    {
     }
 
     /**

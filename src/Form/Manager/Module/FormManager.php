@@ -136,15 +136,16 @@ class FormManager
      */
     private function addBlock(
         Layout\Col $col,
-        string $adminName,
-        string $slug,
-        string $field,
-        ?string $label = null,
-        ?string $placeholder = null,
-        ?bool $anonymize = false,
-        ?int $position = 1,
-        ?int $size = 12,
-    ): void {
+        string     $adminName,
+        string     $slug,
+        string     $field,
+        ?string    $label = null,
+        ?string    $placeholder = null,
+        ?bool      $anonymize = false,
+        ?int       $position = 1,
+        ?int       $size = 12,
+    ): void
+    {
 
         $block = new Layout\Block();
         $block->setAdminName($adminName);

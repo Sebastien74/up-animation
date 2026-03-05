@@ -35,8 +35,9 @@ class IconManager
      */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly string $projectDir,
-    ) {
+        private readonly string                 $projectDir,
+    )
+    {
         $this->baseDirname = '/medias/icons/app';
     }
 

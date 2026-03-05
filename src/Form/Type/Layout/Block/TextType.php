@@ -69,7 +69,7 @@ class TextType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Liste à puces checkbox', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100 mb-0'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
         ]);
 
         $save = new WidgetType\SubmitType($this->coreLocator);

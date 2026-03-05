@@ -40,9 +40,10 @@ class ConfigurationType extends AbstractType
      * @throws InvalidArgumentException
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->entityManager = $this->coreLocator->em();
         $this->user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
@@ -61,7 +62,7 @@ class ConfigurationType extends AbstractType
             'label' => $this->translator->trans('E-mails de réception', [], 'admin'),
             'required' => false,
             'attr' => ['placeholder' => $this->translator->trans('Ajouter des e-mails', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
         ]);
@@ -69,7 +70,7 @@ class ConfigurationType extends AbstractType
         $builder->add('sendingEmail', Type\EmailType::class, [
             'label' => $this->translator->trans("E-mail d'envoi", [], 'admin'),
             'attr' => ['placeholder' => $this->translator->trans('Saisissez un e-mail', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'constraints' => [
@@ -84,10 +85,10 @@ class ConfigurationType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             ]);
 
             $builder->add('pageRedirection', EntityType::class, [
@@ -95,8 +96,8 @@ class ConfigurationType extends AbstractType
                 'label' => $this->translator->trans('Page de redirection', [], 'admin'),
                 'attr' => [
                     'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 allow-clear'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 allow-clear'],
                 'class' => Page::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('p')
@@ -173,7 +174,7 @@ class ConfigurationType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Envoyer un e-mail de confirmation', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         if ($this->isInternalUser) {
@@ -204,7 +205,7 @@ class ConfigurationType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Activer les calendriers', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
             }
 
@@ -215,7 +216,7 @@ class ConfigurationType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Soumission en ajax', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
             }
 

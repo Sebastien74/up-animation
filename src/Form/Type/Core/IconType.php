@@ -45,7 +45,7 @@ class IconType extends AbstractType
                 'data-max-size' => self::MAX_SIZE,
                 'placeholder' => $this->translator->trans('Séléctionnez une image', [], 'admin'),
                 'class' => 'col-12 dropzone-field',
-                
+
                 'data-height' => 250
             ],
             'row_attr' => ['class' => 'col-12 d-none'],

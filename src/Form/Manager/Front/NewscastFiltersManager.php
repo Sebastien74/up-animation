@@ -12,6 +12,7 @@ use App\Model\Core\WebsiteModel;
 use App\Repository\Module\Newscast\CategoryRepository;
 use App\Service\Content\ActionService;
 use App\Service\Interface\CoreLocatorInterface;
+use Exception;
 use Psr\Cache\InvalidArgumentException;
 
 /**
@@ -26,9 +27,10 @@ class NewscastFiltersManager implements NewscastFiltersInterface
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly CategoryRepository $categoryRepository,
-        private readonly ActionService $actionService,
-    ) {
+        private readonly CategoryRepository   $categoryRepository,
+        private readonly ActionService        $actionService,
+    )
+    {
     }
 
     /**
@@ -57,7 +59,7 @@ class NewscastFiltersManager implements NewscastFiltersInterface
     /**
      * Get results.
      *
-     * @throws \Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     public function getResults(Listing|Teaser $entity, array $filters = [], array $entities = []): array
     {

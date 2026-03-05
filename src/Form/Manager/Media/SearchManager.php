@@ -7,6 +7,7 @@ namespace App\Form\Manager\Media;
 use App\Entity\Core\Website;
 use App\Entity\Media\Media;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -30,8 +31,9 @@ class SearchManager
      */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly TokenStorageInterface $tokenStorage,
-    ) {
+        private readonly TokenStorageInterface  $tokenStorage,
+    )
+    {
         $user = !empty($tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
     }
@@ -72,7 +74,7 @@ class SearchManager
                     ->orderBy('m.id', 'DESC')
                     ->getQuery()
                     ->getResult();
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 //                dd($exception);
             }
         } else {

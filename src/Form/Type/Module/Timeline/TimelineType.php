@@ -49,7 +49,7 @@ class TimelineType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Afficher les chiffres', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $save = new WidgetType\SubmitType($this->coreLocator);

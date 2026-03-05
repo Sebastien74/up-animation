@@ -46,9 +46,8 @@ class AddressType extends AbstractType
             $builder->add('name', Type\TextType::class, [
                 'label' => !empty($labels['name']) ? $labels['name'] : $this->translator->trans('Raison sociale', [], 'admin'),
                 'required' => false,
-                'attr' => ['placeholder' => $this->translator->trans('Saisissez une raison sociale', [],
-            'row_attr' => ['class' => $multiLocales ? 'col-md-9' : 'col-12'], 'admin'),
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une raison sociale', [], 'admin')],
+                'row_attr' => ['class' => $multiLocales ? 'col-md-9' : 'col-12'],
             ]);
         }
 
@@ -101,9 +100,9 @@ class AddressType extends AbstractType
                 'label' => !empty($labels['address']) ? $labels['address'] : $this->translator->trans('Adresse', [], 'admin'),
                 'required' => false,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez une adresse', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
             ]);
         }
 
@@ -112,9 +111,9 @@ class AddressType extends AbstractType
                 'label' => !empty($labels['zipCode']) ? $labels['zipCode'] : $this->translator->trans('Code postal', [], 'admin'),
                 'required' => false,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez un code postal', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Validator\ZipCode()],
             ]);
         }
@@ -124,9 +123,9 @@ class AddressType extends AbstractType
                 'label' => !empty($labels['city']) ? $labels['city'] : $this->translator->trans('Ville', [], 'admin'),
                 'required' => false,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez une ville', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 
@@ -135,9 +134,9 @@ class AddressType extends AbstractType
                 'label' => !empty($labels['department']) ? $labels['department'] : $this->translator->trans('Département', [], 'admin'),
                 'required' => false,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez une département', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 
@@ -146,9 +145,9 @@ class AddressType extends AbstractType
                 'label' => !empty($labels['region']) ? $labels['region'] : $this->translator->trans('Région', [], 'admin'),
                 'required' => false,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez une région', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 
@@ -204,10 +203,10 @@ class AddressType extends AbstractType
                     'attr' => ['class' => 'col-12 address-email',
                         'icon' => 'at',
                         'caption' => $this->translator->trans('E-mails', [],
-                 'admin'),
+                            'admin'),
                         'button' => $this->translator->trans('Ajouter un e-mail', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     'website' => $options['website'],
                 ],
             ]);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Widget;
 
 use App\Service\Interface\CoreLocatorInterface;
+use Exception;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Intl\Countries;
@@ -59,7 +60,7 @@ class LanguageIconType extends AbstractType
             try {
                 $name = !in_array(Languages::getName($locale), $locales) ? Languages::getName($locale) : Languages::getName($locale).' ('.strtoupper($locale).')';
                 $locales[$locale] = $name;
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
             }
         }
 

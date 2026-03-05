@@ -29,8 +29,9 @@ class BlockTypeType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly RoleRepository $roleRepository,
-    ) {
+        private readonly RoleRepository       $roleRepository,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
     }
 
@@ -66,7 +67,7 @@ class BlockTypeType extends AbstractType
             'label' => $this->translator->trans('Rôle', [], 'admin'),
             'choices' => $this->getRoles(),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            
+
             'row_attr' => ['class' => $isNew ? 'col-md-4' : 'col-md-3'],
         ]);
 

@@ -34,13 +34,14 @@ class FrontManager
      * FrontManager constructor.
      */
     public function __construct(
-        private readonly RequestStack $requestStack,
-        private readonly TranslatorInterface $translator,
-        private readonly EntityManagerInterface $entityManager,
+        private readonly RequestStack                $requestStack,
+        private readonly TranslatorInterface         $translator,
+        private readonly EntityManagerInterface      $entityManager,
         private readonly TranslationDomainRepository $domainRepository,
-        private readonly TranslationRepository $translationRepository,
-        private readonly Extractor $extractor,
-    ) {
+        private readonly TranslationRepository       $translationRepository,
+        private readonly Extractor                   $extractor,
+    )
+    {
         $this->request = $this->requestStack->getMainRequest();
     }
 

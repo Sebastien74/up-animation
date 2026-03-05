@@ -28,9 +28,10 @@ class TabType extends AbstractType
      * TabType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
@@ -56,9 +57,9 @@ class TabType extends AbstractType
                     $this->translator->trans('Accordéon', [], 'admin') => 'accordion',
                 ],
                 'attr' => [
-                
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 

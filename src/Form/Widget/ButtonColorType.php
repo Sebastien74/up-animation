@@ -28,7 +28,8 @@ class ButtonColorType extends AbstractType
     /**
      * ButtonColorType constructor.
      */
-    public function __construct(private readonly CoreLocatorInterface $coreLocator) {
+    public function __construct(private readonly CoreLocatorInterface $coreLocator)
+    {
         $this->translator = $this->coreLocator->translator();
         $this->website = $this->coreLocator->website();
         $this->customModules = $this->website->configuration->customModules;

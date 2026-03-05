@@ -14,6 +14,8 @@ use App\Form\Manager\Seo;
 interface SeoFormManagerInterface
 {
     public function importRedirection(): Seo\ImportRedirectionManager;
+
     public function redirection(): Seo\RedirectionManager;
+
     public function url(): Seo\UrlManager;
 }

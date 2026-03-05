@@ -32,8 +32,9 @@ class UrlType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly IconRuntime $iconRuntime,
-    ) {
+        private readonly IconRuntime          $iconRuntime,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
     }
 
@@ -65,8 +66,7 @@ class UrlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => ['placeholder' => $this->getAttribute($field, 'placeholder'),
                 'code' => 'code'],
-            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass,
-            ],
+            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass)],
             'constraints' => [new UniqUrl()],
             'help' => $this->getAttribute($field, 'help'),
         ]);
@@ -83,7 +83,7 @@ class UrlType extends AbstractType
             'color' => 'app',
             'label' => $this->getAttribute($field, 'label'),
             
-            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass, 'class' => 'col-12 w-100'],
+            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass) . ' w-100'],
             'help' => $this->getAttribute($field, 'help'),
         ]);
     }
@@ -98,8 +98,8 @@ class UrlType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->getAttribute($field, 'label'),
-            
-            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass, 'class' => 'col-12 w-100'],
+
+            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass) . ' w-100'],
             'help' => $this->getAttribute($field, 'help'),
         ]);
     }
@@ -119,13 +119,13 @@ class UrlType extends AbstractType
             'choice_attr' => function ($boolean, $key, $value) {
                 if (true === $boolean) {
                     return [
-                        'data-svg' => '<span class="btn-icon success small me-2"><i class="icm-wifi success"></i></span>',
-                        'data-text' => true,
+                        'data - svg' => ' < span class="btn-icon success small me-2" ><i class="icm-wifi success" ></i ></span > ',
+                        'data - text' => true,
                     ];
                 } else {
                     return [
-                        'data-svg' => '<span class="btn-icon danger small me-2"><i class="icm-snooze success"></i></span>',
-                        'data-text' => true,
+                        'data - svg' => ' < span class="btn-icon danger small me-2" ><i class="icm-snooze success" ></i ></span > ',
+                        'data - text' => true,
                     ];
                 }
             },

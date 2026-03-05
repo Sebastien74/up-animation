@@ -14,5 +14,6 @@ use App\Entity\Module\Recruitment\Listing;
 interface JobFiltersInterface
 {
     public function getFilters(): array;
+
     public function getResults(Listing $entity, array $filters = []): array;
 }

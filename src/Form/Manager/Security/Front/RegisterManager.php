@@ -11,6 +11,8 @@ use App\Model\Core\WebsiteModel;
 use App\Security\LoginFrontFormAuthenticator;
 use App\Service\Core\MailerService;
 use App\Service\Interface\CoreLocatorInterface;
+use DateTimeImmutable;
+use DateTimeZone;
 use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Form\FormInterface;
@@ -42,13 +44,14 @@ class RegisterManager
      * RegisterManager constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface        $coreLocator,
         private readonly UserPasswordHasherInterface $passwordEncoder,
-        private readonly UserAuthenticatorInterface $authenticator,
+        private readonly UserAuthenticatorInterface  $authenticator,
         private readonly LoginFrontFormAuthenticator $formAuthenticator,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly MailerService $mailer
-    ) {
+        private readonly EventDispatcherInterface    $eventDispatcher,
+        private readonly MailerService               $mailer
+    )
+    {
 
     }
 
@@ -77,11 +80,11 @@ class RegisterManager
      * @throws Exception
      */
     public function register(
-        FormInterface $form,
-        CoreEntity\Security $security,
-        WebsiteModel $website,
+        FormInterface            $form,
+        CoreEntity\Security      $security,
+        WebsiteModel             $website,
         ?UserEntity\UserCategory $userCategory = null,
-        bool $disabledConfirmation = false): ?string
+        bool                     $disabledConfirmation = false): ?string
     {
         $disabledAccount = $form->getConfig()->getOption('disabled_account');
         $user = $this->setUser($form, $disabledAccount, $website);
@@ -152,7 +155,7 @@ class RegisterManager
      */
     public function confirmation(UserEntity\UserFront $user, ?string $status = null): ?string
     {
-        $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        $now = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
         $tokenDate = $user->getTokenDate();
         $interval = $now->diff($tokenDate);
         $isExpired = ($now > $tokenDate) && ($interval->days >= 1 || $interval->h >= 24);
@@ -205,7 +208,7 @@ class RegisterManager
             );
         }
 
-        $currentDate = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        $currentDate = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
         $user->setWebsite($website->entity);
         $user->setAgreeTerms(true);
         $user->setAgreesTermsAt($currentDate);

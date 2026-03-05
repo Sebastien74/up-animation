@@ -47,12 +47,12 @@ class AlertType extends AbstractType
         $builder->add('backgroundColorType', WidgetType\AlertColorType::class, [
             'label' => $this->translator->trans('Couleur de fond', [], 'admin'),
             'attr' => ['class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('icon', WidgetType\IconType::class, [
             'attr' => ['class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $save = new WidgetType\SubmitType($this->coreLocator);

@@ -12,6 +12,7 @@ use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,7 +37,7 @@ class WidgetType extends AbstractType
     }
 
     /**
-     * @throws InvalidArgumentException|MappingException|NonUniqueResultException|\ReflectionException
+     * @throws InvalidArgumentException|MappingException|NonUniqueResultException|ReflectionException
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

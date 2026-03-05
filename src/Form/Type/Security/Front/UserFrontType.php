@@ -83,7 +83,7 @@ class UserFrontType extends AbstractType
 
 //        $builder->add('profile', ProfileFrontType::class);
 
-        if ((bool) $_ENV['SECURITY_FRONT_PROFILE_IMG'] === true) {
+        if ((bool)$_ENV['SECURITY_FRONT_PROFILE_IMG'] === true) {
             $builder->add('file', Type\FileType::class, [
                 'label' => false,
                 'mapped' => false,

@@ -20,11 +20,12 @@ class ApiFormManagerLocator implements ApiFormManagerInterface
      * ApiFormManagerLocator constructor.
      */
     public function __construct(
-        #[AutowireLocator(ApiManager\CustomManager::class, indexAttribute: 'key')] protected ServiceLocator $customLocator,
-        #[AutowireLocator(ApiManager\FacebookManager::class, indexAttribute: 'key')] protected ServiceLocator $facebookLocator,
-        #[AutowireLocator(ApiManager\GoogleManager::class, indexAttribute: 'key')] protected ServiceLocator $googleLocator,
+        #[AutowireLocator(ApiManager\CustomManager::class, indexAttribute: 'key')] protected ServiceLocator    $customLocator,
+        #[AutowireLocator(ApiManager\FacebookManager::class, indexAttribute: 'key')] protected ServiceLocator  $facebookLocator,
+        #[AutowireLocator(ApiManager\GoogleManager::class, indexAttribute: 'key')] protected ServiceLocator    $googleLocator,
         #[AutowireLocator(ApiManager\InstagramManager::class, indexAttribute: 'key')] protected ServiceLocator $instagramLocator,
-    ) {
+    )
+    {
     }
 
     /**

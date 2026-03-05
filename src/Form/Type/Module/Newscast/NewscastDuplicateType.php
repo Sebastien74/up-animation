@@ -33,10 +33,11 @@ class NewscastDuplicateType extends AbstractType
      * NewscastDuplicateType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly WebsiteRepository $websiteRepository,
+        private readonly CoreLocatorInterface  $coreLocator,
+        private readonly WebsiteRepository     $websiteRepository,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->request = $this->coreLocator->request();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
@@ -67,7 +68,7 @@ class NewscastDuplicateType extends AbstractType
             'choice_label' => function ($entity) {
                 return strip_tags($entity->getAdminName());
             },
-            
+
             'row_attr' => ['class' => $multiSites ? 'col-md-6' : 'd-none'],
         ]);
 

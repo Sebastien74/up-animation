@@ -28,9 +28,10 @@ class UserSelectTextType extends AbstractType
      * UserSelectTextType constructor.
      */
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepository       $userRepository,
         private readonly CoreLocatorInterface $coreLocator,
-    ) {
+    )
+    {
         $this->router = $this->coreLocator->router();
     }
 

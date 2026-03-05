@@ -12,9 +12,15 @@ use App\Model\EntityModel;
 use App\Service\Content\RecaptchaService;
 use App\Service\Core\MailerService;
 use App\Service\Interface\CoreLocatorInterface;
+use Brevo\Client\Api\ContactsApi;
+use Brevo\Client\Configuration;
+use Brevo\Client\Model\CreateContact;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
+use GuzzleHttp\Client;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
 use Monolog\Logger;
@@ -43,11 +49,12 @@ class NewsletterManager
      * NewsletterManager constructor.
      */
     public function __construct(
-        private readonly CampaignManager $campaignManager,
+        private readonly CampaignManager      $campaignManager,
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly RecaptchaService $recaptcha,
-        private readonly MailerService $mailer,
-    ) {
+        private readonly RecaptchaService     $recaptcha,
+        private readonly MailerService        $mailer,
+    )
+    {
         $this->request = $this->coreLocator->request();
     }
 
@@ -84,7 +91,7 @@ class NewsletterManager
      */
     public function confirmation(Email $email, ?string $status = null): ?string
     {
-        $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        $now = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
         $tokenDate = $email->getTokenDate();
         $interval = $now->diff($tokenDate);
         $isExpired = ($now > $tokenDate) && ($interval->days >= 1 || $interval->h >= 24);
@@ -95,7 +102,7 @@ class NewsletterManager
             $this->coreLocator->em()->flush();
         } elseif ('accept' === $status) {
             $email->setAccept(true);
-            $email->setAcceptDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+            $email->setAcceptDate(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
             $email->setToken(null);
             $email->setTokenDate(null);
             $this->coreLocator->em()->persist($email);
@@ -137,7 +144,7 @@ class NewsletterManager
             $this->mailer->setName($this->getCompanyName($website));
             $this->mailer->setFrom($campaign->getSendingEmail());
             $this->mailer->setReplyTo('disabled');
-            $this->mailer->setTemplate('front/' . $website->getConfiguration()->getTemplate() . '/actions/newsletter/email/confirmation.html.twig');
+            $this->mailer->setTemplate('front/'.$website->getConfiguration()->getTemplate().'/actions/newsletter/email/confirmation.html.twig');
             $this->mailer->setArguments([
                 'stringEmail' => $email->getEmail(),
                 'confirmationLink' => $this->coreLocator->router()->generate('front_newsletter_confirmation', ['token' => $email->getToken()]),
@@ -198,12 +205,12 @@ class NewsletterManager
         if (self::SENDING_BLUE_API_KEY) {
             $logger = new Logger('sending_blue_registration');
             $logger->pushHandler(new RotatingFileHandler($this->coreLocator->logDir().'/newsletter-sending-blue.log', 10, Level::Info));
-            $config = \Brevo\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', self::SENDING_BLUE_API_KEY);
-            $apiInstance = new \Brevo\Client\Api\ContactsApi(
-                new \GuzzleHttp\Client(),
+            $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', self::SENDING_BLUE_API_KEY);
+            $apiInstance = new ContactsApi(
+                new Client(),
                 $config
             );
-            $createContact = new \Brevo\Client\Model\CreateContact();
+            $createContact = new CreateContact();
             $createContact['email'] = $email->getEmail();
             try {
                 $result = $apiInstance->createContact($createContact);
@@ -348,7 +355,7 @@ class NewsletterManager
      */
     private function setToken(Email $email): void
     {
-        $raw = uniqid('', true) . $email->getEmail() . bin2hex(random_bytes(128));
+        $raw = uniqid('', true).$email->getEmail().bin2hex(random_bytes(128));
         $token = base64_encode($raw);
         $token = preg_replace('/[^a-zA-Z0-9]/', '', $token);
         $token = substr(str_shuffle($token), 0, 300);

@@ -36,7 +36,7 @@ class CompanyAddressType extends AbstractType
             'label' => $this->translator->trans('Raison sociale', [], 'admin'),
             'required' => false,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une raison sociale', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
@@ -45,7 +45,7 @@ class CompanyAddressType extends AbstractType
             'label' => $this->translator->trans('Latitude', [], 'admin'),
             'required' => false,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une latitude', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
@@ -54,7 +54,7 @@ class CompanyAddressType extends AbstractType
             'label' => $this->translator->trans('Longitude', [], 'admin'),
             'required' => false,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une longitude', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
@@ -71,7 +71,7 @@ class CompanyAddressType extends AbstractType
             'label' => $this->translator->trans('Code postal', [], 'admin'),
             'required' => false,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez un code postal', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => [new ZipCode()],
@@ -81,7 +81,7 @@ class CompanyAddressType extends AbstractType
             'label' => $this->translator->trans('Ville', [], 'admin'),
             'required' => false,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une ville', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
@@ -90,7 +90,7 @@ class CompanyAddressType extends AbstractType
             'label' => $this->translator->trans('Département', [], 'admin'),
             'required' => false,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une département', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
@@ -107,7 +107,7 @@ class CompanyAddressType extends AbstractType
             'label' => $this->translator->trans('Google map URL', [], 'admin'),
             'required' => false,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
@@ -116,7 +116,7 @@ class CompanyAddressType extends AbstractType
             'label' => $this->translator->trans('Google map itinéraire URL', [], 'admin'),
             'required' => false,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);

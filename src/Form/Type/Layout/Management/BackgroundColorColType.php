@@ -29,9 +29,10 @@ class BackgroundColorColType extends AbstractType
      * BackgroundColorColType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface          $coreLocator,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->isInternalUser = $this->authorizationChecker->isGranted('ROLE_INTERNAL');
     }
@@ -49,8 +50,8 @@ class BackgroundColorColType extends AbstractType
                 'attr' => [
                     'placeholder' => $this->translator->trans('Code couleur', [], 'admin'),
                     'class' => 'col-12 colorpicker'
-            ],
-            'row_attr' => ['class' => 'col-12 mb-3 mt-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 mb-3 mt-3'],
             ]);
         }
 

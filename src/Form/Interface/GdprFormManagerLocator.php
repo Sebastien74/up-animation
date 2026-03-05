@@ -21,7 +21,8 @@ class GdprFormManagerLocator implements GdprFormManagerInterface
      */
     public function __construct(
         #[AutowireLocator(CookieManager::class, indexAttribute: 'key')] protected ServiceLocator $cookieLocator,
-    ) {
+    )
+    {
     }
 
     /**

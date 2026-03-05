@@ -35,9 +35,10 @@ class LinkType extends AbstractType
      * LinkType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
@@ -123,7 +124,7 @@ class LinkType extends AbstractType
                 'onlyMedia' => true,
                 'data_class' => LinkMediaRelation::class,
                 'attr' => ['data-config' => true],
-            'row_attr' => ['class' => 'col-12'],
+                'row_attr' => ['class' => 'col-12'],
             ]);
 
             $builder->add('icon', WidgetType\IconType::class, [
@@ -137,20 +138,20 @@ class LinkType extends AbstractType
                 $builder->add('color', WidgetType\AppColorType::class, [
                     'attr' => ['data-config' => true,
                         'class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-lg-3'],
+                    'row_attr' => ['class' => 'col-12 col-lg-3'],
                 ]);
 
                 $builder->add('backgroundColor', WidgetType\BackgroundColorSelectType::class, [
                     'attr' => ['data-config' => true,
                         'class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-lg-3'],
+                    'row_attr' => ['class' => 'col-12 col-lg-3'],
                 ]);
 
                 $builder->add('btnColor', WidgetType\ButtonColorType::class, [
                     'label' => $this->translator->trans('Style de bouton', [], 'admin'),
                     'attr' => ['data-config' => true,
                         'class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-lg-3'],
+                    'row_attr' => ['class' => 'col-12 col-lg-3'],
                 ]);
             }
 

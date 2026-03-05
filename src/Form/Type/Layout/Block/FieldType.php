@@ -30,10 +30,11 @@ class FieldType extends AbstractType
      * FieldType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-        private readonly IconRepository $iconRepository,
-    ) {
+        private readonly IconRepository        $iconRepository,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
@@ -74,7 +75,7 @@ class FieldType extends AbstractType
             if ($this->isInternalUser) {
                 $builder->add('icon', WidgetType\IconType::class, [
                     'attr' => ['class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
+                    'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
                     'choices' => $this->getIcons($options['website']),
                 ]);
             }
@@ -139,7 +140,7 @@ class FieldType extends AbstractType
         $fields['form-language'] = ['title' => 'col-md-3', 'placeholder' => 'col-md-3', 'help' => 'col-md-3', 'error' => 'col-md-3'];
         $fields['form-emails'] = ['title' => 'col-md-3', 'placeholder' => 'col-md-3', 'help' => 'col-md-3', 'error' => 'col-md-3'];
         $fields['form-date'] = ['title' => 'col-md-3', 'placeholder' => 'col-md-3', 'help' => 'col-md-3', 'error' => 'col-md-3'];
-        $fields['form-hour'] =['title' => 'col-md-3', 'placeholder' => 'col-md-3', 'help' => 'col-md-3', 'error' => 'col-md-3'];
+        $fields['form-hour'] = ['title' => 'col-md-3', 'placeholder' => 'col-md-3', 'help' => 'col-md-3', 'error' => 'col-md-3'];
         $fields['form-file'] = ['title' => 'col-md-3', 'targetLabel' => 'col-md-3', 'placeholder' => 'col-md-3', 'help' => 'col-md-3'];
         $fields['form-submit'] = ['title' => 'col-md-6', 'help'];
         $fields['form-hidden'] = ['title'];
@@ -173,7 +174,7 @@ class FieldType extends AbstractType
             $response['targetLabel'] = $labels['base']['targetLabel'];
         }
 
-        return (object) $response;
+        return (object)$response;
     }
 
     /**

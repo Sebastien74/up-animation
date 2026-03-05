@@ -20,9 +20,10 @@ class InformationFormManagerLocator implements InformationFormManagerInterface
      * InformationFormManagerLocator constructor.
      */
     public function __construct(
-        #[AutowireLocator(Information\InformationManager::class, indexAttribute: 'key')] protected ServiceLocator $informationLocator,
+        #[AutowireLocator(Information\InformationManager::class, indexAttribute: 'key')] protected ServiceLocator   $informationLocator,
         #[AutowireLocator(Information\SocialNetworkManager::class, indexAttribute: 'key')] protected ServiceLocator $networksLocator,
-    ) {
+    )
+    {
     }
 
     /**

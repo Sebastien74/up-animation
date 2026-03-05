@@ -35,7 +35,7 @@ class CssClassType extends AbstractType
         $builder->add('name', Type\TextType::class, [
             'label' => $this->translator->trans('Nom', [], 'admin'),
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une classe', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'constraints' => [new Assert\NotBlank()],
@@ -45,7 +45,7 @@ class CssClassType extends AbstractType
             'label' => $this->translator->trans('Description', [], 'admin'),
             'required' => false,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
         ]);

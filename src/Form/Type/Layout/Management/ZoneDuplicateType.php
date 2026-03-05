@@ -39,9 +39,10 @@ class ZoneDuplicateType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly WebsiteRepository $websiteRepository,
-        private readonly InterfaceHelper $interfaceHelper,
-    ) {
+        private readonly WebsiteRepository    $websiteRepository,
+        private readonly InterfaceHelper      $interfaceHelper,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->entityManager = $this->coreLocator->em();
         $this->multiSites = count($this->websiteRepository->findAll()) > 1;
@@ -73,7 +74,7 @@ class ZoneDuplicateType extends AbstractType
                 }
                 return $qb;
             },
-            
+
             'row_attr' => ['class' => 'col-12 disable-asterisk text-center'],
             'choice_label' => function ($page) {
                 if ($this->multiSites) {

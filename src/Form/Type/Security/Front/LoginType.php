@@ -50,7 +50,7 @@ class LoginType extends AbstractType
             'attr' => ['placeholder' => $loginPlaceholder,
                 'autocomplete' => 'off',
                 'autofocus' => false],
-                'row_attr' => ['class' => 'col-12 col-lg-12'],
+            'row_attr' => ['class' => 'col-12 col-lg-12'],
             'constraints' => $constraints,
         ]);
 
@@ -79,7 +79,7 @@ class LoginType extends AbstractType
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une valeur', [], 'security_cms'),
                 'class' => 'col-12 form-field-none field_ho',
-                
+
                 'autocomplete' => 'off'
             ],
             'row_attr' => ['class' => 'col-12 form-field-none'],
@@ -91,7 +91,7 @@ class LoginType extends AbstractType
             'label_attr' => ['class' => 'col-12 d-none'],
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un intitulé', [], 'security_cms'),
-                
+
                 'class' => 'col-12 form-field-none',
                 'autocomplete' => 'off'
             ],
@@ -101,7 +101,7 @@ class LoginType extends AbstractType
         $builder->add('submit', Type\SubmitType::class, [
             'label' => $this->translator->trans('Se connecter', [], 'security_cms'),
             'attr' => ['class' => 'col-12 btn btn-primary btn-block text-uppercase w-100 mt-3 d-flex justify-content-center'],
-                'row_attr' => ['class' => 'col-12 col-lg-12'],
+            'row_attr' => ['class' => 'col-12 col-lg-12'],
         ]);
     }
 

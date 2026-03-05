@@ -34,7 +34,7 @@ class CalendarTimeRangeType extends AbstractType
     {
         $builder->add('startHour', Type\TimeType::class, [
             'label' => $this->translator->trans('Ouverture', [], 'admin'),
-            
+
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 hours-field-group'],
             'placeholder' => [
                 'hour' => $this->translator->trans('Heure', [], 'admin'),
@@ -45,7 +45,7 @@ class CalendarTimeRangeType extends AbstractType
 
         $builder->add('endHour', Type\TimeType::class, [
             'label' => $this->translator->trans('Fermeture', [], 'admin'),
-            
+
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 hours-field-group'],
             'placeholder' => [
                 'hour' => $this->translator->trans('Heure', [], 'admin'),

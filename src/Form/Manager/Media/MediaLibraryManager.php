@@ -27,10 +27,11 @@ class MediaLibraryManager
      * MediaLibraryManager constructor.
      */
     public function __construct(
-        private readonly string $projectDir,
+        private readonly string              $projectDir,
         private readonly TranslatorInterface $translator,
-        private readonly RequestStack $requestStack,
-    ) {
+        private readonly RequestStack        $requestStack,
+    )
+    {
     }
 
     /**

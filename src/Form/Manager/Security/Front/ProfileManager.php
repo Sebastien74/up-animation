@@ -11,6 +11,8 @@ use App\Entity\Security\UserRequest;
 use App\Form\Manager\Security\PictureManager;
 use App\Service\Core\MailerService;
 use App\Service\Interface\CoreLocatorInterface;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
@@ -39,9 +41,10 @@ class ProfileManager extends BaseManager
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly PictureManager $pictureManager,
-        private readonly MailerService $mailer,
-    ) {
+        private readonly PictureManager       $pictureManager,
+        private readonly MailerService        $mailer,
+    )
+    {
         $this->addressConfiguration = $_ENV['SECURITY_FRONT_ADDRESSES'];
         parent::__construct($coreLocator, $this->mailer);
     }
@@ -70,7 +73,7 @@ class ProfileManager extends BaseManager
         $excluded = ['token'];
         $metadata = $this->coreLocator->em()->getClassMetadata(get_class($userRequest));
         foreach ($metadata->fieldMappings as $fieldName => $mapping) {
-            $getter = 'get' . ucfirst($fieldName);
+            $getter = 'get'.ucfirst($fieldName);
             if ('string' === $mapping['type'] && !in_array($fieldName, $excluded, true) && $userRequest->$getter() !== $user->$getter()) {
                 $isUpdated = true;
                 break;
@@ -80,7 +83,7 @@ class ProfileManager extends BaseManager
         if ($isUpdated) {
 
             $userRequest->setToken($this->token($userRequest->getEmail()));
-            $userRequest->setTokenDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+            $userRequest->setTokenDate(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
 
 //        $this->pictureManager->execute($user, $form);
             $this->coreLocator->em()->persist($userRequest);
@@ -88,7 +91,7 @@ class ProfileManager extends BaseManager
 
             $subject = $this->coreLocator->translator()->trans('Modification de vos données personnelles', [], 'security_cms');
             $message = $this->message('front-email-confirmation', $subject);
-            $this->sendMail($user, $message,'profile-request');
+            $this->sendMail($user, $message, 'profile-request');
 
             $session = $this->coreLocator->request()->getSession();
             $session->getFlashBag()->add('success', $this->coreLocator->translator()->trans('Un email de confirmation vous a été envoyé à votre adresse actuelle. Pour des raisons de sécurité, ces modifications ne seront pas appliquées tant que vous ne les aurez pas validées depuis ce message.', [], 'front'));
@@ -124,13 +127,13 @@ class ProfileManager extends BaseManager
     {
         /** @var UserFront $user */
         $user->setTokenRemoveRequest($this->token($user->getEmail()));
-        $user->setTokenRemoveRequestDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+        $user->setTokenRemoveRequestDate(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
         $this->coreLocator->em()->persist($user);
         $this->coreLocator->em()->flush();
 
         $subject = $this->coreLocator->translator()->trans('Demande de suppression de votre compte', [], 'security_cms');
         $message = $this->message('front-email-remove', $subject);
-        $this->sendMail($user, $message,'remove-request');
+        $this->sendMail($user, $message, 'remove-request');
     }
 
     /**
@@ -142,9 +145,9 @@ class ProfileManager extends BaseManager
         $metadata = $this->coreLocator->em()->getClassMetadata(get_class($userRequest));
         $user = $userRequest->getUserFront();
         foreach ($metadata->fieldMappings as $fieldName => $mapping) {
-            $getter = 'get' . ucfirst($fieldName);
+            $getter = 'get'.ucfirst($fieldName);
             if ('string' === $mapping['type'] && !in_array($fieldName, $excluded, true) && $userRequest->$getter() !== $user->$getter()) {
-                $setter = 'set' . ucfirst($fieldName);
+                $setter = 'set'.ucfirst($fieldName);
                 $user->$setter($userRequest->$getter());
             }
         }

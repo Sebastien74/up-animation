@@ -49,8 +49,8 @@ class MarginType
                     'placeholder' => $this->translator->trans('NULL', [], 'admin'),
                     'choices' => $this->getSizes($config['sizes']['type'], $config['sizes']['position']),
                     'label' => false,
-                    
-            'row_attr' => ['class' => $config['group'], 'class' => 'col-12 disable-search'],
+
+                    'row_attr' => ['class' => $config['group'], 'class' => 'col-12 disable-search'],
                 ]);
             }
         }

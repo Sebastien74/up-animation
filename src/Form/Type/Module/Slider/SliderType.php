@@ -58,7 +58,7 @@ class SliderType extends AbstractType
             'display' => 'search',
             'attr' => [
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                
+
                 'data-config' => true
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
@@ -71,10 +71,10 @@ class SliderType extends AbstractType
                 'label' => $this->translator->trans('Intervalle en millisecondes', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('effect', Type\ChoiceType::class, [
@@ -82,10 +82,10 @@ class SliderType extends AbstractType
                 'display' => 'search',
                 'attr' => [
                     'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'choices' => [
                     'Fade' => 'fade',
                     'Slide' => 'slide',
@@ -103,10 +103,10 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('itemsPerSlideMiniPC', Type\IntegerType::class, [
@@ -114,10 +114,10 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('itemsPerSlideTablet', Type\IntegerType::class, [
@@ -125,20 +125,20 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('itemsPerSlideMobile', Type\IntegerType::class, [
                 'label' => $this->translator->trans("Nombre d'images par slide (Mobile)", [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('offsetDesktop', Type\IntegerType::class, [
@@ -146,10 +146,10 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('offsetMiniPC', Type\IntegerType::class, [
@@ -157,10 +157,10 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('offsetTablet', Type\IntegerType::class, [
@@ -168,10 +168,10 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('offsetMobile', Type\IntegerType::class, [
@@ -179,10 +179,10 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('focus', Type\ChoiceType::class, [

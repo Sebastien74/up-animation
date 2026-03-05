@@ -58,13 +58,13 @@ class CounterType extends AbstractType
         $builder->add('icon', WidgetType\IconType::class, [
             'required' => true,
             'attr' => ['class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('color', WidgetType\AppColorType::class, [
             'label' => $this->translator->trans("Couleur de l'icône", [], 'admin'),
             'attr' => ['class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('iconSize', ChoiceType::class, [
@@ -73,7 +73,7 @@ class CounterType extends AbstractType
             'label' => $this->translator->trans("Taille de l'icône", [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'attr' => [
-                
+
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'choices' => ['XS' => 'xs', 'S' => 'sm', 'M' => 'md', 'L' => 'lg', 'XL' => 'xl', 'XXL' => 'xxl'],

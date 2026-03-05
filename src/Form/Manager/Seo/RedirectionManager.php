@@ -33,7 +33,7 @@ class RedirectionManager
      */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly string $cacheDir)
+        private readonly string                 $cacheDir)
     {
         $this->asSSL = 'https' === $_ENV['APP_PROTOCOL'];
     }

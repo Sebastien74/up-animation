@@ -30,9 +30,10 @@ class CardType extends AbstractType
      * CardType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isLayoutUser = $user && in_array('ROLE_LAYOUT_PORTFOLIOCARD', $user->getRoles());
@@ -105,7 +106,7 @@ class CardType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
             }
         }

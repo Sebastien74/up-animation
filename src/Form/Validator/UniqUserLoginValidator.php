@@ -27,10 +27,11 @@ class UniqUserLoginValidator extends ConstraintValidator
      * UniqUserEmailValidator constructor.
      */
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepository      $userRepository,
         private readonly UserFrontRepository $userFrontRepository,
         private readonly TranslatorInterface $translator
-    ) {
+    )
+    {
     }
 
     /**

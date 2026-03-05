@@ -46,7 +46,7 @@ class DomainType extends AbstractType
                 'choices' => $locales,
                 'choice_translation_domain' => false,
                 'attr' => ['class' => 'col-12 select-icons'],
-            'row_attr' => ['class' => 'col-12 mb-0'],
+                'row_attr' => ['class' => 'col-12 mb-0'],
                 'choice_attr' => function ($iso, $key, $value) {
                     return [
                         'data-image' => '/medias/icons/flags/'.strtolower($iso).'.svg',

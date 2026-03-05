@@ -13,6 +13,7 @@ use App\Repository\Module\Recruitment\CategoryRepository;
 use App\Repository\Module\Recruitment\ContractRepository;
 use App\Service\Content\ActionService;
 use App\Service\Interface\CoreLocatorInterface;
+use Exception;
 use Psr\Cache\InvalidArgumentException;
 
 /**
@@ -27,10 +28,11 @@ class JobFiltersManager implements JobFiltersInterface
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly CategoryRepository $categoryRepository,
-        private readonly ContractRepository $contractRepository,
-        private readonly ActionService $actionService,
-    ) {
+        private readonly CategoryRepository   $categoryRepository,
+        private readonly ContractRepository   $contractRepository,
+        private readonly ActionService        $actionService,
+    )
+    {
     }
 
     /**
@@ -61,7 +63,7 @@ class JobFiltersManager implements JobFiltersInterface
     /**
      * Get results.
      *
-     * @throws \Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     public function getResults(Listing $entity, array $filters = [], array $entities = []): array
     {

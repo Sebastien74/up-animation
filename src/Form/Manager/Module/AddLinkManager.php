@@ -54,10 +54,10 @@ class AddLinkManager
                 $parentLink = !empty($parentLinks[0]) ? $parentLinks[0] : null;
                 $level = $parentLink instanceof Link ? $parentLink->getLevel() + 1 : 1;
                 $position = count($repository->findBy([
-                    'menu' => $menu,
-                    'locale' => $locale,
-                    'parent' => $parentLink,
-                ])) + 1;
+                        'menu' => $menu,
+                        'locale' => $locale,
+                        'parent' => $parentLink,
+                    ])) + 1;
                 $link = $this->addLink($page, $locale, $menu, $level, $position, $parentLink);
                 $intl = $this->addIntl($link, $page, $locale);
                 $this->addMediaRelation($link, $locale);

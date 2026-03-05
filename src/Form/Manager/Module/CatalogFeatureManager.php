@@ -27,7 +27,7 @@ class CatalogFeatureManager
      * CatalogFeatureValueManager constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly CatalogProductManager $productManager,
     )
     {

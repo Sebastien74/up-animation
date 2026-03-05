@@ -125,8 +125,8 @@ class EntityType extends AbstractType
                 'label' => $this->translator->trans('Admin limite', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez une limite', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('columns', Type\ChoiceType::class, [

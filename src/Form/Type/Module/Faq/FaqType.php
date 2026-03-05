@@ -30,9 +30,10 @@ class FaqType extends AbstractType
      * FaqType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
         $this->translator = $this->coreLocator->translator();
@@ -66,9 +67,9 @@ class FaqType extends AbstractType
                 ],
                 'display' => 'search',
                 'attr' => ['placeholder' => $this->translator->trans('Sélectionnez', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
 

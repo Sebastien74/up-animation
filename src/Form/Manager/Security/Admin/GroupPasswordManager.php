@@ -29,9 +29,10 @@ class GroupPasswordManager
      * GroupPasswordManager constructor.
      */
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private readonly EntityManagerInterface      $entityManager,
         private readonly UserPasswordHasherInterface $passwordEncoder,
-    ) {
+    )
+    {
     }
 
     /**

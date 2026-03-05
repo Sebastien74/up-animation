@@ -39,11 +39,12 @@ class BaseManager
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly UrlManager $urlManager,
-        private readonly Uploader $uploader,
-        private readonly InterfaceHelper $interfaceHelper,
-    ) {
-        $this->inAdmin = (bool) preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $coreLocator->requestStack()->getMainRequest()->getUri());
+        private readonly UrlManager           $urlManager,
+        private readonly Uploader             $uploader,
+        private readonly InterfaceHelper      $interfaceHelper,
+    )
+    {
+        $this->inAdmin = (bool)preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $coreLocator->requestStack()->getMainRequest()->getUri());
     }
 
     /**

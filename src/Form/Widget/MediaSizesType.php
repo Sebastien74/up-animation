@@ -39,9 +39,8 @@ class MediaSizesType
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une largeur', [], 'admin'),
                 'tabSize' => !empty($options['tabSize']) ? $options['tabSize'] : '12',
-                .$fieldSize
             ],
-            'row_attr' => ['class' => 'col-12 col-md-'],
+            'row_attr' => ['class' => 'col-12 col-md-'.$fieldSize],
         ]);
 
         $builder->add('maxHeight', IntegerType::class, [
@@ -49,9 +48,8 @@ class MediaSizesType
             'label' => $this->translator->trans('Hauteur (px) - Ordinateur', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une hauteur', [], 'admin'),
-                .$fieldSize
             ],
-            'row_attr' => ['class' => 'col-12 col-md-'],
+            'row_attr' => ['class' => 'col-12 col-md-'.$fieldSize],
         ]);
 
         $builder->add('tabletMaxWidth', IntegerType::class, [
@@ -59,9 +57,8 @@ class MediaSizesType
             'label' => 'Largeur (px) - Tablette',
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une largeur', [], 'admin'),
-                .$fieldSize
             ],
-            'row_attr' => ['class' => 'col-12 col-md-'],
+            'row_attr' => ['class' => 'col-12 col-md-'.$fieldSize],
         ]);
 
         $builder->add('tabletMaxHeight', IntegerType::class, [
@@ -69,9 +66,8 @@ class MediaSizesType
             'label' => $this->translator->trans('Hauteur (px) - Tablette', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une hauteur', [], 'admin'),
-                .$fieldSize
             ],
-            'row_attr' => ['class' => 'col-12 col-md-'],
+            'row_attr' => ['class' => 'col-12 col-md-'.$fieldSize],
         ]);
 
         $builder->add('mobileMaxWidth', IntegerType::class, [
@@ -79,9 +75,8 @@ class MediaSizesType
             'label' => $this->translator->trans('Largeur (px) - Mobile', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une largeur', [], 'admin'),
-                .$fieldSize
             ],
-            'row_attr' => ['class' => 'col-12 col-md-'],
+            'row_attr' => ['class' => 'col-12 col-md-'.$fieldSize],
         ]);
 
         $builder->add('mobileMaxHeight', IntegerType::class, [
@@ -89,9 +84,8 @@ class MediaSizesType
             'label' => $this->translator->trans('Hauteur (px) - Mobile', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une hauteur', [], 'admin'),
-                .$fieldSize
             ],
-            'row_attr' => ['class' => 'col-12 col-md-'],
+            'row_attr' => ['class' => 'col-12 col-md-'.$fieldSize],
         ]);
     }
 }

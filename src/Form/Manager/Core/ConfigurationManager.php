@@ -12,6 +12,7 @@ use App\Entity\Core\Website;
 use App\Entity\Information\SocialNetwork;
 use App\Entity\Media\Media;
 use App\Entity\Media\MediaRelation;
+use App\Model\Core\WebsiteModel;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Twig\Content\ColorRuntime;
 use App\Twig\Translation\i18nRuntime;
@@ -19,6 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
@@ -55,20 +57,21 @@ class ConfigurationManager
      * ConfigurationManager constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface   $coreLocator,
         private readonly EntityManagerInterface $entityManager,
-        private readonly RequestStack $requestStack,
-        private readonly i18nRuntime $i18nRuntime,
-        private readonly ColorRuntime $colorRuntime,
-        private readonly string $projectDir,
-    ) {
+        private readonly RequestStack           $requestStack,
+        private readonly i18nRuntime            $i18nRuntime,
+        private readonly ColorRuntime           $colorRuntime,
+        private readonly string                 $projectDir,
+    )
+    {
         $this->request = $this->requestStack->getMainRequest();
     }
 
     /**
      * Synchronize locale relation entities.
      *
-     * @throws NonUniqueResultException|MappingException|InvalidArgumentException|\ReflectionException
+     * @throws NonUniqueResultException|MappingException|InvalidArgumentException|ReflectionException
      */
     public function synchronizeLocales(Configuration $configuration): void
     {
@@ -145,7 +148,7 @@ class ConfigurationManager
     /**
      * Synchronize Medias.
      *
-     * @throws NonUniqueResultException|MappingException|InvalidArgumentException|\ReflectionException
+     * @throws NonUniqueResultException|MappingException|InvalidArgumentException|ReflectionException
      */
     private function synchronizeMedias(Configuration $configuration): void
     {
@@ -193,7 +196,7 @@ class ConfigurationManager
     /**
      * To generate manifest file.
      *
-     * @throws NonUniqueResultException|MappingException|InvalidArgumentException|\ReflectionException
+     * @throws NonUniqueResultException|MappingException|InvalidArgumentException|ReflectionException
      */
     private function setManifest(Configuration $configuration): void
     {
@@ -201,7 +204,7 @@ class ConfigurationManager
         $locale = $configuration->getLocale();
         $filesystem = new Filesystem();
         $website = $configuration->getWebsite();
-        $websiteModel = \App\Model\Core\WebsiteModel::fromEntity($website, $this->coreLocator, $locale);
+        $websiteModel = WebsiteModel::fromEntity($website, $this->coreLocator, $locale);
         $domains = $this->entityManager->getRepository(Domain::class)->findBy(['configuration' => $configuration, 'locale' => $locale, 'asDefault' => true]);
         $domain = !empty($domains[0]) ? $domains[0]->getName() : $this->request->getSchemeAndHttpHost();
         $information = $website instanceof Website ? $this->i18nRuntime->intl($website->getInformation(), $locale) : null;

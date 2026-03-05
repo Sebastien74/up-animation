@@ -40,7 +40,7 @@ class ModalLibraryManager
      */
     public function add(Website $website, Media $media, ?string $options = null): void
     {
-        $options = (object) json_decode($options);
+        $options = (object)json_decode($options);
         $this->repository = $this->entityManager->getRepository(urldecode($options->classname));
         $entity = $this->repository->find($options->entityId);
         $this->metadata = $this->coreLocator->metadata($entity, 'mediaRelations');

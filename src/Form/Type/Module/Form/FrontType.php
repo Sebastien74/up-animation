@@ -17,6 +17,10 @@ use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Twig\Content\FileRuntime;
 use App\Twig\Translation\IntlRuntime;
+use DateInterval;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\MappingException;
@@ -60,10 +64,11 @@ class FrontType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly IntlRuntime $intlExtension,
-        private readonly FileRuntime $fileRuntime,
-        private readonly InterfaceHelper $interfaceHelper,
-    ) {
+        private readonly IntlRuntime          $intlExtension,
+        private readonly FileRuntime          $fileRuntime,
+        private readonly InterfaceHelper      $interfaceHelper,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->entityManager = $this->coreLocator->em();
         $this->request = $this->coreLocator->requestStack()->getCurrentRequest();
@@ -369,7 +374,7 @@ class FrontType extends AbstractType
         if (Type\HiddenType::class === $fieldType) {
             $data = $intl && $intl->getTitle() ? $intl->getTitle() : null;
         } elseif (Type\DateType::class === $fieldType && $value instanceof FormEntities\ContactValue) {
-            $data = $value->getValue() ? new \DateTime($value->getValue()) : null;
+            $data = $value->getValue() ? new DateTime($value->getValue()) : null;
         } elseif (Type\CheckboxType::class === $fieldType && $value instanceof FormEntities\ContactValue) {
             $data = boolval($value->getValue());
         }
@@ -450,10 +455,10 @@ class FrontType extends AbstractType
                 return;
             }
 
-            $startDatetime = $minData > 0 ? new \DateTime($minData.'-01-01') : new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
-            $referDatetimeStart = $minData > 0 ? new \DateTime($minData.'-01-01') : new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+            $startDatetime = $minData > 0 ? new DateTime($minData.'-01-01') : new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
+            $referDatetimeStart = $minData > 0 ? new DateTime($minData.'-01-01') : new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
             $start = intval($startDatetime->format('Y'));
-            $endDatetime = $maxData > 0 ? new \DateTime($maxData.'-01-01', new \DateTimeZone('Europe/Paris')) : $referDatetimeStart->add(new \DateInterval('P100Y'));
+            $endDatetime = $maxData > 0 ? new DateTime($maxData.'-01-01', new DateTimeZone('Europe/Paris')) : $referDatetimeStart->add(new DateInterval('P100Y'));
             $end = intval($endDatetime->format('Y'));
 
             $years = [];
@@ -581,20 +586,20 @@ class FrontType extends AbstractType
                 $this->options['attr']['data-type'] = Type\DateType::class === $fieldType ? 'date' : (Type\DateTimeType::class === $fieldType ? 'datetime' : 'hour');
                 if ($type) {
                     if ('before-current-in' === $type) {
-                        $this->options['attr']['data-max'] = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->format('Y-m-d');
+                        $this->options['attr']['data-max'] = (new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')))->format('Y-m-d');
                     } elseif ('after-current-in' === $type) {
-                        $this->options['attr']['data-min'] = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->format('Y-m-d');
+                        $this->options['attr']['data-min'] = (new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')))->format('Y-m-d');
                     } elseif ('before-current-out' === $type) {
-                        $this->options['attr']['data-max'] = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->modify('-1 day')->format('Y-m-d');
+                        $this->options['attr']['data-max'] = (new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')))->modify('-1 day')->format('Y-m-d');
                     } elseif ('after-current-out' === $type) {
-                        $this->options['attr']['data-min'] = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->modify('+1 day')->format('Y-m-d');
+                        $this->options['attr']['data-min'] = (new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')))->modify('+1 day')->format('Y-m-d');
                     }
                 } else {
                     if ($configuration->getMin()) {
-                        $this->options['attr']['data-min'] = (new \DateTime($configuration->getMin().'-01-01', new \DateTimeZone('Europe/Paris')))->format('Y-m-d');
+                        $this->options['attr']['data-min'] = (new DateTime($configuration->getMin().'-01-01', new DateTimeZone('Europe/Paris')))->format('Y-m-d');
                     }
                     if ($configuration->getMax()) {
-                        $this->options['attr']['data-max'] = (new \DateTime($configuration->getMax().'-12-31', new \DateTimeZone('Europe/Paris')))->format('Y-m-d');
+                        $this->options['attr']['data-max'] = (new DateTime($configuration->getMax().'-12-31', new DateTimeZone('Europe/Paris')))->format('Y-m-d');
                     }
                 }
                 if (Type\DateType::class === $fieldType) {

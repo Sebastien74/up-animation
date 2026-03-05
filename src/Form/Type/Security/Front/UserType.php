@@ -32,8 +32,9 @@ class UserType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly CompanyRepository $companyRepository,
-    ) {
+        private readonly CompanyRepository    $companyRepository,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
     }
 
@@ -66,8 +67,8 @@ class UserType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('firstName', Type\TextType::class, [
@@ -75,14 +76,14 @@ class UserType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un prénom', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
         }
 
         $builder->add('locale', WidgetType\LanguageIconType::class, [
             'label' => $this->translator->trans('Langue', [], 'admin'),
-            
+
             'row_attr' => ['class' => $isNew && $haveCompanies ? 'col-md-3' : 'col-md-4'],
             'constraints' => [new Assert\NotBlank()],
         ]);
@@ -116,16 +117,16 @@ class UserType extends AbstractType
                     'label' => $this->translator->trans('Mot de passe', [], 'admin'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 password-generator'],
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 password-generator'],
                     'constraints' => [new Assert\NotBlank()],
                 ],
                 'second_options' => [
                     'label' => $this->translator->trans('Confirmation du mot de passe', [], 'admin'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                     'constraints' => [new Assert\NotBlank()],
                 ],
             ]);

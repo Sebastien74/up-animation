@@ -38,13 +38,14 @@ class RegisterManager
      * RegisterManager constructor.
      */
     public function __construct(
-        private readonly RequestStack $requestStack,
-        private readonly TranslatorInterface $translator,
-        private readonly EntityManagerInterface $entityManager,
+        private readonly RequestStack                $requestStack,
+        private readonly TranslatorInterface         $translator,
+        private readonly EntityManagerInterface      $entityManager,
         private readonly UserPasswordHasherInterface $passwordEncoder,
-        private readonly UserAuthenticatorInterface $authenticator,
-        private readonly LoginFormAuthenticator $formAuthenticator,
-    ) {
+        private readonly UserAuthenticatorInterface  $authenticator,
+        private readonly LoginFormAuthenticator      $formAuthenticator,
+    )
+    {
         $this->request = $this->requestStack->getMainRequest();
     }
 

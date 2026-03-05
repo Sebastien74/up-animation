@@ -54,9 +54,9 @@ class GroupType extends AbstractType
                 'display' => 'search',
                 'choices' => $this->getRoutes(),
                 'attr' => [
-                
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
         }
 

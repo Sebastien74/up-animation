@@ -72,10 +72,10 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Nombre de produits par page', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-                    
+
                     'data-config' => true
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('orderBy', Type\ChoiceType::class, [
@@ -120,9 +120,9 @@ class ListingType extends AbstractType
                 'required' => false,
                 'class' => Catalog::class,
                 'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -148,9 +148,9 @@ class ListingType extends AbstractType
                 'required' => false,
                 'class' => Product::class,
                 'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -176,9 +176,9 @@ class ListingType extends AbstractType
                 'required' => false,
                 'class' => Category::class,
                 'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -204,9 +204,9 @@ class ListingType extends AbstractType
                 'required' => false,
                 'class' => SubCategory::class,
                 'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
                         ->leftJoin('s.catalogcategory', 'c')
@@ -234,9 +234,9 @@ class ListingType extends AbstractType
                 'required' => false,
                 'class' => Feature::class,
                 'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->where('c.website = :website')
@@ -336,7 +336,7 @@ class ListingType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Aficher sur une carte', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
             }
 
@@ -351,10 +351,10 @@ class ListingType extends AbstractType
                     'attr' => ['class' => 'col-12 feature',
                         'icon' => 'filter',
                         'caption' => $this->translator->trans('Filtres des produits par valeurs', [],
-                 'admin'),
+                            'admin'),
                         'button' => $this->translator->trans('Ajouter une valeur', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                     'website' => $options['website'],
                 ],
             ]);

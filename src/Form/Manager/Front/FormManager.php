@@ -17,6 +17,9 @@ use App\Service\Core\MessengerWorkerService;
 use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Twig\Translation\IntlRuntime;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -59,12 +62,13 @@ class FormManager
      */
     public function __construct(
         private readonly MessengerWorkerService $messengerWorkerService,
-        private readonly MessageBusInterface $bus,
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly RecaptchaService $recaptcha,
-        private readonly MailerService $mailer,
-        private readonly IntlRuntime $intlRuntime,
-    ) {
+        private readonly MessageBusInterface    $bus,
+        private readonly CoreLocatorInterface   $coreLocator,
+        private readonly RecaptchaService       $recaptcha,
+        private readonly MailerService          $mailer,
+        private readonly IntlRuntime            $intlRuntime,
+    )
+    {
         $this->session = $this->coreLocator->requestStack()->getSession();
     }
 
@@ -285,7 +289,7 @@ class FormManager
             }
         }
 
-        return (object) [
+        return (object)[
             'label' => $label,
             'value' => $value,
             'email' => $email,
@@ -345,7 +349,7 @@ class FormManager
         $alert = $this->coreLocator->translator()->trans('Merci pour votre message !!', [], 'front_form');
         $intl = EntityModel::fromEntity($entity, $this->coreLocator)->response->intl;
 
-        return (object) [
+        return (object)[
             'alert' => $intl->placeholder ?: $alert,
             'title' => $intl->title,
             'subject' => $intl->title ?: $entity->getAdminName(),
@@ -407,7 +411,7 @@ class FormManager
             $contact->setToken($token);
             $contact->setEmail($email);
             $contact->setPhone($this->phone);
-            $contact->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+            $contact->setCreatedAt(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
             $form->addContact($contact);
 
             foreach ($this->fields as $keyName => $field) {
@@ -417,7 +421,7 @@ class FormManager
                 $fieldConfiguration = !empty($this->configurations[$keyName]) ? $this->configurations[$keyName] : null;
                 $fieldType = $fieldConfiguration instanceof FieldConfiguration ? $fieldConfiguration->getBlock()->getBlockType()->getFieldType() : null;
                 $originalValue = $fieldValue;
-                if ($fieldValue instanceof \DateTime) {
+                if ($fieldValue instanceof DateTime) {
                     $setField = true;
                     $fieldValue = Component\Extension\Core\Type\DateType::class === $fieldType ? $fieldValue->format('Y-m-d')
                         : (Component\Extension\Core\Type\TimeType::class === $fieldType ? $fieldValue->format('H:m') : $fieldValue->format('Y-m-d H:m:i'));
@@ -447,10 +451,10 @@ class FormManager
                 }
                 if ($setField) {
                     $value->setLabel($field['label']);
-                    $value->setValue((string) $fieldValue);
+                    $value->setValue((string)$fieldValue);
                     $value->setType($fieldType);
                     $value->setConfiguration($this->configurations[$keyName]);
-                    if ($originalValue instanceof \DateTime) {
+                    if ($originalValue instanceof DateTime) {
                         $value->setDate($originalValue);
                     }
                     $contact->addContactValue($value);
@@ -477,7 +481,7 @@ class FormManager
     {
         $configuration = $form->getConfiguration();
         $maxShipments = $configuration->getMaxShipments();
-        if ($configuration->getPublicationEnd() && new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')) > $configuration->getPublicationEnd()) {
+        if ($configuration->getPublicationEnd() && new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')) > $configuration->getPublicationEnd()) {
             return false;
         }
         if ($maxShipments && $form->getContacts()->count() >= $maxShipments) {

@@ -8,6 +8,8 @@ use App\Entity\Core\Website;
 use App\Entity\Layout;
 use App\Entity\Module\Menu\Menu;
 use App\Form\Manager\Module\AddLinkManager;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
@@ -35,9 +37,10 @@ class LayoutManager
      */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly RequestStack $requestStack,
-        private readonly AddLinkManager $addLinkManager,
-    ) {
+        private readonly RequestStack           $requestStack,
+        private readonly AddLinkManager         $addLinkManager,
+    )
+    {
         $this->request = $this->requestStack->getMainRequest();
     }
 
@@ -102,12 +105,12 @@ class LayoutManager
             $entityLayout = $entity->getCol()->getZone()->getLayout();
         }
         if ($entityLayout instanceof Layout\Layout) {
-            $entityLayout->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+            $entityLayout->setUpdatedAt(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
             $entityLayout->setParent($this->entityManager);
             $this->entityManager->persist($entityLayout);
             $parent = $entityLayout->getParent($this->entityManager);
             if ($parent) {
-                $parent->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+                $parent->setUpdatedAt(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
                 $this->entityManager->persist($parent);
             }
         }
@@ -147,7 +150,7 @@ class LayoutManager
                     $colsArray[] = $colId;
                 }
 
-                $grids[] = (object) [
+                $grids[] = (object)[
                     'grid' => rtrim($class, '-'),
                     'cols' => $colsArray,
                 ];

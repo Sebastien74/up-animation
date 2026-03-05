@@ -75,9 +75,9 @@ class FilterType extends AbstractType
                     $arguments = [
                         'label' => $label,
                         'attr' => ['placeholder' => $this->translator->trans('Saisissez votre recherche', [],
-             'admin')
-            ],
-            'row_attr' => ['class' => 'col-12'],
+                            'admin')
+                        ],
+                        'row_attr' => ['class' => 'col-12'],
                         'required' => false,
                     ];
                     if (Filters\BooleanFilterType::class === self::FIELD_TYPES[$mapping['type']]) {

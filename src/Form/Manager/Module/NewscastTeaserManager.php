@@ -10,6 +10,8 @@ use App\Entity\Module\Newscast\Listing;
 use App\Entity\Module\Newscast\Teaser;
 use App\Entity\Security\UserFront;
 use App\Service\Interface\CoreLocatorInterface;
+use DateTimeImmutable;
+use DateTimeZone;
 use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Form\Form;
@@ -63,7 +65,7 @@ class NewscastTeaserManager
                 $category->setWebsite($website);
                 $category->setOrderBy('startDate-desc');
                 $category->setPosition($position);
-                $category->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+                $category->setCreatedAt(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
                 $teaser->addCategory($category);
             }
         }

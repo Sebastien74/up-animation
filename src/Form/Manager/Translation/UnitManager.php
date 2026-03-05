@@ -28,9 +28,10 @@ class UnitManager
      * UnitManager constructor.
      */
     public function __construct(
-        private readonly Extractor $extractor,
+        private readonly Extractor              $extractor,
         private readonly EntityManagerInterface $entityManager,
-    ) {
+    )
+    {
     }
 
     /**

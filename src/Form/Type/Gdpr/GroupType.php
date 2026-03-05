@@ -21,6 +21,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class GroupType extends AbstractType
 {
     private TranslatorInterface $translator;
+
     /**
      * GroupType constructor.
      */

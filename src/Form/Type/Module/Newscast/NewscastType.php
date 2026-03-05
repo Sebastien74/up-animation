@@ -36,9 +36,10 @@ class NewscastType extends AbstractType
      * NewscastType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->entityManager = $this->coreLocator->em();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
@@ -101,9 +102,9 @@ class NewscastType extends AbstractType
                 'label' => $this->translator->trans('Auteur', [], 'admin'),
                 'required' => false,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez un auteur', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('promote', Type\CheckboxType::class, [
@@ -121,9 +122,9 @@ class NewscastType extends AbstractType
                     'label' => $this->translator->trans('Localité', [], 'admin'),
                     'required' => false,
                     'attr' => ['placeholder' => $this->translator->trans('Saisissez un lieu', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                        'admin')
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
 
                 $builder->add('startDate', Type\DateTimeType::class, [
@@ -189,7 +190,7 @@ class NewscastType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
                 ]);
             }
         }

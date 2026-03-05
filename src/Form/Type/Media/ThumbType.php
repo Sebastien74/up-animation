@@ -52,14 +52,14 @@ class ThumbType extends AbstractType
         $builder->add('width', $sizeFieldType, [
             'label' => $isInfinite ? $this->translator->trans('Largeur', [], 'admin') : false,
             'attr' => ['class' => 'col-12 dataWidth'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 mb-0'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 mb-0'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
         $builder->add('height', $sizeFieldType, [
             'label' => $isInfinite ? $this->translator->trans('Hauteur', [], 'admin') : false,
             'attr' => ['class' => 'col-12 dataHeight'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 mb-0'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 mb-0'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 

@@ -11,6 +11,7 @@ use App\Entity\Module\Catalog\Listing;
 use App\Model\IntlModel;
 use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
+use Collator;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\PersistentCollection;
@@ -38,7 +39,8 @@ class FrontSearchFiltersType extends AbstractType
     /**
      * FrontSearchFiltersType constructor.
      */
-    public function __construct(private readonly CoreLocatorInterface $coreLocator) {
+    public function __construct(private readonly CoreLocatorInterface $coreLocator)
+    {
         $this->translator = $this->coreLocator->translator();
     }
 
@@ -215,7 +217,7 @@ class FrontSearchFiltersType extends AbstractType
         if (isset($configuration['expanded'])) {
             $arguments['expanded'] = $configuration['expanded'];
         }
-        if (isset($arguments['expanded']) && (bool) $arguments['expanded'] !== true || empty($arguments['expanded'])) {
+        if (isset($arguments['expanded']) && (bool)$arguments['expanded'] !== true || empty($arguments['expanded'])) {
             $arguments['attr']['reset-btn'] = true;
             $arguments['attr']['data-display'] = $arguments['display'];
         }
@@ -252,7 +254,7 @@ class FrontSearchFiltersType extends AbstractType
         }
 
         // Alpha order
-        $collator = new \Collator($this->coreLocator->locale());
+        $collator = new Collator($this->coreLocator->locale());
         if ('subcategories' === $keyName) {
             foreach ($choices as &$subArray) {
                 uksort($subArray, function ($a, $b) use ($collator) {

@@ -49,7 +49,7 @@ class CardType extends AbstractType
         $builder->add('backgroundColorType', WidgetType\BackgroundColorSelectType::class, [
             'label' => $this->translator->trans('Couleur de fond', [], 'admin'),
             'attr' => ['class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-lg-6'],
+            'row_attr' => ['class' => 'col-12 col-lg-6'],
         ]);
 
         $builder->add('customTemplate', Type\ChoiceType::class, [

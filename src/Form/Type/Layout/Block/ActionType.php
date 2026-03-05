@@ -36,8 +36,9 @@ class ActionType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly InterfaceHelper $interfaceHelper,
-    ) {
+        private readonly InterfaceHelper      $interfaceHelper,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
     }
 
@@ -58,8 +59,8 @@ class ActionType extends AbstractType
                 'label' => $this->translator->trans('Template', [], 'admin'),
                 'display' => 'search',
                 'choices' => $templates,
-                
-            'row_attr' => ['class' => 'col-12 count($allLocales) > 1 ?'' : 'col-md-4 col-lg-2'],
+
+                'row_attr' => ['class' => 'col-12 ' . (count($allLocales) > 1 ? '' : 'col-md-4 col-lg-2')],
                 'constraints' => [new Assert\NotBlank()],
             ]);
         } elseif ($templates) {
@@ -97,8 +98,8 @@ class ActionType extends AbstractType
 
             if (is_array($interface) && !empty($interface['actionCode']) && !empty($interface['entityCode'])) {
                 $websiteTemplate = $website->getConfiguration()->getTemplate();
-                $dirname = $this->coreLocator->projectDir().'/templates/front/'.$websiteTemplate.'/actions/'.$interface['actionCode'].'/'.$interface['entityCode'];
-                $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
+                $dirname = $this->coreLocator->projectDir().' / templates / front / '.$websiteTemplate.' / actions / '.$interface['actionCode'].' / '.$interface['entityCode'];
+                $dirname = str_replace([' / ', 'nullnull'], DIRECTORY_SEPARATOR, $dirname);
                 $filesystem = new Filesystem();
 
                 if ($filesystem->exists($dirname)) {
@@ -130,7 +131,7 @@ class ActionType extends AbstractType
     private function templateName(string $fileName): string
     {
         $names['default'] = $this->translator->trans('Défaut', [], 'admin');
-        $names['promote-first'] = $this->translator->trans('Mise en avant de la première publication', [], 'admin');
+        $names['promote - first'] = $this->translator->trans('Mise en avant de la première publication', [], 'admin');
         $names['main'] = $this->translator->trans('Principal', [], 'admin');
         $names['slider'] = $this->translator->trans('Carrousel', [], 'admin');
 

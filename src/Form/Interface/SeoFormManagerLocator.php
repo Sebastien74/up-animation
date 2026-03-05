@@ -21,9 +21,10 @@ class SeoFormManagerLocator implements SeoFormManagerInterface
      */
     public function __construct(
         #[AutowireLocator(Seo\ImportRedirectionManager::class, indexAttribute: 'key')] protected ServiceLocator $importRedirectionLocator,
-        #[AutowireLocator(Seo\RedirectionManager::class, indexAttribute: 'key')] protected ServiceLocator $redirectionLocator,
-        #[AutowireLocator(Seo\UrlManager::class, indexAttribute: 'key')] protected ServiceLocator $urlLocator,
-    ) {
+        #[AutowireLocator(Seo\RedirectionManager::class, indexAttribute: 'key')] protected ServiceLocator       $redirectionLocator,
+        #[AutowireLocator(Seo\UrlManager::class, indexAttribute: 'key')] protected ServiceLocator               $urlLocator,
+    )
+    {
     }
 
     /**

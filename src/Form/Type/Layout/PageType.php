@@ -41,10 +41,11 @@ class PageType extends AbstractType
      * PageType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-        private readonly MenuRepository $menuRepository,
-    ) {
+        private readonly MenuRepository        $menuRepository,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->entityManager = $this->coreLocator->em();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
@@ -107,7 +108,7 @@ class PageType extends AbstractType
                 'display' => 'search',
                 'choices' => $this->getTemplates($page),
                 'attr' => ['data-config' => true],
-            'row_attr' => ['class' => 'col-12'],
+                'row_attr' => ['class' => 'col-12'],
             ]);
 
             if (!$isNew) {
@@ -125,7 +126,7 @@ class PageType extends AbstractType
                         'color' => 'app',
                         'label' => $this->translator->trans('Afficher dans le menu', [], 'admin'),
                         'attr' => ['class' => 'col-12 w-100'],
-            'row_attr' => ['class' => $secureActive ? 'col-md-4 text-center' : 'col-md-6 text-center'],
+                        'row_attr' => ['class' => $secureActive ? 'col-md-4 text-center' : 'col-md-6 text-center'],
                     ]);
                 }
 
@@ -135,7 +136,7 @@ class PageType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Page intercalaire', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100'],
-            'row_attr' => ['class' => $secureActive && $mainMenu ? 'col-md-4 text-center' : 'col-md-6 text-center'],
+                    'row_attr' => ['class' => $secureActive && $mainMenu ? 'col-md-4 text-center' : 'col-md-6 text-center'],
                 ]);
             }
 
@@ -146,7 +147,7 @@ class PageType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Page sécurisée', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100'],
-            'row_attr' => ['class' => 'col-12 !$mainMenu ?'col-md-12 col-lg-6 text-center' : 'col-md-12 col-lg-6 text-center'],
+                    'row_attr' => ['class' => 'col-12 ' . (!$mainMenu ? 'col-md-12 col-lg-6 text-center' : 'col-md-12 col-lg-6 text-center')],
                 ]);
             }
 
@@ -175,9 +176,11 @@ class PageType extends AbstractType
                 if ($this->haveBackgroundsRole) {
                     $builder->add('backgroundColor', WidgetType\BackgroundColorSelectType::class, [
                         'label' => $this->translator->trans('Couleur de fond', [], 'admin'),
-                        'attr' => ['data-config' => true,
-                            'class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                        'attr' => [
+                            'data-config' => true,
+                            'class' => 'col-12 select-icons',
+                        ],
+                        'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                         'display' => 'search'
                     ]);
                 }

@@ -8,6 +8,9 @@ use App\Entity\Core\Website;
 use App\Entity\Security\UserFront;
 use App\Repository\Security\UserFrontRepository;
 use App\Service\Core\MailerService;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -30,12 +33,13 @@ class ResetPasswordManager
      * ResetPasswordManager constructor.
      */
     public function __construct(
-        private readonly MailerService $mailer,
-        private readonly UserFrontRepository $repository,
-        private readonly TranslatorInterface $translator,
+        private readonly MailerService          $mailer,
+        private readonly UserFrontRepository    $repository,
+        private readonly TranslatorInterface    $translator,
         private readonly EntityManagerInterface $entityManager,
         private readonly ConfirmPasswordManager $confirmPasswordManager,
-    ) {
+    )
+    {
     }
 
     /**
@@ -58,8 +62,8 @@ class ResetPasswordManager
         $this->confirmPasswordManager->checkUser($user->getToken());
 
         $resetToken = false;
-        if ($user->getResetPasswordDate() instanceof \DateTime) {
-            $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        if ($user->getResetPasswordDate() instanceof DateTime) {
+            $today = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
             $tokenDate = $user->getResetPasswordDate();
             $interval = $today->diff($tokenDate);
             $hours = $interval->format('%a') > 0 ? $interval->format('%a') * 24 : 0;
@@ -88,7 +92,7 @@ class ResetPasswordManager
      */
     private function setToken(UserFront $user, string $email): string
     {
-        $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        $now = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
         $token = $user->getEmail() ? bin2hex(random_bytes(45).md5($email)) : null;
         $user->setTokenRequest(str_replace('/', '', $token));
         $user->setTokenRequestDate($now);

@@ -21,10 +21,11 @@ class MediaFormManagerLocator implements MediaFormManagerInterface
      */
     public function __construct(
         #[AutowireLocator(Media\MediaLibraryManager::class, indexAttribute: 'key')] protected ServiceLocator $libraryLocator,
-        #[AutowireLocator(Media\MediaManager::class, indexAttribute: 'key')] protected ServiceLocator $mediaLocator,
+        #[AutowireLocator(Media\MediaManager::class, indexAttribute: 'key')] protected ServiceLocator        $mediaLocator,
         #[AutowireLocator(Media\ModalLibraryManager::class, indexAttribute: 'key')] protected ServiceLocator $modalLibraryLocator,
-        #[AutowireLocator(Media\SearchManager::class, indexAttribute: 'key')] protected ServiceLocator $searchLocator,
-    ) {
+        #[AutowireLocator(Media\SearchManager::class, indexAttribute: 'key')] protected ServiceLocator       $searchLocator,
+    )
+    {
     }
 
     /**

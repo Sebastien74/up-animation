@@ -29,8 +29,9 @@ class IntlManager
      */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly CoreLocatorInterface $coreLocator,
-    ) {
+        private readonly CoreLocatorInterface   $coreLocator,
+    )
+    {
     }
 
     /**

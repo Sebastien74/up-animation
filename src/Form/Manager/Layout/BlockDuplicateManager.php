@@ -29,12 +29,13 @@ class BlockDuplicateManager extends BaseDuplicateManager
      * BlockDuplicateManager constructor.
      */
     public function __construct(
-        protected string $projectDir,
-        protected CoreLocatorInterface $coreLocator,
+        protected string                 $projectDir,
+        protected CoreLocatorInterface   $coreLocator,
         protected EntityManagerInterface $entityManager,
-        protected Uploader $uploader,
-        protected RequestStack $requestStack,
-    ) {
+        protected Uploader               $uploader,
+        protected RequestStack           $requestStack,
+    )
+    {
         parent::__construct($projectDir, $coreLocator, $entityManager, $uploader, $requestStack);
     }
 

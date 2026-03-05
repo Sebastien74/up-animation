@@ -38,10 +38,9 @@ class AddressFrontType extends AbstractType
             $builder->add('address', Type\TextType::class, [
                 'label' => $this->translator->trans('Adresse', [], 'admin'),
                 'required' => $constraints['required'],
-                
-            'row_attr' => ['class' => 'col-12 !empty($options['groups_classes']['address']) ? $options['groups_classes']['address'] : 'col-12',
-                    'placeholder' => $this->translator->trans('Saisissez une adresse', [], 'admin'),
-                ],
+
+                'row_attr' => ['class' => 'col-12 ' . (!empty($options['groups_classes']['address']) ? $options['groups_classes']['address'] : 'col-12')],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une adresse', [], 'admin')],
                 'constraints' => $constraints['validators'],
             ]);
         }
@@ -54,14 +53,12 @@ class AddressFrontType extends AbstractType
             }
             $options['constraints_fields']['zipCode'] = [new Validator\ZipCode(['departments' => $options['departments']])];
             $constraints = $this->getConstraints('zipCode', $options);
-            $help = !empty($options['departments']) ? $this->translator->trans('Inscription possible uniquement pour les résidents des %count% départements suivants : <br /> '.ltrim($departmentsToString, ','), ['%count%' => count($options['departments'])], 'admin') : null;
+            $help = !empty($options['departments']) ? $this->translator->trans('Inscription possible uniquement pour les résidents des % count % départements suivants : <br /> '.ltrim($departmentsToString, ','), [' % count % ' => count($options['departments'])], 'admin') : null;
             $builder->add('zipCode', Type\TextType::class, [
                 'label' => $this->translator->trans('Code postal', [], 'admin'),
                 'required' => $constraints['required'],
-                
-            'row_attr' => ['class' => 'col-12 !empty($options['groups_classes']['zipCode']) ? $options['groups_classes']['zipCode'] : 'col-lg-4',
-                    'placeholder' => $this->translator->trans('Saisissez un code postal', [], 'admin'),
-                ],
+                'row_attr' => ['class' => 'col-12 ' . (!empty($options['groups_classes']['zipCode']) ? $options['groups_classes']['zipCode'] : 'col-lg-4')],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez un code postal', [], 'admin')],
                 'constraints' => $constraints['validators'],
                 'help' => $help,
             ]);
@@ -72,10 +69,9 @@ class AddressFrontType extends AbstractType
             $builder->add('city', Type\TextType::class, [
                 'label' => $this->translator->trans('Ville', [], 'admin'),
                 'required' => $constraints['required'],
-                
-            'row_attr' => ['class' => 'col-12 !empty($options['groups_classes']['city']) ? $options['groups_classes']['city'] : 'col-lg-8',
-                    'placeholder' => $this->translator->trans('Saisissez une ville', [], 'admin'),
-                ],
+
+                'row_attr' => ['class' => 'col-12 ' . (!empty($options['groups_classes']['city']) ? $options['groups_classes']['city'] : 'col-lg-8')],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une ville', [], 'admin')],
                 'constraints' => $constraints['validators'],
             ]);
         }
@@ -85,10 +81,8 @@ class AddressFrontType extends AbstractType
             $builder->add('department', Type\TextType::class, [
                 'label' => $this->translator->trans('Département', [], 'admin'),
                 'required' => $constraints['required'],
-                
-            'row_attr' => ['class' => 'col-12 !empty($options['groups_classes']['department']) ? $options['groups_classes']['department'] : 'col-lg-4',
-                    'placeholder' => $this->translator->trans('Saisissez une département', [], 'admin'),
-                ],
+                'row_attr' => ['class' => 'col-12 ' . (!empty($options['groups_classes']['department']) ? $options['groups_classes']['department'] : 'col-lg-4')],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une département', [], 'admin')],
                 'constraints' => $constraints['validators'],
             ]);
         }
@@ -98,10 +92,9 @@ class AddressFrontType extends AbstractType
             $builder->add('region', Type\TextType::class, [
                 'label' => $this->translator->trans('Région', [], 'admin'),
                 'required' => $constraints['required'],
-                
-            'row_attr' => ['class' => 'col-12 !empty($options['groups_classes']['region']) ? $options['groups_classes']['region'] : 'col-lg-4',
-                    'placeholder' => $this->translator->trans('Saisissez une région', [], 'admin'),
-                ],
+
+                'row_attr' => ['class' => 'col-12 ' . (!empty($options['groups_classes']['region']) ? $options['groups_classes']['region'] : 'col-lg-4')],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une région', [], 'admin')],
                 'constraints' => $constraints['validators'],
             ]);
         }
@@ -113,9 +106,7 @@ class AddressFrontType extends AbstractType
                 'required' => $constraints['required'],
                 'display' => 'search',
                 'placeholder' => $this->translator->trans('Sélectionnez un pays', [], 'admin'),
-                
-            'row_attr' => ['class' => 'col-12 !empty($options['groups_classes']['country']) ? $options['groups_classes']['country'] : 'col-lg-4',
-                ],
+                'row_attr' => ['class' => 'col-12 ' . (!empty($options['groups_classes']['country']) ? $options['groups_classes']['country'] : 'col-lg-4')],
                 'constraints' => $constraints['validators'],
             ]);
         }

@@ -65,10 +65,10 @@ class ConfigurationType extends AbstractType
                 'attr' => ['class' => 'col-12 transition',
                     'icon' => 'hurricane',
                     'caption' => $this->translator->trans('Transitions', [],
-                 'admin'),
+                        'admin'),
                     'button' => $this->translator->trans('Ajouter une transition', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 'website' => $options['website'],
             ],
         ]);

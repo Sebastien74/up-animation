@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Module\Form;
 
 use App\Entity\Module\Form\ContactValue;
+use Exception;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,7 +26,7 @@ class CalendarAppointmentContactValuesType extends AbstractType
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

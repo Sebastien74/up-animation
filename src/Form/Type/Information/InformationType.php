@@ -32,9 +32,10 @@ class InformationType extends AbstractType
      * InformationType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
     }
@@ -78,9 +79,9 @@ class InformationType extends AbstractType
                     'required' => false,
                     'label' => $this->translator->trans("Durée de défilement de l'alerte", [], 'admin'),
                     'attr' => ['placeholder' => $this->translator->trans('Saisissez une durée', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                        'admin')
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     'help' => $this->translator->trans("En secondes", [], 'admin'),
                 ],
             ],
@@ -114,10 +115,10 @@ class InformationType extends AbstractType
                 'attr' => ['class' => 'col-12 phone',
                     'icon' => 'phone',
                     'caption' => $this->translator->trans('Numéro de téléphone', [],
-                 'admin'),
+                        'admin'),
                     'button' => $this->translator->trans('Ajouter un numéro', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'website' => $website,
             ],
         ]);
@@ -132,10 +133,10 @@ class InformationType extends AbstractType
                 'attr' => ['class' => 'col-12 email',
                     'icon' => 'at',
                     'caption' => $this->translator->trans('E-mails', [],
-                 'admin'),
+                        'admin'),
                     'button' => $this->translator->trans('Ajouter un e-mail', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'website' => $website,
             ],
         ]);
@@ -150,10 +151,10 @@ class InformationType extends AbstractType
                 'attr' => ['class' => 'col-12 address',
                     'icon' => 'map-marked',
                     'caption' => $this->translator->trans('Adresses', [],
-                 'admin'),
+                        'admin'),
                     'button' => $this->translator->trans('Ajouter une adresse', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-12'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-12'],
                 'website' => $website,
             ],
         ]);
@@ -169,10 +170,10 @@ class InformationType extends AbstractType
                     'icon' => 'balance-scale-left',
                     'deletable' => $multiLocales,
                     'caption' => $this->translator->trans('Mentions légales', [],
-             'admin'),
+                        'admin'),
                     'button' => $multiLocales ? $this->translator->trans('Ajouter des informations', [], 'admin') : false
-            ],
-            'row_attr' => ['class' => 'col-12'],
+                ],
+                'row_attr' => ['class' => 'col-12'],
                 'website' => $website,
             ],
         ]);

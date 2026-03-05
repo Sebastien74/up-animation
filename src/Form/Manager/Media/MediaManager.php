@@ -9,12 +9,17 @@ use App\Entity\Core\Configuration;
 use App\Entity\Core\Website;
 use App\Entity\Layout;
 use App\Entity\Media;
+use App\Entity\Module\Form\Form;
 use App\Entity\Module\Map\Point;
+use App\Entity\Module\Newscast\Category;
+use App\Entity\Module\Newscast\Newscast;
 use App\Entity\Seo\Seo;
 use App\Service\Core\InterfaceHelper;
 use App\Service\Core\Uploader;
 use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -55,9 +60,10 @@ class MediaManager
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly Uploader $uploader,
-        private readonly InterfaceHelper $interfaceHelper,
-    ) {
+        private readonly Uploader             $uploader,
+        private readonly InterfaceHelper      $interfaceHelper,
+    )
+    {
         $this->request = $this->coreLocator->request();
         $this->translator = $this->coreLocator->translator();
         $this->entityManager = $this->coreLocator->em();
@@ -132,7 +138,7 @@ class MediaManager
         $asMediaRelation = !empty($metadata['media']['targetEntity']) && Media\Media::class === $metadata['media']['targetEntity'];
 
         if (method_exists($entity, 'setUpdatedAt')) {
-            $entity->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+            $entity->setUpdatedAt(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
             $this->entityManager->persist($entity);
         }
 
@@ -646,7 +652,7 @@ class MediaManager
             }
         }
 
-        return (object) [
+        return (object)[
             'success' => $messageInfo->deletable,
             'message' => $messageInfo->message,
         ];
@@ -691,7 +697,7 @@ class MediaManager
 
         $message .= '</ul>';
 
-        return (object) [
+        return (object)[
             'deletable' => $deletable,
             'message' => $deletable ? '' : $message,
         ];
@@ -804,13 +810,13 @@ class MediaManager
             if ($masterEntity instanceof Layout\Page) {
                 $masterEntityMessage = ' [Page : '.$layout->getAdminName().' ID: '.$masterEntity->getId().']';
             }
-            if ($masterEntity instanceof \App\Entity\Module\Newscast\Newscast) {
+            if ($masterEntity instanceof Newscast) {
                 $masterEntityMessage = ' [Actualité : '.$layout->getAdminName().' ID: '.$masterEntity->getId().']';
             }
-            if ($masterEntity instanceof \App\Entity\Module\Form\Form) {
+            if ($masterEntity instanceof Form) {
                 $masterEntityMessage = ' [Formulaire : '.$layout->getAdminName().' ID: '.$masterEntity->getId().']';
             }
-            if ($masterEntity instanceof \App\Entity\Module\Newscast\Category) {
+            if ($masterEntity instanceof Category) {
                 $masterEntityMessage = " - [ Catégorie d'Actualité : ".$layout->getAdminName().' ID: '.$masterEntity->getId().']';
             }
         }

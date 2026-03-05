@@ -8,6 +8,7 @@ use App\Entity\Core\Website;
 use App\Entity\Module\Form\Configuration;
 use App\Entity\Module\Form\StepForm;
 use App\Service\Interface\CoreLocatorInterface;
+use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
@@ -32,7 +33,7 @@ class StepFormManager
     /**
      * @prePersist
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function prePersist(StepForm $stepForm, Website $website): void
     {

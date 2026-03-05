@@ -31,9 +31,10 @@ class JobManager
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly PageFixtures $pageFixtures,
-        private readonly LayoutManager $layoutManager,
-    ) {
+        private readonly PageFixtures         $pageFixtures,
+        private readonly LayoutManager        $layoutManager,
+    )
+    {
     }
 
     /**
@@ -41,7 +42,7 @@ class JobManager
      */
     public function prePersist(Job $job, Website $website, array $interface, Form $form): void
     {
-        $frontForm = $this->coreLocator->em()->getRepository(\App\Entity\Module\Form\Form::class)->findOneBy(['website' => $website, 'slug' => 'recruitment']);
+        $frontForm = $this->coreLocator->em()->getRepository(FormEntity\Form::class)->findOneBy(['website' => $website, 'slug' => 'recruitment']);
         if (!$frontForm instanceof FormEntity\Form) {
             $this->defaultForm($website);
         }
@@ -93,7 +94,7 @@ class JobManager
         $file = $this->pageFixtures->addBlock($col, 'form-file', null, null, 6);
         $file->setControls(true);
         $file->setColor('btn-primary');
-        $this->pageFixtures->addFieldConfiguration($file, 'Votre cv', null,true, false, 'Veuillez joindre votre CV..', 'curriculum')->setFilesTypes(['.doc', '.docx', '.pdf']);
+        $this->pageFixtures->addFieldConfiguration($file, 'Votre cv', null, true, false, 'Veuillez joindre votre CV..', 'curriculum')->setFilesTypes(['.doc', '.docx', '.pdf']);
         $gdpr = $this->pageFixtures->addBlock($col, 'form-gdpr', null, null, 7);
         $this->pageFixtures->addFieldConfiguration($gdpr, 'RGPD', "J'accepte que mes données soient utilisées pour me recontacter dans le cadre de cette demande.", true, true, 'Veuillez accépter.', 'gdpr');
         $submit = $this->pageFixtures->addBlock($col, 'form-submit', null, null, 8);

@@ -7,6 +7,9 @@ namespace App\Form\Manager\Security\Admin;
 use App\Entity\Security\User;
 use App\Service\Core\MailerService;
 use App\Service\Interface\CoreLocatorInterface;
+use DateTimeImmutable;
+use DateTimeZone;
+use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
@@ -26,14 +29,15 @@ class ResetPasswordManager
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly MailerService $mailer,
-    ) {
+        private readonly MailerService        $mailer,
+    )
+    {
     }
 
     /**
      * Send request.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function send(array $data): bool
     {
@@ -57,13 +61,13 @@ class ResetPasswordManager
     /**
      * Set token.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function setToken(User $user, string $email): string
     {
         $token = base64_encode(uniqid().password_hash($email, PASSWORD_BCRYPT).random_bytes(10));
         $token = substr(str_shuffle($token), 0, 30);
-        $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        $now = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
         $token = str_replace(['%', '/'], '', $token);
 
         $user->setTokenRequest($token);

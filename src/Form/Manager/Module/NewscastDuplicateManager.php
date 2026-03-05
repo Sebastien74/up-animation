@@ -41,14 +41,14 @@ class NewscastDuplicateManager extends BaseDuplicateManager
      * NewscastDuplicateManager constructor.
      */
     public function __construct(
-        string $projectDir,
-        protected CoreLocatorInterface $coreLocator,
-        EntityManagerInterface $entityManager,
-        Uploader $uploader,
-        RequestStack $requestStack,
+        string                                  $projectDir,
+        protected CoreLocatorInterface          $coreLocator,
+        EntityManagerInterface                  $entityManager,
+        Uploader                                $uploader,
+        RequestStack                            $requestStack,
         private readonly LayoutDuplicateManager $layoutDuplicateManager,
-        private readonly UrlManager $urlManager,
-        private readonly LayoutManager $layoutManager)
+        private readonly UrlManager             $urlManager,
+        private readonly LayoutManager          $layoutManager)
     {
         $this->repository = $entityManager->getRepository(Newscast::class);
 

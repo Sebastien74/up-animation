@@ -8,6 +8,8 @@ use App\Entity\Core\Website;
 use App\Entity\Media;
 use App\Service\Core\Uploader;
 use App\Service\Interface\CoreLocatorInterface;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
@@ -38,12 +40,13 @@ class BaseDuplicateManager
      * BaseDuplicateManager constructor.
      */
     public function __construct(
-        protected string $projectDir,
-        protected CoreLocatorInterface $coreLocator,
+        protected string                 $projectDir,
+        protected CoreLocatorInterface   $coreLocator,
         protected EntityManagerInterface $entityManager,
-        protected Uploader $uploader,
-        protected RequestStack $requestStack,
-    ) {
+        protected Uploader               $uploader,
+        protected RequestStack           $requestStack,
+    )
+    {
         $this->request = $this->requestStack->getMainRequest();
     }
 
@@ -178,9 +181,9 @@ class BaseDuplicateManager
                 $setter = 'set'.ucfirst($name);
                 $value = method_exists($entityToDuplicate, $getMethod) ? $entityToDuplicate->$getMethod() : $entityToDuplicate->$isMethod();
                 if (isset($configFields[$name]) && 'newDate' === $configFields[$name]) {
-                    $value = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+                    $value = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
                 } elseif ('computeETag' === $name) {
-                    $date = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+                    $date = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
                     $value = uniqid().md5($date->format('YmdHis'));
                 }
                 $newEntity->$setter($value);

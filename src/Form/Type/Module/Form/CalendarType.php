@@ -30,9 +30,10 @@ class CalendarType extends AbstractType
      * CalendarType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
@@ -49,16 +50,16 @@ class CalendarType extends AbstractType
             $builder->add('daysPerPage', Type\IntegerType::class, [
                 'label' => $this->translator->trans('Nombre de jour par page', [], 'admin'),
                 'attr' => ['data-config' => true, 'placeholder' => $this->translator->trans('Saisissez un chiffre', [],
-                 'admin')],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
 
             $builder->add('frequency', Type\IntegerType::class, [
                 'label' => $this->translator->trans('Fréquence', [], 'admin'),
                 'attr' => ['data-config' => true, 'placeholder' => $this->translator->trans('Saisissez un chiffre', [],
-                 'admin')],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
 
@@ -66,16 +67,16 @@ class CalendarType extends AbstractType
                 'required' => false,
                 'label' => $this->translator->trans("Nombre d'heures minimum avant RDV", [], 'admin'),
                 'attr' => ['data-config' => true, 'placeholder' => $this->translator->trans('Saisissez un chiffre', [],
-                 'admin')],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('maxHours', Type\IntegerType::class, [
                 'required' => false,
                 'label' => $this->translator->trans("Nombre d'heures maximum avant RDV", [], 'admin'),
                 'attr' => ['data-config' => true, 'placeholder' => $this->translator->trans('Saisissez un chiffre', [],
-                 'admin')],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('startHour', Type\TimeType::class, [
@@ -97,9 +98,9 @@ class CalendarType extends AbstractType
                 'required' => false,
                 'attr' => ['data-config' => true,
                     'placeholder' => $this->translator->trans('Ajouter des e-mails', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
+                        'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
             ]);
 
             $builder->add('controls', Type\CheckboxType::class, [
@@ -145,7 +146,7 @@ class CalendarType extends AbstractType
                 'prototype' => true,
                 'by_reference' => false,
                 'entry_options' => ['attr' => ['icon' => 'concierge-bell'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4']],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4']],
             ]);
         }
 

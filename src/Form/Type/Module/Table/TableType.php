@@ -30,9 +30,10 @@ class TableType extends AbstractType
      * TableType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
@@ -64,14 +65,14 @@ class TableType extends AbstractType
                     'label' => $this->translator->trans("Couleur de fond de l'entête", [], 'admin'),
                     'attr' => ['data-config' => true,
                         'class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
 
                 $builder->add('headColor', WidgetType\AppColorType::class, [
                     'label' => $this->translator->trans("Couleur de la police de l'entête", [], 'admin'),
                     'attr' => ['data-config' => true,
                         'class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);
 
                 $builder->add('striped', CheckboxType::class, [
@@ -80,7 +81,7 @@ class TableType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Striped', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
                 ]);
             }
         }

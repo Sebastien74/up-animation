@@ -76,13 +76,11 @@ class ContentConfigType
             'display' => 'search',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Gras', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            
-            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-2',
-                'class' => 'col-12 select-icons',
-            ],
+
+            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-2') . ' select-icons'],
             'choices' => $choices,
             'choice_attr' => function ($weight, $key, $value) {
-                return ['class' => 'col-12 fw-'.$weight, 'data-fw' => $weight];
+                return ['class' => 'col-12 fw - '.$weight, 'data-fw' => $weight];
             },
         ]);
     }
@@ -114,13 +112,11 @@ class ContentConfigType
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Taille de la police', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             
-            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-2',
-                'class' => 'col-12 select-icons',
-            ],
+            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-2') . ' select-icons'],
             'choices' => $choices,
             'choice_attr' => function ($size, $key, $value) {
-                return ['data-fz' => $size];
-            },
+        return ['data-fz' => $size];
+    },
         ]);
     }
 
@@ -131,10 +127,8 @@ class ContentConfigType
     {
         $builder->add('color', AppColorType::class, [
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Couleur', [], 'admin'),
-            
-            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-2',
-                'class' => 'col-12 select-icons',
-            ],
+
+            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-2') . ' select-icons'],
         ]);
     }
 
@@ -149,9 +143,7 @@ class ContentConfigType
             'color' => 'app',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('En italique', [], 'admin'),
             
-            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field].' d-flex align-items-end' : 'col-md-2 d-flex align-items-end',
-                'class' => 'col-12 w-100',
-            ],
+            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] . ' d-flex align-items-end' : 'col-md-2 d-flex align-items-end') . ' w-100'],
         ]);
     }
 
@@ -165,10 +157,8 @@ class ContentConfigType
             'display' => 'button',
             'color' => 'app',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('En majuscule', [], 'admin'),
-            
-            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field].' d-flex align-items-end' : 'col-md-2 d-flex align-items-end',
-                'class' => 'col-12 w-100',
-            ],
+
+            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] . ' d-flex align-items-end' : 'col-md-2 d-flex align-items-end') . ' w-100'],
         ]);
     }
 
@@ -183,9 +173,7 @@ class ContentConfigType
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Famille de police', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             
-            'row_attr' => ['class' => 'col-12 !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-3',
-                'class' => 'col-12 select-icons',
-            ],
+            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-3') . ' select-icons'],
             'choices' => $this->getFonts(),
         ]);
     }

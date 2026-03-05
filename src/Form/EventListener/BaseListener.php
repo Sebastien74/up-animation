@@ -29,8 +29,9 @@ abstract class BaseListener implements EventSubscriberInterface
      */
     public function __construct(
         protected readonly CoreLocatorInterface $coreLocator,
-        protected array $options = [],
-    ) {
+        protected array                         $options = [],
+    )
+    {
         $this->website = $this->coreLocator->website();
         $this->entityManager = !empty($options['entityManager']) ? $options['entityManager'] : null;
         $configuration = $this->website->configuration;

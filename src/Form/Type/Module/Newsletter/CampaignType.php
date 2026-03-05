@@ -28,9 +28,10 @@ class CampaignType extends AbstractType
      * CampaignType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
@@ -74,8 +75,8 @@ class CampaignType extends AbstractType
                 'attr' => [
                     'subtitle' => $this->translator->trans('ConfigurationModel Mailchimp', [], 'admin'),
                     'placeholder' => $this->translator->trans("Saisissez l'action", [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
 
             $builder->add('externalFieldEmail', Type\TextType::class, [
@@ -83,8 +84,8 @@ class CampaignType extends AbstractType
                 'label' => $this->translator->trans('Nom du champs de mail', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez le nom', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('externalFormToken', Type\TextType::class, [
@@ -92,8 +93,8 @@ class CampaignType extends AbstractType
                 'label' => $this->translator->trans('Nom du champs token', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez le token', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('internalRegistration', Type\CheckboxType::class, [
@@ -111,8 +112,8 @@ class CampaignType extends AbstractType
                 'attr' => [
                     'subtitle' => $this->translator->trans('ConfigurationModel Mailjet', [], 'admin'),
                     'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('mailjetListId', Type\TextType::class, [
@@ -120,8 +121,8 @@ class CampaignType extends AbstractType
                 'label' => $this->translator->trans('ID de la campagne', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un ID', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('mailjetPublicKey', Type\TextType::class, [
@@ -129,8 +130,8 @@ class CampaignType extends AbstractType
                 'label' => $this->translator->trans('Clé publique', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('mailjetSecretKey', Type\TextType::class, [
@@ -138,8 +139,8 @@ class CampaignType extends AbstractType
                 'label' => $this->translator->trans('Clé privée', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez la clé', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('recaptcha', Type\CheckboxType::class, [
@@ -174,9 +175,9 @@ class CampaignType extends AbstractType
                 'required' => false,
                 'attr' => ['data-config' => true,
                     'placeholder' => $this->translator->trans('Ajouter des e-mails', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
+                        'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
             ]);
 
             $builder->add('sendingEmail', Type\EmailType::class, [
@@ -184,9 +185,9 @@ class CampaignType extends AbstractType
                 'required' => false,
                 'attr' => ['data-config' => true,
                     'placeholder' => $this->translator->trans('Saisissez un e-mail', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                        'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
         }
 

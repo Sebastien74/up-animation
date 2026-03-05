@@ -34,12 +34,13 @@ class ZoneDuplicateManager extends BaseDuplicateManager
      */
     public function __construct(
         private readonly LayoutFormManagerInterface $layoutManager,
-        protected string $projectDir,
-        protected CoreLocatorInterface $coreLocator,
-        protected EntityManagerInterface $entityManager,
-        protected Uploader $uploader,
-        protected RequestStack $requestStack,
-    ) {
+        protected string                            $projectDir,
+        protected CoreLocatorInterface              $coreLocator,
+        protected EntityManagerInterface            $entityManager,
+        protected Uploader                          $uploader,
+        protected RequestStack                      $requestStack,
+    )
+    {
         parent::__construct($projectDir, $coreLocator, $entityManager, $uploader, $requestStack);
     }
 

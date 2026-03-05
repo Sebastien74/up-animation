@@ -6,7 +6,11 @@ namespace App\Form\Manager\Security\Front;
 
 use App\Entity\Security\UserFront;
 use App\Form\Model\Security\Front\PasswordResetModel;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -22,21 +26,23 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 ])]
 class ConfirmPasswordManager
 {
-    private const int TOKEN_LIMIT = 60 * 24; /** minutes */
+    private const int TOKEN_LIMIT = 60 * 24;
+    /** minutes */
 
     /**
      * ConfirmPasswordManager constructor.
      */
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordEncoder,
-        private readonly EntityManagerInterface $entityManager,
-    ) {
+        private readonly EntityManagerInterface      $entityManager,
+    )
+    {
     }
 
     /**
      * Check if user token is not too old.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkUser(?string $token = null): ?UserFront
     {
@@ -58,7 +64,7 @@ class ConfirmPasswordManager
     /**
      * Check if is an invalid token.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function isInvalidToken(UserFront $user): ?bool
     {
@@ -66,9 +72,9 @@ class ConfirmPasswordManager
             return null;
         }
 
-        $time = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
+        $time = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
         $userTokenRequest = $user->getTokenRequestDate()->format('Y-m-d H:i:s');
-        $userTokenRequest = new \DateTime($userTokenRequest, new \DateTimeZone('Europe/Paris'));
+        $userTokenRequest = new DateTime($userTokenRequest, new DateTimeZone('Europe/Paris'));
         $diff = $userTokenRequest->diff($time);
 
         return intval($diff->format('%i')) >= self::TOKEN_LIMIT;
@@ -77,7 +83,7 @@ class ConfirmPasswordManager
     /**
      * Set user password.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function confirm(PasswordResetModel $passwordResetModel, UserFront $user): bool
     {
@@ -93,7 +99,7 @@ class ConfirmPasswordManager
             }
         }
 
-        $user->setResetPasswordDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+        $user->setResetPasswordDate(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
         $user->setTokenRequest(null);
         $user->setTokenRequestDate(null);
         $user->setAlerts($alerts);

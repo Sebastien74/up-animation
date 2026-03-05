@@ -43,9 +43,9 @@ class AddressType extends AbstractType
                 'label' => $this->translator->trans('Raison sociale', [], 'admin'),
                 'required' => false,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez une raison sociale', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
 
             $builder->add('latitude', Type\TextType::class, [
@@ -53,9 +53,9 @@ class AddressType extends AbstractType
                 'label' => $this->translator->trans('Latitude', [], 'admin'),
                 'attr' => ['class' => 'col-12 latitude',
                     'placeholder' => $this->translator->trans('Saisissez une latitude', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                        'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('longitude', Type\TextType::class, [
@@ -63,9 +63,9 @@ class AddressType extends AbstractType
                 'label' => $this->translator->trans('Longitude', [], 'admin'),
                 'attr' => ['class' => 'col-12 longitude',
                     'placeholder' => $this->translator->trans('Saisissez une longitude', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                        'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('zoom', Type\IntegerType::class, [
@@ -95,7 +95,7 @@ class AddressType extends AbstractType
             'required' => false,
             'attr' => ['class' => 'col-12 address',
                 'placeholder' => $this->translator->trans('Saisissez une adresse', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
         ]);
@@ -105,7 +105,7 @@ class AddressType extends AbstractType
             'required' => false,
             'attr' => ['class' => 'col-12 city',
                 'placeholder' => $this->translator->trans('Saisissez une ville', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
@@ -115,7 +115,7 @@ class AddressType extends AbstractType
             'required' => false,
             'attr' => ['class' => 'col-12 zip-code',
                 'placeholder' => $this->translator->trans('Saisissez un code postal', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => [new ZipCode()],
@@ -126,7 +126,7 @@ class AddressType extends AbstractType
             'required' => false,
             'attr' => ['class' => 'col-12 department',
                 'placeholder' => $this->translator->trans('Saisissez une département', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
@@ -136,7 +136,7 @@ class AddressType extends AbstractType
             'required' => false,
             'attr' => ['class' => 'col-12 region',
                 'placeholder' => $this->translator->trans('Saisissez une région', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
@@ -148,7 +148,7 @@ class AddressType extends AbstractType
             'placeholder' => $this->translator->trans('Sélectionnez un pays', [], 'admin'),
             'preferred_choices' => ['FR', 'CH'],
             'attr' => ['class' => 'col-12 country'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         if ($options['google_fields']) {
@@ -157,18 +157,18 @@ class AddressType extends AbstractType
                 'label' => $this->translator->trans('Google map URL', [], 'admin'),
                 'required' => false,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
 
             $builder->add('googleMapDirectionUrl', Type\UrlType::class, [
                 'label' => $this->translator->trans('Google map itinéraire URL', [], 'admin'),
                 'required' => false,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
         }
 
@@ -199,10 +199,10 @@ class AddressType extends AbstractType
                 'attr' => ['class' => 'col-12 address-email',
                     'icon' => 'at',
                     'caption' => $this->translator->trans('E-mails', [],
-                 'admin'),
+                        'admin'),
                     'button' => $this->translator->trans('Ajouter un e-mail', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'website' => $options['website'],
             ],
         ]);

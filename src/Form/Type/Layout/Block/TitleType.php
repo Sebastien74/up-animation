@@ -46,7 +46,7 @@ class TitleType extends AbstractType
 
         $builder->add('color', WidgetType\AppColorType::class, [
             'attr' => ['class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $configs = new WidgetType\ContentConfigType($this->coreLocator);

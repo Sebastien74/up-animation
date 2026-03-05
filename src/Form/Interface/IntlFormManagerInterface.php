@@ -14,6 +14,8 @@ use App\Form\Manager\Translation;
 interface IntlFormManagerInterface
 {
     public function front(): Translation\FrontManager;
+
     public function intl(): Translation\IntlManager;
+
     public function unit(): Translation\UnitManager;
 }

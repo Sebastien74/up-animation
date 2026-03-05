@@ -53,7 +53,7 @@ class TemplateBlockType extends AbstractType
                 'display' => 'search',
                 'choices' => $templates,
                 'attr' => ['data-config' => $haveCustom],
-            'row_attr' => ['class' => $haveCustom ? 'col-md-4' : 'd-none'],
+                'row_attr' => ['class' => $haveCustom ? 'col-md-4' : 'd-none'],
             ]);
         }
     }

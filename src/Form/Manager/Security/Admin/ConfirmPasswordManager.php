@@ -6,7 +6,10 @@ namespace App\Form\Manager\Security\Admin;
 
 use App\Entity\Security\User;
 use App\Form\Model\Security\Admin\PasswordResetModel;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -27,14 +30,15 @@ class ConfirmPasswordManager
      */
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordEncoder,
-        private readonly EntityManagerInterface $entityManager,
-    ) {
+        private readonly EntityManagerInterface      $entityManager,
+    )
+    {
     }
 
     /**
      * Set user password.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function confirm(PasswordResetModel $passwordResetModel, User $user): void
     {
@@ -50,7 +54,7 @@ class ConfirmPasswordManager
             }
         }
 
-        $user->setResetPasswordDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+        $user->setResetPasswordDate(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
         $user->setTokenRequest(null);
         $user->setTokenRequestDate(null);
         $user->setAlerts($alerts);

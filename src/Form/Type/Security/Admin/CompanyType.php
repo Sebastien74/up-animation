@@ -56,8 +56,8 @@ class CompanyType extends AbstractType
                 'label' => $this->translator->trans('E-mail', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('contactLastName', Type\EmailType::class, [
@@ -65,8 +65,8 @@ class CompanyType extends AbstractType
                 'label' => $this->translator->trans('Nom du contact principal', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('contactFirstName', Type\EmailType::class, [
@@ -74,8 +74,8 @@ class CompanyType extends AbstractType
                 'label' => $this->translator->trans('Prénom du contact principal', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 
             $builder->add('file', Type\FileType::class, [

@@ -14,7 +14,10 @@ use App\Form\Manager\Media;
 interface MediaFormManagerInterface
 {
     public function library(): Media\MediaLibraryManager;
+
     public function media(): Media\MediaManager;
+
     public function modalLibrary(): Media\ModalLibraryManager;
+
     public function search(): Media\SearchManager;
 }

@@ -14,5 +14,6 @@ use App\Form\Manager\Information;
 interface InformationFormManagerInterface
 {
     public function information(): Information\InformationManager;
+
     public function networks(): Information\SocialNetworkManager;
 }

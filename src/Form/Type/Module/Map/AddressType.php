@@ -39,7 +39,7 @@ class AddressType extends AbstractType
             'required' => $isRequired,
             'attr' => ['class' => 'col-12 latitude',
                 'placeholder' => $this->translator->trans('Saisissez une latitude', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => $isRequired ? [new NotBlank()] : [],
@@ -51,7 +51,7 @@ class AddressType extends AbstractType
             'required' => $isRequired,
             'attr' => ['class' => 'col-12 longitude',
                 'placeholder' => $this->translator->trans('Saisissez une longitude', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => $isRequired ? [new NotBlank()] : [],
@@ -62,7 +62,7 @@ class AddressType extends AbstractType
             'label' => $this->translator->trans('Raison sociale', [], 'admin'),
             'required' => $isRequired,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une raison sociale', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             'constraints' => $isRequired ? [new NotBlank()] : [],
@@ -74,7 +74,7 @@ class AddressType extends AbstractType
             'required' => $isRequired,
             'attr' => ['class' => 'col-12 address',
                 'placeholder' => $this->translator->trans('Saisissez une adresse', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
             'constraints' => $isRequired ? [new NotBlank()] : [],
@@ -86,7 +86,7 @@ class AddressType extends AbstractType
             'required' => $isRequired,
             'attr' => ['class' => 'col-12 city',
                 'placeholder' => $this->translator->trans('Saisissez une ville', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => $isRequired ? [new NotBlank()] : [],
@@ -98,7 +98,7 @@ class AddressType extends AbstractType
             'required' => $isRequired,
             'attr' => ['class' => 'col-12 zip-code',
                 'placeholder' => $this->translator->trans('Saisissez un code postal', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => $isRequired ? [new ZipCode(), new NotBlank()] : [],
@@ -110,7 +110,7 @@ class AddressType extends AbstractType
             'required' => $isRequired,
             'attr' => ['class' => 'col-12 department',
                 'placeholder' => $this->translator->trans('Saisissez une département', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => $isRequired ? [new NotBlank()] : [],
@@ -122,7 +122,7 @@ class AddressType extends AbstractType
             'required' => $isRequired,
             'attr' => ['class' => 'col-12 region',
                 'placeholder' => $this->translator->trans('Saisissez une région', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => $isRequired ? [new NotBlank()] : [],
@@ -135,7 +135,7 @@ class AddressType extends AbstractType
             'display' => 'search',
             'placeholder' => $this->translator->trans('Sélectionnez un pays', [], 'admin'),
             'attr' => ['class' => 'col-12 country'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             'constraints' => $isRequired ? [new NotBlank()] : [],
         ]);
 
@@ -144,7 +144,7 @@ class AddressType extends AbstractType
             'label' => $this->translator->trans('Google map URL', [], 'admin'),
             'required' => $isRequired,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             'constraints' => $isRequired ? [new NotBlank()] : [],
@@ -155,7 +155,7 @@ class AddressType extends AbstractType
             'label' => $this->translator->trans('Google map itinéraire URL', [], 'admin'),
             'required' => $isRequired,
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             'constraints' => $isRequired ? [new NotBlank()] : [],

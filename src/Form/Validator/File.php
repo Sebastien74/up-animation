@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Validator;
 
+use Attribute;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
 
 /**
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints\File as FileConstraint;
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class File extends FileConstraint
 {
 }

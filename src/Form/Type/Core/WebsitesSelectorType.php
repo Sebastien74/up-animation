@@ -29,9 +29,10 @@ class WebsitesSelectorType extends AbstractType
      * WebsitesSelectorType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->entityManager = $this->coreLocator->em();
         $this->user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $this->user && in_array('ROLE_INTERNAL', $this->user->getRoles());

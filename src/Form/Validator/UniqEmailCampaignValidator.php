@@ -29,10 +29,11 @@ class UniqEmailCampaignValidator extends ConstraintValidator
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly WebsiteRepository $websiteRepository,
-        private readonly CampaignRepository $campaignRepository,
-        private readonly EmailRepository $emailRepository,
-    ) {
+        private readonly WebsiteRepository    $websiteRepository,
+        private readonly CampaignRepository   $campaignRepository,
+        private readonly EmailRepository      $emailRepository,
+    )
+    {
         $this->request = $this->coreLocator->requestStack()->getCurrentRequest();
     }
 

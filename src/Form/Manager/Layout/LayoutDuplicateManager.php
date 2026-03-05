@@ -11,6 +11,7 @@ use App\Form\Manager\Core\BaseDuplicateManager;
 use App\Service\Core\Uploader;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -27,19 +28,20 @@ use Symfony\Component\HttpFoundation\RequestStack;
 ])]
 class LayoutDuplicateManager extends BaseDuplicateManager
 {
-    private \Doctrine\ORM\EntityRepository $repository;
+    private EntityRepository $repository;
 
     /**
      * LayoutDuplicateManager constructor.
      */
     public function __construct(
         private readonly LayoutFormManagerInterface $layoutManager,
-        protected string $projectDir,
-        protected CoreLocatorInterface $coreLocator,
-        protected EntityManagerInterface $entityManager,
-        protected Uploader $uploader,
-        protected RequestStack $requestStack,
-    ) {
+        protected string                            $projectDir,
+        protected CoreLocatorInterface              $coreLocator,
+        protected EntityManagerInterface            $entityManager,
+        protected Uploader                          $uploader,
+        protected RequestStack                      $requestStack,
+    )
+    {
         $this->repository = $entityManager->getRepository(Layout::class);
 
         parent::__construct($projectDir, $coreLocator, $entityManager, $uploader, $requestStack);

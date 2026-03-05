@@ -96,9 +96,9 @@ class PointType extends AbstractType
                     'multiple' => true,
                     'display' => 'search',
                     'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez des pays', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                        'admin')
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 ]);
             }
 
@@ -108,9 +108,9 @@ class PointType extends AbstractType
                     'required' => false,
                     'multiple' => true,
                     'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez des départements', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                        'admin')
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 ]);
             }
 
@@ -126,10 +126,10 @@ class PointType extends AbstractType
                     'attr' => ['class' => 'col-12 phone',
                         'icon' => 'phone',
                         'caption' => $this->translator->trans('Numéro de téléphone', [],
-                 'admin'),
+                            'admin'),
                         'button' => $this->translator->trans('Ajouter un numéro', [], 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                     'locale' => false,
                     'entitled' => false,
                     'type' => false,

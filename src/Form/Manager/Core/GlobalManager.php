@@ -10,6 +10,7 @@ use App\Entity\Layout;
 use App\Form\Interface as FormManagerInterface;
 use App\Service\Core\Urlizer;
 use App\Service\Interface as ServiceLocator;
+use Exception;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
 use Monolog\Logger;
@@ -46,13 +47,14 @@ class GlobalManager
      * GlobalManager constructor.
      */
     public function __construct(
-        private readonly FormManagerInterface\CoreFormManagerInterface $coreManagerLocator,
+        private readonly FormManagerInterface\CoreFormManagerInterface   $coreManagerLocator,
         private readonly FormManagerInterface\LayoutFormManagerInterface $layoutManager,
-        private readonly FormManagerInterface\MediaFormManagerInterface $mediaManager,
-        private readonly FormManagerInterface\IntlFormManagerInterface $intlManager,
-        private readonly ServiceLocator\CoreLocatorInterface $coreLocator,
-        private readonly ServiceLocator\AdminLocatorInterface $adminLocator,
-    ) {
+        private readonly FormManagerInterface\MediaFormManagerInterface  $mediaManager,
+        private readonly FormManagerInterface\IntlFormManagerInterface   $intlManager,
+        private readonly ServiceLocator\CoreLocatorInterface             $coreLocator,
+        private readonly ServiceLocator\AdminLocatorInterface            $adminLocator,
+    )
+    {
         $this->request = $this->coreLocator->requestStack()->getCurrentRequest();
         $this->masterRequest = $this->coreLocator->requestStack()->getMainRequest();
     }
@@ -112,7 +114,7 @@ class GlobalManager
                 $clearMediasService = $this->adminLocator->clearMediasService();
                 $clearMediasService->execute($this->interface['classname']);
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->request->getSession()->getFlashBag()->add('error', $this->coreLocator->translator()->trans('Une erreur est survenue : ', [], 'admin').$exception->getMessage());
             $logger = new Logger('form.global.manager');
             $logger->pushHandler(new RotatingFileHandler($this->coreLocator->logDir().'/admin-critical.log', 10, Level::Info));

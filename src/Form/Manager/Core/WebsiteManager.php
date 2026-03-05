@@ -12,6 +12,7 @@ use App\Entity\Module\Search\Search;
 use App\Entity\Security\User;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Service\Interface\DataFixturesInterface;
+use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Form;
@@ -35,15 +36,16 @@ class WebsiteManager
      */
     public function __construct(
         private readonly DataFixturesInterface $fixtures,
-        private readonly CoreLocatorInterface $coreLocator,
-    ) {
+        private readonly CoreLocatorInterface  $coreLocator,
+    )
+    {
         $this->user = $coreLocator->user();
     }
 
     /**
      * @prePersist
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function prePersist(CoreEntities\Website $website, CoreEntities\Website $currentWebsite, array $interface, Form $form): void
     {
@@ -53,7 +55,7 @@ class WebsiteManager
     /**
      * @preUpdate
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function preUpdate(CoreEntities\Website $website): void
     {
@@ -175,7 +177,7 @@ class WebsiteManager
     /**
      * To set security.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function setSecurity(CoreEntities\Website $website, CoreEntities\Configuration $configuration): void
     {
@@ -267,7 +269,7 @@ class WebsiteManager
     {
         //        $allLocales = $configuration->getAllLocales();
         //
-        //        $filePath = $this->projectDir . '/config/packages/translation.yaml';
+        //        $filePath = $this->projectDir.'/config/packages/translation.yaml';
         //        $filePath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $filePath);
         //        $filesystem = new Filesystem();
         //
@@ -297,7 +299,7 @@ class WebsiteManager
     /**
      * To add associated pages Module.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function addPages(CoreEntities\Website $website, CoreEntities\Configuration $configuration): void
     {
@@ -387,9 +389,9 @@ class WebsiteManager
     private function addLink(MenuEntities\Menu $menu, string $locale, LayoutEntities\Page $page, CoreEntities\Website $website): void
     {
         $linkPosition = count($this->coreLocator->em()->getRepository(MenuEntities\Link::class)->findBy([
-            'menu' => $menu,
-            'locale' => $locale,
-        ])) + 1;
+                'menu' => $menu,
+                'locale' => $locale,
+            ])) + 1;
 
         $intl = new MenuEntities\LinkIntl();
         $intl->setLocale($locale);

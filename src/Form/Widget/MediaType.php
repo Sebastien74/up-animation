@@ -58,11 +58,12 @@ class MediaType extends AbstractType
      * MediaType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface    $coreLocator,
         private readonly ImageThumbnailInterface $imageThumbnail,
-        private readonly FileRuntime $fileRuntime,
-        private readonly WebsiteRepository $websiteRepository,
-    ) {
+        private readonly FileRuntime             $fileRuntime,
+        private readonly WebsiteRepository       $websiteRepository,
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->request = $this->coreLocator->request();
     }
@@ -88,7 +89,7 @@ class MediaType extends AbstractType
                 'data-max-size' => $maxSize,
                 'placeholder' => $this->translator->trans('Séléctionnez une image', [], 'admin'),
                 'class' => !$options['multiple'] ? 'dropify' : 'dropzone-field',
-                'row_attr' => ['class' => 'col-12 !$options['multiple'],] ? 'dropify-group' : 'd-none',
+                'row_attr' => ['class' => 'col-12 ' . (!$options['multiple'] ? 'dropify-group' : 'd-none')],
                 'data-height' => $options['dataHeight'],
             ],
             'constraints' => [
@@ -209,8 +210,8 @@ class MediaType extends AbstractType
                 'label' => $this->translator->trans('Nom du fichier', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un nom de fichier', [], 'admin'),
-                    'row_attr' => ['class' => 'col-12 !empty($options['name'],]) ? $options['name'] : 'col-md-6',
                 ],
+                'row_attr' => ['class' => 'col-12 ' . (!empty($options['name']) ? $options['name'] : 'col-md-6')],
                 'constraints' => [
                     new UniqFileName(),
                 ],

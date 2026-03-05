@@ -39,7 +39,7 @@ class SeparatorType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('Hauteur du séparateur (px)', [], 'admin'),
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une hauteur', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'constraints' => [new Assert\NotBlank()],
@@ -49,7 +49,7 @@ class SeparatorType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('Largeur du séparateur (px)', [], 'admin'),
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une hauteur', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
@@ -58,7 +58,7 @@ class SeparatorType extends AbstractType
             'label' => $this->translator->trans('Couleur de fond', [], 'admin'),
             'expanded' => false,
             'attr' => ['class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $builder->add('hideMobile', Type\CheckboxType::class, [
@@ -67,7 +67,7 @@ class SeparatorType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Cacher le séparateur en mobile', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
         ]);
 
         $radiusType = new WidgetType\RadiusType($this->coreLocator);

@@ -8,6 +8,7 @@ use App\Entity\Core\Website;
 use App\Entity\Media\Media;
 use App\Repository\Media\MediaRepository;
 use App\Service\Core\Urlizer;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -26,10 +27,11 @@ class UniqFileNameValidator extends ConstraintValidator
      * UniqFileValidator constructor.
      */
     public function __construct(
-        private readonly TranslatorInterface $translator,
-        private readonly MediaRepository $mediaRepository,
-        private readonly \Symfony\Component\HttpFoundation\RequestStack $requestStack,
-    ) {
+        private readonly TranslatorInterface                            $translator,
+        private readonly MediaRepository                                $mediaRepository,
+        private readonly RequestStack $requestStack,
+    )
+    {
     }
 
     /**

@@ -35,9 +35,10 @@ class CategoryType extends AbstractType
      * @throws InvalidArgumentException
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $this->user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $this->user && in_array('ROLE_INTERNAL', $this->user->getRoles());
@@ -62,7 +63,7 @@ class CategoryType extends AbstractType
             'required' => false,
             'class' => Module::class,
             'attr' => ['placeholder' => $this->translator->trans('Sélectionnez un module', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-sm-3'],
             'choices' => $this->getModules($options['website']),

@@ -10,6 +10,7 @@ use App\Entity\Module\Recruitment\Contract;
 use App\Entity\Module\Recruitment\Job;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityRepository;
+use Exception;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -41,7 +42,7 @@ class FrontFiltersType extends AbstractType
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

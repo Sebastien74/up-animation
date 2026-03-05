@@ -21,19 +21,20 @@ class SecurityFormManagerLocator implements SecurityFormManagerInterface
      * ApiFormManagerLocator constructor.
      */
     public function __construct(
-        #[AutowireLocator(AdminSecurity\CompanyManager::class, indexAttribute: 'key')] protected ServiceLocator $adminCompanyLocator,
+        #[AutowireLocator(AdminSecurity\CompanyManager::class, indexAttribute: 'key')] protected ServiceLocator         $adminCompanyLocator,
         #[AutowireLocator(AdminSecurity\ConfirmPasswordManager::class, indexAttribute: 'key')] protected ServiceLocator $adminConfirmPasswordLocator,
-        #[AutowireLocator(AdminSecurity\GroupPasswordManager::class, indexAttribute: 'key')] protected ServiceLocator $adminGroupPasswordLocator,
-        #[AutowireLocator(AdminSecurity\RegisterManager::class, indexAttribute: 'key')] protected ServiceLocator $adminRegisterLocator,
-        #[AutowireLocator(AdminSecurity\ResetPasswordManager::class, indexAttribute: 'key')] protected ServiceLocator $adminResetPasswordLocator,
-        #[AutowireLocator(AdminSecurity\RoleManager::class, indexAttribute: 'key')] protected ServiceLocator $adminRoleLocator,
-        #[AutowireLocator(AdminSecurity\UserManager::class, indexAttribute: 'key')] protected ServiceLocator $adminUserLocator,
+        #[AutowireLocator(AdminSecurity\GroupPasswordManager::class, indexAttribute: 'key')] protected ServiceLocator   $adminGroupPasswordLocator,
+        #[AutowireLocator(AdminSecurity\RegisterManager::class, indexAttribute: 'key')] protected ServiceLocator        $adminRegisterLocator,
+        #[AutowireLocator(AdminSecurity\ResetPasswordManager::class, indexAttribute: 'key')] protected ServiceLocator   $adminResetPasswordLocator,
+        #[AutowireLocator(AdminSecurity\RoleManager::class, indexAttribute: 'key')] protected ServiceLocator            $adminRoleLocator,
+        #[AutowireLocator(AdminSecurity\UserManager::class, indexAttribute: 'key')] protected ServiceLocator            $adminUserLocator,
         #[AutowireLocator(FrontSecurity\ConfirmPasswordManager::class, indexAttribute: 'key')] protected ServiceLocator $frontConfirmPasswordLocator,
-        #[AutowireLocator(FrontSecurity\ProfileManager::class, indexAttribute: 'key')] protected ServiceLocator $frontProfileLocator,
-        #[AutowireLocator(FrontSecurity\RegisterManager::class, indexAttribute: 'key')] protected ServiceLocator $frontRegisterLocator,
-        #[AutowireLocator(FrontSecurity\ResetPasswordManager::class, indexAttribute: 'key')] protected ServiceLocator $frontResetPasswordLocator,
-        #[AutowireLocator(FrontSecurity\UserManager::class, indexAttribute: 'key')] protected ServiceLocator $frontUserLocator,
-    ) {
+        #[AutowireLocator(FrontSecurity\ProfileManager::class, indexAttribute: 'key')] protected ServiceLocator         $frontProfileLocator,
+        #[AutowireLocator(FrontSecurity\RegisterManager::class, indexAttribute: 'key')] protected ServiceLocator        $frontRegisterLocator,
+        #[AutowireLocator(FrontSecurity\ResetPasswordManager::class, indexAttribute: 'key')] protected ServiceLocator   $frontResetPasswordLocator,
+        #[AutowireLocator(FrontSecurity\UserManager::class, indexAttribute: 'key')] protected ServiceLocator            $frontUserLocator,
+    )
+    {
     }
 
     /**

@@ -14,13 +14,22 @@ use App\Form\Manager\Core as CoreManager;
 interface CoreFormManagerInterface
 {
     public function base(): CoreManager\BaseManager;
+
     public function configuration(): CoreManager\ConfigurationManager;
+
     public function entityConfiguration(): CoreManager\EntityConfigurationManager;
+
     public function global(): CoreManager\GlobalManager;
+
     public function icon(): CoreManager\IconManager;
+
     public function search(): CoreManager\SearchManager;
+
     public function session(): CoreManager\SessionManager;
+
     public function support(): CoreManager\SupportManager;
+
     public function tree(): CoreManager\TreeManager;
+
     public function website(): CoreManager\WebsiteManager;
 }

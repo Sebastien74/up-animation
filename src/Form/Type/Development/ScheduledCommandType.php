@@ -41,23 +41,21 @@ class ScheduledCommandType extends AbstractType
             'label' => $this->translator->trans('Commande', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'display' => 'search',
-            
+
             'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-md-4'],
         ]);
 
         $builder->add('cronExpression', Type\TextType::class, [
             'label' => $this->translator->trans('Expression cron', [], 'admin'),
-            'attr' => ['placeholder' => $this->translator->trans('*/10 * * * *', [],
-            'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-md-4'], 'admin'),
-            ],
+            'attr' => ['placeholder' => $this->translator->trans('*/10 * * * *', [], 'admin')],
+            'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-md-4'],
             'help' => '<a href="http://www.abunchofutils.com/utils/developer/cron-expression-helper/" target="_blank">'.$this->translator->trans('Générer', [], 'admin').'</a>',
         ]);
 
         $builder->add('description', Type\TextType::class, [
             'label' => $this->translator->trans('Description', [], 'admin'),
-            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description*', [],
-            'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-md-9'], 'admin'),
-            ],
+            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description*', [], 'admin')],
+            'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-md-9'],
         ]);
 
         if (!$isNew) {
@@ -65,9 +63,9 @@ class ScheduledCommandType extends AbstractType
                 'required' => false,
                 'label' => $this->translator->trans('Nom du fichier de log', [], 'admin'),
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez un nom', [],
-                 'admin')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                    'admin')
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
             $builder->add('executeImmediately', Type\CheckboxType::class, [

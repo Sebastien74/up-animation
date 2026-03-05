@@ -6,6 +6,8 @@ namespace App\Form\DataTransformer;
 
 use App\Entity\Security\User;
 use App\Repository\Security\UserRepository;
+use Closure;
+use LogicException;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -23,7 +25,7 @@ class EmailToUserTransformer implements DataTransformerInterface
      */
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly \Closure $finderCallback)
+        private readonly Closure       $finderCallback)
     {
     }
 
@@ -34,7 +36,7 @@ class EmailToUserTransformer implements DataTransformerInterface
         }
 
         if (!$value instanceof User) {
-            throw new \LogicException('The UserEmailSelectType can only be used with User objects');
+            throw new LogicException('The UserEmailSelectType can only be used with User objects');
         }
 
         return $value->getEmail();

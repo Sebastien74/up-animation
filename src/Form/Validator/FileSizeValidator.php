@@ -7,6 +7,7 @@ namespace App\Form\Validator;
 use App\Service\Content\ImageThumbnailInterface;
 use App\Twig\Content\FileRuntime;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -29,11 +30,12 @@ class FileSizeValidator extends ConstraintValidator
      * FileSizeValidator constructor.
      */
     public function __construct(
-        private readonly TranslatorInterface $translator,
-        private readonly ImageThumbnailInterface $imageThumbnail,
-        private readonly FileRuntime $fileRuntime,
-        private readonly \Symfony\Component\HttpFoundation\RequestStack $requestStack,
-    ) {
+        private readonly TranslatorInterface                            $translator,
+        private readonly ImageThumbnailInterface                        $imageThumbnail,
+        private readonly FileRuntime                                    $fileRuntime,
+        private readonly RequestStack $requestStack,
+    )
+    {
     }
 
     /**

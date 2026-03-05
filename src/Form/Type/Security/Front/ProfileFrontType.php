@@ -26,8 +26,7 @@ class ProfileFrontType extends AbstractType
 //        //                $this->translator->trans('M.', [], 'security_cms') => 'mr',
 //        //                $this->translator->trans('Mme', [], 'security_cms') => 'ms',
 //        //            ],
-//        //            
-            'row_attr' => ['class' => 'col-12'],
+//                      'row_attr' => ['class' => 'col-12'],
 //        //            'constraints' => [
 //        //                new Assert\NotBlank([
 //        //                    'message' => $this->translator->trans("Veuillez séléctionnez un genre.", [], 'admin')

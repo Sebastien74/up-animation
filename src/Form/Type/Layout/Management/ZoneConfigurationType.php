@@ -31,9 +31,10 @@ class ZoneConfigurationType extends AbstractType
      * ZoneConfigurationType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
+        private readonly CoreLocatorInterface  $coreLocator,
         private readonly TokenStorageInterface $tokenStorage,
-    ) {
+    )
+    {
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
@@ -54,7 +55,7 @@ class ZoneConfigurationType extends AbstractType
             'label' => $this->translator->trans('Classes personnalisées', [], 'admin'),
             'attr' => ['class' => 'col-12 input-css',
                 'placeholder' => $this->translator->trans('Éditer', [],
-                 'admin')
+                    'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-8'],
         ]);
@@ -63,7 +64,7 @@ class ZoneConfigurationType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('Id personnalisé', [], 'admin'),
             'attr' => ['placeholder' => $this->translator->trans('Éditer', [],
-                 'admin')
+                'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
@@ -74,7 +75,7 @@ class ZoneConfigurationType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Id pour ancre', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $margins = new MarginType($this->coreLocator);
@@ -84,7 +85,7 @@ class ZoneConfigurationType extends AbstractType
         $transitions->add($builder, ['website' => $website]);
 
         $builder->add('alignment', AlignmentType::class, [
-            
+
             'row_attr' => ['class' => $zone->isFullSize() ? 'col-12' : 'col-md-6'],
         ]);
 
@@ -109,37 +110,37 @@ class ZoneConfigurationType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Étendre', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $builder->add('hideMobile', HideType::class, [
             'label' => $this->translator->trans('Cacher la zone sur mobile', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideTablet', HideType::class, [
             'label' => $this->translator->trans('Cacher la zone sur tablette', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideMiniPc', HideType::class, [
             'label' => $this->translator->trans('Cacher la zone sur mini PC', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hideDesktop', HideType::class, [
             'label' => $this->translator->trans('Cacher la zone sur PC', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
         $builder->add('hide', HideType::class, [
             'label' => $this->translator->trans('Cacher la zone', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $centerColLabel = 1 === $zone->getCols()->count()
@@ -151,7 +152,7 @@ class ZoneConfigurationType extends AbstractType
             'color' => 'app',
             'label' => $centerColLabel,
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $colToRightLabel = 1 === $zone->getCols()->count()
@@ -163,7 +164,7 @@ class ZoneConfigurationType extends AbstractType
             'color' => 'app',
             'label' => $colToRightLabel,
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         $colToRightLabel = 1 === $zone->getCols()->count()
@@ -175,7 +176,7 @@ class ZoneConfigurationType extends AbstractType
             'color' => 'app',
             'label' => $colToRightLabel,
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
         if ($zone->getCols()->count() > 1) {
@@ -198,7 +199,7 @@ class ZoneConfigurationType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Uniformiser la hauteur des médias', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         $radiusType = new RadiusType($this->coreLocator);
@@ -258,8 +259,8 @@ class ZoneConfigurationType extends AbstractType
 
         if ($multiLocales) {
             $builder->add('hideLocales', WebsiteLocalesType::class, [
-                
-            'row_attr' => ['class' => $this->isInternalUser ? 'col-md-6' : 'col-12'],
+
+                'row_attr' => ['class' => $this->isInternalUser ? 'col-md-6' : 'col-12'],
             ]);
         }
 

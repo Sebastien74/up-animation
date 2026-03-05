@@ -90,7 +90,7 @@ class BlockManager
             foreach ($localesMedias as $localeMediaRelations) {
                 if (count($localeMediaRelations) > 2) {
                     foreach ($localeMediaRelations as $key => $mediaRelation) {
-                        $mediaRelation->setPosition($key  + 1);
+                        $mediaRelation->setPosition($key + 1);
                         $this->coreLocator->em()->persist($mediaRelation);
                         if ($mediaRelation->getPosition() > 2) {
                             $this->coreLocator->em()->remove($mediaRelation);

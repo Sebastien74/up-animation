@@ -43,15 +43,15 @@ class GroupPasswordType extends AbstractType
                 'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 password-generator'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 password-generator'],
             ],
             'second_options' => [
                 'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez le mot de passe', [], 'security_cms')
-            ],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
+                ],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ],
         ]);
 

@@ -83,7 +83,7 @@ class LotType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Vendu', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 d-flex align-items-end'],
+            'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 d-flex align-items-end'],
         ]);
     }
 
