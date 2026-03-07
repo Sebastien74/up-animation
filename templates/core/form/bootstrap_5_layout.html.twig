@@ -197,7 +197,7 @@
     {%- else -%}
         {{- parent() -}}
     {%- endif -%}
-    {%- set attrGroup = attr.group is defined ? attr.group : (attr['data-group'] is defined ? attr['data-group'] : null) -%}
+    {%- set attrGroup = row_attr is defined ? row_attr : (attr['data-group'] is defined ? attr['data-group'] : null) -%}
     {%- if 'password-generator' in attrGroup -%}
         <small id="help_{{ id }}" class="form-text generator-password"><i class="icm-sync"></i>{{ "Générer un mot de passe"|trans([], 'admin')|raw }}</small>
     {%- endif -%}

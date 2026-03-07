@@ -376,7 +376,7 @@ class FormHelper
     }
 
     /**
-     * Form submission process.
+     * Form a submission process.
      *
      * @throws ContainerExceptionInterface|NotFoundExceptionInterface|InvalidArgumentException
      */

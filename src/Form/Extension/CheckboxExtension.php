@@ -42,8 +42,8 @@ class CheckboxExtension implements FormTypeExtensionInterface
             $view->vars['attr']['class'] = $class;
         }
 
-        $group = !empty($options['attr']['group']) ? $options['attr']['group'].' ' : 'col-12 ';
-        $view->vars['attr']['group'] = $group.'checkbox-group';
+        $group = !empty($options['row_attr']['class']) ? $options['row_attr']['class'].' ' : 'col-12 ';
+        $view->vars['row_attr']['class'] = $group.'checkbox-group';
 
         $parentConfiguration = $form->getParent()->getConfig();
         $choiceList = !empty($form->getParent()->getConfig()->getAttributes()['choice_list']) ? $form->getParent()->getConfig()->getAttributes()['choice_list'] : null;

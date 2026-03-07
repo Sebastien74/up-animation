@@ -73,7 +73,6 @@ class PageDuplicateType extends AbstractType
             'choice_label' => function ($entity) {
                 return strip_tags($entity->getAdminName());
             },
-
             'row_attr' => ['class' => $multiSites ? 'col-md-4' : 'col-md-6'],
         ]);
 
@@ -95,7 +94,6 @@ class PageDuplicateType extends AbstractType
             'choice_label' => function ($entity) {
                 return strip_tags($entity->getAdminName());
             },
-
             'row_attr' => ['class' => $multiSites ? 'col-md-4' : 'd-none'],
         ]);
 

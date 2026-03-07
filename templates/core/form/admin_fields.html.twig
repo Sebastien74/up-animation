@@ -45,7 +45,7 @@
                            data-hexa="{{ hexa }}"
                            style="background-color: {{ hexa }}; border-color: {{ hexa }};">
                         {%- if hexa == 'transparent' -%}
-                            {{ 'far times'|icon(34, 37, 'white') }}
+                            <i class="icm-times"></i>
                         {%- endif -%}
                         <input type="radio"
                                id="{{ filedId }}"
@@ -74,7 +74,7 @@
                            data-hexa="{{ hexa }}"
                            style="background-color: {{ hexa }};">
                         {%- if hexa == 'transparent' -%}
-                            {{ 'far times'|icon(34, 37, 'white') }}
+                            <i class="icm-times"></i>
                         {%- endif -%}
                         <input type="radio"
                                id="{{ filedId }}"
@@ -103,7 +103,7 @@
                            data-hexa="{{ hexa }}"
                            style="background-color: {{ hexa }};">
                         {%- if hexa == 'transparent' -%}
-                            {{ 'far times'|icon(34, 37, 'white') }}
+                            <i class="icm-times"></i>
                         {%- endif -%}
                         <input type="radio"
                                id="{{ filedId }}"
@@ -253,7 +253,7 @@
     {%- endmacro -%}
 
     {%- set prototypeOptions = form.vars.prototype.vars -%}
-    {%- set prototypeGroup = prototypeOptions.attr.group is defined ? prototypeOptions.attr.group : (prototypeOptions.attr['data-group'] is defined ? prototypeOptions.attr['data-group'] : null) -%}
+    {%- set prototypeGroup = prototypeOptions.row_attr is defined ? prototypeOptions.row_attr : (prototypeOptions.attr['data-group'] is defined ? prototypeOptions.attr['data-group'] : null) -%}
     {%- set prototypePosition = true -%}
 
     <div id="{{ id }}_collection"

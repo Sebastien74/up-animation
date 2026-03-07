@@ -15,8 +15,8 @@
     width: 100%;
     position: relative;
 
-    .marquee::before,
-    .marquee::after {
+    &::before,
+    &::after {
         content: "";
         position: absolute;
         top: 0;
@@ -28,13 +28,13 @@
     }
 
     /* Left fade */
-    .marquee::before {
+    &::before {
         left: 0;
         background: linear-gradient(to right, $body-bg 0%, rgba(255, 255, 255, 0) 100%);
     }
 
     /* Right fade */
-    .marquee::after {
+    &::after {
         right: 0;
         background: linear-gradient(to left, $body-bg 0%, rgba(255, 255, 255, 0) 100%);
     }
@@ -48,11 +48,11 @@
 
         .marquee-content {
 
+            white-space: nowrap;
+            pointer-events: auto; // Réactive les événements sur le contenu si besoin
             display: inline-flex;
             align-items: center;
             gap: 0 16px;
-            white-space: nowrap;
-            pointer-events: auto; // Réactive les événements sur le contenu si besoin
 
             .marquee-item {
 

@@ -1,6 +1,6 @@
 ﻿{%- trans_default_domain 'admin' -%}
 
-<h4 class="text-dark w-100 text-center mb-3 position-relative">
+<h2 class="main-title text-dark w-100 text-center mb-3 position-relative">
     {{ "Marges"|trans }}
     {%- if interface.name is defined and 'zone' == interface.name -%}
         <span class="reset-margins h-100 position-absolute d-inline-flex justify-content-center align-items-center cursor"
@@ -16,43 +16,48 @@
             <i class="icm-sync"></i>
         </span>
     {%- endif -%}
-</h4>
+</h2>
 
 {%- set tabs = {
     desktop: {
-        title: "Ordinateur"|trans
+        title: "Ordinateur"|trans,
+        icon: "icm-desktop"
     },
     miniPc: {
         title: "Mini PC"|trans,
-        field: "MiniPc"
+        field: "MiniPc",
+        icon: "icm-laptop"
     },
     tablet: {
-        title: "Tablette"|trans
+        title: "Tablette"|trans,
+        icon: "icm-tablet"
     },
     mobile: {
-        title: "Mobile"|trans
+        title: "Mobile"|trans,
+        icon: "icm-mobile"
     }} -%}
 
-<ul class="nav nav-tabs" role="tablist">
+<ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" role="tablist">
     {%- for tabId, config in tabs -%}
-        <li class="nav-item">
-            <a id="nav-{{ tabId }}-tab-margin" class="nav-link {% if loop.first %} active{% endif %}"
+        <li class="nav-item flex-fill">
+            <a id="nav-{{ tabId }}-tab-margin" class="btn-app w-100 {% if loop.first %} active{% endif %}"
                data-bs-toggle="tab"
                data-bs-target="#{{ tabId }}-margin"
                aria-controls="{{ tabId }}-margin"
                type="button"
                role="tab"
                aria-selected="{% if loop.first %}true{% else %}false{% endif %}">
+                <i class="{{ config.icon }}"></i>
                 <span class="d-none d-sm-inline-block">{{ config.title }}</span>
             </a>
         </li>
     {%- endfor -%}
 </ul>
 
-<div id="margins-management-block" class="tab-content pt-4">
+<div id="margins-management-block" class="tab-content config-tabs-content pt-4">
     {%- for tabId, config in tabs -%}
         {%- set suffix = tabId == 'desktop' ? '' : (config.field is defined ? config.field : tabId|capitalize) -%}
-        <div class="tab-pane fade text-center w-100 mb-4{% if loop.first %} active show{% endif %}" id="{{ tabId }}-margin" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab-margin">
+        <div class="tab-pane fade text-center w-100 mb-4 tab-pane-config{% if loop.first %} active show{% endif %}" id="{{ tabId }}-margin" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab-margin">
             <div class="margin-dashed d-inline-block mx-auto position-relative">
                 <small class="margin-info position-absolute">{{ "Marge extérieure"|trans }}</small>
                 <div class="row">

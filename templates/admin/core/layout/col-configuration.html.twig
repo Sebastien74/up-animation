@@ -13,7 +13,7 @@
             <div class="modal-dialog modal-dialog-centered modal-xxl" role="document">
                 <div class="modal-content border">
                     <div class="modal-header">
-                        <h5 class="modal-title text-center w-100" id="modal-col-configuration-{{ interface['name']~'-'~entity.id }}-label"><i class="icm-cog"></i></h5>
+                        <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-cog"></i></span></span>
                         <button class="btn-close btn-icon" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
                             <i class="icm-times"></i>
                         </button>
@@ -22,37 +22,37 @@
 
                         <h2 class="main-title text-center fw-bold mb-5">{{ "Configuration de la colonne"|trans|raw }}</h2>
 
-                        <ul class="nav nav-tabs config-tabs" id="col-configuration-tab" role="tablist">
+                        <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" id="col-configuration-tab" role="tablist">
                             <li class="nav-item text-center">
-                                <a class="nav-link active" id="general-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">
+                                <a class="btn-app active" id="general-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">
                                     <i class="icm-star"></i>{{ "Général"|trans|raw }}
                                 </a>
                             </li>
                             {%- if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 -%}
                                 <li class="nav-item text-center">
-                                    <a class="nav-link" id="animation-tab" data-bs-toggle="tab" href="#animation" role="tab" aria-controls="animation" aria-selected="false">
+                                    <a class="btn-app" id="animation-tab" data-bs-toggle="tab" href="#animation" role="tab" aria-controls="animation" aria-selected="false">
                                         <i class="icm-hurricane"></i>{{ "Animation / Styles"|trans|raw }}
                                     </a>
                                 </li>
                             {%- endif -%}
                             <li class="nav-item text-center">
-                                <a class="nav-link" id="fingerprint-tab" data-bs-toggle="tab" href="#fingerprint" role="tab" aria-controls="fingerprint" aria-selected="false">
+                                <a class="btn-app" id="fingerprint-tab" data-bs-toggle="tab" href="#fingerprint" role="tab" aria-controls="fingerprint" aria-selected="false">
                                     <i class="icm-fingerprint"></i>{{ "Identifiants"|trans|raw }}
                                 </a>
                             </li>
                             <li class="nav-item text-center">
-                                <a class="nav-link" id="screens-tab" data-bs-toggle="tab" href="#screens" role="tab" aria-controls="screens" aria-selected="false">
+                                <a class="btn-app" id="screens-tab" data-bs-toggle="tab" href="#screens" role="tab" aria-controls="screens" aria-selected="false">
                                     <i class="icm-desktop"></i>{{ "Écrans"|trans|raw }}
                                 </a>
                             </li>
                             <li class="nav-item text-center">
-                                <a class="nav-link" id="blocks-tab" data-bs-toggle="tab" href="#blocks" role="tab" aria-controls="blocks" aria-selected="false">
+                                <a class="btn-app" id="blocks-tab" data-bs-toggle="tab" href="#blocks" role="tab" aria-controls="blocks" aria-selected="false">
                                     <i class="icm-th-large"></i>{{ "Blocs"|trans|raw }}
                                 </a>
                             </li>
                             {%- if form.intls is defined -%}
                                 <li class="nav-item text-center">
-                                    <a class="nav-link" id="content-tab" data-bs-toggle="tab" href="#content" role="tab" aria-controls="content" aria-selected="false">
+                                    <a class="btn-app" id="content-tab" data-bs-toggle="tab" href="#content" role="tab" aria-controls="content" aria-selected="false">
                                         <i class="icm-text"></i>{{ "Contenu"|trans|raw }}
                                     </a>
                                 </li>
@@ -66,7 +66,7 @@
                                         {%- include 'admin/core/layout/margins.html.twig' -%}
                                     </div>
                                     <div class="col-md-6">
-                                        <h4 class="w-100 text-center mb-3">{{ "Alignements"|trans }}</h4>
+                                        <h2 class="main-title text-center mb-3">{{ "Alignements"|trans }}</h2>
                                         <div class="row">
                                             {%- if form.alignment is defined -%}
                                                 {{ form_row(form.alignment) }}
@@ -81,7 +81,7 @@
                                                 {{ form_row(form.endAlign) }}
                                             {%- endif -%}
                                         </div>
-                                        <h4 class="w-100 text-center mb-3">{{ "Autres"|trans }}</h4>
+                                        <h2 class="main-title text-center mb-3">{{ "Autres"|trans }}</h2>
                                         <div class="row">
                                             {%- if form.fullSize is defined -%}
                                                 {{ form_row(form.fullSize) }}
@@ -102,11 +102,11 @@
                             {%- if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 -%}
                                 <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="animation" role="tabpanel" aria-labelledby="animation-tab">
                                     <div class="row">
-                                        <h4 class="text-dark w-100 text-center mb-3">{{ "Animation"|trans }}</h4>
+                                        <h2 class="main-title text-dark w-100 text-center mb-3">{{ "Animation"|trans }}</h2>
                                         {{ form_row(form.transition) }}
                                         {{ form_row(form.delay) }}
                                         {{ form_row(form.duration) }}
-                                        <h4 class="text-dark w-100 text-center mb-3">{{ "Styles"|trans }}</h4>
+                                        <h2 class="main-title text-dark w-100 text-center mb-3">{{ "Styles"|trans }}</h2>
                                         <div class="row justify-content-center">
                                             {%- if form.shadow is defined -%}
                                                 {{ form_row(form.shadow) }}
@@ -136,7 +136,7 @@
                                 {%- include 'admin/core/layout/custom-identifiers.html.twig' -%}
                             </div>
                             <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="screens" role="tabpanel" aria-labelledby="screens-tab">
-                                <h4 class="text-dark w-100 text-center mb-3">{{ "Cacher"|trans }}</h4>
+                                <h2 class="main-title text-dark w-100 text-center mb-3">{{ "Cacher"|trans }}</h2>
                                 <div class="row">
                                     {%- if form.hideMobile is defined -%}
                                         {{ form_row(form.hideMobile) }}
@@ -151,13 +151,13 @@
                                         {{ form_row(form.hideDesktop) }}
                                     {%- endif -%}
                                 </div>
-                                <h4 class="text-dark w-100 text-center mb-3">{{ "Autres"|trans }}</h4>
+                                <h2 class="main-title text-dark w-100 text-center mb-3">{{ "Autres"|trans }}</h2>
                                 <div class="row">
                                     {%- if form.reverse is defined -%}
                                         {{ form_row(form.reverse) }}
                                     {%- endif -%}
                                 </div>
-                                <h4 class="text-dark w-100 text-center mb-3">{{ "Ordres / Tailles de la colonne"|trans }}</h4>
+                                <h2 class="main-title text-dark w-100 text-center mb-3">{{ "Ordres / Tailles de la colonne"|trans }}</h2>
                                 <div class="row">
                                     {%- if form.mobilePosition is defined -%}
                                         {{ form_row(form.mobilePosition) }}
@@ -193,8 +193,8 @@
 
                     </div>
                     <div class="modal-footer px-4">
-                        <div class="col-12">
-                            {{ form_widget(form.save) }}
+                        <div class="col-12 d-flex justify-content-end">
+                            {{ form_widget(form.save, {attr: {class: 'btn-app'}}) }}
                         </div>
                     </div>
                 </div>

@@ -830,4 +830,147 @@ form {
             }
         }
     }
+
+    .asColorPicker-wrap {
+
+        display: flex;
+
+        .asColorPicker-trigger {
+
+            position: absolute;
+            right: .5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 5px;
+            border: 1px solid $btn-surface;
+
+            span {
+                border-radius: 5px;
+            }
+        }
+    }
+}
+
+.asColorPicker-dropdown {
+    background: $dash-dark;
+    border: 1px solid $input-border-color;
+    border-radius: $border-radius;
+    box-shadow: $btn-shadow;
+    padding: 1rem;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .asColorPicker-palettes {
+        background: transparent;
+        border: 0;
+        order: 5;
+    }
+
+    .asColorPicker-buttons {
+        display: flex;
+        gap: .5rem;
+        margin-top: .5rem;
+        order: 4;
+
+        .asColorPicker-button {
+            background: $btn-surface;
+            border: 1px solid $btn-border;
+            color: $btn-text;
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 12px;
+            transition: all .3s linear;
+            flex: 1;
+            text-align: center;
+
+            &:hover {
+                background: $btn-surface-hover;
+                border-color: $btn-border-hover;
+                color: $white;
+            }
+        }
+    }
+
+    .asColorPicker-hex {
+        background: $btn-surface;
+        border: 1px solid $input-border-color;
+        border-radius: 8px;
+        color: $white;
+        padding: 4px 8px;
+        font-size: 12px;
+        width: 100%;
+        margin-bottom: .5rem;
+        order: 3;
+    }
+
+    .asColorPicker-saturation {
+        width: 100% !important;
+        height: 180px !important;
+        margin-bottom: .75rem;
+        order: 0;
+        background-size: cover;
+        float: none;
+        display: block;
+    }
+
+    .asColorPicker-alpha,
+    .asColorPicker-hue {
+        float: none;
+        display: block;
+        width: 100% !important;
+        height: 20px !important;
+        margin-bottom: .75rem;
+        margin-left: 0 !important;
+        position: relative;
+        cursor: pointer;
+
+        .asColorPicker-alpha-pointer,
+        .asColorPicker-hue-pointer {
+            top: 0;
+            height: 100%;
+            width: 6px;
+            margin-left: -3px;
+            border: 1px solid #fff;
+            position: absolute;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: ew-resize;
+        }
+
+        i {
+            display: none; // Cache le curseur par défaut si asColorPicker en injecte un autre
+        }
+    }
+
+    .asColorPicker-hue {
+        order: 1;
+        border-radius: 5px;
+        background-image: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+    }
+
+    .asColorPicker-alpha {
+        order: 2;
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACFJREFUeNpiZEAC/7EEMDORj4nORL4nUXST6D8S9EOCfAgwAB98DAn7Wv7VAAAAAElFTkSuQmCC");
+        border-radius: 5px;
+
+        .asColorPicker-alpha-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            background-image: linear-gradient(to right, transparent, #000);
+        }
+    }
+
+    &.asColorPicker-dropdown-hide {
+        display: none;
+    }
 }

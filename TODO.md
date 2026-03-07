@@ -1,6 +1,18 @@
 Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
-pour les ul remplacer par 
+Slider marquee ajouter dans back bannière petite images, moyennes images et grandes images et faire le CSS pour les 3 tailles
+Et ajouter aussi data-speed="20" data-speed-mobile="20" etc
+
+Dans mixin before retirer :before et :after
+
+Récupérer les groupe d'onglets de sydev
+
+Pour les erreurs de form invisible faire :
+            dump($form->isSynchronized());
+            dump((string) $form->getErrors(true, true));
+            dd($form->getErrors()->count());
+
+pour les ul remplacer par et virer la longue chaine :not pas bon pour la vitesses
 
             ul {
 

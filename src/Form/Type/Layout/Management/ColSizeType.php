@@ -49,7 +49,7 @@ class ColSizeType extends AbstractType
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Ajouter', [], 'admin'),
             'attr' => [
-                'class' => 'col-12 btn-app d-none edit-element-submit-btn disable-preloader',
+                'class' => 'btn-app d-none edit-element-submit-btn disable-preloader',
                 'data-icon' => 'plus',
                 'data-icon-side' => 'left',
             ],

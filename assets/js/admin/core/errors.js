@@ -1,5 +1,6 @@
 import '../bootstrap/dist/modal';
 import '../bootstrap/dist/alert';
+import {AlertHTML} from '../functions';
 
 /**
  * To display Errors messages
@@ -29,37 +30,37 @@ export default function (error = null, element = null) {
         let status = 500;
         let statusText = trans ? trans.dataset.internalError : 'Internal Error';
 
-        if (typeof error != 'string') {
-            text = error.responseText || error.statusText || 'Error';
-            status = error.status;
-            statusText = error.statusText;
+        if (typeof error === 'string') {
+            text = error;
+        } else if (error) {
+            // JSON.parse / SyntaxError / Error
+            if (typeof error.message === 'string' && error.message.trim() !== '') {
+                text = error.message;
+            }
+            // XHR / fetch-like
+            else if (typeof error.responseText === 'string' && error.responseText.trim() !== '') {
+                text = error.responseText;
+            }
+            // Ajax: errorThrown
+            else if (typeof error.statusText === 'string' && error.statusText.trim() !== '') {
+                text = error.statusText;
+            } else if (typeof error.toString === 'function') {
+                text = String(error);
+            }
+            if (typeof error.status === 'number') status = error.status;
+            if (typeof error.statusText === 'string') statusText = error.statusText;
         }
 
         const adminBody = document.getElementById('admin-body');
         let blockToDisplay = element === null ? adminBody : (element.length > 0 || element instanceof HTMLElement ? element : adminBody);
 
         if (body.classList.contains('internal') && typeof text != 'undefined') {
-            let message = '<div class="internal-error-alert alert alert-danger position-relative d-flex p-0 mt-3">';
-            message += '<div class="icon d-flex align-items-center justify-content-center position-relative">';
-            message += '<svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 576 512"><path d="M248.747 204.705l6.588 112c.373 6.343 5.626 11.295 11.979 11.295h41.37a12 12 0 0 0 11.979-11.295l6.588-112c.405-6.893-5.075-12.705-11.979-12.705h-54.547c-6.903 0-12.383 5.812-11.978 12.705zM330 384c0 23.196-18.804 42-42 42s-42-18.804-42-42 18.804-42 42-42 42 18.804 42 42zm-.423-360.015c-18.433-31.951-64.687-32.009-83.154 0L6.477 440.013C-11.945 471.946 11.118 512 48.054 512H527.94c36.865 0 60.035-39.993 41.577-71.987L329.577 23.985zM53.191 455.002L282.803 57.008c2.309-4.002 8.085-4.002 10.394 0l229.612 397.993c2.308 4-.579 8.998-5.197 8.998H58.388c-4.617.001-7.504-4.997-5.197-8.997z"/></svg>';
-            message += '</div>';
-            message += '<div class="message px-4 py-3 w-100">';
-            message += text;
-            message += '</div>';
-            message += '</div>';
-            if (blockToDisplay) blockToDisplay.insertAdjacentHTML('afterbegin', message);
+            if (blockToDisplay) blockToDisplay.insertAdjacentHTML('afterbegin', AlertHTML(text));
         }
 
         if (status !== 0 && statusText !== "error") {
-            let message = '<div class="internal-error-alert alert alert-danger position-relative d-flex p-0 mt-3">';
-            message += '<div class="icon d-flex align-items-center justify-content-center position-relative">';
-            message += '<svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 576 512"><path d="M248.747 204.705l6.588 112c.373 6.343 5.626 11.295 11.979 11.295h41.37a12 12 0 0 0 11.979-11.295l6.588-112c.405-6.893-5.075-12.705-11.979-12.705h-54.547c-6.903 0-12.383 5.812-11.978 12.705zM330 384c0 23.196-18.804 42-42 42s-42-18.804-42-42 18.804-42 42-42 42 18.804 42 42zm-.423-360.015c-18.433-31.951-64.687-32.009-83.154 0L6.477 440.013C-11.945 471.946 11.118 512 48.054 512H527.94c36.865 0 60.035-39.993 41.577-71.987L329.577 23.985zM53.191 455.002L282.803 57.008c2.309-4.002 8.085-4.002 10.394 0l229.612 397.993c2.308 4-.579 8.998-5.197 8.998H58.388c-4.617.001-7.504-4.997-5.197-8.997z"/></svg>';
-            message += '</div>';
-            message += '<div class="message px-4 py-3 w-100">';
-            message += '<strong class="me-2">' + (trans ? trans.dataset.error : 'Error') + ' ' + status + '</strong>' + statusText;
-            message += '</div>';
-            message += '</div>';
-            if (blockToDisplay) blockToDisplay.insertAdjacentHTML('afterbegin', message);
+            const text = '<strong class="me-2">' + (trans ? trans.dataset.error : 'Error') + ' ' + status + '</strong>' + statusText;
+            if (blockToDisplay) blockToDisplay.insertAdjacentHTML('afterbegin', AlertHTML(text));
         }
 
         document.querySelectorAll('.stripe-preloader').forEach(el => el.classList.add('d-none'));
@@ -73,7 +74,7 @@ export default function (error = null, element = null) {
             });
         }
 
-        const firstError = document.querySelector('.page-wrapper > .container-fluid .internal-error-alert');
+        const firstError = document.querySelector('.internal-error-alert');
 
         if (firstError) {
             const rect = firstError.getBoundingClientRect();

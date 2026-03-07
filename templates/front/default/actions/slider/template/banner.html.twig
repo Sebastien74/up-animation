@@ -1,14 +1,18 @@
 ﻿{%- trans_default_domain 'front_default' -%}
 
 {%- set withThumbs = false -%}
+{%- set side = 'left' -%}
+{%- set speed = 100 -%}
 
-<div class="marquee items-center marquee-left"
-     data-direction="left"
-     data-speed="100">
+<div class="marquee marquee-{{ side }} items-center"
+     data-direction="{{ side }}"
+     data-speed="{{ speed }}">
     <div class="marquee-inner">
         <div class="marquee-content d-inline-flex align-items-center">
             {%- for media in medias -%}
-                {%- set display = (mediaType == 'video' and media.videoLink is not empty) or (media.media.filename is defined and media.media.filename) -%}
+                {% set mediaType = (media.media.screen is defined and media.media.screen == 'poster')
+                    or (media.intl.video is defined and media.intl.video) ? 'video' : 'image' %}
+                {% set display = mediaType != 'video' and media.media.filename is defined and media.media.filename %}
                 {%- if display -%}
                     <div class="marquee-item d-flex align-items-center justify-content-center px-2 h-100">
                         {%- if withThumbs -%}

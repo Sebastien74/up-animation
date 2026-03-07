@@ -112,9 +112,9 @@ class IntlType extends AbstractType
                 'label' => $this->getAttribute('titleForce', 'label'),
                 'placeholder' => $this->getAttribute('titleForce', 'placeholder'),
                 'attr' => [
-                    'group' => 'col-md-2',
                     'data-placeholder' => $this->getAttribute('titleForce', 'placeholder'),
                 ],
+                'row_attr' => ['class' => 'col-md-2'],
                 'choices' => ['H1' => 1, 'H2' => 2, 'H3' => 3, 'H4' => 4, 'H5' => 5, 'H6' => 6],
                 'help' => $this->getAttribute('titleForce', 'help'),
             ]);
@@ -125,9 +125,9 @@ class IntlType extends AbstractType
             'required' => $constraints['required'],
             'label' => $this->getAttribute($field, 'label'),
             'attr' => array_merge($attributes, [
-                'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'row_attr' => ['class' => $groupClass === 'col-12' && $this->options['title_force'] ? 'col-12 col-md-10' : $groupClass],
+                'placeholder' => $this->getAttribute($field, 'placeholder')
             ]),
+            'row_attr' => ['class' => $groupClass === 'col-12' && $this->options['title_force'] ? 'col-12 col-md-10' : $groupClass],
             'constraints' => $constraints['validators'],
             'help' => $this->getAttribute($field, 'help'),
         ]);
@@ -147,8 +147,8 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => array_merge($attributes, [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-5',
             ]),
+            'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-5'],
             'constraints' => $constraints['validators'],
             'help' => $this->getAttribute($field, 'help'),
         ]);
@@ -207,7 +207,6 @@ class IntlType extends AbstractType
         $attributes = !empty($this->options['attributes_fields'][$field]) ? $this->options['attributes_fields'][$field] : [];
         $attributes = array_merge($attributes, [
             'placeholder' => $this->getAttribute($field, 'placeholder'),
-            'group' => $groupClass,
         ]);
         if (!empty($this->options['fields_data'][$field])) {
             $attributes = array_merge($attributes, $this->options['fields_data'][$field]);
@@ -218,6 +217,7 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'editor' => !str_contains($groupClass, 'no-editor'),
             'attr' => $attributes,
+            'row_attr' => ['class' => $groupClass],
             'help' => $this->getAttribute($field, 'help'),
             'constraints' => $constraints['validators'],
         ]);
@@ -367,8 +367,8 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => array_merge($attributes, [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-3',
             ]),
+            'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-3'],
             'help' => $this->getAttribute($field, 'help'),
         ]);
     }
@@ -384,8 +384,8 @@ class IntlType extends AbstractType
             'label' => $this->getAttribute($field, 'label'),
             'attr' => array_merge($attributes, [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
-                'group' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-3',
             ]),
+            'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-3'],
             'help' => $this->getAttribute($field, 'help'),
         ]);
     }

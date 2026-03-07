@@ -141,14 +141,6 @@ class Group extends BaseEntity
         return $this;
     }
 
-    /**
-     * @return Collection<int, Cookie>
-     */
-    public function getGdprcookies(): Collection
-    {
-        return $this->gdprcookies;
-    }
-
     public function addGdprcooky(Cookie $gdprcooky): static
     {
         if (!$this->gdprcookies->contains($gdprcooky)) {

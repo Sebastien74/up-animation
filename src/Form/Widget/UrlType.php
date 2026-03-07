@@ -9,7 +9,6 @@ use App\Entity\Seo\Url;
 use App\Form\Type\Seo\SeoBasicType;
 use App\Form\Validator\UniqUrl;
 use App\Service\Interface\CoreLocatorInterface;
-use App\Twig\Content\IconRuntime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -30,10 +29,7 @@ class UrlType extends AbstractType
     /**
      * UrlType constructor.
      */
-    public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly IconRuntime          $iconRuntime,
-    )
+    public function __construct(private readonly CoreLocatorInterface $coreLocator)
     {
         $this->translator = $this->coreLocator->translator();
     }
@@ -64,8 +60,10 @@ class UrlType extends AbstractType
         $builder->add($field, Type\TextType::class, [
             'required' => in_array($field, $this->options['required_fields']),
             'label' => $this->getAttribute($field, 'label'),
-            'attr' => ['placeholder' => $this->getAttribute($field, 'placeholder'),
-                'code' => 'code'],
+            'attr' => [
+                'placeholder' => $this->getAttribute($field, 'placeholder'),
+                'code' => 'code'
+            ],
             'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass)],
             'constraints' => [new UniqUrl()],
             'help' => $this->getAttribute($field, 'help'),

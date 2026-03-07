@@ -164,7 +164,7 @@
     flex-wrap: wrap;
     align-items: center; // vertically center
     justify-content: flex-end; // Right align buttons with flex property because text-align doesn't work on flex items
-    padding: calc(var(--#{$prefix}modal-padding) - var(--#{$prefix}modal-footer-gap) * .5);
+    padding: calc(var(--#{$prefix}modal-padding) - var(--#{$prefix}modal-footer-gap) * .5) var(--#{$prefix}modal-padding);
     background-color: var(--#{$prefix}modal-footer-bg);
     border-top: var(--#{$prefix}modal-footer-border-width) solid var(--#{$prefix}modal-footer-border-color);
     @include border-bottom-radius(var(--#{$prefix}modal-inner-border-radius));
@@ -206,6 +206,12 @@
 @include media-breakpoint-up(xl) {
     .modal-xl {
         --#{$prefix}modal-width: #{$modal-xl};
+    }
+}
+
+@include media-breakpoint-up(xxl) {
+    .modal-xxl {
+        --#{$prefix}modal-width: #{$modal-xxl};
     }
 }
 

@@ -21,3 +21,17 @@ export function scrollToEL(el, middle = true, offset = 0) {
     offset = offsetTop > 0 ? offset - offsetTop : elOffset;
     window.scrollTo({top: offset, behavior: 'smooth'});
 }
+
+export function AlertHTML(message, type = 'danger', icon = 'exclamation-triangle', iconColor = 'white-50') {
+    let html = '<div class="internal-error-alert alert alert-' + type + ' position-relative d-flex mb-3 p-3">';
+    html += '<div class="btn-icon d-flex align-items-center justify-content-center position-relative ' + type + ' me-3">';
+    html += '<i class="icm-' + icon + ' text-' + iconColor + '"></i>';
+    html += '</div>';
+    html += '<div class="message w-100 d-flex align-items-center text-' + iconColor + '">';
+    html += '<div class="content">';
+    html += message;
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+    return html;
+}

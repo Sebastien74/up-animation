@@ -28,11 +28,6 @@ class MainExtension implements FormTypeExtensionInterface
     {
         $view->vars['row_attr']['class'] = !empty($view->vars['row_attr']['class']) ? $view->vars['row_attr']['class'].' group-form' : 'group-form';
 
-        if (!empty($view->vars['attr']['group'])) {
-            $view->vars['attr']['data-group'] = $view->vars['attr']['group'];
-            unset($view->vars['attr']['group']);
-        }
-
         if (isset($options['media_modal_copy']) && $options['media_modal_copy']) {
             $view->vars['attr']['data-media-modal-copy'] = $options['media_modal_copy'];
         }

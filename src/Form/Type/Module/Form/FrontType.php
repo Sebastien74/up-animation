@@ -293,7 +293,7 @@ class FrontType extends AbstractType
     private function setClasses(string $fieldType, Layout\FieldConfiguration $configuration, string $blockType): void
     {
         $class = !empty($this->options['attr']['class']) ? $this->options['attr']['class'] : '';
-        $groupClass = !empty($this->options['attr']['group']) ? $this->options['attr']['group'] : '';
+        $groupClass = !empty($this->options['row_attr']['class']) ? $this->options['row_attr']['class'] : '';
         $block = $configuration->getBlock();
 
         if (Type\SubmitType::class === $fieldType) {
@@ -338,13 +338,13 @@ class FrontType extends AbstractType
             $blockSize = $block->getSize();
             $colSize = $block->getCol()->getSize();
             $size = $colSize < $blockSize ? $colSize : $blockSize;
-            $this->options['attr']['group'] = $groupClass = strtolower($type).'-group col-md-'.$size.' '.$blockType.'-group';
+            $this->options['row_attr']['class'] = $groupClass = strtolower($type).'-group col-md-'.$size.' '.$blockType.'-group';
         } else {
-            $this->options['attr']['group'] = $groupClass = strtolower($type).'-group '.$blockType.'-group';
+            $this->options['row_attr']['class'] = $groupClass = strtolower($type).'-group '.$blockType.'-group';
         }
 
         if ($configuration->isSmallSize()) {
-            $this->options['attr']['group'] = trim($groupClass.' small-size');
+            $this->options['row_attr']['class'] = trim($groupClass.' small-size');
         }
 
         if ($block->getIcon()) {
@@ -356,7 +356,7 @@ class FrontType extends AbstractType
             $this->options['attr']['class'] = $class.' '.$this->options['attr']['data-color'];
             if ($block->isControls()) {
                 $blockModel = BlockModel::fromEntity($block, $this->coreLocator);
-                $this->options['attr']['group'] = $groupClass.' '.trim('as-btn '.$this->options['attr']['data-color']);
+                $this->options['row_attr']['class'] = $groupClass.' '.trim('as-btn '.$this->options['attr']['data-color']);
                 $this->options['attr']['data-type'] = 'as-btn';
                 $this->options['attr']['data-label'] = $blockModel->intl->linkLabel ?: $this->translator->trans('Parcourir', [], 'front_form');
             }

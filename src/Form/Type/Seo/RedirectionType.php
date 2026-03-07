@@ -71,7 +71,6 @@ class RedirectionType extends AbstractType
 
         $oldArguments = [
             'label' => $options['labels'] ? $this->translator->trans('Ancienne URI / URL', [], 'admin') : false,
-
             'row_attr' => ['class' => $options['groups'] ?: ($multiLocales ? 'col-md-4' : 'col-md-6'),
                 'placeholder' => $this->translator->trans('Saisissez une URI', [], 'admin'),
             ],

@@ -251,15 +251,12 @@ export default function (Routing) {
                             });
                         }
                     }
-                })
-                .catch(errors => {
+                }).catch(errors => {
                     let modal = body.querySelector('.modal');
-
                     /** Display errors */
                     import('../../core/errors').then(({default: displayErrors}) => {
                         new displayErrors(errors);
                     }).catch(error => console.error(error.message));
-
                     if (modal) {
                         resetModal(modal, true);
                     }

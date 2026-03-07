@@ -24,6 +24,11 @@
     .title-header-block {
 
         overflow: hidden;
+        word-wrap: break-word;
+
+        * {
+            word-wrap: break-word;
+        }
 
         &.as-large {
 

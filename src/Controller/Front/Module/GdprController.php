@@ -93,7 +93,7 @@ class GdprController extends FrontController
                     }
                 }
             }
-            foreach ($group->getGdprcookies() as $cookie) {
+            foreach ($group->gdprcookies as $cookie) {
                 $push = $asGoogle && in_array($cookie->getCode(), $cookies) || !$asGoogle;
                 if ($push) {
                     $cookies[] = $cookie->getCode();

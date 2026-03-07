@@ -106,7 +106,7 @@ $dash-surface-4: #2e1e51 !default;
 $dash-dark: $black !default;
 $darken: $dash-bg-1 !default;
 $dash-text: rgba(255, 255, 255, 0.92) !default;
-$dash-border: rgba(255, 255, 255, 0.05) !default;
+//$dash-border: rgba(255, 255, 255, 0.05) !default;
 $dash-accent: $primary !default;
 $dash-lighten: lighten($dash-accent, 20%) !default;
 

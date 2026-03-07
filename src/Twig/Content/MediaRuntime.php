@@ -89,8 +89,8 @@ class MediaRuntime implements RuntimeExtensionInterface
                 }
                 if ($media instanceof Media) {
                     $fileInfo = $this->fileRuntime->fileInfo($website, $media->getFilename());
-                    $infoSize = $fileInfo instanceof FileInfo ? $fileInfo->$orientation() : null;
                     if ($fileInfo instanceof FileInfo) {
+                        $infoSize = 'width' === $orientation ? $fileInfo->getWidth() : $fileInfo->getHeight();
                         if (!empty($sizes)) {
                             $size = $infoSize;
                             $sizes = ['width' => $fileInfo->getWidth(), 'height' => $fileInfo->getHeight()];

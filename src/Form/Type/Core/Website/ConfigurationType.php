@@ -87,7 +87,6 @@ class ConfigurationType extends AbstractType
             $builder->add('onlineStatus', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('En ligne', [], 'admin'),
                 'display' => 'switch',
-
                 'row_attr' => ['class' => 'col-12 mb-1'],
                 'help' => $this->translator->trans('Site en maintenace si hors ligne', [], 'admin'),
             ]);
@@ -95,14 +94,12 @@ class ConfigurationType extends AbstractType
             $builder->add('asDefault', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Site principal', [], 'admin'),
                 'display' => 'switch',
-
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('fullWidth', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Plein écran', [], 'admin'),
                 'display' => 'switch',
-
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
@@ -114,28 +111,24 @@ class ConfigurationType extends AbstractType
             $builder->add('preloader', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Preloader', [], 'admin'),
                 'display' => 'switch',
-
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('scrollTopBtn', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Bouton de retour haut de page', [], 'admin'),
                 'display' => 'switch',
-
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('breadcrumb', Type\CheckboxType::class, [
                 'label' => $this->translator->trans("Activer les fils d'Ariane", [], 'admin'),
                 'display' => 'switch',
-
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('subNavigation', Type\CheckboxType::class, [
                 'label' => $this->translator->trans('Activer les sous-navigations', [], 'admin'),
                 'display' => 'switch',
-
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 

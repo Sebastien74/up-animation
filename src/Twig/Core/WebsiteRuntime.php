@@ -99,7 +99,7 @@ class WebsiteRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Check if module is active.
+     * Check if the module is active.
      */
     public function moduleActive(string $moduleCode, ?ConfigurationModel $configuration = null, bool $object = false): mixed
     {

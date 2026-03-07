@@ -195,19 +195,19 @@ class FrontSearchFiltersType extends AbstractType
                 $arguments['placeholder'] = $this->translator->trans('Supprimer la sélection', [], 'front_form');
             } elseif ($expanded) {
                 $arguments['placeholder'] = $this->translator->trans('Tout', [], 'front_form');
-                $arguments['row_attr'] = ['class' => 'col-12 disabled-floating d-lg-flex align-items-lg-start'];
+                $arguments['row_attr']['class'] = ['col-12 disabled-floating d-lg-flex align-items-lg-start'];
             }
             $selectedClass = $data ? ' selected' : '';
             $arguments['attr']['class'] = isset($configuration['multiple']) && !$configuration['multiple'] ? 'select-search'.$selectedClass : $selectedClass;
             $arguments['attr']['class'] = $expanded ? 'form-check form-check-inline '.$arguments['attr']['class'] : $arguments['attr']['class'];
-            $arguments['attr']['group'] = isset($configuration['multiple']) && $configuration['multiple'] ? 'col-md-12' : 'p-0 col-md-12';
+            $arguments['row_attr']['class'] = isset($configuration['multiple']) && $configuration['multiple'] ? 'col-md-12'
+                : (!empty($arguments['row_attr']['class']) ? $arguments['row_attr']['class'] : 'p-0 col-md-12');
             $arguments['attr']['data-floating'] = false;
             $arguments['label_class'] = '';
             $arguments['display'] = $configuration['display'];
         } else {
-            $arguments['attr']['group'] = 'col-md-4';
+            $arguments['row_attr']['class'] = 'col-md-4';
         }
-
         if ($choicesValues) {
             $arguments['choices'] = $choicesValues;
         }

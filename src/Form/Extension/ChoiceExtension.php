@@ -32,12 +32,12 @@ class ChoiceExtension implements FormTypeExtensionInterface
         $display = !in_array($fieldName, $noSelect2Fields) ? $setDisplay : 'classic';
 
         if ('select-flags' === $display) {
-            $view->vars['attr']['group'] = !empty($options['attr']['group']) ? $options['attr']['group'].' select2-group select-flags' : 'col-12 select2-group select-flags';
+            $view->vars['row_attr']['class'] = !empty($options['row_attr']['class']) ? $options['row_attr']['class'].' select2-group select-flags' : 'col-12 select2-group select-flags';
             $display = 'select-icons select-flags';
         }
 
         if ('select-2' == $setDisplay) {
-            $view->vars['attr']['group'] = !empty($options['attr']['group']) ? $options['attr']['group'].' select2-group' : 'col-12 select2-group';
+            $view->vars['row_attr']['class'] = !empty($options['row_attr']['class']) ? $options['row_attr']['class'].' select2-group' : 'col-12 select2-group';
         }
 
         $view->vars['attr']['class'] = !empty($options['attr']['class'])
@@ -52,8 +52,8 @@ class ChoiceExtension implements FormTypeExtensionInterface
             $view->vars['attr']['class'] = $view->vars['attr']['class'].' select-choice';
         }
 
-        //        if (!empty($view->vars['attr']['group'])) {
-        //            $view->vars['attr']['class'] = $view->vars['attr']['class'].' '.$view->vars['attr']['group'];
+        //        if (!empty($view->vars['row_attr'])) {
+        //            $view->vars['attr']['class'] = $view->vars['attr']['class'].' '.$view->vars['row_attr'];
         //        }
 
         $view->vars['attr']['data-dropdown-class'] = 'select-dropdown-container' != $options['dropdown_class']
