@@ -47,7 +47,7 @@ final class JobModel extends BaseModel
 
         $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $model['date'] = self::getContent('date', $job);
-        if ($model['date'] instanceof \DateTime && $now >= $model['date']) {
+        if ($model['date'] instanceof \DateTimeInterface && $now >= $model['date']) {
             $model['date'] = $coreLocator->translator()->trans('Dès que possible', [], 'front');
         }
 

@@ -72,14 +72,14 @@ class Job extends BaseEntity
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $remuneration = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $date = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $date = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $publicationStart = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $publicationStart = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $publicationEnd = null;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $publicationEnd = null;
 
     #[ORM\ManyToOne(targetEntity: Contract::class)]
     #[ORM\JoinColumn(name: 'contract_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
@@ -100,7 +100,7 @@ class Job extends BaseEntity
     #[ORM\JoinColumn(nullable: false)]
     private ?Website $website = null;
 
-    #[ORM\OneToMany(mappedBy: 'job', targetEntity: JobIntl::class, cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: JobIntl::class, mappedBy: 'job', cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
     #[ORM\OrderBy(['locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $intls;
@@ -191,36 +191,36 @@ class Job extends BaseEntity
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(?\DateTimeInterface $date): static
+    public function setDate(?\DateTimeImmutable $date): static
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getPublicationStart(): ?\DateTimeInterface
+    public function getPublicationStart(): ?\DateTimeImmutable
     {
         return $this->publicationStart;
     }
 
-    public function setPublicationStart(?\DateTimeInterface $publicationStart): static
+    public function setPublicationStart(?\DateTimeImmutable $publicationStart): static
     {
         $this->publicationStart = $publicationStart;
 
         return $this;
     }
 
-    public function getPublicationEnd(): ?\DateTimeInterface
+    public function getPublicationEnd(): ?\DateTimeImmutable
     {
         return $this->publicationEnd;
     }
 
-    public function setPublicationEnd(?\DateTimeInterface $publicationEnd): static
+    public function setPublicationEnd(?\DateTimeImmutable $publicationEnd): static
     {
         $this->publicationEnd = $publicationEnd;
 

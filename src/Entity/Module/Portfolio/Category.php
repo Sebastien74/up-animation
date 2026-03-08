@@ -56,11 +56,11 @@ class Category extends BaseEntity
         'intl.body' => 'Description',
     ];
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $publicationStart = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $publicationStart = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $publicationEnd = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $publicationEnd = null;
 
     #[ORM\OneToOne(targetEntity: Layout::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]
@@ -96,24 +96,24 @@ class Category extends BaseEntity
         $this->urls = new ArrayCollection();
     }
 
-    public function getPublicationStart(): ?\DateTimeInterface
+    public function getPublicationStart(): ?\DateTimeImmutable
     {
         return $this->publicationStart;
     }
 
-    public function setPublicationStart(?\DateTimeInterface $publicationStart): static
+    public function setPublicationStart(?\DateTimeImmutable $publicationStart): static
     {
         $this->publicationStart = $publicationStart;
 
         return $this;
     }
 
-    public function getPublicationEnd(): ?\DateTimeInterface
+    public function getPublicationEnd(): ?\DateTimeImmutable
     {
         return $this->publicationEnd;
     }
 
-    public function setPublicationEnd(?\DateTimeInterface $publicationEnd): static
+    public function setPublicationEnd(?\DateTimeImmutable $publicationEnd): static
     {
         $this->publicationEnd = $publicationEnd;
 

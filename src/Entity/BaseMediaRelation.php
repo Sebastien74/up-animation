@@ -84,8 +84,8 @@ class BaseMediaRelation extends BaseInterface
     #[ORM\Column(type: Types::BOOLEAN)]
     protected bool $active = true;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $cacheDate = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $cacheDate = null;
 
     #[ORM\Column(type: Types::STRING, length: 100, nullable: true)]
     private ?string $pictogram = null;
@@ -319,14 +319,14 @@ class BaseMediaRelation extends BaseInterface
         return $this;
     }
 
-    public function setCacheDate(?\DateTimeInterface $cacheDate): static
+    public function setCacheDate(?\DateTimeImmutable $cacheDate): static
     {
         $this->cacheDate = $cacheDate;
 
         return $this;
     }
 
-    public function getCacheDate(): ?\DateTimeInterface
+    public function getCacheDate(): ?\DateTimeImmutable
     {
         return $this->cacheDate;
     }

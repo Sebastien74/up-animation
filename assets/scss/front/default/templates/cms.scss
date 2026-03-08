@@ -39,3 +39,22 @@ $enable-pagination: true;
 /*-----------------------------------
    4 ) Core
 -----------------------------------*/
+
+/*-----------------------------------
+   5 ) News
+-----------------------------------*/
+
+.first-news-block {
+
+    .left {
+
+        .img-loader-wrap, .img-loader, img {
+            border-radius: 32px !important;
+        }
+
+        img {
+            border: 1px solid $light;
+            width: 100%;
+        }
+    }
+}

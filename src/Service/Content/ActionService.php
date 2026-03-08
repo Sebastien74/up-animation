@@ -128,7 +128,7 @@ class ActionService
             $qb->andWhere('e.category = :category')
                 ->setParameter('category', $this->request->get('category'));
         }
-        if ($this->listing && property_exists($this->listing, 'pastEvents') && $this->listing->isPastEvents() && 'startDate' === $sort
+        if ($this->listing && property_exists($this->listing, 'pastEvents') && method_exists($this->listing, 'isPastEvents') && $this->listing->isPastEvents() && 'startDate' === $sort
             && method_exists($referEntity, 'getStartDate')) {
             $qb->andWhere('e.startDate IS NOT NULL AND e.startDate >= CURRENT_TIMESTAMP()');
         }
@@ -260,7 +260,7 @@ class ActionService
                     ->andWhere('e.publicationEnd IS NULL OR e.publicationEnd > CURRENT_TIMESTAMP()')
                     ->andWhere('e.publicationStart IS NOT NULL');
             }
-            $displayPastEvents = $this->listing && property_exists($this->listing, 'pastEvents') && $this->listing->isPastEvents();
+            $displayPastEvents = $this->listing && property_exists($this->listing, 'pastEvents') && method_exists($this->listing, 'isPastEvents') && $this->listing->isPastEvents();
             if ($displayPastEvents && 'startDate' === $sort
                 && method_exists($referEntity, 'getStartDate') && !method_exists($referEntity, 'getEndDate')) {
                 $statement->andWhere('e.startDate IS NOT NULL');
@@ -278,7 +278,7 @@ class ActionService
                 $statement->andWhere('e.startDate IS NULL OR e.startDate >= CURRENT_TIMESTAMP()')
                     ->andWhere('e.endDate IS NULL OR e.endDate <= CURRENT_TIMESTAMP()');
             }
-            if (method_exists($this->listing, 'isAsEvents') && !$this->listing->isAsEvents() && !$displayPastEvents) {
+            if ($this->listing && method_exists($this->listing, 'isAsEvents') && !$this->listing->isAsEvents() && !$displayPastEvents) {
                 $statement->andWhere('e.startDate IS NULL OR e.startDate >= CURRENT_TIMESTAMP()');
             }
             if (method_exists($referEntity, 'getUrls')) {

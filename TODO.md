@@ -7,6 +7,8 @@ Et ajouter aussi data-speed="20" data-speed-mobile="20" etc
 
 Dans mixin before retirer :before et :after
 
+Dans actus mdias la modal d'ajout de media ne fonctionne pas
+
 Récupérer les groupe d'onglets de sydev
 
 Pour les erreurs de form invisible faire :

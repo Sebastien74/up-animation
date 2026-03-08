@@ -66,11 +66,11 @@ class Card extends BaseEntity
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $promote = false;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $publicationStart = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $publicationStart = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $publicationEnd = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $publicationEnd = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $customLayout = false;
@@ -126,24 +126,24 @@ class Card extends BaseEntity
         return $this;
     }
 
-    public function getPublicationStart(): ?\DateTimeInterface
+    public function getPublicationStart(): ?\DateTimeImmutable
     {
         return $this->publicationStart;
     }
 
-    public function setPublicationStart(?\DateTimeInterface $publicationStart): static
+    public function setPublicationStart(?\DateTimeImmutable $publicationStart): static
     {
         $this->publicationStart = $publicationStart;
 
         return $this;
     }
 
-    public function getPublicationEnd(): ?\DateTimeInterface
+    public function getPublicationEnd(): ?\DateTimeImmutable
     {
         return $this->publicationEnd;
     }
 
-    public function setPublicationEnd(?\DateTimeInterface $publicationEnd): static
+    public function setPublicationEnd(?\DateTimeImmutable $publicationEnd): static
     {
         $this->publicationEnd = $publicationEnd;
 

@@ -13,7 +13,7 @@
 
     ------------------------------------------------------------------ */
 
-    .card {
+    .card:not(.news-card) {
 
         .card-header {
             picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader, .img-loader-wrap {
@@ -179,6 +179,27 @@
             a, a span {
                 font-size: 14px !important;
             }
+        }
+    }
+
+    .news-card {
+
+        border-radius: 40px;
+        padding: .75rem;
+
+        .card-header {
+
+            .img-loader-wrap, .img-loader, img {
+                border-radius: 32px !important;
+            }
+
+            img {
+                border: 1px solid $light;
+            }
+        }
+
+        .card-text {
+            font-size: 14px;
         }
     }
 }

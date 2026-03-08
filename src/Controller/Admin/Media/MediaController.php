@@ -119,11 +119,12 @@ class MediaController extends AdminController
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
-        $options = (array) json_decode($request->get('options'));
+        $options = (array) json_decode(urldecode($request->query->get('options', '[]')));
         $arguments = $this->getBaseArguments($request);
         $arguments['options'] = $options;
         $arguments['form'] = $form->createView();
         $arguments['history'] = false;
+        $arguments['type'] = $options['type'] ?? 'single';
         $arguments['asCopy'] = $asCopy = isset($options['type']) && 'copy' === $options['type'];
 
         foreach ($options as $name => $value) {

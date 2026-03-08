@@ -47,8 +47,8 @@ class ScheduledCommand extends BaseEntity
     #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $lastExecution = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $lastExecution = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $lastReturnCode = null;
@@ -139,12 +139,12 @@ class ScheduledCommand extends BaseEntity
         return $this;
     }
 
-    public function getLastExecution(): ?\DateTimeInterface
+    public function getLastExecution(): ?\DateTimeImmutable
     {
         return $this->lastExecution;
     }
 
-    public function setLastExecution(?\DateTimeInterface $lastExecution): static
+    public function setLastExecution(?\DateTimeImmutable $lastExecution): static
     {
         $this->lastExecution = $lastExecution;
 

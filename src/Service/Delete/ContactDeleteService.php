@@ -81,7 +81,7 @@ class ContactDeleteService
     public function removeOld(int $limit = 365): void
     {
         $datetime = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
-        $datetime->modify('- '.$limit.' days');
+        $datetime = $datetime->modify('- '.$limit.' days');
 
         $flush = false;
         $contacts = $this->entityManager->getRepository(ContactForm::class)

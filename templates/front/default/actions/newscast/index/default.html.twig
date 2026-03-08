@@ -32,7 +32,7 @@
          data-href="{{ ajaxPath }}"
          class="news-index-container container position-relative pagination-ajax-wrap {% if entities|length > 0 %} pt-4 pb-3 pt-md-5 pb-md-4{% endif %}">
 
-        {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader'} only -%}
+        {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader strict-size'} only -%}
 
         <div id="results" class="results row row-container">
             {%- for entity in entities -%}

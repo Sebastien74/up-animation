@@ -31,7 +31,7 @@ use Symfony\Component\Filesystem\Filesystem;
 final class MenuModel extends BaseModel
 {
     /**
-     * ViewModel constructor.
+     * MenuModel constructor.
      */
     public function __construct(
         public readonly array $arguments,

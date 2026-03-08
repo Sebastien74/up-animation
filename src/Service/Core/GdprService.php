@@ -50,7 +50,7 @@ class GdprService
             $namespaces = [ContactForm::class, ContactStepForm::class, Email::class];
             $datetime = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             $interval = new \DateInterval('P'.$frequency.'D');
-            $datetime->sub($interval);
+            $datetime = $datetime->sub($interval);
             foreach ($namespaces as $namespace) {
                 $entities = $this->coreLocator->em()->getRepository($namespace)->createQueryBuilder('e')
                     ->andWhere('e.createdAt <= :datetime')

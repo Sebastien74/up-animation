@@ -90,7 +90,7 @@ interface CoreLocatorInterface
 
     public function fileExist(?string $path = null, string $dir = '/templates/'): bool;
 
-    public function routeExist(string $routeName): bool;
+    public function routeExist(?string $routeName): bool;
 
     public function checkRoute(string $routeName): bool;
 

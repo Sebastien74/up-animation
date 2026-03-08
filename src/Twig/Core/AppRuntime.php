@@ -61,7 +61,7 @@ class AppRuntime implements RuntimeExtensionInterface
     /**
      * Check if the route exists in PHP CLASS.
      */
-    public function routeExist(string $routeName): bool
+    public function routeExist(?string $routeName): bool
     {
         return $routeName && $this->coreLocator->routeExist($routeName);
     }

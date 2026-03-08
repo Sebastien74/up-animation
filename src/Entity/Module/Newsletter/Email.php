@@ -41,14 +41,14 @@ class Email extends BaseInterface
     #[ORM\Column(type: Types::STRING, length: 500, nullable: true)]
     private ?string $token = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $tokenDate = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $tokenDate = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $accept = false;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $acceptDate = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $acceptDate = null;
 
     #[ORM\ManyToOne(targetEntity: Campaign::class, inversedBy: 'emails')]
     #[ORM\JoinColumn(nullable: false)]
@@ -103,13 +103,13 @@ class Email extends BaseInterface
         return $this;
     }
 
-    public function setTokenDate(?\DateTimeInterface $tokenDate): static
+    public function setTokenDate(?\DateTimeImmutable $tokenDate): static
     {
         $this->tokenDate = $tokenDate;
         return $this;
     }
 
-    public function getTokenDate(): ?\DateTimeInterface
+    public function getTokenDate(): ?\DateTimeImmutable
     {
         return $this->tokenDate;
     }
@@ -126,13 +126,13 @@ class Email extends BaseInterface
         return $this;
     }
 
-    public function setAcceptDate(?\DateTimeInterface $acceptDate): static
+    public function setAcceptDate(?\DateTimeImmutable $acceptDate): static
     {
         $this->acceptDate = $acceptDate;
         return $this;
     }
 
-    public function getAcceptDate(): ?\DateTimeInterface
+    public function getAcceptDate(): ?\DateTimeImmutable
     {
         return $this->acceptDate;
     }

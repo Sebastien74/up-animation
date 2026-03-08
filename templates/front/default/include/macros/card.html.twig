@@ -150,8 +150,22 @@
         </div>
         <div class="card-body">
             <a href="{{ vars.entity.url }}" class="d-inline-block w-100">
-                <h3 class="title text-bold mb-3">{{ vars.entity.intl.title|unescape|raw }}</h3>
+                <h3 class="title text-bold mb-1">{{ vars.entity.intl.title|unescape|raw }}</h3>
             </a>
+            {{ component('Date', {
+                date: vars.entity.date,
+                formatDate: vars.formatDate is defined ? vars.formatDate : 'dd MMM Y',
+                startDate: entity.dates.startDate is defined ? entity.dates.startDate : null,
+                endDate: entity.dates.endDate is defined ? entity.dates.endDate : null,
+                between: vars.betweenDates is defined ? vars.betweenDates : false,
+                class: 'mb-3',
+            }) }}
+            {%- if vars.entity.intl.introduction -%}
+                <p class="card-text mb-0">{{ vars.entity.intl.introduction|truncate(150) }}</p>
+            {%- endif -%}
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+            <a href="{{ vars.entity.url }}" class="text-uppercase text-primary fw-500">{{ "En savoir +"|trans|raw }}</a>
         </div>
     </article>
 {%- endmacro -%}

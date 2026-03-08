@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Entity\Layout;
+use App\Entity\Module\Newscast\Newscast;
 use App\Entity\Seo\Url;
 use App\Model\Layout\BlockModel;
 use App\Service\Core\Urlizer;
@@ -54,7 +55,7 @@ final class ViewModel extends BaseModel
         public readonly ?object $intlCard = null,
         public readonly ?bool $haveContent = null,
         public readonly ?bool $pastDate = null,
-        public readonly ?\DateTime $date = null,
+        public readonly ?\DateTimeInterface $date = null,
         public readonly array $dates = [],
         public readonly ?string $formatDate = null,
         public readonly ?string $author = null,

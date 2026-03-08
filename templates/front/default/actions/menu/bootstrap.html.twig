@@ -38,7 +38,7 @@
             {%- set linkClass = link.children and not dropdownHover ? linkClass~' dropdown-toggle' : linkClass -%}
             {%- set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass -%}
             {%- set linkClass = 1 == link.level ? linkClass~' text-uppercase' : linkClass -%}
-            <{%- if 'a' == element -%}a{%- else -%}div{%- endif -%} class="{{ linkClass }}" {%- if link.dataAnchor -%} data-anchor="{{ link.dataAnchor }}" {%- endif -%}
+            <{% if 'a' == element %}a{% else %}div{% endif %} class="{{ linkClass }}" {%- if link.dataAnchor -%} data-anchor="{{ link.dataAnchor }}" {%- endif -%}
                 {%- if path -%}href="{{ path }}" {%- endif -%}{%- if link.children and not dropdownHover -%} id="navbar-link-{{ link.id }}" {%- endif -%}
                 {%- if link.children and not dropdownHover -%} role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" {%- elseif link.linkBlank -%} target="_blank" {%- else -%}{%- endif -%}
                 {%- if link.linkExternal -%} rel="noopener noreferrer" {%- endif -%}
@@ -56,7 +56,7 @@
                         {{ ('fal chevron-'~icon)|icon(null, 8) }}
                     </span>
                 {%- endif -%}
-            </{%- if 'a' == element -%}a{%- else -%}div{%- endif -%}>
+            </{% if 'a' == element %}a{% else %}div{% endif %}>
             {%- if link.children -%}
                 <ul class="dropdown-menu dropdown-menu-level-{{ link.level }}" aria-labelledby="navbar-link-{{ link.id }}">
                     {%- for subLink in link.children -%}

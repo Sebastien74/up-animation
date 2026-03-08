@@ -25,11 +25,11 @@ class UserRequest
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $createdAt = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $updatedAt = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $login = null;
@@ -48,8 +48,8 @@ class UserRequest
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $token = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $tokenDate = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $tokenDate = null;
 
     #[ORM\Column(type: Types::STRING, length: 10, nullable: true)]
     protected ?string $locale = null;
@@ -81,24 +81,24 @@ class UserRequest
         return $this->id;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): static
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
 
@@ -165,12 +165,12 @@ class UserRequest
         return $this;
     }
 
-    public function getTokenDate(): ?\DateTimeInterface
+    public function getTokenDate(): ?\DateTimeImmutable
     {
         return $this->tokenDate;
     }
 
-    public function setTokenDate(?\DateTimeInterface $tokenDate): static
+    public function setTokenDate(?\DateTimeImmutable $tokenDate): static
     {
         $this->tokenDate = $tokenDate;
 

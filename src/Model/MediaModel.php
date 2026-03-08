@@ -64,7 +64,7 @@ final class MediaModel extends BaseModel
         public readonly ?int $tabletMaxHeight = null,
         public readonly ?int $mobileMaxWidth = null,
         public readonly ?int $mobileMaxHeight = null,
-        public readonly ?\DateTime $cacheDate = null,
+        public readonly ?\DateTimeInterface $cacheDate = null,
         public readonly ?string $titlePosition = null,
         public readonly ?string $titleAlignment = null,
         public readonly ?int $position = null,

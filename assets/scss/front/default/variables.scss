@@ -214,6 +214,7 @@ $font-weight-bolder: bolder !default; /* .font-weight-bolder */
 
 $browser-context: 16;
 
+$body-line-height: normal !default;
 $font-size-base-pixel: 16px;
 $font-size-base: rem($font-size-base-pixel);
 $font-size-h1: 60px;
@@ -229,12 +230,12 @@ $font-size-card-title: rem(35px);
 $font-size-small: 80%;
 
 $font-sizes-app: (
-    'xs': ('rfs': true, 'size': 16px, 'line-height': 1.1, 'bulllet-top': 10px),
-    'sm': ('rfs': true, 'size': 32px, 'line-height': 1.1, 'bulllet-top': 10px),
-    'md': ('rfs': true, 'size': 48px, 'line-height': 1.1, 'bulllet-top': 10px),
-    'lg': ('rfs': true, 'size': 64px, 'line-height': 1.1, 'bulllet-top': 10px),
-    'xl': ('rfs': true, 'size': 80px, 'line-height': 1.1, 'bulllet-top': 10px),
-    'xxl': ('rfs': true, 'size': 98px, 'line-height': 1.1, 'bulllet-top': 10px),
+    'xs': ('rfs': true, 'size': 16px, 'line-height': normal, 'bulllet-top': 10px),
+    'sm': ('rfs': true, 'size': 32px, 'line-height': normal, 'bulllet-top': 10px),
+    'md': ('rfs': true, 'size': 48px, 'line-height': normal, 'bulllet-top': 10px),
+    'lg': ('rfs': true, 'size': 64px, 'line-height': normal, 'bulllet-top': 10px),
+    'xl': ('rfs': true, 'size': 80px, 'line-height': normal, 'bulllet-top': 10px),
+    'xxl': ('rfs': true, 'size': 98px, 'line-height': normal, 'bulllet-top': 10px),
 );
 
 $font-sizes-config: (

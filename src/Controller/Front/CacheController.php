@@ -66,7 +66,7 @@ class CacheController extends BaseController
         $cacheConfiguration = $configuration?->getCacheExpiration();
         $cacheExpires = $cacheConfiguration ?: self::CACHE_EXPIRES;
         $date = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
-        $date->modify('+'.$cacheExpires.' seconds');
+        $date = $date->modify('+'.$cacheExpires.' seconds');
 
         return (object) [
             'result' => $cacheExpires,

@@ -140,9 +140,9 @@ class UserChecker implements UserCheckerInterface
             $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
             $interval = new \DateInterval('P'.$delay.'D');
 
-            /** @var \DateTime $resetDate */
+            /** @var \DateTimeImmutable $resetDate */
             $resetDate = $user->getResetPasswordDate();
-            $resetDate->add($interval);
+            $resetDate = $resetDate->add($interval);
 
             $expired = $securityStatus && $today > $resetDate;
 
@@ -166,8 +166,7 @@ class UserChecker implements UserCheckerInterface
     private function setLastActivity(Security\User|Security\UserFront $user): void
     {
         if (self::ENABLE_LAST_ACTIVITY) {
-            $delay = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
-            $delay->setTimestamp(strtotime('2 minutes ago'));
+            $delay = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->setTimestamp(strtotime('2 minutes ago'));
             if ($user->getLastActivity() < $delay) {
                 $user->setLastActivity(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $this->coreLocator->em()->persist($user);

@@ -3,7 +3,7 @@
 {%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
 
 {%- if lastEntity -%}
-    <article class="first-news-block position-relative text-center text-lg-start">
+    <article class="first-news-block bg-white position-relative text-center text-lg-start">
         <div class="container position-relative {% if not displayFormFilters %}py-5{% else %} pb-5 pt-lg-5{% endif %}">
             {{ macroWebmaster.box({
                 title: "Éditer l'actualité"|trans([], 'front_webmaster'),
@@ -19,19 +19,19 @@
                     </div>
                 {%- endif -%}
                 {%- if lastEntity.mainMedia -%}
-                    <div class="col-lg-5 mb-4 mb-md-5 mb-lg-auto">
+                    <div class="left col-lg-5 mb-4 mb-md-5 mb-lg-auto">
                         {{ lastEntity.mainMedia|file(thumbConfigurationFirst, {
                             targetLink: lastEntity.url,
                             placeholder: true,
                             isInBox: false,
-                            class: '',
+                            class: 'shadow',
                         }) }}
                     </div>
                 {%- endif -%}
-                <div class="col-lg-7 {% if lastEntity.mainMedia %} ps-lg-5{% endif %}">
+                <div class="right col-lg-7 {% if lastEntity.mainMedia %} ps-lg-5{% endif %}">
                     {%- if lastEntity.intl.title -%}
                         <a href="{{ lastEntity.url }}" class="link-title d-none d-lg-inline-block">
-                            <h2 class="title text-uppercase d-inline-block">{{ lastEntity.intl.title|raw }}</h2>
+                            <h2 class="title text-uppercase d-inline-block mb-2">{{ lastEntity.intl.title|raw }}</h2>
                         </a>
                     {%- endif -%}
                     {%- if lastEntity.category and lastEntity.showCategory and lastEntity.category.intl.title is defined and lastEntity.category.intl.title -%}
@@ -47,7 +47,8 @@
                             startDate: lastEntity.dates.startDate,
                             endDate: lastEntity.dates.endDate,
                             formatDate: formatDate,
-                            between: lastEntity.asEvent
+                            between: lastEntity.asEvent,
+                            class: 'mb-3',
                         }) }}
                     {%- endif -%}
                     <div class="col-xl-10">
@@ -58,7 +59,7 @@
                             <p class="introduction">{{ lastEntity.intl.body|truncate(150) }}</p>
                         {%- endif -%}
                         {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
-                            intl: {'link': lastEntity.url, linkStyle: 'btn btn-outline-primary mt-4'}
+                            intl: {'link': lastEntity.url, linkStyle: 'mt-3 text-uppercase'}
                         } -%}
                     </div>
                 </div>

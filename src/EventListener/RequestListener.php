@@ -143,7 +143,8 @@ class RequestListener
             }
         }
 
-        if (isset(self::$routesCache[$this->routeName]) && !self::$routesCache[$this->routeName]['isMainRequest']) {
+        if ((isset(self::$routesCache[$this->routeName]) && !self::$routesCache[$this->routeName]['isMainRequest'])
+            || (isset(self::$routesCache['route.' . $this->routeName]) && !self::$routesCache['route.' . $this->routeName]['isMainRequest'])) {
             return false;
         }
 

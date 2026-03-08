@@ -522,10 +522,14 @@ class CoreLocator implements CoreLocatorInterface
      *
      * @throws InvalidArgumentException
      */
-    public function routeExist(string $routeName): bool
+    public function routeExist(?string $routeName): bool
     {
+        if (!$routeName) {
+            return false;
+        }
+
         if (!empty($this->cache['routes'])) {
-            return array_key_exists($routeName, $this->cache['routes']);
+            return array_key_exists($routeName, $this->cache['routes']) || array_key_exists('route.'.$routeName, $this->cache['routes']);
         }
 
         $filesystem = new Filesystem();
@@ -538,7 +542,7 @@ class CoreLocator implements CoreLocatorInterface
             }
         }
 
-        return array_key_exists($routeName, $this->cache['routes']);
+        return array_key_exists($routeName, $this->cache['routes']) || array_key_exists('route.'.$routeName, $this->cache['routes']);
     }
 
     /**

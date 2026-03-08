@@ -53,7 +53,7 @@ class ActionController extends FrontController
     private ?string $filtersForm = null;
     private ?object $filtersFormManager = null;
     private int $associatedEntitiesLimit = 4;
-    private ?\DateTime $associatedEntitiesLastDate = null;
+    private ?\DateTimeInterface $associatedEntitiesLastDate = null;
     private ?string $associatedThumbMethod = null;
     private ?array $associatedEntitiesProperties = [];
     private array $arguments = [];
@@ -595,7 +595,7 @@ class ActionController extends FrontController
     public function setAssociatedEntitiesLastDate(int $limit): void
     {
         $datetime = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
-        $datetime->modify('- '.$limit.' days');
+        $datetime = $datetime->modify('- '.$limit.' days');
         $this->associatedEntitiesLastDate = $datetime;
     }
 

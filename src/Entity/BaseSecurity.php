@@ -63,41 +63,41 @@ abstract class BaseSecurity extends BaseInterface implements UserInterface, Pass
     #[ORM\Column(type: Types::BOOLEAN)]
     protected bool $agreeTerms = false;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $agreesTermsAt = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $agreesTermsAt = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $token = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $tokenDate = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $tokenDate = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $tokenRequest = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $tokenRequestDate = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $tokenRequestDate = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $tokenRemoveRequest = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $tokenRemoveRequestDate = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $tokenRemoveRequestDate = null;
 
     #[ORM\Column(type: Types::STRING, length: 10, nullable: true)]
     protected ?string $locale = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $lastLogin = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $lastLogin = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $lastActivity = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $lastActivity = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     protected bool $resetPassword = false;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected ?\DateTimeInterface $resetPasswordDate = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    protected ?\DateTimeImmutable $resetPasswordDate = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     protected ?string $secretKey = null;
@@ -359,12 +359,12 @@ abstract class BaseSecurity extends BaseInterface implements UserInterface, Pass
         return $this;
     }
 
-    public function getAgreesTermsAt(): ?\DateTimeInterface
+    public function getAgreesTermsAt(): ?\DateTimeImmutable
     {
         return $this->agreesTermsAt;
     }
 
-    public function setAgreesTermsAt(\DateTimeInterface $agreesTermsAt): static
+    public function setAgreesTermsAt(\DateTimeImmutable $agreesTermsAt): static
     {
         $this->agreesTermsAt = $agreesTermsAt;
 
@@ -406,12 +406,12 @@ abstract class BaseSecurity extends BaseInterface implements UserInterface, Pass
         return $this;
     }
 
-    public function getTokenDate(): ?\DateTimeInterface
+    public function getTokenDate(): ?\DateTimeImmutable
     {
         return $this->tokenDate;
     }
 
-    public function setTokenDate(?\DateTimeInterface $tokenDate): static
+    public function setTokenDate(?\DateTimeImmutable $tokenDate): static
     {
         $this->tokenDate = $tokenDate;
 
@@ -430,12 +430,12 @@ abstract class BaseSecurity extends BaseInterface implements UserInterface, Pass
         return $this;
     }
 
-    public function getTokenRequestDate(): ?\DateTimeInterface
+    public function getTokenRequestDate(): ?\DateTimeImmutable
     {
         return $this->tokenRequestDate;
     }
 
-    public function setTokenRequestDate(?\DateTimeInterface $tokenRequestDate): static
+    public function setTokenRequestDate(?\DateTimeImmutable $tokenRequestDate): static
     {
         $this->tokenRequestDate = $tokenRequestDate;
 
@@ -454,12 +454,12 @@ abstract class BaseSecurity extends BaseInterface implements UserInterface, Pass
         return $this;
     }
 
-    public function getTokenRemoveRequestDate(): ?\DateTimeInterface
+    public function getTokenRemoveRequestDate(): ?\DateTimeImmutable
     {
         return $this->tokenRemoveRequestDate;
     }
 
-    public function setTokenRemoveRequestDate(?\DateTimeInterface $tokenRemoveRequestDate): static
+    public function setTokenRemoveRequestDate(?\DateTimeImmutable $tokenRemoveRequestDate): static
     {
         $this->tokenRemoveRequestDate = $tokenRemoveRequestDate;
 
@@ -478,24 +478,24 @@ abstract class BaseSecurity extends BaseInterface implements UserInterface, Pass
         return $this;
     }
 
-    public function getLastLogin(): ?\DateTimeInterface
+    public function getLastLogin(): ?\DateTimeImmutable
     {
         return $this->lastLogin;
     }
 
-    public function setLastLogin(?\DateTimeInterface $lastLogin): static
+    public function setLastLogin(?\DateTimeImmutable $lastLogin): static
     {
         $this->lastLogin = $lastLogin;
 
         return $this;
     }
 
-    public function getLastActivity(): ?\DateTimeInterface
+    public function getLastActivity(): ?\DateTimeImmutable
     {
         return $this->lastActivity;
     }
 
-    public function setLastActivity(?\DateTimeInterface $lastActivity): static
+    public function setLastActivity(?\DateTimeImmutable $lastActivity): static
     {
         $this->lastActivity = $lastActivity;
 
@@ -514,12 +514,12 @@ abstract class BaseSecurity extends BaseInterface implements UserInterface, Pass
         return $this;
     }
 
-    public function getResetPasswordDate(): ?\DateTimeInterface
+    public function getResetPasswordDate(): ?\DateTimeImmutable
     {
         return $this->resetPasswordDate;
     }
 
-    public function setResetPasswordDate(\DateTimeInterface $resetPasswordDate): static
+    public function setResetPasswordDate(\DateTimeImmutable $resetPasswordDate): static
     {
         $this->resetPasswordDate = $resetPasswordDate;
 

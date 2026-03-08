@@ -69,11 +69,11 @@ class Configuration
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     protected ?int $maxShipments = 0;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $publicationStart = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $publicationStart = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $publicationEnd = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $publicationEnd = null;
 
     #[ORM\OneToOne(targetEntity: Form::class, inversedBy: 'configuration', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(onDelete: 'cascade')]
@@ -272,24 +272,24 @@ class Configuration
         return $this;
     }
 
-    public function getPublicationStart(): ?\DateTimeInterface
+    public function getPublicationStart(): ?\DateTimeImmutable
     {
         return $this->publicationStart;
     }
 
-    public function setPublicationStart(?\DateTimeInterface $publicationStart): static
+    public function setPublicationStart(?\DateTimeImmutable $publicationStart): static
     {
         $this->publicationStart = $publicationStart;
 
         return $this;
     }
 
-    public function getPublicationEnd(): ?\DateTimeInterface
+    public function getPublicationEnd(): ?\DateTimeImmutable
     {
         return $this->publicationEnd;
     }
 
-    public function setPublicationEnd(?\DateTimeInterface $publicationEnd): static
+    public function setPublicationEnd(?\DateTimeImmutable $publicationEnd): static
     {
         $this->publicationEnd = $publicationEnd;
 

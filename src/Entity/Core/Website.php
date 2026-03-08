@@ -40,8 +40,8 @@ class Website extends BaseEntity
     #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $uploadDirname = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $cacheClearDate = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $cacheClearDate = null;
 
     #[ORM\OneToOne(targetEntity: Security::class, inversedBy: 'website', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'cascade')]
@@ -104,12 +104,12 @@ class Website extends BaseEntity
         return $this;
     }
 
-    public function getCacheClearDate(): ?\DateTimeInterface
+    public function getCacheClearDate(): ?\DateTimeImmutable
     {
         return $this->cacheClearDate;
     }
 
-    public function setCacheClearDate(?\DateTimeInterface $cacheClearDate): static
+    public function setCacheClearDate(?\DateTimeImmutable $cacheClearDate): static
     {
         $this->cacheClearDate = $cacheClearDate;
 

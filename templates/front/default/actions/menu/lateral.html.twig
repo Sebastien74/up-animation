@@ -59,7 +59,7 @@
                 {%- endif -%}
                 <div class="link-wrap">
             {%- endif -%}
-                <{%- if 'a' == element -%}a{%- else -%}div{%- endif -%} class="{{ linkClass }}" {%- if link.dataAnchor -%} data-anchor="{{ link.dataAnchor }}" {%- endif -%}
+                <{% if 'a' == element %}a{% else %}div{% endif %} class="{{ linkClass }}" {%- if link.dataAnchor -%} data-anchor="{{ link.dataAnchor }}" {%- endif -%}
                     href="{% if path %}{{ path }}{% else %}javascript:void(0){% endif %}" {%- if link.children and not dropdownHover -%} id="navbar-link-{{ link.id }}" {%- endif -%}
                     {%- if link.linkBlank -%} target="_blank" {%- else -%}{%- endif -%}
                     {%- if link.linkExternal -%} rel="noopener noreferrer" {%- endif -%}
@@ -71,7 +71,7 @@
                     {%- else -%}
                         <span class="link-label cursor{% if link.level > 1 %} text-secondary{% endif %}" {%- if pushMicroData -%} itemprop="name" {%- endif -%}>{{ linkLabel|unescape|raw }}</span>
                     {%- endif -%}
-                </{%- if 'a' == element -%}a{%- else -%}div{%- endif -%}>
+                </{% if 'a' == element %}a{% else %}div{% endif %}>
                 {%- if link.level >= 3 -%}
                 {%- if link.introduction -%}
                     <div class="intro mt-2">{{ link.introduction|raw }}</div>
