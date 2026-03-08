@@ -30,7 +30,7 @@
         novalidate: "novalidate",
         action: path('admin_mediarelation_edit', {website: websiteId(), mediarelation: entity.id, entityNamespace: entityNamespace, referEntityId: referEntityId, screen: screen}),
         id: 'form-'~entity.id }}) }}
-        <h4 class="main-subtitle"><i class="icm-video"></i>{{ "Vidéo"|trans }}</h4>
+        <h4 class="main-subtitle"><i class="icm-video"></i>{{ "Vidéo"|trans|raw }}</h4>
         <div class="row">
             {{ macro.card(entity, 'App\\Entity\\Media\\MediaRelation', form.media.uploadedFile, 'mediaRelationId', entity.media.screen) }}
             {%- for mediaScreen in form.media.mediaScreens -%}
@@ -39,7 +39,7 @@
         </div>
         <div class="row">
             <div class="col-md-7">
-                <h4 class="main-subtitle"><i class="icm-align-center"></i>{%- if allLocales|length > 1 -%}{{ "Descriptions"|trans }}{%- else -%}{{ "Description"|trans }}{%- endif -%}</h4>
+                <h4 class="main-subtitle"><i class="icm-align-center"></i>{%- if allLocales|length > 1 -%}{{ "Descriptions"|trans|raw }}{%- else -%}{{ "Description"|trans|raw }}{%- endif -%}</h4>
                 <div class="row">
                     {%- set fieldNames = ['titleForce', 'title', 'subTitle', 'pictogram', 'introduction', 'body'] -%}
                     {%- for fieldName in fieldNames -%}
@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="col-md-5">
-                <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Lien"|trans }}</h4>
+                <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Lien"|trans|raw }}</h4>
                 <div class="row">
                     {%- set fieldNames = ['video', 'targetLink', 'targetPage', 'targetLabel', 'targetStyle'] -%}
                     {%- for fieldName in fieldNames -%}

@@ -62,7 +62,7 @@
                 {%- elseif prototypeOptions['legend'] is defined and prototypeOptions['legend'] -%}
                     {{ prototypeOptions['legend'] }}
                 {%- else -%}
-                    {{ 'Collection'|trans }}
+                    {{ 'Collection'|trans|raw }}
                 {%- endif -%}
                 {%- if prototypeOptions['legend_property'] is defined and prototypeOptions['legend_property'] and entity and attribute(entity, prototypeOptions['legend_property']) -%}
                      : {{ attribute(entity, prototypeOptions['legend_property']) }}
@@ -87,24 +87,15 @@
 
     {%- if displayBtn -%}
         <div class="col-12 text-end mb-4">
-            <button role="button" class="add-collection btn {% if fullBtn is defined %}full-prototype-btn w-100{% else %}btn-app success{% endif %}"
+            <button role="button" class="add-collection btn-app success"
                     data-collection-target="append"
                     data-target="#{{ field.vars.id }}_collection">
-                {%- if fullBtn is defined -%}
-                    <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
-                         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                         class="img-fluid rounded-add-img lazy-load"
-                         width="20" height="20" alt="{{ 'Ajouter'|trans|striptags }}" /><br>
+                <i class="icm-plus"></i>
+                {%- if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] -%}
+                    {{ prototypeOptions['attr']['button'] }}
                 {%- else -%}
-                    <i class="icm-plus"></i>
+                    {{ 'Ajouter'|trans|raw }}
                 {%- endif -%}
-                <span class="d-inline-block">
-                    {%- if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] -%}
-                        {{ prototypeOptions['attr']['button'] }}
-                    {%- else -%}
-                        {{ 'Ajouter'|trans }}
-                    {%- endif -%}
-                </span>
             </button>
         </div>
     {%- endif -%}

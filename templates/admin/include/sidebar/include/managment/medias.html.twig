@@ -16,8 +16,8 @@
             <span class="btn-icon small me-3">{{ icon|icon(19, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
         <ul aria-expanded="false" class="collapse {% if active %} in{% endif %}">
-            <li><a href="{{ path('admin_medias_library', {website: websiteId}) }}">{{ "Bibliothèque"|trans }}</a></li>
-            <li><a href="{{ path('admin_mediacategory_index', {website: websiteId}) }}">{{ "Catégories de médias"|trans }}</a></li>
+            <li><a href="{{ path('admin_medias_library', {website: websiteId}) }}">{{ "Bibliothèque"|trans|raw }}</a></li>
+            <li><a href="{{ path('admin_mediacategory_index', {website: websiteId}) }}">{{ "Catégories de médias"|trans|raw }}</a></li>
         </ul>
     </li>
 {%- elseif moduleActive -%}

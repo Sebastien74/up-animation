@@ -51,7 +51,7 @@
                     <div class="position-relative">
                         <div class="side position-absolute">
                             {%- if video.id and ('admin_'~interfaceName~'_position')|routeExist -%}
-                                <div class="handle-video cursor btn btn-transparent" data-toggle="tooltip" title="{{"Déplacer"|trans }}">{{ 'far arrows-alt'|icon(null, 15, 'dark') }}</div>
+                                <div class="handle-video cursor btn btn-transparent" data-toggle="tooltip" title="{{"Déplacer"|trans|raw }}">{{ 'far arrows-alt'|icon(null, 15, 'dark') }}</div>
                             {%- endif -%}
                             <span class="delete-video">
                             {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
@@ -96,15 +96,9 @@
 </div>
 
 <div class="col-12 text-end mb-4">
-    <button role="button" class="add-collection btn full-prototype-btn w-100"
+    <button role="button" class="add-collection btn-app success"
             data-collection-target="append"
             data-target="#{{ id }}-collection">
-        <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
-             src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-             class="img-fluid rounded-add-img lazy-load"
-             width="20" height="20" alt="{{ 'Ajouter'|trans }}"><br>
-        <span class="d-inline-block">
-            {{ 'Ajouter une video'|trans }}
-        </span>
+        <i class="icm-plug"></i>{{ 'Ajouter une video'|trans|raw }}
     </button>
 </div>

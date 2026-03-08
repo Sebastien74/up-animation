@@ -27,7 +27,7 @@
 {%- if displayModules -%}
     <li>
         <a class="as-arrow bigger py-2 fw-600{% if moduleActive %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
-            {{ "Modules"|trans }}
+            {{ "Modules"|trans|raw }}
         </a>
         <ul aria-expanded="false" class="collapse list-unstyled ps-0 py-3{% if moduleActive %} in{% endif %}">
             {%- include 'admin/include/sidebar/include/modules/catalog.html.twig' -%}

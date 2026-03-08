@@ -8,7 +8,7 @@
 {%- if displayTitleCard -%}
     <div class="col-12">
         <h4 class="main-subtitle">
-            <i class="icm-photo-video"></i>{%- if allLocales|length > 1 -%}{{ "Médias"|trans }}{%- else -%}{{ "Média"|trans }}{%- endif -%}
+            <i class="icm-photo-video"></i>{%- if allLocales|length > 1 -%}{{ "Médias"|trans|raw }}{%- else -%}{{ "Média"|trans|raw }}{%- endif -%}
         </h4>
     </div>
 {%- endif -%}
@@ -90,7 +90,7 @@
                         data-bs-toggle="collapse"
                         href="#collapse-link-{{ mediaRelationId }}"
                         aria-expanded="false">
-                    <i class="icm-link me-2"></i>{{ "Lien"|trans }}
+                    <i class="icm-link me-2"></i>{{ "Lien"|trans|raw }}
                     <i class="icm-chevron-down ms-auto"></i>
                 </button>
             {%- endif -%}
@@ -135,7 +135,7 @@
                         data-bs-toggle="collapse"
                         href="#collapse-configuration-{{ mediaRelationId }}"
                         aria-expanded="false">
-                    <i class="icm-cog me-2"></i>{{ "Configuration / Contenu"|trans }}
+                    <i class="icm-cog me-2"></i>{{ "Configuration / Contenu"|trans|raw }}
                     <i class="icm-chevron-down ms-auto"></i>
                 </button>
 

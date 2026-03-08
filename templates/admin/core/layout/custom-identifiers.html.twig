@@ -2,7 +2,7 @@
 {%- if customClasses|length > 0 and form.customClass is defined -%}
     <div class="text-start custom-css-alert ribbon-vwrapper alert alert-info">
         <div class="ribbon ribbon-bookmark ribbon-vertical-l ribbon-info"><i class="icm-info"></i></div>
-        <h5 class="mb-3">{{ "Classes personnalisées"|trans }}</h5>
+        <h5 class="mb-3">{{ "Classes personnalisées"|trans|raw }}</h5>
         <div class="row css-classes-list">
             {%- for customClass in customClasses -%}
                 {%- if customClass.name -%}

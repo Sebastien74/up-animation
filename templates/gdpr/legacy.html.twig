@@ -5,14 +5,14 @@
 
 {%- if not axeptioId and 'gdpr'|moduleActive(website.configuration) -%}
     <div id="cookies-infos" class="container table-responsive mb-5">
-        <h2 id="legacy-title-params" class="mb-4">{{ "Paramétrage des cookies"|trans }}</h2>
+        <h2 id="legacy-title-params" class="mb-4">{{ "Paramétrage des cookies"|trans|raw }}</h2>
         <table class="table table-bordered table-striped gdpr-management mb-0">
             <thead>
                 <tr>
-                    <th class="align-middle">{{ "Groupe"|trans }}</th>
+                    <th class="align-middle">{{ "Groupe"|trans|raw }}</th>
                     <th class="align-middle">
                         <div class="row">
-                            <div class="col-8 my-auto">{{ "Description"|trans }}</div>
+                            <div class="col-8 my-auto">{{ "Description"|trans|raw }}</div>
                             <div class="col-4 my-auto">
                                 <button type="button" id="gdpr-choices-validate" class="gdpr-choices-validate btn float-end d-none d-lg-inline-block">
                                     <span id="gdpr-choices-validate-icon-large" class="spinner-border me-2 d-none" role="status"></span>
@@ -52,7 +52,7 @@
                                                     {{ intl.body|unescape|raw }}
                                                 {%- endif -%}
                                                 {%- if intl.targetLink is defined and intl.targetLink -%}
-                                                    <a href="{{ intl.targetLink }}" target="_blank">{{ "En savoir plus"|trans }}</a>
+                                                    <a href="{{ intl.targetLink }}" target="_blank">{{ "En savoir plus"|trans|raw }}</a>
                                                 {%- endif -%}
                                             </div>
                                             <div class="col-lg-3 my-auto">

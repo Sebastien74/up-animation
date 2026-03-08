@@ -4,7 +4,7 @@
 
     {%- set mediasByPosition = entity|mediasIdsByPosition(website, interface) -%}
 
-    <h4 class="main-subtitle position-relative mb-4"><i class="icm-photo-video"></i>{{ "Médias"|trans }}</h4>
+    <h4 class="main-subtitle position-relative mb-4"><i class="icm-photo-video"></i>{{ "Médias"|trans|raw }}</h4>
 
     {%- set mediasInfos = {} -%}
     {%- set errors = {} -%}
@@ -108,7 +108,7 @@
                                 {%- endif -%}
                                 {%- if media.categories is defined and media.categories|length > 0 -%}
                                     <span class="mytooltip tooltip-effect-4">
-                                        <small class="tooltip-item tooltip-categories ms-3">{{ "Catégories"|trans }}</small>
+                                        <small class="tooltip-item tooltip-categories ms-3">{{ "Catégories"|trans|raw }}</small>
                                         <span class="tooltip-content clearfix">
                                             <span class="tooltip-text p-3">
                                                 <ul class="p-0 ps-3">
@@ -175,7 +175,7 @@
                                 <div class="progress medias-preloader-tab">
                                     <div class="bg-stripe-loader"></div>
                                     <div class="d-flex flex-column justify-content-center align-items-center w-100">
-                                        <h4>{{ "Chargement en cours..."|trans }}</h4>
+                                        <h4>{{ "Chargement en cours..."|trans|raw }}</h4>
                                     </div>
                                 </div>
                             </div>

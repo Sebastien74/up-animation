@@ -26,9 +26,9 @@
         <table class="table editable-table table-striped mb-0">
             <thead>
                 <tr>
-                    <th class="col-locale {% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans }}</th>
-                    <th>{{ "URL"|trans }} <small class="ms-1">({{ "Ancienne URI / URL"|trans }})</small></th>
-                    <th class="text-start">{{ "Nouvelle URL"|trans }} <small class="ms-1">({{ "Avec protocol"|trans }})</small></th>
+                    <th class="col-locale {% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans|raw }}</th>
+                    <th>{{ "URL"|trans|raw }} <small class="ms-1">({{ "Ancienne URI / URL"|trans|raw }})</small></th>
+                    <th class="text-start">{{ "Nouvelle URL"|trans|raw }} <small class="ms-1">({{ "Avec protocol"|trans|raw }})</small></th>
                     <th class="text-end">
                         <div class="delete-index-all-wrap custom-control custom-checkbox float-end ms-3 d-none" data-toggle="tooltip"
                              title="{{"Tout cocher"|trans|striptags }}"
@@ -37,7 +37,7 @@
                             <input type="checkbox" class="custom-control-input delete-index-all" id="delete-index-all">
                             <label class="custom-control-label" for="delete-index-all"></label>
                         </div>
-                        {{ "Actions"|trans }}
+                        {{ "Actions"|trans|raw }}
                     </th>
                 </tr>
             </thead>

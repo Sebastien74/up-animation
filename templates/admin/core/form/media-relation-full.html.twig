@@ -18,7 +18,7 @@
             <div class="col-md-8">
                 {%- if intlCardTitle -%}
                     <h4 class="main-subtitle" data-bs-toggle="collapse" href="#collapse-description-{{ entity.id }}" role="button" aria-expanded="true" aria-controls="collapse-description-{{ entity.id }}">
-                        <i class="icm-align-center"></i>{%- if allLocales|length > 1 -%}{{ "Descriptions"|trans }}{%- else -%}{{ "Description"|trans }}{%- endif -%}
+                        <i class="icm-align-center"></i>{%- if allLocales|length > 1 -%}{{ "Descriptions"|trans|raw }}{%- else -%}{{ "Description"|trans|raw }}{%- endif -%}
                         <i class="icm-chevron-down ms-auto"></i>
                     </h4>
                 {%- endif -%}
@@ -54,7 +54,7 @@
 
                 {%- if linkCardTitle -%}
                     <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-link-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-link-{{ entity.id }}">
-                        <i class="icm-link"></i>{{ "Lien"|trans }}
+                        <i class="icm-link"></i>{{ "Lien"|trans|raw }}
                         <i class="icm-chevron-down ms-auto"></i>
                     </h4>
                 {%- endif -%}
@@ -88,7 +88,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <h4 class="main-subtitle"><i class="icm-image"></i>{{ "Média"|trans }}</h4>
+                <h4 class="main-subtitle"><i class="icm-image"></i>{{ "Média"|trans|raw }}</h4>
                 <div class="card-body pb-2 border mb-4 radius">
                     {%- include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: entity.id, classname: class} -%}
                     {{ form_row(form.media.uploadedFile) }}

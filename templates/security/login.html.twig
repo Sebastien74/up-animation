@@ -21,7 +21,7 @@
         id: "login-form",
     }}) }}
         <div class="info-request mb-4 text-center">
-            <h5 class="text-white mb-2">{{ "Connectez-vous"|trans }}</h5>
+            <h5 class="text-white mb-2">{{ "Connectez-vous"|trans|raw }}</h5>
         </div>
         <div class="form-data" data-id="{{ securityKey }}" data-website="{{ websiteId() }}"></div>
         {%- for field in form.children -%}

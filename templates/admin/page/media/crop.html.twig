@@ -3,7 +3,7 @@
 {%- trans_default_domain 'admin' -%}
 
 {%- block title -%}{{ "Redimensionner"|trans|htmlEntities }}{%- endblock -%}
-{%- block pageTitle -%}{{ "Redimensionner"|trans }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Redimensionner"|trans|raw }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ parent() }}

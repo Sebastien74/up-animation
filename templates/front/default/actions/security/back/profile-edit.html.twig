@@ -50,7 +50,7 @@
                                     {%- endif -%}
                                 </div>
                                 {%- if 'SECURITY_FRONT_ADDRESSES'|getEnv -%}
-                                    <h3 class="mb-4 mt-4">{{ "Adresse de livraison"|trans }}</h3>
+                                    <h3 class="mb-4 mt-4">{{ "Adresse de livraison"|trans|raw }}</h3>
                                     <div class="row">
                                         {%- for address in form.profile.addresses -%}
                                             {%- if address.vars.data.slug == 'basic' -%}
@@ -59,7 +59,7 @@
                                         {%- endfor -%}
                                     </div>
                                     {%- if 'SECURITY_FRONT_ADDRESSES'|getEnv == 'full' -%}
-                                        <h3 class="mb-4 mt-4">{{ "Adresse de facturation"|trans }}</h3>
+                                        <h3 class="mb-4 mt-4">{{ "Adresse de facturation"|trans|raw }}</h3>
                                         <div class="row">
                                             {%- for address in form.profile.addresses -%}
                                                 {%- if address.vars.data.slug == 'billing' -%}

@@ -23,10 +23,10 @@
                                     {%- include 'admin/core/form/intls.html.twig' with {intls: form.intls} -%}
                                     {%- set configsSet = configsSet|merge(['intls']) -%}
                                 {%- elseif tabId == 'features' and field.vars.name == 'values' -%}
-                                    {%- include 'admin/core/form/prototype.html.twig' with {fullBtn: true} -%}
+                                    {%- include 'admin/core/form/prototype.html.twig' -%}
                                 {%- elseif tabId == 'configuration' -%}
                                     <div class="col-12">
-                                        <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
+                                        <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans|raw }}</h4>
                                     </div>
                                     {%- if form.publicationStart is defined -%}
                                         {{ form_row(form.publicationStart) }}

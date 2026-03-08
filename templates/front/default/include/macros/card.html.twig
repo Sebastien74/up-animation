@@ -237,7 +237,7 @@
         {%- if entity.intl.introduction -%}
             <div class="bottom mt-auto overflow-hidden position-relative">
                 <p class="intro mb-0 text-{{ color }} mt-4">{{ entity.intl.introduction|striptags }}</p>
-                <span class="show-more position-absolute text-{{ color }} mt-0 pb-1">{{ "En savoir +"|trans }}</span>
+                <span class="show-more position-absolute text-{{ color }} mt-0 pb-1">{{ "En savoir +"|trans|raw }}</span>
             </div>
         {%- endif -%}
     </a>

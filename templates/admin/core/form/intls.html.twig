@@ -11,7 +11,7 @@
 {%- if not disableTitle -%}
     <div class="col-12">
         <h4 class="main-subtitle">
-            <i class="icm-align-center"></i>{%- if allLocales|length > 1 -%}{{ "Descriptions"|trans }}{%- else -%}{{ "Description"|trans }}{%- endif -%}
+            <i class="icm-align-center"></i>{%- if allLocales|length > 1 -%}{{ "Descriptions"|trans|raw }}{%- else -%}{{ "Description"|trans|raw }}{%- endif -%}
         </h4>
     </div>
 {%- endif -%}
@@ -64,7 +64,7 @@
 
                         {%- if disableTitleVideo is not defined and field.vars.name == "video" and disableVideoTitle is not defined -%}
                             <div class="col-12">
-                                <h4 class="main-subtitle"><i class="icm-video"></i>{{ "Vidéo"|trans }}</h4>
+                                <h4 class="main-subtitle"><i class="icm-video"></i>{{ "Vidéo"|trans|raw }}</h4>
                             </div>
                         {%- endif -%}
 
@@ -72,7 +72,7 @@
                         {%- set attrGroup = field.vars.attr['data-group'] is defined and field.vars.attr['data-group'] ? field.vars.attr['data-group'] : attrGroup -%}
                         {%- if disableTitleLink is not defined and attrGroup and "add-title" in attrGroup and "target" in field.vars.name -%}
                             <div class="col-12">
-                                <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Lien"|trans }}</h4>
+                                <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Lien"|trans|raw }}</h4>
                             </div>
                         {%- endif -%}
 
@@ -110,7 +110,7 @@
                                                 {%- set pathArgs = pathArgs|merge({entitylocale: website().configuration.locale}) -%}
                                             {%- endif -%}
                                             <a href="{{ path('admin_'~entityInterfaceName~'_edit', pathArgs) }}" class="btn-app">
-                                                <i class="icm-pencil-alt"></i>{{ "Éditer"|trans }}
+                                                <i class="icm-pencil-alt"></i>{{ "Éditer"|trans|raw }}
                                             </a>
                                         </div>
                                     </div>

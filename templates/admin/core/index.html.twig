@@ -97,7 +97,7 @@
                                     data-hide="{{"Masquer"|trans|striptags }}">
                                 <i class="icm-trash"></i>
                             </button>
-                            <button class="index-delete-submit btn-icon danger-darken d-none" data-bs-toggle="tooltip" title="{{"Supprimer la sélection"|trans }}">
+                            <button class="index-delete-submit btn-icon danger-darken d-none" data-bs-toggle="tooltip" title="{{"Supprimer la sélection"|trans|raw }}">
                                 <i class="icm-trash"></i>
                             </button>
                         </div>
@@ -111,12 +111,12 @@
                         </div>
                     {%- endif -%}
                     {%- if haveExport in interface.configuration.exports and routeExist('admin_'~interface['name']~'_export') and granted('ROLE_EXPORT') and not disabledExport -%}
-                        <div class="item-header mb-2 pe-lg-0 mb-2">
+                        <div class="item-header my-1 pe-lg-0">
                             {{ render_esi(path('admin_'~interface['name']~'_export', args)) }}
                         </div>
                     {%- endif -%}
                     {%- if routeExist('admin_'~interface['name']~'_new') and not disableFormNew and granted('ROLE_ADD') -%}
-                        <div class="item-header mb-2 pe-lg-0 mb-2 d-flex align-items-center">
+                        <div class="item-header my-1 pe-lg-0">
                             {%- set newArgs = ('admin_'~interface['name']~'_new')|routeArgs(interface.entity, args) -%}
 {#                            <a href="{{ path('admin_'~interface['name']~'_new', newArgs) }}" class="btn-icon me-3">Go</a>#}
                             {{ render_esi(path('admin_'~interface['name']~'_new', newArgs)) }}
@@ -159,11 +159,11 @@
                                 {%- endif -%}
 
                                 {%- if haveInfos -%}
-                                    <th class="px-4">{{ "Infos"|trans }}</th>
+                                    <th class="px-4">{{ "Infos"|trans|raw }}</th>
                                 {%- endif -%}
 
                                 {%- if positionActive -%}
-                                    <th class="text-center px-4">{{ "Position"|trans }}</th>
+                                    <th class="text-center px-4">{{ "Position"|trans|raw }}</th>
                                 {%- endif -%}
 
                                 {%- set disabledButtons = interface.disabledButtons is defined and haveParentMasterField -%}
@@ -184,7 +184,7 @@
                                         <input type="checkbox" class="custom-control-input delete-index-all" id="delete-index-all">
                                         <label class="custom-control-label" for="delete-index-all"></label>
                                     </div>
-                                    {{ "Actions"|trans }}
+                                    {{ "Actions"|trans|raw }}
                                 </th>
                             </tr>
                         </thead>
@@ -387,7 +387,7 @@
                                 <tr>
                                     <td colspan="12" class="px-4">
                                         <div class="py-2 d-flex align-items-center justify-content-center gap-2">
-                                            <i class="btn-icon info icm-info"></i>{{ "Aucun résultat"|trans }}
+                                            <i class="btn-icon info icm-info"></i>{{ "Aucun résultat"|trans|raw }}
                                         </div>
                                     </td>
                                 </tr>

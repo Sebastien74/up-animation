@@ -34,7 +34,7 @@
                                                  class="img-fluid lazy-load" height="17" width="17">
                                         </span>
                                     {%- endif -%}
-                                    {{ domain|trans }}
+                                    {{ domain|trans|raw }}
                                     <small class="italic">
                                         <span class="counter">0</span>/{{ localeTranslations|length }}
                                     </small>

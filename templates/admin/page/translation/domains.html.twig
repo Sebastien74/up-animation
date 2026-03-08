@@ -5,7 +5,7 @@
 {%- set pageIcon = 'globe' -%}
 
 {%- block title -%}{{ "Groupes de traductions"|trans|htmlEntities }}{%- endblock -%}
-{%- block pageTitle -%}{{ "Groupes de traductions"|trans }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Groupes de traductions"|trans|raw }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ parent() }}
@@ -28,20 +28,20 @@
     {%- if granted('ROLE_INTERNAL') -%}
         <div class="d-flex align-items-center gap-2 mb-4">
             <span class="translation-extract-btn cursor btn-app" data-domain="only_front">
-                <i class="icm-sync-alt"></i><span>{{ "Extraire le front"|trans }}</span>
+                <i class="icm-sync-alt"></i><span>{{ "Extraire le front"|trans|raw }}</span>
             </span>
             <span class="translation-extract-btn cursor btn-app" data-domain="all">
-                <i class="icm-sync-alt"></i><span>{{ "Extraire tout"|trans }}</span>
+                <i class="icm-sync-alt"></i><span>{{ "Extraire tout"|trans|raw }}</span>
             </span>
             {%- if not toExtract -%}
                 <a href="{{ path('admin_intls_export', { website: websiteId }) }}" class="btn-app">
-                    <i class="icm-upload"></i><span>{{ "Exporter les traductions"|trans }}</span>
+                    <i class="icm-upload"></i><span>{{ "Exporter les traductions"|trans|raw }}</span>
                 </a>
                 <a href="#" class="btn-app" data-bs-toggle="modal" data-bs-target="#import-modal">
-                    <i class="icm-download"></i><span>{{ "Importer les traductions"|trans }}</span>
+                    <i class="icm-download"></i><span>{{ "Importer les traductions"|trans|raw }}</span>
                 </a>
                 <a class="btn-app" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}">
-                    <i class="icm-broom"></i><span>{{ "Vider le cache"|trans }}</span>
+                    <i class="icm-broom"></i><span>{{ "Vider le cache"|trans|raw }}</span>
                 </a>
                 {{ render_esi(path("admin_translation_new", {website: websiteId()})) }}
                 {{ render_esi(path('admin_intls_import', {website: websiteId()} )) }}
@@ -75,7 +75,7 @@
                     <table class="table table-striped responsive-cards">
                         <thead>
                             <tr>
-                                <th class="align-middle px-4">{{ "Groupe"|trans }}</th>
+                                <th class="align-middle px-4">{{ "Groupe"|trans|raw }}</th>
                                 {%- for transLocale in allLocales -%}
                                     <th class="align-middle px-4">
                                         {%- if allLocales|length > 1 -%}
@@ -84,7 +84,7 @@
                                                  class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">
                                         {%- endif -%}
                                         {%- if stats[transLocale] is defined -%}
-                                            <span class="d-inline-block fw-500">{{ stats[transLocale]['words'] }} {{ "mots"|trans }}</span>
+                                            <span class="d-inline-block fw-500">{{ stats[transLocale]['words'] }} {{ "mots"|trans|raw }}</span>
                                         {%- endif -%}
                                     </th>
                                 {%- endfor -%}
@@ -155,7 +155,7 @@
                                         {%- for transLocale in interface.website.configuration.allLocales -%}
                                             <td class="align-middle px-4">
                                                 {%- if stats[entity.name]['units'][transLocale] is defined -%}
-                                                    <small>{{ stats[entity.name]['units'][transLocale] }}/{{ stats[entity.name]['units']['count'][transLocale] }} <span class="d-inline-block"> - {{ stats[entity.name][transLocale]['words'] }} {{ 'mots'|trans }}</span></small>
+                                                    <small>{{ stats[entity.name]['units'][transLocale] }}/{{ stats[entity.name]['units']['count'][transLocale] }} <span class="d-inline-block"> - {{ stats[entity.name][transLocale]['words'] }} {{ 'mots'|trans|raw }}</span></small>
                                                     <div class="progress">
                                                         {%- set percent = stats[entity.name]['units'][transLocale]|percent(stats[entity.name]['units']['count'][transLocale]) -%}
                                                         {%- set color = percent < 100 ? 'danger' : 'success' -%}

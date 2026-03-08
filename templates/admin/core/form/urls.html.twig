@@ -23,7 +23,7 @@
 
     <div class="col-12 mb-3">
         <h4 class="main-subtitle small">
-            <i class="icm-link"></i>{%- if allLocales|length > 1 -%}{{ "URLS"|trans }}{%- else -%}{{ "URL"|trans }}{%- endif -%}
+            <i class="icm-link"></i>{%- if allLocales|length > 1 -%}{{ "URLS"|trans|raw }}{%- else -%}{{ "URL"|trans|raw }}{%- endif -%}
         </h4>
         {%- for url in urls -%}
             {%- set locale = url.vars.value.locale -%}
@@ -66,7 +66,7 @@
                        target="_blank"><i class="icm-eye"></i>
                     </a>
                     <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: locale, url: urlId}) }}"
-                       data-bs-toggle="tooltip" title="{{"Référencement avancé"|trans }}"
+                       data-bs-toggle="tooltip" title="{{"Référencement avancé"|trans|raw }}"
                        class="btn-icon small">
                         <i class="icm-chart-line"></i>
                     </a>

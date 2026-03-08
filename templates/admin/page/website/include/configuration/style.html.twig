@@ -2,7 +2,7 @@
 
 <div class="card mb-3">
     <div class="card-body pb-2">
-        <h4 class="main-subtitle"><i class="icm-css3-alt"></i>{{ "Classes personnalisées"|trans }}</h4>
+        <h4 class="main-subtitle"><i class="icm-css3-alt"></i>{{ "Classes personnalisées"|trans|raw }}</h4>
 
         {%- import _self as macro -%}
 
@@ -41,7 +41,7 @@
                     data-type="table"
                     data-collection-target="append"
                     data-target="#cssclasses-collection">
-                <i class="icm-plus"></i>{{ "Ajouter une classe"|trans }}
+                <i class="icm-plus"></i>{{ "Ajouter une classe"|trans|raw }}
             </button>
         </div>
 

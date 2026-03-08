@@ -2,52 +2,52 @@
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-        <span class="btn-icon small me-3"><i class="icm-bug"></i></span>{{ "Debug"|trans }}
+        <span class="btn-icon small me-3"><i class="icm-bug"></i></span>{{ "Debug"|trans|raw }}
     </a>
     <ul aria-expanded="false" class="collapse">
         <li>
             <a href="{{ path('bin_debug', {service: 'autowiring'}) }}">
-                <span class="hide-menu">{{ "Autowiring"|trans }}</span>
+                <span class="hide-menu">{{ "Autowiring"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('bin_debug', {service: 'config'}) }}">
-                <span class="hide-menu">{{ "Config"|trans }}</span>
+                <span class="hide-menu">{{ "Config"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('bin_debug', {service: 'container'}) }}">
-                <span class="hide-menu">{{ "Container"|trans }}</span>
+                <span class="hide-menu">{{ "Container"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('bin_debug', {service: 'event-dispatcher'}) }}">
-                <span class="hide-menu">{{ "Event dispatcher"|trans }}</span>
+                <span class="hide-menu">{{ "Event dispatcher"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('bin_debug', {service: 'form'}) }}">
-                <span class="hide-menu">{{ "Form"|trans }}</span>
+                <span class="hide-menu">{{ "Form"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('bin_debug', {service: 'router'}) }}">
-                <span class="hide-menu">{{ "Router"|trans }}</span>
+                <span class="hide-menu">{{ "Router"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('bin_debug', {service: 'swiftmailer'}) }}">
-                <span class="hide-menu">{{ "Swiftmailer"|trans }}</span>
+                <span class="hide-menu">{{ "Swiftmailer"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('bin_debug', {service: 'translation'}) }}">
-                <span class="hide-menu">{{ "Translation"|trans }}</span>
+                <span class="hide-menu">{{ "Translation"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('bin_debug', {service: 'twig'}) }}">
-                <span class="hide-menu">{{ "Twig"|trans }}</span>
+                <span class="hide-menu">{{ "Twig"|trans|raw }}</span>
             </a>
         </li>
     </ul>

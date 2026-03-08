@@ -158,7 +158,7 @@
                         {%- if pageUrl -%}
                             <a href="{{ path('front_index', {'url': pageUrl}) }}" class="back-link d-flex align-items-center justify-content-start">
                                 <i class="icon-chevron-circle-left"></i>
-                                <span class="ms-2">{{ 'Retour aux offres'|trans }}</span>
+                                <span class="ms-2">{{ 'Retour aux offres'|trans|raw }}</span>
                             </a>
                         {%- endif -%}
                     </div>

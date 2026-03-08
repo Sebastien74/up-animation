@@ -23,9 +23,9 @@
     <div id="dashboard" class="pt-4 pb-5 position-relative">
 
         <div class="header mb-1 d-inline-block px-4 py-4 shadow-item">
-            <h1 class="w-100 d-flex align-items-center">{{ seasonIcon()|icon(25, 25, 'me-2 info-darken') }}{{ "Ravi de vous revoir !"|trans }}</h1>
+            <h1 class="w-100 d-flex align-items-center">{{ seasonIcon()|icon(25, 25, 'me-2 info-darken') }}{{ "Ravi de vous revoir !"|trans|raw }}</h1>
             {%- if app.user.lastLogin is defined and app.user.lastLogin -%}
-                <p>{{ "Dernière connexion"|trans }} {{ app.user.lastLogin|ago }}</p>
+                <p>{{ "Dernière connexion"|trans|raw }} {{ app.user.lastLogin|ago }}</p>
             {%- endif -%}
             <div id="saying" class="mt-4">
                 <script language="javascript" charset="utf-8" src="https://dicocitations.lemonde.fr/dictonblog.js" defer></script>
@@ -42,7 +42,7 @@
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_page_tree', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin pages-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos pages"|trans }}</span>
+                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos pages"|trans|raw }}</span>
                             </a>
                         </div>
                     {%- endif -%}
@@ -50,7 +50,7 @@
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_medias_library', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin images-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos médias"|trans }}</span>
+                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos médias"|trans|raw }}</span>
                             </a>
                         </div>
                     {%- endif -%}
@@ -58,7 +58,7 @@
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin news-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Publiez une actu"|trans }}</span>
+                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Publiez une actu"|trans|raw }}</span>
                             </a>
                         </div>
                     {%- endif -%}
@@ -68,7 +68,7 @@
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_form_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin form-color'|icon(70, 70, 'info') }}</span>
-                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos formulaires"|trans }}</span>
+                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos formulaires"|trans|raw }}</span>
                             </a>
                         </div>
                     {%- endif -%}
@@ -76,14 +76,14 @@
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_slider_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin sliders-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Vos sliders"|trans }}</span>
+                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Vos sliders"|trans|raw }}</span>
                             </a>
                         </div>
                     {%- endif -%}
                     <div class="col-6 col-md-4 text-center py-2">
                         <a href="{{ path('admin_support', {website: websiteId()}) }}" class="d-flex shadow-item flex-column h-100 p-4">
                             <span class="d-inline-block w-100 mb-2">{{ 'admin headset-color'|icon(65, 65, 'info') }}</span>
-                            <span class="entitled text-dark d-inline-flex align-items-center justify-content-center mt-auto">{{ "Besoin d’aide ?"|trans }}</span>
+                            <span class="entitled text-dark d-inline-flex align-items-center justify-content-center mt-auto">{{ "Besoin d’aide ?"|trans|raw }}</span>
                         </a>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                                             {{ notFoundUrls|length }}
                                         {%- endif -%}
                                     </span>
-                                    <span class="entitled text-dark d-inline-flex align-items-center justify-content-center"><i class="icm-unlink"></i>{{ "Erreurs 404"|trans }}</span>
+                                    <span class="entitled text-dark d-inline-flex align-items-center justify-content-center"><i class="icm-unlink"></i>{{ "Erreurs 404"|trans|raw }}</span>
                                 </div>
                             </a>
                             <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: defaultLocale}) }}"
@@ -128,7 +128,7 @@
                                             </ul>
                                         </div>
                                     {%- endif -%}
-                                    <span class="entitled text-dark w-100 d-inline-block"><i class="icm-search"></i>{{ "SEO manquant"|trans }}</span>
+                                    <span class="entitled text-dark w-100 d-inline-block"><i class="icm-search"></i>{{ "SEO manquant"|trans|raw }}</span>
                                 </div>
                             </a>
                         </div>
@@ -140,7 +140,7 @@
                 <div id="stats-search" class="col-12 mt-4 pt-4">
                     <div class="table-card card">
                         <div class="card-header-darken-dark">
-                            <h3 class="title w-100 fw-400 mb-0">{{ "Recherches effectuées"|trans }}</h3>
+                            <h3 class="title w-100 fw-400 mb-0">{{ "Recherches effectuées"|trans|raw }}</h3>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped mb-0">

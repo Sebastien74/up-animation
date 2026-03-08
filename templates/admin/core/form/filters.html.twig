@@ -1,6 +1,6 @@
 {%- trans_default_domain 'admin' -%}
 
-<button class="btn-icon danger float-start me-2" data-bs-toggle="modal" data-bs-target="#filters-modal"><i class="icm-filter"></i>{{ "Filtrer"|trans }}</button>
+<button class="btn-icon danger float-start me-2" data-bs-toggle="modal" data-bs-target="#filters-modal"><i class="icm-filter"></i>{{ "Filtrer"|trans|raw }}</button>
 
 <div class="modal-wrapper float-start">
     <div class="modal fade" id="filters-modal" tabindex="-1"
@@ -10,13 +10,13 @@
                 {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
                 <div class="modal-header">
                     <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-filter"></i></span></span>
-                    <button class="btn-close btn-icon position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
+                    <button class="btn-close btn-icon position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
                         <i class="icm-times"></i>
                     </button>
                 </div>
                 <div class="modal-body d-flex">
                     <div class="container my-auto ajax-content">
-                        <h2 class="main-title text-center fw-bold mb-5">{{ "Filtrer"|trans }}</h2>
+                        <h2 class="main-title text-center fw-bold mb-5">{{ "Filtrer"|trans|raw }}</h2>
                         {{ form_start(searchFiltersForm, { attr: {
                             novalidate: "novalidate",
                             id: "filters-form",
@@ -28,10 +28,10 @@
                             <div class="w-100 text-center modal-buttons mt-4">
                                 {%- if '?filter' in app.request.uri -%}
                                     <a href="{{ path('admin_'~interface.name~'_index', args) }}" class="btn-app">
-                                        {{ "Réinitialiser"|trans }}
+                                        {{ "Réinitialiser"|trans|raw }}
                                     </a>
                                 {%- endif -%}
-                                <button type="submit" class="btn-app">{{ "Filtrer"|trans }}</button>
+                                <button type="submit" class="btn-app">{{ "Filtrer"|trans|raw }}</button>
                             </div>
                         {{ form_end(searchFiltersForm) }}
                     </div>

@@ -6,7 +6,7 @@
 {%- set pageIcon = 'photo-video' -%}
 
 {%- block title -%}{{ "Bibliothèque de médias"|trans|htmlEntities }}{%- endblock -%}
-{%- block pageTitle -%}{{ "Bibliothèque de médias"|trans }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Bibliothèque de médias"|trans|raw }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ parent() }}
@@ -36,7 +36,7 @@
                         href="#collapseFormMedias"
                         aria-expanded="false"
                         aria-controls="collapseFormMedias">
-                    <i class="icm-plus"></i><span>{{ "Ajouter des medias"|trans }}</span>
+                    <i class="icm-plus"></i><span>{{ "Ajouter des medias"|trans|raw }}</span>
                 </button>
             </div>
             {{ render_esi(path('admin_medias_uploader', {website: websiteId})) }}
@@ -63,7 +63,7 @@
             <div class="col-md-5">
                 <div class="main-subtitle">
                     <div class="title-wrap d-flex align-items-center gap-2 me-auto">
-                        <i class="icm-folder-tree"></i>{{ "Dossiers"|trans }}
+                        <i class="icm-folder-tree"></i>{{ "Dossiers"|trans|raw }}
                     </div>
                     {%- if 'delete'|moduleActive(configuration) -%}
                         <button id="delete-pack-btn" class="btn-icon danger d-none"
@@ -112,25 +112,25 @@
                     <div class="card-header mb-0 pb-0">
                         <div class="row align-items-center">
                             <div class="col-md-7 my-auto d-flex align-items-center gap-2">
-                                <i class="icm-photo-video btn-icon"></i>{{ "Médias"|trans }}
+                                <i class="icm-photo-video btn-icon"></i>{{ "Médias"|trans|raw }}
                                 <div id="media-management-buttons" class="d-none ms-3 d-flex gap-2">
                                     {%- if 'edit'|moduleActive(configuration) -%}
                                         <button id="select-folder-btn"
                                                 data-path="{{ path('admin_folder_select', {website: websiteId}) }}"
                                                 class="btn-icon warning"
-                                                data-bs-toggle="tooltip" title="{{"Déplacer"|trans }}">
+                                                data-bs-toggle="tooltip" title="{{"Déplacer"|trans|raw }}">
                                             <i class="icm-share-square"></i>
                                         </button>
                                     {%- endif -%}
                                     {%- if granted('ROLE_MEDIA_COMPRESS') -%}
                                         <button id="media-compress-btn" class="btn-icon info"
-                                                data-bs-toggle="tooltip" title="{{"Compresser"|trans }}">
+                                                data-bs-toggle="tooltip" title="{{"Compresser"|trans|raw }}">
                                             <i class="icm-compress-alt"></i>
                                         </button>
                                     {%- endif -%}
                                     {%- if 'delete'|moduleActive(configuration) -%}
                                         <button class="btn-icon danger sa-warning sa-warning-delete-medias"
-                                                data-bs-toggle="tooltip" title="{{"Supprimer"|trans }}">
+                                                data-bs-toggle="tooltip" title="{{"Supprimer"|trans|raw }}">
                                             <i class="icm-trash"></i>
                                         </button>
                                     {%- endif -%}

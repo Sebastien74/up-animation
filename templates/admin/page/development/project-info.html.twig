@@ -3,7 +3,7 @@
 {%- trans_default_domain 'admin' -%}
 
 {%- block title -%}{{ "Infos projet"|trans|htmlEntities }}{%- endblock -%}
-{%- block pageTitle -%}{{ "Infos projet"|trans }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Infos projet"|trans|raw }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ parent() }}
@@ -17,7 +17,7 @@
 {%- block body -%}
 
     <div class="card mb-3">
-        <h4 class="main-subtitle"><i class="icm-exclamation-circle"></i>{{ "Infos"|trans }}</h4>
+        <h4 class="main-subtitle"><i class="icm-exclamation-circle"></i>{{ "Infos"|trans|raw }}</h4>
         <table class="table table-striped mb-0">
             <tr>
                 <td>{{ 'Poids total'|trans|raw }}</td>

@@ -17,7 +17,7 @@
                         {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
                         <div class="modal-header">
                             <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-copy"></i></span></span>
-                            <button class="btn-close btn-icon" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
+                            <button class="btn-close btn-icon" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
                                 <i class="icm-times"></i>
                             </button>
                         </div>
@@ -29,7 +29,7 @@
                         </div>
                         <div class="modal-footer pt-0">
                             <button type="submit" class="btn-app w-100 ajax-post remove-modal{% if refresh %} refresh{% endif %}">
-                                {{ "Enregistrer"|trans }}
+                                {{ "Enregistrer"|trans|raw }}
                             </button>
                         </div>
                     </div>
@@ -48,13 +48,13 @@
                     {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
                     <div class="modal-header">
                         <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-copy"></i></span></span>
-                        <button class="btn-close btn-icon position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
+                        <button class="btn-close btn-icon position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
                             <i class="icm-times"></i>
                         </button>
                     </div>
                     <div class="modal-body d-flex">
                         <div class="container my-auto ajax-content ajax-html">
-                            <h2 class="main-title text-center fw-bold mb-5">{{ "Dupliquer"|trans }}</h2>
+                            <h2 class="main-title text-center fw-bold mb-5">{{ "Dupliquer"|trans|raw }}</h2>
                             {{ form_start(form, { attr: {
                                 novalidate: "novalidate",
                                 id: "duplicate-form",
@@ -64,7 +64,7 @@
                                     {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only -%}
                                 </div>
                                 <div class="w-100 text-center modal-buttons mt-4">
-                                    <button type="submit" class="btn-app ajax-post remove-modal{% if refresh %} refresh{% endif %}">{{ "Dupliquer"|trans }}</button>
+                                    <button type="submit" class="btn-app ajax-post remove-modal{% if refresh %} refresh{% endif %}">{{ "Dupliquer"|trans|raw }}</button>
                                 </div>
                             {{ form_end(form) }}
                         </div>

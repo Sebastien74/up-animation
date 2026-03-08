@@ -35,9 +35,9 @@
                             {{ username|trim }}
                         </h2>
                         <ul class="reset">
-                            <li><strong>{{ "Nom d'utilisateur :"|trans }}</strong> {{ user.login }}</li>
+                            <li><strong>{{ "Nom d'utilisateur :"|trans|raw }}</strong> {{ user.login }}</li>
                             <li class="d-flex align-items-center">
-                                <strong class="me-1">{{ "E-mail :"|trans }}</strong> {{ user.email }}
+                                <strong class="me-1">{{ "E-mail :"|trans|raw }}</strong> {{ user.email }}
                                 {%- set emailValidMessage = user.confirmEmail ? 'E-mail confirmé'|trans : 'E-mail non confirmé'|trans -%}
                                 {%- set iconEmailValid = user.confirmEmail ? 'check-circle' : 'times-circle' -%}
                                 {%- set iconEmailColor = user.confirmEmail ? 'success' : 'danger' -%}
@@ -52,7 +52,7 @@
                         <section class="user-address-container mb-4 mt-4">
                             <h3>
                                 {{ "Adresse de facturation"|trans|raw }}
-                                <span class="d-inline-block ms-3" data-bs-toggle="tooltip" title="{{"Éditer mes informations"|trans }}">
+                                <span class="d-inline-block ms-3" data-bs-toggle="tooltip" title="{{"Éditer mes informations"|trans|raw }}">
                                     <a href="{{ path('security_front_profile_edit') }}">
                                         {{ 'fal pencil'|icon(null, 20) }}
                                     </a>

@@ -8,7 +8,7 @@
             {{ form_row(media.uploadedFile) }}
             <a class="tinypng-btn btn-icon dark"
                href="https://tinypng.com/" target="_blank"
-               data-bs-toggle="tooltip" title="{{"Optimisez vos médias avant de les télécharger"|trans }}">
+               data-bs-toggle="tooltip" title="{{"Optimisez vos médias avant de les télécharger"|trans|raw }}">
                 <i class="icm-file-archive"></i>
             </a>
         </div>
@@ -17,7 +17,7 @@
 
         <div class="card">
             <div class="card-body radius pb-2">
-                <h5 class="file-info-title text-dark text-italic">{{ "Informations"|trans }}</h5>
+                <h5 class="file-info-title text-dark text-italic">{{ "Informations"|trans|raw }}</h5>
                 <ul class="reset text-italic text-dark">
                     {%- if info.width is defined and info.width and info.height is defined and info.height -%}
                         <li>
@@ -55,14 +55,14 @@
                                 <div class="row mt-2 gap-2 mx-0">
                                     <div class="col px-0">
                                             <span class="btn-app small secondary copy-link cursor w-100 center"
-                                              data-bs-toggle="tooltip" title="{{"Copier l'URL"|trans }}">
-                                                <i class="icm-copy"></i><span>{{ "Copier l'URL"|trans }}</span>
+                                              data-bs-toggle="tooltip" title="{{"Copier l'URL"|trans|raw }}">
+                                                <i class="icm-copy"></i><span>{{ "Copier l'URL"|trans|raw }}</span>
                                             </span>
                                     </div>
                                     <div class="col px-0">
                                         <a href="{{ app.request.getSchemeAndHttpHost()~info.path }}" download="{{ info.filename }}" class="btn-app small secondary w-100 center"
-                                           data-bs-toggle="tooltip" title="{{"Télécharger"|trans }}">
-                                            <i class="icm-upload"></i><span>{{ "Télécharger"|trans }}</span>
+                                           data-bs-toggle="tooltip" title="{{"Télécharger"|trans|raw }}">
+                                            <i class="icm-upload"></i><span>{{ "Télécharger"|trans|raw }}</span>
                                         </a>
                                     </div>
                                 </div>

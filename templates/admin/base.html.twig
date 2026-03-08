@@ -50,7 +50,7 @@
                 {% if metaTitle is defined %}
                     {{ metaTitle|htmlEntities }}
                 {% else %}
-                    {{ "Bienvenue !!"|trans }}
+                    {{ "Bienvenue !!"|trans|raw }}
                 {% endif %}
             {% endblock %}
             | {{ defaultTitle }}

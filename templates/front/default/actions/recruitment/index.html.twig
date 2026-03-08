@@ -87,7 +87,7 @@
                 {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {
                     alert: 'primary',
                     alertClass: 'no-job-alert',
-                    message: "Aucune offre pour le moment."|trans } only -%}
+                    message: "Aucune offre pour le moment."|trans|raw } only -%}
             </div>
         </div>
     {%- endif -%}

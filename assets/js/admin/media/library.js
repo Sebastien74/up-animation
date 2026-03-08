@@ -347,14 +347,27 @@ export default function activeSearch() {
                             let html = document.createElement('div');
                             html.innerHTML = response.html;
                             let results = html.querySelector('#medias-results');
+                            if (!results && html.querySelector('#medias-results-container')) {
+                                results = html;
+                            }
                             let responsePagination = html.querySelector('.pagination-nav');
-                            pagination.dataset.next = responsePagination.dataset.next;
+                            if (responsePagination) {
+                                pagination.dataset.next = responsePagination.dataset.next;
+                            } else {
+                                pagination.dataset.next = '';
+                                paginationWrap.remove();
+                            }
                             if (results) {
                                 let container = document.querySelector('#medias-results-container');
                                 let files = results.querySelectorAll('.file');
                                 if (container) {
                                     files.forEach((file) => {
-                                        container.appendChild(file);
+                                        let col = file.closest('[class*="col-"]');
+                                        if (col) {
+                                            container.appendChild(col);
+                                        } else {
+                                            container.appendChild(file);
+                                        }
                                     });
                                 }
                             }
@@ -379,6 +392,8 @@ export default function activeSearch() {
             }
         }
     }
+
+    showMoreMedias();
 
     let searchForm = document.getElementById('search-medias-form');
     if (searchForm) {

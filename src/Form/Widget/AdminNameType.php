@@ -48,9 +48,7 @@ class AdminNameType extends AbstractType
 
         $fieldType = !empty($options['fieldType']) ? $options['fieldType'] : TextType::class;
         $builder->add('adminName', $fieldType, [
-            'label' => !empty($options['label']) || isset($options['label'])
-                ? $options['label']
-                : $this->translator->trans('Intitulé', [], 'admin'),
+            'label' => $options['label'] ?? $this->translator->trans('Intitulé', [], 'admin'),
             'attr' => [
                 'placeholder' => !empty($options['placeholder'])
                     ? $options['placeholder']
@@ -68,7 +66,7 @@ class AdminNameType extends AbstractType
             'constraints' => $constraints,
         ]);
 
-        $slugGroup = isset($options['slugGroup']) ? $options['slugGroup'] : 'col-sm-3';
+        $slugGroup = $options['slugGroup'] ?? 'col-sm-3';
         if (!$isNew && $haveSlug || !empty($options['slug-force'])) {
             $builder->add('slug', TextType::class, [
                 'label' => $this->translator->trans('Code', [], 'admin'),
@@ -76,7 +74,7 @@ class AdminNameType extends AbstractType
                     'code' => true,
                     'placeholder' => 'Saisissez un code',
                 ],
-                'row_attr' => ['class' => 'col-12'],
+                'row_attr' => ['class' => $slugGroup],
                 'constraints' => [new Assert\NotBlank()],
             ]);
         }

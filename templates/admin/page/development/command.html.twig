@@ -3,7 +3,7 @@
 {%- trans_default_domain 'admin' -%}
 
 {%- block title -%}{{ "Command"|trans|htmlEntities }}{%- endblock -%}
-{%- block pageTitle -%}{{ "Command"|trans }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Command"|trans|raw }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ parent() }}

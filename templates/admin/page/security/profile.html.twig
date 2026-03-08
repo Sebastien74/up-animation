@@ -35,25 +35,25 @@
 
                     <div class="row">
                         <div class="{% if granted('ROLE_INTERNAL') %}col-md-5{% else %}col-12{% endif %}">
-                            <h2 class="main-subtitle small mb-3"><i class="icm-info"></i>{{ "Information"|trans }}</h2>
+                            <h2 class="main-subtitle small mb-3"><i class="icm-info"></i>{{ "Information"|trans|raw }}</h2>
                             <div class="ps-1">
-                                <p class="mb-2"><strong class="me-2 text-dark">{{ "Dernière connexion :"|trans }}</strong> <span class="text-muted">{{ user.lastLogin|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</span></p>
+                                <p class="mb-2"><strong class="me-2 text-dark">{{ "Dernière connexion :"|trans|raw }}</strong> <span class="text-muted">{{ user.lastLogin|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</span></p>
                                 <p class="mb-2 d-flex align-items-center">
-                                    <strong class="me-2 text-dark">{{ "Langue :"|trans }}</strong>
+                                    <strong class="me-2 text-dark">{{ "Langue :"|trans|raw }}</strong>
                                     <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
                                          data-src=" {{ asset('/medias/icons/flags/'~user.locale~'.svg') }}" class="img-fluid img-locale lazy-load me-2 rounded-1" height="14" width="19">
                                     <span class="text-muted">{{ user.locale|languageName }}</span>
                                 </p>
-                                <p class="mb-2"><strong class="me-2 text-dark">{{ "Email :"|trans }}</strong> <a href="mailto: {{ user.email }}" class="text-underline">{{ user.email }}</a></p>
+                                <p class="mb-2"><strong class="me-2 text-dark">{{ "Email :"|trans|raw }}</strong> <a href="mailto: {{ user.email }}" class="text-underline">{{ user.email }}</a></p>
 
                                 {%- if granted('ROLE_INTERNAL') -%}
-                                    <p class="mb-2"><strong class="me-2 text-dark">{{ "Groupe :"|trans }}</strong> <span class="text-muted">{{ user.group.adminName }}</span></p>
+                                    <p class="mb-2"><strong class="me-2 text-dark">{{ "Groupe :"|trans|raw }}</strong> <span class="text-muted">{{ user.group.adminName }}</span></p>
                                 {%- endif -%}
                             </div>
                         </div>
                         {%- if granted('ROLE_INTERNAL') -%}
                             <div class="col-md-7 mt-4 mt-md-0">
-                                <h2 class="main-subtitle small mb-3"><i class="icm-user-tag"></i>{{ "Rôles"|trans }}</h2>
+                                <h2 class="main-subtitle small mb-3"><i class="icm-user-tag"></i>{{ "Rôles"|trans|raw }}</h2>
                                 <div class="row ps-1">
                                     {%- for role in user.group.roles -%}
                                         <div class="col-md-6 mb-1 text-muted"><i class="icm-check small text-success me-2"></i>{{ role.adminName }}</div>

@@ -32,10 +32,10 @@
     <table class="table table-striped responsive-cards">
         <thead>
             <tr>
-                <th class="col-locale px-4{% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans }}</th>
-                <th class="px-4">{{ "URL"|trans }} <small class="fw-300 ms-1">({{ "Sans le protocole"|trans }})</small></th>
-                <th class="text-center px-4">{{ "Défault ?"|trans }}</th>
-                <th class="text-end px-4">{{ "Actions"|trans }}</th>
+                <th class="col-locale px-4{% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans|raw }}</th>
+                <th class="px-4">{{ "URL"|trans|raw }} <small class="fw-300 ms-1">({{ "Sans le protocole"|trans|raw }})</small></th>
+                <th class="text-center px-4">{{ "Défault ?"|trans|raw }}</th>
+                <th class="text-end px-4">{{ "Actions"|trans|raw }}</th>
             </tr>
         </thead>
         <tbody id="domains-collection" data-index="{{ form.configuration.domains|length }}" class="collection" data-prototype="{{ macro.domain_prototype(form.configuration.domains.vars.prototype, configuration)|e('html_attr') }}">
@@ -50,6 +50,6 @@
             data-type="table"
             data-collection-target="append"
             data-target="#domains-collection">
-        <i class="icm-plus"></i>{{ "Ajouter un domaine"|trans }}
+        <i class="icm-plus"></i>{{ "Ajouter un domaine"|trans|raw }}
     </button>
 </div>

@@ -21,7 +21,7 @@
 {%- block body -%}
     <span>
         <a href="{{ lastRoute() }}" class="btn-back mb-3"
-           data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans }}"
+           data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|raw }}"
            aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
             <i class="icm-reply"></i>
         </a>
@@ -31,10 +31,10 @@
             <table class="table table-striped responsive-cards">
                 <thead>
                 <tr>
-                    <th class="align-middle keys-td">{{ "Domaine"|trans }}</th>
-                    <th class="align-middle keys-td">{{ "Clé du contenu"|trans }}</th>
-                    <th class="align-middle forms-td">{%- if allLocales|length > 1 -%}{{ "Langues"|trans }}{%- else -%}{{ "Texte"|trans }}{%- endif -%}</th>
-                    <th class="align-middle actions-td text-center">{{ "Actions"|trans }}</th>
+                    <th class="align-middle keys-td">{{ "Domaine"|trans|raw }}</th>
+                    <th class="align-middle keys-td">{{ "Clé du contenu"|trans|raw }}</th>
+                    <th class="align-middle forms-td">{%- if allLocales|length > 1 -%}{{ "Langues"|trans|raw }}{%- else -%}{{ "Texte"|trans|raw }}{%- endif -%}</th>
+                    <th class="align-middle actions-td text-center">{{ "Actions"|trans|raw }}</th>
                 </tr>
                 </thead>
                 <tbody>

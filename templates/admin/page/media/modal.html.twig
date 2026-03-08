@@ -14,13 +14,13 @@
             </div>
             <div class="modal-header border-0">
                 <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-images"></i></span></span>
-                <button class="btn-icon small position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
+                <button class="btn-icon small position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
                     <i class="icm-times"></i>
                 </button>
             </div>
             <div class="modal-body d-flex">
                 <div class="container-fluid my-auto">
-                    <h2 class="main-title text-center fw-bold mb-5">{{ "Choisir dans la bibliothèque"|trans }}</h2>
+                    <h2 class="main-title text-center fw-bold mb-5">{{ "Choisir dans la bibliothèque"|trans|raw }}</h2>
                     <div class="row text-center mx-auto d-flex justify-content-center mb-4">
                         {%- include 'admin/page/media/search.html.twig' with {form: form} only -%}
                     </div>
@@ -40,7 +40,7 @@
                                    class="ajax-get-refresh btn-app info w-100 center"
                                    data-target="#medias-results"
                                    data-target-loader="#medias-preloader">
-                                    <i class="icm-eye"></i><span>{{ "Racine"|trans }}</span>
+                                    <i class="icm-eye"></i><span>{{ "Racine"|trans|raw }}</span>
                                 </a>
                             </div>
                             {%- include 'admin/core/include/nestable.html.twig' with {
@@ -61,7 +61,7 @@
                             {%- if not asCopy -%}
                                 <div class="w-100 text-center mt-4 pt-2">
                                     <button id="save-file-library" class="btn-app info center" data-type="{{ type }}" data-options="{{ options|json_encode }}">
-                                        <i class="icm-plus"></i><span>{{ "Ajouter"|trans }}</span>
+                                        <i class="icm-plus"></i><span>{{ "Ajouter"|trans|raw }}</span>
                                     </button>
                                 </div>
                             {%- endif -%}

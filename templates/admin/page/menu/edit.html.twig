@@ -24,17 +24,17 @@
                 <div class="card mb-3">
                     <div class="card-body pb-2">
                         <div class="main-subtitle">
-                            <i class="icm-copy"></i>{{ "Pages du site"|trans }}
+                            <i class="icm-copy"></i>{{ "Pages du site"|trans|raw }}
                             <div class="d-flex d-flex align-items-center gap-1 ms-auto">
-                                <i class="icm-arrow-alt-to-bottom info cursor expand-all-pages" data-bs-toggle="tooltip" title="{{"Tout afficher"|trans }}"></i>
-                                <i class="icm-arrow-alt-to-top info cursor collapse-all-pages d-none" data-bs-toggle="tooltip" title="{{"Tout cacher"|trans }}"></i>
+                                <i class="icm-arrow-alt-to-bottom info cursor expand-all-pages" data-bs-toggle="tooltip" title="{{"Tout afficher"|trans|raw }}"></i>
+                                <i class="icm-arrow-alt-to-top info cursor collapse-all-pages d-none" data-bs-toggle="tooltip" title="{{"Tout cacher"|trans|raw }}"></i>
                             </div>
                         </div>
                         <form method="post" id="page-selector-menu"
                               action="{{ path('admin_link_add', {website: websiteId(), menu: entity.id, locale: entitylocale, multiple: 0}) }}" class="mb-4">
                             <div class="input-group select2-group mb-3">
                                 <select name="page" class="custom-select select-2">
-                                    <option value="">{{ "Sélectionnez une page"|trans }}</option>
+                                    <option value="">{{ "Sélectionnez une page"|trans|raw }}</option>
                                     {%- for page in pages -%}
                                         {%- if page.template != "components.html.twig" -%}
                                             <option value="{{ page.id }}">{{ page.adminName }}</option>
@@ -55,19 +55,19 @@
                                     {%- endif -%}
                                 {%- endfor -%}
                             </ul>
-                            <button type="submit" class="btn-app"><i class="icm-plus"></i>{{ "Ajouter au menu"|trans }}</button>
+                            <button type="submit" class="btn-app"><i class="icm-plus"></i>{{ "Ajouter au menu"|trans|raw }}</button>
                         </form>
                     </div>
                 </div>
                 <div id="add-link-card" class="card mb-3">
                     <div class="card-body pb-2">
-                        <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Ajouter un lien externe ou d'arborescence"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Ajouter un lien externe ou d'arborescence"|trans|raw }}</h4>
                         {{ render_esi(path('admin_link_new', {website: websiteId(), menu: entity.id, entitylocale: entitylocale} )) }}
                     </div>
                 </div>
                 <div class="card mb-3">
                     <div class="card-body pb-2">
-                        <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans|raw }}</h4>
                         <div class="row">
                             {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri}}) }}
                                 {%- include 'admin/core/form/edit-fields-base.html.twig' with {
@@ -80,7 +80,7 @@
                                             href="#collapseConfigForm"
                                             aria-expanded="false"
                                             aria-controls="collapseForm">
-                                        <i class="icm-cog"></i>{{ "Options avancées"|trans }}
+                                        <i class="icm-cog"></i>{{ "Options avancées"|trans|raw }}
                                     </button>
                                 </div>
                                 <div id="collapseConfigForm" class="collapse">

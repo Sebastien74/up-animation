@@ -16,22 +16,22 @@
         <button class="carousel-control-prev position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} me-2"
                 data-bs-slide="prev"
                 data-bs-target="#carousel-{{ sliderSlug }}"
-                aria-label="{{"Précédent"|trans }}"
+                aria-label="{{"Précédent"|trans|raw }}"
                 tabindex="-1">
             <i class="icon-{{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
         </button>
         {%- if slider.autoplay and accessibility -%}
-            <button class="carousel-control-pause position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{"Pause"|trans }}" tabindex="-1">
+            <button class="carousel-control-pause position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{"Pause"|trans|raw }}" tabindex="-1">
                 <i class="icon-pause {% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
             </button>
-            <button class="carousel-control-play position-relative d-none cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{"Pause"|trans }}" tabindex="-1">
+            <button class="carousel-control-play position-relative d-none cursor{% if btnClasses %} {{ btnClasses }}{% endif %} mx-1" aria-label="{{"Pause"|trans|raw }}" tabindex="-1">
                 <i class="icon-play {% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
             </button>
         {%- endif -%}
         <button class="carousel-control-next position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %} ms-2"
                 data-bs-slide="next"
                 data-bs-target="#carousel-{{ sliderSlug }}"
-                aria-label="{{"Suivant"|trans }}"
+                aria-label="{{"Suivant"|trans|raw }}"
                 tabindex="-1">
             <i class="icon-{{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
         </button>

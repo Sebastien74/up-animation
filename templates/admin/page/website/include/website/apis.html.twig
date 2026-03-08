@@ -2,7 +2,7 @@
 
 <div class="card mb-3">
     <div class="card-body pb-2">
-        <h4 class="main-subtitle"><i class="icm-shield-alt"></i>{{ "Recaptcha"|trans }}</h4>
+        <h4 class="main-subtitle"><i class="icm-shield-alt"></i>{{ "Recaptcha"|trans|raw }}</h4>
         <div class="row">
             {{ form_row(form.api.securitySecretKey) }}
             {{ form_row(form.api.securitySecretIv) }}
@@ -12,7 +12,7 @@
 
 <div class="card mb-3">
     <div class="card-body pb-2">
-        <h4 class="main-subtitle"><i class="icm-google"></i>{{ "Google"|trans }}</h4>
+        <h4 class="main-subtitle"><i class="icm-google"></i>{{ "Google"|trans|raw }}</h4>
         <div class="row">
             {%- include 'admin/page/api/google-intls.html.twig' with {googleIntls: form.api.google.intls} -%}
         </div>
@@ -22,11 +22,11 @@
 <div class="card mb-3">
     <div class="card-body pb-2">
         <h4 class="main-subtitle">
-            <i class="icm-instagram"></i>{{ "Instagram"|trans }}
+            <i class="icm-instagram"></i>{{ "Instagram"|trans|raw }}
             <a href="https://www.instagram.com/accounts/login/?force_authentication=1&enable_fb_login=1&platform_app_id=&next=/oauth/authorize/%3Fclient_id%3D1677ed07ddd54db0a70f14f9b1435579%26redirect_uri%3Dhttp%3A//instagram.pixelunion.net%26response_type%3Dtoken%26hl%3Den"
                class="ms-auto"
                target="_blank">
-                {{ "Générer le token"|trans }}
+                {{ "Générer le token"|trans|raw }}
             </a>
         </h4>
         <div class="row">
@@ -37,7 +37,7 @@
 
 <div class="card mb-3">
     <div class="card-body pb-2">
-        <h4 class="main-subtitle"><i class="icm-plus-circle"></i>{{ "Autres"|trans }}</h4>
+        <h4 class="main-subtitle"><i class="icm-plus-circle"></i>{{ "Autres"|trans|raw }}</h4>
         <div class="row">
             {%- include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.api.custom.intls} -%}
             {{ form_row(form.api.addThis) }}

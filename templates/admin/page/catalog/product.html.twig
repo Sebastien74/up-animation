@@ -67,51 +67,45 @@
 
     <div id="entity-edition" class="{% if isMainEntity %} is-entity{% endif %}">
         {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'entity-preloader', full: true, progress: 'hide', preloaderClass: 'progress-fixed'} only -%}
-        <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" role="tablist">
+        <nav class="nav nav-tabs gap-2 align-items-center w-100 border-0 mb-4" role="tablist">
             {%- for tabId, config in tabs -%}
                 {%- if tabId in activeTabs -%}
-                    <li class="nav-item">
-                        <a {% if not isMainEntity -%}href="{{ path('admin_catalogproduct_edit', {website: websiteId, catalogproduct: entity.id, catalog: entity.catalog.id, tab: tabId} ) }}" {%- endif -%}
-                           id="nav-{{ tabId }}-tab" class="btn-app {% if activeTab == tabId or not activeTab and loop.first and isMainEntity %} active{% endif %}"
-                                {%- if isMainEntity -%}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}" {%- else -%}{%- endif -%}>
-                            <i class="icm-{{ config.icon }}"></i>
-                            <span class="d-none d-lg-inline-block">{{ config.title }}</span>
-                        </a>
-                    </li>
+                    <a {% if not isMainEntity -%}href="{{ path('admin_catalogproduct_edit', {website: websiteId, catalogproduct: entity.id, catalog: entity.catalog.id, tab: tabId} ) }}" {%- endif -%}
+                       id="nav-{{ tabId }}-tab" class="btn-app small {% if activeTab == tabId or not activeTab and loop.first and isMainEntity %} active{% endif %}"
+                            {%- if isMainEntity -%}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}" {%- else -%}{%- endif -%}>
+                        <i class="icm-{{ config.icon }}"></i>
+                        <span class="d-none d-lg-inline-block">{{ config.title }}</span>
+                    </a>
                 {%- endif -%}
             {%- endfor -%}
             {%- if entity and entity.catalog and 'medias' in activeTabs -%}
-                <li class="nav-item">
-                    {%- set routeArgs = 'admin_catalogproduct_medias'|routeArgs(entity) -%}
-                    <a href="{{ path('admin_catalogproduct_medias', routeArgs) }}"
-                       id="medias-path"
-                       class="btn-app {% if not isMainEntity %} active{% endif %}">
-                        <i class="icm-photo-video"></i>
-                        <span class="d-none d-lg-inline-block">{{ "Médias"|trans }}</span>
-                    </a>
-                </li>
-            {%- endif -%}
-            <li class="nav-item d-inline-flex right gap-2">
-                {%- set backPage = app.request.session.get('last_route_back_page') ? app.request.session.get('last_route_back_page') : 1 -%}
-                {%- set routeArgs = 'admin_catalogproduct_index'|routeArgs(entity, {website: website.id, page: backPage}) -%}
-                <a href="{{ path('admin_catalogproduct_index', routeArgs) }}"
-                   class="back-link btn-app">
-                    <i class="icm-reply"></i><span>{{ "Retourner à la liste"|trans|raw }}</span>
+                {%- set routeArgs = 'admin_catalogproduct_medias'|routeArgs(entity) -%}
+                <a href="{{ path('admin_catalogproduct_medias', routeArgs) }}"
+                   id="medias-path"
+                   class="btn-app {% if not isMainEntity %} active{% endif %}">
+                    <i class="icm-photo-video"></i>
+                    <span class="d-none d-lg-inline-block">{{ "Médias"|trans|raw }}</span>
                 </a>
-                {%- if isMainEntity -%}
-                    <div class="save-buttons d-flex gap-2">
-                        {%- set lastRoute = app.request.session.get('last_route_back') -%}
-                        {%- set haveSaveBack = lastRoute.name is defined and lastRoute.params is defined -%}
-                        <span id="save-entity" class="btn-app save">
-                            <i class="icm-save"></i><span>{{ "Enregistrer"|trans }}</span>
-                        </span>
-                        <span id="save-back-entity" class="btn-app save" data-path="{{ path('admin_catalogproduct_index', routeArgs) }}">
-                            <i class="icm-save"></i><span>{{ "Enregistrer et retourner à la liste"|trans }}</span>
-                        </span>
-                    </div>
-                {%- endif -%}
-            </li>
-        </ul>
+            {%- endif -%}
+            {%- set backPage = app.request.session.get('last_route_back_page') ? app.request.session.get('last_route_back_page') : 1 -%}
+            {%- set routeArgs = 'admin_catalogproduct_index'|routeArgs(entity, {website: website.id, page: backPage}) -%}
+            <a href="{{ path('admin_catalogproduct_index', routeArgs) }}"
+               class="back-link btn-icon small ms-auto"
+               data-bs-toggle="tooltip"
+               title="{{ "Retourner à la liste"|trans|striptags }}">
+                <i class="icm-reply"></i>
+            </a>
+            {%- if isMainEntity -%}
+                {%- set lastRoute = app.request.session.get('last_route_back') -%}
+                {%- set haveSaveBack = lastRoute.name is defined and lastRoute.params is defined -%}
+                <span id="save-entity" class="btn-app small save">
+                    <i class="icm-save"></i><span>{{ "Enregistrer"|trans|raw }}</span>
+                </span>
+                <span id="save-back-entity" class="btn-app small save" data-path="{{ path('admin_catalogproduct_index', routeArgs) }}">
+                    <i class="icm-save"></i><span>{{ "Enregistrer et retourner à la liste"|trans|raw }}</span>
+                </span>
+            {%- endif -%}
+        </nav>
         {%- block entityForm -%}{%- endblock -%}
     </div>
 
@@ -123,11 +117,11 @@
     {%- endif -%}
 
     <div id="entity-translations"
-         data-swal-entity-title="{{"Pensez à enregistrer vos modifications"|trans }}"
+         data-swal-entity-title="{{"Pensez à enregistrer vos modifications"|trans|raw }}"
          data-swal-entity-text=""
-         data-swal-entity-cancel-text="{{"Annuler"|trans }}"
-         data-swal-media-confirm-text="{{"Aller aux médias"|trans }}"
-         data-swal-value-confirm-text="{{"Éditer la valeur"|trans }}">
+         data-swal-entity-cancel-text="{{"Annuler"|trans|raw }}"
+         data-swal-media-confirm-text="{{"Aller aux médias"|trans|raw }}"
+         data-swal-value-confirm-text="{{"Éditer la valeur"|trans|raw }}">
     </div>
 
 {%- endblock -%}

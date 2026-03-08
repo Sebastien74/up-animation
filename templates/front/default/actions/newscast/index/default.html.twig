@@ -75,7 +75,7 @@
         {%- if scrollInfinite or showMoreBtn -%}
             <div id="scroller-loader" class="w-100 mt-5 d-none text-center">
                 <div class="spinner-border" role="status">
-                    <span class="visually-hidden sr-only">{{ "Chargement..."|trans }}</span>
+                    <span class="visually-hidden sr-only">{{ "Chargement..."|trans|raw }}</span>
                 </div>
             </div>
         {%- endif -%}

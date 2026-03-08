@@ -9,6 +9,28 @@
 
 ----------------------------------------------------------------------------------------- */
 
+#entities-index {
+
+    td {
+
+        * {
+            font-size: 13px;
+        }
+
+        &.as-media {
+            .img-loader-wrap, .img-loader, img {
+                border-radius: 5px;
+            }
+        }
+
+        .infos-list {
+            * {
+                font-size: 10px;
+            }
+        }
+    }
+}
+
 //.form-search {
 //
 //    /* --------------------------------------------

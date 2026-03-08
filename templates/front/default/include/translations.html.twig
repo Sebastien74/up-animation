@@ -3,9 +3,9 @@
 {%- set formatDate = app.request.locale|formatDate -%}
 
 <div id="data-translation" class="d-none"
-     data-phone-map="{{"Tel."|trans }}"
-     data-required-field="{{"Champs obligatoire"|trans }}"
-     data-email-field="{{"E-mail invalide"|trans }}"
+     data-phone-map="{{"Tel."|trans|raw }}"
+     data-required-field="{{"Champs obligatoire"|trans|raw }}"
+     data-email-field="{{"E-mail invalide"|trans|raw }}"
      data-format-datetime="{{ formatDate.dateTime }}"
      data-format-date="{{ formatDate.dateLarge }}"
      data-format-time="{{ formatDate.time }}"

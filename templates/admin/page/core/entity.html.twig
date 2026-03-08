@@ -20,7 +20,7 @@
         <div id="edit-form-{{ interface.name }}" class="card">
             {%- include 'admin/core/form/save/header.html.twig' -%}
             <div class="card-body pb-2">
-                <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration de l'entité"|trans }}</h4>
+                <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration de l'entité"|trans|raw }}</h4>
                 <div class="row">
                     {{ form_row(form.adminName) }}
                     {{ form_row(form.className) }}
@@ -30,7 +30,7 @@
                     {{ form_row(form.uniqueLocale) }}
                     {{ form_row(form.inFieldConfiguration) }}
                 </div>
-                <h4 class="main-subtitle"><i class="icm-list-ul"></i>{{ "Configuration des index"|trans }}</h4>
+                <h4 class="main-subtitle"><i class="icm-list-ul"></i>{{ "Configuration des index"|trans|raw }}</h4>
                 <div class="row">
                     {{ form_row(form.columns) }}
                     {{ form_row(form.searchFields) }}
@@ -42,13 +42,13 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <h4 class="main-subtitle"><i class="icm-pencil-alt"></i>{{ "Configuration de l'édition"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-pencil-alt"></i>{{ "Configuration de l'édition"|trans|raw }}</h4>
                         <div class="row">
                             {{ form_row(form.saveArea) }}
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <h4 class="main-subtitle"><i class="icm-eye"></i>{{ "Configuration de la visualisation"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-eye"></i>{{ "Configuration de la visualisation"|trans|raw }}</h4>
                         <div class="row">
                             {{ form_row(form.showView) }}
                         </div>

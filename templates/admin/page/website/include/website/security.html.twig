@@ -1,13 +1,13 @@
 {%- trans_default_domain 'admin' -%}
 
-<h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
+<h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans|raw }}</h4>
 <div class="row">
     {{ form_row(form.security.headerData) }}
     {{ form_row(form.security.secureWebsite) }}
     {{ form_row(form.security.resetPasswordsByGroup) }}
 </div>
 
-<h4 class="main-subtitle"><i class="icm-network-wired"></i>{{ "Administrateurs"|trans }}</h4>
+<h4 class="main-subtitle"><i class="icm-network-wired"></i>{{ "Administrateurs"|trans|raw }}</h4>
 <div class="row">
     {{ form_row(form.security.adminRegistration) }}
     {{ form_row(form.security.adminRegistrationValidation) }}
@@ -16,7 +16,7 @@
 </div>
 
 {%- if form.security.frontRegistration is defined -%}
-    <h4 class="main-subtitle"><i class="icm-desktop"></i>{{ "Utilisateurs front"|trans }}</h4>
+    <h4 class="main-subtitle"><i class="icm-desktop"></i>{{ "Utilisateurs front"|trans|raw }}</h4>
     <div class="row">
         {{ form_row(form.security.frontRegistration) }}
         {{ form_row(form.security.frontRegistrationValidation) }}

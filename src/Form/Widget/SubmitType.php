@@ -66,7 +66,7 @@ class SubmitType
         $builder->add('save', SymfonySubmitType::class, [
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
             'attr' => [
-                'class' => 'col-12 btn-app'.$this->ajaxClass.$this->refreshClass,
+                'class' => 'btn-app'.$this->ajaxClass.$this->refreshClass,
                 'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],
@@ -74,7 +74,7 @@ class SubmitType
         $builder->add('saveEdit', SymfonySubmitType::class, [
             'label' => $this->translator->trans('Enregistrer et éditer', [], 'admin'),
             'attr' => [
-                'class' => 'col-12 btn-app'.$this->ajaxClass.$this->refreshClass,
+                'class' => 'btn-app'.$this->ajaxClass.$this->refreshClass,
                 'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],
@@ -113,7 +113,7 @@ class SubmitType
         $builder->add('saveBack', SymfonySubmitType::class, [
             'label' => $label,
             'attr' => [
-                'class' => 'col-12 btn-app',
+                'class' => 'btn-app',
                 'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],
@@ -128,7 +128,7 @@ class SubmitType
         $builder->add('saveAdd', SymfonySubmitType::class, [
             'label' => $this->translator->trans('Enregistrer et ajouter', [], 'admin'),
             'attr' => [
-                'class' => 'col-12 btn-app',
+                'class' => 'btn-app',
                 'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],

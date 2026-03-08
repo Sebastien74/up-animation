@@ -3,7 +3,7 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- block metaTitle -%}{{ "Inscrivez-vous"|trans|htmlEntities }}{%- endblock -%}
-{%- block metaDescription -%}{{ "Inscrivez-vous"|trans }}{%- endblock -%}
+{%- block metaDescription -%}{{ "Inscrivez-vous"|trans|raw }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
@@ -41,7 +41,7 @@
                             {%- include "security/includes/recaptcha-fields.html.twig" -%}
                         </div>
                         {%- include "front/"~websiteTemplate~"/include/flashbag.html.twig" -%}
-                        <button id="submit" name="submit" type="submit" class="btn btn-primary btn-block text-uppercase">{{ "S'inscrire"|trans }}</button>
+                        <button id="submit" name="submit" type="submit" class="btn btn-primary btn-block text-uppercase">{{ "S'inscrire"|trans|raw }}</button>
                     {{ form_end(form) }}
                 {%- endif -%}
             </div>

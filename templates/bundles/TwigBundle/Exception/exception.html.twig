@@ -24,7 +24,7 @@
         <div class="container">
             <div class="error">
                 <h1>{{ status_code }}</h1>
-                <h2>{{ "erreur"|trans }}</h2>
+                <h2>{{ "erreur"|trans|raw }}</h2>
                 {%- if granted('ROLE_INTERNAL') or is_debug -%}
                     <p class="text-danger fw-300">{{ status_text }}</p>
                 {%- endif -%}

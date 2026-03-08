@@ -6,7 +6,7 @@
             {{ asset(logos.preloader)|file({}, {width: null, height: 300, title: companyName, class: 'img-fluid', lazyLoad: false}) }}
         {%- endif -%}
         <noscript>
-            <strong class="no-js text-white d-inline-block w-100">{{ "Pour vister ce site vous devez activer le JavaScript !!"|trans }}</strong>
+            <strong class="no-js text-white d-inline-block w-100">{{ "Pour vister ce site vous devez activer le JavaScript !!"|trans|raw }}</strong>
         </noscript>
     </div>
 </div>

@@ -6,13 +6,13 @@
             <div class="modal-content border">
                 <div class="modal-header">
                     <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-line-height"></i></span></span>
-                    <button class="btn-close btn-icon" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
+                    <button class="btn-close btn-icon" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
                         <i class="icm-times"></i>
                     </button>
                 </div>
                 <div class="modal-body pe-5 ps-5">
                     <div class="mx-auto">
-                        <h3 class="text-dark w-100 text-center fw-bold mb-5">{{ 'Ajouter une ligne'|trans }}</h3>
+                        <h3 class="text-dark w-100 text-center fw-bold mb-5">{{ 'Ajouter une ligne'|trans|raw }}</h3>
                         {{ form_start(form, {attr: {
                             novalidate: "novalidate",
                             action: path('admin_zone_new', {website: websiteId(), layout: layout.id}),

@@ -20,28 +20,28 @@
             <div class="d-flex gap-2 flex-wrap mb-4">
                 <div class="nav nav-tabs gap-2 border-0 me-auto" role="tablist">
                     <a class="btn-app active" id="nav-seo-tab" data-bs-toggle="tab" href="#seo" role="tab" aria-selected="true">
-                        <i class="icm-code"></i><span>{{ 'Métas'|trans }}</span>
+                        <i class="icm-code"></i><span>{{ 'Métas'|trans|raw }}</span>
                     </a>
                     <a class="btn-app" id="nav-seo-analytics" data-bs-toggle="tab" href="#analytics" role="tab" aria-selected="false">
-                        <i class="icm-share-alt"></i><span>{{ 'Trackings'|trans }}</span>
+                        <i class="icm-share-alt"></i><span>{{ 'Trackings'|trans|raw }}</span>
                     </a>
                     <a class="btn-app" id="nav-seo-axeptio" data-bs-toggle="tab" href="#axeptio" role="tab" aria-selected="false">
-                        <i class="icm-share-alt"></i><span>{{ 'Axeptio'|trans }}</span>
+                        <i class="icm-share-alt"></i><span>{{ 'Axeptio'|trans|raw }}</span>
                     </a>
                     <a class="btn-app" id="nav-social-tab" data-bs-toggle="tab" href="#social" role="tab" aria-selected="false">
-                        <i class="icm-share-alt"></i><span>{{ 'Réseaux sociaux'|trans }}</span>
+                        <i class="icm-share-alt"></i><span>{{ 'Réseaux sociaux'|trans|raw }}</span>
                     </a>
                     <a class="btn-app" id="nav-other-tab" data-bs-toggle="tab" href="#other" role="tab" aria-selected="false">
-                        <i class="icm-share-alt"></i><span>{{ 'Autres'|trans }}</span>
+                        <i class="icm-share-alt"></i><span>{{ 'Autres'|trans|raw }}</span>
                     </a>
                 </div>
                 {%- set sitemap = defaultLocale|domain~"/sitemap.xml?preview=true" -%}
                 <a href="{{ sitemap }}" target="_blank" class="btn-app info">
-                    <i class="icm-sitemap"></i><span>{{ 'sitemap.xml'|trans }}</span>
+                    <i class="icm-sitemap"></i><span>{{ 'sitemap.xml'|trans|raw }}</span>
                 </a>
                 {%- set robots = defaultLocale|domain~"/robots.txt?preview=true" -%}
                 <a href="{{ robots }}" target="_blank" class="btn-app info">
-                    <i class="icm-robot"></i><span>{{ 'robots.txt'|trans }}</span>
+                    <i class="icm-robot"></i><span>{{ 'robots.txt'|trans|raw }}</span>
                 </a>
             </div>
             <div class="tab-content">
@@ -56,7 +56,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="card h-100">
                                 <div class="card-body pb-2">
-                                    <h4 class="main-subtitle"><i class="icm-chart-line"></i>{{ "Axeptio"|trans }}</h4>
+                                    <h4 class="main-subtitle"><i class="icm-chart-line"></i>{{ "Axeptio"|trans|raw }}</h4>
                                     <div class="row">
                                         {%- include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.website.api.custom.intls, displayFields: ['axeptioId', 'axeptioCookieVersion', 'axeptioExternal']} -%}
                                     </div>
@@ -73,7 +73,7 @@
                         <div class="col-12 mb-3">
                             <div class="card">
                                 <div class="card-body pb-2">
-                                    <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Scripts"|trans }}</h4>
+                                    <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Scripts"|trans|raw }}</h4>
                                     <div class="row">
                                         {%- set customOthers = [] -%}
                                         {%- for customField in form.website.api.custom.intls -%}

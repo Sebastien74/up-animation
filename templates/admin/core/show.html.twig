@@ -57,7 +57,7 @@
                 <tbody>
                     {%- if granted('ROLE_INTERNAL') and entity.slug is defined and entity.slug -%}
                         <tr>
-                            <td class="align-middle px-4">{{ 'Code'|trans }}</td>
+                            <td class="align-middle px-4">{{ 'Code'|trans|raw }}</td>
                             <td class="align-middle px-4">{{ entity.slug }}</td>
                         </tr>
                     {%- endif -%}
@@ -70,7 +70,7 @@
                                 {%- set fieldValue = 'N/C' -%}
                             {%- endif -%}
                             <tr>
-                                <td class="align-middle px-4">{{ labelName|trans }}</td>
+                                <td class="align-middle px-4">{{ labelName|trans|raw }}</td>
                                 <td class="align-middle px-4">
                                     {%- include 'core/data-formater.html.twig' with {elementsToShow: elementsToShow, dataValue: fieldValue, property: field, view: 'show'} only -%}
                                 </td>

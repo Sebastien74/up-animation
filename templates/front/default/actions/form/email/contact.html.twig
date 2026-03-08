@@ -28,7 +28,7 @@
             {%- endfor -%}
             {%- if attachments is defined and attachments|length > 0 -%}
                 <p style="font-size: 14px;">
-                    <strong>{{ "Pièces jointes"|trans }} :</strong>  {{ attachments|length }}
+                    <strong>{{ "Pièces jointes"|trans|raw }} :</strong>  {{ attachments|length }}
                 </p>
             {%- endif -%}
 {#            <img src="{{ email.image('@images/medias/email/pixel.png')~'?classname='~classname|url_encode~'&code='~entityId }}" alt="Image" />#}

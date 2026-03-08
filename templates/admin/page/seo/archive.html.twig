@@ -42,8 +42,8 @@
                 </h4>
                 <table class="table table-striped mb-4">
                     <thead>
-                        <th>{{ "Nom d'administration"|trans }}</th>
-                        <th>{{ "URL code"|trans }}</th>
+                        <th>{{ "Nom d'administration"|trans|raw }}</th>
+                        <th>{{ "URL code"|trans|raw }}</th>
                         {%- if 'delete'|moduleActive(configuration) or 'edit'|moduleActive(configuration) -%}
                             <th class="text-end">
                                 {%- if 'delete'|moduleActive(configuration) -%}
@@ -55,7 +55,7 @@
                                         <label class="custom-control-label" for="delete-index-all-{{ loop.index }}"></label>
                                     </div>
                                 {%- endif -%}
-                                {{ "Actions"|trans }}
+                                {{ "Actions"|trans|raw }}
                             </th>
                         {%- endif -%}
                     </thead>

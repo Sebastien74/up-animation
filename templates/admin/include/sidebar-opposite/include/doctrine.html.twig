@@ -2,22 +2,22 @@
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-        <span class="btn-icon small me-3"><i class="icm-database"></i></span>{{ "Doctrine"|trans }}
+        <span class="btn-icon small me-3"><i class="icm-database"></i></span>{{ "Doctrine"|trans|raw }}
     </a>
     <ul aria-expanded="false" class="collapse">
         <li>
             <a href="{{ path('doctrine_schema_update') }}">
-                {{ "MAJ de la base de donnée"|trans }}
+                {{ "MAJ de la base de donnée"|trans|raw }}
             </a>
         </li>
         <li>
             <a href="{{ path('doctrine_clear_cache_result') }}">
-                {{ "Vider le cache des résultats"|trans }}
+                {{ "Vider le cache des résultats"|trans|raw }}
             </a>
         </li>
         <li>
             <a href="{{ path('doctrine_schema_validate') }}">
-                {{ "Vérification du schéma"|trans }}
+                {{ "Vérification du schéma"|trans|raw }}
             </a>
         </li>
     </ul>

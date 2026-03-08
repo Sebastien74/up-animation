@@ -6,7 +6,7 @@
             {{ 'fas check'|icon(null, 60, 'success') }}
             {%- set message = message is defined and message ? message : 'Merci pour votre message !' -%}
             <div class="body mt-4 mb-0">{{ message|raw }}</div>
-            <a href="{{ path('front_index') }}" class="btn btn-primary mt-5">{{ "Retourner à la page d'accueil"|trans }}</a>
+            <a href="{{ path('front_index') }}" class="btn btn-primary mt-5">{{ "Retourner à la page d'accueil"|trans|raw }}</a>
         </div>
     </div>
 </div>

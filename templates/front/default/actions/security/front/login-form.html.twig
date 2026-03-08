@@ -4,8 +4,8 @@
     <div class="card-body form-ajax-container p-4">
         {%- if secureActive -%}
             {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'strict-size small-radius'} only -%}
-            <p class="text-uppercase text-bold mb-2">{{ "Je suis déjà membre"|trans }}</p>
-            <h3 class="title text-uppercase mb-4">{{ "Se connecter"|trans }}</h3>
+            <p class="text-uppercase text-bold mb-2">{{ "Je suis déjà membre"|trans|raw }}</p>
+            <h3 class="title text-uppercase mb-4">{{ "Se connecter"|trans|raw }}</h3>
             {{ form_start(form, {attr: {
                 novalidate: "novalidate",
                 class: 'security',

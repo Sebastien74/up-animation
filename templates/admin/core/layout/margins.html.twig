@@ -1,7 +1,7 @@
 ﻿{%- trans_default_domain 'admin' -%}
 
 <h2 class="main-title text-dark w-100 text-center mb-3 position-relative">
-    {{ "Marges"|trans }}
+    {{ "Marges"|trans|raw }}
     {%- if interface.name is defined and 'zone' == interface.name -%}
         <span class="reset-margins h-100 position-absolute d-inline-flex justify-content-center align-items-center cursor"
               data-post-form="0"
@@ -59,7 +59,7 @@
         {%- set suffix = tabId == 'desktop' ? '' : (config.field is defined ? config.field : tabId|capitalize) -%}
         <div class="tab-pane fade text-center w-100 mb-4 tab-pane-config{% if loop.first %} active show{% endif %}" id="{{ tabId }}-margin" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab-margin">
             <div class="margin-dashed d-inline-block mx-auto position-relative">
-                <small class="margin-info position-absolute">{{ "Marge extérieure"|trans }}</small>
+                <small class="margin-info position-absolute">{{ "Marge extérieure"|trans|raw }}</small>
                 <div class="row">
                     <div class="col-12">
                         <div class="item mx-auto m-2">
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                             <div class="col-8 element-margin">
-                                <small class="margin-info position-absolute">{{ "Marge intérieure"|trans }}</small>
+                                <small class="margin-info position-absolute">{{ "Marge intérieure"|trans|raw }}</small>
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="item mx-auto m-2">

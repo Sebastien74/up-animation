@@ -12,7 +12,7 @@
         {%- if folder.adminName is defined and folder.adminName -%}
             {{ folder.adminName }}
         {%- else -%}
-            {{ "Racine"|trans }}
+            {{ "Racine"|trans|raw }}
         {%- endif -%}
     </h4>
 
@@ -86,8 +86,8 @@
                                         <div class="refer-copy refer-copy-wrap w-100">
                                             <span class="to-copy d-none">{{ app.request.getSchemeAndHttpHost()~info.path }}</span>
                                             <span class="copy-link btn-app small w-100 center cursor"
-                                                  data-bs-toggle="tooltip" title="{{"Copier l'URL"|trans }}">
-                                                <i class="icm-copy"></i><span>{{ "Copier l'URL"|trans }}</span>
+                                                  data-bs-toggle="tooltip" title="{{"Copier l'URL"|trans|raw }}">
+                                                <i class="icm-copy"></i><span>{{ "Copier l'URL"|trans|raw }}</span>
                                             </span>
                                         </div>
                                     {%- endif -%}

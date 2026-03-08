@@ -15,11 +15,11 @@
         </a>
         <ul aria-expanded="false" class="collapse {% if active %} in{% endif %}">
             <li>
-                <a href="{{ path('admin_form_index', {website: websiteId}) }}" {%- if formActive -%} class="active" {%- endif -%}>{{ "Liste des formulaires"|trans }}</a>
+                <a href="{{ path('admin_form_index', {website: websiteId}) }}" {%- if formActive -%} class="active" {%- endif -%}>{{ "Liste des formulaires"|trans|raw }}</a>
             </li>
             <li>
                 <a href="{{ path('admin_stepform_index', {website: websiteId}) }}" {%- if '/steps/forms/' in uri -%} class="active" {%- endif -%}>
-                    {{ "Liste des formulaires à étapes"|trans }}
+                    {{ "Liste des formulaires à étapes"|trans|raw }}
                 </a>
             </li>
         </ul>

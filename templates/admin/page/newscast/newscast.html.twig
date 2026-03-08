@@ -68,7 +68,7 @@
                        id="medias-path"
                        class="nav-link {% if not isMainEntity %} active{% endif %}">
                         <i class="icm-photo-video"></i>
-                        <span class="d-none d-sm-inline-block">{{ "Médias"|trans }}</span>
+                        <span class="d-none d-sm-inline-block">{{ "Médias"|trans|raw }}</span>
                     </a>
                 </li>
                 <li class="nav-item d-inline-flex right">
@@ -78,7 +78,7 @@
                     </a>
                     {%- if isMainEntity -%}
                         <span id="save-entity" class="nav-link save cursor">
-                            <i class="icm-save"></i><span>{{ "Enregistrer"|trans }}</span>
+                            <i class="icm-save"></i><span>{{ "Enregistrer"|trans|raw }}</span>
                         </span>
                     {%- endif -%}
                 </li>
@@ -90,11 +90,11 @@
     </div>
 
     <div id="entity-translations"
-         data-swal-entity-title="{{"Pensez à enregistrer vos modifications"|trans }}"
+         data-swal-entity-title="{{"Pensez à enregistrer vos modifications"|trans|raw }}"
          data-swal-entity-text=""
-         data-swal-entity-cancel-text="{{"Annuler"|trans }}"
-         data-swal-media-confirm-text="{{"Aller aux médias"|trans }}"
-         data-swal-value-confirm-text="{{"Éditer la valeur"|trans }}">
+         data-swal-entity-cancel-text="{{"Annuler"|trans|raw }}"
+         data-swal-media-confirm-text="{{"Aller aux médias"|trans|raw }}"
+         data-swal-value-confirm-text="{{"Éditer la valeur"|trans|raw }}">
     </div>
 
 {%- endblock -%}

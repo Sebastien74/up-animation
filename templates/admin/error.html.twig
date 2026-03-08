@@ -6,7 +6,7 @@
             {%- include 'bundles/TwigBundle/Exception/messages.html.twig' -%}
             <a href="{{ path('admin_dashboard', {website: websiteId}) }}" class="btn-app mt-4">
                 <i class="icm-reply"></i>
-                {{ "Retourner au tableau de bord"|trans }}
+                {{ "Retourner au tableau de bord"|trans|raw }}
             </a>
         </div>
     </div>

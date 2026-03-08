@@ -56,7 +56,7 @@
                     {%- if fieldConfiguration.fieldValues is defined -%}
 
                         <div class="col-12">
-                            <h4 class="main-subtitle"><i class="icm-text"></i>{{ "Valeurs"|trans }}</h4>
+                            <h4 class="main-subtitle"><i class="icm-text"></i>{{ "Valeurs"|trans|raw }}</h4>
                         </div>
 
                         {%- import _self as macro -%}
@@ -107,7 +107,7 @@
                                     data-collection-target="append"
                                     data-target="#configuration-values-collection">
                                 <i class="icm-plus"></i>
-                                <span class="d-inline-block">{{ 'Ajouter une valeur'|trans }}</span>
+                                <span class="d-inline-block">{{ 'Ajouter une valeur'|trans|raw }}</span>
                             </button>
                         </div>
 
@@ -125,7 +125,7 @@
 
                     {%- if count > 0 -%}
                         <div class="col-12">
-                            <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
+                            <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans|raw }}</h4>
                         </div>
                     {%- endif -%}
 

@@ -3,7 +3,7 @@
 {%- trans_default_domain 'admin' -%}
 
 {%- block title -%}{{ "Erreurs 404"|trans|htmlEntities }}{%- endblock -%}
-{%- block pageTitle -%}{{ "Erreurs 404"|trans }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Erreurs 404"|trans|raw }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ parent() }}
@@ -39,7 +39,7 @@
             {%- if 'delete'|moduleActive(configuration) and pagination|length > 0 -%}
                 <a href="{{ path("admin_notfoundurl_delete_all", {website: websiteId(), type: type, category: category}) }}"
                    class="btn-app danger swal-delete-link">
-                    <i class="icm-trash"></i><span>{{ 'Tout supprimer'|trans }}</span>
+                    <i class="icm-trash"></i><span>{{ 'Tout supprimer'|trans|raw }}</span>
                 </a>
             {%- endif -%}
         </div>
@@ -48,17 +48,17 @@
             <table class="table table-striped responsive-cards mb-0">
                 <thead>
                     <tr>
-                        <th class="align-middle px-4">{{ "Jour"|trans }}</th>
-                        <th class="align-middle column-url px-4">{{ "URL"|trans }}</th>
-                        <th class="align-middle text-end px-4">{{ "Actions"|trans }}</th>
+                        <th class="align-middle px-4">{{ "Jour"|trans|raw }}</th>
+                        <th class="align-middle column-url px-4">{{ "URL"|trans|raw }}</th>
+                        <th class="align-middle text-end px-4">{{ "Actions"|trans|raw }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {%- for entity in pagination -%}
                         <tr id="entity-row-{{ entity.id }}">
-                            <td class="align-middle px-4" data-label="{{"Jour"|trans }}">{{ entity.createdAt|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</td>
-                            <td class="align-middle px-4" data-label="{{"URL"|trans }}">{{ entity.url }}</td>
-                            <td class="align-middle text-end px-4" data-label="{{"Actions"|trans }}">
+                            <td class="align-middle px-4" data-label="{{"Jour"|trans|raw }}">{{ entity.createdAt|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</td>
+                            <td class="align-middle px-4" data-label="{{"URL"|trans|raw }}">{{ entity.url }}</td>
+                            <td class="align-middle text-end px-4" data-label="{{"Actions"|trans|raw }}">
                                 <div class="d-flex justify-content-end align-items-center gap-2">
                                     {{ render_esi(path('admin_notfoundurl_redirection', {website: websiteId(), notfoundUrl: entity.id} )) }}
                                     {%- if routeExist('admin_notfoundurl_delete') and 'delete'|moduleActive(configuration) -%}
@@ -76,7 +76,7 @@
                         <tr>
                             <td colspan="12" class="px-4">
                                 <div class="py-2 d-flex align-items-center justify-content-center gap-2">
-                                    <i class="btn-icon info icm-info"></i>{{ "Aucun résultat"|trans }}
+                                    <i class="btn-icon info icm-info"></i>{{ "Aucun résultat"|trans|raw }}
                                 </div>
                             </td>
                         </tr>

@@ -233,9 +233,9 @@ class FrontController extends CacheController
 
         $arguments = [
 //            'isUserBack' => $this->coreLocator->checkIP($website) && !$user instanceof UserFront || $user instanceof User,
-            'website' => $website,
-            'configuration' => $website->configuration,
-            'websiteTemplate' => $websiteTemplate,
+//            'website' => $website,
+//            'configuration' => $website->configuration,
+//            'websiteTemplate' => $websiteTemplate,
 //            'mainMenus' => $this->frontLocator->menuService()->all($website, $url),
 //            'mainPages' => $website->configuration->pages,
 //            'logos' => $website->configuration->logos,
@@ -246,10 +246,10 @@ class FrontController extends CacheController
 //            'preloadFiles' => is_object($entityModel) && property_exists($entityModel, 'preloadFiles') ? $entityModel->preloadFiles : false,
         ];
 
-        if (str_contains($this->coreLocator->request()->get('_route'), '_security')
-            || str_contains($this->coreLocator->request()->get('_route'), 'security_')) {
-            $arguments['templateName'] = 'security';
-        }
+//        if (str_contains($this->coreLocator->request()->get('_route'), '_security')
+//            || str_contains($this->coreLocator->request()->get('_route'), 'security_')) {
+//            $arguments['templateName'] = 'security';
+//        }
 
         return $arguments;
     }

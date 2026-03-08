@@ -14,7 +14,7 @@
             <div class="container">
                 <div class="row">
                     <label class="col-lg-4 col-xl-3 pt-0 pb-2 pb-lg-0 my-auto col-form-label text-center text-md-center text-lg-start text-uppercase form-control-label required" for="front_newsletter_email">
-                        <span class="label-name text-white">{{ "S'inscrire à la newsletter"|trans }}</span>
+                        <span class="label-name text-white">{{ "S'inscrire à la newsletter"|trans|raw }}</span>
                     </label>
                     <div class="refer-group col-lg-8 col-xl-9">
                         <div id="newsletter-fields" class="row">
@@ -23,7 +23,7 @@
                                 <button aria-label="{{"Je m'inscris"|trans|raw }}" class="newsletter-submit newsletter-track w-100 btn btn-white ps-2 pe-2">
                                     {{ 'fas sign-in-alt'|icon(17, 17) }}
                                     <span class="spinner-border d-none" role="status"></span>
-                                    <span class="ms-2">{{ "Je m'inscris"|trans }}</span>
+                                    <span class="ms-2">{{ "Je m'inscris"|trans|raw }}</span>
                                 </button>
                             </div>
                         </div>

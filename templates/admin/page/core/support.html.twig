@@ -22,7 +22,7 @@
 
         <div class="col-xl-8 mb-0 mb-sm-3">
             <div class="card h-100">
-                <h4 class="main-subtitle"><i class="icm-info"></i>{{ "Coordonnées"|trans }}</h4>
+                <h4 class="main-subtitle"><i class="icm-info"></i>{{ "Coordonnées"|trans|raw }}</h4>
                 <div class="card-body pb-2">
                     <div class="row xs-center sm-center">
                         <div class="col-12 col-md-7 col-xl-6 mb-3">
@@ -30,27 +30,27 @@
                                 <a href="https://www.felix-creation.fr" class="bold" target="_blank" rel="noopener noreferrer">
                                     <img data-src="{{ asset('build/admin/images/theme/felix-logo.svg', 'admin') }}"
                                          src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                         alt=" {{"Agence Félix"|trans }}" title="{{"Agence Félix"|trans|striptags }}"
+                                         alt=" {{"Agence Félix"|trans|raw }}" title="{{"Agence Félix"|trans|striptags }}"
                                          width="80" height="80"
                                          class="img-fluid lazy-load" />
                                 </a>
                             </div>
                             <div class="adress-wrap float-start">
-                                <a href="https://www.felix-creation.fr" class="bold" target="_blank" rel="noopener noreferrer">{{ "Agence Félix - Agence de Publicité"|trans }}</a><br>
+                                <a href="https://www.felix-creation.fr" class="bold" target="_blank" rel="noopener noreferrer">{{ "Agence Félix - Agence de Publicité"|trans|raw }}</a><br>
                                 {{ "4BIS Avenue du Pont de Tasset <br/> 74960 Cran-Gevrier / Annecy <br/> FRANCE"|trans|raw }}
                             </div>
                         </div>
                         <ul class="reset ps-3 col-8 col-md-5 col-xl-3 mb-3">
                             <li class="mb-1">
-                                <span class="d-inline-block i-square me-1 float-start"><span title="{{"Phone"|trans }}" data-toogle="tooltip"><i class="icm-phone"></i></span></span>
+                                <span class="d-inline-block i-square me-1 float-start"><span title="{{"Phone"|trans|raw }}" data-toogle="tooltip"><i class="icm-phone"></i></span></span>
                                 <a href="tel:+33450671855" class="text-dark">+33 (0)4 50 67 18 55</a>
                             </li>
                             <li class="mb-1">
-                                <span class="d-inline-block i-square me-1 float-start"><span title="{{"Fax"|trans }}" data-toogle="tooltip"><i class="icm-fax"></i></span></span>
+                                <span class="d-inline-block i-square me-1 float-start"><span title="{{"Fax"|trans|raw }}" data-toogle="tooltip"><i class="icm-fax"></i></span></span>
                                 +33 (0)4 50 67 16 85
                             </li>
                             <li>
-                                <span class="d-inline-block i-square me-1 float-start"><span title="{{"Email"|trans }}" data-toogle="tooltip"><i class="icm-at"></i></span></span>
+                                <span class="d-inline-block i-square me-1 float-start"><span title="{{"Email"|trans|raw }}" data-toogle="tooltip"><i class="icm-at"></i></span></span>
                                 <a href="mailto:support@agence-felix.fr" class="text-dark">support@agence-felix.fr</a>
                             </li>
                         </ul>
@@ -87,7 +87,7 @@
 
         <div class="col-xl-4 mb-0 mb-sm-3">
             <div class="card h-100">
-                <h4 class="main-subtitle"><i class="icm-pencil-alt"></i>{{ "Contactez-nous"|trans }}</h4>
+                <h4 class="main-subtitle"><i class="icm-pencil-alt"></i>{{ "Contactez-nous"|trans|raw }}</h4>
                 <div class="card-body pb-2">
                     {{ form_start(form, {attr: {id: "contact-form", action: app.request.uri, novalidate: "novalidate"}}) }}
                         <div class="row">
@@ -110,7 +110,7 @@
                class="w-100 text-center d-inline-block"
                download="notice-cms-agence-felix.pdf">
                 <i class="icm-file-pdf"></i>
-                <br>{{ "Télécharger la notice"|trans }}
+                <br>{{ "Télécharger la notice"|trans|raw }}
             </a>
         </div>
 

@@ -237,7 +237,7 @@
                             interfaceName: interfaceName
                         } -%}
                     {%- else -%}
-                        <span class="btn btn-transparent delete-disabled" data-toggle="tooltip" title="{{"Donnée requise"|trans }}">
+                        <span class="btn btn-transparent delete-disabled" data-toggle="tooltip" title="{{"Donnée requise"|trans|raw }}">
                             {{ 'fas trash'|icon(null, 14, 'dark') }}
                         </span>
                     {%- endif -%}
@@ -275,7 +275,7 @@
                 {%- if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] -%}
                     {{ prototypeOptions['attr']['button'] }}
                 {%- else -%}
-                    {{ 'Ajouter'|trans }}
+                    {{ 'Ajouter'|trans|raw }}
                 {%- endif -%}
             </span>
         </button>

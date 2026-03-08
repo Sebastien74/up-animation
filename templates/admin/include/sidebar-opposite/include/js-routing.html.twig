@@ -2,17 +2,17 @@
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-        <span class="btn-icon small me-3"><i class="icm-link"></i></span>{{ "Routing JS"|trans }}
+        <span class="btn-icon small me-3"><i class="icm-link"></i></span>{{ "Routing JS"|trans|raw }}
     </a>
     <ul aria-expanded="false" class="collapse">
         <li>
             <a href="{{ path('js_routing_dump') }}">
-                <span class="hide-menu">{{ "Générer les routes"|trans }}</span>
+                <span class="hide-menu">{{ "Générer les routes"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('js_routing_debug') }}">
-                <span class="hide-menu">{{ "Debug"|trans }}</span>
+                <span class="hide-menu">{{ "Debug"|trans|raw }}</span>
             </a>
         </li>
     </ul>

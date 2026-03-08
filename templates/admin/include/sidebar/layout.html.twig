@@ -44,8 +44,8 @@
                         <ul class="list-unstyled">
                             {%- set domain = app.user.locale is defined ? app.user.locale|domain() : null -%}
                             {%- set scheme = not domain ? path('front_index') : domain -%}
-                            <li><a href="{{ scheme }}" target="_blank"><span class="btn-icon small me-3"><i class="icm-desktop"></i></span>{{ "Accéder au site"|trans }}</a></li>
-                            <li class="d-lg-none"><a href="{{ path('app_logout') }}"><span class="btn-icon danger small me-3"><i class="icm-power-off"></i></span>{{ "Déconnexion"|trans }}</a></li>
+                            <li><a href="{{ scheme }}" target="_blank"><span class="btn-icon small me-3"><i class="icm-desktop"></i></span>{{ "Accéder au site"|trans|raw }}</a></li>
+                            <li class="d-lg-none"><a href="{{ path('app_logout') }}"><span class="btn-icon danger small me-3"><i class="icm-power-off"></i></span>{{ "Déconnexion"|trans|raw }}</a></li>
                         </ul>
                         {%- if isMultiWebsite and app.user -%}
                             {{ render_esi(path('admin_site_selector', {website: websiteId()})) }}

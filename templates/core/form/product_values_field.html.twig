@@ -12,18 +12,14 @@
         {%- set interfaceName = property.vars.errors.form.config.dataClass|interfaceName -%}
         {%- if isNew -%}
             <div class="prototype-block prototype mb-4">
-                <div class="row m-0">
-                    <div class="col-md-3 my-auto">{{ form_widget(property.value) }}</div>
-                    <div class="col-md-2 my-auto text-center"><strong>{{ "Ou personnalisée"|trans }}</strong></div>
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-4 my-auto form-group feature-group select2-group">{{ form_widget(property.feature) }}</div>
-                            <div class="col-md-4 my-auto form-group name-group">{{ form_widget(property.adminName) }}</div>
-                            {%- if property.addToGlobal is defined -%}
-                                <div class="col-md-4 my-auto form-group add-to-global-group">{{ form_widget(property.addToGlobal) }}</div>
-                            {%- endif -%}
-                        </div>
-                    </div>
+                <div class="d-flex align-items-center gap-2 px-3">
+                    {{ form_widget(property.value) }}
+                    <strong>{{ "Ou personnalisée"|trans|raw }}</strong>
+                    <div class="form-group feature-group select2-group">{{ form_widget(property.feature) }}</div>
+                    <div class="form-group name-group">{{ form_widget(property.adminName) }}</div>
+                    {%- if property.addToGlobal is defined -%}
+                        <div class="form-group add-to-global-group">{{ form_widget(property.addToGlobal) }}</div>
+                    {%- endif -%}
                     <div class="d-none">
                         {%- if property.displayInArray is defined -%}
                             {{ form_widget(property.displayInArray) }}
@@ -135,7 +131,7 @@
 {#                                                {%- set feature = feature is defined ? feature : (value.feature is defined ? value.feature : null) -%}#}
 {#                                                {%- if feature and value.value.id is defined and value.value.id -%}#}
 {#                                                    <a href="{{ path('admin_catalogfeaturevalue_edit', {website: websiteId(), catalogfeature: feature.id, catalogfeaturevalue: value.value.id}) }}"#}
-{#                                                       data-toggle="tooltip" title="{{"Éditer la valeur"|trans }}"#}
+{#                                                       data-toggle="tooltip" title="{{"Éditer la valeur"|trans|raw }}"#}
 {#                                                       class="swal-product-value btn btn-transparent btn-circle">#}
 {#                                                        {{ 'fas pencil-alt'|icon(null, 14, 'info') }}#}
 {#                                                    </a>#}
@@ -171,16 +167,10 @@
     </div>
 
     <div class="col-12 text-end mb-4">
-        <button role="button" class="add-collection btn full-prototype-btn w-100"
+        <button role="button" class="add-collection btn-app success"
                 data-collection-target="append"
                 data-target="#{{ id }}-collection">
-            <img data-src="{{ asset('build/admin/images/theme/plus-rounded.svg', 'admin') }}"
-                 src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                 class="img-fluid rounded-add-img lazy-load"
-                 width="20" height="20" alt="{{ 'Ajouter'|trans }}"><br>
-            <span class="d-inline-block">
-                {{ 'Ajouter une valeur'|trans }}
-            </span>
+            <i class="icm-plus"></i>{{ 'Ajouter une valeur'|trans|raw }}
         </button>
     </div>
 

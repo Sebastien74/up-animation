@@ -3,7 +3,7 @@
 {%- if interface.configuration.saveArea is not defined
     or interface.configuration.saveArea != 'top'
     or configsFieldsSet is defined and configsFieldsSet -%}
-    <div class="save-bottom d-flex justify-content-end align-items-center gap-2">
+    <div class="save-bottom d-flex justify-content-end align-items-center gap-2 mb-3">
         {%- set submitFields = ['save', 'saveBack', 'saveEdit'] -%}
         {%- if interface.configuration.saveArea == 'bottom' -%}
             {%- include 'admin/core/form/save/base.html.twig' -%}

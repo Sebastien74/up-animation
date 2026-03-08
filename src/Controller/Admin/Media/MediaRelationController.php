@@ -10,6 +10,7 @@ use App\Entity\Media\MediaRelation;
 use App\Entity\Module\Slider\Slider;
 use App\Form\Manager\Media\MediaManager;
 use App\Form\Widget\MediaRelationType;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\PersistentCollection;
 use Exception;
@@ -82,7 +83,7 @@ class MediaRelationController extends AdminController
     /**
      * Edit Locales MediaRelation.
      *
-     * @throws Exception
+     * @throws Exception|ORMException
      */
     #[IsGranted('ROLE_EDIT')]
     #[Route('/edit/locales', name: 'admin_mediarelations_edit', options: ['expose' => true], methods: 'GET|POST')]
@@ -90,6 +91,7 @@ class MediaRelationController extends AdminController
         Request $request,
         MediaManager $mediaManager,
     ): JsonResponse {
+
         $website = $this->getWebsite();
         $classname = urldecode($request->get('entityNamespace'));
         $interface = $this->getInterface($classname);
@@ -194,6 +196,44 @@ class MediaRelationController extends AdminController
         }
 
         return parent::edit($request);
+    }
+
+    /**
+     * Set MediaRelation positions.
+     */
+    #[IsGranted('ROLE_EDIT')]
+    #[Route('/positions', name: 'admin_mediarelation_positions', options: ['expose' => true], methods: 'POST')]
+    public function relationsPositions(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (!empty($data['items']) && !empty($data['entityNamespace'])) {
+            $entityNamespace = urldecode($data['entityNamespace']);
+            $repository = $this->coreLocator->em()->getRepository($entityNamespace);
+
+            foreach ($data['items'] as $item) {
+                $entityId = (int) $item['entityId'];
+                $position = (int) $item['position'];
+                $mediaRelationIds = (array) $item['mediaRelationIds'];
+
+                $entity = $repository->find($entityId);
+                $metadata = $entity ? $this->coreLocator->metadata($entity, 'mediaRelations')->targetEntity : null;
+
+                if ($metadata) {
+                    $mediaRelationRepo = $this->coreLocator->em()->getRepository($metadata);
+                    foreach ($mediaRelationIds as $mediaRelationId) {
+                        $mediaRelation = $mediaRelationRepo->find($mediaRelationId);
+                        if ($mediaRelation) {
+                            $mediaRelation->setPosition($position);
+                            $this->coreLocator->em()->persist($mediaRelation);
+                        }
+                    }
+                }
+            }
+            $this->coreLocator->em()->flush();
+        }
+
+        return new JsonResponse(['success' => true]);
     }
 
     /**

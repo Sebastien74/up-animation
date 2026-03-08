@@ -1,4 +1,4 @@
 {%- trans_default_domain 'admin' -%}
 
-<h4 class="main-subtitle"><i class="icm-copy"></i>{{ "Pages"|trans }}</h4>
+<h4 class="main-subtitle"><i class="icm-copy"></i>{{ "Pages"|trans|raw }}</h4>
 {%- include 'admin/page/information/social-network.html.twig' with {socialsNetworks: form.website.information.socialNetworks} -%}

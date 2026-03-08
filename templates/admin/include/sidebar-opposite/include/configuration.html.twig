@@ -2,62 +2,62 @@
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-        <span class="btn-icon small me-3"><i class="icm-cog"></i></span>{{ "Configuration"|trans }}
+        <span class="btn-icon small me-3"><i class="icm-cog"></i></span>{{ "Configuration"|trans|raw }}
     </a>
     <ul aria-expanded="false" class="collapse">
         <li>
             <a href="{{ path('admin_site_edit', {website: websiteId, site: websiteId}) }}">
-                <span class="hide-menu">{{ "Site courant"|trans }}</span>
+                <span class="hide-menu">{{ "Site courant"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_website_style', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Élements de site"|trans }}</span>
+                <span class="hide-menu">{{ "Élements de site"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_site_index', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Liste des sites"|trans }}</span>
+                <span class="hide-menu">{{ "Liste des sites"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_thumbconfiguration_index', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Thumbnails"|trans }}</span>
+                <span class="hide-menu">{{ "Thumbnails"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_grid_index', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Grilles"|trans }}</span>
+                <span class="hide-menu">{{ "Grilles"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_entity_index', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Entités"|trans }}</span>
+                <span class="hide-menu">{{ "Entités"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_blocktype_index', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Types de blocs"|trans }}</span>
+                <span class="hide-menu">{{ "Types de blocs"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_module_index', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Modules"|trans }}</span>
+                <span class="hide-menu">{{ "Modules"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_action_index', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Actions de modules"|trans }}</span>
+                <span class="hide-menu">{{ "Actions de modules"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_layoutconfiguration_index', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Mises en page"|trans }}</span>
+                <span class="hide-menu">{{ "Mises en page"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_icons', {website: websiteId, library: 'app'}) }}">
-                <span class="hide-menu">{{ "Blibliothèque d'icônes"|trans }}</span>
+                <span class="hide-menu">{{ "Blibliothèque d'icônes"|trans|raw }}</span>
             </a>
         </li>
     </ul>

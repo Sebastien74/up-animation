@@ -6,8 +6,8 @@
             {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Vous êtes déjà connecté."|trans} only -%}
         {%- else -%}
             {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' only -%}
-            <p class="text-uppercase text-bold mb-2">{{ "Je n'ai pas de compte"|trans }}</p>
-            <h3 class="title text-uppercase mb-4">{{ "S'inscrire"|trans }}</h3>
+            <p class="text-uppercase text-bold mb-2">{{ "Je n'ai pas de compte"|trans|raw }}</p>
+            <h3 class="title text-uppercase mb-4">{{ "S'inscrire"|trans|raw }}</h3>
             {%- set action = path('security_front_register', {category: 'undefined', view: 'form'}) -%}
             {%- if category is defined and category -%}
                 {%- set action = path('security_front_register', {category: category.id, view: 'form'}) -%}
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 {%- endif -%}
-                <button id="submit" name="submit" type="submit" class="btn btn-primary text-uppercase w-100 d-flexs justify-content-center">{{ "Créer son compte"|trans }}</button>
+                <button id="submit" name="submit" type="submit" class="btn btn-primary text-uppercase w-100 d-flexs justify-content-center">{{ "Créer son compte"|trans|raw }}</button>
             {{ form_end(form) }}
         {%- endif -%}
     </div>

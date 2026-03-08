@@ -34,8 +34,8 @@
                                 <a class="zone-resize cursor btn-action"
                                    data-zone="{{ zone.id }}"
                                    data-size="{{ size }}"
-                                   data-compress="{{"Étendre"|trans }}"
-                                   data-expand="{{"Rétrécir"|trans }}">
+                                   data-compress="{{"Étendre"|trans|raw }}"
+                                   data-expand="{{"Rétrécir"|trans|raw }}">
                                     <span class="icon-wrap {% if zone.fullSize %} d-none{% endif %}">
                                         <i class="icm-expand-arrows-alt"></i>
                                     </span>
@@ -85,8 +85,8 @@
                                 <a class="zone-cols-standardize cursor btn-action"
                                    data-zone="{{ zone.id }}"
                                    data-standardize="{{ standardize }}"
-                                   data-cols-default="{{"Largeur par défaut des colonnes"|trans }}"
-                                   data-cols-standardize="{{"Uniformiser la largeur des colonnes"|trans }}">
+                                   data-cols-default="{{"Largeur par défaut des colonnes"|trans|raw }}"
+                                   data-cols-standardize="{{"Uniformiser la largeur des colonnes"|trans|raw }}">
                                     <span class="icon-wrap {% if isStandardize %} d-none{% endif %}">
                                         <i class="icm-indent"></i>
                                     </span>
@@ -144,7 +144,7 @@
         <button id="add-zone-btn"
                 class="btn-app edit-layout-element-btn"
                 data-path="{{ path('admin_zone_new', {website: websiteId(), layout: layout.id}) }}">
-            <i class="icm-plus"></i>{{ 'Ajouter une ligne'|trans }}
+            <i class="icm-plus"></i>{{ 'Ajouter une ligne'|trans|raw }}
         </button>
     {%- endif -%}
 

@@ -13,10 +13,10 @@
         </a>
         <ul aria-expanded="false" class="collapse {% if pageTag == 'maps' %} in{% endif %}">
             <li>
-                <a href="{{ path('admin_map_index', {website: websiteId}) }}">{{ "Liste des cartes"|trans }}</a>
+                <a href="{{ path('admin_map_index', {website: websiteId}) }}">{{ "Liste des cartes"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_mapcategory_index', {website: websiteId}) }}" {%- if '/maps/categories/' in uri -%} class="active" {%- endif -%}>{{ "Liste des catégories de points"|trans }}</a>
+                <a href="{{ path('admin_mapcategory_index', {website: websiteId}) }}" {%- if '/maps/categories/' in uri -%} class="active" {%- endif -%}>{{ "Liste des catégories de points"|trans|raw }}</a>
             </li>
         </ul>
     </li>

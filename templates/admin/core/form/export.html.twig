@@ -14,11 +14,11 @@
         {%- set args = args|merge({entitylocale: interface.website.configuration.locale}) -%}
     {%- endif -%}
 
-    <a href="{{ path('admin_'~interface['name']~'_export', args) }}" class="btn-app"><i class="icm-upload"></i>{{ "Exporter"|trans }}</a>
+    <a href="{{ path('admin_'~interface['name']~'_export', args) }}" class="btn-app"><i class="icm-upload"></i>{{ "Exporter"|trans|raw }}</a>
 
 {%- else -%}
 
-    <button class="btn-app" data-bs-toggle="modal" data-bs-target="#export-modal"><i class="icm-upload"></i>{{ "Exporter"|trans }}</button>
+    <button class="btn-app" data-bs-toggle="modal" data-bs-target="#export-modal"><i class="icm-upload"></i>{{ "Exporter"|trans|raw }}</button>
 
     <div class="modal-wrapper float-start">
         <div class="modal fade" id="export-modal" tabindex="-1"
@@ -28,13 +28,13 @@
                     {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'edit-card-preloader', full: true} only -%}
                     <div class="modal-header">
                         <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-upload"></i></span></span>
-                        <button class="btn-close btn-icon position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans }}">
+                        <button class="btn-close btn-icon position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
                             <i class="icm-times"></i>
                         </button>
                     </div>
                     <div class="modal-body d-flex">
                         <div class="container my-auto ajax-content">
-                            <h2 class="main-title text-center fw-bold mb-5">{{ "Exporter"|trans }}</h2>
+                            <h2 class="main-title text-center fw-bold mb-5">{{ "Exporter"|trans|raw }}</h2>
                             {{ form_start(form, { attr: {
                                 novalidate: "novalidate",
                                 id: "export-form",
@@ -44,7 +44,7 @@
                                     {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only -%}
                                 </div>
                                 <div class="w-100 text-center modal-buttons">
-                                    <button type="submit" class="btn-app">{{ "Exporter"|trans }}</button>
+                                    <button type="submit" class="btn-app">{{ "Exporter"|trans|raw }}</button>
                                 </div>
                             {{ form_end(form) }}
                         </div>

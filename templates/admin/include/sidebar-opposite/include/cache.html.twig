@@ -2,37 +2,37 @@
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-        <span class="btn-icon small me-3"><i class="icm-crosshairs"></i></span>{{ "Cache"|trans }}
+        <span class="btn-icon small me-3"><i class="icm-crosshairs"></i></span>{{ "Cache"|trans|raw }}
     </a>
     <ul aria-expanded="false" class="collapse">
         <li>
             <a href="{{ path('cache_clear', {rename: true}) }}">
-                <span class="hide-menu">{{ "Vider le cache principal"|trans }}</span>
+                <span class="hide-menu">{{ "Vider le cache principal"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('doctrine_clear_cache_result') }}">
-                <span class="hide-menu">{{ "Vider le cache Doctrine"|trans }}</span>
+                <span class="hide-menu">{{ "Vider le cache Doctrine"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('cache_liip_clear') }}">
-                <span class="hide-menu">{{ "Vider les médias"|trans }}</span>
+                <span class="hide-menu">{{ "Vider les médias"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_translation_cache_clear', {website: websiteId()}) }}">
-                <span class="hide-menu">{{ "Vider les traductions"|trans }}</span>
+                <span class="hide-menu">{{ "Vider les traductions"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_clear_sessions') }}">
-                <span class="hide-menu">{{ "Vider les sessions"|trans }}</span>
+                <span class="hide-menu">{{ "Vider les sessions"|trans|raw }}</span>
             </a>
         </li>
 {#        <li>#}
 {#            <a href="{{ path('composer_autoload') }}">#}
-{#                <span class="hide-menu">{{ "Optimiser l'autoload"|trans }}</span>#}
+{#                <span class="hide-menu">{{ "Optimiser l'autoload"|trans|raw }}</span>#}
 {#            </a>#}
 {#        </li>#}
     </ul>

@@ -11,9 +11,9 @@
         <meta charset="{{ _charset }}" />
         <meta name="robots" content="noindex, nofollow" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>{{ status_code }} Error - {{ "Agence Félix CMS"|trans }}</title>
-        <meta name="description" content="{{"Agence Félix CMS"|trans }}" />
-        <meta name="author" content="{{"Agence Félix"|trans }}" />
+        <title>{{ status_code }} Error - {{ "Agence Félix CMS"|trans|raw }}</title>
+        <meta name="description" content="{{"Agence Félix CMS"|trans|raw }}" />
+        <meta name="author" content="{{"Agence Félix"|trans|raw }}" />
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('build/admin/images/theme/favicon.ico', 'admin') }}" />
         <style nonce="{{ csp_nonce() }}">{{ include('@Twig/exception.css.twig') }}</style>
         {%- block head -%}{%- endblock -%}

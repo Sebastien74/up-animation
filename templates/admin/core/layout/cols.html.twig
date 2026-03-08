@@ -63,8 +63,8 @@
                                                 <a class="btn-action col-blocks-standardize cursor"
                                                    data-col="{{ col.id }}"
                                                    data-standardize="{{ standardize }}"
-                                                   data-cols-default="{{"Largeur par défaut des blocs"|trans }}"
-                                                   data-cols-standardize="{{"Uniformiser la largeur des blocs"|trans }}">
+                                                   data-cols-default="{{"Largeur par défaut des blocs"|trans|raw }}"
+                                                   data-cols-standardize="{{"Uniformiser la largeur des blocs"|trans|raw }}">
                                                     <span class="icon-wrap {% if isStandardize %} d-none{% endif %}">
                                                         <i class="icm-indent"></i>
                                                     </span>
@@ -132,7 +132,7 @@
         <div class="col-12 d-inline-flex align-items-end">
             <button data-path="{{ path('admin_col_new', {website: websiteId(), zone: zone.id}) }}"
                     class="btn-app new-col-btn edit-layout-element-btn mb-3">
-                <i class="icm-plus"></i>{{ 'Ajouter une colonne'|trans }}
+                <i class="icm-plus"></i>{{ 'Ajouter une colonne'|trans|raw }}
             </button>
         </div>
     {%- endif -%}

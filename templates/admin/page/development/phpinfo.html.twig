@@ -3,7 +3,7 @@
 {%- trans_default_domain 'admin' -%}
 
 {%- block title -%}{{ "PHP Info"|trans|htmlEntities }}{%- endblock -%}
-{%- block pageTitle -%}{{ "PHP Info"|trans }}{%- endblock -%}
+{%- block pageTitle -%}{{ "PHP Info"|trans|raw }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ parent() }}
@@ -24,7 +24,7 @@
                     <i class="icm-search"></i>
                 </button>
             </div>
-            <input type="text" id="phpinfo-search" class="form-control" placeholder="{{"Rechercher une directive ou une valeur..."|trans }}">
+            <input type="text" id="phpinfo-search" class="form-control" placeholder="{{"Rechercher une directive ou une valeur..."|trans|raw }}">
         </div>
     </div>
 
@@ -38,7 +38,7 @@
                         <thead>
                             <tr>
                                 <th class="d-none"></th>
-                                <th class="px-4">{{ "Directive"|trans }}</th>
+                                <th class="px-4">{{ "Directive"|trans|raw }}</th>
                                 {%- set isDirectiveTable = false -%}
                                 {%- for item in items -%}
                                     {%- if item.local is defined -%}
@@ -47,10 +47,10 @@
                                 {%- endfor -%}
 
                                 {%- if isDirectiveTable -%}
-                                    <th class="text-center px-4">{{ "Local Value"|trans }}</th>
-                                    <th class="text-center px-4">{{ "Master Value"|trans }}</th>
+                                    <th class="text-center px-4">{{ "Local Value"|trans|raw }}</th>
+                                    <th class="text-center px-4">{{ "Master Value"|trans|raw }}</th>
                                 {%- else -%}
-                                    <th class="text-end px-4">{{ "Value"|trans }}</th>
+                                    <th class="text-end px-4">{{ "Value"|trans|raw }}</th>
                                 {%- endif -%}
                                 <th class="text-end px-4 d-none">Actions</th>
                             </tr>

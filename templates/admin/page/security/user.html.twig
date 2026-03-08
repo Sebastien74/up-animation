@@ -22,7 +22,7 @@
             <div class="card-body pb-2">
                 <div class="row">
                     <div class="col-md-9">
-                        <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans|raw }}</h4>
                         <div class="row">
                             {%- if form.login is defined -%}
                                 {{ form_row(form.login) }}
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <h4 class="main-subtitle"><i class="icm-image"></i>{{ "Image de profil"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-image"></i>{{ "Image de profil"|trans|raw }}</h4>
                         <div class="row">
                             {%- if form.file is defined -%}
                                 {{ form_row(form.file) }}

@@ -5,13 +5,11 @@
 {%- set isProduct = true -%}
 
 {%- block entityForm -%}
-
     {%- set configsSet = [] -%}
-
     {{ form_start(form, {attr: {novalidate: "novalidate", action: app.request.uri, id: 'form-entity'}}) }}
-        <div class="tab-content pb-2">
+        <div class="tab-content pb-0">
             {%- for tabId, config in tabs -%}
-                <div class="tab-pane pe-4 ps-4{% if activeTab == tabId or not activeTab and loop.first and isProduct %} active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab">
+                <div class="tab-pane p-0{% if activeTab == tabId or not activeTab and loop.first and isProduct %} active{% endif %}" id="{{ tabId }}" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab">
                     <div class="row">
                         {%- for field in form.children -%}
                             {%- if tabId not in configsSet -%}
@@ -25,11 +23,11 @@
                                     {%- endif -%}
                                     {%- set configsSet = configsSet|merge(['intls']) -%}
                                 {%- elseif tabId == 'features' and field.vars.name == 'values' -%}
-                                    {%- include 'admin/core/form/prototype.html.twig' with {fullBtn: true} -%}
+                                    {%- include 'admin/core/form/prototype.html.twig' -%}
                                 {%- elseif tabId == 'configuration' -%}
                                     {%- if form.mainCategory is defined or form.categories is defined or form.subCategories is defined or form.promote is defined or form.customLayout is defined -%}
                                         <div class="col-12">
-                                            <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans }}</h4>
+                                            <h4 class="main-subtitle"><i class="icm-cog"></i>{{ "Configuration"|trans|raw }}</h4>
                                         </div>
                                     {%- endif -%}
                                     {%- if form.catalog is defined -%}
@@ -52,13 +50,13 @@
                                     {%- endif -%}
                                     {%- if form.startDate is defined and form.endDate is defined -%}
                                         <div class="col-12">
-                                            <h4 class="main-subtitle"><i class="icm-calendar"></i>{{ "Dates"|trans }}</h4>
+                                            <h4 class="main-subtitle"><i class="icm-calendar"></i>{{ "Dates"|trans|raw }}</h4>
                                         </div>
                                         {{ form_row(form.startDate) }}
                                         {{ form_row(form.endDate) }}
                                     {%- endif -%}
                                     <div class="col-12">
-                                        <h4 class="main-subtitle"><i class="icm-calendar"></i>{{ "Dates de publication"|trans }}</h4>
+                                        <h4 class="main-subtitle"><i class="icm-calendar"></i>{{ "Dates de publication"|trans|raw }}</h4>
                                     </div>
                                     {{ form_row(form.publicationStart) }}
                                     {{ form_row(form.publicationEnd) }}
@@ -71,7 +69,7 @@
                                         form: field
                                     } only -%}
                                 {%- elseif tabId == 'lots' and field.vars.name == 'lots' -%}
-                                    {%- include 'admin/core/form/prototype.html.twig' with {field: form[field.vars.name], fullBtn: true} -%}
+                                    {%- include 'admin/core/form/prototype.html.twig' with {field: form[field.vars.name]} -%}
                                 {%- elseif tabId == 'seo' -%}
                                     {%- include 'admin/core/form/urls.html.twig' with {
                                         form: form,
@@ -93,5 +91,4 @@
             {%- endfor -%}
         </div>
     {{ form_end(form) }}
-
 {%- endblock -%}

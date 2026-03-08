@@ -21,7 +21,7 @@
             <div class="card-body pb-2">
                 <div class="row">
                     <div class="col-md-9">
-                        <h4 class="main-subtitle"><i class="icm-envelope"></i>{{ "Information"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-envelope"></i>{{ "Information"|trans|raw }}</h4>
                         <div class="row">
                             {%- if form.name is defined -%}
                                 {{ form_row(form.name) }}
@@ -30,7 +30,7 @@
                                 {{ form_row(form.locale) }}
                             {%- endif -%}
                         </div>
-                        <h4 class="main-subtitle"><i class="icm-at"></i>{{ "Contact"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-at"></i>{{ "Contact"|trans|raw }}</h4>
                         <div class="row">
                             {%- if form.email is defined -%}
                                 {{ form_row(form.email) }}
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <h4 class="main-subtitle"><i class="icm-image"></i>{{ "Logo"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-image"></i>{{ "Logo"|trans|raw }}</h4>
                         <div class="row">
                             {%- if form.file is defined -%}
                                 {{ form_row(form.file) }}
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <h4 class="main-subtitle"><i class="icm-map-marker-alt"></i>{{ "Adresse"|trans }}</h4>
+                        <h4 class="main-subtitle"><i class="icm-map-marker-alt"></i>{{ "Adresse"|trans|raw }}</h4>
                         <div class="row">
                             {%- if form.address.name is defined -%}
                                 {{ form_row(form.address.name) }}

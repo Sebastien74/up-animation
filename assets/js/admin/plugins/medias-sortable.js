@@ -57,49 +57,44 @@ export default function () {
 
         function setPosition(website) {
 
-            let items = document.getElementById('medias-sortable-container').querySelectorAll(".sortable-item:not(.executed)");
+            let container = document.getElementById('medias-sortable-container');
+            let items = container.querySelectorAll(".sortable-item");
+            let data = {
+                entityNamespace: items.length > 0 ? items[0].dataset.classname : null,
+                items: []
+            };
 
-            if (items.length > 0) {
-
-                let item = items[0];
+            items.forEach(function (item) {
+                let mediaRelationIds = [];
                 let elsDataLocale = item.getElementsByClassName('media-locale-data');
-                let count = elsDataLocale.length;
-
                 for (let i = 0; i < elsDataLocale.length; i++) {
+                    mediaRelationIds.push(elsDataLocale[i].dataset.id);
+                }
+                data.items.push({
+                    entityId: item.dataset.entityId,
+                    position: item.dataset.position,
+                    mediaRelationIds: mediaRelationIds
+                });
+            });
 
-                    let elData = elsDataLocale[i];
-                    let url = route('admin_mediarelation_position', {
-                        website: website,
-                        mediaRelation: elData.dataset.id,
-                        position: item.dataset.position,
-                        entityId: item.dataset.entityId,
-                        clearCache: item.dataset.clearCache,
-                        entityNamespace: item.dataset.classname,
-                    });
-
-                    let xHttp = new XMLHttpRequest();
-                    xHttp.open("GET", url, true);
-                    xHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-                    xHttp.send();
-                    xHttp.onload = function () {
-                        if (this.readyState === 4 && this.status === 200) {
-                            let currentCount = i + 1;
-                            if (currentCount === count) {
-                                window.scrollTo({
-                                    top: (elementToScroll.getBoundingClientRect().top + window.scrollY) - 20,
-                                    behavior: 'smooth'
-                                });
-                                item.classList.add('executed');
-                                let container = document.getElementById('medias-sortable-container');
-                                let allItems = container.querySelectorAll(".sortable-item");
-                                let executedItems = container.querySelectorAll(".sortable-item.executed");
-                                let progress = executedItems.length > 0 ? Math.ceil(((executedItems.length - allItems.length) / allItems.length) * 100) + 100 : 100;
-                                progressBar.style.width = progress + '%';
-                                progressBar.setAttribute('aria-valuenow', progress + '%');
-                                progressBar.innerText = progress + '%';
-                                setPosition(website);
-                            }
-                        }
+            if (data.items.length > 0) {
+                let url = route('admin_mediarelation_positions', {website: website});
+                let xHttp = new XMLHttpRequest();
+                xHttp.open("POST", url, true);
+                xHttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                xHttp.send(JSON.stringify(data));
+                xHttp.onload = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        progressBar.style.width = '100%';
+                        progressBar.setAttribute('aria-valuenow', '100%');
+                        progressBar.innerText = '100%';
+                        setTimeout(function() {
+                            progressBarCard.classList.add('d-none');
+                            progressBar.style.width = 0;
+                            progressBar.innerText = '';
+                            progressBar.setAttribute('aria-valuenow', '0');
+                            loader.classList.add('d-none');
+                        }, 500);
                     }
                 }
             } else {
@@ -108,10 +103,6 @@ export default function () {
                 progressBar.innerText = '';
                 progressBar.setAttribute('aria-valuenow', '0');
                 loader.classList.add('d-none');
-                let items = document.getElementById('medias-sortable-container').querySelectorAll(".sortable-item");
-                for (let i = 0; i < items.length; i++) {
-                    items[i].classList.remove('executed');
-                }
             }
         }
     }

@@ -65,14 +65,12 @@ class IndexController extends FrontController
         bool $preview = false
     ): RedirectResponse|Response {
 
-
         $website = $this->getWebsite();
         if ($website->isEmpty) {
             throw $this->createNotFoundException($this->coreLocator->translator()->trans("Site non configuré !!", [], 'front'));
         }
 
         $page = $this->getPage($website, $request, $preview, $url);
-        return $this->render('core/debug.html.twig', []);
         $requestUri = $request->getRequestUri();
         $pageSlug = $page instanceof Page ? $page->getSlug() : null;
 
@@ -108,7 +106,7 @@ class IndexController extends FrontController
             return $this->redirect($redirectUrl);
         }
 
-        /* To redirect build page if website is online */
+        /* To redirect the build page if the website is online */
         if (!$preview && 'build.html.twig' === $page->getTemplate() && $website->configuration->onlineStatus) {
             return $this->redirectToRoute('front_index');
         }
@@ -128,7 +126,7 @@ class IndexController extends FrontController
 
         /* Optimization: HTTP Cache (ETag & Last-Modified) */
         $response = new Response();
-        if (!$preview && !$page->isSecure() && !$this->coreLocator->isDebug()) {
+        if ((!$preview && !$page->isSecure() && !$this->coreLocator->isDebug()) || self::FORCE_CACHE) {
             $lastUpdate = $this->getLastUpdateDate($website, $page, $urlEntity);
             $response->setLastModified($lastUpdate);
             $response->setEtag(md5($urlEntity->getId() . $lastUpdate->getTimestamp() . $request->getLocale()));
@@ -187,7 +185,7 @@ class IndexController extends FrontController
     }
 
     /**
-     * Get current Page.
+     * Get the current Page.
      */
     private function getPage(WebsiteModel $website, Request $request, bool $preview, ?string $url = null): Page|array|null
     {
@@ -204,6 +202,9 @@ class IndexController extends FrontController
      */
     private function getTemplate(ConfigurationModel $configuration, Page $page): string
     {
+
+        return 'core/debug.html.twig';
+
         $template = 'components' === $page->getSlug() ? 'components.html.twig' : $page->getTemplate();
         $templateDir = 'front/'.$configuration->template.'/template/'.$template;
         $cacheKey = $templateDir;
@@ -236,7 +237,7 @@ class IndexController extends FrontController
         }
 
         $pageModel = ViewModel::fromEntity($page, $this->coreLocator, ['disabledMedias' => false, 'disabledIntl' => false]);
-        $seo = $this->coreLocator->seoService()->execute($url, $pageModel, null, false, $website);
+//        $seo = $this->coreLocator->seoService()->execute($url, $pageModel, null, false, $website);
         $interface = !empty($seo['interface']) ? $seo['interface'] : $this->getInterface(Page::class);
 
         return self::$argsCache[$cacheKey] = array_merge([

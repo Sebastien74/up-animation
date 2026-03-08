@@ -4,7 +4,7 @@
 
     <div class="card-body pb-2">
 
-        <h5 class="main-subtitle"><i class="icm-code"></i>{{ "Balises métas"|trans }}</h5>
+        <h5 class="main-subtitle"><i class="icm-code"></i>{{ "Balises métas"|trans|raw }}</h5>
 
         {{ form_start(form, {attr: {
             id: 'seo-form-'~entity.id,
@@ -22,17 +22,17 @@
             <div class="form-group col-12 ribbon-wrapper m-0">
                 <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
                      href="#collapse-open-graph" role="button" aria-expanded="false">
-                    <i class="icm-share-alt me-3"></i>{{ "Open graph tags"|trans }}
+                    <i class="icm-share-alt me-3"></i>{{ "Open graph tags"|trans|raw }}
                 </div>
             </div>
 
             <div class="collapse col-12 collapseOG" id="collapse-open-graph">
                 <div class="row pt-3">
                     <div class="col-md-8">
-                        <button class="autocomplete btn-app info w-100 mb-3"><i class="icm-magic"></i><span>{{ "Saisie automatique"|trans }}</span></button>
+                        <button class="autocomplete btn-app info w-100 mb-3"><i class="icm-magic"></i><span>{{ "Saisie automatique"|trans|raw }}</span></button>
                     </div>
                     <div class="col-md-4">
-                        <button class="resetautocomplete btn-app secondary w-100 mb-3"><i class="icm-retweet"></i><span>{{ "Réinitialiser"|trans }}</span></button>
+                        <button class="resetautocomplete btn-app secondary w-100 mb-3"><i class="icm-retweet"></i><span>{{ "Réinitialiser"|trans|raw }}</span></button>
                     </div>
                     <div class="row pt-3">
                         {{ form_row(form.metaOgTitle) }}
@@ -50,7 +50,7 @@
             <div class="form-group col-12 ribbon-wrapper m-0">
                 <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
                      href="#collapse-url" role="button" aria-expanded="false">
-                    <i class="icm-link me-3"></i>{{ "URL"|trans }}
+                    <i class="icm-link me-3"></i>{{ "URL"|trans|raw }}
                 </div>
             </div>
 
@@ -67,7 +67,7 @@
             <div class="form-group col-12 ribbon-wrapper m-0">
                 <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
                      href="#collapse-options" role="button" aria-expanded="false">
-                    <i class="icm-plus-circle me-3"></i>{{ "Options"|trans }}
+                    <i class="icm-plus-circle me-3"></i>{{ "Options"|trans|raw }}
                 </div>
             </div>
 
@@ -86,7 +86,7 @@
                 <div class="form-group col-12 ribbon-wrapper m-0">
                     <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
                          href="#collapse-microdata" role="button" aria-expanded="false">
-                        <i class="icm-server me-3"></i>{{ "Microdata"|trans }}
+                        <i class="icm-server me-3"></i>{{ "Microdata"|trans|raw }}
                     </div>
                 </div>
 
@@ -100,7 +100,7 @@
             {%- endif -%}
 
             <div class="form-group text-end mb-0 mt-3">
-                <button type="submit" id="submit-seo" class="btn-app info w-100"><i class="icm-save"></i><span>{{ "Enregistrer"|trans }}</span></button>
+                <button type="submit" id="submit-seo" class="btn-app info w-100"><i class="icm-save"></i><span>{{ "Enregistrer"|trans|raw }}</span></button>
             </div>
 
         {{ form_end(form) }}

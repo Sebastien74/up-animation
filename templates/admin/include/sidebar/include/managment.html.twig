@@ -20,7 +20,7 @@
 {%- if allowedManagment -%}
     <li>
         <a class="as-arrow bigger py-2 fw-600{% if mainActive %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
-            {{ "Gestion du site"|trans }}
+            {{ "Gestion du site"|trans|raw }}
         </a>
         <ul aria-expanded="true" class="collapse list-unstyled ps-0 py-3 {% if mainActive %} in{% endif %}">
             {%- include 'admin/include/sidebar/include/managment/page.html.twig' -%}

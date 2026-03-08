@@ -6,7 +6,7 @@
     <tr>
         <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
             <h2>{{ "Vous avez un nouvel inscrit à la newsletter !!" }}</h2>
-            <p><strong>{{ "Email :"|trans }}</strong> {{ stringEmail }}</p>
+            <p><strong>{{ "Email :"|trans|raw }}</strong> {{ stringEmail }}</p>
         </td>
     </tr>
 {%- endblock -%}

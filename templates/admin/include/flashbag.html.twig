@@ -5,7 +5,7 @@
         {%- if alert == 'command' -%}
             <div id="coresphere_consolebundle_console" class="console mb-3">
                 <div class="console_info_bar">
-                    {{ "Working directory"|trans }} : <strong id="dirname">{{ flash.dirname }}</strong>
+                    {{ "Working directory"|trans|raw }} : <strong id="dirname">{{ flash.dirname }}</strong>
                     <span class="float-end cursor close-console"><i class="icm-times"></i></span>
                 </div>
                 <div class="console_log_container">

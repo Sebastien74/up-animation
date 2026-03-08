@@ -2,53 +2,53 @@
 
 <li>
     <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
-        <span class="btn-icon small me-3"><i class="icm-code"></i></span>{{ "Développement"|trans }}
+        <span class="btn-icon small me-3"><i class="icm-code"></i></span>{{ "Développement"|trans|raw }}
     </a>
     <ul aria-expanded="false" class="collapse">
         <li>
             <a href="{{ path('admin_tools') }}">
-                <span class="hide-menu">{{ "Boite à outils"|trans }}</span>
+                <span class="hide-menu">{{ "Boite à outils"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_phpinfo') }}">
-                <span class="hide-menu">{{ "PHP info"|trans }}</span>
+                <span class="hide-menu">{{ "PHP info"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_entities_generator', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Générer la configuration des entités"|trans }}</span>
+                <span class="hide-menu">{{ "Générer la configuration des entités"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_command_index', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Tâches planifiées"|trans }}</span>
+                <span class="hide-menu">{{ "Tâches planifiées"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a class="swal-link-confirm" href="{{ path('admin_cron_scheluder') }}">
-                <span class="hide-menu">{{ "Exécuter les tâches planifiées"|trans }}</span>
+                <span class="hide-menu">{{ "Exécuter les tâches planifiées"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_dev_import', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Importation de données"|trans }}</span>
+                <span class="hide-menu">{{ "Importation de données"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_translation_data_fixtures_parser', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Yaml translations fixtures parser"|trans }}</span>
+                <span class="hide-menu">{{ "Yaml translations fixtures parser"|trans|raw }}</span>
             </a>
         </li>
         <li>
             <a href="{{ path('admin_dev_test', {website: websiteId}) }}">
-                <span class="hide-menu">{{ "Controller de développement"|trans }}</span>
+                <span class="hide-menu">{{ "Controller de développement"|trans|raw }}</span>
             </a>
         </li>
         {%- if 'local' == app.environment -%}
             <li>
                 <a href="{{ path('admin_project_info', {website: websiteId}) }}">
-                    <span class="hide-menu">{{ "Infos projet"|trans }}</span>
+                    <span class="hide-menu">{{ "Infos projet"|trans|raw }}</span>
                 </a>
             </li>
         {%- endif -%}

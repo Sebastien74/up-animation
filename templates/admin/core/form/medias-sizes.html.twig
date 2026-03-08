@@ -15,7 +15,7 @@
 {%- if displayTabs -%}
     <div class="col-12 col-md-{{ tabSize }}">
         {%- if displayTitle -%}
-            <h4 class="main-subtitle"><i class="icm-expand"></i>{{ "Taille du médias"|trans }}</h4>
+            <h4 class="main-subtitle"><i class="icm-expand"></i>{{ "Taille du médias"|trans|raw }}</h4>
         {%- endif -%}
         <nav class="nav nav-tabs gap-3 border-0" role="tablist">
             {%- for tabId, config in tabs -%}

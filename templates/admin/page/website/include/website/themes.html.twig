@@ -1,8 +1,8 @@
 {%- trans_default_domain 'admin' -%}
 
 <div class="inner pb-2">
-    <h4 class="main-subtitle mt-1"><i class="icm-desktop"></i>{{ "Site"|trans }}</h4>
+    <h4 class="main-subtitle mt-1"><i class="icm-desktop"></i>{{ "Site"|trans|raw }}</h4>
     {{ form_widget(form.configuration.template) }}
-    <h4 class="main-subtitle mt-1"><i class="icm-tools"></i>{{ "Maintenance"|trans }}</h4>
+    <h4 class="main-subtitle mt-1"><i class="icm-tools"></i>{{ "Maintenance"|trans|raw }}</h4>
     {{ form_widget(form.configuration.buildTheme) }}
 </div>

@@ -13,16 +13,16 @@
         </a>
         <ul aria-expanded="false" class="collapse {% if pageTag == 'galleries' %} in{% endif %}">
             <li>
-                <a href="{{ path('admin_gallery_index', {website: websiteId}) }}">{{ "Liste des galeries"|trans }}</a>
+                <a href="{{ path('admin_gallery_index', {website: websiteId}) }}">{{ "Liste des galeries"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_gallerycategory_index', {website: websiteId}) }}" {%- if '/galleries/categories/' in uri -%} class="active" {%- endif -%}>{{ "Liste des catégories"|trans }}</a>
+                <a href="{{ path('admin_gallerycategory_index', {website: websiteId}) }}" {%- if '/galleries/categories/' in uri -%} class="active" {%- endif -%}>{{ "Liste des catégories"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_galleryteaser_index', {website: websiteId}) }}" {%- if '/galleries/teasers/' in uri -%} class="active" {%- endif -%}>{{ "Configuration des teasers"|trans }}</a>
+                <a href="{{ path('admin_galleryteaser_index', {website: websiteId}) }}" {%- if '/galleries/teasers/' in uri -%} class="active" {%- endif -%}>{{ "Configuration des teasers"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_gallerylisting_index', {website: websiteId}) }}" {%- if '/galleries/listings/' in uri -%} class="active" {%- endif -%}>{{ "Configuration des index"|trans }}</a>
+                <a href="{{ path('admin_gallerylisting_index', {website: websiteId}) }}" {%- if '/galleries/listings/' in uri -%} class="active" {%- endif -%}>{{ "Configuration des index"|trans|raw }}</a>
             </li>
         </ul>
     </li>
