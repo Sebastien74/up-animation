@@ -6,7 +6,6 @@ namespace App\Controller\Admin\Development\Command;
 
 use App\Controller\Admin\AdminController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 

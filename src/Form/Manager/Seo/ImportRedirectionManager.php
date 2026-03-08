@@ -16,7 +16,6 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * ImportRedirectionManager.

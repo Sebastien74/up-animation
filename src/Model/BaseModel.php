@@ -325,6 +325,7 @@ class BaseModel extends FunctionModel
                 ->addSelect('b')
                 ->addSelect('bt')
                 ->getQuery()
+                ->enableResultCache(3600, 'layout_'.($entity->getLayout()->getId()))
                 ->getOneOrNullResult();
 
             self::$baseCache[$classname][$entity->getId()] = $layout ?: $entity->getLayout();

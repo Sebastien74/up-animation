@@ -20,7 +20,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -71,21 +70,21 @@ class IndexController extends FrontController
         }
 
         $page = $this->getPage($website, $request, $preview, $url);
-//
-//        /* Optimization: HTTP Cache (ETag & Last-Modified) */
+
+        /* Optimization: HTTP Cache (ETag & Last-Modified) */
         $response = new Response();
-//        if (!$preview && $page instanceof Page && (!$page->isSecure() && !$this->coreLocator->isDebug()) || self::FORCE_CACHE) {
-//            $urlEntity = $page->getUrls()->first();
-//            if ($urlEntity instanceof Url) {
-//                $lastUpdate = $this->getLastUpdateDate($website, $page, $urlEntity);
-//                $response->setLastModified($lastUpdate);
-//                $response->setEtag(md5($urlEntity->getId() . $lastUpdate->getTimestamp() . $request->getLocale()));
-//                $response->setPublic();
-//                if ($response->isNotModified($request)) {
-//                    return $response;
-//                }
-//            }
-//        }
+        if (!$preview && $page instanceof Page && (!$page->isSecure() && !$this->coreLocator->isDebug()) || self::FORCE_CACHE) {
+            $urlEntity = $page->getUrls()->first();
+            if ($urlEntity instanceof Url) {
+                $lastUpdate = $this->getLastUpdateDate($website, $page, $urlEntity);
+                $response->setLastModified($lastUpdate);
+                $response->setEtag(md5($urlEntity->getId() . $lastUpdate->getTimestamp() . $request->getLocale()));
+                $response->setPublic();
+                if ($response->isNotModified($request)) {
+                    return $response;
+                }
+            }
+        }
 
         $requestUri = $request->getRequestUri();
         $pageSlug = $page instanceof Page ? $page->getSlug() : null;

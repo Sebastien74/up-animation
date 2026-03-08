@@ -100,7 +100,7 @@ class WebsiteRepository extends ServiceEntityRepository
             ->addSelect('sc')
             ->addSelect('sci')
             ->getQuery()
-            ->enableResultCache(3600, 'website-'.$host)
+            ->enableResultCache(3600, 'website-'.md5($host))
             ->getOneOrNullResult();
 
         if ($forceByHost && $website && !$asObject) {

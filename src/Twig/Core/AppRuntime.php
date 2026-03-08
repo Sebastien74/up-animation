@@ -13,7 +13,6 @@ use Exception;
 use libphonenumber\PhoneNumberUtil;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Intl\Countries;
 use Twig\Extension\RuntimeExtensionInterface;
 

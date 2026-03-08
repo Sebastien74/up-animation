@@ -76,6 +76,8 @@ class ConfigurationRepository extends ServiceEntityRepository
             return [];
         }
 
+        $cacheKey = 'config_media_relations_'.$configurationId.'_'.($category ?? 'all').'_'.($locale ?? 'all');
+
         $queryBuilder = $this->createQueryBuilder('c')->select('c')
             ->leftJoin('c.mediaRelations', 'mediaRelations')
             ->leftJoin('mediaRelations.media', 'media')
@@ -95,7 +97,8 @@ class ConfigurationRepository extends ServiceEntityRepository
                 ->setParameter('category', $category);
         }
 
-        $queryBuilder = $queryBuilder->getQuery();
+        $queryBuilder = $queryBuilder->getQuery()
+            ->enableResultCache(3600, $cacheKey);
         $configuration = $queryBuilder->getOneOrNullResult();
 
         return $configuration ? $configuration->getMediaRelations() : [];
@@ -108,6 +111,8 @@ class ConfigurationRepository extends ServiceEntityRepository
      */
     public function findBlocksTypes(Website $website, $categories): PersistentCollection|array
     {
+        $cacheKey = 'config_block_types_'.$website->getId().'_'.md5(serialize($categories));
+
         $qb = $this->createQueryBuilder('c')->select('c')
             ->join('c.blockTypes', 'b')
             ->join('c.website', 'w')
@@ -121,7 +126,9 @@ class ConfigurationRepository extends ServiceEntityRepository
             $qb->setParameter(':category'.$key, $category);
         }
 
-        $result = $qb->getQuery()->getOneOrNullResult();
+        $result = $qb->getQuery()
+            ->enableResultCache(3600, $cacheKey)
+            ->getOneOrNullResult();
 
         return $result ? $result->getBlockTypes() : [];
     }

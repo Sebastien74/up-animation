@@ -6,7 +6,6 @@ namespace App\Form\EventListener\Translation;
 
 use App\Form\EventListener\BaseListener;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * IntlListener.

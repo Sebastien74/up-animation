@@ -47,6 +47,7 @@ class BlockRepository extends ServiceEntityRepository
             ->setParameter('id', $id)
             ->addSelect('i')
             ->getQuery()
+            ->enableResultCache(3600, 'block_id_'.$id)
             ->getOneOrNullResult();
 
         return $this->cache['id'][$id] = $result;
@@ -139,6 +140,7 @@ class BlockRepository extends ServiceEntityRepository
             ->addOrderBy('z.position', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
+            ->enableResultCache(3600, 'block_title_layout_'.md5($cacheKey))
             ->getResult();
 
         /** @var Block $result */
@@ -204,7 +206,9 @@ class BlockRepository extends ServiceEntityRepository
             $statement->andWhere('i.body IS NOT NULL OR i.introduction IS NOT NULL');
         }
 
-        $blocks = $statement->getQuery()->getResult();
+        $blocks = $statement->getQuery()
+            ->enableResultCache(3600, 'block_type_'.md5($cacheKey))
+            ->getResult();
 
         $result = !empty($blocks[0]) ? $blocks[0] : null;
 
@@ -228,6 +232,11 @@ class BlockRepository extends ServiceEntityRepository
      */
     public function findFieldTextByLocalePage(string $field, Page $page, string $locale): ?Block
     {
+        $cacheKey = 'field_text_'.md5($field.'_'.$page->getId().'_'.$locale);
+        if (isset($this->cache['field_text'][$cacheKey])) {
+            return $this->cache['field_text'][$cacheKey];
+        }
+
         $result = $this->createQueryBuilder('b')
             ->leftJoin('b.blockType', 'bt')
             ->leftJoin('b.intls', 'i')
@@ -251,11 +260,12 @@ class BlockRepository extends ServiceEntityRepository
             ->addOrderBy('z.position', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
+            ->enableResultCache(3600, $cacheKey)
             ->getOneOrNullResult();
 
         $getter = 'get'.ucfirst($field);
 
-        return $result ? $result->getIntls()[0]->$getter() : null;
+        return $this->cache['field_text'][$cacheKey] = $result ? $result->getIntls()[0]->$getter() : null;
     }
 
     /**
@@ -263,6 +273,11 @@ class BlockRepository extends ServiceEntityRepository
      */
     public function findMediaByLocalePage(Page $page, string $locale): array
     {
+        $cacheKey = 'media_page_'.md5($page->getId().'_'.$locale);
+        if (isset($this->cache['media_page'][$cacheKey])) {
+            return $this->cache['media_page'][$cacheKey];
+        }
+
         $result = $this->createQueryBuilder('b')
             ->leftJoin('b.col', 'c')
             ->leftJoin('c.zone', 'z')
@@ -282,9 +297,10 @@ class BlockRepository extends ServiceEntityRepository
             ->addOrderBy('z.position', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
+            ->enableResultCache(3600, $cacheKey)
             ->getArrayResult();
 
-        return !empty($result[0]['mediaRelations'][0]['media']) ? $result[0]['mediaRelations'][0]['media'] : [];
+        return $this->cache['media_page'][$cacheKey] = !empty($result[0]['mediaRelations'][0]['media']) ? $result[0]['mediaRelations'][0]['media'] : [];
     }
 
     /**
@@ -301,6 +317,7 @@ class BlockRepository extends ServiceEntityRepository
             ->setParameter('entity', $classname)
             ->setParameter('actionFilter', $filterId)
             ->getQuery()
+            ->enableResultCache(3600, 'block_action_'.md5($classname.'_'.$filterId))
             ->getResult();
     }
 }

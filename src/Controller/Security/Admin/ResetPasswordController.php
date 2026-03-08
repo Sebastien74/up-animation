@@ -13,7 +13,6 @@ use App\Repository\Security\UserRepository;
 use App\Security\BaseAuthenticator;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

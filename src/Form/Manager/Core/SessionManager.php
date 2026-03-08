@@ -11,7 +11,6 @@ use App\Entity\Media\ThumbConfiguration;
 use App\Entity\Seo\SeoConfiguration;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * SessionManager.

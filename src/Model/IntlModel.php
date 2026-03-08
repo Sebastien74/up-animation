@@ -176,6 +176,7 @@ final class IntlModel extends BaseModel
                 ->setParameter('locale', $locale)
                 ->indexBy('i', 'i.'.$metadata->mappedBy)
                 ->getQuery()
+                ->enableResultCache(3600, 'intls_'.md5(get_class($entity).'_'.implode('_', $ids).'_'.$locale))
                 ->getResult();
         }
         $intl = !empty(self::$cache['intls'][get_class($entity)][$locale][$entity->getId()]) ? self::$cache['intls'][get_class($entity)][$locale][$entity->getId()] : null;

@@ -44,6 +44,7 @@ class TranslationRepository extends ServiceEntityRepository
             ->setParameter('locale', $locale)
             ->addSelect('u')
             ->getQuery()
+            ->enableResultCache(3600, 'trans_domain_content_'.md5($domain->getId().'_'.$content.'_'.$locale))
             ->getResult();
     }
 
@@ -64,6 +65,7 @@ class TranslationRepository extends ServiceEntityRepository
             ->setParameter('locale', $locale)
             ->addSelect('u')
             ->getQuery()
+            ->enableResultCache(3600, 'trans_domain_key_one_'.md5($domain->getId().'_'.$keyName.'_'.$locale))
             ->getOneOrNullResult();
     }
 
@@ -84,6 +86,7 @@ class TranslationRepository extends ServiceEntityRepository
             ->setParameter('locale', $locale)
             ->addSelect('u')
             ->getQuery()
+            ->enableResultCache(3600, 'trans_domain_key_'.md5($domain->getId().'_'.$keyName.'_'.$locale))
             ->getResult();
     }
 

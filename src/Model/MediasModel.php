@@ -174,6 +174,7 @@ final class MediasModel extends BaseModel
                 ->orderBy('mr.locale', 'ASC')
                 ->addOrderBy('mr.position', 'ASC')
                 ->getQuery()
+                ->enableResultCache(3600, 'medias_'.md5(get_class($entity).'_'.implode('_', $ids).'_'.self::$coreLocator->locale()))
                 ->getResult();
             $getter = 'get'.ucfirst($metadata->mappedBy);
             self::$cache['medias'][get_class($entity)] = [];
@@ -220,6 +221,7 @@ final class MediasModel extends BaseModel
 
         return $qb instanceof QueryBuilder ? $qb
             ->getQuery()
+            ->enableResultCache(3600, 'media_relations_'.md5(get_class($entity).'_'.$entity->getId().'_'.$locale))
             ->getResult() : [];
     }
 

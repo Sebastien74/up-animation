@@ -54,6 +54,7 @@ class ModelRepository extends ServiceEntityRepository
         }
 
         $result = $result->getQuery()
+            ->enableResultCache(3600, 'seo_model_'.md5($locale.'_'.$classname.'_'.$website->getId().'_'.($childClassName ?? '').'_'.($entityId ?? '')))
             ->setMaxResults(1)
             ->getOneOrNullResult();
 

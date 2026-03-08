@@ -142,6 +142,7 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('locale', $locale)
             ->addSelect('u')
             ->getQuery()
+            ->enableResultCache(3600, 'page_url_id_'.$urlId.'_'.$locale)
             ->getOneOrNullResult();
     }
 
@@ -166,6 +167,7 @@ class PageRepository extends ServiceEntityRepository
             ->addSelect('c')
             ->addSelect('d')
             ->getQuery()
+            ->enableResultCache(3600, 'cookies_page_'.$website->id.'_'.$locale)
             ->getArrayResult();
 
         return $pages && 1 === count($pages) ? $pages[0] : null;
@@ -208,6 +210,7 @@ class PageRepository extends ServiceEntityRepository
             ->addSelect('u', 'l', 'z', 'c', 'b', 'a', 'ai')
             ->addSelect('ai.actionFilter AS actionFilter')
             ->getQuery()
+            ->enableResultCache(3600, 'pages_action_'.md5($classname.'_'.implode('_', $filterIds).'_'.$locale.'_'.$websiteId))
             ->getResult();
 
         $result = [];
@@ -238,6 +241,7 @@ class PageRepository extends ServiceEntityRepository
             ->addSelect('u')
             ->addSelect('u.code AS urlCode')
             ->getQuery()
+            ->enableResultCache(3600, 'pages_index_url_'.md5(implode('_', $ids).'_'.$locale))
             ->getResult();
 
         $result = [];
@@ -289,12 +293,14 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('actionFilter', $filterId)
             ->setMaxResults(1)
             ->getQuery()
+            ->enableResultCache(3600, 'page_action_'.md5($websiteId.'_'.$locale.'_'.$classname.'_'.$filterId))
             ->getResult();
 
         if (!$page && $slugAction) {
             $page = $queryBuilder->andWhere('a.slug = :slug')
                 ->setParameter('slug', $slugAction)
                 ->getQuery()
+                ->enableResultCache(3600, 'page_action_slug_'.md5($websiteId.'_'.$locale.'_'.$classname.'_'.$slugAction))
                 ->getResult();
         }
 
@@ -338,12 +344,14 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('actionFilters', $filterIds)
             ->setMaxResults(1)
             ->getQuery()
+            ->enableResultCache(3600, 'pages_action_ids_'.md5($websiteId.'_'.$locale.'_'.$classname.'_'.implode('_', $filterIds)))
             ->getArrayResult();
 
         if (empty($pages) && $slugAction) {
             $pages = $queryBuilder->andWhere('a.slug = :slug')
                 ->setParameter('slug', $slugAction)
                 ->getQuery()
+                ->enableResultCache(3600, 'pages_action_slug_'.md5($websiteId.'_'.$locale.'_'.$classname.'_'.$slugAction))
                 ->getArrayResult();
         }
 

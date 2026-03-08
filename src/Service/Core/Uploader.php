@@ -11,7 +11,6 @@ use Maestroerror\HeicToJpg;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Uploader.

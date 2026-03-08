@@ -76,6 +76,7 @@ class TranslationDomainRepository extends ServiceEntityRepository
             ->addSelect('u')
             ->addSelect('t')
             ->getQuery()
+            ->enableResultCache(3600, 'translation_domain_'.$id)
             ->getOneOrNullResult();
     }
 
@@ -91,6 +92,7 @@ class TranslationDomainRepository extends ServiceEntityRepository
             ->setParameter('names', self::FRONT_DOMAINS)
             ->orderBy('d.adminName', 'ASC')
             ->getQuery()
+            ->enableResultCache(3600, 'translation_domains_front')
             ->getResult();
     }
 
@@ -106,6 +108,7 @@ class TranslationDomainRepository extends ServiceEntityRepository
             ->setParameter('names', self::FRONT_DOMAINS)
             ->orderBy('d.adminName', 'ASC')
             ->getQuery()
+            ->enableResultCache(3600, 'translation_domains_admin')
             ->getResult();
     }
 

@@ -9,7 +9,6 @@ use App\Entity\Media\Media;
 use App\Repository\Media\MediaRepository;
 use App\Service\Core\Urlizer;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Contracts\Translation\TranslatorInterface;

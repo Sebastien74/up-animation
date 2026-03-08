@@ -28,7 +28,6 @@ use Psr\Cache\InvalidArgumentException;
 use Random\RandomException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * NewsletterManager.
