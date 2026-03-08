@@ -115,7 +115,12 @@ final class InformationModel extends BaseModel
      */
     private static function information(Website $website): ?object
     {
-        return self::$coreLocator->em()->getRepository(Information::class)
+        $cacheId = 'info-' . $website->getId();
+        if (isset(self::$cache[$cacheId])) {
+            return self::$cache[$cacheId];
+        }
+
+        return self::$cache[$cacheId] = self::$coreLocator->em()->getRepository(Information::class)
             ->createQueryBuilder('i')
             ->innerJoin('i.website', 'w')
             ->leftJoin('i.intls', 'intl')
@@ -141,6 +146,8 @@ final class InformationModel extends BaseModel
             ->getOneOrNullResult();
     }
 
+    private static array $logosCache = [];
+
     /**
      * To get logos.
      *
@@ -148,16 +155,20 @@ final class InformationModel extends BaseModel
      */
     private static function logos(Website $website, string $locale): array
     {
+        $cacheId = $website->getId().'-'.$locale;
+        if (isset(self::$logosCache[$cacheId])) {
+            return self::$logosCache[$cacheId];
+        }
+
         $cacheDirname = self::$coreLocator->formatDirname(self::$coreLocator->cacheDir().'/website-logos-'.$website->getId().'.cache.json');
         $filesystem = new Filesystem();
         if ($filesystem->exists($cacheDirname)) {
-            return (array) json_decode(file_get_contents($cacheDirname));
+            return self::$logosCache[$cacheId] = (array) json_decode(file_get_contents($cacheDirname), true);
         }
 
         $medias = MediasModel::fromEntity($website->getConfiguration(), self::$coreLocator, $locale)->list;
         $logos = [];
         $socialLogos = [];
-        $filesystem = new Filesystem();
         $uploadDirname = $website->getUploadDirname();
         $projectDir = self::$coreLocator->projectDir();
         $socialNetworksCategories = ['linkedin', 'youtube', 'instagram', 'facebook', 'twitter', 'tiktok', 'pinterest', 'tripadvisor', 'google'];
@@ -216,7 +227,7 @@ final class InformationModel extends BaseModel
         fwrite($fp, json_encode($logos, JSON_PRETTY_PRINT));
         fclose($fp);
 
-        return $logos;
+        return self::$logosCache[$cacheId] = $logos;
     }
 
     /**

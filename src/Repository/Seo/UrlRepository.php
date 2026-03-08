@@ -38,6 +38,7 @@ class UrlRepository extends ServiceEntityRepository
             ->andWhere('u.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
+            ->enableResultCache(3600, 'url-array-'.$id)
             ->setMaxResults(1)
             ->getArrayResult();
 

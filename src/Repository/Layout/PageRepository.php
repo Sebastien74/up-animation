@@ -45,6 +45,7 @@ class PageRepository extends ServiceEntityRepository
             ->andWhere('p.asIndex = :asIndex')
             ->setParameter('asIndex', true)
             ->getQuery()
+            ->enableResultCache(3600, 'page-index-'.$website->id.'-'.$locale)
             ->getOneOrNullResult();
     }
 
@@ -106,6 +107,7 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('code', $urlCode)
             ->setParameter('archived', false)
             ->getQuery()
+            ->enableResultCache(3600, 'page-'.$website->id.'-'.$urlCode.'-'.$locale)
             ->getOneOrNullResult();
 
         if ($page instanceof Page && $page->isInFill() && $page->getPages()->count() > 0) {

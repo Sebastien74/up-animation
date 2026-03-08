@@ -20,9 +20,6 @@ doctrine:
         default_entity_manager: default
         entity_managers:
             default:
-                query_cache_driver:
-                    type: pool
-                    pool: doctrine.query_cache_pool
                 connection: default
                 report_fields_where_declared: true
                 naming_strategy: doctrine.orm.naming_strategy.default
@@ -64,26 +61,55 @@ when@local:
 #                    url: 'mysql://%env(DB_USER_DIRECT)%:%env(DB_PASSWORD_DIRECT)%@%env(DB_HOST_DIRECT)%:%env(DB_PORT_DIRECT)%/%env(DB_NAME_DIRECT)%'
         orm:
             auto_generate_proxy_classes: true
-#            entity_managers:
-#                direct:
-#                    connection: direct
+            entity_managers:
+                default:
+                    query_cache_driver:
+                        type: pool
+                        pool: doctrine.system_cache_pool
+                    result_cache_driver:
+                        type: pool
+                        pool: doctrine.result_cache_pool
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system
 
 when@dev:
     doctrine:
         orm:
             auto_generate_proxy_classes: true
+            entity_managers:
+                default:
+                    query_cache_driver:
+                        type: pool
+                        pool: doctrine.system_cache_pool
+                    result_cache_driver:
+                        type: pool
+                        pool: doctrine.result_cache_pool
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system
 
 when@preprod:
     doctrine:
         orm:
             auto_generate_proxy_classes: false
             proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
-            query_cache_driver:
-                type: pool
-                pool: doctrine.system_cache_pool
-            result_cache_driver:
-                type: pool
-                pool: doctrine.result_cache_pool
+            entity_managers:
+                default:
+                    query_cache_driver:
+                        type: pool
+                        pool: doctrine.system_cache_pool
+                    result_cache_driver:
+                        type: pool
+                        pool: doctrine.result_cache_pool
     framework:
         cache:
             pools:
@@ -97,12 +123,14 @@ when@prod:
         orm:
             auto_generate_proxy_classes: false
             proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
-            query_cache_driver:
-                type: pool
-                pool: doctrine.system_cache_pool
-            result_cache_driver:
-                type: pool
-                pool: doctrine.result_cache_pool
+            entity_managers:
+                default:
+                    query_cache_driver:
+                        type: pool
+                        pool: doctrine.system_cache_pool
+                    result_cache_driver:
+                        type: pool
+                        pool: doctrine.result_cache_pool
     framework:
         cache:
             pools:

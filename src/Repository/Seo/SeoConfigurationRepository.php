@@ -40,6 +40,7 @@ class SeoConfigurationRepository extends ServiceEntityRepository
             ->setParameter('id', $website->getId())
             ->addSelect('w')
             ->getQuery()
+            ->enableResultCache(3600, 'seo-config-'.$website->getId())
             ->getOneOrNullResult();
     }
 }

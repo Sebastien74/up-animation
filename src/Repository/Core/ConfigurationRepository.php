@@ -61,6 +61,7 @@ class ConfigurationRepository extends ServiceEntityRepository
             ->addSelect('w')
             ->addSelect('mr')
             ->getQuery()
+            ->enableResultCache(3600, 'config-admin-'.$website->id.'-'.$locale)
             ->getOneOrNullResult();
     }
 

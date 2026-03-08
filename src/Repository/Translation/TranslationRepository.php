@@ -96,9 +96,12 @@ class TranslationRepository extends ServiceEntityRepository
             ->leftJoin('t.unit', 'u')
             ->leftJoin('u.domain', 'd')
             ->andWhere('t.content IS NOT NULL')
+            ->andWhere('t.locale = :locale')
+            ->setParameter('locale', $locale)
             ->addSelect('u')
             ->addSelect('d')
             ->getQuery()
+            ->enableResultCache(3600, 'translations-'.$locale)
             ->getResult();
     }
 }

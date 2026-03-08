@@ -55,6 +55,7 @@ class ApiRepository extends ServiceEntityRepository
             ->addSelect('gi')
             ->addSelect('ci')
             ->getQuery()
+            ->enableResultCache(3600, 'api-'.$id.'-'.$locale)
             ->getOneOrNullResult();
 
         if (!$api) {
@@ -62,6 +63,7 @@ class ApiRepository extends ServiceEntityRepository
                 ->andWhere('a.id = :id')
                 ->setParameter('id', $id)
                 ->getQuery()
+                ->enableResultCache(3600, 'api-simple-'.$id)
                 ->getOneOrNullResult();
         }
 

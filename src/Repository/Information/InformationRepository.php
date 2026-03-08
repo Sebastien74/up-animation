@@ -49,6 +49,7 @@ class InformationRepository extends ServiceEntityRepository
                 ->addSelect('ip')
                 ->addSelect('iw')
                 ->getQuery()
+                ->enableResultCache(3600, 'info-array-'.$id)
                 ->getArrayResult();
         }
 

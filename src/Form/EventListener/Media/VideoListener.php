@@ -32,7 +32,7 @@ class VideoListener extends BaseListener
                 $existing = $this->screenExist($entity, $format);
                 if (!$existing) {
                     $this->addScreen($entity, $format);
-                    if ('admin_block_edit' === $this->coreLocator->request()->get('_route')) {
+                    if ('admin_block_edit' === $this->coreLocator->request()->attributes->get('_route')) {
                         $flush = true;
                     }
                 }

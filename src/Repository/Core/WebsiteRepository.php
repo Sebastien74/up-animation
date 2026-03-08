@@ -50,6 +50,7 @@ class WebsiteRepository extends ServiceEntityRepository
             ->andWhere('w.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
+            ->enableResultCache(3600, 'website-id-'.$id)
             ->getOneOrNullResult();
 
         return $website ? WebsiteModel::fromEntity($website, $this->coreLocator) : null;
@@ -99,6 +100,7 @@ class WebsiteRepository extends ServiceEntityRepository
             ->addSelect('sc')
             ->addSelect('sci')
             ->getQuery()
+            ->enableResultCache(3600, 'website-'.$host)
             ->getOneOrNullResult();
 
         if ($forceByHost && $website && !$asObject) {
@@ -164,6 +166,7 @@ class WebsiteRepository extends ServiceEntityRepository
             ->setParameter('asDefault', true)
             ->addSelect('c')
             ->getQuery()
+            ->enableResultCache(3600, 'website-default')
             ->getOneOrNullResult();
 
         if ($asObject) {
@@ -184,6 +187,7 @@ class WebsiteRepository extends ServiceEntityRepository
             ->andWhere('w.active = :active')
             ->setParameter('active', true)
             ->getQuery()
+            ->enableResultCache(3600, 'websites-actives')
             ->getResult();
     }
 
@@ -202,6 +206,7 @@ class WebsiteRepository extends ServiceEntityRepository
             ->setParameter('seoStatus', true)
             ->addSelect('c')
             ->getQuery()
+            ->enableResultCache(3600, 'websites-switcher')
             ->getResult();
     }
 
@@ -214,6 +219,7 @@ class WebsiteRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('w')
             ->getQuery()
+            ->enableResultCache(3600, 'websites-all')
             ->getResult();
     }
 

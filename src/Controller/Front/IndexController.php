@@ -71,6 +71,22 @@ class IndexController extends FrontController
         }
 
         $page = $this->getPage($website, $request, $preview, $url);
+//
+//        /* Optimization: HTTP Cache (ETag & Last-Modified) */
+        $response = new Response();
+//        if (!$preview && $page instanceof Page && (!$page->isSecure() && !$this->coreLocator->isDebug()) || self::FORCE_CACHE) {
+//            $urlEntity = $page->getUrls()->first();
+//            if ($urlEntity instanceof Url) {
+//                $lastUpdate = $this->getLastUpdateDate($website, $page, $urlEntity);
+//                $response->setLastModified($lastUpdate);
+//                $response->setEtag(md5($urlEntity->getId() . $lastUpdate->getTimestamp() . $request->getLocale()));
+//                $response->setPublic();
+//                if ($response->isNotModified($request)) {
+//                    return $response;
+//                }
+//            }
+//        }
+
         $requestUri = $request->getRequestUri();
         $pageSlug = $page instanceof Page ? $page->getSlug() : null;
 
@@ -123,18 +139,6 @@ class IndexController extends FrontController
 
         /* Set request */
         $request->setLocale($urlEntity->getLocale());
-
-        /* Optimization: HTTP Cache (ETag & Last-Modified) */
-        $response = new Response();
-        if ((!$preview && !$page->isSecure() && !$this->coreLocator->isDebug()) || self::FORCE_CACHE) {
-            $lastUpdate = $this->getLastUpdateDate($website, $page, $urlEntity);
-            $response->setLastModified($lastUpdate);
-            $response->setEtag(md5($urlEntity->getId() . $lastUpdate->getTimestamp() . $request->getLocale()));
-            $response->setPublic();
-            if ($response->isNotModified($request)) {
-                return $response;
-            }
-        }
 
         return $this->render(
             $this->getTemplate($website->configuration, $page),
@@ -202,9 +206,6 @@ class IndexController extends FrontController
      */
     private function getTemplate(ConfigurationModel $configuration, Page $page): string
     {
-
-        return 'core/debug.html.twig';
-
         $template = 'components' === $page->getSlug() ? 'components.html.twig' : $page->getTemplate();
         $templateDir = 'front/'.$configuration->template.'/template/'.$template;
         $cacheKey = $templateDir;
@@ -237,18 +238,18 @@ class IndexController extends FrontController
         }
 
         $pageModel = ViewModel::fromEntity($page, $this->coreLocator, ['disabledMedias' => false, 'disabledIntl' => false]);
-//        $seo = $this->coreLocator->seoService()->execute($url, $pageModel, null, false, $website);
+        $seo = $this->coreLocator->seoService()->execute($url, $pageModel, null, false, $website);
         $interface = !empty($seo['interface']) ? $seo['interface'] : $this->getInterface(Page::class);
 
         return self::$argsCache[$cacheKey] = array_merge([
-//            'seo' => $seo,
-//            'templateName' => str_contains($this->coreLocator->request()->get('_route'), '_security') ? 'security' : str_replace('.html.twig', '', $pageModel->template),
-//            'interface' => $interface,
-//            'interfaceName' => !empty($interface['name']) ? $interface['name'] : null,
-//            'thumbConfiguration' => $this->thumbConfiguration($website, Page::class),
-//            'entityModel' => $pageModel,
-//            'intlMedia' => $pageModel->mainMedia,
-//            'entity' => $pageModel->entity,
+            'seo' => $seo,
+            'templateName' => str_contains($this->coreLocator->request()->attributes->get('_route'), '_security') ? 'security' : str_replace('.html.twig', '', $pageModel->template),
+            'interface' => $interface,
+            'interfaceName' => !empty($interface['name']) ? $interface['name'] : null,
+            'thumbConfiguration' => $this->thumbConfiguration($website, Page::class),
+            'entityModel' => $pageModel,
+            'intlMedia' => $pageModel->mainMedia,
+            'entity' => $pageModel->entity,
         ], $this->defaultArgs($website, $url, $pageModel));
     }
 

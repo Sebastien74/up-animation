@@ -326,8 +326,8 @@ class ActionController extends FrontController
             $block->setUpdatedAt($teaser->getUpdatedAt());
         }
 
-        /* To remove current view entity and set Model */
-        $inView = $url instanceof Url && 'front_index' !== $this->coreLocator->requestStack()->getMainRequest()->get('_route');
+        /* To remove the current view entity and set Model */
+        $inView = $url instanceof Url && 'front_index' !== $this->coreLocator->requestStack()->getMainRequest()->attributes->get('_route');
         if ($inView) {
             $this->setCore($request);
         }

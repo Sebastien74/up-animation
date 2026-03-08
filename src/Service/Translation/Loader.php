@@ -9,7 +9,9 @@ use App\Repository\Core\WebsiteRepository;
 use App\Repository\Translation\TranslationRepository;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
 use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\MessageCatalogue;
@@ -40,7 +42,7 @@ class Loader implements LoaderInterface
     /**
      * load.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public function load($resource, string $locale, string $domain = 'messages'): MessageCatalogue
     {
@@ -72,22 +74,21 @@ class Loader implements LoaderInterface
      */
     private function getMessages(string $domain, string $locale, ?string $keyName = null): string|array
     {
-        if (!$this->cacheSet) {
+        if (empty($this->messages[$locale])) {
             $messages = $this->translationRepository->findByLocale($locale);
             foreach ($messages as $message) {
                 $unit = $message->getUnit();
                 $domainDb = $unit->getDomain();
-                $this->messages[$domainDb->getName()][$message->getLocale()][$unit->getKeyname()] = $message->getContent();
+                $this->messages[$locale][$domainDb->getName()][$unit->getKeyname()] = $message->getContent();
             }
-            $this->cacheSet = true;
         }
 
-        $localeMessages = !empty($this->messages[$domain][$locale]) ? $this->messages[$domain][$locale] : [];
+        $localeMessages = !empty($this->messages[$locale][$domain]) ? $this->messages[$locale][$domain] : [];
 
         if ($keyName) {
             return $localeMessages[$keyName] ?? [];
         }
 
-        return !empty($this->messages[$domain][$locale]) ? $this->messages[$domain][$locale] : [];
+        return $localeMessages;
     }
 }
