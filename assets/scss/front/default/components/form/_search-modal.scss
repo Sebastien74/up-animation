@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Module : Form
+    Copyright : 2026
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+------------------------------------------------------------------ */
+
+@if ($enable-search-modal) {
+
+    .search-container {
+
+        .modal {
+
+            .baseline {
+                line-height: 1.2 !important;
+            }
+
+            .form-control {
+                border-right: 0 !important;
+                border-radius: 16px 0 0 16px !important;
+            }
+
+            .input-group-text {
+                border: 1px solid $primary !important;
+                border-left: 0 !important;
+                width: 70px !important;
+                border-radius: 0 16px 16px 0 !important;
+                padding: 0 !important;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}

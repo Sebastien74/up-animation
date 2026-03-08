@@ -125,7 +125,7 @@
                                         {{ macro.arrows(slider, autoplay, sliderSlug, arrowsSide, arrowsColor, arrowsAsBtn, 'bottom') }}
                                     {%- endif -%}
                                     {%- if mediaTitle and not disabledTitleForce -%}
-                                        <h {{ mediaTitleForce }} class="caption-title mt-4 mb-0 ms-auto">{{ mediaTitle|unescape|raw }}</h{{ mediaTitleForce }}>
+                                        <h{{ mediaTitleForce }} class="caption-title mt-4 mb-0 ms-auto">{{ mediaTitle|unescape|raw }}</h{{ mediaTitleForce }}>
                                     {%- elseif mediaTitle -%}
                                         <p class="caption-title bg-secondary text-white fw-400 ms-auto mt-4 mb-0 py-1 px-2">{{ mediaTitle|unescape|raw }}</p>
                                     {%- endif -%}

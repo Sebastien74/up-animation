@@ -15,7 +15,6 @@ use App\Entity\Module\Newscast\Category;
 use App\Entity\Module\Newscast\Newscast;
 use App\Entity\Seo\Seo;
 use App\Service\Core\InterfaceHelper;
-use App\Service\Core\Uploader;
 use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
 use DateTimeImmutable;
@@ -60,8 +59,7 @@ class MediaManager
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly Uploader             $uploader,
-        private readonly InterfaceHelper      $interfaceHelper,
+        private readonly InterfaceHelper $interfaceHelper,
     )
     {
         $this->request = $this->coreLocator->request();

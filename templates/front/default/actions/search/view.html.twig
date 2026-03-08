@@ -12,22 +12,25 @@
         {%- if modal -%}
             <div class="modal fade content-modal" id="search-modal-{{ search.slug }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
+                    <div class="modal-content bg-light">
                         <div class="modal-body pt-5 pb-5 p-md-5">
                             <div role="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|striptags }}">
-                                {{ "cms close-modal"|icon(40, 40, 'initial-color') }}
+                                <i class="icon-times"></i>
                             </div>
+                            <p class="fw-700 baseline">{{ "Que recherchez-vous pour votre événement ? <br>Une animation, un spectacle ou une activité originale ?"|trans|unescape|raw }}</p>
                             {%- if resultsPage -%}
                                 {{ form_start(form, {attr: {
                                     class: "search-engine-form",
                                     novalidate: "novalidate",
-                                    "data-component": "webpack-form"}}) }}
-                                    <div class="input-group p-0">
-                                        <label for="search" class="fw-600 mb-4 text-center w-100">{{ "Rercherchez"|trans|raw }}</label>
-                                        {{ form_widget(form.search) }}
-                                        <button type="submit" id="search-engine-submit" class="input-group-text cursor">
-                                            {{ 'far search'|icon(20, 20, 'search') }}
-                                        </button>
+                                    "data-component": "webpack-form"
+                                }}) }}
+                                    <div class="input-group">
+                                        <label for="search" class="d-flex justify-content-center align-items-center w-100">
+                                            {{ form_widget(form.search) }}
+                                            <button type="submit" id="search-engine-submit" class="input-group-text cursor p-0 h-100">
+                                                <i class="icon-search"></i>
+                                            </button>
+                                        </label>
                                     </div>
                                 {{ form_end(form) }}
                             {%- else -%}

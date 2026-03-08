@@ -53,6 +53,7 @@ class CampaignRepository extends ServiceEntityRepository
         }
 
         return $statement->getQuery()
+            ->enableResultCache(3600, 'newsletter-campaign-'.md5($website->getId().'_'.$locale.'_'.$filter))
             ->getOneOrNullResult();
     }
 }

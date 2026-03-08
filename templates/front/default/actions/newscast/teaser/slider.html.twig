@@ -154,7 +154,7 @@
 
 {%- if entities is not empty -%}
     {%- if 'teaser-title' in teaser.fields and intl.title -%}
-        <h {{ intl.titleForce }} class="title mb-4 mb-lg-3">{{ intl.title|raw }}</h{{ intl.titleForce }}>
+        <h{{ intl.titleForce }} class="title mb-4 mb-lg-3">{{ intl.title|raw }}</h{{ intl.titleForce }}>
     {%- endif -%}
     <div class="row listing-entities-container">
         {{ macroWebmaster.box({

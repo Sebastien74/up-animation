@@ -159,7 +159,8 @@ class NewscastRepository extends ServiceEntityRepository
             $qb->setMaxResults($limit);
         }
 
-        $qb = $qb->getQuery();
+        $qb = $qb->getQuery()
+            ->enableResultCache(3600, 'newscasts_optimized_'.md5($locale.'_'.$website->getId().'_'.$limit));
 
         if ($limit === 1) {
             return $qb->getOneOrNullResult();

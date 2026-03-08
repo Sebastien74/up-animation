@@ -42,7 +42,7 @@
 
 {#                    {%- if title|striptags|length > 0 -%}#}
 {#                        <a href="{{ path('front_'~interfaceName~'_view', {pageUrl: url.code, url: website|intlUrl(lastEntity)}) }}">#}
-{#                            <h {{ titleForce }} class="title text-white">{{ title|unescape|raw }}</h{{ titleForce }}>#}
+{#                            <h{{ titleForce }} class="title text-white">{{ title|unescape|raw }}</h{{ titleForce }}>#}
 {#                        </a>#}
 {#                    {%- endif -%}#}
 
@@ -50,7 +50,7 @@
 {#                        {%- set intlCategory = lastEntity.category|intl -%}#}
 {#                        {%- if intlCategory and intlCategory.title -%}#}
 {#                            {%- set titleCategory = intl.title -%}#}
-{#                            <h {{ titleForce + 1 }} class="news-category-title">{{ intlCategory.title|unescape|raw }}</h{{ titleForce + 1 }}>#}
+{#                            <h{{ titleForce + 1 }} class="news-category-title">{{ intlCategory.title|unescape|raw }}</h{{ titleForce + 1 }}>#}
 {#                        {%- endif -%}#}
 {#                    {%- endif -%}#}
 

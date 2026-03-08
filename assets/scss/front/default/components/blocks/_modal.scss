@@ -18,9 +18,21 @@
         z-index: 99999;
 
         .btn-close {
+
             box-shadow: none;
             top: 20px;
             right: 15px;
+            opacity: 1;
+            background-image: none !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: $primary;
+
+            i {
+                color: $white !important;
+            }
         }
     }
 

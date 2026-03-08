@@ -217,7 +217,7 @@
                         </span>
                     </button>
                     {%- if logo -%}
-                        <{%- if 'h1' == compagnyNameElement -%}h1{%- else -%}strong{%- endif -%} class="d-none" aria-hidden="true">{{ companyName|striptags }}</{%- if 'h1' == compagnyNameElement -%}h1{%- else -%}strong{%- endif -%}>
+                        <{% if 'h1' == compagnyNameElement %}h1{% else %}strong{% endif %} class="d-none" aria-hidden="true">{{ companyName|striptags }}</{% if 'h1' == compagnyNameElement %}h1{% else %}strong{% endif %}>
                         <a class="navbar-brand d-inline-flex p-0" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
                             {{ asset(logo)|file({}, {
                                 screensSizes: {

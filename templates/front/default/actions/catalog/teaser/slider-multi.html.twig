@@ -40,7 +40,7 @@
         }) }}
         {%- if teaserIntl.title -%}
             {%- set titleForce = teaserIntl.titleForce ? teaserIntl.titleForce : 2 -%}
-            <h {{ titleForce }} class="title mb-4">{{ teaserIntl.title|raw }}</h{{ titleForce }}>
+            <h{{ titleForce }} class="title mb-4">{{ teaserIntl.title|raw }}</h{{ titleForce }}>
         {%- endif -%}
         {%- set autoplay = 1 -%}
         <div id="catalog-teaser-{{ teaser.slug }}" class="catalog-teaser splide mt-5 length-{{ entities|length }}"

@@ -20,10 +20,10 @@
                 <div class="modal-content bg-white">
                     <div class="modal-header border-0 d-inline-block">
                         {%- if intl.title -%}
-                            <h {{ intl.titleForce }} class="modal-title title d-inline-block w-100" id="modal-block-{{ id }}-label">{{ intl.title|raw }}</h{{ intl.titleForce }}>
+                            <h{{ intl.titleForce }} class="modal-title title d-inline-block w-100" id="modal-block-{{ id }}-label">{{ intl.title|raw }}</h{{ intl.titleForce }}>
                         {%- endif -%}
                         {%- if intl.subTitle -%}
-                            <h {{ intl.subTitleForce }} class="modal-sub-title sub-title d-inline-block w-100 sub-title-h{{ intl.titleForce }}">{{ intl.subTitle }}</h{{ intl.subTitleForce }}>
+                            <h{{ intl.subTitleForce }} class="modal-sub-title sub-title d-inline-block w-100 sub-title-h{{ intl.titleForce }}">{{ intl.subTitle }}</h{{ intl.subTitleForce }}>
                         {%- endif -%}
                         <button class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}"></button>
                     </div>

@@ -92,7 +92,7 @@
                             {%- if haveContent -%}
                                 <div class="content flex-shrink-0">
                                     {%- if mediaTitle -%}
-                                        <h {{ mediaTitleForce }} class="caption-title mt-3 mb-0">{{ mediaTitle|unescape|raw }}</h{{ mediaTitleForce }}>
+                                        <h{{ mediaTitleForce }} class="caption-title mt-3 mb-0">{{ mediaTitle|unescape|raw }}</h{{ mediaTitleForce }}>
                                     {%- endif -%}
                                     {%- if mediaIntro -%}
                                         <p class="introduction text-bold{% if mediaTitle %} mt-3{% endif %}">{{ mediaIntro|unescape|raw|nl2br }}</p>

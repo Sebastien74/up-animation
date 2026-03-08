@@ -55,4 +55,34 @@ class InformationRepository extends ServiceEntityRepository
 
         return ! empty($result[0]) ? $result[0] : [];
     }
+    /**
+     * Get entity object with full relations.
+     */
+    public function findObject(int $websiteId): ?Information
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.website', 'w')
+            ->leftJoin('i.intls', 'intl')
+            ->leftJoin('i.socialNetworks', 'sn')
+            ->leftJoin('i.phones', 'p')
+            ->leftJoin('i.emails', 'e')
+            ->leftJoin('i.addresses', 'a')
+            ->leftJoin('i.legals', 'l')
+            ->leftJoin('i.scheduleDays', 's')
+            ->leftJoin('s.occurrences', 'o')
+            ->andWhere('w.id = :website')
+            ->setParameter('website', $websiteId)
+            ->addSelect('w')
+            ->addSelect('intl')
+            ->addSelect('sn')
+            ->addSelect('p')
+            ->addSelect('e')
+            ->addSelect('a')
+            ->addSelect('l')
+            ->addSelect('s')
+            ->addSelect('o')
+            ->getQuery()
+            ->enableResultCache(3600, 'info-object-'.$websiteId)
+            ->getOneOrNullResult();
+    }
 }

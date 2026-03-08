@@ -36,7 +36,7 @@ class Layout extends BaseEntity
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $associatedEntitiesDisplay = 'slider';
 
-    #[ORM\OneToMany(targetEntity: Zone::class, mappedBy: 'layout', cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Zone::class, mappedBy: 'layout', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
     private ArrayCollection|PersistentCollection $zones;
 

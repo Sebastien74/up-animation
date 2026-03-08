@@ -78,7 +78,7 @@ class Zone extends BaseConfiguration
     #[ORM\JoinColumn(nullable: false)]
     private ?Layout $layout = null;
 
-    #[ORM\OneToMany(targetEntity: Col::class, mappedBy: 'zone', cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Col::class, mappedBy: 'zone', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
     private ArrayCollection|PersistentCollection $cols;
 

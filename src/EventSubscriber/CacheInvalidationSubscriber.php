@@ -6,22 +6,29 @@ namespace App\EventSubscriber;
 
 use App\Entity\Core\Website;
 use App\Entity\BaseInterface;
+use DateMalformedStringException;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Mapping\MappingException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 #[AsDoctrineListener(event: Events::onFlush)]
 class CacheInvalidationSubscriber
 {
-    private $propertyAccessor;
+    private \Symfony\Component\PropertyAccess\PropertyAccessor $propertyAccessor;
 
     public function __construct()
     {
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
+    /**
+     * onFlush.
+     *
+     * @throws DateMalformedStringException|MappingException
+     */
     public function onFlush(OnFlushEventArgs $args): void
     {
         $em = $args->getObjectManager();
@@ -50,6 +57,11 @@ class CacheInvalidationSubscriber
         }
     }
 
+    /**
+     * findWebsite.
+     *
+     * @throws MappingException
+     */
     private function findWebsite(object $entity, EntityManagerInterface $em): ?Website
     {
         if ($entity instanceof Website) {

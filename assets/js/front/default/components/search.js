@@ -10,6 +10,7 @@ export default function () {
     let timeout = null;
 
     if (autoComplete && searchInput) {
+
         if (!autoComplete.classList.contains('loaded')) {
 
             autoComplete.classList.add('loaded');

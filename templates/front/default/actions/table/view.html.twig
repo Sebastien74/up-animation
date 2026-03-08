@@ -31,7 +31,7 @@
                             <div class="content">
                                 {%- if row.intl.title -%}
                                     {%- set titleForce = row.intl.titleForce ? row.intl.titleForce : 3 -%}
-                                    <h {{ titleForce }}>{{ row.intl.title|raw }}</h{{ titleForce }}>
+                                    <h{{ titleForce }}>{{ row.intl.title|raw }}</h{{ titleForce }}>
                                 {%- endif -%}
                                 {%- if row.intl.introduction -%}
                                     <p class="introduction">{{ row.intl.introduction|raw }}</p>

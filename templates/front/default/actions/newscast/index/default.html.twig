@@ -42,8 +42,7 @@
                         {%- if entityEvent -%}
                             {{ macroCard.eventCard(entity) }}
                         {%- else -%}
-                            {{ macroCard.standard({
-                                card: 'article',
+                            {{ macroCard.news({
                                 entity: entity,
                                 thumbConfiguration: thumbConfiguration,
                                 thumbPlaceholder: true,

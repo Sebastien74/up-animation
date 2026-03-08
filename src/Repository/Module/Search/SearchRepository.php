@@ -51,6 +51,7 @@ class SearchRepository extends ServiceEntityRepository
         }
 
         return $statement->getQuery()
+            ->enableResultCache(3600, 'search-filter-'.md5($website->getId().'_'.$locale.'_'.$filter))
             ->getOneOrNullResult();
     }
 }

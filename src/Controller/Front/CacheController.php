@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CacheController extends BaseController
 {
-    protected const bool FORCE_CACHE = true;
+    protected const bool FORCE_CACHE = false;
     private const int CACHE_EXPIRES = 3600;
     private const string CHARSET = 'UTF-8';
 

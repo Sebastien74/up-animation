@@ -22,7 +22,7 @@
         {%- if icon and iconBackground -%}
             <div class="title-icon-wrap position-relative d-inline-flex">
         {%- endif -%}
-        <h {{ titleForce }} class="title position-relative mb-0{% if style %} {{ style }}{% endif %}{% if anim.title.class %} {{ anim.title.class|raw }}{% endif %}"
+        <h{{ titleForce }} class="title position-relative mb-0{% if style %} {{ style }}{% endif %}{% if anim.title.class %} {{ anim.title.class|raw }}{% endif %}"
             {%- if anim.title.attr -%} {{ anim.title.attr|raw }}{%- endif -%}>
             {%- if intl.link is defined and intl.link -%}
                 <a href="{{ intl.link }}" {%- if intl.linkExternal -%} rel="noopener noreferrer" {%- endif -%}{%- if intl.linkBlank -%} target="_blank" {%- endif -%}>

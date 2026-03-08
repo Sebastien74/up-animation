@@ -30,28 +30,28 @@ class BlockRepository extends ServiceEntityRepository
         parent::__construct($this->registry, Block::class);
     }
 
-    /**
-     * Find by Id.
-     *
-     * @throws NonUniqueResultException
-     */
-    public function findById(int $id): ?Block
-    {
-        if (isset($this->cache['id'][$id])) {
-            return $this->cache['id'][$id];
-        }
-
-        $result = $this->createQueryBuilder('b')
-            ->leftJoin('b.intls', 'i')
-            ->andWhere('b.id = :id')
-            ->setParameter('id', $id)
-            ->addSelect('i')
-            ->getQuery()
-            ->enableResultCache(3600, 'block_id_'.$id)
-            ->getOneOrNullResult();
-
-        return $this->cache['id'][$id] = $result;
-    }
+//    /**
+//     * Find by I'd.
+//     *
+//     * @throws NonUniqueResultException
+//     */
+//    public function findById(int $id): ?Block
+//    {
+//        if (isset($this->cache['id'][$id])) {
+//            return $this->cache['id'][$id];
+//        }
+//
+//        $result = $this->createQueryBuilder('b')
+//            ->leftJoin('b.intls', 'i')
+//            ->andWhere('b.id = :id')
+//            ->setParameter('id', $id)
+//            ->addSelect('i')
+//            ->getQuery()
+//            ->enableResultCache(3600, 'block_id_'.$id)
+//            ->getOneOrNullResult();
+//
+//        return $this->cache['id'][$id] = $result;
+//    }
 
     /**
      * Find Block by titleForce, locale & Page.
@@ -85,7 +85,6 @@ class BlockRepository extends ServiceEntityRepository
 
         $rows = $this->createQueryBuilder('b')
             ->select('l.id AS layoutId', 'b.id AS blockId', 'i.title AS title')
-            // vu tes WHERE sur i.*, c'est un INNER JOIN logique
             ->innerJoin('b.intls', 'i')
             ->leftJoin('b.col', 'c')
             ->leftJoin('c.zone', 'z')
@@ -183,6 +182,9 @@ class BlockRepository extends ServiceEntityRepository
         $statement = $this->createQueryBuilder('b')
             ->leftJoin('b.blockType', 'bt')
             ->leftJoin('b.intls', 'i')
+//            ->leftJoin('b.mediaRelations', 'bmr')
+//            ->leftJoin('bmr.media', 'bmrm')
+//            ->leftJoin('b.actionIntls', 'bai')
             ->leftJoin('b.col', 'c')
             ->leftJoin('c.zone', 'z')
             ->leftJoin('z.layout', 'l')
@@ -194,6 +196,9 @@ class BlockRepository extends ServiceEntityRepository
             ->setParameter('layoutId', $layoutId)
             ->addSelect('bt')
             ->addSelect('i')
+//            ->addSelect('bmr')
+//            ->addSelect('bmrm')
+//            ->addSelect('bai')
             ->addSelect('c')
             ->addSelect('z')
             ->addSelect('l')
@@ -225,48 +230,54 @@ class BlockRepository extends ServiceEntityRepository
         return $this->cache['block_type'][$cacheKey] = $result;
     }
 
-    /**
-     * Find block text by locale & Page.
-     *
-     * @throws NonUniqueResultException
-     */
-    public function findFieldTextByLocalePage(string $field, Page $page, string $locale): ?Block
-    {
-        $cacheKey = 'field_text_'.md5($field.'_'.$page->getId().'_'.$locale);
-        if (isset($this->cache['field_text'][$cacheKey])) {
-            return $this->cache['field_text'][$cacheKey];
-        }
-
-        $result = $this->createQueryBuilder('b')
-            ->leftJoin('b.blockType', 'bt')
-            ->leftJoin('b.intls', 'i')
-            ->leftJoin('b.col', 'c')
-            ->leftJoin('c.zone', 'z')
-            ->leftJoin('z.layout', 'l')
-            ->leftJoin('l.page', 'p')
-            ->andWhere('bt.slug = :slug')
-            ->andWhere('i.'.$field.' IS NOT NULL')
-            ->andWhere('i.locale = :locale')
-            ->andWhere('p.id = :page')
-            ->setParameter('slug', 'media')
-            ->setParameter('locale', $locale)
-            ->setParameter('page', $page)
-            ->addSelect('bt')
-            ->addSelect('i')
-            ->addSelect('l')
-            ->addSelect('z')
-            ->addSelect('c')
-            ->addOrderBy('b.position', 'ASC')
-            ->addOrderBy('z.position', 'ASC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->enableResultCache(3600, $cacheKey)
-            ->getOneOrNullResult();
-
-        $getter = 'get'.ucfirst($field);
-
-        return $this->cache['field_text'][$cacheKey] = $result ? $result->getIntls()[0]->$getter() : null;
-    }
+//    /**
+//     * Find block text by locale & Page.
+//     *
+//     * @throws NonUniqueResultException
+//     */
+//    public function findFieldTextByLocalePage(string $field, Page $page, string $locale): ?Block
+//    {
+//        $cacheKey = 'field_text_'.md5($field.'_'.$page->getId().'_'.$locale);
+//        if (isset($this->cache['field_text'][$cacheKey])) {
+//            return $this->cache['field_text'][$cacheKey];
+//        }
+//
+//        $result = $this->createQueryBuilder('b')
+//            ->leftJoin('b.blockType', 'bt')
+//            ->leftJoin('b.intls', 'i')
+//            ->leftJoin('b.mediaRelations', 'bmr')
+//            ->leftJoin('bmr.media', 'bmrm')
+//            ->leftJoin('b.actionIntls', 'bai')
+//            ->leftJoin('b.col', 'c')
+//            ->leftJoin('c.zone', 'z')
+//            ->leftJoin('z.layout', 'l')
+//            ->leftJoin('l.page', 'p')
+//            ->andWhere('bt.slug = :slug')
+//            ->andWhere('i.'.$field.' IS NOT NULL')
+//            ->andWhere('i.locale = :locale')
+//            ->andWhere('p.id = :page')
+//            ->setParameter('slug', 'media')
+//            ->setParameter('locale', $locale)
+//            ->setParameter('page', $page)
+//            ->addSelect('bt')
+//            ->addSelect('i')
+//            ->addSelect('bmr')
+//            ->addSelect('bmrm')
+//            ->addSelect('bai')
+//            ->addSelect('l')
+//            ->addSelect('z')
+//            ->addSelect('c')
+//            ->addOrderBy('b.position', 'ASC')
+//            ->addOrderBy('z.position', 'ASC')
+//            ->setMaxResults(1)
+//            ->getQuery()
+//            ->enableResultCache(3600, $cacheKey)
+//            ->getOneOrNullResult();
+//
+//        $getter = 'get'.ucfirst($field);
+//
+//        return $this->cache['field_text'][$cacheKey] = $result ? $result->getIntls()[0]->$getter() : null;
+//    }
 
     /**
      * Find block text by locale & Page.
@@ -279,17 +290,19 @@ class BlockRepository extends ServiceEntityRepository
         }
 
         $result = $this->createQueryBuilder('b')
+            ->leftJoin('b.mediaRelations', 'mr')
+            ->leftJoin('mr.media', 'm')
             ->leftJoin('b.col', 'c')
             ->leftJoin('c.zone', 'z')
             ->leftJoin('z.layout', 'l')
             ->leftJoin('l.page', 'p')
             ->andWhere('m.filename IS NOT NULL')
-            ->andWhere('m.screen = :screen')
             ->andWhere('mr.locale = :locale')
             ->andWhere('p.id = :page')
             ->setParameter('locale', $locale)
-            ->setParameter('page', $page)
-            ->setParameter('screen', 'desktop')
+            ->setParameter('page', $page->getId())
+            ->addSelect('mr')
+            ->addSelect('m')
             ->addSelect('l')
             ->addSelect('z')
             ->addSelect('c')
@@ -303,21 +316,27 @@ class BlockRepository extends ServiceEntityRepository
         return $this->cache['media_page'][$cacheKey] = !empty($result[0]['mediaRelations'][0]['media']) ? $result[0]['mediaRelations'][0]['media'] : [];
     }
 
-    /**
-     * Find by Action.
-     */
-    public function findByAction(string $classname, int $filterId): array
-    {
-        return $this->createQueryBuilder('b')
-            ->leftJoin('b.intls', 'bi')
-            ->leftJoin('b.action', 'a')
-            ->leftJoin('b.actionIntls', 'ai')
-            ->andWhere('a.entity = :entity')
-            ->andWhere('ai.actionFilter = :actionFilter')
-            ->setParameter('entity', $classname)
-            ->setParameter('actionFilter', $filterId)
-            ->getQuery()
-            ->enableResultCache(3600, 'block_action_'.md5($classname.'_'.$filterId))
-            ->getResult();
-    }
+//    /**
+//     * Find by Action.
+//     */
+//    public function findByAction(string $classname, int $filterId): array
+//    {
+//        return $this->createQueryBuilder('b')
+//            ->leftJoin('b.intls', 'bi')
+//            ->leftJoin('b.mediaRelations', 'bmr')
+//            ->leftJoin('bmr.media', 'bmrm')
+//            ->leftJoin('b.action', 'a')
+//            ->leftJoin('b.actionIntls', 'ai')
+//            ->andWhere('a.entity = :entity')
+//            ->andWhere('ai.actionFilter = :actionFilter')
+//            ->setParameter('entity', $classname)
+//            ->setParameter('actionFilter', $filterId)
+//            ->addSelect('bi')
+//            ->addSelect('bmr')
+//            ->addSelect('bmrm')
+//            ->addSelect('ai')
+//            ->getQuery()
+//            ->enableResultCache(3600, 'block_action_'.md5($classname.'_'.$filterId))
+//            ->getResult();
+//    }
 }

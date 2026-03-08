@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-<!-- TO CHECK IF MACRO IS NOT EMPTY macro.name|trim is not empty -->
-
 {%- macro standard(vars) -%}
 
     {%- set card = vars.card is defined ? vars.card : 'div' -%}
@@ -66,7 +64,7 @@
                     {%- if newTab -%} target="_blank" {%- else -%}{%- endif -%}
                     {%- if externalLink -%} rel="noopener noreferrer" {%- endif -%}>
                 {%- endif -%}
-                    <h {{ titleForce }} class="title text-bold mb-3">{{ title|unescape|raw }}</h{{ titleForce }}>
+                    <h{{ titleForce }} class="title text-bold mb-3">{{ title|unescape|raw }}</h{{ titleForce }}>
                 {%- if targetLink -%}
                     </a>
                 {%- endif -%}
@@ -89,7 +87,7 @@
                 {%- if showCategory -%}
                     {%- set category = entity.category -%}
                     {%- if category and category.intl.title -%}
-                        <h {{ titleForce + 1 }} class="news-category-title">{{ category.intl.title|raw }}</h{{ titleForce + 1 }}>
+                        <h{{ titleForce + 1 }} class="news-category-title">{{ category.intl.title|raw }}</h{{ titleForce + 1 }}>
                     {%- endif -%}
                 {%- endif -%}
                 <div class="text-block">
@@ -133,6 +131,29 @@
             </div>
         {%- endif -%}
     </{{ card }}>
+{%- endmacro -%}
+
+{%- macro news(vars) -%}
+    <article class="card news-card bg-white shadow bg-lght border-0 overflow-hidden position-relative h-100">
+        {%- if vars.webmaster is defined and granted('ROLE_ADMIN') -%}
+            {%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
+            {{ macroWebmaster.box(vars.webmaster) }}
+        {%- endif -%}
+        <div class="card-header p-0">
+            {{ vars.entity.mainMedia|file(vars.thumbConfiguration, {
+                parentEntity: vars.entity,
+                targetLink: vars.entity.url,
+                isInBox: true,
+                placeholder: true,
+                class: ''
+            }) }}
+        </div>
+        <div class="card-body">
+            <a href="{{ vars.entity.url }}" class="d-inline-block w-100">
+                <h3 class="title text-bold mb-3">{{ vars.entity.intl.title|unescape|raw }}</h3>
+            </a>
+        </div>
+    </article>
 {%- endmacro -%}
 
 {%- macro agency(vars) -%}
@@ -191,7 +212,7 @@
                 <i class="icon-headset text-white"></i>
             </div>
             <div class="content position-relative px-4 py-4">
-                <h {{ titleForce }} class="card-title text-uppercase h4 fw-700 mb-0">{{ title|raw }}</h{{ titleForce }}>
+                <h{{ titleForce }} class="card-title text-uppercase h4 fw-700 mb-0">{{ title|raw }}</h{{ titleForce }}>
             </div>
         </div>
     </a>

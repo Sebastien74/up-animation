@@ -6,7 +6,7 @@
 
 {%- if entities|length > 0 -%}
     {%- if 'teaser-title' in teaser.fields and intl.title -%}
-        <h {{ intl.titleForce }} class="title text-center mb-5 pb-4">{{ intl.title|raw }}</h{{ intl.titleForce }}>
+        <h{{ intl.titleForce }} class="title text-center mb-5 pb-4">{{ intl.title|raw }}</h{{ intl.titleForce }}>
     {%- endif -%}
     <div class="default-teaser row m-0 listing-entities-container">
         {{ macroWebmaster.box({

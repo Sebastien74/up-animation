@@ -429,7 +429,9 @@ class PageRepository extends ServiceEntityRepository
                 ->andWhere('u.locale = :locale')
                 ->setParameter('id', $page->getId())
                 ->setParameter('locale', $locale)
+                ->addSelect('u')
                 ->getQuery()
+                ->enableResultCache(3600, 'page-url-'.md5($page->getId().'_'.$locale))
                 ->getOneOrNullResult();
             if ($result && !$result->getUrls()->isEmpty() && !empty($result->getUrls()[0]->getCode())) {
                 foreach ($result->getUrls() as $url) {
@@ -488,7 +490,7 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
-     * Front optimized QueryBuilder.
+     * Front-optimized QueryBuilder.
      */
     public function optimizedQueryBuilder(WebsiteModel $website, string $locale, bool $offline = false): QueryBuilder
     {
@@ -496,27 +498,34 @@ class PageRepository extends ServiceEntityRepository
             ->innerJoin('p.urls', 'u')
             ->innerJoin('p.website', 'w')
             ->innerJoin('p.layout', 'l')
+            ->leftJoin('p.intls', 'pi')
+            ->leftJoin('p.mediaRelations', 'pmr')
+            ->leftJoin('pmr.media', 'pmrm')
             ->andWhere('u.website = :website')
             ->andWhere('u.locale = :locale')
             ->setParameter('locale', $locale)
             ->setParameter('website', $website->id)
             ->addSelect('u')
             ->addSelect('w')
-            ->addSelect('l');
+            ->addSelect('l')
+            ->addSelect('pi')
+            ->addSelect('pmr')
+            ->addSelect('pmrm');
 
         if ($website->configuration->onlineStatus) {
-            $queryBuilder->innerJoin('l.zones', 'z')
-                ->innerJoin('z.cols', 'c')
-                ->innerJoin('c.blocks', 'b')
-                ->innerJoin('b.blockType', 'bt')
-                ->leftJoin('b.intls', 'bi')
+            $queryBuilder->leftJoin('l.zones', 'z')
+                ->leftJoin('z.cols', 'c')
+                ->leftJoin('c.blocks', 'b')
+                ->leftJoin('b.blockType', 'bt')
+                ->leftJoin('b.action', 'ba')
+                ->leftJoin('b.intls', 'bi', 'WITH', 'bi.locale = :locale')
                 ->leftJoin('b.mediaRelations', 'bmr')
                 ->leftJoin('bmr.media', 'bmrm')
-                ->andWhere('bi.locale = :locale')
                 ->addSelect('z')
                 ->addSelect('c')
                 ->addSelect('b')
                 ->addSelect('bt')
+                ->addSelect('ba')
                 ->addSelect('bi')
                 ->addSelect('bmr')
                 ->addSelect('bmrm');

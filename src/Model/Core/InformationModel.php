@@ -113,37 +113,14 @@ final class InformationModel extends BaseModel
      *
      * @throws NonUniqueResultException
      */
-    private static function information(Website $website): ?object
+    private static function information(Website $website): ?Information
     {
         $cacheId = 'info-' . $website->getId();
         if (isset(self::$cache[$cacheId])) {
             return self::$cache[$cacheId];
         }
 
-        return self::$cache[$cacheId] = self::$coreLocator->em()->getRepository(Information::class)
-            ->createQueryBuilder('i')
-            ->innerJoin('i.website', 'w')
-            ->leftJoin('i.intls', 'intl')
-            ->leftJoin('i.socialNetworks', 'sn')
-            ->leftJoin('i.phones', 'p')
-            ->leftJoin('i.emails', 'e')
-            ->leftJoin('i.addresses', 'a')
-            ->leftJoin('i.legals', 'l')
-            ->leftJoin('i.scheduleDays', 's')
-            ->leftJoin('s.occurrences', 'o')
-            ->andWhere('w.id = :website')
-            ->setParameter('website', $website)
-            ->addSelect('w')
-            ->addSelect('intl')
-            ->addSelect('sn')
-            ->addSelect('p')
-            ->addSelect('e')
-            ->addSelect('a')
-            ->addSelect('l')
-            ->addSelect('s')
-            ->addSelect('o')
-            ->getQuery()
-            ->getOneOrNullResult();
+        return self::$cache[$cacheId] = self::$coreLocator->em()->getRepository(Information::class)->findObject($website->getId());
     }
 
     private static array $logosCache = [];

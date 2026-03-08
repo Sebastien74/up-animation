@@ -49,7 +49,7 @@
     {#                    {%- if mediaTitle|striptags|length > 0 or mediaIntro|striptags|length > 0 or mediaBody|striptags|length > 0 -%}#}
     {#                        <div class="card-body p-0">#}
     {#                            {%- if mediaTitleForce and mediaTitle|striptags|length > 0 -%}#}
-    {#                                <h {{ mediaTitleForce }} class="title mt-2 mb-0 fw-200 ff-primary d-inline-block text-italic w-100 text-gray-darken">#}
+    {#                                <h{{ mediaTitleForce }} class="title mt-2 mb-0 fw-200 ff-primary d-inline-block text-italic w-100 text-gray-darken">#}
     {#                                    {{ mediaTitle|unescape|raw }}#}
     {#                                </h{{ mediaTitleForce }}>#}
     {#                            {%- elseif mediaTitle|striptags|length > 0 -%}#}

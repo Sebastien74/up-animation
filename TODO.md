@@ -1,5 +1,7 @@
 Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
+{%- if vars.webmaster is defined and granted('ROLE_ADMIN') -%} AJOUTER granted('ROLE_ADMIN')
+
 Slider marquee ajouter dans back bannière petite images, moyennes images et grandes images et faire le CSS pour les 3 tailles
 Et ajouter aussi data-speed="20" data-speed-mobile="20" etc
 

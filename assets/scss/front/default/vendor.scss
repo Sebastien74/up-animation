@@ -34,10 +34,6 @@
     $enable-form: true;
 }
 
-@if $enable-search-modal {
-    $enable-form: true;
-}
-
 @if $enable-modal {
     $enable-button-close: true;
 }

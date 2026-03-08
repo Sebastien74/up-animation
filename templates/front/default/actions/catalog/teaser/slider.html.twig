@@ -12,7 +12,7 @@
         }) }}
         {%- if teaserIntl.title -%}
             {%- set titleForce = teaserIntl.titleForce ? teaserIntl.titleForce : 2 -%}
-            <h {{ titleForce }} class="title mb-4">{{ teaserIntl.title|raw }}</h{{ titleForce }}>
+            <h{{ titleForce }} class="title mb-4">{{ teaserIntl.title|raw }}</h{{ titleForce }}>
         {%- endif -%}
         <div id="teaser-products-carousel-{{ teaser.slug }}"
              class="carousel slide carousel-fade"
