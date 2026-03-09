@@ -88,6 +88,7 @@ class MediaManager
     public function synchronizeScreens(Media\Media $media): void
     {
         if (in_array($media->getExtension(), self::ALLOWED_IMAGES_EXTENSIONS)) {
+            $hasChange = false;
             foreach (self::SCREENS as $screen) {
                 $exist = $this->screenExist($media, $screen);
                 if (!$exist) {
@@ -96,12 +97,12 @@ class MediaManager
                     $mediaScreen->setScreen($screen);
                     $mediaScreen->setWebsite($media->getWebsite());
                     $media->addMediaScreen($mediaScreen);
-                    $this->entityManager->persist($media);
-                    if (!$this->request->isMethod('post')) {
-                        $this->entityManager->flush();
-                        $this->entityManager->refresh($media);
-                    }
+                    $this->entityManager->persist($mediaScreen);
+                    $hasChange = true;
                 }
+            }
+            if ($hasChange) {
+                $this->entityManager->persist($media);
             }
         }
     }
@@ -495,23 +496,15 @@ class MediaManager
     {
         if (!empty($interface['name'])) {
 
-            $classname = $this->entityManager->getClassMetadata(get_class($entity))->getName();
-            $repository = $this->entityManager->getRepository($classname);
-            $entityLocaleRelation = $repository->createQueryBuilder('e')->select('e')
-                ->leftJoin('e.mediaRelations', 'm')
-                ->andWhere('e.id = :id')
-                ->andWhere('m.position = :position')
-                ->andWhere('m.locale = :locale')
-                ->setParameter('position', $mediaRelation->getPosition())
-                ->setParameter('locale', $locale)
-                ->setParameter('id', $entity->getId())
-                ->addSelect('m')
-                ->orderBy('m.locale', 'ASC')
-                ->getQuery()
-                ->getOneOrNullResult();
-
-            $localeRelation = $entityLocaleRelation && !$entityLocaleRelation->getMediaRelations()->isEmpty()
-                ? $entityLocaleRelation->getMediaRelations()[0] : null;
+            $localeRelation = null;
+            if (method_exists($entity, 'getMediaRelations')) {
+                foreach ($entity->getMediaRelations() as $relation) {
+                    if ($relation->getPosition() === $mediaRelation->getPosition() && $relation->getLocale() === $locale) {
+                        $localeRelation = $relation;
+                        break;
+                    }
+                }
+            }
 
             if (!$localeRelation && !in_array($locale, $this->localesSet)) {
                 $this->localesSet[] = $locale;
@@ -530,14 +523,6 @@ class MediaManager
 
             if (!empty($entity)) {
                 $this->entityManager->persist($entity);
-                if (!$this->request->isMethod('post')) {
-                    $this->entityManager->flush();
-                }
-            }
-
-            try {
-                $this->entityManager->refresh($entity);
-            } catch (Exception $exception) {
             }
         }
     }

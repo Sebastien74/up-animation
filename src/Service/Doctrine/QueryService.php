@@ -76,4 +76,118 @@ class QueryService implements QueryServiceInterface
 
         return $this->cache[$cacheKey] = $query->getResult();
     }
+
+    public function findFullEntity(int $id, string $classname): ?object
+    {
+        $qb = $this->entityManager->createQueryBuilder()
+            ->select('e')
+            ->from($classname, 'e')
+            ->andWhere('e.id = :id')
+            ->setParameter('id', $id);
+
+        $hasLayout = property_exists($classname, 'layout');
+        if ($hasLayout) {
+            $qb->leftJoin('e.layout', 'l')->addSelect('l');
+        }
+
+        $entity = $qb->getQuery()->getOneOrNullResult();
+
+        if (!$entity) {
+            return null;
+        }
+
+        if ($hasLayout && $layout = $entity->getLayout()) {
+            $this->entityManager->createQueryBuilder()
+                ->select('l', 'z', 'c', 'b')
+                ->from(\App\Entity\Layout\Layout::class, 'l')
+                ->leftJoin('l.zones', 'z')
+                ->leftJoin('z.cols', 'c')
+                ->leftJoin('c.blocks', 'b')
+                ->andWhere('l.id = :layoutId')
+                ->setParameter('layoutId', $layout->getId())
+                ->getQuery()
+                ->getResult();
+
+            $this->entityManager->createQueryBuilder()
+                ->select('b', 'bmr', 'bmrm', 'bmrmw', 'bi', 'bmri')
+                ->from(\App\Entity\Layout\Block::class, 'b')
+                ->leftJoin('b.mediaRelations', 'bmr')
+                ->leftJoin('bmr.media', 'bmrm')
+                ->leftJoin('bmrm.website', 'bmrmw')
+                ->leftJoin('bmr.intl', 'bmri')
+                ->leftJoin('b.intls', 'bi')
+                ->innerJoin('b.col', 'c')
+                ->innerJoin('c.zone', 'z')
+                ->andWhere('z.layout = :layoutId')
+                ->setParameter('layoutId', $layout->getId())
+                ->getQuery()
+                ->getResult();
+        }
+
+        if (property_exists($classname, 'urls')) {
+            $this->entityManager->createQueryBuilder()
+                ->select('e', 'u', 's')
+                ->from($classname, 'e')
+                ->leftJoin('e.urls', 'u')
+                ->leftJoin('u.seo', 's')
+                ->andWhere('e.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getResult();
+        }
+
+        if (property_exists($classname, 'mediaRelations')) {
+            $this->entityManager->createQueryBuilder()
+                ->select('e', 'mr', 'm', 'mw', 'mi')
+                ->from($classname, 'e')
+                ->leftJoin('e.mediaRelations', 'mr')
+                ->leftJoin('mr.media', 'm')
+                ->leftJoin('m.website', 'mw')
+                ->leftJoin('mr.intl', 'mi')
+                ->andWhere('e.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getResult();
+        }
+
+        if (property_exists($classname, 'intls')) {
+            $this->entityManager->createQueryBuilder()
+                ->select('e', 'ei')
+                ->from($classname, 'e')
+                ->leftJoin('e.intls', 'ei')
+                ->andWhere('e.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getResult();
+        }
+
+        if (property_exists($classname, 'pages')) {
+            $this->entityManager->createQueryBuilder()
+                ->select('e', 'p')
+                ->from($classname, 'e')
+                ->leftJoin('e.pages', 'p')
+                ->andWhere('e.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getResult();
+        }
+
+        if (property_exists($classname, 'website')) {
+            $this->entityManager->createQueryBuilder()
+                ->select('e', 'w', 'conf', 'colors', 'icons', 'transitions', 'cssClasses')
+                ->from($classname, 'e')
+                ->leftJoin('e.website', 'w')
+                ->leftJoin('w.configuration', 'conf')
+                ->leftJoin('conf.colors', 'colors')
+                ->leftJoin('conf.icons', 'icons')
+                ->leftJoin('conf.transitions', 'transitions')
+                ->leftJoin('conf.cssClasses', 'cssClasses')
+                ->andWhere('e.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getResult();
+        }
+
+        return $entity;
+    }
 }

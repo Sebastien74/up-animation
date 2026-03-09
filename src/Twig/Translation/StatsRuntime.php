@@ -15,6 +15,7 @@ use Twig\Extension\RuntimeExtensionInterface;
 class StatsRuntime implements RuntimeExtensionInterface
 {
     private array $stats = [];
+    private array $cache = [];
 
     /**
      * Get count of words for all domains by locale.
@@ -22,12 +23,24 @@ class StatsRuntime implements RuntimeExtensionInterface
     public function transStats(array $domains): array
     {
         $this->stats = [];
+        $ids = [];
+        foreach ($domains as $d) {
+            if ($d instanceof TranslationDomain) {
+                $ids[] = $d->getId();
+            }
+        }
+        sort($ids);
+        $cacheKey = md5(implode(',', $ids));
+
+        if (isset($this->cache[$cacheKey])) {
+            return $this->cache[$cacheKey];
+        }
 
         foreach ($domains as $translationDomain) {
             $this->domainStats($translationDomain);
         }
 
-        return $this->stats;
+        return $this->cache[$cacheKey] = $this->stats;
     }
 
     /**
@@ -36,39 +49,41 @@ class StatsRuntime implements RuntimeExtensionInterface
     public function domainStats(TranslationDomain $translationDomain): array
     {
         $accents = '/&([A-Za-z]{1,2})(grave|acute|circ|cedil|uml|lig);/';
+        $domainName = $translationDomain->getName();
 
         foreach ($translationDomain->getUnits() as $unit) {
+            $keyName = strip_tags($unit->getKeyname());
+            $encodingBase = htmlentities($keyName, ENT_NOQUOTES, 'UTF-8');
+            $encodingBase = preg_replace($accents, '$1', $encodingBase);
+            $encodingBase = str_replace(['_'], [''], $encodingBase);
+            
             foreach ($unit->getTranslations() as $translation) {
                 $locale = $translation->getLocale();
-                $keyName = strip_tags($translation->getUnit()->getKeyname());
-                $encoding = htmlentities($keyName, ENT_NOQUOTES, 'UTF-8');
-                $encoding = preg_replace($accents, '$1', $encoding);
-                $encoding = str_replace(['_'], [''], $encoding);
-                $wordsCount = str_word_count($encoding, 0);
+                $wordsCount = str_word_count($encodingBase, 0);
 
-                $localeCount = empty($this->stats[$locale]['words'])
-                    ? 0 : $this->stats[$locale]['words'];
-                $localeDomainCount = empty($this->stats[$translationDomain->getName()][$locale]['words'])
-                    ? 0 : $this->stats[$translationDomain->getName()][$locale]['words'];
-                $this->stats[$translationDomain->getName()][$locale]['words'] = $localeDomainCount + $wordsCount;
-                $this->stats[$locale]['words'] = $localeCount + $wordsCount;
+                if (!isset($this->stats[$locale]['words'])) {
+                    $this->stats[$locale]['words'] = 0;
+                }
+                if (!isset($this->stats[$domainName][$locale]['words'])) {
+                    $this->stats[$domainName][$locale]['words'] = 0;
+                }
+                
+                $this->stats[$domainName][$locale]['words'] += $wordsCount;
+                $this->stats[$locale]['words'] += $wordsCount;
                 $this->stats['keywords'][$keyName] = $wordsCount;
 
-                if (!isset($this->stats[$translationDomain->getName()]['units'][$locale])) {
-                    $this->stats[$translationDomain->getName()]['units'][$locale] = 0;
+                if (!isset($this->stats[$domainName]['units'][$locale])) {
+                    $this->stats[$domainName]['units'][$locale] = 0;
                 }
-
-                $translationCount = empty($this->stats[$translationDomain->getName()]['units'][$locale])
-                    ? 0 : $this->stats[$translationDomain->getName()]['units'][$locale];
-
-                $translationCountAll = empty($this->stats[$translationDomain->getName()]['units']['count'][$locale])
-                    ? 0 : $this->stats[$translationDomain->getName()]['units']['count'][$locale];
+                if (!isset($this->stats[$domainName]['units']['count'][$locale])) {
+                    $this->stats[$domainName]['units']['count'][$locale] = 0;
+                }
 
                 if ($translation->getContent()) {
-                    $this->stats[$translationDomain->getName()]['units'][$locale] = $translationCount + 1;
+                    $this->stats[$domainName]['units'][$locale]++;
                 }
 
-                $this->stats[$translationDomain->getName()]['units']['count'][$locale] = $translationCountAll + 1;
+                $this->stats[$domainName]['units']['count'][$locale]++;
             }
         }
 

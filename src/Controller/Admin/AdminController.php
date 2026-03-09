@@ -481,6 +481,10 @@ class AdminController extends BaseController
         $entity = $this->entity && is_object($this->entity) && str_contains(get_class($this->entity), 'Model') && property_exists($this->entity, 'entity')
             ? $this->entity->entity : ($this->entity ?: (!empty($interface['entity']) ? $interface['entity'] : null));
 
+        if ($entity && $entity->getId() && !$entity instanceof ViewModel) {
+            $entity = $this->coreLocator->emQuery()->findFullEntity($entity->getId(), get_class($entity)) ?: $entity;
+        }
+
         if ($entity && $entity->getId()) {
             $this->adminLocator->urlManager()->synchronizeLocales($entity, $interface['website']);
         }
@@ -488,9 +492,31 @@ class AdminController extends BaseController
         $website = $interface ? $interface['website'] : $this->getWebsite();
         $website = $website instanceof Website ? WebsiteModel::fromEntity($website, $this->coreLocator) : $website;
         $mediasAlertExec = $entity instanceof Page || ($entity && method_exists($entity, 'isCustomLayout') && $entity->isCustomLayout());
-        $mediasAlert = 'layout' === $view && $mediasAlertExec && $entity->getLayout()
-            ? $this->coreLocator->em()->getRepository(BlockMediaRelation::class)->findWithEmptyAlt($entity->getLayout())
-            : ('edit' === $view ? $this->adminLocator->mediasAlert($entity) : []);
+        $mediasAlert = [];
+        if ('layout' === $view && $mediasAlertExec && $entity->getLayout()) {
+            foreach ($entity->getLayout()->getZones() as $zone) {
+                foreach ($zone->getCols() as $col) {
+                    foreach ($col->getBlocks() as $block) {
+                        foreach ($block->getMediaRelations() as $mediaRelation) {
+                            $intl = $mediaRelation->getIntl();
+                            $media = $mediaRelation->getMedia();
+                            if ((!$intl || !$intl->getPlaceholder()) && ($media && $media->getFilename())) {
+                                $blockId = $block->getId();
+                                $filename = $media->getFilename();
+                                $locales = !empty($mediasAlert[$filename][$blockId]['locales']) ? $mediasAlert[$filename][$blockId]['locales'] : [];
+                                $locales[] = $mediaRelation->getLocale();
+                                $mediasAlert[$filename][$blockId] = [
+                                    'locales' => $locales,
+                                    'block' => $block,
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        } elseif ('edit' === $view) {
+            $mediasAlert = $this->adminLocator->mediasAlert($entity);
+        }
 
         $arguments = [
             'pageTitle' => $this->pageTitle,
@@ -559,7 +585,7 @@ class AdminController extends BaseController
         $arguments = array_merge($this->arguments, [
             'form' => $formHelper->getForm()?->createView(),
             'entity' => $entity,
-            'medias' => $entity && !property_exists($params, 'medias') ? MediasModel::fromEntity($entity, $this->coreLocator)->mediasAndVideos
+            'medias' => $entity && !property_exists($params, 'medias') ? MediasModel::fromEntity($entity, $this->coreLocator, null, false)->mediasAndVideos
                 : (property_exists($params, 'medias') ? $params->medias : []),
             'haveH1' => $formHelper->haveH1(),
             'namespace' => $this->getCurrentNamespace($params->request),

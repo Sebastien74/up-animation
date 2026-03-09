@@ -7,6 +7,7 @@ namespace App\Form\Type\Translation;
 use App\Entity\Translation\TranslationDomain;
 use App\Form\Widget as WidgetType;
 use App\Service\Interface\CoreLocatorInterface;
+use App\Repository\Translation\TranslationDomainRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -42,6 +43,10 @@ class AddTranslationType extends AbstractType
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'class' => TranslationDomain::class,
+            'query_builder' => function (TranslationDomainRepository $dr) {
+                return $dr->createQueryBuilder('d')
+                    ->orderBy('d.adminName', 'ASC');
+            },
             'choice_label' => function ($entity) {
                 return strip_tags($entity->getAdminName());
             },

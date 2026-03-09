@@ -89,19 +89,21 @@ class IntlManager
             if (!$defaultIntl && $entity instanceof Block) {
                 $defaultIntl = $this->addIntl($website, $entity, $defaultLocale, $defaultLocale);
             }
+            $hasChange = false;
             foreach ($configuration->getAllLocales() as $locale) {
                 if ($locale !== $defaultLocale) {
                     $existing = $this->localeExist($entity, $locale);
                     if (!$existing && $defaultIntl) {
                         $this->addIntl($website, $entity, $locale, $defaultLocale, $defaultIntl);
+                        $hasChange = true;
                     } elseif ($existing && !$existing->getId()) {
                         $this->entityManager->persist($existing);
-                        if (!$this->coreLocator->request()->isMethod('post')) {
-                            $this->entityManager->flush();
-                            $this->entityManager->refresh($existing);
-                        }
+                        $hasChange = true;
                     }
                 }
+            }
+            if ($hasChange) {
+                $this->entityManager->persist($entity);
             }
         }
     }
@@ -130,12 +132,7 @@ class IntlManager
 
         $entity->addIntl($intl);
 
-        $this->entityManager->persist($entity);
-
-        if (!$this->coreLocator->request()->isMethod('post')) {
-            $this->entityManager->flush();
-            $this->entityManager->refresh($entity);
-        }
+        $this->entityManager->persist($intl);
 
         return $intl;
     }

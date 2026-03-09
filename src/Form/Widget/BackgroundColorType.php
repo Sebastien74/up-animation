@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Form\Widget;
 
 use App\Entity\Core\Website;
-use App\Repository\Core\WebsiteRepository;
 use App\Service\Interface\CoreLocatorInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -25,10 +24,9 @@ class BackgroundColorType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly WebsiteRepository    $websiteRepository,
     )
     {
-        $this->website = $this->websiteRepository->find($this->coreLocator->requestStack()->getMainRequest()->get('website'));
+        $this->website = $this->coreLocator->website()?->entity;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

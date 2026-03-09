@@ -239,21 +239,24 @@ class AdminLocator implements AdminLocatorInterface
                 $media = $mediaRelation->getMedia();
                 if ($media) {
                     $website = $media->getWebsite();
-                    $dirname = $this->coreLocator->projectDir().'/public/uploads/'.$website->getUploadDirname().'/'.$media->getFilename();
-                    $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
-                    if ($filesystem->exists($dirname)) {
-                        $info = $this->coreLocator->fileInfo()->file($website, $media->getFilename());
-                        if ($info->getSize() > 500000) {
-                            $locales = !empty($tooHeavyFiles[$info->getFilename()][$entity->getId()]['locales']) ? $tooHeavyFiles[$info->getFilename()][$entity->getId()]['locales'] : [];
-                            $locales[] = $mediaRelation->getLocale();
-                            $tooHeavyFiles[$info->getFilename()][$entity->getId()] = [
-                                'filename' => $info->getFilename(),
-                                'locales' => $locales,
-                                'entity' => $entity,
-                                'interface' => $interface,
-                                'interfaceName' => !empty($interface['name']) ? $interface['name'] : null,
-                                'bytes' => $info->getFormatBytes(),
-                            ];
+                    $filename = $media->getFilename();
+                    if ($website && $filename) {
+                        $dirname = $this->coreLocator->projectDir().'/public/uploads/'.$website->getUploadDirname().'/'.$filename;
+                        $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
+                        if ($filesystem->exists($dirname)) {
+                            $info = $this->coreLocator->fileInfo()->file($website, $filename);
+                            if ($info->getSize() > 500000) {
+                                $locales = !empty($tooHeavyFiles[$info->getFilename()][$entity->getId()]['locales']) ? $tooHeavyFiles[$info->getFilename()][$entity->getId()]['locales'] : [];
+                                $locales[] = $mediaRelation->getLocale();
+                                $tooHeavyFiles[$info->getFilename()][$entity->getId()] = [
+                                    'filename' => $info->getFilename(),
+                                    'locales' => $locales,
+                                    'entity' => $entity,
+                                    'interface' => $interface,
+                                    'interfaceName' => !empty($interface['name']) ? $interface['name'] : null,
+                                    'bytes' => $info->getFormatBytes(),
+                                ];
+                            }
                         }
                     }
                 }
@@ -271,24 +274,18 @@ class AdminLocator implements AdminLocatorInterface
         $response = [];
 
         if (method_exists($entity, 'getMediaRelations') && $entity->getId()) {
-            $metadata = $this->coreLocator->metadata($entity, 'mediaRelations');
-            $mediaRelations = $this->coreLocator->em()->getRepository($metadata->targetEntity)->createQueryBuilder('mr')
-                ->leftJoin('mr.intl', 'i')
-                ->leftJoin('mr.media', 'm')
-                ->andWhere('mr.'.$metadata->mappedBy.' = :mappedBy')
-                ->andWhere('i.title IS NULL')
-                ->andWhere('m.filename IS NOT NULL')
-                ->setParameter('mappedBy', $entity)
-                ->getQuery()
-                ->getResult();
-            foreach ($mediaRelations as $mediaRelation) {
-                $entityId = $entity->getId();
-                $filename = $mediaRelation->getMedia()->getFilename();
-                $locales = !empty($response[$filename][$entityId]['locales']) ? $response[$filename][$entityId]['locales'] : [];
-                $locales[] = $mediaRelation->getLocale();
-                $response[$filename][$entityId] = [
-                    'locales' => $locales,
-                ];
+            foreach ($entity->getMediaRelations() as $mediaRelation) {
+                $intl = $mediaRelation->getIntl();
+                $media = $mediaRelation->getMedia();
+                if ((!$intl || !$intl->getTitle()) && ($media && $media->getFilename())) {
+                    $entityId = $entity->getId();
+                    $filename = $media->getFilename();
+                    $locales = !empty($response[$filename][$entityId]['locales']) ? $response[$filename][$entityId]['locales'] : [];
+                    $locales[] = $mediaRelation->getLocale();
+                    $response[$filename][$entityId] = [
+                        'locales' => $locales,
+                    ];
+                }
             }
         }
 

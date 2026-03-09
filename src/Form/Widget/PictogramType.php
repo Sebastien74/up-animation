@@ -31,7 +31,7 @@ class PictogramType extends AbstractType
     {
         $this->translator = $this->coreLocator->translator();
         $this->entityManager = $this->coreLocator->em();
-        $this->website = $coreLocator->em()->getRepository(Website::class)->find($this->coreLocator->request()->get('website'));
+        $this->website = $this->coreLocator->website()?->entity;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -64,8 +64,8 @@ class PictogramType extends AbstractType
     private function getPictograms(): array
     {
         $folder = $this->entityManager->getRepository(Folder::class)->findOneBy([
-            'website' => $this->website,
             'slug' => 'pictogram',
+            'website' => $this->website,
         ]);
 
         $pictograms = [];

@@ -56,6 +56,8 @@ class TranslationDomainRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('d')
             ->leftJoin('d.units', 'u')
             ->leftJoin('u.translations', 't')
+            ->addSelect('u')
+            ->addSelect('t')
             ->orderBy('d.adminName', 'ASC')
             ->getQuery()
             ->getResult();
@@ -90,6 +92,8 @@ class TranslationDomainRepository extends ServiceEntityRepository
             ->leftJoin('u.translations', 't')
             ->andWhere('d.name IN (:names)')
             ->setParameter('names', self::FRONT_DOMAINS)
+            ->addSelect('u')
+            ->addSelect('t')
             ->orderBy('d.adminName', 'ASC')
             ->getQuery()
             ->enableResultCache(3600, 'translation_domains_front')
@@ -106,6 +110,8 @@ class TranslationDomainRepository extends ServiceEntityRepository
             ->leftJoin('u.translations', 't')
             ->andWhere('d.name NOT IN (:names)')
             ->setParameter('names', self::FRONT_DOMAINS)
+            ->addSelect('u')
+            ->addSelect('t')
             ->orderBy('d.adminName', 'ASC')
             ->getQuery()
             ->enableResultCache(3600, 'translation_domains_admin')
@@ -124,6 +130,7 @@ class TranslationDomainRepository extends ServiceEntityRepository
             ->orWhere('t.content LIKE :search')
             ->setParameter('search', '%'.trim($search).'%')
             ->addSelect('u')
+            ->addSelect('t')
             ->getQuery()
             ->getResult();
     }

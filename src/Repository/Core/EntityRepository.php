@@ -46,6 +46,7 @@ class EntityRepository extends ServiceEntityRepository
             ->setParameter('website', $website->entity)
             ->addSelect('w')
             ->getQuery()
+            ->enableResultCache(3600, 'entity_configuration_'.md5($classname.'_'.$website->id))
             ->getOneOrNullResult();
     }
 }

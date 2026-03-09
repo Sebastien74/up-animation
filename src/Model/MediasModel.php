@@ -68,7 +68,7 @@ final class MediasModel extends BaseModel
         $main = $header = $medias = $mediasAndVideos = $mediaRelations = $file = $files = $videos = $mediasWithoutMain = [];
 
         foreach ($mediaRelationsDb as $key => $mediaRelation) {
-            $mediaModel = MediaModel::fromEntity($mediaRelation, $coreLocator);
+            $mediaModel = MediaModel::fromEntity($mediaRelation, $coreLocator, $query);
             if ('file' === $mediaModel->type) {
                 $files[$key + 1] = $mediaModel;
                 if (empty($file)) {

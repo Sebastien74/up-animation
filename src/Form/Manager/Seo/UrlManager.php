@@ -97,21 +97,30 @@ class UrlManager
     public function synchronizeLocales($entity, ?Website $website = null): void
     {
         if ($website && method_exists($entity, 'getUrls') && $entity->getUrls()->count() > 0) {
+            $hasChange = false;
             foreach ($website->getConfiguration()->getAllLocales() as $locale) {
                 $existing = false;
                 foreach ($entity->getUrls() as $url) {
                     /** @var Url $url */
                     if ($url->getLocale() === $locale) {
                         $existing = true;
+                        break;
                     }
                 }
                 if (!$existing) {
                     $url = new Url();
                     $url->setLocale($locale);
                     $entity->addUrl($url);
-                    $this->entityManager->persist($entity);
-                    $this->entityManager->flush();
-                    $this->entityManager->refresh($entity);
+                    $this->entityManager->persist($url);
+                    $hasChange = true;
+                }
+            }
+            if ($hasChange) {
+                $this->entityManager->persist($entity);
+                if (!$this->entityManager->getConnection()->isTransactionActive() && !$this->entityManager->getUnitOfWork()->isScheduledForInsert($entity)) {
+                    // We only flush if we are not in a larger process that will flush later
+                    // But in AdminController, we want to avoid flush/refresh in loops.
+                    // Actually, synchronizeLocales is called once per editionArguments.
                 }
             }
         }

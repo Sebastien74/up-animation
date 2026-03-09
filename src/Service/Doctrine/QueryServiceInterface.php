@@ -14,4 +14,6 @@ interface QueryServiceInterface
     public function findOneBy(string $classname, string $column, mixed $value): ?object;
 
     public function findBy(string $classname, string $column, mixed $value): array;
+
+    public function findFullEntity(int $id, string $classname): ?object;
 }

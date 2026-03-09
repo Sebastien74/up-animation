@@ -31,8 +31,8 @@ class IconType extends AbstractType
     {
         $this->translator = $this->coreLocator->translator();
         $this->entityManager = $this->coreLocator->em();
-        $website = $this->entityManager->getRepository(Website::class)->find($coreLocator->request()->get('website'));
-        $this->icons = $this->entityManager->getRepository(Icon::class)->findBy(['configuration' => $website->getConfiguration()]);
+        $website = $this->coreLocator->website()?->entity;
+        $this->icons = $website ? $website->getConfiguration()->getIcons()->toArray() : [];
     }
 
     public function configureOptions(OptionsResolver $resolver): void

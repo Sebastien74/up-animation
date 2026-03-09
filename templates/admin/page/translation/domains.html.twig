@@ -43,8 +43,10 @@
                 <a class="btn-app" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}">
                     <i class="icm-broom"></i><span>{{ "Vider le cache"|trans|raw }}</span>
                 </a>
-                {{ render_esi(path("admin_translation_new", {website: websiteId()})) }}
-                {{ render_esi(path('admin_intls_import', {website: websiteId()} )) }}
+                {%- set newTranslationForm = render_esi(path("admin_translation_new", {website: websiteId()})) -%}
+                {%- set importTranslationModal = render_esi(path('admin_intls_import', {website: websiteId()} )) -%}
+                {{ newTranslationForm|raw }}
+                {{ importTranslationModal|raw }}
             {%- endif -%}
         </div>
     {%- endif -%}
@@ -91,8 +93,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {%- set singularTrans = 'singular'|trans([], 'admin') -%}
                             {%- for entity in pagination -%}
-                                {%- set name = 'singular'|trans([], entity.name) and 'singular'|trans([], entity.name) != 'singular'
+                                {%- set name = 'singular'|trans([], entity.name) and 'singular'|trans([], entity.name) != singularTrans
                                     ? 'singular'|trans([], entity.name) : entity.adminName -%}
                                 {%- if name != '_undefined' -%}
                                     <tr class="{% if loop.index is even %}even{% else %}odd{% endif %}">

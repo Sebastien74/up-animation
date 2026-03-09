@@ -28,11 +28,10 @@ class AppColorType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly WebsiteRepository    $websiteRepository
     )
     {
         $this->translator = $this->coreLocator->translator();
-        $this->website = $this->websiteRepository->find($this->coreLocator->requestStack()->getMainRequest()->get('website'));
+        $this->website = $this->coreLocator->website()?->entity;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -69,7 +69,10 @@ class WebsiteLocalesType extends AbstractType
      */
     private function getLocales(): array
     {
-        $website = $this->entityManager->getRepository(Website::class)->find($this->requestStack->getMainRequest()->get('website'));
+        $website = $this->coreLocator->website()?->entity;
+        if (!$website) {
+            return [];
+        }
         $configuration = $website->getConfiguration();
         $defaultLocale = $configuration->getLocale();
         $locales[Languages::getName($defaultLocale)] = $defaultLocale;
