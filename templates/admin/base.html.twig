@@ -25,6 +25,7 @@
         {%- set adminInformation = website.information -%}
         {%- set defaultTitle = isCustomPath and adminInformation.title is defined and adminInformation.title ? adminInformation.title : "Up Animations CMS"|trans|striptags -%}
         {%- set cmsAuthorTitle = 'Up Animations!'|trans -%}
+        {%- set cssTheme = (app.request.cookies.get('ADMIN_LIGHT_THEME') or masterRequest().get('admin_light_theme')) ? 'dark' : 'light' -%}
 
         <!-- Metas -->
         <meta charset="utf-8"/>
@@ -57,11 +58,7 @@
         </title>
 
         {%- block stylesheets -%}
-            {%- if (app.request.cookies.get('ADMIN_LIGHT_THEME') or masterRequest().get('admin_light_theme')) -%}
-                {{ encore_entry_link_tags('admin-vendor-dark', null, 'admin') }}
-            {%- else -%}
-                {{ encore_entry_link_tags('admin-vendor-default', null, 'admin') }}
-            {%- endif -%}
+            {{ encore_entry_link_tags('admin-'~cssTheme, null, 'admin') }}
             <link rel="preload" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" as="style" onload="this.onload=null;this.rel='stylesheet'" nonce="{{ csp_nonce() }}">
             <noscript><link rel="stylesheet" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" nonce="{{ csp_nonce() }}"></noscript>
             {%- if displayFrontFonts is defined and displayFrontFonts -%}
@@ -130,7 +127,7 @@
                     {{ encore_entry_script_tags(webpackEntry, null,  webpackName, {defer: true}) }}
                 {%- endfor -%}
             {%- endif -%}
-            {{ encore_entry_script_tags('admin-vendor-default', null, 'admin', {defer: true}) }}
+            {{ encore_entry_script_tags('admin-vendor', null, 'admin', {defer: true}) }}
         {%- endblock -%}
 
         {%- if app.request.cookies.get('IS_IMPERSONATOR_FRONT') -%}

@@ -1,0 +1,188 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Created on : 2020-11-21, 10:20:46 AM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    LIGHT THEME :
+    ===============
+
+    1 ) Core Imports
+    2 ) Core
+        a - Color
+        b - Typography
+        c - Card
+        d - Modal
+        e - Link
+    3 ) Custom
+    4 ) Import Vendor
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Core Imports
+-----------------------------------*/
+
+@import '../variables';
+
+/*-----------------------------------
+   2 ) Core
+-----------------------------------*/
+
+/*-- a - Color --*/
+
+$white: #fff !global;
+$black: #000 !global;
+
+$gray-50: #f8f9fa !global;
+$gray-100: #f1f3f5 !global;
+$gray-200: #e9ecef !global;
+$gray-300: #dee2e6 !global;
+$gray-400: #ced4da !global;
+$gray-500: #adb5bd !global;
+$gray-600: #6c757d !global;
+$gray-700: #495057 !global;
+$gray-800: #343a40 !global;
+$gray-900: #212529 !global;
+
+$primary: #6f42c1 !global;
+$theme-color: $primary !global;
+$body-shadow: transparentize($theme-color, .8) !global;
+$theme-color-alt: $theme-color !global;
+$info-darken: $theme-color !global;
+$info-darken-dark: #1a1b21 !global;
+
+// Theme Semantic Variables Overrides for Light Theme (High Contrast)
+$theme-bg: $gray-50 !global;
+$theme-bg-alt: $white !global;
+$theme-surface: $white !global;
+$theme-surface-alt: $gray-100 !global;
+
+$theme-text: #1a1a1a !global; // Darker text for better contrast
+$theme-text-muted: #4a4a4a !global;
+$theme-text-light: #6c757d !global;
+
+$theme-border: #d1d1d1 !global;
+$theme-border-alt: #adb5bd !global;
+
+$theme-sidebar-bg: #212529 !global; // Dark sidebar even in light theme is common and provides good contrast
+$theme-sidebar-text: #dee2e6 !global;
+$theme-sidebar-icons: #adb5bd !global;
+
+$theme-card-bg: $white !global;
+$theme-card-cap-bg: $gray-100 !global;
+
+$theme-modal-bg: $white !global;
+$theme-modal-border: $gray-300 !global;
+
+$theme-table-striped-bg: rgba($black, 0.03) !global;
+$theme-table-hover-bg: rgba($black, 0.05) !global;
+
+$theme-input-bg: $white !global;
+$theme-input-border: #ced4da !global;
+$theme-input-text: $theme-text !global;
+$theme-input-placeholder: $gray-500 !global;
+
+$theme-breadcrumb-bg: transparent !global;
+$theme-breadcrumb-text: $theme-text-muted !global;
+
+$theme-pagination-bg: $white !global;
+$theme-pagination-text: $theme-text !global;
+$theme-pagination-border: $gray-300 !global;
+$theme-pagination-active-bg: $primary !global;
+$theme-pagination-active-text: $white !global;
+
+$theme-colors: (
+    primary: $primary,
+    secondary: $gray-600,
+    success: #198754,
+    info: #0dcaf0,
+    warning: #ffc107,
+    danger: #dc3545,
+    light: $gray-100,
+    dark: $gray-900,
+    white: $white
+);
+
+$alert-colors: () !global;
+$alert-colors: map-merge((
+    "primary": ('bg': $white, 'color': $primary, 'border': $primary, 'icon-color': $white, 'icon-bg': $primary, 'font-size': $font-size-base),
+    "secondary": ('bg': $white, 'color': $secondary, 'border': $secondary, 'icon-color': $white, 'icon-bg': $secondary, 'font-size': $font-size-base),
+    "success": ('bg': $white, 'color': $success, 'border': $success, 'icon-color': $white, 'icon-bg': $success, 'font-size': $font-size-base),
+    "info": ('bg': $white, 'color': $info, 'border': $info, 'icon-color': $white, 'icon-bg': $info, 'font-size': $font-size-base),
+    "warning": ('bg': $white, 'color': $warning, 'border': $warning, 'icon-color': $white, 'icon-bg': $warning, 'font-size': $font-size-base),
+    "danger": ('bg': $white, 'color': $danger, 'border': $danger, 'icon-color': $white, 'icon-bg': $danger, 'font-size': $font-size-base),
+), $alert-colors);
+
+:root {
+    --fc-button-bg-color: $primary;
+}
+
+/*-- b - Typography --*/
+
+$font-family: 'Poppins', sans-serif !default;
+$font-family-sans-serif: $font-family !global;
+$headings-font-family: $font-family !global;
+
+/*-- c - Card --*/
+
+$card-cap-bg: $theme-card-cap-bg !global;
+$card-cap-color: $theme-text !global;
+$card-cap-btn-outline: $primary !global;
+$card-cap-bg-subtitle: $theme-card-cap-bg !global;
+$card-cap-color-subtitle: $theme-text-muted !global;
+
+/*-- d - Modal --*/
+
+$modal-border-color: $theme-modal-border !global;
+$modal-border-btn: $theme-modal-border !global;
+
+/*-- e - Link --*/
+
+$link-hover-color: darken($primary, 15%) !global;
+$nav-pills-link-active-color: $white !global;
+$nav-pills-link-active-bg: $primary !global;
+$nav-link-color: $primary !global;
+$pagination-color: $theme-text !global;
+$pagination-hover-color: $primary !global;
+$pagination-active-bg: $primary !global;
+$pagination-active-border-color: $primary !global;
+$dropdown-link-active-bg: $primary !global;
+$dropdown-link-active-color: $white !global;
+
+/*-----------------------------------
+   3 ) Custom
+-----------------------------------*/
+
+#index-search-form {
+
+    ::placeholder {
+        color: $gray-500;
+        opacity: .7;
+    }
+
+    #index_search_search {
+        color: $theme-text;
+    }
+
+    #index-search-submit svg {
+        fill: $primary;
+    }
+}
+
+.card-subtitle {
+    .custom-control-label::before {
+        border-color: $theme-border !important;
+    }
+}
+
+.badge-danger {
+    background-color: $danger !important;
+}
+
+/*-----------------------------------
+   4 ) Import Vendor
+-----------------------------------*/
+
+@import '../vendor';

@@ -75,14 +75,8 @@ class AdvertisingController extends AdminController
         $externalModules = $jsonDecoder->decode($file->getContent(), 'json');
 
         foreach ($externalModules as $slug => $config) {
-            $existing = false;
-            foreach ($modules as $module) {
-                if ($slug === $module->getSlug()) {
-                    $existing = true;
-                    break;
-                }
-            }
-            if (!$existing) {
+            $module = array_find($modules, fn($m) => $slug === $m->getSlug());
+            if (!$module) {
                 $module = new Module();
                 $module->setAdminName($config->title);
                 $module->setSlug($slug);
@@ -91,12 +85,12 @@ class AdvertisingController extends AdminController
                 $modules[] = $module;
                 ++$position;
             }
-            if (!empty($module)) {
+            if ($module) {
                 $module->setInAdvert(true);
                 if ($module->getIntls()->isEmpty()) {
                     foreach ($website->configuration->allLocales as $locale) {
                         $intlData = $this->coreLocator->metadata($module, 'intls');
-                        $intl = new ($intlData->targetEntity)();
+                        $intl = new $intlData->targetEntity();
                         $intl->setLocale($locale);
                         $intl->setWebsite($website->entity);
                         $module->addIntl($intl);

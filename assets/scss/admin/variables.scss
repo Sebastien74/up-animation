@@ -71,7 +71,7 @@ $dark: lighten($black, 5%) !global;
 $primary: #6f42c1 !default;
 
 $body-bg: $gray-100 !global;
-$theme-color: $primary !global;
+$theme-color: $primary !default;
 $body-shadow: transparentize($theme-color, .8) !global;
 $theme-color-alt: $theme-color !global;
 $info-darken: $theme-color !global;
