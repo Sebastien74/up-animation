@@ -25,7 +25,8 @@
         {%- set adminInformation = website.information -%}
         {%- set defaultTitle = isCustomPath and adminInformation.title is defined and adminInformation.title ? adminInformation.title : "Up Animations CMS"|trans|striptags -%}
         {%- set cmsAuthorTitle = 'Up Animations!'|trans -%}
-        {%- set cssTheme = (app.request.cookies.get('ADMIN_LIGHT_THEME') or masterRequest().get('admin_light_theme')) ? 'dark' : 'light' -%}
+        {%- set cssTheme = adminTheme() -%}
+        {%- set isDarkTheme = cssTheme == 'dark' -%}
 
         <!-- Metas -->
         <meta charset="utf-8"/>

@@ -38,7 +38,8 @@ class TimelineRepository extends ServiceEntityRepository
             ->leftJoin('t.website', 'w')
             ->leftJoin('t.steps', 's')
             ->leftJoin('s.intls', 'si')
-            ->addSelect('w', 's', 'si');
+            ->leftJoin('s.mediaRelations', 'smr')
+            ->addSelect('w', 's', 'si', 'smr');
 
         if (is_numeric($filter)) {
             $statement->andWhere('t.id = :id')

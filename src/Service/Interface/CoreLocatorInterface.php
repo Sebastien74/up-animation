@@ -47,6 +47,8 @@ interface CoreLocatorInterface
     public function schemeAndHttpHost(): ?string;
 
     public function locale(): ?string;
+    
+    public function adminTheme(): string;
 
     public function inFront(): bool;
 

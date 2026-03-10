@@ -121,6 +121,8 @@ class LayoutRuntime implements RuntimeExtensionInterface
         }
     }
 
+    private array $transitionsCache = [];
+
     /**
      * Get render block.
      *
@@ -133,7 +135,8 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $block = $options['block'];
         $seo = !empty($options['seo']) ? $options['seo'] : false;
         $entity = !empty($options['entity']) ? $options['entity'] : null;
-        $blockTemplate = $slugBlock = $block->getBlockType()->getSlug();
+        $blockType = $block->getBlockType();
+        $blockTemplate = $slugBlock = $blockType->getSlug();
         $configuration = $website->configuration;
         $websiteTemplate = $configuration->template;
         $mediasSizes = $zone->isStandardizeMedia() ? $this->mediasSizes($website, $zone, $this->coreLocator->request()->getLocale()) : [];
@@ -146,12 +149,16 @@ class LayoutRuntime implements RuntimeExtensionInterface
         }
 
         /** Get Block Transition[] */
-        $blockTransitions = [];
-        foreach ($configuration->transitions as $transition) {
-            if ($transition->activeForBlock && str_contains($transition->section, 'block-'.$blockTemplate)) {
-                $blockTransitions[$transition->slug] = $transition;
+        if (!isset($this->transitionsCache[$blockTemplate])) {
+            $blockTransitions = [];
+            foreach ($configuration->transitions as $transition) {
+                if ($transition->activeForBlock && str_contains($transition->section, 'block-'.$blockTemplate)) {
+                    $blockTransitions[$transition->slug] = $transition;
+                }
             }
+            $this->transitionsCache[$blockTemplate] = $blockTransitions;
         }
+        $blockTransitions = $this->transitionsCache[$blockTemplate];
 
         $thumbSlug = $block->isLarge() && 'title-header' === $slugBlock ? $slugBlock.'-large' : $slugBlock;
         $arguments = array_merge($options, (array) BlockModel::fromEntity($block, $this->coreLocator), [

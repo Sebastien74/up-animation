@@ -34,11 +34,12 @@
             <h2 class="title fw-400 mb-0">{{ pageTitle|raw }}</h2>
         </div>
         <div class="actions ms-auto d-flex align-items-center gap-2">
-            {%- set asLightTheme = (app.request.cookies.get('ADMIN_LIGHT_THEME') or masterRequest().get('admin_light_theme')) -%}
-            {%- set themeParam = asLightTheme ? 'admin_dark_theme' : 'admin_light_theme' -%}
-            {%- set themeLabel = asLightTheme ? "Thème sombre"|trans : "Thème clair"|trans -%}
-            {%- set themeIcon = asLightTheme ? 'moon' : 'sun' -%}
-            <a href="{{ '?'~themeParam~'=true' }}"
+            {%- set cssTheme = adminTheme() -%}
+            {%- set isDarkTheme = cssTheme == 'dark' -%}
+            {%- set themeParam = isDarkTheme ? 'admin_light_theme' : 'admin_dark_theme' -%}
+            {%- set themeLabel = isDarkTheme ? "Thème clair"|trans : "Thème sombre"|trans -%}
+            {%- set themeIcon = isDarkTheme ? 'sun' : 'moon' -%}
+            <a href="{{ replaceRequestParam(themeParam, '1') }}"
                aria-label="{{ themeLabel|striptags }}"
                data-bs-toggle="tooltip"
                data-bs-placement="bottom"

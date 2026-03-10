@@ -41,6 +41,7 @@ class MapRepository extends ServiceEntityRepository
             ->leftJoin('c.intls', 'ci')
             ->leftJoin('p.address', 'a')
             ->leftJoin('p.intls', 'pi')
+            ->leftJoin('p.phones', 'pp')
             ->andWhere('m.website = :website')
             ->setParameter('website', $website)
             ->addSelect('w')
@@ -48,7 +49,8 @@ class MapRepository extends ServiceEntityRepository
             ->addSelect('c')
             ->addSelect('ci')
             ->addSelect('a')
-            ->addSelect('pi');
+            ->addSelect('pi')
+            ->addSelect('pp');
 
         if (is_numeric($filter)) {
             $statement->andWhere('m.id = :id')

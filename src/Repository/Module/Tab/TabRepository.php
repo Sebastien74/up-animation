@@ -36,6 +36,7 @@ class TabRepository extends ServiceEntityRepository
     {
         $statement = $this->createQueryBuilder('t')
             ->leftJoin('t.website', 'w')
+            ->leftJoin('t.intls', 'ti')
             ->leftJoin('t.contents', 'c')
             ->leftJoin('c.intls', 'i')
             ->leftJoin('c.mediaRelations', 'mr')
@@ -43,6 +44,7 @@ class TabRepository extends ServiceEntityRepository
             ->andWhere('t.website = :website')
             ->setParameter('website', $website)
             ->addSelect('w')
+            ->addSelect('ti')
             ->addSelect('c')
             ->addSelect('i')
             ->addSelect('mr')

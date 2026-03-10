@@ -418,6 +418,7 @@ class CoreExtension extends AbstractExtension
             new TwigFunction('datetime', [CoreRuntime\AppRuntime::class, 'datetime']),
             new TwigFunction('countChars', [CoreRuntime\AppRuntime::class, 'countChars']),
             new TwigFunction('countCollection', [CoreRuntime\AppRuntime::class, 'countCollection']),
+            new TwigFunction('adminTheme', [CoreRuntime\AppRuntime::class, 'adminTheme']),
             new TwigFunction('inAdmin', [CoreRuntime\AppRuntime::class, 'inAdmin']),
             new TwigFunction('isUserBack', [CoreRuntime\AppRuntime::class, 'isUserBack']),
             new TwigFunction('isUserFront', [CoreRuntime\AppRuntime::class, 'isUserFront']),

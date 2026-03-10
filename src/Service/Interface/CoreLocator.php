@@ -210,7 +210,27 @@ class CoreLocator implements CoreLocatorInterface
      */
     public function inFront(): bool
     {
-        return $this->inAdmin() && !$this->inSecurity();
+        return !$this->inAdmin() && !$this->inSecurity();
+    }
+
+    /**
+     * To get ADMIN_THEME.
+     */
+    public function adminTheme(): string
+    {
+        $request = $this->request();
+        $theme = $request->cookies->get('ADMIN_THEME');
+
+        if (!$theme) {
+            $session = $request->hasSession() ? $request->getSession() : null;
+            $theme = $session?->get('ADMIN_THEME');
+        }
+
+        if ($theme !== 'light' && $theme !== 'dark') {
+            $theme = 'dark';
+        }
+
+        return $theme;
     }
 
     /**

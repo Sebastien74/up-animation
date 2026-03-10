@@ -220,10 +220,20 @@ class RequestListener
             }
         }
 
-        if ($this->request->query->get('admin_light_theme') || $this->request->query->get('admin_dark_theme')) {
-            $response = new RedirectResponse($this->request->getPathInfo());
-            $expire = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->modify('+365 days');
-            $response->headers->setCookie(Cookie::create('ADMIN_LIGHT_THEME', !empty($this->request->query->get('admin_light_theme')) ? '1' : '0', $expire));
+        if ($this->request->query->has('admin_light_theme') || $this->request->query->has('admin_dark_theme')) {
+
+            $status = $this->request->query->has('admin_dark_theme') ? 'dark' : 'light';
+            $expire = new \DateTime()->modify('+1 year');
+            $this->session?->set('ADMIN_THEME', $status);
+
+            $query = $this->request->query->all();
+            unset($query['admin_light_theme'], $query['admin_dark_theme']);
+            
+            $baseUrl = $this->request->getSchemeAndHttpHost() . $this->request->getBaseUrl() . $this->request->getPathInfo();
+            $redirectUrl = $query ? $baseUrl . '?' . http_build_query($query) : $baseUrl;
+
+            $response = new RedirectResponse($redirectUrl);
+            $response->headers->setCookie(new Cookie('ADMIN_THEME', $status, $expire, '/', null, false, true, false, 'lax'));
             $this->event->setResponse($response);
             return;
         }

@@ -37,7 +37,11 @@ class AgendaRepository extends ServiceEntityRepository
         $statement = $this->createQueryBuilder('a')
             ->leftJoin('a.website', 'w')
             ->leftJoin('a.periods', 'p')
-            ->addSelect('w', 'p');
+            ->leftJoin('p.information', 'pi')
+            ->leftJoin('pi.intls', 'pii')
+            ->leftJoin('a.intls', 'ai')
+            ->leftJoin('a.mediaRelations', 'amr')
+            ->addSelect('w', 'p', 'pi', 'pii', 'ai', 'amr');
 
         if (is_numeric($filter)) {
             $statement->andWhere('a.id = :id')

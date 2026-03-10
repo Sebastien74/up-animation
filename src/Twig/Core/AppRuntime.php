@@ -21,12 +21,12 @@ use Twig\Extension\RuntimeExtensionInterface;
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-class AppRuntime implements RuntimeExtensionInterface
+readonly class AppRuntime implements RuntimeExtensionInterface
 {
     /**
      * AppRuntime constructor.
      */
-    public function __construct(private readonly CoreLocatorInterface $coreLocator)
+    public function __construct(private CoreLocatorInterface $coreLocator)
     {
     }
 
@@ -453,19 +453,17 @@ class AppRuntime implements RuntimeExtensionInterface
      */
     public function replaceRequestParam(string $param, mixed $newValue): string
     {
-        $uri = $this->coreLocator->request()->getUri();
-
-        foreach ($_GET as $name => $value) {
-            if ($name === $param) {
-                $uri = str_replace($name.'='.$value, $param.'='.$newValue, $uri);
-            }
+        $request = $this->coreLocator->request();
+        $query = $request->query->all();
+        if (str_contains($param, 'light')) {
+            unset($query['admin_dark_theme']);
+        } elseif (str_contains($param, 'dark')) {
+            unset($query['admin_light_theme']);
         }
+        $query[$param] = $newValue;
+        $baseUrl = $request->getSchemeAndHttpHost() . $request->getBaseUrl() . $request->getPathInfo();
 
-        if (!str_contains($uri, $param.'=')) {
-            $uri = !str_contains($uri, '?') ? $uri.'?'.$param.'='.$newValue : $uri.'&'.$param.'='.$newValue;
-        }
-
-        return $uri;
+        return $baseUrl . '?' . http_build_query($query);
     }
 
     /**
@@ -493,6 +491,14 @@ class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
+     * To get ADMIN_THEME.
+     */
+    public function adminTheme(): string
+    {
+        return $this->coreLocator->adminTheme();
+    }
+
+    /**
      * Get current Request Client IP.
      */
     public function currentIP(): ?string
@@ -501,7 +507,7 @@ class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Set entities tree.
+     * Set an entities tree.
      */
     public function entityTree(array $entities): array
     {
