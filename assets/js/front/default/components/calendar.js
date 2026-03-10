@@ -1,5 +1,3 @@
-import '../../../../scss/front/default/components/_calendar.scss';
-
 import route from "../../../vendor/components/routing";
 import allLocales from '@fullcalendar/core/locales-all';
 import {Calendar} from '@fullcalendar/core';
@@ -14,9 +12,12 @@ import listPlugin from '@fullcalendar/list';
  */
 export default function () {
 
-    let entitiesData = document.getElementById('entities-data')
-    let agenda = entitiesData.dataset.agenda
     let calendarEl = document.getElementById('calendar-render')
+    if (calendarEl) {
+        import('../../../../scss/front/default/components/_calendar.scss');
+    }
+
+    let entitiesData = document.getElementById('entities-data')
     let locale = document.documentElement.getAttribute('lang')
     let card = document.getElementById('agenda-info-card')
     let preloader = document.getElementById('agenda-card-preloader')

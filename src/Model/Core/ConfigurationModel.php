@@ -177,43 +177,43 @@ final class ConfigurationModel extends BaseModel
      */
     private static function modules(Configuration $configuration): array
     {
-        $dirname = self::$coreLocator->formatDirname(self::$coreLocator->cacheDir().'/modules-configuration-'.$configuration->getId().'.cache.json');
+        $currentUser = self::$coreLocator->tokenStorage()->getToken() ? self::$coreLocator->tokenStorage()->getToken()->getUser() : null;
+        $userId = $currentUser instanceof User ? (string) $currentUser->getId() : 'anonymous';
+        $dirname = self::$coreLocator->formatDirname(self::$coreLocator->cacheDir().'/modules-configuration-'.$configuration->getId().'-'.$userId.'.cache.json');
         $filesystem = new Filesystem();
         if ($filesystem->exists($dirname)) {
             return (array) json_decode(file_get_contents($dirname));
         }
 
-        if (isset(self::$cache['modules'][$configuration->getId()])) {
-            return self::$cache['modules'][$configuration->getId()];
+        if (isset(self::$cache['modules'][$configuration->getId()][$userId])) {
+            return self::$cache['modules'][$configuration->getId()][$userId];
         }
 
         $modulesActives = [];
         $isAdmin = self::$coreLocator->request() && preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', self::$coreLocator->request()->getUri());
-        $currentUser = self::$coreLocator->tokenStorage()->getToken() ? self::$coreLocator->tokenStorage()->getToken()->getUser() : null;
         $roles = $currentUser ? $currentUser->getRoles() : [];
         $modulesDb = self::$coreLocator->em()->getRepository(Module::class)->findAll();
         $isInternal = $currentUser instanceof User && in_array('ROLE_INTERNAL', $roles);
 
-        $roles = $currentUser ? $currentUser->getRoles() : [];
         foreach ($configuration->getModules() as $module) {
             $modulesActives[$module->getSlug()] = !$isAdmin || in_array($module->getRole(), $roles);
         }
 
         foreach ($modulesDb as $module) {
             if (!empty($modulesActives[$module->getSlug()])) {
-                self::$cache['modules'][$configuration->getId()][$module->getSlug()] = $modulesActives[$module->getSlug()];
+                self::$cache['modules'][$configuration->getId()][$userId][$module->getSlug()] = $modulesActives[$module->getSlug()];
             }
         }
 
-        self::$cache['modules'][$configuration->getId()]['delete'] = $isInternal || in_array('ROLE_DELETE', $roles);
-        self::$cache['modules'][$configuration->getId()]['gdpr'] = isset($modulesActives['gdpr']);
+        self::$cache['modules'][$configuration->getId()][$userId]['delete'] = $isInternal || in_array('ROLE_DELETE', $roles);
+        self::$cache['modules'][$configuration->getId()][$userId]['gdpr'] = isset($modulesActives['gdpr']);
 
-        ksort(self::$cache['modules'][$configuration->getId()]);
+        ksort(self::$cache['modules'][$configuration->getId()][$userId]);
 
         $fp = fopen($dirname, 'w');
-        fwrite($fp, json_encode(self::$cache['modules'][$configuration->getId()], JSON_PRETTY_PRINT));
+        fwrite($fp, json_encode(self::$cache['modules'][$configuration->getId()][$userId], JSON_PRETTY_PRINT));
         fclose($fp);
 
-        return self::$cache['modules'][$configuration->getId()];
+        return self::$cache['modules'][$configuration->getId()][$userId];
     }
 }

@@ -262,9 +262,6 @@ class Uploader
                     break;
             }
 
-            imagedestroy($sourceImage);
-            imagedestroy($newImage);
-
             $this->coreLocator->requestStack()->getSession()->getFlashBag()->add('warning', $this->coreLocator->translator()->trans('Votre image %filename% a été redimensionnée car elle était trop grande.', [
                 '%filename%' => $this->filename,
             ], 'admin'));
@@ -306,7 +303,6 @@ class Uploader
 
         // Re-encode: this drops EXIF metadata (including Orientation), which is what we want here.
         imagejpeg($img, $absolutePath, 90);
-        imagedestroy($img);
     }
 
     /**
@@ -324,7 +320,6 @@ class Uploader
             $h = imagesy($im);
             $flipped = imagecreatetruecolor($w, $h);
             imagecopyresampled($flipped, $im, 0, 0, $w - 1, 0, $w, $h, -$w, $h);
-            imagedestroy($im);
             return $flipped;
         };
 
@@ -339,7 +334,6 @@ class Uploader
             $h = imagesy($im);
             $flipped = imagecreatetruecolor($w, $h);
             imagecopyresampled($flipped, $im, 0, 0, 0, $h - 1, $w, $h, $w, -$h);
-            imagedestroy($im);
 
             return $flipped;
         };

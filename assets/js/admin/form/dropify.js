@@ -1,9 +1,3 @@
-import 'dropify/dist/css/dropify.css';
-import '../../../scss/admin/lib/sweetalert.scss';
-
-import "dropify";
-import '../lib/sweetalert/sweetalert.min';
-
 import route from "../../vendor/components/routing";
 
 /**
@@ -19,6 +13,9 @@ export default function () {
     if (dropifyElements.length === 0) {
         return;
     }
+
+    import('dropify/dist/css/dropify.css');
+    import('../../../scss/admin/lib/sweetalert.scss');
 
     let $dropifyElements = jQuery(dropifyElements);
     let drEvent = $dropifyElements.dropify({

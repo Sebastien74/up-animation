@@ -36,6 +36,11 @@ AddDefaultCharset UTF-8
 	    RewriteRule ^ /denied.php [L,R=301]
 	</FilesMatch>
 
+    # If asset exists in /build/, let it through directly without security.php (performance & avoiding MIME type issues)
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteCond %{REQUEST_URI} ^/build/ [NC]
+    RewriteRule ^ - [L]
+
     RewriteCond %{REQUEST_URI} \.(jpe?g|svg|gif|png|pdf|docx|xlsx|css|js)$ [NC]
     RewriteRule ^build/back/ security.php [QSA,L]
 

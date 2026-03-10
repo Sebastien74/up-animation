@@ -1,5 +1,5 @@
 import resetModal from "../../vendor/components/reset-modal";
-import select2 from '../../vendor/plugins/select2'
+import select2 from '../../vendor/plugins/select2';
 
 /**
  * Duplicate form
@@ -42,9 +42,11 @@ export default function () {
 
                 const modalEl = document.getElementById(modal ? modal.getAttribute('id') : '');
 
-                if (modalEl && typeof bootstrap !== 'undefined') {
-                    const bsModal = new bootstrap.Modal(modalEl);
-                    bsModal.show();
+                if (modalEl) {
+                    import('../bootstrap/dist/modal').then(({default: Modal}) => {
+                        const bsModal = new Modal(modalEl);
+                        bsModal.show();
+                    }).catch(error => console.error(error.message));
                 }
                 if (loader) loader.classList.toggle('d-none');
 

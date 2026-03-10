@@ -15,7 +15,7 @@
  *  10 - Counter
  *  11 - Search in index
  *  12 - Entities status switcher
- *  13 - Loader on submit
+ *  13 - Loader on submitting
  *  14 - Input label btn
  *  15 - Date Picker
  *  16 - Btn toggle
@@ -120,7 +120,7 @@ if (document.querySelector('.entity-switcher-status')) {
     }).catch(error => console.error(error.message));
 }
 
-/** 13 - Loader on submit */
+/** 13 - Loader on submitting */
 document.body.addEventListener('click', function (e) {
     const btn = e.target.closest("button[type='submit']");
     if (!btn) return;

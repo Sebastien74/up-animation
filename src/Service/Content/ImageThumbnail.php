@@ -837,7 +837,6 @@ class ImageThumbnail implements ImageThumbnailInterface
                             } else {
                                 $function($image, $newDirname, $quality);
                             }
-                            imagedestroy($image);
                             // Si la version générée est plus lourde que la source, préférer la source
                             if ($this->filesystem->exists($copyDirname) && $this->filesystem->exists($newDirname)
                                 && @filesize($newDirname) !== false && @filesize($copyDirname) !== false

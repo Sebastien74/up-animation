@@ -1,11 +1,8 @@
-import '../../../../../scss/front/default/components/news/_carousel-multiple.scss';
-
-/**
- * News vendor
- *
- * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
- */
 export default function (body, carousels) {
+
+    if (carousels.length > 0) {
+        import('../../../../../scss/front/default/components/news/_carousel-multiple.scss');
+    }
 
     carousels.each(function () {
 

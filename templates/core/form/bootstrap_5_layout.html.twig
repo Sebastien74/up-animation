@@ -466,7 +466,8 @@
             {%- set widget_attr = {attr: {'aria-describedby': id~"_help"}} -%}
         {%- endif -%}
         {%- set group_size = attr['data-group'] is defined and attr['data-group'] ? attr['data-group'] : 'col-12' -%}
-        {%- set row_attr_class = row_attr.class is defined ? row_attr.class|trim~' '~group_size : group_size -%}
+        {%- set row_attr_class = row_attr.class is defined and 'col-' not in row_attr.class
+            ? row_attr.class|trim~' '~group_size : (row_attr.class is defined ? row_attr.class : group_size) -%}
         {%- set row_class = 'mb-' not in row_attr_class ? row_attr_class~' mb-3' : row_attr_class -%}
         {%- set allowed_for_floating = ['text', 'choice', 'single_text', 'integer', 'number'] -%}
         {%- set field_display = display is defined ? display : null -%}

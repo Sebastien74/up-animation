@@ -1,24 +1,12 @@
-import '../../../scss/admin/lib/dataTables.bootstrap5.scss';
-import 'datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css';
-// import 'datatables.net-buttons/js/buttons.flash.min';
-
-const jsZip = require('jszip');
-const pdfMake = require('pdfmake/build/pdfmake.js');
-const pdfFonts = require('pdfmake/build/vfs_fonts.js');
-
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-window.JSZip = jsZip;
-
-import '../lib/dataTables.bootstrap5.js';
-import 'datatables.net-buttons/js/buttons.html5.min';
-import 'datatables.net-buttons/js/buttons.print.min';
-
-/**
- * DataTable
- *
- * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
- */
 export default function () {
+
+    let tables = document.querySelectorAll('body .data-table');
+    if (tables.length === 0) {
+        return;
+    }
+
+    import('../../../scss/admin/lib/dataTables.bootstrap5.scss');
+    import('datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css');
 
     /**
      * DataTable internationalization
@@ -50,8 +38,6 @@ export default function () {
             }
         };
     };
-
-    let tables = document.querySelectorAll('body .data-table');
 
     tables.forEach(function (tableEl) {
 

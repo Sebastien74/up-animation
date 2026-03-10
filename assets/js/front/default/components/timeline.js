@@ -1,8 +1,5 @@
-import '../../../../scss/front/default/components/_timeline.scss';
-
-/**
- * Timeline
- *
- * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
- */
-export default function () {}
+export default function () {
+    if (document.querySelector('.timeline-container')) {
+        import('../../../../scss/front/default/components/_timeline.scss');
+    }
+}

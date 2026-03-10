@@ -1,5 +1,5 @@
-import '../../../scss/admin/pages/icons-library.scss';
 import route from "../../vendor/components/routing";
+import '../../../scss/admin/pages/icons-library.scss';
 
 const body = document.body;
 

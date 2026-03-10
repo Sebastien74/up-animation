@@ -1,9 +1,10 @@
-import '../../../scss/admin/lib/sweetalert.scss';
-import '../lib/sweetalert/sweetalert.min';
-
 export default function () {
 
     let body = document.body;
+
+    if (body.querySelector('.index-container')) {
+        import('../../../scss/admin/lib/sweetalert.scss');
+    }
 
     document.addEventListener('DOMContentLoaded', function () {
 

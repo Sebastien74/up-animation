@@ -40,9 +40,9 @@ class ServiceController extends AdminController
         methods: 'GET')]
     public function generateCode(Request $request, SeoService $seoService, ?Url $url = null): JsonResponse
     {
-        $string = $request->get('string');
-        $classname = $request->get('classname');
-        $entityId = $request->get('entityId');
+        $string = $request->query->get('string');
+        $classname = $request->query->get('classname');
+        $entityId = $request->query->get('entityId');
 
         if (!$url instanceof Url && 'undefined' === $string) {
             return new JsonResponse(['code' => '']);
@@ -56,7 +56,7 @@ class ServiceController extends AdminController
             $request->getSession()->set('_locale', $url->getLocale());
             $entity = $this->coreLocator->em()->getRepository(urldecode($classname))->find($entityId);
             $seo = $seoService->execute($url, $entity, $url->getLocale());
-            $string = !$string && is_array($seo) && !empty($seo['titleH1']) ? $seo['titleH1'] : (!$string && is_array($seo) && !empty($seo['title']) ? $seo['title'] : $string);
+            $string = is_array($seo) && !empty($seo['titleH1']) ? $seo['titleH1'] : (is_array($seo) && !empty($seo['title']) ? $seo['title'] : $string);
             $request->setLocale($url->getWebsite()->getConfiguration()->getLocale());
             $request->getSession()->set('_locale', $url->getWebsite()->getConfiguration()->getLocale());
         }

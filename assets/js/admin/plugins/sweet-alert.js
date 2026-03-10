@@ -1,12 +1,11 @@
-import '../../../scss/admin/lib/sweetalert.scss';
-import '../lib/sweetalert/sweetalert.min';
-
 /**
  * On delete alert
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 export default function (e, el) {
+
+    import('../../../scss/admin/lib/sweetalert.scss');
 
     let body = document.body;
     let trans = document.getElementById('data-translation');

@@ -248,20 +248,30 @@
 //    }
 //}
 //
-//#medias-library-modal {
-//
-//    #search-medias-form {
-//
-//        min-width: 300px;
-//        max-width: 40%;
-//        margin-bottom: 15px;
-//
-//        .input-group,
-//        .form-control {
-//            height: 45px;
-//        }
-//    }
-//
+
+#medias-library-modal {
+
+    .edit-medias-btns {
+        display: none !important;
+    }
+
+    #search-medias-form {
+        min-width: 300px;
+        max-width: 40%;
+    }
+
+    .media-selector {
+        border: none !important;
+    }
+
+    .inner {
+        position: relative;
+    }
+
+    #medias-results-container {
+        justify-content: center;
+    }
+
 //    .file-data-wrap .wrap {
 //        .btn {
 //            display: none !important;
@@ -378,38 +388,54 @@
 //        margin-top: -3rem;
 //    }
 //
-//    .file {
-//
-//        .btn {
-//            display: none !important;
-//        }
-//
-//        .file-data {
-//            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0) !important;
-//            transition: all .1s !important;
-//            padding: 3px !important;
-//        }
-//
-//        &.active {
-//
-//            .file-data {
-//
-//                box-shadow: 0 0 10px 0 rgba(0, 0, 0, .8) !important;
-//                transition: all .1s;
-//                border-radius: $card-border-radius;
-//                background: white;
-//
-//                .check-media {
-//
-//                    display: inline-block !important;
-//
-//                    i {
-//                        transform: initial !important;
-//                    }
-//                }
-//            }
-//        }
-//    }
+    .file {
+
+        cursor: pointer;
+
+        label {
+            cursor: pointer;
+        }
+
+        //.btn {
+        //    display: none !important;
+        //}
+        //
+        //.file-data {
+        //    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0) !important;
+        //    transition: all .1s !important;
+        //    padding: 3px !important;
+        //}
+
+        &.active {
+
+            .file-data {
+
+                //box-shadow: 0 0 10px 0 rgba(0, 0, 0, .8) !important;
+                //transition: all .1s;
+                //border-radius: $card-border-radius;
+                //background: white;
+
+                .check-media {
+
+                    display: inline-flex !important;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    align-items: center;
+                    justify-content: center;
+                    background: rgba(0, 0, 0, .5);
+                    border-radius: $border-radius;
+
+                    i {
+                        font-size: 35px;
+                        opacity: .7;
+                    }
+                }
+            }
+        }
+    }
 //
 //    #save-file-library {
 //        padding: 10px 45px;
@@ -437,7 +463,7 @@
 //            transition: all .3s ease-in-out;
 //        }
 //    }
-//}
+}
 //
 ///*-----------------------------------
 //   3 ) Modal Edition

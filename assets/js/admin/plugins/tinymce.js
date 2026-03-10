@@ -11,6 +11,18 @@ export function refreshTinymce() {
         if (tinymceEditor) {
             try {
                 tinymceEditor.save();
+                /** Force to close toolbar overflow by clicking the button if it's open */
+                document.querySelectorAll('.tox-tbtn--opened, .tox-tbtn--enabled[aria-expanded="true"]').forEach(function (button) {
+                    button.click();
+                });
+                /** Handle other open popups/menus that might not be closed by the command */
+                document.querySelectorAll('.tox-menu, .tox-popover, .tox-dialog-wrap, .tox-toolbar__overflow').forEach(function (el) {
+                    el.style.display = 'none';
+                });
+                tinymceEditor.focus();
+                if (typeof tinymceEditor.nodeChanged === 'function') {
+                    tinymceEditor.nodeChanged();
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -264,9 +276,30 @@ export function tinymcePlugin() {
                         });
 
                         const runAccessibility = () => accessibilityFields(tinymceEl, editor);
+
+                        const closePopups = () => {
+                            try {
+                                /** Force to close toolbar overflow by clicking the button if it's open */
+                                document.querySelectorAll('.tox-tbtn--opened, .tox-tbtn--enabled[aria-expanded="true"]').forEach(function (button) {
+                                    button.click();
+                                });
+                                /** Handle other open popups/menus that might not be closed by the command */
+                                document.querySelectorAll('.tox-menu, .tox-popover, .tox-dialog-wrap, .tox-toolbar__overflow').forEach(function (el) {
+                                    el.style.display = 'none';
+                                });
+                                if (typeof tinymceEl.nodeChanged === 'function') {
+                                    tinymceEl.nodeChanged();
+                                }
+                            } catch (e) {}
+                        };
+
                         tinymceEl.on('input', runAccessibility);       // pour la frappe
                         tinymceEl.on('NodeChange', runAccessibility);  // pour les modifications structurelles
-                        tinymceEl.on('SetContent', runAccessibility);  // lors du chargement initial (collage HTML, chargement AJAX)
+                        tinymceEl.on('SetContent', () => {
+                            runAccessibility();
+                            closePopups();
+                        });
+                        tinymceEl.on('CloseWindow', closePopups);// lors du chargement initial (collage HTML, chargement AJAX)
                         tinymceEl.on('init', runAccessibility);        // déclenche à l’ouverture
                         tinymceEl.on('LoadContent', runAccessibility); // Bonus : appel initial après le rendu
 
@@ -280,7 +313,7 @@ export function tinymcePlugin() {
                                         type: 'menuitem',
                                         text: name,
                                         onAction: function () {
-                                            tinymceEl.execCommand('FormatBlock', false, name);
+                                            tinymceEl.formatter.apply(name);
                                         }
                                     });
                                 });

@@ -1,5 +1,3 @@
-import '../../../../../scss/front/default/components/form/_steps-form.scss';
-
 import {hideLoader, displayLoader} from "../loader";
 import removeErrors from '../../../../vendor/components/remove-errors';
 import {scrollToEL} from "../../functions";
@@ -10,6 +8,10 @@ import {scrollToEL} from "../../functions";
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 export default function () {
+
+    if (document.querySelector('.steps-form-container')) {
+        import('../../../../../scss/front/default/components/form/_steps-form.scss');
+    }
 
     function handleChange(event) {
         const input = event.currentTarget;

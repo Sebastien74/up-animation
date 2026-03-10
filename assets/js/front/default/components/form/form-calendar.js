@@ -1,15 +1,13 @@
-import '../../../../../scss/front/default/components/form/_form-calendar.scss';
-
-const Choices = require("choices.js")
-
-/**
- * Form calendar
- *
- * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
- */
 export default function (event = null, referForm = null) {
 
     let formContainer = document.querySelectorAll('.form-container')
+    if (formContainer.length === 0) {
+        return;
+    }
+
+    import('../../../../../scss/front/default/components/form/_form-calendar.scss');
+
+    const Choices = require("choices.js")
     let trans = document.getElementById('data-translation')
 
     let registerForm = null

@@ -4,14 +4,12 @@
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 
-import '../lib/sweetalert/sweetalert.min';
-import '../../../scss/admin/lib/sweetalert.scss';
-
 let buttonToClear = document.getElementById('clear-thumbs-btn');
 let buttonGenerate = document.getElementById('generate-btn');
 let loader = document.getElementById('main-preloader');
 
 if (buttonToClear) {
+    import('../../../scss/admin/lib/sweetalert.scss');
 
     let progressAction = function (progressCard, progressBar, counterWrap, progress, percent, filename = null) {
         if (filename) {

@@ -13,6 +13,10 @@ export default function (Routing, e, el) {
     let options = el instanceof HTMLElement ? JSON.parse(el.dataset.options || '{}') : el.data('options');
     let files = mediasModal ? mediasModal.querySelectorAll('.file.active') : [];
     let type = mediasModal ? mediasModal.dataset.type : null;
+    if (!type) {
+        let saveBtn = body.querySelector('#save-file-library');
+        type = saveBtn ? saveBtn.dataset.type : null;
+    }
 
     let addMedia = function ({file, body, options, type, media, src, mediasModal}) {
 

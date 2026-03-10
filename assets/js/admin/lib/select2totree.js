@@ -1,10 +1,5 @@
-import '../../../scss/admin/lib/select2totree.css';
-
-/*!
- * Select2-to-Tree 1.1.1
- * https://github.com/clivezhg/select2-to-tree
- */
 (function ($) {
+    import('../../../scss/admin/lib/select2totree.css');
 	$.fn.select2ToTree = function (options) {
 		var opts = $.extend({}, options);
 

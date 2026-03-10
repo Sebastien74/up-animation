@@ -23,6 +23,10 @@ export default function (e, el) {
     let mediasList = body.querySelector('#medias-results');
     let mediasModal = body.querySelector('#medias-library-modal');
     let type = mediasModal ? mediasModal.dataset.type : null;
+    if (!type) {
+        let saveBtn = body.querySelector('#save-file-library');
+        type = saveBtn ? saveBtn.dataset.type : null;
+    }
 
     if (type === 'single') {
         setSingleMedia(el, mediasList);

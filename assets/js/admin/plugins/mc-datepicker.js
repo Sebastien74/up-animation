@@ -1,10 +1,13 @@
 /** https://mcdatepicker.netlify.app/docs/ */
 
 import MCDatepicker from 'mc-datepicker';
-import "../../../scss/admin/lib/_mc-calendar.scss";
 import moment from "moment";
 
 export default function (pickers) {
+
+    if (pickers.length > 0) {
+        import("../../../scss/admin/lib/_mc-calendar.scss");
+    }
 
     let trans = document.getElementById('data-translation');
     let localeSplit = document.documentElement.getAttribute('lang').split('_');

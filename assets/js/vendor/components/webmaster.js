@@ -1,14 +1,10 @@
-import "../../../scss/vendor/components/_webmaster.scss";
-
-/**
- * Webmaster toolbox
- *
- * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
- */
-
 import Tooltip from '../../../js/front/bootstrap/dist/tooltip';
 
 export default function (webmasterBox) {
+
+    if (webmasterBox) {
+        import("../../../scss/vendor/components/_webmaster.scss");
+    }
 
     let body = document.body;
 

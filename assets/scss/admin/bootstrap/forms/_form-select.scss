@@ -15,7 +15,7 @@
     line-height: $form-select-line-height;
     color: $form-select-color;
     appearance: none;
-    background-color: $form-select-bg;
+    background: $form-select-bg;
     background-image: var(--#{$prefix}form-select-bg-img), var(--#{$prefix}form-select-bg-icon, none);
     background-repeat: no-repeat;
     background-position: $form-select-bg-position;

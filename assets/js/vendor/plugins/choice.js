@@ -6,9 +6,12 @@
  */
 
 import Choices from "choices.js";
-import "choices.js/public/assets/styles/choices.css";
 
 export default function (selectors, returnElem = false) {
+
+    if (selectors.length > 0) {
+        import("choices.js/public/assets/styles/choices.css");
+    }
 
     let displayClear = function (selector, change) {
         let formGroup = selector.closest('.form-group')

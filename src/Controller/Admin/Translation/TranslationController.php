@@ -62,9 +62,9 @@ class TranslationController extends AdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->intlFormInterface->unit()->addUnit($form, $this->getWebsite()->entity);
 
-            return new JsonResponse(['success' => true]);
+            return new JsonResponse(['success' => true], Response::HTTP_OK);
         } elseif ($form->isSubmitted() && !$form->isValid()) {
-            return new JsonResponse(['html' => $this->renderView('admin/core/new.html.twig', ['form' => $form->createView()])]);
+            return new JsonResponse(['html' => $this->renderView('admin/core/new.html.twig', ['form' => $form->createView()])], Response::HTTP_OK);
         }
 
         return $this->adminRender('admin/core/new.html.twig', ['form' => $form->createView()]);
@@ -134,7 +134,7 @@ class TranslationController extends AdminController
     #[Route('/extract/{locale}', name: 'admin_translation_extract', options: ['expose' => true], methods: 'GET')]
     public function extract(Request $request, WebsiteRepository $websiteRepository, EntityService $entityService, Extractor $extractor, string $locale): JsonResponse
     {
-        $website = $websiteRepository->find($request->get('website'));
+        $website = $websiteRepository->find($request->attributes->get('website'));
         $configuration = $website->getConfiguration();
         if ($locale === $configuration->getLocale()) {
             $extractor->extractEntities($website, $configuration->getLocale(), $configuration->getAllLocales());
@@ -146,7 +146,7 @@ class TranslationController extends AdminController
 
         $entityService->execute($website, $locale);
 
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse(['success' => true], Response::HTTP_OK);
     }
 
     /**
@@ -181,7 +181,7 @@ class TranslationController extends AdminController
             'translations' => $translations,
             'domainName' => $request->get('domain'),
             'multiCols' => count($translations) > 1,
-        ])]);
+        ])], Response::HTTP_OK);
     }
 
     /**
@@ -200,7 +200,7 @@ class TranslationController extends AdminController
         $translations = json_decode($request->getContent(), true)['translations'] ?? [];
 
         if (empty($translations) && $request->isMethod('GET')) {
-            return new JsonResponse(['success' => true, 'message' => 'Empty translations for GET request']);
+            return new JsonResponse(['success' => true, 'message' => 'Empty translations for GET request'], Response::HTTP_OK);
         }
 
         $count = 0;
@@ -223,7 +223,7 @@ class TranslationController extends AdminController
 
         $entityManager->flush();
 
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse(['success' => true], Response::HTTP_OK);
     }
 
     /**
@@ -248,7 +248,7 @@ class TranslationController extends AdminController
             $keyName !== null ? (string) urldecode($keyName) : null
         );
 
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse(['success' => true], Response::HTTP_OK);
     }
 
     /**
@@ -260,7 +260,7 @@ class TranslationController extends AdminController
         $website = $websiteRepository->find($request->get('website'));
         $extractor->initFiles($website->getConfiguration()->getAllLocales());
 
-        return new JsonResponse(['success' => true]);
+        return new JsonResponse(['success' => true], Response::HTTP_OK);
     }
 
     /**
@@ -271,7 +271,7 @@ class TranslationController extends AdminController
     {
         $extractor->clearCache();
         if ($request->get('ajax')) {
-            return new JsonResponse(['success' => true]);
+            return new JsonResponse(['success' => true], Response::HTTP_OK);
         }
         $request->getSession()->getFlashBag()->add('command', [
             'dirname' => $cacheDir.'/translations',

@@ -3,14 +3,13 @@ import dropifyJS from "../form/dropify";
 import resetModal from "../../vendor/components/reset-modal";
 import route from "../../vendor/components/routing";
 import select2 from "../../vendor/plugins/select2";
+import '../../../scss/admin/pages/library.scss';
+import '../../../scss/admin/lib/sweetalert.scss';
 
 import '../lib/sweetalert/sweetalert.min';
 import '../bootstrap/dist/modal';
 import '../media/cache-resolve';
 import '../media/cache-clear';
-
-import '../../../scss/admin/pages/library.scss';
-import '../../../scss/admin/lib/sweetalert.scss';
 
 let folderModalEl = document.getElementById('new-modal-folder');
 if (folderModalEl) {

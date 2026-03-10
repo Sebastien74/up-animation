@@ -1,14 +1,9 @@
-import '../../../../../../node_modules/vanillajs-datepicker/dist/css/datepicker.min.css';
-import '../../../../../../node_modules/vanillajs-datepicker/dist/css/datepicker-bs4.min.css';
 import fr from '../../../../../../node_modules/vanillajs-datepicker/js/i18n/locales/fr';
 import es from '../../../../../../node_modules/vanillajs-datepicker/js/i18n/locales/es';
 import it from '../../../../../../node_modules/vanillajs-datepicker/js/i18n/locales/it';
 import de from '../../../../../../node_modules/vanillajs-datepicker/js/i18n/locales/de';
 
 import {Datepicker} from 'vanillajs-datepicker'
-
-// VOIR POUR REMPLACER PAR
-// https://mcdatepicker.netlify.app/docs/theme
 
 /**
  * Date pickers
@@ -17,6 +12,11 @@ import {Datepicker} from 'vanillajs-datepicker'
  * @doc https://mymth.github.io/vanillajs-datepicker/#/?id=quick-start
  */
 export default function (pickers) {
+
+    if (pickers.length > 0) {
+        import('../../../../../../node_modules/vanillajs-datepicker/dist/css/datepicker.min.css');
+        import('../../../../../../node_modules/vanillajs-datepicker/dist/css/datepicker-bs4.min.css');
+    }
 
     Object.assign(Datepicker.locales, fr, es, it, de);
 

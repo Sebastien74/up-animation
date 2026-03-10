@@ -42,18 +42,20 @@ export default function (Routing, e, el) {
             }
 
             let modalEl = body.querySelector('#medias-library-modal');
-            let modal = new bootstrap.Modal(modalEl);
-            modal.show();
+            import('../bootstrap/dist/modal').then(({default: Modal}) => {
+                let modal = new Modal(modalEl);
+                modal.show();
+            }).catch(error => console.error(error.message));
 
             modalEl.querySelectorAll('.btn-edit, .btn-zip').forEach(btn => btn.remove());
 
-                    import('../plugins/nestable').then(({default: nestable}) => {
-                        nestable();
-                    }).catch(error => console.error(error.message));
+            import('../plugins/nestable').then(({default: nestable}) => {
+                nestable();
+            }).catch(error => console.error(error.message));
 
-                    import('../plugins/tooltips').then(({default: tooltips}) => {
-                        tooltips();
-                    }).catch(error => console.error(error.message));
+            import('../plugins/tooltips').then(({default: tooltips}) => {
+                tooltips();
+            }).catch(error => console.error(error.message));
 
             activeSearch();
 
@@ -66,6 +68,7 @@ export default function (Routing, e, el) {
             });
 
             modalEl.addEventListener('click', function (e) {
+
                 let saveBtn = e.target.closest('#save-file-library');
                 if (saveBtn) {
                     e.preventDefault();

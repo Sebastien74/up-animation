@@ -1,12 +1,8 @@
-import 'nestable2';
-import '../../../scss/admin/lib/nestable.scss';
-
-/**
- * Nestable
- *
- * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
- */
 export default function () {
+
+    if (document.querySelector('.nestable-list-container')) {
+        import('../../../scss/admin/lib/nestable.scss');
+    }
 
     const body = document.body;
     const isActive = body.classList.contains('editor');

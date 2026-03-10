@@ -1,6 +1,5 @@
 import './leaflet'
 import './leaflet.markercluster'
-import '../../../../../scss/front/default/components/map/_map.scss'
 
 /**
  * Open street map
@@ -8,6 +7,10 @@ import '../../../../../scss/front/default/components/map/_map.scss'
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 export default function (maps, autoCenterMap = null) {
+
+    if (maps.length > 0) {
+        import('../../../../../scss/front/default/components/map/_map.scss');
+    }
 
     let body = document.body;
     let screenWidth = window.screen.width;

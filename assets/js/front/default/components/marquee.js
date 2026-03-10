@@ -1,11 +1,9 @@
-import '../../../../scss/front/default/components/_infinite-marquee.scss';
-
-/**
- * Marquee.
- *
- * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
- */
 export default function (els) {
+
+    if (els.length > 0) {
+        import('../../../../scss/front/default/components/_infinite-marquee.scss');
+    }
+
     els.forEach((marquee) => {
         const content = marquee.querySelector('.marquee-content');
         const inner = marquee.querySelector('.marquee-inner');

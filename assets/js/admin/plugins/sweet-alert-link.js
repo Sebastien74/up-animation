@@ -1,12 +1,6 @@
-import '../../../scss/admin/lib/sweetalert.scss';
-import '../lib/sweetalert/sweetalert.min';
-
-/**
- * Confirm link alert
- *
- * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
- */
 export default function (e, el) {
+
+    import('../../../scss/admin/lib/sweetalert.scss');
 
     let trans = document.getElementById('data-translation');
     let href = el instanceof jQuery ? el.attr('href') : el.getAttribute('href');

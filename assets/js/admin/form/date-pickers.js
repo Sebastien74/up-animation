@@ -1,7 +1,3 @@
-import '../plugins/material-datetimepicker';
-import '../../../scss/admin/lib/material-datetimepicker.scss';
-import '../../../lib/fonts/material.scss';
-
 /**
  * Date Picker
  *
@@ -9,10 +5,15 @@ import '../../../lib/fonts/material.scss';
  */
 export default function () {
 
+    let datepickers = document.querySelectorAll('.datepicker');
+    if (datepickers.length > 0) {
+        import('../plugins/material-datetimepicker');
+        import('../../../scss/admin/lib/material-datetimepicker.scss');
+        import('../../../lib/fonts/material.scss');
+    }
+
     let trans = document.getElementById('data-translation');
     let lang = document.querySelector('html').getAttribute('lang');
-
-    let datepickers = document.querySelectorAll('.datepicker');
     datepickers.forEach(function (datepicker) {
         if (typeof jQuery !== 'undefined' && typeof jQuery.fn.bootstrapMaterialDatePicker !== 'undefined') {
             jQuery(datepicker).bootstrapMaterialDatePicker({

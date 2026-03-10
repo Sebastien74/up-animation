@@ -26,7 +26,7 @@
                     </div>
                     <div class="row">
                         <div id="folders-col" class="col-md-4 pe-md-4">
-                            <div id="root-btn-wrap" class="position-relative">
+                            <div id="root-btn-wrap" class="position-relative d-flex align-items-center">
                                 {%- set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined
                                     ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees -%}
                                 <span id="nestable-expand-all" class="btn-icon info-lighten cursor me-2{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{"Dépiler"|trans|raw }}">
@@ -60,7 +60,7 @@
                             {%- include 'admin/page/media/medias-list.html.twig' -%}
                             {%- if not asCopy -%}
                                 <div class="w-100 text-center mt-4 pt-2">
-                                    <button id="save-file-library" class="btn-app info center" data-type="{{ type }}" data-options="{{ options|json_encode }}">
+                                    <button id="save-file-library" class="btn-app center" data-type="{{ type }}" data-options="{{ options|json_encode }}">
                                         <i class="icm-plus"></i><span>{{ "Ajouter"|trans|raw }}</span>
                                     </button>
                                 </div>

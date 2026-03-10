@@ -7,6 +7,8 @@
 
 export function Tooltip() {
 
+    if (document.querySelectorAll('[data-bs-toggle="tooltip"]').length === 0) return;
+
     import('./bootstrap/dist/tooltip').then(({default: Tooltip}) => {
 
         const initOne = (el) => {
@@ -33,5 +35,60 @@ export function Tooltip() {
 
         document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(initOne);
 
+    }).catch(error => console.error(error.message));
+}
+
+export function Popover() {
+
+    if (document.querySelectorAll('[data-bs-toggle="popover"]').length === 0) return;
+
+    import('./bootstrap/dist/popover').then(({default: Popover}) => {
+        document.querySelectorAll('[data-bs-toggle="popover"]').forEach(popoverTriggerEl => {
+            new Popover(popoverTriggerEl);
+        });
+    }).catch(error => console.error(error.message));
+}
+
+export function Collapse() {
+
+    if (document.querySelectorAll('.collapse').length === 0) return;
+
+    import('./bootstrap/dist/collapse').then(({default: Collapse}) => {
+        document.querySelectorAll('.collapse').forEach(collapseEl => {
+            new Collapse(collapseEl, {
+                toggle: false
+            });
+        });
+    }).catch(error => console.error(error.message));
+}
+
+export function Tab() {
+
+    if (document.querySelectorAll('.nav-tabs, .nav-pills').length === 0) return;
+
+    import('./bootstrap/dist/tab').then(({default: Tab}) => {
+        document.querySelectorAll('.nav-tabs, .nav-pills').forEach(tabToggleEl => {
+            tabToggleEl.querySelectorAll('button').forEach(triggerEl => {
+                const tabTrigger = new Tab(triggerEl);
+                triggerEl.addEventListener('click', event => {
+                    event.preventDefault();
+                    tabTrigger.show();
+                });
+            });
+        });
+    }).catch(error => console.error(error.message));
+}
+
+export function Modal() {
+
+    if (document.querySelectorAll('.modal').length === 0) return;
+
+    import('./bootstrap/dist/modal').then(({default: Modal}) => {
+        document.querySelectorAll('.modal').forEach(modalEl => {
+            new Modal(modalEl, {
+                backdrop: 'static',
+                keyboard: false
+            });
+        });
     }).catch(error => console.error(error.message));
 }

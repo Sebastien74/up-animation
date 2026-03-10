@@ -12,7 +12,7 @@
     {%- set entityId = domain.vars.data.id is defined and domain.vars.data.id ? domain.vars.data.id : domain.vars.id -%}
     {%- set locale = domain.vars.data.locale is defined and domain.vars.data.locale ? domain.vars.data.locale : null -%}
     <tr id="refer-col-domain-{{ entityId }}" class="prototype">
-        <td class="col-locale px-4{% if allLocales|length <= 1 %} d-none{% endif %}"><span class="d-none">{{ locale }}</span>{{ form_row(domain.locale) }}</td>
+        <td class="col-locale align-middle px-4{% if allLocales|length <= 1 %} d-none{% endif %}"><span class="d-none">{{ locale }}</span>{{ form_row(domain.locale) }}</td>
         <td class="align-middle px-4">
             {{ form_widget(domain.name) }}
             {{ form_errors(domain.name) }}

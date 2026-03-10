@@ -1,6 +1,3 @@
-import 'dropzone/dist/dropzone.css';
-import '../../../scss/admin/lib/dropzone.scss';
-
 import Dropzone from "dropzone";
 import masterDropzoneForm from "../media/master-dropzone-form";
 import {AlertHTML} from '../functions';
@@ -19,6 +16,9 @@ export default function () {
     if (!form) {
         return;
     }
+
+    import('dropzone/dist/dropzone.css');
+    import('../../../scss/admin/lib/dropzone.scss');
 
     Dropzone.autoDiscover = false;
 

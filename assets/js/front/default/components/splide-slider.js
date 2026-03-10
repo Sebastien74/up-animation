@@ -1,6 +1,5 @@
 import {Counter} from './modules/splide-counter';
 import {isInViewport} from "../functions";
-import '../../../../scss/vendor/components/_splide.scss';
 
 /**
  * Splide Sliders
@@ -9,6 +8,10 @@ import '../../../../scss/vendor/components/_splide.scss';
  * @doc https://splidejs.com/
  */
 export default function (sliders) {
+
+    if (sliders.length > 0) {
+        import('../../../../scss/vendor/components/_splide.scss');
+    }
 
     import('@splidejs/splide').then(({Splide: Splide}) => {
 

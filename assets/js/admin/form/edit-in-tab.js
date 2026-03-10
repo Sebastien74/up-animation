@@ -7,11 +7,8 @@
 import 'jquery-ui/dist/jquery-ui.min'
 import '../bootstrap/dist/tab';
 import setPositions from "./edit-in-tab-positions";
-
 import '../../../scss/admin/pages/edit-in-tab.scss';
 import '../../../scss/admin/lib/sweetalert.scss';
-import '../lib/sweetalert/sweetalert.min';
-import {tinymcePlugin} from "../plugins/tinymce";
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -104,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
             start: function (e, ui) {
                 ui.placeholder.height(ui.item.height());
             },
-            update: function (event, ui) {
+            update: function (event) {
 
                 const loader = document.querySelector('.main-preloader');
                 const loaderContent = document.querySelector('#entity-preloader');
@@ -164,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
             start: function (e, ui) {
                 ui.placeholder.height(ui.item.height());
             },
-            update: function (event, ui) {
+            update: function (event) {
                 const items = document.querySelectorAll('#features-sortable .ui-value');
                 setPositions(items);
                 event.stopImmediatePropagation();
@@ -183,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
             start: function (e, ui) {
                 ui.placeholder.height(ui.item.height());
             },
-            update: function (event, ui) {
+            update: function (event) {
                 const items = videoValuesSortableEl.querySelectorAll('.ui-video');
                 setPositions(items);
                 event.stopImmediatePropagation();

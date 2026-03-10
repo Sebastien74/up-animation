@@ -1,16 +1,13 @@
 import route from "../../vendor/components/routing";
 
-import '../../../scss/admin/core/_nestable-medias.scss';
-
-/**
- * Medias sortable
- *
- * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
- */
 export default function () {
 
     let loader = document.getElementById("medias-sortable-preloader");
-    let progressBarCard = loader.querySelector(".progress-card");
+    if (loader) {
+        import('../../../scss/admin/core/_nestable-medias.scss');
+    }
+
+    let progressBarCard = loader ? loader.querySelector(".progress-card") : null;
 
     if (progressBarCard) {
 

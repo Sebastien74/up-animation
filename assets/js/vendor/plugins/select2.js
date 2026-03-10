@@ -1,4 +1,3 @@
-import '../../../scss/vendor/components/_select2.scss';
 import 'select2/dist/js/select2.full.min';
 
 /**
@@ -7,6 +6,10 @@ import 'select2/dist/js/select2.full.min';
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 export default function (selectId = null, containerId = null) {
+
+    if (document.querySelector('.select-2') || document.querySelector('select')) {
+        import('../../../scss/vendor/components/_select2.scss');
+    }
 
     let html = document.querySelector('html');
     let language = html ? html.getAttribute('lang') : 'en';

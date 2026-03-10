@@ -1,5 +1,3 @@
-require('../../../scss/admin/pages/agenda.scss');
-
 import '../bootstrap/dist/modal';
 
 import resetModal from "../../vendor/components/reset-modal";
@@ -8,6 +6,8 @@ import allLocales from '@fullcalendar/core/locales-all';
 import {Calendar} from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+
+import '../../../scss/admin/pages/agenda.scss';
 
 document.querySelectorAll('.alert').forEach(alert => alert.remove());
 

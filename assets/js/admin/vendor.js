@@ -27,7 +27,7 @@
  */
 
 import './bootstrap';
-import {Tooltip} from './bootstrap-modules';
+import {Tooltip, Popover, Collapse, Tab, Modal} from './bootstrap-modules';
 import {scrollToEL} from './functions';
 
 import Cookies from "js-cookie";
@@ -239,6 +239,10 @@ window.addEventListener("load", function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     Tooltip();
+    Popover();
+    Collapse();
+    Tab();
+    Modal();
     document.querySelectorAll('[data-scroll-to]').forEach(function (el) {
         el.onclick = function (e) {
             const targetId = el.getAttribute('data-scroll-to');

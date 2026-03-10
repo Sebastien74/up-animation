@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     "use strict";
 
@@ -161,9 +162,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     icon.classList.toggle('ti-plus');
                 }
                 const cardBody = card.querySelector('.card-body');
-                if (cardBody && typeof bootstrap !== 'undefined') {
-                    const bsCollapse = bootstrap.Collapse.getOrCreateInstance(cardBody);
-                    bsCollapse.toggle();
+                if (cardBody) {
+                    import('../bootstrap/dist/collapse').then(({default: Collapse}) => {
+                        const bsCollapse = Collapse.getOrCreateInstance(cardBody);
+                        bsCollapse.toggle();
+                    }).catch(error => console.error(error.message));
                 }
             }
         });

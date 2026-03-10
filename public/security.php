@@ -19,14 +19,23 @@ $filesystem = new Filesystem();
  * Generate a small error image.
  */
 if (!function_exists('generateImage')) {
-    #[NoReturn] function generateImage(string $message): void
+    #[NoReturn] function generateImage(string $message, string $extension = 'jpeg'): void
     {
-        $img = imagecreatetruecolor(180, 45);
-        $color = imagecolorallocate($img, 200, 50, 50);
-        imagestring($img, 4, 15, 15, $message, $color);
-        header('Content-Type: image/jpeg');
-        imagejpeg($img);
-        imagedestroy($img);
+        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+            $img = imagecreatetruecolor(180, 45);
+            $color = imagecolorallocate($img, 200, 50, 50);
+            imagestring($img, 4, 15, 15, $message, $color);
+            header('Content-Type: image/jpeg');
+            imagejpeg($img);
+        } else {
+            $mimeType = match ($extension) {
+                'css' => 'text/css',
+                'js' => 'application/javascript',
+                default => 'text/plain',
+            };
+            header('Content-Type: ' . $mimeType, true, 404);
+            echo $message;
+        }
         exit;
     }
 }
@@ -39,6 +48,19 @@ $secureToken = $_ENV['SECURITY_TOKEN'] ?? null;
 $appSecret = $_ENV['APP_SECRET'] ?? null;
 
 // ----------------------------
+// FILE RESOLUTION
+// ----------------------------
+
+$uriPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$filePath = $_SERVER['DOCUMENT_ROOT'] . $uriPath;
+if (!str_contains($filePath, 'public')) {
+    $filePath = str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['DOCUMENT_ROOT'] . '/public', $filePath);
+}
+
+$file = new File($filePath, false);
+$extension = strtolower($file->getExtension());
+
+// ----------------------------
 // SECURITY CHECKS
 // ----------------------------
 
@@ -49,26 +71,21 @@ if (!empty($_COOKIE['SECURITY_TOKEN']) && $_COOKIE['SECURITY_TOKEN'] === $secure
     $validToken = true;
 }
 
-// ----------------------------
-// FILE RESOLUTION
-// ----------------------------
-
-$uriPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$filePath = $_SERVER['DOCUMENT_ROOT'] . $uriPath;
-if (!str_contains($filePath, 'public')) {
-    $filePath = str_replace($_SERVER['DOCUMENT_ROOT'], $_SERVER['DOCUMENT_ROOT'] . '/public', $filePath);
+// Allow build assets if they exist and are JS or CSS, as they are part of the frontend/admin interface
+// and may be requested dynamically by Webpack chunks without specific security tokens in the URL.
+$isAsset = in_array($extension, ['js', 'css', 'json', 'map']);
+if ($isAsset && $filesystem->exists($filePath)) {
+    $validToken = true;
 }
 
-if (!$filesystem->exists($filePath) || !$validToken) {
-    generateImage('Not found');
+if (!$validToken) {
+    generateImage('Not found', $extension);
 }
 
 // ----------------------------
 // MIME TYPE DETECTION
 // ----------------------------
 
-$file = new File($filePath);
-$extension = strtolower($file->getExtension());
 $mimeType = $file->getMimeType() ?: 'application/octet-stream';
 
 $mimeType = match ($extension) {

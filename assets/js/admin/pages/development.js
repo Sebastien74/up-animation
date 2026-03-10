@@ -1,7 +1,5 @@
 import '../../../scss/admin/pages/development.scss';
 
-// import places from 'places.js';
-
 let importData = function (progress) {
     let indexLinks = document.getElementById('import-index-links');
     let index = document.getElementById('index-import-data');

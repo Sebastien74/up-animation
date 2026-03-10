@@ -4,9 +4,11 @@ import 'flatpickr/dist/l10n/es'
 import 'flatpickr/dist/l10n/it'
 import 'flatpickr/dist/l10n/de'
 import 'flatpickr/dist/l10n/nl'
-import "../../../../../scss/front/default/components/form/_flatpickr.scss"
-
 export default function (pickers) {
+
+    if (pickers.length > 0) {
+        import("../../../../../scss/front/default/components/form/_flatpickr.scss");
+    }
 
     let trans = document.getElementById('data-translation')
     let localeSplit = document.documentElement.getAttribute('lang').split('_')

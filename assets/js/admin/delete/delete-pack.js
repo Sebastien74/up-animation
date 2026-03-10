@@ -1,5 +1,3 @@
-import '../../../scss/admin/lib/sweetalert.scss';
-import '../lib/sweetalert/sweetalert.min';
 import displayAlert from "../core/alert";
 
 /**
@@ -8,6 +6,10 @@ import displayAlert from "../core/alert";
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 export default function () {
+
+    if (document.querySelector('.delete-pack')) {
+        import('../../../scss/admin/lib/sweetalert.scss');
+    }
 
     function setRows(element) {
         let parentRow = element.closest('.parent-row');

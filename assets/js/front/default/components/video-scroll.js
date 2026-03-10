@@ -1,14 +1,9 @@
-import '../../../../scss/front/default/components/_video-scroll.scss';
-
-/**
- * Video scroll expansion (bidirectional lock)
- *
- * @author Sébastien FOURNIER
- */
 export default function () {
 
     const triggers = Array.from(document.querySelectorAll('.block-scroll-video'));
     if (!triggers.length) return;
+
+    import('../../../../scss/front/default/components/_video-scroll.scss');
 
     const nav = document.getElementById('main-navigation');
 

@@ -1,9 +1,7 @@
-import '../../../scss/admin/pages/seo.scss';
-import '../../../scss/vendor/components/_prism.scss';
-
-import '../../vendor/plugins/prism';
 import preview from './seo/preview';
 import search from './seo/search';
+import '../../../scss/admin/pages/seo.scss';
+import '../../../scss/vendor/components/_prism.scss';
 
 document.addEventListener('DOMContentLoaded', function () {
     search();

@@ -36,6 +36,11 @@ class ChoiceExtension implements FormTypeExtensionInterface
             $display = 'select-icons select-flags';
         }
 
+        if (($setDisplay && str_contains($setDisplay, 'select-icons')) || ($display && str_contains($display, 'select-icons'))) {
+            $setDisplay = 'select-2';
+            $display = $display ? $display.' select-2' : 'select-2';
+        }
+
         if ('select-2' == $setDisplay) {
             $view->vars['row_attr']['class'] = !empty($options['row_attr']['class']) ? $options['row_attr']['class'].' select2-group' : 'col-12 select2-group';
         }
@@ -52,9 +57,9 @@ class ChoiceExtension implements FormTypeExtensionInterface
             $view->vars['attr']['class'] = $view->vars['attr']['class'].' select-choice';
         }
 
-        //        if (!empty($view->vars['row_attr'])) {
-        //            $view->vars['attr']['class'] = $view->vars['attr']['class'].' '.$view->vars['row_attr'];
-        //        }
+        if (!empty($view->vars['row_attr']['class']) && str_contains($view->vars['row_attr']['class'], 'select2-group')) {
+            $view->vars['attr']['class'] = $view->vars['attr']['class'].' select-2';
+        }
 
         $view->vars['attr']['data-dropdown-class'] = 'select-dropdown-container' != $options['dropdown_class']
             ? $options['dropdown_class']

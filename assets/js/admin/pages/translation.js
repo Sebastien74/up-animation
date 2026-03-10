@@ -79,6 +79,20 @@ let generateTranslation = function (list, website, generator) {
     const total = parseInt(mainCounter.dataset.total);
     const listId = list.getAttribute('id');
 
+    if (translationsData.length === 0) {
+        list.classList.remove('undo');
+        let count = 0;
+        body.querySelectorAll('.translation-list:not(.undo)').forEach(function (listEl) {
+            count += parseInt(listEl.dataset.count);
+        });
+        mainCounter.dataset.count = count.toString();
+        mainCounter.textContent = count.toString();
+        if (count >= total) {
+            generateYaml(website, generator);
+        }
+        return;
+    }
+
     fetch(batchUrl, {
         method: "POST",
         headers: {
@@ -105,10 +119,16 @@ let generateTranslation = function (list, website, generator) {
                 progressBar.style.width = "100%";
                 progressBar.classList.add('bg-info');
 
-                if (count === total) {
+                if (count >= total) {
                     generateYaml(website, generator);
                 }
+            } else {
+                list.classList.add('error');
             }
+        })
+        .catch(error => {
+            console.error('Error generating translation:', error);
+            list.classList.add('error');
         });
 };
 

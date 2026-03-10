@@ -1,3 +1,5 @@
+import '../bootstrap/dist/modal';
+
 /**
  * Assert
  *
@@ -14,8 +16,10 @@ export default function () {
 
         /** If is an invalid form modal */
         if (invalids.length > 0 && !modalError) {
-            const modal = typeof bootstrap !== 'undefined' ? bootstrap.Modal.getOrCreateInstance(modalEl) : null;
-            if (modal) modal.show();
+            import('../bootstrap/dist/modal').then(({default: Modal}) => {
+                const modal = Modal.getOrCreateInstance(modalEl);
+                modal.show();
+            }).catch(error => console.error(error.message));
             modalError = true;
 
             /** On close modal : Reset form */

@@ -12,8 +12,8 @@ export default function () {
 
     /** 1 - Select2 */
 
-    let selects = body.querySelectorAll('.select-2')
-    let selectsIcons = body.querySelectorAll('.select-icons')
+    let selects = body.querySelectorAll('.select-2');
+    let selectsIcons = body.querySelectorAll('.select-icons');
 
     if (selects.length > 0 || selectsIcons.length > 0) {
         import('./select2').then(({default: select2}) => {

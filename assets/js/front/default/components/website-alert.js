@@ -5,12 +5,15 @@
  * @Doc: https://www.jsdelivr.com/package/npm/vanilla-infinite-marquee
  */
 
-import '../../../../scss/front/default/components/_website-alert.scss';
-
 export default function () {
 
     const body = document.body;
     const boxAlert = document.getElementById('website-alert');
+
+    if (!boxAlert) return;
+
+    import('../../../../scss/front/default/components/_website-alert.scss');
+
     const navigation = document.getElementById('menu-container-main');
     const type = boxAlert ? boxAlert.dataset.type : false;
 

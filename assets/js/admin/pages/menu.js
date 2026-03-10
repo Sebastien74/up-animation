@@ -1,5 +1,4 @@
 import removeErrors from "../../vendor/components/remove-errors";
-
 import '../../../scss/admin/pages/menu.scss';
 
 document.addEventListener('click', function (e) {

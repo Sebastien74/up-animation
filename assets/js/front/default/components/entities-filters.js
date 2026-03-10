@@ -1,8 +1,11 @@
-import '../../../../scss/front/default/components/form/_search-fiters.scss';
 import scrollToEl from "../../../vendor/components/scroll-to";
 import {AjaxPagination} from "../functions";
 
 export default function (forms) {
+
+    if (forms.length > 0) {
+        import('../../../../scss/front/default/components/form/_search-fiters.scss');
+    }
 
     let resetForm = function (form) {
         let loader = form.closest('.search-filters-container').querySelector('.loader');
