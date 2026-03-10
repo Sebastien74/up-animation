@@ -26,8 +26,8 @@
     {%- set microDataActive = microDataActive is defined ? microDataActive : website.seoConfiguration.microData -%}
     {%- set information = website.information -%}
     {%- set infoIntl = information.intl -%}
-    {%- set companyName = infoIntl.title is defined and infoIntl.title ? infoIntl.title : "Up Animations!"|trans|raw -%}
     {%- set api = website.api is defined ? website.api : null -%}
+    {%- set companyName = infoIntl.title is defined and infoIntl.title ? infoIntl.title : "Up Animations!"|trans|raw -%}
     {%- set urlId = seo.url.id is defined ? seo.url.id : null -%}
     {%- set bodyBg = configuration.backgroundColor is defined ? configuration.backgroundColor : null -%}
     {%- set pageBg = entity.backgroundColor is defined and entity.backgroundColor ? entity.backgroundColor : null -%}
@@ -46,12 +46,12 @@
     {%- set stickyColClass = entity.haveStickyCol is defined and entity.haveStickyCol ? ' body-sticky-col'
         : (entityModel.haveStickyCol is defined and entityModel.haveStickyCol ? ' body-sticky-col' : null) -%}
     {%- set customBodyClass = customBodyClass is defined ? customBodyClass~stickyColClass : stickyColClass -%}
-    {%- set axeptioId = website.api.custom.axeptioId is defined ? website.api.custom.axeptioId : null -%}
-    {%- set axeptioCookie = website.api.custom.axeptioCookieVersion is defined ? website.api.custom.axeptioCookieVersion : null -%}
-    {%- set axeptioExternal = website.api.custom.axeptioExternal is defined ? website.api.custom.axeptioExternal : null -%}
+    {%- set axeptioId = api.custom.axeptioId is defined ? api.custom.axeptioId : null -%}
+    {%- set axeptioCookie = api.custom.axeptioCookieVersion is defined ? api.custom.axeptioCookieVersion : null -%}
+    {%- set axeptioExternal = api.custom.axeptioExternal is defined ? api.custom.axeptioExternal : null -%}
     {%- set axeptioActive = axeptioId or axeptioExternal -%}
-    {%- set matomoId = website.api.custom.matomoId is defined ? website.api.custom.matomoId : null -%}
-    {%- set matomoUrl = website.api.custom.matomoUrl is defined ? website.api.custom.matomoUrl : null -%}
+    {%- set matomoId = api.custom.matomoId is defined ? api.custom.matomoId : null -%}
+    {%- set matomoUrl = api.custom.matomoUrl is defined ? api.custom.matomoUrl : null -%}
     {%- set pageClass = entity.catalog.slug is defined ? 'body-'~entity.catalog.slug : (entity.slug is defined ? 'body-'~entity.slug : null) -%}
     {%- set pageSlug = pageClass ? pageClass~'-page' : null -%}
     {%- set asAccessibility = app.request.cookies.get('USER_ACCESSIBILITY') -%}
@@ -113,8 +113,8 @@
         {{ macroApi.render({
             gdprActive: gdprActive,
             axeptioActive: axeptioActive,
-            searchConsoleKey: website.api.google.searchConsoleKey is defined ? website.api.google.searchConsoleKey : null,
-            domainVerification: website.api.facebook.domainVerification is defined ? website.api.facebook.domainVerification : null
+            searchConsoleKey: api.google.searchConsoleKey is defined ? api.google.searchConsoleKey : null,
+            domainVerification: api.facebook.domainVerification is defined ? api.facebook.domainVerification : null
         }) }}
 
         {%- if website.logos is defined -%}
@@ -197,11 +197,11 @@
             gdprActive: gdprActive,
             axeptioId: axeptioId,
             axeptioActive: axeptioActive,
-            analyticsUa: website.api.google.analyticsUa is defined ? website.api.google.analyticsUa : null,
-            tagManagerKey: website.api.google.tagManagerKey is defined ? website.api.google.tagManagerKey : null,
-            pixel: website.api.facebook.pixel is defined ? website.api.facebook.pixel : null,
-            headScript: website.api.custom.headScript is defined ? website.api.custom.headScript : null,
-            headScriptSeo: website.api.custom.headScriptSeo is defined ? website.api.custom.headScriptSeo : null
+            analyticsUa: api.google.analyticsUa is defined ? api.google.analyticsUa : null,
+            tagManagerKey: api.google.tagManagerKey is defined ? api.google.tagManagerKey : null,
+            pixel: api.facebook.pixel is defined ? api.facebook.pixel : null,
+            headScript: api.custom.headScript is defined ? api.custom.headScript : null,
+            headScriptSeo: api.custom.headScriptSeo is defined ? api.custom.headScriptSeo : null
         }) }}
 
         <noscript nonce="{{ csp_nonce() }}">
@@ -227,10 +227,10 @@
         {{ macroApi.render({
             gdprActive: gdprActive,
             axeptioActive: axeptioActive,
-            noscriptTagManagerKey: website.api.google.tagManagerKey is defined ? website.api.google.tagManagerKey : null,
-            noscriptPixel: website.api.facebook.pixel is defined ? website.api.facebook.pixel : null,
-            topBodyScript: website.api.custom.topBodyScript is defined ? website.api.custom.topBodyScript : null,
-            topBodyScriptSeo: website.api.custom.topBodyScriptSeo is defined ? website.api.custom.topBodyScriptSeo : null
+            noscriptTagManagerKey: api.google.tagManagerKey is defined ? api.google.tagManagerKey : null,
+            noscriptPixel: api.facebook.pixel is defined ? api.facebook.pixel : null,
+            topBodyScript: api.custom.topBodyScript is defined ? api.custom.topBodyScript : null,
+            topBodyScriptSeo: api.custom.topBodyScriptSeo is defined ? api.custom.topBodyScriptSeo : null
         }) }}
 
         {%- if websiteAlertIsActive and not onlyBody -%}
@@ -347,8 +347,8 @@
         {{ macroApi.render({
             gdprActive: gdprActive,
             axeptioActive: axeptioActive,
-            bottomBodyScript: website.api.custom.bottomBodyScript is defined ? website.api.custom.bottomBodyScript : null,
-            bottomBodyScriptSeo: website.api.custom.bottomBodyScriptSeo is defined ? website.api.custom.bottomBodyScriptSeo : null
+            bottomBodyScript: api.custom.bottomBodyScript is defined ? api.custom.bottomBodyScript : null,
+            bottomBodyScriptSeo: api.custom.bottomBodyScriptSeo is defined ? api.custom.bottomBodyScriptSeo : null
         }) }}
 
     </body>
