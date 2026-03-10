@@ -44,28 +44,22 @@ class WebsiteRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Get default domain name by locale.
+     * Get the default domain name by locale.
      */
     public function domain(string $locale, ?WebsiteModel $website = null): bool|string
     {
         $protocol = $_ENV['APP_PROTOCOL'].'://';
         $website = $website instanceof WebsiteModel ? $website : $this->website();
         $configuration = $website->configuration;
-        $domains = $this->coreLocator->em()->getRepository(Core\Domain::class)->findBy([
-            'configuration' => $configuration->entity,
-            'asDefault' => true,
-        ]);
-
         $defaultDomain = false;
-        foreach ($domains as $domain) {
-            if ($domain->getLocale() === $locale) {
-                return $protocol.$domain->getName();
+        foreach ($configuration->domains as $domain) {
+            if ($domain->locale === $locale) {
+                return $protocol.$domain->name;
             }
             if ($domain->getLocale() === $configuration->locale) {
-                $defaultDomain = $protocol.$domain->getName();
+                $defaultDomain = $protocol.$domain->name;
             }
         }
-
         return $defaultDomain;
     }
 
