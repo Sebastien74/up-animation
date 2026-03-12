@@ -85,7 +85,7 @@
             {%- if arrows and 'top' in slider.arrowAlignment -%}
                 {{ macro.arrows(slider, arrowsSide, arrowsColor, arrowsAsBtn, 'top') }}
             {%- endif -%}
-            <ul class="splide__list {% if medias|length < slider.itemsPerSlide %} d-lg-flex justify-content-lg-center{% endif %}">
+            <ul class="splide__list {%- if medias|length < slider.itemsPerSlide -%} d-lg-flex justify-content-lg-center{% endif %}">
                 {%- set isFirst = true -%}
                 {%- for media in medias -%}
                     {%- set intlMedia = media.intl -%}
@@ -94,11 +94,11 @@
                     {%- set display = (mediaType == 'video' and media.videoLink is defined and media.videoLink is not empty) or (media.media.filename is defined and media.media.filename) -%}
                     {%- if display -%}
                         <li class="splide__slide">
-                            <div class="content {% if slider.itemsPerSlide > 1 and 'center' != focus %} me-4 me-md-5{% elseif 'center' == focus %} mx-4 mx-md-4{% endif %}">
+                            <div class="content {%- if slider.itemsPerSlide > 1 and 'center' != focus -%} me-4 me-md-5{% elseif 'center' == focus %} mx-4 mx-md-4{%- endif -%}">
                                 {%- if linkFullSize and media.intl.link -%}
                                     <a href="{{ media.intl.link }}" class="d-inline-block slider-link"
-                                        {%- if media.intl.linkBlank -%} target="_blank" {%- endif -%}
-                                        {%- if media.intl.linkExternal -%} rel="noopener noreferrer" {%- endif -%}>
+                                        {% if media.intl.linkBlank %} target="_blank" {% endif %}
+                                        {% if media.intl.linkExternal %} rel="noopener noreferrer" {% endif %}>
                                 {%- endif -%}
                                 {%- if mediaType == 'video' -%}
                                     {%- include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {

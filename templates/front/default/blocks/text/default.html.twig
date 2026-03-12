@@ -16,13 +16,13 @@
             {%- set introClasses = intl.body ? introClasses~' mb-4 mb-lg-5' : introClasses -%}
             {%- set introClasses = color ? (introClasses~' '~color)|trim : introClasses|trim -%}
             <p class="text-bold introduction{% if introClasses %} {{ introClasses|raw }}{% endif %}"
-                    {%- if anim.intro.attr -%} {{ anim.intro.attr|raw }}{%- endif -%}>
+                    {% if anim.intro.attr %} {{ anim.intro.attr|raw }}{% endif %}>
                 {{ intl.introduction|raw|nl2br }}
             </p>
         {%- endif -%}
         {%- if intl.body -%}
             <div class="body {% if anim.text.class is defined and anim.text.class %} {{ anim.text.class|raw }}{% endif %}{% if fontWeight %} {{ fontWeight }}{% endif %}"
-                    {%- if anim.text.attr is defined and anim.text.attr -%} {{ anim.text.attr|raw }}{%- endif -%}>
+                    {% if anim.text.attr is defined and anim.text.attr %} {{ anim.text.attr|raw }}{% endif %}>
                 {{ intl.body|raw }}
             </div>
         {%- endif -%}

@@ -64,7 +64,7 @@
     letter-spacing: -0.01em;
     font-size: 14px;
 
-    &.form-check-input {
+    &.form-check-input:not(.w-100) {
         width: auto !important;
     }
 

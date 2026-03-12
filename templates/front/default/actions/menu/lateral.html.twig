@@ -44,7 +44,7 @@
         {%- set liClass = link.level == 1 and not isLast and not notExpanded ? liClass~' me-'~expand~'-4 mb-4 mb-lg-0' : liClass -%}
         {%- set liClass = link.level == 1 ? liClass~' justify-content-end text-end text-'~expand~'-start' : liClass~' justify-content-start text-start' -%}
         <li class="nav-item position-relative d-flex level-{{ link.level }} {{ liClass }}"
-            {%- if pushMicroData -%} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" {%- endif -%}>
+            {% if pushMicroData %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" {% endif %}>
             {%- set linkClass = link.class~' nav-link fw-600 '~expand~' link-level-'~link.level -%}
             {%- set linkClass = link.children and not dropdownHover ? linkClass~' as-dropdown-toggle dropdown-toggle' : (link.children ? 'as-dropdown-toggle '~linkClass : linkClass) -%}
             {%- set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass -%}
@@ -59,17 +59,17 @@
                 {%- endif -%}
                 <div class="link-wrap">
             {%- endif -%}
-                <{% if 'a' == element %}a{% else %}div{% endif %} class="{{ linkClass }}" {%- if link.dataAnchor -%} data-anchor="{{ link.dataAnchor }}" {%- endif -%}
-                    href="{% if path %}{{ path }}{% else %}javascript:void(0){% endif %}" {%- if link.children and not dropdownHover -%} id="navbar-link-{{ link.id }}" {%- endif -%}
-                    {%- if link.linkBlank -%} target="_blank" {%- else -%}{%- endif -%}
-                    {%- if link.linkExternal -%} rel="noopener noreferrer" {%- endif -%}
-                    {%- if pushMicroData -%} itemprop="url" {%- endif -%}>
+                <{% if 'a' == element %}a{% else %}div{% endif %} class="{{ linkClass }}" {% if link.dataAnchor %} data-anchor="{{ link.dataAnchor }}" {% endif %}
+                    href="{% if path %}{{ path }}{% else %}javascript:void(0){% endif %}" {% if link.children and not dropdownHover %} id="navbar-link-{{ link.id }}" {% endif %}
+                    {% if link.linkBlank %} target="_blank" {% else %}{% endif %}
+                    {% if link.linkExternal %} rel="noopener noreferrer" {% endif %}
+                    {% if pushMicroData %} itemprop="url" {% endif %}>
                     {%- set linkLabel = link.linkLabel and link.level > 1 ? link.linkLabel : link.title -%}
                     {%- if link.media.haveMedia is defined and link.media.haveMedia -%}
                         {{ link.media|file }}
-                        <span class="d-lg-none" {%- if pushMicroData -%} itemprop="name" {%- endif -%}>{{ linkLabel|unescape|raw }}</span>
+                        <span class="d-lg-none" {% if pushMicroData %} itemprop="name" {% endif %}>{{ linkLabel|unescape|raw }}</span>
                     {%- else -%}
-                        <span class="link-label cursor{% if link.level > 1 %} text-secondary{% endif %}" {%- if pushMicroData -%} itemprop="name" {%- endif -%}>{{ linkLabel|unescape|raw }}</span>
+                        <span class="link-label cursor{%- if link.level > 1 -%} text-secondary{%- endif -%}" {%- if pushMicroData -%} itemprop="name" {%- endif -%}>{{ linkLabel|unescape|raw }}</span>
                     {%- endif -%}
                 </{% if 'a' == element %}a{% else %}div{% endif %}>
                 {%- if link.level >= 3 -%}
@@ -103,12 +103,12 @@
                     </div>
                     {%- set subLabel = link.subTitle ? link.subTitle : link.title -%}
                     {%- set parentEl = link.link ? 'a' : 'div' -%}
-                    <{{ parentEl }}{%- if 'a' == parentEl -%} href="{{ link.link }}" {%- endif -%} class="d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}" aria-hidden="true">
+                    <{{ parentEl }}{% if 'a' == parentEl %} href="{{ link.link }}" {% endif %} class="d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}" aria-hidden="true">
                         <span class="parent-label text-warning position-relative fw-500 me-3 me-lg-0">{{ subLabel|unescape|raw }}</span>
                         <i class="icon-arrow-right text-primary ms-3"></i>
                     </{{ parentEl }}>
                     <div class="inner position-relative mt-5">
-                        <div class="inner-sub-wrap spy-scroll position-relative text-start {% if link.level >= 3 %}pt-4{% else %}mt-4 mt-lg-4{% endif %}" tabindex="-1"
+                        <div class="inner-sub-wrap spy-scroll position-relative text-start {%- if link.level >= 3 -%}pt-4{%- else -%}mt-4 mt-lg-4{%- endif -%}" tabindex="-1"
                              data-scroll-bar="1">
                             {%- set haveColumns = false -%}
                             {%- set haveIcons = false -%}
@@ -132,9 +132,9 @@
                                 {%- endfor -%}
                             {%- endfor -%}
                             {%- if haveColumns -%}
-                                <div class="submenu-columns d-xl-flex{% if link.level < 3 %} pt-4{% endif %}">
+                                <div class="submenu-columns d-xl-flex{%- if link.level < 3 -%} pt-4{% endif %}">
                                     {%- for subLink in link.children -%}
-                                        <ul class="sublist ps-0{% if loop.index > 1 %} ms-xl-5{% endif %}">
+                                        <ul class="sublist ps-0{%- if loop.index > 1 -%} ms-xl-5{%- endif -%}">
                                             {%- for subSubLInk in subLink.children -%}
                                                 {{ macro.element(subSubLInk, tree, companyName, logo, microDataActive, expand, dropdownHover, true, loop.last, websiteTemplate, notExpanded, haveIcons) }}
                                             {%- endfor -%}
@@ -240,9 +240,9 @@
                             <ul class="navbar-nav {% if haveLogin %}w-100{% else %}{{ alignment }}{% endif %} pt-3 pb-5{% if not notExpanded %} pt-{{ expand }}-0 pb-{{ expand }}-0{% endif %} {{ class }}">
                                 {%- if displayHomePage -%}
                                     <li class="nav-item d-flex align-items-center justify-content-center level-1 text-center d-{{ expand }}-none{% if indexActive %} active{% endif %}"
-                                        {%- if microDataActive -%} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" {%- endif -%}>
+                                        {% if microDataActive %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" {% endif %}>
                                         <a href="{{ path('front_index') }}" class="nav-link link-level-1 fw-600 text-black{% if indexActive %} active{% endif %}"
-                                            {%- if microDataActive -%} itemprop="url" {%- endif -%}>
+                                            {% if microDataActive %} itemprop="url" {% endif %}>
                                             {%- if microDataActive -%}<span itemprop="name">{%- endif -%}{{ "Accueil"|trans|raw }}{%- if microDataActive -%}</span>{%- endif -%}
                                         </a>
                                     </li>

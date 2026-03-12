@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -53,7 +54,7 @@ class NewscastController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index', name: 'admin_newscast_index', methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         $this->arguments['interfaceHideColumns'] = ['position'];
 

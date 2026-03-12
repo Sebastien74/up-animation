@@ -3,13 +3,13 @@
     <msapplication>
         <tile>
             {% set logos = website|logos %}
-            {% if logos['mstile-150x150'] is defined and logos['mstile-150x150'] %}
+            {%- if logos['mstile-150x150'] is defined and logos['mstile-150x150'] -%}
                 <square150x150logo src="{{ absolute_url(asset(logos['mstile-150x150'])) }}"/>
-            {% endif %}
+            {%- endif -%}
             {% set color = 'favicon'|color(website, 'browserconfig') %}
-            {% if color and color.color != 'browserconfig' %}
+            {%- if color and color.color != 'browserconfig' -%}
                 <TileColor>{{ color.color }}</TileColor>
-            {% endif %}
+            {%- endif -%}
         </tile>
     </msapplication>
 </browserconfig>

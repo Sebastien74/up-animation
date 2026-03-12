@@ -16,7 +16,7 @@
             </div>
             <div class="modal-body ps-5 pe-5">
                 <div class="ajax-content">
-                    <h2 class="main-title text-dark text-center fw-bold mb-4">{{ "Édition média"|trans|raw }}</h2>
+                    <h2 class="main-title text-center fw-bold mb-4">{{ "Édition média"|trans|raw }}</h2>
                     {{ form_start(form, {attr: {
                         novalidate: "novalidate",
                         action: path('admin_media_edit', {website: websiteId(), media: entity.id}),

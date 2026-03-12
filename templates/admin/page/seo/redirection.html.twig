@@ -58,7 +58,7 @@
                 {%- set locale = redirection.vars.data.locale is defined and redirection.vars.data.locale ? redirection.vars.data.locale : null -%}
 
                 <tr id="refer-col-domain-{{ entityId }}" class="prototype">
-                    <td class="col-locale align-middle px-4{% if allLocales|length <= 1 %} d-none{% endif %}" data-label="{{"Langue"|trans|raw }}">
+                    <td class="col-locale align-middle px-4{%- if allLocales|length <= 1 -%} d-none{% endif %}" data-label="{{"Langue"|trans|raw }}">
                         <span class="d-none">{{ locale }}</span>
                         {{ form_widget(redirection.locale) }}
                     </td>
@@ -92,7 +92,7 @@
                 <table class="table table-striped responsive-cards mb-0 editable-table collection" data-index="{{ form.redirections|length }}" data-prototype="{{ macro.redirection_prototype(form.redirections.vars.prototype)|e('html_attr') }}">
                 <thead>
                     <tr>
-                        <th class="col-locale px-4{% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans|raw }}</th>
+                        <th class="col-locale px-4{%- if allLocales|length <= 1 -%} d-none{% endif %}">{{ "Langue"|trans|raw }}</th>
                         <th class="px-4">{{ "URL"|trans|raw }} <small class="ms-1">({{ "Ancienne URI / URL"|trans|raw }})</small></th>
                         <th class="text-start px-4">{{ "Nouvelle URL"|trans|raw }} <small class="ms-1">({{ "Avec protocol"|trans|raw }})</small></th>
                         <th class="text-end px-4">

@@ -130,7 +130,7 @@
                 </div>
             </div>
         {%- elseif is_granted('IS_IMPERSONATOR') -%}
-            <div id="webmaster-box" {%- if bottom -%} class="bottom" {%- endif -%}>
+            <div id="webmaster-box" {% if bottom %} class="bottom" {% endif %}>
                 <a href="{{ impersonation_exit_path(path('front_index')) }}"
                    class="btn btn-primary webmaster-btn align-items-center justify-content-center"
                    data-bs-toggle="tooltip"

@@ -26,10 +26,10 @@
                     {%- if link.link -%}
                         <a href="{{ link.link }}"
                            id="{{ link.id }}"
-                           {%- if link.linkBlank -%} target="_blank" {%- else -%}{%- endif -%}
-                           {%- if link.dataAnchor -%} data-anchor="{{ link.dataAnchor }}" {%- endif -%}
+                           {% if link.linkBlank %} target="_blank" {% else %}{% endif %}
+                           {% if link.dataAnchor %} data-anchor="{{ link.dataAnchor }}" {% endif %}
                            class="{{ linkClass }}"
-                           {%- if link.linkExternal -%} rel="noopener noreferrer" {%- endif -%}>
+                           {% if link.linkExternal %} rel="noopener noreferrer" {% endif %}>
                     {%- endif -%}
                         {{ link.title|unescape|raw }}
                     {%- if link.link -%}

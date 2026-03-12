@@ -105,11 +105,11 @@
                                 <span class="item background-block-item cursor background-item d-inline-block">
                                     {%- set color = 'background'|color(website, block.backgroundColor) -%}
                                     {%- set hexa = color.color is defined and color.color ? color.color : block.hexadecimalCode -%}
-                                    <span class="color-info-bulle" {%- if hexa -%} style="background-color: {{ hexa }}" {%- endif -%}></span>
                                     <span class="btn-action edit-layout-element-btn btn-palette cursor"
                                           data-path="{{ path('admin_block_background', {website: website.id, block: block.id}) }}"
                                           data-bs-toggle="tooltip"
                                           title="{{"Couleur de fond"|trans|striptags }}">
+                                        <span class="color-info-bulle" {% if hexa %} style="background-color: {{ hexa }}" {% endif %}></span>
                                         <i class="icm-palette"></i>
                                     </span>
                                 </span>

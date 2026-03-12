@@ -5,7 +5,7 @@
             <div class="col text-center">
                 <ul class="reset">
                     {%- for occurrence in date.occurrences -%}
-                        <li {% if not loop.last -%} class="mb-2" {%- endif -%}>
+                        <li{% if not loop.last %} class="mb-2" {% endif -%}>
                             {%- set slotId = date.datetime|date('Y-m-d')~'-'~loop.index -%}
                             <label for="slot-{{ slotId }}"
                                    class="w-100 btn-block-slot btn-{{ occurrence.available~" "~occurrence.available }}">

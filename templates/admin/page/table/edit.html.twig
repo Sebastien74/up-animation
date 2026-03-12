@@ -101,7 +101,7 @@
                         {%- endfor -%}
                         <td class="actions bg-body text-center bg-transparent">
                             <div class="inner-darken">
-                                <span {% if not loop.first -%}{%- endif -%}>
+                                <span {% if not loop.first %}{% endif -%}>
                                     {%- if not loop.first -%}
                                         <a href="{{ path('admin_tablecell_position', {website: websiteId, table: entity.id, position: loop.index, type:"up"}) }}"
                                            class="btn" data-bs-toggle="tooltip" title="{{"Modifier la position"|trans|striptags }}"><i class="icm-chevron-up"></i>
@@ -110,7 +110,7 @@
                                         <span class="disabled"><i class="icm-chevron-up"></i></span>
                                     {%- endif -%}
                                 </span>
-                                <span {% if not loop.last -%}{%- endif -%}>
+                                <span {% if not loop.last %}{% endif -%}>
                                         {%- if not loop.last -%}
                                             <a href="{{ path('admin_tablecell_position', {website: websiteId, table: entity.id, position: loop.index, type:"down"}) }}"
                                                class="btn" data-bs-toggle="tooltip" title="{{"Modifier la position"|trans|striptags }}"><i class="icm-chevron-down"></i>

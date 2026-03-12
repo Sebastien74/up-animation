@@ -278,13 +278,13 @@
         {%- endif -%}
                 <input type="{{ type }}" id="{{ id }}"
                        name="{{ full_name }}"
-                       {%- if accept -%}accept="{{ accept }}" {%- endif -%}
-                       {%- if maxSize -%}data-max-size="{{ maxSize }}" {%- endif -%}
-                       {%- if placeholder -%}placeholder="{{ placeholder }}" {%- endif -%}
+                       {% if accept %}accept="{{ accept }}" {% endif %}
+                       {% if maxSize %}data-max-size="{{ maxSize }}" {% endif %}
+                       {% if placeholder %}placeholder="{{ placeholder }}" {% endif %}
                        class="dropify custom-file-input"
                        data-height="{{ dataHeight }}"
-                       {%- if dataScreen -%}{{ dataScreen|raw }}{%- endif -%}
-                       {%- if dataMedia -%}{{ dataMedia|raw }}{%- endif -%}
+                       {% if dataScreen %}{{ dataScreen|raw }}{% endif %}
+                       {% if dataMedia %}{{ dataMedia|raw }}{% endif %}
                        data-default-file="{{ filename|raw }}"
                        data-errors-position="outside">
         {%- if filename -%}
@@ -354,7 +354,7 @@
             <label for="{{ id }}" class="cursor btn btn-{{ color }}{% if class %} {{ class }}{% endif %}{% if checked %} active{% endif %}">
                 <i class="icm-check"></i>{{ label }}
             </label>
-            <input id="{{ id }}" type="checkbox" class="btn-check" value="{{ checked }}" name="{{ full_name }}" {%- if checked -%} checked{%- endif -%}{%- if values -%} data-values="{{ values }}" {%- endif -%}>
+            <input id="{{ id }}" type="checkbox" class="btn-check" value="{{ checked }}" name="{{ full_name }}" {% if checked %} checked{% endif %}{% if values %} data-values="{{ values }}" {% endif %}>
         {%- else -%}
             {{- form_label(form, null, { widget: parent() }) -}}
         {%- endif -%}

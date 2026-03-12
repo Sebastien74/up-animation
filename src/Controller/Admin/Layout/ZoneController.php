@@ -8,7 +8,6 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Layout\Layout;
 use App\Entity\Layout\Zone;
 use App\Form\Interface\LayoutFormFormManagerLocator;
-use App\Form\Type\Layout\Management as FormType;
 use App\Repository\Layout\ZoneRepository;
 use App\Service\Admin\LayoutServiceInterface;
 use Doctrine\ORM\Mapping\MappingException;

@@ -40,7 +40,7 @@
                  data-counter="0"
                  data-interval="3000">
                 <div class="splide__track">
-                    <ul class="splide__list {% if entities|length < itemsPerSlide %} d-lg-flex justify-content-lg-center{% endif %}">
+                    <ul class="splide__list {%- if entities|length < itemsPerSlide -%} d-lg-flex justify-content-lg-center{% endif %}">
                         {%- set isFirst = true -%}
                         {%- for gallery in entities -%}
                             {%- if isArray(gallery) -%}

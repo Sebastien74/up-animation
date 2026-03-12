@@ -55,9 +55,9 @@
             <ul class="nav nav-tabs" role="tablist">
                 {%- for tabId, config in tabs -%}
                     <li class="nav-item">
-                        <a {% if not isMainEntity -%}href="{{ path('admin_newscast_edit', {website: websiteId, newscast: entity.id, tab: tabId} ) }}" {%- endif -%}
+                        <a {% if not isMainEntity %}href="{{ path('admin_newscast_edit', {website: websiteId, newscast: entity.id, tab: tabId} ) }}" {% endif -%}
                            id="nav-{{ tabId }}-tab" class="nav-link {% if activeTab == tabId or not activeTab and loop.first and isMainEntity %} active{% endif %}"
-                            {%- if isMainEntity -%}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}" {%- else -%}{%- endif -%}>
+                            {% if isMainEntity %}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}" {% else %}{% endif %}>
                             {{ config.icon|icon(17, 17, 'me-sm-2') }}
                             <span class="d-none d-sm-inline-block">{{ config.title }}</span>
                         </a>

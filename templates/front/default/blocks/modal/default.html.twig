@@ -14,8 +14,8 @@
              aria-labelledby="modal-block-{{ id }}-label"
              aria-hidden="true"
              data-id="{{ block.id }}"
-             {%- if block.width -%} data-cookie-delay="{{ block.width }}" data-cookie-name="{{ 'popup-cookie-'~block.id~'-'~app.request.locale }}" {%- endif -%}
-             {%- if block.timer -%} data-modal-timer="{{ block.timer * 1000 }}" {%- endif -%}>
+             {% if block.width %} data-cookie-delay="{{ block.width }}" data-cookie-name="{{ 'popup-cookie-'~block.id~'-'~app.request.locale }}" {% endif %}
+             {% if block.timer %} data-modal-timer="{{ block.timer * 1000 }}" {% endif %}>
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content bg-white">
                     <div class="modal-header border-0 d-inline-block">

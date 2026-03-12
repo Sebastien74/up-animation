@@ -15,7 +15,6 @@ use App\Entity\Seo\Url;
 use App\Model\Core\WebsiteModel;
 use App\Service\Content\MenuServiceInterface;
 use App\Service\Content\SeoService;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;

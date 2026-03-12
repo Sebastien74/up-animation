@@ -71,7 +71,7 @@
                                                     <b>{{ group.adminName|unescape|raw }}</b>
                                                     {%- set urlGroup = intl.targetLink is defined and intl.targetLink ? intl.targetLink : path('front_index', {url: cookiesPageUrl})~"#cookies-infos" -%}
                                                     <span class="d-inline-block ms-2" data-bs-toggle="tooltip" title="{{"En savoir plus"|trans|striptags }}">
-                                                        <a href="{{ urlGroup }}" {%- if intl.targetLink is defined and intl.targetLink -%}rel="noreferrer noopener" target="_blank" {%- endif -%}
+                                                        <a href="{{ urlGroup }}" {% if intl.targetLink is defined and intl.targetLink %}rel="noreferrer noopener" target="_blank" {% endif %}
                                                            class="info-link cookies-more-wrap"
                                                            data-toggle="preloader">{{ 'fas info-circle'|icon(null, 20) }}</a>
                                                     </span>
@@ -84,7 +84,7 @@
                                                                type="checkbox"
                                                                class="cookie-group-checkbox"
                                                                data-service="{{ group.service }}"
-                                                               data-code="{{ group.slug }}" {%- if cookie(group.slug) -%} checked{%- endif -%} />
+                                                               data-code="{{ group.slug }}" {% if cookie(group.slug) %} checked{% endif %} />
                                                         <label for="gdpr-{{ group.slug }}" class="label-primary"></label>
                                                     </div>
                                                 </div>

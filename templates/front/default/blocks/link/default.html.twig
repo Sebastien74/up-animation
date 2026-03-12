@@ -36,11 +36,11 @@
 
 {%- macro link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage, iconCustom = false, iconSide = 'start') -%}
     {%- set iconClass = linkAsButton ? 'chevron-right ms-2 as-btn' : 'chevron-right' -%}
-    <a {% if samePage -%}data-href{%- else -%}href{%- endif -%}=" {{ link }}"
+    <a {% if samePage %}data-href{% else -%}href{% endif %}=" {{ link }}"
        class="{{ linkStyle }} d-inline-flex align-items-center{% if samePage %} scroll-link{% endif %}{{ trackClass }}"
-        {%- if linkBlank -%} target="_blank" {%- endif -%}
-        {%- if samePage -%} data-target="#{{ uriInfos.anchor }}" {%- endif -%}
-        {%- if linkExternal -%} rel="noopener noreferrer" {%- endif -%}>
+        {% if linkBlank %} target="_blank" {% endif %}
+        {% if samePage %} data-target="#{{ uriInfos.anchor }}" {% endif %}
+        {% if linkExternal %} rel="noopener noreferrer" {% endif %}>
         {%- if 'start' == iconSide and iconCustom -%}
             <i class="icon-{{ iconCustom }} me-2" aria-hidden="true"></i>
         {%- endif -%}
@@ -76,11 +76,11 @@
             </div>
         {%- elseif 'cta' in linkStyle -%}
             {%- set background = linkStyle|replace({'cta-': ''}) is not empty ? 'bg-'~linkStyle|replace({'cta-': ''}) : null -%}
-            <a {% if samePage -%}data-href{%- else -%}href{%- endif -%}=" {{ link }}"
+            <a {% if samePage %}data-href{% else -%}href{% endif %}=" {{ link }}"
                class="{{ linkStyle }}{% if samePage %} scroll-link{% endif %}{% if not linkContent and background %} {{ background }}{% endif %} d-inline-block{{ trackClass }}"
-                {%- if linkBlank -%} target="_blank" {%- endif -%}
-                {%- if samePage -%} data-target="#{{ uriInfos.anchor }}" {%- endif -%}
-                {%- if linkExternal -%} rel="noopener noreferrer" {%- endif -%}>
+                {% if linkBlank %} target="_blank" {% endif %}
+                {% if samePage %} data-target="#{{ uriInfos.anchor }}" {% endif %}
+                {% if linkExternal %} rel="noopener noreferrer" {% endif %}>
                 {{ linkLabel|unescape|raw }} <i class="icon-chevron-right"></i>
             </a>
         {%- else -%}

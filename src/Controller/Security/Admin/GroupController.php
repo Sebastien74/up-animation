@@ -13,6 +13,7 @@ use App\Form\Type\Security\Admin\GroupType;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -49,7 +50,7 @@ class GroupController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index', name: 'admin_securitygroup_index', methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         return parent::index($request, $paginator);
     }

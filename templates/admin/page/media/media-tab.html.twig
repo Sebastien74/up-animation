@@ -17,7 +17,7 @@
 
         <div class="card">
             <div class="card-body radius pb-2">
-                <h5 class="file-info-title text-dark text-italic">{{ "Informations"|trans|raw }}</h5>
+                <h5 class="file-info-title text-italic">{{ "Informations"|trans|raw }}</h5>
                 <ul class="reset text-italic text-dark">
                     {%- if info.width is defined and info.width and info.height is defined and info.height -%}
                         <li>
@@ -79,7 +79,7 @@
         <div class="row">
             {%- if displayLabel -%}
                 <div class="col-12">
-                    <h3 class="text-dark mb-3">{{ label }}</h3>
+                    <h3 class="mb-3">{{ label }}</h3>
                 </div>
             {%- endif -%}
             <div class="col-md-12">{{ form_row(media.name) }}</div>

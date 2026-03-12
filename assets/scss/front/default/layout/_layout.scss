@@ -414,6 +414,12 @@ picture {
             }
         }
     }
+
+    > .container-fluid-right {
+        > .row {
+            justify-content: end !important;
+        }
+    }
 }
 
 .layout-block {

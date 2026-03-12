@@ -4,18 +4,21 @@
     <div class="locales-tab-container">
 {%- endif -%}
     {%- if allLocales|length > 1 -%}
-        <ul class="nav nav-tabs w-100" id="google-tab" role="tablist">
+        <ul class="nav nav-tabs border-0 d-flex w-100 mb-3 mt-1 gap-2" id="google-tab" role="tablist">
             {%- for intl in googleIntls -%}
                 {%- set locale = intl.vars.value.locale -%}
-                <li class="nav-item">
-                    <a class="nav-link {% if locale == defaultLocale %} active{% endif %}"
+                <li class="nav-item"
+                    data-bs-toggle="tooltip"
+                    title="{{ locale|languageName }}">
+                    <a class="btn-locale {% if locale == defaultLocale %} active{% endif %}"
                        id="social-{{ locale }}-tab"
                        data-bs-toggle="tab"
                        href="#google-tab-{{ locale }}"
                        role="tab"
                        aria-controls="google-tab-{{ locale }}"
                        aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}"
+                             class="img-fluid lazy-load" height="14" width="19" alt="{{ locale|languageName }}">
                     </a>
                 </li>
             {%- endfor -%}

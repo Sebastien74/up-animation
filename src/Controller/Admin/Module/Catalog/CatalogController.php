@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Module\Catalog;
 
 use App\Controller\Admin\AdminController;
-use App\Entity\Layout\Layout;
 use App\Entity\Layout\Page;
 use App\Entity\Module\Catalog\Catalog;
-use App\Entity\Module\Catalog\Product;
-use App\Entity\Module\Catalog\ProductIntl;
 use App\Entity\Seo\Seo;
 use App\Entity\Seo\Url;
 use App\Form\Interface\ModuleFormManagerInterface;
@@ -20,7 +17,9 @@ use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use DateMalformedStringException;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -57,7 +56,7 @@ class CatalogController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index', name: 'admin_catalog_index', methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
 //        $path = $this->coreLocator->formatDirname($this->coreLocator->projectDir().'/var/crawler/contents.json');
 //        if (file_exists($path)) {

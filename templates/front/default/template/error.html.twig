@@ -16,7 +16,7 @@
         </div>
         {{ removeSession('alert_error') }}
     {%- endif -%}
-    <section id="exception-block" {%- if displaySitemap -%} class="mb-5" {%- endif -%}>
+    <section id="exception-block" {% if displaySitemap %} class="mb-5" {% endif %}>
         <div id="errorStatus">
             <div class="errorStatus">
                 <div class="errorStatus-code"></div>

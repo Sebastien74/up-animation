@@ -13,7 +13,9 @@ use App\Form\Type\Security\Front\UserType;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -50,7 +52,7 @@ class UserController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index/{role}', name: 'admin_userfront_index', defaults: ['role' => null], methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         $role = $request->get('role') ? 'ROLE_'.strtoupper($request->get('role')) : null;
         if ($role) {

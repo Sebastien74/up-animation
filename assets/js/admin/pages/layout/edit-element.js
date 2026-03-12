@@ -99,8 +99,7 @@ export default function (Routing) {
                 if (modal) {
                     let field = modal.querySelector('.input-css');
                     if (field) {
-                        let copy = field.value === "" ? text : field.value + " " + text;
-                        field.value = copy;
+                        field.value = field.value === "" ? text : field.value + " " + text;
                     }
                 }
             }

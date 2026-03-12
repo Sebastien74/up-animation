@@ -92,7 +92,7 @@
                                 {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: intl} -%}
                             </div>
                         {%- elseif point.intl.link -%}
-                            <a href="{{ point.intl.link }}" {%- if point.intl.linkBlank -%} target="_blank" {%- endif -%}{%- if point.intl.linkExternal -%} rel="noopener noreferrer" {%- endif -%}>
+                            <a href="{{ point.intl.link }}" {% if point.intl.linkBlank %} target="_blank" {% endif %}{% if point.intl.linkExternal %} rel="noopener noreferrer" {% endif %}>
                                 <i class="icon-external-link-alt text-primary me-2"></i>
                             </a>
                         {%- endif -%}

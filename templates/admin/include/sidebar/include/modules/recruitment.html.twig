@@ -7,7 +7,7 @@
     {%- set intl = intlsModules['recruitment'][app.user.locale] is defined ? intlsModules['recruitment'][app.user.locale] : intlsModules['recruitment']['fr'] -%}
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['recruitment']['entity'].adminName is defined ? intlsModules['recruitment']['entity'].adminName : 'Recrutements'|trans) -%}
     {%- set icon = intlsModules['recruitment']['entity'].iconClass is defined and intlsModules['recruitment']['entity'].iconClass ? intlsModules['recruitment']['entity'].iconClass : '/medias/icons/light/file-certificate.svg' -%}
-    <li {% if active -%} class="active" {%- endif -%}>
+    <li {% if active %} class="active" {% endif -%}>
         <a class="as-arrow {% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
             <span class="btn-icon small me-3">{{ icon|icon(17, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
@@ -16,13 +16,13 @@
                 <a href="{{ path('admin_recruitmentjob_index', {"website": websiteId}) }}">{{ "Liste des offres"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_recruitmentcontract_index', {"website": websiteId}) }}"{%- if '/recruitment/contracts/' in uri -%} class="active" {%- endif -%}>{{ "Liste des types de contrat"|trans|raw }}</a>
+                <a href="{{ path('admin_recruitmentcontract_index', {"website": websiteId}) }}"{% if '/recruitment/contracts/' in uri %} class="active" {% endif %}>{{ "Liste des types de contrat"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_recruitmentcategory_index', {"website": websiteId}) }}"{%- if '/recruitment/categories/' in uri -%} class="active" {%- endif -%}>{{ "Liste des domaines de compétence"|trans|raw }}</a>
+                <a href="{{ path('admin_recruitmentcategory_index', {"website": websiteId}) }}"{% if '/recruitment/categories/' in uri %} class="active" {% endif %}>{{ "Liste des domaines de compétence"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_recruitmentlisting_index', {"website": websiteId}) }}"{%- if '/recruitment/listings/' in uri -%} class="active" {%- endif -%}>{{ "Configuration des index"|trans|raw }}</a>
+                <a href="{{ path('admin_recruitmentlisting_index', {"website": websiteId}) }}"{% if '/recruitment/listings/' in uri %} class="active" {% endif %}>{{ "Configuration des index"|trans|raw }}</a>
             </li>
         </ul>
     </li>

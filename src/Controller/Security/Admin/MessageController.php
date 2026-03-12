@@ -9,7 +9,9 @@ use App\Entity\Security\Message;
 use App\Form\Type\Security\Admin\MessageType;
 use Knp\Component\Pager\PaginatorInterface;
 use Psr\Cache\InvalidArgumentException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -33,7 +35,7 @@ class MessageController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index', name: 'admin_securitymessage_index', methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         return parent::index($request, $paginator);
     }

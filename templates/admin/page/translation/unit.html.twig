@@ -16,7 +16,7 @@
 
         <td class="align-middle px-4">{{ entity.keyName }}</td>
 
-        <td class="align-middle px-4{% if allLocales|length > 1 %} locales-groups{% endif %}">
+        <td class="align-middle px-4{%- if allLocales|length > 1 -%} locales-groups{%- endif -%}">
             {%- for transLocale in allLocales -%}
                 {%- set exist = false -%}
                 {%- for translation in form.translations -%}
@@ -25,7 +25,7 @@
                         {%- set isEmpty = translation.vars.data.content|striptags|length == 0 -%}
                         <div class="form-group my-1{% if isEmpty %} empty{% endif %}">
                             <span class="d-none">{{ translation.vars.value.content }}</span>
-                            <div class="translation-form-group position-relative{% if allLocales|length > 1 %} locales-group{% endif %}">
+                            <div class="translation-form-group position-relative{%- if allLocales|length > 1 -%} locales-group{%- endif -%}">
                                 <div class="input-group">
                                     {{ form_widget(translation.content, {attr: {class: 'translation-input'}}) }}
                                     {%- if allLocales|length > 1 -%}

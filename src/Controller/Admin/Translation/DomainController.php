@@ -16,6 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -39,7 +40,7 @@ class DomainController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index/{domains}', name: 'admin_translationdomain_index', options: ['expose' => true], defaults: ['domains' => null], methods: 'GET')]
-    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         $this->template = 'admin/page/translation/domains.html.twig';
         $this->arguments['domains'] = $this->entities = !$domains
@@ -57,7 +58,7 @@ class DomainController extends AdminController
      */
     #[IsGranted('ROLE_INTERNAL')]
     #[Route('/edit/{translationdomain}', name: 'admin_translationdomain_edit', methods: 'GET|POST')]
-    public function edit(Request $request)
+    public function edit(Request $request): JsonResponse|string|Response
     {
         return parent::edit($request);
     }
@@ -68,7 +69,7 @@ class DomainController extends AdminController
      * @throws NonUniqueResultException
      */
     #[Route('/edit/domain/{translationdomain}', name: 'admin_translationsdomain_edit', methods: 'GET')]
-    public function translationsDomain(Request $request, TranslationDomainRepository $domainRepository, TranslationUnitRepository $unitRepository)
+    public function translationsDomain(Request $request, TranslationDomainRepository $domainRepository, TranslationUnitRepository $unitRepository): JsonResponse|string|Response
     {
         $indexHelper = $this->adminLocator->indexHelper();
         $interface = $this->getInterface(TranslationUnit::class);
@@ -102,7 +103,7 @@ class DomainController extends AdminController
      */
     #[IsGranted('ROLE_INTERNAL')]
     #[Route('/delete/{translationdomain}', name: 'admin_translationsdomain_delete', methods: 'DELETE')]
-    public function deleteDomain(Request $request, string $projectDir)
+    public function deleteDomain(Request $request, string $projectDir): JsonResponse|string|Response
     {
         /** @var TranslationDomain $domain */
         $domain = $this->coreLocator->em()->getRepository(TranslationDomain::class)->find($request->get('translationdomain'));

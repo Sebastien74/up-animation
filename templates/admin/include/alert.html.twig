@@ -25,7 +25,7 @@
 {%- set alwaysShow = alwaysShow is defined and alwaysShow ? 'always-show' : false -%}
 
 {%- if 'alert' == display -%}
-    <div {% if id -%} id="{{ id }}" {%- endif -%} class="alert alert-{{ bgColor }} position-relative d-flex mb-3 {{ class }}{% if size %} {{ size }}{% endif %}">
+    <div {% if id %} id="{{ id }}" {% endif -%} class="alert alert-{{ bgColor }} position-relative d-flex mb-3 {{ class }}{% if size %} {{ size }}{% endif %}">
         <div class="btn-icon d-flex align-items-center justify-content-center position-relative {{ bgColor }} me-3">
             <i class="icm-{{ icon }} text-{{ iconColor }}"></i>
         </div>

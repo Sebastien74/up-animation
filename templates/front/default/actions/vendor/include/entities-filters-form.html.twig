@@ -32,7 +32,7 @@
             <option value="">{{ placeholder }}</option>
         {%- endif -%}
         {%- for choice in field.vars.choices -%}
-            <option value="{{ choice.value }}" {%- if data == choice.value -%} selected{%- endif -%}>{{ choice.label }}</option>
+            <option value="{{ choice.value }}" {% if data == choice.value %} selected{% endif %}>{{ choice.label }}</option>
         {%- endfor -%}
     </select>
 {%- endmacro -%}

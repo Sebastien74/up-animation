@@ -1,4 +1,4 @@
-﻿{%- trans_default_domain 'front_default' -%}
+{%- trans_default_domain 'front_default' -%}
 
 {%- set withThumbs = false -%}
 {%- set side = 'left' -%}
@@ -29,7 +29,7 @@
                                 path: true,
                             }) -%}
                             {%- set title = media.intl.title ? media.intl.title : media.entity.name -%}
-                            <img src="{{ path }}" alt="{{ title }}" class="img-fluid img-{{ media.extension }}" height="70" {%- if 'svg' == media.extension -%} style="height: 70px;" {%- endif -%}>
+                            <img src="{{ path }}" alt="{{ title }}" class="img-fluid img-{{ media.extension }}" height="70" {% if 'svg' == media.extension %} style="height: 70px;" {% endif %}>
                         {%- endif -%}
                     </div>
                 {%- endif -%}

@@ -17,7 +17,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <h5 class="main-title text-dark text-center fw-bold mb-4">{{ "Sélectionnez un dossier de destination"|trans|raw }}</h5>
+                        <h5 class="main-title text-center fw-bold mb-4">{{ "Sélectionnez un dossier de destination"|trans|raw }}</h5>
                         {%- for field in form.children -%}
                             {%- if field.vars.name != 'save' and field.vars.name != 'saveEdit' -%}
                                 {{ form_row(form[field.vars.name]) }}

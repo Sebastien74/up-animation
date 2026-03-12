@@ -17,7 +17,7 @@
             <ul class="dropdown-menu bg-transparent p-0 border-0 no-min-width" aria-labelledby="locales-switcher">
                 {%- for locale in locales -%}
                     {%- if routes[locale] is defined and locale != activeLocale -%}
-                        <li class="pt-2 bg-transparent" {%- if microDataActive -%} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language" {%- endif -%}>
+                        <li class="pt-2 bg-transparent" {% if microDataActive %} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language" {% endif %}>
                             {%- set languageName = locale|languageName(locale) -%}
                             {%- if microDataActive -%}
                                 <span itemprop="name" class="d-none">{{ languageName }}</span>
@@ -47,7 +47,7 @@
                 {%- set active = locale == app.request.locale -%}
                 {%- if displayFlag and routes[locale] is defined -%}
                     <li class="d-inline-flex {% if active %}active-locale{% else %}inactive{% endif %}"
-                        {%- if microDataActive -%} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language" {%- endif -%}>
+                        {% if microDataActive %} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language" {% endif %}>
                         {%- set languageName = locale|languageName(locale) -%}
                         {%- if microDataActive -%}
                             <span itemprop="name" class="d-none">{{ languageName }}</span>

@@ -72,7 +72,7 @@
                                 {%- set blockEntity = data.configuration.block is defined and data.configuration.block ? data.configuration.block : null -%}
                                 {%- set valueClassname = blockEntity.fieldConfiguration.className is defined and blockEntity.fieldConfiguration.className ? blockEntity.fieldConfiguration.className : null -%}
                                 {%- set isFile = metaProperty != 'label' and metaFieldValue|fileExist('public') -%}
-                                <li {% if metaProperty == 'label' -%} class="bold" {%- endif -%}>
+                                <li {% if metaProperty == 'label' %} class="bold" {% endif -%}>
                                     {%- if metaProperty == 'label' -%}
                                         {%- set intl = blockEntity|intl -%}
                                         {%- set value = intl.title is defined and intl.title ? intl.title : (blockEntity.adminName is defined and blockEntity.adminName ? blockEntity.adminName : metaFieldValue) -%}

@@ -30,7 +30,7 @@
          data-page="{{ pageNum }}"
          data-max="{{ maxPage }}"
          data-href="{{ ajaxPath }}"
-         class="news-index-container container position-relative pagination-ajax-wrap {% if entities|length > 0 %} pt-4 pb-3 pt-md-5 pb-md-4{% endif %}">
+         class="news-index-container container position-relative pagination-ajax-wrap {%- if entities|length > 0 -%} pt-4 pb-3 pt-md-5 pb-md-4{%- endif -%}">
 
         {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader strict-size'} only -%}
 

@@ -83,7 +83,7 @@
 {%- endmacro -%}
 
 {%- macro single(websiteTemplate, autoplay, teaser, entity, loopIndex, entities, thumbConfiguration) -%}
-    <li class="splide__slide col-12 p-0{% if loopIndex > teaser.itemsPerSlide %} d-none{% endif %}">
+    <li class="splide__slide col-12 p-0{%- if loopIndex > teaser.itemsPerSlide -%} d-none{%- endif -%}">
         <div class="card d-inline-block border-0 h-100 w-100">
             {%- if entity.showImage -%}
                 <div class="card-header bg-transparent p-0 border-0 text-center">
@@ -118,7 +118,7 @@
     {%- if isMobile -%}
         {%- set colSize = 100 -%}
     {%- endif -%}
-    <li class="splide__slide ps-0 pe-0 ps-md-0 pe-md-4 {% if isMobile %}col-12{% else %}col{% if not promoteFirst %}-md-4{% endif %}{% endif %}{% if loopIndex > teaser.itemsPerSlide %} d-none{% endif %}{% if isFirst %} is-first{% endif %}"
+    <li class="splide__slide ps-0 pe-0 ps-md-0 pe-md-4 {% if isMobile %}col-12{% else %}col{% if not promoteFirst %}-md-4{% endif %}{% endif %}{%- if loopIndex > teaser.itemsPerSlide -%} d-none{%- endif -%}{%- if isFirst -%} is-first{%- endif -%}"
         {%- if colSizeNext -%}data-size-next="{{ colSizeNext }}%" {%- endif -%}
         {%- if colSize -%}style="width: {{ colSize }}%" {%- endif -%}>
         {{ macroWebmaster.box({

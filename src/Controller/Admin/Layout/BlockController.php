@@ -11,7 +11,6 @@ use App\Entity\Layout;
 use App\Entity\Module\Form\Form;
 use App\Entity\Module\Form\StepForm;
 use App\Form\Interface\LayoutFormFormManagerLocator;
-use App\Form\Type\Layout\Block as FormType;
 use App\Form\Type\Layout\Management\BackgroundColorBlockType;
 use App\Form\Type\Layout\Management\BlockConfigurationType;
 use App\Repository\Layout\BlockRepository;

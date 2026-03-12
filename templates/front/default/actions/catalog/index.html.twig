@@ -98,7 +98,7 @@
                     </div>
                 {%- endif -%}
                 {%- if showMoreBtn and maxPage > 1 -%}
-                    <div id="show-more-wrap" class="w-100 text-center mt-5{% if maxPage >= 1 %} d-none{% endif %}">
+                    <div id="show-more-wrap" class="w-100 text-center mt-5{%- if maxPage >= 1 -%} d-none{%- endif -%}">
                         <button type="button" id="show-more-index-btn" class="btn btn-secondary">{{ "Voir plus"|trans|raw }}</button>
                     </div>
                 {%- endif -%}

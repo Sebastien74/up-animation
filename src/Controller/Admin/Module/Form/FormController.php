@@ -16,6 +16,7 @@ use App\Service\Interface\CoreLocatorInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -52,7 +53,7 @@ class FormController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index/{stepform}', name: 'admin_form_index', defaults: ['stepform' => null], methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         if (!empty($request->get('stepform'))) {
             $this->pageTitle = $this->coreLocator->translator()->trans('Étapes', [], 'admin');
@@ -78,7 +79,7 @@ class FormController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/layout/{form}/{stepform}', name: 'admin_form_layout', defaults: ['stepform' => null], methods: 'GET|POST')]
-    public function layout(Request $request)
+    public function layout(Request $request): JsonResponse|string|Response
     {
         $form = $this->coreLocator->em()->getRepository(Form::class)->find($request->attributes->getInt('form'));
         if ($form) {

@@ -13,7 +13,9 @@ use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -73,7 +75,7 @@ class PageController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/layout/{page}', name: 'admin_page_layout', methods: 'GET|POST')]
-    public function layout(Request $request)
+    public function layout(Request $request): JsonResponse|string|Response
     {
         $this->templateConfig = 'admin/page/layout/page-configuration.html.twig';
 

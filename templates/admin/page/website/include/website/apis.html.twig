@@ -39,9 +39,9 @@
     <div class="card-body pb-2">
         <h4 class="main-subtitle small"><i class="icm-plus-circle"></i>{{ "Autres"|trans|raw }}</h4>
         <div class="row">
-            {%- include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.api.custom.intls} -%}
             {{ form_row(form.api.addThis) }}
             {{ form_row(form.api.tawkToId) }}
+            {%- include 'admin/page/api/custom-intls.html.twig' with {customIntls: form.api.custom.intls} -%}
         </div>
     </div>
 </div>

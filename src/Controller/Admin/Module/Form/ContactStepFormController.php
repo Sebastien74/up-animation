@@ -9,7 +9,9 @@ use App\Entity\Module\Form\ContactStepForm;
 use App\Entity\Module\Form\Form;
 use App\Entity\Module\Form\StepForm;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -43,7 +45,7 @@ class ContactStepFormController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index/{stepform}', name: 'admin_contactstepform_index', methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         $form = $this->coreLocator->em()->getRepository(StepForm::class)->find($request->attributes->getInt('stepform'));
         $prefix = $this->coreLocator->translator()->trans('Contacts', [], 'admin');

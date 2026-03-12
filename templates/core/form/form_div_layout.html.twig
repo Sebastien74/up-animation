@@ -57,7 +57,7 @@
         {%- set formatDate = app.request.locale|formatDate -%}
         {%- set value = value|date(formatDate.inputDate) -%}
     {%- endif -%}
-        <input type="{{ type }}" {{ block('widget_attributes') }}{%- if value is not empty -%} value="{{ value }}" {%- endif -%}>
+        <input type="{{ type }}" {{ block('widget_attributes') }}{% if value is not empty %} value="{{ value }}" {% endif %}>
     {%- if type is defined and type == 'password' -%}
             <span class="input-group-text show-password">
                 <span class="show-icon"><i class="icon-eye"></i></span>
@@ -163,9 +163,9 @@
                 <span class="position-absolute clear cursor d-flex align-items-center justify-content-center"></span>
             {%- endif -%}
     {%- endif -%}
-    <select {{ block('widget_attributes') }}{%- if multiple -%} multiple="multiple" {%- endif -%}>
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple" {% endif %}>
         {%- if placeholder is not none -%}
-            <option value="" {%- if placeholder_attr|default({}) -%}{%- with { attr: placeholder_attr } -%}{{ block('attributes') }}{%- endwith -%}{%- endif -%}{%- if required and value is empty -%} selected="selected" {%- endif -%}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder|raw : placeholder|trans({}, translation_domain))|raw }}</option>
+            <option value="" {% if placeholder_attr|default({}) %}{%- with { attr: placeholder_attr } -%}{{ block('attributes') }}{%- endwith -%}{% endif %}{% if required and value is empty %} selected="selected" {% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder|raw : placeholder|trans({}, translation_domain))|raw }}</option>
         {%- endif -%}
         {%- if preferred_choices|length > 0 -%}
             {%- set options = preferred_choices -%}
@@ -193,17 +193,17 @@
             </optgroup>
         {%- else -%}
             {%- set choice = choice.data.value is defined and '@' in choice.data.value ? choice.data : choice -%}
-            <option value="{{ choice.value }}" {%- if choice.attr -%}{%- with { attr: choice.attr } -%}{{ block('attributes') }}{%- endwith -%}{%- endif -%}{%- if not render_preferred_choices|default(false) and choice is selectedchoice(value) -%} selected="selected" {%- endif -%}>{{ choice_translation_domain is same as(false) ? choice.label|raw : choice.label|trans(choice.labelTranslationParameters, choice_translation_domain)|raw }}</option>
+            <option value="{{ choice.value }}" {% if choice.attr %}{%- with { attr: choice.attr } -%}{{ block('attributes') }}{%- endwith -%}{% endif %}{% if not render_preferred_choices|default(false) and choice is selectedchoice(value) %} selected="selected" {% endif %}>{{ choice_translation_domain is same as(false) ? choice.label|raw : choice.label|trans(choice.labelTranslationParameters, choice_translation_domain)|raw }}</option>
         {%- endif -%}
     {%- endfor -%}
 {%- endblock choice_widget_options -%}
 
 {%- block checkbox_widget -%}
-    <input type="checkbox" {{ block('widget_attributes') }}{%- if value is defined -%} value="{{ value }}" {%- endif -%}{%- if checked -%} checked="checked" {%- endif -%}>
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}" {% endif %}{% if checked %} checked="checked" {% endif %}>
 {%- endblock checkbox_widget -%}
 
 {%- block radio_widget -%}
-    <input type="radio" {{ block('widget_attributes') }}{%- if value is defined -%} value="{{ value }}" {%- endif -%}{%- if checked -%} checked="checked" {%- endif -%}>
+    <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}" {% endif %}{% if checked %} checked="checked" {% endif %}>
 {%- endblock radio_widget -%}
 
 {%- block datetime_widget -%}
@@ -409,7 +409,7 @@
         {%- if required -%}
             {%- set label_attr = label_attr|merge({class: (label_attr.class|default('')~' required')|trim}) -%}
         {%- endif -%}
-        <{{ element|default('label') }}{%- if label_attr -%}{%- with { attr: label_attr } -%}{{ block('attributes') }}{%- endwith -%}{%- endif -%}>
+        <{{ element|default('label') }}{% if label_attr %}{%- with { attr: label_attr } -%}{{ block('attributes') }}{%- endwith -%}{% endif %}>
         {{- block('form_label_content') -}}
         </{{ element|default('label') }}>
     {%- endif -%}

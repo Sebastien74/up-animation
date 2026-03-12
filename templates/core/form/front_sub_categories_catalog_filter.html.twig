@@ -14,7 +14,7 @@
                                name="{{ name }}"
                                class="form-check-input"
                                value="{{ child.value }}"
-                               {%- if data == child.data -%} checked{%- endif -%}>
+                               {% if data == child.data %} checked{% endif %}>
                         <label class="inline form-check-label" for="subcategories-{{ urlize(child.data) }}">{{ child.label|raw }}</label>
                     </div>
                 {%- endfor -%}

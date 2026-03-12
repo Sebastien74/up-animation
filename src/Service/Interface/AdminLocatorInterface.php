@@ -54,7 +54,7 @@ interface AdminLocatorInterface
 
     public function tooHeavyFiles(mixed $entity): array;
 
-    public function mediasAlert(array $entity): array;
+    public function mediasAlert(mixed $entity): array;
 
-    public function routeArgs(string $route): array;
+    public function routeArgs(string $route, mixed $entity = null, array $parameters = []): array;
 }

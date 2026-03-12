@@ -42,7 +42,7 @@
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_page_tree', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin pages-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos pages"|trans|raw }}</span>
+                                <span class="entitled d-inline-block mt-auto">{{ "Gérez vos pages"|trans|raw }}</span>
                             </a>
                         </div>
                     {%- endif -%}
@@ -50,7 +50,7 @@
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_medias_library', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin images-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos médias"|trans|raw }}</span>
+                                <span class="entitled d-inline-block mt-auto">{{ "Gérez vos médias"|trans|raw }}</span>
                             </a>
                         </div>
                     {%- endif -%}
@@ -58,7 +58,7 @@
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin news-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Publiez une actu"|trans|raw }}</span>
+                                <span class="entitled d-inline-block mt-auto">{{ "Publiez une actu"|trans|raw }}</span>
                             </a>
                         </div>
                     {%- endif -%}
@@ -68,7 +68,7 @@
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_form_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin form-color'|icon(70, 70, 'info') }}</span>
-                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Gérez vos formulaires"|trans|raw }}</span>
+                                <span class="entitled d-inline-block mt-auto">{{ "Gérez vos formulaires"|trans|raw }}</span>
                             </a>
                         </div>
                     {%- endif -%}
@@ -76,14 +76,14 @@
                         <div class="col-6 col-md-4 text-center py-2">
                             <a href="{{ path('admin_slider_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
                                 <span class="d-inline-block w-100 mb-2">{{ 'admin sliders-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled text-dark d-inline-block mt-auto">{{ "Vos sliders"|trans|raw }}</span>
+                                <span class="entitled d-inline-block mt-auto">{{ "Vos sliders"|trans|raw }}</span>
                             </a>
                         </div>
                     {%- endif -%}
                     <div class="col-6 col-md-4 text-center py-2">
                         <a href="{{ path('admin_support', {website: websiteId()}) }}" class="d-flex shadow-item flex-column h-100 p-4">
                             <span class="d-inline-block w-100 mb-2">{{ 'admin headset-color'|icon(65, 65, 'info') }}</span>
-                            <span class="entitled text-dark d-inline-flex align-items-center justify-content-center mt-auto">{{ "Besoin d’aide ?"|trans|raw }}</span>
+                            <span class="entitled d-inline-flex align-items-center justify-content-center mt-auto">{{ "Besoin d’aide ?"|trans|raw }}</span>
                         </a>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                             <a href="{{ path('admin_notfoundurl_index', {website: websiteId(), type: 'front', category: 'url'}) }}" data-bs-toggle="preloader"
                                class="w-100 shadow-item text-center d-inline-flex align-items-center justify-content-center py-3 px-4 my-2">
                                 <div class="inner">
-                                    <span class="count text-dark w-100 d-inline-block">
+                                    <span class="count w-100 d-inline-block">
                                         {%- if notFoundUrls|length > notFoundsLimit -%}
                                             <i class="icm-chevron-right"></i>
                                             {{ notFoundsLimit }}
@@ -104,18 +104,18 @@
                                             {{ notFoundUrls|length }}
                                         {%- endif -%}
                                     </span>
-                                    <span class="entitled text-dark d-inline-flex align-items-center justify-content-center"><i class="icm-unlink"></i>{{ "Erreurs 404"|trans|raw }}</span>
+                                    <span class="entitled d-inline-flex align-items-center justify-content-center"><i class="icm-unlink"></i>{{ "Erreurs 404"|trans|raw }}</span>
                                 </div>
                             </a>
                             <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: defaultLocale}) }}"
                                class="w-100 shadow-item text-center d-inline-flex align-items-center justify-content-center py-3 px-4 my-2">
                                 <div class="inner">
-                                    <span class="count text-dark w-100 d-inline-block">{{ noSeoCounts['total'] }}</span>
+                                    <span class="count w-100 d-inline-block">{{ noSeoCounts['total'] }}</span>
                                     {%- if allLocales|length > 1 -%}
                                         <div class="w-100 mx-auto">
                                             <ul class="reset">
                                                 {%- for locale, count in noSeoCounts|unset('total') -%}
-                                                    <li class="small-count text-dark d-inline-block">
+                                                    <li class="small-count d-inline-block">
                                                         <span class="flag d-inline-block" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
                                                             <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
                                                                  data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}"
@@ -128,7 +128,7 @@
                                             </ul>
                                         </div>
                                     {%- endif -%}
-                                    <span class="entitled text-dark w-100 d-inline-block"><i class="icm-search"></i>{{ "SEO manquant"|trans|raw }}</span>
+                                    <span class="entitled w-100 d-inline-block"><i class="icm-search"></i>{{ "SEO manquant"|trans|raw }}</span>
                                 </div>
                             </a>
                         </div>
@@ -166,7 +166,7 @@
                                                     <a href="{{ path('admin_searchvalue_delete', {website: website.id, searchvalue: value.id}) }}"
                                                        data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
                                                        data-target="#entity-row-{{ value.id }}"
-                                                       class="text-dark swal-delete-link cursor">
+                                                       class="swal-delete-link cursor">
                                                         <i class="icm-trash"></i>
                                                     </a>
                                                 </span>

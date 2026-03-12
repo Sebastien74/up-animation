@@ -10,8 +10,6 @@ use App\Entity\Layout\Block;
 use App\Entity\Layout\Page;
 use App\Entity\Media\Folder;
 use App\Entity\Media\Media;
-use App\Entity\Module\Catalog as CatalogEntities;
-use App\Entity\Module\Newscast as NewscastEntities;
 use App\Form\Interface\MediaFormManagerInterface;
 use App\Form\Type\Media\SearchType;
 use App\Form\Widget\MediaType;

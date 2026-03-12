@@ -13,7 +13,7 @@
     {%- elseif entitled -%}
         <span class="label fw-600 me-1">{{ "E-mail :"|trans|raw }}</span>
     {%- endif -%}
-    <a href="{{ mailto }}" {%- if not only_href -%} data-mailto="{{ email|encrypt(website) }}" {%- endif -%}
+    <a href="{{ mailto }}" {% if not only_href %} data-mailto="{{ email|encrypt(website) }}" {% endif %}
        class="email-link position-relative d-inline-flex align-items-center{% if class %} {{ class }}{% endif %}{% if not only_href %} loading{% else %} only-href{% endif %}{{ btnClasses }}"
        data-id="{{ website.id }}"
        aria-label="{{"E-mail"|trans|striptags }}"

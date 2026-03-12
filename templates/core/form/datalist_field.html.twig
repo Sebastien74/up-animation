@@ -17,8 +17,8 @@
                id="{{ id }}"
                class="form-control {% if attr.class is defined and attr.class %} {{ attr.class }}{% endif %}"
                name="{{ full_name }}"
-               {%- if attr.placeholder is defined and attr.placeholder -%}placeholder="{{ attr.placeholder }}" {%- endif -%}
-               {%- if value is not empty -%}value="{{ value }}" {%- endif -%}>
+               {% if attr.placeholder is defined and attr.placeholder %}placeholder="{{ attr.placeholder }}" {% endif %}
+               {% if value is not empty %}value="{{ value }}" {% endif %}>
         <datalist id="{{ id }}_list">
             {%- for choice in choices -%}
                 <option value="{{ choice }}"></option>

@@ -10,7 +10,7 @@
         action: path('admin_redirection_form', {website: websiteId(), redirection: entity.id}),
         id: 'redirection-form-'~entity.id
     }}) }}
-        <td id="group-locale-{{ entity.id }}" class="col-locale refresh-group{% if allLocales|length <= 1 %} d-none{% endif %}">
+        <td id="group-locale-{{ entity.id }}" class="col-locale refresh-group{%- if allLocales|length <= 1 -%} d-none{% endif %}">
             {{ form_row(form.locale, {id: 'redirection_locale_'~entity.id}) }}
         </td>
         <td id="group-old-{{ entity.id }}" class="refresh-group align-middle">
@@ -29,7 +29,7 @@
                 <a href="{{ path('admin_redirection_delete', {website: websiteId(), redirection: entity.id}) }}"
                    data-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
                    data-target="#entity-row-{{ entity.id }}"
-                   class="text-dark swal-delete-link">
+                   class="swal-delete-link">
                     <i class="icm-trash ms-3"></i>
                 </a>
             {%- endif -%}

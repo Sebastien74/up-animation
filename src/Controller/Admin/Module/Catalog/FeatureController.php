@@ -14,6 +14,7 @@ use App\Service\Interface\CoreLocatorInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -49,7 +50,7 @@ class FeatureController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index', name: 'admin_catalogfeature_index', methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         $unusedValues = $this->coreLocator->em()->getRepository(FeatureValueProduct::class)->findBy(['product' => null]);
         $flush = false;

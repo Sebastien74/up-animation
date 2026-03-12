@@ -64,6 +64,15 @@
         </div>
         <div class="card mb-3">
             <div class="card-body pb-2">
+                <h4 class="main-subtitle small"><i class="icm-atom"></i>{{ "Thèmes"|trans|raw }}</h4>
+                <div class="row">
+                    {{ form_row(form.configuration.template) }}
+                    {{ form_row(form.configuration.buildTheme) }}
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body pb-2">
                 <h4 class="main-subtitle small"><i class="icm-tools"></i>{{ "Administration"|trans|raw }}</h4>
                 <div class="row">
                     {{ form_row(form.configuration.adminAdvertising) }}

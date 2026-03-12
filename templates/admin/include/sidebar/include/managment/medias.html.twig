@@ -11,7 +11,7 @@
     {%- set intl = intlsModules['medias'][app.user.locale] is defined ? intlsModules['medias'][app.user.locale] : intlsModules['medias']['fr'] -%}
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['medias']['entity'].adminName is defined ? intlsModules['medias']['entity'].adminName : 'Médias'|trans) -%}
     {%- set icon = intlsModules['medias']['entity'].iconClass is defined and intlsModules['medias']['entity'].iconClass ? intlsModules['medias']['entity'].iconClass : '/medias/icons/light/photo-video.svg' -%}
-    <li {% if active -%} class="active" {%- endif -%}>
+    <li {% if active %} class="active" {% endif -%}>
         <a class="as-arrow {% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
             <span class="btn-icon small me-3">{{ icon|icon(19, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
@@ -25,7 +25,7 @@
     {%- set intl = intlsModules['medias'][app.user.locale] is defined ? intlsModules['medias'][app.user.locale] : intlsModules['medias']['fr'] -%}
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['medias']['entity'].adminName is defined ? intlsModules['medias']['entity'].adminName : 'Médias'|trans) -%}
     {%- set icon = intlsModules['medias']['entity'].iconClass is defined and intlsModules['medias']['entity'].iconClass ? intlsModules['medias']['entity'].iconClass : '/medias/icons/light/photo-video.svg' -%}
-    <li {% if active -%} class="active" {%- endif -%}>
+    <li {% if active %} class="active" {% endif -%}>
         <a href="{{ path('admin_medias_library', {website: websiteId}) }}">
             <span class="btn-icon small me-3">{{ icon|icon(19, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>

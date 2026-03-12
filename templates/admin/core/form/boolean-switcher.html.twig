@@ -8,7 +8,7 @@
                    id="switcher-status-{{ property }}-{{ entity.id }}"
                    name="status"
                    class="form-check-input cursor entity-switcher-status"
-                   value="{{ fieldValue }}" {%- if fieldValue -%} checked="checked" {%- endif -%}>
+                   value="{{ fieldValue }}" {% if fieldValue %} checked="checked" {% endif %}>
             <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="switcher-status-{{ property }}-{{ entity.id }}"></label>
         </div>
     </form>

@@ -101,8 +101,8 @@ export default function () {
                     ajaxContent.innerHTML = responseContent;
 
                     /** Refresh dropify */
-                    import('./dropify').then(({default: dropifyJS}) => {
-                        dropifyJS();
+                    import('./dropify').then(async ({default: dropifyJS}) => {
+                        await dropifyJS();
                     }).catch(error => console.error(error.message));
 
                     /** Refresh select2 */

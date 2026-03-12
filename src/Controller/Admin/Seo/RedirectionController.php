@@ -59,7 +59,7 @@ class RedirectionController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index', name: 'admin_redirection_index', methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         $this->formType = null;
         $this->class = Redirection::class;

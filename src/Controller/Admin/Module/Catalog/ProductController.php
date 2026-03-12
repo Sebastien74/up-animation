@@ -58,7 +58,7 @@ class ProductController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index/{catalog}', name: 'admin_catalogproduct_index', defaults: ['catalog' => null], methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         if ($request->attributes->get('catalog')) {
             $catalog = $this->coreLocator->em()->getRepository(Catalog::class)->find($request->attributes->getInt('catalog'));

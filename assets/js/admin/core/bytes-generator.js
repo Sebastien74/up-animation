@@ -6,7 +6,7 @@
 export default function (event, el, tokenLength = 30) {
 
     let spinnerIcon = el.querySelector('svg');
-    let group = el.closest('.form-group');
+    let group = el.closest('.form-group') ? el.closest('.form-group') : el.closest('.group-form');
     let input = group ? group.querySelector('input') : null;
 
     if (group) {
@@ -19,8 +19,8 @@ export default function (event, el, tokenLength = 30) {
 
     if (spinnerIcon) spinnerIcon.classList.toggle('fa-spin');
 
-    const rand = () => Math.random().toString(36).substr(2);
-    const token = (length) => (rand() + rand() + rand() + rand()).substr(0, length);
+    const rand = () => Math.random().toString(36).slice(2);
+    const token = (length) => (rand() + rand() + rand() + rand()).slice(0, length);
 
     if (input) {
         input.value = token(tokenLength);

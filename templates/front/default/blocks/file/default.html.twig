@@ -8,8 +8,8 @@
     <a href="{{ absolute_url(asset(media.path)) }}"
        class="{{ media.intl.linkStyle }} file d-inline-flex align-items-center"
        title="{{ media.media.filename }}"
-        {%- if downloadable -%} download="{{ media.media.filename|urlize(true) }}" {%- endif -%}
-        {%- if media.intl.linkBlank -%} target="_blank" {%- endif -%}>
+        {% if downloadable %} download="{{ media.media.filename|urlize(true) }}" {% endif %}
+        {% if media.intl.linkBlank %} target="_blank" {% endif %}>
         {%- if extension -%}
             {{ 'front'|fileIcon(extension, 'me-2')|raw }}
         {%- endif -%}

@@ -9,6 +9,10 @@ Dans mixin before retirer :before et :after
 
 https://github.com/jackocnr/intl-tel-input/tree/master
 
+Retirer tous les use non utilisés
+
+mudole js voir pour ajouter async : export default async function
+
 Dans actus mdias la modal d'ajout de media ne fonctionne pas
 
 Récupérer les groupe d'onglets de sydev

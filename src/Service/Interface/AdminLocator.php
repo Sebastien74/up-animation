@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * AdminFormMangerLocator.
+ * AdminLocator.
  *
  * To load admin Services
  *

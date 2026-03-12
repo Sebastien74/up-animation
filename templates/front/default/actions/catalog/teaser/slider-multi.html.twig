@@ -65,7 +65,7 @@
             <div class="splide__track">
                 {%- set arrowsClass = entities|length >= teaser.itemsPerSlide ? ' d-lg-none' : '' -%}
                 {{ macro.arrows(website, autoplay, 'end', 'primary'~arrowsClass, true, 'top') }}
-                <ul class="splide__list {% if entities|length < teaser.itemsPerSlide %} d-lg-flex justify-content-lg-center{% endif %}">
+                <ul class="splide__list {%- if entities|length < teaser.itemsPerSlide -%} d-lg-flex justify-content-lg-center{% endif %}">
                     {%- for post in entities -%}
                         <li class="splide__slide pe-4">
                             {{ macroCard.standard({

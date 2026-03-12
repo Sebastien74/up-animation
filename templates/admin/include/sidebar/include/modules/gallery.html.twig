@@ -7,7 +7,7 @@
     {%- set intl = intlsModules['gallery'][app.user.locale] is defined ? intlsModules['gallery'][app.user.locale] : intlsModules['gallery']['fr'] -%}
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['gallery']['entity'].adminName is defined ? intlsModules['gallery']['entity'].adminName : 'Galeries'|trans) -%}
     {%- set icon = intlsModules['gallery']['entity'].iconClass is defined and intlsModules['gallery']['entity'].iconClass ? intlsModules['gallery']['entity'].iconClass : '/medias/icons/light/photo-video.svg' -%}
-    <li {% if active -%} class="active" {%- endif -%}>
+    <li {% if active %} class="active" {% endif -%}>
         <a class="as-arrow {% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
             <span class="btn-icon small me-3">{{ icon|icon(17, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
@@ -16,13 +16,13 @@
                 <a href="{{ path('admin_gallery_index', {website: websiteId}) }}">{{ "Liste des galeries"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_gallerycategory_index', {website: websiteId}) }}" {%- if '/galleries/categories/' in uri -%} class="active" {%- endif -%}>{{ "Liste des catégories"|trans|raw }}</a>
+                <a href="{{ path('admin_gallerycategory_index', {website: websiteId}) }}" {% if '/galleries/categories/' in uri %} class="active" {% endif %}>{{ "Liste des catégories"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_galleryteaser_index', {website: websiteId}) }}" {%- if '/galleries/teasers/' in uri -%} class="active" {%- endif -%}>{{ "Configuration des teasers"|trans|raw }}</a>
+                <a href="{{ path('admin_galleryteaser_index', {website: websiteId}) }}" {% if '/galleries/teasers/' in uri %} class="active" {% endif %}>{{ "Configuration des teasers"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_gallerylisting_index', {website: websiteId}) }}" {%- if '/galleries/listings/' in uri -%} class="active" {%- endif -%}>{{ "Configuration des index"|trans|raw }}</a>
+                <a href="{{ path('admin_gallerylisting_index', {website: websiteId}) }}" {% if '/galleries/listings/' in uri %} class="active" {% endif %}>{{ "Configuration des index"|trans|raw }}</a>
             </li>
         </ul>
     </li>

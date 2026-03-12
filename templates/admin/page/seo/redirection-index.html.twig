@@ -26,7 +26,7 @@
         <table class="table editable-table table-striped mb-0">
             <thead>
                 <tr>
-                    <th class="col-locale {% if allLocales|length <= 1 %} d-none{% endif %}">{{ "Langue"|trans|raw }}</th>
+                    <th class="col-locale {%- if allLocales|length <= 1 -%} d-none{% endif %}">{{ "Langue"|trans|raw }}</th>
                     <th>{{ "URL"|trans|raw }} <small class="ms-1">({{ "Ancienne URI / URL"|trans|raw }})</small></th>
                     <th class="text-start">{{ "Nouvelle URL"|trans|raw }} <small class="ms-1">({{ "Avec protocol"|trans|raw }})</small></th>
                     <th class="text-end">

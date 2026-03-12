@@ -49,11 +49,11 @@
         {%- set metaTitle = block('title') is defined ? block('title') : "Bienvenue !!"|trans -%}
         <title>
             {% block title %}
-                {% if metaTitle is defined %}
+                {%- if metaTitle is defined -%}
                     {{ metaTitle|htmlEntities }}
-                {% else %}
+                {%- else -%}
                     {{ "Bienvenue !!"|trans|raw }}
-                {% endif %}
+                {%- endif -%}
             {% endblock %}
             | {{ defaultTitle }}
         </title>

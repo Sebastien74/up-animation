@@ -20,9 +20,9 @@
                     </div>
                     <div class="modal-body pe-4 ps-4">
 
-                        <h2 class="main-title text-center fw-bold mb-5">{{ "Configuration de la colonne"|trans|raw }}</h2>
+                        <h2 class="main-title text-center fw-500 mb-5">{{ "Configuration de la colonne"|trans|raw }}</h2>
 
-                        <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" id="col-configuration-tab" role="tablist">
+                        <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4 justify-content-center" id="col-configuration-tab" role="tablist">
                             <li class="nav-item text-center">
                                 <a class="btn-app active" id="general-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">
                                     <i class="icm-star"></i>{{ "Général"|trans|raw }}
@@ -66,7 +66,7 @@
                                         {%- include 'admin/core/layout/margins.html.twig' -%}
                                     </div>
                                     <div class="col-md-6">
-                                        <h2 class="main-title text-center mb-3">{{ "Alignements"|trans|raw }}</h2>
+                                        <h2 class="main-subtitle small text-center mb-3">{{ "Alignements"|trans|raw }}</h2>
                                         <div class="row">
                                             {%- if form.alignment is defined -%}
                                                 {{ form_row(form.alignment) }}
@@ -81,7 +81,7 @@
                                                 {{ form_row(form.endAlign) }}
                                             {%- endif -%}
                                         </div>
-                                        <h2 class="main-title text-center mb-3">{{ "Autres"|trans|raw }}</h2>
+                                        <h2 class="main-subtitle small text-center mb-3">{{ "Autres"|trans|raw }}</h2>
                                         <div class="row">
                                             {%- if form.fullSize is defined -%}
                                                 {{ form_row(form.fullSize) }}
@@ -102,11 +102,11 @@
                             {%- if form.transition.vars.choices is defined and form.transition.vars.choices|length > 0 -%}
                                 <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="animation" role="tabpanel" aria-labelledby="animation-tab">
                                     <div class="row">
-                                        <h2 class="main-title text-dark w-100 text-center mb-3">{{ "Animation"|trans|raw }}</h2>
+                                        <h2 class="main-subtitle small w-100 text-center mb-3">{{ "Animation"|trans|raw }}</h2>
                                         {{ form_row(form.transition) }}
                                         {{ form_row(form.delay) }}
                                         {{ form_row(form.duration) }}
-                                        <h2 class="main-title text-dark w-100 text-center mb-3">{{ "Styles"|trans|raw }}</h2>
+                                        <h2 class="main-subtitle small w-100 text-center mb-3">{{ "Styles"|trans|raw }}</h2>
                                         <div class="row justify-content-center">
                                             {%- if form.shadow is defined -%}
                                                 {{ form_row(form.shadow) }}
@@ -136,7 +136,7 @@
                                 {%- include 'admin/core/layout/custom-identifiers.html.twig' -%}
                             </div>
                             <div class="tab-pane tab-pane-config fade pe-4 ps-4 pb-0" id="screens" role="tabpanel" aria-labelledby="screens-tab">
-                                <h2 class="main-title text-dark w-100 text-center mb-3">{{ "Cacher"|trans|raw }}</h2>
+                                <h2 class="main-subtitle small w-100 text-center mb-3">{{ "Cacher"|trans|raw }}</h2>
                                 <div class="row">
                                     {%- if form.hideMobile is defined -%}
                                         {{ form_row(form.hideMobile) }}
@@ -151,13 +151,13 @@
                                         {{ form_row(form.hideDesktop) }}
                                     {%- endif -%}
                                 </div>
-                                <h2 class="main-title text-dark w-100 text-center mb-3">{{ "Autres"|trans|raw }}</h2>
+                                <h2 class="main-subtitle small w-100 text-center mb-3">{{ "Autres"|trans|raw }}</h2>
                                 <div class="row">
                                     {%- if form.reverse is defined -%}
                                         {{ form_row(form.reverse) }}
                                     {%- endif -%}
                                 </div>
-                                <h2 class="main-title text-dark w-100 text-center mb-3">{{ "Ordres / Tailles de la colonne"|trans|raw }}</h2>
+                                <h2 class="main-subtitle small w-100 text-center mb-3">{{ "Ordres / Tailles de la colonne"|trans|raw }}</h2>
                                 <div class="row">
                                     {%- if form.mobilePosition is defined -%}
                                         {{ form_row(form.mobilePosition) }}

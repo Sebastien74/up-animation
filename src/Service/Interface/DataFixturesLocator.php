@@ -9,6 +9,11 @@ use Psr\Container\ContainerExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
+/**
+ * DataFixturesLocator.
+ *
+ * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
+ */
 class DataFixturesLocator implements DataFixturesInterface
 {
     /**

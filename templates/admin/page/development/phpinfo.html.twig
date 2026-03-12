@@ -72,7 +72,7 @@
                                             {{ value.master }}
                                         </td>
                                     {%- else -%}
-                                        <td class="align-middle px-4" {%- if key matches '/^\\d+$/' -%}colspan="2" {%- endif -%}>
+                                        <td class="align-middle px-4" {% if key matches '/^\\d+$/' %}colspan="2" {% endif %}>
                                             <div class="d-flex align-items-center">
                                                 {%- if key matches '/^\\d+$/' == false -%}
                                                     {{ key }}

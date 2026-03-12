@@ -8,7 +8,9 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Module\Map\Point;
 use App\Form\Type\Module\Map\PointType;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -32,7 +34,7 @@ class PointController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/{map}/index', name: 'admin_mappoint_index', methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         return parent::index($request, $paginator);
     }

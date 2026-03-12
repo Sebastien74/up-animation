@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Service\Export;
 
-use App\Entity\Module\Form;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\PersistentCollection;

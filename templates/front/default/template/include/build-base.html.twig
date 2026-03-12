@@ -108,7 +108,7 @@
 {#                </div>#}
             </div>
         </div>
-        <div class="right col-md-6 col-xl-7 px-0 column d-none d-lg-block" {%- if backgroundPath -%} style="background: url({{ backgroundPath }})" {%- endif -%}>
+        <div class="right col-md-6 col-xl-7 px-0 column d-none d-lg-block" {% if backgroundPath %} style="background: url({{ backgroundPath }})" {% endif %}>
             <div class="inner w-100 h-100"></div>
         </div>
     </div>

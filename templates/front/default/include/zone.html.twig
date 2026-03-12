@@ -47,9 +47,9 @@
     {%- set zoneClass = zone.colToRight ? 'container-fluid-right' : zoneClass -%}
     {%- set asFluidRight = zone.colToRight -%}
 
-    <{{ sectionEl }} id="{% if not zone.idAsAnchor %}zone-{% endif %}{{ zoneId|urlize }}" {%- if bgImgStyle -%} data-style="{{ bgImgStyle }}" {%- endif -%}
+    <{{ sectionEl }} id="{% if not zone.idAsAnchor %}zone-{% endif %}{{ zoneId|urlize }}" {% if bgImgStyle %} data-style="{{ bgImgStyle }}" {% endif %}
         class="layout-zone {{ zoneClasses }}{% if zoneBgFullSize %} {{ zoneMarginsAndPaddings }}{% endif %}{% if bgImgZone or bgImgStyle %} have-bg-img{% endif %}{% if bgParallax %} parallax position-relative{% endif %}"
-        {%- if zoneEffects -%} {{ zoneEffects|raw }}{%- endif -%} tabindex="-1">
+        {% if zoneEffects %} {{ zoneEffects|raw }}{% endif %} tabindex="-1">
 
         {%- if bgImgZone and bgParallax -%}
             <div class="parlx-children position-absolute">
@@ -60,7 +60,7 @@
         {%- set bgColorHexa = zone.hexadecimalCode and not zone.backgroundColor ? zone.hexadecimalCode : false -%}
 
         <div class="zone-container position-relative {{ zoneClass }}{% if not zoneBgFullSize %} {{ zoneContainerBg~zoneMarginsAndPaddings }}{% endif %}"
-            {%- if bgColorHexa -%} style="background: {{ bgColorHexa }};" data-hexadecimal="{{ bgColorHexa }}" {%- endif -%} tabindex="-1">
+            {% if bgColorHexa %} style="background: {{ bgColorHexa }};" data-hexadecimal="{{ bgColorHexa }}" {% endif %} tabindex="-1">
 
             {%- if not fullSize and zone.containerSize -%}
                 <div class="custom-container row">
@@ -124,8 +124,8 @@
 
                         <div id="layout-col-{{ colId }}" class="layout-col {{ colClasses }} {{ colSpaces }}{% if isColMedia %} media-col{% endif %}{% if colAlignment %} {{ colAlignment }}{% endif %}"
                              data-position="{{ col.position }}"
-                            {%- if colEffects -%} {{ colEffects|raw }}{%- endif -%}
-                            {%- if bgColorHexa -%} style="background: {{ bgColorHexa }};" data-hexadecimal="{{ bgColorHexa }}" {%- endif -%}>
+                            {% if colEffects %} {{ colEffects|raw }}{% endif %}
+                            {% if bgColorHexa %} style="background: {{ bgColorHexa }};" data-hexadecimal="{{ bgColorHexa }}" {% endif %}>
 
                             {%- if align -%}
                                 <div class="col-12 p-0 my-auto">
@@ -139,7 +139,7 @@
 
                                     {%- if innerColBackground or bgColorHexaInnerZone -%}
                                         {%- set colPaddings = paddings(col, 'vertical') -%}
-                                        <div class="h-100 px-0{% if blocks|length >= 2 %} row m-0{% endif %} {{ colPaddings }}{% if innerColBackground %} {{ innerColBackground }}{% endif %}{% if col.elementsAlignment %} {{ col.elementsAlignment }}{% endif %}"
+                                        <div class="h-100 px-0{%- if blocks|length >= 2 -%} row m-0{%- endif -%} {{ colPaddings }}{%- if innerColBackground -%} {{ innerColBackground }}{%- endif -%}{%- if col.elementsAlignment -%} {{ col.elementsAlignment }}{%- endif -%}"
                                              {%- if bgColorHexaInnerZone -%} style="background: {{ bgColorHexaInnerZone }};" data-hexadecimal="{{ bgColorHexaInnerZone }}" {%- endif -%}>
                                     {%- endif -%}
 
@@ -165,12 +165,12 @@
                                             {%- set bgFullHeight = (block.backgroundFullHeight) or (blocks|length == 1 and innerBlockBackground) -%}
                                             {%- set innerBgPaddings = not block.backgroundFullSize and (bgColorHexaZone or 'bg-' in innerBlockBackground) ? block|paddings|trim : false -%}
 
-                                            <div id="layout-block-{{ blockId }}" class="layout-block position-relative {{ blockClasses }}" {%- if blockEffects -%} {{ blockEffects|raw }}{%- endif -%}
-                                                 {%- if bgColorHexaZone -%} style="background: {{ bgColorHexaZone }};" data-hexadecimal="{{ bgColorHexaZone }}" {%- endif -%}>
+                                            <div id="layout-block-{{ blockId }}" class="layout-block position-relative {{ blockClasses }}" {% if blockEffects %} {{ blockEffects|raw }}{% endif %}
+                                                 {% if bgColorHexaZone %} style="background: {{ bgColorHexaZone }};" data-hexadecimal="{{ bgColorHexaZone }}" {% endif %}>
                                                 <div class="layout-block-content {{ margins(block) }}{% if bgFullHeight and 'align-items-end' not in blockClasses and 'zones-navigation' != blockSlug %} h-100{% endif %}">
                                                     {%- if innerBlockBackground or bgColorHexaInner -%}
                                                         <div class="{% if innerBlockBackground %}{{ innerBlockBackground }}{% endif %}{% if innerBgPaddings %} {{ innerBgPaddings }}{% endif %}{% if bgFullHeight and 'align-items-end' not in blockClasses %} h-100{% endif %}{% if block.radius %} radius{% endif %}"
-                                                            {%- if bgColorHexaInner -%} style="background: {{ bgColorHexaInner }};" data-hexadecimal="{{ bgColorHexaInner }}" {%- endif -%}>
+                                                            {% if bgColorHexaInner %} style="background: {{ bgColorHexaInner }};" data-hexadecimal="{{ bgColorHexaInner }}" {% endif %}>
                                                     {%- endif -%}
                                                         {%- if block.blockType.slug is defined and block.blockType.slug == 'core-action' -%}
                                                             {%- set action = block.action -%}

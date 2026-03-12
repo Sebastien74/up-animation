@@ -1,9 +1,10 @@
-﻿{%- trans_default_domain 'admin' -%}
+{%- trans_default_domain 'admin' -%}
 
-<h2 class="main-title text-dark w-100 text-center mb-3 position-relative">
+<h2 class="main-subtitle small w-100 text-center mb-3 position-relative">
+    <i class="icm-border-top-left"></i>
     {{ "Marges"|trans|raw }}
     {%- if interface.name is defined and 'zone' == interface.name -%}
-        <span class="reset-margins h-100 position-absolute d-inline-flex justify-content-center align-items-center cursor"
+        <span class="reset-margins ms-auto d-inline-flex justify-content-center align-items-center cursor"
               data-post-form="0"
               data-type="stay"
               data-target=".layout-modal"
@@ -37,10 +38,10 @@
         icon: "icm-mobile"
     }} -%}
 
-<ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" role="tablist">
+<ul class="nav nav-tabs gap-2 w-100 border-0 mb-3" role="tablist">
     {%- for tabId, config in tabs -%}
         <li class="nav-item flex-fill">
-            <a id="nav-{{ tabId }}-tab-margin" class="btn-app w-100 {% if loop.first %} active{% endif %}"
+            <a id="nav-{{ tabId }}-tab-margin" class="btn-app justify-content-center small w-100 {% if loop.first %} active{% endif %}"
                data-bs-toggle="tab"
                data-bs-target="#{{ tabId }}-margin"
                aria-controls="{{ tabId }}-margin"
@@ -54,10 +55,10 @@
     {%- endfor -%}
 </ul>
 
-<div id="margins-management-block" class="tab-content config-tabs-content pt-4">
+<div id="margins-management-block" class="tab-content pt-0">
     {%- for tabId, config in tabs -%}
         {%- set suffix = tabId == 'desktop' ? '' : (config.field is defined ? config.field : tabId|capitalize) -%}
-        <div class="tab-pane fade text-center w-100 mb-4 tab-pane-config{% if loop.first %} active show{% endif %}" id="{{ tabId }}-margin" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab-margin">
+        <div class="tab-pane fade text-center w-100 mb-4{% if loop.first %} active show{% endif %}" id="{{ tabId }}-margin" role="tabpanel" aria-labelledby="nav-{{ tabId }}-tab-margin">
             <div class="margin-dashed d-inline-block mx-auto position-relative">
                 <small class="margin-info position-absolute">{{ "Marge extérieure"|trans|raw }}</small>
                 <div class="row">
@@ -134,7 +135,7 @@
                 </div>
             </div>
             <small class="margins-infos mt-2 d-inline-block w-100">
-                {{ "<b>null :</b> Valeur par défaut - <b>0 :</b> Aucune - <b>XS :</b> Très petite - <b>S :</b> Petite - <b>M :</b> Moyenne - <b>L :</b> Large - <b>XL :</b> Très large - <b>XXL :</b> Extra large - <b>N* :</b> Négatif"|trans|raw }}
+                {{ "<b>null :</b> Valeur par défaut - <b>0 :</b> Aucune - <b>XS :</b> Trés petite - <b>S :</b> Petite - <b>M :</b> Moyenne - <b>L :</b> Large - <b>XL :</b> Trés large - <b>XXL :</b> Extra large - <b>N* :</b> Négatif"|trans|raw }}
             </small>
         </div>
     {%- endfor -%}

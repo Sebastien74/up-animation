@@ -86,8 +86,8 @@ if (document.querySelector('.js-reference-dropzone')) {
 
 /** 8 - Dropify */
 if (document.querySelector('.dropify')) {
-    import('./dropify').then(({default: dropify}) => {
-        new dropify();
+    import('./dropify').then(async ({default: dropify}) => {
+        await dropify();
     }).catch(error => console.error(error.message));
 }
 

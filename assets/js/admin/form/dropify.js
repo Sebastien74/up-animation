@@ -5,7 +5,7 @@ import route from "../../vendor/components/routing";
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-export default function () {
+export default async function () {
 
     let trans = document.getElementById('data-translation');
     let dropifyElements = document.querySelectorAll('.dropify');
@@ -16,6 +16,9 @@ export default function () {
 
     import('dropify/dist/css/dropify.css');
     import('../../../scss/admin/lib/sweetalert.scss');
+
+    await import('dropify');
+    await import('../lib/sweetalert/sweetalert-dev');
 
     let $dropifyElements = jQuery(dropifyElements);
     let drEvent = $dropifyElements.dropify({

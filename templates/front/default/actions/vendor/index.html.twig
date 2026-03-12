@@ -40,7 +40,7 @@
              data-page="{{ pageNum }}"
              data-max="{{ maxPage }}"
              data-href="{{ ajaxPath }}"
-             class="{{ interfaceName }}-index-container index-container container {% if entities|length > 0 %} pt-4 pb-3 pt-md-5 pb-md-4{% endif %}">
+             class="{{ interfaceName }}-index-container index-container container {%- if entities|length > 0 -%} pt-4 pb-3 pt-md-5 pb-md-4{%- endif -%}">
 
             {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader'} only -%}
 

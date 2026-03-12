@@ -9,7 +9,7 @@
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['translation']['entity'].adminName is defined ? intlsModules['translation']['entity'].adminName : 'Traductions'|trans) -%}
     {%- set icon = intlsModules['translation']['entity'].iconClass is defined and intlsModules['translation']['entity'].iconClass ? intlsModules['translation']['entity'].iconClass : '/medias/icons/light/globe-stand.svg' -%}
     {%- if granted('ROLE_INTERNAL') -%}
-        <li {% if active -%} class="active" {%- endif -%}>
+        <li {% if active %} class="active" {% endif -%}>
             <a class="as-arrow {% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
                 <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
             </a>
@@ -21,12 +21,12 @@
                     <li><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}">{{ transDomain.adminName }}</a></li>
                 {%- endfor -%}
                 <li>
-                    <a href="{{ path('admin_translationdomain_index', {website: websiteId}) }}" {%- if 'translations/domains' in uri-%} class="active" {%- endif -%}>{{ "Groupes de traductions"|trans|raw }}</a>
+                    <a href="{{ path('admin_translationdomain_index', {website: websiteId}) }}" {% if 'translations/domains' in uri-%} class="active" {%- endif %}>{{ "Groupes de traductions"|trans|raw }}</a>
                 </li>
             </ul>
         </li>
     {%- else -%}
-        <li {% if '/translations/' in uri -%} class="active" {%- endif -%}>
+        <li {% if '/translations/' in uri %} class="active" {% endif -%}>
             <a class="as-arrow {% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="{% if active %}true{% else %}false{% endif %}">
                 <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
             </a>

@@ -50,10 +50,10 @@
                         <input type="radio"
                                id="{{ filedId }}"
                                name="{{ full_name }}"
-                               {%- if required -%}required="required" {%- endif -%}
+                               {% if required %}required="required" {% endif %}
                                class="background-input d-none"
                                data-hexa="{{ hexa }}"
-                               value="{{ choice.value }}" {%- if value == choice.value -%} checked="checked" {%- endif -%}>
+                               value="{{ choice.value }}" {% if value == choice.value %} checked="checked" {% endif %}>
                     </label>
                 </span>
             </span>
@@ -79,10 +79,10 @@
                         <input type="radio"
                                id="{{ filedId }}"
                                name="{{ full_name }}"
-                               {%- if required -%}required="required" {%- endif -%}
+                               {% if required %}required="required" {% endif %}
                                class="background-input d-none"
                                data-hexa="{{ hexa }}"
-                               value="{{ choice.value }}" {%- if value == choice.value -%} checked="checked" {%- endif -%}>
+                               value="{{ choice.value }}" {% if value == choice.value %} checked="checked" {% endif %}>
                     </label>
                 </span>
             </span>
@@ -108,10 +108,10 @@
                         <input type="radio"
                                id="{{ filedId }}"
                                name="{{ full_name }}"
-                               {%- if required -%}required="required" {%- endif -%}
+                               {% if required %}required="required" {% endif %}
                                class="background-input d-none"
                                data-hexa="{{ hexa }}"
-                               value="{{ choice.value }}" {%- if value == choice.value -%} checked="checked" {%- endif -%}>
+                               value="{{ choice.value }}" {% if value == choice.value %} checked="checked" {% endif %}>
                     </label>
                 </span>
             </span>
@@ -128,7 +128,7 @@
             multiple>
         {%- for choice in choices -%}
             {%- if choice.data.slug not in disabled -%}
-                <option value="{{ choice.value }}" {%- if choice.value in value -%} selected="selected" {%- endif -%}>{{ choice.label }}</option>
+                <option value="{{ choice.value }}" {% if choice.value in value %} selected="selected" {% endif %}>{{ choice.label }}</option>
             {%- endif -%}
         {%- endfor -%}
     </select>
@@ -141,7 +141,7 @@
             class="{{ attr.class }} form-control"
             multiple>
         {%- for choice in choices -%}
-            <option value="{{ choice.value }}" {%- if choice.value in value -%} selected="selected" {%- endif -%}>{{ choice.label }}</option>
+            <option value="{{ choice.value }}" {% if choice.value in value %} selected="selected" {% endif %}>{{ choice.label }}</option>
         {%- endfor -%}
     </select>
 {%- endblock -%}
@@ -157,7 +157,7 @@
                                id="block-type-{{ choice.value }}"
                                name="{{ full_name }}[]"
                                class="form-check-input cursor"
-                               value="{{ choice.value }}" {%- if choice.value in value -%} checked="checked" {%- endif -%}>
+                               value="{{ choice.value }}" {% if choice.value in value %} checked="checked" {% endif %}>
                         <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="block-type-{{ choice.value }}">{{ choice.label }}</label>
                     </div>
                 </div>
@@ -177,7 +177,7 @@
                                id="modules-input-{{ choice.value }}"
                                name="{{ full_name }}[]"
                                class="form-check-input cursor"
-                               value="{{ choice.value }}" {%- if choice.value in value -%} checked="checked" {%- endif -%}>
+                               value="{{ choice.value }}" {% if choice.value in value %} checked="checked" {% endif %}>
                         <label class="checkbox-inline checkbox-switch cursor mb-0 form-check-label" for="modules-input-{{ choice.value }}">{{ choice.label }}</label>
                     </div>
                 </div>
@@ -282,147 +282,3 @@
     </div>
 
 {%- endblock -%}
-
-{%- block _website_configuration_buildTheme_widget -%}
-    <div id="{{ id }}_fields" class="row themes-group">
-        {%- for choice in choices -%}
-            {%- set isChecked = choice.value == value -%}
-            <div class="col-md-3 text-center mb-2">
-                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="build-theme-{{ choice.data }}">
-                    {%- set src = choice.data ? choice.data : 'anonymous' -%}
-                    <img src="{{ asset('build/admin/images/theme/build-theme-'~src~'.jpg', 'admin')|imagine_filter('admin_theme') }}" class="img-fluid" alt="theme">
-                    <div class="vertical-align w-100 p-4">
-                        <div class="content p-3">
-                            <h5 class="m-0">{{ choice.label }}</h5>
-                        </div>
-                    </div>
-                    <input type="radio" id="build-theme-{{ choice.data }}"
-                           name="{{ full_name }}"
-                           class="input-theme d-none{% if isChecked %} active{% endif %}"
-                           value="{{ choice.value }}" {%- if required -%} required{%- endif -%}{%- if isChecked -%} checked{%- endif -%}>
-                </label>
-            </div>
-        {%- endfor -%}
-    </div>
-{%- endblock -%}
-
-{%- block _website_configuration_template_widget -%}
-    <div id="{{ id }}_fields" class="row themes-group">
-        {%- for choice in choices -%}
-            {%- set isChecked = choice.value == value -%}
-            <div class="col-md-3 text-center mb-2">
-                <label class="card cursor p-0{% if isChecked %} active{% endif %}" for="front-theme-{{ choice.data }}">
-                    {%- set src = choice.data ? choice.data : 'anonymous' -%}
-                    <img src="{{ asset('build/admin/images/theme/theme-'~src~'.jpg', 'admin')|imagine_filter('admin_theme') }}" class="img-fluid" alt="theme">
-                    <div class="vertical-align w-100 p-4">
-                        <div class="content p-3">
-                            <h5 class="m-0">{{ choice.label }}</h5>
-                        </div>
-                    </div>
-                    <input type="radio" id="front-theme-{{ choice.data }}"
-                           name="{{ full_name }}"
-                           class="input-theme d-none{% if isChecked %} active{% endif %}"
-                           value="{{ choice.value }}" {%- if required -%} required{%- endif -%}{%- if isChecked -%} checked{%- endif -%}>
-                </label>
-            </div>
-        {%- endfor -%}
-    </div>
-{%- endblock -%}
-
-{#{%- block _page_parent_widget -%}#}
-
-{#    {%- set options = [] -%}#}
-{#    {%- for choice in choices -%}#}
-{#        {%- set options = options|merge([choice.data]) -%}#}
-{#    {%- endfor -%}#}
-
-{#    {%- set tree = options|entityTree -%}#}
-{#    {%- set entities = tree.main is defined ? tree.main : [] -%}#}
-
-{#    {%- macro option(entity, tree, pupPosition = 1) -%}#}
-
-{#        {%- set children = tree[entity.id] is defined ? tree[entity.id] : [] -%}#}
-
-{#        {%- if children and entity.level == 2 -%}#}
-{#            {%- set pupPosition = pupPosition == 1 ? pupPosition : pupPosition + 1 -%}#}
-{#            {{ dump(pupPosition) }}#}
-{#            {%- set pup = pupPosition -%}#}
-{#        {%- endif -%}#}
-
-{#        {%- set pup = pup~'1' -%}#}
-
-{#        {%- set isMain = not index -%}#}
-{#        {%- set index = isMain ? index + 1 : index -%}#}
-{#        {%- set pup = not pup ? index : pup~'1' -%}#}
-
-{#        <option value="{{ entity.id }}"#}
-{#                {%- if not isMain -%}data-pup="{{ pup|slice(0, pup|length - 1) }}" {%- endif -%}#}
-{#                class="l {{ entity.level }}{% if children %} non-leaf{% endif %}">#}
-{#            {{ entity.adminName }}#}
-{#        </option>#}
-
-{#        {%- import _self as macro -%}#}
-
-{#        {%- for child in children -%}#}
-{#            {{ macro.option(child, tree, pupPosition) }}#}
-{#        {%- endfor -%}#}
-
-{#    {%- endmacro -%}#}
-
-{#    {%- macro option(entities, tree, pupPosition = 0, pup = null) -%}#}
-
-{#        {%- import _self as macro -%}#}
-
-{#        {%- for entity in entities -%}#}
-
-{#            {%- set children = tree[entity.id] is defined ? tree[entity.id] : [] -%}#}
-
-{#            {%- if children and entity.level == 1 -%}#}
-{#                {%- set pupPosition = pupPosition + 1 -%}#}
-{#            {%- endif -%}#}
-
-{#            {%- if children and entity.level == 2 -%}#}
-{#                {%- set pup = pupPosition -%}#}
-{#            {%- elseif children and entity.level > 2 -%}#}
-{#                {%- set pup = pup~1 -%}#}
-{#            {%- endif -%}#}
-
-{#            {{ dump(pupPosition) }}#}
-{#            <option value="{{ entity.id }}">#}
-{#                {{ entity.adminName }}#}
-{#            </option>#}
-
-{#            {%- if children -%}#}
-{#                {{ macro.option(children, tree, pupPosition, pup) }}#}
-{#            {%- endif -%}#}
-
-{#        {%- endfor -%}#}
-
-{#    {%- endmacro -%}#}
-
-{#    {%- import _self as macro -%}#}
-
-{#    <select class="tree-select" style="width:8em">#}
-
-{#        <option value="1" class="l1 non-leaf">opt_1</option>#}
-{#        <option value="11" data-pup="1" class="l2 non-leaf">1</option>#}
-{#        <option value="111" data-pup="11" class="l3 non-leaf">11</option>#}
-{#        <option value="qdqsdqsd" data-pup="111" class="l4">opt_1111</option>#}
-{#        <option value="11dqsdqsdq11" data-pup="111" class="l4">opt_1111</option>#}
-{#        <option value="112" data-pup="11" class="l3">12</option>#}
-
-{#        <option value="2" class="l1 non-leaf">opt_1</option>#}
-{#        <option value="21" data-pup="2" class="l2 non-leaf">1</option>#}
-{#        <option value="211" data-pup="21" class="l3 non-leaf">11</option>#}
-{#        <option value="2111" data-pup="211" class="l4">opt_1111</option>#}
-{#        <option value="212" data-pup="21" class="l3">12</option>#}
-
-{#    </select>#}
-
-{#    <select id="{{ id }}" class="tree-select form-control" name="{{ full_name }}">#}
-{#        {%- for entity in entities -%}#}
-{#            {{ macro.option(entities, tree) }}#}
-{#        {%- endfor -%}#}
-{#    </select>#}
-
-{#{%- endblock -%}#}

@@ -61,7 +61,7 @@
                                                            type="checkbox"
                                                            class="cookie-group-checkbox"
                                                            data-service="{{ group.service }}"
-                                                           data-code="{{ group.slug }}" {%- if cookie(group.slug) -%} checked{%- endif -%} />
+                                                           data-code="{{ group.slug }}" {% if cookie(group.slug) %} checked{% endif %} />
                                                     <label for="table-gdpr-{{ group.slug }}" class="label-primary"></label>
                                                 </div>
                                             </div>

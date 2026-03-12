@@ -8,7 +8,9 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Core\Module;
 use App\Form\Type\Core\ModuleType;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -32,7 +34,7 @@ class ModuleController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index', name: 'admin_module_index', methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         return parent::index($request, $paginator);
     }

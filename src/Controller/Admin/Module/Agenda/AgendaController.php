@@ -8,7 +8,9 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Module\Agenda\Agenda;
 use App\Form\Type\Module\Agenda\AgendaType;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -32,7 +34,7 @@ class AgendaController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index', name: 'admin_agenda_index', methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         return parent::index($request, $paginator);
     }

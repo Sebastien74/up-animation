@@ -70,9 +70,9 @@
         <nav class="nav nav-tabs gap-2 align-items-center w-100 border-0 mb-4" role="tablist">
             {%- for tabId, config in tabs -%}
                 {%- if tabId in activeTabs -%}
-                    <a {% if not isMainEntity -%}href="{{ path('admin_catalogproduct_edit', {website: websiteId, catalogproduct: entity.id, catalog: entity.catalog.id, tab: tabId} ) }}" {%- endif -%}
+                    <a {% if not isMainEntity %}href="{{ path('admin_catalogproduct_edit', {website: websiteId, catalogproduct: entity.id, catalog: entity.catalog.id, tab: tabId} ) }}" {% endif -%}
                        id="nav-{{ tabId }}-tab" class="btn-app small {% if activeTab == tabId or not activeTab and loop.first and isMainEntity %} active{% endif %}"
-                            {%- if isMainEntity -%}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}" {%- else -%}{%- endif -%}>
+                            {% if isMainEntity %}data-bs-toggle="tab" href="#{{ tabId }}" role="tab" aria-selected="{{ loop.first }}" {% else %}{% endif %}>
                         <i class="icm-{{ config.icon }}"></i>
                         <span class="d-none d-lg-inline-block">{{ config.title }}</span>
                     </a>

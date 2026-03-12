@@ -61,8 +61,8 @@
             {%- if title -%}
                 {%- if targetLink -%}
                     <a href="{{ targetLink }}" class="d-inline-block w-100"
-                    {%- if newTab -%} target="_blank" {%- else -%}{%- endif -%}
-                    {%- if externalLink -%} rel="noopener noreferrer" {%- endif -%}>
+                    {% if newTab %} target="_blank" {% else %}{% endif %}
+                    {% if externalLink %} rel="noopener noreferrer" {% endif %}>
                 {%- endif -%}
                     <h{{ titleForce }} class="title text-bold mb-3">{{ title|unescape|raw }}</h{{ titleForce }}>
                 {%- if targetLink -%}

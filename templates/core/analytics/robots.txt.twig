@@ -1,16 +1,16 @@
-{% if robots.disallow and not app.request.get('preview') %}
+{%- if robots.disallow and not app.request.get('preview') -%}
 User-agent: *
 Disallow: /
-{% else %}
+{%- else -%}
 User-agent: *
 {% for url in robots.noIndexes %}
-{% if url.uri is defined and url.uri %}
+{%- if url.uri is defined and url.uri -%}
 Disallow: {{ url.uri }}
-{% endif %}
-{% else %}
+{%- endif -%}
+{%- else -%}
 Allow: /
 {% endfor %}
-{% endif %}
-{% if sitemap %}
+{%- endif -%}
+{%- if sitemap -%}
 Sitemap: {{ sitemap }}
-{% endif %}
+{%- endif -%}

@@ -71,7 +71,7 @@
         </div>
     {%- endif -%}
 
-    {%- set prototypeGroup = prototypeOptions['attr']['group'] is defined and prototypeOptions['attr']['group'] ? prototypeOptions['attr']['group'] : null -%}
+    {%- set prototypeGroup = prototypeOptions['row_attr']['class'] is defined and prototypeOptions['row_attr']['class'] ? prototypeOptions['row_attr']['class'] : null -%}
     {%- set prototypePosition = prototypeOptions.prototypePosition is defined and prototypeOptions.prototypePosition -%}
     {%- set displayBtn = (prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] != false) or prototypeOptions['attr']['button'] is not defined -%}
 

@@ -8,7 +8,9 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Module\Portfolio\Category;
 use App\Form\Type\Module\Portfolio\CategoryType;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -32,7 +34,7 @@ class CategoryController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/index', name: 'admin_portfoliocategory_index', methods: 'GET|POST')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         return parent::index($request, $paginator);
     }
@@ -54,7 +56,7 @@ class CategoryController extends AdminController
      * {@inheritdoc}
      */
     #[Route('/layout/{portfoliocategory}', name: 'admin_portfoliocategory_layout', methods: 'GET|POST')]
-    public function layout(Request $request)
+    public function layout(Request $request): JsonResponse|string|Response
     {
         return parent::layout($request);
     }

@@ -7,7 +7,6 @@ namespace App\Controller\Admin;
 use App\Controller\BaseController;
 use App\Entity\Core\Entity;
 use App\Entity\Core\Website;
-use App\Entity\Layout\BlockMediaRelation;
 use App\Entity\Layout\LayoutConfiguration;
 use App\Entity\Layout\Page;
 use App\Form\Type\Core\FilterType;
@@ -18,6 +17,7 @@ use App\Model\MediasModel;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\Persistence\Mapping\MappingException;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
@@ -68,9 +68,9 @@ class AdminController extends BaseController
     /**
      * Index view.
      *
-     * @throws NonUniqueResultException|InvalidArgumentException|\Exception
+     * @throws NonUniqueResultException|InvalidArgumentException|Exception
      */
-    protected function index(Request $request, PaginatorInterface $paginator)
+    protected function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         $interface = $this->getInterface($this->class, $this->arguments);
         $website = !empty($interface['website']) && $interface['website'] instanceof Website ? $interface['website'] : $this->getWebsite();
@@ -126,7 +126,7 @@ class AdminController extends BaseController
     /**
      * Tree view.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function tree(Request $request)
     {
@@ -156,7 +156,7 @@ class AdminController extends BaseController
     }
 
     /**
-     * Set Tree Form position.
+     * Set the Tree Form position.
      */
     protected function getTreeForm(Request $request, ?string $classname = null): JsonResponse|FormInterface
     {
@@ -179,7 +179,7 @@ class AdminController extends BaseController
      *
      * @throws InvalidArgumentException|NonUniqueResultException|\Doctrine\ORM\Mapping\MappingException|\ReflectionException|QueryException
      */
-    protected function layout(Request $request)
+    protected function layout(Request $request): JsonResponse|string|Response
     {
         if (!in_array('ROLE_EDIT', $this->getUser()->getRoles())) {
             $this->denyAccessUnlessGranted('ROLE_EDIT');
@@ -249,7 +249,7 @@ class AdminController extends BaseController
     /**
      * Show view.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function show(Request $request)
     {
@@ -358,7 +358,7 @@ class AdminController extends BaseController
     /**
      * Entity position.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function position(Request $request)
     {
@@ -630,7 +630,7 @@ class AdminController extends BaseController
      */
     protected function adminRender(string $template, array $arguments = [], ?Request $request = null): string|Response
     {
-        if ($request && $request->get('ajax') || $request && $request->get('jsonResponse')) {
+        if ($request && $request->query->get('ajax') || $request && $request->query->get('jsonResponse')) {
             return $this->renderView($template, $arguments);
         } else {
             return $this->render($template, $arguments);

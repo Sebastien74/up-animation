@@ -63,11 +63,11 @@
                         {%- endif -%}
                     {%- endfor -%}
                     <video id="video-{{ block.id }}" data-elements-to-hide=""
-                        {%- if title -%} aria-label="{{ title }}" {%- endif -%}
+                        {% if title %} aria-label="{{ title }}" {% endif %}
                            class="html-video video-fluid lazy-video w-100{% if autoplay %} autoplay playing{% endif %}{% if playInHover %} play-in-hover{% endif %}"
                            preload="none" inert
-                        {%- if autoplay or playInHover -%} muted loop playsinline{%- if not playInHover -%} autoplay{%- endif -%}{%- endif -%}
-                        {%- if controls -%} controls{%- endif -%}>
+                        {% if autoplay or playInHover %} muted loop playsinline{% if not playInHover %} autoplay{% endif %}{% endif %}
+                        {% if controls %} controls{% endif %}>
                         {%- for video in intlMedia.media.mediaScreens -%}
                             {%- if video.filename is defined and video.filename and video.screen in formatsVideo and video.screen != 'vtt' -%}
                                 <source src="" data-src="{{ asset('uploads/'~website.uploadDirname~'/'~video.filename) }}" type="video/ {{ video.screen }}">

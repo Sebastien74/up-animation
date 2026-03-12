@@ -48,7 +48,7 @@
 
 {%- block media -%}
     {%- if not inAdmin and not isInBox and imageLinkUrl and not btnLink and not disableLink -%}
-        <a href="{{ imageLinkUrl }}" {%- if imageLinkBlank -%} target="_blank" {%- endif -%}{%- if imageLinkExternal -%} rel="noopener noreferrer" {%- endif -%}>
+        <a href="{{ imageLinkUrl }}" {% if imageLinkBlank %} target="_blank" {% endif %}{% if imageLinkExternal %} rel="noopener noreferrer" {% endif %}>
     {%- endif -%}
         {%- include 'core/image.html.twig' with {
             website: website,
