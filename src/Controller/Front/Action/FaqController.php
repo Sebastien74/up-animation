@@ -62,7 +62,7 @@ class FaqController extends FrontController
     #[Route('/front/faq/teaser/{filter}', name: 'front_faq_teaser', options: ['isMainRequest' => false], methods: 'GET', schemes: '%protocol%')]
     public function teaser(?Block $block = null, mixed $filter = null): Response
     {
-        $faqModel = $filter ? FaqModel::fromEntity($this->coreLocator, true, $block, $filter) : false;
+        $faqModel = $filter ? FaqModel::fromEntity($this->coreLocator, true, $block, $filter, 'teaser') : false;
         $faq = $faqModel->entity;
 
         if (!$faq instanceof Faq) {

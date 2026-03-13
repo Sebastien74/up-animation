@@ -116,7 +116,7 @@ class ButtonColorType extends AbstractType
 
         if ($linkColors) {
             foreach ($defaultChoices as $label => $value) {
-                if (!str_contains($value, 'outline') && str_contains($value, 'btn')) {
+                if (!str_contains($value, 'outline') && str_contains($value, 'btn') && !str_contains($value, 'glass')) {
                     $label = str_replace(['Bouton', 'Button'], ['Lien'], $label);
                     $value = str_replace(['btn'], ['text'], $value);
                     $choices[$label] = $value;
@@ -126,7 +126,7 @@ class ButtonColorType extends AbstractType
 
         if ($options['ctaColors']) {
             foreach ($defaultChoices as $label => $value) {
-                if (!str_contains($value, 'outline') && str_contains($value, 'btn')) {
+                if (!str_contains($value, 'outline') && str_contains($value, 'btn') && !str_contains($value, 'glass')) {
                     $label = str_replace(['Bouton', 'Button'], ['CTA'], $label);
                     $value = str_replace(['btn'], ['cta'], $value);
                     $choices[$label] = $value;

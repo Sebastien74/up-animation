@@ -61,61 +61,25 @@ class FeatureValueProductRepository extends ServiceEntityRepository
         return 1 === $limit ? $queryBuilder->getOneOrNullResult() : $queryBuilder->getResult();
     }
 
-//    /**
-//     * Find by Product.
-//     */
-//    public function findByWebsite(Website $website): array
-//    {
-//        dump('faire un json array dans product');
-//        dd('ou cache pool by product');
-////        dd('faire un json array dans product');
-////        dd('faire un json array dans product');
-//        return $this->createQueryBuilder('fv')
-////            ->leftJoin('fv.product', 'p')
-//            ->leftJoin('fv.feature', 'f')
-////            ->leftJoin('f.intls', 'fi')
-////            ->leftJoin('f.mediaRelations', 'fmr')
-//            ->leftJoin('fv.value', 'v')
-////            ->leftJoin('v.intls', 'vi')
-////            ->leftJoin('v.mediaRelations', 'vmr')
-////            ->andWhere('p.website = :website')
-////            ->setParameter('website', $website->getId())
-////            ->addSelect('p')
-//            ->addSelect('f')
-//            ->addSelect('v')
-////            ->addSelect('fi')
-////            ->addSelect('fmr')
-////            ->addSelect('vi')
-////            ->addSelect('vmr')
-//            ->getQuery()
-//            ->getArrayResult();
-//    }
-//
-//    /**
-//     * Find by Product.
-//     */
-//    public function findProduct(Product $product): array
-//    {
-//        return $this->createQueryBuilder('fv')
-//            ->leftJoin('fv.product', 'p')
-//            ->leftJoin('fv.feature', 'f')
-//            ->leftJoin('f.intls', 'fi')
-//            ->leftJoin('f.mediaRelations', 'fmr')
-//            ->leftJoin('fv.value', 'v')
-//            ->leftJoin('v.intls', 'vi')
-//            ->leftJoin('v.mediaRelations', 'vmr')
-//            ->andWhere('p.id = :id')
-//            ->setParameter('id', $product->getId())
-//            ->addSelect('p')
-//            ->addSelect('f')
-//            ->addSelect('v')
-//            ->addSelect('fi')
-//            ->addSelect('fmr')
-//            ->addSelect('vi')
-//            ->addSelect('vmr')
-//            ->getQuery()
-//            ->getResult();
-//    }
+    /**
+     * Find by Product ids.
+     *
+     * @throws NonUniqueResultException
+     */
+    public function findByProductIds(array $products = []): array
+    {
+        $ids = array_map(fn(Product $product) => $product->getId(), $products);
+
+        return $this->createQueryBuilder('fv')
+            ->leftJoin('fv.product', 'p')
+            ->leftJoin('fv.feature', 'f')
+            ->andWhere('p.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->addSelect('p')
+            ->addSelect('f')
+            ->getQuery()
+            ->getResult();
+    }
 
     /**
      * Save.

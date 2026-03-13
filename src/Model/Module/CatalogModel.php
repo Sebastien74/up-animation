@@ -23,6 +23,14 @@ use ReflectionException;
 final class CatalogModel extends BaseModel
 {
     /**
+     * CatalogModel constructor.
+     */
+    public function __construct(
+        public readonly array $products,
+    ) {
+    }
+
+    /**
      * fromEntity.
      *
      * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
@@ -52,8 +60,8 @@ final class CatalogModel extends BaseModel
         }
         ksort($products);
 
-        return (object) array_merge($model, [
-            'products' => $products
-        ]);
+        return new self(
+            products: $products,
+        );
     }
 }

@@ -46,6 +46,12 @@ class Faq extends BaseEntity
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $display = 'all-closed';
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $displayTeaser = 'all-closed';
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $limitTeaser = 5;
+
     #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'faq', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
     private ArrayCollection|PersistentCollection $questions;
@@ -96,6 +102,30 @@ class Faq extends BaseEntity
     public function setDisplay(?string $display): static
     {
         $this->display = $display;
+
+        return $this;
+    }
+
+    public function getDisplayTeaser(): ?string
+    {
+        return $this->displayTeaser;
+    }
+
+    public function setDisplayTeaser(?string $displayTeaser): static
+    {
+        $this->displayTeaser = $displayTeaser;
+
+        return $this;
+    }
+
+    public function getLimitTeaser(): ?int
+    {
+        return $this->limitTeaser;
+    }
+
+    public function setLimitTeaser(?int $limitTeaser): static
+    {
+        $this->limitTeaser = $limitTeaser;
 
         return $this;
     }

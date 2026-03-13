@@ -7,6 +7,10 @@ Et ajouter aussi data-speed="20" data-speed-mobile="20" etc
 
 //        dd('Ajouter dans website un etag global et le persister dans Doctrine listener');
 
+Sur page actus mettre le carousel en sticky scroll
+
+Récupérer les boutons glasses
+
 Dans mixin before retirer :before et :after
 
 Faire comme dans sweetalert pour les JS

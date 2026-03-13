@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '50262f3299f4c0e6341875b4e9cfb9d1e545efa8',
+        'reference' => '23c4d7471ef1fdf51e2643a5f213384033afb644',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '50262f3299f4c0e6341875b4e9cfb9d1e545efa8',
+            'reference' => '23c4d7471ef1fdf51e2643a5f213384033afb644',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -299,9 +299,9 @@
             'dev_requirement' => false,
         ),
         'giggsey/libphonenumber-for-php' => array(
-            'pretty_version' => '9.0.25',
-            'version' => '9.0.25.0',
-            'reference' => '774ca57b2b0ed04bd279d25f877dd03b090811fc',
+            'pretty_version' => '9.0.26',
+            'version' => '9.0.26.0',
+            'reference' => '53c2c418d3de20018662158a0c441fbaacc21da6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../giggsey/libphonenumber-for-php',
             'aliases' => array(),
@@ -310,7 +310,7 @@
         'giggsey/libphonenumber-for-php-lite' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '9.0.25',
+                0 => '9.0.26',
             ),
         ),
         'giggsey/locale' => array(
@@ -347,9 +347,9 @@
             'dev_requirement' => false,
         ),
         'guzzlehttp/psr7' => array(
-            'pretty_version' => '2.8.0',
-            'version' => '2.8.0.0',
-            'reference' => '21dc724a0583619cd1652f673303492272778051',
+            'pretty_version' => '2.9.0',
+            'version' => '2.9.0.0',
+            'reference' => '7d0ed42f28e42d61352a7a79de682e5e67fec884',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
@@ -1722,9 +1722,9 @@
             'dev_requirement' => false,
         ),
         'vich/uploader-bundle' => array(
-            'pretty_version' => 'v2.9.1',
-            'version' => '2.9.1.0',
-            'reference' => '945939a04a33c0b78c5fbb7ead31533d85112df5',
+            'pretty_version' => 'v2.9.2',
+            'version' => '2.9.2.0',
+            'reference' => '4b88b23cb859a121413df4a831d960a46d6fe27f',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../vich/uploader-bundle',
             'aliases' => array(),

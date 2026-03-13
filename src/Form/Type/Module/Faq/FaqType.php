@@ -66,10 +66,32 @@ class FaqType extends AbstractType
                     $this->translator->trans('Premier volet ouvert', [], 'admin') => 'first-opened',
                 ],
                 'display' => 'search',
-                'attr' => ['placeholder' => $this->translator->trans('Sélectionnez', [],
-                    'admin')
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                'constraints' => [new Assert\NotBlank()],
+            ]);
+
+            $builder->add('displayTeaser', Type\ChoiceType::class, [
+                'label' => $this->translator->trans('Affichage tesaer', [], 'admin'),
+                'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+                'choices' => [
+                    $this->translator->trans('Tout les volets fermés', [], 'admin') => 'all-closed',
+                    $this->translator->trans('Tout les volets ouverts', [], 'admin') => 'all-opened',
+                    $this->translator->trans('Premier volet ouvert', [], 'admin') => 'first-opened',
+                ],
+                'display' => 'search',
+                'attr' => ['placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                'constraints' => [new Assert\NotBlank()],
+            ]);
+
+            $builder->add('limitTeaser', Type\IntegerType::class, [
+                'required' => false,
+                'label' => $this->translator->trans('Limite teaser', [], 'admin'),
+                'attr' => [
+                    'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
+                    'group' => 'col-md-4',
+                ],
                 'constraints' => [new Assert\NotBlank()],
             ]);
 

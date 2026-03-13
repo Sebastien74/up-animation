@@ -28,15 +28,16 @@ final class FaqModel extends BaseModel
      *
      * @throws MappingException|NonUniqueResultException
      */
-    public static function fromEntity(CoreLocatorInterface $coreLocator, bool $promote, ?Block $block = null, mixed $filter = null): object
+    public static function fromEntity(CoreLocatorInterface $coreLocator, bool $promote, ?Block $block = null, mixed $filter = null, string $type = 'faq'): object
     {
         $website = self::$coreLocator->website();
         $faq = self::$coreLocator->em()->getRepository(Faq::class)->findOneByFilter($website->entity, self::$coreLocator->locale(), $promote, $filter);
         $model = $faq ? (array) EntityModel::fromEntity($faq, self::$coreLocator)->response : [];
-        $questions = $faq ? self::questions($faq) : [];
+        $questions = $faq ? self::questions($faq, $type) : [];
 
         return (object) array_merge($model, [
             'entity' => $faq,
+            'asTeaser' => 'teaser' === $type,
             'questions' => $questions,
             'microdata' => $faq ? self::microdata($website, $faq, $promote, $questions, $block) : [],
         ]);
@@ -84,14 +85,19 @@ final class FaqModel extends BaseModel
      *
      * @throws MappingException|NonUniqueResultException
      */
-    private static function questions(Faq $faq): array
+    private static function questions(Faq $faq, string $type = 'faq'): array
     {
-        $display = $faq->getDisplay();
+        $display = 'teaser' === $type ? $faq->getDisplayTeaser() : $faq->getDisplay();
+        $limit = 'teaser' === $type ? $faq->getLimitTeaser() : -1;
 
+        $count = 1;
         $questions = [];
         foreach ($faq->getQuestions() as $key => $question) {
-            $questions[$key] = (array) EntityModel::fromEntity($question, self::$coreLocator)->response;
-            $questions[$key]['open'] = 'all-opened' === $display || (0 === $key && 'first-opened' === $display);
+            if ($count <= $limit || -1 === $limit) {
+                $questions[$key] = (array) EntityModel::fromEntity($question, self::$coreLocator)->response;
+                $questions[$key]['open'] = 'all-opened' === $display || (0 === $key && 'first-opened' === $display);
+                ++$count;
+            }
         }
 
         return $questions;

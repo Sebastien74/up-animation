@@ -36,11 +36,18 @@ final class ProductModel extends BaseModel
      */
     public static function fromEntity(Catalog\Product $product, CoreLocatorInterface $coreLocator, array $options = []): object
     {
-        $model = ViewModel::fromEntity($product, $coreLocator, array_merge($options, []));
+        $website = self::$coreLocator->website();
         $catalogDb = self::getContent('catalog', $product);
+        self::$cache['allProducts'] = array_key_exists('allProducts', self::$cache) ? self::$cache['allProducts']
+            : self::$coreLocator->em()->getRepository(Catalog\Product::class)->findOnlineByCatalogs($website->entity, self::$coreLocator->locale(), [$catalogDb]);
+        self::$cache['allValues'] = array_key_exists('allValues', self::$cache) ? self::$cache['allValues']
+            : self::$coreLocator->em()->getRepository(Catalog\FeatureValueProduct::class)->findByProductIds(self::$cache['allProducts']);
+
+        $model = ViewModel::fromEntity($product, $coreLocator, array_merge($options, []));
         $catalog = ViewModel::fromEntity($catalogDb, $coreLocator, array_merge($options, []));
-        $catalogLayout = self::$cache['catalogLayout'][$catalog->id] = !empty(self::$cache['catalogLayout'][$catalog->id])
-            ? self::$cache['catalogLayout'][$catalog->id] : self::getContent('layout', $catalog->entity);
+        $layoutCache = array_key_exists('catalogLayout', self::$cache) ? self::$cache['catalogLayout'] : [];
+        $catalogLayout = self::$cache['catalogLayout'][$catalog->id] = array_key_exists($catalog->id, $layoutCache)
+            ? $layoutCache[$catalog->id] : self::getContent('layout', $catalog->entity);
         $disabledValues = array_key_exists('disabledValues', $options) ? $options['disabledValues'] : false;
         $disabledInfo = array_key_exists('disabledInfo', $options) ? $options['disabledInfo'] : false;
 
@@ -148,7 +155,7 @@ final class ProductModel extends BaseModel
     /**
      * To get values.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     private static function getValues(Catalog\Product $product, Catalog\Catalog $catalog, array $multiFeaturesValues = [], array $defaultUniqFeatures = []): array
     {
@@ -368,9 +375,7 @@ final class ProductModel extends BaseModel
      */
     private static function information(Catalog\Product $product): ?InformationModel
     {
-        if (!empty(self::$cache['infos'][$product->getId()])) {
-            return self::$cache['infos'][$product->getId()];
-        }
+
 
         self::$cache['infos'][$product->getId()] = self::$cache['infos'][$product->getId()] ?? $product->getInformation();
         self::$cache['infos'][$product->getId()] = self::jsonCache(self::$cache['infos'][$product->getId()], self::$coreLocator->locale(), InformationModel::class);

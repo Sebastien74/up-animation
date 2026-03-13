@@ -302,6 +302,15 @@ body.menu-open {
     .submenu {
 
         position: fixed;
+        z-index: 3000;
+
+        .close-menu-submenu {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            aspect-ratio: 1;
+            font-size: 13px;
+        }
 
         .parent-label {
             font-size: 26px;
@@ -383,7 +392,6 @@ body.menu-open {
         &.show {
 
             left: 0;
-            z-index: 3000;
 
             @include mediaQuery(min-lg) {
                 &.submenu-level-1 {

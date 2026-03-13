@@ -30,7 +30,7 @@
 </script>
 {%- endif -%}
 
-<div id="faq-container-{{ faq.slug }}" class="faq-container position-relative">
+<div id="faq-container-{{ faq.slug }}" class="faq-container position-relative{% if faq.asTeaser %} faq-teaser{% endif %}">
     {{ macroWebmaster.box({
         title: "Éditer la FAQ"|trans([], 'front_webmaster'),
         role: 'ROLE_FAQ',
@@ -74,7 +74,12 @@
             {%- set marginTop = badge ? 'mt-5' : 'mt-4' -%}
             <div class="accordion-item {% if not loop.first %} {{ marginTop }}{% endif %}">
                 <div class="accordion-header">
-                    <div class="accordion-button bg-secondary{% if not question.open %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-teaser-{{ accordionId }}-{{ loop.index }}" aria-expanded="false" aria-controls="accordion-teaser-{{ accordionId }}-{{ loop.index }}">
+                    <div class="accordion-button bg-secondary{% if not question.open %} collapsed{% endif %}"
+                         type="button"
+                         data-bs-toggle="collapse"
+                         data-bs-target="#accordion-teaser-{{ accordionId }}-{{ loop.index }}"
+                         aria-expanded="{% if question.open %}true{% else %}false{% endif %}"
+                         aria-controls="accordion-teaser-{{ accordionId }}-{{ loop.index }}">
                         <div class="inner d-inline-flex flex-column">
                             {%- if badge -%}
                                 <div class="badge-wrap position-relative mb-2">

@@ -8,11 +8,13 @@ use App\Command\JsRoutingCommand;
 use App\Entity\Core\Website;
 use App\Entity\Layout\Block;
 use App\Entity\Layout\Page;
+use App\Entity\Module\Catalog\Catalog;
 use App\Entity\Module\Catalog\Product;
 use App\Entity\Security\User;
 use App\Entity\Seo\Seo;
 use App\Entity\Seo\Url;
 use App\Model\Core\WebsiteModel;
+use App\Model\Module\CatalogModel;
 use App\Service\Content\MenuServiceInterface;
 use App\Service\Content\SeoService;
 use Doctrine\ORM\Mapping\MappingException;
@@ -197,16 +199,15 @@ class ExceptionController extends BaseController
             $arguments['configuration'] = $website->configuration;
             $arguments['template'] = 'admin';
         } else {
+
+            $em = $this->coreLocator->em();
             $website = $this->getWebsite();
             $configuration = $website->configuration;
             $userBackIPS = $configuration ? $configuration->entity->getAllIPS() : [];
             $allowedIP = $this->checkIP($userBackIPS);
-//            $agenciesCatalog = $this->coreLocator->em()->getRepository(Catalog::class)->findOneBy(['website' => $website->entity, 'slug' => 'agencies']);
-//            $agenciesBd = $this->coreLocator->em()->getRepository(Product::class)->findOnlineByCatalogs($website->entity, $this->coreLocator->locale(), [$agenciesCatalog]);
-            $agencies = [];
-//            foreach ($agenciesBd as $agency) {
-//                $agencies[] = ProductModel::fromEntity($agency, $this->coreLocator, ['disabledProducts' => true, 'disabledLayout' => true, 'disabledMedias' => true, 'disabledCategories' => true, 'disabledCategory' => true]);
-//            }
+            $catalog = $em->getRepository(Catalog::class)->findOneBy(['website' => $website->entity, 'slug' => 'agencies']);
+            $catalogModel = $catalog ? CatalogModel::fromEntity($catalog, $this->coreLocator, ['onlyForUrl' => true]) : null;
+
             $arguments['thumbConfigurationHeader'] = $this->thumbConfiguration($website, Block::class, 'block', null, 'title-header');
             $arguments['isUserBack'] = $allowedIP || $this->getUser() instanceof User;
             $arguments['website'] = $this->website = $website;
@@ -217,8 +218,8 @@ class ExceptionController extends BaseController
             $arguments['mainMenus'] = !$website->isEmpty ? $menuService->all($website) : [];
             $arguments['mainPages'] = $website->configuration->pages;
             $arguments['logos'] = $website->logos;
-            $arguments['agencies'] = $agencies;
-            $arguments['catalogMenus'] = $this->coreLocator->em()->getRepository(Product::class)->findOnlineInMenus($website->entity, $this->coreLocator->locale());
+            $arguments['agencies'] = is_object($catalogModel) ? $catalogModel->products : [];
+            $arguments['catalogMenus'] = $em->getRepository(Product::class)->findOnlineInMenus($website->entity, $this->coreLocator->locale());
         }
 
         return $arguments;

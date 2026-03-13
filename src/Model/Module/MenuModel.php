@@ -81,7 +81,7 @@ final class MenuModel extends BaseModel
     }
 
     /**
-     * To get tree.
+     * To get a tree.
      *
      * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
@@ -120,14 +120,15 @@ final class MenuModel extends BaseModel
                 $active = $asPath && $path && trim($uri, '/') === trim(str_replace($schemeAndHttpHost, '', $path), '/');
                 $color = $link instanceof Link && $link->getColor() ? 'text-'.$link->getColor() : '';
                 $btnColor = $link instanceof Link && $link->getBtnColor() ? 'btn '.$link->getBtnColor() : '';
+                $link = $link instanceof Link ? $link : (property_exists($link, 'entity') ? $link->entity : null);
                 $id = $intl->linkTargetPage && $intl->linkTargetPage->getSlug() ? 'link-'.$menu->getSlug().'-'.$intl->linkTargetPage->getSlug() : 'link-'.$menu->getSlug().'-'.$link->getSlug();
                 $media = $link instanceof Link ? MediaModel::fromEntity($link->getMediaRelation(), self::$coreLocator) : null;
                 $pictogram = self::getContent('pictogram', $link);
                 $children = !empty($defaultTree[$link->getId()]) ? self::tree($website, $menu, $defaultTree[$link->getId()], null, $defaultTree)[$link->getId()] : [];
-//                if ($asCatalog) {
-//                    $products = self::$coreLocator->em()->getRepository(Product::class)->findOnlineByCatalogs($website->entity, self::$coreLocator->locale(), [$link->getCatalog()]);
-//                    $children = self::tree($website, $menu, $products, null, $defaultTree)['products'];
-//                }
+                if ($asCatalog) {
+                    $catalogModel = CatalogModel::fromEntity($link->getCatalog(), self::$coreLocator, ['onlyForUrl' => true]);
+                    $children = self::tree($website, $menu, $catalogModel->products, null, $defaultTree)['products'];
+                }
                 $treeResponse[$key][$keyLink] = array_merge((array) $intl, [
                     'id' => $id,
                     'entity' => $link,

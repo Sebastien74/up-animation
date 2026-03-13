@@ -98,7 +98,7 @@
                             }) }}
                         </a>
                         {%- if link.level == 1 -%}
-                            <i class="close-menu-level-{{ link.level }} close-menu-submenu ms-auto icon-times text-primary cursor d-inline-block"></i>
+                            <i class="close-menu-level-{{ link.level }} close-menu-submenu ms-auto icon-times cursor d-inline-flex align-items-center justify-content-center bg-primary text-white"></i>
                         {%- endif -%}
                     </div>
                     {%- set subLabel = link.subTitle ? link.subTitle : link.title -%}
