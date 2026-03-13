@@ -24,14 +24,11 @@
 @import "../../../vendor/mixin/font-weight";
 
 @each $suffix, $color in $theme-colors {
-    @include svg($suffix, $color);
-}
-
-/*! purgecss end ignore */
-
-@each $suffix, $color in $theme-colors {
-    *.text-#{$suffix} {
-        color: $color !important;
+    @if not index($default-bootstrap-colors, $suffix) {
+        @include svg($suffix, $color);
+        *.text-#{$suffix} {
+            color: $color !important;
+        }
     }
 }
 

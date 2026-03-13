@@ -86,7 +86,7 @@
 
         z-index: 100;
         opacity: 1;
-        transition: all .3s linear;
+        transition: color $transition-base;
 
         img, picture {
             height: 100%;
@@ -103,14 +103,14 @@
             opacity: 0;
             width: 0 !important;
             height: 0 !important;
-            transition: opacity 3s linear, width 1s, height 1s;
+            transition: opacity 3s $transition-base, width 1s $transition-base, height 1s $transition-base;
         }
     }
 
     .control-pause-btn {
         height: 40px;
         width: 40px;
-        transition: all .3s linear;
+        transition: color $transition-base;
     }
 
     .sound-control {
@@ -119,12 +119,12 @@
         opacity: 0;
         top: 4rem;
         right: 1rem;
-        transition: all .3s linear;
+        transition: color $transition-base;
     }
 
     .hide-on-hover {
         opacity: 1;
-        transition: all .3s linear;
+        transition: color $transition-base;
     }
 
     .vertical-align-bottom {
@@ -135,12 +135,12 @@
 
         .sound-control {
             opacity: 1;
-            transition: all .3s linear;
+            transition: $transition-base;
         }
 
         .hide-on-hover {
             opacity: 0;
-            transition: all .3s linear;
+            transition: $transition-base;
         }
     }
 }

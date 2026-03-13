@@ -99,12 +99,12 @@
             width: 15px;
             height: 15px;
             aspect-ratio: 1;
-            transition: all .3s linear !important;
+            transition: opacity $transition-base, transform $transition-base !important;
 
             &.active {
                 opacity: 1 !important;
                 transform: none !important;
-                transition: all .3s linear !important;
+                transition: opacity $transition-base, transform $transition-base !important;
                 width: 2.5rem !important;
             }
         }
@@ -325,7 +325,7 @@
     .splide .slider-link {
 
         .title, .body *, img {
-            transition: all .3s linear;
+            transition: $transition-base;
         }
 
         > .img-loader-wrap {
@@ -336,7 +336,7 @@
         &:hover {
 
             .title, .body *, img {
-                transition: all .3s linear;
+                transition: color $transition-base;
             }
 
             .title {
@@ -366,7 +366,7 @@
         }
 
         button {
-            transition: all .3s linear !important;
+            transition: $transition-base !important;
             width: .75rem;
             height: .75rem;
             border-radius: 99px;
@@ -375,7 +375,7 @@
 
         button.is-active {
             width: 2.5rem !important;
-            transition: all .3s linear !important;
+            transition: $transition-base !important;
             opacity: 1 !important;
             transform: initial !important;
             background-color: $primary !important;
@@ -392,11 +392,11 @@
 
             font-size: 30px;
             font-weight: 600;
-            transition: all .3s linear;
+            transition: $transition-base;
 
             &:hover {
                 color: $primary !important;
-                transition: all .3s linear;
+                transition: color $transition-base;
             }
         }
     }

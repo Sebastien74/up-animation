@@ -34,7 +34,7 @@
                     transition: color .3s linear;
 
                     &:hover, &:focus {
-                        transition: all .3s linear;
+                        transition: $transition-base;
                         color: $primary !important;
                     }
                 }

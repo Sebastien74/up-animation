@@ -128,7 +128,7 @@
 
     .job-card {
 
-        transition: all .3s linear;
+        transition: transform $transition-base;
 
         &.have-footer .card-body {
             border-bottom: 1px solid $primary;
@@ -136,7 +136,7 @@
 
         @include mediaQuery(min-lg) {
             &:hover {
-                transition: all .3s linear;
+                transition: transform $transition-base;
                 transform: scale(1.030);
             }
         }
@@ -170,14 +170,14 @@
             .back-link {
 
                 * {
-                    transition: all .3s linear;
+                    transition: color $transition-base;
                 }
 
                 @include mediaQuery(min-lg) {
                     &:hover {
                         * {
                             color: $primary;
-                            transition: all .3s linear;
+                            transition: color $transition-base;
                         }
                     }
                 }
@@ -195,14 +195,14 @@
                     width: 25px;
 
                     svg {
-                        transition: all .3s linear;
+                        transition: fill $transition-base;
                     }
 
                     @include mediaQuery(min-lg) {
                         &:hover {
                             svg {
                                 fill: $primary;
-                                transition: all .3s linear;
+                                transition: fill $transition-base;
                             }
                         }
                     }

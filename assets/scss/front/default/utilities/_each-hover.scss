@@ -18,26 +18,32 @@
         .hover-#{$suffix},
         .hover-underline-#{$suffix} {
 
-            transition: all .2s linear;
+            transition: $transition-fast;
 
-            &:hover {
-                transition: all .2s linear;
-                color: $color !important;
+            @include mediaQuery(min-lg) {
+                &:hover {
+                    transition: $transition-fast;
+                    color: $color !important;
+                }
             }
         }
 
-        .hover-underline-#{$suffix}:hover {
-            color: $color !important;
-            text-decoration: underline !important;
+        @include mediaQuery(min-lg) {
+            .hover-underline-#{$suffix}:hover {
+                color: $color !important;
+                text-decoration: underline !important;
+            }
         }
 
         .hover-svg-#{$suffix} {
 
-            transition: all .2s linear;
+            transition: $transition-fast;
 
-            &:hover, &:hover * {
-                transition: all .2s linear;
-                fill: $color !important;
+            @include mediaQuery(min-lg) {
+                &:hover, &:hover * {
+                    transition: $transition-fast;
+                    fill: $color !important;
+                }
             }
         }
     }

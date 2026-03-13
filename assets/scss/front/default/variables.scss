@@ -179,9 +179,7 @@ $container-fluid-side-limit: 'xl';
 /** @doc: To find font adjust https://support.envoke.com/en/articles/5760547-fallback-font-rules */
 
 @if not $enable-medias-queries {
-
     /** run yarn build:font-fallbacks */
-
     @font-face {
         font-family: roboto-fallback;
         src: url("../../../lib/fonts/Arial/Arial.ttf") format("truetype");
@@ -903,7 +901,11 @@ $btn-font-size: $font-size-base;
 $btn-font-size-md: $btn-font-size;
 $btn-font-size-xs: $btn-font-size;
 
-$btn-transition: all .4s ease-in-out;
+$transition-base: all .3s cubic-bezier(0.4, 0, 0.2, 1) !default;
+$transition-fast: all .15s cubic-bezier(0.4, 0, 0.2, 1) !default;
+$transition-slow: all .5s cubic-bezier(0.4, 0, 0.2, 1) !default;
+
+$btn-transition: all .3s cubic-bezier(0.4, 0, 0.2, 1) !default;
 
 $btn-padding-top: 1rem;
 $btn-padding-bottom: 1rem;

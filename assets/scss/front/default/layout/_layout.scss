@@ -141,20 +141,25 @@ body {
 a {
 
     text-decoration: none;
-    transition: all .3s linear;
+    transition: $transition-base;
 
-    &:hover, &:focus, &:active {
-        transition: all .3s linear;
+    @include mediaQuery(min-lg) {
+        &:hover, &:focus, &:active {
+            // transition inherited
+        }
     }
 }
 
 /*! purgecss start ignore */
 
 $z-indexes: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000;
+%z-index-base {
+    position: relative !important;
+}
 @each $z-index in $z-indexes {
     .z-index-#{$z-index} {
+        @extend %z-index-base;
         z-index: $z-index !important;
-        position: relative !important;
     }
 }
 
@@ -162,7 +167,7 @@ $z-indexes: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000;
 
     position: relative;
 
-    &:not(.around):before {
+    %shadow-box-before {
         content: '';
         position: absolute;
         top: 0;
@@ -172,15 +177,27 @@ $z-indexes: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000;
         z-index: 500;
     }
 
-    &.shadow-left:before, &.shadow-right:before {
+    &:not(.around):before {
+        @extend %shadow-box-before;
+    }
+
+    @mixin shadow-y-repeat {
         background-repeat: repeat-y !important;
         background-size: 50% 1px !important;
     }
 
-    &.shadow-top:before, &.shadow-bottom:before {
+    @mixin shadow-x-repeat {
         background-repeat: repeat-x !important;
         background-size: 1px 80% !important;
         background-position: bottom;
+    }
+
+    &.shadow-left:before, &.shadow-right:before {
+        @include shadow-y-repeat;
+    }
+
+    &.shadow-top:before, &.shadow-bottom:before {
+        @include shadow-x-repeat;
     }
 
     &.shadow-right:before {
@@ -195,14 +212,11 @@ $z-indexes: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000;
     @include mediaQuery(max-lg) {
 
         &.shadow-left-mobile:before, &.shadow-right-mobile:before {
-            background-repeat: repeat-y !important;
-            background-size: 50% 1px !important;
+            @include shadow-y-repeat;
         }
 
         &.shadow-top-mobile:before, &.shadow-bottom-mobile:before {
-            background-repeat: repeat-x !important;
-            background-size: 1px 80% !important;
-            background-position: bottom;
+            @include shadow-x-repeat;
         }
 
         &.shadow-right-mobile:before {
@@ -224,10 +238,9 @@ $z-indexes: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000;
 
     /* Attributes for svg stretchable: width="100%" height="auto" preserveAspectRatio="none" */
 
-    $svg-shadow-left-right: svg-to-data-url('<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="17.5" preserveAspectRatio="none" viewBox="0 0 658 17.5"><defs><linearGradient id="shadow-x" x1="0" y1="0" x2="658" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})"/><stop offset="1" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})" stop-opacity="0"/></linearGradient></defs><rect fill="url(%23shadow-x)" width="658" height="17.5"/></svg>');
-    $svg-shadow-left-right-mobile: svg-to-data-url('<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="17.5" preserveAspectRatio="none" viewBox="0 0 658 17.5"><defs><linearGradient id="shadow-x" x1="0" y1="0" x2="658" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})"/><stop offset="1" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})" stop-opacity="0"/></linearGradient></defs><rect fill="url(%23shadow-x)" width="658" height="17.5"/></svg>');
-    $svg-shadow-top-bottom: svg-to-data-url('<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="17.5" preserveAspectRatio="none" viewBox="0 0 658 17.5"><defs><linearGradient id="shadow-y" x1="0" y1="0" x2="0" y2="17.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})" stop-opacity="0"/><stop offset="1" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})"/></linearGradient></defs><rect fill="url(%23shadow-y)" width="658" height="17.5"/></svg>');
-    $svg-shadow-top-bottom-mobile: svg-to-data-url('<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="17.5" preserveAspectRatio="none" viewBox="0 0 658 17.5"><defs><linearGradient id="shadow-y" x1="0" y1="0" x2="0" y2="17.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})"/><stop offset="1" stop-color="rgb(#{red($color)},#{green($color)},#{blue($color)})" stop-opacity="0"/></linearGradient></defs><rect fill="url(%23shadow-y)" width="658" height="17.5"/></svg>');
+    $color-rgb: "#{red($color)},#{green($color)},#{blue($color)}";
+    $svg-shadow-left-right: svg-to-data-url('<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="17.5" preserveAspectRatio="none" viewBox="0 0 658 17.5"><defs><linearGradient id="shadow-x" x1="0" y1="0" x2="658" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(#{$color-rgb})"/><stop offset="1" stop-color="rgb(#{$color-rgb})" stop-opacity="0"/></linearGradient></defs><rect fill="url(%23shadow-x)" width="658" height="17.5"/></svg>');
+    $svg-shadow-top-bottom: svg-to-data-url('<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="17.5" preserveAspectRatio="none" viewBox="0 0 658 17.5"><defs><linearGradient id="shadow-y" x1="0" y1="0" x2="0" y2="17.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(#{$color-rgb})" stop-opacity="0"/><stop offset="1" stop-color="rgb(#{$color-rgb})"/></linearGradient></defs><rect fill="url(%23shadow-y)" width="658" height="17.5"/></svg>');
 
     .zone-shadow-right-#{$suffix},
     .col-shadow-right-#{$suffix},
@@ -253,6 +266,8 @@ $z-indexes: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000;
 
     @include mediaQuery(max-lg) {
 
+        $svg-shadow-top-bottom-mobile: svg-to-data-url('<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="17.5" preserveAspectRatio="none" viewBox="0 0 658 17.5"><defs><linearGradient id="shadow-y" x1="0" y1="0" x2="0" y2="17.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(#{$color-rgb})"/><stop offset="1" stop-color="rgb(#{$color-rgb})" stop-opacity="0"/></linearGradient></defs><rect fill="url(%23shadow-y)" width="658" height="17.5"/></svg>');
+
         .zone-shadow-right-#{$suffix}-mobile,
         .col-shadow-right-#{$suffix}-mobile,
         .block-shadow-right-#{$suffix}-mobile,
@@ -260,7 +275,7 @@ $z-indexes: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000;
         .col-shadow-left-#{$suffix}-mobile,
         .block-shadow-left-#{$suffix}-mobile {
             &:before {
-                background: url($svg-shadow-left-right-mobile);
+                background: url($svg-shadow-left-right); // Reused
             }
         }
 

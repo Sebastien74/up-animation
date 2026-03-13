@@ -68,34 +68,34 @@
 
             @include mediaQuery(min-lg) {
 
-                transition: box-shadow .3s linear;
+                transition: box-shadow $transition-base;
 
                 .card-header img {
-                    transition: transform .3s linear;
+                    transition: transform $transition-base;
                     transform: scale(1);
                 }
 
                 .card-title, .card-title span {
-                    transition: color .3s linear;
+                    transition: color $transition-base;
                 }
 
                 &:hover {
 
-                    transition: box-shadow .3s linear;
+                    transition: box-shadow $transition-base;
                     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.30) !important;
 
                     .card-header img {
-                        transition: transform .3s linear;
+                        transition: transform $transition-base;
                         transform: scale(1.02);
                     }
 
                     .card-title {
 
-                        transition: color .3s linear;
+                        transition: color $transition-base;
                         color: $primary !important;
 
                         span {
-                            transition: color .3s linear;
+                            transition: color $transition-base;
                             color: $dark !important;
                         }
                     }

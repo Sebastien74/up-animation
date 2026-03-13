@@ -170,7 +170,7 @@ $imgCopyright: map-get($elements, 'img-copyright-svg');
 
         img {
             transform: scale(1);
-            transition: all .5s linear;
+            transition: transform $transition-slow;
         }
     }
 
@@ -185,7 +185,7 @@ $imgCopyright: map-get($elements, 'img-copyright-svg');
 
         &:not(.only-one) {
             background-color: transparentize($primary, .1);
-            transition: all .6s linear;
+            transition: background-color $transition-slow, clip-path $transition-slow;
             clip-path: circle(0.0% at 0 100%);
         }
 
@@ -227,7 +227,7 @@ $imgCopyright: map-get($elements, 'img-copyright-svg');
 
         > picture img {
             transform: scale(1.1);
-            transition: all .5s linear;
+            transition: transform $transition-slow;
         }
 
         &:not(.only-one) {

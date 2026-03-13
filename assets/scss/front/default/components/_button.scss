@@ -96,9 +96,11 @@
 
     transition: $btn-transition;
 
-    &:hover {
-        transition: $btn-transition;
-        transform: translateY(-1px);
+    @include mediaQuery(min-lg) {
+        &:hover {
+            transition: $btn-transition;
+            transform: translateY(-1px);
+        }
     }
 }
 
@@ -119,7 +121,7 @@
             border-radius: inherit;
             pointer-events: none;
             z-index: -1;
-            transition: opacity .4s ease-in-out;
+            transition: opacity $transition-base;
         }
 
         &::before {
@@ -130,12 +132,14 @@
             opacity: 0;
         }
 
-        &:hover::after {
-            opacity: 1;
-        }
+        @include mediaQuery(min-lg) {
+            &:hover::after {
+                opacity: 1;
+            }
 
-        &:hover::before {
-            opacity: 0;
+            &:hover::before {
+                opacity: 0;
+            }
         }
     }
 }
@@ -152,8 +156,10 @@
         color: $white !important;
     }
 
-    &:hover, &:active, &:focus {
-        transform: scale(1.02);
-        background: rgba(120, 130, 95, .42);
+    @include mediaQuery(min-lg) {
+        &:hover, &:active, &:focus {
+            transform: scale(1.02);
+            background: rgba(120, 130, 95, .42);
+        }
     }
 }

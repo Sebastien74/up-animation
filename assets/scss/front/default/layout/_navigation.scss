@@ -41,12 +41,12 @@ body.menu-as-scroll {
 
     #menu-container-main {
 
-    transition: transform .5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform $transition-slow;
     will-change: transform;
 
     &.as-animation:not(.open):not(.force-as-scroll) {
         transform: translateY(-200px);
-        transition: transform .5s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform $transition-slow;
     }
 
     .overlay {

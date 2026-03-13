@@ -65,7 +65,7 @@
         i {
 
             font-size: 40px;
-            transition: color .4s ease-in-out, transform .4s ease-in-out;
+            transition: color $transition-base, transform $transition-base;
 
             @include mediaQuery(min-lg) {
 
@@ -83,7 +83,7 @@
                     bottom: 3px;
                     border-radius: 50%;
                     background-color: transparent;
-                    transition: background-color .4s ease-in-out;
+                    transition: background-color $transition-base;
                 }
 
                 &:hover {
@@ -161,11 +161,13 @@
 
         color: transparentize($white, .2);
         text-decoration: none;
-        transition: color .4s ease-in-out;
+        transition: color $transition-base;
 
-        &:hover,
-        &:focus {
-            color: $white;
+        @include mediaQuery(min-lg) {
+            &:hover,
+            &:focus {
+                color: $white;
+            }
         }
     }
 
@@ -199,7 +201,7 @@
     .email-link,
     .phone-link {
 
-        transition: color .4s ease-in-out;
+        transition: color $transition-base;
 
         @include mediaQuery(min-lg) {
 
@@ -231,12 +233,14 @@
             background: $primary;
             transform: scaleX(0);
             transform-origin: left;
-            transition: transform .4s ease-in-out;
+            transition: transform $transition-base;
         }
 
-        &:hover::after,
-        &:focus::after {
-            transform: scaleX(1);
+        @include mediaQuery(min-lg) {
+            &:hover::after,
+            &:focus::after {
+                transform: scaleX(1);
+            }
         }
     }
 
@@ -250,14 +254,16 @@
         color: transparentize($white, 0.18);
         text-decoration: none;
         font-size: .9rem;
-        transition: border-color .4s ease-in-out, color .4s ease-in-out, transform .4s ease-in-out;
+        transition: border-color $transition-base, color $transition-base, transform $transition-base;
 
-        &:hover,
-        &:focus {
-            transform: translateY(-1px);
-            border-color: transparentize($primary, 0.25);
-            color: #fff;
-            text-decoration: none;
+        @include mediaQuery(min-lg) {
+            &:hover,
+            &:focus {
+                transform: translateY(-1px);
+                border-color: transparentize($primary, 0.25);
+                color: #fff;
+                text-decoration: none;
+            }
         }
     }
 

@@ -75,24 +75,24 @@
         font-weight: 300;
         color: transparent;
         background-color: $primary;
-        transition: all .3s linear;
+        transition: $transition-base;
 
         &:after {
             font-family: 'icomoon', serif;
             content: "\e93d";
             color: $white;
-            transition: all .3s linear;
+            transition: $transition-base;
         }
 
         &:hover {
 
             color: transparent;
             background-color: $white;
-            transition: all .3s linear;
+            transition: $transition-base;
 
             &:after {
                 color: $primary;
-                transition: all .3s linear;
+                transition: $transition-base;
             }
         }
     }
@@ -143,11 +143,11 @@
         .phone-link {
 
             color: $primary;
-            transition: all .3s linear;
+            transition: $transition-base;
 
             &:hover {
                 color: $info;
-                transition: all .3s linear;
+                transition: $transition-base;
             }
         }
     }
