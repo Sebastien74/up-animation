@@ -1,7 +1,7 @@
 /**
  * Async resources
  *
- * @copyright 2020
+ * @copyright 2026
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  * @version 1.0
  * @licence under the MIT License (LICENSE.txt)

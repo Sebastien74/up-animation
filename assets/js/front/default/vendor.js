@@ -1,7 +1,7 @@
 /**
  * On loaded
  *
- * @copyright 2024
+ * @copyright 2026
  * @author Sébastien FOURNIER <contact@sebastien-fournier.com>
  * @licence under the MIT License (LICENSE.txt)
  */
@@ -13,7 +13,7 @@ const isDebug = html.dataset.debug ? parseInt(html.dataset.debug) === 1 : false;
 /**
  * Bootstrap
  *
- * @copyright 2024
+ * @copyright 2026
  * @author Sébastien FOURNIER <contact@sebastien-fournier.com>
  * @licence under the MIT License (LICENSE.txt)
  */

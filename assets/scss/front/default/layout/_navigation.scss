@@ -2,7 +2,7 @@
 
 /* -----------------------------------------------------------------
 
-    Copyright  : 2024
+    Copyright  : 2026
     Created on : 2019-08-15, 4:04 PM
     Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
@@ -39,13 +39,14 @@ body.menu-as-scroll {
    2 ) Navigation
 -----------------------------------*/
 
-#menu-container-main {
+    #menu-container-main {
 
-    transition: top .5s linear;
+    transition: transform .5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
 
     &.as-animation:not(.open):not(.force-as-scroll) {
-        top: -200px;
-        transition: top .5s linear;
+        transform: translateY(-200px);
+        transition: transform .5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .overlay {
@@ -57,6 +58,9 @@ body.menu-as-scroll {
             top: 0;
             height: 100%;
             display: none;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+            will-change: opacity;
         }
     }
 }
@@ -75,6 +79,7 @@ body.menu-open {
 
             .overlay {
                 display: block;
+                opacity: 1;
             }
         }
     }
@@ -115,6 +120,7 @@ body.menu-open {
             max-width: initial !important;
             opacity: 1 !important;
             visibility: visible !important;
+            will-change: max-height;
         }
     }
 
@@ -130,7 +136,7 @@ body.menu-open {
 
             opacity: .3;
             font-size: 28px;
-            transition: opacity .3s linear;
+            transition: opacity .3s ease-in-out;
 
             &.close-menu-level-1 {
                 top: 1.5rem;
@@ -139,7 +145,7 @@ body.menu-open {
 
             &:hover {
                 opacity: 1;
-                transition: opacity .3s linear;
+                transition: opacity .3s ease-in-out;
             }
         }
     }
@@ -179,13 +185,13 @@ body.menu-open {
 
     &:not(.as-scroll) {
 
-        transition: margin-top .3s linear;
+        transition: margin-top .3s ease-in-out;
 
         .navbar-brand {
 
             svg, img {
 
-                transition: max-height .3s linear;
+                transition: max-height .3s ease-in-out;
 
                 @include mediaQuery(max-lg) {
                     max-height: 75px;
@@ -204,7 +210,7 @@ body.menu-open {
 
     &.as-scroll {
 
-        transition: margin-top .3s linear;
+        transition: margin-top .3s ease-in-out;
 
         @include mediaQuery(max-lg) {
             height: 60px;
@@ -220,7 +226,7 @@ body.menu-open {
 
             svg, img {
 
-                transition: max-height .3s linear;
+                transition: max-height .3s ease-in-out;
 
                 @include mediaQuery(max-sm) {
                     max-height: 30px;
@@ -255,10 +261,10 @@ body.menu-open {
 
         .link-level-1, #locales-switcher {
 
-            transition: color .3s linear;
+            transition: color .3s ease-in-out;
 
             &:hover {
-                transition: color .3s linear;
+                transition: color .3s ease-in-out;
                 color: $primary !important;
             }
         }
@@ -272,9 +278,10 @@ body.menu-open {
     #main-navigation-nav.not-expanded {
         &.show {
             left: 0;
-            transition: left .3s linear;
+            transition: left .3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
+            will-change: left;
         }
     }
 
@@ -288,11 +295,12 @@ body.menu-open {
             left: -100%;
             top: 0;
             height: 100dvh;
-            transition: left .3s linear;
+            transition: left .3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: left;
 
             &.show:not(.not-expanded) {
                 left: 0;
-                transition: left .3s linear;
+                transition: left .3s cubic-bezier(0.4, 0, 0.2, 1);
                 display: flex;
                 flex-direction: column;
             }
@@ -303,6 +311,7 @@ body.menu-open {
 
         position: fixed;
         z-index: 3000;
+        will-change: left;
 
         .close-menu-submenu {
             height: 20px;
@@ -319,7 +328,7 @@ body.menu-open {
 
         @include mediaQuery(min-lg) {
             &.submenu-level-1 {
-                transition: left .3s linear;
+                transition: left .3s cubic-bezier(0.4, 0, 0.2, 1);
             }
         }
 
@@ -395,7 +404,7 @@ body.menu-open {
 
             @include mediaQuery(min-lg) {
                 &.submenu-level-1 {
-                    transition: left .3s linear;
+                    transition: left .3s cubic-bezier(0.4, 0, 0.2, 1);
                 }
             }
         }
@@ -471,7 +480,7 @@ body.menu-open {
         display: inline-block;
         position: relative;
         transform: rotate(0deg);
-        transition: .5s linear;
+        transition: .5s cubic-bezier(0.4, 0, 0.2, 1);
 
         span {
 
@@ -483,7 +492,7 @@ body.menu-open {
             opacity: 1;
             left: 0;
             transform: rotate(0deg);
-            transition: .25s linear;
+            transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
 
             &:nth-child(1) {
                 top: 0;
@@ -572,7 +581,7 @@ body.menu-open {
                 left: 0;
                 background-color: $white;
                 clip-path: circle(0% at 0 0);
-                transition: all .5s linear !important;
+                transition: all .5s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 display: inline-flex;
                 flex-direction: column !important;
                 align-items: center;
@@ -605,7 +614,7 @@ body.menu-open {
 
                 &.show {
                     clip-path: circle(141.4% at 0 0);
-                    transition: all .5s linear !important;
+                    transition: all .5s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 }
             }
 
