@@ -39,6 +39,7 @@ body.preloader-active {
     width: 150%;
     background: $bg-preloader !important;
     animation: stripes-preloader .6s linear infinite !important;
+    will-change: transform;
 }
 
 .stripe-preloader {

@@ -120,6 +120,10 @@ $btn-surface-hover: rgba(255, 255, 255, 0.04) !default;
 $btn-border-hover: rgba(255, 255, 255, 0.12) !default;
 $btn-shadow: 0 18px 45px rgba(0, 0, 0, 0.55) !default;
 
+$transition-base: all .3s cubic-bezier(0.4, 0, 0.2, 1) !default;
+$transition-fast: all .15s cubic-bezier(0.4, 0, 0.2, 1) !default;
+$transition-slow: all .5s cubic-bezier(0.4, 0, 0.2, 1) !default;
+
 $crumb-surface: rgba(255, 255, 255, 0.015) !default;
 $crumb-border: rgba(255, 255, 255, 0.06) !default;
 $crumb-border-hover: rgba(255, 255, 255, 0.10) !default;

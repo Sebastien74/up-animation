@@ -21,11 +21,11 @@
     letter-spacing: -0.01em;
     font-size: 14px;
 
-    transition: transform 140ms ease,
-    background-color 140ms ease,
-    border-color 140ms ease,
-    box-shadow 140ms ease,
-    filter 140ms ease;
+    transition: transform .14s $transition-base-timing,
+    background-color .14s $transition-base-timing,
+    border-color .14s $transition-base-timing,
+    box-shadow .14s $transition-base-timing,
+    filter .14s $transition-base-timing;
 
     text-transform: uppercase;
 

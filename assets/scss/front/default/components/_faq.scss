@@ -22,10 +22,10 @@
                 border-radius: 20px 0 !important;
                 padding-left: 1.75rem;
                 box-shadow: 2px 2px 0 0 $secondary;
-                transition: border-radius .3s linear;
+                transition: border-radius $transition-base;
 
                 &:not(.collapsed) {
-                    transition: border-radius .3s linear;
+                    transition: border-radius $transition-base;
                     border-bottom-right-radius: 0 !important;
                 }
             }

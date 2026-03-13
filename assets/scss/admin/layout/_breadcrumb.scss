@@ -16,13 +16,15 @@
     border: 1px solid $crumb-border;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+    transition: border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
 }
 
-.breadcrumb-container:hover {
-    border-color: $crumb-border-hover;
-    box-shadow: $crumb-shadow;
-    transform: translateY(-1px);
+@include mediaQuery(min-lg) {
+    .breadcrumb-container:hover {
+        border-color: $crumb-border-hover;
+        box-shadow: $crumb-shadow;
+        transform: translateY(-1px);
+    }
 }
 
 /* Ensure container doesn't add unwanted padding in the breadcrumb row */
@@ -54,10 +56,12 @@
     .breadcrumb-item a {
         color: $crumb-muted !important;
         text-decoration: none;
-        transition: color 120ms ease;
+        transition: color $transition-fast;
 
-        &:hover {
-            color: $crumb-text !important;
+        @include mediaQuery(min-lg) {
+            &:hover {
+                color: $crumb-text !important;
+            }
         }
     }
 

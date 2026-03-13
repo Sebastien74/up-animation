@@ -130,7 +130,7 @@ a {
             top: 1px;
             position: relative;
             transform-origin: center;
-            transition: all .3s linear;
+            transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1);
         }
     }
 
@@ -139,7 +139,7 @@ a {
             top: 0;
             transform-origin: center;
             transform: rotate(180deg);
-            transition: all .3s linear;
+            transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1);
         }
     }
 }
@@ -151,12 +151,12 @@ a {
 [data-bs-toggle="collapse"] {
 
     .icm-chevron-down {
-        transition: transform .3s linear;
+        transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     :not(.collapsed) > .icm-chevron-down {
         transform: rotate(180deg);
-        transition: transform .3s linear;
+        transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 }
 
@@ -177,12 +177,13 @@ a {
 
 a.shadow-item {
 
-    transition: all .4s;
+    transition: transform $transition-base, box-shadow $transition-base;
 
-    &:hover {
-        transform: translateY(calc(1.5rem * -.15));
-        box-shadow: 0 5px 10px rgba(30, 32, 37, .12);
-        transition: all .4s;
+    @include mediaQuery(min-lg) {
+        &:hover {
+            transform: translateY(calc(1.5rem * -.15));
+            box-shadow: 0 5px 10px rgba(30, 32, 37, .12);
+        }
     }
 }
 

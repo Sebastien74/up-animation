@@ -20,6 +20,7 @@
 
 @import '../../../lib/fonts/icomoon-webmaster';
 @import "../../front/bootstrap/variables";
+@import "../mixin/media-queries";
 
 $enable-dropdown: true;
 @import "../../front/bootstrap/modules/dropdown";
@@ -35,6 +36,8 @@ $danger: #a82835;
 $white: #fff;
 $black: #000;
 $icon-color: transparentize($white, .2);
+$lg: 992px !default;
+$transition-base-timing: cubic-bezier(0.4, 0, 0.2, 1) !default;
 
 html body {
 
@@ -65,7 +68,7 @@ html body #webmaster-box {
     left: 20px !important;
     z-index: 9999 !important;
     text-align: center !important;
-    transition: all .3s !important;
+    transition: transform .3s $transition-base-timing !important;
 
     @media only screen and (min-width: 768px) {
 
@@ -85,7 +88,7 @@ html body #webmaster-box {
             margin: 0 !important;
 
             i {
-                transition: all 1s !important;
+                transition: transform 1s $transition-base-timing !important;
                 transform: rotate(45deg) !important;
             }
 
@@ -96,7 +99,7 @@ html body #webmaster-box {
 
         #webmaster-box-dropdown.show {
             i {
-                transition: all .7s !important;
+                transition: transform .7s $transition-base-timing !important;
                 transform: rotate(270deg) !important;
             }
         }
@@ -119,7 +122,7 @@ html body #webmaster-box {
         margin-bottom: 12px !important;
         background-color: $primary !important;
         border-color: $primary !important;
-        transition: all .3s !important;
+        transition: background-color .3s $transition-base-timing !important;
         color: $primary !important;
         box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.46) !important;
         font-family: unset !important;
@@ -141,16 +144,17 @@ html body #webmaster-box {
         i {
             font-size: 24px !important;
             color: $icon-color !important;
-            transition: all .3s !important;
+            transition: color .3s $transition-base-timing !important;
         }
 
         &:hover, &:focus {
+            @include mediaQuery(min-lg) {
+                background-color: $white !important;
 
-            background-color: $white !important;
-
-            i {
-                color: $primary !important;
-                transition: all .3s !important;
+                i {
+                    color: $primary !important;
+                    transition: color .3s $transition-base-timing !important;
+                }
             }
         }
 
@@ -214,16 +218,18 @@ html body a.webmaster-link-edit {
             color: $white !important;
             margin: 0 !important;
             min-width: initial !important;
-            transition: all .3s ease-in-out !important;
+            transition: color .3s $transition-base-timing !important;
         }
 
         &:hover, &:focus {
 
-            background-color: $white !important;
+            @include mediaQuery(min-lg) {
+                background-color: $white !important;
 
-            i {
-                color: $success !important;
-                transition: all .3s ease-in-out !important;
+                i {
+                    color: $success !important;
+                    transition: color .3s $transition-base-timing !important;
+                }
             }
         }
     }

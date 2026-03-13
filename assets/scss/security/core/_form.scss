@@ -53,7 +53,7 @@ html body form .form-field-none {
             height: $card-icon-size;
             justify-content: center;
             width: $card-icon-size;
-            transition: color .3s ease-in-out;
+            transition: color .3s $transition-base-timing;
 
             i {
                 font-size: 1rem;
@@ -73,7 +73,7 @@ html body form .form-field-none {
 
 .group-form {
     .input-group-text {
-        transition: border-color 0.15s ease-in-out;
+        transition: border-color .15s $transition-base-timing;
     }
 }
 
@@ -89,7 +89,7 @@ html body form .form-field-none {
 
     .input-group-text {
         border-color: $input-focus-border-color;
-        transition: border-color 0.15s ease-in-out;
+        transition: border-color .15s $transition-base-timing;
     }
 }
 
@@ -126,7 +126,7 @@ html body form .form-field-none {
 
 .form-check-label {
 
-    transition: color 0.3s ease-in-out;
+    transition: color .3s $transition-base-timing;
     color: transparentize($white, .5);
     font-size: 12px;
     line-height: 1;

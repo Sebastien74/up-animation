@@ -11,7 +11,7 @@
     color: $btn-text;
 
     @include mediaQuery(min-lg) {
-        transition: color .3s ease;
+        transition: color $transition-base;
     }
 
     i {
@@ -19,7 +19,7 @@
         position: relative;
 
         @include mediaQuery(min-lg) {
-            transition: color .3s ease;
+            transition: color $transition-base;
         }
     }
 
@@ -102,11 +102,11 @@
         padding-left: .5rem !important;
     }
 
-    transition: transform 140ms ease,
-    background-color 140ms ease,
-    border-color 140ms ease,
-    box-shadow 140ms ease,
-    filter 140ms ease;
+    transition: transform $transition-fast,
+    background-color $transition-fast,
+    border-color $transition-fast,
+    box-shadow $transition-fast,
+    filter $transition-fast;
 
     i {
         position: relative;
@@ -151,7 +151,7 @@
     height: 22px;
     flex: 0 0 22px;
     border-radius: 7px;
-    transition: opacity .3s ease;
+    transition: opacity $transition-base;
     overflow: hidden;
 
     img {
@@ -170,7 +170,7 @@
 
     &:hover, &:focus, &:active {
         opacity: .8;
-        transition: opacity .3s ease;
+        transition: opacity $transition-base;
     }
 }
 
@@ -284,21 +284,20 @@
     .btn-icon.cursor,
     button.btn-icon,
     a.btn-icon {
-        transition: all .3s ease;
+        transition: background-color $transition-base, border-color $transition-base, box-shadow $transition-base;
     }
 
     .btn-icon.cursor:hover,
     button.btn-icon:hover,
     a.btn-icon:hover {
 
-        transition: all .3s ease;
         background: rgba($primary, .22);
         border-color: rgba($primary, .55);
         opacity: 1 !important;
 
         i {
             color: $white;
-            transition: color .3s ease;
+            transition: color $transition-base;
         }
 
         &.danger {

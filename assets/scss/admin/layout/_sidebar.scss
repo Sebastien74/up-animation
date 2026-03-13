@@ -48,7 +48,7 @@
         display: inline-flex;
         align-items: center;
         position: relative;
-        transition: color .3s linear;
+        transition: color $transition-base;
         width: 100%;
     }
 
@@ -67,12 +67,12 @@
             border-color: $white-lighten;
             transform: rotate(135deg) translate(0, -50%);
             transform-origin: top;
-            transition: transform .3s linear;
+            transition: transform $transition-base;
         }
 
         &.active::after {
             transform: rotate(225deg) translate(0, -50%);
-            transition: transform .3s linear;
+            transition: transform $transition-base;
         }
 
         &:not(.bigger) {
@@ -113,7 +113,7 @@
 
         padding: .4rem 0;
         font-size: 14px;
-        transition: all .3s linear;
+        transition: background-color $transition-base, border-color $transition-base, padding $transition-base;
         border-radius: 12px;
 
         &:hover, &:active, &:focus, &.active {
@@ -121,7 +121,6 @@
             border: $border-color;
             padding-right: .25rem;
             padding-left: .75rem;
-            transition: all .3s linear;
         }
     }
 
@@ -159,7 +158,7 @@
 
 .left-sidebar {
 
-    transition: left .3s linear;
+    transition: left $transition-base;
 
     @include mediaQuery(max-sm) {
         left: -100%;
@@ -171,7 +170,7 @@
 
     &.open {
         left: 0;
-        transition: left .3s linear;
+        transition: left $transition-base;
     }
 
     > nav > ul > li > ul > li {
@@ -185,7 +184,7 @@
 
 .right-sidebar {
 
-    transition: right .3s linear;
+    transition: right $transition-base;
 
     @include mediaQuery(max-sm) {
         right: -100%;
@@ -197,6 +196,6 @@
 
     &.open {
         right: 0;
-        transition: right .3s linear;
+        transition: right $transition-base;
     }
 }

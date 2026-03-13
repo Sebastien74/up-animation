@@ -34,6 +34,7 @@
     $xl: 1200px;
     $xxl: 1400px;
     $xxxl: 1600px;
+    $transition-base-timing: cubic-bezier(0.4, 0, 0.2, 1);
 
     $white: #fff;
     $light-blue: #bfecea;
@@ -235,7 +236,7 @@
                 margin-top: -10px;
                 position: absolute;
                 opacity: 0.3;
-                transition: all .4s ease-in-out;
+                transition: background-color .4s $transition-base-timing;
                 width: 40px;
             }
 
@@ -250,7 +251,7 @@
                 margin-top: -8px;
                 position: absolute;
                 top: -4px;
-                transition: all .3s ease-in-out;
+                transition: transform .3s $transition-base-timing, left .3s $transition-base-timing;
                 font-size: 14px;
                 text-align: center;
                 padding-top: 2px;
@@ -357,11 +358,13 @@
                 #gdpr-choices-validate:hover,
                 #gdpr-choices-validate:focus {
 
-                    color: #333 !important;
-
-                    svg {
+                    @include mediaQuery(min-lg) {
                         color: #333 !important;
-                        fill: #333 !important;
+
+                        svg {
+                            color: #333 !important;
+                            fill: #333 !important;
+                        }
                     }
                 }
 
@@ -451,8 +454,10 @@
                 border-radius: 0 !important;
 
                 &:hover, &:focus {
-                    color: #343a40 !important;
-                    background-color: #fff !important;
+                    @include mediaQuery(min-lg) {
+                        color: #343a40 !important;
+                        background-color: #fff !important;
+                    }
                 }
             }
 
@@ -790,12 +795,12 @@
             left: 2px;
             right: 2px;
             opacity: 0;
-            transition: opacity .2s linear
+            transition: opacity .2s $transition-base-timing;
         }
 
         .simplebar-scrollbar.simplebar-visible:before {
             opacity: .5;
-            transition: opacity 0s linear
+            transition: opacity 0s $transition-base-timing;
         }
 
         .simplebar-track.simplebar-vertical {
