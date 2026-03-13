@@ -21,7 +21,7 @@
                     <p class="mb-1">Vous recherchez un prestataire pour votre événement&nbsp;?</p>
                     <p class="mb-1">Une ou plusieurs animations vous intéressent&nbsp;?</p>
                     <p class="mb-0">
-                        <strong>Contactez votre agence Up Animations{%- if city -%} {{ city }}{%- endif -%} dès maintenant</strong> et faites-nous part de votre projet, nos experts se chargeront de répondre au mieux à votre demande.
+                        <strong>Contactez votre agence Up Animations{% if city %} {{ city }}{% endif %} dès maintenant</strong> et faites-nous part de votre projet, nos experts se chargeront de répondre au mieux à votre demande.
                     </p>
                     {%- if contactUrl -%}
                         {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {

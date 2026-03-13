@@ -24,7 +24,7 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            transition: all .5s linear;
+            transition: all .4s ease-in-out;
             opacity: 0;
             visibility: hidden;
             padding: 0;
@@ -37,17 +37,24 @@
             z-index: 999;
 
             svg, i {
-                fill: $white;
-                color: $white;
-                margin-top: -3px;
+                fill: $white !important;
+                color: $white !important;
+                margin-top: -1px !important;
+                font-size: 0;
+                transition: font-size .4s ease-in-out;
             }
 
             &.show {
+
                 opacity: 1;
                 visibility: visible;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
+                i {
+                    font-size: 1rem;
+                }
             }
 
             &:hover svg,

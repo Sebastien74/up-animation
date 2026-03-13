@@ -15,6 +15,7 @@ use App\Entity\Seo\Url;
 use App\Http\TransparentPixelResponse;
 use App\Model\Core\WebsiteModel;
 use App\Model\MediaModel;
+use App\Model\Module\CatalogModel;
 use App\Model\Module\ProductModel;
 use App\Repository\Core\WebsiteRepository;
 use App\Service\Interface\CoreLocatorInterface;
@@ -217,20 +218,8 @@ class FrontController extends CacheController
         $websiteTemplate = $website->configuration->template;
 
         $em = $this->coreLocator->em();
-//        $agenciesCatalog = $em->getRepository(Catalog::class)->findOneBy(['website' => $website->entity, 'slug' => 'agencies']);
-//        $agenciesBd = $em->getRepository(Product::class)->findOnlineByCatalogs($website->entity, $this->coreLocator->locale(), [$agenciesCatalog]);
-        $agenciesBd = [];
-        $agencies = [];
-        foreach ($agenciesBd as $agency) {
-            $agencies[] = ProductModel::fromEntity($agency, $this->coreLocator, [
-//                'onlyForUrl' => true,
-                'disabledProducts' => true,
-                'disabledLayout' => true,
-                'disabledMedias' => true,
-                'disabledCategories' => true,
-                'disabledCategory' => true
-            ]);
-        }
+        $catalog = $em->getRepository(Catalog::class)->findOneBy(['website' => $website->entity, 'slug' => 'agencies']);
+        $catalogModel = $catalog ? CatalogModel::fromEntity($catalog, $this->coreLocator, ['onlyForUrl' => true]) : null;
 
         $arguments = [
             'isUserBack' => $this->coreLocator->checkIP($website) && !$user instanceof UserFront || $user instanceof User,
@@ -241,7 +230,7 @@ class FrontController extends CacheController
             'mainPages' => $website->configuration->pages,
             'logos' => $website->configuration->logos,
             'thumbConfigurationHeader' => $thumbConfigurationHeader,
-            'agencies' => $agencies,
+            'agencies' => is_object($catalogModel) ? $catalogModel->products : [],
             'catalogMenus' => $this->coreLocator->em()->getRepository(Product::class)->findOnlineInMenus($website->entity, $this->coreLocator->locale()),
             'url' => $url,
             'preloadFiles' => is_object($entityModel) && property_exists($entityModel, 'preloadFiles') ? $entityModel->preloadFiles : false,

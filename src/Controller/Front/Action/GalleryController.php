@@ -48,7 +48,6 @@ class GalleryController extends ActionController
     ): JsonResponse|Response|null {
         $this->setTemplate('gallery/index.html.twig');
         $this->setClassname(Gallery::class);
-
         return $this->getIndex($request, $paginator, $url, $block, $filter);
     }
 

@@ -98,8 +98,8 @@ class RecruitmentController extends ActionController
     {
         $this->setTemplate('recruitment/view.html.twig');
         $this->setModel(JobModel::class);
-        $this->setClassname(Job::class);
-        $this->setListingClassname(Listing::class);
+        $this->classname = Job::class;
+        $this->listingClassname = Listing::class;
 
         return $this->getView($request, $url, $pageUrl, $preview);
     }
@@ -113,11 +113,11 @@ class RecruitmentController extends ActionController
     #[\Symfony\Component\Routing\Attribute\Route('/admin-%security_token%/front/recruitment/preview/{url}', name: 'front_recruitmentjob_preview', methods: 'GET|POST', schemes: '%protocol%')]
     public function preview(Request $request, Url $url): Response
     {
-        $this->setClassname(Job::class);
+        $this->classname = Job::class;
         $this->setModel(JobModel::class);
         $this->setModelOptions([]);
-        $this->setListingClassname(Listing::class);
-        $this->setController(RecruitmentController::class);
+        $this->listingClassname = Listing::class;
+        $this->controller = RecruitmentController::class;
 
         return $this->getPreview($request, $url);
     }

@@ -148,11 +148,10 @@ class ExceptionController extends BaseController
         $isForbidden = 403 === $this->statusCode || 401 === $this->statusCode;
         $isDevEnv = $_ENV['APP_ENV'] === 'local' || $_ENV['APP_ENV'] === 'dev';
         $displayStackTraces = true === (bool)$_ENV['APP_DEBUG'] && $isDevEnv && !$isNotFound && !$isForbidden;
+        $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
 
         if ($displayStackTraces) {
             return '@Twig/Exception/stack-traces.html.twig';
-        } elseif ($filesystem->exists($dirname.'exception_full.html.twig')) {
-            return '@Twig/Exception/exception_full.html.twig';
         } elseif ($filesystem->exists($dirname.'error-'.$this->statusCode.'.html.twig')) {
             return '@Twig/Exception/error-'.$this->statusCode.'.html.twig';
         }
@@ -183,6 +182,7 @@ class ExceptionController extends BaseController
         $arguments['exception'] = $exception;
         $arguments['allowedIP'] = $allowedIP;
         $arguments['currentContent'] = null;
+        $arguments['isFront'] = !$this->coreLocator->inAdmin();
 
         if ($this->coreLocator->inAdmin()) {
             if (!$request->attributes->get('website')) {

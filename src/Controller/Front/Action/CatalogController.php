@@ -110,6 +110,7 @@ class CatalogController extends ActionController
         $this->setTeaserClassname(Catalog\Teaser::class);
         $this->setListingClassname(Catalog\Listing::class);
         $this->setClassname(Catalog\Product::class);
+        $this->setJoins(['catalog']);
         $this->setModel(ProductModel::class);
         $this->setModelOptions([]);
         $this->setInterfaceName('catalog');

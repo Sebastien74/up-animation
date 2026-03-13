@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Entity\Layout;
+use App\Entity\Module\Catalog\Catalog;
 use App\Entity\Module\Newscast\Newscast;
 use App\Entity\Seo\Url;
 use App\Model\Layout\BlockModel;
@@ -107,7 +108,7 @@ final class ViewModel extends BaseModel
         if ($entity && method_exists($entity, 'getId')) {
             $entityId = $entity->getId();
             $classname = get_class($entity);
-            $cacheKey = $classname . '-' . $entityId . '-' . md5(serialize($options));
+            $cacheKey = $classname.'-'.$entityId.'-'.md5(serialize($options));
             if (isset(self::$cache['view_model'][$cacheKey])) {
                 return self::$cache['view_model'][$cacheKey];
             }
@@ -516,7 +517,7 @@ final class ViewModel extends BaseModel
                                         ->withAttribute('fetchpriority', 'high');
                                     $extension = pathinfo($video->videoLink, PATHINFO_EXTENSION);
                                     if ($extension) {
-                                        $link = $link->withAttribute('type', 'video/' . $extension);
+                                        $link = $link->withAttribute('type', 'video/'.$extension);
                                     }
                                     self::$coreLocator->request()->attributes->set('_links', $linkProvider->withLink($link));
                                 }

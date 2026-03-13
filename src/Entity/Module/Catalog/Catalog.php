@@ -56,7 +56,7 @@ class Catalog extends BaseEntity
     #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]
     private ?Layout $layout = null;
 
-    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'catalog', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'catalog', cascade: ['persist'], fetch: 'EXTRA_LAZY')]
     #[ORM\OrderBy(['adminName' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $products;

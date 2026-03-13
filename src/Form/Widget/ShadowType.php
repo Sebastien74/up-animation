@@ -88,6 +88,7 @@ class ShadowType extends AbstractType
             'bottom' => $this->translator->trans('En bas', [], 'admin'),
             'left' => $this->translator->trans('À gauche', [], 'admin'),
             'right' => $this->translator->trans('À droite', [], 'admin'),
+            'around' => $this->translator->trans('Autour', [], 'admin'),
         ];
 
         $choices = [];

@@ -112,8 +112,18 @@ sup {
 }
 
 @include mediaQuery(min-lg) {
+
     .text-lg-justify {
         text-align: justify !important;
+    }
+
+    @each $name, $color in $theme-colors {
+        .text-hover-#{$name} {
+            transition: color .4s ease-in-out;
+            &:hover, &:hover *, :focus, :focus * {
+                color: $color !important;
+            }
+        }
     }
 }
 
@@ -480,7 +490,7 @@ a {
         i {
             font-size: 11px;
             position: relative;
-            transition: all .3s linear;
+            transition: all .4s ease-in-out;
         }
     }
 }
@@ -518,22 +528,22 @@ a {
             left: 0;
             height: 1px;
             width: 0;
-            transition: all .3s linear;
+            transition: all .4s ease-in-out;
         }
 
         &:hover {
 
             color: $primary;
-            transition: all .3s linear;
+            transition: all .4s ease-in-out;
 
             svg {
                 fill: $primary;
-                transition: all .3s linear;
+                transition: all .4s ease-in-out;
             }
 
             &:after {
                 width: 100%;
-                transition: all .3s linear;
+                transition: all .4s ease-in-out;
                 background-color: $secondary;
             }
         }
@@ -555,7 +565,7 @@ a {
     left: 0;
     height: 1px;
     width: 100%;
-    transition: all .3s linear;
+    transition: all .4s ease-in-out;
     background-color: currentColor;
 }
 

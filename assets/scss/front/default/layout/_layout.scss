@@ -162,7 +162,7 @@ $z-indexes: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000;
 
     position: relative;
 
-    &:before {
+    &:not(.around):before {
         content: '';
         position: absolute;
         top: 0;
@@ -217,6 +217,10 @@ $z-indexes: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000;
 }
 
 @each $suffix, $color in $theme-colors {
+
+    .col-shadow-around-#{$suffix} {
+        box-shadow: 0 0 14px 0 transparentize($color, .35);
+    }
 
     /* Attributes for svg stretchable: width="100%" height="auto" preserveAspectRatio="none" */
 

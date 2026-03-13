@@ -9,6 +9,7 @@ use App\Entity\Module\Catalog;
 use App\Model\BaseModel;
 use App\Model\Core\WebsiteModel;
 use App\Model\EntityModel;
+use App\Model\InformationModel;
 use App\Model\ViewModel;
 use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
@@ -40,6 +41,8 @@ final class ProductModel extends BaseModel
         $catalog = ViewModel::fromEntity($catalogDb, $coreLocator, array_merge($options, []));
         $catalogLayout = self::$cache['catalogLayout'][$catalog->id] = !empty(self::$cache['catalogLayout'][$catalog->id])
             ? self::$cache['catalogLayout'][$catalog->id] : self::getContent('layout', $catalog->entity);
+        $disabledValues = array_key_exists('disabledValues', $options) ? $options['disabledValues'] : false;
+        $disabledInfo = array_key_exists('disabledInfo', $options) ? $options['disabledInfo'] : false;
 
         if (isset($options['entitiesIds'])) {
             unset($options['entitiesIds']);
@@ -53,7 +56,8 @@ final class ProductModel extends BaseModel
         $defaultUniqFeatures = [
 
         ];
-        $values = self::getValues($product, $catalogDb, $multiFeaturesValues, $defaultUniqFeatures);
+        $values['defaults'] = [];
+        $values = !$disabledValues ? self::getValues($product, $catalogDb, $multiFeaturesValues, $defaultUniqFeatures) : $values;
         $subCategories = self::getSubCategories($product, $options, $defaultUniqSubCategories);
 
         $disabledProducts = isset($options['disabledProducts']) && $options['disabledProducts'];
@@ -64,8 +68,8 @@ final class ProductModel extends BaseModel
             }
         }
 
-        $information = in_array('informations', $catalogDb->getTabs()) ? self::information($product) : false;
-        $address = $information ? $information->getAddress() : false;
+        $information = !$disabledInfo && in_array('informations', $catalogDb->getTabs()) ? self::information($product) : false;
+        $address = $information ? $information->address : false;
 
         return (object) array_merge((array) $model, [
             'catalog' => $catalog,
@@ -74,11 +78,11 @@ final class ProductModel extends BaseModel
             'entityForLayout' => $model->layout && $model->layout->getSlug() && !$model->layout->getZones()->isEmpty() && $model->asCustomLayout ? $model->entity : $catalog,
             'info' => $information,
             'address' => $address,
-            'city' => $address ? $address->getCity() : false,
-            'department' => $address && 'FR' === $address->getCountry() ? $address->getDepartment() : false,
-            'zipcode' => $address && 'FR' === $address->getCountry() ? $address->getZipCode() : false,
-            'country' => $address ? $address->getCountry() : false,
-            'zipcodeSmall' => $address && $address->getZipCode() && 'FR' === $address->getCountry() ? '('.substr($address->getZipCode(), 0 , 2).')' : false,
+            'city' => $address ? $address['city'] : false,
+            'department' => $address && 'FR' === $address['country'] ? $address['department'] : false,
+            'zipcode' => $address && 'FR' === $address['country'] ? $address['zipCode'] : false,
+            'country' => $address ? $address['country'] : false,
+            'zipcodeSmall' => $address && $address['zipCode'] && 'FR' === $address['country'] ? '('.substr($address['zipCode'], 0 , 2).')' : false,
             'subCategories' => $subCategories,
             'mediasCard' => $model->medias ? array_slice($model->medias, array_key_first($model->medias), self::MEDIA_CARD_LIMIT) : [],
             'values' => $values,
@@ -359,12 +363,18 @@ final class ProductModel extends BaseModel
 
     /**
      * Get information.
+     *
+     * @throws ReflectionException
      */
-    private static function information(Catalog\Product $product): ?Catalog\ProductInformation
+    private static function information(Catalog\Product $product): ?InformationModel
     {
-        self::$cache['infos'][$product->getId()] = self::$cache['infos'][$product->getId()] ?? self::$coreLocator->em()->getRepository(Catalog\ProductInformation::class)->findByProduct($product);
+        if (!empty(self::$cache['infos'][$product->getId()])) {
+            return self::$cache['infos'][$product->getId()];
+        }
 
-        return !empty(self::$cache['infos'][$product->getId()]) ? self::$cache['infos'][$product->getId()] : null;
+        self::$cache['infos'][$product->getId()] = self::$cache['infos'][$product->getId()] ?? $product->getInformation();
+        self::$cache['infos'][$product->getId()] = self::jsonCache(self::$cache['infos'][$product->getId()], self::$coreLocator->locale(), InformationModel::class);
+        return self::$cache['infos'][$product->getId()];
     }
 
     /**

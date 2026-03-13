@@ -8,6 +8,7 @@ use App\Entity\Api\Api;
 use App\Entity\Core\Configuration;
 use App\Entity\Core\Website;
 use App\Entity\Information\Information;
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Security\User;
 use App\Entity\Seo\SeoConfiguration;
 use App\Entity\Translation;
@@ -263,17 +264,12 @@ class DoctrineEventsListener
     }
 
     /**
-     * To check if process allowed.
+     * To check if a process allowed.
      */
     private function forceUriCache(): bool
     {
-        foreach (self::ALLOW_URIS as $uri) {
-            if (str_contains($this->request->getUri(), $uri)) {
-                return true;
-            }
-        }
+        return array_any(self::ALLOW_URIS, fn($uri) => str_contains($this->request->getUri(), $uri));
 
-        return false;
     }
 
     /**
@@ -289,6 +285,7 @@ class DoctrineEventsListener
             Website::class => ['apimodel', 'domains', 'modules-configuration'],
             Configuration::class => ['pages'],
             Information::class => ['apimodel'],
+            Product::class => ['productinformation'],
         ];
 
         foreach ($entitiesCache as $classname => $filenames) {

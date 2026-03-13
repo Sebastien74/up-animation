@@ -151,8 +151,6 @@ class IndexController extends FrontController
      */
     private function getLastUpdateDate(WebsiteModel $website, Page $page, Url $url): DateTimeInterface
     {
-//        dd('Ajouter dans website un etag global et le persister dans Doctrine listener');
-
         $dates = [
             $page->getUpdatedAt(),
             $url->getUpdatedAt(),
@@ -161,7 +159,6 @@ class IndexController extends FrontController
 
         /** @var DateTimeInterface $lastUpdate */
         $lastUpdate = $page->getCreatedAt() ?: new \DateTimeImmutable();
-
         foreach ($dates as $date) {
             if ($date instanceof DateTimeInterface && $date > $lastUpdate) {
                 $lastUpdate = $date;

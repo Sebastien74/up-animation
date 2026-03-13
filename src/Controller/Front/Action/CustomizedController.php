@@ -54,8 +54,7 @@ class CustomizedController extends FrontController
             $entity = $entity ? ProductModel::fromEntity($entity, $this->coreLocator, ['disabledIntl' => true, 'disabledMedias' => true, 'disabledUrl' => true, 'disabledCategories' => true, 'disabledCategory' => true]) : null;
             if ($entity) {
                 $contactPageParams['agence'] = $entity->slug;
-                $productAddress = $entity->address;
-                $address = $entity->address && $entity->address->getAddress() ? $productAddress : $address;
+                $address = $entity->address;
                 $city = $entity->city;
             }
         }

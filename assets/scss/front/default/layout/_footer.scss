@@ -1,64 +1,28 @@
 @charset "UTF-8";
 
-/* -----------------------------------------------------------------
+/* ------------------------------------------------------------------------------------------
+
     Module : Footer
     Copyright : 2026
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
     Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
------------------------------------------------------------------- */
 
-//#footer {
-//
-//    .socials-list {
-//
-//        i {
-//
-//            font-size: 40px;
-//            transition: color .5s linear;
-//
-//            &:hover {
-//                color: $primary;
-//                transition: color .5s linear;
-//            }
-//        }
-//    }
-//
-//    //.phone-link-wrap, .email-link-wrap {
-//    //
-//    //    .label, .wrap-icon-link i {
-//    //        color: $primary !important;
-//    //    }
-//    //
-//    //    @include mediaQuery(min-lg) {
-//    //
-//    //        .phone-link, .email-link {
-//    //
-//    //            &:before {
-//    //                content: '';
-//    //                position: absolute;
-//    //                bottom: -2px;
-//    //                left: 0;
-//    //                width: 0;
-//    //                height: 1px;
-//    //                background-color: $primary;
-//    //                transition: width .3s linear;
-//    //            }
-//    //
-//    //            &:hover:before {
-//    //                width: 100%;
-//    //                transition: width .3s linear;
-//    //            }
-//    //        }
-//    //    }
-//    //}
-//
-//    .menu-container ul {
-//        .link, .dashed {
-//            font-size: rem(12px);
-//        }
-//    }
-//}
+    1 ) Reset
+    2 ) Main
+    3 ) Contact
+    4 ) Socials
+    5 ) Content
+    6 ) Links
+    7 ) Extras
+    8 ) Accessibility
 
-html body .ua-footer .link-block {
+------------------------------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Reset
+-----------------------------------*/
+
+.link-block {
     .btn, .btn:hover {
         span, i {
             color: $dark !important;
@@ -66,35 +30,42 @@ html body .ua-footer .link-block {
     }
 }
 
-.ua-footer {
+/*-----------------------------------
+   2 ) Main
+-----------------------------------*/
 
-    --ua-bg-1: #333333; // contact
-    --ua-bg-2: #2c2c2c; // main
-    --ua-bg-3: #222222; // bottom
-    --ua-accent: #ff7100;
+.footer {
 
-    background: var(--ua-bg-1);
-    color: #fff;
+    background: $gray-700;
+    color: $white;
 
-    &__contact {
-        background: var(--ua-bg-1);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    /*-----------------------------------
+       3 ) Contact
+    -----------------------------------*/
+
+    .footer-contact {
+        background: $gray-700;
+        border-bottom: 1px solid transparentize($white, .92);
     }
 
-    &__main {
-        background: var(--ua-bg-2);
+    .footer-main {
+        background: $gray-800;
     }
 
     #footer-bottom {
-        background: var(--ua-bg-3) !important;
+        background: $gray-900 !important;
     }
+
+    /*-----------------------------------
+       4 ) Socials
+    -----------------------------------*/
 
     .socials-list {
 
         i {
 
             font-size: 40px;
-            transition: color .5s linear;
+            transition: color .4s ease-in-out, transform .4s ease-in-out;
 
             @include mediaQuery(min-lg) {
 
@@ -111,62 +82,57 @@ html body .ua-footer .link-block {
                     right: 3px;
                     bottom: 3px;
                     border-radius: 50%;
-                    background-color: red;
-                }
-
-                transition: color .15s linear, transform .2s linear;
-
-                &:hover {
-                    transform: translateY(-1px);
+                    background-color: transparent;
+                    transition: background-color .4s ease-in-out;
                 }
 
                 &:hover {
                     color: $primary !important;
-                    transition: color .5s linear;
+                    transform: translateY(-1px);
+
+                    &:after {
+                        background-color: $white;
+                    }
                 }
             }
         }
     }
 
-    /* Contact bar */
-    .ua-contact-item {
+    .contact-item {
         position: relative;
     }
 
-    /* vertical separators on desktop only */
-    .ua-contact {
+    .contact {
         @media (min-width: 992px) {
-            > div:not(:last-child) .ua-contact-item {
-                border-right: 1px solid rgba(255, 255, 255, 0.08);
+            > div:not(:last-child) .contact-item {
+                border-right: 1px solid transparentize($white, .92);
             }
         }
     }
 
-    .ua-contact-icon {
+    .contact-icon {
         width: 44px;
         height: 44px;
         background: #1f1f1f;
-        color: var(--ua-accent);
+        color: $primary;
         font-size: 1.1rem;
         flex-shrink: 0;
     }
 
-    .ua-contact-title {
+    .contact-title {
         font-size: .75rem;
         letter-spacing: .08em;
     }
 
-    .ua-contact__accent {
-        color: var(--ua-accent);
-    }
+    /*-----------------------------------
+       5 ) Content
+    -----------------------------------*/
 
-    /* separators */
-    .ua-sep {
-        border-color: rgba(255, 255, 255, 0.12);
+    .sep {
+        border-color: transparentize($white, .88);
         opacity: 1;
     }
 
-    /* Titles */
     .footer-title {
 
         position: relative;
@@ -181,18 +147,21 @@ html body .ua-footer .link-block {
             bottom: 0;
             width: 45px;
             height: 2px;
-            background: var(--ua-accent);
+            background: $primary;
         }
     }
 
-    /* Link system */
-    .ua-link,
+    /*-----------------------------------
+       6 ) Links
+    -----------------------------------*/
+
+    .link,
     .footer-link,
     #footer-bottom .link {
 
-        color: rgba(255, 255, 255, 0.8);
+        color: transparentize($white, .2);
         text-decoration: none;
-        transition: color .15s linear;
+        transition: color .4s ease-in-out;
 
         &:hover,
         &:focus {
@@ -202,15 +171,14 @@ html body .ua-footer .link-block {
 
     li::marker {
 
-        color: var(--ua-accent);
+        color: $primary;
 
         @include mediaQuery(min-lg) {
 
-            transition: color .15s linear;
+            transition: color .4s ease-in-out;
 
             &:hover {
                 color: $white;
-                transition: color .15s linear;
             }
         }
     }
@@ -219,28 +187,36 @@ html body .ua-footer .link-block {
 
         @include mediaQuery(min-lg) {
 
-            transition: color .15s linear;
+            transition: color .4s ease-in-out;
 
             &:hover {
                 color: $white;
-                transition: color .15s linear;
             }
         }
     }
 
-    .footer-link {
+    .footer-link,
+    .email-link,
+    .phone-link {
 
-        transition: color .15s linear;
+        transition: color .4s ease-in-out;
 
         @include mediaQuery(min-lg) {
+
+            &:after {
+                display: none !important;
+            }
+
             &:hover {
-                transition: color .15s linear;
                 color: $primary !important;
             }
         }
     }
 
-    /* Underline accent on hover (modern but sober) */
+    /*-----------------------------------
+       7 ) Extras
+    -----------------------------------*/
+
     #footer-bottom .link {
 
         position: relative;
@@ -252,10 +228,10 @@ html body .ua-footer .link-block {
             bottom: -2px;
             width: 100%;
             height: 1px;
-            background: var(--ua-accent);
+            background: $primary;
             transform: scaleX(0);
             transform-origin: left;
-            transition: transform .2s linear;
+            transition: transform .4s ease-in-out;
         }
 
         &:hover::after,
@@ -264,32 +240,43 @@ html body .ua-footer .link-block {
         }
     }
 
-    /* City pills (accent border) */
-    .ua-city {
+    .city {
 
         display: inline-flex;
         align-items: center;
         padding: .45rem .7rem;
         border-radius: 999px;
-        border: 1px solid rgba(255, 113, 0, 0.35);
-        color: rgba(255, 255, 255, 0.82);
+        border: 1px solid transparentize($primary, 0.65);
+        color: transparentize($white, 0.18);
         text-decoration: none;
         font-size: .9rem;
-        transition: border-color .15s linear, color .15s linear, transform .15s linear;
+        transition: border-color .4s ease-in-out, color .4s ease-in-out, transform .4s ease-in-out;
 
         &:hover,
         &:focus {
             transform: translateY(-1px);
-            border-color: rgba(255, 113, 0, 0.75);
+            border-color: transparentize($primary, 0.25);
             color: #fff;
             text-decoration: none;
         }
     }
 
-    /* Accessibility */
+    /*-----------------------------------
+       8 ) Accessibility
+    -----------------------------------*/
+
     a:focus-visible {
-        outline: 2px solid var(--ua-accent);
+        outline: 2px solid $primary;
         outline-offset: 3px;
         border-radius: 4px;
+    }
+
+    .agencies-body {
+
+        line-height: 1.5;
+
+        a {
+            transition: color .4s ease-in-out;
+        }
     }
 }

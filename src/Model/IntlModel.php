@@ -166,8 +166,19 @@ final class IntlModel extends BaseModel
     public static function fromEntities(mixed $entity, CoreLocatorInterface $coreLocator, array $ids = [], ?string $locale = null): self
     {
         $locale = $locale ?? self::$coreLocator->locale();
+        $entityId = method_exists($entity, 'getId') ? $entity->getId() : $entity->id;
         if (!isset(self::$cache['intls'][get_class($entity)][$locale])) {
             $metadata = self::$coreLocator->metadata($entity, 'intls');
+            $cacheIds = [];
+            foreach ($ids as $id) {
+                if (is_scalar($id)) {
+                    $cacheIds[] = $id;
+                } elseif (method_exists($id, 'getId')) {
+                    $cacheIds[] = $id->getId();
+                } elseif (property_exists($id, 'id')) {
+                    $cacheIds[] = $id->id;
+                }
+            }
             self::$cache['intls'][get_class($entity)][$locale] = self::$coreLocator->em()->getRepository($metadata->targetEntity)
                 ->createQueryBuilder('i')
                 ->andWhere('i.'.$metadata->mappedBy.' IN (:ids)')
@@ -176,11 +187,10 @@ final class IntlModel extends BaseModel
                 ->setParameter('locale', $locale)
                 ->indexBy('i', 'i.'.$metadata->mappedBy)
                 ->getQuery()
-                ->enableResultCache(3600, 'intls_'.md5(get_class($entity).'_'.implode('_', $ids).'_'.$locale))
+                ->enableResultCache(3600, 'intls_'.md5(get_class($entity).'_'.implode('_', $cacheIds).'_'.$locale))
                 ->getResult();
         }
-        $intl = !empty(self::$cache['intls'][get_class($entity)][$locale][$entity->getId()]) ? self::$cache['intls'][get_class($entity)][$locale][$entity->getId()] : null;
-
+        $intl = !empty(self::$cache['intls'][get_class($entity)][$locale][$entityId]) ? self::$cache['intls'][get_class($entity)][$locale][$entityId] : null;
         return self::fromEntity($entity, $coreLocator, false, ['intl' => $intl, 'locale' => $locale]);
     }
 

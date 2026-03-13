@@ -224,7 +224,7 @@
             &:active,
             &.active {
 
-                transition-duration: .5s;
+                transition: $btn-transition;
 
                 @if map-has-key($config, 'color-outline-hover') {
                     color: map-get($config, 'color-outline-hover') !important;

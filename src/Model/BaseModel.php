@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Entity\Core\Website;
+use App\Entity\Information\Information;
 use App\Entity\Layout\Layout;
 use App\Entity\Layout\Page;
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Form\Form;
 use App\Entity\Seo\Model;
 use App\Service\Core\Urlizer;
@@ -236,38 +238,41 @@ class BaseModel extends FunctionModel
      *
      * @throws ReflectionException
      */
-    protected static function jsonCache(mixed $entity, string $locale, string $model)
+    protected static function jsonCache(mixed $entity, string $locale, string $model, array $options = [])
     {
-        $entityMatches = explode('-', Urlizer::urlize(get_class($entity)));
-        $modelMatches = explode('-', Urlizer::urlize($model));
-        $dirname = self::$coreLocator->cacheDir().'/'.end($entityMatches).'-'.end($modelMatches).'-'.$locale.'.cache.json';
-        $localeData = self::cacheData($entity, $locale, $model, $dirname);
 
+        $localeData = self::cacheData($entity, $locale, $model, $options);
         return $model::modelCache($localeData);
     }
 
     /**
      * To set a cache file.
      */
-    private static function cacheData(mixed $entity, string $locale, string $modelClassname, string $dirname, bool $force = false)
+    private static function cacheData(mixed $entity, string $locale, string $modelClassname, array $options = [])
     {
         $filesystem = new Filesystem();
+        $entityId = method_exists($entity, 'getId') ? $entity->getId() : $entity->id;
+        $entityMatches = explode('-', Urlizer::urlize(get_class($entity)));
+        $modelMatches = explode('-', Urlizer::urlize($modelClassname));
+        $dirname = self::$coreLocator->cacheDir().'/'.end($entityMatches).'-'.end($modelMatches).'-'.$entityId.'-'.$locale.'.cache.json';
 
-        if (!$filesystem->exists($dirname) || $force) {
-            $model = $modelClassname::fromEntity($entity, self::$coreLocator, $locale);
+        if (!$filesystem->exists($dirname)) {
+            $model = EntityModel::class === $modelClassname
+                ? $modelClassname::fromEntity($entity, self::$coreLocator, $options)
+                : $modelClassname::fromEntity($entity, self::$coreLocator, $locale);
             $reflector = new \ReflectionClass($model);
             $properties = $reflector->getProperties(\ReflectionProperty::IS_PUBLIC);
             $cacheData = [];
             foreach ($properties as $property) {
                 $name = $property->name;
-                $cacheData[$entity->getId()][$locale][$name] = $model->$name;
+                $cacheData[$entityId][$locale][$name] = $model->$name;
             }
             $fp = fopen($dirname, 'w');
             fwrite($fp, json_encode($cacheData, JSON_PRETTY_PRINT));
             fclose($fp);
         }
         $json = (array) json_decode(file_get_contents($dirname));
-        $entityData = isset($json[$entity->getId()]) ? (array) $json[$entity->getId()] : [];
+        $entityData = isset($json[$entityId]) ? (array) $json[$entityId] : [];
 
         return $entityData[$locale] ?? false;
     }

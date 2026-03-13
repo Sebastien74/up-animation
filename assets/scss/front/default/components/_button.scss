@@ -20,7 +20,7 @@
     justify-content: center !important;
     align-items: center !important;
     padding: 0 !important;
-    transition: all .3s linear !important;
+    transition: $btn-transition !important;
     width: 45px !important;
     height: 45px !important;
     flex: 0 0 45px !important;
@@ -94,10 +94,10 @@
 
 .btn {
 
-    transition: transform .2s linear;
+    transition: $btn-transition;
 
     &:hover {
-        transition: transform .2s linear;
+        transition: $btn-transition;
         transform: translateY(-1px);
     }
 }
@@ -119,7 +119,7 @@
             border-radius: inherit;
             pointer-events: none;
             z-index: -1;
-            transition: opacity .5s linear;
+            transition: opacity .4s ease-in-out;
         }
 
         &::before {

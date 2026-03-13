@@ -105,32 +105,32 @@ class Product extends BaseEntity
     #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
     private ?string $menu = null;
 
-    #[ORM\OneToOne(targetEntity: Layout::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Layout::class, cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]
     private ?Layout $layout = null;
 
-    #[ORM\OneToOne(targetEntity: ProductInformation::class, inversedBy: 'product', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: ProductInformation::class, inversedBy: 'product', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(name: 'information_id', referencedColumnName: 'id', nullable: true)]
     private ?ProductInformation $information = null;
 
-    #[ORM\OneToMany(targetEntity: FeatureValueProduct::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: FeatureValueProduct::class, mappedBy: 'product', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[ORM\OrderBy(['position' => 'ASC'])]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $values;
 
-    #[ORM\OneToMany(targetEntity: Lot::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Lot::class, mappedBy: 'product', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[ORM\OrderBy(['position' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $lots;
 
-    #[ORM\OneToMany(targetEntity: ProductMediaRelation::class, mappedBy: 'product', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ProductMediaRelation::class, mappedBy: 'product', cascade: ['persist'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     #[ORM\OrderBy(['position' => 'ASC', 'locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $mediaRelations;
 
-    #[ORM\OneToMany(targetEntity: ProductIntl::class, mappedBy: 'product', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ProductIntl::class, mappedBy: 'product', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $intls;

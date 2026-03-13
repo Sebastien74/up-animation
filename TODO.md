@@ -5,7 +5,27 @@ Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 Slider marquee ajouter dans back bannière petite images, moyennes images et grandes images et faire le CSS pour les 3 tailles
 Et ajouter aussi data-speed="20" data-speed-mobile="20" etc
 
+//        dd('Ajouter dans website un etag global et le persister dans Doctrine listener');
+
 Dans mixin before retirer :before et :after
+
+Faire comme dans sweetalert pour les JS
+
+    import('../lib/sweetalert/sweetalert.min').then(() => {
+
+        import('../../../scss/admin/lib/sweetalert.scss');
+
+Styliser la page 500 twig logo RS etc
+
+tester les shadows
+
+        $sides = [
+            'top' => $this->translator->trans('En haut', [], 'admin'),
+            'bottom' => $this->translator->trans('En bas', [], 'admin'),
+            'left' => $this->translator->trans('À gauche', [], 'admin'),
+            'right' => $this->translator->trans('À droite', [], 'admin'),
+            'around' => $this->translator->trans('Autour', [], 'admin'),
+        ];
 
 https://github.com/jackocnr/intl-tel-input/tree/master
 

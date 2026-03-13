@@ -42,10 +42,10 @@ class ActionController extends FrontController
 {
     private ActionService $service;
     private WebsiteModel $website;
-    private ConfigurationModel $configuration;
     private string $websiteTemplate = '';
     private string $controller = '';
     private string $classname = '';
+    private array $joins = [];
     private string $listingClassname = '';
     private string $teaserClassname;
     private string $categoryClassname = '';
@@ -301,9 +301,9 @@ class ActionController extends FrontController
         $this->websiteTemplate = $websiteTemplate = $configuration->template;
         $locale = $request->getLocale();
         $listingService = $this->coreLocator->listingService();
-        $entities = $listingService->findTeaserEntities($teaser, $locale, $this->classname, $this->website);
+        $entities = $listingService->findTeaserEntities($teaser, $locale, $this->classname, $this->website, false, $this->joins);
 
-        /** To order past events in bottom of array */
+        /** To order past events in the bottom of an array */
         $orderBy = explode('-', $teaser->getOrderBy());
         if (!empty($entities) && property_exists($teaser, 'pastEvents') && $teaser->isPastEvents() && 'startDate' === $orderBy[0]) {
             $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
@@ -476,6 +476,14 @@ class ActionController extends FrontController
     }
 
     /**
+     * Set joins query builder.
+     */
+    public function setJoins(array $joins): void
+    {
+        $this->joins = $joins;
+    }
+
+    /**
      * Set model.
      */
     public function setModel(string $model): void
@@ -572,7 +580,7 @@ class ActionController extends FrontController
     }
 
     /**
-     * To set associated thumb method.
+     * To set the associated thumb method.
      */
     public function setAssociatedThumbMethod(string $method): void
     {
@@ -674,14 +682,14 @@ class ActionController extends FrontController
         $this->arguments['block'] = $block;
         $this->arguments['filter'] = $filter;
         $this->arguments['website'] = $this->website;
-        $this->configuration = $this->arguments['configuration'] = $this->website->configuration;
-        $this->websiteTemplate = $this->arguments['websiteTemplate'] = $this->configuration->template;
+        $configuration = $this->arguments['configuration'] = $this->website->configuration;
+        $this->websiteTemplate = $this->arguments['websiteTemplate'] = $configuration->template;
     }
 
     /**
      * To get associated entities.
      *
-     * @throws NonUniqueResultException|MappingException|QueryException
+     * @throws NonUniqueResultException|MappingException|QueryException|InvalidArgumentException
      */
     public function getAssociatedEntities(Request $request, mixed $entity): array
     {

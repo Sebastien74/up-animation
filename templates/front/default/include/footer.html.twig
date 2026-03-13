@@ -13,24 +13,26 @@
 {%- set contactUrl = mainPages.contact.code is defined ? mainPages.contact.code : null -%}
 {%- set animationsUrl = mainPages.animations.code is defined ? mainPages.animations.code : null -%}
 
-{%- macro uaContact(website, icon, title, type, data) -%}
+{%- macro uaContact(website, icon, title, type, data, label) -%}
     <div class="col-12 col-lg-3">
-        <div class="ua-contact-item h-100 d-flex align-items-center py-3">
+        <div class="contact-item h-100 d-flex align-items-center py-3">
             <div class="h-100 d-flex align-items-center gap-3">
-                <div class="ua-contact-icon d-flex align-items-center justify-content-center rounded-3"
+                <div class="contact-icon d-flex align-items-center justify-content-center rounded-3"
                      aria-hidden="true">
                     <i class="icon-{{ icon }} text-white"></i>
                 </div>
-                <div class="lh-sm">
-                    <div class="ua-contact-title text-uppercase text-white-50">{{ title|raw }}</div>
+                <div class="d-flex flex-column gap-1">
+                    <div class="contact-title text-uppercase text-white-50">{{ title|raw }}</div>
                     {%- if 'emails' == type -%}
                         {%- for email in data -%}
-                            {{ email.email|email(website, {icon: false, only_href: true, entitled: false, class: 'ua-link fw-600 d-inline-block'}) }}
+                            {{ email.email|email(website, {icon: false, only_href: true, entitled: false, class: 'link fw-600 d-inline-block'}) }}
                         {%- endfor -%}
                     {%- elseif 'phones' == type -%}
                         {%- for phone in data -%}
-                            {{ phone|phone(website, {icon: false, only_href: true, entitled: false, class: 'ua-link fw-600 d-inline-block'}) }}
+                            {{ phone|phone(website, {icon: false, only_href: true, entitled: false, class: 'link fw-600 d-inline-block'}) }}
                         {%- endfor -%}
+                    {%- elseif 'link' == type -%}
+                        <div class="fw-600"><a href="{{ data|raw }}">{{ label|raw }}</a></div>
                     {%- elseif 'text' == type -%}
                         <div class="fw-600">{{ data|raw }}</div>
                     {%- endif -%}
@@ -51,10 +53,11 @@
     {%- endif -%}
 {%- endmacro -%}
 
-<footer class="ua-footer text-white">
-    <section class="ua-footer-contact py-4">
+<footer class="footer text-white">
+
+    <section class="footer-contact py-4">
         <div class="container">
-            <div class="row g-3 g-lg-0 ua-contact align-items-stretch">
+            <div class="row g-3 g-lg-0 contact align-items-stretch">
                 {%- if agencies is not empty -%}
                     {{ macro.uaContact(website, 'map-marker-alt-solid', "Plusieurs agences", 'text', agencies|length~" en France & Suisse") }}
                 {%- endif -%}
@@ -71,11 +74,11 @@
         </div>
     </section>
 
-    <section class="ua-footer-main py-5">
+    <section class="footer-main py-5">
         <div class="container">
             <div class="row g-4">
                 <div class="col-12 col-lg-4 pe-lg-5">
-                    <div class="ua-brand pe-lg-4">
+                    <div class="brand pe-lg-4">
                         {%- if logo -%}
                             <a class="d-inline-block" aria-label="{{ companyName|striptags }}"
                                href="{{ app.request.getSchemeAndHttpHost() }}">
@@ -124,20 +127,18 @@
                             </div>
                         {%- endif -%}
                         {%- if agencies is not empty -%}
-                            <hr class="ua-sep my-4">
+                            <hr class="sep my-4">
                             <h3 class="footer-title pb-2 mb-3 fw-900 text-white">Nos agences</h3>
                             <div class="d-flex flex-wrap gap-2">
                                 {%- for agency in agencies -%}
-                                    <a class="ua-city px-3" href="{{ agency.url }}">Agence {{ agency.city }}</a>
+                                    <a class="city px-3" href="{{ agency.url }}">Agence {{ agency.city }}</a>
                                 {%- endfor -%}
                             </div>
                         {%- endif -%}
                         {%- if website.networks is not empty -%}
-                            <hr class="ua-sep my-4">
+                            <hr class="sep my-4">
                             <h3 class="footer-title pb-2 mb-3 fw-900 text-white">Restez connecté&nbsp;!</h3>
-                            <p class="text-white-50">Rejoignez <strong
-                                        class="text-white-50">{{ companyName|unescape|replace({'!': ''}) }}</strong> sur
-                                les <strong class="text-white-50">réseaux sociaux</strong> dès maintenant&nbsp;!</p>
+                            <p class="text-white-50">Rejoignez <strong class="text-white-50">{{ companyName|unescape|replace({'!': ''}) }}</strong> sur les <strong class="text-white-50">réseaux sociaux</strong> dès maintenant&nbsp;!</p>
                             <div class="d-flex flex-wrap">
                                 <nav class="socials-list d-inline-flex justify-content-center justify-content-sm-start gap-3"
                                      aria-label="{{"Navigation des liens sociaux"|trans|striptags }}">
@@ -147,7 +148,7 @@
                                             <a href="{{ infos.link }}" class="{{ name }} p-0 d-inline-flex"
                                                 rel="noopener noreferrer" target="_blank"
                                                 aria-label="{{ label }}">
-                                                <i class="icon-{{ name|lower }} text-white" aria-hidden="true"></i>
+                                                <i class="icon-{{ name|lower }} text-white position-relative" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ label }}</span>
                                             </a>
                                         {%- endif -%}
@@ -172,14 +173,13 @@
                             </div>
                         {%- endif -%}
                         {%- set labels = agencies|map(a =>
-                            '<a href="' ~ a.url ~ '" class="text-white fw-700">' ~ a.city ~ '</a> ' ~ a.zipcodeSmall
+                            '<a href="' ~ a.url ~ '" class="text-white-50 text-hover-white fw-700">' ~ a.city ~ '</a> ' ~ a.zipcodeSmall
                         ) -%}
                         <div class="col-12">
-                            <hr class="ua-sep mt-2 mb-4">
-                            <p class="mb-0 small text-white-50">
+                            <hr class="sep mt-2 mb-4">
+                            <p class="mb-0 small text-white-50 agencies-body">
                                 Découvrez <strong class="text-white-50 fw-600">Up Animations</strong> expert en
-                                animations événementielles dans les villes d’{%- for agency in agencies -%}<strong
-                                        class="text-white-50 fw-600">{{ agency.city }}</strong> {{ agency.zipcodeSmall }}{%- if not loop.last -%}{%- if loop.revindex0 == 1 -%} et {%- else -%}, {%- endif -%}{%- endif -%}{%- endfor -%}
+                                animations événementielles dans les villes d’{%- for agency in labels -%}{{ agency|raw }}{% if not loop.last %}{% if loop.revindex0 == 1 %} et {% else %}, {% endif %}{%- endif -%}{%- endfor -%}
                                 . Nous saurons rendre vos événements originaux et conviviales. Magiciens professionnels,
                                 nous nous déplaçons pour vos spectacles de magie et animations en tout genre&nbsp;!
                             </p>
@@ -214,7 +214,7 @@
         <div class="container px-0">
             <div class="pt-3 text-center small text-white-50 d-flex align-items-center justify-content-center gap-1">
                 Copyright {{ 'now'|date('Y') }} <span class="dashed text-white-50">-</span>
-                <a class="d-inline-block" aria-label="{{ companyName|striptags }}"
+                <a class="d-inline-block text-hover-white" aria-label="{{ companyName|striptags }}"
                    href="{{ app.request.getSchemeAndHttpHost() }}">
                     <strong class="text-white-50">{{ companyName|striptags }}</strong>
                 </a>

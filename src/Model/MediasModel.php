@@ -152,8 +152,19 @@ final class MediasModel extends BaseModel
             return self::fromEntity($entity, $coreLocator, self::$coreLocator->locale(), false, ['medias' => self::$cache['medias'][get_class($entity)][$entity->getId()]]);
         }
 
+        $entityId = method_exists($entity, 'getId') ? $entity->getId() : $entity->id;
         if (!isset(self::$cache['medias'][get_class($entity)])) {
             $metadata = self::$coreLocator->metadata($entity, 'mediaRelations');
+            $cacheIds = [];
+            foreach ($ids as $id) {
+                if (is_scalar($id)) {
+                    $cacheIds[] = $id;
+                } elseif (method_exists($id, 'getId')) {
+                    $cacheIds[] = $id->getId();
+                } elseif (property_exists($id, 'id')) {
+                    $cacheIds[] = $id->id;
+                }
+            }
             $mediaRelations = self::$coreLocator->em()->getRepository($metadata->targetEntity)
                 ->createQueryBuilder('mr')
                 ->innerJoin('mr.media', 'm')
@@ -174,7 +185,7 @@ final class MediasModel extends BaseModel
                 ->orderBy('mr.locale', 'ASC')
                 ->addOrderBy('mr.position', 'ASC')
                 ->getQuery()
-                ->enableResultCache(3600, 'medias_'.md5(get_class($entity).'_'.implode('_', $ids).'_'.self::$coreLocator->locale()))
+                ->enableResultCache(3600, 'medias_'.md5(get_class($entity).'_'.implode('_', $cacheIds).'_'.self::$coreLocator->locale()))
                 ->getResult();
             $getter = 'get'.ucfirst($metadata->mappedBy);
             self::$cache['medias'][get_class($entity)] = [];
@@ -184,7 +195,7 @@ final class MediasModel extends BaseModel
                 }
             }
         }
-        $medias = !empty(self::$cache['medias'][get_class($entity)][$entity->getId()]) ? self::$cache['medias'][get_class($entity)][$entity->getId()] : [];
+        $medias = !empty(self::$cache['medias'][get_class($entity)][$entityId]) ? self::$cache['medias'][get_class($entity)][$entityId] : [];
 
         return self::fromEntity($entity, $coreLocator, self::$coreLocator->locale(), false, ['medias' => $medias]);
     }

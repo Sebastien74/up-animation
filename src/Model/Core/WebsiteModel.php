@@ -53,7 +53,7 @@ final class WebsiteModel extends BaseModel
         public readonly ?string $logo = null,
         public readonly ?string $footerLogo = null,
         public readonly ?string $emailLogo = null,
-        public readonly ?object $networks = null,
+        public readonly ?array $networks = null,
         public readonly ?array $addresses = null,
         public readonly ?array $phones = null,
         public readonly ?array $emails = null,
