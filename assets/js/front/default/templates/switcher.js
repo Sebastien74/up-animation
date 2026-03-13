@@ -1,6 +1,3 @@
-/** Import CSS */
-import '../../../../scss/front/default/templates/switcher.scss';
-
 /** Import JS */
 
 import Choices from "choices.js";

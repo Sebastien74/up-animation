@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Front - Light Theme Variables
+------------------------------------------------------------------ */
+
+@import '../variables';
+
+/*-- a - Color --*/
+
+$white: #fff !global;
+$black: #000 !global;
+
+$gray-100: #f8f9fa !global;
+$gray-200: #f9f9f9 !global;
+$gray-300: #f2f2f2 !global;
+$gray-400: #d7d7d7 !global;
+$gray-500: #adadad !global;
+$gray-600: #6c757d !global;
+$gray-700: #333333 !global;
+$gray-800: #2c2c2c !global;
+$gray-900: #222222 !global;
+
+$primary: #ff7100 !global;
+$primary-darken: darken($primary, 5%) !global;
+$secondary: #68312c !global;
+$success: #5d7808 !global;
+$info: #0081ac !global;
+$warning: #f0ad4e !global;
+$danger: #a82835 !global;
+$danger-light: #ee9da5 !global;
+$light: $gray-300 !global;
+$lighten: $gray-200 !global;
+$dark: $gray-900 !global;
+$dark-lighten: $gray-800 !global;
+
+$body-bg: $white !global;
+$body-color: $dark !global;
+
+/*-- b - Variables --*/
+
+:root {
+    --body-bg: #{$white};
+    --body-color: #{$dark};
+    --main-navigation-bg: #{$white};
+    --footer-bg: #{$gray-900};
+    --footer-color: #{$white};
+}

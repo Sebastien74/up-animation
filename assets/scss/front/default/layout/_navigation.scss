@@ -98,7 +98,7 @@ body.menu-open {
 
 #main-navigation {
 
-    background-color: $white;
+    background-color: var(--main-navigation-bg, #{$white});
     z-index: 3000;
 
     * {

@@ -234,6 +234,26 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
+     * To get FRONT_THEME.
+     */
+    public function frontTheme(): string
+    {
+        $request = $this->request();
+        $theme = $request->cookies->get('FRONT_THEME');
+
+        if (!$theme) {
+            $session = $request->hasSession() ? $request->getSession() : null;
+            $theme = $session?->get('FRONT_THEME');
+        }
+
+        if ($theme !== 'light' && $theme !== 'dark') {
+            $theme = 'light';
+        }
+
+        return $theme;
+    }
+
+    /**
      * To check if the url is in admin render.
      */
     public function inAdmin(): bool

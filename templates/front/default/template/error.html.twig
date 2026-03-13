@@ -2,6 +2,11 @@
 
 {%- set displaySitemap = false -%}
 {%- set websiteTemplate = websiteTemplate is defined and websiteTemplate ? websiteTemplate : website().configuration.template -%}
+{%- set frontTheme = frontTheme() -%}
+
+{%- block stylesheets -%}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-error-'~frontTheme, null, webpack) }}
+{%- endblock -%}
 
 <div id="content-exception" class="template-page col-lg-12">
     {%- if app.request.session.get('alert_error') -%}

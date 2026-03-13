@@ -58,6 +58,11 @@
 
     <head>
 
+        {%- set frontTheme = frontTheme() -%}
+        <script nonce="{{ csp_nonce() }}">
+            document.documentElement.setAttribute('data-theme', '{{ frontTheme }}');
+        </script>
+
         {%- if matomoUrl -%}
             <link rel="preconnect" href="{{ matomoUrl }}" crossorigin>
             <link rel="dns-prefetch" href="{{ matomoUrl }}">
@@ -149,7 +154,7 @@
 
         <!-- Stylesheets -->
         {{ encore_entry_link_tags('front-'~websiteTemplate~'-vendor-mobile', null, webpack, {media: 'screen and (max-width: 575px)', nonce: csp_nonce()}) }}
-        {{ encore_entry_link_tags('front-'~websiteTemplate~'-vendor-desktop', null, webpack, {media: 'screen and (min-width: 576px)', nonce: csp_nonce()}) }}
+        {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~frontTheme, null, webpack, {media: 'screen and (min-width: 576px)', nonce: csp_nonce()}) }}
         {%- if axeptioExternal or axeptioId -%}
             <link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-gdpr.css', webpack) }}" rel="preload" as="style" nonce="{{ csp_nonce() }}" onload="this.onload=null;this.rel='stylesheet'">
             <noscript><link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-gdpr.css', webpack) }}" rel="stylesheet" nonce="{{ csp_nonce() }}"></noscript>
@@ -267,6 +272,16 @@
             {%- if app.session.get('as_switch_user') -%}
                 {%- include 'core/switcher-modal.html.twig' with {website: website} only -%}
             {%- endif -%}
+
+            {%- set isDarkTheme = frontTheme() == 'dark' -%}
+            {%- set themeParam = isDarkTheme ? 'front_light_theme' : 'front_dark_theme' -%}
+            <div class="dark-mode-switch ms-3 d-flex align-items-center">
+                <a class="btn btn-link nav-link p-0"
+                   href="{{ replaceRequestParam(themeParam, 1) }}"
+                   aria-label="{{ 'Changer de thème'|trans }}">ssssssssssssssss
+                    <i class="fas fa-{{ isDarkTheme ? 'sun' : 'moon' }}"></i>
+                </a>
+            </div>
 
             <main id="body-page" role="main" class="position-relative{% if pageClass %} {{ pageClass }}{% endif %}" {% if bgImgStyle %} style="{{ bgImgStyle }}" {% endif %}>
                 {%- block body -%}{%- endblock -%}

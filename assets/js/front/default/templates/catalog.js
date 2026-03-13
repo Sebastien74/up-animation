@@ -1,6 +1,3 @@
-/** Import CSS */
-import '../../../../scss/front/default/templates/catalog.scss';
-
 /** Import JS */
 import {isInViewport} from "../functions";
 import "../components/remove-empty-blocks";

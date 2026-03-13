@@ -499,6 +499,14 @@ readonly class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
+     * To get FRONT_THEME.
+     */
+    public function frontTheme(): string
+    {
+        return $this->coreLocator->frontTheme();
+    }
+
+    /**
      * Get current Request Client IP.
      */
     public function currentIP(): ?string

@@ -1,6 +1,3 @@
-/** Import CSS */
-import '../../../../scss/front/default/templates/security-back.scss';
-
 /** Import JS */
 
 const form = document.querySelector('form');

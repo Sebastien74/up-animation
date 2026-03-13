@@ -49,6 +49,8 @@ interface CoreLocatorInterface
     public function locale(): ?string;
     
     public function adminTheme(): string;
+    
+    public function frontTheme(): string;
 
     public function inFront(): bool;
 

@@ -170,6 +170,24 @@ class RequestListener
      */
     private function frontRequest(): void
     {
+        if ($this->request->query->has('front_light_theme') || $this->request->query->has('front_dark_theme')) {
+
+            $status = $this->request->query->has('front_dark_theme') ? 'dark' : 'light';
+            $expire = new \DateTimeImmutable('+1 year');
+            $this->session?->set('FRONT_THEME', $status);
+
+            $query = $this->request->query->all();
+            unset($query['front_light_theme'], $query['front_dark_theme']);
+
+            $baseUrl = $this->request->getSchemeAndHttpHost() . $this->request->getBaseUrl() . $this->request->getPathInfo();
+            $redirectUrl = $query ? $baseUrl . '?' . http_build_query($query) : $baseUrl;
+
+            $response = new RedirectResponse($redirectUrl);
+            $response->headers->setCookie(Cookie::create('FRONT_THEME', $status, $expire, '/', null, false, true, false, 'lax'));
+            $this->event->setResponse($response);
+            return;
+        }
+
         $asAccessibility = $this->request->query->get('user_accessibility') || $this->request->query->get('user_accessibility_initial');
         if ($asAccessibility) {
             $status = true === (bool)$this->request->query->get('user_accessibility') ? '1' : '0';

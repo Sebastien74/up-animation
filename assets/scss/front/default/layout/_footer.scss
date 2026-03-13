@@ -36,8 +36,8 @@
 
 .footer {
 
-    background: $gray-700;
-    color: $white;
+    background-color: var(--footer-bg, #{$gray-700});
+    color: var(--footer-color, #{$white});
 
     /*-----------------------------------
        3 ) Contact
