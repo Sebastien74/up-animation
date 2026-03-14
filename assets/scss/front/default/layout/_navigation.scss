@@ -25,7 +25,7 @@
 
     max-height: 200px;
     overflow: hidden;
-    transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), padding 0.8s cubic-bezier(0.4, 0, 0.2, 1), margin 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: max-height 0.8s $transition-base-timing, transform 0.8s $transition-base-timing, opacity 0.8s $transition-base-timing, padding 0.8s $transition-base-timing, margin 0.8s $transition-base-timing;
     will-change: max-height, transform, opacity, padding, margin;
 
     .schedule, .socials-list {
@@ -492,7 +492,7 @@ body.menu-open {
         display: inline-block;
         position: relative;
         transform: rotate(0deg);
-        transition: $transition-slow;
+        transition: all $transition-slow;
 
         span {
 
@@ -504,7 +504,7 @@ body.menu-open {
             opacity: 1;
             left: 0;
             transform: rotate(0deg);
-            transition: $transition-fast;
+            transition: all $transition-fast;
 
             &:nth-child(1) {
                 top: 0;
@@ -626,7 +626,7 @@ body.menu-open {
 
                 &.show {
                     clip-path: circle(141.4% at 0 0);
-                    transition: all .6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                    transition: all $transition-slow !important;
                 }
             }
 

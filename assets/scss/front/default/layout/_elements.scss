@@ -264,8 +264,8 @@ sup {
 
         @each $code, $config in $font-sizes-app {
             .fz-#{$code} li::before {
-                @if (map-get($config, 'bulllet-top') == true) {
-                    top: map-get($config, "bulllet-top") !important;
+                @if (map-get($config, 'bullet-top') == true) {
+                    top: map-get($config, "bullet-top") !important;
                 }
             }
         }

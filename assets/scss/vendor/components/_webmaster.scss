@@ -29,7 +29,7 @@ $enable-dropdown: true;
    2 ) Webmaster buttons toolbar
 -----------------------------------*/
 
-$primary: #24252e;
+$primary: #6f42c1;
 $primary-darken: shade-color($primary, 20%);
 $success: #01796f;
 $danger: #a82835;
@@ -37,7 +37,7 @@ $white: #fff;
 $black: #000;
 $icon-color: transparentize($white, .2);
 $lg: 992px !default;
-$transition-base-timing: cubic-bezier(0.4, 0, 0.2, 1) !default;
+$transition-base-timing: cubic-bezier(0.65, 0, 0.35, 1) !default;
 
 html body {
 

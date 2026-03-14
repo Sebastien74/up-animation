@@ -18,15 +18,16 @@
         b - Container
         c - Fonts
         d - Fonts sizes
-        e - Elements
-        f - Main
-        g - Border radius
-        h - Title header
-        i - Breadcrumb
-        j - Margins
-        k - Icon sizes
-        l - App
-        m - Pagination
+        e - Transitions
+        f - Elements
+        g - Main
+        h - Border radius
+        i - Title header
+        j - Breadcrumb
+        k - Margins
+        l - Icon sizes
+        m - App
+        n - Pagination
     5 ) Buttons
     6 ) Cards
     7 ) Forms
@@ -39,12 +40,6 @@
 ----------------------------------------------*/
 
 /*-- a - Gdpr --*/
-
-$transition-base: all .4s cubic-bezier(0.65, 0, 0.35, 1) !default;
-$transition-fast: all .2s cubic-bezier(0.65, 0, 0.35, 1) !default;
-$transition-slow: all .6s cubic-bezier(0.65, 0, 0.35, 1) !default;
-
-$btn-transition: $transition-base !default;
 
 $enable-gdpr-axeptio: true !default;
 $enable-gdpr-cms: false !default;
@@ -241,12 +236,12 @@ $font-size-card-title: rem(35px);
 $font-size-small: 80%;
 
 $font-sizes-app: (
-    'xs': ('rfs': true, 'size': 16px, 'line-height': normal, 'bulllet-top': 10px),
-    'sm': ('rfs': true, 'size': 32px, 'line-height': normal, 'bulllet-top': 10px),
-    'md': ('rfs': true, 'size': 48px, 'line-height': normal, 'bulllet-top': 10px),
-    'lg': ('rfs': true, 'size': 64px, 'line-height': normal, 'bulllet-top': 10px),
-    'xl': ('rfs': true, 'size': 80px, 'line-height': normal, 'bulllet-top': 10px),
-    'xxl': ('rfs': true, 'size': 98px, 'line-height': normal, 'bulllet-top': 10px),
+    'xs': ('rfs': true, 'size': 16px, 'line-height': normal, 'bullet-top': 10px),
+    'sm': ('rfs': true, 'size': 32px, 'line-height': normal, 'bullet-top': 10px),
+    'md': ('rfs': true, 'size': 48px, 'line-height': normal, 'bullet-top': 10px),
+    'lg': ('rfs': true, 'size': 64px, 'line-height': normal, 'bullet-top': 10px),
+    'xl': ('rfs': true, 'size': 80px, 'line-height': normal, 'bullet-top': 10px),
+    'xxl': ('rfs': true, 'size': 98px, 'line-height': normal, 'bullet-top': 10px),
 );
 
 $font-sizes-config: (
@@ -265,7 +260,16 @@ $font-sizes-config: (
     'p, .body, a.link, a.link svg, address span, .open-gdpr-modal.link, .body a, .introduction a, a.phone-link, a.email-link': ('rfs': true, 'size': $font-size-paragraph),
 );
 
-/*-- e - Elements --*/
+/*-- e - Transitions --*/
+
+$transition-base-timing: cubic-bezier(0.65, 0, 0.35, 1) !default;
+$transition-base: .4s $transition-base-timing !default;
+$transition-fast: .2s $transition-base-timing !default;
+$transition-slow: .6s $transition-base-timing !default;
+
+$btn-transition: $transition-base !default;
+
+/*-- f - Elements --*/
 
 $elements: () !default;
 $elements: map-merge((
@@ -466,7 +470,7 @@ $elements: map-merge((
     'a.link, a.link span, a.link svg, .open-gdpr-modal.link, .body a, .introduction a, a.phone-link, a.email-link': (
         'properties': (
             'color': $primary,
-            'transition': $transition-base,
+            'transition': all $transition-base,
         ),
         'colors-in-backgrounds': (
             'primary': $white,
@@ -486,7 +490,7 @@ $elements: map-merge((
     'a:hover, a:hover .title, a:hover span, a.link:hover, a.link:hover span': (
         'properties': (
             'color': $primary,
-            'transition': $transition-base,
+            'transition': all $transition-base,
         ),
         'colors-in-backgrounds': (
             'primary': $white,
@@ -746,13 +750,13 @@ $elements: map-merge((
     )
 ), $elements);
 
-/*-- f - Main --*/
+/*-- g - Main --*/
 
 $content-page-full-width: 2000px;
 $content-page-box-width: 1600px;
 $enable-caret: false;
 
-/*-- g - Border radius --*/
+/*-- h - Border radius --*/
 
 $border-radius: 1.3rem !default;
 $border-radius-small: .25rem;
@@ -761,7 +765,7 @@ $border-radius-large: 80px;
 $border-radius-lg: $border-radius;
 $border-radius-sm: $border-radius;
 
-/*-- h - Title header --*/
+/*-- i - Title header --*/
 
 $title-header-padding: 6rem;
 $title-header-color: $white;
@@ -769,7 +773,7 @@ $title-header-font-size: rem(90px);
 $title-header-sub-font-size: rem(31px);
 $title-header-sub-color: $dark;
 
-/*-- i - Breadcrumb --*/
+/*-- j - Breadcrumb --*/
 
 $breadcrumb-padding-x: 0;
 $breadcrumb-padding-y: 1rem;
@@ -783,7 +787,7 @@ $breadcrumb-divider-color: $white;
 $breadcrumb-font-size: rem(15px);
 $breadcrumb-divider-font-size: rem(7px);
 
-/*-- j - Margins ( first key is mediaQuery breakpoint) --*/
+/*-- k - Margins ( first key is mediaQuery breakpoint) --*/
 
 @function strip-unit($value) {
     @return $value / ($value * 0 + 1);
@@ -876,7 +880,7 @@ $marginsScreens: (
 $margins: convert-margins-to-ratio($margins, $base-rem);
 $marginsScreens: convert-margins-to-ratio($marginsScreens, $base-rem);
 
-/*-- k - Icon sizes --*/
+/*-- l - Icon sizes --*/
 
 $icon-sizes: (
     'xs': #{$browser-context}px,
@@ -887,11 +891,11 @@ $icon-sizes: (
     'xxl': #{$browser-context * 6}px,
 );
 
-/*-- l - App --*/
+/*-- m - App --*/
 
 $orders-limit: 30;
 
-/*-- m - Pagination --*/
+/*-- n - Pagination --*/
 
 $pagination-padding-y: .375rem !default;
 $pagination-padding-x: .75rem !default;

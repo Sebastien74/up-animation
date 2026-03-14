@@ -91,10 +91,10 @@ $card-icon-size: 38px !default;
 $card-icon-radius: 14px !default;
 $card-icon-bg: rgba($primary, 0.22) !default;
 $card-icon-border: rgba($primary, 0.55) !default;
-$transition-base-timing: cubic-bezier(0.4, 0, 0.2, 1) !default;
-$transition-base: all .3s $transition-base-timing !default;
-$transition-fast: all .15s $transition-base-timing !default;
-$transition-slow: all .5s $transition-base-timing !default;
+$transition-base-timing: cubic-bezier(0.65, 0, 0.35, 1) !default;
+$transition-base: .3s $transition-base-timing !default;
+$transition-fast: .15s $transition-base-timing !default;
+$transition-slow: .5s $transition-base-timing !default;
 
 /*-----------------------------------
    4 ) Elements
