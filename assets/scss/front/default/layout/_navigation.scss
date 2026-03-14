@@ -22,6 +22,12 @@
 -----------------------------------*/
 
 #top-navigation {
+
+    max-height: 200px;
+    overflow: hidden;
+    transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), padding 0.8s cubic-bezier(0.4, 0, 0.2, 1), margin 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: max-height, transform, opacity, padding, margin;
+
     .schedule, .socials-list {
         i {
             font-size: 25px;
@@ -29,10 +35,16 @@
     }
 }
 
-body.menu-as-scroll {
-    #top-navigation {
-        display: none !important;
-    }
+body.menu-as-scroll #top-navigation,
+body.menu-as-animation #top-navigation {
+    max-height: 0;
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 /*-----------------------------------

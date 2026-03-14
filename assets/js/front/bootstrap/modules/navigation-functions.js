@@ -68,6 +68,17 @@ export function scrollEvent(nav) {
     if (position.y >= scrollLimit) {
         nav.classList.add('as-scroll');
         body.classList.add('menu-as-scroll');
+    } else if (position.y >= scrollLimitAnimation) {
+        nav.classList.add('as-animation');
+        menuContainer.classList.add('as-animation');
+        body.classList.add('menu-as-animation');
+    }
+
+    // On force un reflow pour s'assurer que l'animation se lance bien au chargement
+    // si l'élément est déjà censé être caché par une classe ajoutée dynamiquement.
+    const topNav = document.querySelector('#top-navigation');
+    if (topNav) {
+        topNav.style.display = 'flex'; // S'assurer qu'il est bien affiché pour être animé
     }
 
     let scrollPosition = 0;
