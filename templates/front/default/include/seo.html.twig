@@ -5,8 +5,8 @@
 {%- if seo -%}
 
     <title>
-        {%- if not seoActive -%}[{{ 'SEO Désactivé'|trans|raw }}] {%- endif -%}
-        {%- if seoTitle is defined and seoTitle -%}{{ seoTitle|htmlEntities }}{% elseif seo.fullTitle is defined and seo.fullTitle %}{{ seo.fullTitle|htmlEntities }}{%- endif -%}
+        {% if not seoActive %}[{{ 'SEO Désactivé'|trans|raw }}] {% endif-%}
+        {% if seoTitle is defined and seoTitle %}{{ seoTitle|htmlEntities }}{% elseif seo.fullTitle is defined and seo.fullTitle %}{{ seo.fullTitle|htmlEntities }}{% endif %}
     </title>
 
     {%- if seo.description is defined and seo.description -%}

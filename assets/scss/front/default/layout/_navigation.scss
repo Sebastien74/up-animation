@@ -59,7 +59,7 @@ body.menu-as-scroll {
             height: 100%;
             display: none;
             opacity: 0;
-            transition: opacity .3s ease-in-out;
+            transition: opacity .5s ease-in-out;
             will-change: opacity;
         }
     }
@@ -136,7 +136,7 @@ body.menu-open {
 
             opacity: .3;
             font-size: 28px;
-            transition: opacity .3s ease-in-out;
+            transition: opacity .5s ease-in-out;
 
             &.close-menu-level-1 {
                 top: 1.5rem;
@@ -145,7 +145,7 @@ body.menu-open {
 
             &:hover {
                 opacity: 1;
-                transition: opacity .3s ease-in-out;
+                transition: opacity .5s ease-in-out;
             }
         }
     }
@@ -185,13 +185,13 @@ body.menu-open {
 
     &:not(.as-scroll) {
 
-        transition: margin-top .3s ease-in-out;
+        transition: margin-top .5s ease-in-out;
 
         .navbar-brand {
 
             svg, img {
 
-                transition: max-height .3s ease-in-out;
+                transition: max-height .5s ease-in-out;
 
                 @include mediaQuery(max-lg) {
                     max-height: 75px;
@@ -210,7 +210,7 @@ body.menu-open {
 
     &.as-scroll {
 
-        transition: margin-top .3s ease-in-out;
+        transition: margin-top .5s ease-in-out;
 
         @include mediaQuery(max-lg) {
             height: 60px;
@@ -226,7 +226,7 @@ body.menu-open {
 
             svg, img {
 
-                transition: max-height .3s ease-in-out;
+                transition: max-height .5s ease-in-out;
 
                 @include mediaQuery(max-sm) {
                     max-height: 30px;
@@ -261,10 +261,10 @@ body.menu-open {
 
         .link-level-1, #locales-switcher {
 
-            transition: color .3s ease-in-out;
+            transition: color .5s ease-in-out;
 
             &:hover {
-                transition: color .3s ease-in-out;
+                transition: color .5s ease-in-out;
                 color: $primary !important;
             }
         }
@@ -278,7 +278,7 @@ body.menu-open {
     #main-navigation-nav.not-expanded {
         &.show {
             left: 0;
-            transition: left .3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: left .5s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             will-change: left;
@@ -295,12 +295,12 @@ body.menu-open {
             left: -100%;
             top: 0;
             height: 100dvh;
-            transition: left .3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: left .5s cubic-bezier(0.4, 0, 0.2, 1);
             will-change: left;
 
             &.show:not(.not-expanded) {
                 left: 0;
-                transition: left .3s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: left .5s cubic-bezier(0.4, 0, 0.2, 1);
                 display: flex;
                 flex-direction: column;
             }
@@ -328,7 +328,7 @@ body.menu-open {
 
         @include mediaQuery(min-lg) {
             &.submenu-level-1 {
-                transition: left .3s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: left .5s cubic-bezier(0.4, 0, 0.2, 1);
             }
         }
 
@@ -404,7 +404,7 @@ body.menu-open {
 
             @include mediaQuery(min-lg) {
                 &.submenu-level-1 {
-                    transition: left .3s cubic-bezier(0.4, 0, 0.2, 1);
+                    transition: left .5s cubic-bezier(0.4, 0, 0.2, 1);
                 }
             }
         }
@@ -581,7 +581,7 @@ body.menu-open {
                 left: 0;
                 background-color: $white;
                 clip-path: circle(0% at 0 0);
-                transition: all .5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                transition: all .6s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 display: inline-flex;
                 flex-direction: column !important;
                 align-items: center;
@@ -614,7 +614,7 @@ body.menu-open {
 
                 &.show {
                     clip-path: circle(141.4% at 0 0);
-                    transition: all .5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                    transition: all .6s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 }
             }
 

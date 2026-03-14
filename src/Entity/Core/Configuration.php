@@ -84,6 +84,9 @@ class Configuration extends BaseEntity
     private bool $fullWidth = true;
 
     #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $darkTheme = false;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $onlineStatus = true;
 
     #[ORM\Column(type: Types::BOOLEAN)]
@@ -334,6 +337,18 @@ class Configuration extends BaseEntity
     public function setFullWidth(bool $fullWidth): static
     {
         $this->fullWidth = $fullWidth;
+
+        return $this;
+    }
+
+    public function isDarkTheme(): ?bool
+    {
+        return $this->darkTheme;
+    }
+
+    public function setDarkTheme(bool $darkTheme): static
+    {
+        $this->darkTheme = $darkTheme;
 
         return $this;
     }

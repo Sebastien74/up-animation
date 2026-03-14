@@ -22,21 +22,44 @@ $gray-700: #2a2a2a !global;
 $gray-800: #1e1e1e !global;
 $gray-900: #121212 !global;
 
-$primary: #ff7100 !global;
+$primary: #ff8b33 !global; // Plus lumineux pour le contraste sur sombre
 $primary-darken: darken($primary, 5%) !global;
 $secondary: #a0524d !global;
-$success: #5d7808 !global;
-$info: #0081ac !global;
-$warning: #f0ad4e !global;
-$danger: #a82835 !global;
-$danger-light: #ee9da5 !global;
+$success: #8db014 !global; // Plus clair
+$info: #33a6cc !global; // Plus clair
+$warning: #f4c382 !global; // Plus clair
+$danger: #c74d5a !global; // Plus clair
+$danger-light: #f4babb !global; // Plus clair
 $light: $gray-300 !global;
 $lighten: $gray-200 !global;
 $dark: $gray-900 !global;
 $dark-lighten: $gray-800 !global;
+$focus-color: #ff9800 !global;
 
 $body-bg: #121212 !global;
 $body-color: #e0e0e0 !global;
+
+$footer-bg: $gray-900 !global;
+$footer-color: $body-color !global;
+$footer-contact-bg: $gray-700 !global;
+$footer-main-bg: $gray-800 !global;
+$footer-bottom-bg: #000 !global;
+
+$bullet-list-color: $primary !global;
+
+$theme-colors: (
+    'primary': $primary,
+    'primary-darken': $primary-darken,
+    'success': $success,
+    'danger': $danger,
+    'light': $light,
+    'lighten': $lighten,
+    'dark': $dark,
+    'dark-lighten': $dark-lighten,
+    'black': $black,
+    'white': $white,
+    'muted': $gray-500,
+) !global;
 
 /*-- b - Footer --*/
 
@@ -46,20 +69,40 @@ $footer-contact-bg: $gray-700 !global;
 $footer-main-bg: $gray-800 !global;
 $footer-bottom-bg: #000 !global;
 
+$title-header-color: $white !global;
+$title-header-sub-color: $body-color !global;
+
+$breadcrumb-muted-color: $gray-500 !global;
+$breadcrumb-active-color: $white !global;
+$breadcrumb-divider-color: $gray-500 !global;
+
 /*-- b - Forms --*/
 
 $shadow-color: #000 !global;
 $input-label-color: $primary !global;
-$input-background: $gray-200 !global;
-$input-color: $gray-900 !global;
-$input-border-color: $primary !global;
-$placeholder-color: $gray-600 !global;
+$input-background: $gray-100 !global;
+$input-color: $body-color !global;
+$input-border-color: $gray-300 !global;
+$input-focus-bg: $gray-200 !global;
+$input-focus-border-color: $primary !global;
+$input-focus-color: $white !global;
+$input-placeholder-color: $gray-500 !global;
+$input-plaintext-color: $body-color !global;
+
+$placeholder-color: $gray-500 !global;
 $form-file-button-bg: $primary !global;
 $form-file-button-color: $white !global;
 $form-file-button-hover-bg: $white !global;
 $form-file-button-hover-color: $primary !global;
 
 /*-- c - Buttons --*/
+
+$btn-border-radius: $border-radius !global;
+$btn-border-radius-sm: $border-radius-sm !global;
+$btn-border-radius-lg: $border-radius-lg !global;
+
+$btn-focus-width: .2rem !global;
+$btn-focus-box-shadow: 0 0 0 $btn-focus-width rgba($primary, .25) !global;
 
 $buttons: (
     'primary': (
@@ -202,6 +245,14 @@ $buttons: (
     ),
 ) !global;
 
+/*-- d - Cards --*/
+
+$card-bg: $gray-800 !global;
+$card-color: $body-color !global;
+$card-border-color: $gray-700 !global;
+$card-cap-bg: $gray-800 !global;
+$card-cap-color: $body-color !global;
+
 /*-- d - Alerts --*/
 
 $alert-colors: (
@@ -230,15 +281,15 @@ $elements: (
         'colors-in-backgrounds': (
             'primary': $white,
             'secondary': $white,
-            'success': $body-color,
+            'success': $white,
             'info': $white,
-            'warning': $body-color,
+            'warning': $black,
             'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
+            'danger-light': $black,
+            'light': $black,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $body-color,
+            'white': $black,
         )
     ),
     'h2, h2 a, .h2, .h2 a': (
@@ -250,15 +301,15 @@ $elements: (
         'colors-in-backgrounds': (
             'primary': $white,
             'secondary': $white,
-            'success': $body-color,
+            'success': $white,
             'info': $white,
-            'warning': $body-color,
+            'warning': $black,
             'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
+            'danger-light': $black,
+            'light': $black,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $body-color,
+            'white': $black,
         )
     ),
     'h2 span, .h2 span': (
@@ -289,15 +340,15 @@ $elements: (
         'colors-in-backgrounds': (
             'primary': $white,
             'secondary': $white,
-            'success': $body-color,
+            'success': $white,
             'info': $white,
-            'warning': $body-color,
+            'warning': $black,
             'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
+            'danger-light': $black,
+            'light': $black,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $body-color,
+            'white': $black,
         )
     ),
     'h4, h4 a, .h4, .h4 a': (
@@ -309,15 +360,15 @@ $elements: (
         'colors-in-backgrounds': (
             'primary': $white,
             'secondary': $white,
-            'success': $body-color,
+            'success': $white,
             'info': $white,
-            'warning': $body-color,
+            'warning': $black,
             'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
+            'danger-light': $black,
+            'light': $black,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $body-color,
+            'white': $black,
         )
     ),
     'h5, h5 a, .h5, .h5 a': (
@@ -329,15 +380,15 @@ $elements: (
         'colors-in-backgrounds': (
             'primary': $white,
             'secondary': $white,
-            'success': $body-color,
+            'success': $white,
             'info': $white,
-            'warning': $body-color,
+            'warning': $black,
             'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
+            'danger-light': $black,
+            'light': $black,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $body-color,
+            'white': $black,
         )
     ),
     'h6, h6 a, .h6, .h6 a': (
@@ -349,15 +400,15 @@ $elements: (
         'colors-in-backgrounds': (
             'primary': $white,
             'secondary': $white,
-            'success': $body-color,
+            'success': $white,
             'info': $white,
-            'warning': $body-color,
-            'danger': $body-color,
-            'danger-light': $body-color,
-            'light': $body-color,
+            'warning': $black,
+            'danger': $white,
+            'danger-light': $black,
+            'light': $black,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $body-color,
+            'white': $black,
         )
     ),
     '.sub-title': (
@@ -368,15 +419,15 @@ $elements: (
         'colors-in-backgrounds': (
             'primary': $white,
             'secondary': $white,
-            'success': $body-color,
+            'success': $white,
             'info': $white,
-            'warning': $body-color,
+            'warning': $black,
             'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
+            'danger-light': $black,
+            'light': $black,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $body-color,
+            'white': $black,
         )
     ),
     'p': (
@@ -386,15 +437,15 @@ $elements: (
         'colors-in-backgrounds': (
             'primary': $white,
             'secondary': $white,
-            'success': $body-color,
+            'success': $white,
             'info': $white,
-            'warning': $body-color,
+            'warning': $black,
             'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
+            'danger-light': $black,
+            'light': $black,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $body-color,
+            'white': $black,
         )
     ),
     '.body, p': (
@@ -404,15 +455,15 @@ $elements: (
         'colors-in-backgrounds': (
             'primary': $white,
             'secondary': $white,
-            'success': $body-color,
+            'success': $white,
             'info': $white,
-            'warning': $body-color,
+            'warning': $black,
             'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
+            'danger-light': $black,
+            'light': $black,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $body-color,
+            'white': $black,
         )
     ),
     'a.link, a.link span, a.link svg, .open-gdpr-modal.link, .body a, .introduction a, a.phone-link, a.email-link': (
@@ -472,15 +523,15 @@ $elements: (
         'colors-in-backgrounds': (
             'primary': $white,
             'secondary': $white,
-            'success': $body-color,
+            'success': $white,
             'info': $white,
-            'warning': $body-color,
+            'warning': $black,
             'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
+            'danger-light': $black,
+            'light': $black,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $body-color,
+            'white': $black,
         )
     ),
     'form .form-text': (
@@ -706,8 +757,4 @@ $elements: (
     --main-navigation-bg: #1e1e1e;
     --footer-bg: #000000;
     --footer-color: #e0e0e0;
-}
-
-.dark-mode-switch a {
-    color: #ff9800 !important; // Couleur soleil
 }

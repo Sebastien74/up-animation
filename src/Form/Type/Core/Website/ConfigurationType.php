@@ -85,6 +85,7 @@ class ConfigurationType extends AbstractType
             ]);
 
             $builder->add('onlineStatus', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('En ligne', [], 'admin'),
                 'display' => 'switch',
                 'row_attr' => ['class' => 'col-12 mb-1'],
@@ -92,58 +93,75 @@ class ConfigurationType extends AbstractType
             ]);
 
             $builder->add('asDefault', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('Site principal', [], 'admin'),
                 'display' => 'switch',
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('fullWidth', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('Plein écran', [], 'admin'),
                 'display' => 'switch',
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
+            $builder->add('darkTheme', Type\CheckboxType::class, [
+                'required' => false,
+                'label' => $this->translator->trans('Thème sombre', [], 'admin'),
+                'display' => 'switch',
+                'row_attr' => ['class' => 'col-12 mb-1'],
+            ]);
+
             $builder->add('progressiveWebApp', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('Progressive Web App', [], 'admin'),
                 'display' => 'switch',
             ]);
 
             $builder->add('preloader', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('Preloader', [], 'admin'),
                 'display' => 'switch',
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('scrollTopBtn', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('Bouton de retour haut de page', [], 'admin'),
                 'display' => 'switch',
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('breadcrumb', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans("Activer les fils d'Ariane", [], 'admin'),
                 'display' => 'switch',
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('subNavigation', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('Activer les sous-navigations', [], 'admin'),
                 'display' => 'switch',
                 'row_attr' => ['class' => 'col-12 mb-1'],
             ]);
 
             $builder->add('seoStatus', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('Activer le référencement', [], 'admin'),
                 'display' => 'switch',
                 'help' => $this->translator->trans('A activer uniquement si le site est en production', [], 'admin'),
             ]);
 
             $builder->add('accessibilityStatus', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans("Activer le module d'accessibilité", [], 'admin'),
                 'display' => 'switch',
             ]);
 
             $builder->add('duplicateMediasStatus', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('Activer la duplication des médias', [], 'admin'),
                 'display' => 'switch',
 
@@ -151,6 +169,7 @@ class ConfigurationType extends AbstractType
             ]);
 
             $builder->add('mediasSecondary', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('Activer 2<sup>ème</sup> image au block média', [], 'admin'),
                 'display' => 'switch',
 
@@ -158,16 +177,19 @@ class ConfigurationType extends AbstractType
             ]);
 
             $builder->add('mediasCategoriesStatus', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('Activer les catégories de médias', [], 'admin'),
                 'display' => 'switch',
             ]);
 
             $builder->add('collapsedAdminTrees', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans("Empiler les arborescences d'administartion", [], 'admin'),
                 'display' => 'switch',
             ]);
 
             $builder->add('adminAdvertising', Type\CheckboxType::class, [
+                'required' => false,
                 'label' => $this->translator->trans('Activer la promotion des modules', [], 'admin'),
                 'display' => 'switch',
 

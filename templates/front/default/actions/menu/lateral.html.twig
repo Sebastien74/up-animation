@@ -165,7 +165,7 @@
         path: path('admin_menu_edit', {website: website.id, menu: id, entitylocale: app.request.locale})
     }) }}
     <header id="main-navigation" class="navbar navbar-expand-{{ expand }} flex-column px-0 py-0">
-        <div id="top-navigation" class="bg-primary py-3 position-relative w-100">
+        <div id="top-navigation" class="d-none d-lg-flex bg-primary py-3 position-relative w-100">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6">
@@ -254,7 +254,7 @@
                         </nav>
                     </div>
                 </div>
-                <div class="side d-flex align-items-center justify-content-end ms-auto ps-lg-4">
+                <div class="side d-flex align-items-center justify-content-end ms-auto ps-lg-4 gap-3">
                     {%- if haveLogin -%}
                         {%- include 'front/'~websiteTemplate~'/actions/menu/login-nav.html.twig' with {
                             website: website,
@@ -265,7 +265,9 @@
                     {%- endif -%}
                     {%- if phone -%}
                         <span class="d-lg-nones">
-                            <a href="tel: {{ phone.tagNumber }}" class="btn btn-circle rounded btn-primary" aria-label="{{"Téléphone"|trans|striptags }}"><i class="icon-phone-alt-solid"></i></a>
+                            <a href="tel: {{ phone.tagNumber }}" class="btn btn-circle btn-primary" aria-label="{{"Appelez-nous"|trans|striptags }}">
+                                <i class="icon-phone-alt-solid"></i>
+                            </a>
                         </span>
                     {%- endif -%}
                     {%- if contactPageUrl -%}
@@ -277,6 +279,15 @@
                             },
                             icon: 'headset',
                         } -%}
+                    {%- endif -%}
+                    {%- set isDarkTheme = frontTheme() == 'dark' -%}
+                    {%- set themeParam = isDarkTheme ? 'front_light_theme' : 'front_dark_theme' -%}
+                    {%- if configuration.darkTheme -%}
+                        <a class="btn btn-circle btn-primary"
+                           href="{{ replaceRequestParam(themeParam, 1) }}"
+                           aria-label="{{ 'Changer de thème'|trans }}">
+                            <i class="icon-{{ isDarkTheme ? 'sun' : 'moon' }}"></i>
+                        </a>
                     {%- endif -%}
                     {%- if multiLingues -%}
                         {{ render_esi(path('front_locales_switcher', {class: ''|url_encode, classname: currentClassname|url_encode, entityId: currentEntityId} )) }}

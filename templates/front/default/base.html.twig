@@ -273,16 +273,6 @@
                 {%- include 'core/switcher-modal.html.twig' with {website: website} only -%}
             {%- endif -%}
 
-            {%- set isDarkTheme = frontTheme() == 'dark' -%}
-            {%- set themeParam = isDarkTheme ? 'front_light_theme' : 'front_dark_theme' -%}
-            <div class="dark-mode-switch ms-3 d-flex align-items-center">
-                <a class="btn btn-link nav-link p-0"
-                   href="{{ replaceRequestParam(themeParam, 1) }}"
-                   aria-label="{{ 'Changer de thème'|trans }}">ssssssssssssssss
-                    <i class="fas fa-{{ isDarkTheme ? 'sun' : 'moon' }}"></i>
-                </a>
-            </div>
-
             <main id="body-page" role="main" class="position-relative{% if pageClass %} {{ pageClass }}{% endif %}" {% if bgImgStyle %} style="{{ bgImgStyle }}" {% endif %}>
                 {%- block body -%}{%- endblock -%}
                 {{ component('LastNews') }}
