@@ -173,13 +173,18 @@
                         {%- set labels = agencies|map(a =>
                             '<a href="' ~ a.url ~ '" class="text-white-50 text-hover-white fw-700">' ~ a.city ~ '</a> ' ~ a.zipcodeSmall
                         ) -%}
+                        {%- set agency_list -%}
+                            {%- for agency in labels -%}{{ agency|raw }}{% if not loop.last %}{% if loop.revindex0 == 1 %} {{ 'et'|trans }} {% else %}, {% endif %}{%- endif -%}{%- endfor -%}
+                        {%- endset -%}
                         <div class="col-12">
                             <hr class="sep mt-2 mb-4">
                             <p class="mb-0 small text-white-50 agencies-body">
-                                Découvrez <strong class="text-white-50 fw-600">Up Animations</strong> expert en
-                                animations événementielles dans les villes d’{%- for agency in labels -%}{{ agency|raw }}{% if not loop.last %}{% if loop.revindex0 == 1 %} et {% else %}, {% endif %}{%- endif -%}{%- endfor -%}
-                                . Nous saurons rendre vos événements originaux et conviviales. Magiciens professionnels,
-                                nous nous déplaçons pour vos spectacles de magie et animations en tout genre&nbsp;!
+                                {% trans with {'%agency_list%': agency_list|raw} %}
+                                    Découvrez <strong class="text-white-50 fw-600">Up Animations</strong> expert en
+                                    animations événementielles dans les villes d’%agency_list%
+                                    . Nous saurons rendre vos événements originaux et conviviales. Magiciens professionnels,
+                                    nous nous déplaçons pour vos spectacles de magie et animations en tout genre !
+                                {% endtrans %}
                             </p>
                         </div>
                     </div>

@@ -2,6 +2,15 @@ Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
 {%- if vars.webmaster is defined and granted('ROLE_ADMIN') -%} AJOUTER granted('ROLE_ADMIN')
 
+Mettre ces balises trans pour les long textes
+
+{% trans with {'%agency_list%': agency_list|raw} %}
+    Découvrez <strong class="text-white-50 fw-600">Up Animations</strong> expert en
+    animations événementielles dans les villes d’%agency_list%
+    . Nous saurons rendre vos événements originaux et conviviales. Magiciens professionnels,
+    nous nous déplaçons pour vos spectacles de magie et animations en tout genre !
+{% endtrans %}
+
 Slider marquee ajouter dans back bannière petite images, moyennes images et grandes images et faire le CSS pour les 3 tailles
 Et ajouter aussi data-speed="20" data-speed-mobile="20" etc
 

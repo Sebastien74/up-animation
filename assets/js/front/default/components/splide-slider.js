@@ -16,7 +16,6 @@ export default function (sliders) {
     import('@splidejs/splide').then(({Splide: Splide}) => {
 
         let imgSizes = function (slider) {
-            slider.querySelector('.splide__list').classList.add('d-flex');
             slider.querySelectorAll('.splide__slide').forEach(function (slide) {
                 slide.querySelectorAll('picture').forEach(function (picture) {
                     const hoverCard = picture.closest('.hover-card');
@@ -314,7 +313,6 @@ export default function (sliders) {
                             slider.setAttribute('style', 'opacity: 0;');
                             setTimeout(() => {
                                 let reinitSplide = init(slider, true);
-                                slider.querySelector('.splide__list').classList.remove('d-flex');
                                 slider.setAttribute('style', 'opacity: 1;');
                                 reinitSplide.go(newIndex);
                             }, 50);

@@ -432,6 +432,28 @@
 }
 
 .splide {
+    visibility: hidden;
+
+    &:not(.is-initialized) {
+        .splide__list {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            overflow: hidden !important;
+        }
+
+        .splide__slide {
+            flex: 0 0 auto !important;
+            width: 33.33% !important; // Fallback par défaut (3 items)
+
+            @include mediaQuery(max-md) {
+                width: 100% !important;
+            }
+
+            @include mediaQuery(max-lg) {
+                width: 50% !important;
+            }
+        }
+    }
 
     .pictogram-wrap {
 
