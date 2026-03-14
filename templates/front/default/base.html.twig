@@ -27,7 +27,7 @@
     {%- set information = website.information -%}
     {%- set infoIntl = information.intl -%}
     {%- set api = website.api is defined ? website.api : null -%}
-    {%- set companyName = infoIntl.title is defined and infoIntl.title ? infoIntl.title : "Up Animations!"|trans|raw -%}
+    {%- set companyName = infoIntl.title is defined and infoIntl.title ? infoIntl.title : "Up Animations!"|trans|striptags -%}
     {%- set urlId = seo.url.id is defined ? seo.url.id : null -%}
     {%- set bodyBg = configuration.backgroundColor is defined ? configuration.backgroundColor : null -%}
     {%- set pageBg = entity.backgroundColor is defined and entity.backgroundColor ? entity.backgroundColor : null -%}
@@ -210,7 +210,7 @@
         }) }}
 
         <noscript nonce="{{ csp_nonce() }}">
-            <div class="alert-no-script bg-primary py-3"><div class="container"><p class="mb-0 text-center fw-700">{{ "Activez JavaScript pour charger plus de contenu interactif."|trans|raw }}</p></div></div>
+            <div class="alert-no-script bg-primary py-3"><div class="container"><p class="mb-0 text-center fw-700">{{ "Activez JavaScript pour charger plus de contenu interactif."|trans|striptags }}</p></div></div>
             {{ encore_entry_link_tags('front-'~websiteTemplate~'-noscript', null, webpack) }}
         </noscript>
 

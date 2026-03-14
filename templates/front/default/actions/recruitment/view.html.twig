@@ -109,29 +109,29 @@
             <div id="job-content" class="col-lg-6 col-xxl-5">
                 <div id="job-info" class="px-3">
                     {%- if entity.contract.title -%}
-                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Type de contrat :"|trans|raw }}</strong> {{ entity.contract.title|raw }}</p>
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Type de contrat :"|trans|striptags }}</strong> {{ entity.contract.title|raw }}</p>
                     {%- endif -%}
                     {%- if entity.date -%}
                         {%- set date = entity.date|isDateTime ? entity.date|format_datetime(pattern='MM/Y', locale=app.request.locale)|capitalize : entity.date -%}
-                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Disponibilité :"|trans|raw }}</strong> {{  date }}</p>
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Disponibilité :"|trans|striptags }}</strong> {{  date }}</p>
                     {%- endif -%}
                     {%- if entity.duration -%}
-                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Durée du contrat :"|trans|raw }}</strong> {{ entity.duration|raw  }}</p>
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Durée du contrat :"|trans|striptags }}</strong> {{ entity.duration|raw  }}</p>
                     {%- endif -%}
                     {%- if entity.company -%}
-                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Entreprise :"|trans|raw }}</strong> {{ entity.company|raw }}</p>
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Entreprise :"|trans|striptags }}</strong> {{ entity.company|raw }}</p>
                     {%- endif -%}
                     {%- if entity.place -%}
-                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Localité :"|trans|raw }}</strong> {{ entity.place|raw }}{%- if entity.department -%} ({{ entity.department }}){%- endif -%}</p>
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Localité :"|trans|striptags }}</strong> {{ entity.place|raw }}{%- if entity.department -%} ({{ entity.department }}){%- endif -%}</p>
                     {%- endif -%}
                     {%- if entity.diploma -%}
-                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Diplôme :"|trans|raw }}</strong> {{ entity.diploma|raw }}</p>
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Diplôme :"|trans|striptags }}</strong> {{ entity.diploma|raw }}</p>
                     {%- endif -%}
                     {%- if entity.drivingLicence -%}
-                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Permis de conduire :"|trans|raw }}</strong> {{ entity.drivingLicence|raw }}</p>
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Permis de conduire :"|trans|striptags }}</strong> {{ entity.drivingLicence|raw }}</p>
                     {%- endif -%}
                     {%- if entity.remuneration -%}
-                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Rémunération :"|trans|raw }}</strong> {{ entity.remuneration|raw }}</p>
+                        <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Rémunération :"|trans|striptags }}</strong> {{ entity.remuneration|raw }}</p>
                     {%- endif -%}
                 </div>
                 <div class="content px-3">
@@ -142,13 +142,13 @@
                     {%- endif -%}
                     {%- if entity.body -%}
                         <div class="mt-4 content-wrap">
-                            <strong class="section-title d-inline-block w-100 text-primary mb-3">{{ "Description du poste :"|trans|raw }}</strong>
+                            <strong class="section-title d-inline-block w-100 text-primary mb-3">{{ "Description du poste :"|trans|striptags }}</strong>
                             <div class="body">{{ entity.body|raw }}</div>
                         </div>
                     {%- endif -%}
                     {%- if entity.profil -%}
                         <div class="mt-4 content-wrap">
-                            <strong class="section-title d-inline-block w-100 text-primary mb-3">{{ "Profil recherché :"|trans|raw }}</strong>
+                            <strong class="section-title d-inline-block w-100 text-primary mb-3">{{ "Profil recherché :"|trans|striptags }}</strong>
                             <div class="body">{{ entity.profil|raw }}</div>
                         </div>
                     {%- endif -%}
@@ -158,13 +158,13 @@
                         {%- if pageUrl -%}
                             <a href="{{ path('front_index', {'url': pageUrl}) }}" class="back-link d-flex align-items-center justify-content-start">
                                 <i class="icon-chevron-circle-left"></i>
-                                <span class="ms-2">{{ 'Retour aux offres'|trans|raw }}</span>
+                                <span class="ms-2">{{ 'Retour aux offres'|trans|striptags }}</span>
                             </a>
                         {%- endif -%}
                     </div>
                     <div class="right">
                         <div class="share d-flex align-items-center justify-content-end">
-                            <span class="me-2">{{ 'Partager sur :'|trans|raw }}</span>
+                            <span class="me-2">{{ 'Partager sur :'|trans|striptags }}</span>
                             {{ macro.linksSocial() }}
                         </div>
                     </div>
@@ -174,7 +174,7 @@
                 <div class="py-5 px-sm-4 bg-primary m-0">
                     <div class="text-center">
                         <div class="pencil text-center w-100">{{ "cms pencil-write"|icon(35, 35, 'white mb-2') }}</div>
-                        <h2 class="title text-center text-uppercase fw-700 d-inline-block w-100 mb-4">{{ "Postuler à ce poste"|trans|raw }}</h2>
+                        <h2 class="title text-center text-uppercase fw-700 d-inline-block w-100 mb-4">{{ "Postuler à ce poste"|trans|striptags }}</h2>
                     </div>
                     {%- set form = entity.form ? entity.form.slug : 'recruitment' -%}
                     {{ render_esi(path('front_form_view', {'filter': form, 'website': website.id, 'url': url.id} )) }}

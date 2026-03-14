@@ -44,7 +44,7 @@
                 novalidate: "novalidate",
                 "data-component": "webpack-form" }}) }}
                 <div class="input-group p-0">
-                    <label for="search" class="fw-600 mb-4 text-center w-100 d-none">{{ "Rercherchez"|trans|raw }}</label>
+                    <label for="search" class="fw-600 mb-4 text-center w-100 d-none">{{ "Recherchez"|trans|striptags }}</label>
                     {{ form_widget(form.search) }}
                     <button type="submit" id="search-engine-submit" class="input-group-text bg-warning cursor p-0 d-inline-flex justify-content-center align-items-center">
                         {{ 'far search'|icon(20, 20, 'search') }}

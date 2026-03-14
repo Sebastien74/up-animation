@@ -57,16 +57,16 @@
         <div class="container">
             <div class="row g-3 g-lg-0 contact align-items-stretch">
                 {%- if agencies is not empty -%}
-                    {{ macro.uaContact(website, 'map-marker-alt-solid', "Plusieurs agences", 'text', agencies|length~" en France & Suisse") }}
+                    {{ macro.uaContact(website, 'map-marker-alt-solid', "Plusieurs agences"|trans, 'text', agencies|length ~ " en France & Suisse"|trans) }}
                 {%- endif -%}
                 {%- if emails is not empty -%}
-                    {{ macro.uaContact(website, 'envelope-solid', "Contactez-nous par mail", 'emails', emails) }}
+                    {{ macro.uaContact(website, 'envelope-solid', "Contactez-nous par mail"|trans, 'emails', emails) }}
                 {%- endif -%}
                 {%- if contactUrl -%}
-                    {{ macro.uaContact(website, 'envelope-solid', "Utiliser notre formulaire", 'link', path('front_index', {url: contactUrl}), "Écrivez-nous") }}
+                    {{ macro.uaContact(website, 'envelope-solid', "Utiliser notre formulaire"|trans, 'link', path('front_index', {url: contactUrl}), "Écrivez-nous"|trans) }}
                 {%- endif -%}
                 {%- if phones is not empty -%}
-                    {{ macro.uaContact(website, 'phone-alt-solid', "Appelez-nous quand vous voulez", 'phones', phones) }}
+                    {{ macro.uaContact(website, 'phone-alt-solid', "Appelez-nous quand vous voulez"|trans, 'phones', phones) }}
                 {%- endif -%}
             </div>
         </div>
@@ -95,10 +95,14 @@
                             </a>
                         {%- endif -%}
                         <p class="text-white-50 mb-4">
-                            Animations et spectacles professionnels pour <span
-                                    class="text-white fw-semibold">séminaires</span>,
-                            <span class="text-white fw-semibold">team building</span> et <span
-                                    class="text-white fw-semibold">soirées d’entreprise</span>.
+                            {{ "Animations et spectacles professionnels pour %seminars_start%séminaires%seminars_end%, %teambuilding_start%team building%teambuilding_end% et %evenings_start%soirées d’entreprise%evenings_end%."|trans({
+                                '%seminars_start%': '<span class="text-white fw-semibold">',
+                                '%seminars_end%': '</span>',
+                                '%teambuilding_start%': '<span class="text-white fw-semibold">',
+                                '%teambuilding_end%': '</span>',
+                                '%evenings_start%': '<span class="text-white fw-semibold">',
+                                '%evenings_end%': '</span>'
+                            })|raw }}
                         </p>
                         {%- if contactUrl -%}
                             <div class="d-flex flex-wrap gap-2">
@@ -107,7 +111,7 @@
                                         intl: {
                                             link: path('front_index', {url: contactUrl}),
                                             linkStyle: 'btn btn-primary my-1',
-                                            linkLabel: 'Demander un devis',
+                                            linkLabel: 'Demander un devis'|trans,
                                         },
                                         icon: 'headset',
                                     } -%}
@@ -117,7 +121,7 @@
                                         intl: {
                                             link: path('front_index', {url: animationsUrl}),
                                             linkStyle: 'btn btn-white my-1',
-                                            linkLabel: 'Voir les animations',
+                                            linkLabel: 'Voir les animations'|trans,
                                         },
                                         icon: 'people-group',
                                     } -%}
@@ -126,17 +130,20 @@
                         {%- endif -%}
                         {%- if agencies is not empty -%}
                             <hr class="sep my-4">
-                            <h3 class="footer-title pb-2 mb-3 fw-900 text-white">Nos agences</h3>
+                            <h3 class="footer-title pb-2 mb-3 fw-900 text-white">{{ "Nos agences"|trans }}</h3>
                             <div class="d-flex flex-wrap gap-2">
                                 {%- for agency in agencies -%}
-                                    <a class="city px-3" href="{{ agency.url }}">Agence {{ agency.city }}</a>
+                                    <a class="city px-3" href="{{ agency.url }}">{{ "Agence %city%"|trans({'%city%': agency.city}) }}</a>
                                 {%- endfor -%}
                             </div>
                         {%- endif -%}
                         {%- if website.networks is not empty -%}
                             <hr class="sep my-4">
-                            <h3 class="footer-title pb-2 mb-3 fw-900 text-white">Restez connecté&nbsp;!</h3>
-                            <p class="text-white-50">Rejoignez <strong class="text-white-50">{{ companyName|unescape|replace({'!': ''}) }}</strong> sur les <strong class="text-white-50">réseaux sociaux</strong> dès maintenant&nbsp;!</p>
+                            <h3 class="footer-title pb-2 mb-3 fw-900 text-white">{{ "Restez connecté&nbsp;!"|trans }}</h3>
+                            <p class="text-white-50">{{ "Rejoignez %company% sur les %socials% dès maintenant&nbsp;!"|trans({
+                                '%company%': '<strong class="text-white-50">' ~ (companyName|unescape|replace({'!': ''})) ~ '</strong>',
+                                '%socials%': '<strong class="text-white-50">' ~ ("réseaux sociaux"|trans) ~ '</strong>'
+                            })|raw }}</p>
                             <div class="d-flex flex-wrap">
                                 <nav class="socials-list d-inline-flex justify-content-center justify-content-sm-start gap-3"
                                      aria-label="{{"Navigation des liens sociaux"|trans|striptags }}">
@@ -160,14 +167,14 @@
                     <div class="row g-4">
                         {%- if catalogMenus.services is not empty or catalogMenus.performances is not empty -%}
                             <div class="col-12 col-md-6">
-                                {{ macro.menu(catalogMenus, 'services', 'Nos prestations') }}
-                                {{ macro.menu(catalogMenus, 'performances', 'Spectacles') }}
+                                {{ macro.menu(catalogMenus, 'services', 'Nos prestations'|trans) }}
+                                {{ macro.menu(catalogMenus, 'performances', 'Spectacles'|trans) }}
                             </div>
                         {%- endif -%}
                         {%- if catalogMenus.animations is not empty or catalogMenus.rentals is not empty -%}
                             <div class="col-12 col-md-6">
-                                {{ macro.menu(catalogMenus, 'animations', 'Animations création') }}
-                                {{ macro.menu(catalogMenus, 'rentals', 'Nos locations') }}
+                                {{ macro.menu(catalogMenus, 'animations', 'Animations création'|trans) }}
+                                {{ macro.menu(catalogMenus, 'rentals', 'Nos locations'|trans) }}
                             </div>
                         {%- endif -%}
                         {%- set labels = agencies|map(a =>
