@@ -1,6 +1,6 @@
 {#{%- trans_default_domain 'front_default' -%}#}
 
-{#{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}#}
+{##}
 
 {#{%- set layout = lastEntity.layout -%}#}
 {#{%- set asCustomLayout = lastEntity.customLayout is defined and lastEntity.customLayout#}
@@ -21,7 +21,7 @@
 
 {#        <div class="container pt-4 pt-lg-5 pb-0 pb-lg-5 position-relative">#}
 
-{#            {{ macroWebmaster.box({#}
+{#            {{ component('WebmasterEdit', {#}
 {#                title: "Éditer l'entité"|trans([], 'front_webmaster'),#}
 {#                role: 'ROLE_'~interfaceName|upper,#}
 {#                path: path('admin_'~interfaceName~'_edit', {website: lastEntity.website.id, (interfaceName): lastEntity.id})#}

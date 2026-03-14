@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set asListing = listing is defined -%}
 {%- set microDataActive = microDataActive is defined ? microDataActive : website.seoConfiguration.microData -%}
 {%- set pageNum = app.request.query.get('page') ? app.request.query.get('page') : 1 -%}
@@ -14,7 +12,7 @@
 <div id="listing-{{ interfaceName }}-container-{{ listing.slug }}" class="listing-{{ interfaceName }}-container listing-container">
 
     {%- if asListing -%}
-        {{ macroWebmaster.box({
+        {{ component('WebmasterEdit', {
             title: "Éditer l'index"|trans([], 'front_webmaster'),
             role: 'ROLE_'~interfaceName|upper,
             path: path('admin_'~interfaceName~'listing_edit', {website: listing.website.id, (interfaceName~'listing'): listing.id})

@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set displayFormFilters = teaser.displayFilters is defined ? teaser.displayFilters : false -%}
 
 {%- if entities|length > 0 -%}
@@ -9,10 +7,10 @@
         <h{{ intl.titleForce }} class="title text-center mb-5 pb-4">{{ intl.title|raw }}</h{{ intl.titleForce }}>
     {%- endif -%}
     <div class="default-teaser row m-0 listing-entities-container">
-        {{ macroWebmaster.box({
+        {{ component('WebmasterEdit', {
             title: "Éditer le teaser"|trans([], 'front_webmaster'),
             role: 'ROLE_NEWSCAST',
-            toolBoxClass: 'listing-box',
+            class: 'listing-box',
             path: path('admin_newscastteaser_edit', {website: website.id, newscastteaser: teaser.id})
         }) }}
         {%- if displayFormFilters -%}
@@ -39,7 +37,7 @@
         {%- for entity in entities -%}
             <div class="col mb-4" style="width: {{ colSize }}%">
                 <div class="card bg-transparent d-inline-block border-0 d-flex flex-column h-100">
-                    {{ macroWebmaster.box({
+                    {{ component('WebmasterEdit', {
                         title: "Éditer l'actualité"|trans([], 'front_webmaster'),
                         role: 'ROLE_NEWSCAST',
                         path: path('admin_newscast_edit', {website: website.id, newscast: entity.id})

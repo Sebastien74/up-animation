@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set zone = block.col.zone -%}
 {%- set defaultTemplate = 'front/'~websiteTemplate~'/actions/gallery/teaser/template/default.html.twig' -%}
 {%- set blockTemplate = block.template ? 'front/'~websiteTemplate~'/actions/gallery/teaser/template/'~block.template~'.html.twig' : defaultTemplate -%}
@@ -20,7 +18,7 @@
 {%- set linkLabel = link.label is defined and link.label ? link.label : "Voir toute la galerie"|trans -%}
 
 <div id="teaser-gallery-container-{{ teaser.slug }}" class="teaser-gallery-container">
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer le teaser"|trans([], 'front_webmaster'),
         role: 'ROLE_GALLERY',
         path: path('admin_galleryteaser_edit', {website: teaser.website.id, galleryteaser: teaser.id})

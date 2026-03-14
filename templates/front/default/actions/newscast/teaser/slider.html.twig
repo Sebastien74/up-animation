@@ -1,8 +1,6 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- import _self as macro -%}
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- macro mediaRelation(entity, thumbConfiguration) -%}
     {{ entity.mainMedia|file(thumbConfiguration, {
         btnLink: false,
@@ -121,7 +119,7 @@
     <li class="splide__slide ps-0 pe-0 ps-md-0 pe-md-4 {% if isMobile %}col-12{% else %}col{% if not promoteFirst %}-md-4{% endif %}{% endif %}{%- if loopIndex > teaser.itemsPerSlide -%} d-none{%- endif -%}{%- if isFirst -%} is-first{%- endif -%}"
         {%- if colSizeNext -%}data-size-next="{{ colSizeNext }}%" {%- endif -%}
         {%- if colSize -%}style="width: {{ colSize }}%" {%- endif -%}>
-        {{ macroWebmaster.box({
+        {{ component('WebmasterEdit', {
             title: "Éditer l'actualité"|trans([], 'front_webmaster'),
             role: 'ROLE_NEWSCAST',
             path: path('admin_newscast_edit', {website: teaser.website.id, newscast: entity.id})
@@ -157,10 +155,10 @@
         <h{{ intl.titleForce }} class="title mb-4 mb-lg-3">{{ intl.title|raw }}</h{{ intl.titleForce }}>
     {%- endif -%}
     <div class="row listing-entities-container">
-        {{ macroWebmaster.box({
+        {{ component('WebmasterEdit', {
             title: "Éditer le teaser"|trans([], 'front_webmaster'),
             role: 'ROLE_NEWSCAST',
-            toolBoxClass: 'listing-box',
+            class: 'listing-box',
             path: path('admin_newscastteaser_edit', {website: website.id, newscastteaser: teaser.id})
         }) }}
         {%- if displayFormFilters -%}

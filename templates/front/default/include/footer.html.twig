@@ -1,8 +1,6 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- import _self as macro -%}
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set addresses = website.infoZones.addresses.footer is defined ? website.infoZones.addresses.footer : [] -%}
 {%- set address = addresses|first -%}
 {%- set phones = addresses|length <= 1 and website.infoZones.phones.footer is defined ? website.infoZones.phones.footer : [] -%}
@@ -194,7 +192,7 @@
         {%- if mainMenus['footer'].arguments is defined and mainMenus['footer'].arguments -%}
             <nav class="menu-container position-relative d-flex justify-content-center justify-content-md-center gap-2"
                  aria-label="Liens utiles">
-                {{ macroWebmaster.box({
+                {{ component('WebmasterEdit', {
                     title: "Éditer le menu"|trans([], 'front_webmaster'),
                     role: 'ROLE_NAVIGATION',
                     path: path('admin_menu_edit', {website: website.id, menu: mainMenus['footer'].arguments.id, entitylocale: app.request.locale})

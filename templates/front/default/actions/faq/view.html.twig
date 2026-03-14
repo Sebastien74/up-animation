@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set customTemplate = 'front/'~websiteTemplate~'/actions/faq/'~faq.slug~'.html.twig' -%}
 {%- set customTemplateExist = (customTemplate)|fileExist -%}
 {%- set template = customTemplateExist ? 'front/'~websiteTemplate~'/actions/faq/template/'~faq.slug~'.html.twig'
@@ -31,7 +29,7 @@
 {%- endif -%}
 
 <div id="faq-container-{{ faq.slug }}" class="faq-container position-relative{% if faq.asTeaser %} faq-teaser{% endif %}">
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer la FAQ"|trans([], 'front_webmaster'),
         role: 'ROLE_FAQ',
         path: path('admin_faqquestion_index', {website: website.id, faq: faq.id})

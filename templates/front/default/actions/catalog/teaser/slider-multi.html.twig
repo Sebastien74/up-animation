@@ -1,8 +1,6 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard -%}
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- import _self as macro -%}
 
 {%- macro arrows(entity, autoplay, side, color, asBtn, position) -%}
@@ -33,7 +31,7 @@
 
 {%- if entities -%}
     <div class="products-slider-multi-teaser-container position-relative">
-        {{ macroWebmaster.box({
+        {{ component('WebmasterEdit', {
             title: "Éditer le tesaer"|trans([], 'front_webmaster'),
             role: 'ROLE_CATALOG',
             path: path('admin_productteaser_edit', {website: website.id, productteaser: teaser.id})

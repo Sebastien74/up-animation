@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set dashed = dashed is defined ? dashed : isFooter -%}
 {%- set alwaysHorizontal = alwaysHorizontal is defined ? alwaysHorizontal : not entity.vertical -%}
 {%- set isHorizontal = isHorizontal or alwaysHorizontal -%}
@@ -12,7 +10,7 @@
 
 <nav class="menu-container position-relative d-flex{% if not isVertical %} justify-content-center justify-content-md-{{ alignment }}{% endif %}"
      aria-label="{{"Liens utiles"|trans|striptags }}">
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer le menu"|trans([], 'front_webmaster'),
         role: 'ROLE_NAVIGATION',
         path: path('admin_menu_edit', {website: website.id, menu: id, entitylocale: app.request.locale})

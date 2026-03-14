@@ -1,0 +1,12 @@
+{%- trans_default_domain 'front_webmaster' -%}
+
+{%- if this.visible -%}
+    <a href="{{ path }}"
+       {{ attributes.addClass("webmaster-link-edit success d-none") }}
+       data-toggle="tooltip"
+       data-placement="right"
+       tabindex="-1" aria-hidden="true"
+       title="{{ title|default("Éditer"|trans)|striptags }}" target="_blank">
+        <i class="icw-pencil-alt"></i>
+    </a>
+{%- endif -%}

@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set currentZone = block.col.zone -%}
 {%- set layout = currentZone.layout -%}
 {%- set previousZonePosition = currentZone.position - 1 -%}
@@ -14,10 +12,10 @@
 {%- endfor -%}
 
 <div class="newscast-teaser-vertical position-relative {{ previousZoneBg }}">
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer le teaser"|trans([], 'front_webmaster'),
         role: 'ROLE_NEWSCAST',
-        toolBoxClass: 'listing-box',
+        class: 'listing-box',
         path: path('admin_newscastteaser_edit', {website: website.id, newscastteaser: teaser.id})
     }) }}
     {%- if intl.title -%}
@@ -40,7 +38,7 @@
                                 role="tab"
                                 aria-controls="v-pills-{{ entity.slug }}"
                                 aria-selected="{% if loop.first %}true{% else %}false{% endif %}">
-                            {{ macroWebmaster.box({
+                            {{ component('WebmasterEdit', {
                                 title: "Éditer l'actualité"|trans([], 'front_webmaster'),
                                 role: 'ROLE_NEWSCAST',
                                 path: path('admin_newscast_edit', {website: teaser.website.id, newscast: entity.id})

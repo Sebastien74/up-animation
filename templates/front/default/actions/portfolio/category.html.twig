@@ -2,14 +2,12 @@
 
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set intl = category|intl -%}
 {%- set layout = category.layout is defined ? category.layout : null -%}
 {%- set asLayout = category.layout is defined and category.layout and layout.zones.count > 0 -%}
 
 {%- block body -%}
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer la catégorie"|trans([], 'front_webmaster'),
         role: 'ROLE_PORTFOLIO',
         path: path('admin_portfoliocategory_layout', {website: website.id, portfoliocategory: category.id})

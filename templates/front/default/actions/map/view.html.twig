@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set zone = block.col.zone -%}
 {%- set displayFilters = map.displayFilters and categories|length > 1 -%}
 {%- set displayPointsList = map.displayPointsList and map.points|length > 0 -%}
@@ -12,7 +10,7 @@
     : 'front/'~websiteTemplate~'/actions/map/template/default.html.twig' -%}
 
 <div id="map-container-{{ map.slug }}" class="map-container position-relative">
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer la carte"|trans([], 'front_webmaster'),
         role: 'ROLE_MAP',
         path: path('admin_mappoint_index', {website: website.id, map: map.id})

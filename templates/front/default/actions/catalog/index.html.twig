@@ -1,8 +1,6 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard -%}
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- if microDataActive and microdataEntities is defined -%}
     {%- include 'front/'~websiteTemplate~'/include/microdata-entities.html.twig' with {entities: microdataEntities, url: url, website: website} only -%}
 {%- endif -%}
@@ -12,10 +10,10 @@
 
 <div id="index-products" class="index-products row position-relative">
 
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer le listing"|trans([], 'front_webmaster'),
         role: 'ROLE_CATALOG',
-        toolBoxClass: 'listing-box',
+        class: 'listing-box',
         path: path('admin_cataloglisting_edit', {website: website.id, cataloglisting: listing.id})
     }) }}
 
@@ -56,7 +54,7 @@
                         <div class="row products-section justify-content-center mt-5">
                             {%- for product in categoryArgs.products -%}
                                 <div class="col-md-6 col-lg-4 mb-5 position-relative">
-                                    {{ macroWebmaster.box({
+                                    {{ component('WebmasterEdit', {
                                         title: "Éditer le produit"|trans([], 'front_webmaster'),
                                         role: 'ROLE_CATALOG',
                                         path: path('admin_catalogproduct_edit', {website: website.id, catalogproduct: product.id})

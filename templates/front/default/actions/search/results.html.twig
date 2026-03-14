@@ -1,12 +1,10 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set slug = search.slug -%}
 
 <div class="search-results-container position-relative">
 
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer le moteur de recherche"|trans([], 'front_webmaster'),
         role: 'ROLE_SEARCH_ENGINE',
         path: path('admin_search_edit', {website: website.id, search: search.id})

@@ -1,6 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
 {%- import _self as macro -%}
 
 {%- macro card(job, websiteTemplate, background = 'white') -%}
@@ -142,16 +141,16 @@
     {%- endif -%}
     {%- if entities is not empty -%}
         <div class="row jobs-index d-flex justify-content-center position-relative">
-            {{ macroWebmaster.box({
+            {{ component('WebmasterEdit', {
                 title: "Éditer le listing"|trans([], 'front_webmaster'),
                 role: 'ROLE_RECRUITMENT',
-                toolBoxClass: 'listing-box',
+                class: 'listing-box',
                 path: path('admin_recruitmentlisting_edit', {website: website.id, recruitmentlisting: listing.id})
             }) }}
             {%- set delay = 200 -%}
             {%- for job in entities -%}
                 <div class="col-12 col-lg-6 col-xl-4 mb-4 aos px-lg-4" data-aos="fade-right" data-aos-delay="{{ delay }}">
-                    {{ macroWebmaster.box({
+                    {{ component('WebmasterEdit', {
                         'title': "Éditer l'offre"|trans([], 'front_webmaster'),
                         'role': 'ROLE_RECRUITMENT',
                         'path': path('admin_recruitmentjob_edit', {'website': website.id, 'recruitmentjob': job.id})

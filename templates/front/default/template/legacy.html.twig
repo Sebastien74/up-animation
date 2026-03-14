@@ -1,7 +1,5 @@
 {%- extends 'front/'~website.configuration.template~'/base.html.twig' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- trans_default_domain 'front_default' -%}
 
 {%- block stylesheets -%}
@@ -50,7 +48,7 @@
                 <div class="container position-relative">
                     <div class="row row-container">
                         <div class="col-12">
-                            {{ macroWebmaster.box({
+                            {{ component('WebmasterEdit', {
                                 title: "Éditer les informations"|trans([], 'front_webmaster'),
                                 role: 'ROLE_EDIT',
                                 path: path('admin_information_edit', {website: website.id, information: website.information.id, tab: 'legal-notice'})

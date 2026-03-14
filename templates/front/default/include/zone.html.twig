@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set website = website is defined ? website : website() -%}
 {%- set intlMediaZone = layoutRelations['zones']['medias'][zone.id] is defined ? layoutRelations['zones']['medias'][zone.id] : {} -%}
 {%- set intlZone = layoutRelations['zones']['intls'][zone.id] is defined ? layoutRelations['zones']['intls'][zone.id] : null -%}
@@ -189,7 +187,7 @@
                                                             {%- include template -%}
                                                         {%- else -%}
                                                             {%- if granted('ROLE_ADMIN') and disabledEditTools is not defined and interface is defined and interface.name is defined -%}
-                                                                {{ macroWebmaster.box({
+                                                                {{ component('WebmasterEdit', {
                                                                     title: "Éditer le bloc"|trans([], 'front_webmaster'),
                                                                     role: 'ROLE_EDIT',
                                                                     path: path('admin_block_edit', {website: website.id, col: col.id, interfaceName: interface.name, interfaceEntity: entity.id, block: block.id})

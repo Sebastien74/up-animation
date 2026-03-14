@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set customTemplate = 'front/'~websiteTemplate~'/actions/form/form-step/'~entity.slug~'.html.twig' -%}
 {%- set customTemplateExist = (customTemplate)|fileExist -%}
 {%- set formTemplate = customTemplateExist
@@ -26,7 +24,7 @@
 {%- endif -%}
 
 <div id="steps-form-container-{{ entity.slug }}" class="steps-form-container keep-form-module form-wizard position-relative{% if formConfiguration.recaptcha %} recaptcha-referer{% endif %}">
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer le formulaire"|trans([], 'front_webmaster'),
         role: 'ROLE_FORM',
         path: path('admin_form_index', {website: website.id, stepform: entity.id})

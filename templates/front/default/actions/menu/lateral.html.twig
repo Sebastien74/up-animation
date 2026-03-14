@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set displayHomePage = false -%}
 {%- set isHome = (seo.entity.asIndex is defined and seo.entity.asIndex) or (app.request.requestUri == '/') or (not app.request.requestUri) -%}
 {%- set logo = logos.logo is defined and logos.logo ? logos.logo : null -%}
@@ -159,7 +157,7 @@
 <div id="menu-container-{{ slug }}" class="menu-container as-lateral w-100 {% if fixedOnScroll or alwaysFixed %} as-sticky sticky-top{% else %}position-relative{% endif %}{% if alwaysFixed %} always-sticky{% endif %} {{ dropdownClass }}"
      data-expand="{{ expand }}"
      tabindex="0">
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer le menu"|trans([], 'front_webmaster'),
         role: 'ROLE_NAVIGATION',
         path: path('admin_menu_edit', {website: website.id, menu: id, entitylocale: app.request.locale})

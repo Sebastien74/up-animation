@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- if medias -%}
     {%- set isHomePage = isHomePage is defined ? isHomePage : false -%}
     {%- set arrowsAsBtn = arrowsAsBtn is defined ? arrowsAsBtn : false -%}
@@ -29,7 +27,7 @@
     {%- set template = customTemplateExist ? 'front/'~websiteTemplate~'/actions/slider/template/'~slider.slug~'.html.twig'
         : ((selectedTemplate)|fileExist ? selectedTemplate : 'front/'~websiteTemplate~'/actions/slider/template/bootstrap.html.twig') -%}
     <div id="slider-container-{{ slider.slug }}" class="slider-container-{{ slider.slug }} slider-container{% if slider.popup %} popup-gallery{% endif %}{% if isHomePage %} is-home-page{% endif %}{% if 'center' == focus %} focus-center{% endif %}">
-        {{ macroWebmaster.box({
+        {{ component('WebmasterEdit', {
             title: "Éditer le carrousel"|trans([], 'front_webmaster'),
             role: 'ROLE_SLIDER',
             path: slider.id ? path('admin_slider_edit', {website: website.id, slider: slider.id}) : null

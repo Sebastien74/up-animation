@@ -4,17 +4,15 @@
 {%- set displayPointInfo = true -%}
 {%- set sidebarSize = 4 -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {#{%- if microDataActive -%}#}
 {#    {%- include 'front/'~websiteTemplate~'/include/microdata-entities.html.twig' with {entities: products, url: url, website: website} only -%}#}
 {#{%- endif -%}#}
 
 <div class="position-relative">
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer le listing"|trans([], 'front_webmaster'),
         role: 'ROLE_CATALOG',
-        toolBoxClass: 'listing-box',
+        class: 'listing-box',
         path: path('admin_cataloglisting_edit', {website: website.id, cataloglisting: listing.id})
     }) }}
     <div class="catalog-map-container map-container position-relative">

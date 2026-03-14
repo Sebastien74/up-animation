@@ -1,9 +1,7 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 <div class="table-container position-relative header-table{% if render.haveColsTitles %} table-responsive{% endif %}">
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer le tableau"|trans([], 'front_webmaster'),
         role: 'ROLE_FORM',
         path: path('admin_table_edit', {website: website.id, table: table.id, entitylocale: app.request.locale})

@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- if calendar -%}
 
     {%- set blockId = block.id is defined ? block.id : null -%}
@@ -24,7 +22,7 @@
 
     <div class="form-calendar-container position-relative">
         
-        {{ macroWebmaster.box({
+        {{ component('WebmasterEdit', {
             title: "Éditer le calendrier"|trans([], 'front_webmaster'),
             role: 'ROLE_FORM_CALENDAR',
             path: path('admin_formcalendar_edit', {website: website.id, form: form.id, formcalendar: calendar.id})

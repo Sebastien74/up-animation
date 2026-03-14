@@ -44,8 +44,7 @@
 
     <{{ card }} class="card-block bg-transparent card h-100 border-0 {% if targetLink %} have-link{% endif %}{% if class %} {{ class }}{% endif %}{% if haveBg %} have-bg{% endif %}">
         {%- if vars.webmaster is defined -%}
-            {%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-            {{ macroWebmaster.box(vars.webmaster) }}
+                        {{ component('WebmasterEdit', vars.webmaster) }}
         {%- endif -%}
         {%- if displayMedia -%}
             <div class="card-header bg-transparent border-0 p-0">
@@ -136,8 +135,7 @@
 {%- macro news(vars) -%}
     <article class="card news-card bg-white shadow bg-lght border-0 overflow-hidden position-relative h-100">
         {%- if vars.webmaster is defined and granted('ROLE_ADMIN') -%}
-            {%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-            {{ macroWebmaster.box(vars.webmaster) }}
+                        {{ component('WebmasterEdit', vars.webmaster) }}
         {%- endif -%}
         <div class="card-header p-0">
             {{ vars.entity.mainMedia|file(vars.thumbConfiguration, {

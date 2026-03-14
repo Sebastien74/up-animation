@@ -1,7 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- import 'core/webmaster-edit.html.twig' as macroWebmaster -%}
-
 {%- set customTemplate = 'front/'~websiteTemplate~'/actions/form/form/'~entity.slug~'.html.twig' -%}
 {%- set customTemplateExist = (customTemplate)|fileExist -%}
 {%- set formTemplate = customTemplateExist ? customTemplate : 'front/'~websiteTemplate~'/actions/form/form/default.html.twig' -%}
@@ -29,7 +27,7 @@
 {%- endif -%}
 
 <div id="form-container-{{ entity.slug }}" class="form-container keep-form-module position-relative{% if formConfiguration.recaptcha %} recaptcha-referer{% endif %}">
-    {{ macroWebmaster.box({
+    {{ component('WebmasterEdit', {
         title: "Éditer le formulaire"|trans([], 'front_webmaster'),
         role: 'ROLE_FORM',
         path: path('admin_form_layout', {website: website.id, form: entity.id})
