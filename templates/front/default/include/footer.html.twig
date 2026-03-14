@@ -190,30 +190,13 @@
 
     <div id="footer-bottom" class="bg-dark py-4 px-4 position-relative">
         {%- if mainMenus['footer'].arguments is defined and mainMenus['footer'].arguments -%}
-            <nav class="menu-container position-relative d-flex justify-content-center justify-content-md-center gap-2"
-                 aria-label="Liens utiles">
-                {{ component('WebmasterEdit', {
-                    title: "Éditer le menu"|trans([], 'front_webmaster'),
-                    role: 'ROLE_NAVIGATION',
-                    path: path('admin_menu_edit', {website: website.id, menu: mainMenus['footer'].arguments.id, entitylocale: app.request.locale})
-                }) }}
-                {%- set links = mainMenus['footer'].arguments.tree.main is defined ? mainMenus['footer'].arguments.tree.main : [] -%}
-                {%- for link in links -%}
-                    <li id="item-link-footer-sitemap" class="d-flex align-items-center justify-content-center">
-                        <a href="https://up-animation.local/plan-de-site" id="link-footer-sitemap"
-                           class="track-link-footer-sitemap text-white link position-relative">
-                            Plan de site
-                        </a>
-                        <span class="dashed text-white-50 d-none d-md-inline ms-2">•</span>
-                    </li>
-                {%- endfor -%}
-            </nav>
+            {% set menuArgs = mainMenus.footer.arguments|merge({information: information, logos: logos, axeptioActive: axeptioActive}) %}
+            {% include mainMenus.footer.arguments.template with menuArgs only %}
         {%- endif -%}
         <div class="container px-0">
             <div class="pt-3 text-center small text-white-50 d-flex align-items-center justify-content-center gap-1">
-                Copyright {{ 'now'|date('Y') }} <span class="dashed text-white-50">-</span>
-                <a class="d-inline-block text-hover-white" aria-label="{{ companyName|striptags }}"
-                   href="{{ app.request.getSchemeAndHttpHost() }}">
+                {{ "Copyright"|trans|raw }} {{ 'now'|date('Y') }} <span class="dashed text-white-50">-</span>
+                <a href="{{ app.request.getSchemeAndHttpHost() }}" class="d-inline-block text-hover-white" aria-label="{{ companyName|striptags }}">
                     <strong class="text-white-50">{{ companyName|striptags }}</strong>
                 </a>
             </div>
