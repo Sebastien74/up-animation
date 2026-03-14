@@ -1,0 +1,52 @@
+{% if videos is not empty %}
+    <div class="youtube-feed">
+        <div class="row g-4">
+            {% for item in videos %}
+                {% set videoId = item.id.videoId %}
+                {% set snippet = item.snippet %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="youtube-item card h-100 shadow-sm border-0 bg-transparent">
+                        <div class="position-relative overflow-hidden rounded shadow-sm mb-3">
+                            <a href="https://www.youtube.com/watch?v={{ videoId }}" target="_blank" rel="noopener" class="d-block">
+                                <img src="{{ snippet.thumbnails.high.url|default(snippet.thumbnails.medium.url) }}" alt="{{ snippet.title }}" class="img-fluid w-100">
+                                <div class="play-button position-absolute top-50 start-50 translate-middle">
+                                    <i class="fab fa-youtube text-danger fa-4x opacity-75"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="youtube-content">
+                            <p class="text-muted small mb-1">{{ snippet.publishedAt|date('d/m/Y') }}</p>
+                            <h5 class="h6 card-title mb-2">
+                                <a href="https://www.youtube.com/watch?v={{ videoId }}" target="_blank" rel="noopener" class="text-dark text-decoration-none">
+                                    {{ snippet.title|slice(0, 70) }}{{ snippet.title|length > 70 ? '...' : '' }}
+                                </a>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        .youtube-item img {
+            transition: transform 0.3s ease;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+        .youtube-item:hover img {
+            transform: scale(1.05);
+        }
+        .youtube-item .play-button {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .youtube-item:hover .play-button {
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 1 !important;
+        }
+        .youtube-content h5 {
+            font-weight: 600;
+            line-height: 1.4;
+        }
+    </style>
+{% endif %}

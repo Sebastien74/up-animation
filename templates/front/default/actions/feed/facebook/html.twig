@@ -1,0 +1,48 @@
+{% if feed is not empty %}
+    <div class="facebook-feed">
+        <div class="row g-4">
+            {% for item in feed %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="facebook-item card h-100 shadow-sm border-0">
+                        {% if item.full_picture %}
+                            <a href="{{ item.permalink_url }}" target="_blank" rel="noopener" class="d-block overflow-hidden rounded-top">
+                                <img src="{{ item.full_picture }}" alt="{{ item.message|default('Facebook Post')|slice(0, 50) }}..." class="card-img-top img-fluid">
+                            </a>
+                        {% endif %}
+                        <div class="card-body">
+                            <p class="card-text text-muted small mb-2">
+                                <i class="fab fa-facebook text-primary me-1"></i>
+                                {{ item.created_time|date('d/m/Y H:i') }}
+                            </p>
+                            {% if item.message %}
+                                <p class="card-text">
+                                    {{ item.message|nl2br|slice(0, 150) }}{{ item.message|length > 150 ? '...' : '' }}
+                                </p>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+                            <a href="{{ item.permalink_url }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                Voir sur Facebook
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        .facebook-item img {
+            transition: transform 0.3s ease;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+        .facebook-item:hover img {
+            transform: scale(1.05);
+        }
+        .facebook-item .card-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+    </style>
+{% endif %}

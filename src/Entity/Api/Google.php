@@ -26,6 +26,16 @@ class Google
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $youtubeApiKey = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $youtubeChannelId = null;
+
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[Assert\NotBlank]
+    private ?int $youtubeNbrItems = 7;
+
     #[ORM\OneToOne(targetEntity: Api::class, mappedBy: 'google', cascade: ['persist', 'remove'])]
     private ?Api $api = null;
 
@@ -45,6 +55,42 @@ class Google
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getYoutubeApiKey(): ?string
+    {
+        return $this->youtubeApiKey;
+    }
+
+    public function setYoutubeApiKey(?string $youtubeApiKey): static
+    {
+        $this->youtubeApiKey = $youtubeApiKey;
+
+        return $this;
+    }
+
+    public function getYoutubeChannelId(): ?string
+    {
+        return $this->youtubeChannelId;
+    }
+
+    public function setYoutubeChannelId(?string $youtubeChannelId): static
+    {
+        $this->youtubeChannelId = $youtubeChannelId;
+
+        return $this;
+    }
+
+    public function getYoutubeNbrItems(): ?int
+    {
+        return $this->youtubeNbrItems;
+    }
+
+    public function setYoutubeNbrItems(?int $youtubeNbrItems): static
+    {
+        $this->youtubeNbrItems = $youtubeNbrItems;
+
+        return $this;
     }
 
     public function getApi(): ?Api

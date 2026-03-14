@@ -35,6 +35,9 @@ final class GoogleModel extends BaseModel
         public readonly ?string $serverUrl = null,
         public readonly ?string $mapKey = null,
         public readonly ?string $placeId = null,
+        public readonly ?string $youtubeApiKey = null,
+        public readonly ?string $youtubeChannelId = null,
+        public readonly ?int $youtubeNbrItems = null,
     ) {
     }
 
@@ -69,6 +72,9 @@ final class GoogleModel extends BaseModel
             serverUrl: $isProd ? self::getContentIntl('serverUrl', $locale, $google) : null,
             mapKey: $isProd ? self::getContentIntl('mapKey', $locale, $google) : null,
             placeId:$isProd ? self::getContentIntl('placeId', $locale, $google) : null,
+            youtubeApiKey: self::getContent('youtubeApiKey', $api),
+            youtubeChannelId: self::getContent('youtubeChannelId', $api),
+            youtubeNbrItems: self::getContent('youtubeNbrItems', $api),
         );
 
         return self::$cache['google'][$api->getId()][$locale];
@@ -91,6 +97,9 @@ final class GoogleModel extends BaseModel
             serverUrl: $data->serverUrl,
             mapKey: $data->mapKey,
             placeId: $data->placeId,
+            youtubeApiKey: $data->youtubeApiKey,
+            youtubeChannelId: $data->youtubeChannelId,
+            youtubeNbrItems: $data->youtubeNbrItems,
         );
     }
 }

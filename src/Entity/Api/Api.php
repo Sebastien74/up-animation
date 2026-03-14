@@ -50,6 +50,10 @@ class Api
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ?Instagram $instagram = null;
 
+    #[ORM\OneToOne(targetEntity: TikTok::class, inversedBy: 'api', cascade: ['persist', 'remove'], fetch: 'EAGER')]
+    #[Assert\Valid(['groups' => ['form_submission']])]
+    private ?TikTok $tiktok = null;
+
     #[ORM\OneToOne(targetEntity: Custom::class, inversedBy: 'api', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ?Custom $custom = null;
@@ -154,6 +158,18 @@ class Api
     public function setInstagram(?Instagram $instagram): static
     {
         $this->instagram = $instagram;
+
+        return $this;
+    }
+
+    public function getTikTok(): ?TikTok
+    {
+        return $this->tiktok;
+    }
+
+    public function setTikTok(?TikTok $tiktok): static
+    {
+        $this->tiktok = $tiktok;
 
         return $this;
     }

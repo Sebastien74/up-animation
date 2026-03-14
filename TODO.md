@@ -1,5 +1,7 @@
 Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
+Finir le feed instagram etc ....
+
 Mettre ces balises trans pour les long textes
 
 {% trans with {'%agency_list%': agency_list|raw} %}

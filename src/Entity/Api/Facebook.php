@@ -44,6 +44,13 @@ class Facebook
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $apiGraphVersion = null;
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $accessToken = null;
+
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[Assert\NotBlank]
+    private ?int $nbrItems = 7;
+
     #[ORM\OneToOne(targetEntity: Api::class, mappedBy: 'facebook', cascade: ['persist', 'remove'])]
     private ?Api $api = null;
 
@@ -133,6 +140,30 @@ class Facebook
     public function setApiGraphVersion(?string $apiGraphVersion): static
     {
         $this->apiGraphVersion = $apiGraphVersion;
+
+        return $this;
+    }
+
+    public function getAccessToken(): ?string
+    {
+        return $this->accessToken;
+    }
+
+    public function setAccessToken(?string $accessToken): static
+    {
+        $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    public function getNbrItems(): ?int
+    {
+        return $this->nbrItems;
+    }
+
+    public function setNbrItems(?int $nbrItems): static
+    {
+        $this->nbrItems = $nbrItems;
 
         return $this;
     }
