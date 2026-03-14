@@ -67,7 +67,7 @@ class NewscastListingManager
             if (!$eventCategory instanceof Category) {
                 $position = count($repository->findBy(['website' => $website])) + 1;
                 $category = new Category();
-                $category->setAdminName('Évènement');
+                $category->setAdminName('Événement');
                 $category->setSlug('event');
                 $category->setWebsite($website);
                 $category->setOrderBy('startDate-desc');

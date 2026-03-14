@@ -63,7 +63,7 @@ class FeatureValueProductController extends AdminController
 
         if ($asDefault) {
             $session = $request->getSession();
-            $session->getFlashBag()->add('error', $this->coreLocator->translator()->trans("Vous ne pouvez pas supprimer une caractéristique par défault.<br> Vous devez d'abord retirer le catalogue dans la configuration de votre caractéristique ou valeur.", [], 'admin'));
+            $session->getFlashBag()->add('error', $this->coreLocator->translator()->trans("Vous ne pouvez pas supprimer une caractéristique par défaut.<br> Vous devez d'abord retirer le catalogue dans la configuration de votre caractéristique ou valeur.", [], 'admin'));
             return new JsonResponse(['success' => true, 'redirection' => $this->arguments['redirection']]);
         } else {
             $this->formManager = $this->moduleFormInterface->catalogProduct();

@@ -137,7 +137,7 @@ class Uploader
         $this->extension = $uploadedFile->guessExtension();
 
         if ($existingFile) {
-            $this->coreLocator->requestStack()->getSession()->getFlashBag()->add('warning', $uploadedFile->getClientOriginalName().' '.$this->coreLocator->translator()->trans('a été renommé car un fichier du même nom existe déja.', [], 'admin'));
+            $this->coreLocator->requestStack()->getSession()->getFlashBag()->add('warning', $uploadedFile->getClientOriginalName().' '.$this->coreLocator->translator()->trans('a été renommé car un fichier du même nom existe déjà.', [], 'admin'));
         }
     }
 

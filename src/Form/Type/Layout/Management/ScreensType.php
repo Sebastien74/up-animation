@@ -44,7 +44,7 @@ class ScreensType
 
         if ($count) {
             $choices = [];
-            $choices[$this->translator->trans('Par défault', [], 'admin')] = null;
+            $choices[$this->translator->trans('Par défaut', [], 'admin')] = null;
             for ($x = 1; $x <= $count; ++$x) {
                 $choices[$x] = $x;
             }
@@ -78,7 +78,7 @@ class ScreensType
         }
 
         $sizeChoices = [];
-        $sizeChoices[$this->translator->trans('Par défault', [], 'admin')] = null;
+        $sizeChoices[$this->translator->trans('Par défaut', [], 'admin')] = null;
         for ($i = 1; $i <= 12; ++$i) {
             $sizeChoices[$i] = $i;
         }

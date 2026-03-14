@@ -59,7 +59,7 @@ class ConfigurationType extends AbstractType
             'website' => $options['website'],
             'fields' => ['title' => 'col-md-3', 'placeholder' => 'col-md-3', 'author', 'authorType', 'introduction'],
             'label_fields' => [
-                'title' => $this->translator->trans('Méta titre par défault (après le tiret)', [], 'admin'),
+                'title' => $this->translator->trans('Méta titre par défaut (après le tiret)', [], 'admin'),
                 'placeholder' => $this->translator->trans('Type de site (Microdata)', [], 'admin'),
                 'author' => $this->translator->trans('Auteur (Microdata)', [], 'admin'),
                 'authorType' => $this->translator->trans("Type d'auteur (Microdata)", [], 'admin'),
