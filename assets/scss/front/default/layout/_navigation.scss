@@ -59,7 +59,7 @@ body.menu-as-scroll {
             height: 100%;
             display: none;
             opacity: 0;
-            transition: opacity .5s ease-in-out;
+            transition: opacity $transition-base;
             will-change: opacity;
         }
     }
@@ -136,7 +136,7 @@ body.menu-open {
 
             opacity: .3;
             font-size: 28px;
-            transition: opacity .5s ease-in-out;
+            transition: opacity $transition-base;
 
             &.close-menu-level-1 {
                 top: 1.5rem;
@@ -278,7 +278,7 @@ body.menu-open {
     #main-navigation-nav.not-expanded {
         &.show {
             left: 0;
-            transition: left .5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: left $transition-slow;
             display: flex;
             flex-direction: column;
             will-change: left;
@@ -295,12 +295,12 @@ body.menu-open {
             left: -100%;
             top: 0;
             height: 100dvh;
-            transition: left .5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: left $transition-slow;
             will-change: left;
 
             &.show:not(.not-expanded) {
                 left: 0;
-                transition: left .5s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: left $transition-slow;
                 display: flex;
                 flex-direction: column;
             }
@@ -328,7 +328,7 @@ body.menu-open {
 
         @include mediaQuery(min-lg) {
             &.submenu-level-1 {
-                transition: left .5s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: left $transition-slow;
             }
         }
 
@@ -404,7 +404,7 @@ body.menu-open {
 
             @include mediaQuery(min-lg) {
                 &.submenu-level-1 {
-                    transition: left .5s cubic-bezier(0.4, 0, 0.2, 1);
+                    transition: left $transition-slow;
                 }
             }
         }
@@ -480,7 +480,7 @@ body.menu-open {
         display: inline-block;
         position: relative;
         transform: rotate(0deg);
-        transition: .5s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: $transition-slow;
 
         span {
 
@@ -492,7 +492,7 @@ body.menu-open {
             opacity: 1;
             left: 0;
             transform: rotate(0deg);
-            transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: $transition-fast;
 
             &:nth-child(1) {
                 top: 0;
@@ -581,7 +581,7 @@ body.menu-open {
                 left: 0;
                 background-color: $white;
                 clip-path: circle(0% at 0 0);
-                transition: all .6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                transition: all $transition-slow !important;
                 display: inline-flex;
                 flex-direction: column !important;
                 align-items: center;

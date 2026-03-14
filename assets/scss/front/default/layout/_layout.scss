@@ -63,7 +63,7 @@ body {
 
         opacity: 1;
         transform: translateY(0);
-        transition: opacity .25s linear, transform .25s linear;
+        transition: opacity $transition-base, transform $transition-base;
         will-change: opacity, transform;
 
         &.is-closing {
@@ -109,13 +109,13 @@ body {
                 font-size: 8px;
                 position: relative;
                 top: -1px;
-                transition: color .25s linear;
+                transition: color $transition-base;
             }
         }
 
         &.is-near-footer {
             time, strong {
-                transition: color .25s linear;
+                transition: color $transition-base;
                 color: $white !important;
             }
         }

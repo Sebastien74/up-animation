@@ -61,11 +61,28 @@
     -----------------------------------*/
 
     .socials-list {
+        margin-top: 1rem;
+
+        a {
+            transition: transform $transition-base, color $transition-base;
+            color: $white;
+
+            @include mediaQuery(min-lg) {
+                &:hover {
+                    transform: translateY(-3px);
+                    color: $primary !important;
+
+                    i:after {
+                        background-color: $white;
+                    }
+                }
+            }
+        }
 
         i {
 
             font-size: 40px;
-            transition: color $transition-base, transform $transition-base;
+            transition: color $transition-base;
 
             @include mediaQuery(min-lg) {
 
@@ -84,15 +101,6 @@
                     border-radius: 50%;
                     background-color: transparent;
                     transition: background-color $transition-base;
-                }
-
-                &:hover {
-                    color: $primary !important;
-                    transform: translateY(-1px);
-
-                    &:after {
-                        background-color: $white;
-                    }
                 }
             }
         }
@@ -177,7 +185,7 @@
 
         @include mediaQuery(min-lg) {
 
-            transition: color .4s ease-in-out;
+            transition: color $transition-base, transform $transition-base;
 
             &:hover {
                 color: $white;
@@ -189,7 +197,7 @@
 
         @include mediaQuery(min-lg) {
 
-            transition: color .4s ease-in-out;
+            transition: color $transition-base, transform $transition-base;
 
             &:hover {
                 color: $white;
@@ -282,7 +290,7 @@
         line-height: 1.5;
 
         a {
-            transition: color .4s ease-in-out;
+            transition: color $transition-base, transform $transition-base;
         }
     }
 }

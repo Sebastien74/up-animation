@@ -189,9 +189,19 @@ class ImageThumbnail implements ImageThumbnailInterface
             ? $this->dirname($this->projectDirname.'/public'.$media->getFilename()) : $this->dirname($this->projectDirname.'/public/uploads/'.$this->uploadDirname.'/'.$media->getFilename()));
         $originalExist = $this->filesystem->exists($originalDirname);
         $originalInfoFile = $media->getFilename() ? $this->coreLocator->fileInfo()->file($website, $media->getFilename(), $originalDirname) : null;
-        $isEnableMaxSizes = $originalInfoFile && $originalInfoFile->getWidth() <= self::MAX_FILE_WIDTH && $originalInfoFile->getHeight() <= self::MAX_FILE_HEIGHT && $originalInfoFile->getSize() <= self::MAX_FILE_SIZE;
-        $mediaRelation = $options['mediaRelation'] = !empty($options['mediaRelation']) ? $options['mediaRelation'] : ($asMediaModel ? $mediaModel->mediaRelation : null);
-        $execute = $infoFile = false;
+            $isEnableMaxSizes = $originalInfoFile && $originalInfoFile->getWidth() <= self::MAX_FILE_WIDTH && $originalInfoFile->getHeight() <= self::MAX_FILE_HEIGHT && $originalInfoFile->getSize() <= self::MAX_FILE_SIZE;
+            $mediaRelation = $options['mediaRelation'] = !empty($options['mediaRelation']) ? $options['mediaRelation'] : ($asMediaModel ? $mediaModel->mediaRelation : null);
+            $execute = $infoFile = false;
+
+            $loaderFilename = $options['loaderFilename'] ?? null;
+            if ($loaderFilename && !$generator) {
+                $prefix = $this->inAdmin ? 'admin' : 'front';
+                $cacheFile = $this->projectDirname . '/public/thumbnails/generated/' . $prefix . '-' . $this->uploadDirname . '.cache.json';
+                $cacheFile = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $cacheFile);
+                if (!isset($this->cache['json_data']) && $this->filesystem->exists($cacheFile)) {
+                    $this->cache['json_data'] = (array)json_decode(file_get_contents($cacheFile));
+                }
+            }
 
         if ($media instanceof Media\Media && $media->getFilename()) {
             $extension = $this->getExtension($media);
@@ -229,16 +239,21 @@ class ImageThumbnail implements ImageThumbnailInterface
                         || str_contains($originalDirname, 'placeholder.jpeg');
                     $execute = $isEnableMedia || $isEnableEnv;
                     $execute = $execute && $sizeAllowed;
+
+                    if ($loaderFilename && isset($this->cache['json_data'][$loaderFilename])) {
+                        $execute = false;
+                    }
+
                     try {
                         $thumb = $this->getScreenThumb($screenMedia, $mediaRelation, $thumbs, $screen, $dirname, $size, $options);
                         $thumb = $mediaRelation ? $this->setRatio($mediaRelation, $thumb, $size, $options) : $thumb;
                         $runtimeConfig = $this->getRuntimeConfig($thumb->thumb, $size, $options);
                         $thumbnails['runtimeConfig'][$size] = $runtimeConfig;
                         $thumbnails['thumbs'][$size] = $thumb;
-                        if ($execute) {
+                        if ($execute || ($loaderFilename && isset($this->cache['json_data'][$loaderFilename]))) {
                             $thumbnails['files'][$size] = $this->publicPath($this->getThumbnail($thumb, $runtimeConfig, null, $options, $size));
                         } else {
-                            $thumbnails['files'][$size] = $this->publicPath($dirname);
+                            $thumbnails['files'][$size] = $this->publicPath($this->getThumbnail($thumb, $runtimeConfig, null, array_merge($options, ['noCache' => true]), $size));
                         }
                         if (isset($options['strictSize']) && $options['strictSize'] && isset($options['path']) && $options['path'] && isset($options['filter']) && $options['filter']) {
                             return !str_contains($thumbnails['files'][$size], $this->coreLocator->schemeAndHttpHost())
@@ -261,6 +276,10 @@ class ImageThumbnail implements ImageThumbnailInterface
             if ($this->coreLocator->authorizationChecker()->isGranted('ROLE_ADMIN')) {
                 $thumbnails = $this->largeFile($thumbnails, $originalInfoFile);
             }
+        }
+
+        if (str_contains($options['originalSrc'], 'andalusia-spain')) {
+            // dump($thumbnails);
         }
 
         $mediaRelationIntl = $asMediaModel ? $mediaModel->intl : null;
@@ -329,55 +348,104 @@ class ImageThumbnail implements ImageThumbnailInterface
     ): object {
 
         $thumbConfiguration = !empty($thumbs[$screen]) ? $thumbs[$screen] : null;
-        if (!$thumbConfiguration) {
-            foreach ($thumbs as $thumbConfiguration) {
-                break;
+        if (!$thumbConfiguration && !empty($thumbs)) {
+            foreach (['desktop', 'tablet', 'mobile'] as $screenKey) {
+                if (!empty($thumbs[$screenKey])) {
+                    $thumbConfiguration = $thumbs[$screenKey];
+                    break;
+                }
             }
         }
 
         $isRetinaSize = in_array($size, self::RETINA_SIZES);
         $retinaSet = false;
 
-        if (!empty($options['screensSizes'])) {
-            foreach ($options['screensSizes'] as $screen => $sizes) {
-                if (in_array($size, self::SCREENS_SIZES[$screen])) {
-                    $options['maxWidth'] = !empty($sizes['width']) ? $sizes['width'] : null;
-                    $options['maxHeight'] = !empty($sizes['height']) ? $sizes['height'] : null;
+        $optionsScreensSizes = !empty($options['screensSizes']) ? $options['screensSizes'] : [];
+        $optionMaxWidth = !empty($options['maxWidth']) ? intval($options['maxWidth']) : null;
+        $optionMaxHeight = !empty($options['maxHeight']) ? intval($options['maxHeight']) : null;
+
+        $width = null;
+        $height = null;
+
+        // 1. Priority: MediaRelation
+        if ($mediaRelation) {
+            $methodWidth = 'desktop' === $screen ? 'getMaxWidth' : 'get'.ucfirst($screen).'MaxWidth';
+            $methodHeight = 'desktop' === $screen ? 'getMaxHeight' : 'get'.ucfirst($screen).'MaxHeight';
+            $width = method_exists($mediaRelation, $methodWidth) ? $mediaRelation->$methodWidth() : null;
+            $height = method_exists($mediaRelation, $methodHeight) ? $mediaRelation->$methodHeight() : null;
+
+            if (!$width && !$height) {
+                $width = method_exists($mediaRelation, 'getMaxWidth') ? $mediaRelation->getMaxWidth() : null;
+                $height = method_exists($mediaRelation, 'getMaxHeight') ? $mediaRelation->getMaxHeight() : null;
+            }
+        }
+
+        // 2. Priority: screensSizes (passed in options)
+        if ((!$width && !$height) && !empty($optionsScreensSizes)) {
+            foreach ($optionsScreensSizes as $optScreen => $sizes) {
+                if (in_array($size, self::SCREENS_SIZES[$optScreen])) {
+                    $width = !empty($sizes['width']) ? intval($sizes['width']) : null;
+                    $height = !empty($sizes['height']) ? intval($sizes['height']) : null;
+                    break;
                 }
             }
         }
 
-        $optionMaxWidth = !empty($options['maxWidth']) ? intval($options['maxWidth']) : null;
-        if ($isRetinaSize && !empty($optionMaxWidth)) {
-            $optionMaxWidth = (int) ceil($optionMaxWidth * 2);
-            $retinaSet = true;
+        // 3. Priority: width and height (passed in options)
+        if (!$width && !$height) {
+            $width = $optionMaxWidth;
+            $height = $optionMaxHeight;
         }
-        $optionMaxHeight = !empty($options['maxHeight']) ? intval($options['maxHeight']) : null;
-        if ($isRetinaSize && !empty($optionMaxHeight)) {
-            $optionMaxHeight = (int) ceil($optionMaxHeight * 2);
+
+        // 4. Priority: ThumbConfiguration
+        if ((!$width && !$height) && $thumbConfiguration instanceof Media\ThumbConfiguration) {
+            $width = $thumbConfiguration->getWidth();
+            $height = $thumbConfiguration->getHeight();
+        }
+
+        // Retina adjustment for options/relation sizes
+        if ($isRetinaSize && ($width || $height)) {
+            $width = $width ? (int) ceil($width * 2) : null;
+            $height = $height ? (int) ceil($height * 2) : null;
             $retinaSet = true;
         }
 
-        if (('desktop' === $media->getScreen() || !$media->getId()) && $thumbConfiguration instanceof Media\ThumbConfiguration) {
+        // Si on n'a toujours pas de taille définie, utiliser les tailles par défaut par écran
+        if (!$width && !$height) {
+            $width = self::SCREENS_SIZES_ATTR[$screen];
+            // Pour mobile et tablet, on laisse la hauteur auto si non définie ?
+            // L'utilisateur a fourni des constantes SCREENS_SIZES_ATTR qui ne contiennent que la largeur.
+        }
+
+        if (!$thumbConfiguration && ($width || $height)) {
+            $thumbConfiguration = new Media\ThumbConfiguration();
+            $thumbConfiguration->setWidth($width);
+            $thumbConfiguration->setHeight($height);
+            $thumbConfiguration->setScreen($screen);
+        }
+
+        if ($thumbConfiguration instanceof Media\ThumbConfiguration) {
             foreach ($media->getThumbs() as $mediaThumb) {
                 if ($mediaThumb->getConfiguration()->getId() === $thumbConfiguration->getId() && ($mediaThumb->getWidth() > 0 || $mediaThumb->getHeight() > 0)) {
-                    $thumbInfo = $this->setThumbInfos($media, $screen, $dirname, $size, $thumbConfiguration->getWidth(), $thumbConfiguration->getHeight(), $options, $thumbConfiguration);
+                    $thumbInfo = $this->setThumbInfos($media, $screen, $dirname, $size, $width, $height, $options, $thumbConfiguration);
                     $thumb = $thumbInfo->thumb;
-                    $width = $mediaThumb->getWidth();
-                    $height = $mediaThumb->getHeight();
+                    $mediaThumbWidth = $mediaThumb->getWidth();
+                    $mediaThumbHeight = $mediaThumb->getHeight();
                     $dataX = $isRetinaSize && is_numeric($mediaThumb->getDataX()) ? $mediaThumb->getDataX() * 2 : $mediaThumb->getDataX();
                     $dataY = $isRetinaSize && is_numeric($mediaThumb->getDataY()) ? $mediaThumb->getDataY() * 2 : $mediaThumb->getDataY();
                     $scale = $isRetinaSize ? 2 : 1;
+
                     if ($mediaThumb->getWidth() > $size) {
-                        $width = $size;
-                        $height = (int) ceil(($mediaThumb->getHeight() * $width) / $mediaThumb->getWidth());
-                        $dataX = (int) ceil(($width * $mediaThumb->getDataX()) / $mediaThumb->getWidth());
-                        $dataY = (int) ceil(($height * $mediaThumb->getDataY()) / $mediaThumb->getHeight());
+                        $mediaThumbWidth = $size;
+                        $mediaThumbHeight = (int) ceil(($mediaThumb->getHeight() * $mediaThumbWidth) / $mediaThumb->getWidth());
+                        $dataX = (int) ceil(($mediaThumbWidth * $mediaThumb->getDataX()) / $mediaThumb->getWidth());
+                        $dataY = (int) ceil(($mediaThumbHeight * $mediaThumb->getDataY()) / $mediaThumb->getHeight());
                         $scale = $size / $mediaThumb->getWidth();
                     }
+
                     $thumbConfiguration = $thumb->getConfiguration();
-                    $thumb->setWidth($width);
-                    $thumb->setHeight($height);
+                    $thumb->setWidth($mediaThumbWidth);
+                    $thumb->setHeight($mediaThumbHeight);
                     $thumb->setDataX($dataX);
                     $thumb->setDataY($dataY);
                     $thumb->setRotate($mediaThumb->getRotate());
@@ -391,18 +459,15 @@ class ImageThumbnail implements ImageThumbnailInterface
                 }
             }
         }
-        $methodWidth = 'desktop' === $screen ? 'getMaxWidth' : 'get'.ucfirst($screen).'MaxWidth';
-        $methodHeight = 'desktop' === $screen ? 'getMaxHeight' : 'get'.ucfirst($screen).'MaxHeight';
-        $width = $mediaRelation && $mediaRelation->$methodWidth() ? $mediaRelation->$methodWidth() : ($mediaRelation && $mediaRelation->getMaxWidth() ? $mediaRelation->getMaxWidth()
-            : ($thumbConfiguration ? $thumbConfiguration->getWidth() : (!empty($optionMaxWidth) ? $optionMaxWidth : null)));
-        $height = $mediaRelation && $mediaRelation->$methodHeight() ? $mediaRelation->$methodHeight() : ($mediaRelation && $mediaRelation->getMaxHeight() ? $mediaRelation->getMaxHeight()
-            : ($thumbConfiguration ? $thumbConfiguration->getHeight() : (!empty($optionMaxHeight) ? $optionMaxHeight : null)));
+
+        if (!$width && !$height) {
+            $width = self::SCREENS_SIZES_ATTR[$screen] ?? 1920;
+        }
 
         if (!$thumbConfiguration && ($width || $height)) {
-            $newThumb = new Media\ThumbConfiguration();
-            $newThumb->setWidth($width);
-            $newThumb->setHeight($height);
-            $thumbConfiguration = $newThumb;
+            $thumbConfiguration = new Media\ThumbConfiguration();
+            $thumbConfiguration->setWidth($width);
+            $thumbConfiguration->setHeight($height);
         }
 
         if ($thumbConfiguration && $thumbConfiguration->getWidth()
@@ -414,6 +479,7 @@ class ImageThumbnail implements ImageThumbnailInterface
             $newThumb = new Media\ThumbConfiguration();
             $newThumb->setWidth($width);
             $newThumb->setHeight($height);
+            $newThumb->setScreen($screen);
             $newThumb->setFixedHeight($thumbConfiguration->isFixedHeight());
             $thumbConfiguration = $newThumb;
         }
@@ -449,44 +515,6 @@ class ImageThumbnail implements ImageThumbnailInterface
                 $thumbConfiguration = $newThumb;
             }
             return $this->setThumbInfos($media, $screen, $dirname, $size, $width, $height, $options, $thumbConfiguration);
-        }
-
-        if (!empty($options['screensSizes'][$screen])) {
-            $width = !empty($options['screensSizes'][$screen]['width']) ? intval($options['screensSizes'][$screen]['width']) : null;
-            $height = !empty($options['screensSizes'][$screen]['height']) ? intval($options['screensSizes'][$screen]['height']) : null;
-            return $this->setThumbInfos($media, $screen, $dirname, $size, $width, $height, $options);
-        }
-
-        $filename = $media->getFilename();
-        if ($filename) {
-            $width = !empty($options['width']) ? $options['width'] : (!empty($optionMaxWidth) ? $optionMaxWidth : null);
-            $height = !empty($options['height']) ? $options['height'] : (!empty($optionMaxHeight) ? $optionMaxHeight : null);
-            if (!empty($options['filter'])) {
-                if (!$this->yamlConfig) {
-                    $yamlDirname = $this->projectDirname.'/config/packages/liip_imagine.yaml';
-                    $yamlDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $yamlDirname);
-                    $this->yamlConfig = Yaml::parseFile($yamlDirname);
-                }
-                $yamlSizes = $this->getYamlSizes($options['filter']);
-                $width = !empty($yamlSizes['width']) ? $yamlSizes['width'] : $width;
-                $height = !empty($yamlSizes['height']) ? $yamlSizes['height'] : $height;
-            }
-            if ($isRetinaSize && !$retinaSet && $width > 0 && $height > 0) {
-                $width = (int) ceil($width * 2);
-                $height = (int) ceil($height * 2);
-                $dimensions = $this->getImageDimensions($dirname);
-                $originalWidth = $dimensions['width'];
-                $originalHeight = $dimensions['height'];
-                if ($originalHeight < $height) {
-                    $width = null;
-                    $height = $originalHeight;
-                }
-                if ($originalWidth < $width) {
-                    $width = $originalWidth;
-                    $height = null;
-                }
-            }
-            return $this->setThumbInfos($media, $screen, $dirname, $size, $width, $height, $options);
         }
 
         return (object) [];
@@ -745,13 +773,41 @@ class ImageThumbnail implements ImageThumbnailInterface
 
         if (in_array($extension, self::ALLOWED_EXTENSIONS)) {
             $imagineWebp = (self::ACTIVE_WEBP && $this->isWebpSupported() && 'webp' !== $extension) || self::ALWAYS_WEBP;
+            $filter = 1 === $quality ? 'media1' : ($filter ?: (self::FORCE_QUALITY ? 'media100' : 'media'.$quality));
+
+            if ($imagineWebp && 'media1' !== $filter) {
+                // Essayer de deviner le chemin webp/avif final AVANT de faire appel à Imagine
+                $filename = $media ? $media->getFilename() : basename($dirname);
+                $uploadDir = $media && $media->getWebsite() ? $media->getWebsite()->getUploadDirname() : $this->uploadDirname;
+                $finalThumbDir = $this->projectDirname . '/public/media/cache/' . $filter . '/uploads/' . $uploadDir . '/' . $filename;
+                $finalThumbDir = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $finalThumbDir);
+
+                // Si c'est une image hors uploads (ex: build ou medias)
+                if ($media && !str_contains($media->getFilename(), 'uploads/')) {
+                    $finalThumbDir = $this->projectDirname . '/public/media/cache/' . $filter . '/' . ltrim($media->getFilename(), '/');
+                    $finalThumbDir = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $finalThumbDir);
+                }
+
+                $avifFile = $finalThumbDir . '.avif';
+                $webpFile = $finalThumbDir . '.webp';
+
+                if (self::ACTIVE_AVIF && $this->isAvifSupported() && $this->filesystem->exists($avifFile)) {
+                    $path = $this->schemeAndHttpHost . str_replace([$this->projectDirname . '/public', '\\'], ['', '/'], $avifFile);
+                    return str_replace(['//thumbnails', '/public'], ['/thumbnails', ''], $path);
+                }
+
+                if ($this->filesystem->exists($webpFile)) {
+                    $path = $this->schemeAndHttpHost . str_replace([$this->projectDirname . '/public', '\\'], ['', '/'], $webpFile);
+                    return str_replace(['//thumbnails', '/public'], ['/thumbnails', ''], $path);
+                }
+            }
+
             $cacheDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $this->coreLocator->projectDir().'/public'.$dirname);
             $dimensions = $this->getImageDimensions($this->coreLocator->projectDir().'/public'.$dirname);
             $originalWidth = $dimensions['width'];
             $originalHeight = $dimensions['height'];
             $cropWidth = !empty($runtimeConfig['thumbnail']['size'][0]) ? $runtimeConfig['thumbnail']['size'][0] : null;
             $cropHeight = !empty($runtimeConfig['thumbnail']['size'][1]) ? $runtimeConfig['thumbnail']['size'][1] : null;
-            $filter = 1 === $quality ? 'media1' : ($filter ?: (self::FORCE_QUALITY ? 'media100' : 'media'.$quality));
             $loaderFilename = $options['loaderFilename'] ?? null;
             if ('media1' !== $filter && $cropWidth === $originalWidth && $cropHeight === $originalHeight) {
                 $copyDirname = $this->coreLocator->projectDir().'/public/thumbnails/originals'.$dirname;
@@ -777,11 +833,13 @@ class ImageThumbnail implements ImageThumbnailInterface
                     $filesystem->mkdir($dirnameGenerated);
                 }
                 $dirnameGenerated = $dirnameGenerated.$prefix.'-'.$media->getWebsite()->getUploadDirname().'.cache.json';
-                $jsonData = $filesystem->exists($dirnameGenerated) ? (array) json_decode(file_get_contents($dirnameGenerated)) : [];
-                if (!isset($jsonData[$loaderFilename]) && empty($options['noCache'])) {
-                    $jsonData[$loaderFilename] = true;
+                if (!isset($this->cache['json_data'])) {
+                    $this->cache['json_data'] = $filesystem->exists($dirnameGenerated) ? (array) json_decode(file_get_contents($dirnameGenerated)) : [];
+                }
+                if (!isset($this->cache['json_data'][$loaderFilename]) && empty($options['noCache'])) {
+                    $this->cache['json_data'][$loaderFilename] = true;
                     $fp = fopen($dirnameGenerated, 'w');
-                    fwrite($fp, json_encode($jsonData, JSON_PRETTY_PRINT));
+                    fwrite($fp, json_encode($this->cache['json_data'], JSON_PRETTY_PRINT));
                     fclose($fp);
                 }
             }
@@ -797,8 +855,12 @@ class ImageThumbnail implements ImageThumbnailInterface
                     $newDirname = str_replace('.webp', '.avif', $newDirname);
                 }
                 $newPath = $this->schemeAndHttpHost.str_replace([$this->coreLocator->projectDir(), '\\public', '\\'], ['', '', '/'], $newDirname);
-                if (($this->filesystem->exists($copyDirname) && !$this->filesystem->exists($newDirname))
-                    || ($this->filesystem->exists($copyDirname) && 'media1' === $filter && !$this->filesystem->exists($newDirname))) {
+
+                if ($this->filesystem->exists($newDirname)) {
+                    return $newPath;
+                }
+
+                if ($this->filesystem->exists($copyDirname)) {
                     try {
                         $img = 'png' === $extension ? @imagecreatefrompng($copyDirname) : @imagecreatefromjpeg($copyDirname);
                         $function = $imagineWebp ? 'imagewebp' : ('png' === $extension ? 'imagepng' : 'imagejpeg');

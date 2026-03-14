@@ -31,7 +31,7 @@
 
                 a, a span {
 
-                    transition: color .3s linear;
+                    transition: color $transition-base;
 
                     &:hover, &:focus {
                         transition: $transition-base;

@@ -155,15 +155,15 @@
     background: rgba(120, 130, 95, .35);
     backdrop-filter: blur(14px);
     box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
+    transition: $btn-transition;
 
     i {
         color: $white !important;
     }
 
-    @include mediaQuery(min-lg) {
-        &:hover, &:active, &:focus {
-            transform: scale(1.02);
-            background: rgba(120, 130, 95, .42);
-        }
+    &:hover, &:active, &:focus {
+        transform: scale(1.02);
+        background: rgba(120, 130, 95, .42);
+        transition: $btn-transition;
     }
 }

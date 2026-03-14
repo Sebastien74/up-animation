@@ -40,6 +40,12 @@
 
 /*-- a - Gdpr --*/
 
+$transition-base: all .4s cubic-bezier(0.65, 0, 0.35, 1) !default;
+$transition-fast: all .2s cubic-bezier(0.65, 0, 0.35, 1) !default;
+$transition-slow: all .6s cubic-bezier(0.65, 0, 0.35, 1) !default;
+
+$btn-transition: $transition-base !default;
+
 $enable-gdpr-axeptio: true !default;
 $enable-gdpr-cms: false !default;
 $enable-gdpr-page: false !default;
@@ -460,7 +466,7 @@ $elements: map-merge((
     'a.link, a.link span, a.link svg, .open-gdpr-modal.link, .body a, .introduction a, a.phone-link, a.email-link': (
         'properties': (
             'color': $primary,
-            'transition': all .3s linear,
+            'transition': $transition-base,
         ),
         'colors-in-backgrounds': (
             'primary': $white,
@@ -480,7 +486,7 @@ $elements: map-merge((
     'a:hover, a:hover .title, a:hover span, a.link:hover, a.link:hover span': (
         'properties': (
             'color': $primary,
-            'transition': all .3s linear,
+            'transition': $transition-base,
         ),
         'colors-in-backgrounds': (
             'primary': $white,
@@ -907,12 +913,6 @@ $btn-line-height: inherit;
 $btn-font-size: $font-size-base;
 $btn-font-size-md: $btn-font-size;
 $btn-font-size-xs: $btn-font-size;
-
-$transition-base: all .3s cubic-bezier(0.4, 0, 0.2, 1) !default;
-$transition-fast: all .15s cubic-bezier(0.4, 0, 0.2, 1) !default;
-$transition-slow: all .5s cubic-bezier(0.4, 0, 0.2, 1) !default;
-
-$btn-transition: all .3s cubic-bezier(0.4, 0, 0.2, 1) !default;
 
 $btn-padding-top: 1rem;
 $btn-padding-bottom: 1rem;
