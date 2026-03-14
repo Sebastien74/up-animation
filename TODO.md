@@ -1,7 +1,5 @@
 Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
-{%- if vars.webmaster is defined and granted('ROLE_ADMIN') -%} AJOUTER granted('ROLE_ADMIN')
-
 Mettre ces balises trans pour les long textes
 
 {% trans with {'%agency_list%': agency_list|raw} %}
