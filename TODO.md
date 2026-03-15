@@ -1,6 +1,37 @@
 Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
-Finir le feed instagram etc ....
+Faire ube fiche PDF activités
+
+Faire un Générateur d’invitation entreprise
+Le client génère un PDF.
+Invitation
+Team building entreprise
+Date : 12 juin
+Lieu : Annecy
+
+Contenus viraux
+Classement des meilleures activités
+Articles type :
+Top 20 des activités de team building
+Top 10 des activités fun pour entreprise
+Top 15 des activités à faire à Annecy
+
+
+Pages SEO locales
+Créer beaucoup de pages ciblées.
+Exemples :
+team building annecy
+team building lyon
+team building grenoble
+team building geneve
+Google adore ce type de pages.
+Structure :
+Activités disponibles
+Photos
+Lieux partenaires
+Idées d’événements
+
+Finir le feed instagram etc .... Commit Feed 
 
 Mettre ces balises trans pour les long textes
 
@@ -450,8 +481,6 @@ Refaire le placeholder
 Refaire tous le security login, mdp, emails... mettre le logo up animations dans les mails Et ajouter les trads
 
 Dans index configuration et teaser tester les différentes possibilités.. ex : juste sous catégories. Plutôt que de faire des boucles peut etre faire des requetes ?
-
-Refaire le bouton webmaster front à la charte dark
 
 Enregister toutes les ancienne url dans l'url pour faire les redirections
 

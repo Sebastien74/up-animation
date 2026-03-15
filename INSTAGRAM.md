@@ -35,23 +35,45 @@ Pendant que l'application est en mode "Développement", vous devez ajouter manue
 
 ## 4. Génération du Token d'accès (Access Token)
 
+Vous avez deux options pour générer le token :
+
+### Option A : Connexion automatique (Recommandée)
+
+1. Dans l'administration du site, allez dans **Configuration du site** > onglet **Instagram**.
+2. Saisissez votre **App ID** et votre **App Secret** récupérés sur Meta for Developers.
+3. Enregistrez la configuration.
+4. Un bouton **Connecter mon compte Instagram** apparaît. Cliquez dessus.
+5. Autorisez l'accès sur la page Instagram qui s'ouvre.
+6. Le token sera automatiquement récupéré et enregistré.
+
+### Option B : Génération manuelle
+
 1. Retournez dans le tableau de bord Meta for Developers.
 2. Allez dans **Instagram Basic Display** > **Basic Display**.
 3. Faites défiler jusqu'à **User Token Generator**.
 4. Cliquez sur le bouton **Generate Token** en face du compte Instagram de test.
 5. Connectez-vous si nécessaire et autorisez l'accès.
-6. **Copiez le token généré.**
+6. Copiez le token généré et collez-le dans le champ **API token (Manuel)** de l'administration.
 
-## 5. Configuration dans le CMS
+## 5. Configuration de l'URL de retour (Callback)
+
+Pour l'Option A, vous devez configurer l'URL de redirection dans Meta for Developers :
+1. Dans **Instagram Basic Display** > **Basic Display**.
+2. Dans le champ **Valid OAuth Redirect URIs**, ajoutez : `https://[votre-domaine.com]/instagram/callback`
+3. Faites de même pour **Deauthorize Callback URL** et **Data Deletion Request URL** (vous pouvez utiliser la même URL ou l'URL de base du site).
+
+## 6. Configuration dans le CMS
 
 1. Connectez-vous à l'administration du site.
-2. Allez dans la section **API** ou **Configuration du site**.
-3. Trouvez l'onglet **Instagram**.
-4. Collez le **Token d'accès** dans le champ prévu à cet effet.
-5. Indiquez le **Nombre d'items** à afficher (par défaut 7).
-6. Enregistrez.
+2. Allez dans la section **Configuration du site** (via l'icône roue dentée).
+3. Trouvez l'onglet **Instagram** (ou l'entrée API correspondante).
+4. Configurez les champs suivants :
+    - **App ID** : L'ID de votre application Instagram.
+    - **App Secret** : Le secret de votre application Instagram.
+    - **Nombre d'items** : Nombre de médias à afficher.
+5. Enregistrez.
 
-## 6. Utilisation technique
+## 7. Utilisation technique
 
 Le système utilise le contrôleur suivant pour le rendu :
 - **Controller** : `App\Controller\Front\Action\Feed\InstagramController::index`
@@ -62,6 +84,20 @@ Pour appeler le feed dans un autre template Twig ou via une action :
 {{ render(controller('App\\Controller\\Front\\Action\\Feed\\InstagramController::index')) }}
 ```
 
-## Maintenance des Tokens
+## 8. Maintenance des Tokens
 
 Les tokens générés sont des tokens de "longue durée" (60 jours). Le service PHP inclus (`InstagramService`) possède une méthode `refreshToken` qui permet de renouveler automatiquement le token avant son expiration.
+
+## 9. Dépannage (Troubleshooting)
+
+### Erreur "Logged-in use not supported"
+Si vous voyez ce message en cliquant sur le bouton **Connecter mon compte Instagram** :
+1. Déconnectez-vous de votre compte Facebook et Instagram personnel sur votre navigateur.
+2. Utilisez une fenêtre de **navigation privée**.
+3. Assurez-vous d'avoir bien ajouté le compte Instagram souhaité dans la section **Instagram Testers** de votre application Meta for Developers et d'avoir accepté l'invitation sur le compte concerné.
+
+### Erreur "400 Bad Request"
+Cela arrive souvent si :
+1. L'**App Secret** est incorrect.
+2. Le code d'autorisation a expiré (vous avez attendu trop longtemps sur la page d'autorisation). Réessayez la procédure.
+3. L'**URL de redirection** configurée dans Meta for Developers ne correspond pas exactement à celle générée par le site (incluant le `https://` et le `/instagram/callback`).

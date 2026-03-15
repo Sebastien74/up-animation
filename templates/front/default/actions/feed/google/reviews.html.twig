@@ -1,0 +1,56 @@
+<div class="google-reviews-feed container my-5">
+    {% if reviews is not empty %}
+        <div class="d-flex align-items-center mb-4">
+            <h2 class="mb-0 me-3">{{ 'Avis Google'|trans }}</h2>
+            {% if rating %}
+                <div class="google-rating d-flex align-items-center">
+                    <span class="fw-bold me-2">{{ rating }}</span>
+                    <div class="stars text-warning me-2">
+                        {% for i in 1..5 %}
+                            <i class="fa{% if i <= rating %}-solid{% else %}-regular{% endif %} fa-star"></i>
+                        {% endfor %}
+                    </div>
+                    {% if user_ratings_total %}
+                        <small class="text-muted">({{ user_ratings_total }} {{ 'avis'|trans }})</small>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="row g-4">
+            {% for review in reviews %}
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="{{ review.profile_photo_url }}" alt="{{ review.author_name }}" class="rounded-circle me-3" width="45" height="45" loading="lazy">
+                                <div>
+                                    <h5 class="card-title mb-0 fs-6">{{ review.author_name }}</h5>
+                                    <div class="stars text-warning small">
+                                        {% for i in 1..5 %}
+                                            <i class="fa{% if i <= review.rating %}-solid{% else %}-regular{% endif %} fa-star"></i>
+                                        {% endfor %}
+                                    </div>
+                                    <small class="text-muted" style="font-size: 0.75rem;">{{ review.relative_time_description }}</small>
+                                </div>
+                            </div>
+                            <p class="card-text small mb-0">
+                                {{ review.text|nl2br }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if google.placeId %}
+            <div class="text-center mt-4">
+                <a href="https://search.google.com/local/reviews?placeid={{ google.placeId }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm">
+                    {{ 'Voir tous les avis sur Google'|trans }}
+                </a>
+            </div>
+        {% endif %}
+    {% else %}
+        <p class="text-center text-muted">{{ 'Aucun avis disponible pour le moment.'|trans }}</p>
+    {% endif %}
+</div>

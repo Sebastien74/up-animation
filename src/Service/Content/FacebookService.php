@@ -28,7 +28,7 @@ class FacebookService
     }
 
     /**
-     * Get Facebook feed.
+     * Get a Facebook feed.
      *
      * @throws InvalidArgumentException
      */
@@ -42,7 +42,7 @@ class FacebookService
         }
 
         $cacheKey = 'facebook_feed_' . md5($accessToken . $pageId);
-
+        
         return $this->cache->get($cacheKey, function (ItemInterface $item) use ($accessToken, $pageId, $facebookModel) {
             $item->expiresAfter(self::CACHE_EXPIRE);
 
@@ -55,11 +55,9 @@ class FacebookService
                         'limit' => $facebookModel->nbrItems ?: 10,
                     ],
                 ]);
-
                 if ($response->getStatusCode() !== 200) {
                     return [];
                 }
-
                 $data = $response->toArray();
                 return $data['data'] ?? [];
             } catch (Throwable) {

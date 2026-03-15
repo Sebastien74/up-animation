@@ -1,4 +1,22 @@
-{%- trans_default_domain 'admin' -%}
+{%- block instagram_api_widget -%}
+    <div class="row">
+        {{ form_row(form.appId) }}
+        {{ form_row(form.appSecret) }}
+        <div class="col-12 mb-3">
+            {% if auth_url is defined %}
+                <a href="{{ auth_url }}" class="btn btn-primary">
+                    <i class="fab fa-instagram me-2"></i>{{ 'Connecter mon compte Instagram'|trans }}
+                </a>
+            {% else %}
+                <div class="alert alert-info">
+                    {{ 'Veuillez saisir votre App ID et enregistrer pour activer le bouton de connexion.'|trans }}
+                </div>
+            {% endif %}
+        </div>
+        {{ form_row(form.accessToken) }}
+        {{ form_row(form.nbrItems) }}
+    </div>
+{%- endblock -%}
 
 {%- block _col_size_size_widget -%}
     <div id="{{ id }}" class="w-100 text-center d-flex justify-content-center flex-wrap gap-2">

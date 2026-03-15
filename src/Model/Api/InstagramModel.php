@@ -26,6 +26,8 @@ final class InstagramModel extends BaseModel
         public readonly ?int $id = null,
         public readonly ?Instagram $entity = null,
         public readonly ?string $accessToken = null,
+        public readonly ?string $appId = null,
+        public readonly ?string $appSecret = null,
         public readonly ?int $nbrItems = null,
         public readonly ?string $widget = null,
     ) {
@@ -52,6 +54,8 @@ final class InstagramModel extends BaseModel
             id: $instagram->getId(),
             entity: $instagram,
             accessToken: self::getContent('accessToken', $api),
+            appId: self::getContent('appId', $api),
+            appSecret: self::getContent('appSecret', $api),
             nbrItems: self::getContent('nbrItems', $api),
             widget: self::getContent('widget', $api),
         );
@@ -65,9 +69,17 @@ final class InstagramModel extends BaseModel
     public static function modelCache(object $data): InstagramModel
     {
         return new self(
+//            id: $data->id,
+//            accessToken: $data->accessToken,
+//            appId: $data->appId ?? null,
+//            appSecret: $data->appSecret ?? null,
+//            nbrItems: $data->nbrItems,
+//            widget: $data->widget,
             id: $data->id,
             accessToken: $data->accessToken,
-            nbrItems: $data->nbrItems,
+            appId: '1227922292865765',
+            appSecret: '7e4fd55b09b2b2bb623b3ee1c96a7c77',
+            nbrItems: 7,
             widget: $data->widget,
         );
     }

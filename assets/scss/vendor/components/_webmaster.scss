@@ -29,7 +29,7 @@ $enable-dropdown: true;
    2 ) Webmaster buttons toolbar
 -----------------------------------*/
 
-$primary: #6f42c1;
+$primary: #2e1e51;
 $primary-darken: shade-color($primary, 20%);
 $success: #01796f;
 $danger: #a82835;
@@ -202,8 +202,8 @@ html body a.webmaster-link-edit {
     top: 15px !important;
     left: 15px !important;
     font-size: 12px !important;
-    background-color: $success !important;
-    border-color: $success !important;
+    background-color: $primary !important;
+    border-color: $primary !important;
     color: $white !important;
     min-width: initial !important;
 

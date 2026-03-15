@@ -44,7 +44,6 @@ class TikTokService
 
         return $this->cache->get($cacheKey, function (ItemInterface $item) use ($accessToken, $tiktokModel) {
             $item->expiresAfter(self::CACHE_EXPIRE);
-
             try {
                 $response = $this->httpClient->request('POST', self::API_URL, [
                     'headers' => [
@@ -56,11 +55,9 @@ class TikTokService
                         'max_count' => $tiktokModel->nbrItems ?: 10,
                     ],
                 ]);
-
                 if ($response->getStatusCode() !== 200) {
                     return [];
                 }
-
                 $data = $response->toArray();
                 return $data['data']['videos'] ?? [];
             } catch (Throwable) {

@@ -6,25 +6,22 @@ namespace App\Controller\Front\Action\Feed;
 
 use App\Controller\Front\ActionController;
 use App\Service\Content\ActionService;
-use App\Service\Content\InstagramService;
+use App\Service\Content\GoogleReviewService;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Service\Interface\FrontLocatorInterface;
-use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * InstagramController.
+ * GoogleReviewController.
  *
- * Front Instagram feed renders.
+ * Front Google reviews renders.
  */
-class InstagramController extends ActionController
+class GoogleReviewController extends ActionController
 {
-
     public function __construct(
-        private readonly InstagramService $instagramService,
+        private readonly GoogleReviewService $googleReviewService,
         #[AutowireLocator(ActionService::class, indexAttribute: 'key')] ServiceLocator $actionLocator,
         FrontLocatorInterface $frontLocator,
         CoreLocatorInterface $coreLocator
@@ -33,28 +30,26 @@ class InstagramController extends ActionController
     }
 
     /**
-     * Render Instagram feed.
-     *
-     * @throws InvalidArgumentException
+     * Render Google reviews.
      */
-    #[Route('/instagram/index', name: 'front_instagram_index', options: ['isMainRequest' => false], methods: 'GET', schemes: '%protocol%')]
     public function index(): Response
     {
         $website = $this->getWebsite();
-        $instagramModel = $website->api?->instagram;
+        $googleModel = $website->api?->google;
 
-        dd($instagramModel->accessToken);
-
-
-        if (!$instagramModel || !$instagramModel->accessToken) {
+        if (!$googleModel || !$googleModel->mapKey || !$googleModel->placeId) {
             return new Response();
         }
-        $feed = $this->instagramService->getFeed($instagramModel);
+
+        $data = $this->googleReviewService->getReviews($googleModel);
+        
         $template = $website->configuration->template;
 
-        return $this->render('front/' . $template . '/actions/feed/instagram/html.twig', [
-            'instagram' => $instagramModel,
-            'feed' => $feed,
+        return $this->render('front/' . $template . '/actions/feed/google/reviews.html.twig', [
+            'google' => $googleModel,
+            'reviews' => $data['reviews'] ?? [],
+            'rating' => $data['rating'] ?? null,
+            'user_ratings_total' => $data['user_ratings_total'] ?? null,
         ]);
     }
 }

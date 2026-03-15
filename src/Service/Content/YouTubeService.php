@@ -45,7 +45,6 @@ class YouTubeService
 
         return $this->cache->get($cacheKey, function (ItemInterface $item) use ($apiKey, $channelId, $googleModel) {
             $item->expiresAfter(self::CACHE_EXPIRE);
-
             try {
                 $response = $this->httpClient->request('GET', self::API_URL, [
                     'query' => [
@@ -57,11 +56,9 @@ class YouTubeService
                         'type' => 'video',
                     ],
                 ]);
-
                 if ($response->getStatusCode() !== 200) {
                     return [];
                 }
-
                 $data = $response->toArray();
                 return $data['items'] ?? [];
             } catch (Throwable) {

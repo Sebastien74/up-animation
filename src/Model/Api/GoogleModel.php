@@ -38,6 +38,7 @@ final class GoogleModel extends BaseModel
         public readonly ?string $youtubeApiKey = null,
         public readonly ?string $youtubeChannelId = null,
         public readonly ?int $youtubeNbrItems = null,
+        public readonly ?int $googleReviewsNbrItems = null,
     ) {
     }
 
@@ -75,6 +76,7 @@ final class GoogleModel extends BaseModel
             youtubeApiKey: self::getContent('youtubeApiKey', $api),
             youtubeChannelId: self::getContent('youtubeChannelId', $api),
             youtubeNbrItems: self::getContent('youtubeNbrItems', $api),
+            googleReviewsNbrItems: self::getContent('googleReviewsNbrItems', $api),
         );
 
         return self::$cache['google'][$api->getId()][$locale];
@@ -100,6 +102,7 @@ final class GoogleModel extends BaseModel
             youtubeApiKey: $data->youtubeApiKey,
             youtubeChannelId: $data->youtubeChannelId,
             youtubeNbrItems: $data->youtubeNbrItems,
+            googleReviewsNbrItems: $data->googleReviewsNbrItems,
         );
     }
 }

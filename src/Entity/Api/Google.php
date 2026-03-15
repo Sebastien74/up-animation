@@ -36,6 +36,10 @@ class Google
     #[Assert\NotBlank]
     private ?int $youtubeNbrItems = 7;
 
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[Assert\NotBlank]
+    private ?int $googleReviewsNbrItems = 5;
+
     #[ORM\OneToOne(targetEntity: Api::class, mappedBy: 'google', cascade: ['persist', 'remove'])]
     private ?Api $api = null;
 
@@ -89,6 +93,18 @@ class Google
     public function setYoutubeNbrItems(?int $youtubeNbrItems): static
     {
         $this->youtubeNbrItems = $youtubeNbrItems;
+
+        return $this;
+    }
+
+    public function getGoogleReviewsNbrItems(): ?int
+    {
+        return $this->googleReviewsNbrItems;
+    }
+
+    public function setGoogleReviewsNbrItems(?int $googleReviewsNbrItems): static
+    {
+        $this->googleReviewsNbrItems = $googleReviewsNbrItems;
 
         return $this;
     }
