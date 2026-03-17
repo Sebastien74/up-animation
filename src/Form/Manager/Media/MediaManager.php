@@ -223,7 +223,7 @@ class MediaManager
             if (!$uploadedFile && !empty($this->request->files->get('media_relation_'.$entity->getId())['media']['imageFile'])) {
                 $uploadedFile = $this->request->files->get('media_relation_'.$entity->getId())['media']['imageFile'];
             }
-            if ($uploadedFile) {
+            if ($uploadedFile instanceof UploadedFile && $uploadedFile->isReadable()) {
                 $this->setUploadedMediaMediaRelation($uploadedFile, $entity, $entity->getMedia(), $website);
             }
         }
@@ -274,6 +274,10 @@ class MediaManager
      */
     private function multiUploadedFiles(UploadedFile $uploadedFile, Website $website, mixed $entity): void
     {
+        if (!$uploadedFile->isReadable()) {
+            return;
+        }
+
         $configuration = $website->getConfiguration();
 
         $media = new Media\Media();
@@ -338,7 +342,9 @@ class MediaManager
      */
     private function setUploadedMediaMediaRelation(UploadedFile $uploadedFile, mixed $mediaRelation, Media\Media $media, Website $website): void
     {
-        $media->setImageFile($uploadedFile);
+        if ($uploadedFile->isReadable()) {
+            $media->setImageFile($uploadedFile);
+        }
     }
 
     /**
@@ -370,7 +376,9 @@ class MediaManager
      */
     private function setUploadedMedia(UploadedFile $uploadedFile, Media\Media $media): void
     {
-        $media->setImageFile($uploadedFile);
+        if ($uploadedFile->isReadable()) {
+            $media->setImageFile($uploadedFile);
+        }
     }
 
     /**
