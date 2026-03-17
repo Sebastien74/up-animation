@@ -80,7 +80,7 @@ class ClearMediasService
             ->leftJoin('e.mediaRelations', 'mr')
             ->leftJoin('mr.media', 'm')
             ->andWhere('m.screen = :screen')
-            ->andWhere('m.filename IS NULL')
+            ->andWhere('m.originalName IS NULL')
             ->setParameter('screen', 'desktop')
             ->addSelect('mr')
             ->addSelect('m')
@@ -98,7 +98,7 @@ class ClearMediasService
                 /* @var MediaRelation $mediaRelation */
                 try {
                     $media = $mediaRelation->getMedia();
-                    $asUnused = $media && !$media->getFilename() && !$this->checkIntl($media, $mediaRelation->getIntl());
+                    $asUnused = $media && !$media->getOriginalName() && !$this->checkIntl($media, $mediaRelation->getIntl());
                     if ($asUnused) {
                         $entity->removeMediaRelation($mediaRelation);
                         if ($mediaRelation->getId()) {

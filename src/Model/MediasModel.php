@@ -171,7 +171,7 @@ final class MediasModel extends BaseModel
                 ->leftJoin('mr.intl', 'i')
                 ->leftJoin('m.thumbs', 'mt')
                 ->leftJoin('m.intls', 'mi')
-                ->andWhere('m.filename IS NOT NULL')
+                ->andWhere('m.originalName IS NOT NULL')
                 ->andWhere('m.screen = :screen')
                 ->andWhere('mr.'.$metadata->mappedBy.' IN (:ids)')
                 ->setParameter('screen', 'desktop')
@@ -225,8 +225,8 @@ final class MediasModel extends BaseModel
             ->addOrderBy('mr.position', 'ASC') : [];
 
         if ($qb instanceof QueryBuilder && !self::$coreLocator->inAdmin()) {
-            $qb->andWhere('m.filename IS NOT NULL');
-            $qb->orWhere('m.filename IS NULL AND m.screen = :screen AND mr.locale = :locale')
+            $qb->andWhere('m.originalName IS NOT NULL');
+            $qb->orWhere('m.originalName IS NULL AND m.screen = :screen AND mr.locale = :locale')
                 ->setParameter('screen', 'poster');
         }
 

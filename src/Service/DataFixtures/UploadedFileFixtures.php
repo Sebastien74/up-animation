@@ -53,7 +53,7 @@ readonly class UploadedFileFixtures
 
             $media = new MediaEntities\Media();
             $media->setWebsite($website);
-            $media->setFilename($this->uploader->getFilename());
+            $media->setOriginalName($this->uploader->getFilename());
             $media->setName($this->uploader->getName());
             $media->setExtension($this->uploader->getExtension());
             $media->setCategory($category);

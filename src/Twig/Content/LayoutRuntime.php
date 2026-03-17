@@ -508,10 +508,10 @@ class LayoutRuntime implements RuntimeExtensionInterface
                     if ($mediaRelation->getLocale() === $locale) {
                         $isSet = true;
                         $media = $mediaRelation->getMedia();
-                        if ($media instanceof Media\Media && $media->getFilename()) {
+                        if ($media instanceof Media\Media && $media->getOriginalName()) {
                             $height = $mediaRelation->getMaxHeight() > 0 ? $mediaRelation->getMaxHeight() : $height;
                             $width = $mediaRelation->getMaxWidth() > 0 ? $mediaRelation->getMaxWidth() : $width;
-                            $fileInfo = $this->coreLocator->fileInfo()->file($website, $media->getFilename());
+                            $fileInfo = $this->coreLocator->fileInfo()->file($website, $media->getOriginalName());
                             if ($fileInfo->getHeight() < $height) {
                                 $height = $fileInfo->getHeight();
                                 $width = $fileInfo->getWidth();

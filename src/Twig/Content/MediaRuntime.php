@@ -88,7 +88,7 @@ class MediaRuntime implements RuntimeExtensionInterface
                     $website = $media->getWebsite();
                 }
                 if ($media instanceof Media) {
-                    $fileInfo = $this->fileRuntime->fileInfo($website, $media->getFilename());
+                    $fileInfo = $this->fileRuntime->fileInfo($website, $media->getOriginalName());
                     if ($fileInfo instanceof FileInfo) {
                         $infoSize = 'width' === $orientation ? $fileInfo->getWidth() : $fileInfo->getHeight();
                         if (!empty($sizes)) {
@@ -253,7 +253,7 @@ class MediaRuntime implements RuntimeExtensionInterface
             ->leftJoin('e.mediaRelations', 'mr')
             ->leftJoin('mr.media', 'm')
             ->andWhere('mr.locale = :locale')
-            ->andWhere('m.filename IS NOT NULL')
+            ->andWhere('m.originalName IS NOT NULL')
             ->setParameter('locale', $this->coreLocator->request()->getLocale())
             ->addSelect('mr');
 
@@ -289,7 +289,7 @@ class MediaRuntime implements RuntimeExtensionInterface
         if ($mediaRelation instanceof MediaRelation) {
             $media = $mediaRelation->getMedia();
             if ($media instanceof Media) {
-                $dirname = $this->coreLocator->projectDir().'/public/uploads/'.$media->getWebsite()->getUploadDirname().'/'.$media->getFilename();
+                $dirname = $this->coreLocator->projectDir().'/public/uploads/'.$media->getWebsite()->getUploadDirname().'/'.$media->getOriginalName();
                 $size = getimagesize($dirname);
                 $width = $size[0];
                 $height = $size[1];

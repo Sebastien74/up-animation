@@ -37,7 +37,7 @@ class MediaRepository extends ServiceEntityRepository
         $medias = $this->createQueryBuilder('m')
             ->andWhere('m.screen = :screen')
             ->andWhere('m.website = :website')
-            ->andWhere('m.filename IN (:filenames)')
+            ->andWhere('m.originalName IN (:filenames)')
             ->setParameter('website', $website->entity)
             ->setParameter('screen', 'desktop')
             ->setParameter('filenames', $filenames)
@@ -46,8 +46,8 @@ class MediaRepository extends ServiceEntityRepository
         $response = [];
         $extensions = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
         foreach ($medias as $media) {
-            if (!empty($filesSizes[$media->getFilename()]) && $media->getExtension() && in_array($media->getExtension(), $extensions)) {
-                $mediaSize = $this->sizeKey($filesSizes[$media->getFilename()], $response);
+            if (!empty($filesSizes[$media->getOriginalName()]) && $media->getExtension() && in_array($media->getExtension(), $extensions)) {
+                $mediaSize = $this->sizeKey($filesSizes[$media->getOriginalName()], $response);
                 $response[$mediaSize] = $media;
                 krsort($response);
             }
@@ -120,7 +120,7 @@ class MediaRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.screen = :screen')
-            ->andWhere('m.filename IS NULL')
+            ->andWhere('m.originalName IS NULL')
             ->andWhere('m.deletable = :deletable')
             ->setParameter('screen', 'desktop')
             ->setParameter('deletable', true)

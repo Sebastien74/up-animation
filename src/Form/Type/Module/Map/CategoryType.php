@@ -98,7 +98,7 @@ class CategoryType extends AbstractType
 
         $markers = [];
         foreach ($mapFolder->getMedias() as $media) {
-            $markers[$media->getFilename()] = '/uploads/'.$website->getUploadDirname().'/'.$media->getFilename();
+            $markers[$media->getOriginalName()] = '/uploads/'.$website->getUploadDirname().'/'.$media->getOriginalName();
         }
 
         return $markers;

@@ -53,7 +53,7 @@ class MediaRelationController extends AdminController
             if ($media instanceof Media) {
                 $exist = false;
                 foreach ($media->getMediaScreens() as $mediaScreen) {
-                    if ($mediaScreen->getFilename()) {
+                    if ($mediaScreen->getOriginalName()) {
                         $exist = true;
                         break;
                     }
@@ -63,7 +63,7 @@ class MediaRelationController extends AdminController
             }
             if ($media instanceof Media && 'poster' === $media->getScreen()) {
                 $media->setName(null);
-                $media->setFilename(null);
+                $media->setOriginalName(null);
                 $media->setExtension(null);
                 $media->setCopyright(null);
                 $this->coreLocator->em()->persist($media);

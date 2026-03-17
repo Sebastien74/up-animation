@@ -50,7 +50,7 @@ class GalleryRuntime implements RuntimeExtensionInterface
             /** @var Gallery $gallery */
             foreach ($gallery->getMediaRelations() as $mediaRelation) {
                 $media = $mediaRelation->getMedia();
-                if ($media instanceof Media && !empty($media->getFilename())) {
+                if ($media instanceof Media && !empty($media->getOriginalName())) {
                     $date = $mediaRelation->getUpdatedAt() ?: ($mediaRelation->getCreatedAt() ?: new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                     $dateInString = $date->format('Ymdhis');
                     $medias[$dateInString] = [

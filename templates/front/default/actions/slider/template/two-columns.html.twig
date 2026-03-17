@@ -49,7 +49,7 @@
             {%- set haveText = media.intl.introduction or media.intl.body -%}
             {%- set mediaType = (media.media.screen is defined and media.media.screen == 'poster')
                 or (media.intl.video is defined and media.intl.video) ? 'video' : 'image' -%}
-            {%- set display = (mediaType == 'video' and media.videoLink is defined and media.videoLink is not empty) or (media.media.filename is defined and media.media.filename) -%}
+            {%- set display = (mediaType == 'video' and media.videoLink is defined and media.videoLink is not empty) or (media.media.originalName is defined and media.media.originalName) -%}
             {%- if display -%}
                 <div class="carousel-item {% if loop.first %} active{% endif %}">
                 <div class="row m-0">

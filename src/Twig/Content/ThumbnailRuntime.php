@@ -128,7 +128,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         $media = $this->setPlaceholder($media, $options);
         $asPlaceholder = $this->asPlaceholder($media);
 
-        if ($media instanceof MediaModel && $media->media && $media->media->getFilename() && !$asPlaceholder) {
+        if ($media instanceof MediaModel && $media->media && $media->media->getOriginalName() && !$asPlaceholder) {
             $filesystem = new Filesystem();
             $thumb = end($thumbs);
             $inAdmin = $this->coreLocator->inAdmin();
@@ -139,7 +139,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             $options['height'] = $height;
             if (empty($width) || empty($height)) {
                 $dirname = $this->coreLocator->website()->uploadDirname;
-                $dirname = $this->coreLocator->projectDir().'/public/uploads/'.$dirname.'/'.$media->media->getFilename();
+                $dirname = $this->coreLocator->projectDir().'/public/uploads/'.$dirname.'/'.$media->media->getOriginalName();
                 $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
                 if ($filesystem->exists($dirname) && ($size = getimagesize($dirname))) {
                     list($width, $height) = $size;
@@ -148,7 +148,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
                 }
             }
             $filter = !empty($options['filter']) ? $options['filter'] : '';
-            $filename = $filter.$width.$height.$media->id.$media->media->getFilename();
+            $filename = $filter.$width.$height.$media->id.$media->media->getOriginalName();
             $allowedExtension = !in_array($media->media->getExtension(), $this->imageThumbnail->getExceptionsExtensions());
             $dirnameGenerated = $this->coreLocator->projectDir().'/public/thumbnails/generated/';
             $dirnameGenerated = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirnameGenerated);
@@ -160,7 +160,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             $options['lazyFiles'] = $options['onlyLazy'] = !$generateThumbs;
             $thumbnails = !isset($options['beforeRender']) && ($generateThumbs || $options['lazyFiles']) ? $this->imageThumbnail->execute($media, $thumbs, $options) : [];
             $options['loaderSrc'] = $options['dataSource'] = !empty($thumbnails['dataSource'])
-                ? $thumbnails['dataSource'] : (!is_object($src) ? $src : '/uploads/'.$this->coreLocator->website()->uploadDirname.'/'.$media->media->getFilename());
+                ? $thumbnails['dataSource'] : (!is_object($src) ? $src : '/uploads/'.$this->coreLocator->website()->uploadDirname.'/'.$media->media->getOriginalName());
             $options['loaderSvgSrc'] = !empty($thumbnails['lazyFileSvg']) ? $thumbnails['lazyFileSvg'] : (is_string($src) ? $src : 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
             $options['entity'] = $src;
             $options['thumbs'] = $thumbnails['thumbs'] ?? null;
@@ -230,7 +230,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         $mediaModel = $media instanceof MediaModel ? $media : (is_object($media) ? MediaModel::fromEntity($media, $this->coreLocator) : null);
         $media = $mediaModel instanceof MediaModel ? $mediaModel->media : null;
 
-        if (!$mediaModel && !isset($options['placeholder']) || $mediaModel instanceof MediaModel && $mediaModel->media && !$mediaModel->media->getFilename() && !isset($options['placeholder'])) {
+        if (!$mediaModel && !isset($options['placeholder']) || $mediaModel instanceof MediaModel && $mediaModel->media && !$mediaModel->media->getOriginalName() && !isset($options['placeholder'])) {
             return false;
         }
 
@@ -284,8 +284,8 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             if (!$media->getWebsite()) {
                 $media->setWebsite($website);
             }
-            $thumbnails['infos']['path'] = preg_match('/images\/placeholder/', $media->getFilename()) || preg_match('/medias\/placeholder/', $media->getFilename())
-                ? $media->getFilename() : 'uploads/'.$media->getWebsite()->getUploadDirname().'/'.$media->getFilename();
+            $thumbnails['infos']['path'] = preg_match('/images\/placeholder/', $media->getOriginalName()) || preg_match('/medias\/placeholder/', $media->getOriginalName())
+                ? $media->getOriginalName() : 'uploads/'.$media->getWebsite()->getUploadDirname().'/'.$media->getOriginalName();
             $thumbnail = !empty($thumbnails['infos']['path']) ? $thumbnails['infos']['path'] : null;
             $isImage = $media->getExtension() && in_array($media->getExtension(), $allImagesExtensions);
             if ($isImage && !$this->arguments['inAdmin']) {
@@ -305,7 +305,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         }
 
         if (isset($options['only_html']) && $options['only_html']) {
-            $options['src'] = !empty($options['src']) ? $options['src'] : '/uploads/'.$website->getUploadDirname().'/'.$media->getFilename();
+            $options['src'] = !empty($options['src']) ? $options['src'] : '/uploads/'.$website->getUploadDirname().'/'.$media->getOriginalName();
             $htmlDirname = preg_match('/include\/svg/', $options['src']) ? $this->projectDirname.'/templates/'.ltrim($options['src'], '/')
                 : $this->projectDirname.'/public/'.$options['src'];
             $htmlDirname = str_replace($this->request->getSchemeAndHttpHost(), '', $htmlDirname);
@@ -370,10 +370,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
     /**
      * To generate image render with options.
      *
-     * @throws LoaderError
-     * @throws NonUniqueResultException
-     * @throws RuntimeError
-     * @throws SyntaxError|MappingException
+     * @throws NonUniqueResultException|SyntaxError|MappingException
      */
     private function fileRender(array $options = []): array|string|null
     {
@@ -391,7 +388,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         if ((isset($options['style']) && !str_contains('placeholder', $fileDirname)) || !isset($options['style'])) {
             $file = new File($fileDirname);
             $media = new Media\Media();
-            $media->setFilename($file->getFilename());
+            $media->setOriginalName($file->getFilename());
             $media->setExtension($file->getExtension());
             $media->setScreen('desktop');
             $media->setWebsite($this->coreLocator->website()->entity);
@@ -502,7 +499,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             : (is_array($entity) && isset($entity['backgroundFullSize']) ? $entity['backgroundFullSize'] : false);
         $hexadecimalBg = $bgFullSize && is_object($entity) && method_exists($entity, 'getHexadecimalCode') && $entity->getHexadecimalCode() ? ' '.$entity->getHexadecimalCode()
             : ($bgFullSize && is_array($entity) && !empty($entity['hexadecimalCode']) ? ' '.$entity['hexadecimalCode'] : '');
-        $thumbnails = $mediaModel instanceof MediaModel && !str_contains($mediaModel->media->getFilename(), 'placeholder') ? $this->imageThumbnail->execute($mediaModel, $thumb, $options) : [];
+        $thumbnails = $mediaModel instanceof MediaModel && !str_contains($mediaModel->media->getOriginalName(), 'placeholder') ? $this->imageThumbnail->execute($mediaModel, $thumb, $options) : [];
 
         if (!empty($thumbnails['files'])) {
             $retinaSize = $this->imageThumbnail->getRetinaSizes();
@@ -522,7 +519,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
                         $fileDirname = $filesystem->exists($fileDirname) && !is_dir($fileDirname) ? $fileDirname : $this->projectDirname.'/public/medias/placeholder.jpg';
                         $file = new File($fileDirname);
                         $media = new Media\Media();
-                        $media->setFilename($file->getFilename());
+                        $media->setOriginalName($file->getFilename());
                         $media->setExtension($file->getExtension());
                         $media->setScreen('desktop');
                         $media->setWebsite($this->coreLocator->website()->entity);
@@ -558,13 +555,13 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
     {
         if ((!$mediaModel && isset($options['placeholder']) && $options['placeholder'])
             || !$mediaModel && isset($options['src'])
-            || ($mediaModel instanceof MediaModel && $mediaModel->media && !$mediaModel->media->getFilename() && isset($options['placeholder']) && $options['placeholder'])) {
+            || ($mediaModel instanceof MediaModel && $mediaModel->media && !$mediaModel->media->getOriginalName() && isset($options['placeholder']) && $options['placeholder'])) {
             $inAdmin = (isset($options['inAdmin']) && true === (bool)$options['inAdmin']) || (isset($this->arguments['inAdmin']) && true === (bool)$this->arguments['inAdmin']);
             $filename = $inAdmin ? 'placeholder-back.jpg' : 'placeholder.jpg';
             $website = !empty($options['website']) ? $options['website']: (!empty($this->arguments['website']) ? $this->arguments['website'] : $this->coreLocator->website()->entity);
             $locale = $this->request ? $this->request->getLocale() : $this->coreLocator->locale();
             $media = new Media\Media();
-            $media->setFilename('medias/'.$filename);
+            $media->setOriginalName('medias/'.$filename);
             $media->setExtension('jpg');
             $media->setScreen('desktop');
             $media->setName('placeholder');
@@ -583,8 +580,8 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
      */
     private function asPlaceholder(?MediaModel $mediaModel = null): bool
     {
-        if ($mediaModel && $mediaModel->media && $mediaModel->media->getFilename() && str_contains($mediaModel->media->getFilename(), 'placeholder')) {
-            $matches = explode('/', $mediaModel->media->getFilename());
+        if ($mediaModel && $mediaModel->media && $mediaModel->media->getOriginalName() && str_contains($mediaModel->media->getOriginalName(), 'placeholder')) {
+            $matches = explode('/', $mediaModel->media->getOriginalName());
             $filename = end($matches);
             return in_array($filename, ['placeholder.jpg', 'placeholder-dark.jpg', 'placeholder-back.jpg']);
         }

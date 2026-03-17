@@ -24,14 +24,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 #[Autoconfigure(tags: [
     ['name' => CompanyManager::class, 'key' => 'security_admin_company_form_manager'],
 ])]
-class CompanyManager
+readonly class CompanyManager
 {
     /**
      * CompanyManager constructor.
      */
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly string                 $projectDir,
+        private EntityManagerInterface $entityManager,
+        private string $projectDir,
     )
     {
     }
@@ -68,8 +68,7 @@ class CompanyManager
         $file = $form->get('file')->getData();
 
         if ($file instanceof UploadedFile) {
-            /** @var Logo $logo */
-            $logo = $company->getLogo() ? $company->getLogo() : new Logo();
+            $logo = $company->getLogo() ?: new Logo();
             $filesystem = new Filesystem();
             $extension = $file->guessExtension();
             $filename = Urlizer::urlize(str_replace('.'.$extension, '', $file->getClientOriginalName())).'-'.md5(uniqid()).'.'.$extension;
@@ -78,19 +77,15 @@ class CompanyManager
             $publicDirname = $this->projectDir.'/public/';
             $publicDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $publicDirname);
             $dirname = $publicDirname.$baseDirname;
-
             if ($logo->getDirname() && $filesystem->exists($publicDirname.$logo->getDirname()) && !is_dir($publicDirname.$logo->getDirname())) {
                 $filesystem->remove($publicDirname.$logo->getDirname());
             }
-
             $logo->setFilename($filename);
             $logo->setDirname($baseDirname.$filename);
-
             if (!$logo->getId()) {
                 $logo->setCompany($company);
                 $company->setLogo($logo);
             }
-
             $file->move($dirname, $filename);
         }
     }

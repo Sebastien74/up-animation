@@ -271,13 +271,13 @@ class i18nRuntime implements RuntimeExtensionInterface
                 $localeMedia = $mediaRelation->getLocale();
                 $media = $mediaRelation->getMedia();
                 if ($media) {
-                    $filename = $media->getFilename();
+                    $filename = $media->getOriginalName();
                     $mediaScreens = $media->getMediaScreens();
                     if ($localeMedia === $locale && $filename) {
                         return $mediaRelation;
                     } elseif ($localeMedia === $locale && count($mediaScreens) > 0) {
                         foreach ($mediaScreens as $mediaScreen) {
-                            $filename = $mediaScreen->getFilename();
+                            $filename = $mediaScreen->getOriginalName();
                             if ($filename) {
                                 return $mediaScreen;
                             }

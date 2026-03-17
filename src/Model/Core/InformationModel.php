@@ -156,7 +156,7 @@ final class InformationModel extends BaseModel
         foreach ($medias as $media) {
             /** @var MediaModel $media */
             $entityMedia = $media->media;
-            $filename = $entityMedia->getFilename();
+            $filename = $entityMedia->getOriginalName();
             $dirname = $filename ? '/uploads/'.$uploadDirname.'/'.$filename : null;
             $appDirname = $projectDir.'/public'.$dirname;
             $appDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $appDirname);

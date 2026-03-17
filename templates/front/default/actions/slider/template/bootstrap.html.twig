@@ -76,7 +76,7 @@
                 or (media.intl.video is defined and media.intl.video) ? 'video' : 'image' -%}
             {%- set haveContent = mediaIntro or mediaBody -%}
             {%- set haveText = mediaIntro or mediaBody -%}
-            {%- set display = (mediaType == 'video' and media.videoLink is not empty) or (media.media.filename is defined and media.media.filename) -%}
+            {%- set display = (mediaType == 'video' and media.videoLink is not empty) or (media.media.originalName is defined and media.media.originalName) -%}
             {%- set link = intlMedia.link is defined and intlMedia.link ? intlMedia.link : false -%}
             {%- if display -%}
                 <div class="carousel-item {% if isFirst %} active{% endif %}">
@@ -160,7 +160,7 @@
         <ul class="carousel-indicators reset position-relative ms-0 me-0 mb-0 mt-4 justify-content-start">
             {%- set isFirst = true -%}
             {%- for media in medias -%}
-                {%- if media.media.filename is defined and media.media.filename -%}
+                {%- if media.media.originalName is defined and media.media.originalName -%}
                     <li data-bs-target="#carousel-{{ sliderSlug }}"
                         data-bs-slide-to="{{ loop.index - 1 }}"
                         data-index="{{ loop.index }}"

@@ -7,9 +7,9 @@
 
 <div class="col-md-3 result item mt-4">
     <a href="{{ asset(result.url) }}" class="inner d-inline-block bg-gray-200 px-4 py-3 h-100 w-100"
-        {% if entity.filename is defined and entity.filename %} target="_blank" download="{{ entity.filename }}" {% endif %}>
-        {%- if entity.filename is defined and entity.filename -%}
-            {%- set filename = result.snippets is defined and result.snippets ? result.snippets : entity.filename -%}
+        {% if entity.originalName is defined and entity.originalName %} target="_blank" download="{{ entity.originalName }}" {% endif %}>
+        {%- if entity.originalName is defined and entity.originalName -%}
+            {%- set filename = result.snippets is defined and result.snippets ? result.snippets : entity.originalName -%}
             <div class="file d-flex align-items-center">{{ 'front'|fileIcon(entity.extension)|icon(null, 17, 'me-2 float-start file-btn-icon') }}{{ filename|raw }}</div>
         {%- else -%}
             {%- if title -%}

@@ -155,7 +155,7 @@
                                         {{ form_row(mediaRelation.intl.title) }}
                                     {%- endif -%}
                                     {%- if mediaRelation.intl.placeholder is defined -%}
-                                        {%- set haveMedia = mediaRelation.vars.value.media.filename is defined and mediaRelation.vars.value.media.filename -%}
+                                        {%- set haveMedia = mediaRelation.vars.value.media.originalName is defined and mediaRelation.vars.value.media.originalName -%}
                                         {%- set haveAlt = mediaRelation.intl.vars.value.placeholder is defined and mediaRelation.intl.vars.value.placeholder|striptags|length > 0 -%}
                                         {{ form_row(mediaRelation.intl.placeholder, {attr: {'data-help': haveMedia and not haveAlt ? 'no-alt' : false}}) }}
                                     {%- endif -%}

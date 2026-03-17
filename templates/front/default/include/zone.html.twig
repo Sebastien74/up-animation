@@ -13,7 +13,7 @@
 
 {# --- ZONE BACKGROUND & DIMENSIONS --- #}
 {%- set bgParallax = zone.backgroundParallax -%}
-{%- set zoneHaveFile = intlMediaZone.media.filename is defined and intlMediaZone.media.filename -%}
+{%- set zoneHaveFile = intlMediaZone.media.originalName is defined and intlMediaZone.media.originalName -%}
 {%- set bgImgZone = zoneHaveFile and bgParallax ? intlMediaZone : null -%}
 {%- set bgImgStyle = (zoneHaveFile and not bgParallax) or zone.hexadecimalCode ? intlMediaZone|file({}, {style: true, entity: zone, placeholder: false}) : null -%}
 {%- set bgColorHexa = zone.hexadecimalCode and not zone.backgroundColor ? zone.hexadecimalCode : false -%}

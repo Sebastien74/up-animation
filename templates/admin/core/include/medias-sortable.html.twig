@@ -87,10 +87,10 @@
                                         {{ mediaRelation|file({}, {width: 30, height: 30}) }}
                                     </a>
                                 {%- endif -%}
-                                {%- set filename = mediaRelation.media.filename is defined ? mediaRelation.media.filename : null -%}
+                                {%- set filename = mediaRelation.media.originalName is defined ? mediaRelation.media.originalName : null -%}
                                 {%- set asMediaWarning = tooHeavyFiles[filename] is defined or mediasAlert[filename] is defined -%}
                                 <small id="heading-{{ mediaRelation.id }}" class="ms-2 {% if asMediaWarning %} text-warning fw-700{% endif %}">
-                                    {%- if mediaRelation.media.filename is defined -%}{{ mediaRelation.media.filename }}{%- endif -%}
+                                    {%- if mediaRelation.media.originalName is defined -%}{{ mediaRelation.media.originalName }}{%- endif -%}
                                 </small>
                                 {%- if mediaRelation.main -%}
                                     <span class="file-is-main d-inline-block">

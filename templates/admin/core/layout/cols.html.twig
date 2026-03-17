@@ -33,7 +33,7 @@
                                             <span class="position-relative col-img-bulle-wrap d-inline-block">
                                                 <a href="{{ path('admin_col_edit', {website: websiteId(), zone: zone.id, col: col.id, interfaceName: interface.name, interfaceEntity: entity.id}) }}"
                                                    class="position-relative d-inline-block btn-action" data-bs-toggle="tooltip" title="{{"Image de fond"|trans|striptags }}">
-                                                    {%- if mediaRelation and mediaRelation.media and mediaRelation.media.filename -%}
+                                                    {%- if mediaRelation and mediaRelation.media and mediaRelation.media.originalName -%}
                                                         <span style="background: url({{ asset(mediaRelation|file({}, {path: true})) }})" class="image-info-bulle"></span>
                                                     {%- endif -%}
                                                     <i class="icm-image"></i>

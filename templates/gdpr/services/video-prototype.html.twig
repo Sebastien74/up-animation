@@ -4,7 +4,7 @@
     {%- if 'youtube' in embed -%}
         {%- set screen = screen is defined and screen ? screen : screen() -%}
         {%- set title = media.intl.title is defined and media.intl.title ? media.intl.title : 'Poster'|trans -%}
-        {%- set havePoster = media.media.filename is defined and media.media.filename -%}
+        {%- set havePoster = media.media.originalName is defined and media.media.originalName -%}
         {%- set thumbConfiguration = thumbConfiguration[screen] is defined ? thumbConfiguration[screen] : (thumbConfiguration['desktop'] is defined ? thumbConfiguration['desktop'] : null) -%}
         {%- set width = thumbConfiguration.width is defined ? thumbConfiguration.width : 640 -%}
         {%- set height = thumbConfiguration.height is defined ? thumbConfiguration.height : 480 -%}

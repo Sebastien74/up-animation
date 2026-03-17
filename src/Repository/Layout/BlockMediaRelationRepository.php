@@ -41,7 +41,7 @@ class BlockMediaRelationRepository extends ServiceEntityRepository
             ->leftJoin('c.zone', 'z')
             ->leftJoin('z.layout', 'l')
             ->andWhere('i.placeholder IS NULL')
-            ->andWhere('m.filename IS NOT NULL')
+            ->andWhere('m.originalName IS NOT NULL')
             ->andWhere('l.id = :layout')
             ->setParameter('layout', $layout->getId())
             ->addSelect('i')
@@ -56,7 +56,7 @@ class BlockMediaRelationRepository extends ServiceEntityRepository
         $response = [];
         foreach ($mediaRelations as $mediaRelation) {
             $blockId = $mediaRelation->getBlock()->getId();
-            $filename = $mediaRelation->getMedia()->getFilename();
+            $filename = $mediaRelation->getMedia()->getOriginalName();
             $locales = !empty($response[$filename][$blockId]['locales']) ? $response[$filename][$blockId]['locales'] : [];
             $locales[] = $mediaRelation->getLocale();
             $response[$filename][$blockId] = [

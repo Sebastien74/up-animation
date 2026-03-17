@@ -54,7 +54,7 @@
                                    data-bs-toggle="tooltip"
                                    data-placement="right"
                                    title="{{"Image de fond"|trans|striptags }}">
-                                    {%- if mediaRelation and mediaRelation.media and mediaRelation.media.filename -%}
+                                    {%- if mediaRelation and mediaRelation.media and mediaRelation.media.originalName -%}
                                         <span style="background: url({{ asset(mediaRelation|file({}, {path: true})) }})" class="image-info-bulle"></span>
                                     {%- endif -%}
                                     <i class="icm-image"></i>

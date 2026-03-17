@@ -14,6 +14,7 @@ use App\Form\Type\Media\SelectFolderType;
 use App\Repository\Media\FolderRepository;
 use App\Repository\Media\MediaRepository;
 use App\Service\Core\Uploader;
+use App\Service\Core\Urlizer;
 use App\Service\Development\FileUrlizerService;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
@@ -153,7 +154,7 @@ class FolderController extends AdminController
 
         if ($medias) {
             foreach ($medias as $media) {
-                $fileDirname = $websiteDirname.$media->getFilename();
+                $fileDirname = $websiteDirname.$media->getOriginalName();
                 $uploader->pathToUploadedFile($fileDirname, true, $tmpDirname);
             }
             $zip = $fileUrlizerService->zip($tmpDirname, $zipName);

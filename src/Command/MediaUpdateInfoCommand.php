@@ -36,7 +36,7 @@ class MediaUpdateInfoCommand extends Command
 
         $updatedCount = 0;
         foreach ($medias as $media) {
-            $filename = $media->getFilename();
+            $filename = $media->getOriginalName();
             if (!$filename) {
                 $io->progressAdvance();
                 continue;

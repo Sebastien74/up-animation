@@ -71,7 +71,7 @@ class PictogramType extends AbstractType
         $pictograms = [];
         if ($folder) {
             foreach ($folder->getMedias() as $media) {
-                $pictograms[$media->getFilename()] = '/uploads/'.$this->website->getUploadDirname().'/'.$media->getFilename();
+                $pictograms[$media->getOriginalName()] = '/uploads/'.$this->website->getUploadDirname().'/'.$media->getOriginalName();
             }
         }
 

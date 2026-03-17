@@ -13,7 +13,7 @@
     </div>
 
 {#    {%- set count = folders|length -%}#}
-    {%- set name = data|first.media.filename is defined ? data|first.media.filename : null -%}
+    {%- set name = data|first.media.originalName is defined ? data|first.media.originalName : null -%}
     <div id="progress-card" class="card mt-5">
         <div class="card-body pb-2">
             <h6 class="title d-flex align-items-center">{{ "Tri en cours"|trans|raw }}</h6>
@@ -40,7 +40,7 @@
                 }) -%}
                 <li class="item to-reorder"
                     data-path="{{ path }}"
-                    data-name="{{ item.media.filename }}"><a href="{{ path }}">{{ item.entity.adminName }}</a></li>
+                    data-name="{{ item.media.originalName }}"><a href="{{ path }}">{{ item.entity.adminName }}</a></li>
 {#            {%- endif -%}#}
         {%- endfor -%}
         {%- for folder in folders -%}

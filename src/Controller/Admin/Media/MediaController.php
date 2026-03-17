@@ -10,6 +10,8 @@ use App\Entity\Layout\Block;
 use App\Entity\Layout\Page;
 use App\Entity\Media\Folder;
 use App\Entity\Media\Media;
+use App\Entity\Module\Catalog as CatalogEntities;
+use App\Entity\Module\Newscast as NewscastEntities;
 use App\Form\Interface\MediaFormManagerInterface;
 use App\Form\Type\Media\SearchType;
 use App\Form\Widget\MediaType;
@@ -169,7 +171,7 @@ class MediaController extends AdminController
             $parentMedia = $media->getMedia();
             $exist = false;
             foreach ($parentMedia->getMediaScreens() as $mediaScreen) {
-                if ($mediaScreen->getFilename() && $mediaScreen->getId() !== intval($request->get('media'))) {
+                if ($mediaScreen->getOriginalName() && $mediaScreen->getId() !== intval($request->get('media'))) {
                     $exist = true;
                     break;
                 }
@@ -217,7 +219,7 @@ class MediaController extends AdminController
                 foreach ($entity->getMediaRelations() as $mediaRelation) {
                     $media = $mediaRelation->getMedia();
                     $folder = $media ? $media->getFolder() : null;
-                    if (!$folder && $media || ($media && $media->getFilename() && !in_array($folder->getSlug(), $excluded))) {
+                    if (!$folder && $media || ($media && $media->getOriginalName() && !in_array($folder->getSlug(), $excluded))) {
                         if ($mediaRelation->getMedia() instanceof Media) {
                             $data[] = ['website' => $website, 'classname' => $classname, 'entity' => $entity, 'media' => $media, 'name' => $name];
                             if (method_exists($entity, 'getLayout') && $entity->getLayout()) {
@@ -227,7 +229,7 @@ class MediaController extends AdminController
                                     ->leftJoin('b.col', 'c')
                                     ->leftJoin('c.zone', 'z')
                                     ->leftJoin('z.layout', 'l')
-                                    ->andWhere('m.filename IS NOT NULL')
+                                    ->andWhere('m.originalName IS NOT NULL')
                                     ->andWhere('l.id = :layout')
                                     ->setParameter('layout', $entity->getLayout())
                                     ->getQuery()
@@ -263,6 +265,8 @@ class MediaController extends AdminController
 
     /**
      * Media reorder process.
+     *
+     * @throws Exception
      */
     #[Route('/reorder-reorder-process/{media}/{entityId}', name: 'admin_media_reorder_process', options: ['isMainRequest' => false], methods: 'GET|POST')]
     public function reorderMedia(
@@ -273,7 +277,7 @@ class MediaController extends AdminController
     ): JsonResponse {
         $folderName = $request->get('folderName') ? urldecode($request->get('folderName')) : null;
         $classname = $request->get('classname') ? urldecode($request->get('classname')) : null;
-        if ($folderName && $classname && $media->getFilename()) {
+        if ($folderName && $classname && $media->getOriginalName()) {
             $mediaFolder = $media->getFolder();
             $entity = $this->coreLocator->em()->getRepository($classname)->find($entityId);
             $parentFolder = $this->getFolder($website, $folderName);
@@ -309,14 +313,14 @@ class MediaController extends AdminController
     {
         $count = 0;
         foreach ($folder->getMedias() as $media) {
-            if ($media->getFilename()) {
+            if ($media->getOriginalName()) {
                 ++$count;
             }
         }
         if (0 === $count) {
             $childrenFolders = $this->coreLocator->em()->getRepository(Folder::class)->findBy(['parent' => $folder->getId()]);
             foreach ($folder->getMedias() as $media) {
-                if (!$media->getFilename()) {
+                if (!$media->getOriginalName()) {
                     $media->setFolder(null);
                     $this->coreLocator->em()->persist($folder);
                     $this->coreLocator->em()->flush();

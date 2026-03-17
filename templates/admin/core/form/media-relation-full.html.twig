@@ -32,7 +32,7 @@
                                 {{ form_row(form.intl.title) }}
                             {%- endif -%}
                             {%- if form.intl.placeholder is defined -%}
-                                {%- set haveMedia = form.media.vars.value.filename is defined and form.media.vars.value.filename -%}
+                                {%- set haveMedia = form.media.vars.value.originalName is defined and form.media.vars.value.originalName -%}
                                 {%- set haveAlt = form.intl.vars.value.placeholder is defined and form.intl.vars.value.placeholder|striptags|length > 0 -%}
                                 {{ form_row(form.intl.placeholder, {attr: {'data-help': haveMedia and not haveAlt ? 'no-alt' : false}}) }}
                             {%- endif -%}

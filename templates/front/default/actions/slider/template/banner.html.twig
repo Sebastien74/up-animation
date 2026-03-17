@@ -12,7 +12,7 @@
             {%- for media in medias -%}
                 {% set mediaType = (media.media.screen is defined and media.media.screen == 'poster')
                     or (media.intl.video is defined and media.intl.video) ? 'video' : 'image' %}
-                {% set display = mediaType != 'video' and media.media.filename is defined and media.media.filename %}
+                {% set display = mediaType != 'video' and media.media.originalName is defined and media.media.originalName %}
                 {%- if display -%}
                     <div class="marquee-item d-flex align-items-center justify-content-center px-2 h-100">
                         {%- if withThumbs -%}

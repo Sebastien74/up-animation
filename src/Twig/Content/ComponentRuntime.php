@@ -300,7 +300,7 @@ class ComponentRuntime implements RuntimeExtensionInterface
             $media->setWebsite($website->entity);
             $media->setCategory('cms-component');
             $media->setName($filename);
-            $media->setFilename('/medias/components/'.$filename);
+            $media->setOriginalName('/medias/components/'.$filename);
             $media->setCopyright($faker->company);
             $media->setExtension($extension);
             $media->setNotContractual(true);

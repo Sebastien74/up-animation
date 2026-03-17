@@ -242,7 +242,7 @@
                                                     {{ form_row(mediaRelation.intl.title) }}
                                                 {%- endif -%}
                                                 {%- if mediaRelation.intl.placeholder is defined -%}
-                                                    {%- set haveMedia = mediaRelation.media.vars.value.filename is defined and mediaRelation.media.vars.value.filename -%}
+                                                    {%- set haveMedia = mediaRelation.media.vars.value.originalName is defined and mediaRelation.media.vars.value.originalName -%}
                                                     {%- set haveAlt = mediaRelation.intl.vars.value.placeholder is defined and mediaRelation.intl.vars.value.placeholder|striptags|length > 0 -%}
                                                     {{ form_row(mediaRelation.intl.placeholder, {attr: {'data-help': haveMedia and not haveAlt ? 'no-alt' : false}}) }}
                                                 {%- endif -%}

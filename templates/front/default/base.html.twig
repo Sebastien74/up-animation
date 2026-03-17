@@ -31,7 +31,7 @@
     {%- set urlId = seo.url.id is defined ? seo.url.id : null -%}
     {%- set bodyBg = configuration.backgroundColor is defined ? configuration.backgroundColor : null -%}
     {%- set pageBg = entity.backgroundColor is defined and entity.backgroundColor ? entity.backgroundColor : null -%}
-    {%- set intlMedia = intlMedia is defined and interfaceName is defined and intlMedia.media.filename is defined and interfaceName == 'page' ? intlMedia : null -%}
+    {%- set intlMedia = intlMedia is defined and interfaceName is defined and intlMedia.media.originalName is defined and interfaceName == 'page' ? intlMedia : null -%}
     {%- set thumbConfiguration = intlMedia and thumbConfiguration is defined ? thumbConfiguration : {} -%}
     {%- set bgImgStyle = intlMedia ? intlMedia.mediaRelation|file(thumbConfiguration, {style: true}) : null -%}
     {%- set networks = logos['social-networks'] is defined and logos['social-networks'] ? logos['social-networks'] : null -%}

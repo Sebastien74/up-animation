@@ -10,12 +10,12 @@
 {%- set intlEntity = parentEntity|intl -%}
 {%- set downloadable = downloadable is defined ? downloadable : (mediaRelation.downloadable is defined ? mediaRelation.downloadable : false) -%}
 {%- set filepathDesktop = filepathDesktop is defined ? filepathDesktop : (media.path is defined ? media.path : null) -%}
-{%- set filepathDesktop = media.media.category is defined and media.media.category == 'cms-component' ? media.media.filename : filepathDesktop -%}
+{%- set filepathDesktop = media.media.category is defined and media.media.category == 'cms-component' ? media.media.originalName : filepathDesktop -%}
 {%- set originalSrc = originalSrc is defined and originalSrc ? originalSrc : filepathDesktop -%}
 {%- set asDownloadable = downloadable and filepathDesktop -%}
 {%- set popup = popup is defined ? popup : (mediaRelation.popup is defined ? mediaRelation.popup : false) -%}
 {%- set asPopup = popup or popupGallery -%}
-{%- set title = intl.title is defined and intl.title ? intl.title : (media.media.filename is defined and media.media.filename ? media.media.filename : null) -%}
+{%- set title = intl.title is defined and intl.title ? intl.title : (media.media.originalName is defined and media.media.originalName ? media.media.originalName : null) -%}
 {%- set author = desktop.attr.author is defined ? desktop.attr.author : (media.media.copyright is defined ? media.media.copyright : null) -%}
 
 {%- set targetLink = targetLink is defined and targetLink ? targetLink : (imageLinkUrl is defined ? imageLinkUrl : null) -%}

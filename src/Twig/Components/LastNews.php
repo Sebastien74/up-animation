@@ -63,7 +63,7 @@ class LastNews
 //            $filenames = [];
 //            $mainFilename = null;
 //            foreach ($newscast->getMediaRelations() as $mediaRelation) {
-//                $filename = $mediaRelation->getMedia()?->getFilename();
+//                $filename = $mediaRelation->getMedia()?->getOriginalName();
 //                if ($filename) {
 //                    $filenames[] = $filename;
 //                    if ($mediaRelation->isMain()) {

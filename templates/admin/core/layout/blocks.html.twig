@@ -22,7 +22,7 @@
                             {%- set blockTypeCode = block.blockType.slug is defined ? block.blockType.slug : null -%}
                             {%- set intl = block|intl(defaultLocale) -%}
                             {%- set mediaRelation = block|mainMedia(defaultLocale) -%}
-                            {%- set haveMedia = mediaRelation and mediaRelation.media and mediaRelation.media.filename -%}
+                            {%- set haveMedia = mediaRelation and mediaRelation.media and mediaRelation.media.originalName -%}
 
                             <div class="infos-block me-1 d-inline-flex align-items-center gap-2 {% if haveMedia %} mt-1{% endif %}">
 
@@ -31,7 +31,7 @@
                                     {%- set icon = block.action.iconClass is defined ? block.action.iconClass : null -%}
                                 {%- endif -%}
 
-                                {%- set filename = mediaRelation.media.filename is defined and mediaRelation.media.filename ? mediaRelation.media.filename : null -%}
+                                {%- set filename = mediaRelation.media.originalName is defined and mediaRelation.media.originalName ? mediaRelation.media.originalName : null -%}
                                 {%- set asMediaWarning = tooHeavyFiles[filename][block.id] is defined or mediasAlert[filename][block.id] is defined -%}
                                 {%- set btnColor = asMediaWarning ? 'warning' : 'primary' -%}
 

@@ -20,8 +20,8 @@
     {%- set currentEntity = seo.entity is defined ? (seo.entity is defined ? seo.entity : null) -%}
     {%- set thumbConfiguration = thumbConfiguration is defined and thumbConfiguration and thumbConfiguration|isArray ? thumbConfiguration : {} -%}
     {%- set defaultMedia = true -%}
-    {%- set defaultMedia = defaultMedia and logos.mediaRelation['title-header'] is defined and logos.mediaRelation['title-header'] ? logos.mediaRelation['title-header'] : null -%}
-    {%- set displayMedia = customMedia is defined and customMedia ? customMedia : (media.media.filename is defined and media.media.filename ? media : defaultMedia) -%}
+    {%- set defaultMedia = defaultMedia and logos['title-header'] is defined and logos['title-header'] ? logos['title-header'] : null -%}
+    {%- set displayMedia = customMedia is defined and customMedia ? customMedia : (media.media.originalName is defined and media.media.originalName ? media : defaultMedia) -%}
     {%- set displayMedia = backgroundColor ? false : displayMedia -%}
     {%- set mediaPath = mediaPath is defined ? mediaPath : null -%}
     {%- set titleForce = titleForce is defined and titleForce ? titleForce : (intl.titleForce is defined and intl.titleForce ? intl.titleForce : 1) -%}

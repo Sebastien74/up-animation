@@ -250,7 +250,7 @@ class ConfigurationManager
         foreach ($mediaRelations as $mediaRelation) {
             $media = $mediaRelation->getMedia();
             if ($media instanceof Media && $media->getWebsite()->getId() === $website->getId()) {
-                $media->setFilename('manifest.webmanifest.json');
+                $media->setOriginalName('manifest.webmanifest.json');
                 $media->setName('manifest.webmanifest');
                 $media->setExtension('json');
                 $this->entityManager->persist($media);

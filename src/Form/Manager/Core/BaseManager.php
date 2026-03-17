@@ -228,8 +228,8 @@ class BaseManager
                 }
             }
 
-            if ($media->getFilename()) {
-                $dirname = $this->uploader->getUploadsPath().'/'.$media->getFilename();
+            if ($media->getOriginalName()) {
+                $dirname = $this->uploader->getUploadsPath().'/'.$media->getOriginalName();
                 $filesystem = new Filesystem();
                 if ($filesystem->exists($dirname) && !is_dir($dirname)) {
                     $filesystem->remove($dirname);
@@ -237,7 +237,7 @@ class BaseManager
             }
 
             if ($isUpload) {
-                $media->setFilename($this->uploader->getFilename());
+                $media->setOriginalName($this->uploader->getFilename());
                 $media->setName($this->uploader->getName());
                 $media->setExtension($this->uploader->getExtension());
             }

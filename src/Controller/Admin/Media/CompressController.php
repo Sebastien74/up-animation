@@ -39,15 +39,15 @@ class CompressController extends AdminController
         if (in_array($media->getExtension(), $imageThumbnail->getAllowedExtensions())) {
             $filesystem = new Filesystem();
             $websiteDirname = $this->formatDirname($projectDir.'/public/uploads/'.$media->getWebsite()->getUploadDirname().'/');
-            $imageDirname = $this->formatDirname($websiteDirname.'/'.$media->getFilename());
+            $imageDirname = $this->formatDirname($websiteDirname.'/'.$media->getOriginalName());
             $originalDirname = $this->formatDirname($websiteDirname.'/original/');
 
             if (!$filesystem->exists($originalDirname)) {
                 $filesystem->mkdir($originalDirname);
             }
 
-            if ($filesystem->exists($imageDirname) && !$filesystem->exists($originalDirname.$media->getFilename())) {
-                $filesystem->copy($imageDirname, $originalDirname.$media->getFilename());
+            if ($filesystem->exists($imageDirname) && !$filesystem->exists($originalDirname.$media->getOriginalName())) {
+                $filesystem->copy($imageDirname, $originalDirname.$media->getOriginalName());
             }
 
             if ($filesystem->exists($imageDirname)) {
@@ -83,7 +83,7 @@ class CompressController extends AdminController
 
         return new JsonResponse([
             'success' => false,
-            'message' => '<strong>'.$media->getFilename().'</strong> '.$this->coreLocator->translator()->trans('Extension ('.$media->getExtension().') non valide.'),
+            'message' => '<strong>'.$media->getOriginalName().'</strong> '.$this->coreLocator->translator()->trans('Extension ('.$media->getExtension().') non valide.'),
         ]);
     }
 
@@ -96,8 +96,8 @@ class CompressController extends AdminController
         $existing = false;
         $filesystem = new Filesystem();
         $websiteDirname = $this->formatDirname($projectDir.'/public/uploads/'.$media->getWebsite()->getUploadDirname().'/');
-        $imageDirname = $this->formatDirname($websiteDirname.'/'.$media->getFilename());
-        $originalDirname = $this->formatDirname($websiteDirname.'/original/'.$media->getFilename());
+        $imageDirname = $this->formatDirname($websiteDirname.'/'.$media->getOriginalName());
+        $originalDirname = $this->formatDirname($websiteDirname.'/original/'.$media->getOriginalName());
 
         if ($filesystem->exists($originalDirname)) {
             $filesystem->copy($originalDirname, $imageDirname);
@@ -127,7 +127,7 @@ class CompressController extends AdminController
     {
         return new JsonResponse([
             'success' => false,
-            'message' => '<strong>'.$media->getFilename().'</strong> '.$exception->getMessage(),
+            'message' => '<strong>'.$media->getOriginalName().'</strong> '.$exception->getMessage(),
         ]);
     }
 }

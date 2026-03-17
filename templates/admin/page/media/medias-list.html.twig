@@ -23,17 +23,17 @@
             {%- for media in medias -%}
                 {%- set extension = media.extension -%}
                 {%- set haveThumb = extension not in excludesExtensions -%}
-                {%- set uploadDirname = asset('uploads/'~media.website.uploadDirname~'/'~media.filename) -%}
-                {%- set tooHeavyFile = tooHeavyFiles and tooHeavyFilesSizes[media.filename] is defined -%}
-                {%- if media.filename and media.screen == ('desktop' or 'poster' or 'webm' or 'vtt' or 'mp4') and media.website.id == websiteId() and media.screen not in excludesScreens -%}
-                    {%- set extension = extension ? extension : media.filename|split('.')|last -%}
+                {%- set uploadDirname = asset('uploads/'~media.website.uploadDirname~'/'~media.originalName) -%}
+                {%- set tooHeavyFile = tooHeavyFiles and tooHeavyFilesSizes[media.originalName] is defined -%}
+                {%- if media.originalName and media.screen == ('desktop' or 'poster' or 'webm' or 'vtt' or 'mp4') and media.website.id == websiteId() and media.screen not in excludesScreens -%}
+                    {%- set extension = extension ? extension : media.originalName|split('.')|last -%}
                     {%- set icon = 'admin'|fileIcon(extension) -%}
                     {%- set icon = extension == 'svg' or extension == 'webp' ? null : icon -%}
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
                         <div class="card h-100 file {{ extension }}-extension{% if tooHeavyFile %} too-heavy-file{% endif %}" data-id="{{ media.id }}" data-original-src="{{ uploadDirname }}">
                             <div class="card-body p-2 d-flex flex-column pb-2">
                                 <label for="check-pack-media-{{ media.id }}" class="mb-0 check-pack-media-label w-100 flex-grow-1 cursor-pointer">
-                                    <div class="file-data-wrap h-100" data-bs-toggle="tooltip" title="{{ media.filename }}">
+                                    <div class="file-data-wrap h-100" data-bs-toggle="tooltip" title="{{ media.originalName }}">
                                         <div class="file-data media-selector h-100 d-flex align-items-center justify-content-center border rounded p-2">
                                             <div class="spinner-parent">
                                                 <div class="inner">
@@ -82,7 +82,7 @@
                                             {%- endif -%}
                                         {%- endif -%}
                                     {%- else -%}
-                                        {%- set info = website()|fileInfo(media.filename) -%}
+                                        {%- set info = website()|fileInfo(media.originalName) -%}
                                         <div class="refer-copy refer-copy-wrap w-100">
                                             <span class="to-copy d-none">{{ app.request.getSchemeAndHttpHost()~info.path }}</span>
                                             <span class="copy-link btn-app small w-100 center cursor"
@@ -100,7 +100,7 @@
                                             display: "alert",
                                             size: "small",
                                             class: "mb-0",
-                                            message: tooHeavyFilesSizes[media.filename]|formatBytes
+                                            message: tooHeavyFilesSizes[media.originalName]|formatBytes
                                         } only -%}
                                     </div>
                                 {%- endif -%}

@@ -217,12 +217,12 @@
 {%- block form_widget_dropify -%}
 
     {%- set isMedia = false -%}
-    {%- set filename = form.parent.parent.vars.data.media.filename is defined and form.parent.parent.vars.data.media.filename
-        ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.parent.vars.data.media.filename : "" -%}
+    {%- set filename = form.parent.parent.vars.data.media.originalName is defined and form.parent.parent.vars.data.media.originalName
+        ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.parent.vars.data.media.originalName : "" -%}
     {%- if not filename -%}
         {%- set isMedia = true -%}
-        {%- set filename = form.parent.vars.data.filename is defined and form.parent.vars.data.filename
-            ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.vars.data.filename : "" -%}
+        {%- set filename = form.parent.vars.data.originalName is defined and form.parent.vars.data.originalName
+            ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.vars.data.originalName : "" -%}
     {%- endif -%}
     {%- set extentions = ['.png', '.jpeg', '.jpg', '.gif', '.svg', '.ico'] -%}
     {%- for extention in extentions -%}
@@ -246,12 +246,12 @@
             {%- set dataScreen = 'data-screen="'~form.parent.vars.data.screen|trim~'"' -%}
         {%- endif -%}
     {%- endif -%}
-    {%- set filename = form.parent.parent.vars.data.media.filename is defined and form.parent.parent.vars.data.media.filename
-        ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.parent.vars.data.media.filename : "" -%}
+    {%- set filename = form.parent.parent.vars.data.media.originalName is defined and form.parent.parent.vars.data.media.originalName
+        ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.parent.vars.data.media.originalName : "" -%}
     {%- if not filename -%}
         {%- set isMedia = true -%}
-        {%- set filename = form.parent.vars.data.filename is defined and form.parent.vars.data.filename
-            ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.vars.data.filename : "" -%}
+        {%- set filename = form.parent.vars.data.originalName is defined and form.parent.vars.data.originalName
+            ? app.request.getSchemeAndHttpHost()~'/uploads/'~website().uploadDirname~'/'~form.parent.vars.data.originalName : "" -%}
     {%- endif -%}
     {%- set display = true -%}
     {%- for extention in extentions -%}
@@ -289,7 +289,7 @@
                        data-errors-position="outside">
         {%- if filename -%}
             {%- if ('/admin-' in app.request.uri and display) or '/admin-' in app.request.uri and '.pdf' in filename -%}
-                    {%- set filename = form.parent.parent.vars.data.media.filename is defined and form.parent.parent.vars.data.media.filename ? form.parent.parent.vars.data.media.filename : null -%}
+                    {%- set filename = form.parent.parent.vars.data.media.originalName is defined and form.parent.parent.vars.data.media.originalName ? form.parent.parent.vars.data.media.originalName : null -%}
                     {%- set infoFile = website()|fileInfo(filename) -%}
                     {%- if infoFile.size is defined and infoFile.size > 500000 -%}
                         {%- include 'admin/include/alert.html.twig' with {

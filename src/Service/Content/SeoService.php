@@ -601,18 +601,18 @@ class SeoService implements SeoInterface
         $mediaRelation = $this->seo instanceof Seo\Seo ? $this->seo->getMediaRelation() : null;
         if ($mediaRelation instanceof Media\MediaRelation) {
             $seoMedia = $mediaRelation->getMedia();
-            $media = $seoMedia instanceof Media\Media && $seoMedia->getFilename() ? $seoMedia : null;
+            $media = $seoMedia instanceof Media\Media && $seoMedia->getOriginalName() ? $seoMedia : null;
             $uploadDirname = $this->website->uploadDirname;
             /* Get first image of Page [disabled by default] */
             if (!$media && Layout\Page::class === $this->classname && $getFirst) {
                 $repository = $this->coreLocator->em()->getRepository(Layout\Block::class);
                 $media = $repository->findMediaByLocalePage($this->entity->entity, $this->locale);
             }
-            if ($media && !preg_match('/'.$uploadDirname.'/', $media->getFilename())) {
-                return $this->schemeAndHttpHost.'/uploads/'.$uploadDirname.'/'.$media->getFilename();
+            if ($media && !preg_match('/'.$uploadDirname.'/', $media->getOriginalName())) {
+                return $this->schemeAndHttpHost.'/uploads/'.$uploadDirname.'/'.$media->getOriginalName();
             }
 
-            return $media ? $this->schemeAndHttpHost.'/uploads/'.$uploadDirname.'/'.$media->getFilename() : null;
+            return $media ? $this->schemeAndHttpHost.'/uploads/'.$uploadDirname.'/'.$media->getOriginalName() : null;
         }
 
         return null;

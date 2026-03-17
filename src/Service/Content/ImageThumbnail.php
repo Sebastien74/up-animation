@@ -183,10 +183,10 @@ class ImageThumbnail implements ImageThumbnailInterface
         $this->uploadDirname = $website instanceof Website ? $website->getUploadDirname() : null;
         $file = !empty($options['file']) ? $options['file'] : null;
         $fileDirname = $file instanceof File ? $file->getPathname() : null;
-        $originalDirname = $options['originalSrc'] = $fileDirname ?: ((str_contains($media->getFilename(), '/build/') || str_contains($media->getFilename(), '/medias/'))
-            ? $this->dirname($this->projectDirname.'/public'.$media->getFilename()) : $this->dirname($this->projectDirname.'/public/uploads/'.$this->uploadDirname.'/'.$media->getFilename()));
+        $originalDirname = $options['originalSrc'] = $fileDirname ?: ((str_contains($media->getOriginalName(), '/build/') || str_contains($media->getOriginalName(), '/medias/'))
+            ? $this->dirname($this->projectDirname.'/public'.$media->getOriginalName()) : $this->dirname($this->projectDirname.'/public/uploads/'.$this->uploadDirname.'/'.$media->getOriginalName()));
         $originalExist = $this->filesystem->exists($originalDirname);
-        $originalInfoFile = $media->getFilename() ? $this->coreLocator->fileInfo()->file($website, $media->getFilename(), $originalDirname) : null;
+        $originalInfoFile = $media->getOriginalName() ? $this->coreLocator->fileInfo()->file($website, $media->getOriginalName(), $originalDirname) : null;
             $isEnableMaxSizes = $originalInfoFile && $originalInfoFile->getWidth() <= self::MAX_FILE_WIDTH && $originalInfoFile->getHeight() <= self::MAX_FILE_HEIGHT && $originalInfoFile->getSize() <= self::MAX_FILE_SIZE;
             $mediaRelation = $options['mediaRelation'] = !empty($options['mediaRelation']) ? $options['mediaRelation'] : ($asMediaModel ? $mediaModel->mediaRelation : null);
             $execute = $infoFile = false;
@@ -201,7 +201,7 @@ class ImageThumbnail implements ImageThumbnailInterface
                 }
             }
 
-        if ($media instanceof Media\Media && $media->getFilename()) {
+        if ($media instanceof Media\Media && $media->getOriginalName()) {
             $extension = $this->getExtension($media);
             if ($extension && ('desktop' === $media->getScreen() || 'poster' === $media->getScreen())) {
                 $publicDir = $this->projectDirname.'/public';
@@ -211,7 +211,7 @@ class ImageThumbnail implements ImageThumbnailInterface
                 foreach ($this->screensSizes as $size) {
                     $screen = $this->screen($size, true);
                     $screenMedia = $asMediaModel && !$this->inAdmin ? $this->getScreenMedia($screen, $media) : $media;
-                    $filename = $screenMedia->getFilename();
+                    $filename = $screenMedia->getOriginalName();
                     $dirname = $fileDirname ?: ((str_contains($filename, '/build/') || str_contains($filename, '/medias/'))
                         ? $this->dirname($publicDir.$filename) : $this->dirname($publicDir.'/uploads/'.$this->uploadDirname.'/'.$filename));
                     
@@ -223,7 +223,7 @@ class ImageThumbnail implements ImageThumbnailInterface
                     $isEnableSize = in_array($size, self::SIZES) || in_array($size, self::RETINA_SIZES);
                     $isEnableMedia = !$mediaRelation || !$mediaRelation->getId() || ($mediaRelation->getCacheDate() instanceof \DateTime && !$asLoader);
                     $isEnableEnv = $generator || ($this->inAdmin && !isset($options['loader'])) || ($options['forceThumb'] ?? false);
-                    $infoFile = $options['sizeInfo'] = $this->coreLocator->fileInfo()->file($website, $media->getFilename(), $dirname);
+                    $infoFile = $options['sizeInfo'] = $this->coreLocator->fileInfo()->file($website, $media->getOriginalName(), $dirname);
 
                     if (!$isEnableSize) {
                         continue;
@@ -276,10 +276,6 @@ class ImageThumbnail implements ImageThumbnailInterface
             }
         }
 
-        if (str_contains($options['originalSrc'], 'andalusia-spain')) {
-            // dump($thumbnails);
-        }
-
         $mediaRelationIntl = $asMediaModel ? $mediaModel->intl : null;
         $mediaIntl = $asMediaModel ? $mediaModel->mediaIntl : null;
         $currentRuntimeInfos = $this->getCurrentRuntime($thumbnails, $currentSize);
@@ -289,8 +285,8 @@ class ImageThumbnail implements ImageThumbnailInterface
         $currentSize = $thumbnails['currentSize'] = $currentRuntimeInfos['currentSize'];
         $thumbnails['dataSource'] = $thumbnails['currentFile'] = !empty($thumbnails['files'][$currentSize]) ? $thumbnails['files'][$currentSize] : (!empty($thumbnails['files']) ? end($thumbnails['files']) : null);
         $thumbnails['currentRetinaFile'] = !empty($thumbnails['files'][$currentSize * 2]) ? $thumbnails['files'][$currentSize * 2] : null;
-        $thumbnails['originalSrc'] = $originalExist && !$file instanceof File ? '/uploads/'.$this->uploadDirname.'/'.$media->getFilename()
-            : ('cms-component' === $media->getCategory() ? $media->getFilename() : ($file instanceof File ? str_replace([$this->projectDirname, '\\', '/public'], ['', '/', ''], $fileDirname) : '/medias/placeholder.jpg'));
+        $thumbnails['originalSrc'] = $originalExist && !$file instanceof File ? '/uploads/'.$this->uploadDirname.'/'.$media->getOriginalName()
+            : ('cms-component' === $media->getCategory() ? $media->getOriginalName() : ($file instanceof File ? str_replace([$this->projectDirname, '\\', '/public'], ['', '/', ''], $fileDirname) : '/medias/placeholder.jpg'));
         $thumbnails['lazyFile'] = !isset($options['loader']) ? $this->getLazy($thumbnails, $currentSize, $options) : null;
         if (isset($options['lazyFiles']) && true === (bool) $options['lazyFiles']) {
             foreach (self::SIZES as $lazySize) {
@@ -301,7 +297,7 @@ class ImageThumbnail implements ImageThumbnailInterface
                 }
             }
         }
-        $thumbnails = $media->getFilename() ? $this->infos($originalInfoFile, $thumbnails, $media, $currentRuntime, $mediaModel, $mediaIntl, $mediaRelationIntl, $options) : $thumbnails;
+        $thumbnails = $media->getOriginalName() ? $this->infos($originalInfoFile, $thumbnails, $media, $currentRuntime, $mediaModel, $mediaIntl, $mediaRelationIntl, $options) : $thumbnails;
         $info = !empty($thumbnails['infos']) ? $thumbnails['infos'] : null;
 
         //        if (isset($options['loader']) || self::LAZY_SVG_DATA && $mediaModel && 'svg' === $mediaModel->extension) {
@@ -671,7 +667,7 @@ class ImageThumbnail implements ImageThumbnailInterface
             return $media->getExtension();
         }
 
-        $filename = $media->getFilename();
+        $filename = $media->getOriginalName();
         if ($filename) {
             return pathinfo($filename, PATHINFO_EXTENSION);
         }
@@ -775,14 +771,14 @@ class ImageThumbnail implements ImageThumbnailInterface
 
             if ($imagineWebp && 'media1' !== $filter) {
                 // Essayer de deviner le chemin webp/avif final AVANT de faire appel à Imagine
-                $filename = $media ? $media->getFilename() : basename($dirname);
+                $filename = $media ? $media->getOriginalName() : basename($dirname);
                 $uploadDir = $media && $media->getWebsite() ? $media->getWebsite()->getUploadDirname() : $this->uploadDirname;
                 $finalThumbDir = $this->projectDirname . '/public/media/cache/' . $filter . '/uploads/' . $uploadDir . '/' . $filename;
                 $finalThumbDir = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $finalThumbDir);
 
                 // Si c'est une image hors uploads (ex: build ou medias)
-                if ($media && !str_contains($media->getFilename(), 'uploads/')) {
-                    $finalThumbDir = $this->projectDirname . '/public/media/cache/' . $filter . '/' . ltrim($media->getFilename(), '/');
+                if ($media && !str_contains($media->getOriginalName(), 'uploads/')) {
+                    $finalThumbDir = $this->projectDirname . '/public/media/cache/' . $filter . '/' . ltrim($media->getOriginalName(), '/');
                     $finalThumbDir = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $finalThumbDir);
                 }
 
@@ -848,7 +844,7 @@ class ImageThumbnail implements ImageThumbnailInterface
                     : $this->coreLocator->projectDir().'/'.ltrim(str_replace(['.webp', '.avif'], '', $dirname), '/');
                 $copyDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $copyDirname);
                 //                $validFile = 'png' !== $extension || $this->verifyPNGSignature($copyDirname) || str_contains($dirname, 'lazy-file.png');
-                $newDirname = $imagineWebp ? $copyDirname.'.webp' : str_replace($media->getFilename(), str_replace('.'.$media->getExtension(), '-blur.'.$media->getExtension(), $media->getFilename()), $copyDirname);
+                $newDirname = $imagineWebp ? $copyDirname.'.webp' : str_replace($media->getOriginalName(), str_replace('.'.$media->getExtension(), '-blur.'.$media->getExtension(), $media->getOriginalName()), $copyDirname);
                 if ($this->isAvifSupported()) {
                     $newDirname = str_replace('.webp', '.avif', $newDirname);
                 }
@@ -925,7 +921,7 @@ class ImageThumbnail implements ImageThumbnailInterface
     {
         if ($media->isHaveMediaScreens()) {
             foreach ($media->getMediaScreens() as $mediaScreen) {
-                if ($mediaScreen->getFilename() && $screen === $mediaScreen->getScreen()) {
+                if ($mediaScreen->getOriginalName() && $screen === $mediaScreen->getScreen()) {
                     return $mediaScreen;
                 }
             }
@@ -934,7 +930,7 @@ class ImageThumbnail implements ImageThumbnailInterface
         if ($screen !== $media->getScreen()) {
             $mediaScreen = new Media\Media();
             $mediaScreen->setScreen($screen);
-            $mediaScreen->setFilename($media->getFilename());
+            $mediaScreen->setOriginalName($media->getOriginalName());
             $mediaScreen->setExtension($media->getExtension());
             $mediaScreen->setQuality($media->getQuality());
             $mediaScreen->setWebsite($media->getWebsite());
@@ -982,7 +978,7 @@ class ImageThumbnail implements ImageThumbnailInterface
         $thumbnails['infos']['notContractual'] = $media->isNotContractual();
         $thumbnails['infos']['newTab'] = $haveMediaRelationIntl ? $mediaRelationIntl->linkBlank : false;
         $thumbnails['infos']['extension'] = $media->getExtension();
-        $thumbnails['infos']['filename'] = $media->getFilename();
+        $thumbnails['infos']['filename'] = $media->getOriginalName();
         $thumbnails['infos']['asDecor'] = $options['decor'] ?? 'svg' === $thumbnails['infos']['extension'];
 
         $thumbnails['infos']['width'] = !empty($runtimeConfig['thumbnail']['size'][0]) ? $runtimeConfig['thumbnail']['size'][0] : (!empty($svgSizes['width']) ? $svgSizes['width'] : null);

@@ -296,7 +296,7 @@ class BlockRepository extends ServiceEntityRepository
             ->leftJoin('c.zone', 'z')
             ->leftJoin('z.layout', 'l')
             ->leftJoin('l.page', 'p')
-            ->andWhere('m.filename IS NOT NULL')
+            ->andWhere('m.originalName IS NOT NULL')
             ->andWhere('mr.locale = :locale')
             ->andWhere('p.id = :page')
             ->setParameter('locale', $locale)

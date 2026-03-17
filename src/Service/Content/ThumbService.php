@@ -53,7 +53,7 @@ readonly class ThumbService
         $dirnameGenerated = $dirnameGenerated.$prefixCache.'-'.$mediaModel->media->getWebsite()->getUploadDirname().'.cache.json';
         $jsonData = $filesystem->exists($dirnameGenerated) ? file_get_contents($dirnameGenerated) : null;
 
-        if ($jsonData && $mediaModel->media->getFilename() && preg_match('/'.$mediaModel->media->getFilename().'/', $jsonData)) {
+        if ($jsonData && $mediaModel->media->getOriginalName() && preg_match('/'.$mediaModel->media->getOriginalName().'/', $jsonData)) {
             $files = $this->thumbnail->execute($mediaModel, $thumbConfiguration);
             $thumbs = !empty($files['lazyFile']) ? [$files['lazyFile']] : [];
             $thumbs = !empty($files['files']) ? array_replace($thumbs, $files['files']) : $thumbs;

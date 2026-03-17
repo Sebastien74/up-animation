@@ -258,7 +258,7 @@ class MediaManager
         $media = $asMediaRelation && !$entity instanceof Media\Media ? $entity->getMedia() : $entity;
         if ($media instanceof Media\Media) {
             foreach ($media->getMediaScreens() as $mediaScreen) {
-                if ($mediaScreen->getFilename()) {
+                if ($mediaScreen->getOriginalName()) {
                     $media->setHaveMediaScreens(true);
                     $this->entityManager->persist($media);
                     break;
@@ -397,7 +397,7 @@ class MediaManager
 
         /* Set others locales Medias if is new and Media empty */
         foreach ($entity->getMediaRelations() as $mediaRelation) {
-            if (!$mediaRelation->isInit() && $mediaRelation->getLocale() !== $configuration->getLocale() && $defaultLocaleMedia && !$mediaRelation->getMedia()->getFilename()) {
+            if (!$mediaRelation->isInit() && $mediaRelation->getLocale() !== $configuration->getLocale() && $defaultLocaleMedia && !$mediaRelation->getMedia()->getOriginalName()) {
                 $media = $mediaRelation->getMedia();
                 if ($media->getId()) {
                     $this->entityManager->remove($media);
@@ -560,7 +560,7 @@ class MediaManager
     private function setMedia(Media\Media $media): void
     {
         $extension = $media->getExtension();
-        $filename = $media->getFilename();
+        $filename = $media->getOriginalName();
         if (!$extension || !$filename) {
             return;
         }
@@ -578,7 +578,7 @@ class MediaManager
 
             if ($filesystem->exists($originalDirname) && !$filesystem->exists($newDirname)) {
                 $filesystem->rename($originalDirname, $newDirname);
-                $media->setFilename($newFilename);
+                $media->setOriginalName($newFilename);
             }
         }
     }
@@ -651,7 +651,7 @@ class MediaManager
         $excludes = [Website::class, Media\MediaRelation::class, Media\Media::class, Media\Thumb::class];
         $metadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
 
-        $message = $this->translator->trans('Suppression impossible pour le fichier suivant :', [], 'admin').' '.$media->getFilename();
+        $message = $this->translator->trans('Suppression impossible pour le fichier suivant :', [], 'admin').' '.$media->getOriginalName();
         $message .= '<ul class="mb-0 text-italic">';
         $deletable = true;
 

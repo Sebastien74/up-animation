@@ -23,7 +23,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 #[ORM\Table(name: 'media')]
-#[ORM\Index(columns: ['filename'], flags: ['fulltext'])]
+#[ORM\Index(columns: ['originalName'], flags: ['fulltext'])]
 #[ORM\Index(columns: ['name'], flags: ['fulltext'])]
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
 #[Vich\Uploadable]
@@ -52,9 +52,6 @@ class Media extends BaseInterface
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    private ?string $filename = null;
-
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $size = null;
 
@@ -69,10 +66,9 @@ class Media extends BaseInterface
 
     #[Vich\UploadableField(
         mapping: 'media',
-        fileNameProperty: 'filename',
+        fileNameProperty: 'originalName',
         size: 'size',
         mimeType: 'mimeType',
-        originalName: 'originalName',
         dimensions: 'dimensions'
     )]
     private ?File $imageFile = null;
@@ -167,18 +163,6 @@ class Media extends BaseInterface
     public function setName(?string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getFilename(): ?string
-    {
-        return $this->filename;
-    }
-
-    public function setFilename(?string $filename): static
-    {
-        $this->filename = $filename;
 
         return $this;
     }

@@ -47,7 +47,7 @@
                                 {%- for entityGallery in gallery -%}
                                     {%- set mediaRelations = entityGallery|intlMedias -%}
                                     {%- for mediaRelation in mediaRelations -%}
-                                        {%- set media = mediaRelation.media.filename is defined and mediaRelation.media.filename ? mediaRelation.media : null -%}
+                                        {%- set media = mediaRelation.media.originalName is defined and mediaRelation.media.originalName ? mediaRelation.media : null -%}
                                         {%- if media -%}
                                             {%- set intlMedia = mediaRelation.intl -%}
                                             <li class="splide__slide">
@@ -59,7 +59,7 @@
                             {%- else -%}
                                 {%- set mediaRelations = gallery|intlMedias -%}
                                 {%- for mediaRelation in mediaRelations -%}
-                                    {%- set media = mediaRelation.media.filename is defined and mediaRelation.media.filename ? mediaRelation.media : null -%}
+                                    {%- set media = mediaRelation.media.originalName is defined and mediaRelation.media.originalName ? mediaRelation.media : null -%}
                                     {%- if media -%}
                                         {%- set intlMedia = mediaRelation.intl -%}
                                         <li class="splide__slide">

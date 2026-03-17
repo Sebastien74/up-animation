@@ -88,17 +88,17 @@ class DeleteService
     private function resetMedia(Media $media): void
     {
         /** Remove file */
-        $fileDirname = $this->coreLocator->projectDir().'/public/uploads/'.$media->getWebsite()->getUploadDirname().'/'.$media->getFilename();
+        $fileDirname = $this->coreLocator->projectDir().'/public/uploads/'.$media->getWebsite()->getUploadDirname().'/'.$media->getOriginalName();
         $fileDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $fileDirname);
         $filesystem = new Filesystem();
 
-        if (!$media->getMedia() && $filesystem->exists($fileDirname) && !is_dir($fileDirname) && $media->getFilename()) {
+        if (!$media->getMedia() && $filesystem->exists($fileDirname) && !is_dir($fileDirname) && $media->getOriginalName()) {
             $filesystem->remove($fileDirname);
         }
 
         /* Reset Media */
         $media->setName(null);
-        $media->setFilename(null);
+        $media->setOriginalName(null);
         $media->setExtension(null);
 
         $this->coreLocator->em()->persist($media);

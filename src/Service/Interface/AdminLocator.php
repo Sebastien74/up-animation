@@ -239,7 +239,7 @@ class AdminLocator implements AdminLocatorInterface
                 $media = $mediaRelation->getMedia();
                 if ($media) {
                     $website = $media->getWebsite();
-                    $filename = $media->getFilename();
+                    $filename = $media->getOriginalName();
                     if ($website && $filename) {
                         $dirname = $this->coreLocator->projectDir().'/public/uploads/'.$website->getUploadDirname().'/'.$filename;
                         $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
@@ -277,9 +277,9 @@ class AdminLocator implements AdminLocatorInterface
             foreach ($entity->getMediaRelations() as $mediaRelation) {
                 $intl = $mediaRelation->getIntl();
                 $media = $mediaRelation->getMedia();
-                if ((!$intl || !$intl->getTitle()) && ($media && $media->getFilename())) {
+                if ((!$intl || !$intl->getTitle()) && ($media && $media->getOriginalName())) {
                     $entityId = $entity->getId();
-                    $filename = $media->getFilename();
+                    $filename = $media->getOriginalName();
                     $locales = !empty($response[$filename][$entityId]['locales']) ? $response[$filename][$entityId]['locales'] : [];
                     $locales[] = $mediaRelation->getLocale();
                     $response[$filename][$entityId] = [

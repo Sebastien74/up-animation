@@ -50,7 +50,7 @@ class BaseIntl extends BaseInterface
     protected ?string $subTitle = null;
 
     #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
-    protected ?string $subTitlePosition = 'bottom';
+    protected ?string $subTitlePosition = 'top';
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     protected ?string $introduction = null;

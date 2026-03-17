@@ -4,7 +4,9 @@
 
     {%- set card = vars.card is defined ? vars.card : 'div' -%}
     {%- set entity = vars.entity is defined ? vars.entity : null -%}
+    {%- set shadow = true -%}
     {%- set class = vars.class is defined and vars.class ? vars.class : null -%}
+    {%- set class = shadow ? 'shadow '~class : null -%}
     {%- set truncate = vars.truncate is defined ? vars.truncate : 150 -%}
     {%- set disabledSubTitle = vars.disabledSubTitle is defined ? vars.disabledSubTitle : false -%}
     {%- set disabledIntro = vars.disabledIntro is defined ? vars.disabledIntro : false -%}
@@ -38,13 +40,13 @@
     {%- set mediaClass = vars.mediaClass is defined ? vars.mediaClass : null -%}
     {%- set background = entity.backgroundColorType is defined and entity.backgroundColorType ? entity.backgroundColorType : 'bg-transparent' -%}
     {%- set background = entity.backgroundColor is defined and entity.backgroundColor ? entity.backgroundColor : (vars.backgroundColor is defined and vars.backgroundColor ? vars.backgroundColor : background) -%}
-    {%- set paddingX = 'transparent' in background ? 'px-0' : 'px-4' -%}
+    {%- set paddingX = 'transparent' in background and not shadow ? 'px-0' : 'px-4' -%}
     {%- set haveBg = background and 'transparent' not in background -%}
     {%- set displayMedia = (media and showThumbnail) or (thumbPlaceholder and showThumbnail) -%}
 
     <{{ card }} class="card-block bg-transparent card h-100 border-0 {% if targetLink %} have-link{% endif %}{% if class %} {{ class }}{% endif %}{% if haveBg %} have-bg{% endif %}">
         {%- if vars.webmaster is defined -%}
-                        {{ component('WebmasterEdit', vars.webmaster) }}
+            {{ component('WebmasterEdit', vars.webmaster) }}
         {%- endif -%}
         {%- if displayMedia -%}
             <div class="card-header bg-transparent border-0 p-0">

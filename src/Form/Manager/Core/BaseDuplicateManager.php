@@ -81,9 +81,9 @@ class BaseDuplicateManager
                     $mediaRelation->setDownloadable($mediaRelationToDuplicate->isDownloadable());
 
                     if (!$sameSite) {
-                        $path = $this->projectDir.'/public/uploads/'.$referWebsite->getUploadDirname().'/'.$mediaToDuplicate->getFilename();
+                        $path = $this->projectDir.'/public/uploads/'.$referWebsite->getUploadDirname().'/'.$mediaToDuplicate->getOriginalName();
                         $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
-                        if ($mediaToDuplicate->getFilename()) {
+                        if ($mediaToDuplicate->getOriginalName()) {
                             $uploadedFile = $this->uploader->pathToUploadedFile($path);
                             if ($uploadedFile) {
                                 $this->uploader->upload($uploadedFile, $duplicateToWebsiteSession);
@@ -122,7 +122,7 @@ class BaseDuplicateManager
         $media->setScreen($mediaToDuplicate->getScreen());
         $media->setCopyright($mediaToDuplicate->getCopyright());
         $media->setExtension($mediaToDuplicate->getExtension());
-        $media->setFilename($mediaToDuplicate->getFilename());
+        $media->setOriginalName($mediaToDuplicate->getOriginalName());
         $media->setHideHover($mediaToDuplicate->isHideHover());
         $media->setNotContractual($mediaToDuplicate->isNotContractual());
         $media->setQuality($mediaToDuplicate->getQuality());

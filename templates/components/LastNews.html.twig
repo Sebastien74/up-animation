@@ -4,9 +4,9 @@
 
 {#{%- if data -%}#}
 {#    <a href="{{ path('front_newscast_view', {url: data.urlCode}) }}" class="fixed-news shadow position-fixed d-flex align-items-center justify-content-center">#}
-{#        {%- if data.filename -%}#}
+{#        {%- if data.originalName -%}#}
 {#            <div class="media-wrap me-3">#}
-{#                {{ data.filename|file({}, {#}
+{#                {{ data.originalName|file({}, {#}
 {#                    screensSizes: {#}
 {#                        mobile: {width: 100, height: 100},#}
 {#                        tablet: {width: 100, height: 60},#}

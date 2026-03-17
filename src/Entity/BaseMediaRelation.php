@@ -49,7 +49,7 @@ class BaseMediaRelation extends BaseInterface
     protected bool $header = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected bool $radius = true;
+    protected bool $radius = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     protected bool $rotation = false;

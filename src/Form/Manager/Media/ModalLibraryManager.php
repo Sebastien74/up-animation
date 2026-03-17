@@ -100,7 +100,7 @@ class ModalLibraryManager
             }
 
             $entity->setName($media->getName());
-            $entity->setFilename($media->getFilename());
+            $entity->setOriginalName($media->getOriginalName());
             $entity->setCopyright($media->getCopyright());
             $entity->setNotContractual($media->isNotContractual());
             $this->entityManager->persist($entity);

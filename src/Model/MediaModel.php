@@ -36,7 +36,7 @@ final class MediaModel extends BaseModel
         public readonly ?Media $entity = null,
         public readonly ?object $targetPage = null,
         public readonly ?string $targetLink = null,
-        public readonly ?string $filename = null,
+        public readonly ?string $originalName = null,
         public readonly ?string $type = null,
         public readonly ?object $intl = null,
         public readonly ?object $mediaIntl = null,
@@ -111,7 +111,7 @@ final class MediaModel extends BaseModel
         $targetPage = $intl?->linkTargetPage;
         $titlePosition = $media ? $media->getTitlePosition() : null;
         $positionMatches = $titlePosition ? explode('-', $titlePosition) : [];
-        $fileInfo = $media ? self::$coreLocator->fileInfo()->file($website, $media->getFilename()) : null;
+        $fileInfo = $media ? self::$coreLocator->fileInfo()->file($website, $media->getOriginalName()) : null;
         $asVideo = ($media && 'poster' === $media->getScreen()) || ($intl && $intl->video);
         $pictogram = $mediaRelation && $mediaRelation->getPictogram() ? $mediaRelation->getPictogram()
             : ($intl && $intl->pictogram ? $intl->pictogram : ($targetPage && $targetPage->getPictogram() ? $targetPage->getPictogram() : null));
@@ -123,7 +123,7 @@ final class MediaModel extends BaseModel
             entity: $media,
             targetPage: $targetPage,
             targetLink: $targetPage ? $intl?->link : null,
-            filename: $media ? $media->getFilename() : '',
+            originalName: $media ? $media->getOriginalName() : '',
             type: $asVideo ? 'video' : ($media && in_array($media->getExtension(), self::$IMG_EXTENSIONS) ? 'img' : 'file'),
             intl: $intl,
             mediaIntl: $media ? IntlModel::fromEntity($media, $coreLocator, false) : null,
@@ -135,7 +135,7 @@ final class MediaModel extends BaseModel
             body: $intl && $intl->body ? $intl->body : self::getContent('body', $mediaRelation),
             introduction: $intl && $intl->introduction ? $intl->introduction : self::getContent('introduction', $mediaRelation),
             haveContent: $intl && ($intl->title || $intl->introduction || $intl->body),
-            haveMedia: $media && $media->getFilename(),
+            haveMedia: $media && $media->getOriginalName(),
             main: self::getContent('main', $mediaRelation, true),
             header: self::getContent('header', $mediaRelation, true),
             hideHover: self::getContent('hideHover', $media, true),
@@ -174,10 +174,10 @@ final class MediaModel extends BaseModel
      */
     private static function path(?string $websiteDirname = null, ?Media $media = null): ?string
     {
-        $path = $websiteDirname && $media && $media->getFilename() ? '/uploads/'.$websiteDirname.'/'.$media->getFilename() : null;
+        $path = $websiteDirname && $media && $media->getOriginalName() ? '/uploads/'.$websiteDirname.'/'.$media->getOriginalName() : null;
 
-        if ($media && $media->getFilename() && str_contains($media->getFilename(), '/medias/')) {
-            $path = $media->getFilename();
+        if ($media && $media->getOriginalName() && str_contains($media->getOriginalName(), '/medias/')) {
+            $path = $media->getOriginalName();
         }
 
         return $path;
@@ -198,7 +198,7 @@ final class MediaModel extends BaseModel
             ->innerJoin('mr.media', 'm')
             ->andWhere('mr.'.$metadata->mappedBy.' = :entity')
             ->andWhere('mr.locale =  :locale')
-            ->andWhere('m.filename IS NOT NULL')
+            ->andWhere('m.originalName IS NOT NULL')
             ->setParameter('entity', $entity)
             ->setParameter('locale', self::$coreLocator->locale())
             ->addSelect('m')
@@ -241,8 +241,8 @@ final class MediaModel extends BaseModel
 
         if ($media) {
             foreach ($media->getMediaScreens() as $screenMedia) {
-                if ($screenMedia->getFilename()) {
-                    return self::$coreLocator->schemeAndHttpHost().'/uploads/'.self::$coreLocator->website()->uploadDirname.'/'.$screenMedia->getFilename();
+                if ($screenMedia->getOriginalName()) {
+                    return self::$coreLocator->schemeAndHttpHost().'/uploads/'.self::$coreLocator->website()->uploadDirname.'/'.$screenMedia->getOriginalName();
                 }
             }
         }

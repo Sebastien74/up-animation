@@ -67,7 +67,7 @@ class SearchManager
 
         if ($search) {
             try {
-                $result = $statement->andWhere('m.filename LIKE :filename')
+                $result = $statement->andWhere('m.originalName LIKE :filename')
                     ->orWhere('m.name LIKE :name')
                     ->setParameter('filename', '%'.rtrim($search, '-').'%')
                     ->setParameter('name', '%'.rtrim($search, '-').'%')
@@ -80,7 +80,7 @@ class SearchManager
         } else {
             $result = $statement
                 ->andWhere('m.folder IS NULL')
-                ->andWhere('m.filename IS NOT NULL')
+                ->andWhere('m.originalName IS NOT NULL')
                 ->orderBy('m.id', 'DESC')
                 ->getQuery()
                 ->getResult();

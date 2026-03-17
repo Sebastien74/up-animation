@@ -142,8 +142,8 @@ class SearchManager
         $repository = $this->entityManager->getRepository(Media::class);
 
         $against = '(';
-        $against .= "(MATCH_AGAINST(m.filename, :matchAgainst '".$mode."') * 5) + ";
-        $against .= "(CASE WHEN LOWER(m.filename) LIKE LOWER(:likeSearch) THEN 5 ELSE 0 END) + ";
+        $against .= "(MATCH_AGAINST(m.originalName, :matchAgainst '".$mode."') * 5) + ";
+        $against .= "(CASE WHEN LOWER(m.originalName) LIKE LOWER(:likeSearch) THEN 5 ELSE 0 END) + ";
         $against .= "(MATCH_AGAINST(m.name, :matchAgainst '".$mode."') * 4) + ";
         $against .= "(CASE WHEN LOWER(m.name) LIKE LOWER(:likeSearch) THEN 4 ELSE 0 END) + ";
         $against = rtrim($against, '+ ').') as score';

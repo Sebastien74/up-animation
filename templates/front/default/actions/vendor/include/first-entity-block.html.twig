@@ -15,7 +15,7 @@
 {#    {%- set intro = intl.introduction -%}#}
 {#    {%- set body = intl.body -%}#}
 {#    {%- set mediaRelation = asCustomLayout ? layout|layoutBlockType('media')|mainMedia : lastEntity|mainMedia -%}#}
-{#    {%- set haveMedia = mediaRelation.media.filename is defined and mediaRelation.media.filename -%}#}
+{#    {%- set haveMedia = mediaRelation.media.originalName is defined and mediaRelation.media.originalName -%}#}
 
 {#    <div class="first-{{ interfaceName }}-block bg-secondary">#}
 

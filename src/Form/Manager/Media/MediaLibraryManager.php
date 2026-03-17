@@ -51,7 +51,7 @@ class MediaLibraryManager
     private function renameFile(Media $media, Website $website): void
     {
         $name = $media->getName();
-        $filename = $media->getFilename();
+        $filename = $media->getOriginalName();
         $extension = $media->getExtension();
 
         if (empty($extension) || !preg_match('/.'.$extension.'/', $filename)) {
@@ -75,7 +75,7 @@ class MediaLibraryManager
             } else {
                 if ($filesystem->exists($baseDirname.$filename)) {
                     $filesystem->rename($baseDirname.$filename, $newFileDirname);
-                    $media->setFilename($name.'.'.$extension);
+                    $media->setOriginalName($name.'.'.$extension);
                 }
             }
         }

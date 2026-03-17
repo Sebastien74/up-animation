@@ -66,7 +66,7 @@ class MapModel extends BaseModel
             }
             $points[$key]['zones'] = array_merge($countriesData, $departments);
             $geoJson = $point->getGeoJson() && $point->getGeoJson()->getMedia() ? $point->getGeoJson()->getMedia() : null;
-            $points[$key]['geoJson'] = $geoJson && $geoJson->getFilename() ? '/uploads/'.$website->uploadDirname.'/'.$point->getGeoJson()->getMedia()->getFilename() : false;
+            $points[$key]['geoJson'] = $geoJson && $geoJson->getOriginalName() ? '/uploads/'.$website->uploadDirname.'/'.$point->getGeoJson()->getMedia()->getOriginalName() : false;
         }
 
         return $points;

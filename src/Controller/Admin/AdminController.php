@@ -500,9 +500,9 @@ class AdminController extends BaseController
                         foreach ($block->getMediaRelations() as $mediaRelation) {
                             $intl = $mediaRelation->getIntl();
                             $media = $mediaRelation->getMedia();
-                            if ((!$intl || !$intl->getPlaceholder()) && ($media && $media->getFilename())) {
+                            if ((!$intl || !$intl->getPlaceholder()) && ($media && $media->getOriginalName())) {
                                 $blockId = $block->getId();
-                                $filename = $media->getFilename();
+                                $filename = $media->getOriginalName();
                                 $locales = !empty($mediasAlert[$filename][$blockId]['locales']) ? $mediasAlert[$filename][$blockId]['locales'] : [];
                                 $locales[] = $mediaRelation->getLocale();
                                 $mediasAlert[$filename][$blockId] = [

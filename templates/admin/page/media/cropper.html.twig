@@ -68,7 +68,7 @@
                             thumbConfiguration: configuration.id
                         })}}) }}
 
-                        {%- set fileInfo = website()|fileInfo(media.filename) -%}
+                        {%- set fileInfo = website()|fileInfo(media.originalName) -%}
 
                         <div class="cropper-wrap"
                              data-width="{{ thumb.width }}"

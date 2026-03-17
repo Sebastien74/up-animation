@@ -55,7 +55,7 @@ class UniqFileNameValidator extends ConstraintValidator
                 $session->set('same_file_error', rtrim($message, '<br/>'));
             }
 
-            if ($entity->getFilename() && !$entity->getName()) {
+            if ($entity->getOriginalName() && !$entity->getName()) {
                 $message = $this->translator->trans('This value should not be blank.', [], 'validators');
                 $this->context->buildViolation(rtrim($message, '<br/>'))->addViolation();
             }

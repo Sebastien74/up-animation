@@ -215,7 +215,7 @@ readonly class MediaUploadListener implements EventSubscriberInterface
         $session = $this->coreLocator->request()?->hasSession() ? $this->coreLocator->request()->getSession() : null;
         if ($session) {
             $session->getFlashBag()->add('info', $this->coreLocator->translator()->trans('Votre média %filename% a été optimisé (redimensionné ou compressé).', [
-                '%filename%' => $media->getName() ?? $media->getFilename() ?? 'téléchargé',
+                '%filename%' => $media->getName() ?? $media->getOriginalName() ?? 'téléchargé',
             ], 'admin'));
         }
     }
