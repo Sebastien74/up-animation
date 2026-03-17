@@ -222,6 +222,10 @@ class Media extends BaseInterface
 
     public function setImageFile(?File $imageFile = null): void
     {
+        if ($imageFile instanceof UploadedFile && !$imageFile->isReadable()) {
+            return;
+        }
+
         $this->imageFile = $imageFile;
 
         if ($imageFile instanceof UploadedFile) {
