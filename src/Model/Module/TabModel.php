@@ -27,9 +27,19 @@ final class TabModel extends BaseModel
     {
         $model = (array) EntityModel::fromEntity($tab, $coreLocator, array_merge($options))->response;
         $tree = self::$coreLocator->treeService()->execute($tab->getContents());
+        $tabs = !empty($tree['main']) ? self::tabs($tree, $tree['main']) : [];
+
+        $haveMedias = false;
+        foreach ($tabs as $item) {
+            if ($item['entity']->mainMedia) {
+                $haveMedias = true;
+                break;
+            }
+        }
 
         return (object) array_merge($model, [
             'tabs' => !empty($tree['main']) ? self::tabs($tree, $tree['main']) : [],
+            'haveMedias' => $haveMedias,
         ]);
     }
 

@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -54,7 +55,26 @@ class Media extends BaseInterface
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $filename = null;
 
-    #[Vich\UploadableField(mapping: 'media', fileNameProperty: 'filename')]
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?int $size = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $mimeType = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $originalName = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $dimensions = [];
+
+    #[Vich\UploadableField(
+        mapping: 'media',
+        fileNameProperty: 'filename',
+        size: 'size',
+        mimeType: 'mimeType',
+        originalName: 'originalName',
+        dimensions: 'dimensions'
+    )]
     private ?File $imageFile = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
@@ -163,6 +183,54 @@ class Media extends BaseInterface
         return $this;
     }
 
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function setSize(?int $size): static
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getMimeType(): ?string
+    {
+        return $this->mimeType;
+    }
+
+    public function setMimeType(?string $mimeType): static
+    {
+        $this->mimeType = $mimeType;
+
+        return $this;
+    }
+
+    public function getOriginalName(): ?string
+    {
+        return $this->originalName;
+    }
+
+    public function setOriginalName(?string $originalName): static
+    {
+        $this->originalName = $originalName;
+
+        return $this;
+    }
+
+    public function getDimensions(): array
+    {
+        return $this->dimensions ?: [];
+    }
+
+    public function setDimensions(?array $dimensions): static
+    {
+        $this->dimensions = $dimensions ?: [];
+
+        return $this;
+    }
+
     public function getImageFile(): ?File
     {
         return $this->imageFile;
@@ -171,8 +239,14 @@ class Media extends BaseInterface
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
-        $this->extension = $imageFile?->guessExtension();
-        $this->name = $imageFile && $this->extension ? str_replace('.'.$this->extension, '', $imageFile->getFilename()) : null;
+
+        if ($imageFile instanceof UploadedFile) {
+            $this->extension = $imageFile->guessExtension();
+            $this->name = $this->name ?: str_replace('.'.$this->extension, '', $imageFile->getClientOriginalName());
+        } elseif ($imageFile instanceof File) {
+            $this->extension = $imageFile->guessExtension();
+            $this->name = $this->name ?: str_replace('.'.$this->extension, '', $imageFile->getFilename());
+        }
 
         if (null !== $imageFile) {
             $this->updatedAt = new \DateTimeImmutable();

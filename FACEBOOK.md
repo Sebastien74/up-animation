@@ -17,7 +17,18 @@ Ce document détaille la procédure pour connecter une page Facebook au site et 
 
 ## 3. Génération du Token d'accès (Access Token)
 
-Pour un accès permanent au flux d'une page, il est recommandé d'utiliser un **Page Access Token** de longue durée.
+Vous avez deux options pour générer le token :
+
+### Option A : Connexion automatique (Recommandée)
+
+1. Dans l'administration du site, allez dans **Configuration du site** > onglet **Facebook**.
+2. Saisissez votre **App ID**, **App Secret** et **Page ID**.
+3. Enregistrez la configuration.
+4. Un bouton **Connecter ma Page Facebook** apparaît. Cliquez dessus.
+5. Autorisez l'accès et sélectionnez la page concernée.
+6. Le token de page sera automatiquement récupéré et enregistré.
+
+### Option B : Génération manuelle
 
 1. Allez dans l'outil [Graph API Explorer](https://developers.facebook.com/tools/explorer/).
 2. Sélectionnez votre application.
@@ -27,18 +38,26 @@ Pour un accès permanent au flux d'une page, il est recommandé d'utiliser un **
 6. Une fois le token utilisateur généré, cliquez sur l'ID utilisateur dans le menu déroulant pour sélectionner votre **Page**.
 7. Le token affiché est maintenant un token de page.
 8. Pour le rendre permanent, utilisez l'outil [Access Token Tool](https://developers.facebook.com/tools/accesstoken/) ou suivez la documentation Meta pour échanger le token contre un token "long-lived".
+9. Copiez le token et collez-le dans le champ **API token (Manuel)** de l'administration.
 
-## 4. Configuration dans le CMS
+## 4. Configuration de l'URL de retour (Callback)
+
+Pour l'Option A, vous devez configurer l'URL de redirection dans Meta for Developers :
+1. Dans votre application Facebook > **Produits** > **Facebook Login** > **Paramètres**.
+2. Dans le champ **Valid OAuth Redirect URIs**, ajoutez : `https://[votre-domaine.com]/facebook/callback`
+
+## 5. Configuration dans le CMS
 
 1. Connectez-vous à l'administration du site.
-2. Allez dans la section **API** > **Facebook**.
+2. Allez dans la section **Configuration du site** > onglet **Facebook**.
 3. Remplissez les champs suivants :
-    - **ID de la page** : L'identifiant récupéré à l'étape 2.
-    - **Token d'accès** : Le token de page récupéré à l'étape 3.
+    - **App ID** : L'ID de votre application Facebook.
+    - **App Secret** : Le secret de votre application Facebook.
+    - **Page ID** : L'identifiant de la page Facebook.
     - **Nombre d'items** : Nombre de posts à afficher (par défaut 7).
 4. Enregistrez.
 
-## 5. Utilisation technique
+## 6. Utilisation technique
 
 Le système utilise le contrôleur suivant pour le rendu :
 - **Controller** : `App\Controller\Front\Action\Feed\FacebookController::index`

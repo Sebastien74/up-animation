@@ -8,6 +8,7 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Layout\Layout;
 use App\Entity\Layout\Zone;
 use App\Form\Interface\LayoutFormFormManagerLocator;
+use App\Form\Type\Layout\Management as FormType;
 use App\Repository\Layout\ZoneRepository;
 use App\Service\Admin\LayoutServiceInterface;
 use Doctrine\ORM\Mapping\MappingException;
@@ -134,7 +135,7 @@ class ZoneController extends AdminController
     #[Route('/size/{zone}', name: 'admin_zone_size', options: ['expose' => true], methods: 'GET')]
     public function size(Request $request, Zone $zone): JsonResponse
     {
-        $zone->setFullSize((bool) $request->get('size'));
+        $zone->setFullSize((bool) $request->query->get('size'));
         $this->coreLocator->em()->persist($zone);
         $this->coreLocator->em()->flush();
 

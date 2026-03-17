@@ -8,10 +8,15 @@ use App\Entity\Media\Media;
 use App\Service\Content\ImageThumbnailInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Service\Media\Compressor;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Psr\Log\LoggerInterface;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Logger;
+use Monolog\Level;
 
 /**
  * MediaUploadListener.
@@ -22,11 +27,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 readonly class MediaUploadListener implements EventSubscriberInterface
 {
+    private LoggerInterface $logger;
+
     public function __construct(
         private CoreLocatorInterface $coreLocator,
         private ImageThumbnailInterface $imageThumbnail,
         private Compressor $compressor,
     ) {
+        $this->logger = new Logger('media_upload_listener');
+        $this->logger->pushHandler(new RotatingFileHandler($this->coreLocator->logDir().'/media-upload.log', 10, Level::Debug));
     }
 
     public static function getSubscribedEvents(): array
@@ -49,14 +58,25 @@ readonly class MediaUploadListener implements EventSubscriberInterface
             return;
         }
 
-        $this->processImage($file, $object);
+        $originalPath = $file->getRealPath();
+        $this->logger->debug('PRE_UPLOAD for media id: ' . $object->getId() . ' - file: ' . $originalPath);
+
+        if (!file_exists($originalPath)) {
+            $this->logger->error('File DOES NOT EXIST BEFORE processing: ' . $originalPath);
+            return;
+        }
+
+        // Si on a besoin de changer l'extension (ex: PNG -> JPG), on doit créer une copie.
+        // Mais pour l'instant, on traite l'image DIRECTEMENT sur le fichier temporaire original de PHP (ou de Symfony).
+        // Cela garantit que VichUploader utilise toujours le même objet UploadedFile et son chemin.
+        
+        $this->processImage($originalPath, $file->getMimeType(), $object);
+        
+        $this->logger->debug('File processed successfully at: ' . $originalPath);
     }
 
-    private function processImage(UploadedFile $file, Media $media): void
+    private function processImage(string $path, string $mimeType, Media $media): void
     {
-        $path = $file->getRealPath();
-        $mimeType = $file->getMimeType();
-
         if (!str_starts_with($mimeType, 'image/')) {
             return;
         }
@@ -101,14 +121,33 @@ readonly class MediaUploadListener implements EventSubscriberInterface
             $targetHeight = $maxHeight;
         }
 
-        $mustCompress = $file->getSize() > 500 * 1024; // 500ko
+        $mustCompress = filesize($path) > 500 * 1024; // 500ko
 
         if ($resize || $mustCompress || $orientation !== 1) {
+            $this->logger->debug('Resizing/compressing: ' . $path . ' (resize: ' . ($resize ? 'yes' : 'no') . ', mustCompress: ' . ($mustCompress ? 'yes' : 'no') . ')');
             $this->resizeAndCompress($path, $mimeType, $targetWidth, $targetHeight, $media, $orientation);
-            // Compression adaptative si le fichier est toujours > 500ko après resize
-            if (file_exists($path) && filesize($path) > 500 * 1024) {
-                $this->compressor->optimize($path, $mimeType, $media->getQuality() ?? 85);
+            
+            if (!file_exists($path)) {
+                $this->logger->error('File DISAPPEARED AFTER resizeAndCompress: ' . $path);
+                return;
             }
+
+            // Compression adaptative si le fichier est toujours > 500ko après resize
+            if (filesize($path) > 500 * 1024) {
+                $this->logger->debug('Applying additional optimization for: ' . $path);
+                $this->compressor->optimize($path, $mimeType, $media->getQuality() ?? 85);
+                
+                if (!file_exists($path)) {
+                    $this->logger->error('File DISAPPEARED AFTER compressor->optimize: ' . $path);
+                }
+            }
+
+            $finalSizes = getimagesize($path);
+            if ($finalSizes) {
+                $media->setDimensions([$finalSizes[0], $finalSizes[1]]);
+            }
+        } else {
+            $media->setDimensions([$width, $height]);
         }
     }
 
@@ -160,11 +199,17 @@ readonly class MediaUploadListener implements EventSubscriberInterface
 
         if ($mime === 'image/jpeg' || $mime === 'image/jpg') {
             imageinterlace($newImage, true);
-            imagejpeg($newImage, $path, $quality);
+            if (!imagejpeg($newImage, $path, $quality)) {
+                $this->logger->error('imagejpeg FAILED for: ' . $path);
+            }
         } elseif ($mime === 'image/png') {
-            imagepng($newImage, $path, 9);
+            if (!imagepng($newImage, $path, 9)) {
+                $this->logger->error('imagepng FAILED for: ' . $path);
+            }
         } elseif ($mime === 'image/webp') {
-            imagewebp($newImage, $path, $quality);
+            if (!imagewebp($newImage, $path, $quality)) {
+                $this->logger->error('imagewebp FAILED for: ' . $path);
+            }
         }
 
         $session = $this->coreLocator->request()?->hasSession() ? $this->coreLocator->request()->getSession() : null;

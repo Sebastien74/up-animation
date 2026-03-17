@@ -61,16 +61,24 @@
     -----------------------------------*/
 
     .socials-list {
+
         margin-top: 1rem;
 
         a {
+
             transition: transform $transition-base, color $transition-base;
             color: $white;
 
             @include mediaQuery(min-lg) {
+
                 &:hover {
-                    transform: translateY(-3px);
+
+                    transform: translateY(-2px);
                     color: $primary !important;
+
+                    i {
+                        color: $primary !important;
+                    }
 
                     i:after {
                         background-color: $white;
@@ -83,6 +91,7 @@
 
             font-size: 40px;
             transition: color $transition-base;
+            color: $white;
 
             @include mediaQuery(min-lg) {
 

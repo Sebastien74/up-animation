@@ -44,7 +44,7 @@ class Compressor
         // Try jpegoptim
         if ($this->which('jpegoptim')) {
             $this->run(sprintf('jpegoptim --max=%d --strip-all --all-progressive %s', $quality, escapeshellarg($path)));
-            return true;
+            return file_exists($path);
         }
 
         // Try mozjpeg (cjpeg)
@@ -52,6 +52,9 @@ class Compressor
             $tmpPath = $path . '.tmp';
             $this->run(sprintf('cjpeg -quality %d -progressive -outfile %s %s', $quality, escapeshellarg($tmpPath), escapeshellarg($path)));
             if (file_exists($tmpPath) && filesize($tmpPath) < filesize($path)) {
+                if (file_exists($path)) {
+                    unlink($path);
+                }
                 rename($tmpPath, $path);
                 return true;
             }
@@ -70,6 +73,9 @@ class Compressor
             $tmpPath = $path . '-tmp.png';
             $this->run(sprintf('pngquant --quality=65-80 --speed 1 --force --output %s %s', escapeshellarg($tmpPath), escapeshellarg($path)));
             if (file_exists($tmpPath) && filesize($tmpPath) < filesize($path)) {
+                if (file_exists($path)) {
+                    unlink($path);
+                }
                 rename($tmpPath, $path);
                 return true;
             }
@@ -81,7 +87,7 @@ class Compressor
         // Try optipng
         if ($this->which('optipng')) {
             $this->run(sprintf('optipng -o2 -strip all %s', escapeshellarg($path)));
-            return true;
+            return file_exists($path);
         }
 
         return false;

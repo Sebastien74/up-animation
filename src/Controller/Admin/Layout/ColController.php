@@ -8,15 +8,13 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Layout\Col;
 use App\Entity\Layout\Zone;
 use App\Form\Interface\LayoutFormFormManagerLocator;
-use App\Form\Type\Layout\Management\BackgroundColorColType;
-use App\Form\Type\Layout\Management\ColConfigurationType;
-use App\Form\Type\Layout\Management\ColSizeType;
-use App\Form\Type\Layout\Management\ColType;
+use App\Form\Type\Layout\Management as FormType;
 use App\Repository\Layout\ColRepository;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use ReflectionException;
@@ -37,7 +35,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ColController extends AdminController
 {
     protected ?string $class = Col::class;
-    protected ?string $formType = ColType::class;
+    protected ?string $formType = FormType\ColType::class;
 
     /**
      * ColController constructor.
@@ -61,7 +59,7 @@ class ColController extends AdminController
     public function add(Request $request, Zone $zone)
     {
         $col = new Col();
-        $form = $this->createForm(ColSizeType::class, $col);
+        $form = $this->createForm(FormType\ColSizeType::class, $col);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -98,7 +96,7 @@ class ColController extends AdminController
     {
         $this->disableFlash = true;
         $this->template = 'admin/core/layout/background.html.twig';
-        $this->formType = BackgroundColorColType::class;
+        $this->formType = FormType\BackgroundColorColType::class;
 
         return parent::edit($request);
     }
@@ -154,14 +152,14 @@ class ColController extends AdminController
     /**
      * Edit Col configuration.
      *
-     * @throws InvalidArgumentException|NonUniqueResultException|MappingException|ReflectionException
+     * @throws InvalidArgumentException|NonUniqueResultException|MappingException|ReflectionException|QueryException
      */
     #[Route('/modal/configuration/{col}', name: 'admin_col_configuration', methods: 'GET|POST')]
     public function configuration(Request $request)
     {
         $this->disableFlash = true;
         $this->entity = $this->coreLocator->em()->getRepository(Col::class)->find($request->get('col'));
-        $this->formType = ColConfigurationType::class;
+        $this->formType = FormType\ColConfigurationType::class;
         $this->template = 'admin/core/layout/col-configuration.html.twig';
         $this->arguments['col'] = $this->entity;
 

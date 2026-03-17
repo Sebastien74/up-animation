@@ -224,7 +224,7 @@ $body-line-height: normal !default;
 $font-size-base-pixel: 16px;
 $font-size-base: rem($font-size-base-pixel);
 $font-size-h1: 60px;
-$font-size-h2: 35px;
+$font-size-h2: 50px;
 $font-size-h3: 25px;
 $font-size-h4: 18px;
 $font-size-h5: 18px;
@@ -296,8 +296,9 @@ $elements: map-merge((
     'h2, h2 a, .h2, .h2 a': (
         'properties': (
             'color': $body-color,
-            'font-weight': 700,
+            'font-weight': 800,
             'font-family': $font-title,
+            'text-transform': uppercase,
         ),
         'colors-in-backgrounds': (
             'primary': $white,

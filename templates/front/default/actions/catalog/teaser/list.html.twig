@@ -1,9 +1,9 @@
 {%- if entities is not empty -%}
     <div id="index-products">
         {%- include 'front/'~websiteTemplate~'/actions/catalog/results.html.twig' with {
-            'listing': teaser,
-            'products': entities,
-            'titleForce': 3,
+            listing: teaser,
+            products: entities,
+            titleForce: 3,
         } -%}
     </div>
     {%- set firstEntity = entities|first -%}

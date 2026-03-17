@@ -26,6 +26,12 @@ class TikTok
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $accessToken = null;
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $appId = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $appSecret = null;
+
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Assert\NotBlank]
     private ?int $nbrItems = 7;
@@ -47,6 +53,30 @@ class TikTok
     public function setAccessToken(?string $accessToken): static
     {
         $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    public function getAppId(): ?string
+    {
+        return $this->appId;
+    }
+
+    public function setAppId(?string $appId): static
+    {
+        $this->appId = $appId;
+
+        return $this;
+    }
+
+    public function getAppSecret(): ?string
+    {
+        return $this->appSecret;
+    }
+
+    public function setAppSecret(?string $appSecret): static
+    {
+        $this->appSecret = $appSecret;
 
         return $this;
     }

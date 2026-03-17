@@ -16,6 +16,9 @@ export default function (Routing) {
                     draggable: ".col-sortable",
                     ghostClass: "ui-state-highlight",
                     dragClass: "sortable-drag",
+                    forceFallback: true,
+                    scroll: true,
+                    bubbleScroll: true,
                     onStart: function() {
                         document.body.classList.add('sorting-active');
                     },

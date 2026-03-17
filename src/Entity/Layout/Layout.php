@@ -64,11 +64,17 @@ class Layout extends BaseEntity
         $metasData = $entityManager->getMetadataFactory()->getAllMetadata();
         foreach ($metasData as $metadata) {
             $classname = $metadata->getName();
-            $baseEntity = 0 === $metadata->getReflectionClass()->getModifiers() ? new $classname() : null;
-            if (is_object($baseEntity) && method_exists($baseEntity, 'getLayout')) {
-                $parent = $entityManager->getRepository($classname)->findOneBy(['layout' => $this]);
-                if ($parent && method_exists($parent, 'setUpdatedAt')) {
-                    return $parent;
+            if ($metadata->isMappedSuperclass || $metadata->getReflectionClass()->isAbstract()) {
+                continue;
+            }
+            if (method_exists($classname, 'getLayout')) {
+                try {
+                    $parent = $entityManager->getRepository($classname)->findOneBy(['layout' => $this]);
+                    if ($parent) {
+                        return $parent;
+                    }
+                } catch (\Exception $e) {
+                    continue;
                 }
             }
         }

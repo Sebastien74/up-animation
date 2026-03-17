@@ -11,6 +11,7 @@ use App\Entity\Layout;
 use App\Entity\Module\Form\Form;
 use App\Entity\Module\Form\StepForm;
 use App\Form\Interface\LayoutFormFormManagerLocator;
+use App\Form\Type\Layout\Block as BlockFormType;
 use App\Form\Type\Layout\Management\BackgroundColorBlockType;
 use App\Form\Type\Layout\Management\BlockConfigurationType;
 use App\Repository\Layout\BlockRepository;
@@ -43,28 +44,28 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class BlockController extends AdminController
 {
     private const array FORM_TYPES = [
-        'core-action' => FormType\ActionType::class,
-        'alert' => FormType\AlertType::class,
-        'blockquote' => FormType\BlockquoteType::class,
-        'card' => FormType\CardType::class,
-        'collapse' => FormType\CollapseType::class,
-        'counter' => FormType\CounterType::class,
-        'icon' => FormType\IconType::class,
-        'link' => FormType\LinkType::class,
-        'media' => FormType\MediaType::class,
-        'modal' => FormType\ModalType::class,
-        'separator' => FormType\SeparatorType::class,
-        'text' => FormType\TextType::class,
-        'title-header' => FormType\TitleHeaderType::class,
-        'title' => FormType\TitleType::class,
-        'video' => FormType\VideoType::class,
-        'widget' => FormType\WidgetType::class,
-        'layout-catalog-features' => FormType\FeatureType::class,
+        'core-action' => BlockFormType\ActionType::class,
+        'alert' => BlockFormType\AlertType::class,
+        'blockquote' => BlockFormType\BlockquoteType::class,
+        'card' => BlockFormType\CardType::class,
+        'collapse' => BlockFormType\CollapseType::class,
+        'counter' => BlockFormType\CounterType::class,
+        'icon' => BlockFormType\IconType::class,
+        'link' => BlockFormType\LinkType::class,
+        'media' => BlockFormType\MediaType::class,
+        'modal' => BlockFormType\ModalType::class,
+        'separator' => BlockFormType\SeparatorType::class,
+        'text' => BlockFormType\TextType::class,
+        'title-header' => BlockFormType\TitleHeaderType::class,
+        'title' => BlockFormType\TitleType::class,
+        'video' => BlockFormType\VideoType::class,
+        'widget' => BlockFormType\WidgetType::class,
+        'layout-catalog-features' => BlockFormType\FeatureType::class,
     ];
 
     private const array FORM_TYPES_GROUPS = [
         'form' => [
-            'formType' => FormType\FieldType::class,
+            'formType' => BlockFormType\FieldType::class,
             'template' => '',
         ],
     ];

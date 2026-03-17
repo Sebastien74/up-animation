@@ -6,6 +6,7 @@ namespace App\Service\Content;
 
 use App\Model\Api\TikTokModel;
 use Psr\Cache\InvalidArgumentException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -19,11 +20,14 @@ use Throwable;
 class TikTokService
 {
     private const string API_URL = 'https://open.tiktokapis.com/v2/video/list/';
+    private const string AUTH_URL = 'https://www.tiktok.com/v2/auth/authorize/';
+    private const string TOKEN_URL = 'https://open.tiktokapis.com/v2/oauth/token/';
     private const int CACHE_EXPIRE = 3600; // 1 hour
 
     public function __construct(
         private readonly HttpClientInterface $httpClient,
-        private readonly CacheInterface $cache
+        private readonly CacheInterface $cache,
+        private readonly UrlGeneratorInterface $urlGenerator
     ) {
     }
 
@@ -64,5 +68,52 @@ class TikTokService
                 return [];
             }
         });
+    }
+
+    /**
+     * Get authorization URL.
+     */
+    public function getAuthUrl(string $clientKey): string
+    {
+        $redirectUri = $this->urlGenerator->generate('tiktok_auth_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return self::AUTH_URL . '?' . http_build_query([
+            'client_key' => $clientKey,
+            'redirect_uri' => $redirectUri,
+            'scope' => 'user.info.basic,video.list',
+            'response_type' => 'code',
+        ]);
+    }
+
+    /**
+     * Exchange code for an access token.
+     */
+    public function getAccessToken(string $clientKey, string $clientSecret, string $code): ?string
+    {
+        $redirectUri = $this->urlGenerator->generate('tiktok_auth_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        try {
+            $response = $this->httpClient->request('POST', self::TOKEN_URL, [
+                'body' => [
+                    'client_key' => $clientKey,
+                    'client_secret' => $clientSecret,
+                    'grant_type' => 'authorization_code',
+                    'redirect_uri' => $redirectUri,
+                    'code' => $code,
+                ],
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                ],
+            ]);
+
+            if ($response->getStatusCode() === 200) {
+                $data = $response->toArray();
+                return $data['access_token'] ?? null;
+            }
+        } catch (Throwable) {
+            return null;
+        }
+
+        return null;
     }
 }

@@ -135,12 +135,16 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             $prefixCache = $inAdmin ? 'admin' : 'front';
             $width = !empty($options['width']) ? $options['width'] : (!empty($options['maxWidth']) ? $options['maxWidth'] : ($thumb instanceof Media\ThumbConfiguration ? $thumb->getWidth() : ''));
             $height = !empty($options['height']) ? $options['height'] : (!empty($options['maxHeight']) ? $options['maxHeight'] : ($thumb instanceof Media\ThumbConfiguration ? $thumb->getHeight() : ''));
+            $options['width'] = $width;
+            $options['height'] = $height;
             if (empty($width) || empty($height)) {
                 $dirname = $this->coreLocator->website()->uploadDirname;
                 $dirname = $this->coreLocator->projectDir().'/public/uploads/'.$dirname.'/'.$media->media->getFilename();
                 $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
                 if ($filesystem->exists($dirname) && ($size = getimagesize($dirname))) {
                     list($width, $height) = $size;
+                    $options['width'] = $width;
+                    $options['height'] = $height;
                 }
             }
             $filter = !empty($options['filter']) ? $options['filter'] : '';

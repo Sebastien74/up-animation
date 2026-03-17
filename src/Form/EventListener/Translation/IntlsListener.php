@@ -38,6 +38,35 @@ class IntlsListener extends BaseListener
                     $this->addIntl($locale, $entity, $titleForce);
                 }
             }
+
+            $this->sortIntls($entity);
+        }
+    }
+
+    /**
+     * Sort intls by configuration order.
+     */
+    private function sortIntls(mixed $entity): void
+    {
+        if (is_object($entity) && method_exists($entity, 'getIntls') && method_exists($entity, 'addIntl')) {
+            $intls = $entity->getIntls();
+            if ($intls->count() > 1) {
+                $sortedIntls = [];
+                foreach ($this->locales as $locale) {
+                    foreach ($intls as $intl) {
+                        if ($intl->getLocale() === $locale) {
+                            $sortedIntls[] = $intl;
+                            break;
+                        }
+                    }
+                }
+
+                $intls->clear();
+
+                foreach ($sortedIntls as $intl) {
+                    $entity->addIntl($intl);
+                }
+            }
         }
     }
 

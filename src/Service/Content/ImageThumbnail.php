@@ -110,9 +110,7 @@ class ImageThumbnail implements ImageThumbnailInterface
 
         $this->webpSupport = !empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'image/webp');
 
-        if ($session) {
-            $session->set('WEBP_SUPPORT', $this->webpSupport);
-        }
+        $session?->set('WEBP_SUPPORT', $this->webpSupport);
 
         return $this->webpSupport;
     }
@@ -361,8 +359,8 @@ class ImageThumbnail implements ImageThumbnailInterface
         $retinaSet = false;
 
         $optionsScreensSizes = !empty($options['screensSizes']) ? $options['screensSizes'] : [];
-        $optionMaxWidth = !empty($options['maxWidth']) ? intval($options['maxWidth']) : null;
-        $optionMaxHeight = !empty($options['maxHeight']) ? intval($options['maxHeight']) : null;
+        $optionMaxWidth = !empty($options['maxWidth']) ? intval($options['maxWidth']) : (!empty($options['width']) ? intval($options['width']) : null);
+        $optionMaxHeight = !empty($options['maxHeight']) ? intval($options['maxHeight']) : (!empty($options['height']) ? intval($options['height']) : null);
 
         $width = null;
         $height = null;

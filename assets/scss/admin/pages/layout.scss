@@ -493,6 +493,11 @@ body.sorting-active * {
         background: transparent !important;
         border: 0 !important;
 
+        .portlet {
+            display: flex;
+            flex-direction: column;
+        }
+
         .header .col-actions {
             background-color: $dash-bg-1;
             border-top-right-radius: 16px;
@@ -630,7 +635,7 @@ body.sorting-active * {
 
                 border-top-left-radius: $card-border-radius;
                 border-top-right-radius: $card-border-radius;
-                background-color: $gray-200;
+                background-color: transparent;
 
                 .col-actions {
                     min-width: initial !important;
@@ -638,7 +643,6 @@ body.sorting-active * {
             }
 
             .column {
-                background-color: $gray-200;
                 border-radius: $card-border-radius;
             }
 
@@ -667,10 +671,6 @@ body.sorting-active * {
                     max-width: 100%;
                     flex: 0 0 100%;
                 }
-            }
-
-            .portlet-content {
-                border-radius: 0;
             }
         }
 

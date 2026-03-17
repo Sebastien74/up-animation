@@ -26,7 +26,7 @@ class ColConfigurationType extends AbstractType
     private bool $isInternalUser;
 
     /**
-     * ZoneConfigurationType constructor.
+     * ColConfigurationType constructor.
      */
     public function __construct(
         private readonly CoreLocatorInterface  $coreLocator,

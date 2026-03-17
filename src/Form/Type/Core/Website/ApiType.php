@@ -55,7 +55,15 @@ class ApiType extends AbstractType
             'label' => false,
         ]);
 
+        $builder->add('facebook', FacebookType::class, [
+            'label' => false,
+        ]);
+
         $builder->add('instagram', InstagramType::class, [
+            'label' => false,
+        ]);
+
+        $builder->add('tiktok', TikTokType::class, [
             'label' => false,
         ]);
 

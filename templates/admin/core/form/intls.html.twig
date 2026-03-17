@@ -4,6 +4,17 @@
 {%- set configuration = website.configuration -%}
 {%- set defaultLocale = configuration.locale -%}
 {%- set allLocales = configuration.allLocales -%}
+{%- set activeLocale = defaultLocale -%}
+{%- set firstLocale = null -%}
+{%- set hasActiveLocale = false -%}
+{%- for intl in intls -%}
+    {%- set locale = intl.vars.value.locale -%}
+    {%- if loop.first -%}{%- set firstLocale = locale -%}{%- endif -%}
+    {%- if locale == defaultLocale -%}{%- set hasActiveLocale = true -%}{%- endif -%}
+{%- endfor -%}
+{%- if not hasActiveLocale and firstLocale -%}
+    {%- set activeLocale = firstLocale -%}
+{%- endif -%}
 {%- set disableTitle = disableTitle is defined or form.children.intls.vars.attr.disableTitle is defined and form.children.intls.vars.attr.disableTitle -%}
 {%- set disableFields = disableFields is defined ? disableFields : [] -%}
 {%- set enabledFields = enabledFields is defined ? enabledFields : [] -%}
@@ -29,10 +40,10 @@
                 <li class="{% if locale not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
                     {%- set localesMatches = locale|split('_') -%}
                     {%- set subLocaleLabel = localesMatches|length > 1 ? languageName(locale, app.user.locale) : null -%}
-                    {%- set linkActive = locale == defaultLocale -%}
+                    {%- set linkActive = locale == activeLocale -%}
                     <a class="btn-locale{% if linkActive %} active{% endif %}" data-bs-toggle="tab"
                        id="intl-{{ locale~tabUniqId }}-tab"
-                       aria-selected="{% if locale == defaultLocale %}true{% else %}false{% endif %}"
+                       aria-selected="{% if linkActive %}true{% else %}false{% endif %}"
                        href="#intl-tab-{{ locale~tabUniqId }}" role="tab">
                         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
                         {%- if subLocaleLabel -%}<span class="ms-2">{{ subLocaleLabel|raw }}</span>{%- endif -%}
@@ -51,7 +62,7 @@
             {%- set locale = intl.vars.value.locale -%}
 
             {%- if allLocales|length > 1 -%}
-                <div id="intl-tab-{{ locale~tabUniqId }}" class="tab-pane fade{% if locale == defaultLocale %} show active{% endif %}" role="tabpanel" aria-labelledby="intl-{{ locale~tabUniqId }}-tab">
+                <div id="intl-tab-{{ locale~tabUniqId }}" class="tab-pane fade{% if locale == activeLocale %} show active{% endif %}" role="tabpanel" aria-labelledby="intl-{{ locale~tabUniqId }}-tab">
                     <div class="p-20 pb-0">
                         <div class="row">
             {%- endif -%}

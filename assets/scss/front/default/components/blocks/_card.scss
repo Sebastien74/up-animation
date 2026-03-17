@@ -13,11 +13,11 @@
 
     ------------------------------------------------------------------ */
 
-    .card:not(.news-card) {
+    .card {
 
         .card-header {
             picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader, .img-loader-wrap {
-                width: 100%;
+                width: 100% !important;
                 max-width: 100% !important;
                 object-fit: cover;
             }

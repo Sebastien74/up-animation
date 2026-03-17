@@ -1,6 +1,25 @@
 Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
+Faire une sauvegarde de la DB et supprimer tout ce qui n'est pas 'FR'
+
+A l'edition d'une col, de zone... A l'enregistrement la page se recharge, il faut supprimer la modal en ajax juste et mettre à jour les elements
+
+Revoir pour faire un service pour CacheCommand / AppCacheClearCommand
+
+Pour l'edition zone col, block... faire une sidebar plutot qu'une modal
+
+body .layout-block-content .body *:not(h2, h3, h4, h5, h6):not([style*="font-size"]):not([style*="font-size"] *) {
+font-size: 1rem !important;
+line-height: 24px !important;
+}
+
 Faire ube fiche PDF activités
+
+Delete media dns block ne fonctionne pas erreur JS
+
+A l'uploas d'un media faire en sorte de lui changer la taille par celles max et reduire le poids
+
+Dans entité Media remplacer filename par originalname et dans la mécanique de taille il faut récupérer l'info size si elle existe
 
 Faire un Générateur d’invitation entreprise
 Le client génère un PDF.

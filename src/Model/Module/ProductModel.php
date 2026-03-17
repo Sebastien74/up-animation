@@ -80,6 +80,7 @@ final class ProductModel extends BaseModel
 
         return (object) array_merge((array) $model, [
             'catalog' => $catalog,
+            'reference' => self::getContent('reference', $product),
             'asAgency' => 'agencies' === $catalog->slug,
             'catalogSlug' => self::getContent('slug', $catalog),
             'entityForLayout' => $model->layout && $model->layout->getSlug() && !$model->layout->getZones()->isEmpty() && $model->asCustomLayout ? $model->entity : $catalog,
@@ -183,6 +184,7 @@ final class ProductModel extends BaseModel
                     self::$cache['featuresValues'][$value->getId()]['value'] = $valueModel;
                     self::$cache['featuresValues'][$value->getId()]['valueTitle'] = $valueModel->intl->title;
                     self::$cache['featuresValues'][$value->getId()]['slug'] = $value->getSlug();
+                    self::$cache['featuresValues'][$value->getId()]['valueMedia'] = $valueModel->mainMedia;
                 }
             }
             ksort(self::$cache['featuresValues']);
@@ -266,6 +268,7 @@ final class ProductModel extends BaseModel
                     'featureTitle' => $value->feature ? $value->feature->intl->title : null,
                     'value' => $value->value ?: null,
                     'valueTitle' => $value->value ? $value->value->intl->title : null,
+                    'valueMedia' => $value->value ? $value->value->mainMedia : null,
                 ];
             }
         }

@@ -12,25 +12,38 @@ Ce document détaille la procédure pour connecter un compte TikTok au site et a
 
 ## 2. Génération du Token d'accès (Access Token)
 
-Pour obtenir un token d'accès, TikTok utilise le flux OAuth 2.0.
+Vous avez deux options pour générer le token :
 
-1. Configurez votre **Redirect URI** dans les paramètres de l'application TikTok.
-2. Dirigez l'utilisateur vers l'URL d'autorisation de TikTok.
-3. Après autorisation, TikTok redirige vers votre URI avec un code `code`.
-4. Échangez ce code contre un `access_token` via l'API TikTok (`/v2/oauth/token/`).
+### Option A : Connexion automatique (Recommandée)
 
-*Note : Pour une installation simplifiée, vous pouvez utiliser des outils tiers ou des scripts de génération de token si vous n'avez pas encore implémenté le flux OAuth complet dans le CMS.*
+1. Dans l'administration du site, allez dans **Configuration du site** > onglet **TikTok**.
+2. Saisissez votre **Client Key** et **Client Secret**.
+3. Enregistrez la configuration.
+4. Un bouton **Connecter mon compte TikTok** apparaît. Cliquez dessus.
+5. Autorisez l'accès sur la page TikTok qui s'ouvre.
+6. Le token sera automatiquement récupéré et enregistré.
 
-## 3. Configuration dans le CMS
+### Option B : Génération manuelle
+
+Si vous avez déjà un token valide, vous pouvez le saisir directement dans le champ **API token (Manuel)**.
+
+## 3. Configuration de l'URL de retour (Callback)
+
+Pour l'Option A, vous devez configurer l'URL de redirection dans TikTok for Developers :
+1. Dans votre application TikTok > **App Settings** > **Redirect URI**.
+2. Ajoutez : `https://[votre-domaine.com]/tiktok/callback`
+
+## 4. Configuration dans le CMS
 
 1. Connectez-vous à l'administration du site.
-2. Allez dans la section **API** > **TikTok**.
+2. Allez dans la section **Configuration du site** > onglet **TikTok**.
 3. Remplissez les champs suivants :
-    - **Token d'accès** : Le token récupéré à l'étape 2.
-    - **Nombre d'items** : Nombre de vidéos à afficher (par défaut 7).
+    - **Client Key** : La clé client de votre application TikTok.
+    - **Client Secret** : Le secret client de votre application TikTok.
+    - **Nombre de vidéos** : Nombre de vidéos à afficher (par défaut 7).
 4. Enregistrez.
 
-## 4. Utilisation technique
+## 5. Utilisation technique
 
 Le système utilise le contrôleur suivant pour le rendu :
 - **Controller** : `App\Controller\Front\Action\Feed\TikTokController::index`

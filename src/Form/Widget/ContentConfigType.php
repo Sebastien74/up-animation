@@ -37,7 +37,7 @@ class ContentConfigType
         $this->options = $options;
         foreach ($options['fields'] as $key => $name) {
             $field = is_int($key) ? $name : $key;
-            $getter = 'get'.ucfirst($field);
+            $getter = 'get' . ucfirst($field);
             if (method_exists($this, $getter)) {
                 $this->$getter($builder, $field, $options);
             }
@@ -76,11 +76,11 @@ class ContentConfigType
             'display' => 'search',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Gras', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-
-            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-2') . ' select-icons'],
+            'attr' => ['class' => 'select-icons'],
+            'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-lg-2'],
             'choices' => $choices,
             'choice_attr' => function ($weight, $key, $value) {
-                return ['class' => 'col-12 fw - '.$weight, 'data-fw' => $weight];
+                return ['class' => 'fw-'.$weight, 'data-fw' => $weight];
             },
         ]);
     }
@@ -102,7 +102,7 @@ class ContentConfigType
         foreach ($sizes as $size => $pixels) {
             $label = strtoupper($size);
             if ('undefined' !== $pixels) {
-                $label .= ' ('.$pixels.'px)';
+                $label .= ' (' . $pixels . 'px)';
             }
             $choices[$label] = $size;
         }
@@ -111,12 +111,12 @@ class ContentConfigType
             'display' => 'search',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Taille de la police', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            
-            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-2') . ' select-icons'],
+            'attr' => ['class' => 'select-icons'],
+            'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-lg-2'],
             'choices' => $choices,
             'choice_attr' => function ($size, $key, $value) {
-        return ['data-fz' => $size];
-    },
+                return ['data-fz' => $size];
+            },
         ]);
     }
 
@@ -127,8 +127,8 @@ class ContentConfigType
     {
         $builder->add('color', AppColorType::class, [
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Couleur', [], 'admin'),
-
-            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-2') . ' select-icons'],
+            'attr' => ['class' => 'select-icons'],
+            'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-lg-2'],
         ]);
     }
 
@@ -142,8 +142,8 @@ class ContentConfigType
             'display' => 'button',
             'color' => 'app',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('En italique', [], 'admin'),
-            
-            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] . ' d-flex align-items-end' : 'col-md-2 d-flex align-items-end') . ' w-100'],
+            'attr' => ['class' => 'w-100'],
+            'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field].' d-flex align-items-end' : 'col-lg-2 d-flex align-items-end'],
         ]);
     }
 
@@ -157,8 +157,8 @@ class ContentConfigType
             'display' => 'button',
             'color' => 'app',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('En majuscule', [], 'admin'),
-
-            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] . ' d-flex align-items-end' : 'col-md-2 d-flex align-items-end') . ' w-100'],
+            'attr' => ['class' => 'w-100'],
+            'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field].' d-flex align-items-end' : 'col-lg-2 d-flex align-items-end'],
         ]);
     }
 
@@ -172,8 +172,8 @@ class ContentConfigType
             'display' => 'search',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Famille de police', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            
-            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-md-3') . ' select-icons'],
+            'attr' => ['class' => 'select-icons'],
+            'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-lg-3'],
             'choices' => $this->getFonts(),
         ]);
     }
@@ -185,7 +185,7 @@ class ContentConfigType
     {
         $fonts = [];
 
-        $fontsDirname = $this->coreLocator->projectDir().'/assets/scss/front/'.$this->coreLocator->website()->configuration->template.'/';
+        $fontsDirname = $this->coreLocator->projectDir() . '/assets/scss/front/' . $this->coreLocator->website()->configuration->template . '/';
         $fontsDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $fontsDirname);
         $filesystem = new Filesystem();
         if ($filesystem->exists($fontsDirname)) {
@@ -200,7 +200,7 @@ class ContentConfigType
                         if (str_contains($matcheRule, '$font')) {
                             $matchesVars = explode(',', $matcheRule);
                             $var = trim($matchesVars[0]);
-                            $varPattern = '/\\'.$var.':\s*(.*?);/s';
+                            $varPattern = '/\\' . $var . ':\s*(.*?);/s';
                             preg_match_all($varPattern, $file->getContents(), $matchesVars);
                             $matchesFont = explode(',', $matchesVars[1][0]);
                             $fonts[str_replace(["'", '"'], '', $matchesFont[0])] = str_replace('$font-', '', $var);

@@ -3,7 +3,7 @@
 {%- import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard -%}
 {%- set maxPage = maxPage is defined ? maxPage : 1 -%}
 {%- set pageNum = pageNum is defined ? pageNum : 1 -%}
-{%- set colSize = 'agencies' == listing.slug ? 4 : 4 -%}
+{%- set colSize = 'agencies' == listing.slug ? 3 : 4 -%}
 
 <div id="results" class="results row row-container d-flex justify-content-center listing-{{ listing.slug }}" data-page="{{ pageNum }}" data-max="{{ maxPage }}">
     {%- for product in products -%}

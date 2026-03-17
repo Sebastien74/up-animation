@@ -139,7 +139,7 @@
                         {%- endif -%}
                         {%- if website.networks is not empty -%}
                             <hr class="sep my-4">
-                            <h3 class="footer-title pb-2 mb-3 fw-900 text-white">{{ "Restez connecté&nbsp;!"|trans }}</h3>
+                            <h3 class="footer-title pb-2 mb-3 fw-900 text-white">{{ "Restez connecté&nbsp;!"|trans|raw }}</h3>
                             <p class="text-white-50">{{ "Rejoignez %company% sur les %socials% dès maintenant&nbsp;!"|trans({
                                 '%company%': '<strong class="text-white-50">' ~ (companyName|unescape|replace({'!': ''})) ~ '</strong>',
                                 '%socials%': '<strong class="text-white-50">' ~ ("réseaux sociaux"|trans) ~ '</strong>'

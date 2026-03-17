@@ -262,9 +262,10 @@ class Configuration extends BaseEntity
     {
         $allLocales = [$this->locale];
         if (!empty($this->locales)) {
-            $allLocales = array_merge($allLocales, $this->locales);
+            $otherLocales = array_diff($this->locales, [$this->locale]);
+            sort($otherLocales);
+            $allLocales = array_merge($allLocales, $otherLocales);
         }
-        sort($allLocales);
 
         return array_unique($allLocales);
     }
@@ -290,6 +291,14 @@ class Configuration extends BaseEntity
     {
         $this->locale = $locale;
 
+        if ($this->locales) {
+            $this->setLocales($this->locales);
+        }
+
+        if ($this->onlineLocales) {
+            $this->setOnlineLocales($this->onlineLocales);
+        }
+
         return $this;
     }
 
@@ -300,6 +309,10 @@ class Configuration extends BaseEntity
 
     public function setLocales(?array $locales): static
     {
+        if ($locales) {
+            $locales = array_diff($locales, [$this->locale]);
+            sort($locales);
+        }
         $this->locales = $locales;
 
         return $this;
@@ -312,6 +325,11 @@ class Configuration extends BaseEntity
 
     public function setOnlineLocales(?array $onlineLocales): static
     {
+        if ($onlineLocales) {
+            $otherLocales = array_diff($onlineLocales, [$this->locale]);
+            sort($otherLocales);
+            $onlineLocales = in_array($this->locale, $onlineLocales) ? array_merge([$this->locale], $otherLocales) : $otherLocales;
+        }
         $this->onlineLocales = $onlineLocales;
 
         return $this;

@@ -27,7 +27,7 @@ class BlockConfigurationType extends AbstractType
     private bool $isInternalUser;
 
     /**
-     * ZoneConfigurationType constructor.
+     * BlockConfigurationType constructor.
      */
     public function __construct(
         private readonly CoreLocatorInterface  $coreLocator,

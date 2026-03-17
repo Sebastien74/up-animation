@@ -210,7 +210,11 @@
                                                 {%- if entity.mediaRelations is defined -%}
                                                     {%- set mainMedia = entity|mainMedia(defaultLocale) -%}
                                                     <a class="glightbox d-inline-block" href="{{ asset(mainMedia|file({}, {path: true, placeholder: true})) }}">
-                                                        {{ mainMedia|file({}, {width: 30, height: 30, placeholder: true}) }}
+                                                        {{ mainMedia|file({}, {
+                                                            width: 30,
+                                                            height: 30,
+                                                            placeholder: true
+                                                        }) }}
                                                     </a>
                                                 {%- endif -%}
                                             </td>

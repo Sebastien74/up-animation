@@ -55,6 +55,8 @@ class IntlType extends AbstractType
             $this->website = $this->websiteRepository->find($this->request->get('website'));
         }
 
+        $builder->add('locale', Type\HiddenType::class);
+
         $haveLink = false;
         foreach ($options['fields'] as $key => $name) {
             $field = is_int($key) ? $name : $key;
