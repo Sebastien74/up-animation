@@ -65,7 +65,7 @@
                     {% if newTab %} target="_blank" {% else %}{% endif %}
                     {% if externalLink %} rel="noopener noreferrer" {% endif %}>
                 {%- endif -%}
-                    <h{{ titleForce }} class="title text-bold mb-3">{{ title|unescape|raw }}</h{{ titleForce }}>
+                    <h{{ titleForce }} class="title fw-600 mb-3">{{ title|unescape|raw }}</h{{ titleForce }}>
                 {%- if targetLink -%}
                     </a>
                 {%- endif -%}
