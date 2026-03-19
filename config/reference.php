@@ -1718,6 +1718,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  * }
  * @psalm-type LiveComponentConfig = array{
  *     secret?: scalar|Param|null, // The secret used to compute fingerprints and checksums // Default: "%kernel.secret%"
+ *     fetch_credentials?: "same-origin"|"include"|"omit"|Param, // The default fetch credentials mode for all Live Components ('same-origin', 'include', 'omit') // Default: "same-origin"
  * }
  * @psalm-type VichUploaderConfig = array{
  *     default_filename_attribute_suffix?: scalar|Param|null, // Default: "_name"

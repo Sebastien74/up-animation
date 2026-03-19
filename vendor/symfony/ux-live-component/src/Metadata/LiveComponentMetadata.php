@@ -39,7 +39,7 @@ class LiveComponentMetadata
     /**
      * @return list<LivePropMetadata|LegacyLivePropMetadata>
      */
-    public function getAllLivePropsMetadata(object $component): iterable
+    public function getAllLivePropsMetadata(?object $component): iterable
     {
         foreach ($this->livePropsMetadata as $livePropMetadata) {
             yield $livePropMetadata->withModifier($component);
@@ -55,11 +55,11 @@ class LiveComponentMetadata
      */
     public function getOnlyPropsThatAcceptUpdatesFromParent(array $inputProps): array
     {
-        $writableProps = array_filter($this->livePropsMetadata, function (LivePropMetadata|LegacyLivePropMetadata $livePropMetadata) {
+        $writableProps = array_filter($this->livePropsMetadata, static function (LivePropMetadata|LegacyLivePropMetadata $livePropMetadata) {
             return $livePropMetadata->acceptUpdatesFromParent();
         });
 
-        $propNames = array_map(function ($livePropMetadata) {
+        $propNames = array_map(static function ($livePropMetadata) {
             return $livePropMetadata->getName();
         }, $writableProps);
 

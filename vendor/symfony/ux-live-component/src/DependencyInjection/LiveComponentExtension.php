@@ -15,6 +15,7 @@ use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\DependencyInjection\Argument\AbstractArgument;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,9 +27,11 @@ use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Command\LiveComponentDebugCommand;
 use Symfony\UX\LiveComponent\ComponentValidator;
 use Symfony\UX\LiveComponent\ComponentValidatorInterface;
 use Symfony\UX\LiveComponent\Controller\BatchActionController;
+use Symfony\UX\LiveComponent\DependencyInjection\Compiler\LiveComponentPass;
 use Symfony\UX\LiveComponent\EventListener\AddLiveAttributesSubscriber;
 use Symfony\UX\LiveComponent\EventListener\DataModelPropsSubscriber;
 use Symfony\UX\LiveComponent\EventListener\DeferLiveComponentSubscriber;
@@ -90,7 +93,7 @@ final class LiveComponentExtension extends Extension implements PrependExtension
     {
         $container->registerAttributeForAutoconfiguration(
             AsLiveComponent::class,
-            function (ChildDefinition $definition, AsLiveComponent $attribute) {
+            static function (ChildDefinition $definition, AsLiveComponent $attribute) {
                 $definition
                     ->addTag('twig.component', array_filter($attribute->serviceConfig(), static fn ($v) => null !== $v && '' !== $v))
                     ->addTag('controller.service_arguments')
@@ -221,6 +224,7 @@ final class LiveComponentExtension extends Extension implements PrependExtension
                 new Reference('router'),
                 new Reference('ux.live_component.live_responder'),
                 new Reference('ux.live_component.twig.template_mapper'),
+                $config['fetch_credentials'],
             ])
         ;
 
@@ -274,6 +278,13 @@ final class LiveComponentExtension extends Extension implements PrependExtension
                 new Parameter('container.build_hash'),
             ])
             ->addTag('kernel.cache_warmer');
+
+        $container->register('ux.live_component.command.debug', LiveComponentDebugCommand::class)
+            ->setArguments([
+                new Reference('ux.live_component.metadata_factory'),
+                new AbstractArgument(\sprintf('Added in %s.', LiveComponentPass::class)),
+            ])
+            ->addTag('console.command');
     }
 
     public function getConfigTreeBuilder(): TreeBuilder
@@ -293,6 +304,11 @@ final class LiveComponentExtension extends Extension implements PrependExtension
                     ->end()
                     ->cannotBeEmpty()
                     ->defaultValue('%kernel.secret%')
+                ->end()
+                ->enumNode('fetch_credentials')
+                    ->info('The default fetch credentials mode for all Live Components (\'same-origin\', \'include\', \'omit\')')
+                    ->values(['same-origin', 'include', 'omit'])
+                    ->defaultValue('same-origin')
                 ->end()
             ->end()
         ;

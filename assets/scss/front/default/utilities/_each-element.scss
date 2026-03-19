@@ -2,7 +2,7 @@
 
 /* -----------------------------------------------------------------
 
-    Copyright  : 2026
+    Copyright  : 2024
     Created on : 2019-11-16, 7:23 AM
     Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
@@ -60,60 +60,75 @@
 
             @each $color-name, $color in map-get($config, 'colors-in-backgrounds') {
                 $matches: explode($element, ',');
+                $matchGroupWithInitial: '';
+                $matchGroupWithoutInitial: '';
+
                 @each $match in $matches {
                     $match: str-trim($match);
-                    $pushPropertyBg: '';
                     @if str-index($match, "not(.initial)") {
-                        $pushPropertyBg: '.bg-' + $color-name + ' ' + $match + ':not(.btn)';
+                        @if ($matchGroupWithoutInitial == '') { $matchGroupWithoutInitial: $match; }
+                        @else { $matchGroupWithoutInitial: $matchGroupWithoutInitial + ', ' + $match; }
                     } @else {
-                        $pushPropertyBg: '.bg-' + $color-name + ' ' + $match + ':not(.initial):not(.btn)';
+                        @if ($matchGroupWithInitial == '') { $matchGroupWithInitial: $match; }
+                        @else { $matchGroupWithInitial: $matchGroupWithInitial + ', ' + $match; }
                     }
-                    .bg-#{$color-name} #{$match}:not(.initial) {
-                        @each $commonValue in $commonValues {
-                            @each $commonProperty, $commonProperties in $commonValue {
-                                @each $subCommonProperty, $subCommonElements in $commonProperties {
-                                    $elProperty: '';
-                                    @if str-index($match, "not(.initial)") {
-                                        $elProperty: ', .bg-' + $color-name + ' ' + $match + ':not(.btn)';
-                                    } @else {
-                                        $elProperty: ', .bg-' + $color-name + ' ' + $match + ':not(.initial):not(.btn)';
-                                    }
-                                    @if ($commonProperty == $color and $subCommonProperty == 'color') {
-                                        $pushPropertyBg: $subCommonElements + $elProperty;
-                                        $commonValues: remove($commonValues, $commonValue);
-                                    }
-                                }
-                            }
-                        }
-                        $commonValues: append($commonValues, ($color: ('color': $pushPropertyBg)));
-                    }
+
+                    // On garde la logique de .bg-#{$color-name} #{$match}:not(.initial) pour d'éventuels styles non-communs,
+                    // mais ici elle semble vide dans le code original à part pour le remplissage de $commonValues.
+                    // Cependant, pour la légèreté du sélecteur FINAL, c'est $commonValues qui compte.
+                }
+
+                $notExclusion: ':not(.btn):not(.btn *):not([style*="color"]):not([style*="color"] *)';
+
+                @if ($matchGroupWithInitial != '') {
+                    $selector: '.bg-' + $color-name + ' :is(' + $matchGroupWithInitial + '):not(.initial)' + $notExclusion;
+                    $commonValues: append($commonValues, ($color: ('color': $selector)));
+                }
+
+                @if ($matchGroupWithoutInitial != '') {
+                    $selector: '.bg-' + $color-name + ' :is(' + $matchGroupWithoutInitial + ')' + $notExclusion;
+                    $commonValues: append($commonValues, ($color: ('color': $selector)));
                 }
             }
         }
 
         @if map-has-key($config, "properties") {
-            #{$element} {
-                @each $property, $value in map-get($config, 'properties') {
-                    @if type-of($value) == 'map' {
-                        @each $screenSize, $sizeValue in $value {
-                            @include mediaQuery(min-#{$screenSize}) {
+            @each $property, $value in map-get($config, 'properties') {
+                $currentPropertyElement: '';
+
+                $notExclusion: '';
+                @if ($property == 'font-size') { $notExclusion: ':not(.btn):not(.btn *):not([style*="font-size"]):not([style*="font-size"] *)'; }
+                @else if ($property == 'color') { $notExclusion: ':not(.btn):not(.btn *):not([style*="color"]):not([style*="color"] *)'; }
+                @else if ($property == 'font-weight') { $notExclusion: ':not(.btn):not(.btn *):not([style*="font-weight"]):not([style*="font-weight"] *)'; }
+                @else if ($property == 'font-family') { $notExclusion: ':not(.btn):not(.btn *):not([style*="font-family"]):not([style*="font-family"] *)'; }
+
+                @if ($notExclusion != '') {
+                    $currentPropertyElement: ':is(' + $element + ')' + $notExclusion;
+                } @else {
+                    $currentPropertyElement: $element;
+                }
+
+                @if type-of($value) == 'map' {
+                    @each $screenSize, $sizeValue in $value {
+                        @include mediaQuery(min-#{$screenSize}) {
+                            #{$currentPropertyElement} {
                                 #{$property}: $sizeValue;
                             }
                         }
-                    } @else {
-                        $pushProperty: $element;
-                        @each $commonValue in $commonValues {
-                            @each $commonProperty, $commonProperties in $commonValue {
-                                @each $subCommonProperty, $subCommonElements in $commonProperties {
-                                    @if ($commonProperty == $value and $subCommonProperty == $property) {
-                                        $pushProperty: $subCommonElements + ', ' + $element;
-                                        $commonValues: remove($commonValues, $commonValue);
-                                    }
+                    }
+                } @else {
+                    $pushProperty: $currentPropertyElement;
+                    @each $commonValue in $commonValues {
+                        @each $commonProperty, $commonProperties in $commonValue {
+                            @each $subCommonProperty, $subCommonElements in $commonProperties {
+                                @if ($commonProperty == $value and $subCommonProperty == $property) {
+                                    $pushProperty: $subCommonElements + ', ' + $currentPropertyElement;
+                                    $commonValues: remove($commonValues, $commonValue);
                                 }
                             }
                         }
-                        $commonValues: append($commonValues, ($value: ($property: $pushProperty)));
                     }
+                    $commonValues: append($commonValues, ($value: ($property: $pushProperty)));
                 }
             }
         }

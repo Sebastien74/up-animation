@@ -9,6 +9,9 @@ use App\Model;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
+use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 
 /**
  * BlockModel.
@@ -24,7 +27,7 @@ final class BlockModel extends Model\BaseModel
      */
     public function __construct(
         public readonly ?int $id = null,
-        public readonly ?Block $block = null,
+        public readonly ?object $block = null,
         public readonly ?object $intl = null,
         public readonly ?object $media = null,
         public readonly ?object $mediaSecondary = null,
@@ -39,6 +42,7 @@ final class BlockModel extends Model\BaseModel
         public readonly ?string $fontWeightSecondary = null,
         public readonly ?string $fontFamily = null,
         public readonly ?string $backgroundColor = null,
+        public readonly ?string $backgroundColorType = null,
         public readonly ?string $icon = null,
         public readonly ?string $iconSize = null,
         public readonly ?string $iconPosition = null,
@@ -47,7 +51,7 @@ final class BlockModel extends Model\BaseModel
     }
 
     /**
-     * @throws NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public static function fromEntity(Block $block, CoreLocatorInterface $coreLocator, ?string $locale = null): self
     {
@@ -99,6 +103,7 @@ final class BlockModel extends Model\BaseModel
             fontWeightSecondary: $fontWeightSecondary ? 'fw-'.$fontWeightSecondary : null,
             fontFamily: $fontFamily ? 'ff-'.$fontFamily : null,
             backgroundColor: self::getContent('backgroundColor', $block),
+            backgroundColorType: self::getContent('backgroundColorType', $block),
             icon: self::getContent('icon', $block),
             iconSize: self::getContent('iconSize', $block),
             iconPosition: self::getContent('iconPosition', $block),

@@ -6,6 +6,10 @@ A l'edition d'une col, de zone... A l'enregistrement la page se recharge, il fau
 
 Revoir pour faire un service pour CacheCommand / AppCacheClearCommand
 
+Nettoyer CacheInvalidationSubscriber
+
+Ajouter un Typedeblock Tel inicatifs a récupérer sur sydev
+
 Pour l'edition zone col, block... faire une sidebar plutot qu'une modal
 
 body .layout-block-content .body *:not(h2, h3, h4, h5, h6):not([style*="font-size"]):not([style*="font-size"] *) {

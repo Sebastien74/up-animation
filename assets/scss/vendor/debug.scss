@@ -12,6 +12,12 @@
 
 /*! purgecss start ignore */
 
+html body .sf-toolbar-icon-closed {
+    svg, path {
+        fill: #FFFFFF !important;
+    }
+}
+
 html body pre.sf-dump {
 
     .sf-dump-private, .sf-dump-protected, .sf-dump-public, .sf-dump-toggle * {

@@ -497,6 +497,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $isSet = false;
         $width = 0;
         $height = $initHeight = 100000000000;
+        $mediasInfos = [];
 
         $thumbRepository = $this->coreLocator->em()->getRepository(Media\ThumbAction::class);
         $thumbAction = $thumbRepository->findForEntity($website->entity, Layout\Block::class, null, null, 'media');
@@ -509,12 +510,12 @@ class LayoutRuntime implements RuntimeExtensionInterface
                         $isSet = true;
                         $media = $mediaRelation->getMedia();
                         if ($media instanceof Media\Media && $media->getOriginalName()) {
-                            $height = $mediaRelation->getMaxHeight() > 0 ? $mediaRelation->getMaxHeight() : $height;
-                            $width = $mediaRelation->getMaxWidth() > 0 ? $mediaRelation->getMaxWidth() : $width;
                             $fileInfo = $this->coreLocator->fileInfo()->file($website, $media->getOriginalName());
+                            if ($mediaRelation->getMaxHeight() > 0 && $mediaRelation->getMaxHeight() < $height) {
+                                $height = $mediaRelation->getMaxHeight();
+                            }
                             if ($fileInfo->getHeight() < $height) {
                                 $height = $fileInfo->getHeight();
-                                $width = $fileInfo->getWidth();
                             }
                             if ($thumbConfiguration) {
                                 $thumb = null;
@@ -524,8 +525,9 @@ class LayoutRuntime implements RuntimeExtensionInterface
                                         break;
                                     }
                                 }
-                                $height = $thumb instanceof Media\Thumb && $thumb->getHeight() < $height ? $thumb->getHeight() : $height;
-                                $width = $thumb instanceof Media\Thumb && $thumb->getHeight() < $height ? $thumb->getWidth() : $width;
+                                if ($thumb instanceof Media\Thumb && $thumb->getHeight() < $height) {
+                                    $height = $thumb->getHeight();
+                                }
                             }
                         }
                     }
@@ -534,7 +536,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         }
 
         return [
-            'width' => $width,
+            'width' => null,
             'height' => $isSet && $height !== $initHeight ? $height : null,
         ];
     }

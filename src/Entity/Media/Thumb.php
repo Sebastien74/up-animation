@@ -36,22 +36,22 @@ class Thumb extends BaseInterface
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $height = null;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
     private ?int $dataX = null;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
     private ?int $dataY = null;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
     private ?int $rotate = null;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
     private ?int $scale = null;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
     private ?int $scaleX = null;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
     private ?int $scaleY = null;
 
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'], inversedBy: 'thumbs')]
@@ -91,72 +91,72 @@ class Thumb extends BaseInterface
         return $this;
     }
 
-    public function getDataX(): ?int
+    public function getDataX(): ?float
     {
         return $this->dataX;
     }
 
-    public function setDataX(?int $dataX): static
+    public function setDataX(?float $dataX): static
     {
         $this->dataX = $dataX;
 
         return $this;
     }
 
-    public function getDataY(): ?int
+    public function getDataY(): ?float
     {
         return $this->dataY;
     }
 
-    public function setDataY(?int $dataY): static
+    public function setDataY(?float $dataY): static
     {
         $this->dataY = $dataY;
 
         return $this;
     }
 
-    public function getRotate(): ?int
+    public function getRotate(): ?float
     {
         return $this->rotate;
     }
 
-    public function setRotate(?int $rotate): static
+    public function setRotate(?float $rotate): static
     {
         $this->rotate = $rotate;
 
         return $this;
     }
 
-    public function getScale(): ?int
+    public function getScale(): ?float
     {
         return $this->scale;
     }
 
-    public function setScale(?int $scale): static
+    public function setScale(?float $scale): static
     {
         $this->scale = $scale;
 
         return $this;
     }
 
-    public function getScaleX(): ?int
+    public function getScaleX(): ?float
     {
         return $this->scaleX;
     }
 
-    public function setScaleX(?int $scaleX): static
+    public function setScaleX(?float $scaleX): static
     {
         $this->scaleX = $scaleX;
 
         return $this;
     }
 
-    public function getScaleY(): ?int
+    public function getScaleY(): ?float
     {
         return $this->scaleY;
     }
 
-    public function setScaleY(?int $scaleY): static
+    public function setScaleY(?float $scaleY): static
     {
         $this->scaleY = $scaleY;
 

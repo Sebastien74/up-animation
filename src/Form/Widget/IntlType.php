@@ -38,8 +38,8 @@ class IntlType extends AbstractType
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly WebsiteRepository    $websiteRepository,
-        private readonly FolderRepository     $folderRepository,
+        private readonly WebsiteRepository $websiteRepository,
+        private readonly FolderRepository $folderRepository,
     )
     {
         $this->translator = $this->coreLocator->translator();
@@ -51,8 +51,8 @@ class IntlType extends AbstractType
         $this->options = $options;
         $this->website = $options['website'];
         $this->websites = $this->websiteRepository->findAll();
-        if (!$this->website && $this->request->get('website')) {
-            $this->website = $this->websiteRepository->find($this->request->get('website'));
+        if (!$this->website && $this->request->attributes->get('website')) {
+            $this->website = $this->websiteRepository->find($this->request->attributes->get('website'));
         }
 
         $builder->add('locale', Type\HiddenType::class);
@@ -191,7 +191,7 @@ class IntlType extends AbstractType
             'attr' => array_merge($attributes, [
                 'placeholder' => $this->getAttribute($field, 'placeholder'),
             ]),
-            'row_attr' => ['class' => 'col-12'.$groupClass],
+            'row_attr' => ['class' => 'col-12 '.$groupClass],
             'constraints' => $constraints['validators'],
             'help' => $this->getAttribute($field, 'help'),
         ]);
@@ -273,7 +273,6 @@ class IntlType extends AbstractType
                 if ($page->isInfill()) {
                     $label .= ' ('.$this->translator->trans('Pour arbo', [], 'admin').')';
                 }
-
                 return $label;
             },
             'attr' => array_merge($attributes, [
@@ -441,7 +440,7 @@ class IntlType extends AbstractType
                 'color' => 'app',
                 'label' => $this->getAttribute($field, 'label'),
                 'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12'.$groupClass],
+                'row_attr' => ['class' => 'col-12 '.$groupClass],
                 'help' => $this->getAttribute($field, 'help'),
             ]);
         }
@@ -455,7 +454,7 @@ class IntlType extends AbstractType
                 'color' => 'app',
                 'label' => $this->translator->trans('Lien externe'),
                 'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12'.$groupClass],
+                'row_attr' => ['class' => 'col-12 '.$groupClass],
                 'help' => $this->getAttribute('externalLink', 'help'),
             ]);
         }
@@ -474,7 +473,7 @@ class IntlType extends AbstractType
                 'color' => 'app',
                 'label' => $this->getAttribute($field, 'label'),
                 'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12'.$groupClass],
+                'row_attr' => ['class' => 'col-12 '.$groupClass],
                 'help' => $this->getAttribute($field, 'help'),
             ]);
         }

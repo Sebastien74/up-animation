@@ -406,13 +406,6 @@ picture {
 
 .layout-zone {
 
-    &.standardize-medias {
-        img {
-            width: 100% !important;
-            max-height: initial !important;
-        }
-    }
-
     &.layout-zone-navigation {
         z-index: 1500;
     }

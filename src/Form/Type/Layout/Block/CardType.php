@@ -42,7 +42,7 @@ class CardType extends AbstractType
                 'color' => 'app',
                 'label' => $this->translator->trans('Mini-fiche large', [], 'admin'),
                 'attr' => ['class' => 'col-12 w-100'],
-                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+                'row_attr' => ['class' => 'col-12 col-lg-12 col-lg-3'],
             ]);
         }
 
@@ -71,7 +71,17 @@ class CardType extends AbstractType
         $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
         $intls->add($builder, [
             'website' => $options['website'],
-            'fields' => ['title' => 'col-md-5', 'subTitle' => 'col-md-5', 'body', 'targetLink' => 'col-md-3 add-title', 'targetPage' => 'col-md-3', 'targetLabel' => 'col-md-3', 'targetStyle' => 'col-md-3', 'newTab' => 'col-md-3'],
+            'fields' => [
+                'title' => 'col-lg-5',
+                'subTitle' => 'col-lg-5',
+                'body',
+                'targetLink' => 'col-lg-3 add-title',
+                'targetPage' => 'col-lg-3',
+                'targetLabel' => 'col-lg-3',
+                'targetStyle' => 'col-lg-3',
+                'externalLink' => 'col-lg-6',
+                'newTab' => 'col-lg-6'
+            ],
             'title_force' => true,
         ]);
 

@@ -6,6 +6,8 @@ services:
 
 twig:
     default_path: '%kernel.project_dir%/templates'
+    date:
+        timezone: Europe/Paris
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     form_themes:

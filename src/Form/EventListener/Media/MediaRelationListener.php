@@ -39,6 +39,35 @@ class MediaRelationListener extends BaseListener
                     }
                 }
             }
+
+            $this->sortRelations($entity);
+        }
+    }
+
+    /**
+     * Sort relations by configuration order.
+     */
+    private function sortRelations(mixed $entity): void
+    {
+        if (is_object($entity) && method_exists($entity, 'getMediaRelations') && method_exists($entity, 'addMediaRelation')) {
+            $relations = $entity->getMediaRelations();
+            if ($relations->count() > 1) {
+                $sortedRelations = [];
+                foreach ($this->locales as $locale) {
+                    foreach ($relations as $relation) {
+                        if ($relation->getLocale() === $locale) {
+                            $sortedRelations[] = $relation;
+                            break;
+                        }
+                    }
+                }
+
+                $relations->clear();
+
+                foreach ($sortedRelations as $relation) {
+                    $entity->addMediaRelation($relation);
+                }
+            }
         }
     }
 

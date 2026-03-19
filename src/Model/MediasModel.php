@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\QueryBuilder;
+use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 
 /**
  * MediasModel.
@@ -42,8 +44,7 @@ final class MediasModel extends BaseModel
 
     /**
      * fromEntity.
-     *
-     * @throws NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public static function fromEntity(mixed $entity, CoreLocatorInterface $coreLocator, ?string $locale = null, ?bool $query = true, array $options = []): self
     {
@@ -230,8 +231,7 @@ final class MediasModel extends BaseModel
                 ->setParameter('screen', 'poster');
         }
 
-        return $qb instanceof QueryBuilder ? $qb
-            ->getQuery()
+        return $qb instanceof QueryBuilder ? $qb->getQuery()
             ->enableResultCache(3600, 'media_relations_'.md5(get_class($entity).'_'.$entity->getId().'_'.$locale))
             ->getResult() : [];
     }

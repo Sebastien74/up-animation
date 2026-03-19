@@ -26,8 +26,8 @@
         &:not(.card-wave) {
             .card-header {
                 picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader, .img-loader-wrap {
-                    border-top-left-radius: $border-radius-small;
-                    border-top-right-radius: $border-radius-small;
+                    border-top-left-radius: $border-radius;
+                    border-top-right-radius: $border-radius;
                 }
             }
         }
@@ -35,25 +35,34 @@
         &:not(.have-bg):not(.card-wave) {
             .card-header {
                 picture img, .img-hover-buttons-wrap {
-                    border-bottom-left-radius: $border-radius-small;
-                    border-bottom-right-radius: $border-radius-small;
+                    border-bottom-left-radius: $border-radius;
+                    border-bottom-right-radius: $border-radius;
                 }
             }
         }
 
-        &.have-bg {
+        &.have-bg, &.shadow {
+
+            border-radius: $border-radius;
+
+            &:not(.no-media) {
+                .card-body {
+                    border-top-left-radius: $border-radius;
+                    border-top-right-radius: $border-radius;
+                }
+            }
 
             &:not(.have-link) {
                 .card-body {
-                    border-bottom-left-radius: $border-radius-small;
-                    border-bottom-right-radius: $border-radius-small;
+                    border-bottom-left-radius: $border-radius;
+                    border-bottom-right-radius: $border-radius;
                 }
             }
 
             &.have-link {
                 .card-footer {
-                    border-bottom-left-radius: $border-radius-small;
-                    border-bottom-right-radius: $border-radius-small;
+                    border-bottom-left-radius: $border-radius;
+                    border-bottom-right-radius: $border-radius;
                 }
             }
         }

@@ -27,7 +27,12 @@ readonly class WebsiteDirectoryNamer implements DirectoryNamerInterface
     {
         $website = method_exists($object, 'getWebsite')
             ? $object->getWebsite()
-            : $this->coreLocator->website()->entity;
+            : null;
+
+        if (!$website) {
+            $websiteModel = $this->coreLocator->website();
+            $website = $websiteModel ? $websiteModel->entity : null;
+        }
 
         if ($website && $website->getUploadDirname()) {
             return $website->getUploadDirname();

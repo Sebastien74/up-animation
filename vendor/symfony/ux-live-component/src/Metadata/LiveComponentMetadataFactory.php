@@ -74,7 +74,8 @@ class LiveComponentMetadataFactory implements ResetInterface
                 continue;
             }
 
-            $metadatas[$propertyName] = $this->createLivePropMetadata($class->getName(), $propertyName, $property, $attribute->newInstance());
+            $declaringClassName = $property->getDeclaringClass()->getName();
+            $metadatas[$propertyName] = $this->createLivePropMetadata($declaringClassName, $propertyName, $property, $attribute->newInstance());
         }
 
         return array_values($metadatas);
@@ -121,26 +122,26 @@ class LiveComponentMetadataFactory implements ResetInterface
                 $isTypeNullable,
                 $collectionValueType
             );
-        } else {
-            $infoType = $this->propertyTypeExtractor->getType($className, $property->getName());
-
-            if ($infoType instanceof CollectionType) {
-                // If it's an "advanced" type (like CollectionType), let's use the PropertyTypeExtractor to get the Type
-                $type = $infoType;
-            } elseif (null !== $reflectionType) {
-                // Otherwise, we can use the TypeResolver to convert the ReflectionType to a Type
-                $type = $this->typeResolver->resolve($reflectionType);
-            } else {
-                try {
-                    $type = $this->typeResolver->resolve($property);
-                } catch (UnsupportedException) {
-                    // If no type is available, we default to mixed
-                    $type = Type::mixed();
-                }
-            }
-
-            return new LivePropMetadata($property->getName(), $liveProp, $type);
         }
+
+        $infoType = $this->propertyTypeExtractor->getType($className, $property->getName());
+
+        if ($infoType instanceof CollectionType) {
+            // If it's an "advanced" type (like CollectionType), let's use the PropertyTypeExtractor to get the Type
+            $type = $infoType;
+        } elseif (null !== $reflectionType) {
+            // Otherwise, we can use the TypeResolver to convert the ReflectionType to a Type
+            $type = $this->typeResolver->resolve($reflectionType);
+        } else {
+            try {
+                $type = $this->typeResolver->resolve($property);
+            } catch (UnsupportedException) {
+                // If no type is available, we default to mixed
+                $type = Type::mixed();
+            }
+        }
+
+        return new LivePropMetadata($property->getName(), $liveProp, $type);
     }
 
     /**

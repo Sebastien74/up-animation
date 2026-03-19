@@ -61,7 +61,7 @@ class FaqType extends AbstractType
                 'label' => $this->translator->trans('Affichage', [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                 'choices' => [
-                    $this->translator->trans('Tout les volets fermés', [], 'admin') => 'all-closed',
+                    $this->translator->trans('Tous les volets fermés', [], 'admin') => 'all-closed',
                     $this->translator->trans('Tout les volets ouverts', [], 'admin') => 'all-opened',
                     $this->translator->trans('Premier volet ouvert', [], 'admin') => 'first-opened',
                 ],
@@ -75,7 +75,7 @@ class FaqType extends AbstractType
                 'label' => $this->translator->trans('Affichage tesaer', [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                 'choices' => [
-                    $this->translator->trans('Tout les volets fermés', [], 'admin') => 'all-closed',
+                    $this->translator->trans('Tous les volets fermés', [], 'admin') => 'all-closed',
                     $this->translator->trans('Tout les volets ouverts', [], 'admin') => 'all-opened',
                     $this->translator->trans('Premier volet ouvert', [], 'admin') => 'first-opened',
                 ],
