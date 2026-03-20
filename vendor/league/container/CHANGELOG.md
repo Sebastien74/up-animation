@@ -2,6 +2,34 @@
 
 All Notable changes to `League\Container` will be documented in this file
 
+## 5.2.0
+
+### Added
+- **Event system** for hooking into the container lifecycle
+  - Four event types: `OnDefineEvent`, `BeforeResolveEvent`, `DefinitionResolvedEvent`, `ServiceResolvedEvent`
+  - Fluent filtering API: `forType()`, `forTag()`, `forId()`, `where()`
+  - `Container::listen()` for registering filtered event listeners
+  - `Container::afterResolve()` convenience method as a drop-in replacement for `inflector()`
+  - Lazy event dispatch: events are only created when listeners are registered for that event type
+  - `EventDispatcher::hasListenersFor()` to check whether listeners exist for a given event type
+  - `DefinitionInterface::getTags()` for retrieving tags from definitions
+  - Docs: [https://container.thephpleague.com/5.x/events/](https://container.thephpleague.com/5.x/events/)
+- `Container::getDelegate(string $class)` to retrieve a registered delegate container by type
+
+### Fixed
+- Interface-to-concrete definitions now correctly resolve through the concrete's own registered definition instead of bypassing it via direct reflection (#275, #278)
+- `Definition::resolveClass()` now throws `ContainerException` with actionable guidance when a class has unsatisfied constructor dependencies, instead of a raw `ArgumentCountError`
+
+### Deprecated
+- `Container::inflector()` - use `Container::afterResolve()` or the event system instead. Will be removed in v6.0.
+
+### Changed
+- `DefinitionContainerInterface` no longer extends `EventAwareContainerInterface` (removed)
+- Shared definitions now receive a `'shared'` tag automatically via `addTag('shared')`
+
+### Removed
+- `EventAwareContainerInterface` - the event system is provided by `EventAwareTrait` on the concrete `Container` class, not as an interface contract
+
 ## 5.1.0
 
 ### Added

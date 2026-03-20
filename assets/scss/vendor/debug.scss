@@ -12,9 +12,23 @@
 
 /*! purgecss start ignore */
 
-html body .sf-toolbar-icon-closed {
-    svg, path {
-        fill: #FFFFFF !important;
+html body {
+
+    .sf-toolbar {
+
+        a, a * {
+            color: #FFFFFF !important;
+        }
+
+        .sf-toolbar-toggle-button line {
+            stroke: #FFFFFF !important;
+        }
+
+        .sf-toolbar-icon-closed {
+            svg, path {
+                fill: #FFFFFF !important;
+            }
+        }
     }
 }
 
