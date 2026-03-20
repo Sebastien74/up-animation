@@ -8,7 +8,6 @@ use App\Entity\Core\Website;
 use App\Entity\Layout\Block;
 use App\Entity\Layout\Page;
 use App\Entity\Seo\Url;
-use App\Model\Core\ConfigurationModel;
 use App\Model\Core\WebsiteModel;
 use App\Model\EntityModel;
 use App\Model\ViewModel;

@@ -53,9 +53,8 @@ class ConfigurationRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')->select('c')
             ->leftJoin('c.website', 'w')
-            ->leftJoin('c.mediaRelations', 'mr')
+            ->leftJoin('c.mediaRelations', 'mr', 'WITH', 'mr.locale = :locale')
             ->andWhere('w.id = :website')
-            ->andWhere('mr.locale = :locale')
             ->setParameter('website', $website->id)
             ->setParameter('locale', $locale)
             ->addSelect('w')

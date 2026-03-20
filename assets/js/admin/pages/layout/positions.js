@@ -8,7 +8,7 @@ import Tooltip from '../../bootstrap/dist/tooltip';
 export default function (Routing, items, routeName, block = false) {
 
     let body = document.body;
-    let loader = body.querySelector('#layout-preloader');
+    let loader = body.querySelector('#main-preloader');
 
     if (loader) {
         loader.classList.remove('d-none');

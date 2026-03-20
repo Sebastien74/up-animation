@@ -209,7 +209,7 @@ class BlockConfigurationType extends AbstractType
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
             'attr' => [
-                'class' => 'col-12 btn-app edit-element-submit-btn',
+                'class' => 'btn-app edit-element-submit-btn',
                 'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],

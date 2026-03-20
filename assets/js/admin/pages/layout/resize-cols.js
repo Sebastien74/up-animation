@@ -6,7 +6,7 @@ import route from "../../core/routing";
 export default function (Routing) {
 
     let body = document.body;
-    let loader = body.querySelector('#layout-preloader');
+    let loader = body.querySelector('#main-preloader');
     let zones = body.querySelectorAll('.zone');
 
     zones.forEach(zone => {

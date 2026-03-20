@@ -41,6 +41,7 @@ export default function (Routing) {
                 let modal = body.querySelector('.layout-modal');
                 if (!body.classList.contains('ajax-posted')) {
                 let form = submitBtn.closest('.edit-element-form');
+                body.classList.add('ajax-posted');
                 /** Refresh layout */
                 import('./refresh-layout').then(({default: refreshLayout}) => {
                     new refreshLayout(Routing, form, modal, e);
@@ -168,7 +169,7 @@ export default function (Routing) {
             e.preventDefault();
 
             let body = document.body;
-            let loader = body.querySelector('#layout-preloader');
+            let loader = body.querySelector('#main-preloader');
 
             if (loader) {
                 loader.classList.remove('d-none');
@@ -203,7 +204,7 @@ export default function (Routing) {
                             dropify();
                             // touchspin();
 
-                            let layoutPreloader = document.getElementById("layout-preloader");
+                            let layoutPreloader = document.getElementById("main-preloader");
                             if (layoutPreloader) {
                                 layoutPreloader.classList.add('d-none');
                             }
@@ -216,7 +217,7 @@ export default function (Routing) {
                                     }
                                     let referPreloader = this.closest('.refer-preloader');
                                     let stripePreloader = referPreloader ? referPreloader.querySelector('.stripe-preloader') : null;
-                                    let preloader = stripePreloader || document.getElementById("layout-preloader");
+                                    let preloader = stripePreloader || document.getElementById("main-preloader");
                                     if (preloader) {
                                         preloader.classList.remove('d-none');
                                     }

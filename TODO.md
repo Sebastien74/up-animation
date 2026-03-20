@@ -1,3 +1,14 @@
+Retirer les args non utilisés     public function indexesPages(
+mixed $entity,
+string $locale,
+string $listingClassname,
+string $classname,
+array $entities = [],
+array $interface = [],
+bool $all = false,
+bool $asIndexView = false,
+): array {
+
 Revoir les boutons open-modal-medias plusieurs la class open-modal-medias
 
 Faire une sauvegarde de la DB et supprimer tout ce qui n'est pas 'FR'
@@ -7,6 +18,8 @@ A l'edition d'une col, de zone... A l'enregistrement la page se recharge, il fau
 Revoir pour faire un service pour CacheCommand / AppCacheClearCommand
 
 Nettoyer CacheInvalidationSubscriber
+
+Récupérer IA sur Isacar
 
 Ajouter un Typedeblock Tel inicatifs a récupérer sur sydev
 

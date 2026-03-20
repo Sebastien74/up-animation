@@ -71,7 +71,7 @@ $info: #1f1f1f !global;
 $info-darken-light: $info-darken-dark !global;
 $info-light: $gray-500 !global;
 $info-lighten: $info-light !global;
-$body-bg: #292929 !global;
+$body-bg: $gray-400 !global;
 $body-shadow: $body-bg !global;
 
 // Theme Semantic Variables Overrides
@@ -254,8 +254,6 @@ body {
 
     .page-breadcrumb {
 
-        background-color: $theme-breadcrumb-bg !important;
-
         li {
 
             color: $theme-breadcrumb-text;
@@ -273,10 +271,6 @@ body {
         img {
             filter: brightness(0) invert(1);
         }
-    }
-
-    .tab-content {
-        background-color: $gray-800;
     }
 
     .custom-tab {

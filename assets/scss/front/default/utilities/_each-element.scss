@@ -63,6 +63,7 @@
 @mixin each-elements($elements) {
 
     $commonValues: ();
+    $bgColorsList: ();
 
     @each $element, $config in $elements {
 
@@ -90,28 +91,36 @@
                     }
                 }
 
-                $notExclusion: ':not(.btn):not(.btn *):not([style*="color"]):not([style*="color"] *)';
-
                 @if ($matchGroupWithInitial != '') {
-                    $selector: '.bg-' + $color-name + ' :is(' + $matchGroupWithInitial + '):not(.initial)' + $notExclusion;
-                    $commonValues: push-common-value($commonValues, $color, 'color', $selector);
+                    $found: false;
+                    $newList: ();
+                    @each $item in $bgColorsList {
+                        @if map-get($item, 'name') == $color-name and map-get($item, 'color') == $color and map-get($item, 'type') == 'with' {
+                            $item: map-merge($item, ('elements': map-get($item, 'elements') + ', ' + $matchGroupWithInitial));
+                            $found: true;
+                        }
+                        $newList: append($newList, $item);
+                    }
+                    @if not $found {
+                        $newList: append($newList, ('name': $color-name, 'color': $color, 'type': 'with', 'elements': $matchGroupWithInitial));
+                    }
+                    $bgColorsList: $newList;
                 }
 
                 @if ($matchGroupWithoutInitial != '') {
-                    $selector: '.bg-' + $color-name + ' :is(' + $matchGroupWithoutInitial + ')' + $notExclusion;
-                    $commonValues: push-common-value($commonValues, $color, 'color', $selector);
-                }
-
-                // SECOND LEVEL
-                @each $color-name-parent, $color-parent in map-get($config, 'colors-in-backgrounds') {
-                    @if ($matchGroupWithInitial != '') {
-                        $selector: '.bg-' + $color-name-parent + ' .bg-' + $color-name + ' :is(' + $matchGroupWithInitial + '):not(.initial)' + $notExclusion;
-                        $commonValues: push-common-value($commonValues, $color, 'color', $selector);
+                    $found: false;
+                    $newList: ();
+                    @each $item in $bgColorsList {
+                        @if map-get($item, 'name') == $color-name and map-get($item, 'color') == $color and map-get($item, 'type') == 'without' {
+                            $item: map-merge($item, ('elements': map-get($item, 'elements') + ', ' + $matchGroupWithoutInitial));
+                            $found: true;
+                        }
+                        $newList: append($newList, $item);
                     }
-                    @if ($matchGroupWithoutInitial != '') {
-                        $selector: '.bg-' + $color-name-parent + ' .bg-' + $color-name + ' :is(' + $matchGroupWithoutInitial + ')' + $notExclusion;
-                        $commonValues: push-common-value($commonValues, $color, 'color', $selector);
+                    @if not $found {
+                        $newList: append($newList, ('name': $color-name, 'color': $color, 'type': 'without', 'elements': $matchGroupWithoutInitial));
                     }
+                    $bgColorsList: $newList;
                 }
             }
         }
@@ -150,6 +159,24 @@
                 }
             }
         }
+    }
+
+    // Process collected background colors
+    $notExclusion: ':not(.btn):not(.btn *):not([style*="color"]):not([style*="color"] *)';
+    @each $item in $bgColorsList {
+        $color-name: map-get($item, 'name');
+        $color: map-get($item, 'color');
+        $type: map-get($item, 'type');
+        $elementsList: map-get($item, 'elements');
+
+        $selector: '';
+        $exclusionSuffix: ':not(.bg-' + $color-name + ' [class*="bg-"] *)';
+        @if $type == 'with' {
+            $selector: '.bg-' + $color-name + ' :is(' + $elementsList + '):not(.initial)' + $notExclusion + $exclusionSuffix;
+        } @else {
+            $selector: '.bg-' + $color-name + ' :is(' + $elementsList + ')' + $notExclusion + $exclusionSuffix;
+        }
+        $commonValues: push-common-value($commonValues, $color, 'color', $selector);
     }
 
     @each $commonValue in $commonValues {

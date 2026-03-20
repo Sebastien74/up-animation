@@ -11,6 +11,19 @@
     <div class="prototype col-md-6 col-lg-3">
         <div class="card mb-3">
             <div class="card-body pb-2">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    {%- if deletable -%}
+                        {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
+                            isNew: color.vars.data.id is defined and color.vars.data.id ? false : true,
+                            entityId: isNew ? uniqId() : color.vars.data.id,
+                            interfaceName: 'color'
+                        } -%}
+                    {%- else -%}
+                        <a class="cursor-not-allowed btn-icon muted small ms-auto delete-disabled" data-bs-toggle="tooltip" title="{{"Suppression impossible"|trans|raw }}">
+                            <i class="icm-trash"></i>
+                        </a>
+                    {%- endif -%}
+                </div>
                 <div class="row">
                     {{ form_row(color.adminName) }}
                     {{ form_row(color.color) }}
@@ -29,17 +42,6 @@
                     {{ form_row(color.active) }}
                 </div>
             </div>
-            {%- if deletable -%}
-                {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
-                    isNew: color.vars.data.id is defined and color.vars.data.id ? false : true,
-                    entityId: isNew ? uniqId() : color.vars.data.id,
-                    interfaceName: 'color'
-                } -%}
-            {%- else -%}
-                <a class="btn-transparent delete-disabled" data-bs-toggle="tooltip" title="{{"Suppression impossible"|trans|raw }}">
-                    <i class="icm-trash"></i>
-                </a>
-            {%- endif -%}
         </div>
     </div>
 

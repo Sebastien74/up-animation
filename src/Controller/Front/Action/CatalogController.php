@@ -80,6 +80,11 @@ class CatalogController extends ActionController
      * @throws ReflectionException|ContainerExceptionInterface|InvalidArgumentException|NonUniqueResultException|NotFoundExceptionInterface|MappingException|QueryException
      */
     #[Route([
+        'fr' => '/{pageUrl}/fiche-produit/{url}',
+        'fr_ch' => '/{pageUrl}/fiche-produit/{url}',
+        'en' => '/{pageUrl}/product-card/{url}',
+    ], name: 'front_catalogproduct_view', methods: ['GET', 'POST'], schemes: '%protocol%', priority: 300)]
+    #[Route([
         'fr' => '/fiche-produit/{url}',
         'fr_ch' => '/fiche-produit/{url}',
         'en' => '/product-card/{url}',

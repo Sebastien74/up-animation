@@ -191,6 +191,7 @@ body.sorting-active * {
 
         .margin-dashed {
             background: repeating-linear-gradient(-55deg, rgba(255, 255, 255, 0.05) 1px, rgba(255, 255, 255, 0.02) 2px, rgba(255, 255, 255, 0.02) 11px, rgba(255, 255, 255, 0.05) 12px, rgba(255, 255, 255, 0.05) 20px) !important;
+            width: 100%;
         }
 
         .margin-dashed,
@@ -200,6 +201,7 @@ body.sorting-active * {
         }
 
         .padding-dashed {
+
             background-color: rgba(255, 255, 255, 0.03);
             display: flex;
             align-items: center;
@@ -228,6 +230,7 @@ body.sorting-active * {
         .select2-selection--single {
             height: 25px;
             padding: 0;
+            border-radius: 4px !important;
         }
 
         .select2-container--default .select2-results > .select2-results__options {
@@ -244,10 +247,13 @@ body.sorting-active * {
 
         .select2-results {
             border-radius: var(--bs-border-radius);
+            padding: 1rem 0 !important;
         }
 
         .select2-results__option {
             text-align: center;
+            padding: .2rem 0 !important;
+            justify-content: center;
         }
 
         .select2-container--default .select2-selection--single .select2-selection__arrow {

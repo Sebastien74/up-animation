@@ -53,17 +53,17 @@
     {%- set categories = categories|merge({('Personnalisé'|trans): customCategory}) -%}
 {%- endif -%}
 
-{%- set formLocale = masterRequest().get('form_locale') ? masterRequest().get('form_locale') : website.configuration.locale -%}
+{%- set formLocale = masterRequest().query.get('form_locale') ? masterRequest().query.get('form_locale') : website.configuration.locale -%}
 
 {%- if allLocales|length > 1 -%}
-    <ul class="nav nav-tabs w-100" role="tablist">
+    <ul class="nav nav-tabs border-0 d-flex w-100 mb-3 mt-1 gap-2" role="tablist">
         {%- for localeConfig in allLocales -%}
             <li class="nav-item" data-bs-toggle="tooltip" title="{{ languageName(localeConfig, app.user.locale) }}">
-                <a class="nav-link {% if localeConfig == formLocale %} active{% endif %}"
+                <a class="btn-locale {% if localeConfig == formLocale %} active{% endif %}"
                    id="media-relation-{{ localeConfig }}-tab"
                    aria-selected="{% if localeConfig == formLocale %}true{% else %}false{% endif %}"
                    href="{{ path('admin_website_style', {website: website.id, form_locale: localeConfig}) }}" role="tab">
-                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~localeConfig~'.svg') }}" class="img-fluid lazy-load" height="14" width="19">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~localeConfig~'.svg') }}" class="img-fluid lazy-load" height="14" width="19" alt="{{ languageName(localeConfig, app.user.locale) }}">
                 </a>
             </li>
         {%- endfor -%}

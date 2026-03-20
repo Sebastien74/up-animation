@@ -57,7 +57,6 @@ class MediaRelationListener extends BaseListener
                     foreach ($relations as $relation) {
                         if ($relation->getLocale() === $locale) {
                             $sortedRelations[] = $relation;
-                            break;
                         }
                     }
                 }

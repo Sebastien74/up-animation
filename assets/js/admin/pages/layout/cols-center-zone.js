@@ -19,7 +19,7 @@ export default function (Routing) {
         let zone = el.getAttribute('data-zone');
         let newStandardize = el.getAttribute('data-standardize') === 'true' ? 0 : 1;
         let standardize = newStandardize === 1 ? 'true' : 'false';
-        let loader = body.querySelector('#layout-preloader');
+        let loader = body.querySelector('#main-preloader');
 
         if (loader) {
             loader.classList.toggle('d-none');

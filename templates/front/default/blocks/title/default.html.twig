@@ -27,7 +27,7 @@
             {%- if intl.link is defined and intl.link -%}
                 <a href="{{ intl.link }}" {% if intl.linkExternal %} rel="noopener noreferrer" {% endif %}{% if intl.linkBlank %} target="_blank" {% endif %}>
             {%- endif -%}
-                {{ intl.title|raw }}
+                {{ intl.title|unescape|raw }}
             {%- if intl.link is defined and intl.link -%}
                 </a>
             {%- endif -%}

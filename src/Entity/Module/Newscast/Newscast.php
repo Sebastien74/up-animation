@@ -89,18 +89,18 @@ class Newscast extends BaseEntity
     #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]
     private ?Layout $layout = null;
 
-    #[ORM\OneToMany(mappedBy: 'newscast', targetEntity: Comment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'newscast', orphanRemoval: true)]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     #[ORM\OrderBy(['createdAt' => 'DESC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $comments;
 
-    #[ORM\OneToMany(mappedBy: 'newscast', targetEntity: NewscastIntl::class, cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: NewscastIntl::class, mappedBy: 'newscast', cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
     #[ORM\OrderBy(['locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $intls;
 
-    #[ORM\OneToMany(mappedBy: 'newscast', targetEntity: NewscastMediaRelation::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: NewscastMediaRelation::class, mappedBy: 'newscast', cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     #[ORM\OrderBy(['position' => 'ASC', 'locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]

@@ -149,6 +149,8 @@ final class ViewModel extends BaseModel
         $dates = self::dates($entity);
         $haveVideos = (!$disabledMedias && $medias && !empty($medias->videos)) || $haveIntlVideo;
         $titleInfos = $titleInfos && $layout ? self::titleInfos($medias, $layout->entity) : false;
+        $firstIndex = array_key_first($urlsIndex);
+        $firstPageUrl = $firstIndex ? $urlsIndex[$firstIndex] : (self::$coreLocator->request() ? self::$coreLocator->request()->attributes->get('pageUrl') : null);
 
         $viewModel = new self(
             id: self::getContent('id', $entity),
@@ -160,7 +162,7 @@ final class ViewModel extends BaseModel
             online: !$disabledUrl && $url ? $url->online : null,
             urlEntity: !$disabledUrl && $url ? $url->entity : null,
             urlCode: !$disabledUrl && $url ? $url->code : null,
-            urlIndex: $entity && !empty($urlsIndex[$entity->getId()]) ? $urlsIndex[$entity->getId()] : (self::$coreLocator->request() ? self::$coreLocator->request()->attributes->get('pageUrl') : null),
+            urlIndex: $entity && !empty($urlsIndex[$entity->getId()]) ? $urlsIndex[$entity->getId()] : $firstPageUrl,
             interface: $interface,
             interfaceName: !empty($interface['name']) ? $interface['name'] : null,
             category: $category,
@@ -246,8 +248,10 @@ final class ViewModel extends BaseModel
             if ($entity instanceof Layout\Page) {
                 $path = self::$coreLocator->router()->generate('front_index', ['url' => $entity->isAsIndex() ? null : $urlCode], 0);
             } else {
-                $pageUrl = array_key_exists($entity->getId(), $urlsIndex) ? $urlsIndex[$entity->getId()] : ($request && $request->attributes->get('pageUrl') ? $request->attributes->get('pageUrl')
-                    : ($request ? trim($request->getPathInfo(), '/') : null));
+                $firstIndex = array_key_first($urlsIndex);
+                $firstPageUrl = $firstIndex ? $urlsIndex[$firstIndex] : ($request ? trim($request->getPathInfo(), '/') : null);
+                $pageUrl = array_key_exists($entity->getId(), $urlsIndex) ? $urlsIndex[$entity->getId()] : ($request && $request->attributes->get('pageUrl')
+                    ? $request->attributes->get('pageUrl') : $firstPageUrl);
                 $path = $pageUrl && $urlCode && !str_contains($pageUrl, '/') && self::$coreLocator->checkRoute('front_'.$interface['name'].'_view.'.$locale)
                     ? self::$coreLocator->router()->generate('front_'.$interface['name'].'_view', ['pageUrl' => $pageUrl, 'url' => $urlCode], 0) : null;
                 if (!$path) {

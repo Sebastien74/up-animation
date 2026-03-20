@@ -6,7 +6,7 @@
 {%- set btnClasses = asBtn and options.btn is defined ?" btn btn-"~options.btn : '' -%}
 {%- set btnClasses = options.class is defined ? btnClasses~' '~options.class : btnClasses -%}
 {%- set itemprop = phone.type == 'fixe' or phone.type == 'mobile' ? "telephone" : (phone.type == 'fax' ? 'faxNumber' : null) -%}
-{%- set label = phone.type == 'fixe' or phone.type == 'office' or phone.type == 'mobile' ? "Tel :"|trans : (phone.type == 'fax' ? "Fax :"|trans : null) -%}
+{%- set label = phone.type == 'fixe' or phone.type == 'office' or phone.type == 'mobile' ? "Tél :"|trans : (phone.type == 'fax' ? "Fax :"|trans : null) -%}
 {%- set labelHTML = '' -%}
 {%- set fontawesome = options.icon is defined and 'fa-' in options.icon -%}
 {%- set iconWidth = options.icon_width is defined ? options.icon_width : 14 -%}

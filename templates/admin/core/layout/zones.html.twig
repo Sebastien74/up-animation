@@ -1,9 +1,6 @@
 {%- trans_default_domain 'admin' -%}
 
 {%- if layout -%}
-
-    {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'layout-preloader', full: true} only -%}
-
     <ul id="zones-sortable" class="reset">
         {%- for zone in layout.zones -%}
             <li class="zone {% if zone.hide %} hide-zone{% endif %}" id="zone-{{ zone.id }}" data-id="{{ zone.id }}" data-position="{{ zone.position }}">
@@ -101,7 +98,6 @@
                             <span class="item">
                                 <span class="duplicate-btn cursor btn-action"
                                       data-path="{{ path('admin_zone_duplicate', {website: websiteId(), zone: zone.id, refresh: true, template: 'layout'}) }}"
-                                      data-preloader="#layout-preloader"
                                       data-bs-toggle="tooltip"
                                       data-placement="right"
                                       title="{{"Dupliquer"|trans|striptags }}">

@@ -229,7 +229,7 @@ $font-size-h3: 25px;
 $font-size-h4: 18px;
 $font-size-h5: 18px;
 $font-size-h6: 18px;
-$font-size-sub-title: $font-size-base;
+$font-size-sub-title: 25px;
 $font-size-paragraph: $font-size-base;
 $font-size-news-teaser-control: 30px;
 $font-size-card-title: rem(35px);
@@ -252,7 +252,7 @@ $font-sizes-config: (
     'h5, .h5, .h5 a': ('rfs': true, 'size': $font-size-h5, 'line-height': 1),
     'h6, .h6, .h6 a': ('rfs': true, 'size': $font-size-h6, 'line-height': 1),
     '.sub-title': ('rfs': true, 'size': $font-size-sub-title, 'line-height': 1),
-    '.sub-title.sub-title-h2': ('rfs': true, 'size': calc(#{$font-size-h2 * .8}), 'line-height': 1),
+    '.sub-title.sub-title-h2': ('rfs': true, 'size': $font-size-sub-title, 'line-height': 1),
     '.sub-title.sub-title-h3': ('rfs': true, 'size': calc(#{$font-size-h3 * .8}), 'line-height': 1),
     '.sub-title.sub-title-h4': ('rfs': true, 'size': calc(#{$font-size-h4 * .8}), 'line-height': 1),
     '.sub-title.sub-title-h5': ('rfs': true, 'size': calc(#{$font-size-h5 * .8}), 'line-height': 1),
@@ -262,7 +262,7 @@ $font-sizes-config: (
 
 /*-- e - Transitions --*/
 
-$transition-base-timing: cubic-bezier(0.25, 0.1, 0.25, 1) !default;
+$transition-base-timing: ease-in-out !default;
 $transition-base: .4s $transition-base-timing !default;
 $transition-fast: .2s $transition-base-timing !default;
 $transition-slow: .6s $transition-base-timing !default;
@@ -302,15 +302,15 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'secondary': $white,
-            'success': $body-color,
-            'info': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
+            'secondary': $primary,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $primary,
+            'dark-lighten': $primary,
             'white': $body-color,
         )
     ),
@@ -416,7 +416,7 @@ $elements: map-merge((
     '.sub-title': (
         'properties': (
             'color': $body-color,
-            'font-weight': 500,
+            'font-weight': 400,
         ),
         'colors-in-backgrounds': (
             'primary': $white,

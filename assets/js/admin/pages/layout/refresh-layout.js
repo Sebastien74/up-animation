@@ -12,7 +12,7 @@ export default function (Routing, form, modal, event) {
 
     let formData = new FormData(formEl);
     let action = formEl.getAttribute('action') || '';
-    let loader = body.querySelector('#layout-preloader');
+    let loader = body.querySelector('#main-preloader');
     let scrollElementSelector = formEl.getAttribute('data-scroll-to');
 
     if (modal) {
@@ -28,7 +28,7 @@ export default function (Routing, form, modal, event) {
     let urlWithAjax = action.indexOf('?') > -1 ? action + '&ajax=true' : action + '?ajax=true';
 
     if (loader) {
-        loader.classList.toggle('d-none');
+        loader.classList.remove('d-none');
     }
 
     fetch(urlWithAjax, {
@@ -39,7 +39,6 @@ export default function (Routing, form, modal, event) {
         .then(() => {
             let currentUrl = window.location.href;
             let refreshUrl = currentUrl.indexOf('?') > -1 ? currentUrl + '&ajax=true' : currentUrl + '?ajax=true';
-
             return fetch(refreshUrl);
         })
         .then(response => response.json())
@@ -70,8 +69,9 @@ export default function (Routing, form, modal, event) {
             });
 
             if (loader) {
-                loader.classList.toggle('d-none');
+                loader.classList.add('d-none');
             }
+            body.classList.remove('ajax-posted');
 
             let popupImages = document.querySelectorAll('.glightbox');
             if (popupImages.length > 0) {
@@ -81,6 +81,10 @@ export default function (Routing, form, modal, event) {
             }
         })
         .catch(errors => {
+            body.classList.remove('ajax-posted');
+            if (loader) {
+                loader.classList.add('d-none');
+            }
             /** Display errors */
             import('../../core/errors').then(({default: displayErrors}) => {
                 new displayErrors(errors);

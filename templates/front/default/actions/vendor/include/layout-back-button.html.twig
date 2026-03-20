@@ -5,11 +5,14 @@
     {%- set class = class is defined ? class : null -%}
     {%- set btnLabel = entity.category.intl.linkLabel is defined and entity.category.intl.linkLabel
         ? entity.category.intl.linkLabel : "Retourner à la liste des publications"|trans -%}
-    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
-        intl: {
-            link: path('front_index', {url: pageUrl}),
-            linkStyle: 'btn btn-primary',
-            linkLabel: btnLabel,
-        }
-    } -%}
+{#    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {#}
+{#        intl: {#}
+{#            link: path('front_index', {url: pageUrl}),#}
+{#            linkStyle: 'btn btn-primary',#}
+{#            linkLabel: btnLabel,#}
+{#        }#}
+{#    } -%}#}
+    <a href="{{ path('front_index', {url: pageUrl}) }}" class="text-uppercase fw-700 d-inline-flex align-items-center gap-2 back-link">
+        <i class="icon-arrow-left"></i><span class="text-underline">{{ btnLabel }}</span>
+    </a>
 {%- endif -%}

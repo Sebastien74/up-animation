@@ -19,7 +19,7 @@ export default function (Routing) {
         let zone = el.getAttribute('data-zone');
         let newSize = el.getAttribute('data-size') === 'true' ? 0 : 1;
         let size = newSize === 1 ? 'true' : 'false';
-        let loader = body.querySelector('#layout-preloader');
+        let loader = body.querySelector('#main-preloader');
 
         if (loader) {
             loader.classList.toggle('d-none');

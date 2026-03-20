@@ -1,5 +1,5 @@
-let scriptEl = document.getElementById('facebook-pixel-src');
-if (scriptEl) {
+const scriptEl = document.getElementById('facebook-pixel-src');
+if (scriptEl && !scriptEl.classList.contains('script-loaded')) {
     let pixel = scriptEl.dataset.pixel
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
         n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -9,4 +9,5 @@ if (scriptEl) {
     fbq('init', pixel);
     fbq('set', 'agent', 'gtm', pixel);
     fbq('track', pixel);
+    scriptEl.classList.add('script-loaded');
 }

@@ -37,22 +37,22 @@ class Thumb extends BaseInterface
     private ?int $height = null;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?int $dataX = null;
+    private ?float $dataX = null;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?int $dataY = null;
+    private ?float $dataY = null;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?int $rotate = null;
+    private ?float $rotate = null;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?int $scale = null;
+    private ?float $scale = null;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?int $scaleX = null;
+    private ?float $scaleX = null;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?int $scaleY = null;
+    private ?float $scaleY = null;
 
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'], inversedBy: 'thumbs')]
     #[ORM\JoinColumn(onDelete: 'cascade')]

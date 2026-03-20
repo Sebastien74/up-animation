@@ -122,7 +122,7 @@ final class MediaModel extends BaseModel
             media: $media,
             entity: $media,
             targetPage: $targetPage,
-            targetLink: $targetPage ? $intl?->link : null,
+            targetLink: $intl ? $intl?->link : null,
             originalName: $media ? $media->getOriginalName() : '',
             type: $asVideo ? 'video' : ($media && in_array($media->getExtension(), self::$IMG_EXTENSIONS) ? 'img' : 'file'),
             intl: $intl,

@@ -52,7 +52,7 @@ class ConfigurationController extends AdminController
     public function edit(Request $request)
     {
         $website = $this->getWebsite();
-        $locale = $request->get('form_locale') ? $request->get('form_locale') : $website->configuration->locale;
+        $locale = $request->query->get('form_locale') ? $request->query->get('form_locale') : $website->configuration->locale;
         $configuration = $this->coreLocator->em()->getRepository(Configuration::class)->findOptimizedAdmin($website, $locale);
         if (!$configuration) {
             throw $this->createNotFoundException($this->coreLocator->translator()->trans("Cette configuration n'existe pas !!", [], 'front'));

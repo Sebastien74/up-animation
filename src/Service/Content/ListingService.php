@@ -63,17 +63,91 @@ class ListingService
         $listings = $this->listings($listingClassname, $website);
         $pagesGroupByListingIds = $this->pages($listings, $listingClassname, $locale, $website);
         $indexUrls = $this->indexUrls($pagesGroupByListingIds, $listingClassname, $locale);
-        $entities = $this->entities($classname, $website, $interface); // OPTIMISE QUERY
+        $entities = $this->entities($classname, $website, $interface);
+
+        $entitiesDataCache = [];
+        foreach ($entities as $e) {
+            $eId = $e->getId();
+            $entitiesDataCache[$eId] = [
+                'category_id' => method_exists($e, 'getCategory') && $e->getCategory() ? $e->getCategory()->getId() : null,
+                'categories_ids' => [],
+                'catalog_id' => method_exists($e, 'getCatalog') && $e->getCatalog() ? $e->getCatalog()->getId() : null,
+            ];
+            if (!$entitiesDataCache[$eId]['category_id'] && method_exists($e, 'getMainCategory') && $e->getMainCategory()) {
+                $entitiesDataCache[$eId]['category_id'] = $e->getMainCategory()->getId();
+            }
+            if (method_exists($e, 'getCategories')) {
+                foreach ($e->getCategories() as $cat) {
+                    $entitiesDataCache[$eId]['categories_ids'][] = $cat->getId();
+                }
+            }
+        }
+
+        $listingsDataCache = [];
+        foreach ($listings as $listing) {
+            $lId = $listing->getId();
+            $listingsDataCache[$lId] = [
+                'categories_ids' => [],
+                'catalogs_ids' => [],
+                'has_catalogs' => method_exists($listing, 'getCatalogs'),
+                'catalogs_empty' => true,
+                'specificity' => 0,
+            ];
+            if (method_exists($listing, 'getCategories')) {
+                $cats = $listing->getCategories();
+                foreach ($cats as $cat) {
+                    $listingsDataCache[$lId]['categories_ids'][] = $cat->getId();
+                }
+                if (!$cats->isEmpty()) {
+                    $listingsDataCache[$lId]['specificity'] += 100; // Présence de catégories = haute spécificité
+                    $listingsDataCache[$lId]['specificity'] += count($listingsDataCache[$lId]['categories_ids']);
+                }
+            }
+            if ($listingsDataCache[$lId]['has_catalogs']) {
+                $catalogs = $listing->getCatalogs();
+                $listingsDataCache[$lId]['catalogs_empty'] = $catalogs->isEmpty();
+                foreach ($catalogs as $catalog) {
+                    $listingsDataCache[$lId]['catalogs_ids'][] = $catalog->getId();
+                }
+                if (!$catalogs->isEmpty()) {
+                    $listingsDataCache[$lId]['specificity'] += 1000; // Présence de catalogues = très haute spécificité
+                    $listingsDataCache[$lId]['specificity'] += count($listingsDataCache[$lId]['catalogs_ids']);
+                }
+            }
+        }
+
+        // Sort listings by specificity (descending) so the most specific one matches first
+        usort($listings, function($a, $b) use ($listingsDataCache) {
+            $lIdA = $a->getId();
+            $lIdB = $b->getId();
+            $specA = $listingsDataCache[$lIdA]['specificity'] ?? 0;
+            $specB = $listingsDataCache[$lIdB]['specificity'] ?? 0;
+            if ($specA !== $specB) {
+                return ($specA > $specB) ? -1 : 1;
+            }
+            // Si même spécificité, on peut utiliser l'ID comme tie-break pour la stabilité
+            return ($lIdA > $lIdB) ? -1 : 1;
+        });
 
         $entitiesIndex = [];
+        $matches = explode('\\', $classname);
+        $isCategory = 'Category' === end($matches);
+
         foreach ($listings as $listing) {
-            $indexPage = !empty($pagesGroupByListingIds[$listing->getId()]) ? $pagesGroupByListingIds[$listing->getId()] : null;
+            $lId = $listing->getId();
+            $indexPage = !empty($pagesGroupByListingIds[$lId]) ? $pagesGroupByListingIds[$lId] : null;
             $indexUrl = $indexPage && !empty($indexUrls[$indexPage->getId()]) ? $indexUrls[$indexPage->getId()] : null;
             if ($indexUrl) {
+                $lData = $listingsDataCache[$lId];
                 foreach ($entities as $entity) {
-                    if ($this->inListing($listing, $entity, $classname)) {
-                        $entitiesIndex[$entity->getId()] = $indexUrl;
-                        break;
+                    $eId = $entity->getId();
+                    // If we already have a match for this entity, skip (since listings are sorted by specificity)
+                    if (isset($entitiesIndex[$eId])) {
+                        continue;
+                    }
+                    $eData = $entitiesDataCache[$eId];
+                    if ($this->inListingFast($listing, $entity, $classname, $lData, $eData, $isCategory)) {
+                        $entitiesIndex[$eId] = $indexUrl;
                     }
                 }
             }
@@ -82,155 +156,63 @@ class ListingService
         $this->cache['indexes_pages'][$listingClassname] = $entitiesIndex;
 
         return $entitiesIndex;
-//        dump($entities);
-//        dd($indexUrls);
+    }
 
-//        if ($asIndexView) {
-//            $codes = [];
-//            foreach ($entities as $entity) {
-//                $codes[$entity->getId()] = $this->coreLocator->request()->get('url');
-//            }
-//            return $codes;
-//        }
-//
-//        $result = [];
-//        $entity = $entity instanceof ViewModel ? $entity->entity : $entity;
-//        $currentWebsite = $this->coreLocator->website();
-//        $interface = $interface ?: $this->coreLocator->interfaceHelper()->generate($classname);
-//        $entities = $this->parseEntities($entities);
-//
-//        $listingClassname = str_replace('Proxies\__CG__\\', '', $listingClassname);
-//        $cacheKey = $listingClassname.'-'.$locale.'-'.md5(serialize($entities));
-//        if (array_key_exists('indexes_pages', $this->cache) && array_key_exists($cacheKey, $this->cache['indexes_pages'])) {
-//            return $this->cache['indexes_pages'][$cacheKey];
-//        }
-//
-//        if (!empty($interface['indexPage']) && $entity) {
-//
-//            $codes = [];
-//            $entitiesById = [];
-//            foreach ($entities as $item) {
-//                if ($item) {
-//                    $item = property_exists($item, 'entity') ? $item->entity : $item;
-//                    $entitiesById[$item->getId()] = $item;
-//                    if (method_exists($item, 'getUrls')) {
-//                        foreach ($item->getUrls() as $url) {
-//                            /** @var Url $url */
-//                            if ($locale === $url->getLocale() && $url->getIndexPage()) {
-//                                foreach ($url->getIndexPage()->getUrls() as $indexUrl) {
-//                                    if ($locale === $indexUrl->getLocale()) {
-//                                        $codes[$item->getId()] = $indexUrl->getCode();
-//                                        break;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//            if (!empty($entities) && count($codes) === count($entities)) {
-//                return $this->cache['indexes_pages'][$cacheKey] = $codes;
-//            }
-//
-//            $matches = explode(DIRECTORY_SEPARATOR, get_class($entity));
-//            $isListing = str_contains(end($matches), 'Listing');
-//            $listings = $isListing ? [$entity] : [];
-//
-//            if (!empty($this->cache['listing'][$listingClassname])) {
-//                $listings = $this->cache['listing'][$listingClassname];
-//            } elseif (empty($listings) && $currentWebsite) {
-//                $referListing = new $listingClassname();
-//                $queryBuilder = $this->coreLocator->em()->getRepository($listingClassname)
-//                    ->createQueryBuilder('e')
-//                    ->andWhere('e.website = :website')
-//                    ->setParameter('website', $currentWebsite->entity);
-//                if (method_exists($referListing, 'getPosition')) {
-//                    $queryBuilder->orderBy('e.position', 'ASC');
-//                }
-//                $listings = $this->cache['listing'][$listingClassname] = $queryBuilder->getQuery()->getResult();
-//            }
-//
-//            $currentUrl = $this->coreLocator->request()->attributes->get('url');
-//
-//            if (!empty($this->cache['listingIdsByUrls'][$listingClassname][$locale][$currentUrl])) {
-//                $listingId = $this->cache['listingIdsByUrls'][$listingClassname][$locale][$currentUrl];
-//                $listing = $this->cache['listings'][$listingId] ?? $this->coreLocator->em()->getRepository($listingClassname)->find($listingId);
-//                $this->cache['listing'][$listingClassname] = [$listing];
-//            }
-//
-//            $listingIds = [];
-//            foreach ($listings as $listing) {
-//                $listingIds[] = $listing->getId();
-//            }
-//            $pagesByAction = $this->coreLocator->em()->getRepository(Page::class)->findAllByAction($this->coreLocator->website()->entity, $locale, $listingClassname, $listingIds);
-//
-//            $getters = $this->getGetters($interface);
-//            $listingPages = $listingEntities = [];
-//            $mainListing = null;
-//            $route = $this->coreLocator->request()->attributes->get('_route');
-//
-//            foreach ($listings as $listing) {
-//                $listingId = $listing->getId();
-//                $website = $listing->getWebsite() ? $listing->getWebsite() : (method_exists($entity, 'getWebsite') ? $entity->getWebsite() : null);
-//                $website = str_contains(get_class($entity), 'Teaser') ? $currentWebsite->entity : $website;
-//                if (array_key_exists('pageByAction', $this->cache) && array_key_exists($listingClassname, $this->cache['pageByAction']) && array_key_exists($listingId, $this->cache['pageByAction'][$listingClassname])) {
-//                    $pageByAction = $this->cache['pageByAction'][$listingClassname][$listingId];
-//                } elseif (!empty($pagesByAction[$locale][$listing->getId()])) {
-//                    $pageByAction = $pagesByAction[$locale][$listing->getId()];
-//                } else {
-//                    $pageByAction = $this->cache['pageByAction'][$listingClassname][$listingId] = !empty($pagesByAction[$listing->getId()])
-//                        ? $pagesByAction[$listing->getId()]
-//                        : null;
-//                }
-//                if ('browser_sitemap' === $route) {
-//                    $listingPages[$listingId] = $pageByAction;
-//                    $propertyGetter = !empty($getters['properties']) ? $getters['properties'] : null;
-//                    $entityGetter = !empty($getters['entities']) ? $getters['entities'] : null;
-//                    $finder = $propertyGetter && method_exists($listing, $propertyGetter) && $entityGetter && $website && $website->getId() === $currentWebsite->id;
-//                    if (!$entities && $finder || $all && $finder) {
-//                        $findEntities = $this->getEntities($classname, $listing, $propertyGetter, $entityGetter);
-//                        foreach ($findEntities as $findEntity) {
-//                            $entitiesById[$findEntity->getId()] = $findEntity;
-//                        }
-//                    }
-//                    foreach ($entitiesById as $item) {
-//                        if ($this->inListing($listing, $item, $classname)) {
-//                            $listingEntities[$listingId][$item->getId()] = $item;
-//                        }
-//                    }
-//                } else {
-//                    foreach ($entities as $item) {
-//                        if ($this->inListing($listing, $item, $classname)) {
-//                            $listingEntities[$listingId][$item->getId()] = $item;
-//                        }
-//                    }
-//                }
-//                if (!$mainListing && method_exists($listing, 'getCategories') && $listing->getCategories()->isEmpty()) {
-//                    $mainListing = $listing;
-//                }
-//            }
-//
-//            foreach ($entitiesById as $item) {
-//                $this->entityListingCount = 0;
-//                $result[$item->getId()] = $this->getUrlCode($listingEntities, $listingPages, $item, $locale);
-//            }
-//
-//            if ($mainListing) {
-//                $mainListingId = $mainListing->getId();
-//                foreach ($entitiesById as $item) {
-//                    if (empty($result[$item->getId()])) {
-//                        $listingEntities[$mainListingId][$item->getId()] = $item;
-//                        $this->entityListingCount = 0;
-//                        $result[$item->getId()] = $this->getUrlCode($listingEntities, $listingPages, $item, $locale);
-//                    }
-//                }
-//            }
-//
-//            $this->cache['indexes_pages'][$cacheKey] = $result;
-//        }
-//
-//        return $result;
+    private function inListingFast(mixed $listing, mixed $entity, string $classname, array $lData, array $eData, bool $isCategory): bool
+    {
+        $eId = $entity->getId();
+        $cacheKey = $listing->getId().'_'.$eId;
+
+        if (array_key_exists('inListing', $this->cache) && array_key_exists($cacheKey, $this->cache['inListing'])) {
+            return (bool) $this->cache['inListing'][$cacheKey];
+        }
+
+        $hasCategoriesFilters = !empty($lData['categories_ids']);
+        $hasCatalogsFilters = !empty($lData['catalogs_ids']);
+
+        // 1. Si aucun filtre n'est défini, le listing match tout
+        if (!$hasCategoriesFilters && !$hasCatalogsFilters) {
+            return $this->cache['inListing'][$cacheKey] = true;
+        }
+
+        $matchCategory = false;
+        $matchCatalog = false;
+
+        // 2. Vérification Catégories
+        if ($hasCategoriesFilters) {
+            if ($isCategory) {
+                $matchCategory = in_array($eId, $lData['categories_ids']);
+            } else {
+                if ($eData['category_id'] && in_array($eData['category_id'], $lData['categories_ids'])) {
+                    $matchCategory = true;
+                } elseif (!empty($eData['categories_ids'])) {
+                    foreach ($eData['categories_ids'] as $catId) {
+                        if (in_array($catId, $lData['categories_ids'])) {
+                            $matchCategory = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            // S'il n'y a pas de filtre par catégorie, on considère que ça match par défaut (pour le ET final)
+            $matchCategory = true;
+        }
+
+        // 3. Vérification Catalogs
+        if ($hasCatalogsFilters) {
+            if ($eData['catalog_id'] !== null && in_array($eData['catalog_id'], $lData['catalogs_ids'])) {
+                $matchCatalog = true;
+            }
+        } else {
+            // S'il n'y a pas de filtre par catalogue, on considère que ça match par défaut (pour le ET final)
+            $matchCatalog = true;
+        }
+
+        // 4. Logique de décision (ET strict entre les deux types de critères s'ils existent)
+        $res = $matchCategory && $matchCatalog;
+
+        return $this->cache['inListing'][$cacheKey] = $res;
     }
 
     private function listings(string $listingClassname, ?Website $website = null): array
@@ -244,6 +226,13 @@ class ListingService
                 ->createQueryBuilder('e')
                 ->andWhere('e.website = :website')
                 ->setParameter('website', $website);
+            if (method_exists($referListing, 'getCategories')) {
+                $queryBuilder->leftJoin('e.categories', 'lc')->addSelect('lc');
+            }
+            if (method_exists($referListing, 'getCatalogs')) {
+                $queryBuilder->leftJoin('e.catalogs', 'lca')->addSelect('lca');
+            }
+
             if (method_exists($referListing, 'getPosition')) {
                 $queryBuilder->orderBy('e.position', 'ASC');
             }
@@ -254,11 +243,16 @@ class ListingService
 
     private function pages(array $listings, string $listingClassname, string $locale, ?Website $website = null): array
     {
-        $listingIds = [];
+        $idsToListingMapping = [];
         foreach ($listings as $listing) {
-            $listingIds[] = $listing->getId();
+            $idsToListingMapping[] = $listing->getId();
         }
-        return $this->coreLocator->em()->getRepository(Page::class)->findAllByAction($website, $locale, $listingClassname, $listingIds);
+
+        $this->cache['pages'][$listingClassname][$locale] = !empty($this->cache['pages'][$listingClassname][$locale])
+            ? $this->cache['pages'][$listingClassname][$locale]
+            : $this->coreLocator->em()->getRepository(Page::class)->findAllByAction($website, $locale, $listingClassname, $idsToListingMapping);
+
+        return $this->cache['pages'][$listingClassname][$locale];
     }
 
     private function indexUrls(array $pages, string $listingClassname, string $locale): array
@@ -320,7 +314,7 @@ class ListingService
                     foreach ($listing->getCatalogs() as $catalog) {
                         $listingCatalogsIds[] = $catalog->getId();
                     }
-                    if (!in_array($entity->getCatalog()->getId(), $listingCatalogsIds)) {
+                    if ($entity->getCatalog() && !in_array($entity->getCatalog()->getId(), $listingCatalogsIds)) {
                         $inCatalog = false;
                     }
                 }
@@ -505,53 +499,31 @@ class ListingService
             return $this->cache['entities'][$classname];
         }
 
-        $entites = $this->coreLocator->em()->getRepository($classname)->createQueryBuilder('e')
-            ->getQuery()
+        $referEntity = new $classname();
+        $qb = $this->coreLocator->em()->getRepository($classname)->createQueryBuilder('e')
+            ->leftJoin('e.website', 'w')
+            ->andWhere('e.website = :website')
+            ->setParameter('website', $website);
+
+        if (method_exists($referEntity, 'getCategories')) {
+            $qb->leftJoin('e.categories', 'c')->addSelect('c');
+        }
+        if (method_exists($referEntity, 'getCategory')) {
+            $qb->leftJoin('e.category', 'cc')->addSelect('cc');
+        }
+        if (method_exists($referEntity, 'getMainCategory')) {
+            $qb->leftJoin('e.mainCategory', 'cm')->addSelect('cm');
+        }
+        if (method_exists($referEntity, 'getCatalog')) {
+            $qb->leftJoin('e.catalog', 'ca')->addSelect('ca');
+        }
+
+        $entites = $qb->getQuery()
             ->getResult();
 
         $this->cache['entities'][$classname] = $entites;
 
         return $this->cache['entities'][$classname];
-
-//            ->leftJoin('e.website', 'w')
-//            ->andWhere('e.website = :website')
-//            ->setParameter('website', $parent->getWebsite());
-
-//        if (str_contains($this->coreLocator->request()->attributes->get('_route'), '_view')) {
-//            return [];
-//        }
-//
-//        $entities = [];
-//        $propertiesCount = 0;
-//
-//        if (method_exists($parent, $propertyGetter) && $parent->$propertyGetter()->count() > 0) {
-//            foreach ($parent->$propertyGetter() as $property) {
-//                if (method_exists($property, $entityGetter)) {
-//                    foreach ($property->$entityGetter() as $entity) {
-//                        $entities[$entity->getId()] = $entity;
-//                    }
-//                }
-//                ++$propertiesCount;
-//            }
-//        } else {
-//            $referEntity = new $classname();
-//            $qb = $this->coreLocator->em()->getRepository($classname)->createQueryBuilder('e')
-//                ->leftJoin('e.website', 'w')
-//                ->andWhere('e.website = :website')
-//                ->setParameter('website', $parent->getWebsite());
-//            if (method_exists($referEntity, 'getUrls')) {
-//                $qb->leftJoin('e.urls', 'u')
-//                    ->addSelect('u');
-//            }
-//            $entitiesDb = $qb->getQuery()->getResult();
-//            foreach ($entitiesDb as $entity) {
-//                $entities[$entity->getId()] = $entity;
-//            }
-//        }
-//
-//        ksort($entities);
-//
-//        return $entities;
     }
 
     /**
