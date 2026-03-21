@@ -76,7 +76,6 @@ class ContentConfigType
             'display' => 'search',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Gras', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            'attr' => ['class' => 'select-icons'],
             'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-lg-2'],
             'choices' => $choices,
             'choice_attr' => function ($weight, $key, $value) {
@@ -111,7 +110,6 @@ class ContentConfigType
             'display' => 'search',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Taille de la police', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            'attr' => ['class' => 'select-icons'],
             'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-lg-2'],
             'choices' => $choices,
             'choice_attr' => function ($size, $key, $value) {
@@ -127,7 +125,6 @@ class ContentConfigType
     {
         $builder->add('color', AppColorType::class, [
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Couleur', [], 'admin'),
-            'attr' => ['class' => 'select-icons'],
             'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-lg-2'],
         ]);
     }
@@ -172,7 +169,6 @@ class ContentConfigType
             'display' => 'search',
             'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Famille de police', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-            'attr' => ['class' => 'select-icons'],
             'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-lg-3'],
             'choices' => $this->getFonts(),
         ]);

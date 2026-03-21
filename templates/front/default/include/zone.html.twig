@@ -97,16 +97,17 @@
                             {% if colEffects %} {{ colEffects|raw }}{% endif %}
                             {% if bgColorHexa %} style="background: {{ bgColorHexa }};" data-hexadecimal="{{ bgColorHexa }}" {% endif %}>
 
-                            {%- set colInnerClasses = not col.backgroundFullHeight ? paddings(col) ~ ' ' ~ (col.backgroundColor ?: '') : '' -%}
-                            {%- set colInnerClasses = colInnerClasses ~ (not innerColBackground and not bgColorHexaInnerZone ? ' row' ~ (interfaceName != 'form' ? ' m-0' : '') ~ (blocks|length == 1 and (blocks|first.backgroundFullHeight ?? false) ? ' h-100' : '') : ' h-100') -%}
+                            {%- set colInnerClasses = col.backgroundFullHeight ? paddings(col) ~ ' ' ~ (col.backgroundColor ?: '') : '' -%}
+                            {%- set colInnerClasses = colInnerClasses ~ (not innerColBackground and not bgColorHexaInnerZone ? ' row' ~ (interfaceName != 'form' ? ' m-0' : '') ~ (blocks|length == 1 and (blocks|first.backgroundFullHeight ?? false) ? '' : '') : '') -%}
                             {%- set colInnerClasses = colInnerClasses ~ (colAlignment ? ' ' ~ colAlignment : '') ~ (alignEnd ? ' w-100' : '') -%}
+                            {%- set colInnerClasses = col.backgroundFullHeight ? colInnerClasses~' h-100' : colInnerClasses -%}
 
                             <div class="{{ colInnerClasses|trim }}">
 
                                 {%- if innerColBackground or bgColorHexaInnerZone -%}
                                     {%- set colPaddings = paddings(col, 'vertical') -%}
-                                    <div class="h-100 px-0{%- if blocks|length >= 2 -%} row m-0{%- endif -%} {{ colPaddings }}{%- if innerColBackground -%} {{ innerColBackground }}{%- endif -%}{%- if col.elementsAlignment -%} {{ col.elementsAlignment }}{%- endif -%}"
-                                         {%- if bgColorHexaInnerZone -%} style="background: {{ bgColorHexaInnerZone }};" data-hexadecimal="{{ bgColorHexaInnerZone }}" {%- endif -%}>
+                                    <div class="h-100 px-0{% if blocks|length >= 2 %} row m-0{% endif %}{% if col.radius %} radius{% endif %} {{ colPaddings }}{% if innerColBackground %} {{ innerColBackground }}{% endif %}{% if col.elementsAlignment %} {{ col.elementsAlignment }}{% endif %}"
+                                         {% if bgColorHexaInnerZone %} style="background: {{ bgColorHexaInnerZone }};" data-hexadecimal="{{ bgColorHexaInnerZone }}" {% endif %}>
                                 {%- endif -%}
 
                                 {%- for block in blocks -%}
@@ -133,9 +134,9 @@
                                         {%- set isIndex = (interface.name ?? null) == 'page' and (entity.asIndex ?? false) -%}
                                         {%- set pageBg = pageBg ?? null -%}
 
-                                        <div id="layout-block-{{ blockId }}" class="layout-block position-relative {{ blockClasses }}" {% if blockEffects %} {{ blockEffects|raw }}{% endif %}
+                                        <div id="layout-block-{{ blockId }}" class="layout-block position-relative {{ blockClasses }} {{ margins(block) }}" {% if blockEffects %} {{ blockEffects|raw }}{% endif %}
                                              {% if bgColorHexaZone %} style="background: {{ bgColorHexaZone }};" data-hexadecimal="{{ bgColorHexaZone }}" {% endif %}>
-                                            <div class="layout-block-content {{ margins(block) }}{% if bgFullHeight and 'align-items-end' not in blockClasses and 'zones-navigation' != blockSlug %} h-100{% endif %}{% if innerBlockBackground or bgColorHexaInner %} {{ innerBlockBackground }}{% if innerBgPaddings %} {{ innerBgPaddings }}{% endif %}{% if block.radius %} radius{% endif %}{% endif %}"
+                                            <div class="layout-block-content{% if bgFullHeight and 'align-items-end' not in blockClasses and 'zones-navigation' != blockSlug %} h-100{% endif %}{% if innerBlockBackground or bgColorHexaInner %} {{ innerBlockBackground }}{% if innerBgPaddings %} {{ innerBgPaddings }}{% endif %}{% if block.radius %} radius{% endif %}{% endif %}"
                                                  {% if bgColorHexaInner %} style="background: {{ bgColorHexaInner }};" data-hexadecimal="{{ bgColorHexaInner }}" {% endif %}>
                                                       {%- if blockSlug == 'core-action' -%}
                                                           {%- set action = block.action -%}

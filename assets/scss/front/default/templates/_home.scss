@@ -36,20 +36,30 @@ $enable-breadcrumb: false;
 
 .carousel-main-home {
 
-    img, .right, .left {
-
-        @include mediaQuery(min-lg) {
-            height: 500px !important;
-        }
-
-        @include mediaQuery(between-md-lg) {
-            height: 550px !important;
-        }
-
-        @include mediaQuery(max-md) {
-            height: 634px !important;
-        }
-
-        object-fit: cover;
+    .img-loader {
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: initial !important;
     }
+
+    .generating img {
+        max-height: calc(100dvh - 139px) !important;
+    }
+
+    //img, .right, .left {
+    //
+    //    @include mediaQuery(min-lg) {
+    //        height: 500px !important;
+    //    }
+    //
+    //    @include mediaQuery(between-md-lg) {
+    //        height: 550px !important;
+    //    }
+    //
+    //    @include mediaQuery(max-md) {
+    //        height: 634px !important;
+    //    }
+    //
+    //    object-fit: cover;
+    //}
 }

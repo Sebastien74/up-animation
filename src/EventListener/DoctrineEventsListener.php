@@ -252,7 +252,7 @@ class DoctrineEventsListener
     }
 
     /**
-     * To check if process allowed.
+     * To check if a process allowed.
      */
     private function processAllowed(): bool
     {
@@ -281,10 +281,10 @@ class DoctrineEventsListener
         $entityClassname = str_replace('Proxies\__CG__\\', '', get_class($entity));
         $entitiesCache = [
             Api::class => ['apimodel'],
-            SeoConfiguration::class => ['apimodel'],
+            SeoConfiguration::class => ['apimodel', 'website-logos'],
             Website::class => ['apimodel', 'domains', 'modules-configuration'],
             Configuration::class => ['pages'],
-            Information::class => ['apimodel'],
+            Information::class => ['apimodel', 'website-logos'],
             Product::class => ['productinformation'],
         ];
 

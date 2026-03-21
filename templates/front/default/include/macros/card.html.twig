@@ -4,6 +4,7 @@
 
     {%- set card = vars.card is defined ? vars.card : 'div' -%}
     {%- set entity = vars.entity is defined ? vars.entity : null -%}
+    {%- set icon = vars.icon is defined ? vars.icon : null -%}
     {%- set shadow = true -%}
     {%- set class = vars.class is defined and vars.class ? vars.class : null -%}
     {%- set class = shadow ? 'shadow '~class : null -%}
@@ -44,7 +45,7 @@
     {%- set haveBg = background and 'transparent' not in background -%}
     {%- set displayMedia = (media and media.originalName and showThumbnail) or (thumbPlaceholder and showThumbnail) -%}
 
-    <{{ card }} class="card-block bg-transparent card h-100 border-0 {% if targetLink %} have-link{% endif %}{% if class %} {{ class }}{% endif %}{% if haveBg %} have-bg{% endif %}">
+    <{{ card }} class="card-block bg-transparent card h-100 {% if not icon %}border-0{% else %}have-icon{% endif %}{% if targetLink %} have-link{% endif %}{% if class %} {{ class }}{% endif %}{% if haveBg %} have-bg{% endif %}">
         {%- if vars.webmaster is defined -%}
             {{ component('WebmasterEdit', vars.webmaster) }}
         {%- endif -%}
@@ -58,7 +59,14 @@
                 {%- endif -%}
             </div>
         {%- endif -%}
-        <div class="card-body border-0 pt-4{% if not displayMedia %} no-media{% endif %} {{ paddingX~' '~background }} {% if showLink and targetLink %}pb-0 have-link{% else %}pb-4{% endif %}">
+        <div class="card-body pt-4 border-0{% if not displayMedia %} no-media{% endif %} {{ paddingX~' '~background }} {% if showLink and targetLink %}pb-0 have-link{% else %}pb-4{% endif %}">
+            {%- if icon -%}
+                <div class="wrap-icon-container w-100 mb-3">
+                    <div class="wrap-icon d-flex justify-content-center align-items-center">
+                        {{ icon|icon(null, 40) }}
+                    </div>
+                </div>
+            {%- endif -%}
             {%- if title -%}
                 {%- if targetLink -%}
                     <a href="{{ targetLink }}" class="d-inline-block w-100"
@@ -119,7 +127,7 @@
         {%- if showLink and targetLink -%}
             {%- set showLinkLabel = vars.showLinkLabel is defined ? vars.showLinkLabel : (intl.linkLabel is defined and intl.linkLabel ? intl.linkLabel : "En savoir plus"|trans) -%}
             {%- set linkStyle = vars.linkStyle is defined ? vars.linkStyle : (intl.linkStyle is defined and intl.linkStyle ? intl.linkStyle : 'btn btn-primary') -%}
-            <div class="card-footer border-0 {{ paddingX~' '~background }} pb-{% if haveBg %}4{% else %}0{% endif %}">
+            <div class="card-footer border-0 {{ paddingX~' '~background }} pb-{% if haveBg or shadow %}4{% else %}0{% endif %}">
                 {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                     link: targetLink,
                     intl: intl,

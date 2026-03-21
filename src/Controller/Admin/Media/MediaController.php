@@ -119,7 +119,13 @@ class MediaController extends AdminController
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
 
-        $options = (array) json_decode(urldecode($request->query->get('options', '[]')));
+        $optionsRaw = $request->query->get('options');
+        $decoded = json_decode($optionsRaw, true);
+        if (is_string($decoded)) {
+            $decoded = json_decode($decoded, true);
+        }
+        $options = is_array($decoded) ? $decoded : [];
+
         $arguments = $this->getBaseArguments($request);
         $arguments['options'] = $options;
         $arguments['form'] = $form->createView();

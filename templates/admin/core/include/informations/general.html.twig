@@ -56,7 +56,7 @@
             {%- set fieldExist = entity.updatedBy is defined and entity.updatedBy -%}
             {%- if property == 'updatedBy' and fieldExist or property == 'infos' and fieldExist -%}
                 <li>
-                    <small>
+                    <small class="d-flex gap-1">
                         <b class="fw-600">{{ "Modifié par :"|trans|raw }}</b>
                         {%- if entity.updatedBy.firstName -%}{{ entity.updatedBy.firstName }} {%- endif -%}
                         {%- if entity.updatedBy.lastName -%}{{ entity.updatedBy.lastName }} {%- endif -%}

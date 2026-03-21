@@ -58,6 +58,10 @@ export default function (Routing, e, el) {
                     let btnId = options.btnId;
                     let btn = document.getElementById(btnId.replace('#', ''));
                     let dropifyWrapper = btn ? btn.closest('.dropify-wrapper') : null;
+                    if (!dropifyWrapper) {
+                        let parent = btn.closest('.card-body');
+                        dropifyWrapper = parent ? parent.querySelector('.dropify-wrapper') : null;
+                    }
                     if (dropifyWrapper) {
                         let render = dropifyWrapper.querySelector('.dropify-render img');
                         if (render) {

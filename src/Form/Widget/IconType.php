@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Widget;
 
-use App\Entity\Core\Icon;
-use App\Entity\Core\Website;
 use App\Service\Interface\CoreLocatorInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,7 +18,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class IconType extends AbstractType
 {
     private TranslatorInterface $translator;
-    private EntityManagerInterface $entityManager;
     private array $icons;
 
     /**
@@ -30,7 +26,6 @@ class IconType extends AbstractType
     public function __construct(private readonly CoreLocatorInterface $coreLocator)
     {
         $this->translator = $this->coreLocator->translator();
-        $this->entityManager = $this->coreLocator->em();
         $website = $this->coreLocator->website()?->entity;
         $this->icons = $website ? $website->getConfiguration()->getIcons()->toArray() : [];
     }
@@ -40,10 +35,19 @@ class IconType extends AbstractType
         $resolver->setDefaults([
             'label' => $this->translator->trans('Icône', [], 'admin'),
             'required' => false,
+            'display' => 'search',
             'choices' => $this->getIcons(),
             'dropdown_class' => 'icons-selector',
-            'attr' => ['class' => 'col-12 select-icons'],
-            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+            'row_attr' => function (OptionsResolver $attr) {
+                $attr->setDefaults([
+                    'class' => 'col-12 col-md-12 col-lg-4 img-icons',
+                ]);
+            },
+            'attr' => function (OptionsResolver $attr) {
+                $attr->setDefaults([
+                    'class' => 'col-12 select-2 select-icons',
+                ]);
+            },
             'choice_attr' => function ($icon, $key, $value) {
                 return ['data-image' => $icon];
             },

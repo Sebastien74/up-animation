@@ -285,7 +285,7 @@ body.sorting-active * {
 
             &:not(.active) {
                 .background-input-label-border {
-                    opacity: .35;
+                    opacity: .75;
                     border-color: transparentize($white, .9);
                     box-shadow: 0 0 11px 0 $dash-surface-3;
                 }

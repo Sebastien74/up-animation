@@ -76,13 +76,13 @@
         {%- for key, choice in choices -%}
             {%- if choice.data.cols|length > 0 -%}
                 <label for="{{ id~"_"~key }}" class="col-md-6 col-lg-4">
-                    <div class="inner-grid">
-                        <div class="row ms-0 me-0">
+                    <span class="inner-grid">
+                        <span class="row ms-0 me-0">
                             {%- for col in choice.data.cols -%}
                                 <div class="item-col col-{{ col.size }}"><div class="inner">{{ col.size }}</div></div>
                             {%- endfor -%}
-                        </div>
-                    </div>
+                        </span>
+                    </span>
                     <input type="radio" id="{{ id~"_"~key }}" name="{{ full_name }}" required="required" class="d-none input-grid input-btn" value="{{ choice.value }}">
                 </label>
             {%- endif -%}
@@ -97,12 +97,12 @@
             {%- set color = 'background'|color(website(), choice.data) -%}
             {%- set hexa = color ? color.color : choice.data -%}
             {%- set hexa = hexa ? hexa : 'transparent' -%}
-            <span class="background-input-label-active d-inline-block mb-2{% if value == choice.value %} active{% endif %}">
+            <span class="background-input-label-active d-inline-block{% if value == choice.value %} active{% endif %}">
                 <span class="background-input-label-border d-inline-block">
                     <label for="{{ filedId }}"
                            class="background-input-label btn btn-circle cursor mb-0"
                            data-hexa="{{ hexa }}"
-                           style="background-color: {{ hexa }}; border-color: {{ hexa }};">
+                           style="background: {{ hexa }}; border-color: {{ hexa }};">
                         {%- if hexa == 'transparent' -%}
                             <i class="icm-times"></i>
                         {%- endif -%}
@@ -127,11 +127,11 @@
             {%- set color = 'background'|color(website(), choice.data) -%}
             {%- set hexa = color ? color.color : choice.data -%}
             {%- set hexa = hexa ? hexa : 'transparent' -%}
-            <span class="background-input-label-active d-inline-block mb-2{% if value == choice.value %} active{% endif %}">
+            <span class="background-input-label-active d-inline-block{% if value == choice.value %} active{% endif %}">
                 <span class="background-input-label-border d-inline-block">
                     <label for="{{ filedId }}" class="background-input-label btn btn-circle cursor mb-0"
                            data-hexa="{{ hexa }}"
-                           style="background-color: {{ hexa }};">
+                           style="background: {{ hexa }};">
                         {%- if hexa == 'transparent' -%}
                             <i class="icm-times"></i>
                         {%- endif -%}
@@ -156,11 +156,11 @@
             {%- set color = 'background'|color(website(), choice.data) -%}
             {%- set hexa = color ? color.color : choice.data -%}
             {%- set hexa = hexa ? hexa : 'transparent' -%}
-            <span class="background-input-label-active d-inline-block mb-2{% if value == choice.value %} active{% endif %}">
+            <span class="background-input-label-active d-inline-block{% if value == choice.value %} active{% endif %}">
                 <span class="background-input-label-border d-inline-block">
                     <label for="{{ filedId }}" class="background-input-label btn btn-circle cursor mb-0"
                            data-hexa="{{ hexa }}"
-                           style="background-color: {{ hexa }};">
+                           style="background: {{ hexa }};">
                         {%- if hexa == 'transparent' -%}
                             <i class="icm-times"></i>
                         {%- endif -%}

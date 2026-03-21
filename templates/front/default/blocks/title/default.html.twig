@@ -3,7 +3,6 @@
 {%- if intl.title -%}
     {%- set titleForce = titleForce is defined ? titleForce : intl.titleForce -%}
     {%- set animActive = false -%}
-    {%- set blockClasses = blockClasses is defined ? blockClasses : '' -%}
     {%- set blockTransitions = blockTransitions is defined ? blockTransitions : [] -%}
     {%- set icon = icon is defined ? icon : null -%}
     {%- set iconBackground = iconBackground is defined ? iconBackground : null -%}
@@ -12,7 +11,7 @@
         title: animActive ? ('block-title-title-h'~titleForce) : null,
         subtitle: animActive ? 'block-title-subtitle' : null
     }) -%}
-    <div class="title-block w-100{% if blockClasses %} {{ blockClasses }}{% endif %}">
+    <div class="title-block w-100">
         {%- if intl.subTitlePosition is defined and intl.subTitlePosition == 'top' and intl.subTitle -%}
             <strong class="sub-title sub-title-h{{ titleForce }} mb-3 d-inline-block w-100{% if anim.subtitle.class %} {{ anim.subtitle.class|raw }}{% endif %}"
                 {% if anim.subtitle.attr %} {{ anim.subtitle.attr|raw }}{% endif %}>

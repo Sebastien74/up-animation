@@ -49,8 +49,7 @@ class ColorRuntime implements RuntimeExtensionInterface
      */
     public function color(string $category, ?WebsiteModel $website = null, ?string $slug = null, bool $refresh = false): mixed
     {
-        $website = !$website ? $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($this->coreLocator->request()->getHost())
-            : $website;
+        $website = !$website ? $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($this->coreLocator->request()->getHost()) : $website;
         $configurationId = $website->configuration->id;
         $session = $this->coreLocator->request()->getSession();
         $colorsSession = $session->get('website_colors_'.$configurationId) ? $session->get('website_colors_'.$configurationId) : [];
@@ -59,6 +58,9 @@ class ColorRuntime implements RuntimeExtensionInterface
 
         foreach ($colors as $color) {
             if ($color['category'] === $category && $color['slug'] === $slug) {
+                if (str_contains($color['slug'], 'gradient') && str_contains($color['slug'], 'primary')) {
+                    $color['color'] = 'linear-gradient(to bottom right, rgba(255, 62, 0, .8) , rgba(255, 190, 48, .8))';
+                }
                 return $color;
             }
         }

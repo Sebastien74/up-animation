@@ -41,11 +41,11 @@
         {% if linkBlank %} target="_blank" {% endif %}
         {% if samePage %} data-target="#{{ uriInfos.anchor }}" {% endif %}
         {% if linkExternal %} rel="noopener noreferrer" {% endif %}>
-        {%- if 'start' == iconSide and iconCustom -%}
+        {%- if 'start' == iconSide and iconCustom and not '.svg' in iconCustom -%}
             <i class="icon-{{ iconCustom }} me-2" aria-hidden="true"></i>
         {%- endif -%}
             <span class="initial">{{ linkLabel|unescape|raw }}</span>
-        {%- if 'end' == iconSide and iconCustom -%}
+        {%- if 'end' == iconSide and iconCustom and not '.svg' in iconCustom -%}
             <i class="icon-{{ iconCustom }} ms-2" aria-hidden="true"></i>
         {%- endif -%}
     </a>

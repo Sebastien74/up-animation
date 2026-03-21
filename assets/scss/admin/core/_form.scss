@@ -243,6 +243,22 @@ form {
     }
 }
 
+.img-icons-group {
+
+    .select2-selection {
+        height: 66px !important;
+    }
+
+    .select2-selection__rendered {
+        margin-top: 34px !important
+    }
+
+    img {
+        max-height: 20px;
+        filter: brightness(0) invert(1);
+    }
+}
+
 form {
 
     .select2-container--default.select2-container--open.select2-container--above .select2-selection--single,

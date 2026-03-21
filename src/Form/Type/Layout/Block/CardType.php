@@ -46,6 +46,11 @@ class CardType extends AbstractType
             ]);
         }
 
+        $builder->add('icon', WidgetType\IconType::class, [
+            'attr' => ['class' => 'col-12 select-icons'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 img-icons-group'],
+        ]);
+
         $builder->add('backgroundColorType', WidgetType\BackgroundColorSelectType::class, [
             'label' => $this->translator->trans('Couleur de fond', [], 'admin'),
             'attr' => ['class' => 'col-12 select-icons'],
@@ -89,7 +94,7 @@ class CardType extends AbstractType
         $mediaRelations->add($builder, ['entry_options' => [
             'onlyMedia' => true,
             'sizes' => true,
-            'pictogram' => true,
+//            'pictogram' => true,
         ]]);
 
         $save = new WidgetType\SubmitType($this->coreLocator);

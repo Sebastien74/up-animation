@@ -13,6 +13,41 @@
 
     ------------------------------------------------------------------ */
 
+    .card-block {
+
+        .wrap-icon {
+
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, #fff 0%, #fff4e8 100%);
+            border: 1px solid rgba(244, 124, 0, 0.16);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+            svg {
+                height: 24px;
+                width: auto;
+                fill: $primary;
+            }
+        }
+
+        .title {
+            font-size: 1.15rem;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            max-width: 80%;
+        }
+
+        .text-block {
+            max-width: 95%;
+        }
+
+        .link {
+            font-weight: 700;
+            font-size: 0.92rem;
+        }
+    }
+
     .card {
 
         .card-header {
@@ -33,8 +68,12 @@
         }
 
         &:not(.have-bg):not(.card-wave) {
+
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 248, 240, 0.96) 100%);
+            border: 1px solid rgba(244, 124, 0, 0.20) !important;
+
             .card-header {
-                picture img, .img-hover-buttons-wrap {
+                picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader, .img-loader-wrap {
                     border-bottom-left-radius: $border-radius;
                     border-bottom-right-radius: $border-radius;
                 }

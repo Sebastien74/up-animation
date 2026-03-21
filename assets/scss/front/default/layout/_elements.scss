@@ -51,6 +51,10 @@ sup {
     opacity: .5 !important;
 }
 
+.opacity-75 {
+    opacity: .75 !important;
+}
+
 .opacity-100 {
     opacity: 1 !important;
 }
@@ -91,6 +95,10 @@ sup {
 
 .text-white-50 {
     color: transparentize($white, .5) !important;
+}
+
+.text-white-75 {
+    color: transparentize($white, .25) !important;
 }
 
 @include mediaQuery(min-xs) {
@@ -470,8 +478,10 @@ ul.reset {
 
 a {
 
-    &:hover {
-        text-decoration: none;
+    @include mediaQuery(min-lg) {
+        &:hover {
+            text-decoration: none;
+        }
     }
 
     &.link {
@@ -509,73 +519,6 @@ a {
         height: 12px;
         border: 1px solid currentColor;
         border-right-color: transparent;
-    }
-}
-
-@include mediaQuery(min-lg) {
-
-    .item-page-link,
-    .locales-switcher a,
-    .link:not(.text-decoration-underline),
-    a.link:not([href]) {
-
-        position: relative;
-
-        &:after {
-            content: ' ';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            height: 1px;
-            width: 0;
-            transition: all .4s ease-in-out;
-        }
-
-        &:hover {
-
-            color: $primary;
-            transition: all .4s ease-in-out;
-
-            svg {
-                fill: $primary;
-                transition: all .4s ease-in-out;
-            }
-
-            &:after {
-                width: 100%;
-                transition: all .4s ease-in-out;
-                background-color: $secondary;
-            }
-        }
-
-        &.svg-link {
-            &:hover {
-                &:after {
-                    width: calc(100% - 0.75rem);
-                }
-            }
-        }
-    }
-}
-
-.underline::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    height: 1px;
-    width: 100%;
-    transition: all .4s ease-in-out;
-    background-color: currentColor;
-}
-
-.bg-primary {
-    .item-page-link, .locales-switcher a, .link, a.link:not([href]) {
-        &:hover {
-            &:before {
-                background-color: $white;
-            }
-        }
     }
 }
 

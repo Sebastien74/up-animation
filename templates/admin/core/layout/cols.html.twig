@@ -49,7 +49,7 @@
                                                    data-path="{{ path('admin_col_background', {website: websiteId(), col: col.id}) }}"
                                                    data-bs-toggle="tooltip"
                                                    title="{{"Couleur de fond"|trans|striptags }}">
-                                                    <span class="color-info-bulle"{% if hexa %} style="background-color: {{ hexa }}" {% endif %}></span>
+                                                    <span class="color-info-bulle"{% if hexa %} style="background: {{ hexa }}" {% endif %}></span>
                                                     <i class="icm-palette"></i>
                                                 </span>
                                             </span>

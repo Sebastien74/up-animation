@@ -114,6 +114,10 @@ $theme-pagination-border: #545454 !global;
 $theme-pagination-active-bg: $info !global;
 $theme-pagination-active-text: $white !global;
 
+$btn-surface: radial-gradient(900px 600px at 20% 0%, rgba($primary, 0.08), transparent 55%),
+linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 42%),
+$dash-dark;
+
 $theme-colors: (
     primary: #fb9678,
     secondary: $gray-100,
@@ -946,18 +950,6 @@ body {
 
     .block-sortable li .block-row {
         background-color: $gray-900;
-    }
-
-    #add-zone-btn {
-
-        background-image: linear-gradient(-45deg, $gray-900 25%, $gray-800 25%, $gray-800 50%, $gray-900 50%, $gray-900 75%, $gray-800 75%, $gray-800);
-        border-color: $gray-600;
-        color: $gray-500;
-
-        img {
-            filter: brightness(0) invert(1);
-            opacity: .7;
-        }
     }
 
     #zones-sortable .btn-block-group .btn-action i,

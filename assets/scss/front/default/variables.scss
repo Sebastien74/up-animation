@@ -281,6 +281,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -302,6 +303,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $primary,
             'success': $primary,
             'info': $primary,
@@ -320,6 +322,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $primary,
             'success': $primary,
             'info': $primary,
@@ -341,6 +344,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -361,6 +365,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -381,6 +386,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -401,6 +407,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -420,6 +427,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -438,6 +446,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -450,12 +459,14 @@ $elements: map-merge((
             'white': $body-color,
         )
     ),
-    '.body, p': (
+    '.body, .body *': (
         'properties': (
             'color': $body-color,
+            'line-height': 1.5,
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -468,13 +479,14 @@ $elements: map-merge((
             'white': $body-color,
         )
     ),
-    'a.link, a.link span, a.link svg, .open-gdpr-modal.link, .body a, .introduction a, a.phone-link, a.email-link': (
+    'a, a.link, a.link span, a.link svg, .open-gdpr-modal.link, .body a, .introduction a, a.phone-link, a.email-link': (
         'properties': (
             'color': $primary,
             'transition': all $transition-base,
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $primary,
             'success': $primary,
             'info': $primary,
@@ -495,6 +507,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $primary,
             'success': $primary,
             'info': $primary,
@@ -524,6 +537,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -542,6 +556,7 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $info !important,
+            'primary-gradient': $info !important,
             'primary-darken': $info !important,
             'secondary': $info !important,
             'success': $info !important,
@@ -559,6 +574,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -575,6 +591,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $primary,
             'info': $primary,
@@ -592,6 +609,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $primary,
             'info': $primary,
@@ -609,6 +627,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $warning,
+            'primary-gradient': $warning,
             'secondary': $warning,
             'success': $warning,
             'info': $white,
@@ -625,6 +644,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $primary,
             'info': $primary,
@@ -641,6 +661,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $primary,
             'info': $white,
@@ -657,6 +678,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $secondary,
+            'primary-gradient': $secondary,
             'secondary': $white,
             'success': $white,
             'info': $secondary,
@@ -673,6 +695,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $primary,
             'info': $white,
@@ -689,6 +712,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -705,6 +729,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
+            'primary-gradient': $white,
             'secondary': $white,
             'success': $body-color,
             'info': $white,
@@ -721,6 +746,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $danger !important,
+            'primary-gradient': $danger !important,
             'secondary': $danger !important,
             'success': $danger !important,
             'info': $danger !important,
@@ -737,6 +763,7 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $danger,
+            'primary-gradient': $danger,
             'secondary': $danger,
             'success': $danger,
             'info': $danger,
@@ -759,7 +786,7 @@ $enable-caret: false;
 
 /*-- h - Border radius --*/
 
-$border-radius: 1.3rem !default;
+$border-radius: 28px !default;
 $border-radius-small: .25rem;
 $border-radius-medium: 35px;
 $border-radius-large: 80px;
@@ -827,7 +854,7 @@ $margins: (
         'y': ('xxl': 60px, 'xl': 60px, 'lg': 45px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
     ),
     'md': (
-        'x': ('xxl': 120px, 'xl': 90px, 'lg': 75px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
+        'x': ('xxl': 90px, 'xl': 90px, 'lg': 75px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
         'y': ('xxl': 90px, 'xl': 90px, 'lg': 60px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
     ),
     'lg': (
@@ -835,7 +862,7 @@ $margins: (
         'y': ('xxl': 120px, 'xl': 160px, 'lg': 90px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
     ),
     'xl': (
-        'x': ('xxl': 125px, 'xl': 90px, 'lg': 90px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
+        'x': ('xxl': 145px, 'xl': 90px, 'lg': 90px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
         'y': ('xxl': 250px, 'xl': 90px, 'lg': 90px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
     ),
     'xxl': (
@@ -859,15 +886,16 @@ $marginsScreens: (
     )
 );
 
-@function convert-margins-to-ratio($margins, $base-rem) {
+@function convert-margins-to-ratio($margins, $base-x, $base-y) {
     $margins-converted: ();
     @each $size, $axes in $margins {
         $new-axes: ();
         @each $axis, $values in $axes {
             $new-values: ();
+            $base: if($axis == 'x', $base-x, $base-y);
             @each $key, $value in $values {
                 @if type-of($value) == 'number' and unit($value) == 'px' {
-                    $value: ('ratio': convert-unit($value, $base-rem));
+                    $value: ('ratio': convert-unit($value, $base));
                 }
                 $new-values: map-merge($new-values, ($key: $value));
             }
@@ -878,8 +906,8 @@ $marginsScreens: (
     @return $margins-converted;
 }
 
-$margins: convert-margins-to-ratio($margins, $base-rem);
-$marginsScreens: convert-margins-to-ratio($marginsScreens, $base-rem);
+$margins: convert-margins-to-ratio($margins, $gutter-x-margin, $gutter-y-margin);
+$marginsScreens: convert-margins-to-ratio($marginsScreens, $gutter-x-margin, $gutter-y-margin);
 
 /*-- l - Icon sizes --*/
 

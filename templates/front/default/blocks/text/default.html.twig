@@ -1,14 +1,13 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- if haveContent -%}
-    {%- set blockClasses = blockClasses is defined ? blockClasses : '' -%}
     {%- set animActive = false -%}
     {%- set fontWeight = fontWeight is defined ? fontWeight : false -%}
     {%- set anim = blockTransitions is defined ? blockTransitions|transitionsAttributes({
         text: animActive ? 'block-text-text' : null,
         intro: animActive ? 'block-title-intro' : null
     }) : false -%}
-    <div class="text-block w-100{% if block.controls is defined and block.controls %} list-style-check{% endif %}{% if blockClasses %} {{ blockClasses }}{% endif %}">
+    <div class="text-block w-100{% if block.controls is defined and block.controls %} list-style-check{% endif %}">
         {%- if intl.introduction -%}
             {%- set introClasses = anim.intro.class is defined ? anim.intro.class : '' -%}
             {%- set introClasses = fontWeightSecondary ? introClasses~' '~fontWeightSecondary : introClasses -%}

@@ -149,9 +149,7 @@ final class InformationModel extends BaseModel
         $uploadDirname = $website->getUploadDirname();
         $projectDir = self::$coreLocator->projectDir();
         $socialNetworksCategories = ['linkedin', 'youtube', 'instagram', 'facebook', 'twitter', 'tiktok', 'pinterest', 'tripadvisor', 'google'];
-        $socialNetworks = (self::$coreLocator->request() && !preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', self::$coreLocator->request()->getUri()))
-        || (self::$coreLocator->request() && preg_match('/\/preview\//', self::$coreLocator->request()->getUri()))
-            ? self::socialNetworks($website, $locale) : [];
+        $socialNetworks = self::socialNetworks($website, $locale);
 
         foreach ($medias as $media) {
             /** @var MediaModel $media */

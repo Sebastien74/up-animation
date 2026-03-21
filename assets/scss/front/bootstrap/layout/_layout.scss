@@ -34,7 +34,7 @@
         padding-right: calc(var(--bs-gutter-x) * .5);
     }
 
-    .row > *:not(.layout-col) {
+    .row > *:not(.layout-col):not([class^="mt-"]):not([class*=" mt-"]) {
         margin-top: var(--bs-gutter-y)
     }
 

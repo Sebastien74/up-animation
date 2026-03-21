@@ -20,7 +20,7 @@
                     <i class="icon-{{ icon }} text-white"></i>
                 </div>
                 <div class="d-flex flex-column gap-1">
-                    <div class="contact-title text-uppercase text-white-50">{{ title|raw }}</div>
+                    <div class="contact-title text-uppercase text-white-75">{{ title|raw }}</div>
                     {%- if 'emails' == type -%}
                         {%- for email in data -%}
                             {{ email.email|email(website, {icon: false, only_href: true, entitled: false, class: 'link fw-600 d-inline-block'}) }}
@@ -66,7 +66,7 @@
                     {{ macro.uaContact(website, 'envelope-solid', "Utiliser notre formulaire"|trans, 'link', path('front_index', {url: contactUrl}), "Écrivez-nous"|trans) }}
                 {%- endif -%}
                 {%- if phones is not empty -%}
-                    {{ macro.uaContact(website, 'phone-alt-solid', "Appelez-nous quand vous voulez"|trans, 'phones', phones) }}
+                    {{ macro.uaContact(website, 'phone-alt-solid', "Appelez-nous"|trans, 'phones', phones) }}
                 {%- endif -%}
             </div>
         </div>
@@ -94,7 +94,7 @@
                                 }) }}
                             </a>
                         {%- endif -%}
-                        <p class="text-white-50 mb-4">
+                        <p class="text-white-75 mb-4">
                             {{ "Animations et spectacles professionnels pour %seminars_start%séminaires%seminars_end%, %teambuilding_start%team building%teambuilding_end% et %evenings_start%soirées d’entreprise%evenings_end%."|trans({
                                 '%seminars_start%': '<span class="text-white fw-semibold">',
                                 '%seminars_end%': '</span>',
@@ -133,16 +133,16 @@
                             <h3 class="footer-title pb-2 mb-3 fw-900 text-white">{{ "Nos agences"|trans }}</h3>
                             <div class="d-flex flex-wrap gap-2">
                                 {%- for agency in agencies -%}
-                                    <a class="city px-3" href="{{ agency.url }}">{{ "Agence %city%"|trans({'%city%': agency.city}) }}</a>
+                                    <a class="city text-white-75 px-3" href="{{ agency.url }}">{{ "Agence %city%"|trans({'%city%': agency.city}) }}</a>
                                 {%- endfor -%}
                             </div>
                         {%- endif -%}
                         {%- if website.networks is not empty -%}
                             <hr class="sep my-4">
                             <h3 class="footer-title pb-2 mb-3 fw-900 text-white">{{ "Restez connecté&nbsp;!"|trans|raw }}</h3>
-                            <p class="text-white-50">{{ "Rejoignez %company% sur les %socials% dès maintenant&nbsp;!"|trans({
-                                '%company%': '<strong class="text-white-50">' ~ (companyName|unescape|replace({'!': ''})) ~ '</strong>',
-                                '%socials%': '<strong class="text-white-50">' ~ ("réseaux sociaux"|trans) ~ '</strong>'
+                            <p class="text-white-75">{{ "Rejoignez %company% sur les %socials% dès maintenant&nbsp;!"|trans({
+                                '%company%': '<strong class="text-white-75">' ~ (companyName|unescape|replace({'!': ''})) ~ '</strong>',
+                                '%socials%': '<strong class="text-white-75">' ~ ("réseaux sociaux"|trans) ~ '</strong>'
                             })|raw }}</p>
                             <div class="d-flex flex-wrap">
                                 <nav class="socials-list d-inline-flex justify-content-center justify-content-sm-start gap-3"
@@ -178,16 +178,16 @@
                             </div>
                         {%- endif -%}
                         {%- set labels = agencies|map(a =>
-                            '<a href="' ~ a.url ~ '" class="text-white-50 text-hover-white fw-700">' ~ a.city ~ '</a> ' ~ a.zipcodeSmall
+                            '<a href="' ~ a.url ~ '" class="text-white-75 text-hover-white fw-700">' ~ a.city ~ '</a> ' ~ a.zipcodeSmall
                         ) -%}
                         {%- set agency_list -%}
                             {%- for agency in labels -%}{{ agency|raw }}{% if not loop.last %}{% if loop.revindex0 == 1 %} {{ 'et'|trans }} {% else %}, {% endif %}{%- endif -%}{%- endfor -%}
                         {%- endset -%}
                         <div class="col-12">
                             <hr class="sep mt-2 mb-4">
-                            <p class="mb-0 small text-white-50 agencies-body">
+                            <p class="mb-0 small text-white-75 agencies-body">
                                 {% trans with {'%agency_list%': agency_list|raw} %}
-                                    Découvrez <strong class="text-white-50 fw-600">Up Animations</strong> expert en
+                                    Découvrez <strong class="text-white-75 fw-600">Up Animations</strong> expert en
                                     animations événementielles dans les villes d’%agency_list%
                                     . Nous saurons rendre vos événements originaux et conviviaux. Magiciens professionnels,
                                     nous nous déplaçons pour vos spectacles de magie et animations en tout genre !
@@ -206,10 +206,10 @@
             {% include mainMenus.footer.arguments.template with menuArgs only %}
         {%- endif -%}
         <div class="container px-0">
-            <div class="pt-3 text-center small text-white-50 d-flex align-items-center justify-content-center gap-1">
-                {{ "Copyright"|trans|raw }} {{ 'now'|date('Y') }} <span class="dashed text-white-50">-</span>
+            <div class="pt-3 text-center small text-white-75 d-flex align-items-center justify-content-center gap-1">
+                {{ "Copyright"|trans|raw }} {{ 'now'|date('Y') }} <span class="dashed text-white-75">-</span>
                 <a href="{{ app.request.getSchemeAndHttpHost() }}" class="d-inline-block text-hover-white" aria-label="{{ companyName|striptags }}">
-                    <strong class="text-white-50">{{ companyName|striptags }}</strong>
+                    <strong class="text-white-75">{{ companyName|striptags }}</strong>
                 </a>
             </div>
         </div>
