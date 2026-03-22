@@ -37,7 +37,7 @@
             {%- for stepform in entity.forms -%}
                 <div class="step-form-container {% if not loop.first %}d-none{% endif %}" data-step="{{ loop.index }}">
                     {%- include 'front/'~websiteTemplate~'/layout.html.twig' with {entity: stepform} -%}
-                    <div class="row m-0">
+                    <div class="row gx-0">
                         <div class="col-md-6 text-center text-md-start">
                             {%- if not loop.first -%}
                                 <span class="btn btn-primary btn-previous" data-previous="{{ loop.index - 1 }}">{{ "Précédent"|trans|raw }}</span>

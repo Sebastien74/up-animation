@@ -184,7 +184,7 @@ $imgCopyright: map-get($elements, 'img-copyright-svg');
         z-index: 300;
 
         &:not(.only-one) {
-            background-color: transparentize($primary, .1);
+            background: linear-gradient(to bottom right, rgba(255, 62, 0, .8) , rgba(255, 190, 48, .8));
             transition: background-color $transition-slow, clip-path $transition-slow;
             clip-path: circle(0.0% at 0 100%);
         }
@@ -207,7 +207,7 @@ $imgCopyright: map-get($elements, 'img-copyright-svg');
                     width: 100%;
                     height: 100%;
                     transition: all .6s linear;
-                    background-color: transparentize($primary, .1);
+                    background: linear-gradient(to bottom right, rgba(255, 62, 0, .8) , rgba(255, 190, 48, .8));
                     clip-path: circle(0.0% at 0 100%);
                 }
             }

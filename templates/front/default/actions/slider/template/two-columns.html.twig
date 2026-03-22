@@ -52,7 +52,7 @@
             {%- set display = (mediaType == 'video' and media.videoLink is defined and media.videoLink is not empty) or (media.media.originalName is defined and media.media.originalName) -%}
             {%- if display -%}
                 <div class="carousel-item {% if loop.first %} active{% endif %}">
-                <div class="row m-0">
+                <div class="row gx-0">
                     <div class="right col-lg-6 ps-0 pe-0 position-relative img-wrap {% if contentSideRignt %}order-1{% else %}order-1 order-lg-2{% endif %}">
                         {%- if 'video' == media.type -%}
                             {%- include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {

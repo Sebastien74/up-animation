@@ -582,8 +582,11 @@ body.sorting-active * {
         .info-text {
             font-size: 10px;
             max-height: 50px;
+            max-width: 100px;
             overflow: hidden;
             line-height: 1.1;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .add-block-wrap {

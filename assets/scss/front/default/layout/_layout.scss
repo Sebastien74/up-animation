@@ -50,6 +50,43 @@ body {
         outline: none !important;
     }
 
+    $grid-columns: 12;
+
+    .cards-grid {
+
+        display: grid;
+        grid-template-columns: repeat($grid-columns, minmax(0, 1fr));
+        gap: 0 1.5rem;
+
+        > .layout-block {
+            /* Full width by default */
+            grid-column: 1 / -1;
+            width: auto !important;
+            max-width: none !important;
+            min-width: 0;
+        }
+    }
+
+    /* XS numeric classes */
+    @for $i from 1 through $grid-columns {
+        .cards-grid > .col-#{$i} {
+            grid-column: span #{$i};
+        }
+    }
+
+    /* Responsive numeric classes */
+    @each $breakpoint, $min in $grid-breakpoints {
+        @if $breakpoint != xs {
+            @media (min-width: $min) {
+                @for $i from 1 through $grid-columns {
+                    .cards-grid > .col-#{$breakpoint}-#{$i} {
+                        grid-column: span #{$i};
+                    }
+                }
+            }
+        }
+    }
+
     .fixed-news {
 
         border-radius: 25px;
@@ -156,6 +193,7 @@ $z-indexes: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000;
 %z-index-base {
     position: relative !important;
 }
+
 @each $z-index in $z-indexes {
     .z-index-#{$z-index} {
         @extend %z-index-base;

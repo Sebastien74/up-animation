@@ -112,7 +112,7 @@
                 </div>
                 {%- if question.intl.introduction or question.intl.body or faq.haveMainMedia -%}
                     <div id="accordion-teaser-{{ accordionId }}-{{ loop.index }}" class="accordion-collapse collapse{% if question.open %} show{% endif %}" data-bs-parent="#accordion-teaser-{{ accordionId }}">
-                        <div class="content bg-gray-400 pt-4 pb-4 px-3 px-md-4 row m-0">
+                        <div class="content bg-gray-400 pt-4 pb-4 px-3 px-md-4 row gx-0">
                             {%- if question.intl.introduction or question.intl.body -%}
                                 <div class="order-2 order-lg-1 {% if question.haveMedias %}col-lg-7 pe-lg-5{% else %}col-lg-12{% endif %}">
                                     {%- if question.intl.introduction -%}

@@ -271,11 +271,12 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $shadowClass = $this->shadowClasses($col);
         $alignment = $this->getValue($col, 'alignment');
         $transition = $this->getValue($col, 'transition');
+        $backgroundFullSize = $this->getValue($col, 'backgroundFullSize');
 
         $class = $this->getValue($zone, 'standardizeElements') && 'mobile' !== $this->screen ? 'col-center col-12 col-md-6 col-lg' : $this->elementSizes($col, $grid);
         $class .= $this->getValue($col, 'endAlign') ? ' d-flex align-items-end' : '';
         $class .= $this->getValue($col, 'sticky') ? ' col-sticky' : '';
-        $class .= $this->getValue($col, 'backgroundFullSize') && $backgroundColor !== (null && 'transparent') ? ' '.$backgroundColor.' ' : '';
+        $class .= $backgroundFullSize && $backgroundColor !== (null && 'transparent') ? ' '.$backgroundColor.' ' : '';
         $class .= $this->getValue($col, 'reverse') ? ' mobile-first' : '';
         $class .= $this->getValue($col, 'radius') ? ' radius' : '';
         $class .= $customClass ? ' '.$customClass : '';
@@ -291,18 +292,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
             $class .= $this->getValue($transition, 'laxPreset') ? ' lax' : '';
             $transitionSlug = $this->getValue($transition, 'slug');
             $class .= str_contains($transitionSlug, '-parallax') ? ' '.$transitionSlug : '';
-        }
-
-        $class .= $this->getValue($col, 'verticalAlign') ? ' d-flex' : '';
-
-        if (str_contains($class, '-flex')) {
-            $class .= ' row';
-            if (!str_contains($class, 'ms-')) {
-                $class .= ' ms-0';
-            }
-            if (!str_contains($class, 'me-')) {
-                $class .= ' me-0';
-            }
         }
 
         return preg_replace('/\s+/', ' ', trim($class));
@@ -632,7 +621,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         }
 
         if ($fullSize) {
-            $classes .= ' ms-0 me-0 '.$elementName.'-full-size';
+            $classes .= ''.$elementName.'-full-size';
         } else {
             foreach ($screens as $screen => $suffix) {
                 $suffix = $suffix ? '-'.$suffix : ' ';
