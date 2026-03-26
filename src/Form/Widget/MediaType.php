@@ -70,7 +70,7 @@ class MediaType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $websiteRequest = $this->request->get('website');
+        $websiteRequest = $this->request->attributes->get('website');
         /** @var Website $website */
         $website = !empty($options['website']) ? $options['website']
             : ($websiteRequest ? $this->websiteRepository->find($websiteRequest) : null);

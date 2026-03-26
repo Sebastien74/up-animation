@@ -59,7 +59,7 @@ class Information extends BaseEntity
     #[ORM\OneToMany(targetEntity: Legal::class, mappedBy: 'information', cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
     private ArrayCollection|PersistentCollection $legals;
 
-    #[ORM\OneToMany(targetEntity: ScheduleDay::class, mappedBy: 'information', cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ScheduleDay::class, mappedBy: 'information', cascade: ['persist'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private ArrayCollection|PersistentCollection $scheduleDays;
 
     #[ORM\OneToMany(targetEntity: InformationIntl::class, mappedBy: 'information', cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]

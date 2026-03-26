@@ -105,7 +105,7 @@ class PageDuplicateType extends AbstractType
             'class' => Page::class,
             'data' => $options['duplicate_entity'],
             'choice_label' => function ($entity) {
-                return strip_tags($entity->getAdminName());
+                return $entity->getAdminName() ? strip_tags($entity->getAdminName()) : 'Page '.$entity->getSlug();
             },
         ]);
     }

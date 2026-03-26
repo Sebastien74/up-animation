@@ -38,7 +38,6 @@
 body.menu-as-scroll #top-navigation,
 body.menu-as-animation #top-navigation {
     max-height: 0;
-    transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
     padding-top: 0 !important;
@@ -102,14 +101,20 @@ body.menu-open {
 }
 
 .menu-container {
-    &.always-sticky {
+
+    &.always-sticky, &.fixed-top {
         z-index: 3000;
+    }
+
+    &:not(.fixed-top) {
+        #main-navigation {
+            background-color: var(--main-navigation-bg, #{$white});
+        }
     }
 }
 
 #main-navigation {
 
-    background-color: var(--main-navigation-bg, #{$white});
     z-index: 3000;
 
     * {
@@ -119,6 +124,7 @@ body.menu-open {
     &.as-scroll {
         box-shadow: 0 8px 8px -6px rgba(0, 0, 0, .2);
         border-bottom: 1px solid rgba(0, 0, 0, .07);
+        background-color: var(--main-navigation-bg, #{$white});
     }
 
     .navbar-brand {

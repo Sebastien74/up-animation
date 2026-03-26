@@ -22,6 +22,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Filesystem\Filesystem;
@@ -173,8 +174,8 @@ class ActionController extends FrontController
         $arguments['entities'] = $pagination;
         $arguments = $this->getArguments($arguments);
 
-        if ($this->coreLocator->request()->get('page') && empty($pagination->getItems())) {
-            $pageId = $this->coreLocator->request()->get('page');
+        if ($this->coreLocator->request()->query->get('page') && empty($pagination->getItems())) {
+            $pageId = $this->coreLocator->request()->query->get('page');
             $redirection = str_replace(['&page='.$pageId, '?page='.$pageId], '', $this->coreLocator->request()->getUri());
             header('Location: ' . $redirection);
             exit;
@@ -197,7 +198,7 @@ class ActionController extends FrontController
     /**
      * To get View render.
      *
-     * @throws \ReflectionException|ContainerExceptionInterface|InvalidArgumentException|NonUniqueResultException|NotFoundExceptionInterface|MappingException|QueryException
+     * @throws ReflectionException|ContainerExceptionInterface|InvalidArgumentException|NonUniqueResultException|NotFoundExceptionInterface|MappingException|QueryException
      */
     public function getView(
         Request $request,
@@ -271,7 +272,7 @@ class ActionController extends FrontController
         return $this->render($this->getTemplate($this->websiteTemplate, 'view', $entity), $arguments);
     }
 
-    private function setTeaserArguments(?object $teaser): void
+    private function setTeaserArguments(object|bool|null $teaser): void
     {
         if (is_object($teaser)) {
             $interface = $this->getInterface(get_class($teaser));
@@ -283,7 +284,7 @@ class ActionController extends FrontController
     /**
      * To get Teaser render.
      *
-     * @throws ContainerExceptionInterface|InvalidArgumentException|MappingException|NonUniqueResultException|NotFoundExceptionInterface|\ReflectionException|QueryException|Exception
+     * @throws ContainerExceptionInterface|InvalidArgumentException|MappingException|NonUniqueResultException|NotFoundExceptionInterface|ReflectionException|QueryException|Exception
      */
     public function getTeaser(Request $request, ?Block $block = null, ?Url $url = null, mixed $filter = null): Response
     {

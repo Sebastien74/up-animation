@@ -136,7 +136,9 @@ class DoctrineEventsListener
                     $this->setMasterField($entity, true);
                     $this->objects[$classname][$entity->getId()] = $entity;
                 }
-                $this->removeCacheFiles($entity);
+                if ($this->coreLocator->inAdmin()) {
+                    $this->removeCacheFiles($entity);
+                }
             }
         }
     }
@@ -282,7 +284,7 @@ class DoctrineEventsListener
         $entitiesCache = [
             Api::class => ['apimodel'],
             SeoConfiguration::class => ['apimodel', 'website-logos'],
-            Website::class => ['apimodel', 'domains', 'modules-configuration'],
+            Website::class => ['apimodel', 'domains', 'modules'],
             Configuration::class => ['pages'],
             Information::class => ['apimodel', 'website-logos'],
             Product::class => ['productinformation'],

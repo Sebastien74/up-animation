@@ -321,7 +321,7 @@
 {%- elseif blockType == 'layout-secondary-title' -%}
 
     <div class="block-secondary-title">
-        <span class="subtitle text-uppercase d-inline-block mb-2">{{ "À la recherche d'un professionnel&nbsp;?"|trans }}</span>
+        <span class="subtitle text-uppercase d-inline-block mb-2">{{ "À la recherche d'un professionnel&nbsp;?"|trans|raw }}</span>
         <h2 class="title text-uppercase">{{ "Des animations pour<br> <span>tous vos événements <br>%dept_preposition%%dept%</span>"|trans({'%dept_preposition%': entity.department ? entity.department|deptPreposition ~ ' ' : '', '%dept%': entity.department ?: ''})|raw }}</h2>
     </div>
 

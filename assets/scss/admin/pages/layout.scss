@@ -307,8 +307,8 @@ body.sorting-active * {
 
         .background-input-label {
 
-            width: 45px;
-            height: 45px;
+            width: 35px;
+            height: 35px;
             padding: 0;
             display: flex;
             align-items: center;
@@ -318,7 +318,9 @@ body.sorting-active * {
             transition: all .2s ease-in-out;
 
             i {
-                font-size: 25px;
+                font-size: 19px;
+                position: relative;
+                left: 1px;
             }
 
             &:hover {

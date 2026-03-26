@@ -14,6 +14,7 @@ use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
+use Exception;
 use Psr\Cache\InvalidArgumentException;
 use ReflectionException;
 
@@ -48,7 +49,7 @@ class SitemapService
     /**
      * Get XML data.
      *
-     * @throws \Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     public function execute(Website $website, ?string $locale = null, bool $noTrees = false, bool $force = false, bool $securePage = false): array
     {
@@ -96,7 +97,7 @@ class SitemapService
     /**
      * Set Xml Index.
      *
-     * @throws \Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     private function index(): void
     {
@@ -141,9 +142,9 @@ class SitemapService
     }
 
     /**
-     * Set Xml Page.
+     * Set XML Page.
      *
-     * @throws \Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     public function setPage(mixed $entity, mixed $url, array $interface = [])
     {
@@ -154,7 +155,8 @@ class SitemapService
         if (!empty($code) && is_object($entity) && 'components.html.twig' !== $entity->template && 'error' !== $entity->slug) {
             $locale = is_object($urlEntity) ? $urlEntity->getLocale() : $urlEntity['locale'];
             $uri = $isInfill ? null : $this->coreLocator->router()->generate('front_index', ['url' => $code]);
-            $title = $this->forFront && $entity->intl?->title ? $entity->intl->title : $this->coreLocator->seoService()->execute($urlEntity, $entity, null, true)['title'];
+            $title = $this->forFront && $entity->intl->title ? $entity->intl->title
+                : (!empty($seo['titleH1']) ? $seo['titleH1'] : (!empty($seo['title']) ? $seo['title'] : null));
             $strUrl = $isInfill ? null : (!empty($this->localesWebsites[$locale]) ? $this->localesWebsites[$locale].$uri : null);
             $this->xml['pages'][$entity->id][$locale] = [
                 'update' => $this->lastUpdatePage($entity),
@@ -247,7 +249,7 @@ class SitemapService
     /**
      * Parse all Urls result.
      *
-     * @throws \Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     private function parseUrls(): void
     {
@@ -269,7 +271,7 @@ class SitemapService
     /**
      * Set Xml for entity has card.
      *
-     * @throws \Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     public function setAsCard(mixed $entity, array $interface, mixed $url, array $indexPagesCodes = []): ?array
     {
@@ -327,7 +329,7 @@ class SitemapService
     /**
      * Get last update for entity with layout.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function lastUpdatePage(mixed $entity): ?string
     {

@@ -72,7 +72,7 @@ class CatalogSearchService implements CatalogSearchServiceInterface
      */
     public function execute(Listing $listing, array $data = [], ?string $locale = null): iterable
     {
-        $this->website = $listing->getWebsite();
+        $this->website = $listing->getWebsite() ?: $this->coreLocator->website()->entity;
         $this->listing = $listing;
         $this->updateFields = $this->listing->isUpdateFields();
         $this->displayAll = 'all' === $this->listing->getDisplay();

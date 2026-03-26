@@ -39,7 +39,7 @@
                     website: websiteId(),
                     mediarelation: mediaRelation.id,
                     screen: screen is defined ? screen : null,
-                    entityNamespace: app.request.get('entityNamespace'),
+                    entityNamespace: masterRequest().query.get('entityNamespace'),
                     referEntityId: referEntityId is defined ? referEntityId : null,
                     formOptions: formOptions is defined ? formOptions : null,
                 })) }}

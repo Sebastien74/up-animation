@@ -167,10 +167,8 @@ class AdminController extends BaseController
             $class = $classname ?: $this->class;
             $manager = $this->adminLocator->treeManager();
             $manager->post($data, $class);
-
             return new JsonResponse(['success' => true, 'data' => $data]);
         }
-
         return $formPositions;
     }
 

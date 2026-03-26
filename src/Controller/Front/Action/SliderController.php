@@ -8,6 +8,8 @@ use App\Controller\Front\FrontController;
 use App\Entity\Layout\Block;
 use App\Entity\Module\Slider\Slider;
 use App\Model\MediasModel;
+use Exception;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +25,7 @@ class SliderController extends FrontController
     /**
      * View.
      *
-     * @throws \Exception
+     * @throws Exception|InvalidArgumentException
      */
     public function view(
         Request $request,
@@ -53,6 +55,7 @@ class SliderController extends FrontController
 
         return $this->cache($request, 'front/'.$template.'/actions/slider/view.html.twig', $slider, [
             'websiteTemplate' => $template,
+            'mainPages' => $website->configuration->pages,
             'block' => $block,
             'isHomePage' => !$uri || '/' === $uri,
             'website' => $website,

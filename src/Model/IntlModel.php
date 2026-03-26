@@ -50,7 +50,7 @@ final class IntlModel extends BaseModel
         public readonly ?bool $active = null,
         public readonly ?string $link = null,
         public readonly ?bool $linkOnline = null,
-        public readonly ?Page $linkTargetPage = null,
+        public readonly ?object $linkTargetPage = null,
         public readonly ?bool $linkTargetPageInfill = null,
         public readonly ?bool $linkExternal = null,
         public readonly ?bool $linkBlank = null,
@@ -343,11 +343,18 @@ final class IntlModel extends BaseModel
 
         if ($toLinkMenu) {
             $urlsIndex = !empty($options['urlsIndex']) ? $options['urlsIndex'] : [];
-            $entity = $entity instanceof Product
-                ? ProductModel::fromEntity($entity, self::$coreLocator, ['urlsIndex' => $urlsIndex, 'disabledProducts' => true, 'disabledLayout' => true, 'disabledMedias' => true, 'disabledCategories' => true, 'disabledCategory' => true])
-                : ViewModel::fromEntity($entity, self::$coreLocator);
+            $entity = $entity instanceof Product ? ProductModel::fromEntity($entity, self::$coreLocator, [
+                'urlsIndex' => $urlsIndex,
+                'disabledValues' => true,
+                'disabledProducts' => true,
+                'disabledLayout' => true,
+                'disabledMedias' => true,
+                'disabledCategories' => true,
+                'disabledInfo' => true,
+                'disabledCategory' => true
+            ]) : ViewModel::fromEntity($entity, self::$coreLocator);
             $intl = $entity->intl;
-            $label = $entity->intl->title ?: $entity->adminName;
+            $label = $intl && $intl->title ? $intl->title : $entity->adminName;
             $entityDb = $entity->entity;
             if ($entityDb instanceof Product) {
                 $catalogSlug = $entityDb->getCatalog()->getSlug();

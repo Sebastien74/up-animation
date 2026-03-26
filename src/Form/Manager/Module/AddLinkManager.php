@@ -64,8 +64,8 @@ class AddLinkManager
                 $this->coreLocator->em()->persist($link);
                 $this->coreLocator->em()->persist($intl);
                 $this->coreLocator->em()->persist($menu);
-                $this->coreLocator->em()->flush();
             }
+            $this->coreLocator->em()->flush();
         }
     }
 

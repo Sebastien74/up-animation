@@ -133,13 +133,13 @@ class Block extends BaseConfiguration
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $actionIntls;
 
-    #[ORM\OneToMany(targetEntity: BlockMediaRelation::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: BlockMediaRelation::class, mappedBy: 'block', cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     #[ORM\OrderBy(['position' => 'ASC', 'locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $mediaRelations;
 
-    #[ORM\OneToMany(targetEntity: BlockIntl::class, mappedBy: 'block', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: BlockIntl::class, mappedBy: 'block', cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
     #[ORM\OrderBy(['locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $intls;

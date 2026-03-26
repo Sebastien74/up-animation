@@ -25,9 +25,9 @@
     align-items: center !important;
     padding: 0 !important;
     transition: $btn-transition !important;
-    width: 45px !important;
-    height: 45px !important;
-    flex: 0 0 45px !important;
+    width: 50px !important;
+    height: 50px !important;
+    flex: 0 0 50px !important;
 
     &.rounded {
         border-radius: $border-radius-lg !important
@@ -54,14 +54,18 @@
     position: relative;
     z-index: 0;
     max-width: 100%;
-    white-space: initial;
+    min-height: $btn-min-height;
+    white-space: initial !important;
     box-sizing: border-box;
     border-width: $btn-border-width !important;
     border-style: solid;
-    font-size: 1rem;
+    font-size: $btn-font-size;
+    text-transform: uppercase;
+    line-height: 109% !important;
 
     span {
-        font-size: 1rem;
+        font-size: $btn-font-size;
+        line-height: 109% !important;
     }
 
     &:not(.btn-circle) {
@@ -74,7 +78,7 @@
         min-width: 175px;
 
         i {
-            font-size: 1rem;
+            font-size: $btn-font-size;
         }
 
         @include mediaQuery(max-md) {
@@ -148,22 +152,57 @@
     }
 }
 
-.btn-blur {
+/**
+ * Blur buttons.
+ */
 
-    border-radius: 50%;
-    border: none !important;
-    background: rgba(120, 130, 95, .35);
-    backdrop-filter: blur(14px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
-    transition: $btn-transition;
+@if $enable-blur-btn {
 
-    i {
-        color: $white !important;
-    }
+    .btn-blur {
 
-    &:hover, &:active, &:focus {
-        transform: scale(1.02);
-        background: rgba(120, 130, 95, .42);
+        border-radius: 50%;
+        border: none !important;
+        background: rgba(120, 130, 95, .35);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
         transition: $btn-transition;
+
+        i {
+            color: $white !important;
+        }
+
+        &:hover, &:active, &:focus {
+            transform: scale(1.02);
+            background: rgba(120, 130, 95, .42);
+            transition: $btn-transition;
+        }
+    }
+}
+
+/**
+ * Glassmorphism buttons.
+ */
+@if $enable-glass-btn {
+
+    .btn-glass {
+
+        position: relative;
+        overflow: hidden;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: $white !important;
+        backdrop-filter: blur(4px) saturate(120%);
+        -webkit-backdrop-filter: blur(4px) saturate(120%);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.10);
+        transition: all .3s ease-in-out !important;
+
+        &:not(.btn-glass-white) {
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            background: linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, 0.40) 0%,
+                    rgba(255, 255, 255, 0.20) 100%
+            );
+        }
     }
 }

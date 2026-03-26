@@ -11562,17 +11562,17 @@
         },
         {
             "name": "symfony/stimulus-bundle",
-            "version": "v2.33.0",
-            "version_normalized": "2.33.0.0",
+            "version": "v2.34.0",
+            "version_normalized": "2.34.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stimulus-bundle.git",
-                "reference": "581fe67a2a85c10ce315aeba15425d5a7002526d"
+                "reference": "d610a2e021cf63f955838b4bfe40da7e4cafe850"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/581fe67a2a85c10ce315aeba15425d5a7002526d",
-                "reference": "581fe67a2a85c10ce315aeba15425d5a7002526d",
+                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/d610a2e021cf63f955838b4bfe40da7e4cafe850",
+                "reference": "d610a2e021cf63f955838b4bfe40da7e4cafe850",
                 "shasum": ""
             },
             "require": {
@@ -11591,7 +11591,7 @@
                 "symfony/twig-bundle": "^5.4|^6.0|^7.0|^8.0",
                 "zenstruck/browser": "^1.4"
             },
-            "time": "2026-03-15T07:57:29+00:00",
+            "time": "2026-03-21T22:29:11+00:00",
             "type": "symfony-bundle",
             "installation-source": "dist",
             "autoload": {
@@ -11614,7 +11614,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.33.0"
+                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.34.0"
             },
             "funding": [
                 {
@@ -12286,17 +12286,17 @@
         },
         {
             "name": "symfony/ux-autocomplete",
-            "version": "v2.33.0",
-            "version_normalized": "2.33.0.0",
+            "version": "v2.34.0",
+            "version_normalized": "2.34.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-autocomplete.git",
-                "reference": "a2968590fa0baf5e823ba894d9ad06c823c5429d"
+                "reference": "64983e630e687ae086e09d5fc0a7b5271a7747d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/a2968590fa0baf5e823ba894d9ad06c823c5429d",
-                "reference": "a2968590fa0baf5e823ba894d9ad06c823c5429d",
+                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/64983e630e687ae086e09d5fc0a7b5271a7747d7",
+                "reference": "64983e630e687ae086e09d5fc0a7b5271a7747d7",
                 "shasum": ""
             },
             "require": {
@@ -12329,7 +12329,7 @@
                 "zenstruck/browser": "^1.1",
                 "zenstruck/foundry": "^2.0"
             },
-            "time": "2026-03-15T07:57:29+00:00",
+            "time": "2026-03-21T22:29:11+00:00",
             "type": "symfony-bundle",
             "extra": {
                 "thanks": {
@@ -12359,7 +12359,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.33.0"
+                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.34.0"
             },
             "funding": [
                 {
@@ -12383,17 +12383,17 @@
         },
         {
             "name": "symfony/ux-live-component",
-            "version": "v2.33.0",
-            "version_normalized": "2.33.0.0",
+            "version": "v2.34.0",
+            "version_normalized": "2.34.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-live-component.git",
-                "reference": "f025e483f4e98b94a29c6b8bef78506779c4e7cc"
+                "reference": "f246c189192121781c267e26a64ff6942ef61ab6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/f025e483f4e98b94a29c6b8bef78506779c4e7cc",
-                "reference": "f025e483f4e98b94a29c6b8bef78506779c4e7cc",
+                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/f246c189192121781c267e26a64ff6942ef61ab6",
+                "reference": "f246c189192121781c267e26a64ff6942ef61ab6",
                 "shasum": ""
             },
             "require": {
@@ -12433,7 +12433,7 @@
                 "zenstruck/browser": "^1.2.0",
                 "zenstruck/foundry": "^2.0"
             },
-            "time": "2026-03-15T18:48:53+00:00",
+            "time": "2026-03-21T22:29:11+00:00",
             "type": "symfony-bundle",
             "extra": {
                 "thanks": {
@@ -12465,7 +12465,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-live-component/tree/v2.33.0"
+                "source": "https://github.com/symfony/ux-live-component/tree/v2.34.0"
             },
             "funding": [
                 {
@@ -12489,17 +12489,17 @@
         },
         {
             "name": "symfony/ux-turbo",
-            "version": "v2.33.0",
-            "version_normalized": "2.33.0.0",
+            "version": "v2.34.0",
+            "version_normalized": "2.34.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-turbo.git",
-                "reference": "493436bc109f87663ca45c3bac8678b62a5d861f"
+                "reference": "87511f621db238302a3bb819958a72feda27fc45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-turbo/zipball/493436bc109f87663ca45c3bac8678b62a5d861f",
-                "reference": "493436bc109f87663ca45c3bac8678b62a5d861f",
+                "url": "https://api.github.com/repos/symfony/ux-turbo/zipball/87511f621db238302a3bb819958a72feda27fc45",
+                "reference": "87511f621db238302a3bb819958a72feda27fc45",
                 "shasum": ""
             },
             "require": {
@@ -12532,7 +12532,7 @@
                 "symfony/ux-twig-component": "^2.21",
                 "symfony/web-profiler-bundle": "^5.4|^6.0|^7.0|^8.0"
             },
-            "time": "2026-03-15T07:57:29+00:00",
+            "time": "2026-03-21T22:29:11+00:00",
             "type": "symfony-bundle",
             "extra": {
                 "thanks": {
@@ -12571,7 +12571,7 @@
                 "turbo-stream"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-turbo/tree/v2.33.0"
+                "source": "https://github.com/symfony/ux-turbo/tree/v2.34.0"
             },
             "funding": [
                 {
@@ -12595,8 +12595,8 @@
         },
         {
             "name": "symfony/ux-twig-component",
-            "version": "v2.33.0",
-            "version_normalized": "2.33.0.0",
+            "version": "v2.34.0",
+            "version_normalized": "2.34.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-twig-component.git",
@@ -12661,7 +12661,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-twig-component/tree/v2.33.0"
+                "source": "https://github.com/symfony/ux-twig-component/tree/v2.34.0"
             },
             "funding": [
                 {

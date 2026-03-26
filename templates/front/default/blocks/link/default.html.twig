@@ -37,16 +37,16 @@
 {%- macro link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage, iconCustom = false, iconSide = 'start') -%}
     {%- set iconClass = linkAsButton ? 'chevron-right ms-2 as-btn' : 'chevron-right' -%}
     <a {% if samePage %}data-href{% else -%}href{% endif %}=" {{ link }}"
-       class="{{ linkStyle }} d-inline-flex align-items-center{% if samePage %} scroll-link{% endif %}{{ trackClass }}"
+       class="{{ linkStyle }} d-inline-flex align-items-center gap-2{% if samePage %} scroll-link{% endif %}{{ trackClass }}"
         {% if linkBlank %} target="_blank" {% endif %}
         {% if samePage %} data-target="#{{ uriInfos.anchor }}" {% endif %}
         {% if linkExternal %} rel="noopener noreferrer" {% endif %}>
-        {%- if 'start' == iconSide and iconCustom and not '.svg' in iconCustom -%}
-            <i class="icon-{{ iconCustom }} me-2" aria-hidden="true"></i>
+        {%- if 'start' == iconSide and iconCustom and '.svg' not in iconCustom -%}
+            <i class="icon-{{ iconCustom }}" aria-hidden="true"></i>
         {%- endif -%}
-            <span class="initial">{{ linkLabel|unescape|raw }}</span>
-        {%- if 'end' == iconSide and iconCustom and not '.svg' in iconCustom -%}
-            <i class="icon-{{ iconCustom }} ms-2" aria-hidden="true"></i>
+            {%- if iconCustom -%}<span class="initial">{%- endif -%}{{ linkLabel|unescape|raw }}{%- if iconCustom -%}</span>{%- endif -%}
+        {%- if 'end' == iconSide and iconCustom and '.svg' not in iconCustom -%}
+            <i class="icon-{{ iconCustom }}" aria-hidden="true"></i>
         {%- endif -%}
     </a>
 {%- endmacro -%}

@@ -26,7 +26,8 @@ final class CatalogModel extends BaseModel
      * CatalogModel constructor.
      */
     public function __construct(
-        public readonly array $products,
+        public readonly array $products = [],
+        public readonly ?object $catalog = null,
     ) {
     }
 
@@ -51,8 +52,9 @@ final class CatalogModel extends BaseModel
            ]);
         }
 
+        self::setLocator($coreLocator);
         $website = self::$coreLocator->website();
-        $model = (array) EntityModel::fromEntity($catalog, $coreLocator, array_merge($options))->response;
+        $model = EntityModel::fromEntity($catalog, $coreLocator, array_merge($options))->response;
         $productsDb = self::$coreLocator->em()->getRepository(Product::class)->findOnlineByCatalogs($website->entity, self::$coreLocator->locale(), [$catalog]);
         $products = [];
         foreach ($productsDb as $product) {
@@ -62,6 +64,7 @@ final class CatalogModel extends BaseModel
 
         return new self(
             products: $products,
+            catalog: $model,
         );
     }
 }

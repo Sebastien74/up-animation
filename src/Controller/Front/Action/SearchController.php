@@ -58,7 +58,7 @@ class SearchController extends FrontController
         $resultsPageUrl = $pageRepository->findOneUrlByPageAndLocale($request->getLocale(), $search->getResultsPage());
         $urlCode = $resultsPageUrl instanceof Url ? $resultsPageUrl->getCode() : null;
 
-        $searchText = $requestStack->getMainRequest()->get('search');
+        $searchText = $requestStack->getMainRequest()->query->get('search');
         $searchText = $searchText ? urldecode($searchText) : $searchText;
         // XSS protection: reset the value if it contains potentially malicious content
         if (!is_string($searchText) || !preg_match('/^[\p{L}\p{N} _\-.,\'"]+$/u', $searchText)) {

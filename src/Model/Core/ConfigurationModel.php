@@ -192,7 +192,7 @@ final class ConfigurationModel extends BaseModel
         }
 
         $modulesActives = [];
-        $isAdmin = self::$coreLocator->request() && preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', self::$coreLocator->request()->getUri());
+        $isAdmin = self::$coreLocator->inAdmin();
         $roles = $currentUser ? $currentUser->getRoles() : [];
         $modulesDb = self::$coreLocator->em()->getRepository(Module::class)->findAll();
         $isInternal = $currentUser instanceof User && in_array('ROLE_INTERNAL', $roles);
@@ -212,9 +212,11 @@ final class ConfigurationModel extends BaseModel
 
         ksort(self::$cache['modules'][$configuration->getId()][$userId]);
 
-        $fp = fopen($dirname, 'w');
-        fwrite($fp, json_encode(self::$cache['modules'][$configuration->getId()][$userId], JSON_PRETTY_PRINT));
-        fclose($fp);
+        if (!self::$coreLocator->request()->isMethod('POST')) {
+            $fp = fopen($dirname, 'w');
+            fwrite($fp, json_encode(self::$cache['modules'][$configuration->getId()][$userId], JSON_PRETTY_PRINT));
+            fclose($fp);
+        }
 
         return self::$cache['modules'][$configuration->getId()][$userId];
     }

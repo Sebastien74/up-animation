@@ -32,9 +32,9 @@
         id: 'form-'~entity.id }}) }}
         <h4 class="main-subtitle"><i class="icm-video"></i>{{ "Vidéo"|trans|raw }}</h4>
         <div class="row">
-            {{ macro.card(entity, 'App\\Entity\\Media\\MediaRelation', form.media.uploadedFile, 'mediaRelationId', entity.media.screen) }}
+            {{ macro.card(entity, 'App\\Entity\\Media\\MediaRelation', form.media.imageFile, 'mediaRelationId', entity.media.screen) }}
             {%- for mediaScreen in form.media.mediaScreens -%}
-                {{ macro.card(mediaScreen.vars.data, 'App\\Entity\\Media\\Media', mediaScreen.uploadedFile, 'mediaId', mediaScreen.vars.data.screen) }}
+                {{ macro.card(mediaScreen.vars.data, 'App\\Entity\\Media\\Media', mediaScreen.imageFile, 'mediaId', mediaScreen.vars.data.screen) }}
             {%- endfor -%}
         </div>
         <div class="row">

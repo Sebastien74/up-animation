@@ -282,7 +282,7 @@
                                                             : (route != "admin_medias_downloader" ? {website: websiteId(), (interface['name']): entity.id} : null) -%}
                                                         {%- set routeArgs = route|routeArgs(entity, routeArgs) -%}
                                                         {%- if routeArgs -%}
-                                                            <a href="{{ path(route, routeArgs) }}" class="btn-app small icon-start"
+                                                            <a href="{{ path(route, routeArgs) }}" class="btn-app small icon-start flex-shrink-1 gap-2"
                                                                {% if route != 'admin_medias_downloader' %}{% endif %}>
                                                                 {%- set disableCount = interface.disableCount is defined and buttonsProperty in interface.disableCount -%}
                                                                 {%- set counter = entity|countCollection(buttonsProperty) -%}

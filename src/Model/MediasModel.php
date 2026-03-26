@@ -48,7 +48,7 @@ final class MediasModel extends BaseModel
      */
     public static function fromEntity(mixed $entity, CoreLocatorInterface $coreLocator, ?string $locale = null, ?bool $query = true, array $options = []): self
     {
-        if (!$entity) {
+        if (!is_object($entity)) {
             return new self();
         }
 

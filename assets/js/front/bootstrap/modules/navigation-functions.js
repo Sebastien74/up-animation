@@ -52,6 +52,28 @@ export function collapseEvent(body) {
 
 export function scrollEvent(nav) {
 
+    const TOGGLE_BTN_GLASS_CLASS = true;
+
+    const setButtons = function (nav, position) {
+        if ('scroll' === position) {
+            nav.querySelectorAll('.btn-glass').forEach((btn) => {
+                const glassClass = [...btn.classList].find(c => c.startsWith('btn-glass-'));
+                if (!glassClass) return;
+                btn.dataset.glassClass = glassClass;
+                btn.classList.remove(glassClass);
+                if (TOGGLE_BTN_GLASS_CLASS) btn.classList.remove('btn-glass');
+                btn.classList.add(glassClass.replace('btn-glass-', 'btn-'), 'btn-as-glass');
+            });
+        } else {
+            nav.querySelectorAll('.btn-as-glass').forEach((btn) => {
+                if (!btn.dataset.glassClass) return;
+                btn.classList.remove(btn.dataset.glassClass.replace('btn-glass-', 'btn-'), 'btn-as-glass');
+                if (TOGGLE_BTN_GLASS_CLASS) btn.classList.add('btn-glass');
+                btn.classList.add(btn.dataset.glassClass);
+            });
+        }
+    };
+
     const scrollAfterSection = false;
     const body = document.body;
     const firstSection = scrollAfterSection ? document.querySelector('.template-page').querySelector('section') : false;
@@ -68,10 +90,12 @@ export function scrollEvent(nav) {
     if (position.y >= scrollLimit) {
         nav.classList.add('as-scroll');
         body.classList.add('menu-as-scroll');
+        setButtons(nav, 'scroll');
     } else if (position.y >= scrollLimitAnimation) {
         nav.classList.add('as-animation');
         menuContainer.classList.add('as-animation');
         body.classList.add('menu-as-animation');
+        setButtons(nav, 'scroll');
     }
 
     // On force un reflow pour s'assurer que l'animation se lance bien au chargement
@@ -90,15 +114,18 @@ export function scrollEvent(nav) {
             nav.classList.add('as-animation');
             menuContainer.classList.add('as-animation');
             body.classList.add('menu-as-animation');
+            setButtons(nav, 'scroll');
         } else if (nav && scrollDirection === 'down' && Math.abs(scrollPosition) >= scrollLimit && !nav.classList.contains('as-scroll')) {
             nav.classList.add('as-scroll');
             body.classList.add('menu-as-scroll');
             nav.classList.remove('as-animation');
             menuContainer.classList.remove('as-animation');
             body.classList.remove('menu-as-animation');
+            setButtons(nav, 'scroll');
         } else if (nav && scrollDirection === 'up' && Math.abs(scrollPosition) < (scrollLimit - 100) && nav.classList.contains('as-scroll')) {
             nav.classList.remove('as-scroll');
             body.classList.remove('menu-as-scroll');
+            setButtons(nav, 'top');
         }
         if (scrollDirection === 'up') {
             nav.classList.remove('as-animation');

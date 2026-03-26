@@ -42,7 +42,7 @@ class WebsiteRepository extends ServiceEntityRepository
     /**
      * Get WebsiteModel.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public function findObject(int $id): ?WebsiteModel
     {
@@ -59,7 +59,7 @@ class WebsiteRepository extends ServiceEntityRepository
     /**
      * Get current WebsiteModel.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public function findCurrent(): ?WebsiteModel
     {
@@ -144,7 +144,7 @@ class WebsiteRepository extends ServiceEntityRepository
     /**
      * Get WebsiteModel by ID for the admin part.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public function findByIdForAdmin(int $id): ?WebsiteModel
     {
@@ -170,7 +170,7 @@ class WebsiteRepository extends ServiceEntityRepository
     /**
      * Get default WebsiteModel.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public function findDefault(bool $asObject = false): WebsiteModel|Website|null
     {

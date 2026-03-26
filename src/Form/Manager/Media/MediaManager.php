@@ -82,8 +82,6 @@ class MediaManager
 
     /**
      * Synchronize locale Media screens.
-     *
-     * @throws ORMException
      */
     public function synchronizeScreens(Media\Media $media): void
     {
@@ -418,6 +416,8 @@ class MediaManager
 
     /**
      * Set MediaRelation with entitylocale.
+     *
+     * @throws Exception
      */
     public function setEntityLocale(array $interface, mixed $entity, ?Website $website = null): void
     {
@@ -430,10 +430,11 @@ class MediaManager
             $entity->setMediaRelation($mediaRelation);
             $this->entityManager->persist($entity);
             if (!$this->request->isMethod('post')) {
-                $this->entityManager->flush();
                 try {
+                    $this->entityManager->flush();
                     $this->entityManager->refresh($entity);
-                } catch (Exception $exception) {
+                } catch (Exception|ORMException $exception) {
+                    throw new Exception($exception->getMessage());
                 }
             }
         }

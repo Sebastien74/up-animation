@@ -99,16 +99,6 @@ final class MenuModel extends BaseModel
         $uri = self::$coreLocator->request()->getRequestUri();
         $schemeAndHttpHost = self::$coreLocator->request()->getSchemeAndHttpHost();
 
-        $catalogSlugs = [];
-        if (!empty($tree['main'])) {
-            foreach ($tree['main'] as $link) {
-                $catalog = $link instanceof Link ? $link->getCatalog() : false;
-                if ($catalog) {
-                    $catalogSlugs[] = $catalog->getSlug();
-                }
-            }
-        }
-
         $treeResponse = [];
         foreach ($tree as $key => $links) {
             foreach ($links as $keyLink => $link) {
@@ -120,14 +110,16 @@ final class MenuModel extends BaseModel
                 $active = $asPath && $path && trim($uri, '/') === trim(str_replace($schemeAndHttpHost, '', $path), '/');
                 $color = $link instanceof Link && $link->getColor() ? 'text-'.$link->getColor() : '';
                 $btnColor = $link instanceof Link && $link->getBtnColor() ? 'btn '.$link->getBtnColor() : '';
-                $link = $link instanceof Link ? $link : (property_exists($link, 'entity') ? $link->entity : null);
-                $id = $intl->linkTargetPage && $intl->linkTargetPage->getSlug() ? 'link-'.$menu->getSlug().'-'.$intl->linkTargetPage->getSlug() : 'link-'.$menu->getSlug().'-'.$link->getSlug();
+                $link = $link instanceof Link ? $link : (is_object($link) && property_exists($link, 'entity') ? $link->entity : null);
+                $id = $intl->linkTargetPage && $intl->linkTargetPage->getSlug() ? 'link-'.$menu->getSlug().'-'.$intl->linkTargetPage->getSlug()
+                    : (is_object($link) ? 'link-'.$menu->getSlug().'-'.$link->getSlug() : null);
                 $media = $link instanceof Link ? MediaModel::fromEntity($link->getMediaRelation(), self::$coreLocator) : null;
                 $pictogram = self::getContent('pictogram', $link);
-                $children = !empty($defaultTree[$link->getId()]) ? self::tree($website, $menu, $defaultTree[$link->getId()], null, $defaultTree)[$link->getId()] : [];
+                $children = is_object($link) && !empty($defaultTree[$link->getId()]) ? self::tree($website, $menu, $defaultTree[$link->getId()], null, $defaultTree)[$link->getId()] : [];
                 if ($asCatalog) {
                     $catalogModel = CatalogModel::fromEntity($link->getCatalog(), self::$coreLocator, ['onlyForUrl' => true]);
-                    $children = self::tree($website, $menu, $catalogModel->products, null, $defaultTree)['products'];
+                    $childrenTree = self::tree($website, $menu, $catalogModel->products, null, $defaultTree);
+                    $children = !empty($childrenTree['products']) ? $childrenTree['products'] : [];
                 }
                 $treeResponse[$key][$keyLink] = array_merge((array) $intl, [
                     'id' => $id,
@@ -141,7 +133,7 @@ final class MenuModel extends BaseModel
                     'color' => $color,
                     'btnColor' => $btnColor,
                     'bgColor' => $link instanceof Link && $link->getBackgroundColor() ? $link->getBackgroundColor() : '',
-                    'class' => self::linkClass($id, $active, $intl->linkAsAnchor, $color, $btnColor),
+                    'class' => $id ? self::linkClass($id, $active, $intl->linkAsAnchor, $color, $btnColor) : '',
                     'media' => $media && $media->media ? $media : null,
                     'children' => $children,
                 ]);

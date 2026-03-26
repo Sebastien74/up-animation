@@ -3,7 +3,7 @@
 {%- set interfaceName = interfaceName is defined ? interfaceName : (interface.name is defined ? interface.name : false) -%}
 {%- set displayTitleCard = displayTitleCard is defined ? displayTitleCard : true -%}
 {%- set libraryBtnPosition = libraryBtnPosition is defined ? libraryBtnPosition : 'top' -%}
-{%- set onlyMedia = children.media.children.uploadedFile.vars.attr.onlyMedia is defined ? children.media.children.uploadedFile.vars.attr.onlyMedia : false -%}
+{%- set onlyMedia = children.media.children.imageFile.vars.attr.onlyMedia is defined ? children.media.children.imageFile.vars.attr.onlyMedia : false -%}
 {%- set configuration = website().configuration -%}
 {%- set defaultLocale = configuration.locale -%}
 {%- set allLocales = configuration.allLocales -%}
@@ -196,7 +196,7 @@
                                     btnId: "#open-screen-modal-"~screen.vars.value.id,
                                 },
                             } only -%}
-                            {{ form_row(screen.uploadedFile) }}
+                            {{ form_row(screen.imageFile) }}
                         </div>
                         <h4 class="text-center text-uppercase screen-title mb-3">{{ screen.vars.value.screen }}{%- if 'vtt' == screen.vars.value.screen -%} {{ '(Sous-titres)'|trans|raw }}{%- endif -%}</h4>
                     </div>

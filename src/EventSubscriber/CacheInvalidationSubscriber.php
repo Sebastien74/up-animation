@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
+use App\Entity\BaseInterface;
+use App\Entity\BaseMediaRelation;
 use App\Entity\Core\Website;
 use App\Entity\Layout\Page;
 use App\Entity\Layout\Layout;
@@ -21,12 +23,14 @@ use App\Entity\Module\Table\Cell;
 use App\Entity\Module\Table\CellIntl;
 use App\Entity\Media\MediaRelationIntl;
 use App\Entity\Seo\Url;
+use App\Service\Interface\CoreLocatorInterface;
 use DateMalformedStringException;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Mapping\MappingException;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 #[AsDoctrineListener(event: Events::onFlush)]
@@ -34,7 +38,7 @@ class CacheInvalidationSubscriber
 {
     private \Symfony\Component\PropertyAccess\PropertyAccessor $propertyAccessor;
 
-    public function __construct()
+    public function __construct(private readonly CoreLocatorInterface $coreLocator)
     {
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
@@ -42,126 +46,200 @@ class CacheInvalidationSubscriber
     /**
      * onFlush.
      *
-     * @throws DateMalformedStringException|MappingException
+     * @throws DateMalformedStringException|MappingException|InvalidArgumentException
      */
     public function onFlush(OnFlushEventArgs $args): void
     {
-        $em = $args->getObjectManager();
-        $uow = $em->getUnitOfWork();
+        if ($this->coreLocator->inAdmin()) {
 
-        $entities = array_merge(
-            $uow->getScheduledEntityInsertions(),
-            $uow->getScheduledEntityUpdates(),
-            $uow->getScheduledEntityDeletions()
-        );
+            $website = $this->coreLocator->website();
+            $em = $args->getObjectManager();
+            if (!$cache = $em->getConfiguration()->getResultCache()) return;
+            $uow = $em->getUnitOfWork();
+            $entities = array_merge($uow->getScheduledEntityInsertions(), $uow->getScheduledEntityUpdates(), $uow->getScheduledEntityDeletions());
+            $websitesToInvalidate = [];
+            $pagesToInvalidate = [];
 
-        $websitesToInvalidate = [];
-        $pagesToInvalidate = [];
-
-        foreach ($entities as $entity) {
-            if ($entity instanceof BaseInterface) {
-                $page = $this->findPage($entity, $em);
-                if ($page instanceof Page) {
-                    $pagesToInvalidate[$page->getId()] = $page;
-                } else {
-                    $website = $this->findWebsite($entity, $em);
-                    if ($website instanceof Website) {
-                        $websitesToInvalidate[$website->getId()] = $website;
+            $namespace = $this->coreLocator->request()->query->get('entityNamespace');
+            $entityId = $this->coreLocator->request()->query->get('referEntityId');
+            if ($namespace && $entityId) {
+                $inPage = [];
+                $namespace = urldecode($namespace);
+                foreach ($website->configuration->allLocales as $locale) {
+                    $pages = $this->coreLocator->em()->getRepository(Page::class)->findAllByAction($website->entity, $locale, $namespace, [$entityId]);
+                    foreach ($pages as $page) {
+                        if ($page && !array_key_exists($page->getId(), $inPage)) $entities[] = $inPage[$page->getId()] = $page;
                     }
+                }
+                $this->invalidateActionResultCache($namespace, $entityId, $website, $em);
+            }
+
+            foreach ($entities as $entity) {
+                if ($entity instanceof Page) {
+                    $pagesToInvalidate[$entity->getId()] = $entity;
+                } elseif ($entity instanceof BaseInterface) {
+                    if ($page = $this->findPage($entity, $em)) {
+                        $pagesToInvalidate[$page->getId()] = $page;
+                    } elseif ($w = $this->findWebsite($entity, $em)) {
+                        $websitesToInvalidate[$w->getId()] = $w;
+                    }
+                }
+                if ($entity instanceof BaseMediaRelation || $entity instanceof MediaRelationIntl) $this->invalidateMediasCache($entity, $em);
+            }
+
+            foreach ($pagesToInvalidate as $page) {
+                if ($page->getId() && $em->contains($page)) {
+                    $page->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+                    $this->coreLocator->em()->persist($page);
+                    $uow->scheduleForUpdate($page);
+                    $uow->recomputeSingleEntityChangeSet($em->getClassMetadata(Page::class), $page);
+                }
+                if ($page->getId()) {
+                    $this->invalidatePageResultCache($page, $website, $em);
+                }
+            }
+
+            foreach ($websitesToInvalidate as $w) {
+                $w->setCacheClearDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+                $this->coreLocator->em()->persist($w);
+                $uow->scheduleForUpdate($w);
+                $uow->recomputeSingleEntityChangeSet($em->getClassMetadata(Website::class), $w);
+                $cache->deleteItem('website-id-'.$w->getId());
+                foreach (['website-default', 'websites-actives', 'websites-switcher', 'websites-all'] as $key) {
+                    $cache->deleteItem($key);
+                }
+                foreach ($w->getConfiguration()->getDomains() as $domain) {
+                    $host = $domain->getName() ? str_replace(['https://', 'http://'], '', $domain->getName()) : null;
+                    $cache->deleteItem('website-'.md5($host));
+                }
+                foreach ($w->getConfiguration()->getAllLocales() as $locale) {
+                    $cache->deleteItem('config-admin-'.$w->getId().'-'.$locale);
+                }
+            }
+        }
+    }
+
+    /**
+     * Invalidate Result Cache for Action.
+     *
+     * @throws InvalidArgumentException
+     */
+    private function invalidateActionResultCache(string $namespace, mixed $entityId, object $website, EntityManagerInterface $em): void
+    {
+        if (!$cache = $em->getConfiguration()->getResultCache()) return;
+
+        foreach ($website->configuration->allLocales as $locale) {
+            $idsStr = is_array($entityId) ? implode('_', $entityId) : (string) $entityId;
+            $wId = $website->id;
+            $cache->deleteItem('pages_action_'.md5($namespace.'_'.$idsStr.'_'.$locale.'_'.$wId));
+            $cache->deleteItem('page_action_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId));
+            $cache->deleteItem('pages_action_ids_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$idsStr));
+            $cache->deleteItem('page_action_slug_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId));
+            $cache->deleteItem('pages_action_slug_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId));
+        }
+    }
+
+    /**
+     * Invalidate Result Cache for Page.
+     *
+     * @throws InvalidArgumentException
+     */
+    private function invalidatePageResultCache(Page $page, object $website, EntityManagerInterface $em): void
+    {
+        if (!$cache = $em->getConfiguration()->getResultCache()) return;
+
+        foreach ($page->getUrls() as $url) {
+            $locale = $url->getLocale();
+            $urlCode = $url->getCode();
+            if ($page->isAsIndex()) {
+                $cache->deleteItem('page-index-'.$website->id.'-'.$locale);
+            } elseif ($urlCode) {
+                $cache->deleteItem('page-'.$website->id.'-'.$urlCode.'-'.$locale);
+            }
+            $cache->deleteItem('page-url-'.md5($page->getId().'_'.$locale));
+            $cache->deleteItem('page_url_id_'.$url->getId().'_'.$locale);
+            $cache->deleteItem('pages_index_url_'.md5($page->getId().'_'.$locale));
+        }
+        if ($page->getLayout()) $cache->deleteItem('layout_'.$page->getLayout()->getId());
+    }
+
+    /**
+     * Invalidate Medias Cache.
+     *
+     * @throws InvalidArgumentException
+     */
+    private function invalidateMediasCache(BaseMediaRelation|MediaRelationIntl $entity, EntityManagerInterface $em): void
+    {
+        if (!$cache = $em->getConfiguration()->getResultCache()) return;
+
+        $class = $em->getClassMetadata(get_class($entity))->getName();
+        $masterField = ($entity instanceof MediaRelationIntl) ? 'mediaRelation' : (method_exists($class, 'getMasterField') ? $class::getMasterField() : null);
+
+        if (!$masterField) {
+            foreach ($em->getClassMetadata($class)->getAssociationMappings() as $fieldName => $mapping) {
+                if ($mapping->inversedBy && str_ends_with($mapping->inversedBy, 'mediaRelations')) {
+                    $masterField = $fieldName;
+                    break;
                 }
             }
         }
 
-        foreach ($pagesToInvalidate as $page) {
-            $page->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
-            $uow->recomputeSingleEntityChangeSet($em->getClassMetadata(Page::class), $page);
-        }
-
-        foreach ($websitesToInvalidate as $website) {
-            $website->setCacheClearDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
-            $uow->recomputeSingleEntityChangeSet($em->getClassMetadata(Website::class), $website);
+        if ($masterField) {
+            try {
+                $parent = $this->propertyAccessor->getValue($entity, $masterField);
+                if ($parent && method_exists($parent, 'getId')) {
+                    $website = $this->findWebsite($parent, $em);
+                    $locales = $website ? $website->getConfiguration()->getAllLocales() : [$this->coreLocator->website()->configuration->allLocales];
+                    foreach ($locales as $locale) {
+                        $pClass = $em->getClassMetadata(get_class($parent))->getName();
+                        $pId = $parent->getId();
+                        $cache->deleteItem('media_relations_'.md5($pClass.'_'.$pId.'_'.$locale));
+                        $cache->deleteItem('medias_'.md5($pClass.'_'.$pId.'_'.$locale));
+                        $cache->deleteItem('medias_'.md5($pClass.'_'.implode('_', [$pId]).'_'.$locale));
+                    }
+                    if ($parent instanceof BaseMediaRelation || $parent instanceof MediaRelationIntl) $this->invalidateMediasCache($parent, $em);
+                }
+            } catch (\Exception) {}
         }
     }
 
     /**
      * findPage.
+     *
+     * @throws MappingException
      */
     private function findPage(object $entity, EntityManagerInterface $em): ?Page
     {
-        if ($entity instanceof Page) {
-            return $entity;
-        }
+        if ($entity instanceof Page) return $entity;
 
-        $class = get_class($entity);
-        if ($em->getMetadataFactory()->isTransient($class)) {
-            return null;
-        }
+        $class = $em->getClassMetadata(get_class($entity))->getName();
+        if ($em->getMetadataFactory()->isTransient($class)) return null;
 
         $metadata = $em->getClassMetadata($class);
-
-        // Try 'page' property
-        if ($metadata->hasAssociation('page')) {
-            try {
-                $page = $this->propertyAccessor->getValue($entity, 'page');
-                if ($page instanceof Page) {
-                    return $page;
-                }
-            } catch (\Exception $e) {}
-        }
-
-        // Try 'layout' property
-        if ($metadata->hasAssociation('layout')) {
-            try {
-                $layout = $this->propertyAccessor->getValue($entity, 'layout');
-                if ($layout instanceof Layout) {
-                    $page = $em->getRepository(Page::class)->findOneBy(['layout' => $layout]);
-                    if ($page) {
-                        return $page;
-                    }
-                }
-            } catch (\Exception $e) {}
-        }
-
-        // Try 'zone' property
-        if ($metadata->hasAssociation('zone')) {
-            try {
-                $zone = $this->propertyAccessor->getValue($entity, 'zone');
-                if ($zone) {
-                    return $this->findPage($zone, $em);
-                }
-            } catch (\Exception $e) {}
-        }
-
-        // Try 'col' property
-        if ($metadata->hasAssociation('col')) {
-            try {
-                $col = $this->propertyAccessor->getValue($entity, 'col');
-                if ($col) {
-                    return $this->findPage($col, $em);
-                }
-            } catch (\Exception $e) {}
-        }
-
-        // Try 'block' property
-        if ($metadata->hasAssociation('block')) {
-            try {
-                $block = $this->propertyAccessor->getValue($entity, 'block');
-                if ($block) {
-                    return $this->findPage($block, $em);
-                }
-            } catch (\Exception $e) {}
-        }
-
-        // Try to find via masterField
-        if (method_exists($class, 'getMasterField')) {
-            $masterField = $class::getMasterField();
-            if ($masterField && $metadata->hasAssociation($masterField)) {
+        foreach (['page', 'layout', 'zone', 'col', 'block', 'mediaRelation'] as $field) {
+            if ($metadata->hasAssociation($field)) {
                 try {
-                    $parent = $this->propertyAccessor->getValue($entity, $masterField);
-                    if ($parent) {
-                        return $this->findPage($parent, $em);
+                    $value = $this->propertyAccessor->getValue($entity, $field);
+                    if ($value instanceof Page) return $value;
+                    if ($value instanceof Layout) {
+                        $page = $em->getRepository(Page::class)->findOneBy(['layout' => $value]);
+                        if ($page) return $page;
                     }
-                } catch (\Exception $e) {}
+                    if ($value) {
+                        $page = $this->findPage($value, $em);
+                        if ($page) return $page;
+                    }
+                } catch (\Exception) {
+                }
+            }
+        }
+
+        $masterField = method_exists($class, 'getMasterField') ? $class::getMasterField() : null;
+        if ($masterField && $metadata->hasAssociation($masterField)) {
+            try {
+                $parent = $this->propertyAccessor->getValue($entity, $masterField);
+                if ($parent) return $this->findPage($parent, $em);
+            } catch (\Exception) {
             }
         }
 
@@ -175,105 +253,33 @@ class CacheInvalidationSubscriber
      */
     private function findWebsite(object $entity, EntityManagerInterface $em): ?Website
     {
-        if ($entity instanceof Website) {
-            return $entity;
-        }
+        if ($entity instanceof Website) return $entity;
 
-        $class = get_class($entity);
-        if ($em->getMetadataFactory()->isTransient($class)) {
-            return null;
-        }
+        $class = $em->getClassMetadata(get_class($entity))->getName();
+        if ($em->getMetadataFactory()->isTransient($class)) return null;
 
         $metadata = $em->getClassMetadata($class);
-        
-        // Try 'website' property if exists
-        if ($metadata->hasAssociation('website')) {
-            try {
-                return $this->propertyAccessor->getValue($entity, 'website');
-            } catch (\Exception $e) {}
-        }
-
-        // Try to find via masterField if defined in the entity class
-        if (method_exists($class, 'getMasterField')) {
-            $masterField = $class::getMasterField();
-            if ($masterField && $metadata->hasAssociation($masterField)) {
+        foreach (['website', 'page', 'zone', 'block', 'col', 'media', 'mediaRelation'] as $field) {
+            if ($metadata->hasAssociation($field)) {
                 try {
-                    $parent = $this->propertyAccessor->getValue($entity, $masterField);
-                    if ($parent) {
-                        return $this->findWebsite($parent, $em);
+                    $value = $this->propertyAccessor->getValue($entity, $field);
+                    if ($value instanceof Website) return $value;
+                    if ($value) {
+                        $website = $this->findWebsite($value, $em);
+                        if ($website) return $website;
                     }
-                } catch (\Exception $e) {}
+                } catch (\Exception) {
+                }
             }
         }
 
-        // Try 'col' property for Table/ColIntl
-        if ($metadata->hasAssociation('col')) {
+        $masterField = method_exists($class, 'getMasterField') ? $class::getMasterField() : null;
+        if ($masterField && $metadata->hasAssociation($masterField)) {
             try {
-                $col = $this->propertyAccessor->getValue($entity, 'col');
-                if ($col) {
-                    return $this->findWebsite($col, $em);
-                }
-            } catch (\Exception $e) {}
-        }
-
-        // Try 'table' property for TableIntl
-        if ($metadata->hasAssociation('table')) {
-            try {
-                $table = $this->propertyAccessor->getValue($entity, 'table');
-                if ($table) {
-                    return $this->findWebsite($table, $em);
-                }
-            } catch (\Exception $e) {}
-        }
-
-        // Try 'zone' property for ZoneIntl
-        if ($metadata->hasAssociation('zone')) {
-            try {
-                $zone = $this->propertyAccessor->getValue($entity, 'zone');
-                if ($zone) {
-                    return $this->findWebsite($zone, $em);
-                }
-            } catch (\Exception $e) {}
-        }
-
-        // Try 'block' property for BlockIntl
-        if ($metadata->hasAssociation('block')) {
-            try {
-                $block = $this->propertyAccessor->getValue($entity, 'block');
-                if ($block) {
-                    return $this->findWebsite($block, $em);
-                }
-            } catch (\Exception $e) {}
-        }
-
-        // Try 'page' property for PageIntl
-        if ($metadata->hasAssociation('page')) {
-            try {
-                $page = $this->propertyAccessor->getValue($entity, 'page');
-                if ($page) {
-                    return $this->findWebsite($page, $em);
-                }
-            } catch (\Exception $e) {}
-        }
-
-        // Try 'cell' property for CellIntl
-        if ($metadata->hasAssociation('cell')) {
-            try {
-                $cell = $this->propertyAccessor->getValue($entity, 'cell');
-                if ($cell) {
-                    return $this->findWebsite($cell, $em);
-                }
-            } catch (\Exception $e) {}
-        }
-
-        // Try 'media' property for MediaRelationIntl
-        if ($metadata->hasAssociation('media')) {
-            try {
-                $media = $this->propertyAccessor->getValue($entity, 'media');
-                if ($media) {
-                    return $this->findWebsite($media, $em);
-                }
-            } catch (\Exception $e) {}
+                $parent = $this->propertyAccessor->getValue($entity, $masterField);
+                if ($parent) return $this->findWebsite($parent, $em);
+            } catch (\Exception) {
+            }
         }
 
         return null;

@@ -36,6 +36,17 @@ $enable-breadcrumb: false;
 
 .carousel-main-home {
 
+    .carousel-item:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: transparentize($black, .2);
+        z-index: 100;
+    }
+
     .img-loader {
         width: 100% !important;
         max-width: 100% !important;
@@ -44,6 +55,10 @@ $enable-breadcrumb: false;
 
     .generating img {
         max-height: calc(100dvh - 139px) !important;
+    }
+
+    .carousel-caption {
+        z-index: 500;
     }
 
     //img, .right, .left {

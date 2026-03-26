@@ -64,7 +64,7 @@ final class ProductModel extends BaseModel
 
         ];
         $values['defaults'] = [];
-        $values = !$disabledValues ? self::getValues($product, $catalogDb, $multiFeaturesValues, $defaultUniqFeatures) : $values;
+        $values = !$disabledValues ? self::getValues($product, $catalogDb, $multiFeaturesValues, $defaultUniqFeatures, $options) : $values;
         $subCategories = self::getSubCategories($product, $options, $defaultUniqSubCategories);
 
         $disabledProducts = isset($options['disabledProducts']) && $options['disabledProducts'];
@@ -118,7 +118,7 @@ final class ProductModel extends BaseModel
     }
 
     /**
-     * To get sub categories.
+     * To get subcategories.
      */
     private static function getSubCategories(Catalog\Product $product, array $options, array $defaultUniqSubCategories = []): array
     {
@@ -158,7 +158,7 @@ final class ProductModel extends BaseModel
      *
      * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
-    private static function getValues(Catalog\Product $product, Catalog\Catalog $catalog, array $multiFeaturesValues = [], array $defaultUniqFeatures = []): array
+    private static function getValues(Catalog\Product $product, Catalog\Catalog $catalog, array $multiFeaturesValues = [], array $defaultUniqFeatures = [], array $options = []): array
     {
 //        dd('FAIRE UN CACHE GROUP BY');
 

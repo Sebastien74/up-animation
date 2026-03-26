@@ -448,6 +448,73 @@ picture {
         z-index: 1500;
     }
 
+    .curve-divider-top,
+    .wave-divider-top,
+    .wave-divider-bottom {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+        line-height: 0;
+    }
+
+    .curve-divider-top {
+
+        top: 0;
+
+        svg {
+            position: relative;
+            display: block;
+            //width: calc(114% + 1.3px);
+            //height: 82px;
+            width: calc(110% + 1.3px);
+            height: 50px;
+        }
+
+        .shape-fill {
+            fill: #FFFFFF;
+        }
+    }
+
+    .wave-divider-top {
+
+        top: 0;
+        transform: rotate(180deg);
+
+        svg {
+            position: relative;
+            display: block;
+            width: calc(114% + 1.3px);
+            height: 173px;
+            transform: rotateY(180deg);
+        }
+
+        .shape-fill {
+            fill: #FFFFFF;
+        }
+    }
+
+    .wave-divider-bottom {
+
+        bottom: 0;
+
+        svg {
+            position: relative;
+            display: block;
+            width: calc(114% + 1.3px);
+            height: 173px;
+            transform: rotateY(180deg);
+        }
+
+        .shape-fill {
+            fill: #FFFFFF;
+        }
+    }
+
+    > .zone-container {
+        z-index: 100;
+    }
+
     &.parallax {
 
         overflow: hidden;

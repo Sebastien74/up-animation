@@ -93,10 +93,10 @@ class MediaRelationController extends AdminController
     ): JsonResponse {
 
         $website = $this->getWebsite();
-        $classname = urldecode($request->get('entityNamespace'));
+        $classname = urldecode($request->query->get('entityNamespace'));
         $interface = $this->getInterface($classname);
         $repository = $this->coreLocator->em()->getRepository($classname);
-        $entity = $repository->find($request->get('entityId'));
+        $entity = $repository->find($request->query->get('entityId'));
 
         if (!$entity) {
             throw $this->createNotFoundException($this->coreLocator->translator()->trans("Ce média n'existe pas !!", [], 'front'));
@@ -104,25 +104,22 @@ class MediaRelationController extends AdminController
 
         $this->coreLocator->em()->refresh($entity);
         $metadata = $this->coreLocator->metadata($entity, 'mediaRelations');
-        $mediaRelation = $this->coreLocator->em()->getRepository($metadata->targetEntity)->find($request->get('mediaRelation'));
-        $mediaRelations = $this->coreLocator->em()->getRepository($metadata->targetEntity)
-            ->createQueryBuilder('mr')->select('mr')
-            ->andWhere('mr.'.$metadata->mappedBy.' = :mappedBy')
-            ->andWhere('mr.position = :position')
-            ->setParameter('position', $mediaRelation->getPosition())
-            ->setParameter('mappedBy', $entity)
-            ->orderBy('mr.locale', 'ASC')
-            ->getQuery()
-            ->getResult();
-
+        $mediaRelation = $this->coreLocator->em()->getRepository($metadata->targetEntity)->find($request->query->get('mediaRelation'));
         $mediaManager->synchronizeLocales($website->entity, $interface, $entity, $mediaRelation);
+        $mediaRelations = $entity->getMediaRelations();
+        foreach ($mediaRelations as $mediaRelationLocale) {
+            if (!$mediaRelationLocale->getId()) {
+                $this->coreLocator->em()->persist($mediaRelationLocale);
+                $this->coreLocator->em()->flush();
+            }
+        }
 
         return new JsonResponse(['html' => $this->adminRender('admin/core/form/media-relations-multi.html.twig', [
-            'mediaRelations' => $mediaRelations,
+            'mediaRelations' => $entity->getMediaRelations(),
             'screen' => $mediaRelation->getMedia()->getScreen(),
-            'entityNamespace' => $request->get('entityNamespace'),
+            'entityNamespace' => $request->query->get('entityNamespace'),
             'referEntityId' => $entity->getId(),
-            'formOptions' => $request->get('formOptions'),
+            'formOptions' => $request->query->get('formOptions'),
         ], $request)]);
     }
 
@@ -136,20 +133,20 @@ class MediaRelationController extends AdminController
     #[Route('/edit/{mediarelation}', name: 'admin_mediarelation_edit', methods: 'GET|POST')]
     public function edit(Request $request)
     {
-        $referClassname = $request->get('entityNamespace') ? urldecode($request->get('entityNamespace')) : null;
+        $referClassname = $request->query->get('entityNamespace') ? urldecode($request->query->get('entityNamespace')) : null;
         $referClass = $referClassname ? new $referClassname() : null;
-        $referEntityId = $request->get('referEntityId') ? $request->get('referEntityId') : null;
+        $referEntityId = $request->query->get('referEntityId') ? $request->query->get('referEntityId') : null;
         $mediaRelationData = $referClassname ? $this->coreLocator->metadata(new $referClassname(), 'mediaRelations') : null;
-        $this->entity = $mediaRelationData ? $this->coreLocator->em()->getRepository($mediaRelationData->targetEntity)->find($request->get('mediarelation')) : null;
-        $formOptions = $request->get('formOptions') ? (array) json_decode($request->get('formOptions')) : [];
+        $this->entity = $mediaRelationData ? $this->coreLocator->em()->getRepository($mediaRelationData->targetEntity)->find($request->attributes->get('mediarelation')) : null;
+        $formOptions = $request->query->get('formOptions') ? (array) json_decode($request->query->get('formOptions')) : [];
         $excludesFields = isset($formOptions['excludes_fields']) ? (array) $formOptions['excludes_fields'] : [];
-        $screen = $request->get('screen') ? $request->get('screen') : null;
+        $screen = $request->query->get('screen') ? $request->query->get('screen') : null;
         $asVideo = 'poster' === $screen;
         $this->arguments['mediaRelationClassname'] = $this->class = get_class($this->entity);
-        $this->arguments['entityNamespace'] = $request->get('entityNamespace');
-        $this->arguments['referEntityId'] = $request->get('referEntityId');
+        $this->arguments['entityNamespace'] = $request->query->get('entityNamespace');
+        $this->arguments['referEntityId'] = $request->query->get('referEntityId');
         $this->arguments['screen'] = $screen;
-        $this->arguments['customOptions'] = $request->get('formOptions');
+        $this->arguments['customOptions'] = $request->query->get('formOptions');
         $this->arguments['intlCardTitle'] = $formOptions['intlCardTitle'] ?? true;
         $this->arguments['linkCardTitle'] = $formOptions['linkCardTitle'] ?? true;
 

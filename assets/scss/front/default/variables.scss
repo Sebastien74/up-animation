@@ -53,7 +53,9 @@ $enable-form-preloader: false !default;
 $enable-thanks-modal: false !default;
 $enable-title-header: true !default;
 $enable-scroll-top-btn: true !default;
-$enable-gradient-btn: true !default;
+$enable-gradient-btn: false !default;
+$enable-blur-btn: false !default;
+$enable-glass-btn: true !default;
 $enable-media-pictogram: false !default;
 $enable-media-secondary: false !default;
 $enable-browser-ie-alert: false !default;
@@ -101,10 +103,10 @@ $white: #fff !default;
 $black: #000 !default;
 $primary: #ff7100 !default;
 $primary-darken: darken($primary, 5%) !default;
-$secondary: #68312c !default;
-$success: #5d7808 !default;
+$secondary: #22254e !default;
+$success: #aeba2b !default;
 $info: #0081ac !default;
-$warning: #f0ad4e !default;
+$warning: #f1ba12 !default;
 $danger: #a82835 !default;
 $danger-light: #ee9da5 !default;
 $light: $gray-300 !default;
@@ -130,7 +132,10 @@ $hover-colors: 'primary', 'secondary';
 $theme-colors: (
     'primary': $primary,
     'primary-darken': $primary-darken,
+    'secondary': $secondary,
     'success': $success,
+    'info': $info,
+    'warning': $warning,
     'danger': $danger,
     'light': $light,
     'lighten': $lighten,
@@ -939,11 +944,12 @@ $pagination-padding-x-lg: 1.5rem !default;
 
 $btn-border-width: 1px;
 $btn-border-radius: $border-radius;
+$btn-min-height: 50px;
 
 $btn-white-space: normal;
 $btn-font-weight: normal;
 $btn-line-height: inherit;
-$btn-font-size: $font-size-base;
+$btn-font-size: 14px;
 $btn-font-size-md: $btn-font-size;
 $btn-font-size-xs: $btn-font-size;
 
@@ -977,8 +983,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $primary,
         'color-outline': $primary,
-        'color-outline-hover': $white
+        'color-outline-hover': $white,
+        'bg-glass': $primary,
+        'bg-glass-hover': darken($primary, 5%),
+        'color-glass': $white,
+        'color-glass-hover': $white,
     ),
+
     'primary-darken': (
         'bg': $primary-darken,
         'border': $primary-darken,
@@ -989,8 +1000,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $primary-darken,
         'color-outline': $primary-darken,
-        'color-outline-hover': $white
+        'color-outline-hover': $white,
+        'bg-glass': $primary-darken,
+        'bg-glass-hover': darken($primary-darken, 5%),
+        'color-glass': $white,
+        'color-glass-hover': $white,
     ),
+
     'secondary': (
         'bg': $secondary,
         'color': $white,
@@ -999,8 +1015,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $secondary,
         'color-outline': $secondary,
-        'color-outline-hover': $white
+        'color-outline-hover': $white,
+        'bg-glass': $secondary,
+        'bg-glass-hover': lighten($secondary, 5%),
+        'color-glass': $white,
+        'color-glass-hover': $white,
     ),
+
     'success': (
         'bg': $success,
         'color': $white,
@@ -1009,8 +1030,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $success,
         'color-outline': $success,
-        'color-outline-hover': $white
+        'color-outline-hover': $white,
+        'bg-glass': $success,
+        'bg-glass-hover': darken($success, 5%),
+        'color-glass': $white,
+        'color-glass-hover': $white,
     ),
+
     'info': (
         'bg': $info,
         'color': $white,
@@ -1019,8 +1045,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $info,
         'color-outline': $info,
-        'color-outline-hover': $white
+        'color-outline-hover': $white,
+        'bg-glass': $info,
+        'bg-glass-hover': darken($info, 5%),
+        'color-glass': $white,
+        'color-glass-hover': $white,
     ),
+
     'warning': (
         'bg': $warning,
         'color': $white,
@@ -1029,8 +1060,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $warning,
         'color-outline': $warning,
-        'color-outline-hover': $white
+        'color-outline-hover': $white,
+        'bg-glass': $warning,
+        'bg-glass-hover': darken($warning, 5%),
+        'color-glass': $gray-900,
+        'color-glass-hover': $gray-900,
     ),
+
     'danger': (
         'bg': $danger,
         'color': $white,
@@ -1039,8 +1075,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $danger,
         'color-outline': $danger,
-        'color-outline-hover': $black
+        'color-outline-hover': $black,
+        'bg-glass': $danger,
+        'bg-glass-hover': darken($danger, 5%),
+        'color-glass': $white,
+        'color-glass-hover': $white,
     ),
+
     'danger-light': (
         'bg': $danger-light,
         'color': $white,
@@ -1049,8 +1090,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $danger-light,
         'color-outline': $danger-light,
-        'color-outline-hover': $black
+        'color-outline-hover': $black,
+        'bg-glass': $danger-light,
+        'bg-glass-hover': darken($danger-light, 5%),
+        'color-glass': $gray-900,
+        'color-glass-hover': $gray-900,
     ),
+
     'light': (
         'bg': $light,
         'color': $black,
@@ -1060,8 +1106,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $light,
         'color-outline': $black,
-        'color-outline-hover': $black
+        'color-outline-hover': $black,
+        'bg-glass': $light,
+        'bg-glass-hover': darken($light, 5%),
+        'color-glass': $gray-900,
+        'color-glass-hover': $gray-900,
     ),
+
     'dark': (
         'bg': $dark,
         'color': $white,
@@ -1070,8 +1121,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $dark,
         'color-outline': $dark,
-        'color-outline-hover': $white
+        'color-outline-hover': $white,
+        'bg-glass': $dark,
+        'bg-glass-hover': lighten($dark, 5%),
+        'color-glass': $white,
+        'color-glass-hover': $white,
     ),
+
     'dark-lighten': (
         'bg': $dark-lighten,
         'color': $white,
@@ -1080,8 +1136,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $dark-lighten,
         'color-outline': $dark-lighten,
-        'color-outline-hover': $white
+        'color-outline-hover': $white,
+        'bg-glass': $dark-lighten,
+        'bg-glass-hover': lighten($dark-lighten, 5%),
+        'color-glass': $white,
+        'color-glass-hover': $white,
     ),
+
     'black': (
         'bg': $black,
         'color': $white,
@@ -1090,8 +1151,13 @@ $buttons: (
         'bg-outline': transparent,
         'bg-outline-hover': $black,
         'color-outline': $black,
-        'color-outline-hover': $white
+        'color-outline-hover': $white,
+        'bg-glass': $black,
+        'bg-glass-hover': lighten($black, 8%),
+        'color-glass': $white,
+        'color-glass-hover': $white,
     ),
+
     'white': (
         'bg': $white,
         'border': $white,
@@ -1103,7 +1169,11 @@ $buttons: (
         'bg-outline-hover': $white,
         'color-outline': $white,
         'color-outline-hover': $primary,
-        'border-outline-hover': $primary
+        'border-outline-hover': $primary,
+        'bg-glass': $white,
+        'bg-glass-hover': darken($white, 4%),
+        'color-glass': $gray-900,
+        'color-glass-hover': $gray-900,
     ),
 );
 

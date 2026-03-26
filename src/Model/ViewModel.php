@@ -102,10 +102,14 @@ final class ViewModel extends BaseModel
      */
     public static function fromEntity(mixed $entity, CoreLocatorInterface $coreLocator, array $options = []): self
     {
-        $entity = $entity && property_exists($entity, 'entity') && !method_exists($entity, 'getEntity') ? $entity->entity : $entity;
+        if (!is_object($entity)) {
+            return new self();
+        }
+
+        $entity = property_exists($entity, 'entity') && !method_exists($entity, 'getEntity') ? $entity->entity : $entity;
         $entitiesIds = !empty($options['entitiesIds']) ? $options['entitiesIds'] : [];
 
-        if ($entity && method_exists($entity, 'getId')) {
+        if (method_exists($entity, 'getId')) {
             $entityId = $entity->getId();
             $classname = get_class($entity);
             $cacheKey = $classname.'-'.$entityId.'-'.md5(serialize($options));
@@ -115,9 +119,7 @@ final class ViewModel extends BaseModel
         }
 
         self::setLocator($coreLocator);
-        if ($entity) {
-            self::$coreLocator->interfaceHelper()->setInterface(get_class($entity));
-        }
+        self::$coreLocator->interfaceHelper()->setInterface(get_class($entity));
 
         $titleInfos = isset($options['titleInfos']) && $options['titleInfos'];
         $disabledLayout = isset($options['disabledLayout']) && $options['disabledLayout'];

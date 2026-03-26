@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Query\QueryException;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -113,14 +114,13 @@ class i18nRuntime implements RuntimeExtensionInterface
                 }
             }
         }
-
         return null;
     }
 
     /**
      * Get intl Url by locale.
      *
-     * @throws NonUniqueResultException|MappingException|QueryException
+     * @throws NonUniqueResultException|MappingException|QueryException|InvalidArgumentException
      */
     public function intlUrl(mixed $website, mixed $entity, ?string $locale = null, bool $object = false, bool $onlyOnline = false): mixed
     {

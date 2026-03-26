@@ -2,6 +2,7 @@
 
 {%- import _self as macro -%}
 
+{%- set contactPageUrl = mainPages.contact.code is defined ? mainPages.contact.code : null -%}
 {%- set arrows = slider.control is defined and slider.control and medias|length > 1 -%}
 
 {%- macro arrows(slider, sliderSlug, side, color, asBtn, position) -%}
@@ -50,17 +51,8 @@
         {%- set isFirst = true -%}
         {%- for media in medias -%}
             {%- set intlMedia = media.intl -%}
-            {%- set pictogram = intlMedia.pictogram is defined ? intlMedia.pictogram : null -%}
-            {%- set mediaTitleForce = intlMedia.titleForce is defined and intlMedia.titleForce ? intlMedia.titleForce : 2 -%}
-            {%- set mediaTitle = intlMedia.title is defined and intlMedia.title|striptags|length > 0 ? intlMedia.title : null -%}
-            {%- set mediaIntro = intlMedia.introduction is defined and intlMedia.introduction|striptags|length > 0 ? intlMedia.introduction : null -%}
-            {%- set mediaBody = intlMedia.body is defined and intlMedia.body|striptags|length > 0 ? intlMedia.body : null -%}
-            {%- set popup = slider.popup or media.popup -%}
-            {%- set mediaClass = fileSizes.height is defined and medias|length > 1 ? 'force-size' : 'w-100' -%}
-            {%- set mediaType = (media.media.screen is defined and media.media.screen == 'poster')
-                or (media.intl.video is defined and media.intl.video) ? 'video' : 'image' -%}
-            {%- set haveContent = mediaTitle or mediaIntro or mediaBody -%}
-            {%- set haveText = mediaIntro or mediaBody -%}
+            {%- set mediaType = (media.media.screen is defined and media.media.screen == 'poster') or (media.intl.video is defined and media.intl.video) ? 'video' : 'image' -%}
+            {%- set haveContent = intlMedia.subTitle or intlMedia.title or intlMedia.introduction or intlMedia.body -%}
             {%- set display = (mediaType == 'video' and media.videoLink is not empty) or (media.media.originalName is defined and media.media.originalName) -%}
             {%- if display -%}
                 <div class="carousel-item {% if isFirst %} active{% endif %}">
@@ -69,39 +61,77 @@
                             block: media,
                             thumbConfiguration: thumbConfiguration,
                             disableTitle: true,
-                            intlMedia: media} only -%}
+                            intlMedia: media
+                        } only -%}
                     {%- else -%}
                         {{ media|file(thumbConfiguration, {
                             btnLink: true,
                             isInBox: false,
-                            popupGallery: popup,
-                            fullPopup: popup,
+                            popupGallery: slider.popup or media.popup,
+                            fullPopup: slider.popup or media.popup,
                             placeholder: true,
                             maxWidth: fileSizes.width is defined ? fileSizes.width : null,
                             maxHeight: fileSizes.height is defined ? fileSizes.height : null,
                             colSize: colSize,
                             lazyLoad: not isFirstZone or (isFirstZone and not loop.first),
                             priority: not isFirstZone or (isFirstZone and not loop.first) ? 'low': 'high',
-                            class: mediaClass }) }}
+                            class: fileSizes.height is defined and medias|length > 1 ? 'force-size' : 'w-100'
+                        }) }}
                     {%- endif -%}
                     {%- if haveContent or displayIndicators or displayArrows -%}
-                        <div class="carousel-caption text-start position-relative bg-transparent border-0 p-0">
+                        <div class="carousel-caption text-start position-absolute py-5 d-flex align-items-center bg-transparent container mx-auto border-0 p-0">
                             {%- if arrows and 'top' in slider.arrowAlignment -%}
                                 {{ macro.arrows(slider, sliderSlug, arrowsSide, arrowsColor, arrowsAsBtn, 'top') }}
                             {%- endif -%}
                             {%- if haveContent -%}
-                                <div class="content flex-shrink-0">
-                                    {%- if mediaTitle -%}
-                                        <h{{ mediaTitleForce }} class="caption-title mt-3 mb-0">{{ mediaTitle|unescape|raw }}</h{{ mediaTitleForce }}>
-                                    {%- endif -%}
-                                    {%- if mediaIntro -%}
-                                        <p class="introduction text-bold{% if mediaTitle %} mt-3{% endif %}">{{ mediaIntro|unescape|raw|nl2br }}</p>
-                                    {%- endif -%}
-                                    {%- if mediaBody -%}
-                                        <div class="body {% if mediaTitle or mediaIntro %} mt-3{% endif %}">{{ mediaBody|unescape|raw|nl2br }}</div>
-                                    {%- endif -%}
-                                    <div class="mt-4">
-                                        {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: intlMedia} only -%}
+                                <div class="row">
+                                    <div class="col-xl-8 content flex-shrink-0">
+                                        <div class="d-flex gap-5">
+                                            {%- if logo -%}
+                                                <div class="logo-wrap flex-shrink-0 me-lg-5">
+                                                    <a class="navbar-brand d-block p-0" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
+                                                        {{ asset(logo)|file({}, {
+                                                            screensSizes: {
+                                                                mobile: {width: 355, height: 250},
+                                                                tablet: {width: 355, height: 250},
+                                                                desktop: {width: 355, height: 250}
+                                                            },
+                                                            decor: false,
+                                                            title: companyName,
+                                                            class: 'force-size logo initial-color',
+                                                            lazyLoad: false,
+                                                            priority: 'high'
+                                                        }) }}
+                                                    </a>
+                                                </div>
+                                            {%- endif -%}
+                                            <div class="content-wrap">
+                                                {%- if intlMedia.subTitle -%}
+                                                    <strong class="text-white">{{ intlMedia.subTitle|unescape|raw }}</strong>
+                                                {%- endif -%}
+                                                {%- if intlMedia.title -%}
+                                                    <h{{ intlMedia.titleForce }} class="caption-title text-uppercase fw-700 text-white mt-3 mb-0">{{ intlMedia.title|unescape|raw }}</h{{ intlMedia.titleForce }}>
+                                                {%- endif -%}
+                                                {%- if intlMedia.introduction -%}
+                                                    <p class="introduction text-white text-bold{% if intlMedia.title %} mt-3{% endif %}">{{ intlMedia.introduction|unescape|raw }}</p>
+                                                {%- endif -%}
+                                                {%- if intlMedia.body -%}
+                                                    <div class="body text-white {% if intlMedia.title or intlMedia.introduction %} mt-3{% endif %}">{{ intlMedia.body|unescape|raw }}</div>
+                                                {%- endif -%}
+                                                <div class="mt-4 d-flex gap-3 align-items-center">
+                                                    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: intlMedia} only -%}
+                                                    {%- if contactPageUrl -%}
+                                                        {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                                            intl: {
+                                                                link: path('front_index', {url: contactPageUrl}),
+                                                                linkStyle: 'btn btn-primary',
+                                                                linkLabel: "Nous contacter"|trans,
+                                                            }
+                                                        } -%}
+                                                    {%- endif -%}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             {%- endif -%}

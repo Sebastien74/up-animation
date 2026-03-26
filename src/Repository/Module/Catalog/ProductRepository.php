@@ -171,10 +171,12 @@ class ProductRepository extends ServiceEntityRepository
         $menus = [];
         foreach ($products as $product) {
             $menus[$product->getMenu()][] = ProductModel::fromEntity($product, $this->coreLocator, [
+                'disabledValues' => true,
                 'disabledProducts' => true,
                 'disabledLayout' => true,
                 'disabledMedias' => true,
                 'disabledCategories' => true,
+                'disabledInfo' => true,
                 'disabledCategory' => true
             ]);
         }

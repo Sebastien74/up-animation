@@ -49,7 +49,7 @@ class BackgroundColorZoneType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Code couleur', [], 'admin'),
-                    'class' => 'col-12 colorpicker'
+                    'class' => 'colorpicker',
                 ],
                 'row_attr' => ['class' => 'col-12 mb-3 mt-3'],
             ]);
@@ -60,14 +60,14 @@ class BackgroundColorZoneType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Toute la largeur', [], 'admin'),
-            'attr' => ['class' => 'col-12 w-100'],
+            'attr' => ['class' => 'w-100'],
             'row_attr' => ['class' => $this->isInternalUser ? 'text-center mb-0' : 'text-center mt-4 mb-0'],
         ]);
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
             'attr' => [
-                'class' => 'col-12 btn-app justify-content-center edit-element-submit-btn',
+                'class' => 'btn-app m-0 justify-content-center edit-element-submit-btn w-100',
                 'data-icon' => 'save',
                 'data-icon-side' => 'left',
             ],

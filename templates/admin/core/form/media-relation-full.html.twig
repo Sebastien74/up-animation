@@ -91,7 +91,7 @@
                 <h4 class="main-subtitle"><i class="icm-image"></i>{{ "Média"|trans|raw }}</h4>
                 <div class="card-body pb-2 border mb-4 radius">
                     {%- include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: entity.id, classname: class} -%}
-                    {{ form_row(form.media.uploadedFile) }}
+                    {{ form_row(form.media.imageFile) }}
                     <div class="row">
                         {%- if form.media.copyright is defined -%}
                             <div class="col-12">{{ form_row(form.media.copyright) }}</div>

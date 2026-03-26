@@ -41,6 +41,7 @@ class PageRepository extends ServiceEntityRepository
      */
     public function findIndex(WebsiteModel $website, string $locale, bool $preview = false): ?Page
     {
+        $cacheKey = 'page-index-id-'.$website->id.'-'.$locale.'-'.(int) $preview;
         return $this->optimizedQueryBuilder($website, $locale, $preview)
             ->andWhere('p.asIndex = :asIndex')
             ->setParameter('asIndex', true)
@@ -97,8 +98,8 @@ class PageRepository extends ServiceEntityRepository
      */
     public function findByUrlCodeAndLocale(WebsiteModel $website, string $urlCode, string $locale, bool $preview): Page|array|null
     {
-        if (!empty($this->cache[$urlCode][$locale])) {
-            return $this->cache[$urlCode][$locale];
+        if (!empty($this->cache[$urlCode][$locale][$website->id])) {
+            return $this->cache[$urlCode][$locale][$website->id];
         }
 
         $page = $this->optimizedQueryBuilder($website, $locale, $preview)
@@ -120,8 +121,8 @@ class PageRepository extends ServiceEntityRepository
             }
         }
 
-        if ($urlCode && $page) {
-            $this->cache[$urlCode][$locale] = $page;
+        if ($urlCode) {
+            $this->cache[$urlCode][$locale][$website->id] = $page;
         }
 
         return $page;
@@ -433,16 +434,14 @@ class PageRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->enableResultCache(3600, 'page-url-'.md5($page->getId().'_'.$locale))
                 ->getOneOrNullResult();
-            if ($result && !$result->getUrls()->isEmpty() && !empty($result->getUrls()[0]->getCode())) {
+            if ($result && !$result->getUrls()->isEmpty()) {
                 foreach ($result->getUrls() as $url) {
-                    /** @var Url $url */
                     if ($url->getLocale() === $locale && $url->isOnline() && $url->getCode()) {
                         return $url;
                     }
                 }
             }
         }
-
         return null;
     }
 
@@ -492,52 +491,31 @@ class PageRepository extends ServiceEntityRepository
     /**
      * Front-optimized QueryBuilder.
      */
-    public function optimizedQueryBuilder(WebsiteModel $website, string $locale, bool $offline = false): QueryBuilder
+    public function optimizedQueryBuilder(WebsiteModel $website, string $locale, bool $preview = false): QueryBuilder
     {
-        $queryBuilder = $this->createQueryBuilder('p')
+        $qb = $this->createQueryBuilder('p')
             ->innerJoin('p.urls', 'u')
             ->innerJoin('p.website', 'w')
-            ->innerJoin('p.layout', 'l')
-            ->leftJoin('p.intls', 'pi')
-            ->leftJoin('p.mediaRelations', 'pmr')
-            ->leftJoin('pmr.media', 'pmrm')
+            ->leftJoin('p.layout', 'l')
+            ->leftJoin('l.zones', 'z')
+            ->leftJoin('z.cols', 'c')
+            ->leftJoin('c.blocks', 'b')
+            ->leftJoin('b.blockType', 'bt')
+            ->leftJoin('b.action', 'ba')
+            ->leftJoin('p.intls', 'pi', 'WITH', 'pi.locale = :locale')
             ->andWhere('u.website = :website')
             ->andWhere('u.locale = :locale')
-            ->setParameter('locale', $locale)
             ->setParameter('website', $website->id)
-            ->addSelect('u')
-            ->addSelect('w')
-            ->addSelect('l')
-            ->addSelect('pi')
-            ->addSelect('pmr')
-            ->addSelect('pmrm');
+            ->setParameter('locale', $locale)
+            ->addSelect('u', 'w', 'l', 'z', 'c', 'b', 'bt', 'ba', 'pi');
 
-        if ($website->configuration->onlineStatus) {
-            $queryBuilder->leftJoin('l.zones', 'z')
-                ->leftJoin('z.cols', 'c')
-                ->leftJoin('c.blocks', 'b')
-                ->leftJoin('b.blockType', 'bt')
-                ->leftJoin('b.action', 'ba')
-                ->leftJoin('b.intls', 'bi', 'WITH', 'bi.locale = :locale')
-                ->leftJoin('b.mediaRelations', 'bmr')
-                ->leftJoin('bmr.media', 'bmrm')
-                ->addSelect('z')
-                ->addSelect('c')
-                ->addSelect('b')
-                ->addSelect('bt')
-                ->addSelect('ba')
-                ->addSelect('bi')
-                ->addSelect('bmr')
-                ->addSelect('bmrm');
-        }
-
-        if (!$offline) {
-            $queryBuilder->andWhere('p.publicationStart IS NULL OR p.publicationStart < CURRENT_TIMESTAMP()')
+        if (!$preview) {
+            $qb->andWhere('p.publicationStart IS NULL OR p.publicationStart < CURRENT_TIMESTAMP()')
                 ->andWhere('p.publicationEnd IS NULL OR p.publicationEnd > CURRENT_TIMESTAMP()')
                 ->andWhere('u.online = :online')
                 ->setParameter('online', true);
         }
 
-        return $queryBuilder;
+        return $qb;
     }
 }

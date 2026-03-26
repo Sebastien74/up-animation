@@ -25,6 +25,7 @@ use Monolog\Logger;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -67,7 +68,7 @@ class FormHelper
     }
 
     /**
-     * To set request.
+     * To set a request.
      */
     private function setRequest(): void
     {
@@ -78,7 +79,7 @@ class FormHelper
     /**
      * Execute FormHelper.
      *
-     * @throws ContainerExceptionInterface|MappingException|NonUniqueResultException|NotFoundExceptionInterface|\ReflectionException|InvalidArgumentException|ORMException
+     * @throws ContainerExceptionInterface|MappingException|NonUniqueResultException|NotFoundExceptionInterface|ReflectionException|InvalidArgumentException|ORMException
      */
     public function execute(
         ?string $formType = null,
@@ -87,8 +88,9 @@ class FormHelper
         array $options = [],
         mixed $formManager = null,
         bool $disableFlash = false,
-        ?string $view = null): void
-    {
+        ?string $view = null
+    ): void {
+
         $this->disableFlash = $disableFlash;
         if ($classname) {
             $this->setInterface($classname);
@@ -321,8 +323,6 @@ class FormHelper
 
     /**
      * Synchronize locale Media screens.
-     *
-     * @throws ORMException
      */
     private function setMediaScreen(Media $media): void
     {
@@ -348,7 +348,7 @@ class FormHelper
     /**
      * Set Form.
      *
-     * @throws MappingException|\ReflectionException
+     * @throws MappingException|ReflectionException
      */
     public function setForm(?string $formType = null, array $options = []): void
     {

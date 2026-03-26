@@ -1,3 +1,35 @@
+Modifier les routes 
+
+FAQ IMPORTANT : Et faire filtre si possible comme sur Sydev
+
+Les paginations dasn les index doir en haut en en bas
+
+FAIRE LE CACHE COMME PAGEREPOSITORY
+
+        $result = $this->cacheInterface->get($cacheKey, function () use ($website, $urlCode, $locale, $preview) {
+            $page = $this->optimizedQueryBuilder($website, $locale, $preview)
+                ->andWhere('u.code = :code')
+                ->andWhere('u.archived = :archived')
+                ->setParameter('code', $urlCode)
+                ->setParameter('archived', false)
+                ->getQuery()
+                ->enableResultCache(3600, 'page-'.$website->id.'-'.$urlCode.'-'.$locale)
+                ->getOneOrNullResult();
+            if ($page instanceof Page && $page->isInFill() && $page->getPages()->count() > 0) {
+                foreach ($page->getPages() as $page) {
+                    foreach ($page->getUrls() as $url) {
+                        if ($url->getLocale() === $locale && $url->isOnline()) {
+                            return ['redirection' => $url->getCode()];
+                        }
+                    }
+                }
+            }
+            return $page;
+        });
+
+#[Route('/admin-%security_token%/module/catalogs/booking', name: 'admin_catalogproductbooking')]
+#[IsGranted('ROLE_CATALOG')]
+
 Retirer les args non utilisés     public function indexesPages(
 mixed $entity,
 string $locale,
