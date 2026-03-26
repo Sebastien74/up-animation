@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+/* --------------------------------------------------------
+
+    Copyright  : 2019
+    Created on : 2019-10-31, 1:26 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT FONTS ROBOTO :
+    ====================
+
+-------------------------------------------------------- */
+
+@import "../../scss/vendor/mixin/fonts";
+
+$fontFamily: 'Hankengrotesk', sans-serif;
+
+$fonts: (
+    'Hankengrotesk-Thin': ('weight': 100, 'style': normal),
+    'Hankengrotesk-ThinItalic': ('weight': 100, 'style': italic),
+    'Hankengrotesk-ExtraLight': ('weight': 200, 'style': normal),
+    'Hankengrotesk-ExtraLightItalic': ('weight': 200, 'style': italic),
+    'Hankengrotesk-Light': ('weight': 300, 'style': normal),
+    'Hankengrotesk-LightItalic': ('weight': 300, 'style': italic),
+    'Hankengrotesk-Regular': ('weight': 400, 'style': normal),
+    'Hankengrotesk-Italic': ('weight': 400, 'style': italic),
+    'Hankengrotesk-Medium': ('weight': 500, 'style': normal),
+    'Hankengrotesk-MediumItalic': ('weight': 500, 'style': italic),
+    'Hankengrotesk-SemiBold': ('weight': 600, 'style': normal),
+    'Hankengrotesk-SemiBoldItalic': ('weight': 600, 'style': italic),
+    'Hankengrotesk-Bold': ('weight': 700, 'style': normal),
+    'Hankengrotesk-BoldItalic': ('weight': 700, 'style': italic),
+    'Hankengrotesk-ExtraBold': ('weight': 800, 'style': normal),
+    'Hankengrotesk-ExtraBoldItalic': ('weight': 800, 'style': italic),
+    'Hankengrotesk-Black': ('weight': 900, 'style': normal),
+    'Hankengrotesk-BlackItalic': ('weight': 900, 'style': italic),
+);
+
+@include font-face("Hankengrotesk", $fonts, sans-serif, woff2);

@@ -396,3 +396,117 @@ export function anchorsEvents() {
         events();
     });
 }
+
+export function initMainNavigationContext(nav) {
+
+    if (!nav) {
+        return;
+    }
+
+    let ticking = false;
+    let currentState = '';
+
+    /**
+     * Remove previous state classes from navigation.
+     */
+    function clearStateClasses() {
+        nav.classList.forEach((className) => {
+            if (
+                className === 'in-footer' ||
+                className === 'in-bg-none' ||
+                className.startsWith('in-bg-')
+            ) {
+                nav.classList.remove(className);
+            }
+        });
+    }
+
+    /**
+     * Return the first bg-* class found on an element.
+     *
+     * @param {HTMLElement} element
+     * @returns {string|null}
+     */
+    function getBackgroundClass(element) {
+        if (!element) {
+            return null;
+        }
+        return [...element.classList].find(className => className.startsWith('bg-')) || null;
+    }
+
+    /**
+     * Find the relevant element behind the navigation.
+     *
+     * We use elementsFromPoint() and ignore the navigation itself
+     * because it is fixed and overlays the page.
+     *
+     * @returns {HTMLElement|null}
+     */
+    function getElementBehindNavigation() {
+        const rect = nav.getBoundingClientRect();
+        const x = rect.left + (rect.width / 2);
+        const y = rect.top + (rect.height / 2);
+        const elements = document.elementsFromPoint(x, y);
+        return elements.find((element) => {
+            return element !== nav && !nav.contains(element);
+        }) || null;
+    }
+
+    /**
+     * Compute the state class to apply on navigation.
+     *
+     * @returns {string}
+     */
+    function resolveNavigationState() {
+        const elementBehind = getElementBehindNavigation();
+        if (!elementBehind) {
+            return 'in-bg-none';
+        }
+        const footer = elementBehind.closest('footer');
+        if (footer) {
+            return 'in-footer';
+        }
+        const zone = elementBehind.closest('.layout-zone');
+        if (!zone) {
+            return 'in-bg-none';
+        }
+        const bgClass = getBackgroundClass(zone);
+        if (!bgClass) {
+            return 'in-bg-none';
+        }
+        return `in-${bgClass}`;
+    }
+
+    /**
+     * Update navigation contextual class.
+     */
+    function updateNavigationState() {
+        const nextState = resolveNavigationState();
+        console.log(nextState)
+        if (nextState === currentState) {
+            return;
+        }
+        clearStateClasses();
+        nav.classList.add(nextState);
+        currentState = nextState;
+    }
+
+    /**
+     * Throttled update using requestAnimationFrame.
+     */
+    function requestUpdate() {
+        if (ticking) {
+            return;
+        }
+        ticking = true;
+        window.requestAnimationFrame(() => {
+            updateNavigationState();
+            ticking = false;
+        });
+    }
+
+    updateNavigationState();
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+}

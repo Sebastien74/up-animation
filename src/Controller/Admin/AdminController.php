@@ -14,6 +14,7 @@ use App\Form\Type\Core\PositionType;
 use App\Form\Type\Core\TreeType;
 use App\Model\Core\WebsiteModel;
 use App\Model\MediasModel;
+use App\Model\ViewModel;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\Persistence\Mapping\MappingException;
@@ -384,7 +385,7 @@ class AdminController extends BaseController
                 'iterations' => $service->getCount(),
             ]);
 
-            $ajaxView = $request->get('ajax-view');
+            $ajaxView = $request->query->get('ajax-view');
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $service->execute($form, $form->getData());
@@ -428,7 +429,7 @@ class AdminController extends BaseController
             $this->coreLocator->em()->persist($this->arguments['entity']);
             $this->coreLocator->em()->flush();
         }
-        if ($request->get('ajax')) {
+        if ($request->query->get('ajax')) {
             return new JsonResponse(['success' => true, 'redirection' => $redirection]);
         } elseif ($redirection) {
             return $redirection;

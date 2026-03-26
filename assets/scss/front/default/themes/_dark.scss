@@ -24,10 +24,10 @@ $gray-900: #121212 !global;
 
 $primary: #ff8b33 !global; // Plus lumineux pour le contraste sur sombre
 $primary-darken: darken($primary, 5%) !global;
-$secondary: #a0524d !global;
-$success: #8db014 !global; // Plus clair
-$info: #33a6cc !global; // Plus clair
-$warning: #f4c382 !global; // Plus clair
+$secondary: #22254e !global;
+$success: #5d7808 !global; // Plus clair
+$info: #0081ac !global; // Plus clair
+$warning: #f1ba12 !global; // Plus clair
 $danger: #c74d5a !global; // Plus clair
 $danger-light: #f4babb !global; // Plus clair
 $light: $gray-300 !global;

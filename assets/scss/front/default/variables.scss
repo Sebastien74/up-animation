@@ -54,7 +54,7 @@ $enable-thanks-modal: false !default;
 $enable-title-header: true !default;
 $enable-scroll-top-btn: true !default;
 $enable-gradient-btn: false !default;
-$enable-blur-btn: false !default;
+$enable-blur-btn: true !default;
 $enable-glass-btn: true !default;
 $enable-media-pictogram: false !default;
 $enable-media-secondary: false !default;
@@ -194,7 +194,7 @@ $container-fluid-side-limit: 'xl';
 @if not $enable-medias-queries {
     /** run yarn build:font-fallbacks */
     @font-face {
-        font-family: roboto-fallback;
+        font-family: font-fallback;
         src: url("../../../lib/fonts/Arial/Arial.ttf") format("truetype");
         size-adjust: 101.88323917%;
         ascent-override: 92.7734375%;
@@ -204,9 +204,9 @@ $container-fluid-side-limit: 'xl';
     }
 }
 
-$font-primary: 'Roboto', roboto-fallback, sans-serif !default;
-$font-light: 'Roboto', roboto-fallback, sans-serif !default;
-$font-secondary: 'Roboto', roboto-fallback, sans-serif !default;
+$font-primary: 'Hankengrotesk', font-fallback, sans-serif !default;
+$font-light: 'Hankengrotesk', font-fallback, sans-serif !default;
+$font-secondary: 'Hankengrotesk', font-fallback, sans-serif !default;
 $font-title: $font-primary !default;
 $theme-fonts: (
     'primary': ('font-family': $font-primary, 'line-height': 1),
@@ -985,11 +985,10 @@ $buttons: (
         'color-outline': $primary,
         'color-outline-hover': $white,
         'bg-glass': $primary,
-        'bg-glass-hover': darken($primary, 5%),
+        'bg-glass-hover': darken($primary, 15%),
         'color-glass': $white,
         'color-glass-hover': $white,
     ),
-
     'primary-darken': (
         'bg': $primary-darken,
         'border': $primary-darken,
@@ -1006,7 +1005,6 @@ $buttons: (
         'color-glass': $white,
         'color-glass-hover': $white,
     ),
-
     'secondary': (
         'bg': $secondary,
         'color': $white,
@@ -1021,7 +1019,6 @@ $buttons: (
         'color-glass': $white,
         'color-glass-hover': $white,
     ),
-
     'success': (
         'bg': $success,
         'color': $white,
@@ -1036,7 +1033,6 @@ $buttons: (
         'color-glass': $white,
         'color-glass-hover': $white,
     ),
-
     'info': (
         'bg': $info,
         'color': $white,
@@ -1051,7 +1047,6 @@ $buttons: (
         'color-glass': $white,
         'color-glass-hover': $white,
     ),
-
     'warning': (
         'bg': $warning,
         'color': $white,
@@ -1066,7 +1061,6 @@ $buttons: (
         'color-glass': $gray-900,
         'color-glass-hover': $gray-900,
     ),
-
     'danger': (
         'bg': $danger,
         'color': $white,
@@ -1081,7 +1075,6 @@ $buttons: (
         'color-glass': $white,
         'color-glass-hover': $white,
     ),
-
     'danger-light': (
         'bg': $danger-light,
         'color': $white,
@@ -1096,7 +1089,6 @@ $buttons: (
         'color-glass': $gray-900,
         'color-glass-hover': $gray-900,
     ),
-
     'light': (
         'bg': $light,
         'color': $black,
@@ -1112,7 +1104,6 @@ $buttons: (
         'color-glass': $gray-900,
         'color-glass-hover': $gray-900,
     ),
-
     'dark': (
         'bg': $dark,
         'color': $white,
@@ -1127,7 +1118,6 @@ $buttons: (
         'color-glass': $white,
         'color-glass-hover': $white,
     ),
-
     'dark-lighten': (
         'bg': $dark-lighten,
         'color': $white,
@@ -1142,7 +1132,6 @@ $buttons: (
         'color-glass': $white,
         'color-glass-hover': $white,
     ),
-
     'black': (
         'bg': $black,
         'color': $white,
@@ -1157,7 +1146,6 @@ $buttons: (
         'color-glass': $white,
         'color-glass-hover': $white,
     ),
-
     'white': (
         'bg': $white,
         'border': $white,
@@ -1172,8 +1160,8 @@ $buttons: (
         'border-outline-hover': $primary,
         'bg-glass': $white,
         'bg-glass-hover': darken($white, 4%),
-        'color-glass': $gray-900,
-        'color-glass-hover': $gray-900,
+        'color-glass': $white,
+        'color-glass-hover': $primary,
     ),
 );
 

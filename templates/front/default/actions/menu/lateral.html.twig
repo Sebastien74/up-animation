@@ -47,7 +47,7 @@
             {%- set linkClass = link.class~' nav-link fw-600 '~expand~' link-level-'~link.level -%}
             {%- set linkClass = link.children and not dropdownHover ? linkClass~' as-dropdown-toggle dropdown-toggle' : (link.children ? 'as-dropdown-toggle '~linkClass : linkClass) -%}
             {%- set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass -%}
-            {%- set linkClass = 1 == link.level ? linkClass~' text-initial text-white d-flex justify-content-end align-items-center text-end' : linkClass~' text-initial text-white' -%}
+            {%- set linkClass = 1 == link.level ? linkClass~' text-initial text-white btn btn-blur' : linkClass~' text-initial text-white' -%}
             {%- if link.level >= 3 -%}
                 {%- if haveIcons -%}
                     <div class="pictogram-wrap me-3">
@@ -66,9 +66,9 @@
                     {%- set linkLabel = link.linkLabel and link.level > 1 ? link.linkLabel : link.title -%}
                     {%- if link.media.haveMedia is defined and link.media.haveMedia -%}
                         {{ link.media|file }}
-                        <span class="d-lg-none" {% if pushMicroData %} itemprop="name" {% endif %}>{{ linkLabel|unescape|raw }}</span>
+                        <span class="d-lg-none"{% if pushMicroData %} itemprop="name" {% endif %}>{{ linkLabel|unescape|raw }}</span>
                     {%- else -%}
-                        <span class="link-label cursor{%- if link.level > 1 -%} text-secondary{%- endif -%}" {%- if pushMicroData -%} itemprop="name" {%- endif -%}>{{ linkLabel|unescape|raw }}</span>
+                        <span class="link-label cursor {% if link.level > 1 %}text-secondary{% else %}text-white{% endif %}" {% if pushMicroData %} itemprop="name" {% endif %}>{{ linkLabel|unescape|raw }}</span>
                     {%- endif -%}
                 </{% if 'a' == element %}a{% else %}div{% endif %}>
                 {%- if link.level >= 3 -%}

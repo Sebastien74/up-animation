@@ -448,66 +448,70 @@ picture {
         z-index: 1500;
     }
 
+    .main-wave-divider,
     .curve-divider-top,
     .wave-divider-top,
     .wave-divider-bottom {
+
         position: absolute;
         left: 0;
         width: 100%;
         overflow: hidden;
         line-height: 0;
+
+        svg {
+            position: relative;
+            display: block;
+        }
+
+        .shape-fill {
+            fill: $white;
+        }
+    }
+
+    .main-wave-divider {
+
+        bottom: 0;
+        z-index: 1000;
+
+        svg {
+            width: calc(300% + 1.3px);
+            height: 289px;
+        }
     }
 
     .curve-divider-top {
-
-        top: 0;
-
         svg {
-            position: relative;
-            display: block;
-            //width: calc(114% + 1.3px);
-            //height: 82px;
-            width: calc(110% + 1.3px);
             height: 50px;
-        }
-
-        .shape-fill {
-            fill: #FFFFFF;
         }
     }
 
-    .wave-divider-top {
-
-        top: 0;
-        transform: rotate(180deg);
-
+    .curve-divider-top,
+    .wave-divider-bottom {
         svg {
-            position: relative;
-            display: block;
-            width: calc(114% + 1.3px);
-            height: 173px;
-            transform: rotateY(180deg);
+            width: calc(110% + 1.3px);
         }
+    }
 
-        .shape-fill {
-            fill: #FFFFFF;
-        }
+    .main-wave-divider,
+    .wave-divider-top {
+        transform: rotate(180deg);
+    }
+
+    .curve-divider-top,
+    .wave-divider-top {
+        top: 0;
+    }
+
+    .main-wave-divider,
+    .wave-divider-bottom {
+        bottom: 0;
     }
 
     .wave-divider-bottom {
-
-        bottom: 0;
-
         svg {
-            position: relative;
-            display: block;
-            width: calc(114% + 1.3px);
-            height: 173px;
             transform: rotateY(180deg);
-        }
-
-        .shape-fill {
-            fill: #FFFFFF;
+            height: 173px;
         }
     }
 

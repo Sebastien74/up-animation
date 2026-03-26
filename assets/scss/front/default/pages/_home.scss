@@ -58,7 +58,42 @@ $enable-breadcrumb: false;
     }
 
     .carousel-caption {
+
         z-index: 500;
+
+        .content-wrap {
+
+            > strong {
+                @include rfs(20px);
+            }
+
+            .caption-title {
+                @include rfs(60px);
+                line-height: 109%;
+            }
+
+            .body * {
+                font-size: 1rem;
+            }
+        }
+    }
+
+    .main-wave-divider {
+
+        .shape-fill {
+
+            &:nth-child(1) {
+                fill: $secondary;
+            }
+
+            &:nth-child(2) {
+                fill: $primary;
+            }
+
+            &:nth-child(3) {
+                fill: $light;
+            }
+        }
     }
 
     //img, .right, .left {

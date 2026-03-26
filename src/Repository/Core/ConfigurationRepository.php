@@ -162,7 +162,6 @@ class ConfigurationRepository extends ServiceEntityRepository
                 return $object ? $blockType : true;
             }
         }
-
         return false;
     }
 }

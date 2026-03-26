@@ -46,6 +46,7 @@ class SliderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $isNew = !$builder->getData()->getId();
+        $websiteModel = $this->coreLocator->website();
 
         $adminName = new WidgetType\AdminNameType($this->coreLocator);
         $adminName->add($builder, [
@@ -58,7 +59,6 @@ class SliderType extends AbstractType
             'display' => 'search',
             'attr' => [
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-
                 'data-config' => true
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
@@ -71,7 +71,6 @@ class SliderType extends AbstractType
                 'label' => $this->translator->trans('Intervalle en millisecondes', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-
                     'data-config' => true
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
@@ -82,7 +81,6 @@ class SliderType extends AbstractType
                 'display' => 'search',
                 'attr' => [
                     'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-
                     'data-config' => true
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
@@ -93,8 +91,10 @@ class SliderType extends AbstractType
             ]);
 
             $builder->add('backgroundColor', WidgetType\BackgroundColorSelectType::class, [
-                'attr' => ['class' => 'col-12 select-icons',
-                    'data-config' => true],
+                'attr' => [
+                    'class' => 'col-12 select-icons',
+                    'data-config' => true
+                ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
@@ -103,7 +103,6 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-
                     'data-config' => true
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
@@ -114,7 +113,6 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-
                     'data-config' => true
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
@@ -125,7 +123,6 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-
                     'data-config' => true
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
@@ -135,7 +132,6 @@ class SliderType extends AbstractType
                 'label' => $this->translator->trans("Nombre d'images par slide (Mobile)", [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-
                     'data-config' => true
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
@@ -146,7 +142,6 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-
                     'data-config' => true
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
@@ -157,7 +152,6 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-
                     'data-config' => true
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
@@ -168,7 +162,6 @@ class SliderType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
-
                     'data-config' => true
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
@@ -305,9 +298,12 @@ class SliderType extends AbstractType
                 'label' => $this->translator->trans('Couleur des flèches de navigation', [], 'admin'),
                 'cta' => false,
                 'ctaColors' => false,
-                'gradientColors' => false,
-                'attr' => ['class' => 'col-12 select-icons',
-                    'data-config' => true],
+                'gradientColors' => $websiteModel->configuration->customModules->gradientColors,
+                'glassColors' => $websiteModel->configuration->customModules->glassColors,
+                'attr' => [
+                    'class' => 'col-12 select-icons',
+                    'data-config' => true
+                ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             ]);
 

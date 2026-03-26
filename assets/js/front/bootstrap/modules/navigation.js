@@ -1,4 +1,4 @@
-import {activeClasses, scrollEvent} from "./navigation-functions";
+import {activeClasses, scrollEvent, initMainNavigationContext} from "./navigation-functions";
 
 /**
  * Navigation.
@@ -58,4 +58,5 @@ export default function () {
 
     activeClasses(mainNavigation);
     scrollEvent(mainNavigation);
+    initMainNavigationContext(mainNavigation);
 }
