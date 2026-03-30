@@ -95,7 +95,7 @@ body {
         background: transparentize($white, .95);
         z-index: 2500;
         max-width: 390px;
-        bottom: 3rem;
+        bottom: 1.5rem;
         right: 5rem;
 
         opacity: 1;
@@ -448,9 +448,23 @@ picture {
         z-index: 1500;
     }
 
-    .main-wave-divider,
-    .curve-divider-top,
+    &.zone-wave-top {
+        margin-top: -148px;
+    }
+
+    .wave-divider-top {
+        top: -148px;
+    }
+
+    .wave-divider-top svg {
+        width: calc(162% + 1.3px);
+        height: 148px;
+    }
+
     .wave-divider-top,
+    .curve-divider-top,
+    .curve-divider-bottom-left,
+    .wave-divider-top-inner,
     .wave-divider-bottom {
 
         position: absolute;
@@ -458,6 +472,7 @@ picture {
         width: 100%;
         overflow: hidden;
         line-height: 0;
+        z-index: 500;
 
         svg {
             position: relative;
@@ -469,11 +484,29 @@ picture {
         }
     }
 
-    .main-wave-divider {
+    @each $suffix, $color in $theme-colors {
+        &.bg-#{$suffix} {
+            .curve-divider-bottom-left,
+            .wave-divider-top {
+                .shape-fill {
+                    fill: $color;
+                }
+            }
+        }
+    }
 
-        bottom: 0;
-        z-index: 1000;
+    .curve-divider-bottom-left {
 
+        bottom: -74px;
+        transform: rotatex(180deg);
+
+        svg {
+            width: calc(298% + 1.3px);
+            height: 74px;
+        }
+    }
+
+    .wave-shadow-divider-bottom {
         svg {
             width: calc(300% + 1.3px);
             height: 289px;
@@ -493,30 +526,36 @@ picture {
         }
     }
 
-    .main-wave-divider,
-    .wave-divider-top {
+    .wave-shadow-divider-bottom,
+    .wave-divider-top-inner {
         transform: rotate(180deg);
     }
 
     .curve-divider-top,
-    .wave-divider-top {
-        top: 0;
+    .wave-divider-top-inner {
+        top: -1px;
     }
 
-    .main-wave-divider,
+    .wave-shadow-divider-bottom,
     .wave-divider-bottom {
         bottom: 0;
     }
 
     .wave-divider-bottom {
         svg {
-            transform: rotateY(180deg);
             height: 173px;
         }
     }
 
+    .wave-divider-top,
+    .wave-divider-bottom {
+        svg {
+            transform: rotateY(180deg);
+        }
+    }
+
     > .zone-container {
-        z-index: 100;
+        z-index: 600;
     }
 
     &.parallax {

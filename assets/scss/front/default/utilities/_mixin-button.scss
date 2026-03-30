@@ -318,22 +318,49 @@
 
     @if $enable-glass-btn {
 
+        body .btn.btn-blur-#{$suffix} {
+
+            background: transparentize(map-get($config, 'bg-blur'), .85);
+            color: map-get($config, 'color-blur');
+            i {
+                color: map-get($config, 'color-blur');
+            }
+
+            @include mediaQuery(min-lg) {
+                &:hover,
+                &:focus,
+                &:active,
+                &.active {
+                    background: transparentize(map-get($config, 'bg-blur-hover'), .85);
+                    color: map-get($config, 'color-blur-hover');
+                    i {
+                        color: map-get($config, 'color-blur-hover');
+                    }
+                }
+            }
+        }
+    }
+
+    @if $enable-glass-btn {
+
         body .btn.btn-glass-#{$suffix} {
 
-            @if $suffix == 'white' {
-                border: 1px solid rgba(255, 255, 255, 0.95) !important;
-                background: linear-gradient(
-                        350deg,
-                        rgba(255, 255, 255, 0.70) 0%,
-                        rgba(255, 255, 255, 0.50) 10%,
-                        rgba(255, 255, 255, 0.40) 20%,
-                        rgba(255, 255, 255, 0.20) 30%,
-                        rgba(255, 255, 255, 0.15) 45%,
-                        rgba(255, 255, 255, 0.13) 60%,
-                        rgba(255, 255, 255, 0.10) 80%,
-                        rgba(255, 255, 255, 0.05) 100%
-                );
-            } @else if map-has-key($config, 'bg-glass') {
+            //@if $suffix == 'white' {
+            //    border: 1px solid rgba(255, 255, 255, 0.95) !important;
+            //    background: linear-gradient(
+            //            350deg,
+            //            rgba(255, 255, 255, 0.70) 0%,
+            //            rgba(255, 255, 255, 0.50) 10%,
+            //            rgba(255, 255, 255, 0.40) 20%,
+            //            rgba(255, 255, 255, 0.20) 30%,
+            //            rgba(255, 255, 255, 0.15) 45%,
+            //            rgba(255, 255, 255, 0.13) 60%,
+            //            rgba(255, 255, 255, 0.10) 80%,
+            //            rgba(255, 255, 255, 0.05) 100%
+            //    );
+            //}
+            //@else if map-has-key($config, 'bg-glass') {
+            @if map-has-key($config, 'bg-glass') {
                 border: 1px solid rgba(map-get($config, 'bg-glass'), 0.35) !important;
                 background: linear-gradient(
                         315deg,
@@ -397,7 +424,8 @@
                                 rgba(255, 255, 255, 0.12) 80%,
                                 rgba(255, 255, 255, 0.08) 100%
                         );
-                    } @else if map-has-key($config, 'bg-glass-hover') {
+                    }
+                    @else if map-has-key($config, 'bg-glass-hover') {
                         border-color: rgba(map-get($config, 'bg-glass-hover'), 0.5) !important;
                         background: linear-gradient(
                                 315deg,

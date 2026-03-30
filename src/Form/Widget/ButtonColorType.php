@@ -46,6 +46,7 @@ class ButtonColorType extends AbstractType
             'ctaColors' => $this->customModules->ctaColors,
             'gradientColors' => $this->customModules->gradientColors,
             'glassColors' => $this->customModules->glassColors,
+            'blurColors' => $this->customModules->blurColors,
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'attr' => function (OptionsResolver $attr) {
                 $attr->setDefaults([
@@ -81,6 +82,12 @@ class ButtonColorType extends AbstractType
         $this->colors[''] = '';
         $this->colors['link'] = '#ffffff';
 
+        $btnsTypes = [
+            'gradient' => 'Bouton dégradé',
+            'glass' => 'Bouton verre',
+            'blur' => 'Bouton opaque',
+        ];
+
         foreach ($colors as $color) {
             if ('button' === $color->getCategory() && $color->isActive()) {
                 if (!self::GRADIENTS_FIRST) {
@@ -91,13 +98,11 @@ class ButtonColorType extends AbstractType
                 if (!str_contains($color->getSlug(), 'outline') && str_contains($color->getSlug(), 'btn')) {
                     $ctaValue = str_replace(['btn'], ['cta'], $color->getSlug());
                     $this->colors[$ctaValue] = $color->getColor();
-                    if ($options['gradientColors']) {
-                        $gradientValue = str_replace(['btn'], ['btn-gradient btn-gradient'], $color->getSlug());
-                        $this->colors[$gradientValue] = $color->getColor();
-                    }
-                    if ($options['glassColors']) {
-                        $glassValue = str_replace(['btn'], ['btn-glass btn-glass'], $color->getSlug());
-                        $this->colors[$glassValue] = $color->getColor();
+                    foreach ($btnsTypes as $type => $label) {
+                        if ($options[$type.'Colors']) {
+                            $btnValue = str_replace(['btn'], ['btn-'.$type.' btn-'.$type], $color->getSlug());
+                            $this->colors[$btnValue] = $color->getColor();
+                        }
                     }
                     $linkValue = str_replace(['btn'], ['text'], $color->getSlug());
                     $this->colors[$linkValue] = $color->getColor();
@@ -105,22 +110,14 @@ class ButtonColorType extends AbstractType
             }
         }
 
-        if ($options['gradientColors']) {
-            foreach ($defaultChoices as $label => $value) {
-                if (!str_contains($value, 'outline') && str_contains($value, 'btn') && !str_contains($value, 'white')) {
-                    $label = str_replace(['Bouton', 'Button'], ['Bouton dégradé'], $label);
-                    $value = str_replace(['btn'], ['btn-gradient btn-gradient'], $value);
-                    $choices[$label] = $value;
-                }
-            }
-        }
-
-        if ($options['glassColors']) {
-            foreach ($defaultChoices as $label => $value) {
-                if (!str_contains($value, 'outline') && str_contains($value, 'btn')) {
-                    $label = str_replace(['Bouton', 'Button'], ['Bouton verre'], $label);
-                    $value = str_replace(['btn'], ['btn-glass btn-glass'], $value);
-                    $choices[$label] = $value;
+        foreach ($btnsTypes as $type => $labelBtn) {
+            if ($options[$type.'Colors']) {
+                foreach ($defaultChoices as $label => $value) {
+                    if (!str_contains($value, 'outline') && str_contains($value, 'btn')) {
+                        $label = str_replace(['Bouton', 'Button'], [$labelBtn], $label);
+                        $value = str_replace(['btn'], ['btn-'.$type.' btn-'.$type], $value);
+                        $choices[$label] = $value;
+                    }
                 }
             }
         }

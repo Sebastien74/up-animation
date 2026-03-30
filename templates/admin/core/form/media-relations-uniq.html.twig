@@ -3,7 +3,7 @@
 {%- set interfaceName = interfaceName is defined ? interfaceName : (interface.name is defined ? interface.name : false) -%}
 {%- set displayTitleCard = displayTitleCard is defined ? displayTitleCard : true -%}
 {%- set libraryBtnPosition = libraryBtnPosition is defined ? libraryBtnPosition : 'top' -%}
-{%- set onlyMedia = children.media.children.imageFile.vars.attr.onlyMedia is defined ? children.media.children.imageFile.vars.attr.onlyMedia : false -%}
+{%- set onlyMedia = children.media.children.uploadedFile.vars.attr.onlyMedia is defined ? children.media.children.uploadedFile.vars.attr.onlyMedia : false -%}
 {%- set configuration = website().configuration -%}
 {%- set defaultLocale = configuration.locale -%}
 {%- set allLocales = configuration.allLocales -%}
@@ -54,7 +54,7 @@
 
         {%- set locale = mediaRelation.vars.value.locale -%}
         {%- set mediaRelationId = mediaRelation.vars.value.id -%}
-        {%- set onlyMedia = mediaRelation.media.imageFile.vars.attr.onlyMedia is defined and mediaRelation.media.imageFile.vars.attr.onlyMedia -%}
+        {%- set onlyMedia = mediaRelation.media.uploadedFile.vars.attr.onlyMedia is defined and mediaRelation.media.uploadedFile.vars.attr.onlyMedia -%}
         {%- set asMediaScreen = onlyMedia and mediaRelation.media.mediaScreens is defined -%}
         {%- set screenSize = mediaRelation.vars.data.media.screen is defined ? mediaRelation.vars.data.media.screen : null -%}
 
@@ -81,7 +81,7 @@
                                 btnId: "#open-modal-"~mediaRelation.vars.value.id,
                             },
                         } only -%}
-                        {{ form_row(mediaRelation.media.imageFile) }}
+                        {{ form_row(mediaRelation.media.uploadedFile) }}
                     </div>
             {%- else -%}
                 <div class="col-md-{% if onlyMedia %}12{% else %}7{% endif %} mb-2">
@@ -89,7 +89,7 @@
                         {%- if libraryBtnPosition == 'top' -%}
                             {%- include 'admin/page/media/modal-btn.html.twig' -%}
                         {%- endif -%}
-                        {{ form_row(mediaRelation.media.imageFile) }}
+                        {{ form_row(mediaRelation.media.uploadedFile) }}
                         {%- if libraryBtnPosition == 'bottom' -%}
                             {%- include 'admin/page/media/modal-btn.html.twig' -%}
                         {%- endif -%}
@@ -196,7 +196,7 @@
                                     btnId: "#open-screen-modal-"~screen.vars.value.id,
                                 },
                             } only -%}
-                            {{ form_row(screen.imageFile) }}
+                            {{ form_row(screen.uploadedFile) }}
                         </div>
                         <h4 class="text-center text-uppercase screen-title mb-3">{{ screen.vars.value.screen }}{%- if 'vtt' == screen.vars.value.screen -%} {{ '(Sous-titres)'|trans|raw }}{%- endif -%}</h4>
                     </div>

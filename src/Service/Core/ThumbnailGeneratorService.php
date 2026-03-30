@@ -57,11 +57,11 @@ class ThumbnailGeneratorService
         /** DB Files */
         $medias = $this->entityManager->getRepository(Media::class)->findBy(['website' => $website]);
         foreach ($medias as $media) {
-            $filename = $media->getFilename();
+            $filename = $media->getOriginalName();
             $extension = $media->getExtension();
             if ($filename && !in_array($filename, $files) && $extension && in_array($extension, self::ALLOWED_EXTENSIONS)) {
-                $dirname = $uploadDirname.$media->getFilename();
-                $files[] = ['dirname' => str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname), 'filename' => $media->getFilename()];
+                $dirname = $uploadDirname.$media->getOriginalName();
+                $files[] = ['dirname' => str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname), 'filename' => $media->getOriginalName()];
             }
         }
 
@@ -88,7 +88,7 @@ class ThumbnailGeneratorService
         $dirname = str_replace('/', '\\', $dirname);
         $matches = explode('\\', $dirname);
         $filename = end($matches);
-        $media = $this->entityManager->getRepository(Media::class)->findOneBy(['website' => $website, 'filename' => $filename]);
+        $media = $this->entityManager->getRepository(Media::class)->findOneBy(['website' => $website, 'originalName' => $filename]);
         if ($media instanceof Media) {
             $thumbConfiguration = $this->thumbnailRuntime->thumbConfiguration($media, $thumbConfiguration);
             try {

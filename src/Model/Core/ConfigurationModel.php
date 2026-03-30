@@ -26,8 +26,9 @@ final class ConfigurationModel extends BaseModel
         'linkColors' => true,
         'cta' => false,
         'ctaColors' => false,
-        'gradientColors' => true,
-        'glassColors' => true,
+        'gradientColors' => false,
+        'glassColors' => false,
+        'blurColors' => true,
     ];
 
     private static array $cache = [];

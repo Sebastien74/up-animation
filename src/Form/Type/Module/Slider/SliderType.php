@@ -300,6 +300,7 @@ class SliderType extends AbstractType
                 'ctaColors' => false,
                 'gradientColors' => $websiteModel->configuration->customModules->gradientColors,
                 'glassColors' => $websiteModel->configuration->customModules->glassColors,
+                'blurColors' => $websiteModel->configuration->customModules->blurColors,
                 'attr' => [
                     'class' => 'col-12 select-icons',
                     'data-config' => true

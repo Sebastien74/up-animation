@@ -1,8 +1,23 @@
+https://themeforest.net/item/fizcon-event-meeting-conference-html5-template/23255731
+https://velikorodnov.com/html/ewent/index.html
+https://themeforest.net/item/eventify-event-conference-html-bootstrap-5-template/54967506
+https://themeforest.net/item/miexpo-event-conference-html-template/25251151
+https://themeforest.net/item/konfer-conference-and-event-html-template/57222036
+https://themeforest.net/item/evantbiz-conference-events-html-template/57886763
+https://themeforest.net/item/eventen-event-conference-html-templates/53137181
+https://themeforest.net/item/evntox-event-conference-html5-template/32251210
+https://themeforest.net/item/eventro-event-conference-html-template/60883128
+https://themeforest.net/item/conat-event-conference-vuejs-template/61240859
+https://preview.themeforest.net/item/konfer-react-event-conference-meetup-template/full_screen_preview/58424763
+https://preview.themeforest.net/item/eventen-event-conference-meetup-react-templates/full_screen_preview/58292518
+
 Modifier les routes 
 
 FAQ IMPORTANT : Et faire filtre si possible comme sur Sydev
 
 Les paginations dasn les index doir en haut en en bas
+
+Quand HUNI faire une function pour géré les paralaxx et virer le truc de Flo
 
 FAIRE LE CACHE COMME PAGEREPOSITORY
 
@@ -573,7 +588,7 @@ Mettre les Crawler URLS et Meta dans CMS
         $dirname = str_replace('/', '\\', $dirname);
         $matches = explode('\\', $dirname);
         $filename = end($matches);
-        $media = $this->entityManager->getRepository(Media::class)->findOneBy(['website' => $website, 'filename' => $filename]);
+        $media = $this->entityManager->getRepository(Media::class)->findOneBy(['website' => $website, 'originalName' => $filename]);
         if ($media instanceof Media) {
             $thumbConfiguration = $this->thumbnailRuntime->thumbConfiguration($media, $thumbConfiguration);
             try {

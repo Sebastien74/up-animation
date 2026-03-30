@@ -104,6 +104,8 @@ $black: #000 !default;
 $primary: #ff7100 !default;
 $primary-darken: darken($primary, 5%) !default;
 $secondary: #22254e !default;
+$secondary-light: #4e5071 !default;
+$beige: #dfcbaf !default;
 $success: #aeba2b !default;
 $info: #0081ac !default;
 $warning: #f1ba12 !default;
@@ -116,7 +118,7 @@ $dark-lighten: $gray-800 !default;
 $focus-color: #ff9800 !default;
 
 $body-bg: $white !default;
-$body-color: $dark !default;
+$body-color: $secondary !default;
 
 $footer-bg: $gray-700 !default;
 $footer-color: $white !default;
@@ -133,6 +135,8 @@ $theme-colors: (
     'primary': $primary,
     'primary-darken': $primary-darken,
     'secondary': $secondary,
+    'secondary-light': $secondary-light,
+    'beige': $beige,
     'success': $success,
     'info': $info,
     'warning': $warning,
@@ -234,7 +238,7 @@ $font-size-h3: 25px;
 $font-size-h4: 18px;
 $font-size-h5: 18px;
 $font-size-h6: 18px;
-$font-size-sub-title: 25px;
+$font-size-sub-title: 20px;
 $font-size-paragraph: $font-size-base;
 $font-size-news-teaser-control: 30px;
 $font-size-card-title: rem(35px);
@@ -301,8 +305,8 @@ $elements: map-merge((
     ),
     'h2, h2 a, .h2, .h2 a': (
         'properties': (
-            'color': $body-color,
-            'font-weight': 800,
+            'color': $secondary,
+            'font-weight': 900,
             'font-family': $font-title,
             'text-transform': uppercase,
         ),
@@ -310,15 +314,15 @@ $elements: map-merge((
             'primary': $white,
             'primary-gradient': $white,
             'secondary': $primary,
-            'success': $primary,
-            'info': $primary,
-            'warning': $primary,
-            'danger': $primary,
+            'success': $secondary,
+            'info': $white,
+            'warning': $secondary,
+            'danger': $white,
             'danger-light': $primary,
-            'light': $primary,
+            'light': $secondary,
             'dark': $primary,
             'dark-lighten': $primary,
-            'white': $body-color,
+            'white': $secondary,
         )
     ),
     'h2 span, .h2 span': (
@@ -787,6 +791,7 @@ $elements: map-merge((
 
 $content-page-full-width: 2000px;
 $content-page-box-width: 1600px;
+$content-box: $content-page-full-width;
 $enable-caret: false;
 
 /*-- h - Border radius --*/
@@ -943,7 +948,8 @@ $pagination-padding-x-lg: 1.5rem !default;
 -----------------------------------*/
 
 $btn-border-width: 1px;
-$btn-border-radius: $border-radius;
+$btn-border-radius: 22px;
+$btn-blur-border-radius: 24px;
 $btn-min-height: 50px;
 
 $btn-white-space: normal;
@@ -988,6 +994,10 @@ $buttons: (
         'bg-glass-hover': darken($primary, 15%),
         'color-glass': $white,
         'color-glass-hover': $white,
+        'bg-blur': $primary,
+        'bg-blur-hover': darken($primary, 15%),
+        'color-blur': $primary,
+        'color-blur-hover': $primary,
     ),
     'primary-darken': (
         'bg': $primary-darken,
@@ -1004,6 +1014,10 @@ $buttons: (
         'bg-glass-hover': darken($primary-darken, 5%),
         'color-glass': $white,
         'color-glass-hover': $white,
+        'bg-blur': $primary-darken,
+        'bg-blur-hover': darken($primary-darken, 15%),
+        'color-blur': $primary-darken,
+        'color-blur-hover': $primary-darken,
     ),
     'secondary': (
         'bg': $secondary,
@@ -1018,6 +1032,10 @@ $buttons: (
         'bg-glass-hover': lighten($secondary, 5%),
         'color-glass': $white,
         'color-glass-hover': $white,
+        'bg-blur': $secondary,
+        'bg-blur-hover': darken($secondary, 15%),
+        'color-blur': $secondary,
+        'color-blur-hover': $secondary,
     ),
     'success': (
         'bg': $success,
@@ -1032,6 +1050,10 @@ $buttons: (
         'bg-glass-hover': darken($success, 5%),
         'color-glass': $white,
         'color-glass-hover': $white,
+        'bg-blur': $primary,
+        'bg-blur-hover': darken($primary, 15%),
+        'color-blur': $white,
+        'color-blur-hover': $white,
     ),
     'info': (
         'bg': $info,
@@ -1046,6 +1068,10 @@ $buttons: (
         'bg-glass-hover': darken($info, 5%),
         'color-glass': $white,
         'color-glass-hover': $white,
+        'bg-blur': $info,
+        'bg-blur-hover': darken($info, 15%),
+        'color-blur': $info,
+        'color-blur-hover': $info,
     ),
     'warning': (
         'bg': $warning,
@@ -1060,6 +1086,10 @@ $buttons: (
         'bg-glass-hover': darken($warning, 5%),
         'color-glass': $gray-900,
         'color-glass-hover': $gray-900,
+        'bg-blur': $warning,
+        'bg-blur-hover': darken($warning, 15%),
+        'color-blur': $warning,
+        'color-blur-hover': $warning,
     ),
     'danger': (
         'bg': $danger,
@@ -1074,6 +1104,10 @@ $buttons: (
         'bg-glass-hover': darken($danger, 5%),
         'color-glass': $white,
         'color-glass-hover': $white,
+        'bg-blur': $danger,
+        'bg-blur-hover': darken($danger, 15%),
+        'color-blur': $danger,
+        'color-blur-hover': $danger,
     ),
     'danger-light': (
         'bg': $danger-light,
@@ -1088,6 +1122,10 @@ $buttons: (
         'bg-glass-hover': darken($danger-light, 5%),
         'color-glass': $gray-900,
         'color-glass-hover': $gray-900,
+        'bg-blur': $danger-light,
+        'bg-blur-hover': darken($danger-light, 15%),
+        'color-blur': $danger-light,
+        'color-blur-hover': $danger-light,
     ),
     'light': (
         'bg': $light,
@@ -1103,6 +1141,10 @@ $buttons: (
         'bg-glass-hover': darken($light, 5%),
         'color-glass': $gray-900,
         'color-glass-hover': $gray-900,
+        'bg-blur': $light,
+        'bg-blur-hover': darken($light, 15%),
+        'color-blur': $light,
+        'color-blur-hover': $light,
     ),
     'dark': (
         'bg': $dark,
@@ -1117,6 +1159,10 @@ $buttons: (
         'bg-glass-hover': lighten($dark, 5%),
         'color-glass': $white,
         'color-glass-hover': $white,
+        'bg-blur': $dark,
+        'bg-blur-hover': darken($dark, 15%),
+        'color-blur': $dark,
+        'color-blur-hover': $dark,
     ),
     'dark-lighten': (
         'bg': $dark-lighten,
@@ -1131,6 +1177,10 @@ $buttons: (
         'bg-glass-hover': lighten($dark-lighten, 5%),
         'color-glass': $white,
         'color-glass-hover': $white,
+        'bg-blur': $dark-lighten,
+        'bg-blur-hover': darken($dark-lighten, 15%),
+        'color-blur': $dark-lighten,
+        'color-blur-hover': $dark-lighten,
     ),
     'black': (
         'bg': $black,
@@ -1145,6 +1195,10 @@ $buttons: (
         'bg-glass-hover': lighten($black, 8%),
         'color-glass': $white,
         'color-glass-hover': $white,
+        'bg-blur': $black,
+        'bg-blur-hover': darken($black, 15%),
+        'color-blur': $black,
+        'color-blur-hover': $black,
     ),
     'white': (
         'bg': $white,
@@ -1162,6 +1216,10 @@ $buttons: (
         'bg-glass-hover': darken($white, 4%),
         'color-glass': $white,
         'color-glass-hover': $primary,
+        'bg-blur': $white,
+        'bg-blur-hover': darken($white, 15%),
+        'color-blur': $white,
+        'color-blur-hover': $white,
     ),
 );
 

@@ -70,6 +70,7 @@ class DoctrineEventsListener
     private bool $inAdmin;
     private array $entities = [];
     private array $objects = [];
+    private array $processedMasterEntities = [];
 
     /**
      * DoctrineEventsListener constructor.
@@ -136,7 +137,7 @@ class DoctrineEventsListener
                     $this->setMasterField($entity, true);
                     $this->objects[$classname][$entity->getId()] = $entity;
                 }
-                if ($this->coreLocator->inAdmin()) {
+                if ($this->coreLocator->inAdmin() && $entity) {
                     $this->removeCacheFiles($entity);
                 }
             }
@@ -212,9 +213,17 @@ class DoctrineEventsListener
         if ($masterField && 'website' !== $masterField) {
             $method = 'get'.ucfirst($masterField);
             $masterEntity = method_exists($entity, $method) ? $entity->$method() : null;
-            if (is_object($masterEntity) && method_exists($masterEntity, 'setUpdatedAt')) {
-                $masterEntity->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
-                $this->coreLocator->em()->persist($masterEntity);
+            if (is_object($masterEntity)) {
+                $classname = str_replace('Proxies\__CG__\\', '', get_class($masterEntity));
+                $entityId = method_exists($masterEntity, 'getId') ? $masterEntity->getId() : null;
+                $processedKey = $classname.($entityId ? ':'.$entityId : '');
+
+                if (!isset($this->processedMasterEntities[$processedKey]) && method_exists($masterEntity, 'setUpdatedAt')) {
+                    $masterEntity->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
+                    $this->coreLocator->em()->persist($masterEntity);
+                    $this->processedMasterEntities[$processedKey] = true;
+                    $this->setMasterField($masterEntity);
+                }
             }
         }
     }
@@ -296,7 +305,9 @@ class DoctrineEventsListener
                     $finder = Finder::create();
                     $finder->files()->in($this->coreLocator->cacheDir())->name('*'.$filename.'*');
                     foreach ($finder as $file) {
-                        $filesystem->remove($file->getRealPath());
+                        if ($file->getRealPath()) {
+                            $filesystem->remove($file->getRealPath());
+                        }
                     }
                 }
             }

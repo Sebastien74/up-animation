@@ -1,0 +1,151 @@
+$grid-columns: 12;
+
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px,
+    xxxl: 1600px,
+);
+
+/* =========================================================
+   BASE GRID
+   ========================================================= */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat($grid-columns, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 0;
+
+    > .layout-block {
+        --item-span: 12;
+        grid-column: span var(--item-span);
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+/* =========================================================
+   BOOTSTRAP COL -> ITEM SPAN
+   ========================================================= */
+
+@for $i from 1 through $grid-columns {
+    .cards-grid > .col-#{$i} {
+        --item-span: #{$i};
+    }
+}
+
+@each $bp, $min in $grid-breakpoints {
+    @if $bp != xs {
+        @media (min-width: $min) {
+            @for $i from 1 through $grid-columns {
+                .cards-grid > .col-#{$bp}-#{$i} {
+                    --item-span: #{$i};
+                }
+            }
+        }
+    }
+}
+
+/* =========================================================
+   ALIGNMENT MIXINS
+   On n'aligne explicitement que les spans "larges" (7 -> 11)
+   pour ne jamais casser les vraies grilles multi-colonnes
+   comme 6/6/6/6.
+   ========================================================= */
+
+@mixin layout-col-align-base($mode) {
+    @for $i from 7 through 11 {
+        @if $mode == start {
+            > .cards-grid > .col-#{$i} {
+                grid-column: 1 / span #{$i};
+            }
+        } @else if $mode == center {
+            > .cards-grid > .col-#{$i} {
+                grid-column: #{floor((12 - $i) / 2) + 1} / span #{$i};
+            }
+        } @else if $mode == end {
+            > .cards-grid > .col-#{$i} {
+                grid-column: #{12 - $i + 1} / span #{$i};
+            }
+        }
+    }
+}
+
+@mixin layout-col-align-breakpoint($bp, $mode) {
+    @for $i from 7 through 11 {
+        @if $mode == start {
+            > .cards-grid > .col-#{$bp}-#{$i} {
+                grid-column: 1 / span #{$i};
+            }
+        } @else if $mode == center {
+            > .cards-grid > .col-#{$bp}-#{$i} {
+                grid-column: #{floor((12 - $i) / 2) + 1} / span #{$i};
+            }
+        } @else if $mode == end {
+            > .cards-grid > .col-#{$bp}-#{$i} {
+                grid-column: #{12 - $i + 1} / span #{$i};
+            }
+        }
+    }
+}
+
+/* =========================================================
+   BASE ALIGNMENT FROM .layout-col
+   ========================================================= */
+
+.layout-col.justify-content-start {
+    @include layout-col-align-base(start);
+}
+
+.layout-col.justify-content-center {
+    @include layout-col-align-base(center);
+}
+
+.layout-col.justify-content-end {
+    @include layout-col-align-base(end);
+}
+
+/* =========================================================
+   RESPONSIVE ALIGNMENT FROM .layout-col
+   ========================================================= */
+
+@each $bp, $min in $grid-breakpoints {
+    @if $bp != xs {
+        @media (min-width: $min) {
+            .layout-col.justify-content-#{$bp}-start {
+                @include layout-col-align-breakpoint($bp, start);
+            }
+
+            .layout-col.justify-content-#{$bp}-center {
+                @include layout-col-align-breakpoint($bp, center);
+            }
+
+            .layout-col.justify-content-#{$bp}-end {
+                @include layout-col-align-breakpoint($bp, end);
+            }
+        }
+    }
+}
+
+/* =========================================================
+   OPTIONAL: vertical gaps helpers
+   ========================================================= */
+
+.cards-grid.grid-gap-sm {
+    row-gap: 0.75rem;
+}
+
+.cards-grid.grid-gap-md {
+    row-gap: 1rem;
+}
+
+.cards-grid.grid-gap-lg {
+    row-gap: 1.5rem;
+}

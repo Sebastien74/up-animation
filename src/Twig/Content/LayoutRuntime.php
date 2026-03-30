@@ -229,7 +229,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $shadowClass = $this->shadowClasses($zone);
         $alignment = $this->getValue($zone, 'alignment');
 
-        $class = $backgroundColor != ('' and 'transparent') && $this->getValue($zone, 'backgroundFullSize') ? ' '.$backgroundColor.' ' : ' bg-none';
+        $class = $backgroundColor != ('' and 'transparent') && $this->getValue($zone, 'backgroundFullSize') ? ' '.$backgroundColor.' ' : ' bg-white';
         $class .= ' position-'.$this->getValue($zone, 'position');
         $class .= $this->getHiddenClasses($zone);
         $class .= $customClass ? ' '.$customClass : '';

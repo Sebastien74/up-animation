@@ -12,10 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Media.
@@ -26,7 +23,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Index(columns: ['originalName'], flags: ['fulltext'])]
 #[ORM\Index(columns: ['name'], flags: ['fulltext'])]
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
-#[Vich\Uploadable]
 #[ORM\AssociationOverrides([
     new ORM\AssociationOverride(
         name: 'categories',
@@ -60,18 +56,6 @@ class Media extends BaseInterface
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $originalName = null;
-
-    #[ORM\Column(type: Types::JSON, nullable: true)]
-    private ?array $dimensions = [];
-
-    #[Vich\UploadableField(
-        mapping: 'media',
-        fileNameProperty: 'originalName',
-        size: 'size',
-        mimeType: 'mimeType',
-        dimensions: 'dimensions'
-    )]
-    private ?File $imageFile = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $extension = null;
@@ -201,44 +185,6 @@ class Media extends BaseInterface
         $this->originalName = $originalName;
 
         return $this;
-    }
-
-    public function getDimensions(): array
-    {
-        return $this->dimensions ?: [];
-    }
-
-    public function setDimensions(?array $dimensions): static
-    {
-        $this->dimensions = $dimensions ?: [];
-
-        return $this;
-    }
-
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    public function setImageFile(?File $imageFile = null): void
-    {
-        if ($imageFile instanceof UploadedFile && !$imageFile->isReadable()) {
-            return;
-        }
-
-        $this->imageFile = $imageFile;
-
-        if ($imageFile instanceof UploadedFile) {
-            $this->extension = $imageFile->guessExtension();
-            $this->name = $this->name ?: str_replace('.'.$this->extension, '', $imageFile->getClientOriginalName());
-        } elseif ($imageFile instanceof File) {
-            $this->extension = $imageFile->guessExtension();
-            $this->name = $this->name ?: str_replace('.'.$this->extension, '', $imageFile->getFilename());
-        }
-
-        if (null !== $imageFile) {
-            $this->updatedAt = new \DateTimeImmutable();
-        }
     }
 
     public function getExtension(): ?string

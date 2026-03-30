@@ -116,6 +116,7 @@ body.menu-open {
 #main-navigation {
 
     z-index: 3000;
+    max-width: $content-box;
 
     * {
         white-space: initial !important;
@@ -133,7 +134,7 @@ body.menu-open {
 
         svg, img {
             display: flex !important;
-            max-height: 60px !important;
+            //max-height: 60px !important;
             max-width: initial !important;
             opacity: 1 !important;
             visibility: visible !important;
@@ -193,15 +194,15 @@ body.menu-open {
         }
 
         @include mediaQuery(between-lg-xl) {
-            height: 75px;
+            height: 100px;
         }
 
         @include mediaQuery(between-xl-xxl) {
-            height: 80px;
+            height: 130px;
         }
 
         @include mediaQuery(min-xxl) {
-            height: 80px;
+            height: 130px;
         }
     }
 
@@ -224,7 +225,7 @@ body.menu-open {
                 }
 
                 @include mediaQuery(min-xl) {
-                    max-height: 180px;
+                    max-height: 150px;
                 }
             }
         }

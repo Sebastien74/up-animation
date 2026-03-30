@@ -20,8 +20,8 @@
             <div class="col-12">
                 <div class="card-body pb-2 border mb-4 radius">
                     {%- include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: entity.id, classname: class} -%}
-                    {%- if form.media.imageFile is defined -%}
-                        {{ form_row(form.media.imageFile) }}
+                    {%- if form.media.uploadedFile is defined -%}
+                        {{ form_row(form.media.uploadedFile) }}
                     {%- endif -%}
                 </div>
             </div>

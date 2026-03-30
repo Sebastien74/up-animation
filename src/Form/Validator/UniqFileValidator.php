@@ -49,7 +49,7 @@ class UniqFileValidator extends ConstraintValidator
                     $extension = 'heic' === $value->guessExtension() ? 'jpg' : $value->guessExtension();
                     $existingFile = $filesystem->exists($this->coreLocator->uploadDir().'/'.$website->uploadDirname.'/'.$filename.'.'.$extension);
                     if ($existingFile) {
-                        $existingMedia = $this->coreLocator->em()->getRepository(Media::class)->findOneBy(['filename' => $filename.'.'.$extension, 'website' => $website->entity]);
+                        $existingMedia = $this->coreLocator->em()->getRepository(Media::class)->findOneBy(['originalName' => $filename.'.'.$extension, 'website' => $website->entity]);
                         if ($existingMedia && $existingMedia->getId() !== $mediaPost->getId()) {
                             $violation = true;
                             $message .= $this->coreLocator->translator()->trans('Un autre fichier porte déjà ce nom !', [], 'validators_cms').' ('.$value->getClientOriginalName().')<br/>';

@@ -78,7 +78,7 @@
             {%- elseif field.vars.name == 'mediaRelation' -%}
                 <div class="col-12">
                     {%- include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: field.vars.value.id, classname: classname} -%}
-                    {{ form_row(form.mediaRelation.media.imageFile) }}
+                    {{ form_row(form.mediaRelation.media.uploadedFile) }}
                 </div>
             {%- elseif field.vars.prototype is defined and field.vars.prototype -%}
                 {%- include 'admin/core/form/prototype.html.twig' -%}

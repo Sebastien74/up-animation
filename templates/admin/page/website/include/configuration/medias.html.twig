@@ -93,7 +93,7 @@
                                         <div class="card default-media-card h-100">
                                             <div class="card-body text-center pb-2">
                                                 <span class="text-center h5 mb-3 d-inline-block">{{ mediaCaregory }}</span>
-                                                {{ form_row(mediaRelation.media.imageFile) }}
+                                                {{ form_row(mediaRelation.media.uploadedFile) }}
                                                 {%- include 'admin/page/media/modal-btn.html.twig' with {mediaRelationId: mediaRelation.vars.data.id, classname: class} -%}
                                                 <div class="row">
                                                     {{ form_row(mediaRelation.active) }}

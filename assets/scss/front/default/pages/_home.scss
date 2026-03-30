@@ -11,7 +11,8 @@
 
     1 ) Modules
     2 ) Core import
-    3 ) Main carousel
+    3 ) Core
+    4 ) Main carousel
 
 ------------------------------------------------------------------ */
 
@@ -31,35 +32,23 @@ $enable-breadcrumb: false;
 @import "../vendor";
 
 /*-----------------------------------
-   3 ) Main carousel
+   3 ) Core
+-----------------------------------*/
+
+.text-block .body * {
+    font-size: 19px;
+}
+
+/*-----------------------------------
+   4 ) Main carousel
 -----------------------------------*/
 
 .carousel-main-home {
 
-    .carousel-item:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: transparentize($black, .2);
-        z-index: 100;
-    }
+    padding-top: 10rem;
+    padding-bottom: 9rem;
 
-    .img-loader {
-        width: 100% !important;
-        max-width: 100% !important;
-        max-height: initial !important;
-    }
-
-    .generating img {
-        max-height: calc(100dvh - 139px) !important;
-    }
-
-    .carousel-caption {
-
-        z-index: 500;
+    .carousel-content {
 
         .content-wrap {
 
@@ -68,48 +57,14 @@ $enable-breadcrumb: false;
             }
 
             .caption-title {
-                @include rfs(60px);
+                @include rfs(85px);
                 line-height: 109%;
             }
 
             .body * {
-                font-size: 1rem;
+                font-size: 26px;
+                line-height: 1.2;
             }
         }
     }
-
-    .main-wave-divider {
-
-        .shape-fill {
-
-            &:nth-child(1) {
-                fill: $secondary;
-            }
-
-            &:nth-child(2) {
-                fill: $primary;
-            }
-
-            &:nth-child(3) {
-                fill: $light;
-            }
-        }
-    }
-
-    //img, .right, .left {
-    //
-    //    @include mediaQuery(min-lg) {
-    //        height: 500px !important;
-    //    }
-    //
-    //    @include mediaQuery(between-md-lg) {
-    //        height: 550px !important;
-    //    }
-    //
-    //    @include mediaQuery(max-md) {
-    //        height: 634px !important;
-    //    }
-    //
-    //    object-fit: cover;
-    //}
 }

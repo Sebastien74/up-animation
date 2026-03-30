@@ -62,7 +62,7 @@
         <div class="card-body pt-4 border-0{% if not displayMedia %} no-media{% endif %} {{ paddingX~' '~background }} {% if showLink and targetLink %}pb-0 have-link{% else %}pb-4{% endif %}">
             {%- if icon -%}
                 <div class="wrap-icon-container w-100 mb-3">
-                    <div class="wrap-icon d-flex justify-content-center align-items-center">
+                    <div class="wrap-icon shadow d-flex justify-content-center align-items-center">
                         {{ icon|icon(null, 40) }}
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                     {% if newTab %} target="_blank" {% else %}{% endif %}
                     {% if externalLink %} rel="noopener noreferrer" {% endif %}>
                 {%- endif -%}
-                    <h{{ titleForce }} class="title fw-600 mb-3">{{ title|unescape|raw }}</h{{ titleForce }}>
+                    <h{{ titleForce }} class="title fw-700 mb-3">{{ title|unescape|raw }}</h{{ titleForce }}>
                 {%- if targetLink -%}
                     </a>
                 {%- endif -%}

@@ -76,7 +76,7 @@ class UploadController extends AdminController
             foreach ($form->getErrors() as $error) {
                 $errors .= $error->getMessage().'</br>';
             }
-            foreach ($form['medias']['imageFile']->getErrors() as $error) {
+            foreach ($form['medias']['uploadedFile']->getErrors() as $error) {
                 $errors .= $error->getMessage().'</br>';
             }
             return new JsonResponse(['success' => false, 'errors' => rtrim($errors, '</br>')]);

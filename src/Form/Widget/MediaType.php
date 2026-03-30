@@ -58,10 +58,10 @@ class MediaType extends AbstractType
      * MediaType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface    $coreLocator,
+        private readonly CoreLocatorInterface $coreLocator,
         private readonly ImageThumbnailInterface $imageThumbnail,
-        private readonly FileRuntime             $fileRuntime,
-        private readonly WebsiteRepository       $websiteRepository,
+        private readonly FileRuntime $fileRuntime,
+        private readonly WebsiteRepository $websiteRepository,
     )
     {
         $this->translator = $this->coreLocator->translator();
@@ -78,9 +78,9 @@ class MediaType extends AbstractType
         $categoriesActivated = $configuration instanceof Configuration && $configuration->isMediasCategoriesStatus();
         $maxSize = $this->getMaxSize($options);
 
-        $builder->add('imageFile', FileType::class, [
+        $builder->add('uploadedFile', FileType::class, [
             'label' => false,
-            'mapped' => !$options['multiple'],
+            'mapped' => false,
             'multiple' => $options['multiple'],
             'required' => false,
             'attr' => [
@@ -100,6 +100,7 @@ class MediaType extends AbstractType
         ]);
 
         if (!empty($options['copyright'])) {
+
             $builder->add('copyright', Type\TextType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Copyright', [], 'admin'),

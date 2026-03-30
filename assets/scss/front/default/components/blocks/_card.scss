@@ -32,7 +32,7 @@
         }
 
         .title {
-            font-size: 1.15rem;
+            @include rfs(22px);
             line-height: 1.2;
             letter-spacing: -0.03em;
             max-width: 80%;

@@ -22,14 +22,16 @@ $gray-700: #2a2a2a !global;
 $gray-800: #1e1e1e !global;
 $gray-900: #121212 !global;
 
-$primary: #ff8b33 !global; // Plus lumineux pour le contraste sur sombre
+$primary: #ff7100 !global;
 $primary-darken: darken($primary, 5%) !global;
 $secondary: #22254e !global;
-$success: #5d7808 !global; // Plus clair
-$info: #0081ac !global; // Plus clair
-$warning: #f1ba12 !global; // Plus clair
-$danger: #c74d5a !global; // Plus clair
-$danger-light: #f4babb !global; // Plus clair
+$secondary-light: #4e5071 !global;
+$beige: #dfcbaf !global;
+$success: #aeba2b !global;
+$info: #0081ac !global;
+$warning: #f1ba12 !global;
+$danger: #a82835 !global;
+$danger-light: #ee9da5 !global;
 $light: $gray-300 !global;
 $lighten: $gray-200 !global;
 $dark: $gray-900 !global;

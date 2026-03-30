@@ -99,8 +99,9 @@ class BlockController extends AdminController
         int $interfaceEntity,
         Layout\Col $col,
         Layout\BlockType $blockType,
-        ?Layout\Action $action = null): RedirectResponse
-    {
+        ?Layout\Action $action = null
+    ): RedirectResponse {
+
         $slugBlock = $blockType->getSlug();
         $website = $this->getWebsite();
         $layoutConfiguration = $this->coreLocator->em()->getRepository(Layout\LayoutConfiguration::class)->findOneBy([

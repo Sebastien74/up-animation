@@ -81,7 +81,7 @@ export function scrollEvent(nav) {
     const menuContainer = nav.closest('.menu-container');
     const navHeight = nav.clientHeight;
     const scrollLimitAnimation = nav.clientHeight + 45;
-    const scrollLimit = firstSectionHeight > navHeight ? firstSectionHeight + 300 : (scrollLimitAnimation + nav.clientHeight + 45) * 2;
+    const scrollLimit = firstSectionHeight > navHeight ? firstSectionHeight + 300 : (scrollLimitAnimation + nav.clientHeight + 45) * 1.5;
     const getWindowScrollPosition = () => ({
         x: window.scrollX,
         y: window.scrollY
@@ -435,46 +435,43 @@ export function initMainNavigationContext(nav) {
     }
 
     /**
-     * Find the relevant element behind the navigation.
-     *
-     * We use elementsFromPoint() and ignore the navigation itself
-     * because it is fixed and overlays the page.
-     *
-     * @returns {HTMLElement|null}
-     */
-    function getElementBehindNavigation() {
-        const rect = nav.getBoundingClientRect();
-        const x = rect.left + (rect.width / 2);
-        const y = rect.top + (rect.height / 2);
-        const elements = document.elementsFromPoint(x, y);
-        return elements.find((element) => {
-            return element !== nav && !nav.contains(element);
-        }) || null;
-    }
-
-    /**
      * Compute the state class to apply on navigation.
      *
      * @returns {string}
      */
     function resolveNavigationState() {
-        const elementBehind = getElementBehindNavigation();
-        if (!elementBehind) {
-            return 'in-bg-none';
+        const rect = nav.getBoundingClientRect();
+        const x = rect.left + (rect.width / 2);
+        const y = rect.top + (rect.height / 2);
+        const elements = document.elementsFromPoint(x, y);
+
+        for (const element of elements) {
+            // Ignorer l'élément de navigation lui-même et ses enfants
+            if (element === nav || nav.contains(element)) {
+                continue;
+            }
+
+            // Ignorer aussi le conteneur du menu s'il existe
+            const menuContainer = element.closest('.menu-container');
+            if (menuContainer && (menuContainer === nav.closest('.menu-container'))) {
+                continue;
+            }
+
+            const footer = element.closest('footer');
+            if (footer) {
+                return 'in-footer';
+            }
+
+            const zone = element.closest('.layout-zone');
+            if (zone) {
+                const bgClass = getBackgroundClass(zone);
+                if (bgClass) {
+                    return `in-${bgClass}`;
+                }
+            }
         }
-        const footer = elementBehind.closest('footer');
-        if (footer) {
-            return 'in-footer';
-        }
-        const zone = elementBehind.closest('.layout-zone');
-        if (!zone) {
-            return 'in-bg-none';
-        }
-        const bgClass = getBackgroundClass(zone);
-        if (!bgClass) {
-            return 'in-bg-none';
-        }
-        return `in-${bgClass}`;
+
+        return 'in-bg-none';
     }
 
     /**
@@ -482,7 +479,6 @@ export function initMainNavigationContext(nav) {
      */
     function updateNavigationState() {
         const nextState = resolveNavigationState();
-        console.log(nextState)
         if (nextState === currentState) {
             return;
         }
@@ -506,6 +502,7 @@ export function initMainNavigationContext(nav) {
     }
 
     updateNavigationState();
+    setTimeout(updateNavigationState, 100);
 
     window.addEventListener('scroll', requestUpdate, { passive: true });
     window.addEventListener('resize', requestUpdate);

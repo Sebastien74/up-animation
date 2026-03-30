@@ -47,7 +47,7 @@
             {%- set linkClass = link.class~' nav-link fw-600 '~expand~' link-level-'~link.level -%}
             {%- set linkClass = link.children and not dropdownHover ? linkClass~' as-dropdown-toggle dropdown-toggle' : (link.children ? 'as-dropdown-toggle '~linkClass : linkClass) -%}
             {%- set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass -%}
-            {%- set linkClass = 1 == link.level ? linkClass~' text-initial text-white btn btn-blur' : linkClass~' text-initial text-white' -%}
+            {%- set linkClass = 1 == link.level ? linkClass~' text-initial text-secondary btn btn-blur' : linkClass~' text-initial text-secondary' -%}
             {%- if link.level >= 3 -%}
                 {%- if haveIcons -%}
                     <div class="pictogram-wrap me-3">
@@ -68,7 +68,7 @@
                         {{ link.media|file }}
                         <span class="d-lg-none"{% if pushMicroData %} itemprop="name" {% endif %}>{{ linkLabel|unescape|raw }}</span>
                     {%- else -%}
-                        <span class="link-label cursor {% if link.level > 1 %}text-secondary{% else %}text-white{% endif %}" {% if pushMicroData %} itemprop="name" {% endif %}>{{ linkLabel|unescape|raw }}</span>
+                        <span class="link-label cursor {% if link.level > 1 %}text-secondary{% else %}text-secondary{% endif %}" {% if pushMicroData %} itemprop="name" {% endif %}>{{ linkLabel|unescape|raw }}</span>
                     {%- endif -%}
                 </{% if 'a' == element %}a{% else %}div{% endif %}>
                 {%- if link.level >= 3 -%}
@@ -97,7 +97,7 @@
                             }) }}
                         </a>
                         {%- if link.level == 1 -%}
-                            <i class="close-menu-level-{{ link.level }} close-menu-submenu ms-auto icon-times cursor d-inline-flex align-items-center justify-content-center bg-primary text-white"></i>
+                            <i class="close-menu-level-{{ link.level }} close-menu-submenu ms-auto icon-times cursor d-inline-flex align-items-center justify-content-center bg-primary text-secondary"></i>
                         {%- endif -%}
                     </div>
                     {%- set subLabel = link.subTitle ? link.subTitle : link.title -%}
@@ -170,21 +170,21 @@
                     <div class="row">
                         <div class="col-lg-6">
                             {%- if schedule -%}
-                                <div class="schedule text-white d-flex align-items-center">
-                                    <i class="icon-clock text-white me-3"></i>{{ schedule|striptags|raw }}
+                                <div class="schedule text-secondary d-flex align-items-center">
+                                    <i class="icon-clock text-secondary me-3"></i>{{ schedule|striptags|raw }}
                                 </div>
                             {%- endif -%}
                         </div>
                         <div class="col-lg-6 links-wrap d-flex justify-content-end">
                             <div class="inner d-flex align-items-center">
                                 {%- if newsPageUrl -%}
-                                    <a href="{{ path('front_index', {url: newsPageUrl}) }}" class="d-inline-block text-white">{{ 'Nos Actus'|trans|raw }}</a>
+                                    <a href="{{ path('front_index', {url: newsPageUrl}) }}" class="d-inline-block text-secondary">{{ 'Nos Actus'|trans|raw }}</a>
                                 {%- endif -%}
                                 {%- if newsPageUrl and aboutPageUrl -%}
-                                    <span class="mx-2 text-white">|</span>
+                                    <span class="mx-2 text-secondary">|</span>
                                 {%- endif -%}
                                 {%- if aboutPageUrl -%}
-                                    <a href="{{ path('front_index', {url: aboutPageUrl}) }}" class="d-inline-block text-white">{{ companyName|striptags }}</a>
+                                    <a href="{{ path('front_index', {url: aboutPageUrl}) }}" class="d-inline-block text-secondary">{{ companyName|striptags }}</a>
                                 {%- endif -%}
                                 {%- if website.networks is not empty -%}
                                     <nav class="socials-list d-inline-flex align-items-center ms-3" aria-label="{{"Navigation des liens sociaux"|trans|striptags }}">
@@ -194,7 +194,7 @@
                                                 <a href="{{ infos.link }}" class="{{ name }} btn btn-transparent shadow basic p-0 d-inline-flex ms-2"
                                                    rel="noopener noreferrer" target="_blank"
                                                    aria-label="{{ label }}">
-                                                    <i class="icon-{{ name|lower }} text-white" aria-hidden="true"></i>
+                                                    <i class="icon-{{ name|lower }} text-secondary" aria-hidden="true"></i>
                                                     <span class="visually-hidden">{{ label }}</span>
                                                 </a>
                                             {%- endif -%}
@@ -222,9 +222,9 @@
                         <a class="navbar-brand d-inline-flex p-0" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
                             {{ asset(logo)|file({}, {
                                 screensSizes: {
-                                    mobile: {width: null, height: 60},
-                                    tablet: {width: null, height: 60},
-                                    desktop: {width: null, height: 60}
+                                    mobile: {width: 150, height: 100},
+                                    tablet: {width: 150, height: 100},
+                                    desktop: {width: 150, height: 100}
                                 },
                                 decor: false,
                                 title: companyName,
@@ -266,7 +266,7 @@
                     {%- endif -%}
                     {%- if phone -%}
                         <span class="d-lg-nones">
-                            <a href="tel: {{ phone.tagNumber }}" class="btn btn-glass btn-glass-primary btn-circle" aria-label="{{"Appelez-nous"|trans|striptags }}">
+                            <a href="tel: {{ phone.tagNumber }}" class="btn btn-blur btn-blur-primary btn-circle" aria-label="{{"Appelez-nous"|trans|striptags }}">
                                 <i class="icon-phone-alt-solid"></i>
                             </a>
                         </span>
@@ -275,7 +275,7 @@
                         {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                             intl: {
                                 link: path('front_index', {url: contactPageUrl}),
-                                linkStyle: 'btn btn-glass btn-glass-primary track-link-contact-form contact-link',
+                                linkStyle: 'btn btn-blur btn-blur-primary track-link-contact-form contact-link',
                                 linkLabel: "Nous contacter"|trans,
                             },
                         } -%}

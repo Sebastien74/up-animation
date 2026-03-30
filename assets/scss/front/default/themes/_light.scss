@@ -24,7 +24,9 @@ $gray-900: #222222 !global;
 $primary: #ff7100 !global;
 $primary-darken: darken($primary, 5%) !global;
 $secondary: #22254e !global;
-$success: #5d7808 !global;
+$secondary-light: #4e5071 !global;
+$beige: #dfcbaf !global;
+$success: #aeba2b !global;
 $info: #0081ac !global;
 $warning: #f1ba12 !global;
 $danger: #a82835 !global;
@@ -33,6 +35,7 @@ $light: $gray-300 !global;
 $lighten: $gray-200 !global;
 $dark: $gray-900 !global;
 $dark-lighten: $gray-800 !global;
+$focus-color: #ff9800 !global;
 
 $body-bg: $white !global;
 $body-color: $dark !global;

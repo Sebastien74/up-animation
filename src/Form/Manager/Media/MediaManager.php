@@ -9,23 +9,17 @@ use App\Entity\Core\Configuration;
 use App\Entity\Core\Website;
 use App\Entity\Layout;
 use App\Entity\Media;
-use App\Entity\Module\Form\Form;
 use App\Entity\Module\Map\Point;
-use App\Entity\Module\Newscast\Category;
-use App\Entity\Module\Newscast\Newscast;
 use App\Entity\Seo\Seo;
 use App\Service\Core\InterfaceHelper;
-use App\Service\Core\Urlizer;
+use App\Service\Core\Uploader;
 use App\Service\Interface\CoreLocatorInterface;
-use DateTimeImmutable;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\PersistentCollection;
 use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,8 +38,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class MediaManager
 {
     private const array SCREENS = ['tablet', 'mobile'];
-
-    private const array VIDEO_EXTENSIONS = ['webm', 'mp4', 'vtt'];
     private const array ALLOWED_IMAGES_EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp'];
 
     private TranslatorInterface $translator;
@@ -59,9 +51,9 @@ class MediaManager
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
+        private readonly Uploader $uploader,
         private readonly InterfaceHelper $interfaceHelper,
-    )
-    {
+    ) {
         $this->request = $this->coreLocator->request();
         $this->translator = $this->coreLocator->translator();
         $this->entityManager = $this->coreLocator->em();
@@ -82,11 +74,12 @@ class MediaManager
 
     /**
      * Synchronize locale Media screens.
+     *
+     * @throws ORMException
      */
     public function synchronizeScreens(Media\Media $media): void
     {
         if (in_array($media->getExtension(), self::ALLOWED_IMAGES_EXTENSIONS)) {
-            $hasChange = false;
             foreach (self::SCREENS as $screen) {
                 $exist = $this->screenExist($media, $screen);
                 if (!$exist) {
@@ -95,12 +88,12 @@ class MediaManager
                     $mediaScreen->setScreen($screen);
                     $mediaScreen->setWebsite($media->getWebsite());
                     $media->addMediaScreen($mediaScreen);
-                    $this->entityManager->persist($mediaScreen);
-                    $hasChange = true;
+                    $this->entityManager->persist($media);
+                    if (!$this->request->isMethod('post')) {
+                        $this->entityManager->flush();
+                        $this->entityManager->refresh($media);
+                    }
                 }
-            }
-            if ($hasChange) {
-                $this->entityManager->persist($media);
             }
         }
     }
@@ -135,17 +128,17 @@ class MediaManager
         $asMediaRelation = !empty($metadata['media']['targetEntity']) && Media\Media::class === $metadata['media']['targetEntity'];
 
         if (method_exists($entity, 'setUpdatedAt')) {
-            $entity->setUpdatedAt(new DateTimeImmutable('now', new DateTimeZone('Europe/Paris')));
+            $entity->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
             $this->entityManager->persist($entity);
         }
 
         /* Media screen */
         if ($entity instanceof Media\Media) {
             foreach ($form['mediaScreens'] as $mediaScreenForm) {
-                $uploadedFile = $mediaScreenForm['imageFile']->getData();
+                $uploadedFile = $mediaScreenForm['uploadedFile']->getData();
                 $media = $mediaScreenForm->getData();
                 if ($uploadedFile) {
-                    $this->setUploadedMedia($uploadedFile, $media);
+                    $this->setUploadedMedia($uploadedFile, $media, $website);
                 }
             }
         }
@@ -156,9 +149,9 @@ class MediaManager
         if ($entity instanceof Layout\Block && 'video' === $form->getName()) {
             foreach ($form['mediaRelations'] as $mediaRelation) {
                 foreach ($mediaRelation['media']['mediaScreens'] as $screen) {
-                    $uploadedFile = $screen['imageFile']->getData();
+                    $uploadedFile = $screen['uploadedFile']->getData();
                     if ($uploadedFile) {
-                        $this->setUploadedMedia($uploadedFile, $screen->getData());
+                        $this->setUploadedMedia($uploadedFile, $screen->getData(), $website);
                     }
                 }
             }
@@ -172,14 +165,14 @@ class MediaManager
                     $childChildData = $childChildForm->getData();
                     if (is_object($childChildData) && method_exists($childChildData, 'getMediaRelations') && 'videos' === $childForm->getName()) {
                         foreach ($childChildForm['mediaRelations'] as $mediaRelation) {
-                            $uploadedFile = $mediaRelation['media']['imageFile']->getData();
+                            $uploadedFile = $mediaRelation['media']['uploadedFile']->getData();
                             if ($uploadedFile) {
-                                $this->setUploadedMedia($uploadedFile, $mediaRelation->getData()->getMedia());
+                                $this->setUploadedMedia($uploadedFile, $mediaRelation->getData()->getMedia(), $website);
                             }
                             foreach ($mediaRelation['media']['mediaScreens'] as $screen) {
-                                $uploadedFile = $screen['imageFile']->getData();
+                                $uploadedFile = $screen['uploadedFile']->getData();
                                 if ($uploadedFile) {
-                                    $this->setUploadedMedia($uploadedFile, $screen->getData());
+                                    $this->setUploadedMedia($uploadedFile, $screen->getData(), $website);
                                 }
                             }
                         }
@@ -187,9 +180,9 @@ class MediaManager
                 }
             } elseif ($childData instanceof Media\Media && 'poster' === $childData->getScreen() && !empty($form['media'])) {
                 foreach ($form['media']['mediaScreens'] as $screen) {
-                    $uploadedFile = $screen['imageFile']->getData();
+                    $uploadedFile = $screen['uploadedFile']->getData();
                     if ($uploadedFile) {
-                        $this->setUploadedMedia($uploadedFile, $screen->getData());
+                        $this->setUploadedMedia($uploadedFile, $screen->getData(), $website);
                     }
                 }
             }
@@ -197,17 +190,17 @@ class MediaManager
 
         /* Multiple uploaded files */
         if (!empty($form['medias'])) {
-            $uploadedFiles = $form['medias']['imageFile']->getData();
-            if ($uploadedFiles) {
+            foreach ($form['medias'] as $uploadedFilesForm) {
+                $uploadedFiles = $uploadedFilesForm->getData();
                 foreach ($uploadedFiles as $uploadedFile) {
                     $this->multiUploadedFiles($uploadedFile, $website, $entity);
                 }
             }
         } /* Update Media (in media library) */
-        elseif (!empty($form['imageFile'])) {
-            $uploadedFile = $form['imageFile']->getData();
+        elseif (!empty($form['uploadedFile'])) {
+            $uploadedFile = $form['uploadedFile']->getData();
             if ($uploadedFile) {
-                $this->setUploadedMedia($uploadedFile, $entity);
+                $this->setUploadedMedia($uploadedFile, $entity, $website);
             }
         } /* Single uploaded file mediaRelations Collection */
         elseif (method_exists($entity, 'getMediaRelations') && !empty($form['mediaRelations'])) {
@@ -217,11 +210,11 @@ class MediaManager
             $this->singleUploadedLocaleFile($form, $website, $entity);
         } /* Single uploaded file MediaRelation entity */
         elseif ($asMediaRelation) {
-            $uploadedFile = $this->request->files->get('media_relation') ? $this->request->files->get('media_relation')['media']['imageFile'] : null;
-            if (!$uploadedFile && !empty($this->request->files->get('media_relation_'.$entity->getId())['media']['imageFile'])) {
-                $uploadedFile = $this->request->files->get('media_relation_'.$entity->getId())['media']['imageFile'];
+            $uploadedFile = $this->request->files->get('media_relation') ? $this->request->files->get('media_relation')['media']['uploadedFile'] : null;
+            if (!$uploadedFile && !empty($this->request->files->get('media_relation_'.$entity->getId())['media']['uploadedFile'])) {
+                $uploadedFile = $this->request->files->get('media_relation_'.$entity->getId())['media']['uploadedFile'];
             }
-            if ($uploadedFile instanceof UploadedFile && $uploadedFile->isReadable()) {
+            if ($uploadedFile) {
                 $this->setUploadedMediaMediaRelation($uploadedFile, $entity, $entity->getMedia(), $website);
             }
         }
@@ -272,44 +265,47 @@ class MediaManager
      */
     private function multiUploadedFiles(UploadedFile $uploadedFile, Website $website, mixed $entity): void
     {
-        if (!$uploadedFile->isReadable()) {
-            return;
-        }
-
         $configuration = $website->getConfiguration();
 
-        $media = new Media\Media();
-        $media->setImageFile($uploadedFile);
-        $media->setWebsite($website);
+        $isUpload = $this->uploader->upload($uploadedFile, $website);
 
-        $this->entityManager->persist($media);
+        if ($isUpload) {
 
-        if (!$entity instanceof Website && property_exists($entity, 'mediaRelations')) {
+            $media = new Media\Media();
+            $media->setOriginalName($this->uploader->getFilename());
+            $media->setName($this->uploader->getName());
+            $media->setExtension($this->uploader->getExtension());
+            $media->setWebsite($website);
 
-            $classname = $this->entityManager->getClassMetadata(get_class($entity))->getName();
-            $repository = $this->entityManager->getRepository($classname);
-            $queryForPosition = $repository->createQueryBuilder('e')->select('e')
-                ->leftJoin('e.mediaRelations', 'm')
-                ->andWhere('m.locale = :locale')
-                ->andWhere('e.id = :id')
-                ->setParameter('locale', $configuration->getLocale())
-                ->setParameter('id', $entity->getId())
-                ->addSelect('m')
-                ->getQuery()
-                ->getOneOrNullResult();
-            $position = $queryForPosition ? $queryForPosition->getMediaRelations()->count() + 1 : 1;
+            $this->entityManager->persist($media);
 
-            $mediaRelationData = $this->coreLocator->metadata($entity, 'mediaRelations');
-            $mediaRelation = new ($mediaRelationData->targetEntity)();
-            $mediaRelation->setLocale($configuration->getLocale());
-            $mediaRelation->setMedia($media);
-            $mediaRelation->setPosition($position);
-            $mediaRelation->setCategorySlug($this->interfaceName);
+            if (!$entity instanceof Website && property_exists($entity, 'mediaRelations')) {
 
-            $entity->addMediaRelation($mediaRelation);
-            $this->setIntlMedia($mediaRelation, $media);
-            $this->entityManager->persist($mediaRelation);
-            $this->initializeLocales($configuration, $entity, $website);
+                $classname = $this->entityManager->getClassMetadata(get_class($entity))->getName();
+                $repository = $this->entityManager->getRepository($classname);
+                $queryForPosition = $repository->createQueryBuilder('e')->select('e')
+                    ->leftJoin('e.mediaRelations', 'm')
+                    ->andWhere('m.locale = :locale')
+                    ->andWhere('e.id = :id')
+                    ->setParameter('locale', $configuration->getLocale())
+                    ->setParameter('id', $entity->getId())
+                    ->addSelect('m')
+                    ->getQuery()
+                    ->getOneOrNullResult();
+                $position = $queryForPosition ? $queryForPosition->getMediaRelations()->count() + 1 : 1;
+
+                $mediaRelationData = $this->coreLocator->metadata($entity, 'mediaRelations');
+                $mediaRelation = new ($mediaRelationData->targetEntity)();
+                $mediaRelation->setLocale($configuration->getLocale());
+                $mediaRelation->setMedia($media);
+                $mediaRelation->setPosition($position);
+                $mediaRelation->setCategorySlug($this->interfaceName);
+
+                $entity->addMediaRelation($mediaRelation);
+                $this->setIntlMedia($mediaRelation, $media);
+                $this->entityManager->persist($mediaRelation);
+                $this->initializeLocales($configuration, $entity, $website);
+            }
         }
     }
 
@@ -320,7 +316,7 @@ class MediaManager
     {
         $configuration = $website->getConfiguration();
         foreach ($form->get('mediaRelations') as $relation) {
-            $uploadedFile = $relation['media']['imageFile']->getData();
+            $uploadedFile = $relation['media']['uploadedFile']->getData();
             $mediaRelation = $relation->getData();
             $media = $relation['media']->getData();
             if (!$media->getWebsite()) {
@@ -340,8 +336,33 @@ class MediaManager
      */
     private function setUploadedMediaMediaRelation(UploadedFile $uploadedFile, mixed $mediaRelation, Media\Media $media, Website $website): void
     {
-        if ($uploadedFile->isReadable()) {
-            $media->setImageFile($uploadedFile);
+        $isUpload = $this->uploader->upload($uploadedFile, $website);
+
+        if ($isUpload) {
+            /* Change media on updated (Except in Media library) */
+            if (!empty($this->uploader->getFilename()) && $media->getOriginalName() !== $this->uploader->getFilename()) {
+                $oldMedia = $media;
+                $media = new Media\Media();
+                $media->setWebsite($website);
+                $media->setCategory($oldMedia->getCategory());
+                $media->setFolder($oldMedia->getFolder());
+                $media->setScreen($oldMedia->getScreen());
+                $mediaRelation->setMedia($media);
+                $this->entityManager->persist($oldMedia);
+                $this->setIntlMedia($mediaRelation, $media);
+                foreach ($oldMedia->getMediaScreens() as $screen) {
+                    $screen->setMedia($media);
+                    $this->entityManager->persist($screen);
+                }
+            }
+            $media->setOriginalName($this->uploader->getFilename());
+            $media->setName($this->uploader->getName());
+            $media->setExtension($this->uploader->getExtension());
+            /* Remove Media if filename is empty */
+            if (!$media->getOriginalName()) {
+                $mediaRelation->setMedia(null);
+                $this->entityManager->remove($media);
+            }
         }
     }
 
@@ -352,7 +373,7 @@ class MediaManager
     {
         $mediaRelation = $form['mediaRelation']->getData();
         $media = $mediaRelation->getMedia();
-        $uploadedFile = $form['mediaRelation']['media']['imageFile']->getData();
+        $uploadedFile = $form['mediaRelation']['media']['uploadedFile']->getData();
         $locale = property_exists($entity, 'locale')
             ? $entity->getLocale() : $this->request->get('entitylocale');
 
@@ -365,17 +386,40 @@ class MediaManager
         }
 
         if ($uploadedFile) {
-            $media->setImageFile($uploadedFile);
+            $isUpload = $this->uploader->upload($uploadedFile, $website);
+
+            if ($isUpload) {
+                /* Change media on updated */
+                if (!empty($media->getOriginalName()) && $media->getOriginalName() !== $this->uploader->getFilename()) {
+                    $oldMedia = $media;
+                    $media = new Media\Media();
+                    $media->setWebsite($website);
+                    $media->setCategory($oldMedia->getCategory());
+                    $media->setFolder($oldMedia->getFolder());
+                    $mediaRelation->setMedia($media);
+                }
+                $media->setExtension($this->uploader->getExtension());
+                $media->setOriginalName($this->uploader->getFilename());
+                $media->setName($this->uploader->getName());
+            }
         }
     }
 
     /**
      * Update Media.
      */
-    private function setUploadedMedia(UploadedFile $uploadedFile, Media\Media $media): void
+    private function setUploadedMedia(UploadedFile $uploadedFile, Media\Media $media, Website $website): void
     {
-        if ($uploadedFile->isReadable()) {
-            $media->setImageFile($uploadedFile);
+        if ($media->getOriginalName()) {
+            $this->uploader->removeFile($media->getOriginalName());
+        }
+
+        $isUpload = $this->uploader->upload($uploadedFile, $website);
+
+        if ($isUpload) {
+            $media->setOriginalName($this->uploader->getFilename());
+            $media->setName($this->uploader->getName());
+            $media->setExtension($this->uploader->getExtension());
         }
     }
 
@@ -390,11 +434,13 @@ class MediaManager
             if ($mediaRelation->getLocale() === $configuration->getLocale()) {
                 $defaultLocaleMedia = $mediaRelation->getMedia();
             }
+
             /** Set Media WebsiteModel */
             $media = !$mediaRelation->getMedia() ? new Media\Media() : $mediaRelation->getMedia();
             if (!$media->getWebsite()) {
                 $media->setWebsite($website);
             }
+
             $intl = $mediaRelation->getIntl();
             if ($intl && !$intl->getLocale()) {
                 $intl->setLocale($mediaRelation->getLocale());
@@ -416,8 +462,6 @@ class MediaManager
 
     /**
      * Set MediaRelation with entitylocale.
-     *
-     * @throws Exception
      */
     public function setEntityLocale(array $interface, mixed $entity, ?Website $website = null): void
     {
@@ -430,11 +474,10 @@ class MediaManager
             $entity->setMediaRelation($mediaRelation);
             $this->entityManager->persist($entity);
             if (!$this->request->isMethod('post')) {
+                $this->entityManager->flush();
                 try {
-                    $this->entityManager->flush();
                     $this->entityManager->refresh($entity);
-                } catch (Exception|ORMException $exception) {
-                    throw new Exception($exception->getMessage());
+                } catch (Exception $exception) {
                 }
             }
         }
@@ -505,15 +548,23 @@ class MediaManager
     {
         if (!empty($interface['name'])) {
 
-            $localeRelation = null;
-            if (method_exists($entity, 'getMediaRelations')) {
-                foreach ($entity->getMediaRelations() as $relation) {
-                    if ($relation->getPosition() === $mediaRelation->getPosition() && $relation->getLocale() === $locale) {
-                        $localeRelation = $relation;
-                        break;
-                    }
-                }
-            }
+            $classname = $this->entityManager->getClassMetadata(get_class($entity))->getName();
+            $repository = $this->entityManager->getRepository($classname);
+            $entityLocaleRelation = $repository->createQueryBuilder('e')->select('e')
+                ->leftJoin('e.mediaRelations', 'm')
+                ->andWhere('e.id = :id')
+                ->andWhere('m.position = :position')
+                ->andWhere('m.locale = :locale')
+                ->setParameter('position', $mediaRelation->getPosition())
+                ->setParameter('locale', $locale)
+                ->setParameter('id', $entity->getId())
+                ->addSelect('m')
+                ->orderBy('m.locale', 'ASC')
+                ->getQuery()
+                ->getOneOrNullResult();
+
+            $localeRelation = $entityLocaleRelation && !$entityLocaleRelation->getMediaRelations()->isEmpty()
+                ? $entityLocaleRelation->getMediaRelations()[0] : null;
 
             if (!$localeRelation && !in_array($locale, $this->localesSet)) {
                 $this->localesSet[] = $locale;
@@ -532,6 +583,14 @@ class MediaManager
 
             if (!empty($entity)) {
                 $this->entityManager->persist($entity);
+                if (!$this->request->isMethod('post')) {
+                    $this->entityManager->flush();
+                }
+            }
+
+            try {
+                $this->entityManager->refresh($entity);
+            } catch (Exception $exception) {
             }
         }
     }
@@ -568,26 +627,11 @@ class MediaManager
      */
     private function setMedia(Media\Media $media): void
     {
-        $extension = $media->getExtension();
-        $filename = $media->getOriginalName();
-        if (!$extension || !$filename) {
-            return;
-        }
-
-        $dbName = str_replace('.'.$extension, '', $filename);
-        if ($media->getName() && $media->getName() !== $dbName) {
-            $website = $media->getWebsite();
-            $baseDirname = $this->coreLocator->projectDir().'/public/uploads/'.$website->getUploadDirname().'/';
-            $baseDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $baseDirname);
-            $filesystem = new Filesystem();
-
-            $originalDirname = $baseDirname.$filename;
-            $newFilename = Urlizer::urlize($media->getName()).'.'.$media->getExtension();
-            $newDirname = $baseDirname.$newFilename;
-
-            if ($filesystem->exists($originalDirname) && !$filesystem->exists($newDirname)) {
-                $filesystem->rename($originalDirname, $newDirname);
-                $media->setOriginalName($newFilename);
+        $dbName = str_replace('.'.$media->getExtension(), '', $media->getOriginalName());
+        if ($media->getName() !== $dbName) {
+            $isRename = $this->uploader->rename($dbName, $media->getName(), $media->getExtension());
+            if ($isRename) {
+                $media->setOriginalName($media->getName().'.'.$media->getExtension());
             }
         }
     }
@@ -599,10 +643,6 @@ class MediaManager
      */
     public function removeMedia(Media\Media $media): object
     {
-        if ($media->getScreen() && in_array($media->getScreen(), self::VIDEO_EXTENSIONS)) {
-            $media = $media->getMedia();
-        }
-
         $metadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
         $removeScreenMedias = true;
         foreach ($metadata as $data) {
@@ -631,6 +671,7 @@ class MediaManager
 
         if ($removeScreenMedias) {
             foreach ($media->getMediaScreens() as $mediaScreen) {
+                $this->uploader->removeFile($mediaScreen->getOriginalName());
                 $this->entityManager->remove($mediaScreen);
             }
         }
@@ -638,13 +679,14 @@ class MediaManager
         $messageInfo = $this->removeMediaMessages($media);
 
         if ($messageInfo->deletable) {
+            $this->uploader->removeFile($media->getOriginalName());
             $this->entityManager->remove($media);
             if (!$this->request->isMethod('post')) {
                 $this->entityManager->flush();
             }
         }
 
-        return (object)[
+        return (object) [
             'success' => $messageInfo->deletable,
             'message' => $messageInfo->message,
         ];
@@ -689,7 +731,7 @@ class MediaManager
 
         $message .= '</ul>';
 
-        return (object)[
+        return (object) [
             'deletable' => $deletable,
             'message' => $deletable ? '' : $message,
         ];
@@ -802,13 +844,13 @@ class MediaManager
             if ($masterEntity instanceof Layout\Page) {
                 $masterEntityMessage = ' [Page : '.$layout->getAdminName().' ID: '.$masterEntity->getId().']';
             }
-            if ($masterEntity instanceof Newscast) {
+            if ($masterEntity instanceof \App\Entity\Module\Newscast\Newscast) {
                 $masterEntityMessage = ' [Actualité : '.$layout->getAdminName().' ID: '.$masterEntity->getId().']';
             }
-            if ($masterEntity instanceof Form) {
+            if ($masterEntity instanceof \App\Entity\Module\Form\Form) {
                 $masterEntityMessage = ' [Formulaire : '.$layout->getAdminName().' ID: '.$masterEntity->getId().']';
             }
-            if ($masterEntity instanceof Category) {
+            if ($masterEntity instanceof \App\Entity\Module\Newscast\Category) {
                 $masterEntityMessage = " - [ Catégorie d'Actualité : ".$layout->getAdminName().' ID: '.$masterEntity->getId().']';
             }
         }
@@ -857,7 +899,7 @@ class MediaManager
                 }
                 $geoJsonMedia->setFolder($folder);
                 $uploadedFile = $this->request->files->get('point')['geoJson']['media']['uploadedFile'];
-                $this->setUploadedMedia($uploadedFile, $geoJsonMedia);
+                $this->setUploadedMedia($uploadedFile, $geoJsonMedia, $website);
             }
         }
     }

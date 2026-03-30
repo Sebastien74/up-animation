@@ -270,7 +270,7 @@ class ImageThumbnail implements ImageThumbnailInterface
         }
         $currentSize = self::SCREENS_SIZES_ATTR[$this->screen];
 
-        if ((!$isEnableMaxSizes && $media->getFilename()) || ($infoFile && self::MAX_FILE_SIZE_OPTIMIZATION < $infoFile->getSize())) {
+        if ((!$isEnableMaxSizes && $media->getOriginalName()) || ($infoFile && self::MAX_FILE_SIZE_OPTIMIZATION < $infoFile->getSize())) {
             if ($this->coreLocator->authorizationChecker()->isGranted('ROLE_ADMIN')) {
                 $thumbnails = $this->largeFile($thumbnails, $originalInfoFile);
             }

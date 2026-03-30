@@ -138,10 +138,18 @@
                     $notExclusion: ':not(.btn):not(.btn *):not([style*="font-weight"]):not([style*="font-weight"] *)';
                 } @else if ($property == 'font-family') {
                     $notExclusion: ':not(.btn):not(.btn *):not([style*="font-family"]):not([style*="font-family"] *)';
+                } @else if ($property == 'text-transform') {
+                    $notExclusion: ':not(.btn):not(.btn *):not([style*="text-transform"]):not([style*="text-transform"] *)';
                 }
 
+                $currentPropertyElement: '';
                 @if ($notExclusion != '') {
-                    $currentPropertyElement: ':is(' + $element + ')' + $notExclusion;
+                    $matches: explode($element, ',');
+                    @each $match in $matches {
+                        $match: str-trim($match);
+                        $sep: if($currentPropertyElement == '', '', ', ');
+                        $currentPropertyElement: $currentPropertyElement + $sep + $match + $notExclusion;
+                    }
                 } @else {
                     $currentPropertyElement: $element;
                 }

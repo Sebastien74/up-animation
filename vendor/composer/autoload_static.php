@@ -39,10 +39,6 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             'ZipStream\\' => 10,
         ),
-        'V' =>
-        array (
-            'Vich\\UploaderBundle\\' => 20,
-        ),
         'T' =>
         array (
             'Twig\\Extra\\TwigExtraBundle\\' => 27,
@@ -172,7 +168,6 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             'Monolog\\' => 8,
             'Misd\\PhoneNumberBundle\\' => 23,
-            'Metadata\\' => 9,
             'Matrix\\' => 7,
             'Masterminds\\' => 12,
             'Maestroerror\\' => 13,
@@ -261,10 +256,6 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'ZipStream\\' =>
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
-        ),
-        'Vich\\UploaderBundle\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/vich/uploader-bundle/src',
         ),
         'Twig\\Extra\\TwigExtraBundle\\' =>
         array (
@@ -703,10 +694,6 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'Misd\\PhoneNumberBundle\\' =>
         array (
             0 => __DIR__ . '/..' . '/sfcms/phone-number-bundle',
-        ),
-        'Metadata\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/jms/metadata/src',
         ),
         'Matrix\\' =>
         array (
