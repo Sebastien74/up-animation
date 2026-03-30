@@ -11,15 +11,49 @@ $grid-breakpoints: (
 );
 
 /* =========================================================
+   MAPS DE POSITIONNEMENT VISUEL
+   ========================================================= */
+
+$grid-center-lines: (
+    1: (6, 8),
+    2: (6, 9),
+    3: (5, 9),
+    4: (5, 10),
+    5: (4, 10),
+    6: (4, 10),
+    7: (3, 11),
+    8: (3, 12),
+    9: (2, 12),
+    10: (1, 12),
+    11: (1, 13)
+);
+
+$grid-end-lines: (
+    1: (12, 13),
+    2: (11, 13),
+    3: (10, 13),
+    4: (9, 13),
+    5: (8, 13),
+    6: (7, 13),
+    7: (6, 13),
+    8: (5, 13),
+    9: (4, 13),
+    10: (3, 13),
+    11: (2, 13)
+);
+
+/* =========================================================
    BASE GRID
    ========================================================= */
 
 .cards-grid {
-
     display: grid;
     grid-template-columns: repeat($grid-columns, minmax(0, 1fr));
     column-gap: 1.5rem;
     row-gap: 0;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     > .layout-block {
         --item-span: 12;
@@ -27,9 +61,24 @@ $grid-breakpoints: (
         width: 100%;
         max-width: 100%;
         min-width: 0;
+        height: 100%;
+        align-self: stretch;
         padding-left: 0 !important;
         padding-right: 0 !important;
     }
+}
+
+/* =========================================================
+   CHAÎNE DE HAUTEUR
+   ========================================================= */
+
+.cards-grid > .layout-block > .layout-block-content {
+    height: 100%;
+}
+
+.cards-grid > .layout-block .card,
+.cards-grid > .layout-block .card-block {
+    height: 100%;
 }
 
 /* =========================================================
@@ -55,88 +104,133 @@ $grid-breakpoints: (
 }
 
 /* =========================================================
-   ALIGNMENT MIXINS
-   On n'aligne explicitement que les spans "larges" (7 -> 11)
-   pour ne jamais casser les vraies grilles multi-colonnes
-   comme 6/6/6/6.
+   MIXINS
+   On ne repositionne QUE :
+   - un item seul
+   - ou un item narrow placé après un full-width et en dernier
+   Cela évite de casser 6/6, 7/5, 4/8, etc.
    ========================================================= */
 
-@mixin layout-col-align-base($mode) {
-    @for $i from 7 through 11 {
+@mixin single-row-align-base($mode) {
+    @for $i from 1 through 11 {
+        $center-lines: map-get($grid-center-lines, $i);
+        $center-start: nth($center-lines, 1);
+        $center-end: nth($center-lines, 2);
+
+        $end-lines: map-get($grid-end-lines, $i);
+        $end-start: nth($end-lines, 1);
+        $end-end: nth($end-lines, 2);
+
         @if $mode == start {
-            > .cards-grid > .col-#{$i} {
-                grid-column: 1 / span #{$i};
+            > .cards-grid > .col-#{$i}:only-child,
+            > .cards-grid > .col-12 + .col-#{$i}:last-child {
+                grid-column: 1 / span #{$i} !important;
             }
         } @else if $mode == center {
-            > .cards-grid > .col-#{$i} {
-                grid-column: #{floor((12 - $i) / 2) + 1} / span #{$i};
+            > .cards-grid > .col-#{$i}:only-child,
+            > .cards-grid > .col-12 + .col-#{$i}:last-child {
+                grid-column: #{$center-start} / #{$center-end} !important;
             }
         } @else if $mode == end {
-            > .cards-grid > .col-#{$i} {
-                grid-column: #{12 - $i + 1} / span #{$i};
+            > .cards-grid > .col-#{$i}:only-child,
+            > .cards-grid > .col-12 + .col-#{$i}:last-child {
+                grid-column: #{$end-start} / #{$end-end} !important;
             }
         }
     }
 }
 
-@mixin layout-col-align-breakpoint($bp, $mode) {
-    @for $i from 7 through 11 {
+@mixin single-row-align-breakpoint($bp, $mode) {
+    @for $i from 1 through 11 {
+        $center-lines: map-get($grid-center-lines, $i);
+        $center-start: nth($center-lines, 1);
+        $center-end: nth($center-lines, 2);
+
+        $end-lines: map-get($grid-end-lines, $i);
+        $end-start: nth($end-lines, 1);
+        $end-end: nth($end-lines, 2);
+
         @if $mode == start {
-            > .cards-grid > .col-#{$bp}-#{$i} {
-                grid-column: 1 / span #{$i};
+            > .cards-grid > .col-#{$bp}-#{$i}:only-child,
+            > .cards-grid > .col-#{$bp}-12 + .col-#{$bp}-#{$i}:last-child {
+                grid-column: 1 / span #{$i} !important;
             }
         } @else if $mode == center {
-            > .cards-grid > .col-#{$bp}-#{$i} {
-                grid-column: #{floor((12 - $i) / 2) + 1} / span #{$i};
+            > .cards-grid > .col-#{$bp}-#{$i}:only-child,
+            > .cards-grid > .col-#{$bp}-12 + .col-#{$bp}-#{$i}:last-child {
+                grid-column: #{$center-start} / #{$center-end} !important;
             }
         } @else if $mode == end {
-            > .cards-grid > .col-#{$bp}-#{$i} {
-                grid-column: #{12 - $i + 1} / span #{$i};
+            > .cards-grid > .col-#{$bp}-#{$i}:only-child,
+            > .cards-grid > .col-#{$bp}-12 + .col-#{$bp}-#{$i}:last-child {
+                grid-column: #{$end-start} / #{$end-end} !important;
             }
         }
     }
 }
 
 /* =========================================================
-   BASE ALIGNMENT FROM .layout-col
+   ALIGNEMENT DE BASE DEPUIS .layout-col
    ========================================================= */
 
 .layout-col.justify-content-start {
-    @include layout-col-align-base(start);
+    @include single-row-align-base(start);
 }
 
 .layout-col.justify-content-center {
-    @include layout-col-align-base(center);
+    @include single-row-align-base(center);
 }
 
 .layout-col.justify-content-end {
-    @include layout-col-align-base(end);
+    @include single-row-align-base(end);
 }
 
 /* =========================================================
-   RESPONSIVE ALIGNMENT FROM .layout-col
+   ALIGNEMENT RESPONSIVE DEPUIS .layout-col
    ========================================================= */
 
 @each $bp, $min in $grid-breakpoints {
     @if $bp != xs {
         @media (min-width: $min) {
             .layout-col.justify-content-#{$bp}-start {
-                @include layout-col-align-breakpoint($bp, start);
+                @include single-row-align-breakpoint($bp, start);
             }
 
             .layout-col.justify-content-#{$bp}-center {
-                @include layout-col-align-breakpoint($bp, center);
+                @include single-row-align-breakpoint($bp, center);
             }
 
             .layout-col.justify-content-#{$bp}-end {
-                @include layout-col-align-breakpoint($bp, end);
+                @include single-row-align-breakpoint($bp, end);
             }
         }
     }
 }
 
 /* =========================================================
-   OPTIONAL: vertical gaps helpers
+   PROTECTION DES GRILLES RÉPÉTITIVES
+   ========================================================= */
+
+.cards-grid > .col-1 { grid-column: span 1 !important; }
+.cards-grid > .col-2 { grid-column: span 2 !important; }
+.cards-grid > .col-3 { grid-column: span 3 !important; }
+.cards-grid > .col-4 { grid-column: span 4 !important; }
+.cards-grid > .col-6 { grid-column: span 6 !important; }
+
+@each $bp, $min in $grid-breakpoints {
+    @if $bp != xs {
+        @media (min-width: $min) {
+            .cards-grid > .col-#{$bp}-1 { grid-column: span 1 !important; }
+            .cards-grid > .col-#{$bp}-2 { grid-column: span 2 !important; }
+            .cards-grid > .col-#{$bp}-3 { grid-column: span 3 !important; }
+            .cards-grid > .col-#{$bp}-4 { grid-column: span 4 !important; }
+            .cards-grid > .col-#{$bp}-6 { grid-column: span 6 !important; }
+        }
+    }
+}
+
+/* =========================================================
+   GAP HELPERS
    ========================================================= */
 
 .cards-grid.grid-gap-sm {
