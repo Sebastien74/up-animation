@@ -11,7 +11,8 @@ https://themeforest.net/item/conat-event-conference-vuejs-template/61240859
 https://preview.themeforest.net/item/konfer-react-event-conference-meetup-template/full_screen_preview/58424763
 https://preview.themeforest.net/item/eventen-event-conference-meetup-react-templates/full_screen_preview/58292518
 
-Modifier les routes 
+
+Update MediaUpdateInfoCommand et ajouter a upload les dimensions et autres infos.
 
 FAQ IMPORTANT : Et faire filtre si possible comme sur Sydev
 

@@ -21,13 +21,29 @@
             height: 54px;
             border-radius: 18px;
             background: linear-gradient(180deg, #fff 0%, #fff4e8 100%);
-            border: 1px solid rgba(244, 124, 0, 0.16);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
             svg {
                 height: 24px;
                 width: auto;
-                fill: $primary;
+                fill: $secondary;
+            }
+        }
+
+        $bgColors: map-get($elements, 'wrap-icon');
+        @if map-has-key($bgColors, "colors-in-backgrounds") {
+            @each $color-name, $color in map-get($bgColors, 'colors-in-backgrounds') {
+                .card-body.bg-#{$color-name} .wrap-icon {
+                    background: linear-gradient(180deg, #fff 0%, #{$color} 75%, #{$color} 100%);
+                }
+            }
+        }
+
+        $svgColors: map-get($elements, 'wrap-icon-svg');
+        @if map-has-key($svgColors, "colors-in-backgrounds") {
+            @each $color-name, $color in map-get($svgColors, 'colors-in-backgrounds') {
+                .card-body.bg-#{$color-name} .wrap-icon svg {
+                    fill: #{$color};
+                }
             }
         }
 
@@ -35,7 +51,7 @@
             @include rfs(22px);
             line-height: 1.2;
             letter-spacing: -0.03em;
-            max-width: 80%;
+            max-width: 85%;
         }
 
         .text-block {
@@ -163,8 +179,8 @@
 
                 .shape-divider {
                     position: absolute;
-                    height: 45px;
-                    top: -45px;
+                    height: 30px;
+                    top: -30px;
                     left: 0;
                     width: 100%;
                     overflow: hidden;
@@ -174,7 +190,7 @@
 
                 .circle {
 
-                    z-index: 100;
+                    z-index: 1000;
                     width: 55px;
                     height: 55px;
                     border-radius: 50%;

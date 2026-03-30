@@ -18,14 +18,14 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * Resolve and apply the request locale.
  */
-class LocaleSubscriber implements EventSubscriberInterface
+readonly class LocaleSubscriber implements EventSubscriberInterface
 {
     /**
      * LocaleSubscriber constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly string $defaultLocale,
+        private CoreLocatorInterface $coreLocator,
+        private string $defaultLocale,
     ) {
     }
 

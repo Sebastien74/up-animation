@@ -49,22 +49,18 @@ class MediaUpdateInfoCommand extends Command
 
             if ($filePath && file_exists($filePath)) {
                 $needsUpdate = false;
-
                 if (!$media->getSize()) {
                     $media->setSize(filesize($filePath));
                     $needsUpdate = true;
                 }
-
                 if (!$media->getMimeType()) {
                     $media->setMimeType(mime_content_type($filePath) ?: null);
                     $needsUpdate = true;
                 }
-
                 if (!$media->getOriginalName()) {
                     $media->setOriginalName($filename);
                     $needsUpdate = true;
                 }
-
                 if (empty($media->getDimensions())) {
                     $sizes = @getimagesize($filePath);
                     if ($sizes) {
@@ -75,7 +71,6 @@ class MediaUpdateInfoCommand extends Command
                         $needsUpdate = true;
                     }
                 }
-
                 if ($needsUpdate) {
                     $updatedCount++;
                 }

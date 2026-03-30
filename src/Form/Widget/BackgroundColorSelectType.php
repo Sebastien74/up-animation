@@ -58,14 +58,19 @@ class BackgroundColorSelectType extends AbstractType
      */
     private function getColors(): array
     {
+        $configuration = $this->coreLocator->website()->configuration;
+        $gradientActive = $configuration->customModules->gradientColors;
         $colors = $this->website->getConfiguration()->getColors();
         $choices = [];
         foreach ($colors as $color) {
-            if ('background' === $color->getCategory() && $color->isActive()) {
+            $isGradient = str_contains($color->getSlug(), 'gradient');
+            $active = ($color->isActive() && !$isGradient) || ($color->isActive() && $isGradient && $gradientActive);
+            if ($active && 'background' === $color->getCategory() && $color->isActive()) {
                 $choices[$color->getAdminName()] = $color->getSlug();
                 $this->colors[$color->getSlug()] = $color->getColor();
             }
         }
+        ksort($choices);
 
         return $choices;
     }

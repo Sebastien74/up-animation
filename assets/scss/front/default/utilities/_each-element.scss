@@ -70,6 +70,7 @@
         @if map-has-key($config, "colors-in-backgrounds") and not map-has-key($config, "excluded") {
 
             @each $color-name, $color in map-get($config, 'colors-in-backgrounds') {
+
                 $matches: explode($element, ',');
                 $matchGroupWithInitial: '';
                 $matchGroupWithoutInitial: '';
@@ -127,7 +128,6 @@
 
         @if map-has-key($config, "properties") {
             @each $property, $value in map-get($config, 'properties') {
-
                 $currentPropertyElement: '';
                 $notExclusion: '';
                 @if ($property == 'font-size') {
@@ -141,7 +141,6 @@
                 } @else if ($property == 'text-transform') {
                     $notExclusion: ':not(.btn):not(.btn *):not([style*="text-transform"]):not([style*="text-transform"] *)';
                 }
-
                 $currentPropertyElement: '';
                 @if ($notExclusion != '') {
                     $matches: explode($element, ',');
@@ -153,7 +152,6 @@
                 } @else {
                     $currentPropertyElement: $element;
                 }
-
                 @if type-of($value) == 'map' {
                     @each $screenSize, $sizeValue in $value {
                         @include mediaQuery(min-#{$screenSize}) {
@@ -176,15 +174,19 @@
         $color: map-get($item, 'color');
         $type: map-get($item, 'type');
         $elementsList: map-get($item, 'elements');
-
         $selector: '';
         $exclusionSuffix: ':not(.bg-' + $color-name + ' [class*="bg-"] *)';
+        $selector2: '';
+        $exclusionSuffix2: ':not(.bg-' + $color-name + ' [class*="bg-"] [class*="bg-"] *)';
         @if $type == 'with' {
             $selector: '.bg-' + $color-name + ' :is(' + $elementsList + '):not(.initial)' + $notExclusion + $exclusionSuffix;
+            $selector2: '[class*="bg-"] .bg-' + $color-name + ' :is(' + $elementsList + '):not(.initial)' + $notExclusion + $exclusionSuffix2;
         } @else {
             $selector: '.bg-' + $color-name + ' :is(' + $elementsList + ')' + $notExclusion + $exclusionSuffix;
+            $selector2: '[class*="bg-"] .bg-' + $color-name + ' :is(' + $elementsList + ')' + $notExclusion + $exclusionSuffix2;
         }
         $commonValues: push-common-value($commonValues, $color, 'color', $selector);
+        $commonValues: push-common-value($commonValues, $color, 'color', $selector2);
     }
 
     @each $commonValue in $commonValues {

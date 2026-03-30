@@ -15,6 +15,7 @@ $grid-breakpoints: (
    ========================================================= */
 
 .cards-grid {
+
     display: grid;
     grid-template-columns: repeat($grid-columns, minmax(0, 1fr));
     column-gap: 1.5rem;

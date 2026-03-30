@@ -39,6 +39,13 @@ $enable-breadcrumb: false;
     font-size: 19px;
 }
 
+.card-body {
+    .body * {
+        line-height: 1.2;
+        font-size: 17px;
+    }
+}
+
 /*-----------------------------------
    4 ) Main carousel
 -----------------------------------*/

@@ -90,10 +90,15 @@ class ButtonColorType extends AbstractType
 
         foreach ($colors as $color) {
             if ('button' === $color->getCategory() && $color->isActive()) {
-                if (!self::GRADIENTS_FIRST) {
+                if (!self::GRADIENTS_FIRST && $options['gradientColors'] && !str_contains($color->getSlug(), 'outline')) {
+                    $choices[$this->translator->trans($color->getAdminName())] = $color->getSlug();
+                } elseif (!$options['gradientColors'] && !str_contains($color->getSlug(), 'outline')) {
                     $choices[$this->translator->trans($color->getAdminName())] = $color->getSlug();
                 }
-                $defaultChoices[$this->translator->trans($color->getAdminName())] = $color->getSlug();
+                ksort($choices);
+                if (!str_contains($color->getSlug(), 'outline')) {
+                    $defaultChoices[$this->translator->trans($color->getAdminName())] = $color->getSlug();
+                }
                 $this->colors[$color->getSlug()] = $color->getColor();
                 if (!str_contains($color->getSlug(), 'outline') && str_contains($color->getSlug(), 'btn')) {
                     $ctaValue = str_replace(['btn'], ['cta'], $color->getSlug());
@@ -110,6 +115,20 @@ class ButtonColorType extends AbstractType
             }
         }
 
+        foreach ($colors as $color) {
+            if ('button' === $color->getCategory() && $color->isActive()) {
+                if (!self::GRADIENTS_FIRST && $options['gradientColors'] && str_contains($color->getSlug(), 'outline')) {
+                    $choices[$this->translator->trans($color->getAdminName())] = $color->getSlug();
+                } elseif (!$options['gradientColors'] && str_contains($color->getSlug(), 'outline')) {
+                    $choices[$this->translator->trans($color->getAdminName())] = $color->getSlug();
+                }
+                ksort($choices);
+                if (str_contains($color->getSlug(), 'outline')) {
+                    $defaultChoices[$this->translator->trans($color->getAdminName())] = $color->getSlug();
+                }
+            }
+        }
+
         foreach ($btnsTypes as $type => $labelBtn) {
             if ($options[$type.'Colors']) {
                 foreach ($defaultChoices as $label => $value) {
@@ -117,6 +136,7 @@ class ButtonColorType extends AbstractType
                         $label = str_replace(['Bouton', 'Button'], [$labelBtn], $label);
                         $value = str_replace(['btn'], ['btn-'.$type.' btn-'.$type], $value);
                         $choices[$label] = $value;
+                        ksort($choices);
                     }
                 }
             }

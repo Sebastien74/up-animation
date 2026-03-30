@@ -107,7 +107,14 @@
                             {%- set colInnerClasses = innerColBackground or bgColorHexaInnerZone ? paddings(col) ~ ' ' ~ (col.backgroundColor ?: '') : '' -%}
                             {%- set colInnerClasses = col.radius ? 'radius ' ~ colInnerClasses : colInnerClasses -%}
                             {%- set colInnerClasses = colSpaces~' '~colInnerClasses -%}
-                            <div class="{{ colInnerClasses|trim }} cards-grid"
+                            {%- set blocksCount = 0 -%}
+                            {%- for block in blocks -%}
+                                {%- set blockHide = block.hide or app.request.locale in block.hideLocales -%}
+                                {%- if not blockHide -%}
+                                    {%- set blocksCount = blocksCount + 1 -%}
+                                {%- endif -%}
+                            {%- endfor -%}
+                            <div class="{{ colInnerClasses|trim }} cards-grid{% if blocksCount == 1 %} h-100{% endif %}"
                                  {% if bgColorHexaInnerZone %} style="background: {{ bgColorHexaInnerZone }};" data-hexadecimal="{{ bgColorHexaInnerZone }}" {% endif %}>
                                 {%- for block in blocks -%}
                                     {%- set blockHide = block.hide or app.request.locale in block.hideLocales -%}
