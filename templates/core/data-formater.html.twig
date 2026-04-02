@@ -146,9 +146,9 @@
 {%- elseif not dataValue|isObject -%}
 
     {%- set property = property is defined ? property : null -%}
-    {%- set asBagde = property and dataValue and 'status' in property|lower -%}
+    {%- set asBadge = property and dataValue and 'status' in property|lower -%}
 
-    {%- if asBagde -%}
+    {%- if asBadge -%}
         <div class="label label-info-darken text-white">
     {%- endif -%}
 
@@ -172,7 +172,7 @@
         </a>
     {%- endif -%}
 
-    {%- if asBagde -%}
+    {%- if asBadge -%}
         </div>
     {%- endif -%}
 

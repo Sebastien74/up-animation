@@ -197,7 +197,7 @@ class NewscastType extends AbstractType
 
         if ($data->isCustomLayout() || $isNew) {
             $save = new WidgetType\SubmitType($this->coreLocator);
-            $save->add($builder, ['btn_both' => true, 'btn_add' => true]);
+            $save->add($builder, ['btn_both' => true, 'btn_add' => $isNew]);
         }
     }
 

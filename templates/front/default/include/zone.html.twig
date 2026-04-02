@@ -28,6 +28,8 @@
     or forceContainer is defined and forceContainer ? 'container' : 'container-fluid' -%}
 {%- set zoneClass = zone.colToRight ? 'container-fluid-right' : zoneClass -%}
 {%- set asFluidRight = zone.colToRight -%}
+{%- set nextZoneBg = nextZone.backgroundColor is defined ? ' next-'~nextZone.backgroundColor : '' -%}
+{%- set zoneClasses = zoneClasses~nextZoneBg -%}
 
 {%- if not zoneHide -%}
     <{{ sectionEl }} id="{% if not zone.idAsAnchor %}zone-{% endif %}{{ zoneId|urlize }}" {% if bgImgStyle %} data-style="{{ bgImgStyle }}" {% endif %}
@@ -99,14 +101,11 @@
                         {%- set colSpaces = (colMargins ~ colPaddings)|trim -%}
                         {# --- CONTENT ANALYSIS --- #}
                         {%- set colMediaClass = blocks|length == 1 and (blocks|first.blockType.slug ?? null) == 'media' ? 'media-col' : '' -%}
-                        {%- set colClasses = (colClasses~' '~colAlignment~' '~colMediaClass~' '~colPaddingsWrap)|trim -%}
-                        <div id="layout-col-{{ colId }}" class="layout-col {{ colClasses }}{% if align %} d-flex align-items-center{% endif %}"
+                        {%- set colClasses = (colClasses~' '~colMediaClass~' '~colPaddingsWrap)|trim -%}
+                        <div id="layout-col-{{ colId }}" class="layout-col {{ colClasses }}"
                              data-position="{{ col.position }}"
                              {% if colEffects %} {{ colEffects|raw }}{% endif %}
                              {% if bgColorHexa %} style="background: {{ bgColorHexa }};" data-hexadecimal="{{ bgColorHexa }}"{% endif %}>
-                            {%- set colInnerClasses = innerColBackground or bgColorHexaInnerZone ? paddings(col) ~ ' ' ~ (col.backgroundColor ?: '') : '' -%}
-                            {%- set colInnerClasses = col.radius ? 'radius ' ~ colInnerClasses : colInnerClasses -%}
-                            {%- set colInnerClasses = colSpaces~' '~colInnerClasses -%}
                             {%- set blocksCount = 0 -%}
                             {%- for block in blocks -%}
                                 {%- set blockHide = block.hide or app.request.locale in block.hideLocales -%}
@@ -114,7 +113,13 @@
                                     {%- set blocksCount = blocksCount + 1 -%}
                                 {%- endif -%}
                             {%- endfor -%}
-                            <div class="{{ colInnerClasses|trim }} cards-grid{% if blocksCount == 1 %} h-100{% endif %}"
+                            {%- set colInnerClasses = innerColBackground or bgColorHexaInnerZone ? paddings(col) ~ ' ' ~ (col.backgroundColor ?: '') : '' -%}
+                            {%- set colInnerClasses = col.radius ? 'radius ' ~ colInnerClasses : colInnerClasses -%}
+                            {%- set colInnerClasses = colSpaces~' '~colInnerClasses -%}
+                            {%- set colInnerClasses = align ? 'd-flex align-items-center' : colInnerClasses -%}
+                            {%- set colInnerClasses = blocksCount == 1 ? colInnerClasses~' h-100' : colInnerClasses -%}
+                            {%- set colInnerClasses = colAlignment ? colInnerClasses~' '~colAlignment : colInnerClasses -%}
+                            <div class="{{ colInnerClasses|trim }} row"
                                  {% if bgColorHexaInnerZone %} style="background: {{ bgColorHexaInnerZone }};" data-hexadecimal="{{ bgColorHexaInnerZone }}" {% endif %}>
                                 {%- for block in blocks -%}
                                     {%- set blockHide = block.hide or app.request.locale in block.hideLocales -%}

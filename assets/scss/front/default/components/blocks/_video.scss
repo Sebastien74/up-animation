@@ -110,12 +110,16 @@
     .control-pause-btn {
         height: 40px;
         width: 40px;
+        min-width: initial !important;
+        min-height: initial !important;
         transition: color $transition-base;
     }
 
     .sound-control {
         height: 40px;
         width: 40px;
+        min-width: initial !important;
+        min-height: initial !important;
         opacity: 0;
         top: 4rem;
         right: 1rem;

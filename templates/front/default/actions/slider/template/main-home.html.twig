@@ -57,8 +57,8 @@
             {%- if display -%}
                 <div class="carousel-item {% if isFirst %} active{% endif %}">
                     <div class="container">
-                        <div class="row">
-                            <div class="col-lg-7 d-flex align-items-center">
+                        <div class="row m-0">
+                            <div class="col-lg-7 d-flex align-items-center mb-5">
                                 {%- if haveContent or displayIndicators or displayArrows -%}
                                     <div class="carousel-content">
                                         {%- if arrows and 'top' in slider.arrowAlignment -%}
@@ -70,7 +70,7 @@
                                                     <strong class="text-white">{{ intlMedia.subTitle|unescape|raw }}</strong>
                                                 {%- endif -%}
                                                 {%- if intlMedia.title -%}
-                                                    <h{{ intlMedia.titleForce }} class="caption-title text-uppercase fw-900 text-primary mt-1 mb-0">{{ intlMedia.title|unescape|raw }}</h{{ intlMedia.titleForce }}>
+                                                    <h{{ intlMedia.titleForce }} class="caption-title text-uppercase fw-900 text-primary mb-0{% if intlMedia.subTitle %} mt-1{% endif %}">{{ intlMedia.title|unescape|raw }}</h{{ intlMedia.titleForce }}>
                                                 {%- endif -%}
                                                 <div class="row">
                                                     <div class="col-xl-9">

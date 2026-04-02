@@ -66,20 +66,25 @@ export default async function () {
 
                 setTimeout(function () {
 
-                    let input = element.input;
-                    let customUrl = input.dataset.deleteUrl;
-                    let screen = input.dataset.screen;
-                    let media = input.dataset.media;
-                    let url = route('admin_mediarelation_reset_media', {
+                    let input = element.input ? element.input[0] : false;
+                    let dataset = input ? input.dataset : undefined;
+                    let customUrl = dataset ? dataset.deleteUrl : undefined;
+                    let screen = dataset ? dataset.screen : undefined;
+                    let media = dataset ? dataset.media : undefined;
+                    let url = dataset ? route('admin_mediarelation_reset_media', {
                         "website": body.getAttribute('data-id'),
-                        "mediaRelationId": input.dataset.mediaRelation,
-                        "mediaClassname": input.dataset.mediaClassname,
-                    });
+                        "mediaRelationId": dataset.mediaRelation,
+                        "mediaClassname": dataset.mediaClassname,
+                    }) : undefined;
 
                     if (typeof customUrl != 'undefined') {
                         url = customUrl;
                     } else if (typeof media != 'undefined') {
                         url = route('admin_media_delete', {"website": body.getAttribute('data-id'), "media": media});
+                    }
+
+                    if (typeof url !== 'string') {
+                        return;
                     }
 
                     let ajaxUrl = url + (url.indexOf('?') > -1 ? "&ajax=true" : "?ajax=true");
@@ -91,9 +96,13 @@ export default async function () {
                         .then(response => {
                             if (response.success) {
                                 element.resetFile();
-                                input.value = '';
+                                if (input) {
+                                    input.value = '';
+                                }
                                 element.resetPreview();
-                                input.dispatchEvent(new CustomEvent("dropify.afterClear", { detail: [this] }));
+                                if (input) {
+                                    input.dispatchEvent(new CustomEvent("dropify.afterClear", {detail: [this]}));
+                                }
                             }
                             swal.close();
                             if (typeof media != 'undefined' && typeof screen == 'undefined') {

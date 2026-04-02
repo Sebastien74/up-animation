@@ -205,7 +205,7 @@ class BlockRepository extends ServiceEntityRepository
             ->addOrderBy('b.position', 'ASC')
             ->addOrderBy('z.position', 'ASC');
 
-        if ($haveContent && 'title' === $blockType) {
+        if ($haveContent && ('title' === $blockType || 'title-header' === $blockType)) {
             $statement->andWhere('i.title IS NOT NULL');
         } elseif ($haveContent) {
             $statement->andWhere('i.body IS NOT NULL OR i.introduction IS NOT NULL');

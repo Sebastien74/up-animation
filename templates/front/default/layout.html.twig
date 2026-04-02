@@ -12,6 +12,8 @@
 {%- set interfaceName = interfaceName is defined ? interfaceName : (interface.name is defined ? interface.name : null) -%}
 
 {%- for zone in zones -%}
+    {%- set prevZone = zones[loop.index - 1] is defined ? zones[loop.index - 1] : false -%}
+    {%- set nextZone = zones[loop.index] is defined ? zones[loop.index] : false -%}
     {%- if asLayout is defined and asLayout -%}
         {%- for col in zone.cols -%}
             {%- for block in col.blocks -%}
@@ -43,6 +45,8 @@
             seo: seo is defined ? seo : null,
             seoUrl: seoUrl,
             isIndex: isIndex,
+            prevZone: prevZone,
+            nextZone: nextZone,
             transitions: transitions,
             layout: layout,
             zone: zone,

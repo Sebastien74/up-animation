@@ -63,7 +63,7 @@ class QuestionType extends AbstractType
                 ],
                 'label_fields' => [
                     'title' => $this->translator->trans('Question', [], 'admin'),
-                    'placeholder' => $this->translator->trans('Bagde', [], 'admin'),
+                    'placeholder' => $this->translator->trans('Badge', [], 'admin'),
                     'body' => $this->translator->trans('Réponse', [], 'admin'),
                 ],
                 'fields_data' => ['titleForce' => 3],

@@ -105,10 +105,12 @@ $primary: #ff7100 !default;
 $primary-darken: darken($primary, 5%) !default;
 $secondary: #22254e !default;
 $secondary-light: #4e5071 !default;
+$secondary-lighten: #dddef0 !default;
 $beige: #dfcbaf !default;
 $success: #aeba2b !default;
 $info: #0081ac !default;
 $info-light: #71a3bd !default;
+$info-lighten: #c4d8e3 !default;
 $info-dark: #3c5671 !default;
 $warning: #f1ba12 !default;
 $danger: #a82835 !default;
@@ -138,10 +140,12 @@ $theme-colors: (
     'primary-darken': $primary-darken,
     'secondary': $secondary,
     'secondary-light': $secondary-light,
+    'secondary-lighten': $secondary-lighten,
     'beige': $beige,
     'success': $success,
     'info': $info,
     'info-light': $info-light,
+    'info-lighten': $info-lighten,
     'info-dark': $info-dark,
     'warning': $warning,
     'danger': $danger,

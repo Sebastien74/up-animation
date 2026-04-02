@@ -378,26 +378,40 @@ final class ViewModel extends BaseModel
         $body = $intl?->body;
 
         if ($layout->asCustom) {
-            $repository = self::$coreLocator->em()->getRepository(Layout\Block::class);
-            $blockTitle = $repository->findByBlockTypeAndLocaleLayout($layout->entity, 'title', $locale, [
-                'asThumb' => true,
-                'haveContent' => true,
-            ]);
-            $intTitle = $blockTitle ? IntlModel::fromEntity($blockTitle, self::$coreLocator, false) : $intl;
-            $title = $intTitle->title ?: $title;
-            $subTitle = $intTitle->subTitle ?: $subTitle;
-            $blockText = $repository->findByBlockTypeAndLocaleLayout($layout->entity, 'text', $locale, [
-                'asThumb' => true,
-                'haveContent' => true,
-            ]);
-            $intl = $blockText ? IntlModel::fromEntity($blockText, self::$coreLocator, false) : $intl;
-            $intro = $intl && $intl->introduction ? $intl->introduction : $intro;
-            $body = $intl && $intl->body ? $intl->body : $body;
-            $blockMedia = $repository->findByBlockTypeAndLocaleLayout($layout->entity, 'media', $locale, [
-                'asThumb' => true,
-                'haveContent' => false,
-            ]);
-            $medias = $blockMedia ? MediasModel::fromEntity($blockMedia, self::$coreLocator, self::$coreLocator->locale(), false) : $medias;
+            try {
+                $repository = self::$coreLocator->em()->getRepository(Layout\Block::class);
+                $blockTitle = $repository->findByBlockTypeAndLocaleLayout($layout->entity, 'title-header', $locale, [
+                    'haveContent' => true,
+                ]);
+                $blockTitle = !$blockTitle ? $repository->findByBlockTypeAndLocaleLayout($layout->entity, 'title', $locale, [
+                    'asThumb' => true,
+                    'haveContent' => true,
+                ]) : $blockTitle;
+                $intTitle = $blockTitle ? IntlModel::fromEntity($blockTitle, self::$coreLocator, false) : $intl;
+                $title = $intTitle->title ?: $title;
+                $subTitle = $intTitle->subTitle ?: $subTitle;
+                $blockText = $repository->findByBlockTypeAndLocaleLayout($layout->entity, 'text', $locale, [
+                    'asThumb' => true,
+                    'haveContent' => true,
+                ]);
+                $blockText = !$blockText ? $repository->findByBlockTypeAndLocaleLayout($layout->entity, 'text', $locale, [
+                    'haveContent' => true,
+                ]) : $blockText;
+                $intl = $blockText ? IntlModel::fromEntity($blockText, self::$coreLocator, false) : $intl;
+                $intro = $intl && $intl->introduction ? $intl->introduction : $intro;
+                $body = $intl && $intl->body ? $intl->body : $body;
+                $blockMedia = $repository->findByBlockTypeAndLocaleLayout($layout->entity, 'media', $locale, [
+                    'asThumb' => true,
+                    'haveContent' => false,
+                ]);
+                $blockMedia = !$blockMedia ? $repository->findByBlockTypeAndLocaleLayout($layout->entity, 'media', $locale, [
+                    'asThumb' => true,
+                    'haveContent' => false,
+                ]) : $blockMedia;
+                $medias = $blockMedia ? MediasModel::fromEntity($blockMedia, self::$coreLocator, self::$coreLocator->locale(), false) : $medias;
+            } catch (MappingException|QueryException|InvalidArgumentException|\ReflectionException $e) {
+
+            }
         }
 
         return (object) [
@@ -407,6 +421,7 @@ final class ViewModel extends BaseModel
             'text' => $intro ?: $body,
             'intro' => $intro,
             'body' => $body,
+            'haveMainMedia' => $medias ? $medias->haveMain : false,
             'medias' => $medias ? $medias->list : [],
             'mainMedia' => $medias?->main,
             'headerMedia' => $medias?->header,
