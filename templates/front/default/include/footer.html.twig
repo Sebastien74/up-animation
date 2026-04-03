@@ -13,11 +13,10 @@
 
 {%- macro uaContact(website, icon, title, type, data, label) -%}
     <div class="col-12 col-lg-3">
-        <div class="contact-item h-100 d-flex align-items-center py-3">
+        <div class="contact-item h-100 d-flex align-items-center justify-content-center py-3">
             <div class="h-100 d-flex align-items-center gap-3">
-                <div class="contact-icon d-flex align-items-center justify-content-center rounded-3"
-                     aria-hidden="true">
-                    <i class="icon-{{ icon }} text-white"></i>
+                <div class="contact-icon d-flex align-items-center justify-content-center rounded-3" aria-hidden="true">
+                    <i class="icon-{{ icon }} text-secondary"></i>
                 </div>
                 <div class="d-flex flex-column gap-1">
                     <div class="contact-title text-uppercase text-white-75">{{ title|raw }}</div>
@@ -42,18 +41,24 @@
 
 {%- macro menu(catalogMenus, category, title) -%}
     {%- if catalogMenus[category] is not empty -%}
-        <h3 class="footer-title pb-2 mb-3 fw-900 text-white">{{ title|striptags }}</h3>
+        <h3 class="footer-title pb-2 mb-3 fw-900 text-uppercase text-white">{{ title|striptags }}</h3>
         <ul class="list-unstyled d-grid gap-2 mb-4 ps-3">
             {%- for item in catalogMenus[category] -%}
-                <li><a class="footer-link" href="{{ item.url }}">{{ item.intl.title|striptags }}</a></li>
+                <li><a class="footer-link text-white-75 text-hover-primary" href="{{ item.url }}">{{ item.intl.title|striptags }}</a></li>
             {%- endfor -%}
         </ul>
     {%- endif -%}
 {%- endmacro -%}
 
-<footer class="footer text-white">
+<footer class="footer text-white position-relative">
 
-    <section class="footer-contact py-4">
+    <div class="footer-divider">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+        </svg>
+    </div>
+
+    <section class="footer-contact pb-4">
         <div class="container">
             <div class="row g-3 g-lg-0 contact align-items-stretch">
                 {%- if agencies is not empty -%}
@@ -110,7 +115,7 @@
                                     {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                         intl: {
                                             link: path('front_index', {url: contactUrl}),
-                                            linkStyle: 'btn btn-glass btn-glass-primary my-1',
+                                            linkStyle: 'btn btn-primary my-1',
                                             linkLabel: 'Demander un devis'|trans,
                                         },
                                         icon: 'headset',
@@ -120,7 +125,7 @@
                                     {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                         intl: {
                                             link: path('front_index', {url: animationsUrl}),
-                                            linkStyle: 'btn btn-glass btn-glass-white my-1',
+                                            linkStyle: 'btn btn-white my-1',
                                             linkLabel: 'Voir les animations'|trans,
                                         },
                                         icon: 'people-group',
@@ -130,7 +135,7 @@
                         {%- endif -%}
                         {%- if agencies is not empty -%}
                             <hr class="sep my-4">
-                            <h3 class="footer-title pb-2 mb-3 fw-900 text-white">{{ "Nos agences"|trans }}</h3>
+                            <h3 class="footer-title pb-2 mb-3 fw-900 text-uppercase text-white">{{ "Nos agences"|trans }}</h3>
                             <div class="d-flex flex-wrap gap-2">
                                 {%- for agency in agencies -%}
                                     <a class="city text-white-75 px-3" href="{{ agency.url }}">{{ "Agence %city%"|trans({'%city%': agency.city}) }}</a>
@@ -139,7 +144,7 @@
                         {%- endif -%}
                         {%- if website.networks is not empty -%}
                             <hr class="sep my-4">
-                            <h3 class="footer-title pb-2 mb-3 fw-900 text-white">{{ "Restez connecté&nbsp;!"|trans|raw }}</h3>
+                            <h3 class="footer-title pb-2 mb-3 fw-900 text-uppercase text-white">{{ "Restez connecté&nbsp;!"|trans|raw }}</h3>
                             <p class="text-white-75">{{ "Rejoignez %company% sur les %socials% dès maintenant&nbsp;!"|trans({
                                 '%company%': '<strong class="text-white-75">' ~ (companyName|unescape|replace({'!': ''})) ~ '</strong>',
                                 '%socials%': '<strong class="text-white-75">' ~ ("réseaux sociaux"|trans) ~ '</strong>'
@@ -178,13 +183,13 @@
                             </div>
                         {%- endif -%}
                         {%- set labels = agencies|map(a =>
-                            '<a href="' ~ a.url ~ '" class="text-white-75 text-hover-white fw-700">' ~ a.city ~ '</a> ' ~ a.zipcodeSmall
+                            '<a href="' ~ a.url ~ '" class="text-white-75 text-hover-primary fw-700">' ~ a.city ~ '</a> ' ~ a.zipcodeSmall
                         ) -%}
                         {%- set agency_list -%}
                             {%- for agency in labels -%}{{ agency|raw }}{% if not loop.last %}{% if loop.revindex0 == 1 %} {{ 'et'|trans }} {% else %}, {% endif %}{%- endif -%}{%- endfor -%}
                         {%- endset -%}
-                        <div class="col-12">
-                            <hr class="sep mt-2 mb-4">
+                        <div class="col-12 mt-0">
+                            <hr class="sep mb-4">
                             <p class="mb-0 small text-white-75 agencies-body">
                                 {% trans with {'%agency_list%': agency_list|raw} %}
                                     Découvrez <strong class="text-white-75 fw-600">Up Animations</strong> expert en
@@ -208,7 +213,7 @@
         <div class="container px-0">
             <div class="pt-3 text-center small text-white-75 d-flex align-items-center justify-content-center gap-1">
                 {{ "Copyright"|trans|raw }} {{ 'now'|date('Y') }} <span class="dashed text-white-75">-</span>
-                <a href="{{ app.request.getSchemeAndHttpHost() }}" class="d-inline-block text-hover-white" aria-label="{{ companyName|striptags }}">
+                <a href="{{ app.request.getSchemeAndHttpHost() }}" class="d-inline-block text-hover-primary" aria-label="{{ companyName|striptags }}">
                     <strong class="text-white-75">{{ companyName|striptags }}</strong>
                 </a>
             </div>

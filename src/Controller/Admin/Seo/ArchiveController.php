@@ -103,7 +103,7 @@ class ArchiveController extends AdminController
      *
      * {@inheritdoc}
      */
-    #[Route('/delete', name: 'admin_url_archive_delete', methods: 'DELETE')]
+    #[Route('/delete', name: 'admin_url_archive_delete', methods: ['DELETE'])]
     public function delete(Request $request)
     {
         $classname = urldecode($request->query->get('classname'));

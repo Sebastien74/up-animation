@@ -9,6 +9,7 @@ import '../bootstrap/dist/tab';
 import setPositions from "./edit-in-tab-positions";
 import '../../../scss/admin/pages/edit-in-tab.scss';
 import '../../../scss/admin/lib/sweetalert.scss';
+import '../lib/sweetalert/sweetalert.min';
 
 document.addEventListener('DOMContentLoaded', function () {
 

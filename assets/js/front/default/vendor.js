@@ -313,6 +313,17 @@ document.addEventListener('DOMContentLoaded', function () {
     import('../../vendor/components/log-errors').then(({default: Log}) => {
         new Log();
     }).catch(error => console.error(error.message));
+
+    /** To add the last zone bg-* class to the footer */
+    const mainTpl = document.querySelector('.template-page');
+    const lastZone = mainTpl ? mainTpl.querySelector('.layout-zone:last-child') : null;
+    const footer = document.querySelector('footer');
+    const bgClass = lastZone
+        ? [...lastZone.classList].find(cls => cls.startsWith('bg-') && !cls.includes('next'))
+        : null;
+    if (bgClass && footer) {
+        footer.classList.add(`as-${bgClass}`);
+    }
 });
 
 if (isDebug) {

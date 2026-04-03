@@ -599,9 +599,9 @@ class LayoutRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Get margins element.
+     * Get a margin element.
      */
-    public function margins(mixed $entity = null): string
+    public function margins(mixed $entity = null, ?string $orientation = 'all'): string
     {
         $classes = '';
         $asObject = is_object($entity);
@@ -621,17 +621,15 @@ class LayoutRuntime implements RuntimeExtensionInterface
         }
 
         if ($fullSize) {
-            $classes .= ''.$elementName.'-full-size';
+            $classes .= $elementName .'-full-size';
         } else {
             foreach ($screens as $screen => $suffix) {
                 $suffix = $suffix ? '-'.$suffix : ' ';
-
                 $marginRight = $this->getValue($entity, 'marginRight'.ucfirst($screen));
                 $className = $marginRight.$suffix;
                 if ($marginRight && !preg_match('/'.$className.'/', $classes)) {
                     $classes .= ' '.$className;
                 }
-
                 $marginLeft = $this->getValue($entity, 'marginLeft'.ucfirst($screen));
                 $className = $marginLeft.$suffix;
                 if ($marginLeft && !preg_match('/'.$className.'/', $classes)) {
@@ -642,13 +640,11 @@ class LayoutRuntime implements RuntimeExtensionInterface
 
         foreach ($screens as $screen => $suffix) {
             $suffix = $suffix ? '-'.$suffix : ' ';
-
             $marginTop = $this->getValue($entity, 'marginTop'.ucfirst($screen));
             $className = $marginTop.$suffix;
             if ($marginTop && !preg_match('/'.$className.'/', $classes)) {
                 $classes .= ' '.$className;
             }
-
             $marginBottom = $this->getValue($entity, 'marginBottom'.ucfirst($screen));
             $className = $marginBottom.$suffix;
             if ($marginBottom && !preg_match('/'.$className.'/', $classes)) {
@@ -660,7 +656,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Get paddings element.
+     * Get padding element.
      */
     public function paddings(mixed $entity = null, ?string $orientation = null): string
     {

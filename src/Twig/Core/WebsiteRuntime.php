@@ -56,7 +56,7 @@ class WebsiteRuntime implements RuntimeExtensionInterface
             if ($domain->locale === $locale) {
                 return $protocol.$domain->name;
             }
-            if ($domain->getLocale() === $configuration->locale) {
+            if ($domain->locale === $configuration->locale) {
                 $defaultDomain = $protocol.$domain->name;
             }
         }

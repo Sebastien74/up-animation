@@ -118,6 +118,10 @@ class LayoutSubscriber
      */
     private function findLayout(object $entity, UnitOfWork $uow): ?Layout
     {
+        if ($uow->isScheduledForDelete($entity)) {
+            return null;
+        }
+
         if ($entity instanceof Layout) {
             return $entity;
         }

@@ -8,8 +8,8 @@
     {%- set entityId = isNew ? uniqId() : color.vars.data.id -%}
     {%- set deletable = isNew ? true : color.vars.data.deletable -%}
 
-    <div class="prototype col-md-6 col-lg-3">
-        <div class="card mb-3">
+    <div class="prototype col-md-6 col-lg-3 mb-3">
+        <div class="card">
             <div class="card-body pb-2">
                 <div class="d-flex align-items-center gap-2 mb-3">
                     {%- if deletable -%}
@@ -39,8 +39,10 @@
                             {{ form_widget(color.slug) }}
                         </div>
                     {%- endif -%}
-                    {{ form_row(color.active) }}
                 </div>
+            </div>
+            <div class="card-footer bg-transparent">
+                {{ form_row(color.active) }}
             </div>
         </div>
     </div>
@@ -49,7 +51,7 @@
 
 <div id="colors-collection"
      data-index="{{form.colors|length}}"
-     class="collection accordion"
+     class="collection row accordion"
      data-prototype="{{ macro.color_prototype(form.colors.vars.prototype)|e('html_attr') }}">
 
     {%- set categories = {
@@ -63,10 +65,12 @@
     {%- for key, meta in categories -%}
         {%- set items = form.colors|filter(c => c.vars.value.category == key) -%}
         {%- if items|length > 0 -%}
-            <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-{{ key }}" aria-expanded="false" aria-controls="collapse-{{ key }}">
-                <i class="{{ meta.icon }}"></i>{{ meta.label }}
-                <i class="icm-chevron-down ms-auto"></i>
-            </h4>
+            <div class="col-12">
+                <h4 class="main-subtitle cursor w-100" data-bs-toggle="collapse" href="#collapse-{{ key }}" aria-expanded="false" aria-controls="collapse-{{ key }}">
+                    <i class="{{ meta.icon }}"></i>{{ meta.label }}
+                    <i class="icm-chevron-down ms-auto"></i>
+                </h4>
+            </div>
             <div id="collapse-{{ key }}" class="collapse row" aria-labelledby="heading {{ key }}" data-parent="#colors-collection">
                 {%- for color in items -%}
                     {{ macro.color_prototype(color) }}

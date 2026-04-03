@@ -184,9 +184,10 @@ if (body.querySelector('.delete-pack') || document.getElementById('delete-pack-b
 
 /** 15 - Delete index */
 if (document.getElementById('delete-index-all')
-    || document.getElementById('index-delete-show')
+    || document.querySelector('.index-delete-show')
     || body.querySelector('.delete-input-index')
-    || document.getElementById('index-delete-submit')) {
+    || document.querySelector('.index-delete-submit')
+) {
     import('./delete/delete-index').then(({default: DeleteIndex}) => {
         DeleteIndex();
     }).catch(error => console.error(error.message));

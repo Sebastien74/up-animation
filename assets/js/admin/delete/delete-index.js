@@ -3,120 +3,123 @@ export default function () {
     let body = document.body;
 
     if (body.querySelector('.index-container')) {
-        import('../../../scss/admin/lib/sweetalert.scss');
+        import('../lib/sweetalert/sweetalert.min.js').then(() => {
+            import('../../../scss/admin/lib/sweetalert.scss');
+        });
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
+    let removeAllBtns = body.querySelectorAll('.delete-index-all');
 
-        let removeAllBtns = body.querySelectorAll('.delete-index-all');
+    body.querySelectorAll('.delete-input-index').forEach(input => input.checked = false);
+    removeAllBtns.forEach(btn => btn.checked = false);
 
-        body.querySelectorAll('.delete-input-index').forEach(input => input.checked = false);
-        removeAllBtns.forEach(btn => btn.checked = false);
+    body.addEventListener('click', function (e) {
 
-        body.addEventListener('click', function (e) {
+        let target = e.target.closest('.index-delete-show');
 
-            let target = e.target.closest('.index-delete-show');
-            if (!target) return;
+        console.log(target);
+        if (!target) return;
 
-            e.preventDefault();
+        e.preventDefault();
 
-            let el = target;
-            let isActive = el.classList.contains('active');
-            let container = el.closest('.index-container');
-            let inputs = container.querySelectorAll('.delete-input-index');
-            let removeAllBtn = container.querySelector('.delete-index-all');
+        let el = target;
+        let isActive = el.classList.contains('active');
+        let container = el.closest('.index-container');
+        let inputs = container.querySelectorAll('.delete-input-index');
+        let removeAllBtn = container.querySelector('.delete-index-all');
 
-            if (isActive) {
-                inputs.forEach(input => {
-                    let parent = input.parentElement;
-                    parent.classList.remove('d-inline-block');
-                    parent.classList.add('d-none');
-                });
-                if (removeAllBtn) {
-                    removeAllBtn.parentElement.classList.add('d-none');
-                }
-                el.setAttribute('data-original-title', el.getAttribute('data-display'));
-                if (typeof bootstrap !== 'undefined') {
-                    let tooltip = bootstrap.Tooltip.getOrCreateInstance(el);
-                    tooltip.show();
-                }
-                el.classList.remove('active');
-            } else {
-                inputs.forEach(input => {
-                    let parent = input.parentElement;
-                    parent.classList.remove('d-none');
-                    parent.classList.add('d-inline-block');
-                });
-                if (removeAllBtn) {
-                    removeAllBtn.parentElement.classList.remove('d-none');
-                }
-                el.setAttribute('data-original-title', el.getAttribute('data-hide'));
-                if (typeof bootstrap !== 'undefined') {
-                    let tooltip = bootstrap.Tooltip.getOrCreateInstance(el);
-                    tooltip.show();
-                }
-                el.classList.add('active');
+        if (isActive) {
+            inputs.forEach(input => {
+                let parent = input.parentElement;
+                parent.classList.remove('d-inline-block');
+                parent.classList.add('d-none');
+            });
+            if (removeAllBtn) {
+                removeAllBtn.parentElement.classList.add('d-none');
             }
-        });
-
-        let inputChecked = function (card) {
-
-            let inputsChecked = card.querySelectorAll('.delete-input-index:checked');
-            let removeBtn = card.querySelector('.index-delete-submit');
-            let showBtn = card.querySelector('.index-delete-show');
-
-            if (inputsChecked.length > 0) {
-                if (removeBtn) removeBtn.classList.remove('d-none');
-                if (showBtn) showBtn.classList.add('d-none');
-            } else {
-                if (removeBtn) removeBtn.classList.add('d-none');
-                if (showBtn) showBtn.classList.remove('d-none');
-            }
-        };
-
-        body.addEventListener('change', function (e) {
-
-            let el = e.target.closest('.delete-index-all');
-            if (!el) return;
-
-            let container = el.closest('.index-container');
-            let isChecked = el.checked;
-            let allInputs = container.querySelectorAll('.delete-input-index');
-            let parent = el.parentElement;
-
-            if (isChecked) {
-                parent.setAttribute('data-original-title', parent.getAttribute('data-unchecked'));
-                allInputs.forEach(input => input.checked = true);
-            } else {
-                parent.setAttribute('data-original-title', parent.getAttribute('data-checked'));
-                allInputs.forEach(input => input.checked = false);
-            }
-
+            el.setAttribute('data-original-title', el.getAttribute('data-display'));
             if (typeof bootstrap !== 'undefined') {
-                let tooltip = bootstrap.Tooltip.getOrCreateInstance(parent);
+                let tooltip = bootstrap.Tooltip.getOrCreateInstance(el);
                 tooltip.show();
             }
+            el.classList.remove('active');
+        } else {
+            inputs.forEach(input => {
+                let parent = input.parentElement;
+                parent.classList.remove('d-none');
+                parent.classList.add('d-inline-block');
+            });
+            if (removeAllBtn) {
+                removeAllBtn.parentElement.classList.remove('d-none');
+            }
+            el.setAttribute('data-original-title', el.getAttribute('data-hide'));
+            if (typeof bootstrap !== 'undefined') {
+                let tooltip = bootstrap.Tooltip.getOrCreateInstance(el);
+                tooltip.show();
+            }
+            el.classList.add('active');
+        }
+    });
 
-            inputChecked(container);
-        });
+    let inputChecked = function (card) {
 
-        body.addEventListener('change', function (e) {
-            let el = e.target.closest('.delete-input-index');
-            if (!el) return;
-            let container = el.closest('.index-container');
-            inputChecked(container);
-        });
+        let inputsChecked = card.querySelectorAll('.delete-input-index:checked');
+        let removeBtn = card.querySelector('.index-delete-submit');
+        let showBtn = card.querySelector('.index-delete-show');
 
-        body.addEventListener('click', function (e) {
+        if (inputsChecked.length > 0) {
+            if (removeBtn) removeBtn.classList.remove('d-none');
+            if (showBtn) showBtn.classList.add('d-none');
+        } else {
+            if (removeBtn) removeBtn.classList.add('d-none');
+            if (showBtn) showBtn.classList.remove('d-none');
+        }
+    };
 
-            let target = e.target.closest('.index-delete-submit');
-            if (!target) return;
+    body.addEventListener('change', function (e) {
 
-            e.preventDefault();
+        let el = e.target.closest('.delete-index-all');
+        if (!el) return;
 
-            let trans = document.getElementById('data-translation');
-            let container = target.closest('.index-container');
+        let container = el.closest('.index-container');
+        let isChecked = el.checked;
+        let allInputs = container.querySelectorAll('.delete-input-index');
+        let parent = el.parentElement;
 
+        if (isChecked) {
+            parent.setAttribute('data-original-title', parent.getAttribute('data-unchecked'));
+            allInputs.forEach(input => input.checked = true);
+        } else {
+            parent.setAttribute('data-original-title', parent.getAttribute('data-checked'));
+            allInputs.forEach(input => input.checked = false);
+        }
+
+        if (typeof bootstrap !== 'undefined') {
+            let tooltip = bootstrap.Tooltip.getOrCreateInstance(parent);
+            tooltip.show();
+        }
+
+        inputChecked(container);
+    });
+
+    body.addEventListener('change', function (e) {
+        let el = e.target.closest('.delete-input-index');
+        if (!el) return;
+        let container = el.closest('.index-container');
+        inputChecked(container);
+    });
+
+    body.addEventListener('click', function (e) {
+
+        let target = e.target.closest('.index-delete-submit');
+        if (!target) return;
+
+        e.preventDefault();
+
+        let trans = document.getElementById('data-translation');
+        let container = target.closest('.index-container');
+
+        import('../lib/sweetalert/sweetalert.min.js').then(() => {
             swal({
                 title: trans.getAttribute('data-swal-delete-title'),
                 text: trans.getAttribute('data-swal-delete-text'),
@@ -183,9 +186,9 @@ export default function () {
                     input.parentElement.classList.remove('d-inline-block');
                 });
             });
+        }).catch(error => console.error("Could not load SweetAlert:", error));
 
-            e.stopImmediatePropagation();
-            return false;
-        });
+        e.stopImmediatePropagation();
+        return false;
     });
 }

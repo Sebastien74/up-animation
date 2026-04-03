@@ -583,6 +583,12 @@ form {
     }
 }
 
+.prototype {
+    .card {
+        height: 100%;
+    }
+}
+
 .prototype-block {
     border: 1px solid $input-border-color !important;
     border-radius: $border-radius;
@@ -858,13 +864,18 @@ form {
             top: 50%;
             transform: translateY(-50%);
             border-radius: 5px;
-            border: 1px solid $btn-surface;
+            border: 1px solid $input-border-color;
 
             span {
                 border-radius: 5px;
             }
         }
     }
+}
+
+.asColorPicker-input {
+    padding-top: 2rem !important;
+    padding-bottom: 0.625rem !important;
 }
 
 .asColorPicker-dropdown {

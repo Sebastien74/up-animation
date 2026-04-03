@@ -316,7 +316,7 @@
         }
     }
 
-    @if $enable-glass-btn {
+    @if $enable-blur-btn {
 
         body .btn.btn-blur-#{$suffix} {
 

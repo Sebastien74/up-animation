@@ -62,10 +62,10 @@
 {%- block _col_size_size_widget -%}
     <div id="{{ id }}" class="w-100 text-center d-flex justify-content-center flex-wrap gap-2">
         {%- for choice in choices -%}
-            {%- set id = uniqId() -%}
-            <label for="{{ choice.value~''~id }}" class="btn-icon cursor">
+            {%- set filedId = id ~ '_' ~ choice.value -%}
+            <label for="{{ filedId }}" class="btn-icon cursor">
                 {{ choice.value }}
-                <input type="radio" id="{{ choice.value~''~id }}" name="{{ full_name }}" required="required" class="d-none input-btn" value="{{ choice.value }}">
+                <input type="radio" id="{{ filedId }}" name="{{ full_name }}" required="required" class="d-none input-btn" value="{{ choice.value }}">
             </label>
         {%- endfor -%}
     </div>
@@ -75,7 +75,8 @@
     <div id="grid-cols-group" class="row justify-content-center">
         {%- for key, choice in choices -%}
             {%- if choice.data.cols|length > 0 -%}
-                <label for="{{ id~"_"~key }}" class="col-md-6 col-lg-4">
+                {%- set filedId = id ~ "_" ~ key -%}
+                <label for="{{ filedId }}" class="col-md-6 col-lg-4">
                     <span class="inner-grid">
                         <span class="row ms-0 me-0">
                             {%- for col in choice.data.cols -%}
@@ -83,7 +84,7 @@
                             {%- endfor -%}
                         </span>
                     </span>
-                    <input type="radio" id="{{ id~"_"~key }}" name="{{ full_name }}" required="required" class="d-none input-grid input-btn" value="{{ choice.value }}">
+                    <input type="radio" id="{{ filedId }}" name="{{ full_name }}" required="required" class="d-none input-grid input-btn" value="{{ choice.value }}">
                 </label>
             {%- endif -%}
         {%- endfor -%}
@@ -93,7 +94,7 @@
 {%- block _background_color_zone_backgroundColor_widget -%}
     <div id="{{ id }}" class="background-rounded-selector w-100 text-center">
         {%- for choice in choices -%}
-            {%- set filedId = loop.index~uniqId() -%}
+            {%- set filedId = id ~ '_' ~ choice.value -%}
             {%- set color = 'background'|color(website(), choice.data) -%}
             {%- set hexa = color ? color.color : choice.data -%}
             {%- set hexa = hexa ? hexa : 'transparent' -%}
@@ -123,7 +124,7 @@
 {%- block _background_color_col_backgroundColor_widget -%}
     <div id="{{ id }}" class="background-rounded-selector w-100 text-center">
         {%- for choice in choices -%}
-            {%- set filedId = loop.index~uniqId() -%}
+            {%- set filedId = id ~ '_' ~ choice.value -%}
             {%- set color = 'background'|color(website(), choice.data) -%}
             {%- set hexa = color ? color.color : choice.data -%}
             {%- set hexa = hexa ? hexa : 'transparent' -%}
@@ -152,7 +153,7 @@
 {%- block _background_color_block_backgroundColor_widget -%}
     <div id="{{ id }}" class="background-rounded-selector w-100 text-center">
         {%- for choice in choices -%}
-            {%- set filedId = loop.index~uniqId() -%}
+            {%- set filedId = id ~ '_' ~ choice.value -%}
             {%- set color = 'background'|color(website(), choice.data) -%}
             {%- set hexa = color ? color.color : choice.data -%}
             {%- set hexa = hexa ? hexa : 'transparent' -%}

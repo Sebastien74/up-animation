@@ -165,6 +165,7 @@ class ProductRepository extends ServiceEntityRepository
             ->andWhere('u.archived = :archived')
             ->andWhere('p.menu IS NOT NULL')
             ->setParameter('archived', false)
+            ->orderBy('p.position', 'ASC')
             ->getQuery()
             ->getResult();
 

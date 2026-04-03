@@ -277,17 +277,13 @@ body.menu-open {
                 color: $secondary !important;
             }
 
-            &.in-bg-secondary {
-                .btn-blur  .link-label {
+            &.in-bg-secondary, &.in-footer {
+                .btn-blur, .btn-blur i, .btn-blur .link-label {
                     color: $white !important;
                 }
             }
         }
     }
-
-    //&.bottom-shadow {
-    //    box-shadow: 0 8px 8px -6px transparentize($black, .8);
-    //}
 
     @include mediaQuery(min-lg) {
 
@@ -317,7 +313,7 @@ body.menu-open {
             transition: left $transition-slow;
             display: flex;
             flex-direction: column;
-            will-change: left;
+            //will-change: left;
         }
     }
 
@@ -332,7 +328,7 @@ body.menu-open {
             top: 0;
             height: 100dvh;
             transition: left $transition-slow;
-            will-change: left;
+            //will-change: left;
 
             &.show:not(.not-expanded) {
                 left: 0;
@@ -347,7 +343,7 @@ body.menu-open {
 
         position: fixed;
         z-index: 3000;
-        will-change: left;
+        //will-change: left;
 
         .close-menu-submenu {
             height: 20px;

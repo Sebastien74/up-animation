@@ -10,6 +10,7 @@ let loader = document.getElementById('main-preloader');
 
 if (buttonToClear) {
     import('../../../scss/admin/lib/sweetalert.scss');
+    import('../lib/sweetalert/sweetalert.min');
 
     let progressAction = function (progressCard, progressBar, counterWrap, progress, percent, filename = null) {
         if (filename) {

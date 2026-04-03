@@ -18,7 +18,7 @@
     <ul id="footer-menu-{{ slug }}" class="reset {% if alwaysHorizontal %}d-flex flex-wrap justify-content-center{% else %}d-inline-block{% endif %}{% if isHorizontal and not alwaysHorizontal %} d-md-flex{% endif %}">
         {%- for link in links -%}
             {%- if link.title and link.online -%}
-                {%- set linkClass = link.class~' text-white link position-relative' -%}
+                {%- set linkClass = link.class~' text-white text-hover-primary position-relative' -%}
                 {%- set linkClass = isVertical ? linkClass~' d-inline-block mb-3' : linkClass -%}
                 <li id="item-{{ link.id }}" class="{% if isHorizontal %}mb-2 mb-md-0 d-flex align-items-center justify-content-center{% endif %}">
                     {%- if link.link -%}
@@ -48,7 +48,7 @@
                     {%- if isHorizontal and dashed -%}
                         <span class="dashed text-white ms-2 me-2{% if not alwaysHorizontal %} d-none d-md-block{% endif %}">-</span>
                     {%- endif -%}
-                    <a href="{{ '?'~accessibilityParam~'=true' }}" class="text-white link{% if isVertical %} d-inline-block mb-2{% endif %}">{{ accessibilityLabel|raw }}</a>
+                    <a href="{{ '?'~accessibilityParam~'=true' }}" class="text-white text-hover-primary{% if isVertical %} d-inline-block mb-2{% endif %}">{{ accessibilityLabel|raw }}</a>
                 </li>
             {%- endif -%}
             {%- if gdprActive -%}
@@ -57,9 +57,9 @@
                         <span class="dashed text-white ms-2 me-2{% if not alwaysHorizontal %} d-none d-md-block{% endif %}">-</span>
                     {%- endif -%}
                     {%- if axeptioActive is defined and axeptioActive -%}
-                        <a href="javascript:openAxeptioCookies()" class="text-white link{% if isVertical %} d-inline-block mb-2{% endif %}" rel="nofollow">{{ "Gestion des Cookies"|trans|raw }}</a>
+                        <a href="javascript:openAxeptioCookies()" class="text-white text-hover-primary{% if isVertical %} d-inline-block mb-2{% endif %}" rel="nofollow">{{ "Gestion des Cookies"|trans|raw }}</a>
                     {%- else -%}
-                        <span class="open-gdpr-modal cursor text-white link{% if isVertical %} d-inline-block mb-2{% endif %}">{{ "Gestion des Cookies"|trans|raw }}</span>
+                        <span class="open-gdpr-modal cursor text-white text-hover-primary{% if isVertical %} d-inline-block mb-2{% endif %}">{{ "Gestion des Cookies"|trans|raw }}</span>
                     {%- endif -%}
                 </li>
             {%- endif -%}

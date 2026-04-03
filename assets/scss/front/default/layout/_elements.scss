@@ -478,10 +478,8 @@ ul.reset {
 
 a {
 
-    @include mediaQuery(min-lg) {
-        &:hover {
-            text-decoration: none;
-        }
+    &:not(.btn), &:not(.btn) * {
+        transition: color $transition-base !important;
     }
 
     &.link {

@@ -11,6 +11,10 @@ https://themeforest.net/item/conat-event-conference-vuejs-template/61240859
 https://preview.themeforest.net/item/konfer-react-event-conference-meetup-template/full_screen_preview/58424763
 https://preview.themeforest.net/item/eventen-event-conference-meetup-react-templates/full_screen_preview/58292518
 
+Utiliser font-size: clamp(2rem, calc(1.25rem + 1.5vw), 3rem);
+
+Finir le col padding qui ne fonctionne pas (Peut-etre génrer dans dans LayoutRuntime plus propre dans le html)
+
 Axonaut API
 
 Actus en en multi cat

@@ -448,6 +448,7 @@ picture {
     }
 
     @each $suffix, $color in $theme-colors {
+
         &.bg-#{$suffix} {
             .curve-divider-bottom-left,
             .wave-divider-top {
@@ -456,19 +457,19 @@ picture {
                 }
             }
         }
-    }
 
-    &.next-bg-info-light {
-        .wave-divider-bottom {
-            .shape-fill {
-                fill: $info-light;
+        &.next-bg-#{$suffix} {
+            .wave-divider-bottom {
+                .shape-fill {
+                    fill: $color;
+                }
             }
         }
     }
 
     .curve-divider-bottom-left {
 
-        bottom: -74px;
+        bottom: -73px;
         transform: rotatex(180deg);
 
         svg {

@@ -20,12 +20,12 @@
             width: 54px;
             height: 54px;
             border-radius: 18px;
-            background: linear-gradient(180deg, #fff 0%, #fff4e8 100%);
+            background: $primary;
 
             svg {
                 height: 24px;
                 width: auto;
-                fill: $secondary;
+                fill: $white;
             }
         }
 
@@ -33,7 +33,7 @@
         @if map-has-key($bgColors, "colors-in-backgrounds") {
             @each $color-name, $color in map-get($bgColors, 'colors-in-backgrounds') {
                 .card-body.bg-#{$color-name} .wrap-icon {
-                    background: linear-gradient(180deg, #fff 0%, #{$color} 75%, #{$color} 100%);
+                    background: $color;
                 }
             }
         }
@@ -77,47 +77,45 @@
         &:not(.card-wave) {
             .card-header {
                 picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader, .img-loader-wrap {
-                    border-top-left-radius: $border-radius;
-                    border-top-right-radius: $border-radius;
+                    border-top-left-radius: $card-border-radius;
+                    border-top-right-radius: $card-border-radius;
                 }
             }
         }
 
         &:not(.have-bg):not(.card-wave) {
-
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 248, 240, 0.96) 100%);
-            border: 1px solid rgba(244, 124, 0, 0.20) !important;
-
             .card-header {
                 picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader, .img-loader-wrap {
-                    border-bottom-left-radius: $border-radius;
-                    border-bottom-right-radius: $border-radius;
+                    border-bottom-left-radius: $card-border-radius;
+                    border-bottom-right-radius: $card-border-radius;
                 }
             }
         }
 
         &.have-bg, &.shadow {
 
-            border-radius: $border-radius;
+            :not(.news-card) {
+                border-radius: $card-border-radius;
+            }
 
-            &:not(.no-media) {
+            &:not(.no-media):not(.news-card) {
                 .card-body {
-                    border-top-left-radius: $border-radius;
-                    border-top-right-radius: $border-radius;
+                    border-top-left-radius: $card-border-radius;
+                    border-top-right-radius: $card-border-radius;
                 }
             }
 
-            &:not(.have-link) {
+            &:not(.have-link):not(.news-card) {
                 .card-body {
-                    border-bottom-left-radius: $border-radius;
-                    border-bottom-right-radius: $border-radius;
+                    border-bottom-left-radius: $card-border-radius;
+                    border-bottom-right-radius: $card-border-radius;
                 }
             }
 
-            &.have-link {
+            &.have-link:not(.news-card) {
                 .card-footer {
-                    border-bottom-left-radius: $border-radius;
-                    border-bottom-right-radius: $border-radius;
+                    border-bottom-left-radius: $card-border-radius;
+                    border-bottom-right-radius: $card-border-radius;
                 }
             }
         }
@@ -128,7 +126,7 @@
 
         &.card-wave {
 
-            border-radius: $border-radius;
+            border-radius: $card-border-radius;
 
             @include mediaQuery(min-lg) {
 
@@ -167,14 +165,14 @@
             }
 
             .card-header, .card-header .img-loader-wrap, .card-header img {
-                border-top-left-radius: $border-radius;
-                border-top-right-radius: $border-radius;
+                border-top-left-radius: $card-border-radius;
+                border-top-right-radius: $card-border-radius;
             }
 
             .card-body {
 
-                border-bottom-left-radius: $border-radius;
-                border-bottom-right-radius: $border-radius;
+                border-bottom-left-radius: $card-border-radius;
+                border-bottom-right-radius: $card-border-radius;
                 z-index: 500;
 
                 .shape-divider {
@@ -248,17 +246,12 @@
 
     .news-card {
 
-        border-radius: 40px;
+        border-radius: $card-news-border-radius;
         padding: .75rem;
 
         .card-header {
-
             .img-loader-wrap, .img-loader, img {
                 border-radius: 32px !important;
-            }
-
-            img {
-                border: 1px solid $light;
             }
         }
 

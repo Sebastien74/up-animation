@@ -45,7 +45,7 @@
     {%- set haveBg = background and 'transparent' not in background -%}
     {%- set displayMedia = (media and media.originalName and showThumbnail) or (thumbPlaceholder and showThumbnail) -%}
 
-    <{{ card }} class="card-block bg-transparent card h-100 {% if not icon %}border-0{% else %}have-icon{% endif %}{% if targetLink %} have-link{% endif %}{% if class %} {{ class }}{% endif %}{% if haveBg %} have-bg{% endif %}">
+    <{{ card }} class="card-block card h-100 {% if not icon %}border-0{% else %}have-icon{% endif %}{% if targetLink %} have-link{% endif %}{% if class %} {{ class }}{% endif %}{% if haveBg %} have-bg{% endif %}">
         {%- if vars.webmaster is defined -%}
             {{ component('WebmasterEdit', vars.webmaster) }}
         {%- endif -%}
@@ -143,9 +143,9 @@
 {%- endmacro -%}
 
 {%- macro news(vars) -%}
-    <article class="card news-card bg-white shadow bg-lght border-0 overflow-hidden position-relative h-100">
+    <article class="card news-card bg-secondary-lighten shadow bg-lght border-0 overflow-hidden position-relative h-100">
         {%- if vars.webmaster is defined and granted('ROLE_ADMIN') -%}
-                        {{ component('WebmasterEdit', vars.webmaster) }}
+            {{ component('WebmasterEdit', vars.webmaster) }}
         {%- endif -%}
         <div class="card-header p-0">
             {{ vars.entity.mainMedia|file(vars.thumbConfiguration, {

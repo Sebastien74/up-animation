@@ -43,7 +43,7 @@
             {%- endif -%}
             {%- include 'front/'~websiteTemplate~'/actions/vendor/include/layout-back-button.html.twig' with {entity: entity, pageUrl: pageUrl is defined ? pageUrl : null, class: 'mt-5 d-none d-lg-inline-block'} only -%}
         </div>
-        <div class="col-lg-5">
+        <div class="col-lg-5 layout-col col-sticky">
             {%- include 'front/'~websiteTemplate~'/actions/vendor/include/layout-slider.html.twig' with {entity: entity, websiteTemplate: websiteTemplate, thumbConfigurationView: thumbConfigurationView} only -%}
             {%- include 'front/'~websiteTemplate~'/actions/vendor/include/layout-back-button.html.twig' with {entity: entity, pageUrl: pageUrl is defined ? pageUrl : null, class: 'mt-5 d-lg-none'} only -%}
         </div>

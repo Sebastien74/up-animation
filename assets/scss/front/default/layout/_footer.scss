@@ -19,25 +19,52 @@
 ------------------------------------------------------------------------------------------ */
 
 /*-----------------------------------
-   1 ) Reset
------------------------------------*/
-
-.link-block {
-    .btn, .btn:hover {
-        span, i {
-            color: $dark !important;
-        }
-    }
-}
-
-/*-----------------------------------
    2 ) Main
 -----------------------------------*/
 
 .footer {
 
-    background-color: var(--footer-bg, #{$footer-bg});
+    background-color: $footer-bg;
     color: var(--footer-color, #{$footer-color});
+    padding-top: 80px;
+
+    .link-block {
+        .btn, .btn:hover {
+            span, i:not(.initial) {
+                color: darken($secondary, 5%) !important;
+            }
+        }
+    }
+
+    .footer-divider {
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+        line-height: 0;
+
+        svg {
+
+            position: relative;
+            display: block;
+            width: calc(230% + 1.3px);
+            height: 80px;
+
+            .shape-fill {
+                fill: $white;
+            }
+        }
+    }
+
+    @each $suffix, $color in $theme-colors {
+        &.as-bg-#{$suffix} {
+            .footer-divider .shape-fill {
+                fill: $color;
+            }
+        }
+    }
 
     /*-----------------------------------
        3 ) Contact
@@ -130,8 +157,7 @@
     .contact-icon {
         width: 44px;
         height: 44px;
-        background: #1f1f1f;
-        color: $primary;
+        background: $white;
         font-size: 1.1rem;
         flex-shrink: 0;
     }
@@ -175,17 +201,7 @@
     .link,
     .footer-link,
     #footer-bottom .link {
-
-        color: transparentize($white, .2);
         text-decoration: none;
-        transition: color $transition-base;
-
-        @include mediaQuery(min-lg) {
-            &:hover,
-            &:focus {
-                color: $white;
-            }
-        }
     }
 
     li::marker {
@@ -217,8 +233,6 @@
     .footer-link,
     .email-link,
     .phone-link {
-
-        transition: color $transition-base;
 
         @include mediaQuery(min-lg) {
 
@@ -266,7 +280,7 @@
         display: inline-flex;
         align-items: center;
         padding: .45rem .7rem;
-        border-radius: 999px;
+        border-radius: 1rem;
         border: 1px solid transparentize($primary, 0.65);
         color: transparentize($white, 0.18);
         text-decoration: none;

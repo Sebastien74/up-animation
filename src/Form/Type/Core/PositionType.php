@@ -43,7 +43,11 @@ class PositionType extends AbstractType
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Enregistrer', [], 'admin'),
-            'attr' => ['class' => 'col-12 btn-info'],
+            'attr' => [
+                'class' => 'btn-app',
+                'data-icon' => 'save',
+                'data-icon-side' => 'left',
+            ],
         ]);
     }
 

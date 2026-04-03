@@ -55,7 +55,7 @@ $enable-title-header: true !default;
 $enable-scroll-top-btn: true !default;
 $enable-gradient-btn: false !default;
 $enable-blur-btn: true !default;
-$enable-glass-btn: true !default;
+$enable-glass-btn: false !default;
 $enable-media-pictogram: false !default;
 $enable-media-secondary: false !default;
 $enable-browser-ie-alert: false !default;
@@ -124,11 +124,11 @@ $focus-color: #ff9800 !default;
 $body-bg: $white !default;
 $body-color: $secondary !default;
 
-$footer-bg: $gray-700 !default;
+$footer-bg: $secondary !default;
 $footer-color: $white !default;
-$footer-contact-bg: $gray-700 !default;
-$footer-main-bg: $gray-800 !default;
-$footer-bottom-bg: $gray-900 !default;
+$footer-contact-bg: $secondary !default;
+$footer-main-bg: darken($secondary, 5%) !default;
+$footer-bottom-bg: darken($secondary, 10%) !default;
 
 $bullet-list-color: $primary !default;
 
@@ -298,8 +298,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -321,8 +322,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $primary,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $secondary,
             'info': $white,
             'info-dark': $white,
@@ -341,8 +343,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $primary,
+            'secondary-light': $primary,
+            'secondary-lighten': $body-color,
             'success': $primary,
             'info': $primary,
             'info-dark': $white,
@@ -364,8 +367,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -386,8 +390,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -408,8 +413,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -430,8 +436,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -451,8 +458,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -471,8 +479,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -492,8 +501,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -513,8 +523,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $primary,
+            'secondary-light': $primary,
+            'secondary-lighten': $primary,
             'success': $primary,
             'info': $primary,
             'info-dark': $primary,
@@ -535,8 +546,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $primary,
+            'secondary-light': $primary,
+            'secondary-lighten': $primary,
             'success': $primary,
             'info': $primary,
             'info-dark': $primary,
@@ -566,8 +578,9 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -586,9 +599,10 @@ $elements: map-merge((
         ),
         'colors-in-backgrounds': (
             'primary': $info !important,
-            'primary-gradient': $info !important,
             'primary-darken': $info !important,
             'secondary': $info !important,
+            'secondary-light': $info !important,
+            'secondary-lighten': $info !important,
             'success': $info !important,
             'info': $white !important,
             'info-dark': $white,
@@ -605,8 +619,9 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -623,8 +638,9 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $primary,
             'info': $primary,
             'info-dark': $white,
@@ -642,8 +658,9 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $primary,
             'success': $primary,
             'info': $primary,
             'info-dark': $white,
@@ -661,8 +678,9 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $warning,
-            'primary-gradient': $warning,
             'secondary': $warning,
+            'secondary-light': $warning,
+            'secondary-lighten': $warning,
             'success': $warning,
             'info': $white,
             'info-dark': $white,
@@ -679,8 +697,9 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $white,
             'success': $primary,
             'info': $primary,
             'info-dark': $primary,
@@ -697,8 +716,9 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $primary,
             'success': $primary,
             'info': $white,
             'info-dark': $white,
@@ -714,27 +734,29 @@ $elements: map-merge((
     'information-container-hover': (
         'excluded': true,
         'colors-in-backgrounds': (
-            'primary': $secondary,
-            'primary-gradient': $secondary,
+            'primary': $body-color,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $white,
-            'info': $secondary,
+            'info': $body-color,
             'info-dark': $white,
             'warning': $white,
             'danger': $white,
             'danger-light': $white,
-            'light': $secondary,
+            'light': $body-color,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $secondary,
+            'white': $body-color,
         )
     ),
     'bullet': (
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $primary,
             'success': $primary,
             'info': $white,
             'info-dark': $white,
@@ -751,9 +773,9 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
             'secondary-light': $success,
+            'secondary-lighten': $success,
             'success': $primary,
             'beige': $info-light,
             'info': $white,
@@ -772,13 +794,13 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
-            'secondary-light': $secondary,
+            'secondary-light': $body-color,
+            'secondary-lighten': $body-color,
             'success': $primary,
-            'beige': $secondary,
+            'beige': $body-color,
             'info': $white,
-            'info-light': $secondary,
+            'info-light': $body-color,
             'info-dark': $white,
             'warning': $primary,
             'danger': $white,
@@ -793,8 +815,9 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -811,8 +834,9 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $white,
-            'primary-gradient': $white,
             'secondary': $white,
+            'secondary-light': $white,
+            'secondary-lighten': $body-color,
             'success': $body-color,
             'info': $white,
             'info-dark': $white,
@@ -829,8 +853,9 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $danger !important,
-            'primary-gradient': $danger !important,
             'secondary': $danger !important,
+            'secondary-light': $danger !important,
+            'secondary-lighten': $danger !important,
             'success': $danger !important,
             'info': $danger !important,
             'info-dark': $danger !important,
@@ -847,8 +872,9 @@ $elements: map-merge((
         'excluded': true,
         'colors-in-backgrounds': (
             'primary': $danger,
-            'primary-gradient': $danger,
             'secondary': $danger,
+            'secondary-light': $danger,
+            'secondary-lighten': $danger,
             'success': $danger,
             'info': $danger,
             'info-dark': $danger,
@@ -1024,7 +1050,7 @@ $pagination-padding-x-lg: 1.5rem !default;
 -----------------------------------*/
 
 $btn-border-width: 1px;
-$btn-border-radius: 22px;
+$btn-border-radius: 20px;
 $btn-blur-border-radius: 24px;
 $btn-min-height: 50px;
 
@@ -1304,7 +1330,8 @@ $buttons: (
 -----------------------------------*/
 
 $card-border-color: transparentize($black, 1);
-$card-border-radius: 0;
+$card-border-radius: 28px;
+$card-news-border-radius: 40px;
 $card-border-width: 0;
 
 /*-----------------------------------
