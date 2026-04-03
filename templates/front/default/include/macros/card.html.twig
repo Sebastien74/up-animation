@@ -206,28 +206,32 @@
             {%- set title = entity.adminName -%}
         {%- endif -%}
     {%- endif -%}
-    <div class="card agency-card shadow mx-auto bg-white border-0 overflow-hidden h-100">
-        <div class="card-header position-relative p-0 border-0 overflow-hidden">
-            {{ entity.mainMedia|file({}, {
-                screensSizes: screensSizes ? screensSizes : {
-                    mobile: {width: 308, height: 200},
-                    tablet: {width: 308, height: 200},
-                    desktop: {width: 308, height: 200}
-                },
-                parentEntity: entity,
-                title: mediaTitle,
-                targetLink: false,
-                isInBox: false,
-                placeholder: true,
-                class: ''
-            }) }}
-            <a href="#" class="btn-contact-circle shadow-lg position-absolute bg-primary d-flex align-items-center justify-content-center">
+    <div class="card agency-card shadow-sm mx-auto bg-white border-0 h-100 position-relative">
+        <div class="card-header position-relative p-0 border-0">
+            <div class="img-container overflow-hidden">
+                {{ entity.mainMedia|file({}, {
+                    screensSizes: screensSizes ? screensSizes : {
+                        mobile: {width: 308, height: 250},
+                        tablet: {width: 308, height: 250},
+                        desktop: {width: 308, height: 250}
+                    },
+                    parentEntity: entity,
+                    title: mediaTitle,
+                    targetLink: false,
+                    isInBox: false,
+                    placeholder: true,
+                    class: 'img-fluid'
+                }) }}
+            </div>
+            <a href="#" class="btn-contact-circle shadow position-absolute bg-primary d-flex align-items-center justify-content-center">
                 <i class="icon-headset text-white"></i>
             </a>
         </div>
-        <div class="card-body text-center bg-transparent border-0 px-4 py-4 position-relative">
-            <h{{ titleForce }} class="card-title text-uppercase text-dark h4 fw-700 mb-3">{{ title|raw }}</h{{ titleForce }}>
-            <a href="{{ entity.url }}" class="link-more text-uppercase text-primary fw-500">{{ "En savoir +"|trans|raw }}</a>
+        <div class="card-body text-center bg-transparent border-0 px-4 py-5 position-relative">
+            <h{{ titleForce }} class="card-title text-uppercase text-dark h5 fw-800 mb-4 px-2">{{ title|raw }}</h{{ titleForce }}>
+            <div class="link-wrapper mt-auto">
+                <a href="{{ entity.url }}" class="link-more text-uppercase text-primary fw-700 small">{{ "En savoir +"|trans|raw }}</a>
+            </div>
         </div>
     </div>
 {%- endmacro -%}
