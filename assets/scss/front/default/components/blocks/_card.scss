@@ -125,105 +125,132 @@
         }
 
         &.agency-card {
-            border-radius: 12px;
-            overflow: visible;
-            transition: transform $transition-base, box-shadow $transition-base;
+            border-radius: 20px;
+            overflow: visible; // Pour laisser dépasser le bouton si besoin
+            background: $white;
+            box-shadow: 0 10px 30px rgba($black, 0.05);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba($secondary, 0.05);
 
             .card-header {
-                z-index: 10;
+                border-radius: 20px 20px 0 0;
+                overflow: hidden;
+                mask-image: radial-gradient(white, black); // Fix overflow radius on some browsers
                 
                 .img-container {
+                    aspect-ratio: 16/10;
                     overflow: hidden;
-                    border-radius: 12px 12px 0 0;
-                    box-shadow: 0 4px 10px rgba($black, 0.05);
 
                     img {
-                        transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+                        height: 100%;
+                        width: 100%;
+                        object-fit: cover;
+                        transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
                     }
                 }
 
                 .btn-contact-circle {
-                    bottom: -28px;
+                    position: absolute;
+                    bottom: -25px;
                     right: 25px;
-                    width: 56px;
-                    height: 56px;
-                    border-radius: 50% 50% 0 50%;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50% 50% 50% 0; // Forme un peu plus originale
                     z-index: 20;
-                    transition: all $transition-base cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-                    &:hover {
-                        transform: translateY(-3px) scale(1.1);
-                        background-color: $secondary !important;
-                        border-radius: 50%;
-                    }
+                    text-decoration: none;
+                    transition: all 0.3s ease;
+                    transform: rotate(-45deg); // Oriente la pointe
 
                     i {
-                        font-size: 22px;
+                        font-size: 20px;
+                        transform: rotate(45deg); // Redresse l'icône
+                    }
+
+                    &:hover {
+                        border-radius: 50%;
+                        transform: rotate(0) scale(1.1);
+                        background-color: $secondary !important;
+                        i {
+                            transform: rotate(0);
+                        }
                     }
                 }
             }
 
             .card-body {
-                .title-wrapper {
-                    position: relative;
-                    padding-left: 15px;
+                padding: 2rem 1.5rem 1.5rem !important;
+                flex-grow: 1;
 
-                    &:before {
+                .card-title {
+                    @include rfs(18px);
+                    color: $secondary;
+                    letter-spacing: 0.02em;
+                    margin-bottom: 0;
+                    position: relative;
+                    display: inline-block;
+                    
+                    &:after {
                         content: '';
                         position: absolute;
+                        bottom: -4px;
                         left: 0;
-                        top: 4px;
-                        bottom: 4px;
-                        width: 4px;
+                        width: 30px;
+                        height: 2px;
                         background-color: $primary;
-                        border-radius: 2px;
-                        transition: transform $transition-base;
+                        transition: width 0.4s ease;
                     }
                 }
 
-                .card-title {
-                    @include rfs(17px);
-                    color: $dark;
-                    line-height: 1.4;
-                    letter-spacing: 0.5px;
-                    transition: color $transition-base;
-                }
-
-                .link-wrapper {
-                    .link-more {
-                        text-decoration: none;
-                        transition: color $transition-base;
-
-                        .arrow-icon {
-                            transition: transform $transition-base;
+                .link-more {
+                    text-decoration: none;
+                    color: $secondary;
+                    transition: color 0.3s ease;
+                    
+                    .text-label {
+                        position: relative;
+                        padding-bottom: 2px;
+                        &:before {
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+                            width: 0;
+                            height: 1px;
+                            background-color: $primary;
+                            transition: width 0.3s ease;
                         }
+                    }
 
-                        &:hover {
-                            color: $secondary !important;
-
-                            .arrow-icon {
-                                transform: translateX(5px);
-                            }
-                        }
+                    .arrow-icon {
+                        margin-left: 10px;
+                        color: $primary;
+                        transition: transform 0.3s ease;
                     }
                 }
             }
 
             &:hover {
-                transform: translateY(-8px);
-                box-shadow: 0 15px 35px rgba($black, 0.1) !important;
+                transform: translateY(-10px);
+                box-shadow: 0 20px 40px rgba($black, 0.1);
+                border-color: rgba($primary, 0.2);
 
                 .card-header .img-container img {
-                    transform: scale(1.08);
+                    transform: scale(1.05);
                 }
 
-                .card-body .title-wrapper:before {
-                    transform: scaleY(1.2);
-                    background-color: $secondary;
-                }
-
-                .card-body .card-title {
-                    color: $secondary;
+                .card-body {
+                    .card-title:after {
+                        width: 100%;
+                    }
+                    .link-more {
+                        color: $primary;
+                        .text-label:before {
+                            width: 100%;
+                        }
+                        .arrow-icon {
+                            transform: translateX(5px);
+                        }
+                    }
                 }
             }
         }

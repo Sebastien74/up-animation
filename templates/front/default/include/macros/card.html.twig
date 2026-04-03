@@ -206,14 +206,14 @@
             {%- set title = entity.adminName -%}
         {%- endif -%}
     {%- endif -%}
-    <div class="card agency-card border-0 h-100 position-relative bg-white shadow-sm">
+    <div class="card agency-card border-0 h-100 position-relative bg-white">
         <div class="card-header position-relative p-0 border-0">
             <div class="img-container">
                 {{ entity.mainMedia|file({}, {
                     screensSizes: screensSizes ? screensSizes : {
                         mobile: {width: 400, height: 300},
                         tablet: {width: 400, height: 300},
-                        desktop: {width: 400, height: 300}
+                        desktop: {width: 450, height: 340}
                     },
                     parentEntity: entity,
                     title: mediaTitle,
@@ -223,18 +223,23 @@
                     class: 'img-fluid w-100'
                 }) }}
             </div>
-            <a href="#" class="btn-contact-circle shadow position-absolute bg-primary d-flex align-items-center justify-content-center">
+            <a href="#" class="btn-contact-circle shadow bg-primary d-flex align-items-center justify-content-center">
                 <i class="icon-headset text-white"></i>
             </a>
         </div>
-        <div class="card-body bg-transparent border-0 px-4 pt-5 pb-4 position-relative">
-            <div class="title-wrapper mb-4">
-                <h{{ titleForce }} class="card-title text-uppercase text-dark fw-800 mb-0">{{ title|raw }}</h{{ titleForce }}>
+        <div class="card-body bg-white border-0 px-4 pt-5 pb-4 d-flex flex-column">
+            <div class="title-wrapper mb-3">
+                <h{{ titleForce }} class="card-title text-uppercase text-secondary fw-800 mb-0">{{ title|raw }}</h{{ titleForce }}>
             </div>
             <div class="link-wrapper mt-auto">
-                <a href="{{ entity.url }}" class="link-more text-uppercase text-primary fw-700 small d-inline-flex align-items-center">
-                    {{ "En savoir +"|trans|raw }}
-                    <span class="ms-2 arrow-icon">→</span>
+                <a href="{{ entity.url }}" class="link-more text-uppercase text-secondary fw-700 small d-inline-flex align-items-center">
+                    <span class="text-label">{{ "En savoir +"|trans|raw }}</span>
+                    <span class="ms-2 arrow-icon">
+                        <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 1L19 7L13 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M1 7H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
                 </a>
             </div>
         </div>
