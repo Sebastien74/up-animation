@@ -74,7 +74,7 @@
             }
         }
 
-        &:not(.card-wave) {
+        &:not(.agency-card) {
             .card-header {
                 picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader, .img-loader-wrap {
                     border-top-left-radius: $card-border-radius;
@@ -83,7 +83,7 @@
             }
         }
 
-        &:not(.have-bg):not(.card-wave) {
+        &:not(.have-bg):not(.agency-card) {
             .card-header {
                 picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader, .img-loader-wrap {
                     border-bottom-left-radius: $card-border-radius;
@@ -124,89 +124,73 @@
             margin-top: -1px;
         }
 
-        &.card-wave {
-
+        &.agency-card {
             border-radius: $card-border-radius;
 
-            @include mediaQuery(min-lg) {
-
-                transition: box-shadow $transition-base;
-
-                .card-header img {
-                    transition: transform $transition-base;
-                    transform: scale(1);
-                }
-
-                .card-title, .card-title span {
-                    transition: color $transition-base;
-                }
-
-                &:hover {
-
-                    transition: box-shadow $transition-base;
-                    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.30) !important;
-
-                    .card-header img {
-                        transition: transform $transition-base;
-                        transform: scale(1.02);
-                    }
-
-                    .card-title {
-
-                        transition: color $transition-base;
-                        color: $primary !important;
-
-                        span {
-                            transition: color $transition-base;
-                            color: $dark !important;
-                        }
-                    }
-                }
-            }
-
-            .card-header, .card-header .img-loader-wrap, .card-header img {
+            .card-header {
                 border-top-left-radius: $card-border-radius;
                 border-top-right-radius: $card-border-radius;
+
+                .btn-contact-circle {
+                    bottom: -25px;
+                    right: 20px;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    z-index: 2;
+                    transition: transform $transition-base, background-color $transition-base;
+
+                    &:hover {
+                        transform: scale(1.1);
+                        background-color: darken($primary, 10%);
+                    }
+
+                    i {
+                        font-size: 20px;
+                    }
+                }
             }
 
             .card-body {
-
-                border-bottom-left-radius: $card-border-radius;
-                border-bottom-right-radius: $card-border-radius;
-                z-index: 500;
-
-                .shape-divider {
-                    position: absolute;
-                    height: 30px;
-                    top: -30px;
-                    left: 0;
-                    width: 100%;
-                    overflow: hidden;
-                    line-height: 0;
-                    transform: rotate(180deg);
+                .card-title {
+                    @include rfs(18px);
+                    color: $dark;
+                    transition: color $transition-base;
                 }
 
-                .circle {
+                .link-more {
+                    font-size: 0.85rem;
+                    text-decoration: none;
+                    position: relative;
+                    padding-bottom: 2px;
 
-                    z-index: 1000;
-                    width: 55px;
-                    height: 55px;
-                    border-radius: 50%;
-                    aspect-ratio: 1;
-                    right: 3rem;
-                    top: -3.25rem;
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        width: 0;
+                        height: 1px;
+                        bottom: 0;
+                        left: 50%;
+                        background-color: $primary;
+                        transition: all $transition-base;
+                    }
 
-                    i {
-                        font-size: 26px;
+                    &:hover:after {
+                        width: 100%;
+                        left: 0;
                     }
                 }
+            }
 
-                .content {
+            @include mediaQuery(min-lg) {
+                transition: transform $transition-base, box-shadow $transition-base;
 
-                    z-index: 500;
+                &:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
 
                     .card-title {
-                        line-height: 1.2;
+                        color: $primary;
                     }
                 }
             }
