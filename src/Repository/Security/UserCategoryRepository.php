@@ -31,7 +31,7 @@ class UserCategoryRepository extends ServiceEntityRepository
      *
      * @throws NonUniqueResultException
      */
-    public function findBySlug(string $locale, string $slug = null): ?UserCategory
+    public function findBySlug(string $locale, ?string $slug = null): ?UserCategory
     {
         if (!$slug) {
             return null;

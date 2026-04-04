@@ -196,8 +196,14 @@ class ProductRepository extends ServiceEntityRepository
      *
      * @return array<Product>
      */
-    public function findOnlineByCatalogs(Website $website, string $locale, array|PersistentCollection $catalogs = [], ?Listing $listing = null): array
-    {
+    public function findOnlineByCatalogs(
+        Website $website,
+        string $locale,
+        array|PersistentCollection $catalogs = [],
+        ?Listing $listing = null,
+        array $options = [],
+    ): array {
+
         $asOnlyOneCatalog = $catalogs instanceof PersistentCollection && $catalogs->count() === 1 || count($catalogs) === 1;
         $firstCatalog = $asOnlyOneCatalog && $catalogs instanceof PersistentCollection ? $catalogs->first()
             : ($asOnlyOneCatalog ? $catalogs[array_key_first($catalogs)] : false);
@@ -210,7 +216,7 @@ class ProductRepository extends ServiceEntityRepository
 
         $order = $listing instanceof Listing && $listing->getOrderBy() ? $listing->getOrderBy() : 'position';
         $sort = $listing instanceof Listing && $listing->getOrderSort() ? $listing->getOrderSort() : 'ASC';
-        $queryBuilder = $this->optimizedQueryBuilder($locale, $website, $order, $sort)
+        $queryBuilder = $this->optimizedQueryBuilder($locale, $website, $order, $sort, false, null, $options)
             ->andWhere('u.archived = :archived')
             ->setParameter('archived', false);
 
@@ -409,29 +415,42 @@ class ProductRepository extends ServiceEntityRepository
         ?string $order = null,
         ?string $sort = null,
         bool $preview = false,
-        ?QueryBuilder $qb = null): QueryBuilder
-    {
+        ?QueryBuilder $qb = null,
+        array $options = []
+    ): QueryBuilder {
+
         $order = $order ?: 'publicationStart';
         $sort = $sort ?: 'DESC';
+        $disabledCategories = $options['disabledCategories'] ?? false;
+        $disabledMedias = $options['disabledMedias'] ?? false;
 
         $statement = $this->getOrCreateQueryBuilder($qb)
             ->innerJoin('p.catalog', 'catalog')
+            ->innerJoin('catalog.website', 'w')
             ->leftJoin('p.urls', 'u')
-            ->leftJoin('p.categories', 'cat')
-            ->leftJoin('p.subCategories', 'sc')
             ->leftJoin('p.intls', 'i')
-            ->leftJoin('p.mediaRelations', 'mr')
-            ->leftJoin('mr.media', 'm')
+            ->andWhere('w.id = :websiteId')
             ->andWhere('u.locale = :locale')
             ->andWhere('i.locale = :locale')
             ->setParameter('locale', $locale)
+            ->setParameter('websiteId', $website->getId())
             ->addSelect('u')
-            ->addSelect('cat')
-            ->addSelect('sc')
             ->addSelect('i')
-            ->addSelect('mr')
-            ->addSelect('m')
             ->addSelect('catalog');
+
+        if (!$disabledCategories) {
+            $statement->leftJoin('p.categories', 'cat')
+                ->leftJoin('p.subCategories', 'sc')
+                ->addSelect('cat')
+                ->addSelect('sc');
+        }
+
+        if (!$disabledMedias) {
+            $statement->leftJoin('p.mediaRelations', 'mr')
+                ->leftJoin('mr.media', 'm')
+                ->addSelect('mr')
+                ->addSelect('m');
+        }
 
         if ('title' === $order) {
             $statement->orderBy('i.'.$order, $sort);

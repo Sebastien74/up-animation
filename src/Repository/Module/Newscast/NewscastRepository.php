@@ -49,7 +49,7 @@ class NewscastRepository extends ServiceEntityRepository
      *
      * @return array<Newscast>
      */
-    public function findAllPublishedOrderByNewest(string $locale, Website $website, Newscast $excludeNewscast = null): array
+    public function findAllPublishedOrderByNewest(string $locale, Website $website, ?Newscast $excludeNewscast = null): array
     {
         $qb = $this->optimizedQueryBuilder($locale, $website);
 
@@ -67,7 +67,7 @@ class NewscastRepository extends ServiceEntityRepository
      *
      * @return array<Newscast>
      */
-    public function findByCategory(string $locale, Website $website, Category $category, Newscast $excludeNewscast = null, bool $preview = false): array
+    public function findByCategory(string $locale, Website $website, Category $category, ?Newscast $excludeNewscast = null, bool $preview = false): array
     {
         $orderBy = explode('-', $category->getOrderBy());
         $qb = $this->optimizedQueryBuilder($locale, $website, $orderBy[0], strtoupper($orderBy[1]), $preview)
@@ -87,7 +87,7 @@ class NewscastRepository extends ServiceEntityRepository
      *
      * @return array<Newscast>
      */
-    public function findByListing(string $locale, Website $website, Listing $listing, Newscast $excludeNewscast = null): array
+    public function findByListing(string $locale, Website $website, Listing $listing, ?Newscast $excludeNewscast = null): array
     {
         $orderBy = explode('-', $listing->getOrderBy());
 
@@ -133,7 +133,7 @@ class NewscastRepository extends ServiceEntityRepository
      *
      * @throws NonUniqueResultException
      */
-    public function findOptimized(string $locale, Website $website, int $limit = null): Newscast|array|null
+    public function findOptimized(string $locale, Website $website, ?int $limit = null): Newscast|array|null
     {
         $qb = $this->createQueryBuilder('n')
             ->addSelect('c', 'i', 'u', 's', 'mr', 'm')
@@ -257,19 +257,21 @@ class NewscastRepository extends ServiceEntityRepository
     public function optimizedQueryBuilder(
         string $locale,
         Website $website,
-        string $sort = null,
-        string $order = null,
+        ?string $sort = null,
+        ?string $order = null,
         bool $preview = false,
-        QueryBuilder $qb = null
+        ?QueryBuilder $qb = null
     ): QueryBuilder {
 
         $statement = $this->lightQueryBuilder($locale, $website, $sort, $order, $preview, $qb);
         $statement->leftJoin('n.website', 'w')
             ->leftJoin('u.seo', 's')
             ->leftJoin('n.category', 'c')
+            ->leftJoin('n.intls', 'i')
             ->addSelect('w')
             ->addSelect('s')
-            ->addSelect('c');
+            ->addSelect('c')
+            ->addSelect('i');
 
         return $statement;
     }
@@ -280,10 +282,10 @@ class NewscastRepository extends ServiceEntityRepository
     public function lightQueryBuilder(
         string $locale,
         Website $website,
-        string $sort = null,
-        string $order = null,
+        ?string $sort = null,
+        ?string $order = null,
         bool $preview = false,
-        QueryBuilder $qb = null
+        ?QueryBuilder $qb = null
     ): QueryBuilder {
 
         $sort = $sort ?: 'publicationStart';
@@ -315,7 +317,7 @@ class NewscastRepository extends ServiceEntityRepository
     /**
      * Main QueryBuilder.
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $qb = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $qb = null): QueryBuilder
     {
         return $qb ?: $this->createQueryBuilder('n');
     }

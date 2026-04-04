@@ -277,7 +277,9 @@ body.menu-open {
                 color: $secondary !important;
             }
 
-            &.in-bg-secondary, &.in-footer {
+            &.in-bg-secondary,
+            &.in-bg-secondary-light,
+            &.in-footer {
                 .btn-blur, .btn-blur i, .btn-blur .link-label {
                     color: $white !important;
                 }

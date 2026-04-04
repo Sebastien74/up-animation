@@ -94,25 +94,25 @@
 
         &.have-bg, &.shadow {
 
-            :not(.news-card) {
+            &:not(.news-card):not(.agency-card) {
                 border-radius: $card-border-radius;
             }
 
-            &:not(.no-media):not(.news-card) {
+            &:not(.no-media):not(.news-card):not(.agency-card) {
                 .card-body {
                     border-top-left-radius: $card-border-radius;
                     border-top-right-radius: $card-border-radius;
                 }
             }
 
-            &:not(.have-link):not(.news-card) {
+            &:not(.have-link):not(.news-card):not(.agency-card) {
                 .card-body {
                     border-bottom-left-radius: $card-border-radius;
                     border-bottom-right-radius: $card-border-radius;
                 }
             }
 
-            &.have-link:not(.news-card) {
+            &.have-link:not(.news-card):not(.agency-card) {
                 .card-footer {
                     border-bottom-left-radius: $card-border-radius;
                     border-bottom-right-radius: $card-border-radius;
@@ -120,28 +120,21 @@
             }
         }
 
-        .card-footer {
-            margin-top: -1px;
-        }
-
         &.agency-card {
+
             border-radius: 20px;
-            overflow: visible; // Pour laisser dépasser le bouton si besoin
-            background: $white;
-            box-shadow: 0 10px 30px rgba($black, 0.05);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            border: 1px solid rgba($secondary, 0.05);
+            transition: all $transition-base;
+            padding: .75rem;
 
             .card-header {
-                border-radius: 20px 20px 0 0;
-                overflow: hidden;
-                mask-image: radial-gradient(white, black); // Fix overflow radius on some browsers
                 
                 .img-container {
-                    aspect-ratio: 16/10;
+
+                    border-radius: 20px;
                     overflow: hidden;
 
                     img {
+                        border-radius: 20px;
                         height: 100%;
                         width: 100%;
                         object-fit: cover;
@@ -150,6 +143,7 @@
                 }
 
                 .btn-contact-circle {
+
                     position: absolute;
                     bottom: -25px;
                     right: 25px;
@@ -167,9 +161,11 @@
                     }
 
                     &:hover {
+
                         border-radius: 50%;
                         transform: rotate(0) scale(1.1);
                         background-color: $secondary !important;
+
                         i {
                             transform: rotate(0);
                         }
@@ -178,10 +174,9 @@
             }
 
             .card-body {
-                padding: 2rem 1.5rem 1.5rem !important;
-                flex-grow: 1;
 
                 .card-title {
+
                     @include rfs(18px);
                     color: $secondary;
                     letter-spacing: 0.02em;
@@ -220,16 +215,11 @@
                             transition: width 0.3s ease;
                         }
                     }
-
-                    .arrow-icon {
-                        margin-left: 10px;
-                        color: $primary;
-                        transition: transform 0.3s ease;
-                    }
                 }
             }
 
             &:hover {
+
                 transform: translateY(-10px);
                 box-shadow: 0 20px 40px rgba($black, 0.1);
                 border-color: rgba($primary, 0.2);
@@ -241,15 +231,6 @@
                 .card-body {
                     .card-title:after {
                         width: 100%;
-                    }
-                    .link-more {
-                        color: $primary;
-                        .text-label:before {
-                            width: 100%;
-                        }
-                        .arrow-icon {
-                            transform: translateX(5px);
-                        }
                     }
                 }
             }

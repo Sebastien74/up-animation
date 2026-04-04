@@ -43,6 +43,7 @@ final class ProductModel extends BaseModel
         self::$cache['allValues'] = array_key_exists('allValues', self::$cache) ? self::$cache['allValues']
             : self::$coreLocator->em()->getRepository(Catalog\FeatureValueProduct::class)->findByProductIds(self::$cache['allProducts']);
 
+        $disabledLayout = isset($options['disabledLayout']) && $options['disabledLayout'];
         $model = ViewModel::fromEntity($product, $coreLocator, array_merge($options, []));
         $catalog = ViewModel::fromEntity($catalogDb, $coreLocator, array_merge($options, []));
         $layoutCache = array_key_exists('catalogLayout', self::$cache) ? self::$cache['catalogLayout'] : [];
@@ -81,7 +82,7 @@ final class ProductModel extends BaseModel
         return (object) array_merge((array) $model, [
             'catalog' => $catalog,
             'reference' => self::getContent('reference', $product),
-            'asAgency' => 'agencies' === $catalog->slug,
+            'asAgency' => 'agencies' === self::getContent('slug', $catalog),
             'catalogSlug' => self::getContent('slug', $catalog),
             'entityForLayout' => $model->layout && $model->layout->getSlug() && !$model->layout->getZones()->isEmpty() && $model->asCustomLayout ? $model->entity : $catalog,
             'info' => $information,
@@ -95,9 +96,9 @@ final class ProductModel extends BaseModel
             'mediasCard' => $model->medias ? array_slice($model->medias, array_key_first($model->medias), self::MEDIA_CARD_LIMIT) : [],
             'values' => $values,
             'products' => $products,
-            'template' => self::getTemplate($model, $catalog->entity, $catalogLayout),
-            'haveLayout' => $model->haveLayout ?: $catalogLayout && !$catalogLayout->getZones()->isEmpty(),
-            'asCustomLayout' => $model->haveLayout ?: $catalogLayout && !$catalogLayout->getZones()->isEmpty(),
+            'template' => $model->layout ? self::getTemplate($model, $catalog->entity, $catalogLayout) : false,
+            'haveLayout' => !$disabledLayout && $model->haveLayout ? $model->haveLayout : !$disabledLayout && $catalogLayout && !$catalogLayout->getZones()->isEmpty(),
+            'asCustomLayout' => !$disabledLayout && $model->haveLayout ? $model->haveLayout : !$disabledLayout && $catalogLayout && !$catalogLayout->getZones()->isEmpty(),
             'mainFeature' => self::mainFeature($catalogDb, $values),
             'formPageUrl' => self::getFormPage($model),
         ], $values['defaults'], $subCategories['defaults']);

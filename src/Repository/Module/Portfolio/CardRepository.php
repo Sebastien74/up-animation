@@ -62,11 +62,12 @@ class CardRepository extends ServiceEntityRepository
     public function optimizedQueryBuilder(
         string $locale,
         Website $website,
-        string $sort = null,
-        string $order = null,
+        ?string $sort = null,
+        ?string $order = null,
         $preview = false,
-        QueryBuilder $qb = null): QueryBuilder
-    {
+        ?QueryBuilder $qb = null
+    ): QueryBuilder {
+
         $statement = $this->getOrCreateQueryBuilder($qb)
             ->leftJoin('c.website', 'w')
             ->leftJoin('c.urls', 'u')
@@ -95,7 +96,7 @@ class CardRepository extends ServiceEntityRepository
     /**
      * Main QueryBuilder.
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $qb = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $qb = null): QueryBuilder
     {
         return $qb ?: $this->createQueryBuilder('c');
     }

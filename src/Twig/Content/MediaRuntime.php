@@ -242,7 +242,7 @@ class MediaRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Get all entity MediaRelation[] where filename is NOT NULL.
+     * Get all entity MediaRelation[] where the filename is NOT NULL.
      *
      * @throws NonUniqueResultException|MappingException|QueryException
      */
@@ -282,7 +282,7 @@ class MediaRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * To check if image is white.
+     * To check if the image is white.
      */
     public function imgIsWhite(?MediaRelation $mediaRelation = null): bool
     {

@@ -8,7 +8,7 @@
 {%- set gdprActive = 'gdpr'|moduleActive(configuration) or axeptioActive -%}
 {%- set alignment = 'me-auto' == alignment ? 'start' : ('ms-auto' == alignment ? 'end' : 'center') -%}
 
-<nav class="menu-container position-relative d-flex{% if not isVertical %} justify-content-center justify-content-md-{{ alignment }}{% endif %}"
+<nav class="menu-container mt-1 position-relative d-flex{% if not isVertical %} justify-content-center justify-content-md-{{ alignment }}{% endif %}"
      aria-label="{{"Liens utiles"|trans|striptags }}">
     {{ component('WebmasterEdit', {
         title: "Éditer le menu"|trans([], 'front_webmaster'),

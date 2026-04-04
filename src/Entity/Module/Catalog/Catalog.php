@@ -67,7 +67,7 @@ class Catalog extends BaseEntity
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $mediaRelations;
 
-    #[ORM\OneToMany(targetEntity: CatalogIntl::class, mappedBy: 'catalog', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: CatalogIntl::class, mappedBy: 'catalog', cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
     #[ORM\OrderBy(['locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $intls;

@@ -55,7 +55,7 @@ final class CatalogModel extends BaseModel
         self::setLocator($coreLocator);
         $website = self::$coreLocator->website();
         $model = EntityModel::fromEntity($catalog, $coreLocator, array_merge($options))->response;
-        $productsDb = self::$coreLocator->em()->getRepository(Product::class)->findOnlineByCatalogs($website->entity, self::$coreLocator->locale(), [$catalog]);
+        $productsDb = self::$coreLocator->em()->getRepository(Product::class)->findOnlineByCatalogs($website->entity, self::$coreLocator->locale(), [$catalog], null, $options);
         $products = [];
         foreach ($productsDb as $product) {
             $products[$product->getPosition()] = ProductModel::fromEntity($product, $coreLocator, array_merge($options));

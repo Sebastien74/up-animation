@@ -15,6 +15,8 @@ Utiliser font-size: clamp(2rem, calc(1.25rem + 1.5vw), 3rem);
 
 Finir le col padding qui ne fonctionne pas (Peut-etre génrer dans dans LayoutRuntime plus propre dans le html)
 
+{%- set layoutRelations = layout|layoutRelations -%} Voir pour faire autrement
+
 Axonaut API
 
 Actus en en multi cat

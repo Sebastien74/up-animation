@@ -53,8 +53,9 @@ class CatalogController extends ActionController
         Request $request,
         PaginatorInterface $paginator,
         Url $url,
-        mixed $filter = null): JsonResponse|Response
-    {
+        mixed $filter = null
+    ): JsonResponse|Response {
+
         $website = $this->getWebsite();
         $listing = $filter ? $this->coreLocator->em()->getRepository(Catalog\Listing::class)->findOneByFilter($website->entity, $request->getLocale(), $filter) : false;
 
@@ -116,9 +117,8 @@ class CatalogController extends ActionController
         $this->setListingClassname(Catalog\Listing::class);
         $this->setClassname(Catalog\Product::class);
         $this->setJoins(['catalog']);
-//        $this->setJoins();
         $this->setModel(ProductModel::class);
-        $this->setModelOptions([]);
+        $this->setModelOptions(['disabledProducts' => true]);
         $this->setInterfaceName('catalog');
 
         return $this->getTeaser($request, $block, $url, $filter);
@@ -228,8 +228,9 @@ class CatalogController extends ActionController
         WebsiteModel $website,
         Catalog\Listing $listing,
         array $data,
-        ?int $limit = -1): JsonResponse|Response
-    {
+        ?int $limit = -1
+    ): JsonResponse|Response {
+
         $this->arguments['locale'] = $request->getLocale();
         $this->arguments['limit'] = (-1 === $limit) || !is_numeric($limit) ? 1000000 : $limit;
         $searchProducts = ($listing->isShowMap() && $this->coreLocator->request()->query->get('ajax')) || !$listing->isShowMap();
@@ -260,7 +261,11 @@ class CatalogController extends ActionController
         $items = [];
         if ($listing->isGroupByCategories()) {
             foreach ($products as $product) {
-                $productModel = $this->arguments['microdataEntities'][] = ProductModel::fromEntity($product, $this->coreLocator, ['urlsIndex' => $this->arguments['urlsIndex'], 'entitiesIds' => $productIdsDisplay]);
+                $productModel = $this->arguments['microdataEntities'][] = ProductModel::fromEntity($product, $this->coreLocator, [
+                    'urlsIndex' => $this->arguments['urlsIndex'],
+                    'entitiesIds' => $productIdsDisplay,
+                    'disabledProducts' => true,
+                ]);
                 foreach ($product->getCategories() as $category) {
                     $categoryModel = $this->cache['categories'][$category->getId()] = !empty($this->cache['categories'][$category->getId()]) ? $this->cache['categories'][$category->getId()] : EntityModel::fromEntity($category, $this->coreLocator)->response;
                     $entities = !empty($this->arguments['productsByCategories'][$category->getPosition()]['products']) ? $this->arguments['productsByCategories'][$category->getPosition()]['products'] : [];
@@ -274,7 +279,11 @@ class CatalogController extends ActionController
             }
         } else {
             foreach ($this->arguments['products']->getItems() as $item) {
-                $items[] = $this->arguments['microdataEntities'][] = ProductModel::fromEntity($item, $this->coreLocator, ['urlsIndex' => $this->arguments['urlsIndex'], 'entitiesIds' => $productIdsDisplay]);
+                $items[] = $this->arguments['microdataEntities'][] = ProductModel::fromEntity($item, $this->coreLocator, [
+                    'urlsIndex' => $this->arguments['urlsIndex'],
+                    'entitiesIds' => $productIdsDisplay,
+                    'disabledProducts' => true,
+                ]);
             }
             $this->arguments['products']->setItems($items);
         }

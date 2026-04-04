@@ -172,7 +172,7 @@
                 <p class="card-text mb-0">{{ vars.entity.intl.introduction|truncate(150) }}</p>
             {%- endif -%}
         </div>
-        <div class="card-footer d-flex justify-content-end">
+        <div class="card-footer border-0 d-flex justify-content-end">
             <a href="{{ vars.entity.url }}" class="text-uppercase text-primary fw-500">{{ "En savoir +"|trans|raw }}</a>
         </div>
     </article>
@@ -206,7 +206,7 @@
             {%- set title = entity.adminName -%}
         {%- endif -%}
     {%- endif -%}
-    <div class="card agency-card border-0 h-100 position-relative bg-white">
+    <div class="card agency-card shadow border-0 h-100 position-relative bg-light">
         <div class="card-header position-relative p-0 border-0">
             <div class="img-container">
                 {{ entity.mainMedia|file({}, {
@@ -227,19 +227,13 @@
                 <i class="icon-headset text-white"></i>
             </a>
         </div>
-        <div class="card-body bg-white border-0 px-4 pt-5 pb-4 d-flex flex-column">
+        <div class="card-body bg-transparent border-0 px-3 pt-4 pb-2 d-flex flex-column">
             <div class="title-wrapper mb-3">
-                <h{{ titleForce }} class="card-title text-uppercase text-secondary fw-800 mb-0">{{ title|raw }}</h{{ titleForce }}>
+                <h{{ titleForce }} class="card-title text-uppercase text-secondary fw-800 mb-0">{{ title|replace({'Agence': 'Agence <br>'})|raw }}</h{{ titleForce }}>
             </div>
             <div class="link-wrapper mt-auto">
-                <a href="{{ entity.url }}" class="link-more text-uppercase text-secondary fw-700 small d-inline-flex align-items-center">
+                <a href="{{ entity.url }}" class="text-uppercase text-secondary fw-700 small d-inline-flex align-items-center">
                     <span class="text-label">{{ "En savoir +"|trans|raw }}</span>
-                    <span class="ms-2 arrow-icon">
-                        <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13 1L19 7L13 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M1 7H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </span>
                 </a>
             </div>
         </div>
