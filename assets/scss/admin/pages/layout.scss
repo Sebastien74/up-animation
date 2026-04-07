@@ -815,7 +815,7 @@ body.sorting-active * {
 
                 padding: 15px;
                 cursor: pointer;
-                border: 1px solid $gray-400;
+                border: 1px solid $btn-border;
                 border-radius: $border-radius;
                 background-color: transparent;
 
@@ -825,13 +825,14 @@ body.sorting-active * {
                     padding-left: 0;
 
                     .inner {
-                        background-color: transparentize($black, .9);
+                        background-color: $gray-600;
                         height: 90px;
                         margin-right: 5px;
                         margin-left: 5px;
                         text-align: center;
                         line-height: 90px;
                         color: $gray-800;
+                        border-radius: 5px;
                     }
                 }
             }

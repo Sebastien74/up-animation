@@ -33,6 +33,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         inverseJoinColumns: [new ORM\InverseJoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'cascade')],
         joinTable: new ORM\JoinTable(name: 'module_catalog_product_teaser_categories')
     ),
+    new ORM\AssociationOverride(
+        name: 'products',
+        joinColumns: [new ORM\JoinColumn(name: 'teaser_id', referencedColumnName: 'id', onDelete: 'cascade')],
+        inverseJoinColumns: [new ORM\InverseJoinColumn(name: 'product_id', referencedColumnName: 'id', onDelete: 'cascade')],
+        joinTable: new ORM\JoinTable(name: 'module_catalog_product_teaser_products')
+    ),
 ])]
 class Teaser extends BaseTeaser
 {
@@ -61,6 +67,10 @@ class Teaser extends BaseTeaser
     #[ORM\OrderBy(['position' => 'ASC'])]
     private ArrayCollection|PersistentCollection $subCategories;
 
+    #[ORM\ManyToMany(targetEntity: Product::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\OrderBy(['adminName' => 'ASC'])]
+    private ArrayCollection|PersistentCollection $products;
+
     /**
      * Teaser constructor.
      */
@@ -70,6 +80,7 @@ class Teaser extends BaseTeaser
         $this->catalogs = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->subCategories = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     /**
@@ -170,6 +181,30 @@ class Teaser extends BaseTeaser
     public function removeSubCategory(SubCategory $subCategory): static
     {
         $this->subCategories->removeElement($subCategory);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        $this->products->removeElement($product);
 
         return $this;
     }

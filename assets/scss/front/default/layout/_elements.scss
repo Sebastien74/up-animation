@@ -438,6 +438,16 @@ ul.reset {
 
 .body {
 
+    @for $i from 10 through 20 {
+        $value: $i / 10;
+        &.lh-#{$i} {
+            line-height: $value !important;
+            * {
+                line-height: $value !important;
+            }
+        }
+    }
+
     ul {
 
         padding-left: 1rem;
@@ -477,10 +487,6 @@ ul.reset {
 }
 
 a {
-
-    &:not(.btn), &:not(.btn) * {
-        transition: color $transition-base !important;
-    }
 
     &.link {
 

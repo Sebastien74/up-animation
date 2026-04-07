@@ -1,7 +1,6 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- set title = pageTitle is defined ? pageTitle : (intl.title is defined ? intl.title : null) -%}
-{%- set displayLogo = displayLogo is defined ? displayLogo : false -%}
 
 {%- if title -%}
     {%- set animActive = false -%}
@@ -18,6 +17,7 @@
     {%- set page = parentPage is defined and parentPage ? parentPage : (page is defined and page ? page : (seo.entity is defined ? seo.entity : null)) -%}
     {%- set isIndexPage = page and currentEntity.asIndex is not defined or page and currentEntity.asIndex is defined and not currentEntity.asIndex -%}
     {%- set currentEntity = seo.entity is defined ? (seo.entity is defined ? seo.entity : null) -%}
+    {%- set contactUrl = contactUrl is defined ? contactUrl : null -%}
     {%- set thumbConfiguration = thumbConfiguration is defined and thumbConfiguration and thumbConfiguration|isArray ? thumbConfiguration : {} -%}
     {%- set defaultMedia = true -%}
     {%- set defaultMedia = defaultMedia and logos['title-header'] is defined and logos['title-header'] ? logos['title-header'] : null -%}
@@ -28,65 +28,56 @@
     {%- set displayBreadcrumb = (isIndexPage and configuration.breadcrumb and not isIndex) or (forceBreadcrumb is defined and forceBreadcrumb) -%}
     {%- set styleClass = styleClass is defined and styleClass ? styleClass : '' -%}
     {%- set styleClass = large and styleClass ? styleClass~' align-items-start as-large' : (large ? 'align-items-start as-large' : 'align-items-end') -%}
-    <div class="title-header-block w-100 pt-5 pb-5 position-relative d-flex{% if large %} as-large{% endif %}{% if backgroundColor %} {{ backgroundColor }}{% endif %}{% if styleClass %} {{ styleClass }}{% endif %}">
-        {%- if mediaPath or displayMedia -%}
-            <div class="media-content position-absolute">
-                {%- if mediaPath -%}
-                    {{ asset(mediaPath)|file(thumbConfiguration, {lazyLoad: false}) }}
-                {%- elseif displayMedia -%}
-                    {{ displayMedia|file(thumbConfiguration, {lazyLoad: false}) }}
-                {%- endif -%}
-            </div>
-        {%- endif -%}
-        <div class="title-content position-relative w-100 px-2">
-            <div class="container">
-                {%- if displayLogo -%}
-                    <div class="d-flex">
-                        <div class="logo-wrap me-5">
-                            <a href="{{ path('front_index') }}">
-                                {{ asset(displayLogo)|file({}, {
-                                    screensSizes: {
-                                        mobile: {width: null, height: 90},
-                                        tablet: {width: null, height: 90},
-                                        desktop: {width: null, height: 90}
-                                    },
-                                    decor: false,
-                                    only_html: false,
-                                    lazyLoad: false
-                                }) }}
-                            </a>
-                        </div>
-                        <div class="content-wrap">
-                {%- endif -%}
-                <div class="title-wrap {% if displayBreadcrumb %} mb-3{% endif %}">
-                    <h{{ titleForce }} class="title mb-0{% if style is defined and style %} {{ style }}{% endif %}{% if anim.title.class %} {{ anim.title.class|raw }}{% endif %}"
-                        {% if anim.title.attr %} {{ anim.title.attr|raw }}{% endif %}>
-                        {{ title|unescape|raw }}
-                    </h{{ titleForce }}>
-                    {%- if subTitle -%}
-                        <div class="w-100 {% if anim.subtitle.class %} {{ anim.subtitle.class|raw }}{% endif %}"
-                            {% if anim.subtitle.attr %} {{ anim.subtitle.attr|raw }}{% endif %}>
-                            <strong class="sub-title text-white d-inline-block fw-300 w-100 sub-title-h{{ titleForce }}">{{ subTitle|raw }}</strong>
-                        </div>
+    <div class="title-header-block container position-relative d-flex{% if large %} as-large{% endif %}{% if backgroundColor %} {{ backgroundColor }}{% endif %}{% if styleClass %} {{ styleClass }}{% endif %}">
+        <div class="row">
+            <div class="col-xl-7 d-flex title-content position-relative">
+                <div class="inner">
+                    {%- if displayBreadcrumb -%}
+                        {%- set pageTitle = pageTitle is defined ? pageTitle : title -%}
+                        {%- set breadcrumbOptions = breadcrumbOptions is defined ? breadcrumbOptions : [] -%}
+                        {%- set breadcrumbs = page|breadcrumb(pageTitle, currentEntity, breadcrumbOptions) -%}
+                        {%- include "front/"~websiteTemplate~"/include/breadcrumb.html.twig" with {
+                            website: website,
+                            background: 'transparent',
+                            paddingLeft: 'ps-0',
+                            paddingRight: 'pe-0',
+                            breadcrumbs: breadcrumbs
+                        } only -%}
                     {%- endif -%}
-                </div>
-                {%- if displayBreadcrumb -%}
-                    {%- set pageTitle = pageTitle is defined ? pageTitle : title -%}
-                    {%- set breadcrumbOptions = breadcrumbOptions is defined ? breadcrumbOptions : [] -%}
-                    {%- set breadcrumbs = page|breadcrumb(pageTitle, currentEntity, breadcrumbOptions) -%}
-                    {%- include "front/"~websiteTemplate~"/include/breadcrumb.html.twig" with {
-                        website: website,
-                        background: 'transparent',
-                        paddingLeft: 'ps-0',
-                        paddingRight: 'pe-0',
-                        breadcrumbs: breadcrumbs
-                    } only -%}
-                {%- endif -%}
-                {%- if displayLogo -%}
-                        </div>
+                    <div class="title-wrap {% if displayBreadcrumb %} mb-3{% endif %}">
+                        <h{{ titleForce }} class="title text-uppercase fw-900 mb-0{% if style is defined and style %} {{ style }}{% endif %}{% if anim.title.class %} {{ anim.title.class|raw }}{% endif %}"
+                            {% if anim.title.attr %} {{ anim.title.attr|raw }}{% endif %}>
+                            {{ title|unescape|raw }}
+                        </h{{ titleForce }}>
+                        {%- if subTitle -%}
+                            <div class="w-100 mt-2 {% if anim.subtitle.class %} {{ anim.subtitle.class|raw }}{% endif %}"
+                                {% if anim.subtitle.attr %} {{ anim.subtitle.attr|raw }}{% endif %}>
+                                <strong class="sub-title text-white d-inline-block fw-300 w-100 sub-title-h{{ titleForce }}">{{ subTitle|raw }}</strong>
+                            </div>
+                        {%- endif -%}
+                        {%- if contactUrl -%}
+                            {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                intl: {
+                                    link: contactUrl,
+                                    linkStyle: 'btn btn-blur btn-blur-primary mt-4',
+                                    linkLabel: "Nous contacter"|trans,
+                                }
+                            } -%}
+                        {%- endif -%}
                     </div>
-                {%- endif -%}
+                </div>
             </div>
+            {%- if mediaPath or displayMedia -%}
+                <div class="col-xl-5 media-content">
+                    <div class="masked-wrap masked-wrap-primary">
+                        {%- if mediaPath -%}
+                            {{ asset(mediaPath)|file(thumbConfiguration, {lazyLoad: false}) }}
+                        {%- elseif displayMedia -%}
+                            {{ displayMedia|file(thumbConfiguration, {lazyLoad: false}) }}
+                        {%- endif -%}
+                    </div>
+                </div>
+            {%- endif -%}
         </div>
     </div>
     {%- if isIndexPage -%}

@@ -67,6 +67,9 @@ class Block extends BaseConfiguration
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $uppercase = false;
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $lineHeight = null;
+
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $useForThumb = false;
 
@@ -334,6 +337,18 @@ class Block extends BaseConfiguration
     public function setUppercase(bool $uppercase): static
     {
         $this->uppercase = $uppercase;
+
+        return $this;
+    }
+
+    public function getLineHeight(): ?string
+    {
+        return $this->lineHeight;
+    }
+
+    public function setLineHeight(?string $lineHeight): static
+    {
+        $this->lineHeight = $lineHeight;
 
         return $this;
     }

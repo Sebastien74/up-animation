@@ -66,6 +66,8 @@
 
     .card {
 
+        padding: .75rem;
+
         .card-header {
             picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader, .img-loader-wrap {
                 width: 100% !important;
@@ -74,64 +76,25 @@
             }
         }
 
-        &:not(.agency-card) {
+        &:not(.news-card) {
             .card-header {
                 picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader, .img-loader-wrap {
-                    border-top-left-radius: $card-border-radius;
-                    border-top-right-radius: $card-border-radius;
+                    border-radius: 20px;
                 }
             }
         }
 
-        &:not(.have-bg):not(.agency-card) {
-            .card-header {
-                picture, .img-loader, picture img, .img-hover-buttons-wrap, .img-loader, .img-loader-wrap {
-                    border-bottom-left-radius: $card-border-radius;
-                    border-bottom-right-radius: $card-border-radius;
-                }
-            }
-        }
-
-        &.have-bg, &.shadow {
-
-            &:not(.news-card):not(.agency-card) {
-                border-radius: $card-border-radius;
-            }
-
-            &:not(.no-media):not(.news-card):not(.agency-card) {
-                .card-body {
-                    border-top-left-radius: $card-border-radius;
-                    border-top-right-radius: $card-border-radius;
-                }
-            }
-
-            &:not(.have-link):not(.news-card):not(.agency-card) {
-                .card-body {
-                    border-bottom-left-radius: $card-border-radius;
-                    border-bottom-right-radius: $card-border-radius;
-                }
-            }
-
-            &.have-link:not(.news-card):not(.agency-card) {
-                .card-footer {
-                    border-bottom-left-radius: $card-border-radius;
-                    border-bottom-right-radius: $card-border-radius;
-                }
-            }
-        }
-
-        &.agency-card {
+        &.product-card {
 
             border-radius: 20px;
             transition: all $transition-base;
-            padding: .75rem;
 
             .card-header {
-                
+
                 .img-container {
 
                     border-radius: 20px;
-                    overflow: hidden;
+                    transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
 
                     img {
                         border-radius: 20px;
@@ -142,97 +105,96 @@
                     }
                 }
 
-                .btn-contact-circle {
+                .circle-wrap-icon {
 
                     position: absolute;
-                    bottom: -25px;
-                    right: 25px;
+                    bottom: -1.15rem;
+                    right: 1rem;
                     width: 50px;
                     height: 50px;
-                    border-radius: 50% 50% 50% 0; // Forme un peu plus originale
-                    z-index: 20;
                     text-decoration: none;
                     transition: all 0.3s ease;
-                    transform: rotate(-45deg); // Oriente la pointe
+                    z-index: 500;
+
+                    &:not(.as-link) {
+                        border-radius: 50%;
+                    }
+
+                    &.as-link {
+
+                        border-radius: 50% 50% 50% 0;
+                        transform: rotate(-45deg); // Oriente la pointe
+
+                        i {
+                            transform: rotate(45deg); // Redresse l'icône
+                        }
+
+                        &:hover {
+
+                            border-radius: 50%;
+                            transform: rotate(0) scale(1.1);
+                            background-color: $secondary !important;
+
+                            i {
+                                transform: rotate(0);
+                            }
+                        }
+                    }
 
                     i {
                         font-size: 20px;
-                        transform: rotate(45deg); // Redresse l'icône
-                    }
-
-                    &:hover {
-
-                        border-radius: 50%;
-                        transform: rotate(0) scale(1.1);
-                        background-color: $secondary !important;
-
-                        i {
-                            transform: rotate(0);
-                        }
                     }
                 }
             }
 
             .card-body {
 
+                .badge {
+                    font-size: 12px;
+                }
+
+                .title-wrapper {
+                    max-width: 80%;
+                }
+
                 .card-title {
 
                     @include rfs(18px);
-                    color: $secondary;
                     letter-spacing: 0.02em;
-                    margin-bottom: 0;
                     position: relative;
                     display: inline-block;
-                    
+                    transition: color 0.4s ease;
+
                     &:after {
                         content: '';
                         position: absolute;
-                        bottom: -4px;
+                        bottom: -7px;
                         left: 0;
-                        width: 30px;
+                        width: 45px;
                         height: 2px;
                         background-color: $primary;
-                        transition: width 0.4s ease;
+                        transition: background-color 0.4s ease;
                     }
                 }
 
-                .link-more {
-                    text-decoration: none;
-                    color: $secondary;
-                    transition: color 0.3s ease;
-                    
-                    .text-label {
-                        position: relative;
-                        padding-bottom: 2px;
-                        &:before {
-                            content: '';
-                            position: absolute;
-                            bottom: 0;
-                            left: 0;
-                            width: 0;
-                            height: 1px;
-                            background-color: $primary;
-                            transition: width 0.3s ease;
-                        }
-                    }
+                .body-card {
+                    font-size: 15px;
                 }
             }
 
-            &:hover {
+            .card-title:hover {
 
-                transform: translateY(-10px);
-                box-shadow: 0 20px 40px rgba($black, 0.1);
-                border-color: rgba($primary, 0.2);
+                color: $primary !important;
+                transition: color 0.4s ease;
 
-                .card-header .img-container img {
-                    transform: scale(1.05);
+                &:after {
+                    background-color: $secondary;
+                    transition: background-color 0.4s ease;
                 }
+            }
 
-                .card-body {
-                    .card-title:after {
-                        width: 100%;
-                    }
-                }
+            .card-header:hover .img-container img {
+                transform: scale(1.05);
             }
         }
     }
@@ -271,10 +233,9 @@
     .news-card {
 
         border-radius: $card-news-border-radius;
-        padding: .75rem;
 
         .card-header {
-            .img-loader-wrap, .img-loader, img {
+            .img-loader-wrap, .img-loader, img, .img-hover-buttons-wrap, .img-hover-buttons-wrap .inner {
                 border-radius: 32px !important;
             }
         }

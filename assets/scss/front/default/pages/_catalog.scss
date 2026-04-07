@@ -12,7 +12,7 @@
     1 ) Modules
     2 ) Core import
     3 ) Core
-    4 ) Agency highlights
+    4 ) Agency
     5 ) Contact us
 
 ------------------------------------------------------------------ */
@@ -30,10 +30,6 @@ $enable-youtube: true;
 
 @import "../vendor";
 @import "../components/contact-us";
-
-/*-----------------------------------
-   3 ) Core
------------------------------------*/
 
 .product-view-container {
 
@@ -59,22 +55,38 @@ $enable-youtube: true;
 }
 
 /*-----------------------------------
-   4 ) Agency highlights
+   4 ) Agency
 -----------------------------------*/
 
-.agency-highlights {
+.body-agencies-page {
 
-    .card-header {
+    .body *, .introduction, .introduction * {
+        font-size: 19px;
+    }
 
-        .rounded-badge {
+    .body:not([class^="lh-"]):not([class*=" lh-"]) *,
+    .introduction:not([class^="lh-"]):not([class*=" lh-"]) * {
+        line-height: 1.5
+    }
 
-            width: 40px;
-            height: 40px;
-            border-radius: 1rem;
+    .agency-highlights {
 
-            i {
-                font-size: 25px;
+        .card-header {
+
+            .rounded-badge {
+
+                width: 40px;
+                height: 40px;
+                border-radius: 1rem;
+
+                i {
+                    font-size: 25px;
+                }
             }
+        }
+
+        .card-body * {
+            font-size: 1rem !important;
         }
     }
 }
@@ -89,12 +101,12 @@ $enable-youtube: true;
 
         .rounded-badge {
 
-            width: 60px;
-            height: 60px;
+            width: 45px;
+            height: 45px;
             border-radius: 1rem;
 
             i {
-                font-size: 35px;
+                font-size: 20px;
             }
         }
 

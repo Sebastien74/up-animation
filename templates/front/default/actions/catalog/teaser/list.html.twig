@@ -9,7 +9,7 @@
     {%- set firstEntity = entities|first -%}
     {%- set urlIndex = firstEntity.urlIndex is defined ? firstEntity.urlIndex :null -%}
     {%- set catalogSlug = firstEntity.catalog.slug is defined ? firstEntity.catalog.slug : false -%}
-    {%- if urlIndex and 'agencies' != catalogSlug -%}
+    {%- if 'index-link' in teaser.fields -%}
         {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
             intl: {link: path('front_index', {url: urlIndex})},
             linkStyle: 'btn btn-white mt-5',

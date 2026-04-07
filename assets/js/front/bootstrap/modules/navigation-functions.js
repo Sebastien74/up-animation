@@ -407,16 +407,18 @@ export function initMainNavigationContext(nav) {
     let currentState = '';
 
     /**
-     * Remove previous state classes from navigation.
+     * Remove previous state classes from an element.
+     *
+     * @param {HTMLElement} element
      */
-    function clearStateClasses() {
-        nav.classList.forEach((className) => {
+    function clearStateClasses(element) {
+        element.classList.forEach((className) => {
             if (
                 className === 'in-footer' ||
                 className === 'in-bg-none' ||
                 className.startsWith('in-bg-')
             ) {
-                nav.classList.remove(className);
+                element.classList.remove(className);
             }
         });
     }
@@ -435,18 +437,26 @@ export function initMainNavigationContext(nav) {
     }
 
     /**
-     * Compute the state class to apply on navigation.
+     * Compute the state class to apply on an element based on its position.
      *
+     * @param {HTMLElement} target
      * @returns {string}
      */
-    function resolveNavigationState() {
-        const rect = nav.getBoundingClientRect();
+    function resolveState(target) {
+
+        const rect = target.getBoundingClientRect();
         const x = rect.left + (rect.width / 2);
         const y = rect.top + (rect.height / 2);
         const elements = document.elementsFromPoint(x, y);
 
         for (const element of elements) {
-            // Ignorer l'élément de navigation lui-même et ses enfants
+
+            // Ignorer l'élément cible lui-même et ses enfants
+            if (element === target || target.contains(element)) {
+                continue;
+            }
+
+            // Ignorer l'élément de navigation et ses enfants si on teste un bouton dedans
             if (element === nav || nav.contains(element)) {
                 continue;
             }
@@ -462,9 +472,14 @@ export function initMainNavigationContext(nav) {
                 return 'in-footer';
             }
 
-            const zone = element.closest('.layout-zone');
-            if (zone) {
-                const bgClass = getBackgroundClass(zone);
+            // Vérifier n'importe quel élément qui contient la classe bg-
+            let bgElement = element.classList.contains('bg-') ? element : null;
+            if (!bgElement) {
+                // On cherche un élément avec une classe commençant par bg-
+                bgElement = element.closest('[class*=" bg-"], [class^="bg-"]');
+            }
+            if (bgElement) {
+                const bgClass = getBackgroundClass(bgElement);
                 if (bgClass) {
                     return `in-${bgClass}`;
                 }
@@ -475,16 +490,26 @@ export function initMainNavigationContext(nav) {
     }
 
     /**
-     * Update navigation contextual class.
+     * Update navigation and buttons contextual classes.
      */
     function updateNavigationState() {
-        const nextState = resolveNavigationState();
-        if (nextState === currentState) {
-            return;
+        // Update main nav
+        const navNextState = resolveState(nav);
+        if (navNextState !== currentState) {
+            clearStateClasses(nav);
+            nav.classList.add(navNextState);
+            currentState = navNextState;
         }
-        clearStateClasses();
-        nav.classList.add(nextState);
-        currentState = nextState;
+
+        // Update btn-blu in nav
+        nav.querySelectorAll('.btn-blu').forEach((btn) => {
+            const btnState = resolveState(btn);
+            if (!btn.dataset.currentState || btn.dataset.currentState !== btnState) {
+                clearStateClasses(btn);
+                btn.classList.add(btnState);
+                btn.dataset.currentState = btnState;
+            }
+        });
     }
 
     /**

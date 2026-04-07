@@ -6,9 +6,7 @@ namespace App\Service\Content;
 
 use App\Entity\Core\Website;
 use App\Entity\Layout\Page;
-use App\Entity\Seo\Url;
 use App\Model\Core\WebsiteModel;
-use App\Model\ViewModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\PersistentCollection;
@@ -369,6 +367,15 @@ class ListingService
             ->setMaxResults($queryParams['limit'])
             ->leftJoin('e.'.$queryParams['getters']['property'], $queryParams['getters']['property'])
             ->addSelect($queryParams['getters']['property']);
+
+        if ($teaser instanceof \App\Entity\Module\Catalog\Teaser && !$teaser->getProducts()->isEmpty()) {
+            $productsIds = [];
+            foreach ($teaser->getProducts() as $product) {
+                $productsIds[] = $product->getId();
+            }
+            $queryBuilder->andWhere('e.id IN (:productsIds)')
+                ->setParameter('productsIds', $productsIds);
+        }
 
         if ($teaser->isPromote() && method_exists($referEntity, 'isPromote')) {
             $queryBuilder->andWhere('e.promote = :promote')

@@ -110,13 +110,13 @@ class CatalogController extends ActionController
      *
      * @throws ContainerExceptionInterface|InvalidArgumentException|MappingException|NonUniqueResultException|NotFoundExceptionInterface|ReflectionException|QueryException
      */
-    public function teaser(Request $request, Block $block, Url $url, mixed $filter = null): Response
+    public function teaser(Request $request, ?Block $block = null, ?Url $url = null, mixed $filter = null): Response
     {
         $this->setTemplate('catalog/teaser.html.twig');
         $this->setTeaserClassname(Catalog\Teaser::class);
         $this->setListingClassname(Catalog\Listing::class);
         $this->setClassname(Catalog\Product::class);
-        $this->setJoins(['catalog']);
+        $this->setJoins(['catalog', 'products']);
         $this->setModel(ProductModel::class);
         $this->setModelOptions(['disabledProducts' => true]);
         $this->setInterfaceName('catalog');

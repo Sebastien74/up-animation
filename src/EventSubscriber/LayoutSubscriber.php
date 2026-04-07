@@ -26,6 +26,9 @@ use Psr\Cache\InvalidArgumentException;
 #[AsDoctrineListener(event: Events::onFlush)]
 class LayoutSubscriber
 {
+    private array $layouts = [];
+    private array $itemsToDelete = [];
+
     /**
      * onFlush.
      * @throws InvalidArgumentException
@@ -42,6 +45,8 @@ class LayoutSubscriber
         );
 
         $layoutsToUpdate = [];
+        $this->layouts = [];
+        $this->itemsToDelete = [];
 
         foreach ($entities as $entity) {
             $layout = $this->findLayout($entity, $uow);
@@ -54,6 +59,10 @@ class LayoutSubscriber
             $this->updateParent($layout, $em, $uow);
             $this->invalidateCache($layout, $em);
         }
+
+        if ($this->itemsToDelete && ($cache = $em->getConfiguration()->getResultCache())) {
+            $cache->deleteItems(array_unique($this->itemsToDelete));
+        }
     }
 
     /**
@@ -63,14 +72,13 @@ class LayoutSubscriber
      */
     private function invalidateCache(Layout $layout, EntityManagerInterface $em): void
     {
-        $cache = $em->getConfiguration()->getResultCache();
-        if (!$cache) {
+        if (!$em->getConfiguration()->getResultCache()) {
             return;
         }
 
         // layout_{id}
         if ($layout->getId()) {
-            $cache->deleteItem('layout_' . $layout->getId());
+            $this->itemsToDelete[] = 'layout_' . $layout->getId();
         }
 
         $parent = $layout->getParent($em);
@@ -92,25 +100,19 @@ class LayoutSubscriber
                 $urlCode = $url->getCode();
 
                 // page-index-{websiteId}-{locale}
-                $cache->deleteItem('page-index-' . $websiteId . '-' . $locale);
+                $this->itemsToDelete[] = 'page-index-' . $websiteId . '-' . $locale;
 
                 // page-{websiteId}-{urlCode}-{locale}
                 if ($urlCode) {
-                    $cache->deleteItem('page-' . $websiteId . '-' . $urlCode . '-' . $locale);
+                    $this->itemsToDelete[] = 'page-' . $websiteId . '-' . $urlCode . '-' . $locale;
                 }
 
                 // page-url-{md5(id_locale)}
                 if ($parent instanceof Page) {
-                    $cache->deleteItem('page-url-' . md5($parent->getId() . '_' . $locale));
+                    $this->itemsToDelete[] = 'page-url-' . md5($parent->getId() . '_' . $locale);
                 }
             }
         }
-
-        // page_action_... et pages_action_...
-        // On ne peut pas facilement reconstruire le MD5 car on n'a pas classname et filterId
-        // Mais on peut essayer d'invalider par tag si Doctrine le supporte,
-        // ou documenter que ces caches complexes pourraient rester.
-        // Vu que findByAction est souvent utilisé, c'est critique.
     }
 
     /**
@@ -126,6 +128,11 @@ class LayoutSubscriber
             return $entity;
         }
 
+        $oid = spl_object_hash($entity);
+        if (array_key_exists($oid, $this->layouts)) {
+            return $this->layouts[$oid];
+        }
+
         // Zone -> Layout
         if ($entity instanceof Zone) {
             $layout = $entity->getLayout();
@@ -133,7 +140,7 @@ class LayoutSubscriber
                 $changeSet = $uow->getEntityChangeSet($entity);
                 $layout = $changeSet['layout'][1] ?? null;
             }
-            return $layout;
+            return $this->layouts[$oid] = $layout;
         }
 
         // ZoneIntl -> Zone -> Layout
@@ -143,7 +150,7 @@ class LayoutSubscriber
                 $changeSet = $uow->getEntityChangeSet($entity);
                 $zone = $changeSet['zone'][1] ?? null;
             }
-            return $zone ? $zone->getLayout() : null;
+            return $this->layouts[$oid] = $zone ? $zone->getLayout() : null;
         }
 
         // Col -> Zone -> Layout
@@ -153,7 +160,7 @@ class LayoutSubscriber
                 $changeSet = $uow->getEntityChangeSet($entity);
                 $zone = $changeSet['zone'][1] ?? null;
             }
-            return $zone ? $zone->getLayout() : null;
+            return $this->layouts[$oid] = $zone ? $zone->getLayout() : null;
         }
 
         // Block -> Col -> Zone -> Layout
@@ -163,7 +170,7 @@ class LayoutSubscriber
                 $changeSet = $uow->getEntityChangeSet($entity);
                 $col = $changeSet['col'][1] ?? null;
             }
-            return $col && $col->getZone() ? $col->getZone()->getLayout() : null;
+            return $this->layouts[$oid] = $col && $col->getZone() ? $col->getZone()->getLayout() : null;
         }
 
         // BlockIntl -> Block -> Col -> Zone -> Layout
@@ -173,7 +180,7 @@ class LayoutSubscriber
                 $changeSet = $uow->getEntityChangeSet($entity);
                 $block = $changeSet['block'][1] ?? null;
             }
-            return $block && $block->getCol() && $block->getCol()->getZone()
+            return $this->layouts[$oid] = $block && $block->getCol() && $block->getCol()->getZone()
                 ? $block->getCol()->getZone()->getLayout() : null;
         }
 
@@ -184,7 +191,7 @@ class LayoutSubscriber
                 $changeSet = $uow->getEntityChangeSet($entity);
                 $block = $changeSet['block'][1] ?? null;
             }
-            return $block && $block->getCol() && $block->getCol()->getZone()
+            return $this->layouts[$oid] = $block && $block->getCol() && $block->getCol()->getZone()
                 ? $block->getCol()->getZone()->getLayout() : null;
         }
 
@@ -195,7 +202,7 @@ class LayoutSubscriber
                 $changeSet = $uow->getEntityChangeSet($entity);
                 $zone = $changeSet['zone'][1] ?? null;
             }
-            return $zone ? $zone->getLayout() : null;
+            return $this->layouts[$oid] = $zone ? $zone->getLayout() : null;
         }
 
         // PageMediaRelation -> Page -> Layout
@@ -205,13 +212,13 @@ class LayoutSubscriber
                 $changeSet = $uow->getEntityChangeSet($entity);
                 $page = $changeSet['page'][1] ?? null;
             }
-            return $page ? $page->getLayout() : null;
+            return $this->layouts[$oid] = $page ? $page->getLayout() : null;
         }
 
         // MediaRelationIntl changes should be captured via owning BaseMediaRelation (Block/Zone/PageMediaRelation)
         // When only Intl changes without owning side updates, we can't easily find the owner here.
 
-        return null;
+        return $this->layouts[$oid] = null;
     }
 
     /**

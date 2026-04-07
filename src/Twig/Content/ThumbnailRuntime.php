@@ -179,7 +179,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         } elseif ($media instanceof MediaModel && !$placeholder) {
             return false;
         } else {
-            $src = is_array($src) ? $src : [];
+            $src = is_array($src) ? array_merge($src, $options) : $options;
             $src['forceThumb'] = true;
             $src['width'] = $options['width'] ?? null;
             $src['height'] = $options['height'] ?? null;
@@ -267,6 +267,8 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         $this->arguments['priority'] = $options['priority'] ?? null;
         $this->arguments['lazyLoad'] = $this->arguments['priority'] === 'high' ? false : ($options['lazyLoad'] ?? true);
         $this->arguments['targetLink'] = array_key_exists('targetLink', $options) ? $options['targetLink'] : null;
+        $this->arguments['onlyLink'] = array_key_exists('onlyLink', $options) ? $options['onlyLink'] : false;
+        $this->arguments['targetLabel'] = array_key_exists('targetLabel', $options) ? $options['targetLabel'] : false;
         $this->arguments['targetBlank'] = $options['targetBlank'] ?? false;
         $this->arguments['fullPopup'] = $options['fullPopup'] = $options['fullPopup'] ?? true;
         $this->arguments['displayPage'] = $options['displayPage'] ?? true;
@@ -457,7 +459,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Check if MediaRelation is in box.
+     * Check if MediaRelation is in the box.
      */
     private function inBox(?Website $website = null, ?string $extension = null, ?MediaModel $mediaModel = null): void
     {

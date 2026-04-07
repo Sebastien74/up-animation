@@ -102,7 +102,7 @@
                     </div>
                     {%- set subLabel = link.subTitle ? link.subTitle : link.title -%}
                     {%- set parentEl = link.link ? 'a' : 'div' -%}
-                    <{{ parentEl }}{% if 'a' == parentEl %} href="{{ link.link }}" {% endif %} class="d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}" aria-hidden="true">
+                    <{{ parentEl }}{% if 'a' == parentEl %} href="{{ link.link }}" {% endif %} class="d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}">
                         <span class="parent-label text-warning position-relative fw-500 me-3 me-lg-0">{{ subLabel|unescape|raw }}</span>
                         <i class="icon-arrow-right text-primary ms-3"></i>
                     </{{ parentEl }}>

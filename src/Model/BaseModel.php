@@ -374,14 +374,13 @@ class BaseModel extends FunctionModel
         $string = str_replace('-', ' ', $string);
         $string = ucwords($string);
         $string = str_replace(' ', '', $string);
-
         return lcfirst($string);
     }
 
     /**
      * To get Form Page.
      *
-     * @throws NonUniqueResultException|MappingException|QueryException
+     * @throws NonUniqueResultException|MappingException|QueryException|InvalidArgumentException
      */
     protected static function getFormPage(mixed $model): ?string
     {

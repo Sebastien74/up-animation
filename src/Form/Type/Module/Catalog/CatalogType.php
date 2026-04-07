@@ -76,11 +76,31 @@ class CatalogType extends AbstractType
 
             $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
             $intls->add($builder, [
-                'fields' => ['title' => 'col-12', 'placeholder' => 'col-md-4', 'help' => 'col-md-4', 'targetLabel' => 'col-md-4'],
+                'fields' => [
+                    'title' => 'col-12',
+                    'label' => 'col-md-3',
+                    'placeholder' => 'col-md-3',
+                    'help' => 'col-md-3',
+                    'targetLabel' => 'col-md-3'
+                ],
+                'extra_fields' => [
+                    'label' => [
+                        'type' => Type\TextType::class,
+                        'required' => false,
+                        'label' => $this->translator->trans('Label', [], 'admin'),
+                        'attr' => ['placeholder' => $this->translator->trans('Saisissez un intitulé', [], 'admin')],
+                        'row_attr' => ['class' => 'col-12 col-lg-3'],
+                    ],
+                ],
                 'label_fields' => [
                     'placeholder' => $this->translator->trans('Label du lien voir tout', [], 'admin'),
                     'help' => $this->translator->trans('Label du lien en savoir plus', [], 'admin'),
                     'targetLabel' => $this->translator->trans('Label du lien de retour', [], 'admin'),
+                ],
+                'placeholder_fields' => [
+                    'placeholder' => $this->translator->trans('Saisissez un intitulé', [], 'admin'),
+                    'help' => $this->translator->trans('Saisissez un intitulé', [], 'admin'),
+                    'targetLabel' => $this->translator->trans('Saisissez un intitulé', [], 'admin'),
                 ],
                 'target_config' => false,
                 'disableTitle' => true,

@@ -10,7 +10,7 @@
     {%- set paddingRight = paddingRight is defined and paddingRight ? paddingRight : 'ps-0' -%}
     {%- set paddings = paddingLeft~' '~paddingRight -%}
     {%- if microDataActive -%}
-        <ol id="breadcrumb" class="breadcrumb d-flex w-100 mb-0 {{ paddings }} bg-{{ background }} justify-content-start{% if class %} {{ class }}{% endif %}"
+        <ol id="breadcrumb" class="breadcrumb d-flex w-100 mb-4 {{ paddings }} bg-{{ background }} justify-content-start{% if class %} {{ class }}{% endif %}"
             itemscope itemtype="https://schema.org/BreadcrumbList">
             {%- for item in breadcrumbs -%}
                 {%- set haveUrl = item.url is defined and item.url -%}
@@ -23,17 +23,17 @@
                            itemtype="https://schema.org/WebPage"
                            itemid="{{ absolute_url(item.url) }}"
                            href="{{ absolute_url(item.url) }}"
-                           class="text-white d-inline-flex"
+                           class="text-secondary d-inline-flex"
                            data-position="{{ loop.index }}">
                     {%- endif -%}
-                            <span itemprop="name" class="text-white d-inline-block{% if loop.last %} active{% endif %}" aria-label="{{ item.title|striptags }}">
-                                {{ item.title|truncate(75) }}
-                            </span>
+                        <span itemprop="name" class="text-secondary d-inline-block{% if loop.last %} active{% endif %}" aria-label="{{ item.title|striptags }}">
+                            {{ item.title|truncate(75) }}
+                        </span>
                     {%- if haveUrl -%}
                         </a>
                     {%- endif -%}
                     <meta itemprop="position" content="{{ loop.index }}">
-                    {%- if not loop.last -%} <i class="icon-chevron-right text-white separator position-relative"></i>{%- endif -%}
+                    {%- if not loop.last -%} <i class="icon-chevron-right text-secondary separator position-relative"></i>{%- endif -%}
                 </li>
             {%- endfor -%}
         </ol>

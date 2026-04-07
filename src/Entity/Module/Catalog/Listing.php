@@ -48,6 +48,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         inverseJoinColumns: [new ORM\InverseJoinColumn(name: 'feature_id', referencedColumnName: 'id', onDelete: 'cascade')],
         joinTable: new ORM\JoinTable(name: 'module_catalog_listings_features')
     ),
+    new ORM\AssociationOverride(
+        name: 'products',
+        joinColumns: [new ORM\JoinColumn(name: 'listing_id', referencedColumnName: 'id', onDelete: 'cascade')],
+        inverseJoinColumns: [new ORM\InverseJoinColumn(name: 'product_id', referencedColumnName: 'id', onDelete: 'cascade')],
+        joinTable: new ORM\JoinTable(name: 'module_catalog_listings_products')
+    ),
 ])]
 class Listing extends BaseEntity
 {

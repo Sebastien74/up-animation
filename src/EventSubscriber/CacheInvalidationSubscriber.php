@@ -37,6 +37,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class CacheInvalidationSubscriber
 {
     private \Symfony\Component\PropertyAccess\PropertyAccessor $propertyAccessor;
+    private array $pages = [];
+    private array $websites = [];
+    private array $itemsToDelete = [];
 
     public function __construct(private readonly CoreLocatorInterface $coreLocator)
     {
@@ -59,6 +62,9 @@ class CacheInvalidationSubscriber
             $entities = array_merge($uow->getScheduledEntityInsertions(), $uow->getScheduledEntityUpdates(), $uow->getScheduledEntityDeletions());
             $websitesToInvalidate = [];
             $pagesToInvalidate = [];
+            $this->pages = [];
+            $this->websites = [];
+            $this->itemsToDelete = [];
 
             $namespace = $this->coreLocator->request()->query->get('entityNamespace');
             $entityId = $this->coreLocator->request()->query->get('referEntityId');
@@ -104,17 +110,21 @@ class CacheInvalidationSubscriber
                 $this->coreLocator->em()->persist($w);
                 $uow->scheduleForUpdate($w);
                 $uow->recomputeSingleEntityChangeSet($em->getClassMetadata(Website::class), $w);
-                $cache->deleteItem('website-id-'.$w->getId());
+                $this->itemsToDelete[] = 'website-id-'.$w->getId();
                 foreach (['website-default', 'websites-actives', 'websites-switcher', 'websites-all'] as $key) {
-                    $cache->deleteItem($key);
+                    $this->itemsToDelete[] = $key;
                 }
                 foreach ($w->getConfiguration()->getDomains() as $domain) {
                     $host = $domain->getName() ? str_replace(['https://', 'http://'], '', $domain->getName()) : null;
-                    $cache->deleteItem('website-'.md5($host));
+                    $this->itemsToDelete[] = 'website-'.md5($host);
                 }
                 foreach ($w->getConfiguration()->getAllLocales() as $locale) {
-                    $cache->deleteItem('config-admin-'.$w->getId().'-'.$locale);
+                    $this->itemsToDelete[] = 'config-admin-'.$w->getId().'-'.$locale;
                 }
+            }
+
+            if ($this->itemsToDelete) {
+                $cache->deleteItems(array_unique($this->itemsToDelete));
             }
         }
     }
@@ -126,16 +136,16 @@ class CacheInvalidationSubscriber
      */
     private function invalidateActionResultCache(string $namespace, mixed $entityId, object $website, EntityManagerInterface $em): void
     {
-        if (!$cache = $em->getConfiguration()->getResultCache()) return;
+        if (!$em->getConfiguration()->getResultCache()) return;
 
         foreach ($website->configuration->allLocales as $locale) {
             $idsStr = is_array($entityId) ? implode('_', $entityId) : (string) $entityId;
             $wId = $website->id;
-            $cache->deleteItem('pages_action_'.md5($namespace.'_'.$idsStr.'_'.$locale.'_'.$wId));
-            $cache->deleteItem('page_action_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId));
-            $cache->deleteItem('pages_action_ids_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$idsStr));
-            $cache->deleteItem('page_action_slug_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId));
-            $cache->deleteItem('pages_action_slug_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId));
+            $this->itemsToDelete[] = 'pages_action_'.md5($namespace.'_'.$idsStr.'_'.$locale.'_'.$wId);
+            $this->itemsToDelete[] = 'page_action_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId);
+            $this->itemsToDelete[] = 'pages_action_ids_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$idsStr);
+            $this->itemsToDelete[] = 'page_action_slug_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId);
+            $this->itemsToDelete[] = 'pages_action_slug_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId);
         }
     }
 
@@ -146,21 +156,21 @@ class CacheInvalidationSubscriber
      */
     private function invalidatePageResultCache(Page $page, object $website, EntityManagerInterface $em): void
     {
-        if (!$cache = $em->getConfiguration()->getResultCache()) return;
+        if (!$em->getConfiguration()->getResultCache()) return;
 
         foreach ($page->getUrls() as $url) {
             $locale = $url->getLocale();
             $urlCode = $url->getCode();
             if ($page->isAsIndex()) {
-                $cache->deleteItem('page-index-'.$website->id.'-'.$locale);
+                $this->itemsToDelete[] = 'page-index-'.$website->id.'-'.$locale;
             } elseif ($urlCode) {
-                $cache->deleteItem('page-'.$website->id.'-'.$urlCode.'-'.$locale);
+                $this->itemsToDelete[] = 'page-'.$website->id.'-'.$urlCode.'-'.$locale;
             }
-            $cache->deleteItem('page-url-'.md5($page->getId().'_'.$locale));
-            $cache->deleteItem('page_url_id_'.$url->getId().'_'.$locale);
-            $cache->deleteItem('pages_index_url_'.md5($page->getId().'_'.$locale));
+            $this->itemsToDelete[] = 'page-url-'.md5($page->getId().'_'.$locale);
+            $this->itemsToDelete[] = 'page_url_id_'.$url->getId().'_'.$locale;
+            $this->itemsToDelete[] = 'pages_index_url_'.md5($page->getId().'_'.$locale);
         }
-        if ($page->getLayout()) $cache->deleteItem('layout_'.$page->getLayout()->getId());
+        if ($page->getLayout()) $this->itemsToDelete[] = 'layout_'.$page->getLayout()->getId();
     }
 
     /**
@@ -170,7 +180,7 @@ class CacheInvalidationSubscriber
      */
     private function invalidateMediasCache(BaseMediaRelation|MediaRelationIntl $entity, EntityManagerInterface $em): void
     {
-        if (!$cache = $em->getConfiguration()->getResultCache()) return;
+        if (!$em->getConfiguration()->getResultCache()) return;
 
         $class = $em->getClassMetadata(get_class($entity))->getName();
         $masterField = ($entity instanceof MediaRelationIntl) ? 'mediaRelation' : (method_exists($class, 'getMasterField') ? $class::getMasterField() : null);
@@ -193,9 +203,9 @@ class CacheInvalidationSubscriber
                     foreach ($locales as $locale) {
                         $pClass = $em->getClassMetadata(get_class($parent))->getName();
                         $pId = $parent->getId();
-                        $cache->deleteItem('media_relations_'.md5($pClass.'_'.$pId.'_'.$locale));
-                        $cache->deleteItem('medias_'.md5($pClass.'_'.$pId.'_'.$locale));
-                        $cache->deleteItem('medias_'.md5($pClass.'_'.implode('_', [$pId]).'_'.$locale));
+                        $this->itemsToDelete[] = 'media_relations_'.md5($pClass.'_'.$pId.'_'.$locale);
+                        $this->itemsToDelete[] = 'medias_'.md5($pClass.'_'.$pId.'_'.$locale);
+                        $this->itemsToDelete[] = 'medias_'.md5($pClass.'_'.implode('_', [$pId]).'_'.$locale);
                     }
                     if ($parent instanceof BaseMediaRelation || $parent instanceof MediaRelationIntl) $this->invalidateMediasCache($parent, $em);
                 }
@@ -210,24 +220,39 @@ class CacheInvalidationSubscriber
      */
     private function findPage(object $entity, EntityManagerInterface $em): ?Page
     {
-        if ($entity instanceof Page) return $entity;
+        if ($entity instanceof Page) {
+            return $entity;
+        }
+
+        $oid = spl_object_hash($entity);
+        if (array_key_exists($oid, $this->pages)) {
+            return $this->pages[$oid];
+        }
 
         $class = $em->getClassMetadata(get_class($entity))->getName();
-        if ($em->getMetadataFactory()->isTransient($class)) return null;
+        if ($em->getMetadataFactory()->isTransient($class)) {
+            return $this->pages[$oid] = null;
+        }
 
         $metadata = $em->getClassMetadata($class);
         foreach (['page', 'layout', 'zone', 'col', 'block', 'mediaRelation'] as $field) {
             if ($metadata->hasAssociation($field)) {
                 try {
                     $value = $this->propertyAccessor->getValue($entity, $field);
-                    if ($value instanceof Page) return $value;
+                    if ($value instanceof Page) {
+                        return $this->pages[$oid] = $value;
+                    }
                     if ($value instanceof Layout) {
                         $page = $em->getRepository(Page::class)->findOneBy(['layout' => $value]);
-                        if ($page) return $page;
+                        if ($page) {
+                            return $this->pages[$oid] = $page;
+                        }
                     }
                     if ($value) {
                         $page = $this->findPage($value, $em);
-                        if ($page) return $page;
+                        if ($page) {
+                            return $this->pages[$oid] = $page;
+                        }
                     }
                 } catch (\Exception) {
                 }
@@ -238,12 +263,14 @@ class CacheInvalidationSubscriber
         if ($masterField && $metadata->hasAssociation($masterField)) {
             try {
                 $parent = $this->propertyAccessor->getValue($entity, $masterField);
-                if ($parent) return $this->findPage($parent, $em);
+                if ($parent) {
+                    return $this->pages[$oid] = $this->findPage($parent, $em);
+                }
             } catch (\Exception) {
             }
         }
 
-        return null;
+        return $this->pages[$oid] = null;
     }
 
     /**
@@ -253,20 +280,33 @@ class CacheInvalidationSubscriber
      */
     private function findWebsite(object $entity, EntityManagerInterface $em): ?Website
     {
-        if ($entity instanceof Website) return $entity;
+        if ($entity instanceof Website) {
+            return $entity;
+        }
+
+        $oid = spl_object_hash($entity);
+        if (array_key_exists($oid, $this->websites)) {
+            return $this->websites[$oid];
+        }
 
         $class = $em->getClassMetadata(get_class($entity))->getName();
-        if ($em->getMetadataFactory()->isTransient($class)) return null;
+        if ($em->getMetadataFactory()->isTransient($class)) {
+            return $this->websites[$oid] = null;
+        }
 
         $metadata = $em->getClassMetadata($class);
         foreach (['website', 'page', 'zone', 'block', 'col', 'media', 'mediaRelation'] as $field) {
             if ($metadata->hasAssociation($field)) {
                 try {
                     $value = $this->propertyAccessor->getValue($entity, $field);
-                    if ($value instanceof Website) return $value;
+                    if ($value instanceof Website) {
+                        return $this->websites[$oid] = $value;
+                    }
                     if ($value) {
                         $website = $this->findWebsite($value, $em);
-                        if ($website) return $website;
+                        if ($website) {
+                            return $this->websites[$oid] = $website;
+                        }
                     }
                 } catch (\Exception) {
                 }
@@ -277,11 +317,13 @@ class CacheInvalidationSubscriber
         if ($masterField && $metadata->hasAssociation($masterField)) {
             try {
                 $parent = $this->propertyAccessor->getValue($entity, $masterField);
-                if ($parent) return $this->findWebsite($parent, $em);
+                if ($parent) {
+                    return $this->websites[$oid] = $this->findWebsite($parent, $em);
+                }
             } catch (\Exception) {
             }
         }
 
-        return null;
+        return $this->websites[$oid] = null;
     }
 }

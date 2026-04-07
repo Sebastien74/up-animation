@@ -147,9 +147,7 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Filtres par produits', [], 'admin'),
                 'required' => false,
                 'class' => Product::class,
-                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                    'admin')
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')

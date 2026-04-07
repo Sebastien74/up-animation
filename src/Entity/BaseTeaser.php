@@ -50,7 +50,7 @@ class BaseTeaser extends BaseEntity
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Assert\NotBlank]
-    protected ?int $itemsPerSlide = 1;
+    protected ?int $itemsPerSlide = 4;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     protected string $orderBy = 'publicationStart-desc';

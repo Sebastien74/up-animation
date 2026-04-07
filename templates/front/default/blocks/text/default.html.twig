@@ -3,6 +3,7 @@
 {%- if haveContent -%}
     {%- set animActive = false -%}
     {%- set fontWeight = fontWeight is defined ? fontWeight : false -%}
+    {%- set lineHeight = lineHeight is defined ? lineHeight : false -%}
     {%- set anim = blockTransitions is defined ? blockTransitions|transitionsAttributes({
         text: animActive ? 'block-text-text' : null,
         intro: animActive ? 'block-title-intro' : null
@@ -20,7 +21,7 @@
             </p>
         {%- endif -%}
         {%- if intl.body -%}
-            <div class="body {% if anim.text.class is defined and anim.text.class %} {{ anim.text.class|raw }}{% endif %}{% if fontWeight %} {{ fontWeight }}{% endif %}"
+            <div class="body {% if anim.text.class is defined and anim.text.class %} {{ anim.text.class|raw }}{% endif %}{% if lineHeight %} {{ lineHeight }}{% endif %}{% if fontWeight %} {{ fontWeight }}{% endif %}"
                     {% if anim.text.attr is defined and anim.text.attr %} {{ anim.text.attr|raw }}{% endif %}>
                 {{ intl.body|raw }}
             </div>

@@ -6,6 +6,7 @@ namespace App\Entity\Module\Catalog;
 
 use App\Entity\BaseIntl;
 use App\Repository\Module\Catalog\CatalogIntlRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,9 +18,24 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CatalogIntlRepository::class)]
 class CatalogIntl extends BaseIntl
 {
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $label = null;
+
     #[ORM\ManyToOne(targetEntity: Catalog::class, cascade: ['persist'], inversedBy: 'intls')]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     private ?Catalog $catalog = null;
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(?string $label): static
+    {
+        $this->label = $label;
+
+        return $this;
+    }
 
     public function getCatalog(): ?Catalog
     {

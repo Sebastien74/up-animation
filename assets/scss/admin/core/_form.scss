@@ -757,8 +757,21 @@ form {
         position: relative;
         overflow: hidden;
 
-        .dropify-message p {
-            font-size: 13px;
+        .dropify-message {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            p {
+                font-size: 13px;
+            }
+
+            img {
+                max-width: 100%;
+                max-height: 90% !important;
+            }
         }
 
         &.has-preview {
@@ -794,14 +807,14 @@ form {
                 bottom: 0;
                 z-index: 1;
                 background: linear-gradient(
-                        -45deg,
-                        rgba($dash-surface-4, 0.2) 25%,
-                        transparent 25%,
-                        transparent 50%,
-                        rgba($dash-surface-4, 0.2) 50%,
-                        rgba($dash-surface-4, 0.2) 75%,
-                        transparent 75%,
-                        transparent
+                    -45deg,
+                    rgba($dash-surface-4, 0.2) 25%,
+                    transparent 25%,
+                    transparent 50%,
+                    rgba($dash-surface-4, 0.2) 50%,
+                    rgba($dash-surface-4, 0.2) 75%,
+                    transparent 75%,
+                    transparent
                 ) 0 0 / 30px 30px repeat;
                 animation: stripes-move 1s linear infinite;
                 pointer-events: none;
@@ -838,14 +851,14 @@ form {
                 bottom: 0;
                 z-index: 1;
                 background: linear-gradient(
-                        -45deg,
-                        rgba($dash-surface-4, 0.2) 25%,
-                        transparent 25%,
-                        transparent 50%,
-                        rgba($dash-surface-4, 0.2) 50%,
-                        rgba($dash-surface-4, 0.2) 75%,
-                        transparent 75%,
-                        transparent
+                    -45deg,
+                    rgba($dash-surface-4, 0.2) 25%,
+                    transparent 25%,
+                    transparent 50%,
+                    rgba($dash-surface-4, 0.2) 50%,
+                    rgba($dash-surface-4, 0.2) 75%,
+                    transparent 75%,
+                    transparent
                 ) 0 0 / 30px 30px repeat;
                 animation: stripes-move 1s linear infinite;
                 pointer-events: none;

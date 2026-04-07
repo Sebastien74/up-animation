@@ -28,8 +28,9 @@
     or forceContainer is defined and forceContainer ? 'container' : 'container-fluid' -%}
 {%- set zoneClass = zone.colToRight ? 'container-fluid-right' : zoneClass -%}
 {%- set asFluidRight = zone.colToRight -%}
-{%- set nextZoneBg = nextZone.backgroundColor is defined ? ' next-'~nextZone.backgroundColor : '' -%}
+{%- set nextZoneBg = nextZone.backgroundColor is defined and nextZone.backgroundColor ? ' next-'~nextZone.backgroundColor : '' -%}
 {%- set zoneClasses = zoneClasses~nextZoneBg -%}
+{%- set zoneClasses = fullSize ? 'm-0 '~zoneClasses : zoneClasses -%}
 
 {%- if not zoneHide -%}
     <{{ sectionEl }} id="{% if not zone.idAsAnchor %}zone-{% endif %}{{ zoneId|urlize }}" {% if bgImgStyle %} data-style="{{ bgImgStyle }}" {% endif %}
@@ -96,9 +97,10 @@
                         {%- set colPaddings = not asInnerBackground ? paddings(col, orientationPadding)  : '' -%}
                         {%- set colMargins = margins(col) -%}
                         {%- set colSpaces = (colMargins ~ colPaddings)|trim -%}
+                        {%- set alignClasses = align ? 'd-flex align-items-center' : '' -%}
                         {# --- CONTENT ANALYSIS --- #}
                         {%- set colMediaClass = blocks|length == 1 and (blocks|first.blockType.slug ?? null) == 'media' ? 'media-col' : '' -%}
-                        {%- set colClasses = (colClasses~' '~colMediaClass~' '~colMargins~' '~colPaddings~' '~colBackground)|trim -%}
+                        {%- set colClasses = (colClasses~' '~colMediaClass~' '~colMargins~' '~colPaddings~' '~colBackground~' '~alignClasses)|trim -%}
                         <div id="layout-col-{{ colId }}" class="layout-col {{ colClasses }}"
                              data-position="{{ col.position }}"
                              {% if colEffects %} {{ colEffects|raw }}{% endif %}
@@ -115,6 +117,7 @@
                             {%- set colInnerClasses = align ? colInnerClasses~' d-flex align-items-center' : colInnerClasses -%}
                             {%- set colInnerClasses = blocksCount == 1 ? colInnerClasses~' h-100' : colInnerClasses -%}
                             {%- set colInnerClasses = colAlignment ? colInnerClasses~' '~colAlignment : colInnerClasses -%}
+                            {%- set colInnerClasses = fullSize or asFluidRight ? colInnerClasses~' m-0' : colInnerClasses -%}
                             <div class="{{ colInnerClasses|trim }} row"
                                  {% if innerColBackground and col.hexadecimalCode %} style="background: {{ col.hexadecimalCode }};" data-hexadecimal="{{ col.hexadecimalCode }}" {% endif %}>
                                 {%- for block in blocks -%}

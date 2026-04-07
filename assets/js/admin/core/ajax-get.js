@@ -30,7 +30,7 @@ export default function () {
                     document.body.appendChild(htmlEl);
                     if (preloader) {
                         preloader.classList.add('d-none');
-                        preloader.style.opacity = '0';
+                        // preloader.style.opacity = '0';
                     }
                     let modal = document.getElementById(el.dataset.modal);
                     if (modal) {

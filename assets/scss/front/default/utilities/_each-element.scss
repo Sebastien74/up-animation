@@ -133,7 +133,10 @@
                 @if ($property == 'font-size') {
                     $notExclusion: ':not(.btn):not(.btn *):not([style*="font-size"]):not([style*="font-size"] *)';
                 } @else if ($property == 'color') {
-                    $notExclusion: ':not(.btn):not(.btn *):not([style*="color"]):not([style*="color"] *):not([class^="text-"]):not([class*=" text-"])';
+                    $notExclusion: ':not(.btn):not(.btn *):not([style*="color"])';
+                    //@each $name, $value in $theme-colors {
+                    //    $notExclusion: '#{$notExclusion}:not([class~="text-#{$name}"])';
+                    //}
                 } @else if ($property == 'font-weight') {
                     $notExclusion: ':not(.btn):not(.btn *):not([style*="font-weight"]):not([style*="font-weight"] *)';
                 } @else if ($property == 'font-family') {

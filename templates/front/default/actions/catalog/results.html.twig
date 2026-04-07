@@ -3,17 +3,17 @@
 {%- import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard -%}
 {%- set maxPage = maxPage is defined ? maxPage : 1 -%}
 {%- set pageNum = pageNum is defined ? pageNum : 1 -%}
-{%- set colSize = 'agencies' == listing.slug ? 3 : 4 -%}
+{%- set colSize = 'agencies' == listing.slug ? 3 : 3 -%}
 
 <div id="results" class="results row row-container d-flex justify-content-center listing-{{ listing.slug }}" data-page="{{ pageNum }}" data-max="{{ maxPage }}">
     {%- for product in products -%}
         <div class="col-md-6 col-lg-4 col-xl-{{ colSize }} item my-3 position-relative">
-            {%- if 'agencies' == listing.slug -%}
-                {{ component('WebmasterEdit', {
-                    title: "Éditer l'agence"|trans([], 'front_webmaster'),
-                    role: 'ROLE_CATALOG',
-                    path: path('admin_catalogproduct_edit', { website: website.id, catalogproduct: product.id })
-                }) }}
+            {{ component('WebmasterEdit', {
+                title: "Éditer"|trans([], 'front_webmaster'),
+                role: 'ROLE_CATALOG',
+                path: path('admin_catalogproduct_edit', { website: website.id, catalogproduct: product.id })
+            }) }}
+            {%- if 'agencies' == product.catalogSlug -%}
                 {{ macroCard.agency({
                     entity: product,
                     screensSizes: {
@@ -23,23 +23,14 @@
                     },
                 }) }}
             {%- else -%}
-                {{ macroCard.standard({
+                {{ macroCard.product({
                     entity: product,
-                    intl: product.intl,
-                    titleForce: 3,
-                    thumbConfiguration: thumbConfiguration,
-                    thumbPlaceholder: true,
-                    displayThumbnail: true,
-                    showLink: true,
-                    colSize: 4,
-                    linkStyle: 'btn btn-primary',
-                    showLinkLabel: product.catalog.intl.help is defined and product.catalog.intl.help ? product.catalog.intl.help : "Découvrir"|trans,
-                    mediaClass: '',
-                    webmaster: {
-                        title: "Éditer le produit"|trans([], 'front_webmaster'),
-                        role: 'ROLE_CATALOG',
-                        path: path('admin_catalogproduct_edit', {website: website.id, catalogproduct: product.id})
-                }}) }}
+                    screensSizes: {
+                        mobile: {width: 456, height: 295},
+                        tablet: {width: 456, height: 295},
+                        desktop: {width: 456, height: 295}
+                    },
+                }) }}
             {%- endif -%}
         </div>
     {%- endfor -%}

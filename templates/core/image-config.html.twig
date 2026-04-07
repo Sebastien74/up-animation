@@ -14,6 +14,7 @@
 {%- set imageTitle = infos.intlTitle is defined and infos.intlTitle and mediaRelation ? infos.intlTitle : null -%}
 {%- set displayTitle = imageTitle is not empty and titlePosition == 'in-box' -%}
 {%- set lazyLoad = lazyLoad is defined ? lazyLoad : true -%}
+{%- set onlyLink = onlyLink is defined ? onlyLink : false -%}
 {%- set isInBox = not inAdmin and (inBox or popupGallery) and not btnLink -%}
 {%- set thumbs = thumbnails['files'] is defined and thumbnails['files'] ? thumbnails['files'] : [] -%}
 {%- set lazyFile = thumbnails['lazyFile'] is defined and thumbnails['lazyFile'] ? thumbnails['lazyFile'] : (thumbnails['file'] is defined and thumbnails['file'] ? thumbnails['file'] : 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==') -%}

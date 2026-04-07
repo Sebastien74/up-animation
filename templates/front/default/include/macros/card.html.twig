@@ -41,11 +41,13 @@
     {%- set mediaClass = vars.mediaClass is defined ? vars.mediaClass : null -%}
     {%- set background = entity.backgroundColorType is defined and entity.backgroundColorType ? entity.backgroundColorType : (vars.backgroundColorType is defined and vars.backgroundColorType ? vars.backgroundColorType : 'bg-transparent') -%}
     {%- set background = entity.backgroundColor is defined and entity.backgroundColor ? entity.backgroundColor : (vars.backgroundColor is defined and vars.backgroundColor ? vars.backgroundColor : background) -%}
-    {%- set paddingX = 'transparent' in background and not shadow ? 'px-0' : 'px-4' -%}
+    {%- set background = vars.cardBg is defined ? vars.cardBg : (entity.cardBg is defined ? entity.cardBg : background) -%}
+    {%- set background = 'transparent' in background ? 'bg-white' : background -%}
+    {%- set paddingX = 'transparent' in background and not shadow ? 'px-0' : 'px-3' -%}
     {%- set haveBg = background and 'transparent' not in background -%}
     {%- set displayMedia = (media and media.originalName and showThumbnail) or (thumbPlaceholder and showThumbnail) -%}
 
-    <{{ card }} class="card-block card h-100 {% if not icon %}border-0{% else %}have-icon{% endif %}{% if targetLink %} have-link{% endif %}{% if class %} {{ class }}{% endif %}{% if haveBg %} have-bg{% endif %}">
+    <{{ card }} class="card-block card h-100 {{ background }} {% if not icon %}border-0{% else %}have-icon{% endif %}{% if targetLink %} have-link{% endif %}{% if class %} {{ class }}{% endif %}{% if haveBg %} have-bg{% endif %}">
         {%- if vars.webmaster is defined -%}
             {{ component('WebmasterEdit', vars.webmaster) }}
         {%- endif -%}
@@ -53,9 +55,25 @@
             <div class="card-header bg-transparent border-0 p-0">
                 {%- set haveSize = mediaWidth > 0 and mediaHeight > 0 -%}
                 {%- if thumbConfiguration and not haveSize -%}
-                    {{ media|file(thumbConfiguration, {parentEntity: entity, targetLink: targetLink, isInBox: isInBox, placeholder: thumbPlaceholder, class: mediaClass}) }}
+                    {{ media|file(thumbConfiguration, {
+                        parentEntity: entity,
+                        targetLink: targetLink,
+                        isInBox: isInBox,
+                        placeholder: thumbPlaceholder,
+                        class: mediaClass
+                    }) }}
                 {%- else -%}
-                    {{ media|file(thumbConfiguration, {maxWidth: mediaWidth, maxHeight: mediaHeight, colSize: colSize, zoneFullSize: fullSize, parentEntity: entity, targetLink: targetLink, isInBox: isInBox, placeholder: thumbPlaceholder, class: mediaClass}) }}
+                    {{ media|file(thumbConfiguration, {
+                        maxWidth: mediaWidth,
+                        maxHeight: mediaHeight,
+                        colSize: colSize,
+                        zoneFullSize: fullSize,
+                        parentEntity: entity,
+                        targetLink: targetLink,
+                        isInBox: isInBox,
+                        placeholder: thumbPlaceholder,
+                        class: mediaClass
+                    }) }}
                 {%- endif -%}
             </div>
         {%- endif -%}
@@ -178,37 +196,92 @@
     </article>
 {%- endmacro -%}
 
+{%- macro product(vars) -%}
+    {%- set entity = vars.entity -%}
+    {%- set catalog = entity.catalog -%}
+    {%- set titleForce = vars.titleForce is defined ? vars.titleForce : 3 -%}
+    {%- set thumbConfiguration = vars.thumbConfiguration is defined ? vars.thumbConfiguration : [] -%}
+    {%- set screensSizes = vars.screensSizes is defined ? vars.screensSizes : false -%}
+    <div class="card product-card bg-light shadow border-0 h-100 position-relative">
+        <div class="card-header d-flex position-relative p-0 border-0">
+            <a href="{{ entity.url }}" class="img-container d-inline-block overflow-hidden">
+                {{ entity.mainMedia|file({}, {
+                    screensSizes: screensSizes ? screensSizes : {
+                        mobile: {width: 400, height: 300},
+                        tablet: {width: 400, height: 300},
+                        desktop: {width: 450, height: 340}
+                    },
+                    parentEntity: entity,
+                    title: entity.intl.title,
+                    targetLink: false,
+                    onlyLink: true,
+                    haveLink: true,
+                    isInBox: true,
+                    targetLabel: 'Découvrir'|trans,
+                    placeholder: true,
+                    class: 'img-fluid w-100'
+                }) }}
+            </a>
+            {%- set element = entity.indexUrl ? 'a' : span -%}
+            {%- set asLink = 'a' == element -%}
+            {%- set linkLabel = catalog.intl.placeholder ? catalog.intl.placeholder : 'Tout voir'|trans -%}
+            <{{ element }}{% if asLink %} href="{{ entity.indexUrl }}"{% endif %} class="circle-wrap-icon shadow bg-{{ entity.color }} d-flex align-items-center justify-content-center"
+                  data-bs-toggle="tooltip"
+                  data-bs-title="{{ linkLabel|striptags }}"
+                  aria-label="{{ linkLabel|striptags }}">
+                <i class="icon-headset text-white"></i>
+            </{{ element }}>
+        </div>
+        <div class="card-body bg-transparent border-0 px-3 pb-2 d-flex flex-column {% if catalog.intl.label %}pt-3{% else %}pt-4{% endif %}">
+            <div class="title-wrapper mb-3">
+                {%- if catalog.intl.label -%}
+                    <strong class="badge bg-secondary fw-400 text-white small-radius d-inline-block mb-2 px-2 py-1">{{ catalog.intl.label|striptags }}</strong>
+                {%- endif -%}
+                <h{{ titleForce }} class="mb-3">
+                    <a href="{{ entity.url }}" class="card-title text-uppercase text-secondary fw-800">{{ entity.intl.title|raw }}</a>
+                </h{{ titleForce }}>
+                {%- if entity.intl.introduction -%}
+                    <p class="body-card mb-0 lh-1">{{ entity.intl.introduction|raw }}</p>
+                {%- endif -%}
+            </div>
+            <div class="link-wrapper mt-auto text-end">
+                <a href="{{ entity.url }}" class="text-uppercase text-underline text-secondary fw-800 small d-inline-flex align-items-center">
+                    <span class="text-label">{{ "Découvrir"|trans|raw }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+{%- endmacro -%}
+
 {%- macro agency(vars) -%}
     {%- set entity = vars.entity -%}
     {%- set titleForce = vars.titleForce is defined ? vars.titleForce : 3 -%}
     {%- set thumbConfiguration = vars.thumbConfiguration is defined ? vars.thumbConfiguration : [] -%}
     {%- set screensSizes = vars.screensSizes is defined ? vars.screensSizes : false -%}
     {%- set mediaTitle = entity.city ? entity.city : (entity.intl.title ? entity.intl.title : entity.adminName) -%}
-    {%- set title = entity.intl.title -%}
-    {%- if not title -%}
+    {%- set title = entity.intl.title and entity.intl.title ? entity.intl.title : 'Agence '~entity.city -%}
+    {%- set body = "Animations événementielles" -%}
+    {%- if entity.city or entity.department or entity.zipcodeSmall -%}
         {%- if entity.city or entity.department or entity.zipcodeSmall -%}
-            {%- set title = "Animations événementielles" -%}
-            {%- if entity.city or entity.department or entity.zipcodeSmall -%}
-                {%- if entity.city -%}
-                    {%- set title = title~'<br> à <span class="text-primary">'~entity.city~'</span>' -%}
-                {%- endif -%}
-                {%- if entity.department -%}
-                    {%- set title = title~" "~entity.department|deptPreposition~" "~entity.department -%}
-                {%- endif -%}
-                {%- if entity.zipcodeSmall -%}
-                    {%- set title = title~" "~entity.zipcodeSmall -%}
-                {%- endif -%}
+            {%- if entity.city -%}
+                {%- set body = body~'<br> à <strong class="text-primary">'~entity.city~'</strong>' -%}
             {%- endif -%}
-            {%- if entity.country != 'FR' -%}
-                {%- set title = title~' en '~entity.country|countryName -%}
+            {%- if entity.department -%}
+                {%- set body = body~" "~entity.department|deptPreposition~entity.department -%}
             {%- endif -%}
-        {%- else -%}
-            {%- set title = entity.adminName -%}
+            {%- if entity.zipcodeSmall -%}
+                {%- set body = body~" "~entity.zipcodeSmall -%}
+            {%- endif -%}
         {%- endif -%}
+        {%- if entity.country != 'FR' -%}
+            {%- set body = body~' en '~entity.country|countryName -%}
+        {%- endif -%}
+    {%- else -%}
+        {%- set title = entity.adminName -%}
     {%- endif -%}
-    <div class="card agency-card shadow border-0 h-100 position-relative bg-light">
-        <div class="card-header position-relative p-0 border-0">
-            <div class="img-container">
+    <div class="card product-card bg-light shadow border-0 h-100 position-relative">
+        <div class="card-header d-flex position-relative p-0 border-0">
+            <a href="{{ entity.url }}" class="img-container d-inline-block overflow-hidden">
                 {{ entity.mainMedia|file({}, {
                     screensSizes: screensSizes ? screensSizes : {
                         mobile: {width: 400, height: 300},
@@ -218,22 +291,31 @@
                     parentEntity: entity,
                     title: mediaTitle,
                     targetLink: false,
-                    isInBox: false,
+                    onlyLink: true,
+                    haveLink: true,
+                    isInBox: true,
+                    targetLabel: 'Découvrir'|trans,
                     placeholder: true,
                     class: 'img-fluid w-100'
                 }) }}
-            </div>
-            <a href="#" class="btn-contact-circle shadow bg-primary d-flex align-items-center justify-content-center">
-                <i class="icon-headset text-white"></i>
             </a>
+            {%- if entity.contactUrl -%}
+                <a href="{{ entity.contactUrl }}" class="circle-wrap-icon as-link shadow bg-{{ entity.color }} d-flex align-items-center justify-content-center"
+                   aria-label="{{ "Contacter notre agence"|trans|striptags }}">
+                    <i class="icon-headset text-white"></i>
+                </a>
+            {%- endif -%}
         </div>
         <div class="card-body bg-transparent border-0 px-3 pt-4 pb-2 d-flex flex-column">
             <div class="title-wrapper mb-3">
-                <h{{ titleForce }} class="card-title text-uppercase text-secondary fw-800 mb-0">{{ title|replace({'Agence': 'Agence <br>'})|raw }}</h{{ titleForce }}>
+                <h{{ titleForce }} class="mb-3">
+                    <a href="{{ entity.url }}" class="card-title text-uppercase text-secondary fw-800">{{ title|replace({'Agence': 'Agence <br>'})|raw }}</a>
+                </h{{ titleForce }}>
+                <p class="body-card mb-0 lh-1">{{ body|raw }}</p>
             </div>
-            <div class="link-wrapper mt-auto">
-                <a href="{{ entity.url }}" class="text-uppercase text-secondary fw-700 small d-inline-flex align-items-center">
-                    <span class="text-label">{{ "En savoir +"|trans|raw }}</span>
+            <div class="link-wrapper mt-auto text-end">
+                <a href="{{ entity.url }}" class="text-uppercase text-underline text-secondary fw-800 small d-inline-flex align-items-center">
+                    <span class="text-label">{{ "Découvrir"|trans|raw }}</span>
                 </a>
             </div>
         </div>

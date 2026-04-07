@@ -44,13 +44,13 @@
         <h3 class="footer-title pb-2 mb-3 fw-900 text-uppercase text-white">{{ title|striptags }}</h3>
         <ul class="list-unstyled d-grid gap-2 mb-4 ps-3">
             {%- for item in catalogMenus[category] -%}
-                <li><a class="footer-link text-white-75 text-hover-primary" href="{{ item.url }}">{{ item.intl.title|striptags }}</a></li>
+                <li><a class="footer-link text-white-75 text-hover-primary d-inline-block{% if not loop.last %} mb-1{% endif %}" href="{{ item.url }}">{{ item.intl.title|striptags }}</a></li>
             {%- endfor -%}
         </ul>
     {%- endif -%}
 {%- endmacro -%}
 
-<footer class="footer text-white position-relative">
+<footer id="footer" class="footer text-white position-relative">
 
     <div class="footer-divider">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">

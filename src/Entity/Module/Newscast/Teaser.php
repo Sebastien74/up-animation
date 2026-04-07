@@ -49,7 +49,7 @@ class Teaser extends BaseTeaser
     #[ORM\Column(type: Types::BOOLEAN)]
     protected bool $pastEvents = false;
 
-    #[ORM\OneToMany(mappedBy: 'teaser', targetEntity: TeaserIntl::class, cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: TeaserIntl::class, mappedBy: 'teaser', cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
     #[ORM\OrderBy(['locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $intls;

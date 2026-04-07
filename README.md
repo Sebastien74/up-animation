@@ -88,7 +88,7 @@ php composer.phar dump-env prod
 ```
 ### Git
 
-#### To generate archive by commit number:
+#### To generate an archive by commit number:
 ```bash
 git archive --output=changes.zip HEAD $(git diff --name-only 0000000..HEAD --diff-filter=ACMRTUXB)
 ```

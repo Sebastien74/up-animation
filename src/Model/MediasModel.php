@@ -84,6 +84,7 @@ final class MediasModel extends BaseModel
                 }
                 if ($mediaRelation->isHeader() && $mediaRelations[$key + 1]->path) {
                     $header = $mediaRelations[$key + 1];
+//                    dd($header);
                 }
                 if ('video' === $mediaRelations[$key + 1]->type) {
                     $videos[] = $mediaRelations[$key + 1];

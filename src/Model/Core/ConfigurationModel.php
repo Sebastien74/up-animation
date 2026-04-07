@@ -29,6 +29,7 @@ final class ConfigurationModel extends BaseModel
         'gradientColors' => false,
         'glassColors' => false,
         'blurColors' => true,
+        'lastNews' => false,
     ];
 
     private static array $cache = [];

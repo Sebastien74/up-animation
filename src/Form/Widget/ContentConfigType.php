@@ -63,6 +63,30 @@ class ContentConfigType
     /**
      * Font weight field.
      */
+    private function getLineHeight(FormBuilderInterface $builder, string $field): void
+    {
+        $lineHeights = ['1', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '2'];
+        $choices = [];
+        foreach ($lineHeights as $lineHeight) {
+            $choices[$lineHeight] = 'lh-'.$lineHeight;
+        }
+
+        $builder->add($field, Type\ChoiceType::class, [
+            'required' => false,
+            'display' => 'search',
+            'label' => !empty($this->options['labels'][$field]) ? $this->options['labels'][$field] : $this->translator->trans('Interlignage', [], 'admin'),
+            'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+            'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-lg-2'],
+            'choices' => $choices,
+            'choice_attr' => function ($weight, $key, $value) {
+                return ['class' => 'fw-'.$weight, 'data-fw' => $weight];
+            },
+        ]);
+    }
+
+    /**
+     * Font weight field.
+     */
     private function getFontWeightField(FormBuilderInterface $builder, string $field): void
     {
         $weights = [900, 800, 700, 600, 500, 400, 300, 200, 100];

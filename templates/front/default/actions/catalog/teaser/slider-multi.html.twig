@@ -41,7 +41,7 @@
             <h{{ titleForce }} class="title mb-4">{{ teaserIntl.title|raw }}</h{{ titleForce }}>
         {%- endif -%}
         {%- set autoplay = 1 -%}
-        <div id="catalog-teaser-{{ teaser.slug }}" class="catalog-teaser splide mt-5 length-{{ entities|length }}"
+        <div id="catalog-teaser-{{ teaser.slug }}" class="catalog-teaser splide length-{{ entities|length }}"
              data-items="{{ teaser.itemsPerSlide }}"
              data-lenght="{{ entities|length }}"
              data-items-medium-pc="3"
@@ -52,33 +52,35 @@
              data-scroll="1"
              data-pause="1"
              data-autoplay="{{ autoplay }}"
-             data-arrows="0"
+             data-arrows="1"
              data-dots="0"
-             data-offset="50"
-             data-offset-medium-pc="50"
-             data-offset-mini-pc="50"
-             data-offset-tablet="50"
-             data-offset-mobile="50"
+             data-gap="2rem"
              data-interval="2500">
-            <div class="splide__track">
-                {%- set arrowsClass = entities|length >= teaser.itemsPerSlide ? ' d-lg-none' : '' -%}
-                {{ macro.arrows(website, autoplay, 'end', 'primary'~arrowsClass, true, 'top') }}
+            <div class="splide__track ps-lg-3">
+                {%- set arrowsClass = entities|length <= teaser.itemsPerSlide ? ' d-lg-none' : '' -%}
+                {{ macro.arrows(website, autoplay, 'end', 'secondary'~arrowsClass, true, 'top') }}
                 <ul class="splide__list {%- if entities|length < teaser.itemsPerSlide -%} d-lg-flex justify-content-lg-center{% endif %}">
                     {%- for post in entities -%}
-                        <li class="splide__slide pe-4">
-                            {{ macroCard.standard({
-                                entity: post,
-                                titleForce: 3,
-                                thumbConfiguration: thumbConfiguration,
-                                thumbPlaceholder: true,
-                                displayThumbnail: true,
-                                showLink: true,
-                                colSize: 4,
-                                webmaster: {
-                                    title: "Éditer le produit"|trans([], 'front_webmaster'),
-                                    role: 'ROLE_CATALOG',
-                                    path: path('admin_catalogproduct_edit', {website: website.id, catalogproduct: post.id})
-                                }}) }}
+                        <li class="splide__slide ps-0 py-4">
+                            {%- if 'agencies' == post.catalogSlug -%}
+                                {{ macroCard.agency({
+                                    entity: prodpostuct,
+                                    screensSizes: {
+                                        mobile: {width: 456, height: 295},
+                                        tablet: {width: 456, height: 295},
+                                        desktop: {width: 456, height: 295}
+                                    },
+                                }) }}
+                            {%- else -%}
+                                {{ macroCard.product({
+                                    entity: post,
+                                    screensSizes: {
+                                        mobile: {width: 456, height: 295},
+                                        tablet: {width: 456, height: 295},
+                                        desktop: {width: 456, height: 295}
+                                    },
+                                }) }}
+                            {%- endif -%}
                         </li>
                     {%- endfor -%}
                 </ul>

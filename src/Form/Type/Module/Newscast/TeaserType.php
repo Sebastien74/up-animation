@@ -115,7 +115,6 @@ class TeaserType extends AbstractType
                     'attr' => [
                         'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                         'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-
                         'data-config' => true
                     ],
                     'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],

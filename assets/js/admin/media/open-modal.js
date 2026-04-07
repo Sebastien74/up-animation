@@ -38,7 +38,7 @@ export default function (Routing, e, el) {
 
             if (loader) {
                 loader.classList.add('d-none');
-                loader.setAttribute('style', 'opacity: 0;');
+                // loader.setAttribute('style', 'opacity: 0;');
             }
 
             let modalEl = body.querySelector('#medias-library-modal');

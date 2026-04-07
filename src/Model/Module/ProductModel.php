@@ -18,6 +18,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
 use Psr\Cache\InvalidArgumentException;
 use ReflectionException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * ProductModel.
@@ -76,14 +77,28 @@ final class ProductModel extends BaseModel
             }
         }
 
+        $catalogSlug = self::getContent('slug', $catalog);
         $information = !$disabledInfo && in_array('informations', $catalogDb->getTabs()) ? self::information($product) : false;
         $address = $information ? $information->address : false;
+        $mainPages = $website->configuration->pages;
+        $contactPageUrl = !empty($mainPages['contact']) && $mainPages['contact']->code ? $mainPages['contact']->code : false;
+        $contactPageParams = $contactPageUrl ? ['url' => $contactPageUrl, 'agence' => $model->slug] : [];
+
+        $color = match ($catalogSlug) {
+            'agencies' => 'primary',
+            'services' => 'info-light',
+            'animations' => 'secondary-light',
+            'performances' => 'info',
+            'rentals' => 'warning',
+            default => 'white',
+        };
 
         return (object) array_merge((array) $model, [
             'catalog' => $catalog,
             'reference' => self::getContent('reference', $product),
             'asAgency' => 'agencies' === self::getContent('slug', $catalog),
-            'catalogSlug' => self::getContent('slug', $catalog),
+            'catalogSlug' => $catalogSlug,
+            'color' => $color,
             'entityForLayout' => $model->layout && $model->layout->getSlug() && !$model->layout->getZones()->isEmpty() && $model->asCustomLayout ? $model->entity : $catalog,
             'info' => $information,
             'address' => $address,
@@ -101,6 +116,8 @@ final class ProductModel extends BaseModel
             'asCustomLayout' => !$disabledLayout && $model->haveLayout ? $model->haveLayout : !$disabledLayout && $catalogLayout && !$catalogLayout->getZones()->isEmpty(),
             'mainFeature' => self::mainFeature($catalogDb, $values),
             'formPageUrl' => self::getFormPage($model),
+            'indexUrl' => $model->urlIndex && $model->urlCode ? self::$coreLocator->router()->generate('front_catalogproduct_view', ['pageUrl' => $model->urlIndex, 'url' => $model->urlCode], UrlGeneratorInterface::ABSOLUTE_URL) : null,
+            'contactUrl' => $contactPageUrl ? self::$coreLocator->router()->generate('front_index', $contactPageParams, UrlGeneratorInterface::ABSOLUTE_URL) : null,
         ], $values['defaults'], $subCategories['defaults']);
     }
 
@@ -379,9 +396,8 @@ final class ProductModel extends BaseModel
      */
     private static function information(Catalog\Product $product): ?InformationModel
     {
-
-
-        self::$cache['infos'][$product->getId()] = self::$cache['infos'][$product->getId()] ?? $product->getInformation();
+        self::$cache['infosEntity'][$product->getId()] = self::$cache['infosEntity'][$product->getId()] ?? $product->getInformation();
+        self::$cache['infos'][$product->getId()] = self::$cache['infosEntity'][$product->getId()];
         self::$cache['infos'][$product->getId()] = self::jsonCache(self::$cache['infos'][$product->getId()], self::$coreLocator->locale(), InformationModel::class);
         return self::$cache['infos'][$product->getId()];
     }

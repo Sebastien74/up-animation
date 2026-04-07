@@ -77,7 +77,7 @@
             {%- if choice.data.cols|length > 0 -%}
                 {%- set filedId = id ~ "_" ~ key -%}
                 <label for="{{ filedId }}" class="col-md-6 col-lg-4">
-                    <span class="inner-grid">
+                    <span class="inner-grid d-inline-block w-100">
                         <span class="row ms-0 me-0">
                             {%- for col in choice.data.cols -%}
                                 <div class="item-col col-{{ col.size }}"><div class="inner">{{ col.size }}</div></div>

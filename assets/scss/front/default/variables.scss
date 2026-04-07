@@ -292,8 +292,7 @@ $elements: () !default;
 $elements: map-merge((
     'h1, h1 a, .h1, .h1 a': (
         'properties': (
-            'color': $white,
-            'font-weight': 600,
+            'color': $body-color,
             'font-family': $font-title,
         ),
         'colors-in-backgrounds': (
@@ -497,7 +496,6 @@ $elements: map-merge((
     '.body, .body *': (
         'properties': (
             'color': $body-color,
-            'line-height': 1.5,
         ),
         'colors-in-backgrounds': (
             'primary': $white,
@@ -1057,7 +1055,7 @@ $btn-min-height: 50px;
 $btn-white-space: normal;
 $btn-font-weight: normal;
 $btn-line-height: inherit;
-$btn-font-size: 14px;
+$btn-font-size: 1rem;
 $btn-font-size-md: $btn-font-size;
 $btn-font-size-xs: $btn-font-size;
 
@@ -1084,10 +1082,10 @@ $buttons: (
     'primary': (
         'bg': $primary,
         'border': $primary,
-        'color': $white,
+        'color': $body-color,
         'bg-hover': darken($primary, 5%),
         'border-hover': darken($primary, 5%),
-        'color-hover': darken($white, 5%),
+        'color-hover': darken($body-color, 5%),
         'bg-outline': transparent,
         'bg-outline-hover': $primary,
         'color-outline': $primary,

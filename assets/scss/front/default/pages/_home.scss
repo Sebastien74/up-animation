@@ -35,8 +35,15 @@ $enable-breadcrumb: false;
    3 ) Core
 -----------------------------------*/
 
-.text-block .body * {
-    font-size: 19px;
+.text-block {
+
+    .body * {
+        font-size: 19px;
+    }
+
+    .body:not([class^="lh-"]):not([class*=" lh-"]) * {
+        line-height: 1.5
+    }
 }
 
 .card-body {

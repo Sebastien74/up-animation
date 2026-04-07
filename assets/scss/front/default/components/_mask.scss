@@ -1,0 +1,18 @@
+.masked-wrap {
+
+    aspect-ratio: 1.5;
+
+    .img-loader {
+        max-height: 100% !important;
+        max-width: 100% !important;
+        height: 100%;
+    }
+}
+
+.masked-wrap-primary {
+    mask: url(../../../../medias/images/front/default/blob.svg) no-repeat center / contain;
+}
+
+.masked-wrap-secondary {
+    mask: url(../../../../medias/images/front/default/blob.svg) no-repeat center / contain;
+}

@@ -24,6 +24,7 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
 use Monolog\Logger;
 use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -51,7 +52,7 @@ class ExceptionController extends BaseController
     /**
      * Page render.
      *
-     * @throws NonUniqueResultException|InvalidArgumentException|\ReflectionException|MappingException|QueryException
+     * @throws NonUniqueResultException|InvalidArgumentException|ReflectionException|MappingException|QueryException
      */
     public function showAction(
         Request $request,
@@ -164,7 +165,7 @@ class ExceptionController extends BaseController
     /**
      * Set page arguments.
      *
-     * @throws NonUniqueResultException|InvalidArgumentException|\ReflectionException|MappingException|QueryException
+     * @throws NonUniqueResultException|InvalidArgumentException|ReflectionException|MappingException|QueryException
      */
     private function setArguments(
         Request $request,
@@ -228,7 +229,7 @@ class ExceptionController extends BaseController
     /**
      * Get SEO.
      *
-     * @throws NonUniqueResultException|InvalidArgumentException|\ReflectionException|MappingException|QueryException
+     * @throws NonUniqueResultException|InvalidArgumentException|ReflectionException|MappingException|QueryException
      */
     private function getSeo(Website $website, Request $request, SeoService $seoService): bool|array
     {

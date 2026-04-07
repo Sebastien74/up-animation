@@ -275,7 +275,9 @@
 
             <main id="body-page" role="main" class="position-relative{% if pageClass %} {{ pageClass }}{% endif %}" {% if bgImgStyle %} style="{{ bgImgStyle }}" {% endif %}>
                 {%- block body -%}{%- endblock -%}
-                {{ component('LastNews') }}
+                {%- if configuration.customModules.lastNews -%}
+                    {{ component('LastNews') }}
+                {%- endif -%}
             </main>
 
             {%- if 'newsletter'|moduleActive(configuration) and not onlyBody -%}
@@ -327,6 +329,7 @@
             entity: entity is defined ? entity : null,
             url: url is defined ? url : null,
         }) }}
+
         {%- include 'core/data-path.html.twig' only -%}
 
         <!-- JavaScripts -->

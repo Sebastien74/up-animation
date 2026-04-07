@@ -7,6 +7,7 @@ namespace App\Form\Type\Module\Catalog;
 use App\Entity\Core\Website;
 use App\Entity\Module\Catalog\Catalog;
 use App\Entity\Module\Catalog\Category;
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Catalog\SubCategory;
 use App\Entity\Module\Catalog\Teaser;
 use App\Form\Widget as WidgetType;
@@ -112,6 +113,33 @@ class TeaserType extends AbstractType
                     ],
                 ]);
 
+                $builder->add('fields', Type\ChoiceType::class, [
+                    'label' => $this->translator->trans('Champs à afficher', [], 'admin'),
+                    'required' => false,
+                    'expanded' => false,
+                    'display' => 'search',
+                    'multiple' => true,
+                    'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+                    'attr' => [
+                        'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+                        'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+                        'data-config' => true
+                    ],
+                    'row_attr' => ['class' => 'col-12'],
+                    'choices' => [
+                        $this->translator->trans('Titre du teaser', [], 'admin') => 'teaser-title',
+                        $this->translator->trans('Image', [], 'admin') => 'image',
+                        $this->translator->trans('Titre', [], 'admin') => 'title',
+                        $this->translator->trans('Sous-titre', [], 'admin') => 'sub-title',
+                        $this->translator->trans('Catégorie', [], 'admin') => 'category',
+                        $this->translator->trans('Introduction', [], 'admin') => 'introduction',
+                        $this->translator->trans('Description', [], 'admin') => 'body',
+                        $this->translator->trans('Date', [], 'admin') => 'date',
+                        $this->translator->trans('Lien vers fiche', [], 'admin') => 'card-link',
+                        $this->translator->trans('Lien vers index', [], 'admin') => 'index-link',
+                    ],
+                ]);
+
                 $builder->add('promote', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',
@@ -127,9 +155,7 @@ class TeaserType extends AbstractType
                 'required' => false,
                 'display' => 'search',
                 'class' => Catalog::class,
-                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                    'admin')
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
@@ -148,9 +174,7 @@ class TeaserType extends AbstractType
                 'required' => false,
                 'display' => 'search',
                 'class' => Category::class,
-                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                    'admin')
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
@@ -162,6 +186,25 @@ class TeaserType extends AbstractType
                     return strip_tags($entity->getAdminName());
                 },
                 'multiple' => true,
+            ]);
+
+            $builder->add('products', EntityType::class, [
+                'label' => $this->translator->trans('Filtres par produits', [], 'admin'),
+                'required' => false,
+                'class' => Product::class,
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')],
+                'row_attr' => ['class' => 'col-12'],
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->where('c.website = :website')
+                        ->setParameter('website', $this->website)
+                        ->orderBy('c.adminName', 'ASC');
+                },
+                'choice_label' => function ($entity) {
+                    return strip_tags($entity->getAdminName());
+                },
+                'multiple' => true,
+                'display' => 'search',
             ]);
 
             $displaySubCategories = false;

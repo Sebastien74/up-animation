@@ -23,7 +23,8 @@
 {%- set targetBlank = targetBlank is defined and targetBlank ? targetBlank
     : (intlEntity.newTab is defined and intlEntity.newTab ? intlEntity.newTab
     : (mediaRelation.intl.newTab is defined ? mediaRelation.intl.newTab : false)) -%}
-{%- set targetLabel = intl.targetLabel is defined and intl.targetLabel ? intl.targetLabel : "En savoir plus"|trans -%}
+{%- set targetLabel = intl.targetLabel is defined and intl.targetLabel ? intl.targetLabel
+    : (targetLabel is defined and targetLabel ? targetLabel : "En savoir plus"|trans) -%}
 
 {%- set imageLink = imageLink is defined ? imageLink : (intlEntity ? intlEntity|intlLink : null ) -%}
 {%- if not targetLink and imageLink.link is defined and imageLink.link -%}
@@ -79,13 +80,13 @@
                 </a>
             {%- endif -%}
             {%- if haveLink -%}
-                {%- set title = mediaRelation.intl.targetLabel is defined and mediaRelation.intl.targetLabel ? mediaRelation.intl.targetLabel : null -%}
+                {%- set title = mediaRelation.intl.targetLabel is defined and mediaRelation.intl.targetLabel ? mediaRelation.intl.targetLabel : targetLabel -%}
                 {%- set element = onlyLink ? "span" : "a" -%}
                 <{{ element }} class="link-box item d-inline-block" {% if not onlyLink %} href="{{ targetLink }}" {% if targetBlank %} target="_blank" {% else %}{% endif %}{% if externalLink %} rel="noopener noreferrer" {% endif %}{% endif %}>
                     <div class="wrap d-inline-flex align-items-center justify-content-center px-2">
                         <div class="d-inline-flex flex-column">
                             <i class="icon-plus-circle text-white"></i>
-                            <strong class="label fw-500 text-white mt-2">{{ targetLabel|raw }}</strong>
+                            <strong class="label fw-500 text-white mt-2">{{ title|raw }}</strong>
                         </div>
                     </div>
                 </{{ element }}>

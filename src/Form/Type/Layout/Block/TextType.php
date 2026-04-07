@@ -48,6 +48,7 @@ class TextType extends AbstractType
             'website' => $options['website'],
             'fields' => [
                 'fontWeight' => 'col-md-3',
+                'lineHeight' => 'col-md-3',
                 'color' => 'col-md-3',
                 'fontSize' => 'col-md-3',
                 'fontWeightSecondary' => 'col-md-3',
@@ -56,6 +57,7 @@ class TextType extends AbstractType
             ],
             'labels' => [
                 'fontWeight' => $this->translator->trans('Gras du contenu', [], 'admin'),
+                'lineHeight' => $this->translator->trans('Interlignage du contenu', [], 'admin'),
                 'color' => $this->translator->trans("Couleur de l'introduction", [], 'admin'),
                 'fontSize' => $this->translator->trans("Taille de la police de l'introduction", [], 'admin'),
                 'fontWeightSecondary' => $this->translator->trans("Gras de l'introduction", [], 'admin'),

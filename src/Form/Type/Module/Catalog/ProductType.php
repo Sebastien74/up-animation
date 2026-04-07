@@ -242,27 +242,21 @@ class ProductType extends AbstractType
                             'type' => Type\TextareaType::class,
                             'required' => false,
                             'label' => $this->translator->trans('Réunir', [], 'admin'),
-                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [],
-                                'admin')
-                            ],
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
                             'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
                         ],
                         'sympathise' => [
                             'type' => Type\TextareaType::class,
                             'required' => false,
                             'label' => $this->translator->trans('Sympathiser', [], 'admin'),
-                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [],
-                                'admin')
-                            ],
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
                             'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
                         ],
                         'impress' => [
                             'type' => Type\TextareaType::class,
                             'required' => false,
                             'label' => $this->translator->trans('Marquer', [], 'admin'),
-                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [],
-                                'admin')
-                            ],
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
                             'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
                         ],
                     ];
