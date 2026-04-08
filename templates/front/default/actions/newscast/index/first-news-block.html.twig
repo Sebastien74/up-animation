@@ -1,7 +1,7 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- if lastEntity -%}
-    <article class="first-news-block bg-white position-relative text-center text-lg-start">
+    <article class="first-news-block position-relative text-center text-lg-start">
         <div class="container position-relative {% if not displayFormFilters %}py-5{% else %} pb-5 pt-lg-5{% endif %}">
             {{ component('WebmasterEdit', {
                 title: "Éditer l'actualité"|trans([], 'front_webmaster'),
@@ -26,39 +26,41 @@
                         }) }}
                     </div>
                 {%- endif -%}
-                <div class="right col-lg-7 {% if lastEntity.mainMedia %} ps-lg-5{% endif %}">
-                    {%- if lastEntity.intl.title -%}
-                        <a href="{{ lastEntity.url }}" class="link-title d-none d-lg-inline-block">
-                            <h2 class="title text-uppercase d-inline-block mb-2">{{ lastEntity.intl.title|raw }}</h2>
-                        </a>
-                    {%- endif -%}
-                    {%- if lastEntity.category and lastEntity.showCategory and lastEntity.category.intl.title is defined and lastEntity.category.intl.title -%}
-                        <strong class="news-category-title">{{ lastEntity.category.intl.title|raw }}</strong>
-                    {%- endif -%}
-                    {%- if lastEntity.intl.subTitle -%}
-                        <strong class="sub-title mb-3 d-inline-block w-100">{{ lastEntity.intl.subTitle|raw }}</strong>
-                    {%- endif -%}
-                    {%- if (lastEntity.category and not lastEntity.showDate) or not lastEntity.category -%}
-                        {%- set formatDate = lastEntity.category ? lastEntity.category.formatDate : 'dd MMM Y' -%}
-                        {{ component('Date', {
-                            date: lastEntity.date,
-                            startDate: lastEntity.dates.startDate,
-                            endDate: lastEntity.dates.endDate,
-                            formatDate: formatDate,
-                            between: lastEntity.asEvent,
-                            class: 'mb-3',
-                        }) }}
-                    {%- endif -%}
-                    <div class="col-xl-10">
-                        {%- if lastEntity.intl.introduction -%}
-                            <p class="introduction">{{ lastEntity.intl.introduction|truncate(150) }}</p>
+                <div class="right col-lg-7 d-flex align-items-center {% if lastEntity.mainMedia %} ps-lg-5{% endif %}">
+                    <div class="inner">
+                        {%- if lastEntity.intl.title -%}
+                            <a href="{{ lastEntity.url }}" class="link-title d-none d-lg-inline-block">
+                                <h2 class="title text-uppercase d-inline-block mb-2">{{ lastEntity.intl.title|raw }}</h2>
+                            </a>
                         {%- endif -%}
-                        {%- if lastEntity.intl.body -%}
-                            <p class="introduction">{{ lastEntity.intl.body|truncate(150) }}</p>
+                        {%- if lastEntity.category and lastEntity.showCategory and lastEntity.category.intl.title is defined and lastEntity.category.intl.title -%}
+                            <strong class="news-category-title">{{ lastEntity.category.intl.title|raw }}</strong>
                         {%- endif -%}
-                        {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
-                            intl: {'link': lastEntity.url, linkStyle: 'mt-3 text-uppercase'}
-                        } -%}
+                        {%- if lastEntity.intl.subTitle -%}
+                            <strong class="sub-title mb-3 d-inline-block w-100">{{ lastEntity.intl.subTitle|raw }}</strong>
+                        {%- endif -%}
+                        {%- if (lastEntity.category and not lastEntity.showDate) or not lastEntity.category -%}
+                            {%- set formatDate = lastEntity.category ? lastEntity.category.formatDate : 'dd MMM Y' -%}
+                            {{ component('Date', {
+                                date: lastEntity.date,
+                                startDate: lastEntity.dates.startDate,
+                                endDate: lastEntity.dates.endDate,
+                                formatDate: formatDate,
+                                between: lastEntity.asEvent,
+                                class: 'mb-3',
+                            }) }}
+                        {%- endif -%}
+                        <div class="col-xl-10">
+                            {%- if lastEntity.intl.introduction -%}
+                                <p class="introduction">{{ lastEntity.intl.introduction|truncate(150) }}</p>
+                            {%- endif -%}
+                            {%- if lastEntity.intl.body -%}
+                                <p class="introduction">{{ lastEntity.intl.body|truncate(150) }}</p>
+                            {%- endif -%}
+                            {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                intl: {'link': lastEntity.url, linkStyle: 'mt-3 text-uppercase'}
+                            } -%}
+                        </div>
                     </div>
                 </div>
             </div>

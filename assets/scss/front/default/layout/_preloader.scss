@@ -8,7 +8,7 @@
     .loader {
 
         position: absolute;
-        z-index: 100;
+        z-index: 1000;
         background-color: transparentize($white, .2);
         border-radius: $border-radius;
 

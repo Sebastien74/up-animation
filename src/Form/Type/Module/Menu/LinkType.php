@@ -128,8 +128,10 @@ class LinkType extends AbstractType
             ]);
 
             $builder->add('icon', WidgetType\IconType::class, [
-                'attr' => ['class' => 'col-12 select-icons',
-                    'data-config' => true],
+                'attr' => [
+                    'class' => 'col-12 select-icons',
+                    'data-config' => true
+                ],
                 'row_attr' => ['class' => 'col-12 col-lg-3'],
             ]);
 

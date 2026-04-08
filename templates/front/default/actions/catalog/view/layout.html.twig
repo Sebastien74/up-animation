@@ -149,7 +149,7 @@
 
     {%- set mainMedia = entity.asAgency ? entity.mediasWithoutMain|first : entity.mainMedia -%}
     {%- if mainMedia -%}
-        <div class="secondary-mask masked-wrap-secondary image-wrap">{{ mainMedia|file(thumbConfiguration) }}</div>
+        <div class="masked-wrap masked-wrap-secondary image-wrap">{{ mainMedia|file(thumbConfiguration) }}</div>
     {%- endif -%}
 
 {%- elseif blockType == 'layout-catalog-lots-table' -%}

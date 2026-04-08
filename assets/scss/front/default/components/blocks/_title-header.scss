@@ -22,17 +22,22 @@
     $height-lg: 300px;
 
     #body-catalog-agencies .title-header-block {
-        padding-top: 11rem;
         padding-bottom: 12.5rem;
     }
 
     .title-header-block {
 
+        padding-top: 11rem;
         overflow: hidden;
         word-wrap: break-word;
 
         * {
             word-wrap: break-word;
+        }
+
+        .body * {
+            font-size: 26px;
+            line-height: 1.2;
         }
     }
 }

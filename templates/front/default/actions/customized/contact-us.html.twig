@@ -27,9 +27,9 @@
                     {%- endif -%}
                 </div>
             </div>
-            <div class="col-lg-5 d-flex flex-column gap-4 px-lg-5">
+            <div class="col-lg-5 d-flex flex-column justify-content-center gap-4 px-lg-5">
                 {%- if email -%}
-                    <div class="item d-flex gap-3">
+                    <div class="item d-flex gap-3 ms-xl-5">
                         <span class="rounded-badge shadow-lg d-flex align-items-center justify-content-center bg-primary"><i class="icon-envelope-solid text-white"></i></span>
                         <div class="inner d-flex flex-column">
                             <span class="fw-900 text-uppercase mb-1">{{ "E-mail"|trans|raw }}</span>
@@ -39,7 +39,7 @@
                     </div>
                 {%- endif -%}
                 {%- if phone -%}
-                    <div class="item d-flex gap-3">
+                    <div class="item d-flex gap-3 ms-xl-5">
                         <span class="rounded-badge shadow-lg d-flex align-items-center justify-content-center bg-primary"><i class="icon-phone-alt-solid text-white"></i></span>
                         <div class="inner d-flex flex-column">
                             <span class="fw-900 text-uppercase mb-1">{{ "Téléphone"|trans|raw }}</span>
@@ -48,7 +48,7 @@
                     </div>
                 {%- endif -%}
                 {%- if address and address.address -%}
-                    <div class="item d-flex gap-3">
+                    <div class="item d-flex gap-3 ms-xl-5">
                         <span class="rounded-badge shadow-lg d-flex align-items-center justify-content-center bg-primary"><i class="icon-map-marker-alt-solid text-white"></i></span>
                         <div class="inner d-flex flex-column">
                             <span class="fw-900 text-uppercase mb-1">{{ "Adresse"|trans|raw }}</span>

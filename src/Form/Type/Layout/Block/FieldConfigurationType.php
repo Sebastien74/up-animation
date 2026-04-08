@@ -43,8 +43,8 @@ class FieldConfigurationType extends AbstractType
      * FieldConfigurationType constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface  $coreLocator,
-        private readonly i18nRuntime           $i18nRuntime,
+        private readonly CoreLocatorInterface $coreLocator,
+        private readonly i18nRuntime $i18nRuntime,
         private readonly TokenStorageInterface $tokenStorage,
     )
     {
@@ -72,9 +72,7 @@ class FieldConfigurationType extends AbstractType
             $builder->add('slug', Type\TextType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Code', [], 'admin'),
-                'attr' => ['placeholder' => $this->translator->trans('Saisissez un code', [],
-                    'admin')
-                ],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez un code', [], 'admin')],
                 'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
             ]);
         }

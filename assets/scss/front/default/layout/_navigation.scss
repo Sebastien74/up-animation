@@ -350,14 +350,16 @@ body.menu-open {
         .close-menu-submenu {
             height: 20px;
             width: 20px;
-            border-radius: 50%;
-            aspect-ratio: 1;
-            font-size: 13px;
+            font-size: 30px;
         }
 
-        .parent-label {
-            font-size: 26px;
-            line-height: 1.1;
+        .parent-label-wrap {
+            &:not(.btn) {
+                .parent-label {
+                    font-size: 26px;
+                    line-height: 1.1;
+                }
+            }
         }
 
         @include mediaQuery(min-lg) {

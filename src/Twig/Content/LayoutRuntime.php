@@ -220,16 +220,17 @@ class LayoutRuntime implements RuntimeExtensionInterface
     /**
      * Get Zone classes.
      */
-    public function zoneClasses(mixed $zone): string
+    public function zoneClasses(mixed $zone, bool $defaultBg = true): string
     {
         $backgroundColor = $this->getValue($zone, 'backgroundColor');
         $zIndex = $this->getValue($zone, 'zIndex');
         $transition = $this->getValue($zone, 'transition');
+        $position = $this->getValue($zone, 'position');
         $customClass = $this->customClasses($zone);
         $shadowClass = $this->shadowClasses($zone);
         $alignment = $this->getValue($zone, 'alignment');
 
-        $class = $backgroundColor != ('' and 'transparent') && $this->getValue($zone, 'backgroundFullSize') ? ' '.$backgroundColor.' ' : ' bg-white';
+        $class = $backgroundColor != ('' and 'transparent') && $this->getValue($zone, 'backgroundFullSize') ? ' '.$backgroundColor.' ' : '';
         $class .= ' position-'.$this->getValue($zone, 'position');
         $class .= $this->getHiddenClasses($zone);
         $class .= $customClass ? ' '.$customClass : '';
@@ -252,6 +253,10 @@ class LayoutRuntime implements RuntimeExtensionInterface
 
         if ($class && str_contains($class, 'video-bg')) {
             $class .= ' bg-primary';
+        }
+
+        if ($defaultBg && !str_contains($class, 'bg-')) {
+            $class .= $position == 2 ? ' bg-beige' : ' bg-white';
         }
 
         $this->zoneClasses = preg_replace('/\s+/', ' ', trim($class));

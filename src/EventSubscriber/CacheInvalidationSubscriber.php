@@ -187,7 +187,7 @@ class CacheInvalidationSubscriber
 
         if (!$masterField) {
             foreach ($em->getClassMetadata($class)->getAssociationMappings() as $fieldName => $mapping) {
-                if ($mapping->inversedBy && str_ends_with($mapping->inversedBy, 'mediaRelations')) {
+                if (property_exists($mapping, 'inversedBy') && $mapping->inversedBy && str_ends_with($mapping->inversedBy, 'mediaRelations')) {
                     $masterField = $fieldName;
                     break;
                 }

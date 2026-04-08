@@ -167,14 +167,14 @@ class ZoneConfigurationType extends AbstractType
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);
 
-        $colToRightLabel = 1 === $zone->getCols()->count()
+        $colToBottomLabel = 1 === $zone->getCols()->count()
             ? $this->translator->trans('Aligner la colonne en bas', [], 'admin')
             : $this->translator->trans('Aligner les colonnes en bas', [], 'admin');
         $builder->add('colToEnd', Type\CheckboxType::class, [
             'required' => false,
             'display' => 'button',
             'color' => 'app',
-            'label' => $colToRightLabel,
+            'label' => $colToBottomLabel,
             'attr' => ['class' => 'col-12 w-100'],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
         ]);

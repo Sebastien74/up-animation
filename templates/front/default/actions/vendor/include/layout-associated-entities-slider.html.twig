@@ -103,6 +103,7 @@
                     {%- set colSizeNext = isMobile ? 100 : (isTablet() ? 40 : colSizeNext) -%}
                     {%- set colSize = promoteFirst and not isFirst ? colSizeNext : (promoteFirst ? colSizeFirst : null) -%}
                     {%- set asAgency = entity.asAgency is defined and entity.asAgency -%}
+                    {%- set asProduct = not asAgency and interfaceName is defined and 'catalogproduct' == interfaceName -%}
                     <li class="splide__slide ps-0 pe-0 ps-md-0 pe-md-4 {% if isMobile %}col-12{% else %}col{% if not promoteFirst %}-md-4{% endif %}{% endif %}{%- if loop.index > itemsPerSlide -%} d-none{%- endif -%}{%- if isFirst -%} is-first{%- endif -%}"
                         {%- if colSizeNext -%}data-size-next="{{ colSizeNext }}%" {%- endif -%}
                             {%- if colSize -%}style="width: {{ colSize }}%" {%- endif -%}>
@@ -116,6 +117,20 @@
                                 },
                                 webmaster: {
                                     title: "Éditer l'agence"|trans([], 'front_webmaster'),
+                                    role: 'ROLE_CATALOG',
+                                    path: path('admin_catalogproduct_edit', { website: website.id, catalogproduct: entity.id })
+                                }
+                            }) }}
+                        {%- elseif asProduct -%}
+                            {{ macroCard.product({
+                                entity: entity,
+                                screensSizes: {
+                                    mobile: {width: 393, height: 255},
+                                    tablet: {width: 393, height: 255},
+                                    desktop: {width: 393, height: 255}
+                                },
+                                webmaster: {
+                                    title: "Éditer"|trans([], 'front_webmaster'),
                                     role: 'ROLE_CATALOG',
                                     path: path('admin_catalogproduct_edit', { website: website.id, catalogproduct: entity.id })
                                 }

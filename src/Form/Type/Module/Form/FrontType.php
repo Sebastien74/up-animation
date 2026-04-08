@@ -6,11 +6,15 @@ namespace App\Form\Type\Module\Form;
 
 use App\Entity\Core\Website;
 use App\Entity\Layout;
+use App\Entity\Module\Catalog\Catalog;
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Form as FormEntities;
 use App\Form\Validator;
 use App\Form\Widget as WidgetType;
 use App\Model\IntlModel;
 use App\Model\Layout\BlockModel;
+use App\Model\Module\CatalogModel;
+use App\Model\Module\ProductModel;
 use App\Model\ViewModel;
 use App\Service\Core\InterfaceHelper;
 use App\Service\Core\Urlizer;
@@ -672,7 +676,7 @@ class FrontType extends AbstractType
     {
         if (EntityType::class === $fieldType) {
             $fieldName = $configuration->getSlug();
-            $requestArg = $fieldName ? $this->mainRequest->get($fieldName) : null;
+            $requestArg = $fieldName ? $this->mainRequest->query->get($fieldName) : null;
             $this->options['class'] = $configuration->getClassName();
             if ($requestArg) {
                 $this->options['data'] = $this->entityManager->getRepository($this->options['class'])->findOneBy(['slug' => $requestArg]);
@@ -681,13 +685,12 @@ class FrontType extends AbstractType
             $this->options['expanded'] = $configuration->isExpanded();
             $this->options['query_builder'] = function (EntityRepository $er) use ($configuration) {
                 $className = $er->getClassName();
-                $entities = $this->entityManager->getRepository($className)->findAll();
-                $referEntity = $entities ? $entities[0] : null;
+                $referEntity = new $className();
                 if ($referEntity) {
-                    $website = $this->entityManager->getRepository(Website::class)->findOneByHost($this->request->getHost());
+                    $website = $this->coreLocator->website();
                     $interface = $this->interfaceHelper->generate($className);
                     $masterGetter = !empty($interface['masterField']) ? 'get'.ucfirst($interface['masterField']) : null;
-                    $masterWebsite = $masterGetter && method_exists($referEntity, $masterGetter) && method_exists($referEntity->$masterGetter(), 'getWebsite');
+                    $masterWebsite = $masterGetter && method_exists($referEntity, $masterGetter) && $referEntity->$masterGetter() && method_exists($referEntity->$masterGetter(), 'getWebsite');
                     if ($masterGetter && $masterWebsite) {
                         $qb = $er->createQueryBuilder('e')
                             ->leftJoin('e.'.$interface['masterField'], 'j')
@@ -719,10 +722,8 @@ class FrontType extends AbstractType
                             ->setParameter($matches[0], end($matches))
                             ->addSelect($matches[0]);
                     }
-
                     return $qb;
                 }
-
                 return null;
             };
             $this->options['choice_label'] = function ($entity) {

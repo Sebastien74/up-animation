@@ -7,7 +7,9 @@
 {%- set colsGrids = zone.grid -%}
 {%- set fullSize = zone.fullSize -%}
 {%- set zoneId = zone.customId ?: zone.id -%}
-{%- set zoneClasses = zoneClasses(zone) -%}
+{%- set asForm = interfaceName == 'form' -%}
+{%- set defaultBg = interfaceName not in ['form'] -%}
+{%- set zoneClasses = zoneClasses(zone, defaultBg) -%}
 {%- set zoneEffects = zone|effectsAttrs -%}
 {%- set zoneHide = zone.hide or app.request.locale in zone.hideLocales -%}
 {# --- ZONE BACKGROUND & DIMENSIONS --- #}
@@ -29,14 +31,14 @@
 {%- set zoneClass = zone.colToRight ? 'container-fluid-right' : zoneClass -%}
 {%- set asFluidRight = zone.colToRight -%}
 {%- set nextZoneBg = nextZone.backgroundColor is defined and nextZone.backgroundColor ? ' next-'~nextZone.backgroundColor : '' -%}
-{%- set zoneClasses = zoneClasses~nextZoneBg -%}
+{%- set zoneClasses = zoneClasses~nextZoneBg~' layout-zone-'~interfaceName -%}
 {%- set zoneClasses = fullSize ? 'm-0 '~zoneClasses : zoneClasses -%}
 
 {%- if not zoneHide -%}
     <{{ sectionEl }} id="{% if not zone.idAsAnchor %}zone-{% endif %}{{ zoneId|urlize }}" {% if bgImgStyle %} data-style="{{ bgImgStyle }}" {% endif %}
         class="layout-zone position-relative {{ zoneClasses }}{% if zoneBgFullSize %} {{ zoneMarginsAndPaddings }}{% endif %}{% if bgImgZone or bgImgStyle %} have-bg-img{% endif %}{% if bgParallax %} parallax position-relative{% endif %}"
         {% if zoneEffects %} {{ zoneEffects|raw }}{% endif %} tabindex="-1">
-        {%- if 'wave-top' in zoneClasses -%}
+        {%- if ('wave-top' in zoneClasses) or (zone.position == 2) -%}
             <div class="wave-divider-top">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                     <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
@@ -71,7 +73,7 @@
                 </div>
             {%- endif -%}
             {%- set containerSize = not fullSize and zone.containerSize ? zone.containerSize : false -%}
-            <div class="{% if not containerSize %}row{% endif %}{% if not fullSize and interfaceName != 'form' %} row-container{% endif %}{% if zone.centerCol %} d-flex justify-content-center{% endif %}">
+            <div class="{% if not containerSize %}row{% endif %}{% if not fullSize and not asForm %} row-container{% endif %}{% if zone.centerCol %} d-flex justify-content-center{% endif %}">
                 {%- if containerSize -%}
                     <div class="col-xl-{{ zone.containerSize }} mx-auto">
                         <div class="row">

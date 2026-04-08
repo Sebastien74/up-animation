@@ -352,130 +352,83 @@ export default function () {
             }
 
             /* To animate dots controls */
-            const carouselIndicators = carousel.querySelectorAll('.carousel-indicators [data-bs-slide-to] span.loader');
+            const carouselIndicatorsSelectors = '.carousel-indicators [data-bs-slide-to]';
+            const carouselIndicators = carousel.querySelectorAll(carouselIndicatorsSelectors);
+            const carouselLoaders = carousel.querySelectorAll(`${carouselIndicatorsSelectors} span.loader`);
+            const hasProgress = progress && carouselLoaders.length > 0;
+            let intervalID;
 
-            if (progress && carouselIndicators.length > 0) {
+            function getIndicatorIndex(indicator) {
+                const button = indicator.tagName === 'SPAN' ? indicator.parentNode : indicator;
+                const index = parseInt(button.dataset.index || button.closest('.loader-wrap')?.dataset.index);
+                const slideTo = parseInt(button.dataset.bsSlideTo);
+                return !isNaN(index) ? index : slideTo + 1;
+            }
 
-                let intervalID;
-
-                fillCarouselIndicator(1);
-
-                carousel.addEventListener("slide.bs.carousel", function (e) {
-                    let index = e.to;
-                    fillCarouselIndicator(++index);
+            function updateIndicators(activeIndex) {
+                carousel.querySelectorAll(carouselIndicatorsSelectors).forEach(indicator => {
+                    indicator.classList.toggle('active', getIndicatorIndex(indicator) === activeIndex);
                 });
 
-                function fillCarouselIndicator(index) {
-
-                    let i = 0;
-                    for (const carouselIndicator of carouselIndicators) {
-                        const button = carouselIndicator.parentNode;
-                        let parentIndex = button.dataset.index;
-                        if (typeof parentIndex == 'undefined') {
-                            const wrap = carouselIndicator.closest('.loader-wrap');
-                            if (wrap) {
-                                parentIndex = wrap.dataset.index;
-                            }
-                        }
-                        const indicatorIndex = parseInt(parentIndex);
-                        if (indicatorIndex === index) {
-                            if (!button.classList.contains('active')) {
-                                button.classList.add('active');
-                            }
-                        } else {
-                            button.classList.remove('active');
-                        }
-                        if (indicatorIndex < index) {
-                            if (carouselIndicator.classList.contains('height')) {
-                                carouselIndicator.style.height = '100%';
-                            } else {
-                                carouselIndicator.style.width = '100%';
-                            }
-                        } else {
-                            if (carouselIndicator.classList.contains('height')) {
-                                carouselIndicator.style.height = 0;
-                            } else {
-                                carouselIndicator.style.width = 0;
-                            }
-                        }
-                    }
-
-                    clearInterval(intervalID);
-                    bootstrapCarousel.pause();
-
-                    let items = carousel.querySelectorAll('.carousel-item');
-                    let item = items[index - 1];
-                    let video = item.querySelector('video');
-
-                    if (video && !video.classList.contains('loaded')) {
-                        video.muted = true;
-                        video.loop = true;
-                        video.addEventListener('loadedmetadata', function () {
-                            const videoDuration = video.duration * 1000;
-                            video.dataset.duration = videoDuration.toString();
-                            video.classList.add('loaded');
-                            if (video.paused) {
-                                video.play().then(() => {
-                                }).catch(error => {
-                                    console.error("Error attempting to play the video: ", error);
-                                });
-                            }
-                            intervalID = setInterval(function () {
-                                i++;
-                                const indicatorsActive = carousel.querySelectorAll('.carousel-indicators .active span.loader');
-                                for (const indicator of indicatorsActive) {
-                                    if (indicator.classList.contains('height')) {
-                                        indicator.style.height = i + "%";
-                                    } else {
-                                        indicator.style.width = i + "%";
-                                    }
-                                }
-                                if (i >= 100) {
-                                    i = 0;
-                                    bootstrapCarousel.next();
-                                }
-                            }, (parseInt(video.dataset.duration) / 100));
-                        });
-                    } else {
-                        const currentInterval = video ? parseInt(video.dataset.duration) : interval;
-                        if (video) {
-                            video.currentTime = 0;
-                        }
-                        intervalID = setInterval(function () {
-                            i++;
-                            const indicatorsActive = carousel.querySelectorAll('.carousel-indicators .active span.loader');
-                            for (const indicator of indicatorsActive) {
-                                if (indicator.classList.contains('height')) {
-                                    indicator.style.height = i + "%";
-                                } else {
-                                    indicator.style.width = i + "%";
-                                }
-                            }
-                            if (i >= 100) {
-                                i = 0;
-                                bootstrapCarousel.next();
-                            }
-                        }, (currentInterval / 100));
-                    }
+                if (hasProgress) {
+                    carouselLoaders.forEach(loader => {
+                        const idx = getIndicatorIndex(loader);
+                        const property = loader.classList.contains('height') ? 'height' : 'width';
+                        loader.style[property] = idx < activeIndex ? '100%' : (idx > activeIndex ? '0' : loader.style[property]);
+                    });
                 }
             }
 
-            // carousel.addEventListener('slide.bs.carousel', function (e) {
-            //     let target = e.to
-            //     let dots = document.querySelectorAll('[data-bs-slide-to]')
-            //     if (dots.length > 0) {
-            //         for (let k = 0; k <= dots.length; k++) {
-            //             let dot = dots[k]
-            //             if (typeof dot != 'undefined') {
-            //                  let elTarget = parseInt(dot.dataset.bsSlideTo)
-            //                  dot.classList.remove('active')
-            //                  if (elTarget === target) {
-            //                      dot.classList.add('active')
-            //                  }
-            //             }
-            //         }
-            //     }
-            // })
+            function fillCarouselIndicator(index) {
+                if (!hasProgress) return;
+
+                updateIndicators(index);
+                clearInterval(intervalID);
+                bootstrapCarousel.pause();
+
+                let i = 0;
+                const item = carousel.querySelectorAll('.carousel-item')[index - 1];
+                const video = item?.querySelector('video');
+                const startAnimation = (duration) => {
+                    intervalID = setInterval(() => {
+                        i++;
+                        carousel.querySelectorAll(`${carouselIndicatorsSelectors}.active span.loader`).forEach(loader => {
+                            if (getIndicatorIndex(loader) === index) {
+                                loader.style[loader.classList.contains('height') ? 'height' : 'width'] = `${i}%`;
+                            }
+                        });
+                        if (i >= 100) {
+                            clearInterval(intervalID);
+                            bootstrapCarousel.next();
+                        }
+                    }, duration / 100);
+                };
+
+                if (video && !video.classList.contains('loaded')) {
+                    video.muted = video.loop = true;
+                    video.addEventListener('loadedmetadata', () => {
+                        video.dataset.duration = (video.duration * 1000).toString();
+                        video.classList.add('loaded');
+                        video.play().catch(e => console.error(e));
+                        startAnimation(parseInt(video.dataset.duration));
+                    }, {once: true});
+                } else {
+                    if (video) video.currentTime = 0;
+                    startAnimation(video ? parseInt(video.dataset.duration) : interval);
+                }
+            }
+
+            if (carouselIndicators.length > 0) {
+                updateIndicators(1);
+                if (hasProgress) fillCarouselIndicator(1);
+
+                ['slide.bs.carousel', 'slid.bs.carousel'].forEach(event => {
+                    carousel.addEventListener(event, (e) => {
+                        const index = e.to + 1;
+                        hasProgress ? fillCarouselIndicator(index) : updateIndicators(index);
+                    });
+                });
+            }
         });
     }
 

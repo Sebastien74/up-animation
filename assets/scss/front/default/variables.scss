@@ -1338,18 +1338,18 @@ $card-border-width: 0;
 
 $shadow-color: #000;
 $input-floating-as-open: true;
-$mc-calendar-theme-color: $primary;
+$mc-calendar-theme-color: $secondary;
 $textarea-height: 200px;
 $input-height: 50px;
-$input-label-color: $primary;
+$input-label-color: $secondary;
 $input-label-font-weight: 700;
-$input-background: $gray-200;
+$input-background: $white;
 $input-color: $black;
 $invalid-feedback-color: $danger;
-$input-border-radius: .375rem;
+$input-border-radius: 20px;
 $input-border-radius: $input-border-radius $input-border-radius $input-border-radius $input-border-radius;
 $input-border-width: 1px;
-$input-border-color: $primary;
+$input-border-color: $white;
 $input-focus-border-color: $input-border-color;
 $input-line-height: 1.8;
 $input-font-size: $font-size-base;
@@ -1362,13 +1362,13 @@ $placeholder-color: $gray-600;
 $placeholder-font-weight: 400;
 $placeholder-font-size: 12px;
 $form-group-margin: 1rem;
-$form-check-input-checked-bg-color: $primary;
-$form-check-input-checked-border-color: $primary;
+$form-check-input-checked-bg-color: $secondary;
+$form-check-input-checked-border-color: $secondary;
 $form-check-input-focus-box-shadow: none;
-$form-file-button-bg: $primary;
+$form-file-button-bg: $secondary;
 $form-file-button-color: $white;
 $form-file-button-hover-bg: $white;
-$form-file-button-hover-color: $primary;
+$form-file-button-hover-color: $secondary;
 
 /*-----------------------------------
    8 ) Alerts

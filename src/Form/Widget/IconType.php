@@ -45,6 +45,7 @@ class IconType extends AbstractType
             },
             'attr' => function (OptionsResolver $attr) {
                 $attr->setDefaults([
+                    'data-config' => false,
                     'class' => 'col-12 select-2 select-icons',
                 ]);
             },

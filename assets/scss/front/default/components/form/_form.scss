@@ -12,14 +12,6 @@
 
     /*! purgecss start ignore */
 
-    form {
-        .layout-col {
-            > .row {
-                margin: 0 !important;
-            }
-        }
-    }
-
     .checkbox-group, .choice-group {
 
         label {
@@ -119,9 +111,9 @@
         color: $input-label-color !important;
 
         span {
-            background-color: $input-background !important;
+            background-color: transparent !important;
             color: $input-label-color !important;
-            line-height: 1 !important;
+            line-height: 1.1 !important;
             display: inline-block !important;
             white-space: nowrap;
             overflow: hidden;

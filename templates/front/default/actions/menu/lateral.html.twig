@@ -44,7 +44,8 @@
         {%- set liClass = link.level == 1 ? liClass~' justify-content-end text-end text-'~expand~'-start' : liClass~' justify-content-start text-start' -%}
         <li class="nav-item position-relative d-flex level-{{ link.level }} {{ liClass }}"
             {% if pushMicroData %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" {% endif %}>
-            {%- set linkClass = link.class~' nav-link fw-600 '~expand~' link-level-'~link.level -%}
+            {%- set linkClass = link.class~' nav-link '~expand~' link-level-'~link.level -%}
+            {%- set linkClass = link.level > 1 ? linkClass~' fw-800' : linkClass~' fw-600' -%}
             {%- set linkClass = link.children and not dropdownHover ? linkClass~' as-dropdown-toggle dropdown-toggle' : (link.children ? 'as-dropdown-toggle '~linkClass : linkClass) -%}
             {%- set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass -%}
             {%- set linkClass = 1 == link.level ? linkClass~' text-initial text-secondary btn btn-blur' : linkClass~' text-initial text-secondary' -%}
@@ -97,12 +98,13 @@
                             }) }}
                         </a>
                         {%- if link.level == 1 -%}
-                            <i class="close-menu-level-{{ link.level }} close-menu-submenu ms-auto icon-times cursor d-inline-flex align-items-center justify-content-center bg-primary text-secondary"></i>
+                            <i class="close-menu-level-{{ link.level }} close-menu-submenu ms-auto icon-times cursor d-inline-flex align-items-center justify-content-center text-secondary"></i>
                         {%- endif -%}
                     </div>
                     {%- set subLabel = link.subTitle ? link.subTitle : link.title -%}
                     {%- set parentEl = link.link ? 'a' : 'div' -%}
-                    <{{ parentEl }}{% if 'a' == parentEl %} href="{{ link.link }}" {% endif %} class="d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}">
+                    {%- set asLink = 'a' == parentEl -%}
+                    <{{ parentEl }}{% if asLink %} href="{{ link.link }}" {% endif %} class="parent-label-wrap d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}{% if asLink %} btn btn-secondary d-inline-flex{% endif %}">
                         <span class="parent-label text-warning position-relative fw-500 me-3 me-lg-0">{{ subLabel|unescape|raw }}</span>
                         <i class="icon-arrow-right text-primary ms-3"></i>
                     </{{ parentEl }}>
