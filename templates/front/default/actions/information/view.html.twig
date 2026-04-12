@@ -30,15 +30,23 @@
                         {%- endif -%}
                     </div>
                 {%- endif -%}
-                {%- if haveAddress -%}
-                    <div class="address-information">
+                <div class="address-information">
+                    {%- if agency -%}
+                        <strong class="title d-inline-block text-uppercase text-primary fw-900 mb-3">{{ 'Adresse'|trans|raw }}</strong>
+                        {{ agency.address|address(website, 'contact') }}
+                    {%- elseif agencies is not empty -%}
+                        <strong class="title d-inline-block text-uppercase text-primary fw-900 mb-3">{{ 'Adresses'|trans|raw }}</strong>
+                        {%- for agency in agencies -%}
+                            {{ agency.address|address(website, 'contact', {displayName: false, asAgence: true}) }}
+                        {%- endfor -%}
+                    {%- elseif haveAddress -%}
                         {%- set entitled = infos.addresses.contact|length > 1 ? 'Adresses'|trans|raw : 'Adresse'|trans|raw -%}
                         <strong class="title d-inline-block text-uppercase text-primary fw-900 mb-3">{{ entitled }}</strong>
                         {%- for address in infos.addresses.contact -%}
                             {{ address|address(website, 'contact') }}
                         {%- endfor -%}
-                    </div>
-                {%- endif -%}
+                    {%- endif -%}
+                </div>
             </div>
         </div>
     </div>

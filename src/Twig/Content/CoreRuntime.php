@@ -12,7 +12,9 @@ use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
 use Psr\Cache\InvalidArgumentException;
+use ReflectionException;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -37,7 +39,7 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Get last route.
+     * Get the last route.
      */
     public function lastRoute(): ?string
     {
@@ -133,19 +135,19 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Convert text for mailto link.
+     * Convert text for a mailto link.
      */
     public function mailToBody(string $text): string
     {
-        $response = str_replace("\r\n", '<br>', $text);
-        $response = str_replace('</p>', '</p><br>', $response);
-        $response = str_replace('<ul>', '', $response);
-        $response = str_replace('</ul>', '', $response);
-        $response = str_replace('<li>', '%0D%0A%09•%20', $response);
-        $response = str_replace('</li>', '', $response);
-        $response = str_replace('<br/>', '%0D%0A', $response);
-        $response = str_replace('<br>', '%0D%0A', $response);
-        $response = str_replace(' ', '%20', $response);
+        $response = str_replace("\r\n", '<br>', $text)
+                |> (fn($x) => str_replace('</p>', '</p><br>', $x))
+                |> (fn($x) => str_replace('<ul>', '', $x))
+                |> (fn($x) => str_replace('</ul>', '', $x))
+                |> (fn($x) => str_replace('<li>', '%0D%0A%09•%20', $x))
+                |> (fn($x) => str_replace('</li>', '', $x))
+                |> (fn($x) => str_replace('<br/>', '%0D%0A', $x))
+                |> (fn($x) => str_replace('<br>', '%0D%0A', $x))
+                |> (fn($x) => str_replace(' ', '%20', $x));
 
         return strip_tags($response);
     }
@@ -187,7 +189,7 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
     /**
      * Encrypt string.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public function encrypt(string $string, Website $website): ?string
     {
@@ -199,7 +201,7 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
     /**
      * Decrypt string.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public function decrypt(string $string, Website $website): ?string
     {
@@ -306,7 +308,7 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Check if first character is vowel.
+     * Check if the first character is a vowel.
      */
     public function firstIsVowel(?string $string = null): bool
     {
@@ -328,7 +330,9 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
             return null;
         }
 
-        $string = trim(html_entity_decode(mb_convert_encoding($string, 'UTF-8'), ENT_QUOTES, 'UTF-8'));
+        $string = mb_convert_encoding($string, 'UTF-8')
+                |> (fn($x) => html_entity_decode($x, ENT_QUOTES, 'UTF-8'))
+                |> trim(...);
         $string = preg_replace('/\\s+/', ' ', $string);
 
         if ($stripTag) {

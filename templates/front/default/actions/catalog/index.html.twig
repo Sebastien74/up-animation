@@ -28,17 +28,17 @@
 
         {%- set mainCatalog = listing.catalogs|first -%}
         {%- set mainCatalogSlug = mainCatalog.slug is defined ? mainCatalog.slug : false -%}
-        {%- set noneResultTxt = 'exemple-one' == mainCatalogSlug ? "Aucune exemple-one pour le moment"|trans : ('exemple-two' == mainCatalogSlug ? "Aucun exemple-two pour le moment"|trans : "Aucun produit pour le moment"|trans) -%}
-        {%- set oneResultTxt = 'exemple-one' == mainCatalogSlug ? "exemple-one trouvé"|trans : ('exemple-two' == mainCatalogSlug ? "exemple-two trouvé"|trans : "produit"|trans) -%}
-        {%- set multiResultTxt = 'exemple-one' == mainCatalogSlug ? "exemple-one trouvés"|trans : ('exemple-two' == mainCatalogSlug ? "exemple-two trouvés"|trans : "produits"|trans) -%}
+        {%- set noneResultTxt = 'exemple-one' == mainCatalogSlug ? "Aucune exemple-one pour le moment"|trans : ('exemple-two' == mainCatalogSlug ? "Aucun exemple-two pour le moment"|trans : "Aucune animation"|trans) -%}
+        {%- set oneResultTxt = 'exemple-one' == mainCatalogSlug ? "exemple-one trouvé"|trans : ('exemple-two' == mainCatalogSlug ? "exemple-two trouvé"|trans : "animation"|trans) -%}
+        {%- set multiResultTxt = 'exemple-one' == mainCatalogSlug ? "exemple-one trouvés"|trans : ('exemple-two' == mainCatalogSlug ? "exemple-two trouvés"|trans : "animations"|trans) -%}
 
-        <div id="result-counter" class="text-white fw-600 d-flex align-items-center p-0 mb-4 mb-lg-5{% if not listing.counter and not haveFilters %} d-none{% endif %}">
+        <div id="result-counter" class="fw-600 d-flex align-items-center gap-1 p-0 mb-4{% if not listing.counter and not haveFilters %} d-none{% endif %}">
             {%- if count == 0 -%}
                 {{ noneResultTxt }}
             {%- elseif count == 1 -%}
-                <span class="count me-3 bg-primary text-white fw-600 d-flex align-items-center justify-content-center">{{ count }}</span><span class="message">{{ oneResultTxt|raw }}</span>
+                <span class="count fw-600 d-flex align-items-center justify-content-center">{{ count }}</span><span class="message">{{ oneResultTxt|raw }}</span>
             {%- else -%}
-                <span class="count me-3 bg-primary text-white fw-600 d-flex align-items-center justify-content-center">{{ count }}</span><span class="message">{{ multiResultTxt|raw }}</span>
+                <span class="count fw-600 d-flex align-items-center justify-content-center">{{ count }}</span><span class="message">{{ multiResultTxt|raw }}</span>
             {%- endif -%}
         </div>
 

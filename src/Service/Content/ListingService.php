@@ -91,26 +91,34 @@ class ListingService
                 'catalogs_empty' => true,
                 'specificity' => 0,
             ];
+            $hasCategories = false;
             if (method_exists($listing, 'getCategories')) {
                 $cats = $listing->getCategories();
                 foreach ($cats as $cat) {
                     $listingsDataCache[$lId]['categories_ids'][] = $cat->getId();
                 }
-                if (!$cats->isEmpty()) {
-                    $listingsDataCache[$lId]['specificity'] += 100; // Présence de catégories = haute spécificité
-                    $listingsDataCache[$lId]['specificity'] += count($listingsDataCache[$lId]['categories_ids']);
-                }
+                $hasCategories = !$cats->isEmpty();
             }
+            $hasCatalogs = false;
             if ($listingsDataCache[$lId]['has_catalogs']) {
                 $catalogs = $listing->getCatalogs();
                 $listingsDataCache[$lId]['catalogs_empty'] = $catalogs->isEmpty();
                 foreach ($catalogs as $catalog) {
                     $listingsDataCache[$lId]['catalogs_ids'][] = $catalog->getId();
                 }
-                if (!$catalogs->isEmpty()) {
-                    $listingsDataCache[$lId]['specificity'] += 1000; // Présence de catalogues = très haute spécificité
-                    $listingsDataCache[$lId]['specificity'] += count($listingsDataCache[$lId]['catalogs_ids']);
-                }
+                $hasCatalogs = !$catalogs->isEmpty();
+            }
+
+            // Ordre de priorité :
+            // 1. Si match sur catalog et catégorie (plus haute spécificité)
+            // 2. Si match sur catalogue (spécificité moyenne)
+            // 3. Si match sur categorie (plus basse spécificité)
+            if ($hasCatalogs && $hasCategories) {
+                $listingsDataCache[$lId]['specificity'] = 3;
+            } elseif ($hasCatalogs) {
+                $listingsDataCache[$lId]['specificity'] = 2;
+            } elseif ($hasCategories) {
+                $listingsDataCache[$lId]['specificity'] = 1;
             }
         }
 
@@ -144,7 +152,7 @@ class ListingService
                         continue;
                     }
                     $eData = $entitiesDataCache[$eId];
-                    if ($this->inListingFast($listing, $entity, $classname, $lData, $eData, $isCategory)) {
+                    if ($this->inListingFast($listing, $entity, $lData, $eData, $isCategory)) {
                         $entitiesIndex[$eId] = $indexUrl;
                     }
                 }
@@ -156,8 +164,14 @@ class ListingService
         return $entitiesIndex;
     }
 
-    private function inListingFast(mixed $listing, mixed $entity, string $classname, array $lData, array $eData, bool $isCategory): bool
-    {
+    private function inListingFast(
+        mixed $listing,
+        mixed $entity,
+        array $lData,
+        array $eData,
+        bool $isCategory
+    ): bool {
+
         $eId = $entity->getId();
         $cacheKey = $listing->getId().'_'.$eId;
 
@@ -192,9 +206,6 @@ class ListingService
                     }
                 }
             }
-        } else {
-            // S'il n'y a pas de filtre par catégorie, on considère que ça match par défaut (pour le ET final)
-            $matchCategory = true;
         }
 
         // 3. Vérification Catalogs
@@ -202,13 +213,19 @@ class ListingService
             if ($eData['catalog_id'] !== null && in_array($eData['catalog_id'], $lData['catalogs_ids'])) {
                 $matchCatalog = true;
             }
-        } else {
-            // S'il n'y a pas de filtre par catalogue, on considère que ça match par défaut (pour le ET final)
-            $matchCatalog = true;
         }
 
-        // 4. Logique de décision (ET strict entre les deux types de critères s'ils existent)
-        $res = $matchCategory && $matchCatalog;
+        // 4. Logique de décision
+        // S'il y a les deux filtres, il faut matcher les deux (ET)
+        if ($hasCategoriesFilters && $hasCatalogsFilters) {
+            $res = $matchCategory && $matchCatalog;
+        } elseif ($hasCatalogsFilters) {
+            // S'il n'y a que le filtre catalogue
+            $res = $matchCatalog;
+        } else {
+            // S'il n'y a que le filtre catégorie
+            $res = $matchCategory;
+        }
 
         return $this->cache['inListing'][$cacheKey] = $res;
     }

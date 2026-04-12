@@ -570,7 +570,7 @@ $elements: map-merge((
             'font-size': ('xs': $font-size-small, 'sm': $font-size-small, 'md': $font-size-small, 'lg': $font-size-small, 'xl': $font-size-small),
         ),
     ),
-    'span, small, time, figcaption, strong, i:not(.initial), .caption-title': (
+    'span, small, time, figcaption, strong, i:not(.initial), .caption-title, address, address *': (
         'properties': (
             'color': $body-color,
         ),

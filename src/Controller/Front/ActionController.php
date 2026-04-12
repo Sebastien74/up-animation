@@ -355,7 +355,10 @@ class ActionController extends FrontController
                 if (is_object($currentEntity) && $entitiesGroup->getId() === $currentEntity->getId()) {
                     unset($entities[$group][$group]);
                 } else {
-                    $renderEntities[] = ($this->model)::fromEntity($entitiesGroup, $this->coreLocator, ['configEntity' => $teaser, 'urlsIndex' => $urlsIndex]);
+                    $renderEntities[] = ($this->model)::fromEntity($entitiesGroup, $this->coreLocator, array_merge($this->modelOptions, [
+                        'configEntity' => $teaser,
+                        'urlsIndex' => $urlsIndex
+                    ]));
                 }
             }
         }

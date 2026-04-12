@@ -83,8 +83,23 @@ final class ProductModel extends BaseModel
         $mainPages = $website->configuration->pages;
         $contactPageUrl = !empty($mainPages['contact']) && $mainPages['contact']->code ? $mainPages['contact']->code : false;
         $contactPageParams = $contactPageUrl ? ['url' => $contactPageUrl, 'agence' => $model->slug] : [];
+        $displayCity = array_key_exists('displayCity', $options) && $options['displayCity'];
+        $agencyDb = $displayCity && self::$coreLocator->request()->attributes->get('url')
+            ? self::$coreLocator->em()->getRepository(Catalog\Product::class)->findByUrlAndLocale(self::$coreLocator->request()->attributes->get('url'), $website->entity, self::$coreLocator->locale())
+            : false;
+        self::$cache['agency'] = $agencyDb && self::$cache['agency'] ? self::$cache['agency']
+            : ($agencyDb ? ProductModel::fromEntity($agencyDb, self::$coreLocator) : false);
 
         $color = match ($catalogSlug) {
+            'agencies' => 'primary',
+            'services' => 'info-light',
+            'animations' => 'secondary-light',
+            'performances' => 'info',
+            'rentals' => 'warning',
+            default => 'white',
+        };
+
+        $icon = match ($catalogSlug) {
             'agencies' => 'primary',
             'services' => 'info-light',
             'animations' => 'secondary-light',
@@ -97,8 +112,11 @@ final class ProductModel extends BaseModel
             'catalog' => $catalog,
             'reference' => self::getContent('reference', $product),
             'asAgency' => 'agencies' === self::getContent('slug', $catalog),
+            'displayCity' => $displayCity,
+            'agency' => self::$cache['agency'],
             'catalogSlug' => $catalogSlug,
             'color' => $color,
+            'icon' => $icon,
             'entityForLayout' => $model->layout && $model->layout->getSlug() && !$model->layout->getZones()->isEmpty() && $model->asCustomLayout ? $model->entity : $catalog,
             'info' => $information,
             'address' => $address,

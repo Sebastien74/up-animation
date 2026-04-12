@@ -53,12 +53,12 @@
                         <div class="inner d-flex flex-column">
                             <span class="fw-900 text-uppercase mb-1">{{ "Adresse"|trans|raw }}</span>
                             <address class="mb-0">
-                                {{ address.address|raw }}{%- if address.city or address.zipCode or address.department or address.region -%}<br>{%- endif -%}
-                                {%- if address.zipCode -%}{{ address.zipCode }}{%- endif -%}
-                                {%- if address.city -%}{{ address.city }}{%- endif -%}
-                                {%- if address.department -%}{%- if address.zipCode or address.city -%} - {%- endif -%}{{ address.department }}{%- endif -%}
-                                {%- if (address.city or address.zipCode or address.department) and address.region -%}<br>{%- endif -%}
-                                {%- if address.region -%}{{ address.region }}{%- endif -%}
+                                {{ address.address|raw }}{% if address.city or address.zipCode or address.department or address.region %}<br>{% endif %}
+                                {% if address.zipCode %}{{ address.zipCode }}{% endif %}
+                                {% if address.city %}{{ address.city }}{% endif %}
+                                {% if address.department %}{% if address.zipCode or address.city %} - {% endif %}{{ address.department }}{% endif %}
+                                {% if (address.city or address.zipCode or address.department) and address.region %}<br>{% endif %}
+                                {% if address.region %}{{ address.region }}{% endif %}
                             </address>
                         </div>
                     </div>

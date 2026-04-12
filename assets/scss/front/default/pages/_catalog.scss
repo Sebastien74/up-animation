@@ -69,6 +69,12 @@ $enable-youtube: true;
         line-height: 1.5
     }
 
+    @include mediaQuery(min-lg) {
+        .splide__track {
+            margin-left: -1rem;
+        }
+    }
+
     .agency-highlights {
 
         .card-header {

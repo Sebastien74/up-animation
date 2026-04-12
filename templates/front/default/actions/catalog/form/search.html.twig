@@ -3,59 +3,106 @@
 {%- set masterRequest = masterRequest() -%}
 {%- set requestUri = masterRequest.pathInfo|trim('/', 'left') -%}
 {%- set haveFields = formFilters.children|length > 0 or (listing.searchCategories == 'links' and categories|length > 0) or (not listing.combineFieldsText and listing.searchText) -%}
+{%- set isHome = masterRequest.attributes.get('url') is empty -%}
+{%- set fieldSize = isHome ? 3 : 4 -%}
 
 {%- if listing.display != 'disable' and haveFields -%}
-    <div id="search-products-filters-container">
+    <div id="search-products-filters-container" class="d-lg-flex justify-content-between">
+        {%- if formFilters.children|length > 0 or (listing.searchCategories == 'links' and categories|length > 0) -%}
+            <div id="search-fields-container" class="mb-4 position-relative">
+                {%- endif -%}
+                {%- if formFilters.children|length > 0 -%}
+                    {{ form_start(formFilters, {attr: {
+                        id: "search-filter-form",
+                        'data-component': 'webpack-form'
+                    }}) }}
+                    <div class="d-flex flex-wrap gap-3">
+                        {%- set catalogsExisting = false -%}
+                        {%- for field in formFilters.children -%}
+                            {%- if field.vars.name == 'catalogs' -%}
+                                {%- set catalogsExisting = true -%}
+                            {%- endif -%}
+                        {%- endfor -%}
+                        {%- set featuresKey = catalogsExisting ? 3 : 2 -%}
+                        {%- for field in formFilters.children -%}
+                            <div class="group group-{{ field.vars.name }}">
+                                {% if 'save' != field.vars.name %}
+                                    {% set firstChoice = field.vars.choices|first %}
+                                    {% set displayChoices = firstChoice.label is defined and firstChoice.label != 'label' %}
+                                    <div class="dropdown dropdown-select dropup-auto position-relative w-100 mb-3{% if not displayChoices %} disable-dropdown{% endif %}">
+                                        {% set current = field.vars.value %}
+                                        {% if current is empty %}
+                                            {% set current = masterRequest().query.get(field.vars.name) %}
+                                        {% endif %}
+                                        <span class="reset-select-wrap{% if not current %} d-none{% endif %}">
+                                            <span class="position-absolute clear cursor d-flex align-items-center justify-content-center"></span>
+                                        </span>
+                                        {% set label = field.vars.label %}
+                                        {% for choice in field.vars.choices %}
+                                            {% if choice.value == current %}
+                                                {% set label = choice.label %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <button class="btn btn-white dropdown-toggle d-inline-flex align-items-center justify-content-start text-uppercase text-black w-100"
+                                                role="button"
+                                                data-placeholder="{{ label }}"
+                                                data-bs-toggle="dropdown"
+                                                data-bs-display="static"
+                                                aria-expanded="false">
+                                            {{ label|striptags }}
+                                        </button>
+                                        {% if displayChoices %}
+                                            <ul class="dropdown-menu dropdown-menu-start dropdown-menu-end dropdown-menu-bottom border-0 w-100 pb-4 pt-0">
+                                                {% for choice in field.vars.choices %}
+                                                    <li class="p-0">
+                                                        <span class="dropdown-item search-dropdown-item cursor py-0 d-flex align-items-center px-0{% if choice.value == current %} selected{% endif %}"
+                                                              data-field-id="#{{ field.vars.id }}"
+                                                              data-label="{{ choice.label }}"
+                                                              data-value="{{ choice.value }}">
+                                                            {{ ('cms '~choice.value)|icon(45, 45, 'initial me-2') }}{{ choice.label|striptags }}
+                                                        </span>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </div>
+                                    <div class="d-none">
+                                        {{ form_row(formFilters[field.vars.name]) }}
+                                    </div>
+                                {% else %}
+                                    {{ form_row(formFilters[field.vars.name]) }}
+                                {% endif %}
+                            </div>
+                        {%- endfor -%}
+                    </div>
+                    {{ form_end(formFilters) }}
+                {%- endif -%}
+                {%- if listing.searchCategories == 'links' and categories|length > 0 -%}
+                    <ul>
+                        <li>
+                            <a href="{{ path('front_index', {url: requestUri}) }}">{{ "Voir tout les produits"|trans|raw }}</a>
+                        </li>
+                        {%- for category in categories -%}
+                            {%- set categoryIntl = category|intl -%}
+                            <li>
+                                <a href="{{ path('front_index', {url: requestUri, category: category.slug}) }}">
+                                    {%- if categoryIntl.title is defined and categoryIntl.title -%}{{ categoryIntl.title }}{%- else -%}{{ category.adminName }}{%- endif -%}
+                                </a>
+                            </li>
+                        {%- endfor -%}
+                    </ul>
+                {%- endif -%}
+                {%- if formFilters.children|length > 0 or (listing.searchCategories == 'links' and categories|length > 0) -%}
+            </div>
+        {%- endif -%}
         {%- if not listing.combineFieldsText and listing.searchText -%}
-            <div id="search-text-container" class="w-100 mb-4">
+            <div id="search-text-container">
                 {{ form_start(formText, {attr: {id: "search-text-form", 'data-component': 'webpack-form'}}) }}
                 <div class="group d-inline-flex">
                     {{ form_widget(formText.text) }}
                 </div>
                 {{ form_end(formText) }}
             </div>
-        {%- endif -%}
-        {%- if formFilters.children|length > 0 or (listing.searchCategories == 'links' and categories|length > 0) -%}
-        <div id="search-fields-container" class="mb-4 position-relative">
-            {%- endif -%}
-            {%- if formFilters.children|length > 0 -%}
-                {{ form_start(formFilters, {attr: {
-                    id: "search-filter-form",
-                    'data-component': 'webpack-form'
-                }}) }}
-                <div class="row">
-                    {%- set catalogsExisting = false -%}
-                    {%- for field in formFilters.children -%}
-                        {%- if field.vars.name == 'catalogs' -%}
-                            {%- set catalogsExisting = true -%}
-                        {%- endif -%}
-                    {%- endfor -%}
-                    {%- set featuresKey = catalogsExisting ? 3 : 2 -%}
-                    {%- for field in formFilters.children -%}
-                        <div class="group group-{{ field.vars.name }} col-lg-4">
-                            {{ form_row(formFilters[field.vars.name]) }}
-                        </div>
-                    {%- endfor -%}
-                </div>
-                {{ form_end(formFilters) }}
-            {%- endif -%}
-            {%- if listing.searchCategories == 'links' and categories|length > 0 -%}
-                <ul>
-                    <li>
-                        <a href="{{ path('front_index', {url: requestUri}) }}">{{ "Voir tout les produits"|trans|raw }}</a>
-                    </li>
-                    {%- for category in categories -%}
-                        {%- set categoryIntl = category|intl -%}
-                        <li>
-                            <a href="{{ path('front_index', {url: requestUri, category: category.slug}) }}">
-                                {%- if categoryIntl.title is defined and categoryIntl.title -%}{{ categoryIntl.title }}{%- else -%}{{ category.adminName }}{%- endif -%}
-                            </a>
-                        </li>
-                    {%- endfor -%}
-                </ul>
-            {%- endif -%}
-            {%- if formFilters.children|length > 0 or (listing.searchCategories == 'links' and categories|length > 0) -%}
-        </div>
         {%- endif -%}
     </div>
 {%- endif -%}

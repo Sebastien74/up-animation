@@ -24,7 +24,6 @@ export default function () {
         if (form) {
             form.querySelectorAll('.reset-filters').forEach((resetBtn) => {
                 resetBtn.onclick = function () {
-                    const sidebar = document.querySelector('.filter-sidebar');
                     form.querySelectorAll('select, input').forEach((el) => {
                         el.classList.add('is-refresh');
                         if (el.tagName === 'SELECT') {
@@ -70,9 +69,6 @@ export default function () {
             const value = item.dataset.value;
 
             toggle.innerHTML = item.dataset.label;
-
-            console.log(clearWrap);
-            console.log(formHome);
 
             if (formHome && clearWrap) {
                 clearWrap.classList.remove('d-none');
@@ -150,60 +146,7 @@ export default function () {
     };
 
     /**
-     * Bind sidebar toggle/reset behaviors and auto-open if at least one filter is active.
-     * Uses delegation on document to avoid rebinding after AJAX.
-     */
-    const bindSidebarEvents = () => {
-
-        if (document.documentElement.dataset.bindSidebarEvents === '1') {
-            return;
-        }
-        document.documentElement.dataset.bindSidebarEvents = '1';
-
-        const sidebar = document.querySelector('.filter-sidebar');
-        if (!sidebar) {
-            sidebar.querySelectorAll('.form-check').forEach((el) => {
-                el.onclick = function () {
-                    el.classList.toggle('checked');
-                };
-            });
-        }
-
-        document.addEventListener('click', (event) => {
-            if (!sidebar) {
-                return;
-            }
-            const toggle = event.target?.closest?.('.sidebar-toggle');
-            if (toggle) {
-                sidebar.classList.toggle('show');
-            }
-        });
-    };
-
-    /**
-     * Auto-open sidebar if any filter is active (run after initial load and after AJAX).
-     */
-    const autoOpenSidebarIfActive = () => {
-
-        const sidebar = document.querySelector('.filter-sidebar');
-        if (!sidebar || sidebar.classList.contains('show')) {
-            return;
-        }
-
-        sidebar.querySelectorAll('select, input[type="checkbox"], input[type="radio"]').forEach((el) => {
-            const hasValue =
-                (el.tagName === 'SELECT' && el.value !== '') ||
-                (el.type === 'checkbox' && el.checked && el.value) ||
-                (el.type === 'radio' && el.checked && el.value);
-
-            if (hasValue) {
-                sidebar.classList.add('show');
-            }
-        });
-    };
-
-    /**
-     * Bind filter fields (change + clear) using delegation to avoid rebind.
+     * Bind filter fields (change + clear) using delegation to avoid rebinding.
      */
     const bindFilterFields = () => {
 
@@ -331,7 +274,7 @@ export default function () {
         form.classList.add('is-post');
 
         const loader = indexProducts.querySelector('.loader');
-        if (loader && selector && selector.closest('.filter-sidebar')) {
+        if (loader && selector) {
             loader.classList.add('full-screen');
         }
 
@@ -432,8 +375,6 @@ export default function () {
             }
             // Re-run pagination binding if your helper expects an updated DOM
             AjaxPagination(indexProducts);
-            // Ensure sidebar state updated
-            autoOpenSidebarIfActive();
             hideLoader(indexProducts);
             unlock();
             resetFilters();
@@ -470,10 +411,8 @@ export default function () {
 
     // Initial bindings (all delegated / idempotent)
     bindSearchEnter();
-    bindSidebarEvents();
     bindDropdownSelect();
     bindFilterFields();
-    autoOpenSidebarIfActive();
     initTooltips(document);
     resetFilters();
 }

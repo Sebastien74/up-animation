@@ -328,16 +328,13 @@
 {%- elseif blockType == 'layout-agency-animations-events' -%}
 
     <div class="layout-agency-animations-events row">
-        {{ render_esi(controller('App\\Controller\\Front\\Action\\CatalogController::teaser', {filter: 'agencies-animations-events'})) }}
-    </div>
-
-{%- elseif blockType == 'layout-agency-animations' -%}
-
-    <div class="agency-animations row">
-        <div class="col-xl-8">
-            <h2 class="title text-uppercase">{{ "Découvrez nos animations<br> <span>séminaire, team building & soirée d'entreprise à %city%</span>"|trans({'%city%': entity.city ?: ''})|raw }}</h2>
+        <div class="col-xl-8 px-0">
+            <h2 class="title text-uppercase mb-lg-0">{{ "Découvrez nos animations<br> <span>séminaire, team building & soirée d'entreprise à %city%</span>"|trans({'%city%': entity.city ?: ''})|raw }}</h2>
         </div>
-        {{ render_esi(controller('App\\Controller\\Front\\Action\\CatalogController::teaser', {filter: 'agencies-animations'})) }}
+        {{ render_esi(controller('App\\Controller\\Front\\Action\\CatalogController::teaser', {
+            filter: 'agencies-animations-events',
+            displayCity: true,
+        })) }}
     </div>
 
 {%- elseif blockType == 'layout-highlights-agency' -%}
@@ -417,12 +414,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-{%- elseif blockType == 'layout-agency-animations-city' -%}
-
-    <div class="agency-animations-city">
-        <h2 class="title text-uppercase">{{ "Découvrez toutes <br> <span>nos animations %dept_preposition%%dept%%zipcode%</span>"|trans({'%dept_preposition%': entity.department ? entity.department|deptPreposition ~ ' ' : '', '%dept%': entity.department ?: '', '%zipcode%': entity.zipcodeSmall ? '&nbsp;' ~ entity.zipcodeSmall : ''})|raw }}</h2>
     </div>
 
 {%- elseif blockType == 'layout-share' -%}

@@ -238,7 +238,12 @@
                     <strong class="badge bg-secondary fw-400 text-white small-radius d-inline-block mb-2 px-2 py-1">{{ catalog.intl.label|striptags }}</strong>
                 {%- endif -%}
                 <h{{ titleForce }} class="mb-3">
-                    <a href="{{ entity.url }}" class="card-title text-uppercase text-secondary fw-800">{{ entity.intl.title|raw }}</a>
+                    <a href="{{ entity.url }}" class="card-title text-uppercase text-secondary fw-800">
+                        {{ entity.intl.title|raw }}
+                        {%- if entity.displayCity and entity.agency -%}
+                            <br><span class="city text-initial">{{ " à %city% %zipcode%"|trans({'%city%': entity.agency.city, '%zipcode%': entity.agency.zipcodeSmall}) }}</span>
+                        {%- endif -%}
+                    </a>
                 </h{{ titleForce }}>
                 {%- if entity.intl.introduction -%}
                     <p class="body-card mb-0 lh-1">{{ entity.intl.introduction|raw }}</p>

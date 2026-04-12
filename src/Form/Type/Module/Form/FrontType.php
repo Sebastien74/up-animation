@@ -677,6 +677,7 @@ class FrontType extends AbstractType
         if (EntityType::class === $fieldType) {
             $fieldName = $configuration->getSlug();
             $requestArg = $fieldName ? $this->mainRequest->query->get($fieldName) : null;
+            $requestArg = !$requestArg ? $this->mainRequest->query->get('agence') : null;
             $this->options['class'] = $configuration->getClassName();
             if ($requestArg) {
                 $this->options['data'] = $this->entityManager->getRepository($this->options['class'])->findOneBy(['slug' => $requestArg]);

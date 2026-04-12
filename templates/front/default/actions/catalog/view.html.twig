@@ -23,8 +23,10 @@
     <div id="body-catalog-{{ entity.catalog.slug }}" class="product-view-container view-container position-relative">
         {%- if entity.haveLayout -%}
             {%- include 'front/'~websiteTemplate~'/layout.html.twig' with {layout: entity.entityForLayout.layout, asLayout: true} -%}
-        {%- else -%}
+        {%- elseif entity.template is defined and entity.template -%}
             {%- include entity.template -%}
+        {%- else -%}
+            {%- include 'front/'~websiteTemplate~'/actions/catalog/view/default-product.html.twig' -%}
         {%- endif -%}
     </div>
 {%- endblock -%}
