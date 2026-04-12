@@ -710,44 +710,6 @@ $elements: map-merge((
             'white': $primary,
         )
     ),
-    'information-container': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $primary,
-            'success': $primary,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $primary,
-            'danger': $white,
-            'danger-light': $primary,
-            'light': $primary,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $primary,
-        )
-    ),
-    'information-container-hover': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $body-color,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $white,
-            'info': $body-color,
-            'info-dark': $white,
-            'warning': $white,
-            'danger': $white,
-            'danger-light': $white,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
     'bullet': (
         'excluded': true,
         'colors-in-backgrounds': (
