@@ -8,7 +8,7 @@
 
 {%- set asLayout = true -%}
 {%- set template = 'front/'~websiteTemplate~'/actions/form/include/elements.html.twig' -%}
-{%- set messages = app.session.flashbag.all -%}
+{%- set messages = app.session.flashbag.peekAll -%}
 {%- set modalId = "form-thanks-modal-"~entity.id -%}
 {%- set contactsLength = entity.contacts|length -%}
 {%- set maxShipments = formConfiguration.maxShipments -%}

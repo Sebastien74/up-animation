@@ -137,6 +137,7 @@ return array(
     'Faker\\' => array($vendorDir . '/sfcms/faker/src/Faker'),
     'FOS\\JsRoutingBundle\\' => array($vendorDir . '/friendsofsymfony/jsrouting-bundle'),
     'Evenement\\' => array($vendorDir . '/evenement/evenement/src'),
+    'Ergebnis\\AgentDetector\\' => array($vendorDir . '/ergebnis/agent-detector/src'),
     'Egulias\\EmailValidator\\' => array($vendorDir . '/egulias/email-validator/src'),
     'Eckinox\\TinymceBundle\\' => array($vendorDir . '/eckinox/tinymce-bundle/src'),
     'Doctrine\\SqlFormatter\\' => array($vendorDir . '/doctrine/sql-formatter/src'),

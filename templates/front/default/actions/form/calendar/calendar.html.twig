@@ -123,7 +123,7 @@
 
                         {%- if register == 'no-available' -%}
                             <div id="calendar-error">
-                                {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'error', message: "Ce crénéau n'est plus disponible. Veuillez en choisir un autre."|trans} only -%}
+                                {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {display: 'alert', alert: 'error', message: "Ce crénéau n'est plus disponible. Veuillez en choisir un autre."|trans} only -%}
                             </div>
                         {%- endif -%}
 

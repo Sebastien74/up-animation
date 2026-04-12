@@ -136,9 +136,9 @@ class GdprController extends FrontController
         }
 
         $response = new JsonResponse([
-            'headerScripts' => $this->getScripts($website, $api, 'scripts', $cookies, $cookiesCategories, $projectDir),
-            'bodyPrependScripts' => $this->getScripts($website, $api, 'body-prepend', $cookies, $cookiesCategories, $projectDir),
-            'bodyAppendScripts' => $this->getScripts($website, $api, 'body-append', $cookies, $cookiesCategories, $projectDir),
+            'headerScripts' => $this->getScripts($request, $website, $api, 'scripts', $cookies, $cookiesCategories, $projectDir),
+            'bodyPrependScripts' => $this->getScripts($request, $website, $api, 'body-prepend', $cookies, $cookiesCategories, $projectDir),
+            'bodyAppendScripts' => $this->getScripts($request, $website, $api, 'body-append', $cookies, $cookiesCategories, $projectDir),
             'reloadModal' => $this->checkModalReload($cookiesCategories, $cookies),
             'haveCookies' => !empty($cookies),
             'cookies' => $request->cookies->get('felixCookies'),
@@ -171,9 +171,10 @@ class GdprController extends FrontController
     /**
      * Get Scripts to inject in view.
      */
-    private function getScripts(WebsiteModel $website, array $api, string $dirname, array $cookies, array $cookiesCategories, string $projectDir): string
+    private function getScripts(Request $request, array $website, array $api, string $dirname, array $cookies, array $cookiesCategories, string $projectDir): string
     {
-        $formData = !empty($_GET['gdprData']) ? (array) json_decode($_GET['gdprData']) : [];
+        $gdprData = $request->query->get('gdprData');
+        $formData = !empty($gdprData) ? (array) json_decode($gdprData, true) : [];
         $fileSystem = new Filesystem();
         $scripts = '';
 

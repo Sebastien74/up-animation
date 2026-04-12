@@ -72,8 +72,9 @@ class MediaController extends AdminController
             return $formPositions;
         }
 
-        $historyRequestAsBool = isset($_GET['history']) && !preg_match('/\//', $_GET['history']) && in_array($_GET['history'], ['true', 'false', false, true, 0, 1]);
-        $this->arguments['history'] = $historyRequestAsBool ? (bool) $_GET['history'] : $this->generateUrl('admin_medias_library', ['website' => $website->id, 'folder' => $request->get('folder')]);
+        $history = $request->query->get('history');
+        $historyRequestAsBool = isset($history) && !preg_match('/\//', $history) && in_array($history, ['true', 'false', false, true, 0, 1]);
+        $this->arguments['history'] = $historyRequestAsBool ? (bool) $history : $this->generateUrl('admin_medias_library', ['website' => $website->id, 'folder' => $request->get('folder')]);
         $this->arguments['formPositions'] = $formPositions->createView();
         $arguments = $this->editionArguments($request);
         $arguments['params']->medias = $paginator->paginate(

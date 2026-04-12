@@ -1337,7 +1337,7 @@ $form-file-button-hover-color: $secondary;
 -----------------------------------*/
 
 $alert-font-size: 14px;
-$alert-border-radius: 0;
+$alert-border-radius: .75rem;
 $alert-border-width: 1px;
 $alert-colors: () !default;
 $alert-colors: map-merge((

@@ -6,7 +6,6 @@ namespace App\Service\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * QueryService.
@@ -35,20 +34,14 @@ class QueryService implements QueryServiceInterface
             return $this->cache[$cacheKey];
         }
 
-        $metadata = $this->entityManager->getClassMetadata($classname);
-        $table = !empty($metadata->table['name']) ? $metadata->table['name'] : null;
+        $qb = $this->entityManager->createQueryBuilder()
+            ->select('e')
+            ->from($classname, 'e')
+            ->where('e.' . $column . ' = :value')
+            ->setParameter('value', $value)
+            ->setMaxResults(1);
 
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult($classname, 'e');
-        $columns = '';
-        foreach ($metadata->fieldNames as $fieldName) {
-            $rsm->addFieldResult('e', $fieldName, $fieldName);
-            $columns .= $fieldName.', ';
-        }
-        $query = $this->entityManager->createNativeQuery('SELECT '.rtrim($columns, ', ').' FROM '.$table.' WHERE '.$column.' = :'.$column, $rsm);
-        $query->setParameter(':'.$column, $value);
-
-        return $this->cache[$cacheKey] = $query->getOneOrNullResult();
+        return $this->cache[$cacheKey] = $qb->getQuery()->getOneOrNullResult();
     }
 
     /**
@@ -61,20 +54,15 @@ class QueryService implements QueryServiceInterface
             return $this->cache[$cacheKey];
         }
 
-        $metadata = $this->entityManager->getClassMetadata($classname);
-        $table = !empty($metadata->table['name']) ? $metadata->table['name'] : null;
+        $column = str_replace('_id', '', $column);
 
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult($classname, 'e');
-        $columns = '';
-        foreach ($metadata->fieldNames as $fieldName) {
-            $rsm->addFieldResult('e', $fieldName, $fieldName);
-            $columns .= $fieldName.', ';
-        }
-        $query = $this->entityManager->createNativeQuery('SELECT '.rtrim($columns, ', ').' FROM '.$table.' WHERE '.$column.' = :'.$column, $rsm);
-        $query->setParameter(':'.$column, $value);
+        $qb = $this->entityManager->createQueryBuilder()
+            ->select('e')
+            ->from($classname, 'e')
+            ->where('e.' . $column . ' = :value')
+            ->setParameter('value', $value);
 
-        return $this->cache[$cacheKey] = $query->getResult();
+        return $this->cache[$cacheKey] = $qb->getQuery()->getResult();
     }
 
     public function findFullEntity(int $id, string $classname): ?object

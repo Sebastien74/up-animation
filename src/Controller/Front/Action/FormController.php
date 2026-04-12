@@ -78,7 +78,8 @@ class FormController extends FrontController
         $form->handleRequest($request);
         $formConfiguration = $entity->getConfiguration();
         $pageRedirection = $formConfiguration->getPageRedirection()
-            ? ViewModel::fromEntity($formConfiguration->getPageRedirection(), $this->coreLocator, ['disabledIntl' => true, 'disabledMedias' => true, 'disabledCategory' => true, 'disabledLayout' => true]) : null;
+            ? ViewModel::fromEntity($formConfiguration->getPageRedirection(), $this->coreLocator, ['disabledIntl' => true, 'disabledMedias' => true, 'disabledCategory' => true, 'disabledLayout' => true])
+            : null;
 
         return $this->getRender($form, $formManager, [
             'request' => $request,
@@ -182,7 +183,8 @@ class FormController extends FrontController
 
         $formConfiguration = $entity->getConfiguration();
         $pageRedirection = $formConfiguration->getPageRedirection()
-            ? ViewModel::fromEntity($formConfiguration->getPageRedirection(), $this->coreLocator, ['disabledIntl' => true, 'disabledMedias' => true, 'disabledCategory' => true, 'disabledLayout' => true]) : null;
+            ? ViewModel::fromEntity($formConfiguration->getPageRedirection(), $this->coreLocator, ['disabledIntl' => true, 'disabledMedias' => true, 'disabledCategory' => true, 'disabledLayout' => true])
+            : null;
         return $this->getRender($form, $formManager, [
             'request' => $request,
             'websiteTemplate' => $websiteTemplate,
@@ -230,15 +232,15 @@ class FormController extends FrontController
             'register' => $register,
             'calendar' => $calendar,
             'calendars' => $calendars,
-            'token' => !empty($_GET['token']) ? $_GET['token'] : null,
-            'startDate' => $request->get('startDate'),
+            'token' => $request->query->get('token'),
+            'startDate' => $request->query->get('startDate'),
             'dates' => $dates,
             'formCalendar' => $formCalendar->createView(),
             'form' => $form,
             'contact' => $contact,
         ];
 
-        if ($request->get('ajax')) {
+        if ($request->query->get('ajax')) {
             return new JsonResponse(['html' => $this->renderView($template, $arguments), 'slotDate' => $register, 'calendar' => $calendar->getId()]);
         }
 

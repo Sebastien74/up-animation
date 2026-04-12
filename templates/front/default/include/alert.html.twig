@@ -19,9 +19,9 @@
 {%- set class = class is defined ? class : null -%}
 
 {%- if 'alert' == display -%}
-    <div class="alert alert-{{ bgColor }} position-relative d-flex d-flex px-3 py-3 gap-3 {% if class %} {{ class }}{% endif %}">
+    <div class="alert alert-{{ bgColor }} position-relative d-flex d-flex {% if class %} {{ class }}{% endif %}">
         <div class="icon d-flex align-items-center justify-content-center position-relative bg-{{ bgColor }}"><i class="icon-{{ icon }} text-{{ iconColor }}"></i></div>
-        <div class="message w-100 d-flex align-items-center text-start text-{{ iconColor }}">
+        <div class="message w-100 d-flex align-items-center px-3 py-3 gap-3 text-start text-{{ iconColor }}">
             <div class="inner">
                 {%- if 'small' == size -%}
                 <small class="d-inline-block text-{{ iconColor }}">

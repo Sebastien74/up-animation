@@ -206,6 +206,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'E' =>
         array (
             'Evenement\\' => 10,
+            'Ergebnis\\AgentDetector\\' => 23,
             'Egulias\\EmailValidator\\' => 23,
             'Eckinox\\TinymceBundle\\' => 22,
         ),
@@ -774,6 +775,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'Evenement\\' =>
         array (
             0 => __DIR__ . '/..' . '/evenement/evenement/src',
+        ),
+        'Ergebnis\\AgentDetector\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/ergebnis/agent-detector/src',
         ),
         'Egulias\\EmailValidator\\' =>
         array (

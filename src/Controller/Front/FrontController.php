@@ -68,9 +68,9 @@ class FrontController extends CacheController
      * @throws LoaderError|MappingException|NonUniqueResultException|RuntimeError|SyntaxError
      */
     #[Route('/front/media/loader', name: 'front_media_loader', methods: 'GET', schemes: '%protocol%')]
-    public function mediaLoader(ThumbnailRuntime $runtime): JsonResponse
+    public function mediaLoader(Request $request, ThumbnailRuntime $runtime): JsonResponse
     {
-        $path = !empty($_GET['_path']) ? $_GET['_path'] : '';
+        $path = $request->query->get('_path', '');
         $decodedString = urldecode($path);
         parse_str($decodedString, $parameters);
         $options = array_filter($parameters, function ($key) {
@@ -82,7 +82,17 @@ class FrontController extends CacheController
             }
         }
         $options['lazyLoad'] = isset($options['lazyLoad']) && $options['lazyLoad'];
-        $entity = $this->coreLocator->em()->getRepository($options['classname'])->find($options['id']);
+
+        $classname = $options['classname'] ?? null;
+        if (!$classname || !class_exists($classname) || !str_starts_with($classname, 'App\\Entity\\')) {
+            return new JsonResponse(['success' => false, 'message' => 'Invalid classname'], 400);
+        }
+
+        $entity = $this->coreLocator->em()->getRepository($classname)->find($options['id']);
+        if (!$entity) {
+            return new JsonResponse(['success' => false, 'message' => 'Entity not found'], 404);
+        }
+
         $thumbs = !empty($options['thumbConfigurationJson']) ? (array) json_decode($options['thumbConfigurationJson']) : [];
         $options['thumbConfiguration'] = [];
         foreach ($thumbs as $screen => $thumbId) {
@@ -90,21 +100,10 @@ class FrontController extends CacheController
         }
         $options['class'] = !empty($options['class']) ? $options['class'].' in-viewport' : 'in-viewport';
         $media = MediaModel::fromEntity($entity, $this->coreLocator);
-        $arguments = $runtime->thumb($media, $options['thumbConfiguration'], array_merge($options, ['only_arguments' => true, 'lazyFiles' => true, 'forceThumb' => true, 'inAdmin' => $options['inAdmin']]));
+        $arguments = $runtime->thumb($media, $options['thumbConfiguration'], array_merge($options, ['only_arguments' => true, 'lazyFiles' => true, 'forceThumb' => true, 'inAdmin' => $options['inAdmin'] ?? false]));
 
         if (isset($options['path']) && $options['path']) {
             return new JsonResponse(['success' => true]);
-        }
-
-        $filesystem = new Filesystem();
-        $dirname = $this->coreLocator->cacheDir();
-        $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
-        $finder = Finder::create();
-        $finder->in($dirname)->name('pools-cache-*')->depth([0]);
-        foreach ($finder as $file) {
-            if ($filesystem->exists($file->getRealPath())) {
-                $filesystem->remove($file->getRealPath());
-            }
         }
 
         return new JsonResponse(['html' => $this->renderView('core/image-config.html.twig', $arguments)]);
@@ -143,6 +142,11 @@ class FrontController extends CacheController
     public function download(Website $website, ?string $filename): BinaryFileResponse|Response
     {
         if ($filename) {
+
+            if (str_contains($filename, '..') || str_contains($filename, '/') || str_contains($filename, '\\')) {
+                return new Response('Invalid filename', 400);
+            }
+
             $fileDirname = $this->coreLocator->projectDir().'/public/uploads/'.$website->getUploadDirname().'/'.$filename;
             $fileDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $fileDirname);
             $filesystem = new Filesystem();
