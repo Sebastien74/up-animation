@@ -28,6 +28,14 @@
                 font-size: 10px;
             }
         }
+
+        &.as-media {
+            .spinner-border {
+                height: 16px;
+                width: 16px;
+                border-width: 1px;
+            }
+        }
     }
 }
 
@@ -165,42 +173,42 @@
 //        --bs-gutter-x: 1.5rem;
 //    }
 
-    //#index-header {
-    //
-    //    .inner {
-    //
-    //        //margin-right: calc(-.5 * var(--bs-gutter-x));
-    //        //margin-left: calc(-.5 * var(--bs-gutter-x));
-    //
-    //        div > div.item-header {
-    //
-    //            padding-right: calc(var(--bs-gutter-x) * .5);
-    //            padding-left: calc(var(--bs-gutter-x) * .5);
-    //
-    //            @include mediaQuery(max-xs) {
-    //                width: 100%;
-    //            }
-    //
-    //            @include mediaQuery(between-xs-lg) {
-    //                width: 50%;
-    //            }
-    //
-    //            > .btn, form > .btn {
-    //                width: 100%;
-    //            }
-    //
-    //            .btn-icon span {
-    //                width: 100%;
-    //            }
-    //
-    //            @include mediaQuery(max-sm) {
-    //                .btn-icon span {
-    //                    font-size: 12px;
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
+//#index-header {
+//
+//    .inner {
+//
+//        //margin-right: calc(-.5 * var(--bs-gutter-x));
+//        //margin-left: calc(-.5 * var(--bs-gutter-x));
+//
+//        div > div.item-header {
+//
+//            padding-right: calc(var(--bs-gutter-x) * .5);
+//            padding-left: calc(var(--bs-gutter-x) * .5);
+//
+//            @include mediaQuery(max-xs) {
+//                width: 100%;
+//            }
+//
+//            @include mediaQuery(between-xs-lg) {
+//                width: 50%;
+//            }
+//
+//            > .btn, form > .btn {
+//                width: 100%;
+//            }
+//
+//            .btn-icon span {
+//                width: 100%;
+//            }
+//
+//            @include mediaQuery(max-sm) {
+//                .btn-icon span {
+//                    font-size: 12px;
+//                }
+//            }
+//        }
+//    }
+//}
 //}
 
 //#entities-index {

@@ -402,6 +402,18 @@ body.menu-open {
                 margin-bottom: 2rem;
                 font-size: 26px;
             }
+
+            @include mediaQuery(min-lg) {
+
+                &.link-level-2, &.link-level-2 span {
+                    transition: color $transition-fast;
+                }
+
+                &.link-level-2:hover, &.link-level-2:hover span {
+                    color: $primary !important;
+                    transition: color $transition-fast;
+                }
+            }
         }
 
         .caret {

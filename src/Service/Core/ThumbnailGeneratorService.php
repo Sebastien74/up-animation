@@ -137,7 +137,6 @@ class ThumbnailGeneratorService
 
         foreach ($filters as $filter) {
             if ($fileSize <= $sizeLimit) {
-                //                set_time_limit(10);
                 $this->filterService->getUrlOfFilteredImageWithRuntimeFilters($dirname, $filter);
             }
         }

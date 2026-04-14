@@ -104,6 +104,11 @@ class ProductController extends AdminController
         $this->formOptions['isDraggable'] = $this->formManager->isDraggable();
         $this->arguments['activeTab'] = $request->attributes->get('tab');
         $this->arguments['activeTabs'] = $this->formOptions['activesFields'] = $this->entity->getCatalog()->getTabs();
+        $catalog = $this->entity->getCatalog();
+
+        if (!$this->arguments['activeTab'] && 'agencies' === $catalog->getSlug()) {
+            $this->arguments['activeTab'] = 'informations';
+        }
 
         return parent::edit($request);
     }

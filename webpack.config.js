@@ -124,8 +124,6 @@ Encore.setOutputPath('public/build/vendor')
         to: 'i18n/[path][name].[ext]'
     })
     .configureBabelPresetEnv((config) => {
-        config.useBuiltIns = 'usage';
-        config.corejs = '3.38';
         config.targets = { esmodules: true };
     })
     .enablePostCssLoader((options) => {
@@ -259,8 +257,6 @@ Encore.setOutputPath('public/build/front/default')
         config.plugins.push('@babel/plugin-proposal-class-properties');
     })
     .configureBabelPresetEnv((config) => {
-        config.useBuiltIns = 'usage';
-        config.corejs = '3.38';
         config.targets = { esmodules: true };
     })
     .enablePostCssLoader((options) => {
@@ -363,8 +359,6 @@ Encore.setOutputPath('public/build/gdpr')
         babelConfig.presets.push('@babel/preset-flow');
     }, {})
     .configureBabelPresetEnv((config) => {
-        config.useBuiltIns = 'usage';
-        config.corejs = '3.38';
         config.targets = { esmodules: true };
     })
     .copyFiles({
@@ -474,8 +468,6 @@ Encore.setOutputPath('public/build/admin')
         babelConfig.presets.push('@babel/preset-flow');
     }, {})
     .configureBabelPresetEnv((config) => {
-        config.useBuiltIns = 'usage';
-        config.corejs = '3.38';
         config.targets = { esmodules: true };
     })
     .enablePostCssLoader((options) => {
@@ -560,8 +552,6 @@ Encore.setOutputPath('public/build/security')
         babelConfig.presets.push('@babel/preset-flow');
     }, {})
     .configureBabelPresetEnv((config) => {
-        config.useBuiltIns = 'usage';
-        config.corejs = '3.38';
         config.targets = { esmodules: true };
     })
     .enablePostCssLoader((options) => {

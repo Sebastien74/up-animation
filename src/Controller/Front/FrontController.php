@@ -71,11 +71,24 @@ class FrontController extends CacheController
     public function mediaLoader(Request $request, ThumbnailRuntime $runtime): JsonResponse
     {
         $path = $request->query->get('_path', '');
-        $decodedString = urldecode($path);
-        parse_str($decodedString, $parameters);
-        $options = array_filter($parameters, function ($key) {
+        $parameters = [];
+        if ($path) {
+            $decodedString = urldecode($path);
+            parse_str($decodedString, $parameters);
+        }
+
+        $allParameters = array_merge($request->attributes->get('_route_params', []), $request->query->all(), $parameters, $_GET);
+
+        foreach ($allParameters as $key => $value) {
+            if (is_string($value)) {
+                $allParameters[$key] = urldecode($value);
+            }
+        }
+
+        $options = array_filter($allParameters, function ($key) {
             return !str_contains($key, '_');
         }, ARRAY_FILTER_USE_KEY);
+
         foreach ($options as $key => $value) {
             if (is_numeric($value)) {
                 $options[$key] = (int) $value;
@@ -84,8 +97,9 @@ class FrontController extends CacheController
         $options['lazyLoad'] = isset($options['lazyLoad']) && $options['lazyLoad'];
 
         $classname = $options['classname'] ?? null;
-        if (!$classname || !class_exists($classname) || !str_starts_with($classname, 'App\\Entity\\')) {
-            return new JsonResponse(['success' => false, 'message' => 'Invalid classname'], 400);
+
+        if (!$classname || !class_exists($classname) || !str_starts_with($classname, 'App\\Entity\\') || !isset($options['id'])) {
+            return new JsonResponse(['success' => false, 'message' => 'Invalid classname or ID'], 400);
         }
 
         $entity = $this->coreLocator->em()->getRepository($classname)->find($options['id']);

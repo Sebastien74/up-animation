@@ -134,11 +134,14 @@ class ThumbActionType extends AbstractType
         $finderControllers->files()->in($frontDirCore);
         foreach ($finderControllers as $file) {
             $relativeName = $file->getRelativePathname();
-            $controllerName = str_replace('.php', '', $relativeName);
-            $methods = get_class_methods('\App\\Controller\Front\\Action\\'.$controllerName);
-            foreach ($methods as $method) {
-                if (!in_array($method, $excludes)) {
-                    $options[$method] = $method;
+            $controllerName = str_replace(['.php', DIRECTORY_SEPARATOR], ['', '\\'], $relativeName);
+            $className = '\App\\Controller\Front\\Action\\'.$controllerName;
+            if (class_exists($className)) {
+                $methods = get_class_methods($className);
+                foreach ($methods as $method) {
+                    if (!in_array($method, $excludes)) {
+                        $options[$method] = $method;
+                    }
                 }
             }
         }

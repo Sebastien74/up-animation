@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## 3.0.0
+
+- Minimum required Symfony version is now 7.4
+- Minimum required PHP version is now 8.4
+- The configuration `twig_component.defaults` could not be nullable anymore
+- Remove method `PreCreateForRenderEvent::getProps()` in favor of `PreCreateForRenderEvent::getInputProps()`
+- Remove `cva` Twig function in favor of [`html_cva` Twig function from `twig/html-extra`](https://twig.symfony.com/html_cva)
+- Passing `null` as an attribute value when using `ComponentAttributes` (or `attributes` Twig variable) will now throw an exception, use `remove()` instead
+- Remove method `ComponentAttributes::add()`, use `{{ attributes.defaults(stimulus_controller('...')) }}` instead
+- The `ComponentTemplateFinder` does not accept `Twig\Environment` as first argument anymore, pass a `LoaderInterface` instead
+- The `ComponentTemplateFinder` does not accept a nullable `directory` argument anymore, pass a string instead
+- Remove old compatibility layer with deprecated `StimulusTwigExtension` from WebpackEncoreBundle ^1.0, use StimulusBundle instead
+
+## 2.35
+
+- Add support for `AttributeValueInterface` from `twig/html-extra:^3.24.0` in `ComponentAttributes`
+- Allow Symfony UX 3.x packages
+
 ## 2.33
 
 - Extended support for the `index.html.twig` template fallback when resolving namespaced anonymous components

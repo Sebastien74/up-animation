@@ -42,8 +42,7 @@ class AddressType extends AbstractType
             $builder->add('name', Type\TextType::class, [
                 'label' => $this->translator->trans('Raison sociale', [], 'admin'),
                 'required' => false,
-                'attr' => ['placeholder' => $this->translator->trans('Saisissez une raison sociale', [],
-                    'admin')
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez une raison sociale', [], 'admin')
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             ]);
@@ -52,8 +51,7 @@ class AddressType extends AbstractType
                 'required' => false,
                 'label' => $this->translator->trans('Latitude', [], 'admin'),
                 'attr' => ['class' => 'col-12 latitude',
-                    'placeholder' => $this->translator->trans('Saisissez une latitude', [],
-                        'admin')
+                    'placeholder' => $this->translator->trans('Saisissez une latitude', [], 'admin')
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
@@ -62,8 +60,7 @@ class AddressType extends AbstractType
                 'required' => false,
                 'label' => $this->translator->trans('Longitude', [], 'admin'),
                 'attr' => ['class' => 'col-12 longitude',
-                    'placeholder' => $this->translator->trans('Saisissez une longitude', [],
-                        'admin')
+                    'placeholder' => $this->translator->trans('Saisissez une longitude', [], 'admin')
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);

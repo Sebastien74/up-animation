@@ -5,6 +5,7 @@
 {%- set defaultLocale = configuration.locale -%}
 {%- set allLocales = configuration.allLocales -%}
 
+{%- set openTab = openTab is defined ? openTab : false -%}
 {%- set haveFields = false -%}
 {%- for url in form.urls -%}
     {%- set haveFields = url.seo.metaTitle is defined or url.seo.metaDescription is defined -%}
@@ -13,13 +14,18 @@
 {%- if haveFields -%}
 
     <div class="col-12">
-        <h4 class="main-subtitle small collapsed" data-bs-toggle="collapse" href="#collapse-edit-seo-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-edit-seo-{{ entity.id }}">
+        <h4 class="main-subtitle small collapsed"
+            data-bs-toggle="collapse"
+            href="#collapse-edit-seo-{{ entity.id }}"
+            role="tab"
+            aria-expanded="{% if openTab %}true{% else %}false{% endif %}"
+            aria-controls="collapse-edit-seo-{{ entity.id }}">
             <i class="icm-code"></i>{{ "Référencement"|trans|raw }}
             <i class="icm-chevron-down ms-auto"></i>
         </h4>
     </div>
 
-    <div id="collapse-edit-seo-{{ entity.id }}" class="collapse">
+    <div id="collapse-edit-seo-{{ entity.id }}" class="collapse{% if openTab %}show{% endif %}">
 
         {%- if allLocales|length > 1 -%}
             <div class="locales-tab-container">

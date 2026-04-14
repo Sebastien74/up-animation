@@ -18,7 +18,9 @@ class InformationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('address', AddressType::class);
+        $builder->add('address', AddressType::class, [
+            'map_fields' => true,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

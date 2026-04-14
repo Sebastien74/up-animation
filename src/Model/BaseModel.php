@@ -176,7 +176,7 @@ class BaseModel extends FunctionModel
     }
 
     /**
-     * To get table name.
+     * To get a table name.
      */
     protected static function getTableName(mixed $entity): ?string
     {
@@ -204,7 +204,6 @@ class BaseModel extends FunctionModel
                 $result[$fieldName] = $entity->$getter();
             }
         }
-
         return $result;
     }
 
@@ -221,7 +220,6 @@ class BaseModel extends FunctionModel
         $value = method_exists($entity, $getMethod) ? $entity->$getMethod()
             : (method_exists($entity, $isMethod) ? $entity->$isMethod() : null);
         $cache[get_class($entity)][$property][$entity->getId()] = $value;
-
         return $value;
     }
 

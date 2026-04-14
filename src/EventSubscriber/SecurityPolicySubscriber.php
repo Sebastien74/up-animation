@@ -371,7 +371,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
     private function securityPolicy(): string
     {
         $nonceValue = $this->nonceGenerator->getNonce();
-        $nonce = "'{$nonceValue}'";
+        $nonce = "{$nonceValue}";
         $matomo = 'https://matomo.agence-felix.fr';
 
         $allowedScriptDomains = [
@@ -434,6 +434,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
         $styleSrc = [
             "'self'",
             $nonce,
+            "'unsafe-inline'",
             "'unsafe-hashes'",   // permet d'autoriser des attributs style="" via hash
             'https://fonts.googleapis.com',
             'https://*.typekit.net',

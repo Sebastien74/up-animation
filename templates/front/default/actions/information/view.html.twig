@@ -38,6 +38,9 @@
                         <strong class="title d-inline-block text-uppercase text-primary fw-900 mb-3">{{ 'Adresses'|trans|raw }}</strong>
                         {%- for agency in agencies -%}
                             {{ agency.address|address(website, 'contact', {displayName: false, asAgence: true}) }}
+                            {%- if not loop.last -%}
+                                <hr class="text-muted">
+                            {%- endif -%}
                         {%- endfor -%}
                     {%- elseif haveAddress -%}
                         {%- set entitled = infos.addresses.contact|length > 1 ? 'Adresses'|trans|raw : 'Adresse'|trans|raw -%}

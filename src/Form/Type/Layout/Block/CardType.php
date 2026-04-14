@@ -82,6 +82,7 @@ class CardType extends AbstractType
                 'body',
                 'targetLink' => 'col-lg-3 add-title',
                 'targetPage' => 'col-lg-3',
+                'targetProduct' => 'col-lg-3',
                 'targetLabel' => 'col-lg-3',
                 'targetStyle' => 'col-lg-3',
                 'externalLink' => 'col-lg-6',

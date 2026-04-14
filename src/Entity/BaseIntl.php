@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Entity\Core\Website;
 use App\Entity\Layout\Page;
+use App\Entity\Module\Catalog\Product;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -103,6 +104,10 @@ class BaseIntl extends BaseInterface
     #[ORM\ManyToOne(targetEntity: Page::class, cascade: ['persist'], fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     protected ?Page $targetPage = null;
+
+    #[ORM\ManyToOne(targetEntity: Product::class, cascade: ['persist'], fetch: 'EXTRA_LAZY')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    protected ?Product $targetProduct = null;
 
     #[ORM\ManyToOne(targetEntity: Website::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -385,6 +390,18 @@ class BaseIntl extends BaseInterface
     public function setTargetPage(?Page $targetPage): static
     {
         $this->targetPage = $targetPage;
+
+        return $this;
+    }
+
+    public function getTargetProduct(): ?Product
+    {
+        return $this->targetProduct;
+    }
+
+    public function setTargetProduct(?Product $targetProduct): static
+    {
+        $this->targetProduct = $targetProduct;
 
         return $this;
     }

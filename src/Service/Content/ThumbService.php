@@ -69,12 +69,13 @@ readonly class ThumbService
                 if ('0' == $key || in_array($key, $sizesDisplay) && !in_array($key, $this->thumbnail->getRetinaSizes()) && !str_contains($thumb, '-blur.')) {
                     $thumbsRender[$key] = $thumb;
                     $linkProvider = $this->coreLocator->request()->attributes->get('_links', new GenericLinkProvider());
-                    $link = (new Link('preload', $thumb))
+                    $linkPath = str_replace('/public/', '/', $thumb);
+                    $link = (new Link('preload', $linkPath))
                         ->withAttribute('as', 'image')
                         ->withAttribute('fetchpriority', 'high');
                     $mqKey = $key;
                     if ($key == 991 && !isset($mediaQueries_991_done)) {
-                        $link->withAttribute('media', $mediaQueries[991]);
+                        $link = $link->withAttribute('media', $mediaQueries[991]);
                         $mediaQueries_991_done = true;
                     } elseif ($key == 991) {
                         $mqKey = 992;

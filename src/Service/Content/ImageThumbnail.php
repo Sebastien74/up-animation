@@ -45,10 +45,10 @@ class ImageThumbnail implements ImageThumbnailInterface
         1200 => 869,
         1920 => 1391,
     ];
-    private const array SIZES = [618, 991, 1200, 1920];
-    private const array RETINA_SIZES = [1236, 1982, 2400, 3840];
+    private const array SIZES = [320, 480, 618, 768, 991, 1200, 1920];
+    private const array RETINA_SIZES = [640, 960, 1236, 1536, 1982, 2400, 3840];
     private const array SCREENS_SIZES = [
-        'mobile' => [618, 1236],
+        'mobile' => [320, 640, 480, 960, 618, 1236, 768, 1536],
         'tablet' => [991, 1982],
         'desktop' => [1200, 2400, 1920, 3840],
     ];
@@ -860,9 +860,13 @@ class ImageThumbnail implements ImageThumbnailInterface
                         $function = $imagineWebp ? 'imagewebp' : ('png' === $extension ? 'imagepng' : 'imagejpeg');
                         // Définir des qualités adaptées par format/fonction
                         if ($imagineWebp) {
-                            // Pour WebP, rester sous 80 pour éviter des fichiers plus lourds que l'original
-                            $originalQuality = $media ? (int) $media->getQuality() : 80;
-                            $quality = min(80, max(0, $originalQuality));
+                            // Pour WebP, une qualité de 75-80 suffit largement
+                            $originalQuality = $media ? (int) $media->getQuality() : 75;
+                            $quality = min(75, max(0, $originalQuality));
+                            // Réduire encore la qualité pour les grandes tailles (> 1000px) pour compenser le Retina
+                            if ($size && $size > 1000) {
+                                $quality = min(70, $quality);
+                            }
                         } elseif ('png' === $extension) {
                             // imagepng: niveau de compression 0-9 (6 = équilibre)
                             $quality = 6;
@@ -1229,8 +1233,11 @@ class ImageThumbnail implements ImageThumbnailInterface
             ];
 
             $mediaQueries = [
-                618  => '(max-width: 575px)',
-                991  => '(min-width: 576px) and (max-width: 991px)',
+                320  => '(max-width: 319px)',
+                480  => '(min-width: 320px) and (max-width: 479px)',
+                618  => '(min-width: 480px) and (max-width: 575px)',
+                768  => '(min-width: 576px) and (max-width: 767px)',
+                991  => '(min-width: 768px) and (max-width: 991px)',
                 992  => '(min-width: 992px) and (max-width: 1199px)',
                 1200 => '(min-width: 1200px) and (max-width: 1399px)',
                 1920 => '(min-width: 1400px)',

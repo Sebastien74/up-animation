@@ -96,8 +96,8 @@ class LinkType extends AbstractType
             ]);
         }
 
-        $fields = self::CTA_TEXT ? ['targetLink' => 'col-md-8', 'targetPage' => 'col-md-4', 'placeholder' => 'col-md-4', 'targetLabel' => 'col-md-4', 'targetStyle' => 'col-md-4', 'introduction']
-            : ['targetLink' => 'col-md-12', 'targetPage' => 'col-md-4', 'targetLabel' => 'col-md-4', 'targetStyle' => 'col-md-4'];
+        $fields = self::CTA_TEXT ? ['targetLink' => 'col-md-8', 'targetPage' => 'col-md-4', 'targetProduct' => 'col-md-4', 'placeholder' => 'col-md-4', 'targetLabel' => 'col-md-4', 'targetStyle' => 'col-md-4', 'introduction']
+            : ['targetLink' => 'col-md-12', 'targetPage' => 'col-md-4', 'targetProduct' => 'col-md-4', 'targetLabel' => 'col-md-4', 'targetStyle' => 'col-md-4'];
         $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
         $intls->add($builder, [
             'website' => $options['website'],

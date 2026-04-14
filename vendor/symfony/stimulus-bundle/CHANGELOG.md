@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 3.0.0
+
+- Minimum required Symfony version is now 7.4
+- Minimum required PHP version is now 8.4
+- Remove Twig function `ux_controller_link_tags()`, which requires Symfony AssetMapper >=6.4
+
 ## 2.33
 
 - Change AssetMapper `excluded_patterns` from `**/controllers.json` to `*/controllers.json`

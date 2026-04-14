@@ -768,7 +768,7 @@ $elements: map-merge((
             'light': $primary,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $primary,
+            'white': $white,
         )
     ),
     'form :not(.form-floating) .form-label span.label-wrap': (

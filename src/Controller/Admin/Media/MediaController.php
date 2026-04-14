@@ -11,7 +11,12 @@ use App\Entity\Layout\Page;
 use App\Entity\Media\Folder;
 use App\Entity\Media\Media;
 use App\Entity\Module\Catalog as CatalogEntities;
+use App\Entity\Module\Faq\Faq;
+use App\Entity\Module\Faq\Question;
 use App\Entity\Module\Newscast as NewscastEntities;
+use App\Entity\Module\Slider\Slider;
+use App\Entity\Module\Tab\Content;
+use App\Entity\Module\Tab\Tab;
 use App\Form\Interface\MediaFormManagerInterface;
 use App\Form\Type\Media\SearchType;
 use App\Form\Widget\MediaType;
@@ -211,42 +216,65 @@ class MediaController extends AdminController
     public function reorderMedias(Website $website): JsonResponse
     {
         $classnames = [
+            Slider::class => 'Carrousels',
             NewscastEntities\Newscast::class => 'Actualités',
             NewscastEntities\Category::class => "Catégories d'actualités",
+            CatalogEntities\Catalog::class => 'Catalogues',
             CatalogEntities\Product::class => 'Produits',
             CatalogEntities\Category::class => 'Catégories de produits',
+            CatalogEntities\Feature::class => 'Caractéristiques de produits',
+            CatalogEntities\FeatureValue::class => 'Caractéristiques de produits',
+            Faq::class => 'FAQ',
+            Tab::class => "Groupes d'onglets",
             Page::class => 'Pages',
         ];
 
         $data = [];
         $excluded = ['default-media', 'webmaster', 'pictogram', 'gdpr', 'map'];
         foreach ($classnames as $classname => $name) {
-            $entities = $this->coreLocator->em()->getRepository($classname)->findBy(['website' => $website]);
+            if (Faq::class === $classname) {
+                $entities = [];
+                $faqs = $this->coreLocator->em()->getRepository(Faq::class)->findBy(['website' => $website]);
+                foreach ($faqs as $faq) {
+                    foreach ($faq->getQuestions() as $question) {
+                        $entities[] = $question;
+                    }
+                }
+            } elseif (Tab::class === $classname) {
+                $entities = [];
+                $tabs = $this->coreLocator->em()->getRepository(Tab::class)->findBy(['website' => $website]);
+                foreach ($tabs as $tab) {
+                    foreach ($tab->getContents() as $content) {
+                        $entities[] = $content;
+                    }
+                }
+            } else {
+                $entities = $this->coreLocator->em()->getRepository($classname)->findBy(['website' => $website]);
+            }
             foreach ($entities as $entity) {
                 foreach ($entity->getMediaRelations() as $mediaRelation) {
                     $media = $mediaRelation->getMedia();
                     $folder = $media ? $media->getFolder() : null;
-                    if (!$folder && $media || ($media && $media->getOriginalName() && !in_array($folder->getSlug(), $excluded))) {
-                        if ($mediaRelation->getMedia() instanceof Media) {
-                            $data[] = ['website' => $website, 'classname' => $classname, 'entity' => $entity, 'media' => $media, 'name' => $name];
-                            if (method_exists($entity, 'getLayout') && $entity->getLayout()) {
-                                $blocks = $this->coreLocator->em()->getRepository(Block::class)->createQueryBuilder('b')
-                                    ->leftJoin('b.mediaRelations', 'mr')
-                                    ->leftJoin('mr.media', 'm')
-                                    ->leftJoin('b.col', 'c')
-                                    ->leftJoin('c.zone', 'z')
-                                    ->leftJoin('z.layout', 'l')
-                                    ->andWhere('m.originalName IS NOT NULL')
-                                    ->andWhere('l.id = :layout')
-                                    ->setParameter('layout', $entity->getLayout())
-                                    ->getQuery()
-                                    ->getResult();
-                                foreach ($blocks as $block) {
-                                    foreach ($block->getMediaRelations() as $mediaRelation) {
-                                        if ($mediaRelation->getMedia() instanceof Media) {
-                                            $data[] = ['website' => $website, 'classname' => $classname, 'entity' => $entity, 'media' => $mediaRelation->getMedia(), 'name' => $name];
-                                        }
-                                    }
+                    $isExcluded = $folder && in_array($folder->getSlug(), $excluded);
+                    if ($media && $media->getOriginalName() && !$isExcluded) {
+                        $data[] = ['website' => $website, 'classname' => $classname, 'entity' => $entity, 'media' => $media, 'name' => $name];
+                    }
+                    if (method_exists($entity, 'getLayout') && $entity->getLayout()) {
+                        $blocks = $this->coreLocator->em()->getRepository(Block::class)->createQueryBuilder('b')
+                            ->leftJoin('b.mediaRelations', 'mr')
+                            ->leftJoin('mr.media', 'm')
+                            ->leftJoin('b.col', 'c')
+                            ->leftJoin('c.zone', 'z')
+                            ->leftJoin('z.layout', 'l')
+                            ->andWhere('m.originalName IS NOT NULL')
+                            ->andWhere('l.id = :layout')
+                            ->setParameter('layout', $entity->getLayout())
+                            ->getQuery()
+                            ->getResult();
+                        foreach ($blocks as $block) {
+                            foreach ($block->getMediaRelations() as $mediaRelationBlock) {
+                                if ($mediaRelationBlock->getMedia() instanceof Media && $mediaRelationBlock->getMedia()->getOriginalName()) {
+                                    $data[] = ['website' => $website, 'classname' => $classname, 'entity' => $entity, 'media' => $mediaRelationBlock->getMedia(), 'name' => $name];
                                 }
                             }
                         }
@@ -282,8 +310,15 @@ class MediaController extends AdminController
         Media $media,
         int $entityId,
     ): JsonResponse {
-        $folderName = $request->get('folderName') ? urldecode($request->get('folderName')) : null;
-        $classname = $request->get('classname') ? urldecode($request->get('classname')) : null;
+
+        $folderName = $request->query->get('folderName') ? urldecode($request->query->get('folderName')) : null;
+        $classname = $request->query->get('classname') ? urldecode($request->query->get('classname')) : null;
+        $classname = match ($classname) {
+            Tab::class => Content::class,
+            Faq::class => Question::class,
+            default => $classname,
+        };
+
         if ($folderName && $classname && $media->getOriginalName()) {
             $mediaFolder = $media->getFolder();
             $entity = $this->coreLocator->em()->getRepository($classname)->find($entityId);

@@ -27,8 +27,8 @@ final class AsLiveComponent extends AsTwigComponent
 {
     public string $route;
     public string $method;
-    public ?string $fetchCredentials;
     public int $urlReferenceType;
+    public ?string $fetchCredentials;
 
     private ?string $defaultAction;
 
@@ -49,43 +49,20 @@ final class AsLiveComponent extends AsTwigComponent
         ?string $defaultAction = null,
         bool $exposePublicProps = true,
         string $attributesVar = 'attributes',
-        string|bool $route = 'ux_live_component',
+        string $route = 'ux_live_component',
         string $method = 'post',
-        int|string $urlReferenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
+        int $urlReferenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
         ?string $fetchCredentials = null,
-        public bool|int $csrf = true, // @deprecated
     ) {
-        if (9 < \func_num_args() || \is_bool($route)) {
-            trigger_deprecation('symfony/ux-live-component', '2.21', 'Argument "$csrf" of "#[%s]" has no effect anymore and is deprecated.', static::class);
-        }
-        if (\is_bool($route)) {
-            $this->csrf = $route;
-            $route = $method;
-            $method = $urlReferenceType;
-            $urlReferenceType = $fetchCredentials;
-
-            switch (\func_num_args()) {
-                case 6: $route = 'ux_live_component';
-                    // no break
-                case 7: $method = 'post';
-                    // no break
-                case 8: $urlReferenceType = UrlGeneratorInterface::ABSOLUTE_PATH;
-                    // no break
-                case 9: $fetchCredentials = null;
-                    // no break
-                default:
-            }
-        }
-
         parent::__construct($name, $template, $exposePublicProps, $attributesVar);
 
         $this->defaultAction = $defaultAction;
         $this->route = $route;
         $this->method = strtolower($method);
-        $this->fetchCredentials = $fetchCredentials;
         $this->urlReferenceType = $urlReferenceType;
+        $this->fetchCredentials = $fetchCredentials;
 
-        if (!\in_array($method, ['get', 'post'], true)) {
+        if (!\in_array($this->method, ['get', 'post'], true)) {
             throw new \UnexpectedValueException('$method must be either \'get\' or \'post\'.');
         }
 
@@ -102,11 +79,10 @@ final class AsLiveComponent extends AsTwigComponent
         return array_merge(parent::serviceConfig(), [
             'default_action' => $this->defaultAction,
             'live' => true,
-            'csrf' => $this->csrf,
             'route' => $this->route,
             'method' => $this->method,
-            'fetch_credentials' => $this->fetchCredentials,
             'url_reference_type' => $this->urlReferenceType,
+            'fetch_credentials' => $this->fetchCredentials,
         ]);
     }
 

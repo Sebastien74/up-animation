@@ -14,7 +14,9 @@
                         {%- for field in form.children -%}
                             {%- if tabId not in configsSet -%}
                                 {%- if tabId == 'intls' -%}
-                                    {{ form_row(form.adminName) }}
+                                    {%- if 'agencies' != catalog.slug -%}
+                                        {{ form_row(form.adminName) }}
+                                    {%- endif -%}
                                     {%- if form.menu is defined -%}
                                         {{ form_row(form.menu) }}
                                     {%- endif -%}
@@ -65,6 +67,9 @@
                                     {%- endif -%}
                                     {%- set configsSet = configsSet|merge(['configuration']) -%}
                                 {%- elseif tabId == 'informations' and field.vars.name == 'information' -%}
+                                    {%- if 'agencies' == catalog.slug -%}
+                                        {{ form_row(form.adminName) }}
+                                    {%- endif -%}
                                     {%- include 'admin/core/form/edit-fields-base.html.twig' with {
                                         form: field
                                     } only -%}
@@ -74,12 +79,16 @@
                                     {%- include 'admin/core/form/urls.html.twig' with {
                                         form: form,
                                         displaySeo: true,
+                                        openTab: true,
                                         urls: form.urls,
                                         classname: interface.classname
                                     } -%}
                                     {%- set configsSet = configsSet|merge(['seo']) -%}
                                     {%- if form.intls is defined and form.intls|first.associatedWords is defined -%}
-                                        {%- include 'admin/core/form/intls.html.twig' with {intls: form.intls, enabledFields: ['associatedWords']} -%}
+                                        {%- include 'admin/core/form/intls.html.twig' with {
+                                            intls: form.intls,
+                                            enabledFields: ['associatedWords']
+                                        } -%}
                                     {%- endif -%}
                                 {%- elseif tabId == 'products' and field.vars.name == 'products'-%}
                                     {{ form_row(form[field.vars.name]) }}

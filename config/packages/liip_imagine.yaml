@@ -89,23 +89,23 @@ liip_imagine:
         media101:
             quality: 101
         media100:
-            quality: 100
-        media99:
-            quality: 99
-        media98:
-            quality: 98
-        media97:
-            quality: 97
-        media96:
-            quality: 96
-        media95:
-            quality: 95
-        media94:
-            quality: 94
-        media93:
-            quality: 93
-        media92:
             quality: 92
+        media99:
+            quality: 92
+        media98:
+            quality: 92
+        media97:
+            quality: 92
+        media96:
+            quality: 92
+        media95:
+            quality: 92
+        media94:
+            quality: 91
+        media93:
+            quality: 91
+        media92:
+            quality: 91
         media91:
             quality: 91
         media90:

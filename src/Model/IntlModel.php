@@ -292,6 +292,7 @@ final class IntlModel extends BaseModel
         $href = null;
         $targetDomain = null;
         $targetPage = self::getContent('targetPage', $intl);
+        $targetProduct = self::getContent('targetProduct', $intl);
         $targetLink = self::getContent('targetLink', $intl);
         $targetStyle = self::getContent('targetStyle', $intl);
         $infill = $targetPage && $targetPage->isInFill();
@@ -316,6 +317,11 @@ final class IntlModel extends BaseModel
                 ]);
             } elseif ($url->code && $targetDomain && !$infill) {
                 $href = $targetDomain.'/'.$urlCode;
+            }
+        } elseif ($targetProduct) {
+            $product = ProductModel::fromEntity($targetProduct, self::$coreLocator, ['onlyForUrl' => true]);
+            if ($product->online) {
+                $href = $product->url;
             }
         }
 

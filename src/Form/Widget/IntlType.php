@@ -7,6 +7,7 @@ namespace App\Form\Widget;
 use App\Entity\Core\Website;
 use App\Entity\Layout\Page;
 use App\Entity\Media\Folder;
+use App\Entity\Module\Catalog\Product;
 use App\Repository\Core\WebsiteRepository;
 use App\Repository\Media\FolderRepository;
 use App\Service\Interface\CoreLocatorInterface;
@@ -274,6 +275,39 @@ class IntlType extends AbstractType
                     $label .= ' ('.$this->translator->trans('Pour arbo', [], 'admin').')';
                 }
                 return $label;
+            },
+            'attr' => array_merge($attributes, [
+                //                'placeholder' => $this->getAttribute($field, 'placeholder'),
+            ]),
+            'row_attr' => ['class' => !empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : 'col-12 col-md-6'],
+            'help' => $this->getAttribute($field, 'help'),
+        ]);
+    }
+
+    /**
+     * Target Product Link field.
+     */
+    private function getTargetProduct(FormBuilderInterface $builder, string $field, ?string $groupClass = null): void
+    {
+        $attributes = !empty($this->options['attributes_fields'][$field]) ? $this->options['attributes_fields'][$field] : [];
+        $builder->add($field, EntityType::class, [
+            'required' => in_array($field, $this->options['required_fields']),
+            'label' => $this->getAttribute($field, 'label'),
+            'display' => 'search',
+            'class' => Product::class,
+            'placeholder' => $this->getAttribute($field, 'placeholder'),
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('p')
+                    ->leftJoin('p.urls', 'u')
+                    ->leftJoin('p.website', 'w')
+                    ->andWhere('u.archived = :archived')
+                    ->setParameter(':archived', false)
+                    ->addSelect('u')
+                    ->addSelect('w')
+                    ->orderBy('p.adminName', 'ASC');
+            },
+            'choice_label' => function (Product $page) {
+                return strip_tags($page->getAdminName());
             },
             'attr' => array_merge($attributes, [
                 //                'placeholder' => $this->getAttribute($field, 'placeholder'),
@@ -626,6 +660,10 @@ class IntlType extends AbstractType
         $translations['targetPage'] = [
             'label' => $this->translator->trans('Page de destination', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez une page', [], 'admin'),
+        ];
+        $translations['targetProduct'] = [
+            'label' => $this->translator->trans('Produit de destination', [], 'admin'),
+            'placeholder' => $this->translator->trans('Sélectionnez un produit', [], 'admin'),
         ];
         $translations['targetLabel'] = [
             'label' => $this->translator->trans('Label du lien', [], 'admin'),

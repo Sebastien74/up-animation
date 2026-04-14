@@ -13,12 +13,12 @@
     <address class="address{% if class %} {{ class }}{% endif %}">
         {%- set name = address.name is defined and address.name ? address.name : 'Up Animations!' -%}
         {%- if asAgence and address.city -%}
-            <strong class="name d-inline-block w-100 mb-1 fw-700">{{ 'Agence %city%'|trans({'%city%': address.city})|raw }}</strong>
+            <strong class="name d-inline-block w-100 mb-1 text-info-light text-uppercase fw-700">{{ 'Agence %city%'|trans({'%city%': address.city})|raw }}</strong>
         {%- elseif displayName and name -%}
             <strong class="name d-inline-block w-100 mb-2 fw-900">{{ name|raw }}</strong>
         {%- endif -%}
         {%- if address.address is defined and address.address -%}
-            <div class="address">{{ address.address|raw }}</div>
+            <span class="address">{{ address.address|raw }}</span><br>
         {%- endif -%}
         {%- if address.zipCode is defined and address.zipCode -%}
             <span class="zip-code">{{ address.zipCode }}</span>

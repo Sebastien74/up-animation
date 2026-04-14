@@ -62,6 +62,7 @@
     {%- set isMainEntity = 'medias' not in app.request.uri -%}
     {%- set activeTab = activeTab is defined ? activeTab : null -%}
     {%- set featuresGroups = entity|productData -%}
+    {%- set catalog = entity.catalog -%}
 
     {%- include 'admin/include/alerts.html.twig' -%}
 

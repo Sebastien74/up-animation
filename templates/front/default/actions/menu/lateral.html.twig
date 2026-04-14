@@ -45,7 +45,7 @@
         <li class="nav-item position-relative d-flex level-{{ link.level }} {{ liClass }}"
             {% if pushMicroData %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" {% endif %}>
             {%- set linkClass = link.class~' nav-link '~expand~' link-level-'~link.level -%}
-            {%- set linkClass = link.level > 1 ? linkClass~' fw-800' : linkClass~' fw-600' -%}
+            {%- set linkClass = link.level > 1 ? linkClass~' fw-600' : linkClass~' fw-600' -%}
             {%- set linkClass = link.children and not dropdownHover ? linkClass~' as-dropdown-toggle dropdown-toggle' : (link.children ? 'as-dropdown-toggle '~linkClass : linkClass) -%}
             {%- set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass -%}
             {%- set linkClass = 1 == link.level ? linkClass~' text-initial text-secondary btn btn-blur' : linkClass~' text-initial text-secondary' -%}

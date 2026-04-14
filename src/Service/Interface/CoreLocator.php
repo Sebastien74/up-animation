@@ -43,7 +43,7 @@ use Symfony\WebpackEncoreBundle\Twig\EntryFilesTwigExtension;
 ])]
 class CoreLocator implements CoreLocatorInterface
 {
-    private const array ALLOWED_IPS = ['2001:861:43c3:ce70:b13c:b937:79e1:b55e'];
+    private const array ALLOWED_IPS = ['176.135.112.19', '2001:861:43c3:ce70:448f:74b:e526:cdae'];
     private array $cache = [];
 
     /**
@@ -599,7 +599,7 @@ class CoreLocator implements CoreLocatorInterface
     }
 
     /**
-     * To check if route exist.
+     * To check if a route exists.
      *
      * @throws InvalidArgumentException
      */

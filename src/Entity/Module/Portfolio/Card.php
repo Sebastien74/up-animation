@@ -256,6 +256,12 @@ class Card extends BaseEntity
 
     public function addUrl(Url $url): static
     {
+        foreach ($this->urls as $existingUrl) {
+            if ($existingUrl->getLocale() === $url->getLocale()) {
+                return $this;
+            }
+        }
+
         if (!$this->urls->contains($url)) {
             $this->urls->add($url);
         }

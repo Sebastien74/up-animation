@@ -1,8 +1,6 @@
 {
     "browserslist": [
-        "> 0.5%",
-        "last 2 versions",
-        "Firefox ESR",
+        "supports es6-module",
         "not dead"
     ],
     "devDependencies": {

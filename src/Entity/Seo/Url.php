@@ -113,9 +113,9 @@ class Url extends BaseInterface
         return $this->online;
     }
 
-    public function setOnline(bool $online): static
+    public function setOnline(?bool $online): static
     {
-        $this->online = $online;
+        $this->online = (bool) $online;
 
         return $this;
     }

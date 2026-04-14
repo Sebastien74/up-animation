@@ -12,7 +12,8 @@
 namespace Symfony\UX\TwigComponent;
 
 use Symfony\UX\StimulusBundle\Dto\StimulusAttributes;
-use Symfony\WebpackEncoreBundle\Dto\AbstractStimulusDto;
+use Symfony\UX\TwigComponent\Exception\RuntimeException;
+use Twig\Extra\Html\HtmlAttr\AttributeValueInterface;
 use Twig\Runtime\EscaperRuntime;
 
 /**
@@ -47,6 +48,10 @@ final class ComponentAttributes implements \Stringable, \IteratorAggregate, \Cou
                 continue;
             }
 
+            if (null === $value) {
+                throw new RuntimeException('Attribute values cannot be null. If you want to remove an attribute, use the "remove()" method.');
+            }
+
             if (false === $value) {
                 continue;
             }
@@ -60,9 +65,11 @@ final class ComponentAttributes implements \Stringable, \IteratorAggregate, \Cou
                 continue;
             }
 
-            if (null === $value) {
-                trigger_deprecation('symfony/ux-twig-component', '2.8.0', 'Passing "null" as an attribute value is deprecated and will throw an exception in 3.0.');
-                $value = true;
+            if ($value instanceof AttributeValueInterface) {
+                $value = $value->getValue();
+                if (null === $value) {
+                    continue;
+                }
             }
 
             if (!\is_scalar($value) && !($value instanceof \Stringable)) {
@@ -196,33 +203,6 @@ final class ComponentAttributes implements \Stringable, \IteratorAggregate, \Cou
         }
 
         return $clone;
-    }
-
-    public function add($stimulusDto): self
-    {
-        if ($stimulusDto instanceof AbstractStimulusDto) {
-            trigger_deprecation('symfony/ux-twig-component', '2.9.0', 'Passing a StimulusDto to ComponentAttributes::add() is deprecated. Run "composer require symfony/stimulus-bundle" then use "attributes.defaults(stimulus_controller(\'...\'))".');
-        } elseif ($stimulusDto instanceof StimulusAttributes) {
-            trigger_deprecation('symfony/ux-twig-component', '2.9.0', 'Calling ComponentAttributes::add() is deprecated. Instead use "attributes.defaults(stimulus_controller(\'...\'))".');
-
-            return $this->defaults($stimulusDto);
-        } else {
-            throw new \InvalidArgumentException(\sprintf('Argument 1 passed to "%s()" must be an instance of "%s" or "%s", "%s" given.', __METHOD__, AbstractStimulusDto::class, StimulusAttributes::class, get_debug_type($stimulusDto)));
-        }
-
-        $controllersAttributes = $stimulusDto->toArray();
-        $attributes = $this->attributes;
-
-        $attributes['data-controller'] = trim(implode(' ', array_merge(
-            explode(' ', $attributes['data-controller'] ?? ''),
-            explode(' ', $controllersAttributes['data-controller'] ?? [])
-        )));
-        unset($controllersAttributes['data-controller']);
-
-        $clone = new self($attributes, $this->escaper);
-
-        // add the remaining attributes for values/classes
-        return $clone->defaults($controllersAttributes);
     }
 
     public function remove($key): self
