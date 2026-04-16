@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Entity\Module\Newscast\Newscast;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -46,8 +47,14 @@ final class MediasModel extends BaseModel
      * fromEntity.
      * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
-    public static function fromEntity(mixed $entity, CoreLocatorInterface $coreLocator, ?string $locale = null, ?bool $query = true, array $options = []): self
-    {
+    public static function fromEntity(
+        mixed $entity,
+        CoreLocatorInterface $coreLocator,
+        ?string $locale = null,
+        ?bool $query = true,
+        array $options = []
+    ): self {
+
         if (!is_object($entity)) {
             return new self();
         }
@@ -56,6 +63,7 @@ final class MediasModel extends BaseModel
 
         $entity = property_exists($entity, 'entity') && !method_exists($entity, 'getEntity') ? $entity->entity : $entity;
         $locale = $locale ?: self::$coreLocator->locale();
+        $mainMediaInHeader = array_key_exists('mainMediaInHeader', $options) ? $options['mainMediaInHeader'] : false;
 
         if ($entity && $entity->getId() && isset(self::$cache['response'][get_class($entity)][$entity->getId()][$locale])) {
             return self::$cache['response'][get_class($entity)][$entity->getId()][$locale];
@@ -65,7 +73,7 @@ final class MediasModel extends BaseModel
         $mediaRelationsDb = $options['medias'] ?? ($metadata->targetEntity && $entity->getId() && $query ? self::mediaRelationsQuery($entity, $metadata, $locale) : self::mediaRelations($entity, $locale));
 
         $mainSet = $videoAsFirst = false;
-        $mainPosition = $mainVideo = null;
+        $mainPosition = $headerPosition = $mainVideo = null;
         $main = $header = $medias = $mediasAndVideos = $mediaRelations = $file = $files = $videos = $mediasWithoutMain = [];
 
         foreach ($mediaRelationsDb as $key => $mediaRelation) {
@@ -84,7 +92,7 @@ final class MediasModel extends BaseModel
                 }
                 if ($mediaRelation->isHeader() && $mediaRelations[$key + 1]->path) {
                     $header = $mediaRelations[$key + 1];
-//                    dd($header);
+                    $headerPosition = $mediaRelations[$key + 1]->position;
                 }
                 if ('video' === $mediaRelations[$key + 1]->type) {
                     $videos[] = $mediaRelations[$key + 1];
@@ -102,9 +110,14 @@ final class MediasModel extends BaseModel
         }
         ksort($medias);
 
+        if ($mainMediaInHeader && !$header && !empty($mediaRelationsDb) && $entity instanceof Newscast) {
+            $header = $mediaRelations[array_key_first($mediaRelationsDb) + 1];
+            $headerPosition = $header->position;
+        }
+
         if (!self::$coreLocator->inAdmin() && method_exists($entity, 'getLayout')) {
             foreach ($mediasAndVideos as $key => $mediaRelation) {
-                if ($main && $mediaRelation->mediaRelation->isHeader() || $main && $mediaRelation->id === $main->id) {
+                if ($main && $mediaRelation->mediaRelation->isHeader() || $main && $mediaRelation->id === $main->id || $header && $mediaRelation->id === $header->id) {
                     unset($mediasAndVideos[$key]);
                 }
             }
@@ -114,7 +127,7 @@ final class MediasModel extends BaseModel
             if ($mediaRelation->intl && !$mediaRelation->intl->linkOnline) {
                 unset($medias[$position]);
             }
-            if ($mediaRelation->position !== $mainPosition) {
+            if ($mediaRelation->position !== $mainPosition && $mediaRelation->position !== $headerPosition) {
                 $mediasWithoutMain[$position] = $mediaRelation;
             }
         }
@@ -140,7 +153,7 @@ final class MediasModel extends BaseModel
     }
 
     /**
-     * To get media relations by entities array and by locale.
+     * To get media relations by entity array and by locale.
      *
      * @throws QueryException|NonUniqueResultException|MappingException
      */

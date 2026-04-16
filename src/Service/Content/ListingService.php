@@ -42,14 +42,10 @@ class ListingService
      * @throws NonUniqueResultException
      */
     public function indexesPages(
-        mixed $entity,
         string $locale,
         string $listingClassname,
         string $classname,
-        array $entities = [],
         array $interface = [],
-        bool $all = false,
-        bool $asIndexView = false,
     ): array {
 
         if (array_key_exists('indexes_pages', $this->cache) && array_key_exists($listingClassname, $this->cache['indexes_pages'])) {

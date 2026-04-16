@@ -32,7 +32,6 @@ const dropdownBack = function (submenu) {
 export function collapseEvent(body) {
     document.querySelectorAll('.navbar-collapse').forEach(function (collapse) {
         collapse.addEventListener('show.bs.collapse', function () {
-            console.log('here')
             body.classList.add('menu-open');
             collapse.closest('.navbar').classList.add('open');
             document.querySelectorAll('.nav-toggler-icon').forEach(function (toggle) {
@@ -182,8 +181,8 @@ export function lateralMenu(body, nav, screenWidth) {
                         });
                     }
                 });
-                link.classList.toggle('is-active');
-                link.classList.toggle('active');
+                // link.classList.toggle('is-active');
+                // link.classList.toggle('active');
                 submenu.classList.toggle('show');
                 submenu.classList.toggle('active');
                 body.classList.add('menu-open');

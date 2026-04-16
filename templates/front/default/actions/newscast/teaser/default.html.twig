@@ -80,7 +80,7 @@
                         <div class="card-footer bg-transparent p-0 border-0 pt-3">
                             {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                 intl: {link: entity.url}
-                            } -%}
+                            } only -%}
                         </div>
                     {%- endif -%}
                 </div>
@@ -94,7 +94,7 @@
                         linkStyle: 'btn btn-outline-primary',
                         linkLabel: "Voir toutes nos actualités"|trans,
                     }
-                } -%}
+                } only -%}
             </div>
         {%- endif -%}
     </div>

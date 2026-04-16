@@ -59,7 +59,7 @@ class Date
         }
 
         if (!$this->formatDate) {
-            $this->formatDate = 'dd MMM Y';
+            $this->formatDate = 'dd MMM y';
         }
 
         if ($this->between && !$this->startDate) {
@@ -70,7 +70,7 @@ class Date
             'date' => $this->date,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
-            'formatDate' => $this->formatDate,
+            'formatDate' => str_replace('Y', 'y', $this->formatDate),
             'disabledHours' => $this->disabledHours,
             'between' => $this->between,
             'strict' => $this->strict,

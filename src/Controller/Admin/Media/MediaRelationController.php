@@ -105,8 +105,16 @@ class MediaRelationController extends AdminController
         $this->coreLocator->em()->refresh($entity);
         $metadata = $this->coreLocator->metadata($entity, 'mediaRelations');
         $mediaRelation = $this->coreLocator->em()->getRepository($metadata->targetEntity)->find($request->query->get('mediaRelation'));
+        $mediaRelations = $this->coreLocator->em()->getRepository($metadata->targetEntity)
+            ->createQueryBuilder('mr')->select('mr')
+            ->andWhere('mr.'.$metadata->mappedBy.' = :mappedBy')
+            ->andWhere('mr.position = :position')
+            ->setParameter('position', $mediaRelation->getPosition())
+            ->setParameter('mappedBy', $entity)
+            ->orderBy('mr.locale', 'ASC')
+            ->getQuery()
+            ->getResult();
         $mediaManager->synchronizeLocales($website->entity, $interface, $entity, $mediaRelation);
-        $mediaRelations = $entity->getMediaRelations();
         foreach ($mediaRelations as $mediaRelationLocale) {
             if (!$mediaRelationLocale->getId()) {
                 $this->coreLocator->em()->persist($mediaRelationLocale);
@@ -115,7 +123,7 @@ class MediaRelationController extends AdminController
         }
 
         return new JsonResponse(['html' => $this->adminRender('admin/core/form/media-relations-multi.html.twig', [
-            'mediaRelations' => $entity->getMediaRelations(),
+            'mediaRelations' => $mediaRelations,
             'screen' => $mediaRelation->getMedia()->getScreen(),
             'entityNamespace' => $request->query->get('entityNamespace'),
             'referEntityId' => $entity->getId(),

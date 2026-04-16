@@ -207,28 +207,23 @@ class ImageThumbnail implements ImageThumbnailInterface
                 $publicDir = $this->projectDirname.'/public';
                 $placeholderBack = $this->dirname($publicDir.'/medias/placeholder-back.jpg');
                 $placeholderDefault = $this->dirname($publicDir.'/medias/placeholder.jpg');
-
                 foreach ($this->screensSizes as $size) {
                     $screen = $this->screen($size, true);
                     $screenMedia = $asMediaModel && !$this->inAdmin ? $this->getScreenMedia($screen, $media) : $media;
                     $filename = $screenMedia->getOriginalName();
                     $dirname = $fileDirname ?: ((str_contains($filename, '/build/') || str_contains($filename, '/medias/'))
                         ? $this->dirname($publicDir.$filename) : $this->dirname($publicDir.'/uploads/'.$this->uploadDirname.'/'.$filename));
-                    
                     if (!$this->filesystem->exists($dirname)) {
                         $dirname = $this->inAdmin ? $placeholderBack : $placeholderDefault;
                     }
-
                     $asLoader = $options['loader'] ?? false;
                     $isEnableSize = in_array($size, self::SIZES) || in_array($size, self::RETINA_SIZES);
                     $isEnableMedia = !$mediaRelation || !$mediaRelation->getId() || ($mediaRelation->getCacheDate() instanceof \DateTime && !$asLoader);
                     $isEnableEnv = $generator || ($this->inAdmin && !isset($options['loader'])) || ($options['forceThumb'] ?? false);
                     $infoFile = $options['sizeInfo'] = $this->coreLocator->fileInfo()->file($website, $media->getOriginalName(), $dirname);
-
                     if (!$isEnableSize) {
                         continue;
                     }
-
                     $fileExist = $originalDirname === $dirname ? $originalExist : $this->filesystem->exists($dirname);
                     $sizeAllowed = ($fileExist && $infoFile->getSize() <= self::MAX_FILE_SIZE
                             && $infoFile->getWidth() <= self::MAX_FILE_WIDTH
@@ -237,11 +232,9 @@ class ImageThumbnail implements ImageThumbnailInterface
                         || str_contains($originalDirname, 'placeholder.jpeg');
                     $execute = $isEnableMedia || $isEnableEnv;
                     $execute = $execute && $sizeAllowed;
-
                     if ($loaderFilename && isset($this->cache['json_data'][$loaderFilename])) {
                         $execute = false;
                     }
-
                     try {
                         $thumb = $this->getScreenThumb($screenMedia, $mediaRelation, $thumbs, $screen, $dirname, $size, $options);
                         $thumb = $mediaRelation ? $this->setRatio($mediaRelation, $thumb, $size, $options) : $thumb;
@@ -682,7 +675,7 @@ class ImageThumbnail implements ImageThumbnailInterface
     {
         foreach (self::SCREENS_SIZES as $screen => $sizes) {
             foreach ($sizes as $screenSize) {
-                if ($screenSize === $size || $screenSize === ($size / 2)) {
+                if ($screenSize === $size || (in_array($size, self::RETINA_SIZES) && $screenSize === ($size / 2))) {
                     if ($this->generator && !$asReturn) {
                         $this->screen = $screen;
                     } elseif ($asReturn) {

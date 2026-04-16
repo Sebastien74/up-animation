@@ -144,6 +144,13 @@ class BaseModel extends FunctionModel
             $content = $collection;
         }
 
+        if ($content && is_string($content) && str_contains($content, '<table') && !str_contains($content, 'table-responsive')) {
+            $content = preg_replace('/<table(.*?)>/is', '<div class="table-responsive"><table class="table table-striped"$1>', $content);
+            $content = str_replace('</table>', '</table></div>', $content);
+            $content = preg_replace('/height=".*?"/i', '', $content);
+            $content = preg_replace('/height:.*?;/i', '', $content);
+        }
+
         return $content;
     }
 

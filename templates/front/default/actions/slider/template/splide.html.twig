@@ -20,7 +20,7 @@
     {%- set btnClasses = asBtn ? 'btn-circle btn btn-'~color : '' -%}
     {%- set btnClasses = 'vertical' in alignement ? 'btn-vertical '~btnClasses : btnClasses -%}
     {%- set icon = asBtn ? 'chevron' : 'arrow' -%}
-    {%- set iconClasses = not asBtn ? 'text-'~color : '' -%}
+    {%- set iconClasses = not asBtn ? 'text-'~color : 'text-white' -%}
     <button class="btn-arrow btn-prev cursor me-2{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'previous' not in buttons %} d-none{% endif %}" aria-label="{{"Précédent"|trans|raw }}" tabindex="-1">
         <i class="icon-{{ icon }}-left{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
     </button>
@@ -31,7 +31,7 @@
     {%- set btnClasses = asBtn ? 'btn-circle btn btn-'~color : '' -%}
     {%- set btnClasses = 'vertical' in alignement ? 'btn-vertical '~btnClasses : btnClasses -%}
     {%- set icon = asBtn ? 'chevron' : 'arrow' -%}
-    {%- set iconClasses = not asBtn ? 'text-'~color : '' -%}
+    {%- set iconClasses = not asBtn ? 'text-'~color : 'text-white' -%}
     <button class="btn-arrow btn-next cursor ms-2{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'next' not in buttons %} d-none{% endif %}" aria-label="{{"Suivant"|trans|raw }}" tabindex="-1">
         <i class="icon-{{ icon }}-right{% if iconClasses %} {{ iconClasses }}{% endif %}"></i>
     </button>

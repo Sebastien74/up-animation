@@ -2,44 +2,44 @@
 
     {%- set mediaQueries = {
         0: {
-            media: '(max-width: 319px)',
-            thumbSizes: [320],
-            sizes: '(max-width: 319px) 95vw, 320px'
+            media: '(min-width: 1400px)',
+            thumbSizes: [1920],
+            sizes: '1400px'
         },
         1: {
-            media: '(min-width: 320px) and (max-width: 479px)',
-            thumbSizes: [480],
-            sizes: '(min-width: 320px) and (max-width: 479px) 95vw, 480px'
-        },
-        2: {
-            media: '(min-width: 480px) and (max-width: 575px)',
-            thumbSizes: [618],
-            sizes: '(min-width: 480px) and (max-width: 575px) 95vw, 575px'
-        },
-        3: {
-            media: '(min-width: 576px) and (max-width: 767px)',
-            thumbSizes: [768],
-            sizes: '(min-width: 576px) and (max-width: 767px) 80vw, 618px'
-        },
-        4: {
-            media: '(min-width: 768px) and (max-width: 991px)',
-            thumbSizes: [991],
-            sizes: '(min-width: 768px) and (max-width: 991px) 70vw, 700px'
-        },
-        5: {
-            media: '(min-width: 992px) and (max-width: 1199px)',
-            thumbSizes: [991],
-            sizes: '800px'
-        },
-        6: {
             media: '(min-width: 1200px) and (max-width: 1399px)',
             thumbSizes: [1200],
             sizes: '1100px'
         },
+        2: {
+            media: '(min-width: 992px) and (max-width: 1199px)',
+            thumbSizes: [991],
+            sizes: '800px'
+        },
+        3: {
+            media: '(min-width: 768px) and (max-width: 991px)',
+            thumbSizes: [991],
+            sizes: '(min-width: 768px) and (max-width: 991px) 70vw, 700px'
+        },
+        4: {
+            media: '(min-width: 576px) and (max-width: 767px)',
+            thumbSizes: [768],
+            sizes: '(min-width: 576px) and (max-width: 767px) 80vw, 618px'
+        },
+        5: {
+            media: '(min-width: 480px) and (max-width: 575px)',
+            thumbSizes: [618],
+            sizes: '(min-width: 480px) and (max-width: 575px) 95vw, 575px'
+        },
+        6: {
+            media: '(min-width: 320px) and (max-width: 479px)',
+            thumbSizes: [480],
+            sizes: '(min-width: 320px) and (max-width: 479px) 95vw, 480px'
+        },
         7: {
-            media: '(min-width: 1400px)',
-            thumbSizes: [1920],
-            sizes: '1400px'
+            media: '(max-width: 319px)',
+            thumbSizes: [320],
+            sizes: '(max-width: 319px) 95vw, 320px'
         }
     } -%}
 
@@ -74,8 +74,8 @@
         {%- if '.svg' in originalSrc -%}
             {%- set src = thumbnails.dataSource -%}
             {%- set lazyFile = lazyFile != src ? lazyFile : 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' -%}
-            <img {% if lazyLoad %}data-{% endif -%}src="{{ asset(src) }}"
-                 {% if lazyLoad and lazyFile is defined and lazyFile %}src="{{ lazyFile }}" {% endif %}
+            <img {% if lazyLoad %}data-{% endif -%}src="{{ 'data:' in src ? src : asset(src) }}"
+                 {% if lazyLoad and lazyFile is defined and lazyFile %}src="{{ 'data:' in lazyFile ? lazyFile : asset(lazyFile) }}" {% endif %}
                  {% if 'width' not in attributes and infos.width %} width="{{ infos.width }}" {% endif %}
                  {% if 'height' not in attributes and infos.height %} height="{{ infos.height }}" {% endif %}
                  {% if attributes %} {{ attributes|raw }}{% endif %}
@@ -103,7 +103,7 @@
                             {%- set width = sizes.width is defined ? sizes.width : size -%}
                             {%- set height = sizes.height is defined ? sizes.height : 'auto' -%}
                         {%- endif -%}
-                        {%- if defaultThumb and (not dataSource or priority == 'high') -%}
+                        {%- if defaultThumb and (not dataSource or priority == 'high' or loop.parent.loop.first) -%}
                             {%- set dataSource = currentSource -%}
                         {%- endif -%}
                         {%- set retinaSize = size * 2 -%}
@@ -128,18 +128,15 @@
                     {%- if sources -%}
                         <source {% if lazyLoad %}data-{% endif -%}srcset="{{ sources }}"
                                 media="{{ config.media }}"
+                                sizes="{{ config.sizes }}"
                                 data-size="{{ config.thumbSizes|first }}"
                                 width="{{ width }}" height="{{ height }}"
                                 {% if extension %}type="image/{{ extension }}" {% endif %}>
                     {%- endif -%}
                 {%- endfor -%}
-{#                {%- set src = lazyLoad ? lazyFileSvg : (thumbs[618] is defined and isMobile() ? thumbs[618] : dataSource) -%}#}
-{#                {%- set lazyLoad = not lazyLoad and isMobile() ? true : lazyLoad -%}#}
-{#                {%- set priority = lazyLoad ? 'low' : priority -%}#}
                 {%- set src = lazyLoad ? lazyFileSvg : dataSource -%}
                 {%- set dataSrc = dataSource -%}
-                <img src="{{ asset(src) }}" data-src="{{ dataSrc }}"
-                    {% if lazyLoad %} data-sizes="auto" {% endif %}
+                <img src="{{ asset(src) }}"{% if lazyLoad %} data-sizes="auto" data-src="{{ dataSrc }}"{% endif %}
                     {% if 'width' not in attributes and infos.width %} width="{{ infos.width }}" {% endif %}
                     {% if 'height' not in attributes and infos.height %} height="{{ infos.height }}" {% endif %}
                     {% if attributes %} {{ attributes|raw }}{% endif %}

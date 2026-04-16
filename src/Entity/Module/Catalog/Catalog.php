@@ -47,7 +47,7 @@ class Catalog extends BaseEntity
     ];
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    private ?string $formatDate = 'dd MMM Y';
+    private ?string $formatDate = 'dd MMM y';
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     protected array $tabs = ['intls', 'categories', 'features', 'configuration', 'products', 'seo', 'medias'];

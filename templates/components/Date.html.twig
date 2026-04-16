@@ -5,7 +5,7 @@
 {%- if this.localize.date and not this.localize.between and not this.localize.asHours -%}
     {%- set between = this.between -%}
     {%- set betweenDate = between ? this.localize.date|hourBetweenTwoDates : false -%}
-    {%- set newYear = this.localize.date ? this.localize.date|date('Y') : null -%}
+    {%- set newYear = this.localize.date ? this.localize.date|format_datetime(pattern='y', locale=app.request.locale) : null -%}
     {%- set localizeDate = this.localize.date|format_datetime(pattern=this.localize.formatDate, locale=app.request.locale) -%}
     {%- set dateStr = betweenDate < 24 and betweenDate and not disabledHours ? 'Il y a %betweenDate%H'|trans({'%betweenDate%': betweenDate})
         : (this.localize.date and this.prefix ? 'Le %localizeDate%'|trans({'%localizeDate%': localizeDate})
@@ -19,9 +19,13 @@
     {%- if currentYear == newYear and currentYear in dateStr -%}
         {%- set dateStr = dateStr|replace({(currentYear): ''})|trim -%}
     {%- endif -%}
+    {%- if currentYear != newYear and newYear not in dateStr -%}
+        {%- set separator = '/' in this.localize.formatDate ? '/' : ' ' -%}
+        {%- set dateStr = dateStr~separator~newYear -%}
+    {%- endif -%}
     <time class="date d-inline-block w-100{% if this.localize.class %} {{ this.localize.class }}{% endif %}"
           datetime="{{ this.localize.date|date('Y-m-d') }}">
-        {{ dateStr|raw }}
+        {{ dateStr|trim('/')|raw }}
     </time>
 {%- elseif this.localize.between -%}
     {%- set startEntityYear = this.localize.startDate ? this.localize.startDate|date('Y') : false -%}

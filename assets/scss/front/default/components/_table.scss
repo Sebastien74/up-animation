@@ -51,6 +51,7 @@
                 width: calc(100% - 2px) !important;
 
                 td {
+
                     border: none;
                     border-bottom: 1px solid $gray-400;
                     position: relative;
@@ -60,6 +61,19 @@
                     padding: 1rem;
                     display: flex !important;
                     flex-direction: column;
+                    width: 100% !important;
+
+                    .table-title {
+                        font-weight: 600;
+                        color: $primary;
+                        margin-bottom: 0.25rem;
+                        display: block;
+                    }
+
+                    .table-content {
+                        display: block;
+                        margin-top: 0.5rem;
+                    }
                 }
             }
         }

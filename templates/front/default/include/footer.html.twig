@@ -119,7 +119,7 @@
                                             linkLabel: 'Demander un devis'|trans,
                                         },
                                         icon: 'headset',
-                                    } -%}
+                                    } only -%}
                                 {%- endif -%}
                                 {%- if animationsUrl -%}
                                     {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
@@ -129,7 +129,7 @@
                                             linkLabel: 'Voir les animations'|trans,
                                         },
                                         icon: 'people-group',
-                                    } -%}
+                                    } only -%}
                                 {%- endif -%}
                             </div>
                         {%- endif -%}
@@ -157,7 +157,8 @@
                                             {%- set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags -%}
                                             <a href="{{ infos.link }}" class="{{ name }} p-0 d-inline-flex"
                                                 rel="noopener noreferrer" target="_blank"
-                                                aria-label="{{ label }}">
+                                                data-bs-toggle="tooltip" title="{{ name|capitalize|striptags }}"
+                                                aria-label="{{ label|capitalize|striptags }}">
                                                 <i class="icon-{{ name|lower }} position-relative initial" aria-hidden="true"></i>
                                                 <span class="visually-hidden">{{ label }}</span>
                                             </a>

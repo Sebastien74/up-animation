@@ -41,7 +41,7 @@ class Category extends BaseEntity
     protected bool $asEvents = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $mainMediaInHeader = false;
+    private bool $mainMediaInHeader = true;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $hideDate = false;

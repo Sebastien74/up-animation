@@ -59,7 +59,7 @@
                             {%- endif -%}
                             {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                 intl: {'link': lastEntity.url, linkStyle: 'mt-3 text-uppercase'}
-                            } -%}
+                            } only -%}
                         </div>
                     </div>
                 </div>

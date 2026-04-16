@@ -290,9 +290,9 @@
     height: auto !important;
 }
 
-.associated-entities-container {
+@include mediaQuery(min-lg) {
     .splide__track {
-        margin-left: -1.5rem !important;
+        margin-left: -1rem;
     }
 }
 
@@ -534,13 +534,26 @@
     /* Left fade */
     .splide__track::before {
         left: 0;
-        background: linear-gradient(to right, $body-bg 0%, rgba(255, 255, 255, 0) 100%);
+        background: linear-gradient(to right, $body-bg 0%, transparentize($body-bg, 1) 100%);
     }
 
     /* Right fade */
     .splide__track::after {
         right: 0;
-        background: linear-gradient(to left, $body-bg 0%, rgba(255, 255, 255, 0) 100%);
+        background: linear-gradient(to left, $body-bg 0%, transparentize($body-bg, 1) 100%);
+    }
+}
+
+@each $suffix, $color in $theme-colors {
+    .layout-zone.bg-#{$suffix} {
+        .splide.thumbnails-slider {
+            .splide__track::before {
+                background: linear-gradient(to right, $color 0%, transparentize($color, 1) 100%);
+            }
+            .splide__track::after {
+                background: linear-gradient(to left, $color 0%, transparentize($color, 1) 100%);
+            }
+        }
     }
 }
 

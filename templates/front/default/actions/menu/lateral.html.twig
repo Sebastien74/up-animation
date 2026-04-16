@@ -257,7 +257,7 @@
                         </nav>
                     </div>
                 </div>
-                <div class="side d-flex align-items-center justify-content-end ms-auto ps-lg-4 gap-3">
+                <div class="side d-flex align-items-center justify-content-end ms-auto ps-lg-4 gap-2">
                     {%- if haveLogin -%}
                         {%- include 'front/'~websiteTemplate~'/actions/menu/login-nav.html.twig' with {
                             website: website,
@@ -266,28 +266,42 @@
                             microDataActive: microDataActive,
                         } only -%}
                     {%- endif -%}
-                    {%- if phone -%}
-                        <span class="d-lg-nones">
-                            <a href="tel: {{ phone.tagNumber }}" class="btn btn-blur btn-blur-primary btn-circle" aria-label="{{"Appelez-nous"|trans|striptags }}">
-                                <i class="icon-phone-alt-solid"></i>
-                            </a>
-                        </span>
+                    {%- if networks is not empty -%}
+                        <nav class="socials-list d-inline-flex justify-content-center justify-content-sm-start me-3 gap-2"
+                             aria-label="{{"Navigation des liens sociaux"|trans|striptags }}">
+                            {%- for name, infos in networks -%}
+                                {%- if infos.link and infos.dirname -%}
+                                    {%- set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags -%}
+                                    <a href="{{ infos.link }}" class="{{ name }} p-0 d-inline-flex"
+                                       rel="noopener noreferrer" target="_blank"
+                                       data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ name|capitalize|striptags }}"
+                                       aria-label="{{ label|capitalize|striptags }}">
+                                        <i class="icon-{{ name|lower }} position-relative initial" aria-hidden="true"></i>
+                                        <span class="visually-hidden">{{ label }}</span>
+                                    </a>
+                                {%- endif -%}
+                            {%- endfor -%}
+                        </nav>
                     {%- endif -%}
                     {%- if contactPageUrl -%}
                         {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                             intl: {
                                 link: path('front_index', {url: contactPageUrl}),
-                                linkStyle: 'btn btn-blur btn-blur-primary track-link-contact-form contact-link',
+                                linkStyle: 'btn btn-blur btn-blur-primary btn-circle track-link-contact-form contact-link',
                                 linkLabel: "Nous contacter"|trans,
                             },
-                        } -%}
+                            icon: 'headset',
+                            tooltip: true,
+                            tooltipPosition: 'bottom',
+                        } only -%}
                     {%- endif -%}
                     {%- set isDarkTheme = frontTheme() == 'dark' -%}
                     {%- set themeParam = isDarkTheme ? 'front_light_theme' : 'front_dark_theme' -%}
                     {%- if configuration.darkTheme -%}
                         <a class="btn btn-circle btn-primary"
                            href="{{ replaceRequestParam(themeParam, 1) }}"
-                           aria-label="{{ 'Changer de thème'|trans }}">
+                           aria-label="{{ 'Changer de thème'|trans }}"
+                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ 'Changer de thème'|trans }}">
                             <i class="icon-{{ isDarkTheme ? 'sun' : 'moon' }}"></i>
                         </a>
                     {%- endif -%}

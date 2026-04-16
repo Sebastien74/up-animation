@@ -70,13 +70,13 @@
                                     linkStyle: 'btn btn-blur btn-blur-primary mt-4',
                                     linkLabel: "Nous contacter"|trans,
                                 }
-                            } -%}
+                            } only -%}
                         {%- endif -%}
                     </div>
                 </div>
             </div>
             {%- if mediaPath or displayMedia -%}
-                <div class="col-xl-5 media-content">
+                <div class="col-xl-5 media-content d-flex align-items-end">
                     <div class="masked-wrap masked-wrap-primary">
                         {%- if mediaPath -%}
                             {{ asset(mediaPath)|file(thumbConfiguration, {lazyLoad: false}) }}

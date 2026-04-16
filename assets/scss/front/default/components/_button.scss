@@ -164,6 +164,7 @@
         background: rgba(0,0,0,.05);
         font-weight: 700 !important;
         transition: all $transition-base;
+        box-shadow: none !important;
 
         &:not(.btn-circle) {
             line-height: 1;

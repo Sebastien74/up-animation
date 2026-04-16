@@ -143,7 +143,7 @@
 
 {%- elseif blockType == 'layout-link' and entity.intl.link -%}
 
-    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: entity.intl} -%}
+    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: entity.intl} only -%}
 
 {%- elseif blockType == 'layout-image' -%}
 

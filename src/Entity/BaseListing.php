@@ -47,7 +47,7 @@ class BaseListing extends BaseEntity
     private bool $groupByCategory = false;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    private ?string $formatDate = 'dd MMM Y';
+    private ?string $formatDate = 'dd MMM y';
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Assert\NotBlank]

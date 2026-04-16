@@ -560,7 +560,7 @@ class SeoService implements SeoInterface
         $indexPage = $isObjectUrl ? $url->getIndexPage() : null;
         $code = $isObjectUrl ? $url->getCode() : null;
         $indexUrlCodes = !empty($this->indexUrlCodes[$classname][$entity->id]) ? $this->indexUrlCodes[$classname][$entity->id] : ($methodCategory && $listingClass
-            ? $this->listingService->indexesPages($entity, $locale, $listingClass, $classname, [$entity], $interface) : null);
+            ? $this->listingService->indexesPages($locale, $listingClass, $classname, $interface) : null);
 
         if (empty($this->indexUrlCodes[$classname])) {
             $this->indexUrlCodes[$classname] = $indexUrlCodes;

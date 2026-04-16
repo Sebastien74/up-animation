@@ -169,13 +169,13 @@
                                 {%- endif -%}
                             </div>
                         </div>
-                        <div id="collapse-{{ mediaRelation.id }}" class="parent-preloader collapse" aria-labelledby="heading-{{ mediaRelation.id }}" data-parent="#medias-accordion">
+                        <div id="collapse-{{ mediaRelation.id }}" class="parent-preloader overflow-hidden collapse" aria-labelledby="heading-{{ mediaRelation.id }}" data-parent="#medias-accordion">
                             {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'media-preloader-'~mediaRelation.id, preloaderClass: 'inner-preloader radius-preloader'} -%}
                             <div class="card-body position-relative pb-2">
-                                <div class="progress medias-preloader-tab">
+                                <div class="medias-preloader-tab">
                                     <div class="bg-stripe-loader"></div>
                                     <div class="d-flex flex-column justify-content-center align-items-center w-100">
-                                        <h4>{{ "Chargement en cours..."|trans|raw }}</h4>
+                                        <h4 class="text-white-50">{{ "Chargement en cours..."|trans|raw }}</h4>
                                     </div>
                                 </div>
                             </div>

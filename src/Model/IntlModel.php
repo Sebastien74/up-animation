@@ -99,15 +99,8 @@ final class IntlModel extends BaseModel
         $subTitleForce = $titleForce + 1;
         $title = self::getContent('title', $intl);
         $intro = self::getContent('introduction', $intl);
-        $link = self::intlLink($entity, $intl, $toLinkMenu, $options);
-
         $body = self::getContent('body', $intl);
-        if ($body && str_contains($body, '<table')) {
-            $body = preg_replace('/<table(.*?)>/is', '<div class="table-responsive"><table class="table table-striped"$1>', $body);
-            $body = str_replace('</table>', '</table></div>', $body);
-            $body = preg_replace('/height=".*?"/i', '', $body);
-            $body = preg_replace('/height:.*?;/i', '', $body);
-        }
+        $link = self::intlLink($entity, $intl, $toLinkMenu, $options);
 
         $response = new self(
             intl: $intl,

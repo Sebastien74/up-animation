@@ -318,7 +318,7 @@ class SitemapService
             foreach ($group as $listingClassname => $entities) {
                 $referEntity = !empty($entities[0]) ? $entities[0] : null;
                 if ($referEntity) {
-                    $indexPagesCodes[$classname] = $this->coreLocator->listingService()->indexesPages($referEntity, $this->coreLocator->requestStack()->getCurrentRequest()->getLocale(), $listingClassname, $classname, $entities);
+                    $indexPagesCodes[$classname] = $this->coreLocator->listingService()->indexesPages($this->coreLocator->requestStack()->getCurrentRequest()->getLocale(), $listingClassname, $classname);
                 }
             }
         }

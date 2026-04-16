@@ -118,7 +118,7 @@ class PortfolioController extends FrontController
             'block' => $block,
             'url' => $url,
             'website' => $website,
-            'urlsIndex' => $listingService->indexesPages($teaser, $locale, Listing::class, Card::class, $entities, []),
+            'urlsIndex' => $listingService->indexesPages($locale, Listing::class, Card::class),
             'teaser' => $teaser,
             'entities' => $entities,
             'thumbConfiguration' => $this->thumbConfiguration($website, Card::class, 'teaser'),

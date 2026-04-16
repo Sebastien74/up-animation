@@ -217,7 +217,7 @@ class CatalogController extends ActionController
         $website = $this->coreLocator->website();
         $websiteTemplate = $website->configuration->template;
         $listingService = $this->coreLocator->listingService();
-        $urlsIndex = $listingService->indexesPages($listing, $request->getLocale(), Catalog\Listing::class, Catalog\Product::class, [$product]);
+        $urlsIndex = $listingService->indexesPages($request->getLocale(), Catalog\Listing::class, Catalog\Product::class);
         return new JsonResponse(['html' => $this->renderView('front/'.$websiteTemplate.'/actions/catalog/map-product.html.twig', [
             'product' => ProductModel::fromEntity($product, $this->coreLocator, ['urlsIndex' => $urlsIndex]),
         ])]);
@@ -259,7 +259,7 @@ class CatalogController extends ActionController
         $this->arguments['count'] = $count = count($products);
         $this->arguments['microDataActive'] = $website->seoConfiguration->microData;
         $this->arguments['products'] = $this->arguments['limit'] > 0 ? $this->getPagination($paginator, $products, $this->arguments['limit']) : $products;
-        $this->arguments['urlsIndex'] = $listingService->indexesPages($listing, $request->getLocale(), Catalog\Listing::class, Catalog\Product::class, $products);
+        $this->arguments['urlsIndex'] = $listingService->indexesPages($request->getLocale(), Catalog\Listing::class, Catalog\Product::class);
         $this->arguments['maxPage'] = $count > 0 && $this->arguments['limit'] > 0 ? intval(ceil($count / $this->arguments['limit'])) : $count;
         $this->arguments['productsByCategories'] = [];
         $this->arguments['haveFilters'] = !empty($data['filters']) || !empty($data['text']);

@@ -76,7 +76,7 @@
                             linkStyle: 'btn btn-outline-primary',
                             linkLabel: "Toutes les news"|trans,
                         }
-                    } -%}
+                    } only -%}
                 </div>
             {%- endif -%}
         </div>
@@ -106,7 +106,7 @@
                                 <div class="body mb-4">{{ entity.intl.body|raw }}</div>
                             {%- endif -%}
                             {%- if entity.showLinkCard and entity.url -%}
-                                {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: {link: entity.url}, linkStyle: 'btn btn-primary'} -%}
+                                {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: {link: entity.url}, linkStyle: 'btn btn-primary'} only -%}
                             {%- endif -%}
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                                 linkStyle: 'btn btn-outline-primary',
                                 linkLabel: "Toutes les news"|trans,
                             }
-                        } -%}
+                        } only -%}
                     </div>
                 </div>
             </div>

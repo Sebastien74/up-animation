@@ -187,6 +187,12 @@ body.menu-open {
         display: none !important;
     }
 
+    .socials-list {
+        i {
+            font-size: 25px;
+        }
+    }
+
     #navigation-container {
 
         @include mediaQuery(max-lg) {

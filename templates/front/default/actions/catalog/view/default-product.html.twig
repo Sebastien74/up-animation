@@ -40,14 +40,14 @@
                 {%- endif -%}
                 {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                     intl: entity.intl
-                } -%}
+                } only -%}
                 {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                     intl: {
                         link: path('front_index', {url: pageUrl}),
                         linkStyle: 'btn btn-primary mt-5',
                         linkLabel: "Retourner à la liste des produits"|trans,
                     }
-                } -%}
+                } only -%}
             </div>
             {%- if entity.medias is not empty -%}
                 <div class="col-lg-5">

@@ -56,7 +56,7 @@
                     <strong class="text text-white text-uppercase d-inline-block mb-4">{{ media.introduction|raw|nl2br }}</strong>
                     {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                         intl: media.intl
-                    } -%}
+                    } only -%}
                 </div>
                 {%- if 'file' == media.type -%}
                     {{ media|file({}, {file: true}) }}

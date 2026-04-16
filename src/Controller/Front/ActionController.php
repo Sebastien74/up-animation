@@ -119,7 +119,7 @@ class ActionController extends FrontController
 
         $page = $this->coreLocator->em()->getRepository(Page::class)->findOneByUrlIdAndLocale($url->getId(), $locale);
         $listingService = $this->coreLocator->listingService();
-        $urlsIndex = $listingService->indexesPages($listing, $locale, $this->listingClassname, $this->classname, $entities, [], false, true);
+        $urlsIndex = $listingService->indexesPages($locale, $this->listingClassname, $this->classname);
 
         $count = count($entities);
         $limit = method_exists($listing, 'getItemsPerPage') && $listing->getItemsPerPage() ? $listing->getItemsPerPage() : 12;
@@ -223,9 +223,10 @@ class ActionController extends FrontController
 
         /** Check if the index URL code is correct */
         $listingService = $this->coreLocator->listingService();
-        $indexPagesCodes = $listingService->indexesPages($entity, $locale, $this->listingClassname, $this->classname, [$entity]);
-        $indexPageCode = !empty($indexPagesCodes) ? $indexPagesCodes[array_key_first($indexPagesCodes)] : $pageUrl;
+        $indexPagesCodes = $listingService->indexesPages($locale, $this->listingClassname, $this->classname);
+        $indexPageCode = !empty($indexPagesCodes[$entity->getId()]) ? $indexPagesCodes[$entity->getId()] : $pageUrl;
         $this->modelOptions['urlsIndex'] = $indexPagesCodes;
+
         if ($indexPageCode && $indexPageCode !== $pageUrl && $this->coreLocator->checkRoute('front_'.$this->arguments['interface']['name'].'_view.'.$locale)) {
             return $this->redirectToRoute('front_'.$this->arguments['interface']['name'].'_view', ['pageUrl' => $indexPageCode, 'url' => $url->getCode()], 301);
         }
@@ -331,7 +332,7 @@ class ActionController extends FrontController
         if ($inView) {
             $this->setCore($request);
         }
-        $urlsIndex = $listingService->indexesPages($teaser, $locale, $this->listingClassname, $this->classname, $entities, []);
+        $urlsIndex = $listingService->indexesPages($locale, $this->listingClassname, $this->classname);
         $currentEntity = $inView ? $this->service->findEntityByUrlAndLocale($url->getCode()) : null;
         $classname = $this->classname ?: null;
         $referEntity = $classname ? new $classname() : null;
@@ -452,7 +453,7 @@ class ActionController extends FrontController
             throw $this->createNotFoundException();
         }
         $listingService = $this->coreLocator->listingService();
-        $indexUrls = $listingService->indexesPages($entity, $url->getLocale(), $this->listingClassname, $this->classname, [$entity]);
+        $indexUrls = $listingService->indexesPages($url->getLocale(), $this->listingClassname, $this->classname);
         $request->setLocale($url->getLocale());
 
         return $this->forward($this->controller.'::view', [
@@ -740,7 +741,7 @@ class ActionController extends FrontController
             }
         }
 
-        $indexPagesCodes = $listingService->indexesPages($entity, $request->getLocale(), $this->listingClassname, $classname, $allAssociatedEntities);
+        $indexPagesCodes = $listingService->indexesPages($request->getLocale(), $this->listingClassname, $classname);
 
         foreach ($allAssociatedEntities as $associatedEntity) {
             $result[] = ($this->model)::fromEntity($associatedEntity, $this->coreLocator, ['entitiesIds' => $entitiesIds]);

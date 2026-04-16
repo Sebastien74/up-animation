@@ -89,7 +89,7 @@
                         {%- endif -%}
                         {%- if linkAsBtn and point.intl.link -%}
                             <div class="link-wrap mt-3 w-100">
-                                {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: intl} -%}
+                                {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: intl} only -%}
                             </div>
                         {%- elseif point.intl.link -%}
                             <a href="{{ point.intl.link }}" {% if point.intl.linkBlank %} target="_blank" {% endif %}{% if point.intl.linkExternal %} rel="noopener noreferrer" {% endif %}>

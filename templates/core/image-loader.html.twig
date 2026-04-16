@@ -4,20 +4,20 @@
 {%- set activeIsGeneratedLoader = false -%}
 {%- set options = options|merge({inAdmin: inAdmin}) -%}
 
-{%- set mediaQueries = {
-    0: {
-        media: '(max-width: 575px)',
-        thumbSizes: [618],
-    },
-    1: {
-        media: '(min-width: 576px) and (max-width: 991px)',
-        thumbSizes: [991],
-    },
-    2: {
-        media: '(min-width: 992px)',
-        thumbSizes: [1920],
-    }
-} -%}
+    {%- set mediaQueries = {
+        0: {
+            media: '(min-width: 992px)',
+            thumbSizes: [1920],
+        },
+        1: {
+            media: '(min-width: 576px) and (max-width: 991px)',
+            thumbSizes: [991],
+        },
+        2: {
+            media: '(max-width: 575px)',
+            thumbSizes: [618],
+        }
+    } -%}
 
 {%- set args = {} -%}
 {%- if onlyHx or (generateThumbs or onlyLazy) -%}

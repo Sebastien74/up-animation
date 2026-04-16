@@ -6,7 +6,7 @@
 {%- set uriInfos = intl.link is defined ? intl.link|uriInfos : null -%}
 {%- set samePage = uriInfos and uriInfos.samePage -%}
 {%- set ctaBg = ctaBg is defined and ctaBg ? ctaBg : (block.backgroundColorType is defined ? block.backgroundColorType : 'bg-primary') -%}
-{%- set iconCustom = icon is defined ? icon : (icon is defined ? icon : null) -%}
+{%- set iconCustom = icon is defined ? icon : (iconCustom is defined ? iconCustom : null) -%}
 {%- set iconCustomSize = iconSize is defined and iconSize ? iconSize : 'md' -%}
 {%- set iconCustomColor = iconColor is defined and iconColor ? iconColor : (block.color is defined ? block.color : false) -%}
 {%- set iconCustomWidth = iconCustomWidth is defined and iconCustomWidth ? iconCustomWidth : 17 -%}
@@ -14,6 +14,8 @@
 {%- set iconCustomPosition = iconCustomPosition is defined and iconCustomPosition ? iconCustomPosition : 'start' -%}
 {%- set trackClass = entity.id is defined ? ' link-track-'~entity.id : '' -%}
 {%- set style = style is defined ? style : false -%}
+{%- set tooltip = tooltip is defined ? tooltip : false -%}
+{%- set tooltipPosition = tooltipPosition is defined ? tooltipPosition : 'top' -%}
 {%- set linkStyle = linkStyle is defined ? linkStyle : (intl.linkStyle is defined ? intl.linkStyle : 'link') -%}
 {%- set linkBlank = linkBlank is defined ? linkBlank : (intl.linkBlank is defined ? intl.linkBlank : false) -%}
 {%- set linkExternal = linkExternal is defined ? linkExternal : (intl.linkExternal is defined ? intl.linkExternal : false) -%}
@@ -22,6 +24,7 @@
 {%- set linkIsEmail = linkIsEmail is defined ? linkIsEmail : (intl.linkIsEmail is defined ? intl.linkIsEmail : false) -%}
 {%- set linkIsPhone = linkIsPhone is defined ? linkIsPhone : (intl.linkIsPhone is defined ? intl.linkIsPhone : false) -%}
 {%- set linkAsButton = linkAsButton is defined ? linkAsButton : 'btn' in linkStyle -%}
+{%- set asCircle = 'circle' in linkStyle -%}
 
 {%- macro icon(iconCustom, iconCustomSize, iconCustomColor, iconCustomWidth, iconCustomHeight, iconCustomPosition) -%}
     {%- set class = iconCustomPosition == 'start' ? 'me-2' : '' -%}
@@ -34,17 +37,21 @@
     {%- endif -%}
 {%- endmacro -%}
 
-{%- macro link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage, iconCustom = false, iconSide = 'start') -%}
+{%- macro link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage, iconCustom = false, iconSide = 'start', asCircle = false, tooltip = false, tooltipPosition = 'top') -%}
     {%- set iconClass = linkAsButton ? 'chevron-right ms-2 as-btn' : 'chevron-right' -%}
     <a {% if samePage %}data-href{% else -%}href{% endif %}=" {{ link }}"
        class="{{ linkStyle }} d-inline-flex align-items-center gap-2{% if samePage %} scroll-link{% endif %}{{ trackClass }}"
-        {% if linkBlank %} target="_blank" {% endif %}
-        {% if samePage %} data-target="#{{ uriInfos.anchor }}" {% endif %}
-        {% if linkExternal %} rel="noopener noreferrer" {% endif %}>
+        {% if linkBlank %} target="_blank"{% endif %}
+        {% if linkExternal %} rel="noopener noreferrer"{% endif %}
+        {% if samePage %} data-target="#{{ uriInfos.anchor }}"{% endif %}
+        {% if tooltip %} data-bs-toggle="tooltip" data-bs-placement="{{ tooltipPosition }}" title="{{ linkLabel|striptags }}"{% endif %}
+        {% if linkLabel and asCircle %} aria-label="{{ linkLabel|striptags }}"{% endif %}>
         {%- if 'start' == iconSide and iconCustom and '.svg' not in iconCustom -%}
             <i class="icon-{{ iconCustom }}" aria-hidden="true"></i>
         {%- endif -%}
+        {%- if not asCircle -%}
             {%- if iconCustom -%}<span class="initial">{%- endif -%}{{ linkLabel|unescape|raw }}{%- if iconCustom -%}</span>{%- endif -%}
+        {%- endif -%}
         {%- if 'end' == iconSide and iconCustom and '.svg' not in iconCustom -%}
             <i class="icon-{{ iconCustom }}" aria-hidden="true"></i>
         {%- endif -%}
@@ -84,7 +91,7 @@
                 {{ linkLabel|unescape|raw }} <i class="icon-chevron-right"></i>
             </a>
         {%- else -%}
-            {{ macro.link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage, iconCustom) }}
+            {{ macro.link(uriInfos, link, linkStyle, linkLabel, linkBlank, linkExternal, linkAsButton, trackClass, samePage, iconCustom, 'start', asCircle, tooltip, tooltipPosition) }}
         {%- endif -%}
         {%- if script is defined and script -%}
             {{ script|raw }}

@@ -158,7 +158,7 @@
                                                             link: app.request.requestUri,
                                                             linkLabel: '.btn '~color|replace({'btn-': 'btn-gradient btn-gradient-'}),
                                                             linkStyle: 'btn '~color|replace({'btn-': 'btn-gradient btn-gradient-'})
-                                                        } -%}
+                                                        } only -%}
                                                     </div>
                                                 {%- endif -%}
                                             {%- endfor -%}
@@ -177,7 +177,7 @@
                                                         link: app.request.requestUri,
                                                         linkLabel: '.btn '~color,
                                                         linkStyle: 'btn '~color
-                                                    } -%}
+                                                    } only -%}
                                                 </div>
                                             {%- endif -%}
                                         {%- endfor -%}
@@ -195,7 +195,7 @@
                                                         link: app.request.requestUri,
                                                         linkLabel: '.btn '~color,
                                                         linkStyle: 'btn '~color
-                                                    } -%}
+                                                    } only -%}
                                                 </div>
                                             {%- endif -%}
                                         {%- endfor -%}

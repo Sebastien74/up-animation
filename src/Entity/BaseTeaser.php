@@ -39,7 +39,7 @@ class BaseTeaser extends BaseEntity
     protected bool $matchCategories = false;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    protected ?string $formatDate = 'dd MMM Y';
+    protected ?string $formatDate = 'dd MMM y';
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     protected array $fields = ['image', 'teaser-title', 'title', 'card-link', 'index-link'];

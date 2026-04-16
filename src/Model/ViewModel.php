@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Entity\Layout;
-use App\Entity\Module\Catalog\Catalog;
-use App\Entity\Module\Newscast\Newscast;
 use App\Entity\Seo\Url;
 use App\Model\Layout\BlockModel;
 use App\Service\Core\Urlizer;
@@ -132,19 +130,20 @@ final class ViewModel extends BaseModel
         $listingClass = !empty($interface['listingClass']) ? $interface['listingClass'] : null;
         $configEntity = !empty($options['configEntity']) ? $options['configEntity'] : null;
         $configFields = self::getContent('fields', $configEntity, false, true);
-        $urlsIndex = !empty($options['urlsIndex']) ? $options['urlsIndex'] : ($listingClass && $entity ? self::$coreLocator->listingService()->indexesPages($entity, self::$coreLocator->locale(), $listingClass, get_class($entity)) : []);
+        $urlsIndex = !empty($options['urlsIndex']) ? $options['urlsIndex'] : ($listingClass && $entity ? self::$coreLocator->listingService()->indexesPages(self::$coreLocator->locale(), $listingClass, get_class($entity)) : []);
         $locale = !empty($options['locale']) ? $options['locale'] : self::$coreLocator->locale();
         $intl = $entitiesIds ? IntlModel::fromEntities($entity, $coreLocator, $options['entitiesIds'], $locale) : [];
         $intl = $intl ?: (!$disabledIntl ? IntlModel::fromEntity($entity, $coreLocator, false, $options) : null);
-        $intlVideo = !$disabledIntl && $intl && $intl->video ? (object) ['type' => 'video', 'videoLink' => $intl->video, 'path' => $intl->video, 'locale' => $intl->locale] : null;
-        $haveIntlVideo = !empty($intlVideo);
-        $medias = $entitiesIds ? MediasModel::fromEntities($entity, $coreLocator, $options['entitiesIds']) : [];
-        $medias = $medias ?: (!$disabledMedias ? MediasModel::fromEntity($entity, $coreLocator, $locale, false, $options) : null);
-        $mediasAndVideos = !$disabledMedias && $medias && $medias->mediasAndVideos ? $medias->mediasAndVideos : [];
         $categories = !$disabledCategories ? self::getContent('categories', $entity, false, true, true) : [];
         $category = !$disabledCategory ? self::category($entity) : null;
         $category = $category ?: (!empty($categories) ? $categories[0] : null);
         $layout = !$disabledLayout ? self::layout($entity, $interface, $category) : null;
+        $intlVideo = !$disabledIntl && $intl && $intl->video ? (object) ['type' => 'video', 'videoLink' => $intl->video, 'path' => $intl->video, 'locale' => $intl->locale] : null;
+        $haveIntlVideo = !empty($intlVideo);
+        $mainMediaInHeader = $options['mainMediaInHeader'] = self::mainMediaInHeader($entity, $category, $layout) || self::mainMediaInHeader($category, $category, $layout);
+        $medias = $entitiesIds ? MediasModel::fromEntities($entity, $coreLocator, $options['entitiesIds']) : [];
+        $medias = $medias ?: (!$disabledMedias ? MediasModel::fromEntity($entity, $coreLocator, $locale, false, $options) : null);
+        $mediasAndVideos = !$disabledMedias && $medias && $medias->mediasAndVideos ? $medias->mediasAndVideos : [];
         $url = !$disabledUrl ? self::url($entity, $interface, $locale, $urlsIndex, $intl) : (object) [];
         $preloadFiles = !$disabledLayout ? self::preload($entity, $layout) : [];
         $date = self::date($entity);
@@ -195,7 +194,7 @@ final class ViewModel extends BaseModel
             pictogram: self::getContent('pictogram', $entity),
             showGdprVideoBtn: $haveVideos && $medias && self::gdprVideo($medias->videos),
             mediasAndVideos: $mediasAndVideos && !$intlVideo ? $mediasAndVideos : ($intlVideo && $mediasAndVideos ? array_merge([$intlVideo], $mediasAndVideos) : ($intlVideo ? [$intlVideo] : [])),
-            mainMediaInHeader: self::mainMediaInHeader($entity, $category, $layout) || self::mainMediaInHeader($category, $category, $layout),
+            mainMediaInHeader: $mainMediaInHeader,
             haveLayout: $layout ? $layout->haveLayout : false,
             layout: $layout ? $layout->entity : null,
             haveStickyCol: $layout ? $layout->haveStickyCol : false,
@@ -356,7 +355,6 @@ final class ViewModel extends BaseModel
             $category = $qb->getQuery()->getOneOrNullResult();
             if (is_object($category)) {
                 self::$cache['category'][get_class($category)][$category->getId()] = ViewModel::fromEntity($category, self::$coreLocator, ['stop' => true]);
-
                 return self::$cache['category'][get_class($category)][$category->getId()];
             }
         }
@@ -435,13 +433,10 @@ final class ViewModel extends BaseModel
      */
     private static function mainMediaInHeader(mixed $entity = null, mixed $category = null, mixed $layout = null): ?bool
     {
-        if ($layout && $layout->haveLayout && $layout->asCustom) {
-            return self::getContent('mainMediaInHeader', $entity, true);
-        } elseif ($category) {
+        if ($category) {
             return self::getContent('mainMediaInHeader', $category, true);
         }
-
-        return false;
+        return self::getContent('mainMediaInHeader', $entity, true);
     }
 
     /**

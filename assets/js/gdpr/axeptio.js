@@ -10,7 +10,7 @@ let clientId = body.dataset.axeptio;
 let gtmInjection = body.dataset.axeptioExternal;
 let cookiesVersion = body.dataset.axeptioCookie;
 
-if (clientId) {
+if (clientId && !gtmInjection) {
 
     let options = {};
     options.clientId = clientId;
@@ -18,7 +18,6 @@ if (clientId) {
     if (cookiesVersion) {
         options.cookiesVersion = cookiesVersion;
     }
-
     options.googleConsentMode = {
         default: {
             analytics_storage: "denied",
@@ -29,20 +28,19 @@ if (clientId) {
         }
     }
 
-    window.axeptioSettings = options;
-
-    if (!gtmInjection) {
-        (function (d, s) {
-            let t = d.getElementsByTagName(s)[0], e = d.createElement(s);
-            e.async = true;
-            e.src = slimSrc ? "//static.axept.io/sdk-slim.js" : "//static.axept.io/sdk.js";
-            t.parentNode.insertBefore(e, t);
-        })(document, "script");
-    }
+    (function (d, s) {
+        let t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+        e.async = true;
+        e.src = slimSrc ? "//static.axept.io/sdk-slim.js" : "//static.axept.io/sdk.js";
+        t.parentNode.insertBefore(e, t);
+    })(document, "script");
 }
 
 if (clientId || gtmInjection) {
 
+    /**
+     * Check if a block should be refreshed.
+     */
     let refresh = function (wrap, code, active) {
         if (code === 'youtube' && wrap.querySelector('.embed-youtube') && active) {
             return false;
@@ -50,7 +48,39 @@ if (clientId || gtmInjection) {
         return true;
     };
 
-    (_axcb = window._axcb || []).push(function (sdk) {
+    /**
+     * Dynamically load a script element.
+     *
+     * @param {HTMLElement} sourceEl
+     */
+    function loadDeferredScript(sourceEl) {
+        if (!sourceEl || sourceEl.dataset.loaded === '1') {
+            return;
+        }
+        let src = sourceEl.getAttribute('data-src');
+        if (!src) {
+            return;
+        }
+        let script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.type = 'text/javascript';
+        let nonce = sourceEl.getAttribute('nonce');
+        if (nonce) {
+            script.setAttribute('nonce', nonce);
+        }
+        let webchatConfigId = sourceEl.getAttribute('webchatconfigid');
+        if (webchatConfigId) {
+            script.setAttribute('webchatconfigid', webchatConfigId);
+        }
+        script.onload = function () {
+            sourceEl.dataset.loaded = '1';
+        };
+        document.head.appendChild(script);
+    }
+
+    window._axcb = window._axcb || [];
+    window._axcb.push(function (sdk) {
         sdk.on("cookies:complete", function (choices) {
 
             document.querySelectorAll("[data-axeptio-consent]").forEach(function (consentEl) {
@@ -101,23 +131,30 @@ if (clientId || gtmInjection) {
             for (let i = 0; i < requireConsentEls.length; i++) {
                 let requireEl = requireConsentEls[i];
                 let requireVendor = requireEl.getAttribute("data-requires-vendor-consent");
+                let deletableId = requireEl.getAttribute("data-deletable");
+                let deletableEl = deletableId ? document.querySelector(deletableId) : null;
                 if (choices[requireVendor]) {
                     let asCustom = requireEl.getAttribute('data-custom-script') && !requireEl.classList.contains('loaded');
-                    let src = requireEl.getAttribute("data-src");
-                    if (src) {
-                        requireEl.setAttribute("src", requireEl.getAttribute("data-src"));
+                    if (deletableEl) {
+                        deletableEl.classList.remove('d-none');
                     }
+                    loadDeferredScript(requireEl);
                     if (asCustom) {
                         loadScript(requireEl.getAttribute('data-custom-script'));
                         requireEl.classList.add('loaded');
                     }
                 } else {
-                    requireEl.setAttribute("src", "");
+                    if (deletableEl) {
+                        deletableEl.classList.add('d-none');
+                    }
                 }
             }
         });
     });
 
+    /**
+     * Load an external script.
+     */
     function loadScript(src) {
         let script = document.createElement('script');
         script.type = 'text/javascript';

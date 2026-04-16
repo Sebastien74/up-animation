@@ -63,7 +63,7 @@
 {%- endmacro -%}
 
 {%- macro showLink(websiteTemplate, entity) -%}
-    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: {link: entity.url}} -%}
+    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {intl: {link: entity.url}} only -%}
 {%- endmacro -%}
 
 {%- macro showAll(websiteTemplate, entities, asMulti) -%}
@@ -75,7 +75,7 @@
                     linkStyle: 'btn btn-secondary',
                     linkLabel: "Voir toutes nos actualités"|trans,
                 }
-            } -%}
+            } only -%}
         </div>
     {%- endif -%}
 {%- endmacro -%}
@@ -135,7 +135,6 @@
             showDate: true,
             showCategory: true,
             showLink: true,
-            linkStyle: 'btn btn-primary'
         }) }}
     </li>
 {%- endmacro -%}

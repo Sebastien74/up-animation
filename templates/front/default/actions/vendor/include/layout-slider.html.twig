@@ -1,9 +1,10 @@
 {%- set slideType = 'thumbnails' -%}
+{%- set medias = entity.mainMediaInHeader ? entity.mediasWithoutMain : entity.medias -%}
 
-{%- if entity.medias|length > 0 -%}
+{%- if medias is not empty -%}
     {%- if 'thumbnails' == slideType -%}
         {%- include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
-            medias: entity.medias,
+            medias: medias,
             thumbConfiguration: thumbConfigurationView,
             arrowsSide: 'side',
             arrowsColor: 'blur',
@@ -35,9 +36,8 @@
             autoplay: true,
             popup: true,
             class: class is defined ? class : 'text-center',
-            mainMediaInHeader: entity.mainMediaInHeader,
             thumbConfiguration: thumbConfigurationView,
-            medias: entity.medias,
+            medias: medias,
             maxWidth: null,
             maxHeight: 475,
         } -%}

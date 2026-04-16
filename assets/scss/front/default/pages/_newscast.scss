@@ -34,6 +34,10 @@ $enable-code: true;
 
 .newscast-view-container {
 
+    .copy-clipboard {
+        border-radius: .75rem;
+    }
+
     .splide-container {
         .splide:not(.thumbnails-slider) {
             img {
