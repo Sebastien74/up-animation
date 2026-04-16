@@ -2,44 +2,44 @@
 
     {%- set mediaQueries = {
         0: {
-            media: '(min-width: 1400px)',
-            thumbSizes: [1920],
-            sizes: '1400px'
+            media: '(max-width: 319px)',
+            thumbSizes: [320],
+            sizes: '(max-width: 319px) 95vw, 320px'
         },
         1: {
-            media: '(min-width: 1200px) and (max-width: 1399px)',
-            thumbSizes: [1200],
-            sizes: '1100px'
-        },
-        2: {
-            media: '(min-width: 992px) and (max-width: 1199px)',
-            thumbSizes: [991],
-            sizes: '800px'
-        },
-        3: {
-            media: '(min-width: 768px) and (max-width: 991px)',
-            thumbSizes: [991],
-            sizes: '(min-width: 768px) and (max-width: 991px) 70vw, 700px'
-        },
-        4: {
-            media: '(min-width: 576px) and (max-width: 767px)',
-            thumbSizes: [768],
-            sizes: '(min-width: 576px) and (max-width: 767px) 80vw, 618px'
-        },
-        5: {
-            media: '(min-width: 480px) and (max-width: 575px)',
-            thumbSizes: [618],
-            sizes: '(min-width: 480px) and (max-width: 575px) 95vw, 575px'
-        },
-        6: {
             media: '(min-width: 320px) and (max-width: 479px)',
             thumbSizes: [480],
             sizes: '(min-width: 320px) and (max-width: 479px) 95vw, 480px'
         },
+        2: {
+            media: '(min-width: 480px) and (max-width: 575px)',
+            thumbSizes: [618],
+            sizes: '(min-width: 480px) and (max-width: 575px) 95vw, 575px'
+        },
+        3: {
+            media: '(min-width: 576px) and (max-width: 767px)',
+            thumbSizes: [768],
+            sizes: '(min-width: 576px) and (max-width: 767px) 80vw, 618px'
+        },
+        4: {
+            media: '(min-width: 768px) and (max-width: 991px)',
+            thumbSizes: [991],
+            sizes: '(min-width: 768px) and (max-width: 991px) 70vw, 700px'
+        },
+        5: {
+            media: '(min-width: 992px) and (max-width: 1199px)',
+            thumbSizes: [991],
+            sizes: '800px'
+        },
+        6: {
+            media: '(min-width: 1200px) and (max-width: 1399px)',
+            thumbSizes: [1200],
+            sizes: '1100px'
+        },
         7: {
-            media: '(max-width: 319px)',
-            thumbSizes: [320],
-            sizes: '(max-width: 319px) 95vw, 320px'
+            media: '(min-width: 1400px)',
+            thumbSizes: [1920],
+            sizes: '1400px'
         }
     } -%}
 
@@ -103,7 +103,7 @@
                             {%- set width = sizes.width is defined ? sizes.width : size -%}
                             {%- set height = sizes.height is defined ? sizes.height : 'auto' -%}
                         {%- endif -%}
-                        {%- if defaultThumb and (not dataSource or priority == 'high' or loop.parent.loop.first) -%}
+                        {%- if defaultThumb and (not dataSource or priority == 'high' or loop.parent.loop.last) -%}
                             {%- set dataSource = currentSource -%}
                         {%- endif -%}
                         {%- set retinaSize = size * 2 -%}

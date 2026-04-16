@@ -513,6 +513,15 @@
     }
 }
 
+.splide.with-thumbnails {
+    > .splide__track {
+        .splide__slide,
+        .splide__slide picture {
+            width: 100% !important;
+        }
+    }
+}
+
 .splide.thumbnails-slider {
 
     .splide__track {

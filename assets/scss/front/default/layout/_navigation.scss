@@ -55,10 +55,15 @@ body.menu-as-animation #top-navigation {
     transition: transform $transition-slow;
     will-change: transform;
 
-    &.as-animation:not(.open):not(.force-as-scroll) {
-        transform: translateY(-200px);
-        transition: transform $transition-slow;
-    }
+    //&.as-animation {
+    //
+    //    transform: translateY(-200px);
+    //    transition: transform $transition-slow;
+    //
+    //    .submenu, .overlay {
+    //        transform: translateY(200px);
+    //    }
+    //}
 
     @include mediaQuery(min-lg) {
         .overlay {

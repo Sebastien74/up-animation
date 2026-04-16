@@ -259,7 +259,8 @@ class CacheInvalidationSubscriber
             }
         }
 
-        $masterField = method_exists($class, 'getMasterField') ? $class::getMasterField() : null;
+        $reflection = method_exists($class, 'getMasterField') ? new \ReflectionMethod($class, 'getMasterField') : null;
+        $masterField = $reflection && $reflection->isStatic() ? $class::getMasterField() : null;
         if ($masterField && $metadata->hasAssociation($masterField)) {
             try {
                 $parent = $this->propertyAccessor->getValue($entity, $masterField);
@@ -313,7 +314,8 @@ class CacheInvalidationSubscriber
             }
         }
 
-        $masterField = method_exists($class, 'getMasterField') ? $class::getMasterField() : null;
+        $reflection = method_exists($class, 'getMasterField') ? new \ReflectionMethod($class, 'getMasterField') : null;
+        $masterField = $reflection && $reflection->isStatic() ? $class::getMasterField() : null;
         if ($masterField && $metadata->hasAssociation($masterField)) {
             try {
                 $parent = $this->propertyAccessor->getValue($entity, $masterField);

@@ -11,6 +11,8 @@ https://themeforest.net/item/conat-event-conference-vuejs-template/61240859
 https://preview.themeforest.net/item/konfer-react-event-conference-meetup-template/full_screen_preview/58424763
 https://preview.themeforest.net/item/eventen-event-conference-meetup-react-templates/full_screen_preview/58292518
 
+Faire une page FAQ
+
 Voir ->findFullEntity createQueryBuilder * 2 dans if ($hasLayout && $layout = $entity->getLayout()) {
 
 Fakefiller form validation pas de message d'erreur
