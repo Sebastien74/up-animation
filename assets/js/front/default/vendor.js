@@ -99,7 +99,6 @@ lazyLoadComponent('[data-scroll-bar="1"]', () => import('./components/scrollbar'
 lazyLoadComponent('.fixed-element', () => import('./components/fixed-element'), (FixedNews, el) => new FixedNews(el));
 lazyLoadComponent('.dropdown-toggle', () => import('../bootstrap/modules/dropdown'), (Dropdown) => new Dropdown());
 lazyLoadComponent('.block-scroll-video', () => import('./components/video-scroll'), (Videos) => new Videos());
-lazyLoadComponent('.search-engine-form', () => import('./components/search'), (Search) => new Search());
 
 document.addEventListener('DOMContentLoaded', function () {
 
