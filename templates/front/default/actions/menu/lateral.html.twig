@@ -1,6 +1,7 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- set displayTopNav = false -%}
+{%- import _self as macro -%}
+
 {%- set displayHomePage = false -%}
 {%- set isHome = (seo.entity.asIndex is defined and seo.entity.asIndex) or (app.request.requestUri == '/') or (not app.request.requestUri) -%}
 {%- set logo = logos.logo is defined and logos.logo ? logos.logo : null -%}
@@ -21,8 +22,6 @@
 {%- set aboutPageUrl = mainPages.about.code is defined ? mainPages.about.code : null -%}
 {%- set notExpanded = 'xxxl' == expand -%}
 
-{%- import _self as macro -%}
-
 {%- macro element(link, tree, companyName, logo, microDataActive, expand, dropdownHover, dropdownItem, isLast, websiteTemplate, notExpanded, haveIcons = false) -%}
     {%- set dropdownBack = false -%}
     {%- if link.online is defined and link.online -%}
@@ -39,7 +38,6 @@
         {%- set liClass = link.children ? liClass~' dropdown' : liClass -%}
         {%- set liClass = link.children and link.level >= 2 ? liClass~' dropdown-submenu' : liClass -%}
         {%- set liClass = link.media ? liClass~' item-logo' : liClass -%}
-        {%- set liClass = not notExpanded ? liClass~' justify-content-lg-center' : liClass -%}
         {%- set liClass = link.level == 1 and not isLast and not notExpanded ? liClass~' me-'~expand~'-4 mb-4 mb-lg-0' : liClass -%}
         {%- set liClass = link.level == 1 ? liClass~' justify-content-end text-end text-'~expand~'-start' : liClass~' justify-content-start text-start' -%}
         <li class="nav-item position-relative d-flex level-{{ link.level }} {{ liClass }}"
@@ -166,59 +164,9 @@
         path: path('admin_menu_edit', {website: website.id, menu: id, entitylocale: app.request.locale})
     }) }}
     <header id="main-navigation" class="navbar navbar-expand-{{ expand }} flex-column px-0 py-0">
-        {%- if displayTopNav -%}
-            <div id="top-navigation" class="d-none d-lg-flex bg-secondary py-3 position-relative w-100">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            {%- if schedule -%}
-                                <div class="schedule text-secondary d-flex align-items-center">
-                                    <i class="icon-clock text-secondary me-3"></i>{{ schedule|striptags|raw }}
-                                </div>
-                            {%- endif -%}
-                        </div>
-                        <div class="col-lg-6 links-wrap d-flex justify-content-end">
-                            <div class="inner d-flex align-items-center">
-                                {%- if newsPageUrl -%}
-                                    <a href="{{ path('front_index', {url: newsPageUrl}) }}" class="d-inline-block text-secondary">{{ 'Nos Actus'|trans|raw }}</a>
-                                {%- endif -%}
-                                {%- if newsPageUrl and aboutPageUrl -%}
-                                    <span class="mx-2 text-secondary">|</span>
-                                {%- endif -%}
-                                {%- if aboutPageUrl -%}
-                                    <a href="{{ path('front_index', {url: aboutPageUrl}) }}" class="d-inline-block text-secondary">{{ companyName|striptags }}</a>
-                                {%- endif -%}
-                                {%- if website.networks is not empty -%}
-                                    <nav class="socials-list d-inline-flex align-items-center ms-3" aria-label="{{"Navigation des liens sociaux"|trans|striptags }}">
-                                        {%- for name, infos in website.networks -%}
-                                            {%- if infos.link and infos.dirname -%}
-                                                {%- set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags -%}
-                                                <a href="{{ infos.link }}" class="{{ name }} btn btn-transparent shadow basic p-0 d-inline-flex ms-2"
-                                                   rel="noopener noreferrer" target="_blank"
-                                                   aria-label="{{ label }}">
-                                                    <i class="icon-{{ name|lower }} text-secondary" aria-hidden="true"></i>
-                                                    <span class="visually-hidden">{{ label }}</span>
-                                                </a>
-                                            {%- endif -%}
-                                        {%- endfor -%}
-                                    </nav>
-                                {%- endif -%}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {%- endif -%}
         <div id="navigation-container" class="{{ size }}{% if size == 'container-fluid' %} px-3 px-lg-5{% endif %}">
-            <div class="d-lg-flex w-100">
+            <div class="d-flex w-100">
                 <div class="side d-flex align-items-center px-0">
-                    <button class="navbar-toggler bg-transparent me-2 cursor" data-bs-toggle="collapse" data-bs-target="#main-navigation-nav" aria-controls="main-navigation-nav" aria-expanded="false" aria-label="{{"Menu"|trans|raw }}">
-                        <span class="nav-toggler-icon" aria-label="{{"Menu"|trans|raw }}">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </span>
-                    </button>
                     {%- if logo -%}
                         <{% if 'h1' == compagnyNameElement %}h1{% else %}strong{% endif %} class="d-none" aria-hidden="true">{{ companyName|striptags }}</{% if 'h1' == compagnyNameElement %}h1{% else %}strong{% endif %}>
                         <a class="navbar-brand d-inline-flex p-0" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
@@ -267,7 +215,7 @@
                         } only -%}
                     {%- endif -%}
                     {%- if networks is not empty -%}
-                        <nav class="socials-list d-inline-flex justify-content-center justify-content-sm-start me-3 gap-2"
+                        <nav class="socials-list d-inline-flex align-items-center justify-content-center me-md-3 gap-2"
                              aria-label="{{"Navigation des liens sociaux"|trans|striptags }}">
                             {%- for name, infos in networks -%}
                                 {%- if infos.link and infos.dirname -%}
@@ -311,6 +259,13 @@
                     {%- if 'search'|moduleActive(configuration) -%}
                         {{ render_esi(path('front_search_view', {filter: 'main', button: true, website: website.id} )) }}
                     {%- endif -%}
+                    <button class="navbar-toggler bg-transparent me-2 cursor" data-bs-toggle="collapse" data-bs-target="#main-navigation-nav" aria-controls="main-navigation-nav" aria-expanded="false" aria-label="{{"Menu"|trans|raw }}">
+                        <span class="nav-toggler-icon" aria-label="{{"Menu"|trans|raw }}">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>

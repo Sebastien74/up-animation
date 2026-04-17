@@ -29,11 +29,17 @@
                 width: 100%;
             }
 
+            label {
+                border-radius: 16px;
+                box-shadow: inset 5px 5px 17px 5px rgba(0,0,0,0.13);
+                background-color: $white;
+            }
+
             .form-control {
-                border: 1px solid $gray-400 !important;
+                border: 1px solid transparent !important;
                 border-right: 0 !important;
                 border-radius: 16px 0 0 16px !important;
-                background-color: $gray-400 !important;
+                background-color: transparent !important;
                 box-shadow: none !important;
                 color: $secondary !important;
                 font-size: 1rem !important;
@@ -52,8 +58,8 @@
             }
 
             .input-group-text {
-                background-color: $gray-400 !important;
-                border: 1px solid $gray-400 !important;
+                background-color: transparent !important;
+                border: 1px solid transparent !important;
                 border-left: 0 !important;
                 width: 70px !important;
                 border-radius: 0 16px 16px 0 !important;

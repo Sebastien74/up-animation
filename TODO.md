@@ -11,6 +11,21 @@ https://themeforest.net/item/conat-event-conference-vuejs-template/61240859
 https://preview.themeforest.net/item/konfer-react-event-conference-meetup-template/full_screen_preview/58424763
 https://preview.themeforest.net/item/eventen-event-conference-meetup-react-templates/full_screen_preview/58292518
 
+Au filtre des produits la pagination ne fonctionne pas https://up-animation.local/recherche-animations?catalogs=performances
+
+Enregistrement des recherches
+
+Pour les fetch JS ajouter keepalive: true,
+
+const response = await fetch(action, {
+method: 'POST',
+body: formData,
+keepalive: true,
+headers: {
+'X-Requested-With': 'XMLHttpRequest'
+}
+})
+
 Faire une page FAQ
 
 Faire auto completion sur champs moteur de recherche

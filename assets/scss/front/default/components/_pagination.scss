@@ -43,13 +43,18 @@
                 }
 
                 a {
+
                     border: 0;
+
+                    i {
+                        font-size: 10px;
+                    }
                 }
 
                 .page-link {
 
                     font-size: 14px;
-                    color: $black;
+                    color: $secondary;
                     border: 0 !important;
                     box-shadow: none !important;
                     font-weight: 700;
@@ -68,7 +73,7 @@
                 &:first-child > .page-link,
                 &:last-child > .page-link {
                     text-transform: uppercase;
-                    color: $black;
+                    color: $secondary;
                 }
 
                 &.active > .page-link {
