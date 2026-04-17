@@ -117,7 +117,6 @@
     --#{$prefix}backdrop-bg: #{$modal-backdrop-bg};
     --#{$prefix}backdrop-opacity: #{$modal-backdrop-opacity};
     // scss-docs-end modal-backdrop-css-vars
-
     @include overlay-backdrop(var(--#{$prefix}backdrop-zindex), var(--#{$prefix}backdrop-bg), var(--#{$prefix}backdrop-opacity));
 }
 

@@ -136,7 +136,7 @@ final class ProductModel extends BaseModel
             'formPageUrl' => self::getFormPage($model),
             'indexUrl' => $model->urlIndex && $model->urlCode ? self::$coreLocator->router()->generate('front_catalogproduct_view', ['pageUrl' => $model->urlIndex, 'url' => $model->urlCode], UrlGeneratorInterface::ABSOLUTE_URL) : null,
             'contactUrl' => $contactPageUrl ? self::$coreLocator->router()->generate('front_index', $contactPageParams, UrlGeneratorInterface::ABSOLUTE_URL) : null,
-        ], $values['defaults'], $subCategories['defaults']);
+        ], $values['defaults'], $subCategories);
     }
 
     /**
@@ -158,7 +158,7 @@ final class ProductModel extends BaseModel
      */
     private static function getSubCategories(Catalog\Product $product, array $options, array $defaultUniqSubCategories = []): array
     {
-        $result = [];
+
 
         $website = self::$coreLocator->website() ? self::$coreLocator->website() : WebsiteModel::fromEntity($product->getWebsite(), self::$coreLocator);
 
@@ -181,12 +181,9 @@ final class ProductModel extends BaseModel
             }
         }
 
-        $result['defaults'] = [];
-        foreach ($defaultUniqSubCategories as $key => $slug) {
-            $result['defaults'][$key] = !empty($subCategories['byCategoriesSlugs'][$slug]) ? $subCategories['byCategoriesSlugs'][$slug] : false;
-        }
-
-        return $result;
+        return array_map(function ($slug) use ($subCategories) {
+            return !empty($subCategories['byCategoriesSlugs'][$slug]) ? $subCategories['byCategoriesSlugs'][$slug] : false;
+        }, $defaultUniqSubCategories);
     }
 
     /**

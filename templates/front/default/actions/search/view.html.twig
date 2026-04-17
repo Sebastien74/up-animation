@@ -10,12 +10,23 @@
         {%- if modal -%}
             <div class="modal fade content-modal" id="search-modal-{{ search.slug }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content bg-light">
-                        <div class="modal-body pt-5 pb-5 p-md-5">
+                    <div class="modal-content bg-white overflow-hidden">
+                        <div class="modal-body pt-4 pb-4 px-5">
                             <div role="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|striptags }}">
                                 <i class="icon-times"></i>
                             </div>
-                            <p class="fw-700 baseline">{{ "Que recherchez-vous pour votre événement ? <br>Une animation, un spectacle ou une activité originale ?"|trans|unescape|raw }}</p>
+                            {%- set logo = logos.logo is defined and logos.logo ? logos.logo : null -%}
+                            {%- set companyName = information.companyName is defined and information.companyName ? information.companyName : "Up Animations!"|trans -%}
+                            {{ asset(logo)|file({}, {
+                                screensSizes: {
+                                    mobile: {width: null, height: 80},
+                                    tablet: {width: null, height: 80},
+                                    desktop: {width: null, height: 80}
+                                },
+                                title: companyName,
+                                class: 'force-size logo initial-color',
+                            }) }}
+                            <p class="fw-700 baseline mt-4">{{ "Que recherchez-vous pour votre événement ? <br>Une animation, un spectacle ou une activité originale ?"|trans|unescape|raw }}</p>
                             {%- if resultsPage -%}
                                 {{ form_start(form, {attr: {
                                     class: "search-engine-form",
@@ -26,14 +37,20 @@
                                         <label for="search" class="d-flex justify-content-center align-items-center w-100">
                                             {{ form_widget(form.search) }}
                                             <button type="submit" id="search-engine-submit" class="input-group-text cursor p-0 h-100">
-                                                <i class="icon-search"></i>
+                                                <i class="icon-search text-secondary"></i>
                                             </button>
                                         </label>
                                     </div>
+                                    <button type="submit" class="btn btn-secondary mt-4">{{ "Rechercher"|trans|raw }}</button>
                                 {{ form_end(form) }}
                             {%- else -%}
                                 {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Aucune page de résultats configurée pour ce moteur de recherche !!"|trans} only -%}
                             {%- endif -%}
+                        </div>
+                        <div class="wave-divider-top">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                                <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
+                            </svg>
                         </div>
                     </div>
                 </div>

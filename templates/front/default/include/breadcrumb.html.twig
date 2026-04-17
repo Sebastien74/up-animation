@@ -23,6 +23,7 @@
                            itemtype="https://schema.org/WebPage"
                            itemid="{{ absolute_url(item.url) }}"
                            href="{{ absolute_url(item.url) }}"
+                           aria-label="{{ item.title|striptags }}"
                            class="text-secondary d-inline-flex"
                            data-position="{{ loop.index }}">
                     {%- endif -%}

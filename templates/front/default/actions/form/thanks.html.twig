@@ -3,32 +3,37 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- block stylesheets -%}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName~'-'~frontTheme, null, webpack, {nonce: csp_nonce()}) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
     {{ parent() }}
-    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName, null, webpack) }}
 {%- endblock -%}
 
 {%- block javascripts -%}
     {{ parent() }}
-    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null,  webpack, {defer: true}) }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {defer: true, nonce: csp_nonce()}) }}
 {%- endblock -%}
 
 {%- set seoTitle = "Merci pour votre message."|trans -%}
-{%- set message = entity.intl.placeholder is defined and entity.intl.placeholder ? entity.intl.placeholder : "Merci pour votre message !"|trans|raw -%}
 {%- set slug = entity.slug is defined ? entity.slug : uniqId() -%}
 
 {%- block body -%}
-    {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
-        titleForce: 1,
-        pageTitle: 'Merci !'|trans,
-        template: websiteTemplate,
-        thumbConfiguration: thumbConfigurationHeader } -%}
-    <div id="form-thanks-container-{{ slug }}" class="form-thanks-container pt-5 pb-5 text-center d-flex align-items-center">
+    <div id="form-thanks-container-{{ slug }}" class="form-thanks-container pt-5 text-center d-flex align-items-center">
         <div class="row w-100">
             <div class="col-md-6 col-xl-4 mx-auto mt-5 mb-5 d-flex align-items-center">
-                <div class="form-thanks-card card bg-white form-success-card w-100">
+                <div class="form-thanks-card card mt-5 bg-light shadow form-success-card w-100">
                     <div class="card-body bg-transparent pt-4 pt-lg-5 pb-4 text-center">
-                        {{ 'fas check'|icon(null, 60, 'success') }}
-                        <div class="body mt-4 mb-3 text-bold">{{ message|raw }}</div>
+                        <i class="icon-check-circle text-success fz-lg"></i>
+                        <div class="body mt-4 mb-3 text-bold">
+                            {%- if entity.intl.placeholder -%}
+                                {{ entity.intl.placeholder|raw }}
+                            {%- else -%}
+                                <p>{{ "Merci pour votre message.<br><br>
+                                        Nous avons bien pris en compte votre demande et reviendrons vers vous dans les plus brefs délais.<br><br>
+                                        En attendant, nous vous remercions pour l’intérêt que vous portez à nos services.<br><br>
+                                        Bonne journée,<br><br>
+                                        L’équipe Up Animations!"|trans|raw }}</p>
+                            {%- endif -%}
+                        </div>
                     </div>
                     <div class="card-footer bg-transparent text-center px-4 pt-0 pb-4 pb-lg-5 border-0">
                         <a href="{{ path('front_index') }}" class="btn btn-primary d-inline-flex">

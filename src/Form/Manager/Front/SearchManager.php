@@ -9,9 +9,13 @@ use App\Entity\Layout;
 use App\Entity\Media\Media;
 use App\Entity\Module\Catalog\FeatureValue;
 use App\Entity\Module\Catalog\Product;
+use App\Entity\Module\Faq\Question;
+use App\Entity\Module\Newscast\Newscast;
 use App\Entity\Module\Search\Search;
 use App\Entity\Module\Search\SearchValue;
 use App\Model\MediaModel;
+use App\Model\Module\NewscastModel;
+use App\Model\Module\ProductModel;
 use App\Model\ViewModel;
 use App\Service\Content\SitemapService;
 use App\Service\Core\InterfaceHelper;
@@ -75,12 +79,12 @@ class SearchManager
         $results = [];
         $mode = 'boolean' === $search->getMode() ? self::BOOLEAN_MODE : self::LANGUAGE_MODE;
         $searchTerm = empty($this->clearText($searchTerm)) ? $searchTerm : $this->clearText($searchTerm);
-
         $this->uploadDirname = 'uploads/'.$website->getUploadDirname().'/';
 
         foreach ($search->getEntities() as $classname) {
             $interface = $this->interfaceHelper->generate($classname);
-            $results[$interface['name']] = [];
+            $interfaceName = 'pdf' === $classname ? 'pdf' : $interface['name'];
+            $results[$interfaceName] = [];
             if ('pdf' === $classname) {
                 $pdf = $this->getPDF($mode, $website, $searchTerm);
                 if ($pdf) {
@@ -105,7 +109,7 @@ class SearchManager
                     $featuresValue = $this->getByClassname(FeatureValue::class, $mode, $website, $searchTerm);
                     $queryResult = $this->getByRelations($classname, $mode, $website, $searchTerm, ['values' => ['items' => $featuresValue, 'subRelation' => 'value']]);
                     if ($queryResult) {
-                        $results[$interface['name']] = array_merge($results[$interface['name']], $queryResult);
+                        $results[$interfaceName] = array_merge($results[$interfaceName], $queryResult);
                     }
                 }
                 $referEntity = new $classname();
@@ -115,12 +119,12 @@ class SearchManager
                     $categories = $this->getByClassname($categoryClassname, $mode, $website, $searchTerm);
                     $queryResult = $this->getByRelations($classname, $mode, $website, $searchTerm, ['categories' => ['items' => $categories]]);
                     if ($queryResult) {
-                        $results[$interface['name']] = array_merge($results[$interface['name']], $queryResult);
+                        $results[$interfaceName] = array_merge($results[$interfaceName], $queryResult);
                     }
                 }
                 $queryResult = $this->getByClassname($classname, $mode, $website, ucfirst($searchTerm));
                 if ($queryResult) {
-                    $results[$interface['name']] = array_merge($results[$interface['name']], $queryResult);
+                    $results[$interfaceName] = array_merge($results[$interfaceName], $queryResult);
                 }
             }
         }
@@ -150,7 +154,10 @@ class SearchManager
 
         $searchQuery = $searchTerm;
         $searchTerms = array_map(
-            fn($term) => preg_replace('/[\'"]/', '', strtolower(trim($term))),
+            fn($term) => $term
+                    |> trim(...)
+                    |> strtolower(...)
+                    |> (fn($x) => preg_replace('/[\'"]/', '', $x)),
             explode(' ', $searchQuery)
         );
         $matchAgainst = '+'.implode(' +', array_map('strtolower', $searchTerms));
@@ -173,7 +180,7 @@ class SearchManager
     /**
      * Get result by classname.
      *
-     * @throws NonUniqueResultException|MappingException|QueryException
+     * @throws NonUniqueResultException|MappingException|QueryException|InvalidArgumentException
      */
     private function getByClassname(string $classname, string $mode, Website $website, string $searchTerm): array
     {
@@ -181,7 +188,10 @@ class SearchManager
         $repository = $this->entityManager->getRepository($classname);
 
         $searchTerms = array_map(
-            fn($term) => preg_replace('/[\'"]/', '', strtolower(trim($term))),
+            fn($term) => $term
+                    |> trim(...)
+                    |> strtolower(...)
+                    |> (fn($x) => preg_replace('/[\'"]/', '', $x)),
             explode(' ', $searchTerm)
         );
         $matchAgainst = '+'.implode(' +', array_map('strtolower', $searchTerms));
@@ -223,7 +233,14 @@ class SearchManager
         $results = $statement->getQuery()->getResult();
 
         foreach ($results as $key => $result) {
-            $entityModel = ViewModel::fromEntity($result[0], $this->coreLocator, ['disabledLayout' => true, 'disabledMedias' => true]);
+            $entity = $result[0];
+            $classname = $this->coreLocator->em()->getClassMetadata(get_class($entity))->getName();
+            $model = match ($classname) {
+                Product::class => ProductModel::class,
+                Newscast::class => NewscastModel::class,
+                default => ViewModel::class,
+            };
+            $entityModel = $model::fromEntity($result[0], $this->coreLocator, ['disabledLayout' => true, 'disabledMedias' => true]);
             $snippets = [];
             foreach (self::PROPERTIES as $property => $score) {
                 if (property_exists($entityModel->intl, $property)) {
@@ -333,7 +350,7 @@ class SearchManager
     /**
      * Init results.
      *
-     * @throws InvalidArgumentException|NonUniqueResultException|MappingException|QueryException|ReflectionException
+     * @throws InvalidArgumentException|NonUniqueResultException|MappingException|QueryException|ReflectionException|Exception
      */
     private function init(Search $search, array $queryResults, Website $website, ?string $textParameter = null, array $parameters = []): array
     {
@@ -448,7 +465,7 @@ class SearchManager
     /**
      * Get url infos.
      *
-     * @throws NonUniqueResultException|MappingException|ReflectionException|QueryException
+     * @throws NonUniqueResultException|MappingException|ReflectionException|QueryException|InvalidArgumentException
      */
     private function getInfos(mixed $findEntity, string $interfaceName, ?string $textParameter = null): array
     {
@@ -457,11 +474,11 @@ class SearchManager
 
         if ($findEntity instanceof MediaModel) {
             $infos['entity'] = $findEntity;
-            $infos['url'] = $this->uploadDirname.$findEntity->filename;
+            $infos['url'] = $this->uploadDirname.$findEntity->originalName;
             $infos['interfaceName'] = $interfaceName;
             $infos['infos'] = null;
-        } elseif ($findEntity instanceof Layout\Block) {
-            $entity = $this->entityManager->getRepository(Layout\Page::class)->findByBlock($findEntity);
+        } elseif ($interfaceName == 'block') {
+            $entity = $this->entityManager->getRepository(Layout\Page::class)->findByBlock($findEntity->entity);
             $entity = ViewModel::fromEntity($entity, $this->coreLocator, ['disabledLayout' => true, 'disabledMedias' => true]);
             $interfaceName = $this->interfaceHelper->generate(Layout\Page::class)['name'];
         } else {

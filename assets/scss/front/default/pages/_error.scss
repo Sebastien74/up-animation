@@ -31,6 +31,17 @@ $enable-alert: true;
    3 ) Core
 -----------------------------------*/
 
+#error-body, #content-page {
+
+    background-color: $light !important;
+
+    .footer-divider {
+        .shape-fill {
+            fill: $light !important;
+        }
+    }
+}
+
 .flash-bag-container {
 
     @include mediaQuery(max-md) {
@@ -47,16 +58,15 @@ $enable-alert: true;
     background-color: $white;
     background-size: cover;
     position: relative;
-    min-height: calc(100dvh - 70px - 169px);
 
     @include mediaQuery(max-lg) {
         padding-top: 5rem;
-        padding-bottom: 7rem;
+        padding-bottom: 2rem;
     }
 
     @include mediaQuery(min-lg) {
-        padding-top: 5rem;
-        padding-bottom: 7rem;
+        padding-top: 6rem;
+        padding-bottom: 2rem;
     }
 
     &:before {
@@ -66,7 +76,18 @@ $enable-alert: true;
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: transparentize($primary, .2);
+        background-color: $light;
+    }
+
+    .socials-list {
+
+        .baseline {
+            font-size: 20px;
+        }
+
+        i {
+            font-size: 40px;
+        }
     }
 
     #sitemap {
@@ -118,7 +139,7 @@ $enable-alert: true;
         line-height: rem(130px);
         font-weight: 900 !important;
         margin-bottom: 10px;
-        color: $primary-darken !important;
+        color: $secondary !important;
         text-transform: uppercase;
 
         @include mediaQuery(max-md) {
@@ -137,7 +158,7 @@ $enable-alert: true;
         font-size: rem(35px);
         font-weight: 500;
         margin: 0;
-        color: transparentize($white, .2) !important;
+        color: $primary !important;
         text-transform: uppercase;
 
         @include mediaQuery(min-lg) {
@@ -151,7 +172,7 @@ $enable-alert: true;
 
         font-weight: 300;
         line-height: 1.3rem;
-        color: transparentize($white, .4) !important;
+        color: transparentize($secondary, .4) !important;
 
         @include mediaQuery(min-lg) {
             margin-left: 4rem;

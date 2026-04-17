@@ -31,6 +31,18 @@
     {%- endif -%}
 
     {%- set displayMainMedia = false -%}
+    {%- set screensSizes = {} -%}
+    {%- set thumbSizes = {} -%}
+    {%- if asAgency -%}
+        {%- set screensSizes = {
+            mobile: {width: 575, height: 455},
+            tablet: {width: 575, height: 455},
+            desktop: {width: 575, height: 455}
+        } -%}
+    {%- else -%}
+        {%- set thumbSizes = thumbConfigurationHeader -%}
+    {%- endif -%}
+
     {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
         block: entity,
         customMedia: displayMainMedia ? entity.mainMedia : entity.headerMedia,
@@ -40,7 +52,8 @@
         contactUrl: asAgency ? entity.contactUrl : false,
         pageTitle: pageTitle,
         template: websiteTemplate,
-        thumbConfiguration: thumbConfigurationHeader
+        screensSizes: screensSizes,
+        thumbConfiguration: thumbSizes
     } -%}
 
 {%- elseif blockType == 'layout-title' and entity.intl.title -%}
@@ -147,9 +160,21 @@
 
 {%- elseif blockType == 'layout-image' -%}
 
+    {%- set screensSizes = {} -%}
+    {%- set thumbSizes = {} -%}
+    {%- if asAgency -%}
+        {%- set screensSizes = {
+            mobile: {width: 519, height: 410},
+            tablet: {width: 519, height: 410},
+            desktop: {width: 519, height: 410}
+        } -%}
+    {%- else -%}
+        {%- set thumbSizes = thumbConfigurationView -%}
+    {%- endif -%}
+
     {%- set mainMedia = entity.asAgency ? entity.mediasWithoutMain|first : entity.mainMedia -%}
     {%- if mainMedia -%}
-        <div class="masked-wrap masked-wrap-secondary image-wrap">{{ mainMedia|file(thumbConfiguration) }}</div>
+        <div class="masked-wrap masked-wrap-secondary image-wrap">{{ mainMedia|file(thumbSizes, {screensSizes: screensSizes}) }}</div>
     {%- endif -%}
 
 {%- elseif blockType == 'layout-catalog-lots-table' -%}

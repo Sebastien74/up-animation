@@ -4,11 +4,17 @@
     {%- set field = form['field_'~block.id] -%}
     {%- set isInvalid = messages['field_'~block.id~'_message'][0] is defined -%}
     {%- set class = field.vars.attr.class is defined ? field.vars.attr.class : null -%}
-    {%- set groupClass = field.vars.attr.group is defined and field.vars.attr.group
-        ? field.vars.attr.group : (field.vars.attr['data-group'] is defined and field.vars.attr['data-group'] ? field.vars.attr['data-group'] : null) -%}
+    {%- set groupClass = field.vars['row_attr']['class'] is defined and field.vars['row_attr']['class']
+        ? field.vars['row_attr']['class'] : (field.vars.attr['data-group'] is defined and field.vars.attr['data-group'] ? field.vars.attr['data-group'] : null) -%}
     {%- set groupClass = 'btn' in class and 'justify-content-end' in block.elementsAlignment ? groupClass~'d-flex align-items-center' : groupClass -%}
     {%- set value = messages['field_'~block.id~'_value'][0] is defined ? messages['field_'~block.id~'_value'][0] : null -%}
-    <div class="form-group {% if isInvalid %} is-invalid{% endif %}{% if groupClass %} {{ groupClass }}{% endif %}">
+    {%- set asEmail = 'email-group' in groupClass -%}
+    {%- set asEmailConfirm = asEmail and form.children['email_confirm'] is defined -%}
+    {%- if asEmailConfirm %}
+        <div class="row">
+            <div class="col-lg-6">
+    {% endif %}
+    <div class="form-group{% if isInvalid %} is-invalid{% endif %}{% if groupClass %} {{ groupClass }}{% endif %}">
         {%- if 'btn' in class and 'justify-content-end' in block.elementsAlignment -%}
             <small class="text-italic asterisk-group me-3 mb-3"><sup class="text-danger asterisk">*</sup>&nbsp;{{ "Champs obligatoires"|trans|raw }}</small>
         {%- endif -%}
@@ -38,4 +44,11 @@
             <small class="text-italic asterisk-group"><sup class="text-danger asterisk">*</sup>&nbsp;{{ "Champs obligatoires"|trans|raw }}</small>
         {%- endif -%}
     </div>
+    {% if asEmailConfirm %}
+            </div>
+            <div class="col-lg-6">
+                {{ form_row(form.children['email_confirm'], {value: value}) }}
+            </div>
+        </div>
+    {% endif %}
 {%- endif -%}

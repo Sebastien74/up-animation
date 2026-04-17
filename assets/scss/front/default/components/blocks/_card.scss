@@ -101,6 +101,18 @@
             }
         }
 
+        &.as-file {
+            a {
+                span {
+                    width: 25px;
+                    height: 25px;
+                    border-radius: 50%;
+                    aspect-ratio: 1/1;
+                    font-size: 14px;
+                }
+            }
+        }
+
         &.product-card {
 
             .card-header {

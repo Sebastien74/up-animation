@@ -24,10 +24,29 @@
     <section id="exception-block" {% if displaySitemap %} class="mb-5" {% endif %}>
         <div id="errorStatus">
             <div class="errorStatus">
-                <div class="errorStatus-code"></div>
                 {%- include 'bundles/TwigBundle/Exception/messages.html.twig' -%}
-                <a href="{{ path('front_index') }}" class="btn btn-primary-darken d-inline-flex mt-4 back-to-home">
-                    {{ "Découvrir le site"|trans|raw }}
+                {%- if website.networks is defined and website.networks is not empty -%}
+                    <div class="social-container">
+                        <strong class="baseline fw-900 d-inline-block mb-3">{{ "Suivez-nous sur :"|trans|unescape|raw }}</strong>
+                        <nav class="socials-list d-inline-flex justify-content-center justify-content-sm-start me-3 gap-2 w-100"
+                             aria-label="{{"Navigation des liens sociaux"|trans|striptags }}">
+                            {%- for name, infos in website.networks -%}
+                                {%- if infos.link and infos.dirname -%}
+                                    {%- set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags -%}
+                                    <a href="{{ infos.link }}" class="{{ name }} p-0 d-inline-flex"
+                                       rel="noopener noreferrer" target="_blank"
+                                       data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ name|capitalize|striptags }}"
+                                       aria-label="{{ label|capitalize|striptags }}">
+                                        <i class="icon-{{ name|lower }} position-relative initial" aria-hidden="true"></i>
+                                        <span class="visually-hidden">{{ label }}</span>
+                                    </a>
+                                {%- endif -%}
+                            {%- endfor -%}
+                        </nav>
+                    </div>
+                {%- endif -%}
+                <a href="{{ path('front_index') }}" class="btn btn-secondary d-inline-flex mt-4 back-to-home">
+                    {{ "Découvrir nos prestations"|trans|raw }}
                 </a>
             </div>
         </div>

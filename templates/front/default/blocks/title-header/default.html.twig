@@ -31,7 +31,7 @@
     {%- set styleClass = large and styleClass ? styleClass~' align-items-start as-large' : (large ? 'align-items-start as-large' : 'align-items-end') -%}
     <div class="title-header-block container position-relative{% if large %} as-large{% endif %}{% if backgroundColor %} {{ backgroundColor }}{% endif %}{% if styleClass %} {{ styleClass }}{% endif %}">
         <div class="row">
-            <div class="col-xl-7 d-flex title-content position-relative">
+            <div class="col-xl-7 pe-xl-5 d-flex title-content position-relative">
                 <div class="inner">
                     {%- if displayBreadcrumb -%}
                         {%- set pageTitle = pageTitle is defined ? pageTitle : title -%}
@@ -67,7 +67,7 @@
                             {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                 intl: {
                                     link: contactUrl,
-                                    linkStyle: 'btn btn-blur btn-blur-primary mt-4',
+                                    linkStyle: 'btn btn-blur btn-blur-primary mt-5',
                                     linkLabel: "Nous contacter"|trans,
                                 }
                             } only -%}
@@ -78,10 +78,12 @@
             {%- if mediaPath or displayMedia -%}
                 <div class="col-xl-5 media-content d-flex align-items-end">
                     <div class="masked-wrap masked-wrap-primary">
+                        {%- set screensSizes = screensSizes is defined ? screensSizes : {} -%}
+                        {%- set thumbSizes = screensSizes is empty ? thumbConfiguration : {} -%}
                         {%- if mediaPath -%}
-                            {{ asset(mediaPath)|file(thumbConfiguration, {lazyLoad: false}) }}
+                            {{ asset(mediaPath)|file(thumbSizes, {lazyLoad: false, screensSizes: screensSizes}) }}
                         {%- elseif displayMedia -%}
-                            {{ displayMedia|file(thumbConfiguration, {lazyLoad: false}) }}
+                            {{ displayMedia|file(thumbSizes, {lazyLoad: false, screensSizes: screensSizes}) }}
                         {%- endif -%}
                     </div>
                 </div>

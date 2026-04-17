@@ -17,6 +17,12 @@
         padding-left: calc(var(--bs-gutter-x) * .5);
     }
 
+    form.search-engine-form {
+        .form-control {
+            height: 100%;
+        }
+    }
+
     .checkbox-group, .choice-group {
 
         label {
@@ -141,8 +147,8 @@
         }
 
         .input-group-text {
-            border-top-right-radius: $input-border-radius !important;
-            border-bottom-right-radius: $input-border-radius !important;
+            border-top-right-radius: $input-border-radius-size !important;
+            border-bottom-right-radius: $input-border-radius-size !important;
         }
     }
 

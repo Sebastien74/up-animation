@@ -12,7 +12,12 @@
 
         .modal {
 
+            .modal-body {
+                z-index: 10;
+            }
+
             .baseline {
+                font-size: 17px !important;
                 line-height: 1.2 !important;
             }
 
@@ -25,16 +30,16 @@
             }
 
             .form-control {
-                border: 1px solid $primary !important;
+                border: 1px solid $gray-400 !important;
                 border-right: 0 !important;
                 border-radius: 16px 0 0 16px !important;
-                background-color: $lighten !important;
+                background-color: $gray-400 !important;
                 box-shadow: none !important;
-                color: $black !important;
+                color: $secondary !important;
                 font-size: 1rem !important;
                 font-weight: 400 !important;
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
+                padding-left: 1.25rem !important;
+                padding-right: 1.25rem !important;
                 height: 50px !important;
                 width: 100% !important;
             }
@@ -43,12 +48,12 @@
                 color: $placeholder-color;
                 font-family: $font-primary;
                 font-weight: $placeholder-font-weight;
-                font-size: $placeholder-font-size;
+                font-size: 1rem;
             }
 
             .input-group-text {
-                background-color: $lighten !important;
-                border: 1px solid $primary !important;
+                background-color: $gray-400 !important;
+                border: 1px solid $gray-400 !important;
                 border-left: 0 !important;
                 width: 70px !important;
                 border-radius: 0 16px 16px 0 !important;
@@ -61,6 +66,27 @@
                 line-height: 1.5;
                 text-align: center;
                 white-space: nowrap;
+            }
+
+            .wave-divider-top {
+
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                overflow: hidden;
+                line-height: 0;
+                z-index: 0;
+
+                svg {
+
+                    width: calc(162% + 1.3px);
+                    height: 148px;
+
+                    .shape-fill {
+                        fill: $beige;
+                    }
+                }
             }
         }
     }

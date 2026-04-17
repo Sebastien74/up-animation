@@ -117,7 +117,7 @@ class NewscastController extends ActionController
         $this->setInterfaceName('newscast');
         $this->setAssociatedThumbMethod('category');
         $this->setAssociatedEntitiesProperties(['category']);
-        $this->setAssociatedEntitiesLimit(10);
+        $this->associatedEntitiesLimit = 10;
         $this->setAssociatedEntitiesLastDate(9999999);
 
         $mainCategory = $this->getDefaultCategory($this->getWebsite());

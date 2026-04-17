@@ -161,12 +161,15 @@
 {%- endmacro -%}
 
 {%- macro news(vars) -%}
+    {%- set thumbConfiguration = vars.thumbConfiguration is defined ? vars.thumbConfiguration : [] -%}
+    {%- set screensSizes = vars.screensSizes is defined ? vars.screensSizes : false -%}
     <article class="card news-card bg-secondary-lighten shadow bg-lght border-0 overflow-hidden position-relative h-100">
         {%- if vars.webmaster is defined and granted('ROLE_ADMIN') -%}
             {{ component('WebmasterEdit', vars.webmaster) }}
         {%- endif -%}
         <div class="card-header p-0">
-            {{ vars.entity.mainMedia|file(vars.thumbConfiguration, {
+            {{ vars.entity.mainMedia|file(thumbConfiguration, {
+                screensSizes: screensSizes,
                 parentEntity: vars.entity,
                 targetLink: vars.entity.url,
                 isInBox: true,
@@ -191,7 +194,9 @@
             {%- endif -%}
         </div>
         <div class="card-footer border-0 d-flex justify-content-end">
-            <a href="{{ vars.entity.url }}" class="text-uppercase text-primary fw-500">{{ "En savoir +"|trans|raw }}</a>
+            <a href="{{ vars.entity.url }}" class="text-uppercase text-underline text-secondary fw-800 small d-inline-flex align-items-center">
+                <span class="text-secondary text-hocer-primary">{{ "En savoir +"|trans|raw }}</span>
+            </a>
         </div>
     </article>
 {%- endmacro -%}
@@ -199,6 +204,7 @@
 {%- macro product(vars) -%}
     {%- set entity = vars.entity -%}
     {%- set catalog = entity.catalog -%}
+    {%- set isIndex = vars.isIndex is defined ? vars.isIndex : false -%}
     {%- set titleForce = vars.titleForce is defined ? vars.titleForce : 3 -%}
     {%- set thumbConfiguration = vars.thumbConfiguration is defined ? vars.thumbConfiguration : [] -%}
     {%- set screensSizes = vars.screensSizes is defined ? vars.screensSizes : false -%}
@@ -223,12 +229,10 @@
                 }) }}
             </a>
             {%- set element = entity.indexUrl ? 'a' : span -%}
-            {%- set asLink = 'a' == element -%}
+            {%- set asLink = 'a' == element and not isIndex -%}
             {%- set linkLabel = catalog.intl.placeholder ? catalog.intl.placeholder : 'Tout voir'|trans -%}
             <{{ element }}{% if asLink %} href="{{ entity.indexUrl }}"{% endif %} class="circle-wrap-icon shadow bg-{{ entity.color }} d-flex align-items-center justify-content-center"
-                  data-bs-toggle="tooltip"
-                  data-bs-title="{{ linkLabel|striptags }}"
-                  aria-label="{{ linkLabel|striptags }}">
+                {% if asLink %}data-bs-toggle="tooltip" data-bs-title="{{ linkLabel|striptags }}" aria-label="{{ linkLabel|striptags }}"{% endif %}>
                 <i class="icon-headset text-white"></i>
             </{{ element }}>
         </div>

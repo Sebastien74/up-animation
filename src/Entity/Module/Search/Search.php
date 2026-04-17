@@ -74,7 +74,7 @@ class Search extends BaseEntity
     #[ORM\JoinColumn(nullable: false)]
     private ?Website $website = null;
 
-    #[ORM\OneToMany(mappedBy: 'search', targetEntity: SearchValue::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: SearchValue::class, mappedBy: 'search', cascade: ['persist'], orphanRemoval: true)]
     private ArrayCollection|PersistentCollection $values;
 
     /**

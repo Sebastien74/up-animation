@@ -89,7 +89,7 @@
                 {%- if products is not empty -%}
                     {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader'} only -%}
                 {%- endif -%}
-                {%- include 'front/'~websiteTemplate~'/actions/catalog/results.html.twig' -%}
+                {%- include 'front/'~websiteTemplate~'/actions/catalog/results.html.twig' with {isIndex: true} -%}
                 {%- if scrollInfinite or showMoreBtn -%}
                     <div id="scroller-loader" class="w-100 mt-5 d-none text-center">
                         <div class="spinner-border" role="status"></div>

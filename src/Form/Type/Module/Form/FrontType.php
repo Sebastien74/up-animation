@@ -156,6 +156,14 @@ class FrontType extends AbstractType
         $this->options = [];
         $this->getOptions($fieldType, $block, $value);
         $builder->add($fieldName, $fieldType, $this->options);
+        if (Type\EmailType::class === $fieldType) {
+            $this->options = [];
+            $this->getOptions($fieldType, $block, $value);
+            $this->options['mapped'] = false;
+            $this->options['label'] = $this->translator->trans('Confirmer votre email', [], 'front_form');
+            $this->options['constraints'][] = new Validator\EmailConfirm(['fieldToCompare' => $fieldName]);
+            $builder->add('email_confirm', $fieldType, $this->options);
+        }
     }
 
     /**

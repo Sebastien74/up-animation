@@ -306,10 +306,10 @@ body.menu-open {
 
         .link-level-1, #locales-switcher {
 
-            transition: color .5s ease-in-out;
+            transition: color $transition-base;
 
             &:hover {
-                transition: color .5s ease-in-out;
+                transition: color $transition-base;
                 color: $primary !important;
             }
         }
@@ -417,12 +417,12 @@ body.menu-open {
             @include mediaQuery(min-lg) {
 
                 &.link-level-2, &.link-level-2 span {
-                    transition: color $transition-fast;
+                    transition: color $transition-base;
                 }
 
                 &.link-level-2:hover, &.link-level-2:hover span {
                     color: $primary !important;
-                    transition: color $transition-fast;
+                    transition: color $transition-base;
                 }
             }
         }

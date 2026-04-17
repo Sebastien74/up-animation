@@ -119,9 +119,7 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Filtres des produits par catalogues', [], 'admin'),
                 'required' => false,
                 'class' => Catalog::class,
-                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                    'admin')
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
@@ -173,9 +171,7 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Filtres des produits par catégories', [], 'admin'),
                 'required' => false,
                 'class' => Category::class,
-                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                    'admin')
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
@@ -201,9 +197,7 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Filtres des produits par sous-catégories', [], 'admin'),
                 'required' => false,
                 'class' => SubCategory::class,
-                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                    'admin')
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
@@ -212,6 +206,9 @@ class ListingType extends AbstractType
                         ->setParameter('website', $this->website)
                         ->addSelect('c')
                         ->orderBy('c.adminName', 'ASC');
+                },
+                'group_by' => function (SubCategory $subCategory) {
+                    return $subCategory->getCatalogcategory()->getAdminName();
                 },
                 'choice_label' => function ($entity) {
                     return strip_tags($entity->getAdminName());
@@ -231,9 +228,7 @@ class ListingType extends AbstractType
                 'label' => $this->translator->trans('Filtres des produits par caractéristiques', [], 'admin'),
                 'required' => false,
                 'class' => Feature::class,
-                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                    'admin')
-                ],
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-9'],
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c')
@@ -348,8 +343,7 @@ class ListingType extends AbstractType
                 'entry_options' => [
                     'attr' => ['class' => 'col-12 feature',
                         'icon' => 'filter',
-                        'caption' => $this->translator->trans('Filtres des produits par valeurs', [],
-                            'admin'),
+                        'caption' => $this->translator->trans('Filtres des produits par valeurs', [], 'admin'),
                         'button' => $this->translator->trans('Ajouter une valeur', [], 'admin')
                     ],
                     'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],

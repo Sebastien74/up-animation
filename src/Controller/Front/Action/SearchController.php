@@ -76,6 +76,8 @@ class SearchController extends FrontController
             'websiteTemplate' => $template,
             'form' => $displayForm ? $form->createView() : null,
             'website' => $website,
+            'logos' => $configuration->logos,
+            'information' => $website->information,
             'modal' => $modal,
             'btn' => $button,
             'scrollInfinite' => $search->isScrollInfinite(),

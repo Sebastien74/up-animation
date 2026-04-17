@@ -16,10 +16,6 @@
                 <div class="input-group">
                     <div class="position-relative">
                         {{ form_widget(form.search) }}
-                        <div class="autocomplete" data-ajax="{{ path('ai_search_embedding', {
-                            'tool': 8,
-                            'locale': app.request.locale,
-                        }) }}" data-text="{{ app.request.get('search') }}"></div>
                     </div>
                     <button type="submit" class="input-group-text search-engine-submit cursor">
                         {{ 'far search'|icon(20, 20, 'search') }}
@@ -32,17 +28,17 @@
     <div id="search-results" class="mt-2">
 
         {%- if search.counter and searchText -%}
-            <p class="search-infos mb-0 mt-4 d-flex align-items-center">
+            <p class="search-infos mb-0 mt-4 d-flex text-uppercase align-items-center gap-1">
                 {%- if counts.all is defined -%}
-                    <strong class="count badge bg-primary-darken text-white me-2 fw-500 py-2 px-3">{{ counts.all }}</strong>
+                    <span class="count">{{ counts.all }}</span>
                 {%- endif -%}
-                {%- set message = "Aucun résultat pour la recherche :"|trans -%}
+                {%- set message = "Aucun résultat pour la recherche :"|trans|unescape|raw -%}
                 {%- if counts.all is defined and counts.all == 1 -%}
-                    {%- set message = "Résultat trouvé pour la recherche :"|trans -%}
+                    {%- set message = "Résultat trouvé pour la recherche :"|trans|unescape|raw -%}
                 {%- elseif counts.all is defined and counts.all > 1 -%}
-                    {%- set message = "Résultats trouvés pour la recherche :"|trans -%}
+                    {%- set message = "Résultats trouvés pour la recherche :"|trans|unescape|raw -%}
                 {%- endif -%}
-                <span class="result-title text-primary">{{ message|raw }} <strong>"{{ searchText|raw }}"</strong></span>
+                <span class="result-title">{{ message|raw }} <strong class="text-initial">"{{ searchText|raw|unescape|raw }}"</strong></span>
             </p>
         {%- endif -%}
 

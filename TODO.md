@@ -13,6 +13,14 @@ https://preview.themeforest.net/item/eventen-event-conference-meetup-react-templ
 
 Faire une page FAQ
 
+Désindexer la page 404, Merci form contact
+
+Faire la page 404
+
+Faire base email front
+
+Faire la page merci form en responsive
+
 Voir ->findFullEntity createQueryBuilder * 2 dans if ($hasLayout && $layout = $entity->getLayout()) {
 
 Fakefiller form validation pas de message d'erreur

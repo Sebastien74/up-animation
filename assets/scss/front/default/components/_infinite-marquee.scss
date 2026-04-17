@@ -56,8 +56,8 @@
 
             .marquee-item {
 
-                width: 150px;
-                flex: 0 0 150px;
+                width: 120px;
+                flex: 0 0 120px;
 
                 .img-loader-wrap {
                     display: flex !important;
@@ -78,6 +78,19 @@
     &:hover .marquee-inner,
     &:active .marquee-inner {
         animation-play-state: paused !important;
+    }
+}
+
+@each $suffix, $color in $theme-colors {
+    .layout-zone.bg-#{$suffix} {
+        .marquee {
+            &::before {
+                background: linear-gradient(to right, $color 0%, transparentize($color, 1) 100%);
+            }
+            &::after {
+                background: linear-gradient(to left, $color 0%, transparentize($color, 1) 100%);
+            }
+        }
     }
 }
 

@@ -1,11 +1,12 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard -%}
+{%- set isIndex = isIndex is defined ? isIndex : false -%}
 {%- set maxPage = maxPage is defined ? maxPage : 1 -%}
 {%- set pageNum = pageNum is defined ? pageNum : 1 -%}
 {%- set colSize = 'agencies' == listing.slug ? 3 : 3 -%}
 
-<div id="results" class="results row row-container d-flex justify-content-center listing-{{ listing.slug }}" data-page="{{ pageNum }}" data-max="{{ maxPage }}">
+<div id="results" class="results row row-container d-flex listing-{{ listing.slug }}" data-page="{{ pageNum }}" data-max="{{ maxPage }}">
     {%- for product in products -%}
         <div class="col-md-6 col-lg-4 col-xl-{{ colSize }} item my-3 position-relative">
             {{ component('WebmasterEdit', {
@@ -25,6 +26,7 @@
             {%- else -%}
                 {{ macroCard.product({
                     entity: product,
+                    isIndex: isIndex,
                     screensSizes: {
                         mobile: {width: 456, height: 295},
                         tablet: {width: 456, height: 295},
