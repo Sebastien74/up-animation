@@ -13,6 +13,8 @@ https://preview.themeforest.net/item/eventen-event-conference-meetup-react-templ
 
 Faire une page FAQ
 
+Faire auto completion sur champs moteur de recherche
+
 Désindexer la page 404, Merci form contact
 
 Faire la page 404
