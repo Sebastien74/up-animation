@@ -66,7 +66,7 @@ export default function (sliders) {
                     let focusMediumPc = slider.dataset.focusMediumPc ? slider.dataset.focusMediumPc : focusTablet;
                     let focusMiniPc = slider.dataset.focusMiniPc ? slider.dataset.focusMiniPc : focusMediumPc;
                     let gap = slider.dataset.gap ? slider.dataset.gap : '0rem';
-                    let gapMobile = slider.dataset.gapMobile ? slider.dataset.gapMobile : focus;
+                    let gapMobile = slider.dataset.gapMobile ? slider.dataset.gapMobile : gap;
                     let gapTablet = slider.dataset.gapTablet ? slider.dataset.gapTablet : gapMobile;
                     let gapMediumPc = slider.dataset.gapMediumPc ? slider.dataset.gapMediumPc : gapTablet;
                     let gapMiniPc = slider.dataset.gapMiniPc ? slider.dataset.gapMiniPc : gapMediumPc;

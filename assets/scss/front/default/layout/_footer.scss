@@ -199,6 +199,14 @@
        6 ) Links
     -----------------------------------*/
 
+    @include mediaQuery(max-md) {
+        .menus-right {
+            ul:last-child {
+                margin-bottom: 0 !important;
+            }
+        }
+    }
+
     .link,
     .footer-link,
     #footer-bottom .link {
@@ -304,8 +312,15 @@
     -----------------------------------*/
 
     #footer-bottom {
+
         * {
             font-size: 14px;
+        }
+
+        @include mediaQuery(max-md) {
+            li {
+                width: 100%;
+            }
         }
     }
 

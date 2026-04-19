@@ -416,12 +416,27 @@ picture {
     }
 
     .wave-divider-top {
-        top: -148px;
+
+        @include mediaQuery(max-md) {
+            top: -90px;
+        }
+
+        @include mediaQuery(min-md) {
+            top: -148px;
+        }
     }
 
     .wave-divider-top svg {
-        width: calc(162% + 1.3px);
-        height: 148px;
+
+        @include mediaQuery(max-md) {
+            width: calc(220% + 1.3px);
+            height: 90px;
+        }
+
+        @include mediaQuery(min-md) {
+            width: calc(162% + 1.3px);
+            height: 148px;
+        }
     }
 
     .wave-divider-top,
@@ -469,12 +484,27 @@ picture {
 
     .curve-divider-bottom-left {
 
-        bottom: -73px;
         transform: rotatex(180deg);
 
+        @include mediaQuery(max-md) {
+            bottom: -44px;
+        }
+
+        @include mediaQuery(min-md) {
+            bottom: -73px;
+        }
+
         svg {
-            width: calc(298% + 1.3px);
-            height: 74px;
+
+            @include mediaQuery(max-md) {
+                width: calc(800% + 1.3px);
+                height: 45px;
+            }
+
+            @include mediaQuery(min-md) {
+                width: calc(298% + 1.3px);
+                height: 74px;
+            }
         }
     }
 
@@ -486,15 +516,31 @@ picture {
     }
 
     .curve-divider-top {
+
         svg {
-            height: 50px;
+
+            @include mediaQuery(max-md) {
+                height: 25px;
+            }
+
+            @include mediaQuery(min-md) {
+                height: 50px;
+            }
         }
     }
 
     .curve-divider-top,
     .wave-divider-bottom {
+
         svg {
-            width: calc(110% + 1.3px);
+
+            @include mediaQuery(max-md) {
+                width: calc(200% + 1.3px);
+            }
+
+            @include mediaQuery(min-md) {
+                width: calc(110% + 1.3px);
+            }
         }
     }
 
@@ -514,8 +560,16 @@ picture {
     }
 
     .wave-divider-bottom {
+
         svg {
-            height: 173px;
+
+            @include mediaQuery(max-md) {
+                height: 90px;
+            }
+
+            @include mediaQuery(min-md) {
+                height: 173px;
+            }
         }
     }
 

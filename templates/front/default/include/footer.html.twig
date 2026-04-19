@@ -13,8 +13,8 @@
 
 {%- macro uaContact(website, icon, title, type, data, label) -%}
     <div class="col-12 col-lg-3">
-        <div class="contact-item h-100 d-flex align-items-center justify-content-center py-3">
-            <div class="h-100 d-flex align-items-center gap-3">
+        <div class="contact-item h-100 d-flex align-items-center justify-content-center py-2 py-md-3">
+            <div class="h-100 d-flex flex-column flex-md-row text-center text-md-start align-items-center gap-3">
                 <div class="contact-icon d-flex align-items-center justify-content-center rounded-3" aria-hidden="true">
                     <i class="icon-{{ icon }} text-secondary"></i>
                 </div>
@@ -77,19 +77,19 @@
         </div>
     </section>
 
-    <section class="footer-main py-5">
+    <section class="footer-main pt-4 pt-md-5 pb-5">
         <div class="container">
             <div class="row m-0 g-4">
-                <div class="col-12 col-lg-4 pe-lg-5">
+                <div class="col-12 col-lg-4 pe-lg-5 mt-0">
                     <div class="brand pe-lg-4">
                         {%- if logo -%}
                             <a class="d-inline-block" aria-label="{{ companyName|striptags }}"
                                href="{{ app.request.getSchemeAndHttpHost() }}">
                                 {{ asset(logo)|file({}, {
                                     screensSizes: {
-                                        mobile: {width: null, height: 120},
-                                        tablet: {width: null, height: 120},
-                                        desktop: {width: null, height: 120}
+                                        mobile: {width: 139, height: 75},
+                                        tablet: {width: 180, height: 100},
+                                        desktop: {width: 220, height: 120}
                                     },
                                     title: companyName,
                                     id: 'main-footer-logo',
@@ -172,13 +172,13 @@
                 <div class="col-12 col-lg-8 ps-lg-5">
                     <div class="row g-4">
                         {%- if catalogMenus.services is not empty or catalogMenus.performances is not empty -%}
-                            <div class="col-12 col-md-6">
+                            <div class="menus-left col-12 col-md-6">
                                 {{ macro.menu(catalogMenus, 'services', 'Nos prestations'|trans) }}
                                 {{ macro.menu(catalogMenus, 'performances', 'Spectacles'|trans) }}
                             </div>
                         {%- endif -%}
                         {%- if catalogMenus.animations is not empty or catalogMenus.rentals is not empty -%}
-                            <div class="col-12 col-md-6">
+                            <div class="menus-right col-12 col-md-6">
                                 {{ macro.menu(catalogMenus, 'animations', 'Animations création'|trans) }}
                                 {{ macro.menu(catalogMenus, 'rentals', 'Nos locations'|trans) }}
                             </div>
@@ -190,7 +190,7 @@
                             {%- for agency in labels -%}{{ agency|raw }}{% if not loop.last %}{% if loop.revindex0 == 1 %} {{ 'et'|trans }} {% else %}, {% endif %}{%- endif -%}{%- endfor -%}
                         {%- endset -%}
                         <div class="col-12 mt-0">
-                            <hr class="sep mb-4">
+                            <hr class="sep my-4">
                             <p class="mb-0 small text-white-75 agencies-body">
                                 {% trans with {'%agency_list%': agency_list|raw} %}
                                     Découvrez <strong class="text-white-75 fw-600">Up Animations</strong> expert en

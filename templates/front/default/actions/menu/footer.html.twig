@@ -1,7 +1,7 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- set dashed = dashed is defined ? dashed : isFooter -%}
-{%- set alwaysHorizontal = alwaysHorizontal is defined ? alwaysHorizontal : not entity.vertical -%}
+{%- set alwaysHorizontal = (alwaysHorizontal is defined and alwaysHorizontal) or entity.vertical -%}
 {%- set isHorizontal = isHorizontal or alwaysHorizontal -%}
 {%- set links = tree.main is defined ? tree.main : [] -%}
 {%- set accessibilityActive = website.configuration.accessibilityStatus -%}

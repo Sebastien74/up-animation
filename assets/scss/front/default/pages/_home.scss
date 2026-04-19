@@ -62,7 +62,7 @@ $enable-breadcrumb: false;
     padding-bottom: 9rem;
 
     @include mediaQuery(max-md) {
-        padding-top: 6rem;
+        padding-top: 7.5rem;
     }
 
     @include mediaQuery(min-md) {
@@ -73,17 +73,13 @@ $enable-breadcrumb: false;
 
         .content-wrap {
 
-            > strong {
-                @include rfs(20px);
-            }
-
             .caption-title {
-                @include rfs(85px);
+                font-size: clamp(2.5rem, 5vw, 5.3125rem);
                 line-height: 109%;
             }
 
             .body * {
-                font-size: 26px;
+                font-size: clamp(1.35rem, 2vw, 1.625rem);
                 line-height: 1.2;
             }
         }

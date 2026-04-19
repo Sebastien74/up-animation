@@ -77,7 +77,10 @@
     @include make-container-fluid-left-right();
     @include make-container-fluid-right();
 
-    padding-right: 0 !important;
+    @include mediaQuery(min-md) {
+        padding-right: 0 !important;
+    }
+
     overflow: hidden;
 
     > .row-container {

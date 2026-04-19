@@ -298,6 +298,11 @@
 
 @include mediaQuery(max-md) {
 
+    .splide__track {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
     .splide.not-mobile {
 
         visibility: visible !important;

@@ -43,7 +43,7 @@ use Symfony\WebpackEncoreBundle\Twig\EntryFilesTwigExtension;
 ])]
 class CoreLocator implements CoreLocatorInterface
 {
-    private const array ALLOWED_IPS = ['176.135.112.19', '2001:861:43c3:ce70:448f:74b:e526:cdae'];
+    private const array ALLOWED_IPS = ['176.135.112.19', '2001:861:43c3:ce70:448f:74b:e526:cdae', '2001:861:43c3:ce70:60b8:f71:1c9:4843'];
     private array $cache = [];
 
     /**
