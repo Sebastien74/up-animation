@@ -102,8 +102,7 @@ class ProductType extends AbstractType
                     'display' => 'search',
                     'class' => Category::class,
                     'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                    'attr' => ['placeholder' => $this->translator->trans('Sélectionnez', [],
-                        'admin')
+                    'attr' => ['placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
                     ],
                     'row_attr' => ['class' => 'col-12'],
                     'query_builder' => function (EntityRepository $er) {
@@ -122,8 +121,7 @@ class ProductType extends AbstractType
                     'required' => false,
                     'display' => 'search',
                     'class' => Category::class,
-                    'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                        'admin')
+                    'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
                     ],
                     'row_attr' => ['class' => 'col-12'],
                     'query_builder' => function (EntityRepository $er) {
@@ -230,34 +228,84 @@ class ProductType extends AbstractType
                 $extraFields = [];
                 $searchModule = $this->entityManager->getRepository(Module::class)->findOneBy(['slug' => 'search']);
                 $searchModuleActive = $this->entityManager->getRepository(Configuration::class)->moduleExist($options['website'], $searchModule);
-                $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introduction' => 'editor', 'body'];
+                $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introduction' => 'col-lg-6 editor', 'body' => 'col-lg-6'];
                 if ($searchModuleActive) {
-                    $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introduction' => 'editor', 'body', 'associatedWords'];
+                    $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introductionTitle', 'introduction' => 'col-12 editor', 'bodyTitle', 'body' => 'col-12', 'associatedWords'];
                 }
-                if ('agencies' === $catalogSlug) {
-                    $fields['introduction'] = 'col-lg-6 editor';
-                    $fields['body'] = 'col-lg-6';
+                if ('services' === $catalogSlug) {
+                    $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introduction' => 'col-12 editor', 'body' => 'col-12', 'associatedWords'];
+                }
+                if ('services' === $catalogSlug) {
                     $extraFields = [
-                        'gather' => [
-                            'type' => Type\TextareaType::class,
+                        'introductionTitle' => [
+                            'type' => Type\TextType::class,
                             'required' => false,
-                            'label' => $this->translator->trans('Réunir', [], 'admin'),
-                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
-                            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
+                            'label' => $this->translator->trans("Titre de l'introduction", [], 'admin'),
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin')],
+                            'row_attr' => ['class' => 'col-12 editor'],
                         ],
-                        'sympathise' => [
-                            'type' => Type\TextareaType::class,
+                        'bodyTitle' => [
+                            'type' => Type\TextType::class,
                             'required' => false,
-                            'label' => $this->translator->trans('Sympathiser', [], 'admin'),
-                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
-                            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
+                            'label' => $this->translator->trans('Titre de la description', [], 'admin'),
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin')],
+                            'row_attr' => ['class' => 'col-12 editor'],
                         ],
-                        'impress' => [
+                        'bodyTitleSecond' => [
+                            'type' => Type\TextType::class,
+                            'required' => false,
+                            'label' => $this->translator->trans('Titre de description', [], 'admin'),
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin')],
+                            'row_attr' => ['class' => 'col-12 editor'],
+                        ],
+                        'bodySecond' => [
                             'type' => Type\TextareaType::class,
                             'required' => false,
-                            'label' => $this->translator->trans('Marquer', [], 'admin'),
+                            'label' => $this->translator->trans('Description', [], 'admin'),
                             'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
-                            'row_attr' => ['class' => 'col-12 col-lg-4 editor'],
+                            'row_attr' => ['class' => 'col-12 editor'],
+                        ],
+                        'advendisingTitleFirst' => [
+                            'type' => Type\TextType::class,
+                            'required' => false,
+                            'label' => $this->translator->trans('Titre de la mise en avant', [], 'admin'),
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin')],
+                            'row_attr' => ['class' => 'col-12 editor'],
+                        ],
+                        'advendisingFirst' => [
+                            'type' => Type\TextareaType::class,
+                            'required' => false,
+                            'label' => $this->translator->trans('Mise en avant', [], 'admin'),
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
+                            'row_attr' => ['class' => 'col-12 editor'],
+                        ],
+                        'advendisingTitleSecond' => [
+                            'type' => Type\TextType::class,
+                            'required' => false,
+                            'label' => $this->translator->trans('Titre de la mise en avant', [], 'admin'),
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin')],
+                            'row_attr' => ['class' => 'col-12 editor'],
+                        ],
+                        'advendisingSecond' => [
+                            'type' => Type\TextareaType::class,
+                            'required' => false,
+                            'label' => $this->translator->trans('Mise en avant', [], 'admin'),
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
+                            'row_attr' => ['class' => 'col-12 editor'],
+                        ],
+                        'advendisingTitleThird' => [
+                            'type' => Type\TextType::class,
+                            'required' => false,
+                            'label' => $this->translator->trans('Titre de la mise en avant', [], 'admin'),
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin')],
+                            'row_attr' => ['class' => 'col-12 editor'],
+                        ],
+                        'advendisingThird' => [
+                            'type' => Type\TextareaType::class,
+                            'required' => false,
+                            'label' => $this->translator->trans('Mise en avant', [], 'admin'),
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
+                            'row_attr' => ['class' => 'col-12 editor'],
                         ],
                     ];
                 }

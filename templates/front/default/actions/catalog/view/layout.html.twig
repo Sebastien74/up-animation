@@ -42,6 +42,7 @@
     {%- else -%}
         {%- set thumbSizes = thumbConfigurationHeader -%}
     {%- endif -%}
+    {%- set content = 'agencies' != catalogSlug ? entity.intl.introduction : null -%}
 
     {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
         block: entity,
@@ -49,7 +50,8 @@
         titleForce: 1,
         fullSize: true,
         page: page,
-        contactUrl: asAgency ? entity.contactUrl : false,
+        body: content,
+        contactUrl: entity.contactUrl,
         pageTitle: pageTitle,
         template: websiteTemplate,
         screensSizes: screensSizes,
@@ -372,14 +374,18 @@
                     <div class="card-header d-flex flex-column px-4 pt-4 pb-0 mb-3 border-0">
                         <div class="inner d-flex align-items-center">
                             <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-white me-3"><i class="icon-people-group text-primary"></i></span>
-                            <strong class="text-uppercase lh-1">{{ "Réunir"|trans|raw }}</strong>
+                            {%- if entity.intl.advendisingTitleFirst -%}
+                                {{ entity.intl.advendisingTitleFirst|raw }}
+                            {%- else -%}
+                                <strong class="text-uppercase lh-1">{{ "Réunir"|trans|raw }}</strong>
+                            {%- endif -%}
                         </div>
                         <hr class="text-white">
                     </div>
                     <div class="card-body px-4 pt-0 pb-4">
                         <div class="body">
-                            {%- if entity.intl.gather -%}
-                                {{ entity.intl.gather|raw }}
+                            {%- if entity.intl.advendisingFirst -%}
+                                {{ entity.intl.advendisingFirst|raw }}
                             {%- else -%}
                                 <p class="mb-2">{{ "Up&nbsp;Animations vous propose des animations originales et festives pour tous vos événements à %city%."|trans({'%city%': entity.city ?: ''})|raw }}</p>
                                 <p class="mb-2">{{ "Faites parler de vous et de votre événement autour de vous grâce à des animations qui sauront marquer les esprits."|trans|raw }}</p>
@@ -396,14 +402,18 @@
                     <div class="card-header d-flex flex-column px-4 pt-4 pb-0 mb-3 border-0">
                         <div class="inner d-flex align-items-center">
                             <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-dark me-3"><i class="icon-face-grin text-white"></i></span>
-                            <strong class="text-uppercase lh-1">{{ "Sympathiser"|trans }}</strong>
+                            {%- if entity.intl.advendisingTitleSecond -%}
+                                {{ entity.intl.advendisingTitleSecond|raw }}
+                            {%- else -%}
+                                <strong class="text-uppercase lh-1">{{ "Sympathiser"|trans }}</strong>
+                            {%- endif -%}
                         </div>
                         <hr class="text-dark">
                     </div>
                     <div class="card-body px-4 pt-0 pb-4">
                         <div class="body">
-                            {%- if entity.intl.sympathise -%}
-                                {{ entity.intl.sympathise|raw }}
+                            {%- if entity.intl.advendisingSecond -%}
+                                {{ entity.intl.advendisingSecond|raw }}
                             {%- else -%}
                                 <p class="mb-2">{{ "La solution Up&nbsp;Animations c'est organiser des événements professionnels d'envergure à %city%."|trans({'%city%': entity.city ?: ''})|raw }}</p>
                                 <p class="mb-2">{{ "Nous nous occupons de tout&nbsp;: la logistique, l'organisation et la mise en place du matériel."|trans|raw }}</p>
@@ -419,14 +429,18 @@
                     <div class="card-header d-flex flex-column px-4 pt-4 pb-0 mb-3 border-0">
                         <div class="inner d-flex align-items-center">
                             <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-dark me-3"><i class="icon-thumbs-up text-white"></i></span>
-                            <strong class="text-uppercase lh-1">{{ "Marquer"|trans }}</strong>
+                            {%- if entity.intl.advendisingTitleThird -%}
+                                {{ entity.intl.advendisingTitleThird|raw }}
+                            {%- else -%}
+                                <strong class="text-uppercase lh-1">{{ "Marquer"|trans }}</strong>
+                            {%- endif -%}
                         </div>
                         <hr class="text-dark">
                     </div>
                     <div class="card-body px-4 pt-0 pb-4">
                         <div class="body">
-                            {%- if entity.intl.impress -%}
-                                {{ entity.intl.impress|raw }}
+                            {%- if entity.intl.advendisingThird -%}
+                                {{ entity.intl.advendisingThird|raw }}
                             {%- else -%}
                                 <p class="mb-2">{{ "Choisissez votre partenaire Up&nbsp;Animations pour l'animation de votre prochain événement à %city%, c'est être sûr de marquer les esprits de vos invités."|trans({'%city%': entity.city ?: ''})|raw }}</p>
                                 <p class="mb-2">{{ "Nous répondons à tous vos objectifs&nbsp;: visibility ou notoriété."|trans|raw }}</p>

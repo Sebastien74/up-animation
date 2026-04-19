@@ -67,9 +67,12 @@ final class IntlModel extends BaseModel
         public readonly ?bool $linkIsEmail = null,
         public readonly ?bool $linkIsPhone = null,
         public readonly ?string $slug = null,
-        public readonly ?string $gather = null,
-        public readonly ?string $sympathise = null,
-        public readonly ?string $impress = null,
+        public readonly ?string $advendisingTitleFirst = null,
+        public readonly ?string $advendisingFirst = null,
+        public readonly ?string $advendisingTitleSecond = null,
+        public readonly ?string $advendisingSecond = null,
+        public readonly ?string $advendisingTitleThird = null,
+        public readonly ?string $advendisingThird = null,
     ) {
     }
 
@@ -141,9 +144,12 @@ final class IntlModel extends BaseModel
             linkIsEmail: $link->linkIsEmail,
             linkIsPhone: $link->linkIsPhone,
             slug: self::getContent('slug', $intl),
-            gather: self::getContent('gather', $intl),
-            sympathise: self::getContent('sympathise', $intl),
-            impress: self::getContent('impress', $intl),
+            advendisingTitleFirst: self::getContent('advendisingTitleFirst', $intl),
+            advendisingFirst: self::getContent('advendisingFirst', $intl),
+            advendisingTitleSecond: self::getContent('advendisingTitleSecond', $intl),
+            advendisingSecond: self::getContent('advendisingSecond', $intl),
+            advendisingTitleThird: self::getContent('advendisingTitleThird', $intl),
+            advendisingThird: self::getContent('advendisingThird', $intl),
         );
 
         if (is_object($entity) && $entity->getId()) {

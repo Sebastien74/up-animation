@@ -143,6 +143,8 @@ html body form .form-field-none {
 
     .form-control-plaintext,
     .form-control,
+    .form-control:focus,
+    .form-control:active,
     .input-group > .form-control,
     .form-control-plaintext:not(:placeholder-shown),
     .form-control:not(:placeholder-shown),

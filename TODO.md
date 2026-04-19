@@ -1,19 +1,12 @@
-https://themeforest.net/item/fizcon-event-meeting-conference-html5-template/23255731
-https://velikorodnov.com/html/ewent/index.html
-https://themeforest.net/item/eventify-event-conference-html-bootstrap-5-template/54967506
-https://themeforest.net/item/miexpo-event-conference-html-template/25251151
-https://themeforest.net/item/konfer-conference-and-event-html-template/57222036
-https://themeforest.net/item/evantbiz-conference-events-html-template/57886763
-https://themeforest.net/item/eventen-event-conference-html-templates/53137181
-https://themeforest.net/item/evntox-event-conference-html5-template/32251210
-https://themeforest.net/item/eventro-event-conference-html-template/60883128
-https://themeforest.net/item/conat-event-conference-vuejs-template/61240859
-https://preview.themeforest.net/item/konfer-react-event-conference-meetup-template/full_screen_preview/58424763
-https://preview.themeforest.net/item/eventen-event-conference-meetup-react-templates/full_screen_preview/58292518
-
 Au filtre des produits la pagination ne fonctionne pas https://up-animation.local/recherche-animations?catalogs=performances
 
+
+catalog
+@!catalogue74000
+
 Enregistrement des recherches
+
+Faire la page de maintenance
 
 Pour les fetch JS ajouter keepalive: true,
 
@@ -88,7 +81,7 @@ FAIRE LE CACHE COMME PAGEREPOSITORY
 #[Route('/admin-%security_token%/module/catalogs/booking', name: 'admin_catalogproductbooking')]
 #[IsGranted('ROLE_CATALOG')]
 
-Retirer les args non utilisés     public function indexesPages(
+Retirer les args non utilisés public function indexesPages(
 mixed $entity,
 string $locale,
 string $listingClassname,

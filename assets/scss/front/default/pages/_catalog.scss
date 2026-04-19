@@ -52,6 +52,12 @@ $enable-youtube: true;
             margin-bottom: 0;
         }
     }
+
+    .layout-zone:not(:first-child) {
+        .body *, .introduction, .introduction * {
+            font-size: 19px;
+        }
+    }
 }
 
 /*-----------------------------------
@@ -59,10 +65,6 @@ $enable-youtube: true;
 -----------------------------------*/
 
 .body-agencies-page {
-
-    .body *, .introduction, .introduction * {
-        font-size: 19px;
-    }
 
     .body:not([class^="lh-"]):not([class*=" lh-"]) *,
     .introduction:not([class^="lh-"]):not([class*=" lh-"]) * {

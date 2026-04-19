@@ -416,26 +416,20 @@ picture {
     }
 
     .wave-divider-top {
-
-        @include mediaQuery(max-md) {
-            top: -90px;
-        }
-
-        @include mediaQuery(min-md) {
-            top: -148px;
-        }
+        top: -148px;
     }
 
     .wave-divider-top svg {
 
+        height: 148px;
+
         @include mediaQuery(max-md) {
-            width: calc(220% + 1.3px);
-            height: 90px;
+            width: calc(215% + 1.3px);
+            left: -15%;
         }
 
         @include mediaQuery(min-md) {
             width: calc(162% + 1.3px);
-            height: 148px;
         }
     }
 

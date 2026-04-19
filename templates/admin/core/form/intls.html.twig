@@ -18,6 +18,7 @@
 {%- set disableTitle = disableTitle is defined or form.children.intls.vars.attr.disableTitle is defined and form.children.intls.vars.attr.disableTitle -%}
 {%- set disableFields = disableFields is defined ? disableFields : [] -%}
 {%- set enabledFields = enabledFields is defined ? enabledFields : [] -%}
+{%- set interfaceName = interfaceName is defined ? interfaceName : (interface.name is defined ? interface.name : false) -%}
 
 {%- if not disableTitle -%}
     <div class="col-12">
@@ -67,72 +68,102 @@
                         <div class="row">
             {%- endif -%}
 
-                {%- for field in intl.children -%}
-                    {%- if configFields is not defined or field.vars.name not in configsFieldsSet -%}
-                        {%- if allLocales|length == 1 and locale != configuration.locale -%}
-                            <div class="d-none">
-                        {%- endif -%}
-
-                        {%- if disableTitleVideo is not defined and field.vars.name == "video" and disableVideoTitle is not defined -%}
-                            <div class="col-12">
-                                <h4 class="main-subtitle"><i class="icm-video"></i>{{ "Vidéo"|trans|raw }}</h4>
-                            </div>
-                        {%- endif -%}
-
-                        {%- set attrGroup = field.vars.attr.group is defined and field.vars.attr.group ? field.vars.attr.group : null -%}
-                        {%- set attrGroup = field.vars.attr['data-group'] is defined and field.vars.attr['data-group'] ? field.vars.attr['data-group'] : attrGroup -%}
-                        {%- if disableTitleLink is not defined and attrGroup and "add-title" in attrGroup and "target" in field.vars.name -%}
-                            <div class="col-12">
-                                <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Lien"|trans|raw }}</h4>
-                            </div>
-                        {%- endif -%}
-
-                            {%- set entityToEdit = entity.action is defined and entity.action ? entity.action.entity|find(field.vars.value) : null -%}
-                            {%- set entityInterfaceName = entityToEdit.interface.name is defined and entityToEdit.interface.name ? entityToEdit.interface.name : null -%}
-                            {%- set entityModule = entityToEdit.interface.module is defined and entityToEdit.interface.module ? entityToEdit.interface.module : entityInterfaceName -%}
-                            {%- set isActionFilter = field.vars.name == 'actionFilter' -%}
-                            {%- set displayTemplates = intl[field.vars.name].vars.attr.displayTemplates is defined ? intl[field.vars.name].vars.attr.displayTemplates : false -%}
-                            {%- set actionFilterButton = isActionFilter
-                                and field.vars.value is defined
-                                and field.vars.value
-                                and routeExist('admin_'~entityToEdit.interface.name~'_edit')
-                                and entityToEdit
-                                and entityModule
-                                and entityModule|moduleActive(configuration) -%}
-
-                            {%- if actionFilterButton or displayTemplates -%}
-                                <div class="col-md- {% if displayTemplates and actionFilterButton and allLocales|length == 1 %}5{% elseif displayTemplates and actionFilterButton and allLocales|length > 1 %}10{% elseif displayTemplates %}10{%- else -%}12{%- endif -%}">
+                {% if 'catalogproduct' == interfaceName and customRender is defined and customRender %}
+                    {% if intl.children.title is defined and not intl.children.title.rendered %}{{ form_row(intl.children.title) }}{% endif %}
+                    {% if intl.children.subTitle is defined and not intl.children.subTitle.rendered %}{{ form_row(intl.children.subTitle) }}{% endif %}
+                    <div class="col-lg-4">
+                        {% if intl.children.introductionTitle is defined and not intl.children.introductionTitle.rendered %}{{ form_row(intl.children.introductionTitle) }}{% endif %}
+                        {% if intl.children.introduction is defined and not intl.children.introduction.rendered %}{{ form_row(intl.children.introduction) }}{% endif %}
+                    </div>
+                    <div class="col-lg-4">
+                        {% if intl.children.bodyTitle is defined and not intl.children.bodyTitle.rendered %}{{ form_row(intl.children.bodyTitle) }}{% endif %}
+                        {% if intl.children.body is defined and not intl.children.body.rendered %}{{ form_row(intl.children.body) }}{% endif %}
+                    </div>
+                    <div class="col-lg-4">
+                        {% if intl.children.bodyTitleSecond is defined and not intl.children.bodyTitleSecond.rendered %}{{ form_row(intl.children.bodyTitleSecond) }}{% endif %}
+                        {% if intl.children.bodySecond is defined and not intl.children.bodySecond.rendered %}{{ form_row(intl.children.bodySecond) }}{% endif %}
+                    </div>
+                    <div class="col-lg-4">
+                        {% if intl.children.advendisingTitleFirst is defined and not intl.children.advendisingTitleFirst.rendered %}{{ form_row(intl.children.advendisingTitleFirst) }}{% endif %}
+                        {% if intl.children.advendisingFirst is defined and not intl.children.advendisingFirst.rendered %}{{ form_row(intl.children.advendisingFirst) }}{% endif %}
+                    </div>
+                    <div class="col-lg-4">
+                        {% if intl.children.advendisingTitleSecond is defined and not intl.children.advendisingTitleSecond.rendered %}{{ form_row(intl.children.advendisingTitleSecond) }}{% endif %}
+                        {% if intl.children.advendisingSecond is defined and not intl.children.advendisingSecond.rendered %}{{ form_row(intl.children.advendisingSecond) }}{% endif %}
+                    </div>
+                    <div class="col-lg-4">
+                        {% if intl.children.advendisingTitleThird is defined and not intl.children.advendisingTitleThird.rendered %}{{ form_row(intl.children.advendisingTitleThird) }}{% endif %}
+                        {% if intl.children.advendisingThird is defined and not intl.children.advendisingThird.rendered %}{{ form_row(intl.children.advendisingThird) }}{% endif %}
+                    </div>
+                {%- else -%}
+                    {%- for field in intl.children -%}
+                        {%- if configFields is not defined or field.vars.name not in configsFieldsSet -%}
+                            {%- if allLocales|length == 1 and locale != configuration.locale -%}
+                                <div class="d-none">
                             {%- endif -%}
 
-                                {%- set fieldRender = (disableFields is empty and enabledFields is empty)
-                                    or (disableFields is not empty and enabledFields is empty and field.vars.name not in disableFields)
-                                    or (enabledFields is not empty and disableFields is empty and field.vars.name in enabledFields) -%}
-                                {%- if fieldRender -%}
-                                    {{ form_row(intl[field.vars.name]) }}
-                                {%- endif -%}
-
-                            {%- if actionFilterButton or displayTemplates -%}
+                            {%- if disableTitleVideo is not defined and field.vars.name == "video" and disableVideoTitle is not defined -%}
+                                <div class="col-12">
+                                    <h4 class="main-subtitle"><i class="icm-video"></i>{{ "Vidéo"|trans|raw }}</h4>
                                 </div>
-                                {%- if actionFilterButton -%}
-                                    <div class="col-md-2 align-self-end">
-                                        <div class="form-group">
-                                            {%- set pathArgs = {website: websiteId(), (entityInterfaceName): entityToEdit.id} -%}
-                                            {%- if entityInterfaceName in ['table'] -%}
-                                                {%- set pathArgs = pathArgs|merge({entitylocale: website().configuration.locale}) -%}
-                                            {%- endif -%}
-                                            <a href="{{ path('admin_'~entityInterfaceName~'_edit', pathArgs) }}" class="btn-app">
-                                                <i class="icm-pencil-alt"></i>{{ "Éditer"|trans|raw }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                {%- endif -%}
                             {%- endif -%}
 
-                        {%- if allLocales|length == 1 and locale != configuration.locale -%}
-                            </div>
+                            {%- set attrGroup = field.vars.attr.group is defined and field.vars.attr.group ? field.vars.attr.group : null -%}
+                            {%- set attrGroup = field.vars.attr['data-group'] is defined and field.vars.attr['data-group'] ? field.vars.attr['data-group'] : attrGroup -%}
+                            {%- if disableTitleLink is not defined and attrGroup and "add-title" in attrGroup and "target" in field.vars.name -%}
+                                <div class="col-12">
+                                    <h4 class="main-subtitle"><i class="icm-link"></i>{{ "Lien"|trans|raw }}</h4>
+                                </div>
+                            {%- endif -%}
+
+                                {%- set entityToEdit = entity.action is defined and entity.action ? entity.action.entity|find(field.vars.value) : null -%}
+                                {%- set entityInterfaceName = entityToEdit.interface.name is defined and entityToEdit.interface.name ? entityToEdit.interface.name : null -%}
+                                {%- set entityModule = entityToEdit.interface.module is defined and entityToEdit.interface.module ? entityToEdit.interface.module : entityInterfaceName -%}
+                                {%- set isActionFilter = field.vars.name == 'actionFilter' -%}
+                                {%- set displayTemplates = intl[field.vars.name].vars.attr.displayTemplates is defined ? intl[field.vars.name].vars.attr.displayTemplates : false -%}
+                                {%- set actionFilterButton = isActionFilter
+                                    and field.vars.value is defined
+                                    and field.vars.value
+                                    and routeExist('admin_'~entityToEdit.interface.name~'_edit')
+                                    and entityToEdit
+                                    and entityModule
+                                    and entityModule|moduleActive(configuration) -%}
+
+                                {%- if actionFilterButton or displayTemplates -%}
+                                    <div class="col-md- {% if displayTemplates and actionFilterButton and allLocales|length == 1 %}5{% elseif displayTemplates and actionFilterButton and allLocales|length > 1 %}10{% elseif displayTemplates %}10{%- else -%}12{%- endif -%}">
+                                {%- endif -%}
+
+                                    {%- set fieldRender = ((disableFields is empty and enabledFields is empty)
+                                        or (disableFields is not empty and enabledFields is empty and field.vars.name not in disableFields)
+                                        or (enabledFields is not empty and disableFields is empty and field.vars.name in enabledFields))
+                                        and not field.rendered -%}
+                                    {%- if fieldRender -%}
+                                        {{ form_row(intl[field.vars.name]) }}
+                                    {%- endif -%}
+
+                                {%- if actionFilterButton or displayTemplates -%}
+                                    </div>
+                                    {%- if actionFilterButton -%}
+                                        <div class="col-md-2 align-self-end">
+                                            <div class="form-group">
+                                                {%- set pathArgs = {website: websiteId(), (entityInterfaceName): entityToEdit.id} -%}
+                                                {%- if entityInterfaceName in ['table'] -%}
+                                                    {%- set pathArgs = pathArgs|merge({entitylocale: website().configuration.locale}) -%}
+                                                {%- endif -%}
+                                                <a href="{{ path('admin_'~entityInterfaceName~'_edit', pathArgs) }}" class="btn-app">
+                                                    <i class="icm-pencil-alt"></i>{{ "Éditer"|trans|raw }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {%- endif -%}
+                                {%- endif -%}
+
+                            {%- if allLocales|length == 1 and locale != configuration.locale -%}
+                                </div>
+                            {%- endif -%}
                         {%- endif -%}
-                    {%- endif -%}
-                {%- endfor -%}
+                    {%- endfor -%}
+                {%- endif -%}
 
             {%- if allLocales|length > 1 -%}
                         </div>

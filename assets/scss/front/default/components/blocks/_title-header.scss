@@ -27,7 +27,14 @@
 
     .title-header-block {
 
-        padding-top: 11rem;
+        @include mediaQuery(max-lg) {
+            padding-top: 6.5rem;
+        }
+
+        @include mediaQuery(min-md) {
+            padding-top: 11rem;
+        }
+
         overflow: hidden;
         word-wrap: break-word;
 
@@ -36,7 +43,7 @@
         }
 
         .body * {
-            font-size: 26px;
+            font-size: 22px;
             line-height: 1.2;
         }
     }

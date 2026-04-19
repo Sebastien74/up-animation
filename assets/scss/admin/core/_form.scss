@@ -505,7 +505,7 @@ form {
 
 .form-floating {
     .form-label {
-        transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+        transform: scale(0.85) translateY(-0.25rem) translateX(0.15rem) !important;
     }
 }
 
@@ -1012,5 +1012,11 @@ form {
 
     &.asColorPicker-dropdown-hide {
         display: none;
+    }
+}
+
+.choices-users-select {
+    .choices__item {
+        color: $dark !important;
     }
 }

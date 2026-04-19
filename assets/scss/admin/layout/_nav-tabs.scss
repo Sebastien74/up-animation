@@ -13,8 +13,8 @@
 
     .btn-app {
 
-        &:not(.active) {
-            opacity: .4;
+        &:not(.active):not(.save) {
+            opacity: .5;
             transition: opacity .3s linear;
         }
 

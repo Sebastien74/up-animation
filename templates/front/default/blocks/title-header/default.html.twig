@@ -30,7 +30,7 @@
     {%- set styleClass = styleClass is defined and styleClass ? styleClass : '' -%}
     {%- set styleClass = large and styleClass ? styleClass~' align-items-start as-large' : (large ? 'align-items-start as-large' : 'align-items-end') -%}
     <div class="title-header-block container position-relative{% if large %} as-large{% endif %}{% if backgroundColor %} {{ backgroundColor }}{% endif %}{% if styleClass %} {{ styleClass }}{% endif %}">
-        <div class="row">
+        <div class="row m-0">
             <div class="col-xl-7 pe-xl-5 d-flex title-content position-relative">
                 <div class="inner">
                     {%- if displayBreadcrumb -%}

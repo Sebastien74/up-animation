@@ -36,17 +36,17 @@
 
         padding: $form-floating-padding-y $form-floating-padding-x;
 
-        &:focus,
-        &:not(:placeholder-shown) {
-            padding-top: $form-floating-input-padding-t !important;
-            padding-bottom: $form-floating-input-padding-b !important;
-        }
-
-        // Duplicated because `:-webkit-autofill` invalidates other selectors when grouped
-        &:-webkit-autofill {
-            padding-top: $form-floating-input-padding-t !important;
-            padding-bottom: $form-floating-input-padding-b !important;
-        }
+        //&:focus,
+        //&:not(:placeholder-shown) {
+        //    padding-top: $form-floating-input-padding-t !important;
+        //    padding-bottom: $form-floating-input-padding-b !important;
+        //}
+        //
+        //// Duplicated because `:-webkit-autofill` invalidates other selectors when grouped
+        //&:-webkit-autofill {
+        //    padding-top: $form-floating-input-padding-t !important;
+        //    padding-bottom: $form-floating-input-padding-b !important;
+        //}
     }
 
     > .form-select {

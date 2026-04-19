@@ -18,51 +18,156 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProductIntlRepository::class)]
 class ProductIntl extends BaseIntl
 {
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    protected ?string $gather = null;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $introductionTitle = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $bodyTitle = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $bodyTitleSecond = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    protected ?string $sympathise = null;
+    protected ?string $bodySecond = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $advendisingTitleFirst = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    protected ?string $impress = null;
+    protected ?string $advendisingFirst = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $advendisingTitleSecond = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    protected ?string $advendisingSecond = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $advendisingTitleThird = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    protected ?string $advendisingThird = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class, cascade: ['persist'], inversedBy: 'intls')]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     private ?Product $product = null;
 
-    public function getGather(): ?string
+    public function getIntroductionTitle(): ?string
     {
-        return $this->gather;
+        return $this->introductionTitle;
     }
 
-    public function setGather(?string $gather): static
+    public function setIntroductionTitle(?string $introductionTitle): static
     {
-        $this->gather = $gather;
+        $this->introductionTitle = $introductionTitle;
 
         return $this;
     }
 
-    public function getSympathise(): ?string
+    public function getBodyTitle(): ?string
     {
-        return $this->sympathise;
+        return $this->bodyTitle;
     }
 
-    public function setSympathise(?string $sympathise): static
+    public function setBodyTitle(?string $bodyTitle): static
     {
-        $this->sympathise = $sympathise;
+        $this->bodyTitle = $bodyTitle;
 
         return $this;
     }
 
-    public function getImpress(): ?string
+    public function getBodyTitleSecond(): ?string
     {
-        return $this->impress;
+        return $this->bodyTitleSecond;
     }
 
-    public function setImpress(?string $impress): static
+    public function setBodyTitleSecond(?string $bodyTitleSecond): static
     {
-        $this->impress = $impress;
+        $this->bodyTitleSecond = $bodyTitleSecond;
+
+        return $this;
+    }
+
+    public function getBodySecond(): ?string
+    {
+        return $this->bodySecond;
+    }
+
+    public function setBodySecond(?string $bodySecond): static
+    {
+        $this->bodySecond = $bodySecond;
+
+        return $this;
+    }
+
+    public function getAdvendisingTitleFirst(): ?string
+    {
+        return $this->advendisingTitleFirst;
+    }
+
+    public function setAdvendisingTitleFirst(?string $advendisingTitleFirst): static
+    {
+        $this->advendisingTitleFirst = $advendisingTitleFirst;
+
+        return $this;
+    }
+
+    public function getAdvendisingFirst(): ?string
+    {
+        return $this->advendisingFirst;
+    }
+
+    public function setAdvendisingFirst(?string $advendisingFirst): static
+    {
+        $this->advendisingFirst = $advendisingFirst;
+
+        return $this;
+    }
+
+    public function getAdvendisingTitleSecond(): ?string
+    {
+        return $this->advendisingTitleSecond;
+    }
+
+    public function setAdvendisingTitleSecond(?string $advendisingTitleSecond): static
+    {
+        $this->advendisingTitleSecond = $advendisingTitleSecond;
+
+        return $this;
+    }
+
+    public function getAdvendisingSecond(): ?string
+    {
+        return $this->advendisingSecond;
+    }
+
+    public function setAdvendisingSecond(?string $advendisingSecond): static
+    {
+        $this->advendisingSecond = $advendisingSecond;
+
+        return $this;
+    }
+
+    public function getAdvendisingTitleThird(): ?string
+    {
+        return $this->advendisingTitleThird;
+    }
+
+    public function setAdvendisingTitleThird(?string $advendisingTitleThird): static
+    {
+        $this->advendisingTitleThird = $advendisingTitleThird;
+
+        return $this;
+    }
+
+    public function getAdvendisingThird(): ?string
+    {
+        return $this->advendisingThird;
+    }
+
+    public function setAdvendisingThird(?string $advendisingThird): static
+    {
+        $this->advendisingThird = $advendisingThird;
 
         return $this;
     }

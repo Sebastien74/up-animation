@@ -132,6 +132,12 @@ class FrontController extends CacheController
         $website = $this->coreLocator->website();
         $configuration = $website->configuration;
         $websiteTemplate = $configuration->template;
+        $inMaintenance = (isset($_ENV['UNDER_MAINTENANCE']) && $_ENV['UNDER_MAINTENANCE']) || !$configuration->onlineStatus;
+
+        if (!$inMaintenance) {
+            return $this->redirectToRoute('front_index');
+        }
+
         return $this->render('front/'.$websiteTemplate.'/template/build.html.twig', [
             'website' => $website,
             'logos' => $website->logos,

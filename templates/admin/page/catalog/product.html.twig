@@ -99,10 +99,10 @@
             {%- if isMainEntity -%}
                 {%- set lastRoute = app.request.session.get('last_route_back') -%}
                 {%- set haveSaveBack = lastRoute.name is defined and lastRoute.params is defined -%}
-                <span id="save-entity" class="btn-app small save">
+                <span id="save-entity" class="btn-app small save cursor">
                     <i class="icm-save"></i><span>{{ "Enregistrer"|trans|raw }}</span>
                 </span>
-                <span id="save-back-entity" class="btn-app small save" data-path="{{ path('admin_catalogproduct_index', routeArgs) }}">
+                <span id="save-back-entity" class="btn-app small save cursor" data-path="{{ path('admin_catalogproduct_index', routeArgs) }}">
                     <i class="icm-save"></i><span>{{ "Enregistrer et retourner à la liste"|trans|raw }}</span>
                 </span>
             {%- endif -%}

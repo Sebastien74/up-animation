@@ -21,7 +21,11 @@
                                         {{ form_row(form.menu) }}
                                     {%- endif -%}
                                     {%- if form.intls is defined -%}
-                                        {%- include 'admin/core/form/intls.html.twig' with {intls: form.intls, disableFields: ['associatedWords']} -%}
+                                        {%- include 'admin/core/form/intls.html.twig' with {
+                                            customRender: true,
+                                            intls: form.intls,
+                                            disableFields: ['associatedWords']
+                                        } -%}
                                     {%- endif -%}
                                     {%- set configsSet = configsSet|merge(['intls']) -%}
                                 {%- elseif tabId == 'features' and field.vars.name == 'values' -%}
@@ -67,7 +71,7 @@
                                     {%- endif -%}
                                     {%- set configsSet = configsSet|merge(['configuration']) -%}
                                 {%- elseif tabId == 'informations' and field.vars.name == 'information' -%}
-                                    {%- if 'agencies' == catalog.slug -%}
+                                    {%- if catalog and 'agencies' == catalog.slug -%}
                                         {{ form_row(form.adminName) }}
                                     {%- endif -%}
                                     {%- include 'admin/core/form/edit-fields-base.html.twig' with {

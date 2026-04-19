@@ -182,7 +182,7 @@ class RedirectionService
 
         $inMaintenance = (isset($_ENV['UNDER_MAINTENANCE']) && $_ENV['UNDER_MAINTENANCE']) || !$configuration->onlineStatus;
         $envIPS = !empty($_ENV['MAINTENANCE_ALLOWED_IPS']) ? $_ENV['MAINTENANCE_ALLOWED_IPS'] : [];
-        $IPS = !$request->get('disabled_ips') ? array_unique(array_merge(self::IPS_DEV, $ipsDev, $ipsCustomer, $envIPS)) : [];
+        $IPS = !$request->query->get('disabled_ips') ? array_unique(array_merge(self::IPS_DEV, $ipsDev, $ipsCustomer, $envIPS)) : [];
         $allowedIP = $this->checkIP($IPS);
 
         $allowedPath = false;
@@ -218,7 +218,7 @@ class RedirectionService
     }
 
     /**
-     * Check if current user is baned.
+     * Check if the current user is baned.
      */
     public function isBan(Request $request, ?ConfigurationModel $configuration = null): ?string
     {
