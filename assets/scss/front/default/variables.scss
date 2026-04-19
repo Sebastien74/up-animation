@@ -915,7 +915,7 @@ $gutter-y: 1.2rem !default;
 $gutter-x-margin: $gutter-x;
 $gutter-y-margin: $gutter-y;
 
-$sm-gutter-x: strip-unit($gutter-x-margin) / 2;
+$sm-gutter-x: strip-unit($gutter-x-margin) / 3;
 $xs-gutter-x: strip-unit($gutter-x-margin) / 3;
 
 $sm-gutter-y: strip-unit($gutter-y-margin) / 2;
@@ -927,19 +927,19 @@ $margins: (
         'y': ('xxl': 60px, 'xl': 60px, 'lg': 45px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
     ),
     'md': (
-        'x': ('xxl': 90px, 'xl': 90px, 'lg': 75px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
+        'x': ('xxl': 90px, 'xl': 90px, 'lg': 75px, 'md': 45px, 'sm': 1rem, 'xs': 1rem),
         'y': ('xxl': 90px, 'xl': 90px, 'lg': 60px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
     ),
     'lg': (
-        'x': ('xxl': 120px, 'xl': 160px, 'lg': 90px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
+        'x': ('xxl': 120px, 'xl': 160px, 'lg': 90px, 'md': 45px, 'sm': 1rem, 'xs': 1rem),
         'y': ('xxl': 120px, 'xl': 160px, 'lg': 90px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
     ),
     'xl': (
-        'x': ('xxl': 145px, 'xl': 90px, 'lg': 90px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
+        'x': ('xxl': 145px, 'xl': 90px, 'lg': 90px, 'md': 45px, 'sm': 1rem, 'xs': 1rem),
         'y': ('xxl': 250px, 'xl': 90px, 'lg': 90px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
     ),
     'xxl': (
-        'x': ('xxl': 250px, 'xl': 160px, 'lg': 90px, 'md': 45px, 'sm': 1.5rem, 'xs': 10px),
+        'x': ('xxl': 250px, 'xl': 160px, 'lg': 90px, 'md': 45px, 'sm': 1rem, 'xs': 1rem),
         'y': ('xxl': 250px, 'xl': 160px, 'lg': 90px, 'md': 45px, 'sm': 30px, 'xs': 1rem),
     ),
 );

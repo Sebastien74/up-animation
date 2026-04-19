@@ -19,7 +19,7 @@
         path: path('admin_newscastteaser_edit', {website: website.id, newscastteaser: teaser.id})
     }) }}
     {%- if intl.title -%}
-        <div class="row row-container py-xl-5 mt-5">
+        <div class="row py-xl-5 mt-5">
             <div class="col-lg-6">
                 <h2 class="title position-relative d-inline-block mb-4 mb-lg-5 ps-tablet-xs pe-tablet-xs">{{ intl.title|raw }}<i class="icon-circle position-relative text-warning ms-1"></i></h2>
             </div>
@@ -27,7 +27,7 @@
     {%- endif -%}
     <div class="row">
         <div class="col-lg-6 pb-5">
-            <div class="row row-container ps-tablet-xs pe-tablet-xs">
+            <div class="row ps-tablet-xs pe-tablet-xs">
                 <div class="nav flex-column nav-pills me-lg-5 pe-lg-4 col-12" id="v-pills-tab-{{ teaser.id }}" role="tablist" aria-orientation="vertical">
                     {%- for entity in entities -%}
                         <button class="nav-link text-start cursor bg-transparent position-relative d-md-inline-flex px-0 pt-4 pb-0{% if loop.first %} active{% endif %}"
@@ -115,7 +115,7 @@
         </div>
         {%- if 'index-link' in teaser.fields and entities is not empty -%}
             <div class="container-fluid d-lg-none">
-                <div class="row row-container m-0 text-start mt-5 mb-5 ps-tablet-xs pe-tablet-xs">
+                <div class="row m-0 text-start mt-5 mb-5 ps-tablet-xs pe-tablet-xs">
                     <div class="col-12">
                         {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                             intl: {

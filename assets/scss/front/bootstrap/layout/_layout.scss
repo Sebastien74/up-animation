@@ -26,12 +26,26 @@
         max-width: 100%;
     }
 
-    .row > *:not([class^="ps-"]):not([class*=" ps-"]):not([class^="p-"]):not([class*=" p-"]) {
-        padding-left: calc(var(--bs-gutter-x) * .5);
+    @include mediaQuery(max-lg) {
+
+        .row > * {
+            padding-left: calc(var(--bs-gutter-x) * .5);
+        }
+
+        .row > * {
+            padding-right: calc(var(--bs-gutter-x) * .5);
+        }
     }
 
-    .row > *:not([class^="pe-"]):not([class*=" pe-"]):not([class^="p-"]):not([class*=" p-"]) {
-        padding-right: calc(var(--bs-gutter-x) * .5);
+    @include mediaQuery(min-lg) {
+
+        .row > *:not([class^="ps-"]):not([class*=" ps-"]):not([class^="p-"]):not([class*=" p-"]) {
+            padding-left: calc(var(--bs-gutter-x) * .5);
+        }
+
+        .row > *:not([class^="pe-"]):not([class*=" pe-"]):not([class^="p-"]):not([class*=" p-"]) {
+            padding-right: calc(var(--bs-gutter-x) * .5);
+        }
     }
 
     .row > *:not([class^="mt-"]):not([class*=" mt-"]) {

@@ -73,7 +73,7 @@
                 </div>
             {%- endif -%}
             {%- set containerSize = not fullSize and zone.containerSize ? zone.containerSize : false -%}
-            <div class="{% if not containerSize %}row{% endif %}{% if not fullSize and not asForm %} row-container{% endif %}{% if zone.centerCol %} d-flex justify-content-center{% endif %}">
+            <div class="{% if not containerSize %}row{% endif %}{% if not fullSize and not asForm %}{% endif %}{% if zone.centerCol %} d-flex justify-content-center{% endif %}">
                 {%- if containerSize -%}
                     <div class="col-xl-{{ zone.containerSize }} mx-auto">
                         <div class="row">
@@ -120,7 +120,7 @@
                             {%- set colInnerClasses = blocksCount == 1 ? colInnerClasses~' h-100' : colInnerClasses -%}
                             {%- set colInnerClasses = colAlignment ? colInnerClasses~' '~colAlignment : colInnerClasses -%}
                             {%- set colInnerClasses = fullSize or asFluidRight ? colInnerClasses~' m-0' : colInnerClasses -%}
-                            <div class="{{ colInnerClasses|trim }} row w-100"
+                            <div class="{{ colInnerClasses|trim }} row m-0 w-100"
                                  {% if innerColBackground and col.hexadecimalCode %} style="background: {{ col.hexadecimalCode }};" data-hexadecimal="{{ col.hexadecimalCode }}" {% endif %}>
                                 {%- for block in blocks -%}
                                     {%- set blockHide = block.hide or app.request.locale in block.hideLocales -%}

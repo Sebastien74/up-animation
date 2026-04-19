@@ -38,7 +38,7 @@
         {%- set liClass = link.children ? liClass~' dropdown' : liClass -%}
         {%- set liClass = link.children and link.level >= 2 ? liClass~' dropdown-submenu' : liClass -%}
         {%- set liClass = link.media ? liClass~' item-logo' : liClass -%}
-        {%- set liClass = link.level == 1 and not isLast and not notExpanded ? liClass~' me-'~expand~'-4 mb-4 mb-lg-0' : liClass -%}
+        {%- set liClass = link.level == 1 and not isLast and not notExpanded ? liClass~' me-'~expand~'-4' : liClass -%}
         {%- set liClass = link.level == 1 ? liClass~' justify-content-end text-end text-'~expand~'-start' : liClass~' justify-content-start text-start' -%}
         <li class="nav-item position-relative d-flex level-{{ link.level }} {{ liClass }}"
             {% if pushMicroData %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" {% endif %}>
@@ -77,15 +77,15 @@
             </div>
             {%- endif -%}
             {%- if link.children -%}
-                <div class="submenu px-5 py-5 bg-white submenu-level-{{ link.level }}">
+                <div class="submenu text-start ps-4 ps-lg-5 pe-lg-5 py-5 bg-white submenu-level-{{ link.level }}">
                     {%- set displayBack = link.level >= 1 -%}
-                    <div class="d-flex mb-5">
-                        <a class="d-inline-flex me-4" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
+                    <div class="d-flex mb-5 pb-5 pb-lg-0">
+                        <a class="d-none d-lg-inline-flex me-4" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
                             {{ asset(logo)|file({}, {
                                 screensSizes: {
-                                    mobile: {width: null, height: 80},
-                                    tablet: {width: null, height: 80},
-                                    desktop: {width: null, height: 80}
+                                    mobile: {width: 115, height: 60},
+                                    tablet: {width: 115, height: 60},
+                                    desktop: {width: 150, height: 80}
                                 },
                                 decor: false,
                                 title: companyName,
@@ -96,17 +96,17 @@
                             }) }}
                         </a>
                         {%- if link.level == 1 -%}
-                            <i class="close-menu-level-{{ link.level }} close-menu-submenu ms-auto icon-times cursor d-inline-flex align-items-center justify-content-center text-secondary"></i>
+                            <i class="close-menu-level-{{ link.level }} d-none d-lg-inline-flex close-menu-submenu ms-auto icon-times cursor align-items-center justify-content-center text-secondary"></i>
                         {%- endif -%}
                     </div>
                     {%- set subLabel = link.subTitle ? link.subTitle : link.title -%}
                     {%- set parentEl = link.link ? 'a' : 'div' -%}
                     {%- set asLink = 'a' == parentEl -%}
                     <{{ parentEl }}{% if asLink %} href="{{ link.link }}" {% endif %} class="parent-label-wrap d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}{% if asLink %} btn btn-secondary d-inline-flex{% endif %}">
-                        <span class="parent-label text-warning position-relative fw-500 me-3 me-lg-0">{{ subLabel|unescape|raw }}</span>
-                        <i class="icon-arrow-right text-primary ms-3"></i>
+                        <span class="parent-label text-warning position-relative fw-500">{{ subLabel|unescape|raw }}</span>
+                        <i class="icon-arrow-right text-primary ms-2 ms-md-3"></i>
                     </{{ parentEl }}>
-                    <div class="inner position-relative mt-5">
+                    <div class="inner position-relative mt-4 mt-md-5">
                         <div class="inner-sub-wrap spy-scroll position-relative text-start {%- if link.level >= 3 -%}pt-4{%- else -%}mt-4 mt-lg-4{%- endif -%}" tabindex="-1"
                              data-scroll-bar="1">
                             {%- set haveColumns = false -%}
@@ -186,7 +186,7 @@
                         </a>
                     {%- endif -%}
                     <div id="main-navigation-nav" class="collapse navbar-collapse {% if notExpanded %}submenu main-submenu not-expanded position-fixed bg-primary{% else %}position-relative{% endif %}">
-                        <nav class="inner d-{{ expand }}-flex align-center{% if notExpanded %} w-100 pt-5{% endif %}" role="navigation" aria-label="{{"Navigation principale"|trans|striptags }}">
+                        <nav class="inner d-{{ expand }}-flex{% if notExpanded %} w-100 pt-5{% endif %}" role="navigation" aria-label="{{"Navigation principale"|trans|striptags }}">
                             {%- set class = 'mx-auto' == alignment ? 'px-3' : (not notExpanded ? 'ps-4 pe-5 ps-lg-0 pe-xl-0 ps-xxxl-5' : 'ps-4 pe-5') -%}
                             <ul class="navbar-nav {% if haveLogin %}w-100{% else %}{{ alignment }}{% endif %} pt-3 pb-5{% if not notExpanded %} pt-{{ expand }}-0 pb-{{ expand }}-0{% endif %} {{ class }}">
                                 {%- if displayHomePage -%}
@@ -215,7 +215,7 @@
                         } only -%}
                     {%- endif -%}
                     {%- if networks is not empty -%}
-                        <nav class="socials-list d-inline-flex align-items-center justify-content-center me-md-3 gap-2"
+                        <nav class="socials-list d-inline-flex align-items-center justify-content-center me-md-3 gap-3 gap-md-2"
                              aria-label="{{"Navigation des liens sociaux"|trans|striptags }}">
                             {%- for name, infos in networks -%}
                                 {%- if infos.link and infos.dirname -%}
@@ -259,7 +259,7 @@
                     {%- if 'search'|moduleActive(configuration) -%}
                         {{ render_esi(path('front_search_view', {filter: 'main', button: true, website: website.id} )) }}
                     {%- endif -%}
-                    <button class="navbar-toggler bg-transparent me-2 cursor" data-bs-toggle="collapse" data-bs-target="#main-navigation-nav" aria-controls="main-navigation-nav" aria-expanded="false" aria-label="{{"Menu"|trans|raw }}">
+                    <button class="navbar-toggler ms-3" data-bs-toggle="collapse" data-bs-target="#main-navigation-nav" aria-controls="main-navigation-nav" aria-expanded="false" aria-label="{{"Menu"|trans|raw }}">
                         <span class="nav-toggler-icon" aria-label="{{"Menu"|trans|raw }}">
                             <span></span>
                             <span></span>

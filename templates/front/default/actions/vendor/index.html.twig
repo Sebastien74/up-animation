@@ -42,7 +42,7 @@
 
             {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader'} only -%}
 
-            <div id="results" class="results row-container row">
+            <div id="results" class="results row">
                 {%- for entity in entities -%}
                     {%- if not lastEntity or entity.id != lastEntity.id -%}
                         <div class="col-md-6 col-lg-4 mb-4 item">

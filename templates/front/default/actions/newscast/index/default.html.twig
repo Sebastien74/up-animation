@@ -34,7 +34,7 @@
 
         {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'results-loader strict-size'} only -%}
 
-        <div id="results" class="results row row-container">
+        <div id="results" class="results row">
             {%- for entity in entities -%}
                 {%- if not lastEntity or entity.id != lastEntity.id -%}
                     {%- set entityEvent = entity.pastDate ? true : asEvent -%}

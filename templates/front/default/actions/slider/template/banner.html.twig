@@ -19,7 +19,7 @@
                             {{ media|file(thumbConfiguration, {
                                 notInBox: true,
                                 maxWidth: fileSizes.width is defined ? fileSizes.width : null,
-                                maxHeight: fileSizes.height is defined ? fileSizes.height : 70,
+                                maxHeight: fileSizes.height is defined ? fileSizes.height : 50,
                                 popupGallery: slider.popup,
                                 fullPopup: slider.popup,
                                 colSize: colSize
@@ -29,7 +29,7 @@
                                 path: true,
                             }) -%}
                             {%- set title = media.intl.title ? media.intl.title : media.entity.name -%}
-                            <img src="{{ path }}" alt="{{ title }}" class="img-fluid img-{{ media.extension }}" height="70" {% if 'svg' == media.extension %} style="height: 70px;" {% endif %}>
+                            <img src="{{ path }}" alt="{{ title }}" class="img-fluid img-{{ media.extension }}" height="50" {% if 'svg' == media.extension %} style="height: 50px;" {% endif %}>
                         {%- endif -%}
                     </div>
                 {%- endif -%}

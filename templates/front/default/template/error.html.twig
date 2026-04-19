@@ -12,7 +12,7 @@
     {%- if app.request.session.get('alert_error') -%}
         <div class="flash-bag-container bg-primary pb-5">
             <div class="container">
-                <div class="row row-container">
+                <div class="row">
                     <div class="col-lg-8 col-xl-6 mx-auto">
                         {%- include "front/"~websiteTemplate~"/include/flashbag.html.twig" -%}
                     </div>
