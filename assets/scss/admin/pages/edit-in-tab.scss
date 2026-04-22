@@ -187,8 +187,7 @@
             height: initial !important;
             top: 2px !important;
             bottom: 2px !important;
-            right: 0 !important;
-            background: $white !important;
+            right: .5rem !important;
             border-radius: .25rem !important;
         }
 
@@ -276,23 +275,21 @@
 
         .ui-value {
 
-            border-radius: var(--bs-border-radius);
+            border-radius: 12px;
             margin-bottom: 10px;
             box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
             overflow: initial;
             min-height: 60px;
+            border: 1px solid $btn-border;
+            background: $bg-gradient-primary;
+
+            .value-group {
+                position: relative;
+            }
 
             .value-info {
                 font-size: 10px;
                 font-weight: 300;
-            }
-
-            &:not(.bg-gray):not(.bg-gray-600) {
-                background-color: #fff;
-            }
-
-            &.bg-gray {
-                background-color: $gray-200;
             }
 
             &:last-child {

@@ -1,5 +1,16 @@
+utf8mb4_unicode_ci
+utf8mb4_unicode_ci
+utf8mb4_unicode_ci
+utf8mb4_unicode_ci
+utf8mb4_unicode_ci
+
 Au filtre des produits la pagination ne fonctionne pas https://up-animation.local/recherche-animations?catalogs=performances
 
+A l'ajout d'une page configurer les marges mobile correctement
+
+A scroll menu mobile les item deviennent blanc quand on survol une zone foncée
+
+https://www.up-animations.abcvd.com/recherche-animations/fiche-produit/animation-seminaire : Contact url avec parma alors qu'il ne devrait pas
 
 catalog
 @!catalogue74000

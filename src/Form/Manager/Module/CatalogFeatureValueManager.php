@@ -23,14 +23,14 @@ use Symfony\Component\Form\Form;
 #[Autoconfigure(tags: [
     ['name' => CatalogFeatureValueManager::class, 'key' => 'module_catalog_feature_value_form_manager'],
 ])]
-class CatalogFeatureValueManager
+readonly class CatalogFeatureValueManager
 {
     /**
      * CatalogFeatureValueManager constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface  $coreLocator,
-        private readonly CatalogProductManager $productManager,
+        private CoreLocatorInterface  $coreLocator,
+        private CatalogProductManager $productManager,
     )
     {
     }

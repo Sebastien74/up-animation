@@ -47,6 +47,7 @@ final class ProductModel extends BaseModel
         $disabledLayout = isset($options['disabledLayout']) && $options['disabledLayout'];
         $model = ViewModel::fromEntity($product, $coreLocator, array_merge($options, []));
         $catalog = ViewModel::fromEntity($catalogDb, $coreLocator, array_merge($options, []));
+        $catalogSlug = self::getContent('slug', $catalog);
         $layoutCache = array_key_exists('catalogLayout', self::$cache) ? self::$cache['catalogLayout'] : [];
         $catalogLayout = self::$cache['catalogLayout'][$catalog->id] = array_key_exists($catalog->id, $layoutCache)
             ? $layoutCache[$catalog->id] : self::getContent('layout', $catalog->entity);
@@ -56,15 +57,11 @@ final class ProductModel extends BaseModel
         if (isset($options['entitiesIds'])) {
             unset($options['entitiesIds']);
         }
-        $defaultUniqSubCategories = [
 
-        ];
-        $multiFeaturesValues = [
+        $defaultUniqSubCategories = self::getConfig($catalogSlug, 'defaultUniqSubCategories');
+        $multiFeaturesValues = self::getConfig($catalogSlug, 'multiFeaturesValues');
+        $defaultUniqFeatures = self::getConfig($catalogSlug, 'defaultUniqFeatures');
 
-        ];
-        $defaultUniqFeatures = [
-
-        ];
         $values['defaults'] = [];
         $values = !$disabledValues ? self::getValues($product, $catalogDb, $multiFeaturesValues, $defaultUniqFeatures, $options) : $values;
         $subCategories = self::getSubCategories($product, $options, $defaultUniqSubCategories);
@@ -77,7 +74,6 @@ final class ProductModel extends BaseModel
             }
         }
 
-        $catalogSlug = self::getContent('slug', $catalog);
         $information = !$disabledInfo && in_array('informations', $catalogDb->getTabs()) ? self::information($product) : false;
         $address = $information ? $information->address : false;
         $mainPages = $website->configuration->pages;
@@ -90,23 +86,8 @@ final class ProductModel extends BaseModel
         self::$cache['agency'] = $agencyDb && self::$cache['agency'] ? self::$cache['agency']
             : ($agencyDb ? ProductModel::fromEntity($agencyDb, self::$coreLocator) : false);
 
-        $color = match ($catalogSlug) {
-            'agencies' => 'primary',
-            'services' => 'info-light',
-            'animations' => 'secondary-light',
-            'performances' => 'info',
-            'rentals' => 'warning',
-            default => 'white',
-        };
-
-        $icon = match ($catalogSlug) {
-            'agencies' => 'primary',
-            'services' => 'info-light',
-            'animations' => 'secondary-light',
-            'performances' => 'info',
-            'rentals' => 'warning',
-            default => 'white',
-        };
+        $color = self::getConfig($catalogSlug, 'color');
+        $icon = self::getConfig($catalogSlug, 'icon');
 
         return (object) array_merge((array) $model, [
             'catalog' => $catalog,
@@ -137,6 +118,48 @@ final class ProductModel extends BaseModel
             'indexUrl' => $model->urlIndex && $model->urlCode ? self::$coreLocator->router()->generate('front_catalogproduct_view', ['pageUrl' => $model->urlIndex, 'url' => $model->urlCode], UrlGeneratorInterface::ABSOLUTE_URL) : null,
             'contactUrl' => $contactPageUrl ? self::$coreLocator->router()->generate('front_index', $contactPageParams, UrlGeneratorInterface::ABSOLUTE_URL) : self::$coreLocator->router()->generate('front_index', [], UrlGeneratorInterface::ABSOLUTE_URL),
         ], $values['defaults'], $subCategories);
+    }
+
+    /**
+     * Get configuration by catalog slug and type.
+     */
+    private static function getConfig(string $catalogSlug, string $type): array|string
+    {
+        return match ($type) {
+            'color', 'icon' => match ($catalogSlug) {
+                'agencies' => 'primary',
+                'services' => 'info-light',
+                'animations' => 'secondary-light',
+                'performances' => 'info',
+                'rentals' => 'warning',
+                default => 'white',
+            },
+            'defaultUniqSubCategories' => match ($catalogSlug) {
+                'agencies' => [],
+                'services' => [],
+                'animations' => [],
+                'performances' => [],
+                'rentals' => [],
+                default => [],
+            },
+            'multiFeaturesValues' => match ($catalogSlug) {
+                'agencies' => [],
+                'services' => [],
+                'animations' => [],
+                'performances' => [],
+                'rentals' => ['mode', 'people', 'duration', 'age'],
+                default => [],
+            },
+            'defaultUniqFeatures' => match ($catalogSlug) {
+                'agencies' => [],
+                'services' => [],
+                'animations' => [],
+                'performances' => [],
+                'rentals' => [],
+                default => [],
+            },
+            default => [],
+        };
     }
 
     /**

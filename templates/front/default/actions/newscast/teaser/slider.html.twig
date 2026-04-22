@@ -139,7 +139,6 @@
     </li>
 {%- endmacro -%}
 
-{%- set containerClasses = asMulti ? 'col-12' : 'col-md-10 offset-md-1 mb-md-neg' -%}
 {%- set colSizeFirst = isDesktop() ? 50 : (isTablet() ? 60 : 100) -%}
 {%- set displayFormFilters = teaser.displayFilters is defined ? teaser.displayFilters : false -%}
 
@@ -147,7 +146,7 @@
     {%- if 'teaser-title' in teaser.fields and intl.title -%}
         <h{{ intl.titleForce }} class="title mb-4 mb-lg-0">{{ intl.title|raw }}</h{{ intl.titleForce }}>
     {%- endif -%}
-    <div class="row listing-entities-container">
+    <div class="listing-entities-container">
         {{ component('WebmasterEdit', {
             title: "Éditer le teaser"|trans([], 'front_webmaster'),
             role: 'ROLE_NEWSCAST',
@@ -173,49 +172,47 @@
             </div>
         {%- endif -%}
         {%- set autoplay = 1 -%}
-        <div class="{{ containerClasses }} pe-md-0">
-            <div id="newscast-teaser-{{ teaser.slug }}" class="newscast-teaser splide length-{{ entities|length }}"
-                 data-items="{{ teaser.itemsPerSlide }}"
-                 data-lenght="{{ entities|length }}"
-                 data-items-medium-pc="3"
-                 data-items-mini-pc="3"
-                 data-items-tablet="2"
-                 data-items-mobile="1"
-                 data-fade="loop"
-                 data-scroll="1"
-                 data-pause="1"
-                 data-autoplay="{{ autoplay }}"
-                 data-arrows="1"
-                 data-dots="0"
-                 data-gap="2rem"
-                 data-counter="0"
-                 data-interval="2500">
-                <div class="splide__track ps-3">
-                    {%- if entities|length >= teaser.itemsPerSlide -%}
-                        {{ macro.arrows(teaser, autoplay, 'end', 'secondary', true, 'top') }}
-                    {%- endif -%}
-                    <ul class="splide__list {% if not asMulti %} w-100{% endif %}">
-                        {%- for entity in entities -%}
-                            {%- if asMulti -%}
-                                {{ macro.multi(websiteTemplate, autoplay, promoteFirst, colSizeFirst, teaser, entity, loop.index, entities, thumbConfiguration) }}
-                            {%- else -%}
-                                {{ macro.single(websiteTemplate, autoplay, teaser, entity, loop.index, entities, thumbConfiguration) }}
-                            {%- endif -%}
-                        {%- endfor -%}
-                    </ul>
-                </div>
-                {%- if teaser.progress and entities|length >= teaser.itemsPerSlide -%}
-                    <div class="row">
-                        <div class="col-11 col-md-9">
-                            <div class="slider-progress-container d-flex justify-content-start align-items-center w-100 mt-4 mt-md-5">
-                                <div class="slider-progress w-100">
-                                    <div class="slider-progress-bar"></div>
-                                </div>
+        <div id="newscast-teaser-{{ teaser.slug }}" class="newscast-teaser splide length-{{ entities|length }}"
+             data-items="{{ teaser.itemsPerSlide }}"
+             data-lenght="{{ entities|length }}"
+             data-items-medium-pc="3"
+             data-items-mini-pc="3"
+             data-items-tablet="2"
+             data-items-mobile="1"
+             data-fade="loop"
+             data-scroll="1"
+             data-pause="1"
+             data-autoplay="{{ autoplay }}"
+             data-arrows="1"
+             data-dots="0"
+             data-gap="2rem"
+             data-counter="0"
+             data-interval="2500">
+            <div class="splide__track ps-3">
+                {%- if entities|length >= teaser.itemsPerSlide -%}
+                    {{ macro.arrows(teaser, autoplay, 'end', 'secondary', true, 'top') }}
+                {%- endif -%}
+                <ul class="splide__list {% if not asMulti %} w-100{% endif %}">
+                    {%- for entity in entities -%}
+                        {%- if asMulti -%}
+                            {{ macro.multi(websiteTemplate, autoplay, promoteFirst, colSizeFirst, teaser, entity, loop.index, entities, thumbConfiguration) }}
+                        {%- else -%}
+                            {{ macro.single(websiteTemplate, autoplay, teaser, entity, loop.index, entities, thumbConfiguration) }}
+                        {%- endif -%}
+                    {%- endfor -%}
+                </ul>
+            </div>
+            {%- if teaser.progress and entities|length >= teaser.itemsPerSlide -%}
+                <div class="row m-0">
+                    <div class="col-12 col-md-9">
+                        <div class="slider-progress-container d-flex justify-content-start align-items-center w-100 mt-4 mt-md-5">
+                            <div class="slider-progress w-100">
+                                <div class="slider-progress-bar"></div>
                             </div>
                         </div>
                     </div>
-                {%- endif -%}
-            </div>
+                </div>
+            {%- endif -%}
         </div>
     </div>
     {%- if 'index-link' in teaser.fields -%}

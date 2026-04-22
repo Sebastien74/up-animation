@@ -19,12 +19,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => FormCalendarManager::class, 'key' => 'module_form_calendar_form_manager'],
 ])]
-class FormCalendarManager
+readonly class FormCalendarManager
 {
     /**
      * FormCalendarManager constructor.
      */
-    public function __construct(private readonly CoreLocatorInterface $coreLocator)
+    public function __construct(private CoreLocatorInterface $coreLocator)
     {
     }
 

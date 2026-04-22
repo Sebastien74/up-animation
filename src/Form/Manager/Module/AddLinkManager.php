@@ -23,12 +23,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => AddLinkManager::class, 'key' => 'module_add_link_menu_form_manager'],
 ])]
-class AddLinkManager
+readonly class AddLinkManager
 {
     /**
      * AddLinkManager constructor.
      */
-    public function __construct(private readonly CoreLocatorInterface $coreLocator)
+    public function __construct(private CoreLocatorInterface $coreLocator)
     {
     }
 

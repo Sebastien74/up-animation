@@ -24,15 +24,15 @@ use Symfony\Component\Form\Form;
 #[Autoconfigure(tags: [
     ['name' => JobManager::class, 'key' => 'module_job_form_manager'],
 ])]
-class JobManager
+readonly class JobManager
 {
     /**
      * SectorManager constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly PageFixtures         $pageFixtures,
-        private readonly LayoutManager        $layoutManager,
+        private CoreLocatorInterface $coreLocator,
+        private PageFixtures $pageFixtures,
+        private LayoutManager $layoutManager,
     )
     {
     }

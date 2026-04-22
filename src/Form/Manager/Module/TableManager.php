@@ -19,12 +19,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => TableManager::class, 'key' => 'module_table_form_manager'],
 ])]
-class TableManager
+readonly class TableManager
 {
     /**
      * TableManager constructor.
      */
-    public function __construct(private readonly CoreLocatorInterface $coreLocator)
+    public function __construct(private CoreLocatorInterface $coreLocator)
     {
     }
 

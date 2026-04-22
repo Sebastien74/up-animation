@@ -21,12 +21,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => StepFormManager::class, 'key' => 'module_step_form_form_manager'],
 ])]
-class StepFormManager
+readonly class StepFormManager
 {
     /**
      * StepFormManager constructor.
      */
-    public function __construct(private readonly CoreLocatorInterface $coreLocator)
+    public function __construct(private CoreLocatorInterface $coreLocator)
     {
     }
 
@@ -45,5 +45,24 @@ class StepFormManager
         $configuration->setAjax(true);
         $stepForm->setConfiguration($configuration);
         $this->coreLocator->em()->persist($stepForm);
+    }
+
+    /**
+     * @preUpdate
+     *
+     * @throws Exception
+     */
+    public function preUpdate(StepForm $stepForm, Website $website): void
+    {
+        foreach ($stepForm->getForms() as $form) {
+            $configuration = $form->getConfiguration();
+            if (!$configuration) {
+                $configuration = new Configuration();
+                $form->setConfiguration($configuration);
+                $this->coreLocator->em()->persist($form);
+            }
+            $configuration->setDynamic($stepForm->getConfiguration()->isDynamic());
+            $this->coreLocator->em()->persist($configuration);
+        }
     }
 }

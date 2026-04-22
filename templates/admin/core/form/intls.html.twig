@@ -83,6 +83,7 @@
                         {% if intl.children.bodyTitleSecond is defined and not intl.children.bodyTitleSecond.rendered %}{{ form_row(intl.children.bodyTitleSecond) }}{% endif %}
                         {% if intl.children.bodySecond is defined and not intl.children.bodySecond.rendered %}{{ form_row(intl.children.bodySecond) }}{% endif %}
                     </div>
+                    {% if intl.children.advendisingTitle is defined and not intl.children.advendisingTitle.rendered %}{{ form_row(intl.children.advendisingTitle) }}{% endif %}
                     <div class="col-lg-4">
                         {% if intl.children.advendisingTitleFirst is defined and not intl.children.advendisingTitleFirst.rendered %}{{ form_row(intl.children.advendisingTitleFirst) }}{% endif %}
                         {% if intl.children.advendisingFirst is defined and not intl.children.advendisingFirst.rendered %}{{ form_row(intl.children.advendisingFirst) }}{% endif %}

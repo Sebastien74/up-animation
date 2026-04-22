@@ -75,12 +75,12 @@ export default function () {
             });
         }
 
-        /** Plugins vendor */
+        /** Plugin vendor */
         import('../../vendor/plugins/plugins').then(({default: activePlugins}) => {
             activePlugins();
         }).catch(error => console.error(error.message));
 
-        /** Plugins admin */
+        /** Plugin admin */
         import('../plugins/vendor').then(({default: activeAdminPlugins}) => {
             activeAdminPlugins();
         }).catch(error => console.error(error.message));
@@ -96,7 +96,7 @@ export default function () {
             }).catch(error => console.error(error.message));
         }
 
-        /** Tinymce */
+        /** TinyMCE */
         tinymcePlugin();
 
         return false;

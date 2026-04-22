@@ -58,6 +58,7 @@ class FrontType extends AbstractType
     private array $hiddenBlocks = [];
     private array $dynamicBlocks = [];
     private array $associatedElements = [];
+    private bool $asStepForm = false;
     private bool $setGroup = false;
     private bool $disablePicker = false;
     private bool $floatingLabels = true;
@@ -94,9 +95,11 @@ class FrontType extends AbstractType
         $recaptcha->add($builder, $configuration);
 
         if ($entity instanceof FormEntities\Form) {
+            $this->asStepForm = false;
             $this->setVisibleFields($entity, $formName);
             $this->setForm($entity, $builder);
         } elseif ($entity instanceof FormEntities\StepForm) {
+            $this->asStepForm = true;
             $this->setStepForm($entity, $builder);
         }
     }
@@ -335,7 +338,7 @@ class FrontType extends AbstractType
         }
 
         if (in_array($block->getId(), $this->dynamicBlocks)) {
-            $this->options['attr']['class'] = $class.' dynamic-field';
+            $this->options['attr']['class'] = $this->asStepForm ? $class.' dynamic-step-field' : $class.' dynamic-field';
         }
 
         if (!empty($this->associatedElements[$block->getId()])) {

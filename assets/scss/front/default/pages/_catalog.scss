@@ -53,31 +53,7 @@ $enable-youtube: true;
         }
     }
 
-    .layout-zone:not(:first-child) {
-        .body *, .introduction, .introduction * {
-            font-size: 19px;
-        }
-    }
-}
-
-/*-----------------------------------
-   4 ) Agency
------------------------------------*/
-
-.body-agencies-page {
-
-    .body:not([class^="lh-"]):not([class*=" lh-"]) *,
-    .introduction:not([class^="lh-"]):not([class*=" lh-"]) * {
-        line-height: 1.5
-    }
-
-    //@include mediaQuery(min-lg) {
-    //    .splide__track {
-    //        margin-left: -1rem;
-    //    }
-    //}
-
-    .agency-highlights {
+    .highlights {
 
         .card-header {
 
@@ -96,6 +72,24 @@ $enable-youtube: true;
         .card-body * {
             font-size: 1rem !important;
         }
+    }
+
+    .layout-zone:not(:first-child) {
+        .body *, .introduction, .introduction * {
+            font-size: 19px;
+        }
+    }
+}
+
+/*-----------------------------------
+   4 ) Agency
+-----------------------------------*/
+
+.body-agencies-page {
+
+    .body:not([class^="lh-"]):not([class*=" lh-"]) *,
+    .introduction:not([class^="lh-"]):not([class*=" lh-"]) * {
+        line-height: 1.5
     }
 }
 

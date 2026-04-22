@@ -265,6 +265,13 @@ class ProductType extends AbstractType
                             'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
                             'row_attr' => ['class' => 'col-12 editor'],
                         ],
+                        'advendisingTitle' => [
+                            'type' => Type\TextType::class,
+                            'required' => false,
+                            'label' => $this->translator->trans('Titre principal des mises en avant', [], 'admin'),
+                            'attr' => ['placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin')],
+                            'row_attr' => ['class' => 'col-12 editor'],
+                        ],
                         'advendisingTitleFirst' => [
                             'type' => Type\TextType::class,
                             'required' => false,

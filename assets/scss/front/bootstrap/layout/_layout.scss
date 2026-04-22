@@ -1,3 +1,25 @@
+@mixin generateGutterManagement($propertyPrefix, $property, $breakpoints, $allBreakpoints, $shorthandPrefix) {
+
+    $isSelectors: ();
+    @each $bp in $breakpoints {
+        $isSelectors: append($isSelectors, '[class^="#{$propertyPrefix}-#{$bp}-"]', comma);
+        $isSelectors: append($isSelectors, '[class*=" #{$propertyPrefix}-#{$bp}-"]', comma);
+    }
+
+    $notSelectors: ();
+    @each $bp in $allBreakpoints {
+        $notSelectors: append($notSelectors, '[class^="#{$propertyPrefix}-#{$bp}-"]', comma);
+        $notSelectors: append($notSelectors, '[class*=" #{$propertyPrefix}-#{$bp}-"]', comma);
+        $notSelectors: append($notSelectors, '[class^="#{$shorthandPrefix}-#{$bp}-"]', comma);
+        $notSelectors: append($notSelectors, '[class*=" #{$shorthandPrefix}-#{$bp}-"]', comma);
+    }
+
+    .row > *:is(#{$isSelectors}),
+    .row > *:not(:is(#{$notSelectors})) {
+        #{$property}: calc(var(--bs-gutter-x) * .5);
+    }
+}
+
 @if not $enable-medias-queries {
 
     .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
@@ -26,29 +48,39 @@
         max-width: 100%;
     }
 
-    @include mediaQuery(max-lg) {
+    $allBPs: ('mobile', 'tablet', 'mini-pc', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxxl');
 
-        .row > * {
-            padding-left: calc(var(--bs-gutter-x) * .5);
-        }
+    @include mediaQuery(max-sm) {
+        @include generateGutterManagement('ps', 'padding-left', ('mobile', 'xs'), $allBPs, 'p');
+        @include generateGutterManagement('pe', 'padding-right', ('mobile', 'xs'), $allBPs, 'p');
+    }
 
-        .row > * {
-            padding-right: calc(var(--bs-gutter-x) * .5);
-        }
+    @include mediaQuery(min-sm) {
+        @include generateGutterManagement('ps', 'padding-left', ('sm'), $allBPs, 'p');
+        @include generateGutterManagement('pe', 'padding-right', ('sm'), $allBPs, 'p');
+    }
+
+    @include mediaQuery(min-md) {
+        @include generateGutterManagement('ps', 'padding-left', ('tablet', 'md'), $allBPs, 'p');
+        @include generateGutterManagement('pe', 'padding-right', ('tablet', 'md'), $allBPs, 'p');
     }
 
     @include mediaQuery(min-lg) {
-
-        .row > *:not([class^="ps-"]):not([class*=" ps-"]):not([class^="p-"]):not([class*=" p-"]) {
-            padding-left: calc(var(--bs-gutter-x) * .5);
-        }
-
-        .row > *:not([class^="pe-"]):not([class*=" pe-"]):not([class^="p-"]):not([class*=" p-"]) {
-            padding-right: calc(var(--bs-gutter-x) * .5);
-        }
+        @include generateGutterManagement('ps', 'padding-left', ('mini-pc', 'lg'), $allBPs, 'p');
+        @include generateGutterManagement('pe', 'padding-right', ('mini-pc', 'lg'), $allBPs, 'p');
     }
 
-    .row > *:not([class^="mt-"]):not([class*=" mt-"]) {
+    @include mediaQuery(min-xl) {
+        @include generateGutterManagement('ps', 'padding-left', ('xl'), $allBPs, 'p');
+        @include generateGutterManagement('pe', 'padding-right', ('xl'), $allBPs, 'p');
+    }
+
+    @include mediaQuery(min-xxl) {
+        @include generateGutterManagement('ps', 'padding-left', ('xxl', 'xxxl'), $allBPs, 'p');
+        @include generateGutterManagement('pe', 'padding-right', ('xxl', 'xxxl'), $allBPs, 'p');
+    }
+
+    .row > *:not([class^="mt-"]):not([class*=" mt-"]):not([class^="m-"]):not([class*=" m-"]):not([class^="my-"]):not([class*=" my-"]) {
         margin-top: var(--bs-gutter-y)
     }
 

@@ -195,6 +195,16 @@ form {
     }
 }
 
+.select2-results__option--group {
+
+    text-align: left;
+    flex-direction: column;
+
+    .select2-results__options {
+        width: 100%;
+    }
+}
+
 .select2-group {
 
     .form-floating > label {

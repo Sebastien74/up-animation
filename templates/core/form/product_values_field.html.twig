@@ -38,13 +38,14 @@
 
     {# Switch to true if you want display features values by feature groups #}
     {%- set displayByGroup = false -%}
+    {%- set displayAsDefaultDelete = true -%}
     {%- set entity = form.parent.vars.data -%}
     {%- set featuresGroups = entity|productData -%}
     {%- set features = displayByGroup ? featuresGroups['byGroupFeaturesPosition'] : featuresGroups['byPosition'] -%}
     {%- set catalogId = masterRequest().get('catalog') -%}
 
     <div class="col-12">
-        <ul id="features-sortable" class="reset">
+        <ul id="features-sortable" class="reset ps-0">
             {%- if not displayByGroup -%}
                 <ul class="feature-values-sortable reset px-0">
             {%- endif -%}
@@ -127,7 +128,7 @@
                                             </div>
                                         </span>
                                         <span class="my-auto ps-4 pe-2 ms-auto actions-col">
-                                            {%- if not asDefault -%}
+                                            {%- if not asDefault or displayAsDefaultDelete -%}
 {#                                                {%- set feature = feature is defined ? feature : (value.feature is defined ? value.feature : null) -%}#}
 {#                                                {%- if feature and value.value.id is defined and value.value.id -%}#}
 {#                                                    <a href="{{ path('admin_catalogfeaturevalue_edit', {website: websiteId(), catalogfeature: feature.id, catalogfeaturevalue: value.value.id}) }}"#}

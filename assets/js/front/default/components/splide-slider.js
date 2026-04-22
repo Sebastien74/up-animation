@@ -181,7 +181,12 @@ export default function (sliders) {
                             });
                         }
                         const sliderWidth = slider.clientWidth - offset;
-                        const slideWidth = Math.round(sliderWidth / perPageScreen);
+                        let slideWidth = Math.round(sliderWidth / perPageScreen);
+                        if (slider.dataset.width) {
+                            slideWidth = parseInt(slider.dataset.width);
+                        } else {
+                            slider.dataset.width = slideWidth.toString();
+                        }
                         return {
                             ...configBase,
                             arrows: arrows,

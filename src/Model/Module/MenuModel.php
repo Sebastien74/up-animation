@@ -108,7 +108,8 @@ final class MenuModel extends BaseModel
                 $path = self::linkPath($website, $intl, $url);
                 $asPath = $path !== $schemeAndHttpHost;
                 $active = $asPath && $path && trim($uri, '/') === trim(str_replace($schemeAndHttpHost, '', $path), '/');
-                $color = $link instanceof Link && $link->getColor() ? 'text-'.$link->getColor() : '';
+                $color = $link instanceof Link && $link->getColor() && !str_contains($link->getColor(), '#')
+                    ? 'text-'.$link->getColor() : ($link instanceof Link ? $link->getColor() : null);
                 $btnColor = $link instanceof Link && $link->getBtnColor() ? 'btn '.$link->getBtnColor() : '';
                 $link = $link instanceof Link ? $link : (is_object($link) && property_exists($link, 'entity') ? $link->entity : null);
                 $id = $intl->linkTargetPage && $intl->linkTargetPage->getSlug() ? 'link-'.$menu->getSlug().'-'.$intl->linkTargetPage->getSlug()

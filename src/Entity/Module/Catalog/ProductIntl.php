@@ -31,6 +31,9 @@ class ProductIntl extends BaseIntl
     protected ?string $bodySecond = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $advendisingTitle = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $advendisingTitleFirst = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -96,6 +99,18 @@ class ProductIntl extends BaseIntl
     public function setBodySecond(?string $bodySecond): static
     {
         $this->bodySecond = $bodySecond;
+
+        return $this;
+    }
+
+    public function getAdvendisingTitle(): ?string
+    {
+        return $this->advendisingTitle;
+    }
+
+    public function setAdvendisingTitle(?string $advendisingTitle): static
+    {
+        $this->advendisingTitle = $advendisingTitle;
 
         return $this;
     }

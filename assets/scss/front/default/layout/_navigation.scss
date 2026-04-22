@@ -182,7 +182,7 @@ body.menu-open {
 
         @include mediaQuery(max-lg) {
             padding-left: 1.3rem !important;
-            padding-right: 1.3rem !important;
+            padding-right: 1.5rem !important;
         }
 
         @include mediaQuery(between-lg-xl) {

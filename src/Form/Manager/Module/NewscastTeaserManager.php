@@ -26,12 +26,12 @@ use Symfony\Component\Form\Form;
 #[Autoconfigure(tags: [
     ['name' => NewscastTeaserManager::class, 'key' => 'module_newscast_teaser_form_manager'],
 ])]
-class NewscastTeaserManager
+readonly class NewscastTeaserManager
 {
     /**
      * NewscastTeaserManager constructor.
      */
-    public function __construct(private readonly CoreLocatorInterface $coreLocator)
+    public function __construct(private CoreLocatorInterface $coreLocator)
     {
     }
 

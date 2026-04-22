@@ -20,12 +20,12 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: [
     ['name' => CampaignManager::class, 'key' => 'module_newsletter_campaign_form_manager'],
 ])]
-class CampaignManager
+readonly class CampaignManager
 {
     /**
      * CampaignManager constructor.
      */
-    public function __construct(private readonly CoreLocatorInterface $coreLocator)
+    public function __construct(private CoreLocatorInterface $coreLocator)
     {
     }
 
