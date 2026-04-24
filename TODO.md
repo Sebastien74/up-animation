@@ -4,6 +4,14 @@ utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 
+Mettre le partage sur les fiches produits
+
+SUr la fiche Agence revoir les paddings c'est pas aligné
+
+Pour chaque produits faire une page par ville et passant le param city de l'agence
+
+Breakpoint tablet 576, 768px à 991 (Faire le responsive et envisager de revoir les breakpoint du system de marges)
+
 Au filtre des produits la pagination ne fonctionne pas https://up-animation.local/recherche-animations?catalogs=performances
 
 A l'ajout d'une page configurer les marges mobile correctement

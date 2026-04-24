@@ -94,16 +94,32 @@
         padding: .75rem .25rem .75rem !important;
     }
 
-    .form-control, .ts-control input, .form-select {
+    .ts-wrapper {
+        min-width: 200px;
+    }
 
-        background-color: $white !important;
-        color: $gray-900;
-        font-size: 12px;
+    .btn-group-toggle {
 
-        &::placeholder {
-            color: $gray-500 !important;
-            font-size: 12px;
+        display: flex;
+
+        .btn {
+            min-height: 45px;
+            min-width: 215px;
+            padding: .5rem 1.5rem !important;
         }
+    }
+
+    .ts-control {
+        min-width: 215px;
+    }
+
+    .form-control, .ts-control input, .form-select {
+        font-size: 12px;
+        color: $gray-500 !important;
+    }
+
+    .form-control::placeholder {
+        color: $gray-500 !important;
     }
 
     .select2-container .select2-selection--single .select2-selection__rendered {
@@ -124,6 +140,10 @@
         height: initial !important;
     }
 
+    .select2-selection__arrow {
+        top: 10px !important;
+    }
+
     .plugin-clear_button .clear-button {
         display: inline-block;
         position: absolute;
@@ -139,7 +159,7 @@
     .ts-wrapper.form-select {
 
         background-image: none !important;
-        height: 40px;
+        height: 45px;
         max-width: 320px;
 
         &::after {
@@ -148,8 +168,8 @@
             width: 0;
             height: 0;
             position: absolute;
-            top: 17px;
-            right: 0.5rem;
+            top: 19px;
+            right: 0.75rem;
             border-left: 4px solid transparent;
             border-right: 4px solid transparent;
         }
@@ -175,11 +195,11 @@
         }
 
         .select2-container--default .select2-selection--single {
-            height: 40px !important;
+            height: 45px !important;
         }
 
         .select2-container .select2-selection--single .select2-selection__rendered {
-            line-height: 40px !important;
+            line-height: 45px !important;
             font-size: 12px !important;
         }
 
@@ -199,11 +219,13 @@
     .feature-group {
 
         .select2-container--default .select2-selection--single {
-            height: 40px;
+            height: 45px;
+            min-width: 245px !important;
         }
 
         .select2-container .select2-selection--single .select2-selection__rendered {
-            height: 40px;
+            height: 45px;
+            min-width: 245px !important;
         }
     }
 
@@ -214,7 +236,8 @@
 
     .name-group {
         .form-control {
-            min-height: 40px;
+            height: 45px;
+            min-width: 200px;
         }
     }
 }

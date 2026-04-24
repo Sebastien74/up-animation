@@ -48,7 +48,7 @@ class FeatureValueProductController extends AdminController
     #[Route('/delete/{catalogfeaturevalueproduct}', name: 'admin_catalogfeaturevalueproduct_delete', methods: 'DELETE')]
     public function delete(Request $request)
     {
-        $value = $this->coreLocator->em()->getRepository(FeatureValueProduct::class)->find($request->get('catalogfeaturevalueproduct'));
+        $value = $this->coreLocator->em()->getRepository(FeatureValueProduct::class)->find($request->attributes->get('catalogfeaturevalueproduct'));
         $product = $value->getProduct();
         $this->arguments['redirection'] = $this->generateUrl('admin_catalogproduct_edit', [
             'website' => $this->coreLocator->website()->id,
@@ -58,10 +58,11 @@ class FeatureValueProductController extends AdminController
         ]);
 
         $catalogId = $product->getCatalog()->getId();
-        $asDefault = $this->asDefault($value, $catalogId, 'feature');
-        $asDefault = $asDefault || $this->asDefault($value, $catalogId, 'value');
 
-        if ($asDefault) {
+        $delete = $this->isDeletable($value, $product, $catalogId, 'feature')
+            && $this->isDeletable($value, $product, $catalogId, 'value');
+
+        if (!$delete) {
             $session = $request->getSession();
             $session->getFlashBag()->add('error', $this->coreLocator->translator()->trans("Vous ne pouvez pas supprimer une caractéristique par défaut.<br> Vous devez d'abord retirer le catalogue dans la configuration de votre caractéristique ou valeur.", [], 'admin'));
             return new JsonResponse(['success' => true, 'redirection' => $this->arguments['redirection']]);
@@ -75,20 +76,34 @@ class FeatureValueProductController extends AdminController
     }
 
     /**
-     * To check if is default Feature or Value.
+     * To check if is deletable.
      */
-    private function asDefault(FeatureValueProduct $value, int $catalogId, string $property): bool
+    private function isDeletable(FeatureValueProduct $value, Product $product, int $catalogId, string $property): bool
     {
         $method = 'get'.ucfirst($property);
-        if ($value->$method()) {
-            foreach ($value->$method()->getCatalogs() as $catalog) {
-                if ($catalog->getId() == $catalogId) {
-                    return true;
+        $propertyEntity = $value->$method();
+
+        if ($propertyEntity) {
+            $isDefault = false;
+            foreach ($propertyEntity->getCatalogs() as $catalog) {
+                if ($catalog->getId() === $catalogId) {
+                    $isDefault = true;
+                    break;
                 }
+            }
+            if ($isDefault) {
+                $count = 0;
+                foreach ($product->getValues() as $productValue) {
+                    $otherPropertyEntity = $productValue->$method();
+                    if ($otherPropertyEntity && $otherPropertyEntity->getId() === $propertyEntity->getId()) {
+                        $count++;
+                    }
+                }
+                return $count > 1;
             }
         }
 
-        return false;
+        return true;
     }
 
     /**

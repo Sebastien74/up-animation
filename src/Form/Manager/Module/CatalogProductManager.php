@@ -27,13 +27,13 @@ use Symfony\Component\Form\Form;
 ])]
 class CatalogProductManager
 {
-    private const bool ENABLED_DRAG = false;
+    private const bool ENABLED_DRAG = true;
 
     /**
      * CatalogProductManager constructor.
      */
     public function __construct(
-        private readonly CoreLocatorInterface     $coreLocator,
+        private readonly CoreLocatorInterface $coreLocator,
         private readonly CoreFormManagerInterface $baseCoreLocator,
     )
     {

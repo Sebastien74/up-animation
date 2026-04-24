@@ -69,30 +69,34 @@
             {%- endif -%}
 
                 {% if 'catalogproduct' == interfaceName and customRender is defined and customRender %}
+                    {%- set colSizes = 'col-lg-4' -%}
+                    {%- if 'performances' == catalogSlug -%}
+                        {%- set colSizes = 'col-lg-6' -%}
+                    {%- endif -%}
                     {% if intl.children.title is defined and not intl.children.title.rendered %}{{ form_row(intl.children.title) }}{% endif %}
                     {% if intl.children.subTitle is defined and not intl.children.subTitle.rendered %}{{ form_row(intl.children.subTitle) }}{% endif %}
-                    <div class="col-lg-4">
+                    <div class="{{ colSizes }}">
                         {% if intl.children.introductionTitle is defined and not intl.children.introductionTitle.rendered %}{{ form_row(intl.children.introductionTitle) }}{% endif %}
                         {% if intl.children.introduction is defined and not intl.children.introduction.rendered %}{{ form_row(intl.children.introduction) }}{% endif %}
                     </div>
-                    <div class="col-lg-4">
+                    <div class="{{ colSizes }}">
                         {% if intl.children.bodyTitle is defined and not intl.children.bodyTitle.rendered %}{{ form_row(intl.children.bodyTitle) }}{% endif %}
                         {% if intl.children.body is defined and not intl.children.body.rendered %}{{ form_row(intl.children.body) }}{% endif %}
                     </div>
-                    <div class="col-lg-4">
+                    <div class="{{ colSizes }}">
                         {% if intl.children.bodyTitleSecond is defined and not intl.children.bodyTitleSecond.rendered %}{{ form_row(intl.children.bodyTitleSecond) }}{% endif %}
                         {% if intl.children.bodySecond is defined and not intl.children.bodySecond.rendered %}{{ form_row(intl.children.bodySecond) }}{% endif %}
                     </div>
                     {% if intl.children.advendisingTitle is defined and not intl.children.advendisingTitle.rendered %}{{ form_row(intl.children.advendisingTitle) }}{% endif %}
-                    <div class="col-lg-4">
+                    <div class="{{ colSizes }}">
                         {% if intl.children.advendisingTitleFirst is defined and not intl.children.advendisingTitleFirst.rendered %}{{ form_row(intl.children.advendisingTitleFirst) }}{% endif %}
                         {% if intl.children.advendisingFirst is defined and not intl.children.advendisingFirst.rendered %}{{ form_row(intl.children.advendisingFirst) }}{% endif %}
                     </div>
-                    <div class="col-lg-4">
+                    <div class="{{ colSizes }}">
                         {% if intl.children.advendisingTitleSecond is defined and not intl.children.advendisingTitleSecond.rendered %}{{ form_row(intl.children.advendisingTitleSecond) }}{% endif %}
                         {% if intl.children.advendisingSecond is defined and not intl.children.advendisingSecond.rendered %}{{ form_row(intl.children.advendisingSecond) }}{% endif %}
                     </div>
-                    <div class="col-lg-4">
+                    <div class="{{ colSizes }}">
                         {% if intl.children.advendisingTitleThird is defined and not intl.children.advendisingTitleThird.rendered %}{{ form_row(intl.children.advendisingTitleThird) }}{% endif %}
                         {% if intl.children.advendisingThird is defined and not intl.children.advendisingThird.rendered %}{{ form_row(intl.children.advendisingThird) }}{% endif %}
                     </div>

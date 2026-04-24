@@ -50,7 +50,6 @@ class FeatureValueAutocompleteField extends AbstractType
             'no_more_results_text' => $this->translator->trans('Aucun résultat trouvé', [], 'admin'),
             'min_characters' => null,
             'group_by' => 'catalogfeature.adminName',
-
             'row_attr' => ['class' => 'col-12 mb-0'],
             'data' => null, // Option pour récupérer l'objet passé
             'choice_label' => fn($entity) => strip_tags($entity->getAdminName()),

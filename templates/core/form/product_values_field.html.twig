@@ -12,25 +12,29 @@
         {%- set interfaceName = property.vars.errors.form.config.dataClass|interfaceName -%}
         {%- if isNew -%}
             <div class="prototype-block prototype mb-4">
-                <div class="d-flex align-items-center gap-2 px-3">
-                    {{ form_widget(property.value) }}
-                    <strong>{{ "Ou personnalisée"|trans|raw }}</strong>
-                    <div class="form-group feature-group select2-group">{{ form_widget(property.feature) }}</div>
-                    <div class="form-group name-group">{{ form_widget(property.adminName) }}</div>
-                    {%- if property.addToGlobal is defined -%}
-                        <div class="form-group add-to-global-group">{{ form_widget(property.addToGlobal) }}</div>
-                    {%- endif -%}
-                    <div class="d-none">
-                        {%- if property.displayInArray is defined -%}
-                            {{ form_widget(property.displayInArray) }}
-                        {%- endif -%}
-                        {{ form_widget(property.position) }}
+                <div class="d-flex align-items-center justify-content-between gap-2 px-3">
+                    <div class="position-relative flex-shrink-0">
+                        {{ form_widget(property.value) }}
                     </div>
-                    {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
-                        isNew: property.vars.data.id is defined and property.vars.data.id ? false : true,
-                        entityId: isNew ? uniqId() : property.vars.data.id,
-                        interfaceName: interfaceName
-                    } -%}
+                    <strong>{{ "Ou personnalisée"|trans|raw }}</strong>
+                    <div class="right-group d-flex align-items-center gap-3">
+                        <div class="form-group feature-group select2-group">{{ form_widget(property.feature) }}</div>
+                        <div class="form-group name-group">{{ form_widget(property.adminName) }}</div>
+                        {%- if property.addToGlobal is defined -%}
+                            <div class="form-group add-to-global-group">{{ form_widget(property.addToGlobal) }}</div>
+                        {%- endif -%}
+                        <div class="d-none">
+                            {%- if property.displayInArray is defined -%}
+                                {{ form_widget(property.displayInArray) }}
+                            {%- endif -%}
+                            {{ form_widget(property.position) }}
+                        </div>
+                        {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
+                            isNew: property.vars.data.id is defined and property.vars.data.id ? false : true,
+                            entityId: isNew ? uniqId() : property.vars.data.id,
+                            interfaceName: interfaceName
+                        } -%}
+                    </div>
                 </div>
             </div>
         {%- endif -%}
@@ -47,7 +51,7 @@
     <div class="col-12">
         <ul id="features-sortable" class="reset ps-0">
             {%- if not displayByGroup -%}
-                <ul class="feature-values-sortable reset px-0">
+                <ul class="feature-values-sortable reset pb-0 px-0">
             {%- endif -%}
             {%- for featurePosition, values in features -%}
                 {%- if displayByGroup -%}
@@ -107,9 +111,7 @@
                                                 <small class="value-info text-italic d-inline-block d-inline-block w-100">{{ asDefaultLabel|raw }} </small>
                                             {%- endif -%}
                                         </strong>
-{#                                        {%- if not asDefault -%}#}
-                                            <span class="my-auto value-col me-5{% if asDefault or asCustom %} text-info-light{% endif %}">{%- if value.value.adminName is defined and value.value.adminName -%}{{ value.value.adminName }}{%- endif -%}</span>
-{#                                        {%- endif -%}#}
+                                        <span class="my-auto value-col me-5{% if asDefault or asCustom %} text-info-light{% endif %}">{%- if value.value.adminName is defined and value.value.adminName -%}{{ value.value.adminName }}{%- endif -%}</span>
                                         <span class="my-auto edit-col">
                                             {%- if property.displayInArray is defined -%}
                                                 {{ form_widget(property.displayInArray) }}

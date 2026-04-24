@@ -63,6 +63,7 @@
     {%- set activeTab = activeTab is defined ? activeTab : null -%}
     {%- set featuresGroups = entity|productData -%}
     {%- set catalog = entity.catalog -%}
+    {%- set catalogSlug = catalog.slug -%}
 
     {%- include 'admin/include/alerts.html.twig' -%}
 

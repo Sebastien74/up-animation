@@ -62,8 +62,7 @@ class FeatureValueType extends AbstractType
             $builder->add('catalogfeature', EntityType::class, [
                 'label' => $this->translator->trans('Caractéristique', [], 'admin'),
                 'class' => Feature::class,
-                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [],
-                    'admin')
+                'attr' => ['data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin')
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 'query_builder' => function (EntityRepository $er) {
