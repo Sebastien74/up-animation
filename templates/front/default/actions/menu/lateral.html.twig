@@ -35,17 +35,18 @@
         {%- set pushMicroData = microDataActive and link.level == 1 and not link.linkExternal and not link.children -%}
         {%- set liClass = haveIcons ? 'align-items-start' : 'align-items-center' -%}
         {%- set liClass = link.active ? ' active' : liClass -%}
-        {%- set liClass = link.children and not isHeader ? liClass~' dropdown' : liClass -%}
-        {%- set liClass = link.children and link.level >= 2 and not isHeader ? liClass~' dropdown-submenu' : liClass -%}
+        {%- set liClass = link.children and (not isHeader or link.level == 2) ? liClass~' dropdown' : liClass -%}
+        {%- set liClass = link.children and link.level >= 2 and (not isHeader or link.level == 2) ? liClass~' dropdown-submenu' : liClass -%}
         {%- set liClass = link.media ? liClass~' item-logo' : liClass -%}
         {%- set liClass = link.level == 1 and not isLast and not notExpanded ? liClass~' me-'~expand~'-4' : liClass -%}
         {%- set liClass = link.level == 1 ? liClass~' justify-content-end text-end text-'~expand~'-start' : liClass~' justify-content-start text-start' -%}
         {%- set liClass = isHeader ? liClass~' is-header mb-3' : liClass -%}
-        <li class="nav-item position-relative d-flex level-{{ link.level }} {{ liClass }}"
+        <li class="nav-item d-flex level-{{ link.level }} {{ liClass }}"
+            {% if link.children and link.level == 2 %}id="parent-item-{{ link.id }}"{% endif %}
             {% if pushMicroData %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" {% endif %}>
             {%- set linkClass = link.class~' nav-link '~expand~' link-level-'~link.level -%}
             {%- set linkClass = link.level > 1 ? linkClass~' fw-600' : linkClass~' fw-600' -%}
-            {%- set linkClass = link.children and not dropdownHover and not isHeader ? linkClass~' as-dropdown-toggle dropdown-toggle' : (link.children and not isHeader ? 'as-dropdown-toggle '~linkClass : linkClass) -%}
+            {%- set linkClass = link.children and not dropdownHover and (not isHeader or link.level == 2) ? linkClass~' as-dropdown-toggle dropdown-toggle' : (link.children and (not isHeader or link.level == 2) ? 'as-dropdown-toggle '~linkClass : linkClass) -%}
             {%- set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass -%}
             {%- set linkClass = 1 == link.level ? linkClass~' text-initial text-secondary btn btn-blur' : linkClass~' text-initial text-secondary' -%}
             {%- set linkClass = isHeader ? linkClass~' ps-0 fw-700 text-primary' : linkClass -%}
@@ -80,8 +81,8 @@
                 {%- endif -%}
             </div>
             {%- endif -%}
-            {%- if link.children and not isHeader -%}
-                <div class="submenu text-start ps-4 ps-lg-5 pe-lg-5 py-5 bg-white submenu-level-{{ link.level }}">
+            {%- if link.children and (not isHeader or link.level == 2) -%}
+                <div class="submenu text-start ps-4 ps-lg-5 pe-lg-5 py-5 bg-white submenu-level-{{ link.level }}{% if isHeader %} is-header-submenu{% endif %}" data-level="{{ link.level }}">
                     {%- set displayBack = link.level >= 1 -%}
                     <div class="d-flex mb-5 pb-5 pb-lg-0">
                         <a class="d-none d-lg-inline-flex me-4" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
@@ -101,6 +102,8 @@
                         </a>
                         {%- if link.level == 1 -%}
                             <i class="close-menu-level-{{ link.level }} d-none d-lg-inline-flex close-menu-submenu ms-auto icon-times cursor align-items-center justify-content-center text-secondary"></i>
+                        {%- else -%}
+                            <i class="close-menu-level-{{ link.level }} d-none d-lg-inline-flex close-menu ms-auto icon-times cursor align-items-center justify-content-center text-secondary"></i>
                         {%- endif -%}
                     </div>
                     {%- set subLabel = link.subTitle ? link.subTitle : link.title -%}
@@ -110,9 +113,8 @@
                         <span class="parent-label text-warning position-relative fw-500">{{ subLabel|unescape|raw }}</span>
                         <i class="icon-arrow-right text-primary ms-2 ms-md-3"></i>
                     </{{ parentEl }}>
-                    <div class="inner position-relative mt-4 mt-md-5">
-                        <div class="inner-sub-wrap spy-scroll position-relative text-start {%- if link.level >= 3 -%}pt-4{%- else -%}mt-4 mt-lg-4{%- endif -%}" tabindex="-1"
-                             data-scroll-bar="1">
+                    <div class="inner position-relative mt-4 mt-md-5 w-100">
+                        <div class="inner-sub-wrap position-relative text-start w-100 {%- if link.level >= 3 -%}pt-4{%- else -%}mt-4 mt-lg-4{%- endif -%}" tabindex="-1">
                             {%- set haveColumns = false -%}
                             {%- set haveIcons = false -%}
                             {%- for subLink in link.children -%}
@@ -135,18 +137,15 @@
                                 {%- endfor -%}
                             {%- endfor -%}
                             {%- if haveColumns -%}
-                                <div class="submenu-columns d-xl-flex{%- if link.level < 3 -%} pt-4{% endif %}">
+                                <div class="submenu-columns d-xl-flex{%- if link.level < 3 -%} pt-4{% endif %} w-100">
                                     {%- for subLink in link.children -%}
-                                        <ul class="sublist ps-0">
+                                        <ul class="sublist ps-0 w-100">
                                             {{ macro.element(subLink, tree, companyName, logo, microDataActive, expand, dropdownHover, true, loop.last, websiteTemplate, notExpanded, haveIcons, true) }}
-                                            {%- for subSubLInk in subLink.children -%}
-                                                {{ macro.element(subSubLInk, tree, companyName, logo, microDataActive, expand, dropdownHover, true, loop.last, websiteTemplate, notExpanded, haveIcons) }}
-                                            {%- endfor -%}
                                         </ul>
                                     {%- endfor -%}
                                 </div>
                             {%- else -%}
-                                <ul class="list-unstyled scroll-inner">
+                                <ul class="list-unstyled w-100">
                                     {%- for subLink in link.children -%}
                                         {{ macro.element(subLink, tree, companyName, logo, microDataActive, expand, dropdownHover, true, loop.last, websiteTemplate, notExpanded, haveIcons) }}
                                     {%- endfor -%}

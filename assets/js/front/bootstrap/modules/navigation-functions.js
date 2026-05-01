@@ -14,9 +14,10 @@ const closeMenu = function () {
 }
 
 const dropdownBack = function (submenu) {
-    let backBtn = submenu.querySelector('.dropdown-back');
-    if (backBtn) {
-        backBtn.onclick = function () {
+    let backBtns = submenu.querySelectorAll('.dropdown-back, [class*="dropdown-back-level-"]');
+    backBtns.forEach(function (backBtn) {
+        backBtn.onclick = function (e) {
+            e.preventDefault();
             let submenu = backBtn.closest('.submenu');
             if (!submenu) {
                 submenu = backBtn.closest('.dropdown-menu');
@@ -26,7 +27,7 @@ const dropdownBack = function (submenu) {
                 submenu.classList.remove('active');
             }
         }
-    }
+    });
 }
 
 export function collapseEvent(body) {
@@ -145,10 +146,17 @@ export function lateralMenu(body, nav, screenWidth) {
 
     nav.querySelectorAll('.close-menu').forEach(function (btn) {
         btn.onclick = function () {
-            closeMenu();
+            let submenu = btn.closest('.submenu');
+            if (submenu) {
+                submenu.classList.remove('show');
+                submenu.classList.remove('active');
+            } else {
+                closeMenu();
+            }
+            
             if (screenWidth <= 991) {
                 let burgerBtn = nav.querySelector('.navbar-toggler');
-                if (burgerBtn) {
+                if (burgerBtn && !document.querySelector('.submenu.show')) {
                     burgerBtn.click();
                 }
             }
@@ -167,26 +175,30 @@ export function lateralMenu(body, nav, screenWidth) {
     nav.querySelectorAll('.dropdown').forEach(function (dropdown) {
         let link = dropdown.querySelector('.nav-link');
         if (link) {
-            let submenu = dropdown.querySelector('.submenu');
+            let submenu = dropdown.querySelector(':scope > .submenu');
             link.addEventListener('click', function (e) {
                 e.preventDefault();
                 let firstLevelLink = link.classList.contains('link-level-1') ? link : link.closest('.dropdown.level-1').querySelector('.link-level-1');
-                nav.querySelectorAll('.link-level-1').forEach(function (firstLink) {
-                    if (firstLevelLink && firstLink !== firstLevelLink) {
-                        firstLink.classList.remove('is-active');
-                        firstLink.classList.remove('active');
-                        firstLink.parentNode.querySelectorAll('.submenu').forEach(function (otherSubmenu) {
-                            otherSubmenu.classList.remove('show');
-                            otherSubmenu.classList.remove('active');
-                        });
-                    }
-                });
+                if (link.classList.contains('link-level-1')) {
+                    nav.querySelectorAll('.link-level-1').forEach(function (firstLink) {
+                        if (firstLevelLink && firstLink !== firstLevelLink) {
+                            firstLink.classList.remove('is-active');
+                            firstLink.classList.remove('active');
+                            firstLink.parentNode.querySelectorAll('.submenu').forEach(function (otherSubmenu) {
+                                otherSubmenu.classList.remove('show');
+                                otherSubmenu.classList.remove('active');
+                            });
+                        }
+                    });
+                }
                 // link.classList.toggle('is-active');
                 // link.classList.toggle('active');
-                submenu.classList.toggle('show');
-                submenu.classList.toggle('active');
-                body.classList.add('menu-open');
-                dropdownBack(submenu);
+                if (submenu) {
+                    submenu.classList.toggle('show');
+                    submenu.classList.toggle('active');
+                    body.classList.add('menu-open');
+                    dropdownBack(submenu);
+                }
                 const submenuActive = document.querySelector('.submenu.active');
                 if (!submenuActive) {
                     body.classList.remove('menu-open');

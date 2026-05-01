@@ -234,23 +234,24 @@ body.menu-open {
     }
 
     .submenu {
-        top: 0;
-        height: 100dvh;
-    }
-
-    #main-navigation-nav.not-expanded {
-        &.show {
-            left: 0;
-            transition: left $transition-slow;
-            display: flex;
-            flex-direction: column;
-        }
-    }
-
-    .submenu {
-
         position: fixed;
         z-index: 3000;
+        top: 0;
+        height: 100dvh;
+        background-color: $white;
+        transform: translateZ(0); // Force a new stacking context for children if needed, but not on parent
+        
+        &[data-level="1"] {
+            z-index: 3000;
+        }
+
+        &[data-level="2"] {
+            z-index: 3100;
+        }
+
+        &[data-level="3"] {
+            z-index: 3200;
+        }
 
         .close-menu-submenu {
             height: 20px;
@@ -273,21 +274,79 @@ body.menu-open {
         }
 
         @include mediaQuery(min-lg) {
+
             width: 50%;
             left: -50%;
-            &.submenu-level-1 {
+            transition: left $transition-slow;
+
+            &.is-header-submenu {
+
+                z-index: 3200; // Above regular submenu (3000)
+                box-shadow: 10px 0 15px rgba(0,0,0,0.1);
+                left: -50%; // Match level 1 initial position
                 transition: left $transition-slow;
+
+                @include mediaQuery(between-xl-xxl) {
+
+                    &[data-level="1"] {
+                        left: -40%;
+                    }
+
+                    &[data-level="2"] {
+                        left: -100%;
+                    }
+                }
+
+                @include mediaQuery(min-xxl) {
+
+                    &[data-level="1"] {
+                        left: -30%;
+                    }
+
+                    &[data-level="2"] {
+                        left: -100%;
+                    }
+                }
+
+                .submenu-columns {
+
+                    flex-direction: column;
+
+                    .sublist {
+                        margin-left: 0 !important;
+                    }
+                }
             }
         }
 
         @include mediaQuery(between-xl-xxl) {
-            width: 40%;
-            left: -40%;
+
+            transition: left $transition-slow;
+
+            &[data-level="1"] {
+                width: 40%;
+                left: -40%;
+            }
+
+            &[data-level="2"] {
+                width: 100%;
+                left: -100%;
+            }
         }
 
         @include mediaQuery(min-xxl) {
-            width: 30%;
-            left: -30%;
+
+            transition: left $transition-slow;
+
+            &[data-level="1"] {
+                width: 30%;
+                left: -30%;
+            }
+
+            &[data-level="2"] {
+                width: 100%;
+                left: -100%;
+            }
         }
 
         .nav-link {
@@ -336,12 +395,14 @@ body.menu-open {
 
         &.show {
 
-            left: 0;
+            left: 0 !important;
+            
+            &.is-header-submenu {
+                left: 0 !important;
+            }
 
             @include mediaQuery(min-lg) {
-                &.submenu-level-1 {
-                    transition: left $transition-slow;
-                }
+                transition: left $transition-slow;
             }
         }
 

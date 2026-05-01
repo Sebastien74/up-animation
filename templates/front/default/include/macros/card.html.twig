@@ -257,7 +257,7 @@
                     </a>
                 </h{{ titleForce }}>
                 {%- if entity.intl.introduction -%}
-                    <p class="body-card mb-0 lh-1">{{ entity.intl.introduction|truncate(150)|raw }}</p>
+                    <p class="body-card mb-0 lh-1">{{ entity.intl.introduction|truncate(150, true, entity.url)|raw }}</p>
                 {%- endif -%}
             </div>
             <div class="link-wrapper mt-auto text-end">

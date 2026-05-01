@@ -238,7 +238,7 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
     /**
      * Truncate string.
      */
-    public function truncate(?string $string = null, int $length = 30, bool $displayDotes = true): ?string
+    public function truncate(?string $string = null, int $length = 30, bool $displayDotes = true, ?string $link = null): ?string
     {
         if ($string) {
 
@@ -286,12 +286,8 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
             $endSentencesChars = ['.', '!', '?'];
             $truncated = $truncated ? trim($truncated, ',') : '';
             $lastChar = mb_substr($truncated, -1, 1, 'UTF-8');
-            $dotes = $displayDotes && mb_strlen($originalString, 'UTF-8') > $length && !in_array($lastChar, $endSentencesChars) ? '<small class="text-muted dotes ms-1">[...]</small>' : '';
-            $dotes = $displayDotes && mb_strlen($originalString, 'UTF-8') > $length && $lastChar === '.' ? '<small class="text-muted dotes ms-1">[...]</small>' : $dotes;
-
-            if (str_contains($truncated, 'rofessionnels sur mesu')) {
-                dump($lastChar);
-            }
+            $dotes = $displayDotes && mb_strlen($originalString, 'UTF-8') > $length && !in_array($lastChar, $endSentencesChars) ? '...' : '';
+            $dotes = $link && mb_strlen($originalString, 'UTF-8') > $length ? '&nbsp;<a href="'.$link.'" class="dotes-link">[...]</a>' : ($dotes ? '&nbsp;'.$dotes : '');
 
             return $truncated.$dotes;
         }

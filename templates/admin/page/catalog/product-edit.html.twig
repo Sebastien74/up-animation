@@ -23,7 +23,7 @@
                                     {%- if form.intls is defined -%}
                                         {%- include 'admin/core/form/intls.html.twig' with {
                                             customRender: true,
-                                            catalogSlug: true,
+                                            catalogSlug: catalogSlug,
                                             intls: form.intls,
                                             disableFields: ['associatedWords']
                                         } -%}
