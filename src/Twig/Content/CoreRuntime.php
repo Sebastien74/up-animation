@@ -238,7 +238,7 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
     /**
      * Truncate string.
      */
-    public function truncate(?string $string = null, int $length = 30, bool $dotes = true): ?string
+    public function truncate(?string $string = null, int $length = 30, bool $displayDotes = true): ?string
     {
         if ($string) {
 
@@ -259,21 +259,41 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
             // Truncate the string at $length
             $truncated = mb_substr($string, 0, $length, 'UTF-8');
 
-            // Avoid cutting the last word
-            if (!ctype_space(mb_substr($string, $length, 1, 'UTF-8'))) {
-                // Find the last space before $length
-                $lastSpace = mb_strrpos($truncated, ' ', 0, 'UTF-8');
-                if ($lastSpace !== false) {
-                    $truncated = mb_substr($truncated, 0, $lastSpace, 'UTF-8');
+            // Find the last sentence delimiter (., !, ?) within the truncated string
+            $lastDelimiter = -1;
+            foreach (['.', '!', '?'] as $delimiter) {
+                $pos = mb_strrpos($truncated, $delimiter, 0, 'UTF-8');
+                if ($pos !== false && $pos > $lastDelimiter) {
+                    $lastDelimiter = $pos;
+                }
+            }
+
+            // If a sentence delimiter was found, cut at that position (including the delimiter)
+            if ($lastDelimiter !== -1) {
+                $truncated = mb_substr($truncated, 0, $lastDelimiter + 1, 'UTF-8');
+            } else {
+                // Fallback: Avoid cutting the last word if no sentence delimiter is found
+                if (!ctype_space(mb_substr($string, $length, 1, 'UTF-8'))) {
+                    // Find the last space before $length
+                    $lastSpace = mb_strrpos($truncated, ' ', 0, 'UTF-8');
+                    if ($lastSpace !== false) {
+                        $truncated = mb_substr($truncated, 0, $lastSpace, 'UTF-8');
+                    }
                 }
             }
 
             // Check if we need to add ellipsis (...)
+            $endSentencesChars = ['.', '!', '?'];
+            $truncated = $truncated ? trim($truncated, ',') : '';
             $lastChar = mb_substr($truncated, -1, 1, 'UTF-8');
-            $endSentencesChars = ['.', ',', '!', '?'];
-            $dotes = $dotes && mb_strlen($originalString, 'UTF-8') > $length && !in_array($lastChar, $endSentencesChars) ? '...' : '';
+            $dotes = $displayDotes && mb_strlen($originalString, 'UTF-8') > $length && !in_array($lastChar, $endSentencesChars) ? '<small class="text-muted dotes ms-1">[...]</small>' : '';
+            $dotes = $displayDotes && mb_strlen($originalString, 'UTF-8') > $length && $lastChar === '.' ? '<small class="text-muted dotes ms-1">[...]</small>' : $dotes;
 
-            return $truncated . $dotes;
+            if (str_contains($truncated, 'rofessionnels sur mesu')) {
+                dump($lastChar);
+            }
+
+            return $truncated.$dotes;
         }
 
         return null;

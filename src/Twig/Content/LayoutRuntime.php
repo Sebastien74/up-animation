@@ -620,7 +620,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         foreach ($sides as $side) {
             $getter = 'margin'.ucfirst($side);
             $margin = $this->getValue($entity, $getter);
-            if ($margin && str_contains($margin, 'neg')) {
+            if ($margin && str_contains($margin, 'neg') && !$classes) {
                 $classes .= ' negative-margin';
             }
         }

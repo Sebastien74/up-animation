@@ -21,9 +21,8 @@ export default function () {
         if (!field.classList.contains('dynamic-in-progress')) {
             displayLoader(formContainer);
             const xHttp = new XMLHttpRequest();
-            const step = field.closest('.step-form-container').dataset.step;
             const action = form.getAttribute('action');
-            const refreshAction = action.indexOf('?') > -1 ? action + '&refresh=true&step=' + step : action + '?refresh=true&step=' + step;
+            const refreshAction = action.indexOf('?') > -1 ? action + '&refresh=true' : action + '?refresh=true';
             xHttp.open("POST", refreshAction, true);
             xHttp.send(new FormData(form));
             xHttp.onload = function () {
@@ -121,7 +120,7 @@ export default function () {
                     }).catch(error => console.error(error.message));
 
                     let xHttp = new XMLHttpRequest();
-                    xHttp.open("POST", form.getAttribute('action') + '?advancement=' + submitBtn.dataset.advancement + '&step=' + submitBtn.dataset.step, true);
+                    xHttp.open("POST", form.getAttribute('action') + '?advancement=' + submitBtn.dataset.advancement, true);
                     displayLoader(container);
                     removeErrors();
                     xHttp.send(new FormData(form));

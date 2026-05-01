@@ -32,7 +32,7 @@
                         </div>
                         <form method="post" id="page-selector-menu"
                               action="{{ path('admin_link_add', {website: websiteId(), menu: entity.id, locale: entitylocale, multiple: 0}) }}" class="mb-4">
-                            <div class="input-group select2-group mb-3">
+                            <div class="input-group select2-group d-flex mb-3">
                                 <select name="page" class="custom-select select-2">
                                     <option value="">{{ "Sélectionnez une page"|trans|raw }}</option>
                                     {%- for page in pages -%}
@@ -98,7 +98,7 @@
                     <div class="card-body pb-2">
                         <div class="main-subtitle">
                             <i class="icm-bars"></i> {{ "Menu"|trans|striptags }}
-                            <div class="ms-auto d-flex gap-2">
+                            <div class="ms-auto d-flex align-items-center gap-2">
                                 {%- if 'delete'|moduleActive(configuration) -%}
                                     <i id="delete-pack-btn" class="icm-trash btn-icon danger small initial cursor d-none" data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"></i>
                                 {%- endif -%}

@@ -22,7 +22,7 @@
 {%- set aboutPageUrl = mainPages.about.code is defined ? mainPages.about.code : null -%}
 {%- set notExpanded = 'xxxl' == expand -%}
 
-{%- macro element(link, tree, companyName, logo, microDataActive, expand, dropdownHover, dropdownItem, isLast, websiteTemplate, notExpanded, haveIcons = false) -%}
+{%- macro element(link, tree, companyName, logo, microDataActive, expand, dropdownHover, dropdownItem, isLast, websiteTemplate, notExpanded, haveIcons = false, isHeader = false) -%}
     {%- set dropdownBack = false -%}
     {%- if link.online is defined and link.online -%}
         {%- set path = link.link -%}
@@ -35,18 +35,22 @@
         {%- set pushMicroData = microDataActive and link.level == 1 and not link.linkExternal and not link.children -%}
         {%- set liClass = haveIcons ? 'align-items-start' : 'align-items-center' -%}
         {%- set liClass = link.active ? ' active' : liClass -%}
-        {%- set liClass = link.children ? liClass~' dropdown' : liClass -%}
-        {%- set liClass = link.children and link.level >= 2 ? liClass~' dropdown-submenu' : liClass -%}
+        {%- set liClass = link.children and not isHeader ? liClass~' dropdown' : liClass -%}
+        {%- set liClass = link.children and link.level >= 2 and not isHeader ? liClass~' dropdown-submenu' : liClass -%}
         {%- set liClass = link.media ? liClass~' item-logo' : liClass -%}
         {%- set liClass = link.level == 1 and not isLast and not notExpanded ? liClass~' me-'~expand~'-4' : liClass -%}
         {%- set liClass = link.level == 1 ? liClass~' justify-content-end text-end text-'~expand~'-start' : liClass~' justify-content-start text-start' -%}
+        {%- set liClass = isHeader ? liClass~' is-header mb-3' : liClass -%}
         <li class="nav-item position-relative d-flex level-{{ link.level }} {{ liClass }}"
             {% if pushMicroData %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" {% endif %}>
             {%- set linkClass = link.class~' nav-link '~expand~' link-level-'~link.level -%}
             {%- set linkClass = link.level > 1 ? linkClass~' fw-600' : linkClass~' fw-600' -%}
-            {%- set linkClass = link.children and not dropdownHover ? linkClass~' as-dropdown-toggle dropdown-toggle' : (link.children ? 'as-dropdown-toggle '~linkClass : linkClass) -%}
+            {%- set linkClass = link.children and not dropdownHover and not isHeader ? linkClass~' as-dropdown-toggle dropdown-toggle' : (link.children and not isHeader ? 'as-dropdown-toggle '~linkClass : linkClass) -%}
             {%- set linkClass = dropdownItem ? linkClass~' dropdown-item' : linkClass -%}
             {%- set linkClass = 1 == link.level ? linkClass~' text-initial text-secondary btn btn-blur' : linkClass~' text-initial text-secondary' -%}
+            {%- set linkClass = isHeader ? linkClass~' ps-0 fw-700 text-primary' : linkClass -%}
+            {%- set linkClass = not isHeader and link.level == 3 ? linkClass~' ps-3' : linkClass -%}
+            {%- set linkClass = not isHeader and link.level >= 4 ? linkClass~' ps-4' : linkClass -%}
             {%- if link.level >= 3 -%}
                 {%- if haveIcons -%}
                     <div class="pictogram-wrap me-3">
@@ -76,7 +80,7 @@
                 {%- endif -%}
             </div>
             {%- endif -%}
-            {%- if link.children -%}
+            {%- if link.children and not isHeader -%}
                 <div class="submenu text-start ps-4 ps-lg-5 pe-lg-5 py-5 bg-white submenu-level-{{ link.level }}">
                     {%- set displayBack = link.level >= 1 -%}
                     <div class="d-flex mb-5 pb-5 pb-lg-0">
@@ -133,7 +137,8 @@
                             {%- if haveColumns -%}
                                 <div class="submenu-columns d-xl-flex{%- if link.level < 3 -%} pt-4{% endif %}">
                                     {%- for subLink in link.children -%}
-                                        <ul class="sublist ps-0{%- if loop.index > 1 -%} ms-xl-5{%- endif -%}">
+                                        <ul class="sublist ps-0">
+                                            {{ macro.element(subLink, tree, companyName, logo, microDataActive, expand, dropdownHover, true, loop.last, websiteTemplate, notExpanded, haveIcons, true) }}
                                             {%- for subSubLInk in subLink.children -%}
                                                 {{ macro.element(subSubLInk, tree, companyName, logo, microDataActive, expand, dropdownHover, true, loop.last, websiteTemplate, notExpanded, haveIcons) }}
                                             {%- endfor -%}

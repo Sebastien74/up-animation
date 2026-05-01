@@ -61,10 +61,6 @@ export default function (tables) {
                                 titleElement.innerHTML = headElements['td' + j];
                                 cell.insertBefore(titleElement, cell.firstChild);
                             }
-                            let titleElement = cell.querySelector('.table-title');
-                            if (titleElement && (titleElement.innerHTML.trim() === '' || titleElement.innerHTML === '&nbsp;')) {
-                                titleElement.remove();
-                            }
                             cell.setAttribute('scope', 'col');
                         });
                     }

@@ -48,7 +48,7 @@
                 </span>
             {%- endif -%}
 
-            <span class="title">
+            <span class="title d-flex align-items-center">
                 {%- if infoUrl -%}
                     {%- set entityIntl = entity.intl is defined ? entity.intl : null -%}
                     {%- set page = entityIntl.targetPage is defined and entityIntl.targetPage ? entityIntl.targetPage : null -%}
@@ -60,9 +60,11 @@
                     {%- if url.archived is defined and url.archived -%}
                         {%- set tooltipTitle = "Page archivée"|trans -%}
                     {%- endif -%}
-                    <span class="me-1 info-url" data-bs-toggle="tooltip" title="{{ tooltipTitle|striptags }}"><i class="icm-circle"></i></span>
+                    <span class="me-2 info-url" data-bs-toggle="tooltip" title="{{ tooltipTitle|striptags }}">
+                        <i class="icm-circle text-{{ color }}"></i>
+                    </span>
                 {%- endif -%}
-                {%- if entity.adminName is defined and entity.adminName -%}{{ entity.adminName|truncate(75, false) }}{%- endif -%}
+                {%- if entity.adminName is defined and entity.adminName -%}<span>{{ entity.adminName|truncate(75, false) }}</span>{%- endif -%}
             </span>
 
             {%- if children -%}

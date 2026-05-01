@@ -37,22 +37,22 @@
                     }
 
                     .mt-#{$axisSize} {
-                        margin-top: $size;
+                        margin-top: $size !important;
                     }
                     .mb-#{$axisSize} {
-                        margin-bottom: $size;
+                        margin-bottom: $size !important;
                     }
                     .mt-#{$axisSize}-neg {
-                        margin-top: calc(-1 * #{$size});
+                        margin-top: calc(-1 * #{$size}) !important;
                     }
                     .mb-#{$axisSize}-neg {
-                        margin-bottom: calc(-1 * #{$size});
+                        margin-bottom: calc(-1 * #{$size}) !important;
                     }
                     .pt-#{$axisSize} {
-                        padding-top: $size;
+                        padding-top: $size !important;
                     }
                     .pb-#{$axisSize} {
-                        padding-bottom: $size;
+                        padding-bottom: $size !important;
                     }
                 }
 
@@ -65,22 +65,22 @@
                     }
 
                     .ms-#{$axisSize} {
-                        margin-left: $size;
+                        margin-left: $size !important;
                     }
                     .me-#{$axisSize} {
-                        margin-right: $size;
+                        margin-right: $size !important;
                     }
                     .ms-#{$axisSize}-neg {
-                        margin-left: calc(-1 * #{$size});
+                        margin-left: calc(-1 * #{$size}) !important;
                     }
                     .me-#{$axisSize}-neg {
-                        margin-right: calc(-1 * #{$size});
+                        margin-right: calc(-1 * #{$size}) !important;
                     }
                     .ps-#{$axisSize} {
-                        padding-left: $size;
+                        padding-left: $size !important;
                     }
                     .pe-#{$axisSize} {
-                        padding-right: $size;
+                        padding-right: $size !important;
                     }
                 }
             }

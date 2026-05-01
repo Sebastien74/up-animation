@@ -30,10 +30,10 @@ export default function () {
         tinymcePlugin();
     }
 
-    /** 2 - Nestable */
+    /** 2 - Tree Sortable */
     if (document.querySelector('.nestable-list-container')) {
-        import('./nestable').then(({default: nestableModule}) => {
-            nestableModule();
+        import('./tree-sortable').then(({default: treeSortableModule}) => {
+            treeSortableModule();
         }).catch(error => console.error(error.message));
     }
 

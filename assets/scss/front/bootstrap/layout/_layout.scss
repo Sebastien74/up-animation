@@ -6,16 +6,29 @@
         $isSelectors: append($isSelectors, '[class*=" #{$propertyPrefix}-#{$bp}-"]', comma);
     }
 
-    $notSelectors: ();
+    $isNotSelectors: ();
+    $bpIndex: 0;
+    $currentBpMaxIndex: 0;
     @each $bp in $allBreakpoints {
-        $notSelectors: append($notSelectors, '[class^="#{$propertyPrefix}-#{$bp}-"]', comma);
-        $notSelectors: append($notSelectors, '[class*=" #{$propertyPrefix}-#{$bp}-"]', comma);
-        $notSelectors: append($notSelectors, '[class^="#{$shorthandPrefix}-#{$bp}-"]', comma);
-        $notSelectors: append($notSelectors, '[class*=" #{$shorthandPrefix}-#{$bp}-"]', comma);
+        $bpIndex: $bpIndex + 1;
+        @if index($breakpoints, $bp) {
+            $currentBpMaxIndex: $bpIndex;
+        }
+    }
+
+    $bpIndex: 0;
+    @each $bp in $allBreakpoints {
+        $bpIndex: $bpIndex + 1;
+        @if $bpIndex <= $currentBpMaxIndex {
+            $isNotSelectors: append($isNotSelectors, '[class^="#{$propertyPrefix}-#{$bp}-"]', comma);
+            $isNotSelectors: append($isNotSelectors, '[class*=" #{$propertyPrefix}-#{$bp}-"]', comma);
+            $isNotSelectors: append($isNotSelectors, '[class^="#{$shorthandPrefix}-#{$bp}-"]', comma);
+            $isNotSelectors: append($isNotSelectors, '[class*=" #{$shorthandPrefix}-#{$bp}-"]', comma);
+        }
     }
 
     .row > *:is(#{$isSelectors}),
-    .row > *:not(:is(#{$notSelectors})) {
+    .row > *:not(:is(#{$isNotSelectors})) {
         #{$property}: calc(var(--bs-gutter-x) * .5);
     }
 }
@@ -48,7 +61,7 @@
         max-width: 100%;
     }
 
-    $allBPs: ('mobile', 'tablet', 'mini-pc', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxxl');
+    $allBPs: ('mobile', 'tablet', 'mini-pc', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxxl');
 
     @include mediaQuery(max-sm) {
         @include generateGutterManagement('ps', 'padding-left', ('mobile', 'xs'), $allBPs, 'p');

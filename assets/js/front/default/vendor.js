@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Target all elements inside .body that have a style attribute
-    document.querySelectorAll('.body [style]:not(td)').forEach(el => {
+    document.querySelectorAll('.body [style]').forEach(el => {
         const style = el.getAttribute('style');
         if (!style) return;
 

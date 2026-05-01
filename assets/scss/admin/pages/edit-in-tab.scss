@@ -12,6 +12,35 @@
 
 @import '../variables';
 
+%ui-card-base {
+    background-color: #fff;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .1);
+    border-radius: var(--bs-border-radius);
+}
+
+@mixin handle-base($height: 57px) {
+    text-align: center;
+    cursor: grabbing;
+    position: relative;
+    float: left;
+
+    &:after {
+        content: "";
+        position: absolute;
+        right: -14px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+    }
+}
+
+@mixin form-45px-base {
+    height: 45px;
+    font-size: 12px;
+    color: $gray-500 !important;
+}
+
 .values-collection {
 
     .prototype-block {
@@ -34,34 +63,17 @@
     }
 
     .ui-feature, .ui-video, .ui-link {
-        background-color: #fff;
-        margin-bottom: 15px;
-        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .1);
-        border-radius: var(--bs-border-radius);
+        @extend %ui-card-base;
     }
 
     .handle-feature {
-
-        text-align: center;
-        cursor: grabbing;
-        position: relative;
+        @include handle-base;
         margin-right: 30px;
-        float: left;
-
-        &:after {
-            content: "";
-            position: absolute;
-            right: -14px;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-        }
     }
 }
 
 #videos-sortable,
 #links-sortable {
-
     .side {
         top: -15px;
         right: 0;
@@ -114,8 +126,7 @@
     }
 
     .form-control, .ts-control input, .form-select {
-        font-size: 12px;
-        color: $gray-500 !important;
+        @include form-45px-base;
     }
 
     .form-control::placeholder {
@@ -123,9 +134,8 @@
     }
 
     .select2-container .select2-selection--single .select2-selection__rendered {
+        @include form-45px-base;
         font-weight: 400 !important;
-        font-size: 12px !important;
-        color: $gray-500 !important;
     }
 
     .swal-product-value {
@@ -183,6 +193,14 @@
         }
     }
 
+    .value-group, .feature-group, .name-group {
+        .form-control,
+        .select2-container--default .select2-selection--single,
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            height: 45px !important;
+        }
+    }
+
     .value-group {
 
         width: 350px;
@@ -191,16 +209,7 @@
             font-size: 12px !important;
             top: -1px !important;
             position: relative !important;
-            color: $gray-500 !important;;
-        }
-
-        .select2-container--default .select2-selection--single {
-            height: 45px !important;
-        }
-
-        .select2-container .select2-selection--single .select2-selection__rendered {
-            line-height: 45px !important;
-            font-size: 12px !important;
+            color: $gray-500 !important;
         }
 
         .select2-selection__arrow {
@@ -217,26 +226,14 @@
     }
 
     .feature-group {
-
-        .select2-container--default .select2-selection--single {
-            height: 45px;
-            min-width: 245px !important;
-        }
-
+        .select2-container--default .select2-selection--single,
         .select2-container .select2-selection--single .select2-selection__rendered {
-            height: 45px;
             min-width: 245px !important;
         }
-    }
-
-    .select2-group.selected .select2-container .select2-selection--single .select2-selection__rendered,
-    .select2-container.selected .select2-selection--single .select2-selection__rendered {
-        color: $gray-900 !important;
     }
 
     .name-group {
         .form-control {
-            height: 45px;
             min-width: 200px;
         }
     }
@@ -278,13 +275,7 @@
             font-weight: 600;
         }
 
-        .feature-col {
-            flex: 0 0 16%;
-            width: 16%;
-            line-height: 1.2;
-        }
-
-        .value-col {
+        .feature-col, .value-col {
             flex: 0 0 16%;
             width: 16%;
             line-height: 1.2;
@@ -328,23 +319,16 @@
                 }
 
                 &:not(.handle-circle) {
-
+                    @include handle-base;
                     height: 57px;
                     width: 50px;
                     line-height: 57px;
-                    text-align: center;
-                    cursor: grabbing;
-                    position: relative;
                     margin-right: 30px;
-                    float: left;
 
                     &::after {
-                        content: "";
-                        position: absolute;
                         right: 0;
                         top: 15px;
                         bottom: 15px;
-                        width: 1px;
                         background-color: $gray-800;
                     }
                 }

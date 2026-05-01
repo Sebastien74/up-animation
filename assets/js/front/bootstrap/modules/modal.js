@@ -46,10 +46,6 @@ export default function () {
                     });
                     if (!cookie) {
                         setTimeout(function () {
-                            let backdrops = document.querySelectorAll('.modal-backdrop');
-                            backdrops.forEach((backdrop) => {
-                                backdrop.remove();
-                            });
                             timerModal.show();
                         }, parseInt(modal.dataset.modalTimer));
                     }
@@ -103,10 +99,6 @@ export default function () {
                 }
 
                 modal.addEventListener('show.bs.modal', function (event) {
-                    let backdrops = document.querySelectorAll('.modal-backdrop');
-                    backdrops.forEach((backdrop) => {
-                        backdrop.remove();
-                    });
                     if (!backdropStatus) {
                         document.body.classList.add("no-backdrop");
                     }

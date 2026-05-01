@@ -378,119 +378,144 @@
 
 {%- elseif blockType == 'layout-highlights' -%}
 
-    <div class="highlights">
-        <h2 class="title text-uppercase mb-4 mb-lg-5">
-            {%- if entity.intl.advendisingTitle -%}
-                {{ entity.intl.advendisingTitle|unescape|raw }}
-            {%- elseif entity.city -%}
-                {{ "Pourquoi animer son événement<br> <span>professionnel à %city%&nbsp;?</span>"|trans({'%city%': entity.city ?: ''})|raw }}
-            {%- else -%}
-                {{ "Pourquoi animer son événement<br> <span>professionnel avec Up Animation&nbsp;?</span>"|trans({'%city%': entity.city ?: ''})|raw }}
-            {%- endif -%}
-        </h2>
-        <div class="row d-flex justify-content-center">
-            <div class="col-lg-4 my-3 my-lg-0">
-                <div class="card radius bg-secondary h-100 px-3 py-2">
-                    <div class="card-header d-flex flex-column px-lg-4 pt-4 pb-0 mb-3 border-0">
-                        <div class="inner d-flex align-items-center">
-                            <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-white me-3"><i class="icon-people-group text-primary"></i></span>
-                            {%- if entity.intl.advendisingTitleFirst -%}
-                                {{ entity.intl.advendisingTitleFirst|raw }}
-                            {%- else -%}
-                                <strong class="text-uppercase lh-1">{{ "Réunir"|trans|raw }}</strong>
-                            {%- endif -%}
-                        </div>
-                        <hr class="text-white">
-                    </div>
-                    <div class="card-body px-lg-4 pt-0 pb-4">
-                        <div class="body">
-                            {%- if entity.intl.advendisingFirst -%}
-                                {{ entity.intl.advendisingFirst|raw }}
-                            {%- elseif entity.city -%}
-                                <p class="mb-2">{{ "Up&nbsp;Animations vous propose des animations originales et festives pour tous vos événements à %city%."|trans({'%city%': entity.city ?: ''})|raw }}</p>
-                                <p class="mb-2">{{ "Faites parler de vous et de votre événement autour de vous grâce à des animations qui sauront marquer les esprits."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Notre équipe vous propose des animations hors du commun qui offrira surprise et interactivité. Nous vous offrons également la possibilité de créer votre animation événementielle 100% sur mesure pour répondre à tous vos objectifs."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Vous avez une idée ? Nous nous chargeons de la mettre en œuvre %dept_preposition%%dept%. Pour que votre événement d'entreprise ne ressemble qu'à vous&nbsp;!"|trans({'%dept_preposition%': entity.department ? entity.department|deptPreposition : '', '%dept%': entity.department ?: ''})|raw }}</p>
-                                <p class="mb-0">{{ "Alors qu'attendez-vous&nbsp;?"|trans|raw }}</p>
-                            {%- else -%}
-                                <p class="mb-2">{{ "Up&nbsp;Animations vous propose des animations originales et festives pour tous vos événements."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Faites parler de vous et de votre événement autour de vous grâce à des animations qui sauront marquer les esprits."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Notre équipe vous propose des animations hors du commun qui offrira surprise et interactivité. Nous vous offrons également la possibilité de créer votre animation événementielle 100% sur mesure pour répondre à tous vos objectifs."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Vous avez une idée ? Nous nous chargeons de la mettre en œuvre. Pour que votre événement d'entreprise ne ressemble qu'à vous&nbsp;!"|trans|raw }}</p>
-                                <p class="mb-0">{{ "Alors qu'attendez-vous&nbsp;?"|trans|raw }}</p>
-                            {%- endif -%}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 my-3 my-lg-0">
-                <div class="card radius bg-secondary-light h-100 px-3 py-2">
-                    <div class="card-header d-flex flex-column px-lg-4 pt-4 pb-0 mb-3 border-0">
-                        <div class="inner d-flex align-items-center">
-                            <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-dark me-3"><i class="icon-face-grin text-white"></i></span>
-                            {%- if entity.intl.advendisingTitleSecond -%}
-                                {{ entity.intl.advendisingTitleSecond|raw }}
-                            {%- else -%}
-                                <strong class="text-uppercase lh-1">{{ "Sympathiser"|trans }}</strong>
-                            {%- endif -%}
-                        </div>
-                        <hr class="text-dark">
-                    </div>
-                    <div class="card-body px-lg-4 pt-0 pb-4">
-                        <div class="body">
-                            {%- if entity.intl.advendisingSecond -%}
-                                {{ entity.intl.advendisingSecond|raw }}
-                            {%- elseif entity.city -%}
-                                <p class="mb-2">{{ "La solution Up&nbsp;Animations c'est organiser des événements professionnels d'envergure à %city%."|trans({'%city%': entity.city ?: ''})|raw }}</p>
-                                <p class="mb-2">{{ "Nous nous occupons de tout&nbsp;: la logistique, l'organisation et la mise en place du matériel."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Nous pouvons vous proposer la création d'olympiades&nbsp;: des jeux et des challenges vous attendent. De nombreuses animations vous sont proposées&nbsp;: la soirée casino, un après-midi modélisme ou encore faire la course en buggy téléguidé."|trans|raw }}</p>
-                                <p class="mb-0">{{ "Nos équipes restent disponibles pour prendre en main vos animations tout au long de votre Anniversaire d'entreprise. Faites confiance à Up&nbsp;Animations à %city% pour rendre votre événement unique aux yeux de vos invités&nbsp;!"|trans({'%city%': entity.city ?: ''})|raw }}</p>
-                            {%- else -%}
-                                <p class="mb-2">{{ "La solution Up&nbsp;Animations c'est organiser des événements professionnels d'envergure."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Nous nous occupons de tout&nbsp;: la logistique, l'organisation et la mise en place du matériel."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Nous pouvons vous proposer la création d'olympiades&nbsp;: des jeux et des challenges vous attendent. De nombreuses animations vous sont proposées&nbsp;: la soirée casino, un après-midi modélisme ou encore faire la course en buggy téléguidé."|trans|raw }}</p>
-                                <p class="mb-0">{{ "Nos équipes restent disponibles pour prendre en main vos animations tout au long de votre Anniversaire d'entreprise. Faites confiance à Up&nbsp;Animations pour rendre votre événement unique aux yeux de vos invités&nbsp;!"|trans|raw }}</p>
-                            {%- endif -%}
+    {%- set displayZone = true -%}
+    {%- set displayDefaultContent = true -%}
+    {%- set haveFirst = true -%}
+    {%- set haveSecond = true -%}
+    {%- set haveThird = true -%}
+
+    {%- if catalogSlug == 'services' -%}
+        {%- set haveFirst = entity.intl.advendisingFirst or entity.intl.advendisingFirst -%}
+        {%- set haveSecond = entity.intl.advendisingTitleSecond or entity.intl.advendisingSecond -%}
+        {%- set haveThird = entity.intl.advendisingTitleThird or entity.intl.advendisingThird -%}
+        {%- set displayZone = haveFirst or haveSecond or haveThird -%}
+        {%- set displayDefaultContent = false -%}
+    {%- endif -%}
+
+    {%- if displayZone -%}
+        <div class="highlights">
+            <h2 class="title text-uppercase mb-4 mb-lg-5">
+                {%- if entity.intl.advendisingTitle -%}
+                    {{ entity.intl.advendisingTitle|unescape|raw }}
+                {%- elseif entity.city -%}
+                    {{ "Pourquoi animer son événement<br> <span>professionnel à %city%&nbsp;?</span>"|trans({'%city%': entity.city ?: ''})|raw }}
+                {%- else -%}
+                    {{ "Pourquoi animer son événement<br> <span>professionnel avec Up Animation&nbsp;?</span>"|trans({'%city%': entity.city ?: ''})|raw }}
+                {%- endif -%}
+            </h2>
+            <div class="row d-flex">
+                {%- if haveFirst -%}
+                    <div class="col-lg-4 my-3 my-lg-0">
+                        <div class="card radius bg-secondary h-100 px-3 py-2">
+                            <div class="card-header d-flex flex-column px-lg-4 pt-4 pb-0 mb-3 border-0">
+                                <div class="inner d-flex align-items-center">
+                                    {%- if entity.intl.advendisingTitleFirst -%}
+                                        <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-white me-3 flex-shrink-0"><i class="icon-info text-secondary"></i></span>
+                                        <strong class="text-uppercase text-white">{{ entity.intl.advendisingTitleFirst|raw }}</strong>
+                                    {%- elseif displayDefaultContent -%}
+                                        <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-white me-3 flex-shrink-0"><i class="icon-people-group text-primary"></i></span>
+                                        <strong class="text-uppercase lh-1 text-white">{{ "Réunir"|trans|raw }}</strong>
+                                    {%- endif -%}
+                                </div>
+                                <hr class="text-white">
+                            </div>
+                            <div class="card-body px-lg-4 pt-0 pb-4">
+                                <div class="body">
+                                    {%- if entity.intl.advendisingFirst -%}
+                                        {{ entity.intl.advendisingFirst|raw }}
+                                    {%- elseif entity.city -%}
+                                        <p class="mb-2">{{ "Up&nbsp;Animations vous propose des animations originales et festives pour tous vos événements à %city%."|trans({'%city%': entity.city ?: ''})|raw }}</p>
+                                        <p class="mb-2">{{ "Faites parler de vous et de votre événement autour de vous grâce à des animations qui sauront marquer les esprits."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Notre équipe vous propose des animations hors du commun qui offrira surprise et interactivité. Nous vous offrons également la possibilité de créer votre animation événementielle 100% sur mesure pour répondre à tous vos objectifs."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Vous avez une idée ? Nous nous chargeons de la mettre en œuvre %dept_preposition%%dept%. Pour que votre événement d'entreprise ne ressemble qu'à vous&nbsp;!"|trans({'%dept_preposition%': entity.department ? entity.department|deptPreposition : '', '%dept%': entity.department ?: ''})|raw }}</p>
+                                        <p class="mb-0">{{ "Alors qu'attendez-vous&nbsp;?"|trans|raw }}</p>
+                                    {%- elseif displayDefaultContent -%}
+                                        <p class="mb-2">{{ "Up&nbsp;Animations vous propose des animations originales et festives pour tous vos événements."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Faites parler de vous et de votre événement autour de vous grâce à des animations qui sauront marquer les esprits."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Notre équipe vous propose des animations hors du commun qui offrira surprise et interactivité. Nous vous offrons également la possibilité de créer votre animation événementielle 100% sur mesure pour répondre à tous vos objectifs."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Vous avez une idée ? Nous nous chargeons de la mettre en œuvre. Pour que votre événement d'entreprise ne ressemble qu'à vous&nbsp;!"|trans|raw }}</p>
+                                        <p class="mb-0">{{ "Alors qu'attendez-vous&nbsp;?"|trans|raw }}</p>
+                                    {%- endif -%}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-4 my-3 my-lg-0">
-                <div class="card radius bg-secondary-lighten h-100 px-3 py-2">
-                    <div class="card-header d-flex flex-column px-lg-4 pt-4 pb-0 mb-3 border-0">
-                        <div class="inner d-flex align-items-center">
-                            <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-dark me-3"><i class="icon-thumbs-up text-white"></i></span>
-                            {%- if entity.intl.advendisingTitleThird -%}
-                                {{ entity.intl.advendisingTitleThird|raw }}
-                            {%- else -%}
-                                <strong class="text-uppercase lh-1">{{ "Marquer"|trans }}</strong>
-                            {%- endif -%}
+                {%- endif -%}
+                {%- if haveSecond -%}
+                    <div class="col-lg-4 my-3 my-lg-0">
+                        <div class="card radius bg-secondary-light h-100 px-3 py-2">
+                            <div class="card-header d-flex flex-column px-lg-4 pt-4 pb-0 mb-3 border-0">
+                                <div class="inner d-flex align-items-center">
+                                    {%- if entity.intl.advendisingTitleSecond -%}
+                                        <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-secondary-lighten me-3 flex-shrink-0"><i class="icon-info text-secondary"></i></span>
+                                        <strong class="text-uppercase text-white">{{ entity.intl.advendisingTitleSecond|raw }}</strong>
+                                    {%- elseif displayDefaultContent -%}
+                                        <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-secondary-lighten me-3 flex-shrink-0"><i class="icon-people-group text-secondary"></i></span>
+                                        <strong class="text-uppercase lh-1 text-white">{{ "Sympathiser"|trans|raw }}</strong>
+                                    {%- endif -%}
+                                </div>
+                                <hr class="text-dark">
+                            </div>
+                            <div class="card-body px-lg-4 pt-0 pb-4">
+                                <div class="body">
+                                    {%- if entity.intl.advendisingSecond -%}
+                                        {{ entity.intl.advendisingSecond|raw }}
+                                    {%- elseif entity.city -%}
+                                        <p class="mb-2">{{ "La solution Up&nbsp;Animations c'est organiser des événements professionnels d'envergure à %city%."|trans({'%city%': entity.city ?: ''})|raw }}</p>
+                                        <p class="mb-2">{{ "Nous nous occupons de tout&nbsp;: la logistique, l'organisation et la mise en place du matériel."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Nous pouvons vous proposer la création d'olympiades&nbsp;: des jeux et des challenges vous attendent. De nombreuses animations vous sont proposées&nbsp;: la soirée casino, un après-midi modélisme ou encore faire la course en buggy téléguidé."|trans|raw }}</p>
+                                        <p class="mb-0">{{ "Nos équipes restent disponibles pour prendre en main vos animations tout au long de votre Anniversaire d'entreprise. Faites confiance à Up&nbsp;Animations à %city% pour rendre votre événement unique aux yeux de vos invités&nbsp;!"|trans({'%city%': entity.city ?: ''})|raw }}</p>
+                                    {%- elseif displayDefaultContent -%}
+                                        <p class="mb-2">{{ "La solution Up&nbsp;Animations c'est organiser des événements professionnels d'envergure."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Nous nous occupons de tout&nbsp;: la logistique, l'organisation et la mise en place du matériel."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Nous pouvons vous proposer la création d'olympiades&nbsp;: des jeux et des challenges vous attendent. De nombreuses animations vous sont proposées&nbsp;: la soirée casino, un après-midi modélisme ou encore faire la course en buggy téléguidé."|trans|raw }}</p>
+                                        <p class="mb-0">{{ "Nos équipes restent disponibles pour prendre en main vos animations tout au long de votre Anniversaire d'entreprise. Faites confiance à Up&nbsp;Animations pour rendre votre événement unique aux yeux de vos invités&nbsp;!"|trans|raw }}</p>
+                                    {%- endif -%}
+                                </div>
+                            </div>
                         </div>
-                        <hr class="text-dark">
                     </div>
-                    <div class="card-body px-lg-4 pt-0 pb-4">
-                        <div class="body">
-                            {%- if entity.intl.advendisingThird -%}
-                                {{ entity.intl.advendisingThird|raw }}
-                            {%- elseif entity.city -%}
-                                <p class="mb-2">{{ "Choisissez votre partenaire Up&nbsp;Animations pour l'animation de votre prochain événement à %city%, c'est être sûr de marquer les esprits de vos invités."|trans({'%city%': entity.city ?: ''})|raw }}</p>
-                                <p class="mb-2">{{ "Nous répondons à tous vos objectifs&nbsp;: visibility ou notoriété."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Nos animateurs et magiciens se rendent sur votre événement dans n'importe quelle ville près de votre entreprise. Nous nous chargeons de toutes les animations de votre événement professionnel dans la ville %city_prefix%%city% et %dept_preposition%%dept%%zipcode%."|trans({'%city_prefix%': entity.city ? entity.city|deCityPrefix : '', '%city%': entity.city ?: '', '%dept_preposition%': entity.department ? entity.department|deptPreposition('all_in') : '', '%dept%': entity.department ?: '', '%zipcode%': entity.zipcodeSmall ? '&nbsp;' ~ entity.zipcodeSmall : ''})|raw }}</p>
-                                <p class="mb-2">{{ "Marquez les esprits et les journaux&nbsp;! Avec une animation originale pour des retombées médiatiques positives."|trans|raw }}</p>
-                                <p class="mb-0">{{ "Profitez d'un tel événement pour faire parler de vous et de votre enseigne."|trans|raw }}</p>
-                            {%- else -%}
-                                <p class="mb-2">{{ "Choisissez votre partenaire Up&nbsp;Animations pour l'animation de votre prochain événement, c'est être sûr de marquer les esprits de vos invités."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Nous répondons à tous vos objectifs&nbsp;: visibility ou notoriété."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Nos animateurs et magiciens se rendent sur votre événement dans n'importe quelle ville près de votre entreprise. Nous nous chargeons de toutes les animations de votre événement professionnel."|trans|raw }}</p>
-                                <p class="mb-2">{{ "Marquez les esprits et les journaux&nbsp;! Avec une animation originale pour des retombées médiatiques positives."|trans|raw }}</p>
-                                <p class="mb-0">{{ "Profitez d'un tel événement pour faire parler de vous et de votre enseigne."|trans|raw }}</p>
-                            {%- endif -%}
+                {%- endif -%}
+                {%- if haveThird -%}
+                    <div class="col-lg-4 my-3 my-lg-0">
+                        <div class="card radius bg-secondary-lighten h-100 px-3 py-2">
+                            <div class="card-header d-flex flex-column px-lg-4 pt-4 pb-0 mb-3 border-0">
+                                <div class="inner d-flex align-items-center">
+                                    {%- if entity.intl.advendisingTitleThird -%}
+                                        <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-secondary me-3 flex-shrink-0"><i class="icon-info text-secondary-lighten"></i></span>
+                                        <strong class="text-uppercase text-secondary">{{ entity.intl.advendisingTitleThird|raw }}</strong>
+                                    {%- elseif displayDefaultContent -%}
+                                        <span class="rounded-badge shadow d-flex align-items-center justify-content-center bg-secondary me-3 flex-shrink-0"><i class="icon-people-group text-secondary-lighten"></i></span>
+                                        <strong class="text-uppercase lh-1 text-secondary">{{ "Sympathiser"|trans|raw }}</strong>
+                                    {%- endif -%}
+                                </div>
+                                <hr class="text-dark">
+                            </div>
+                            <div class="card-body px-lg-4 pt-0 pb-4">
+                                <div class="body">
+                                    {%- if entity.intl.advendisingThird -%}
+                                        {{ entity.intl.advendisingThird|raw }}
+                                    {%- elseif entity.city -%}
+                                        <p class="mb-2">{{ "Choisissez votre partenaire Up&nbsp;Animations pour l'animation de votre prochain événement à %city%, c'est être sûr de marquer les esprits de vos invités."|trans({'%city%': entity.city ?: ''})|raw }}</p>
+                                        <p class="mb-2">{{ "Nous répondons à tous vos objectifs&nbsp;: visibility ou notoriété."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Nos animateurs et magiciens se rendent sur votre événement dans n'importe quelle ville près de votre entreprise. Nous nous chargeons de toutes les animations de votre événement professionnel dans la ville %city_prefix%%city% et %dept_preposition%%dept%%zipcode%."|trans({'%city_prefix%': entity.city ? entity.city|deCityPrefix : '', '%city%': entity.city ?: '', '%dept_preposition%': entity.department ? entity.department|deptPreposition('all_in') : '', '%dept%': entity.department ?: '', '%zipcode%': entity.zipcodeSmall ? '&nbsp;' ~ entity.zipcodeSmall : ''})|raw }}</p>
+                                        <p class="mb-2">{{ "Marquez les esprits et les journaux&nbsp;! Avec une animation originale pour des retombées médiatiques positives."|trans|raw }}</p>
+                                        <p class="mb-0">{{ "Profitez d'un tel événement pour faire parler de vous et de votre enseigne."|trans|raw }}</p>
+                                    {%- elseif displayDefaultContent -%}
+                                        <p class="mb-2">{{ "Choisissez votre partenaire Up&nbsp;Animations pour l'animation de votre prochain événement, c'est être sûr de marquer les esprits de vos invités."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Nous répondons à tous vos objectifs&nbsp;: visibility ou notoriété."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Nos animateurs et magiciens se rendent sur votre événement dans n'importe quelle ville près de votre entreprise. Nous nous chargeons de toutes les animations de votre événement professionnel."|trans|raw }}</p>
+                                        <p class="mb-2">{{ "Marquez les esprits et les journaux&nbsp;! Avec une animation originale pour des retombées médiatiques positives."|trans|raw }}</p>
+                                        <p class="mb-0">{{ "Profitez d'un tel événement pour faire parler de vous et de votre enseigne."|trans|raw }}</p>
+                                    {%- endif -%}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {%- endif -%}
             </div>
         </div>
-    </div>
+    {%- endif -%}
 
 {%- elseif blockType == 'layout-share' -%}
 

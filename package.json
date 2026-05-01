@@ -86,7 +86,6 @@
         "modernizr": "^3.13.1",
         "modernizr-loader": "^1.0.1",
         "moment": "^2.30.1",
-        "nestable2": "^1.6.0",
         "parlx.js": "^2.0.4",
         "pdfmake": "^0.2.12",
         "places.js": "^1.19.0",

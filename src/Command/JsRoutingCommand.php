@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Service\Core\CronSchedulerService;
+use App\Service\Interface\CoreLocatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * JsRoutingCommand.
@@ -15,6 +18,17 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class JsRoutingCommand extends BaseCommand
 {
+    /**
+     * AppClearBundleCommand constructor.
+     */
+    public function __construct(
+        KernelInterface $kernel,
+        CronSchedulerService $cronSchedulerService,
+        private readonly CoreLocatorInterface $coreLocator
+    ) {
+        parent::__construct($kernel, $cronSchedulerService);
+    }
+
     /**
      * Execute fos:js-routing:dump.
      */
@@ -53,9 +67,9 @@ class JsRoutingCommand extends BaseCommand
     {
         $filename = $filename ? $filename : 'fos_js_routes_front';
         $adminAllowed = ['admin_user_switcher'];
-        $jsRoutingDirname = $this->kernel->getProjectDir().'/public/js/fosjsrouting/';
+        $jsRoutingDirname = $this->coreLocator->projectDir().'/public/js/fosjsrouting/';
         $jsRoutingDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $jsRoutingDirname);
-        $jsRoutingFileDirname = $this->kernel->getProjectDir().'/public/js/fos_js_routes.json';
+        $jsRoutingFileDirname = $this->coreLocator->projectDir().'/public/js/fos_js_routes.json';
         $jsRoutingFileDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $jsRoutingFileDirname);
         $filesystem = new Filesystem();
 

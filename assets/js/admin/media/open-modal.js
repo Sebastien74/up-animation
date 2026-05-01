@@ -49,8 +49,8 @@ export default function (Routing, e, el) {
 
             modalEl.querySelectorAll('.btn-edit, .btn-zip').forEach(btn => btn.remove());
 
-            import('../plugins/nestable').then(({default: nestable}) => {
-                nestable();
+            import('../plugins/tree-sortable').then(({default: treeSortable}) => {
+                treeSortable();
             }).catch(error => console.error(error.message));
 
             import('../plugins/tooltips').then(({default: tooltips}) => {

@@ -30,20 +30,40 @@
 #page-selector-menu {
 
     .select2-container {
-        width: 93% !important;
+        width: calc(100% - 45px) !important;
     }
 
     .select2-selection--single:not([class*="bg-"]):not([class*="border-"]) {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-        border-right: 0;
+        border: 0 !important;
+        height: 45px;
     }
 
+    .select2-selection__rendered {
+        height: 45px;
+    }
+
+    .select2-selection__arrow {
+        top: 10px !important;
+    }
+
+    .select2-results {
+        border-radius: 0 0 16px 16px !important;
+    }
+
+    .input-group-append,
     .input-group-text {
+
         border: 0;
         color: $white;
-        height: 38px;
-        min-width: 30px;
+        height: 45px;
+        width: 45px;
+        padding: 0 !important;
+
+        i {
+            font-size: 13px;
+        }
     }
 }
 
@@ -52,6 +72,7 @@
     .collapse-icon {
 
         display: inline-block;
+        font-size: 10px;
 
         @include mediaQuery(min-lg) {
             &:hover {

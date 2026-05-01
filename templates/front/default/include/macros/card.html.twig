@@ -257,7 +257,7 @@
                     </a>
                 </h{{ titleForce }}>
                 {%- if entity.intl.introduction -%}
-                    <p class="body-card mb-0 lh-1">{{ entity.intl.introduction|raw }}</p>
+                    <p class="body-card mb-0 lh-1">{{ entity.intl.introduction|truncate(150)|raw }}</p>
                 {%- endif -%}
             </div>
             <div class="link-wrapper mt-auto text-end">
@@ -327,7 +327,7 @@
                 <h{{ titleForce }} class="mb-3">
                     <a href="{{ entity.url }}" class="card-title text-uppercase text-secondary fw-800">{{ title|replace({'Agence': 'Agence <br>'})|raw }}</a>
                 </h{{ titleForce }}>
-                <p class="body-card mb-0 lh-1">{{ body|raw }}</p>
+                <div class="body-card mb-0 lh-1">{{ body|raw }}</div>
             </div>
             <div class="link-wrapper mt-auto text-end">
                 <a href="{{ entity.url }}" class="text-uppercase text-underline text-secondary fw-800 small d-inline-flex align-items-center">

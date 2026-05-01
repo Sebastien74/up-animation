@@ -23,7 +23,7 @@ class BaseCommand
      * BaseCommand constructor.
      */
     public function __construct(
-        protected readonly KernelInterface      $kernel,
+        protected readonly KernelInterface $kernel,
         protected readonly CronSchedulerService $cronSchedulerService
     ) {
     }
