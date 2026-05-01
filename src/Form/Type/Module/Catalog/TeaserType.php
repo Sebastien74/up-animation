@@ -144,7 +144,7 @@ class TeaserType extends AbstractType
                     'required' => false,
                     'display' => 'button',
                     'color' => 'app',
-                    'label' => $this->translator->trans('Afficher uniquement les produits mis en avant', [], 'admin'),
+                    'label' => $this->translator->trans('Uniquement les mis en avant', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
                     'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
                 ]);

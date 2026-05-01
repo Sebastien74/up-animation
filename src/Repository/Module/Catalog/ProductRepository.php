@@ -139,6 +139,10 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter(':search', '%'.$search.'%');
 
         if ($listing instanceof Listing) {
+            if ($listing->isPromote()) {
+                $queryBuilder->andWhere('p.promote = :promote')
+                    ->setParameter('promote', true);
+            }
             $catalogIds = [];
             foreach ($listing->getCatalogs() as $catalog) {
                 $catalogIds[] = $catalog->getId();
@@ -219,6 +223,11 @@ class ProductRepository extends ServiceEntityRepository
         $queryBuilder = $this->optimizedQueryBuilder($locale, $website, $order, $sort, false, null, $options)
             ->andWhere('u.archived = :archived')
             ->setParameter('archived', false);
+
+        if ($listing instanceof Listing && $listing->isPromote()) {
+            $queryBuilder->andWhere('p.promote = :promote')
+                ->setParameter('promote', true);
+        }
 
         $catalogIds = [];
         foreach ($catalogs as $catalog) {

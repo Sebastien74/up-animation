@@ -26,6 +26,9 @@ const dropdownBack = function (submenu) {
                 submenu.classList.remove('show');
                 submenu.classList.remove('active');
             }
+            if (backBtn.classList.contains('dropdown-back-level-1')) {
+                document.body.classList.remove('menu-open');
+            }
         }
     });
 }

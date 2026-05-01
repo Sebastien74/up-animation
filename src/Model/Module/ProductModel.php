@@ -91,6 +91,7 @@ final class ProductModel extends BaseModel
 
         return (object) array_merge((array) $model, [
             'catalog' => $catalog,
+            'promote' => self::getContent('promote', $product, true),
             'reference' => self::getContent('reference', $product),
             'asAgency' => 'agencies' === self::getContent('slug', $catalog),
             'displayCity' => $displayCity,

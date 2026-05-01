@@ -4,6 +4,10 @@ utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 
+Sur les best-sellers mettre une étoile
+
+Recherchez une animation en fonction de vos critères ! Page toutes 
+
 Mettre le partage sur les fiches produits
 
 SUr la fiche Agence revoir les paddings c'est pas aligné

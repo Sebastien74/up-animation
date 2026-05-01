@@ -65,6 +65,9 @@ class Listing extends BaseEntity
         'name' => 'cataloglisting',
     ];
 
+    #[ORM\Column(type: Types::BOOLEAN)]
+    protected bool $promote = false;
+
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $display = 'disable';
 
@@ -177,6 +180,18 @@ class Listing extends BaseEntity
         $this->subCategories = new ArrayCollection();
         $this->features = new ArrayCollection();
         $this->products = new ArrayCollection();
+    }
+
+    public function isPromote(): ?bool
+    {
+        return $this->promote;
+    }
+
+    public function setPromote(bool $promote): static
+    {
+        $this->promote = $promote;
+
+        return $this;
     }
 
     public function getDisplay(): ?string

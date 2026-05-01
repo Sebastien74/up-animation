@@ -217,7 +217,12 @@
     {%- set screensSizes = vars.screensSizes is defined ? vars.screensSizes : false -%}
     <div class="card product-card bg-light shadow border-0 h-100 position-relative">
         <div class="card-header d-flex position-relative p-0 border-0">
-            <a href="{{ entity.url }}" class="img-container d-inline-block overflow-hidden">
+            <a href="{{ entity.url }}" class="img-container d-inline-block overflow-hidden position-relative">
+                {%- if entity.promote -%}
+                    <i class="icon-star position-absolute text-warning bg-white d-flex justify-content-center align-items-center"
+                       data-bs-toggle="tooltip"
+                       title="{{ "Best-seller"|trans|striptags }}"></i>
+                {%- endif -%}
                 {{ entity.mainMedia|file({}, {
                     screensSizes: screensSizes ? screensSizes : {
                         mobile: {width: 400, height: 300},

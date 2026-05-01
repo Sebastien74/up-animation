@@ -286,6 +286,15 @@ class ListingType extends AbstractType
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
 
+            $builder->add('promote', Type\CheckboxType::class, [
+                'required' => false,
+                'display' => 'button',
+                'color' => 'app',
+                'label' => $this->translator->trans('Uniquement les mis en avant', [], 'admin'),
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
+            ]);
+
             $builder->add('groupByCategories', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',

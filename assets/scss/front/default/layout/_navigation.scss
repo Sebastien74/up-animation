@@ -141,17 +141,13 @@ body.menu-open {
     @include mediaQuery(min-lg) {
 
         .close-menu {
-            opacity: .3;
+
             font-size: 28px;
             transition: opacity $transition-base;
 
             &.close-menu-level-1 {
                 top: 1.5rem;
                 right: 1.5rem;
-            }
-
-            &:hover {
-                opacity: 1;
             }
         }
     }

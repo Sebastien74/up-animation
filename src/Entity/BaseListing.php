@@ -20,6 +20,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BaseListing extends BaseEntity
 {
     #[ORM\Column(type: Types::BOOLEAN)]
+    protected bool $promote = false;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $hideDate = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
@@ -69,6 +72,18 @@ class BaseListing extends BaseEntity
     #[ORM\ManyToOne(targetEntity: Website::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Website $website = null;
+
+    public function isPromote(): ?bool
+    {
+        return $this->promote;
+    }
+
+    public function setPromote(bool $promote): static
+    {
+        $this->promote = $promote;
+
+        return $this;
+    }
 
     public function isHideDate(): ?bool
     {

@@ -103,15 +103,20 @@
                         {%- if link.level == 1 -%}
                             <i class="close-menu-level-{{ link.level }} d-none d-lg-inline-flex close-menu-submenu ms-auto icon-times cursor align-items-center justify-content-center text-secondary"></i>
                         {%- else -%}
-                            <i class="close-menu-level-{{ link.level }} d-none d-lg-inline-flex close-menu ms-auto icon-times cursor align-items-center justify-content-center text-secondary"></i>
+                            <i class="close-menu-level-{{ link.level }} d-none d-lg-inline-flex close-menu ms-auto icon-times cursor align-items-start justify-content-center text-secondary"></i>
                         {%- endif -%}
                     </div>
                     {%- set subLabel = link.subTitle ? link.subTitle : link.title -%}
                     {%- set parentEl = link.link ? 'a' : 'div' -%}
                     {%- set asLink = 'a' == parentEl -%}
                     <{{ parentEl }}{% if asLink %} href="{{ link.link }}" {% endif %} class="parent-label-wrap d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}{% if asLink %} btn btn-secondary d-inline-flex{% endif %}">
-                        <span class="parent-label text-warning position-relative fw-500">{{ subLabel|unescape|raw }}</span>
-                        <i class="icon-arrow-right text-primary ms-2 ms-md-3"></i>
+                        {%- if not asLink -%}
+                            <i class="icon-arrow-left text-primary me-2 me-md-3"></i>
+                        {%- endif -%}
+                        <span class="parent-label text-secondary position-relative fw-500{% if not asLink %} text-uppercase text-underline fw-900{% endif %}">{{ subLabel|unescape|raw }}</span>
+                        {%- if asLink -%}
+                            <i class="icon-arrow-right text-primary ms-2 ms-md-3"></i>
+                        {%- endif -%}
                     </{{ parentEl }}>
                     <div class="inner position-relative mt-4 mt-md-5 w-100">
                         <div class="inner-sub-wrap position-relative text-start w-100 {%- if link.level >= 3 -%}pt-4{%- else -%}mt-4 mt-lg-4{%- endif -%}" tabindex="-1">
