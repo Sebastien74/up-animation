@@ -233,7 +233,7 @@ class ProductType extends AbstractType
                     $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introductionTitle', 'introduction' => 'col-12 editor', 'bodyTitle', 'body' => 'col-12', 'associatedWords'];
                 }
 
-                if ('events' === $catalogSlug) {
+                if (in_array($catalogSlug, ['events', 'services', 'rentals'])) {
                     $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introduction' => 'col-12 editor', 'body' => 'col-12', 'associatedWords'];
                     $extraFields = [
                         'introductionTitle' => [
@@ -315,57 +315,6 @@ class ProductType extends AbstractType
                         ],
                     ];
                 }
-//                elseif ('performances' === $catalogSlug) {
-//                    $fields = ['title' => 'col-lg-8', 'subTitle' => 'col-lg-4', 'introduction' => 'col-12 editor', 'body' => 'col-12', 'associatedWords' => 'col-12'];
-//                    $extraFields = [
-//                        'introductionTitle' => [
-//                            'type' => Type\TextType::class,
-//                            'required' => false,
-//                            'label' => $this->translator->trans("Titre de l'introduction", [], 'admin'),
-//                            'attr' => ['placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin')],
-//                            'row_attr' => ['class' => 'col-12 editor'],
-//                        ],
-//                        'bodyTitle' => [
-//                            'type' => Type\TextType::class,
-//                            'required' => false,
-//                            'label' => $this->translator->trans('Titre de la description (Vous êtes intéressé ?)', [], 'admin'),
-//                            'attr' => ['placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin')],
-//                            'row_attr' => ['class' => 'col-12 editor'],
-//                        ],
-//                        'bodyTitleSecond' => [
-//                            'type' => Type\TextType::class,
-//                            'required' => false,
-//                            'label' => $this->translator->trans('Titre de description', [], 'admin'),
-//                            'attr' => ['placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin')],
-//                            'row_attr' => ['class' => 'col-12 editor'],
-//                        ],
-//                        'bodySecond' => [
-//                            'type' => Type\TextareaType::class,
-//                            'required' => false,
-//                            'label' => $this->translator->trans('Description', [], 'admin'),
-//                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
-//                            'row_attr' => ['class' => 'col-12 editor'],
-//                        ],
-//                        'advendisingTitleFirst' => [
-//                            'type' => Type\TextType::class,
-//                            'required' => false,
-//                            'label' => $this->translator->trans('Titre de la mise en avant', [], 'admin'),
-//                            'attr' => ['placeholder' => $this->translator->trans('Saisissez un titre', [], 'admin')],
-//                            'row_attr' => ['class' => 'col-12 editor'],
-//                        ],
-//                        'advendisingFirst' => [
-//                            'type' => Type\TextareaType::class,
-//                            'required' => false,
-//                            'label' => $this->translator->trans('Mise en avant', [], 'admin'),
-//                            'attr' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
-//                            'row_attr' => ['class' => 'col-12 editor'],
-//                        ],
-//                    ];
-//
-//                    $labelFields = [
-//                        'body' => $this->translator->trans('Description (Vous êtes intéressé ?)', [], 'admin')
-//                    ];
-//                }
 
                 $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
                 $intls->add($builder, [

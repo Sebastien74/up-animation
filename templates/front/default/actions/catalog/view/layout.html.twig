@@ -400,7 +400,7 @@
     {%- set haveSecond = true -%}
     {%- set haveThird = true -%}
 
-    {%- if catalogSlug == 'services' -%}
+    {%- if catalogSlug in ['events', 'services', 'rentals'] -%}
         {%- set haveFirst = entity.intl.advendisingFirst or entity.intl.advendisingFirst -%}
         {%- set haveSecond = entity.intl.advendisingTitleSecond or entity.intl.advendisingSecond -%}
         {%- set haveThird = entity.intl.advendisingTitleThird or entity.intl.advendisingThird -%}

@@ -77,17 +77,25 @@ class LogController extends AdminController
      *
      * @throws \Exception
      */
-    #[Route('/{website}/log/{file}', name: 'admin_log', methods: 'GET')]
+    #[Route('/{website}/log/{file}', name: 'admin_log', requirements: ['file' => '[A-Za-z0-9._-]+'], methods: 'GET')]
     public function log(Request $request, string $logDir): Response
     {
         $logs = [];
-        $fileDir = $logDir.'/'.$request->attributes->get('file');
+        $requestedFile = (string) $request->attributes->get('file');
+        // basename + realpath confinement: never read outside $logDir, no
+        // matter what the route param ends up containing.
+        $requestedFile = basename($requestedFile);
+        $logDirReal = realpath($logDir);
+        $candidate = $logDirReal ? realpath($logDirReal.DIRECTORY_SEPARATOR.$requestedFile) : false;
+        $fileDir = ($logDirReal && false !== $candidate && str_starts_with($candidate, $logDirReal.DIRECTORY_SEPARATOR))
+            ? $candidate
+            : null;
         $fileSystem = new Filesystem();
 
         $items[$this->coreLocator->translator()->trans('Logs', [], 'back')] = $this->coreLocator->router()->generate('admin_logs', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $this->breadcrumb($request, $items);
 
-        if ($fileSystem->exists($fileDir)) {
+        if ($fileDir && $fileSystem->exists($fileDir)) {
             $logsContent = file_get_contents($fileDir);
             $splitLogs = preg_split('/\\r\\n|\\r|\\n/', $logsContent);
             foreach ($splitLogs as $log) {

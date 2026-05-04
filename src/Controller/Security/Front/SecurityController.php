@@ -271,7 +271,7 @@ class SecurityController extends FrontController
 
         $registerManager->sendConfirmEmail($userFront, $website, $userFront->getToken());
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->safeRefererRedirect($request);
     }
 
     /**

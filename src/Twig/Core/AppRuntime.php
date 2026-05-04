@@ -400,15 +400,19 @@ readonly class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Unserialize array.
+     * Unserialize array. Restricted to scalar/array payloads — passing
+     * `allowed_classes => false` blocks PHP object instantiation and the
+     * deserialization gadget chains that follow.
      */
-    public function unserialize(?string $serialize = null): ?string
+    public function unserialize(?string $serialize = null): mixed
     {
-        if (is_string($serialize)) {
-            return unserialize($serialize);
+        if (!is_string($serialize) || '' === $serialize) {
+            return null;
         }
 
-        return null;
+        $value = @unserialize($serialize, ['allowed_classes' => false]);
+
+        return false === $value && 'b:0;' !== $serialize ? null : $value;
     }
 
     /**
@@ -628,25 +632,41 @@ readonly class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * File get content in the project dir.
+     * File get content in the project dir. Confined to templates/ — the
+     * resolved path must stay inside that directory or we return null.
      */
     public function fileGetContent(?string $dirname = null): ?string
     {
-        if ($dirname) {
-            return file_get_contents($this->coreLocator->projectDir().DIRECTORY_SEPARATOR.'templates/'.DIRECTORY_SEPARATOR.$dirname);
+        if (!$dirname) {
+            return null;
         }
 
-        return null;
+        $templatesRoot = realpath($this->coreLocator->projectDir().DIRECTORY_SEPARATOR.'templates');
+        if (false === $templatesRoot) {
+            return null;
+        }
+
+        $candidate = realpath($templatesRoot.DIRECTORY_SEPARATOR.ltrim($dirname, '/\\'));
+        if (false === $candidate || !str_starts_with($candidate, $templatesRoot.DIRECTORY_SEPARATOR)) {
+            return null;
+        }
+
+        $content = @file_get_contents($candidate);
+
+        return false === $content ? null : $content;
     }
 
     /**
      * File get content by URL.
+     *
+     * Disabled to prevent server-side request forgery: this used to call
+     * file_get_contents() on any URL passed in, which could be abused to
+     * reach internal services. Twig templates that need remote content
+     * should fetch it through a dedicated, allow-listed service.
      */
     public function fileGetContentURL(?string $url = null): ?string
     {
-        if ($url) {
-            return file_get_contents($url);
-        }
+        unset($url);
 
         return null;
     }

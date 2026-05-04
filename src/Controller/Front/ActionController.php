@@ -719,16 +719,12 @@ class ActionController extends FrontController
             $associatedEntities = array_merge($associatedEntities, $onlineEntities);
         }
 
-        $result = [];
-        $indexPages = [];
-        $currentLimit = 1;
+        $result = $indexPages = $entitiesIds = $allAssociatedEntities = [];
         $listingService = $this->coreLocator->listingService();
-        $entitiesIds = [];
         foreach ($associatedEntities as $associatedEntity) {
             $entitiesIds[] = $associatedEntity->getId();
         }
 
-        $allAssociatedEntities = [];
         foreach ($associatedEntities as $associatedEntity) {
             $valid = true;
             if ($this->associatedEntitiesLastDate) {
@@ -744,7 +740,7 @@ class ActionController extends FrontController
         $indexPagesCodes = $listingService->indexesPages($request->getLocale(), $this->listingClassname, $classname);
 
         foreach ($allAssociatedEntities as $associatedEntity) {
-            $result[] = ($this->model)::fromEntity($associatedEntity, $this->coreLocator, ['entitiesIds' => $entitiesIds]);
+            $result[] = ($this->model)::fromEntity($associatedEntity, $this->coreLocator, ['entitiesIds' => $entitiesIds, 'disableMediasLayout' => true]);
             $indexPages[$associatedEntity->getId()] = !empty($indexPagesCodes[$associatedEntity->getId()]) ? $indexPagesCodes[$associatedEntity->getId()] : null;
         }
 

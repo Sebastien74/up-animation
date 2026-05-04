@@ -13,6 +13,7 @@ use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -123,5 +124,24 @@ abstract class BaseController extends AbstractController
     protected function thumbConfigurationByFilter(WebsiteModel $website, string $classname, $filter = null): array
     {
         return $this->coreLocator->thumbService()->thumbConfigurationByFilter($website, $classname, $filter);
+    }
+
+    /**
+     * Redirect to the request Referer when (and only when) it points back to
+     * the same host the request was made on. Falls back to a safe default
+     * route otherwise. Prevents header-based open-redirect attacks.
+     */
+    protected function safeRefererRedirect(Request $request, string $fallbackRoute = 'front_index', array $fallbackParams = [], string $append = ''): RedirectResponse
+    {
+        $referer = $request->headers->get('referer');
+
+        if (is_string($referer) && '' !== $referer) {
+            $parts = parse_url($referer);
+            if (is_array($parts) && !empty($parts['host']) && strcasecmp($parts['host'], $request->getHost()) === 0) {
+                return $this->redirect($referer.$append);
+            }
+        }
+
+        return $this->redirectToRoute($fallbackRoute, $fallbackParams);
     }
 }

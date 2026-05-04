@@ -13,12 +13,17 @@ use Doctrine\ORM\NonUniqueResultException;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * CryptController.
  *
- * Manage string encryption
+ * Manage string encryption used by the form honeypot mechanism.
+ *
+ * Note: a public decryption endpoint used to exist here. It has been removed
+ * because it acted as a generic decryption oracle for any payload encrypted
+ * with the website key.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
@@ -26,34 +31,39 @@ use Symfony\Component\Routing\Attribute\Route;
 class CryptController extends AbstractController
 {
     /**
-     * Encrypt.
+     * Encrypt a short opaque payload (used only for the form honeypot).
      *
      * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
      */
     #[Route('/encrypt/{website}/{string}', name: 'front_encrypt', options: ['isMainRequest' => false], defaults: ['website' => null, 'string' => null], methods: 'GET')]
     public function encrypt(CoreLocatorInterface $coreLocator, CryptService $cryptService, ?Website $website = null, ?string $string = null): JsonResponse
     {
-        $response = new JsonResponse(['result' => $cryptService->execute(WebsiteModel::fromEntity($website, $coreLocator), $string, 'e')]);
-        header('Cache-Control: max-age=31536000');
+        if (!$website instanceof Website || null === $string) {
+            throw new NotFoundHttpException();
+        }
 
-        return $response;
+        if (strlen($string) > 256) {
+            throw new NotFoundHttpException();
+        }
+
+        return new JsonResponse([
+            'result' => $cryptService->execute(WebsiteModel::fromEntity($website, $coreLocator), $string, 'e'),
+        ]);
     }
 
     /**
-     * Decrypt.
+     * Legacy decrypt route — intentionally disabled.
      *
-     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException
+     * Kept to preserve `path('front_decrypt')` calls in templates, but always
+     * answers 404 so it cannot be used as a decryption oracle.
      */
     #[Route('/decrypt/{website}/{string}',
         name: 'front_decrypt',
         options: ['isMainRequest' => false],
         defaults: ['website' => null, 'string' => null],
         methods: 'GET')]
-    public function decrypt(CoreLocatorInterface $coreLocator, CryptService $codeService, ?Website $website = null, ?string $string = null): JsonResponse
+    public function decrypt(): JsonResponse
     {
-        $response = new JsonResponse(['result' => $codeService->execute(WebsiteModel::fromEntity($website, $coreLocator), $string, 'd')]);
-        header('Cache-Control: max-age=31536000');
-
-        return $response;
+        throw new NotFoundHttpException();
     }
 }

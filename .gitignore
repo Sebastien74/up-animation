@@ -11,6 +11,9 @@
 /tools/*
 /config/secrets/prod/prod.decrypt.private.php
 
+/CLAUDE.md
+/AUDIT.md
+
 /vendor/cms/faker/.git
 /vendor/cms/phone-number-bundle/.git
 

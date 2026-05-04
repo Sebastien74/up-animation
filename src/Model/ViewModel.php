@@ -141,7 +141,7 @@ final class ViewModel extends BaseModel
         $intlVideo = !$disabledIntl && $intl && $intl->video ? (object) ['type' => 'video', 'videoLink' => $intl->video, 'path' => $intl->video, 'locale' => $intl->locale] : null;
         $haveIntlVideo = !empty($intlVideo);
         $mainMediaInHeader = $options['mainMediaInHeader'] = self::mainMediaInHeader($entity, $category, $layout) || self::mainMediaInHeader($category, $category, $layout);
-        $medias = $entitiesIds ? MediasModel::fromEntities($entity, $coreLocator, $options['entitiesIds']) : [];
+        $medias = $entitiesIds ? MediasModel::fromEntities($entity, $coreLocator, $options['entitiesIds'], $options) : [];
         $medias = $medias ?: (!$disabledMedias ? MediasModel::fromEntity($entity, $coreLocator, $locale, false, $options) : null);
         $mediasAndVideos = !$disabledMedias && $medias && $medias->mediasAndVideos ? $medias->mediasAndVideos : [];
         $url = !$disabledUrl ? self::url($entity, $interface, $locale, $urlsIndex, $intl) : (object) [];

@@ -133,8 +133,7 @@ class FormController extends FrontController
             : $contactStepFormRepository->findOneBy(['stepform' => $form, 'token' => $token]);
         $validContact = $contact instanceof ContactForm || $contact instanceof ContactStepForm || $token === $session->get('form_success');
         if (!$validContact) {
-            $url = $request->headers->get('referer') ? $request->headers->get('referer') : $this->coreLocator->schemeAndHttpHost();
-            return $this->redirect($url);
+            return $this->safeRefererRedirect($request);
         }
 
         if ($contact) {

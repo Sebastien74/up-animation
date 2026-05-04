@@ -46,6 +46,7 @@ final class MediasModel extends BaseModel
 
     /**
      * fromEntity.
+     *
      * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
     public static function fromEntity(
@@ -64,7 +65,8 @@ final class MediasModel extends BaseModel
 
         $entity = property_exists($entity, 'entity') && !method_exists($entity, 'getEntity') ? $entity->entity : $entity;
         $locale = $locale ?: self::$coreLocator->locale();
-        $mainMediaInHeader = array_key_exists('mainMediaInHeader', $options) ? $options['mainMediaInHeader'] : false;
+        $mainMediaInHeader = array_key_exists('mainMediaInHeader', $options) && $options['mainMediaInHeader'];
+        $disableMediasLayout = array_key_exists('disableMediasLayout', $options) && $options['disableMediasLayout'];
 
         if ($entity && $entity->getId() && isset(self::$cache['response'][get_class($entity)][$entity->getId()][$locale])) {
             return self::$cache['response'][get_class($entity)][$entity->getId()][$locale];
@@ -74,7 +76,7 @@ final class MediasModel extends BaseModel
         $mediaRelationsDb = $options['medias'] ?? ($metadata->targetEntity && $entity->getId() && $query ? self::mediaRelationsQuery($entity, $metadata, $locale) : self::mediaRelations($entity, $locale));
 
         $mainSet = $videoAsFirst = false;
-        $mainPosition = $headerPosition = $secondaryPosition = $mainVideo = null;
+        $mainPosition = $headerPosition = $mainVideo = null;
         $main = $header = $medias = $mediasAndVideos = $mediaRelations = $file = $files = $videos = $mediasWithoutMain = [];
 
         foreach ($mediaRelationsDb as $key => $mediaRelation) {
@@ -111,11 +113,11 @@ final class MediasModel extends BaseModel
         }
         ksort($medias);
 
-        if ($entity instanceof Product && !is_array($main) && str_contains(self::$coreLocator->request()->attributes->get('_route'), '_view')) {
+        if (!$disableMediasLayout && $entity instanceof Product && !is_array($main) && str_contains(self::$coreLocator->request()->attributes->get('_route'), '_view')) {
             $header = !$header ? $main : $header;
             $headerPosition = $header->position;
             $catalogSlug = $entity->getCatalog()->getSlug();
-            if ('events' === $catalogSlug && count($medias) > 1) {
+            if (in_array($catalogSlug, ['events', 'services', 'rentals']) && count($medias) > 1) {
                 $main = $medias[array_key_first($medias) + 1];
                 $mainPosition = $main->position;
             }
@@ -166,16 +168,21 @@ final class MediasModel extends BaseModel
     /**
      * To get media relations by entity array and by locale.
      *
-     * @throws QueryException|NonUniqueResultException|MappingException
+     * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException
      */
-    public static function fromEntities(mixed $entity, CoreLocatorInterface $coreLocator, array $ids = []): self
+    public static function fromEntities(mixed $entity, CoreLocatorInterface $coreLocator, array $ids = [], array $options = []): self
     {
         if (!$entity) {
             return new self();
         }
 
+        $disableMediasLayout = array_key_exists('disableMediasLayout', $options) && $options['disableMediasLayout'];
+
         if (isset(self::$cache['medias'][get_class($entity)][$entity->getId()])) {
-            return self::fromEntity($entity, $coreLocator, self::$coreLocator->locale(), false, ['medias' => self::$cache['medias'][get_class($entity)][$entity->getId()]]);
+            return self::fromEntity($entity, $coreLocator, self::$coreLocator->locale(), false, [
+                'medias' => self::$cache['medias'][get_class($entity)][$entity->getId()],
+                'disableMediasLayout' => $disableMediasLayout
+            ]);
         }
 
         $entityId = method_exists($entity, 'getId') ? $entity->getId() : $entity->id;
@@ -223,7 +230,7 @@ final class MediasModel extends BaseModel
         }
         $medias = !empty(self::$cache['medias'][get_class($entity)][$entityId]) ? self::$cache['medias'][get_class($entity)][$entityId] : [];
 
-        return self::fromEntity($entity, $coreLocator, self::$coreLocator->locale(), false, ['medias' => $medias]);
+        return self::fromEntity($entity, $coreLocator, self::$coreLocator->locale(), false, ['medias' => $medias, 'disableMediasLayout' => $disableMediasLayout]);
     }
 
     /**

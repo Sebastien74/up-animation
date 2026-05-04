@@ -52,9 +52,19 @@ class UploadController extends AdminController
     {
         $entity = $website;
         $entityNamespace = $request->query->get('entityNamespace');
+        $entityNamespace = is_string($entityNamespace) ? urldecode($entityNamespace) : null;
 
+        // Only accept namespaces that are managed App\Entity\... classes; the
+        // value is user-controlled so we must not pass it raw to autoloading.
         if ($entityNamespace && $entityId) {
-            $entity = $this->coreLocator->em()->getRepository(urldecode($entityNamespace))->find($entityId);
+            if (!preg_match('/^App\\\\Entity(\\\\[A-Za-z0-9_]+)+$/', $entityNamespace)
+                || !$this->coreLocator->em()->getMetadataFactory()->hasMetadataFor($entityNamespace)) {
+                throw $this->createNotFoundException();
+            }
+            $entity = $this->coreLocator->em()->getRepository($entityNamespace)->find($entityId);
+            if (!$entity) {
+                throw $this->createNotFoundException();
+            }
         }
 
         $form = $this->createForm(MediaUploadType::class, $entity, [
@@ -92,34 +102,50 @@ class UploadController extends AdminController
     }
 
     /**
-     * File downloader.
+     * File downloader. Serves files strictly under public/ — the requested
+     * path is resolved with realpath() and rejected if it escapes that root.
      */
     #[Route('/download', name: 'admin_medias_downloader', methods: 'GET')]
     public function downloader(Request $request, string $projectDir): RedirectResponse|Response
     {
         $mimeTypes = ['csv' => 'text/csv'];
-        $fileDirname = $projectDir.'/public/'.ltrim(urldecode($request->get('fileDirname')), '/');
-        $fileDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $fileDirname);
-        $filesystem = new Filesystem();
+        $publicRoot = realpath($projectDir.'/public');
+        $requested = (string) $request->get('fileDirname');
 
-        if ($filesystem->exists($fileDirname)) {
-            $file = new File($fileDirname);
-            $response = new Response(file_get_contents($file->getRealPath()));
-            $mimeType = !empty($mimeTypes[$file->getExtension()]) ? $mimeTypes[$file->getExtension()] : $file->getMimeType();
-            $headers = [
-                'Expires' => 'Tue, 01 Jul 1970 06:00:00 GMT',
-                'Cache-Control' => 'max-age=0, no-cache, must-revalidate, proxy-revalidate',
-                'Content-Disposition' => 'attachment; filename='.$file->getFilename(),
-                'Content-Type' => $mimeType,
-                'Content-Transfer-Encoding' => 'binary',
-            ];
-            foreach ($headers as $key => $val) {
-                $response->headers->set($key, $val);
-            }
-
-            return $response;
+        if ('' === $requested || false === $publicRoot) {
+            throw $this->createNotFoundException();
         }
 
-        return $this->redirect($request->headers->get('referer'));
+        // Reject NUL bytes and obvious traversal sequences before resolving.
+        if (str_contains($requested, "\0")) {
+            throw $this->createNotFoundException();
+        }
+
+        $candidate = $projectDir.'/public/'.ltrim(urldecode($requested), '/');
+        $candidate = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $candidate);
+        $resolved = realpath($candidate);
+
+        $filesystem = new Filesystem();
+        $publicRootNormalized = rtrim($publicRoot, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+
+        if (false === $resolved || !$filesystem->exists($resolved) || !str_starts_with($resolved, $publicRootNormalized)) {
+            return $this->safeRefererRedirect($request, 'admin_dashboard', ['website' => $this->getWebsite()->id]);
+        }
+
+        $file = new File($resolved);
+        $response = new Response(file_get_contents($file->getRealPath()));
+        $mimeType = !empty($mimeTypes[$file->getExtension()]) ? $mimeTypes[$file->getExtension()] : $file->getMimeType();
+        $headers = [
+            'Expires' => 'Tue, 01 Jul 1970 06:00:00 GMT',
+            'Cache-Control' => 'max-age=0, no-cache, must-revalidate, proxy-revalidate',
+            'Content-Disposition' => 'attachment; filename="'.basename($file->getFilename()).'"',
+            'Content-Type' => $mimeType,
+            'Content-Transfer-Encoding' => 'binary',
+        ];
+        foreach ($headers as $key => $val) {
+            $response->headers->set($key, $val);
+        }
+
+        return $response;
     }
 }

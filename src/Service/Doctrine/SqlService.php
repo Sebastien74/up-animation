@@ -11,12 +11,16 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * SqlService.
  *
- * To get SQL data from current connection
+ * Low-level helpers around the active Doctrine connection. Identifiers
+ * (table, column, sort) are validated against the schema and quoted; the
+ * compared value is always passed as a bound parameter.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 class SqlService implements SqlServiceInterface
 {
+    private const string IDENTIFIER_REGEX = '/^[A-Za-z_][A-Za-z0-9_]*$/';
+
     private Connection $connection;
     private ?string $dbPrefix;
 
@@ -49,24 +53,31 @@ class SqlService implements SqlServiceInterface
     {
         try {
             $asClassname = str_contains($table, 'App\\Entity\\');
-            $metadata = $asClassname ? $this->entityManager->getClassMetadata($table) : [];
-            $table = $asClassname && !empty($metadata->table['name']) ? $metadata->table['name'] : ($this->dbPrefix ? $this->dbPrefix.'_'.$table : $table);
-            $schemaManager = $this->connection->createSchemaManager();
-            if ($schemaManager->tablesExist([$table]) && $value) {
-                if (is_numeric($value)) {
-                    $statement = $this->connection->prepare('SELECT * FROM '.$table.' WHERE '.$column.' = '.$value);
-                } else {
-                    $statement = $this->connection->prepare('SELECT * FROM '.$table.' WHERE '.$column.' = "'.$value.'"');
-                }
-                $result = $statement->executeQuery()->fetchAllAssociative();
+            $metadata = $asClassname ? $this->entityManager->getClassMetadata($table) : null;
+            $table = $asClassname && !empty($metadata->table['name'])
+                ? $metadata->table['name']
+                : ($this->dbPrefix ? $this->dbPrefix.'_'.$table : $table);
 
-                return !empty($result[0]) ? $result[0] : [];
+            $schemaManager = $this->connection->createSchemaManager();
+            if (!$schemaManager->tablesExist([$table]) || null === $value) {
+                return [];
             }
+
+            if (!$this->isValidColumn($table, $column)) {
+                return [];
+            }
+
+            $sql = sprintf(
+                'SELECT * FROM %s WHERE %s = :value',
+                $this->connection->quoteIdentifier($table),
+                $this->connection->quoteIdentifier($column)
+            );
+            $result = $this->connection->executeQuery($sql, ['value' => $value])->fetchAllAssociative();
+
+            return !empty($result[0]) ? $result[0] : [];
         } catch (\Exception $exception) {
             return ['exception' => $exception->getMessage()];
         }
-
-        return [];
     }
 
     /**
@@ -76,16 +87,21 @@ class SqlService implements SqlServiceInterface
     {
         try {
             $schemaManager = $this->connection->createSchemaManager();
-            if ($schemaManager->tablesExist([$table])) {
-                $statement = $this->connection->prepare('SELECT * FROM '.$table.' ORDER BY '.$sort.' '.$order);
-
-                return $statement->executeQuery()->fetchAllAssociative();
+            if (!$schemaManager->tablesExist([$table]) || !$this->isValidColumn($table, $sort)) {
+                return [];
             }
+
+            $sql = sprintf(
+                'SELECT * FROM %s ORDER BY %s %s',
+                $this->connection->quoteIdentifier($table),
+                $this->connection->quoteIdentifier($sort),
+                $this->normalizeOrder($order)
+            );
+
+            return $this->connection->executeQuery($sql)->fetchAllAssociative();
         } catch (\Exception $exception) {
             return ['exception' => $exception->getMessage()];
         }
-
-        return [];
     }
 
     /**
@@ -95,24 +111,28 @@ class SqlService implements SqlServiceInterface
     {
         try {
             $schemaManager = $this->connection->createSchemaManager();
-            if ($schemaManager->tablesExist([$table])) {
-                if (is_numeric($value) && $sort && $order) {
-                    $statement = $this->connection->prepare('SELECT * FROM '.$table.' WHERE '.$column.' = '.$value.' ORDER BY '.$sort.' '.$order);
-                } elseif ($sort && $order) {
-                    $statement = $this->connection->prepare('SELECT * FROM '.$table.' WHERE '.$column.' = "'.$value.'" ORDER BY '.$sort.' '.$order);
-                } elseif (is_numeric($value)) {
-                    $statement = $this->connection->prepare('SELECT * FROM '.$table.' WHERE '.$column.' = '.$value);
-                } else {
-                    $statement = $this->connection->prepare('SELECT * FROM '.$table.' WHERE '.$column.' = "'.$value.'"');
-                }
-
-                return $statement->executeQuery()->fetchAllAssociative();
+            if (!$schemaManager->tablesExist([$table]) || !$this->isValidColumn($table, $column)) {
+                return [];
             }
+
+            $sql = sprintf(
+                'SELECT * FROM %s WHERE %s = :value',
+                $this->connection->quoteIdentifier($table),
+                $this->connection->quoteIdentifier($column)
+            );
+
+            if ($sort && $order && $this->isValidColumn($table, $sort)) {
+                $sql .= sprintf(
+                    ' ORDER BY %s %s',
+                    $this->connection->quoteIdentifier($sort),
+                    $this->normalizeOrder($order)
+                );
+            }
+
+            return $this->connection->executeQuery($sql, ['value' => $value])->fetchAllAssociative();
         } catch (\Exception $exception) {
             return ['exception' => $exception->getMessage()];
         }
-
-        return [];
     }
 
     /**
@@ -147,5 +167,25 @@ class SqlService implements SqlServiceInterface
         }
 
         return null;
+    }
+
+    private function isValidColumn(string $table, string $column): bool
+    {
+        if (!preg_match(self::IDENTIFIER_REGEX, $column)) {
+            return false;
+        }
+
+        try {
+            $columns = $this->connection->createSchemaManager()->listTableColumns($table);
+        } catch (\Exception) {
+            return false;
+        }
+
+        return array_key_exists(strtolower($column), array_change_key_case($columns));
+    }
+
+    private function normalizeOrder(?string $order): string
+    {
+        return strcasecmp((string) $order, 'DESC') === 0 ? 'DESC' : 'ASC';
     }
 }
