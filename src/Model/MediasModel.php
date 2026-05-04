@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Newscast\Newscast;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
@@ -73,7 +74,7 @@ final class MediasModel extends BaseModel
         $mediaRelationsDb = $options['medias'] ?? ($metadata->targetEntity && $entity->getId() && $query ? self::mediaRelationsQuery($entity, $metadata, $locale) : self::mediaRelations($entity, $locale));
 
         $mainSet = $videoAsFirst = false;
-        $mainPosition = $headerPosition = $mainVideo = null;
+        $mainPosition = $headerPosition = $secondaryPosition = $mainVideo = null;
         $main = $header = $medias = $mediasAndVideos = $mediaRelations = $file = $files = $videos = $mediasWithoutMain = [];
 
         foreach ($mediaRelationsDb as $key => $mediaRelation) {
@@ -109,6 +110,16 @@ final class MediasModel extends BaseModel
             }
         }
         ksort($medias);
+
+        if ($entity instanceof Product && !is_array($main) && str_contains(self::$coreLocator->request()->attributes->get('_route'), '_view')) {
+            $header = !$header ? $main : $header;
+            $headerPosition = $header->position;
+            $catalogSlug = $entity->getCatalog()->getSlug();
+            if ('events' === $catalogSlug && count($medias) > 1) {
+                $main = $medias[array_key_first($medias) + 1];
+                $mainPosition = $main->position;
+            }
+        }
 
         if ($mainMediaInHeader && !$header && !empty($mediaRelationsDb) && $entity instanceof Newscast) {
             $header = $mediaRelations[array_key_first($mediaRelationsDb) + 1];

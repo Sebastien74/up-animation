@@ -30,7 +30,6 @@
         {%- endif -%}
     {%- endif -%}
 
-    {%- set displayMainMedia = false -%}
     {%- set screensSizes = {} -%}
     {%- set thumbSizes = {} -%}
     {%- if asAgency -%}
@@ -40,13 +39,18 @@
             desktop: {width: 575, height: 455}
         } -%}
     {%- else -%}
-        {%- set thumbSizes = thumbConfigurationHeader -%}
+        {%- set screensSizes = {
+            mobile: {width: 575, height: 455},
+            tablet: {width: 575, height: 455},
+            desktop: {width: 575, height: 455}
+        } -%}
     {%- endif -%}
     {%- set content = 'agencies' != catalogSlug ? entity.intl.introduction : null -%}
 
+
     {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
         block: entity,
-        customMedia: displayMainMedia ? entity.mainMedia : entity.headerMedia,
+        customMedia: entity.headerMedia,
         titleForce: 1,
         fullSize: true,
         page: page,
@@ -106,6 +110,16 @@
         <div class="body">{{ entity.intl.bodySecond|raw }}</div>
     {%- endif -%}
 
+{%- elseif blockType == 'layout-media-secondary' and entity.mainMedia -%}
+
+    <div class="masked-wrap-secondary">
+        {{ entity.mainMedia|file({}, {screensSizes: {
+            mobile: {width: 639, height: 590},
+            tablet: {width: 639, height: 590},
+            desktop: {width: 639, height: 590}
+        }}) }}
+    </div>
+
 {%- elseif blockType == 'layout-video' and entity.mainVideo -%}
 
     {%- include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {media: entity.mainVideo} -%}
@@ -121,7 +135,7 @@
     <div class="mt-4 mt-lg-0">
         {%- if 'thumbnails' == slideType -%}
             {%- include 'front/'~websiteTemplate~'/actions/slider/template/splide.html.twig' with {
-                medias: entity.medias,
+                medias: entity.mediasWithoutMain,
                 thumbConfiguration: thumbConfigurationView,
                 arrowsSide: 'side',
                 arrowsColor: 'blur',
@@ -152,7 +166,7 @@
                 sliderSlug: 'product',
                 websiteTemplate: websiteTemplate,
                 entity: entity,
-                medias: entity.medias,
+                medias: entity.mediasWithoutMain,
                 interfaceName: interfaceName,
                 mainMediaInHeader: entity.mainMediaInHeader,
                 disabledTitleForce: true,

@@ -1,10 +1,12 @@
-utf8mb4_unicode_ci
+utf8mb4_0900_ai_ci > utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 
 Sur les best-sellers mettre une étoile
+
+https://symfony.com/bundles/SchebTwoFactorBundle/current/api.html
 
 Recherchez une animation en fonction de vos critères ! Page toutes 
 
@@ -18,9 +20,9 @@ Breakpoint tablet 576, 768px à 991 (Faire le responsive et envisager de revoir 
 
 Au filtre des produits la pagination ne fonctionne pas https://up-animation.local/recherche-animations?catalogs=performances
 
-A l'ajout d'une page configurer les marges mobile correctement
+A l'ajout d'une page configurer les marges mobiles correctement
 
-A scroll menu mobile les item deviennent blanc quand on survol une zone foncée
+A scroll menu mobile les item deviennent blanc quand on est survol une zone foncée
 
 https://www.up-animations.abcvd.com/recherche-animations/fiche-produit/animation-seminaire : Contact url avec parma alors qu'il ne devrait pas
 

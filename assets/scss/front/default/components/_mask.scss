@@ -1,7 +1,13 @@
+.masked-wrap-primary, .masked-wrap-secondary {
+    img {
+        width: 100%;
+    }
+}
+
 .masked-wrap-primary {
     mask: url(../../../../medias/images/front/default/blob.svg) no-repeat center / 100% 100%;
 }
 
 .masked-wrap-secondary {
-    mask: url(../../../../medias/images/front/default/blob.svg) no-repeat center / 100% 100%;
+    mask: url(../../../../medias/images/front/default/blob-secondary.svg) no-repeat center / 100% 100%;
 }

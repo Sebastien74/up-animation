@@ -53,7 +53,7 @@ class WebsiteRuntime implements RuntimeExtensionInterface
         $configuration = $website->configuration;
         $defaultDomain = false;
         foreach ($configuration->domains as $domain) {
-            if ($domain->locale === $locale) {
+            if ($domain->locale === $locale && $domain->asDefault) {
                 return $protocol.$domain->name;
             }
             if ($domain->locale === $configuration->locale) {

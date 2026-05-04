@@ -46,7 +46,7 @@
                             breadcrumbs: breadcrumbs
                         } only -%}
                     {%- endif -%}
-                    <div class="title-wrap {% if displayBreadcrumb %} mb-3{% endif %}">
+                    <div class="title-wrap{% if displayBreadcrumb %} mb-3{% endif %}">
                         <h{{ titleForce }} class="title text-uppercase fw-900 mb-0{% if style is defined and style %} {{ style }}{% endif %}{% if anim.title.class %} {{ anim.title.class|raw }}{% endif %}"
                             {% if anim.title.attr %} {{ anim.title.attr|raw }}{% endif %}>
                             {{ title|unescape|raw }}
@@ -59,7 +59,7 @@
                         {%- endif -%}
                         {%- if bodyTitle or body -%}
                             <div class="body mt-4 row">
-                                <div class="col-xl-8">
+                                <div class="col-xl-10">
                                     {%- if bodyTitle or body -%}
                                         <strong class="d-inline-block w-100 mb-2">{{ bodyTitle|raw }}</strong>
                                     {%- endif -%}
@@ -83,7 +83,7 @@
             </div>
             {%- if mediaPath or displayMedia -%}
                 <div class="col-xl-5 media-content d-flex align-items-end">
-                    <div class="masked-wrap masked-wrap-primary">
+                    <div class="masked-wrap masked-wrap-primary w-100">
                         {%- set screensSizes = screensSizes is defined ? screensSizes : {} -%}
                         {%- set thumbSizes = screensSizes is empty ? thumbConfiguration : {} -%}
                         {%- if mediaPath -%}
