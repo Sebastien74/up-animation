@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import route from "../../vendor/components/routing";
 
 /**
@@ -20,7 +21,7 @@ export default async function () {
     await import('dropify');
     await import('../lib/sweetalert/sweetalert-dev');
 
-    let $dropifyElements = jQuery(dropifyElements);
+    let $dropifyElements = $(dropifyElements);
     let drEvent = $dropifyElements.dropify({
         messages: {
             'default': trans.getAttribute('data-dropify-default'),

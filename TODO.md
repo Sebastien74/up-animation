@@ -6,6 +6,8 @@ utf8mb4_unicode_ci
 
 Sur les best-sellers mettre une étoile
 
+Dropify bloc media page Qui sommes nous ne fonctinne pas
+
 https://symfony.com/bundles/SchebTwoFactorBundle/current/api.html
 
 Recherchez une animation en fonction de vos critères ! Page toutes 

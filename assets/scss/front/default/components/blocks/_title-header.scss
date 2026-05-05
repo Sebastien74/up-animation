@@ -46,5 +46,29 @@
             font-size: 22px;
             line-height: 1.2;
         }
+
+        .features {
+
+            .feature {
+
+                border-radius: .5rem;
+
+                i {
+                    width: 30px;
+                    height: 30px;
+                    font-size: 17px;
+                    border-radius: .25rem;
+                }
+
+                li {
+
+                    padding-left: .75rem !important;
+
+                    &:before {
+                        margin-left: -.75rem;
+                    }
+                }
+            }
+        }
     }
 }

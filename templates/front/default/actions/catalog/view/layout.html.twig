@@ -47,9 +47,11 @@
     {%- endif -%}
     {%- set content = 'agencies' != catalogSlug ? entity.intl.introduction : null -%}
 
-
     {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
         block: entity,
+        people: entity.people is defined ? entity.people : false,
+        duration: entity.duration is defined ? entity.duration : false,
+        age: entity.age is defined ? entity.age : false,
         customMedia: entity.headerMedia,
         titleForce: 1,
         fullSize: true,

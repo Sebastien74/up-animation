@@ -504,6 +504,9 @@ Encore.setOutputPath('public/build/admin')
     .addPlugin(new CleanWebpackPlugin())
     .enableSingleRuntimeChunk()
     .enableSassLoader()
+    .addAliases({
+        jquery: path.resolve(__dirname, 'node_modules/jquery')
+    })
     .autoProvidejQuery();
 
 if (enableNotification) {

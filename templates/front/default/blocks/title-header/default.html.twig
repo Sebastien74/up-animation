@@ -17,6 +17,10 @@
     {%- set bodyTitle = bodyTitle is defined ? bodyTitle : null -%}
     {%- set body = body is defined ? body : (intl.body is defined ? intl.body : null) -%}
     {%- set page = parentPage is defined and parentPage ? parentPage : (page is defined and page ? page : (seo.entity is defined ? seo.entity : null)) -%}
+    {%- set people = people is defined ? people : false -%}
+    {%- set duration = duration is defined ? duration : false -%}
+    {%- set age = age is defined ? age : false -%}
+    {%- set haveFetaures = people or duration or age -%}
     {%- set isIndexPage = page and currentEntity.asIndex is not defined or page and currentEntity.asIndex is defined and not currentEntity.asIndex -%}
     {%- set currentEntity = seo.entity is defined ? (seo.entity is defined ? seo.entity : null) -%}
     {%- set contactUrl = contactUrl is defined ? contactUrl : null -%}
@@ -46,7 +50,7 @@
                             breadcrumbs: breadcrumbs
                         } only -%}
                     {%- endif -%}
-                    <div class="title-wrap{% if displayBreadcrumb %} mb-3{% endif %}">
+                    <div class="title-wrap mb-5">
                         <h{{ titleForce }} class="title text-uppercase fw-900 mb-0{% if style is defined and style %} {{ style }}{% endif %}{% if anim.title.class %} {{ anim.title.class|raw }}{% endif %}"
                             {% if anim.title.attr %} {{ anim.title.attr|raw }}{% endif %}>
                             {{ title|unescape|raw }}
@@ -67,6 +71,55 @@
                                         {{ body|raw }}
                                     {%- endif -%}
                                 </div>
+                            </div>
+                        {%- endif -%}
+                        {%- if haveFetaures -%}
+                            <div class="features row mt-5">
+                                {%- if people is not empty -%}
+                                    <div class="col-lg-4">
+                                        <div class="feature d-flex flex-column shadow p-3 bg-light h-100">
+                                            <span class="feature-icon d-inline-flex align-items-center gap-2 mb-2">
+                                                <i class="icon-user text-white bg-secondary d-flex justify-content-center align-items-center"></i>
+                                                <strong class="feature-title d-inline-flex">{{ "Nombre de personnes"|trans|raw }}</strong>
+                                            </span>
+                                            <ul class="feature-items d-flex flex-column ms-0 mb-0">
+                                                {%- for item in people -%}
+                                                    <li class="feature-item">{{ item.valueTitle|raw }}</li>
+                                                {%- endfor -%}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {%- endif -%}
+                                {%- if duration is not empty -%}
+                                    <div class="col-lg-4">
+                                        <div class="feature d-flex flex-column shadow p-3 bg-light h-100">
+                                            <span class="feature-icon d-inline-flex align-items-center gap-2 mb-2">
+                                                <i class="icon-user text-white bg-secondary d-flex justify-content-center align-items-center"></i>
+                                                <strong class="feature-title d-inline-flex">{{ "Durée"|trans|raw }}</strong>
+                                            </span>
+                                            <ul class="feature-items d-flex flex-column ms-0 mb-0">
+                                                {%- for item in duration -%}
+                                                    <li class="feature-item">{{ item.valueTitle|raw }}</li>
+                                                {%- endfor -%}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {%- endif -%}
+                                {%- if age is not empty -%}
+                                    <div class="col-lg-4">
+                                        <div class="feature d-flex flex-column shadow p-3 bg-light h-100">
+                                            <span class="feature-icon d-inline-flex align-items-center gap-2 mb-2">
+                                                <i class="icon-user text-white bg-secondary d-flex justify-content-center align-items-center"></i>
+                                                <strong class="feature-title d-inline-flex">{{ "Âge"|trans|raw }}</strong>
+                                            </span>
+                                            <ul class="feature-items d-flex flex-column ms-0 mb-0">
+                                                {%- for item in age -%}
+                                                    <li class="feature-item">{{ item.valueTitle|raw }}</li>
+                                                {%- endfor -%}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {%- endif -%}
                             </div>
                         {%- endif -%}
                         {%- if contactUrl -%}

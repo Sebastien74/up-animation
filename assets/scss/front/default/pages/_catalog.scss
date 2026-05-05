@@ -32,6 +32,12 @@ $enable-youtube: true;
 @import "../components/contact-us";
 
 .product-view-container {
+    
+    @include mediaQuery(min-md) {
+        .layout-zone .wave-divider-bottom svg {
+            width: calc(235% + 1.3px);
+        }
+    }
 
     .div-introduction {
         > *:last-child {
