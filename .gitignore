@@ -1,3 +1,4 @@
+.ai/
 .idea/
 .idea/workspace.xml
 /nbproject/
@@ -30,6 +31,7 @@ changes.rar
 /SnoreToast/
 /node_modules/*
 /bin/export/*
+/bin/claude/*
 /public/thumbnails/*
 /public/geo-json/*
 !/public/thumbnails/.gitignore
@@ -65,14 +67,20 @@ changes.rar
 !.gitkeep
 !var/.gitkeep
 !bin/export/.gitkeep
+!bin/claude/.gitkeep
 !translations/.gitkeep
 !public/uploads/.gitkeep
 
 npm-debug.log
 yarn-error.log
+blackfire.msi
 
 ###> symfony/phpunit-bridge ###
 .phpunit
 /phpunit.xml
 .phpunit.result.cache
 ###< symfony/phpunit-bridge ###
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
