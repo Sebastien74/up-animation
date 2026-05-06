@@ -437,9 +437,11 @@
 }
 
 .splide {
+
     visibility: hidden;
 
     &:not(.is-initialized) {
+
         .splide__list {
             display: flex !important;
             flex-wrap: nowrap !important;
@@ -447,6 +449,7 @@
         }
 
         .splide__slide {
+
             flex: 0 0 auto !important;
             width: 33.33% !important; // Fallback par défaut (3 items)
 
@@ -519,6 +522,11 @@
 }
 
 .splide.with-thumbnails {
+
+    background: white;
+    padding: .75rem;
+    border-radius: 42px;
+
     > .splide__track {
         .splide__slide,
         .splide__slide picture {
@@ -558,18 +566,18 @@
     }
 }
 
-@each $suffix, $color in $theme-colors {
-    .layout-zone.bg-#{$suffix} {
-        .splide.thumbnails-slider {
-            .splide__track::before {
-                background: linear-gradient(to right, $color 0%, transparentize($color, 1) 100%);
-            }
-            .splide__track::after {
-                background: linear-gradient(to left, $color 0%, transparentize($color, 1) 100%);
-            }
-        }
-    }
-}
+//@each $suffix, $color in $theme-colors {
+//    .layout-zone.bg-#{$suffix} {
+//        .splide.thumbnails-slider {
+//            .splide__track::before {
+//                background: linear-gradient(to right, $color 0%, transparentize($color, 1) 100%);
+//            }
+//            .splide__track::after {
+//                background: linear-gradient(to left, $color 0%, transparentize($color, 1) 100%);
+//            }
+//        }
+//    }
+//}
 
 .zone-video-bg, .bg-primary {
 

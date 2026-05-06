@@ -46,6 +46,11 @@ $enable-youtube: true;
     }
 
     .splide-container {
+
+        .splide__track {
+            margin-left: 0 !important;
+        }
+
         .splide:not(.thumbnails-slider) {
             img {
                 width: 100%;

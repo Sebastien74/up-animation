@@ -35,6 +35,7 @@
     {%- set displayBreadcrumb = (isIndexPage and configuration.breadcrumb and not isIndex) or (forceBreadcrumb is defined and forceBreadcrumb) -%}
     {%- set styleClass = styleClass is defined and styleClass ? styleClass : '' -%}
     {%- set styleClass = large and styleClass ? styleClass~' align-items-start as-large' : (large ? 'align-items-start as-large' : 'align-items-end') -%}
+    {%- set styleClass = haveFetaures ? styleClass~' have-features' : styleClass -%}
     <div class="title-header-block container position-relative{% if large %} as-large{% endif %}{% if backgroundColor %} {{ backgroundColor }}{% endif %}{% if styleClass %} {{ styleClass }}{% endif %}">
         <div class="row m-0">
             <div class="col-xl-7 pe-xl-5 d-flex title-content position-relative">
@@ -64,7 +65,7 @@
                         {%- endif -%}
                         {%- if bodyTitle or body -%}
                             <div class="body mt-4 row">
-                                <div class="col-xl-10">
+                                <div class="col-xxl-10">
                                     {%- if bodyTitle or body -%}
                                         <strong class="d-inline-block w-100 mb-2">{{ bodyTitle|raw }}</strong>
                                     {%- endif -%}
@@ -72,35 +73,6 @@
                                         {{ body|raw }}
                                     {%- endif -%}
                                 </div>
-                            </div>
-                        {%- endif -%}
-                        {%- if haveFetaures -%}
-                            {%- set featureList = [
-                                { 'data': people, 'class': 'people', 'icon': 'people-group', 'label': "Nombre de personnes"|trans|raw },
-                                { 'data': duration, 'class': 'duration', 'icon': 'clock', 'label': "Durée"|trans|raw },
-                                { 'data': age, 'class': 'age', 'icon': 'face-grin', 'label': "Âge"|trans|raw },
-                                { 'data': environment, 'class': 'environment', 'icon': 'map-marker-alt-solid', 'label': "Environnement"|trans|raw },
-                            ] -%}
-                            <div class="features row g-3 g-lg-4 mt-4">
-                                {%- for feature in featureList -%}
-                                    {%- if feature.data is not empty -%}
-                                        <div class="col-6 col-lg-3">
-                                            <div class="feature feature--{{ feature.class }}">
-                                                <div class="feature-head">
-                                                    <span class="feature-icon d-inline-flex align-items-center justify-content-center">
-                                                        <i class="icon-{{ feature.icon }}" aria-hidden="true"></i>
-                                                    </span>
-                                                    <strong class="feature-label text-uppercase d-block">{{ feature.label }}</strong>
-                                                </div>
-                                                <ul class="feature-values list-unstyled mb-0">
-                                                    {%- for item in feature.data -%}
-                                                        <li class="feature-value">{{ item.valueTitle|raw }}</li>
-                                                    {%- endfor -%}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    {%- endif -%}
-                                {%- endfor -%}
                             </div>
                         {%- endif -%}
                         {%- if contactUrl -%}
@@ -133,4 +105,40 @@
     {%- if isIndexPage -%}
         {%- include 'front/'~websiteTemplate~'/include/sub-navigation.html.twig' with {page: page, website: website} only -%}
     {%- endif -%}
+{%- endif -%}
+
+{%- if haveFetaures -%}
+    <div class="title-header-features container">
+        <div class="row mx-0">
+            <div class="col-xl-7 pe-xl-5">
+                {%- set featureList = [
+                    { 'data': people, 'class': 'people', 'icon': 'people-group', 'label': "Nombre de personnes"|trans|raw },
+                    { 'data': duration, 'class': 'duration', 'icon': 'clock', 'label': "Durée"|trans|raw },
+                    { 'data': age, 'class': 'age', 'icon': 'face-grin', 'label': "Âge"|trans|raw },
+                    { 'data': environment, 'class': 'environment', 'icon': 'map-marker-alt-solid', 'label': "Environnement"|trans|raw },
+                ] -%}
+                <div class="features d-flex flex-wrap gap-3">
+                    {%- for feature in featureList -%}
+                        {%- if feature.data is not empty -%}
+                            <div class="feature feature-{{ feature.class }} h-100 bg-white py-3 ps-3 pe-4">
+                                <div class="feature-head d-flex gap-3">
+                                    <span class="feature-icon d-inline-flex align-items-center justify-content-center">
+                                        <i class="icon-{{ feature.icon }} flex-shrink-0 lh-1" aria-hidden="true"></i>
+                                    </span>
+                                    <div class="feature-content d-flex flex-column">
+                                        <strong class="feature-label text-uppercase d-inline-flex align-items-center">{{ feature.label }}</strong>
+                                        <ul class="feature-values d-flex flex-column gap-1 list-unstyled m-0 reset">
+                                            {%- for item in feature.data -%}
+                                                <li class="feature-value fw-600">{{ item.valueTitle|raw }}</li>
+                                            {%- endfor -%}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {%- endif -%}
+                    {%- endfor -%}
+                </div>
+            </div>
+        </div>
+    </div>
 {%- endif -%}
