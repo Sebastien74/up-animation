@@ -35,7 +35,7 @@ const dropdownBack = function (submenu) {
 
 export function collapseEvent(body) {
     document.querySelectorAll('.navbar-collapse').forEach(function (collapse) {
-        collapse.addEventListener('show.bs.collapse', function () {
+        collapse.addEventListener('shown.bs.collapse', function () {
             body.classList.add('menu-open');
             collapse.closest('.navbar').classList.add('open');
             document.querySelectorAll('.nav-toggler-icon').forEach(function (toggle) {
@@ -199,7 +199,11 @@ export function lateralMenu(body, nav, screenWidth) {
                 if (submenu) {
                     submenu.classList.toggle('show');
                     submenu.classList.toggle('active');
-                    body.classList.add('menu-open');
+                    submenu.ontransitionend = () => {
+                        if (submenu.classList.contains('show')) {
+                            body.classList.add('menu-open');
+                        }
+                    };
                     dropdownBack(submenu);
                 }
                 const submenuActive = document.querySelector('.submenu.active');

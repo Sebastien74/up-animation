@@ -6,8 +6,8 @@
 {%- set isHome = (seo.entity.asIndex is defined and seo.entity.asIndex) or (app.request.requestUri == '/') or (not app.request.requestUri) -%}
 {%- set logo = logos.logo is defined and logos.logo ? logos.logo : null -%}
 {%- set networks = logos['social-networks'] is defined and logos['social-networks'] ? logos['social-networks'] : null -%}
-{%- set haveEmails = information.emails.header is defined and information.emails.header is not empty -%}
-{%- set havePhones = information.phones.header is defined and information.phones.header is not empty -%}
+{%- set haveEmails = information.zones.emails.header is defined and information.zones.emails.header is not empty -%}
+{%- set havePhones = information.zones.phones.header is defined and information.zones.phones.header is not empty -%}
 {%- set phone = information.phone is defined and information.phone ? information.phone : false -%}
 {%- set companyName = information.companyName is defined and information.companyName ? information.companyName : "Up Animations!"|trans|raw -%}
 {%- set schedule = information.schedule is defined and information.schedule ? information.schedule : false -%}
@@ -82,14 +82,14 @@
             </div>
             {%- endif -%}
             {%- if link.children and (not isHeader or link.level == 2) -%}
-                <div class="submenu text-start ps-4 ps-lg-5 pe-lg-5 py-5 bg-white submenu-level-{{ link.level }}{% if isHeader %} is-header-submenu{% endif %}" data-level="{{ link.level }}">
+                <div class="submenu text-start ps-4 pe-4 ps-lg-5 pe-lg-5 py-5 bg-white submenu-level-{{ link.level }}{% if isHeader %} is-header-submenu{% endif %}" data-level="{{ link.level }}">
                     {%- set displayBack = link.level >= 1 -%}
                     <div class="d-flex mb-5 pb-5 pb-lg-0">
                         <a class="d-none d-lg-inline-flex me-4" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
                             {{ asset(logo)|file({}, {
                                 screensSizes: {
-                                    mobile: {width: 105, height: 80},
-                                    tablet: {width: 105, height: 80},
+                                    mobile: {width: 71, height: 55},
+                                    tablet: {width: 71, height: 55},
                                     desktop: {width: 105, height: 80}
                                 },
                                 decor: false,
@@ -173,7 +173,7 @@
         path: path('admin_menu_edit', {website: website.id, menu: id, entitylocale: app.request.locale})
     }) }}
     <header id="main-navigation" class="navbar navbar-expand-{{ expand }} flex-column px-0 py-0">
-        <div id="navigation-container" class="{{ size }}{% if size == 'container-fluid' %} px-3 px-lg-5{% endif %}">
+        <div id="navigation-container" class="{{ size }}{% if size == 'container-fluid' %} px-3 px-xl-4 px-xxl-5{% endif %}">
             <div class="d-flex w-100">
                 <div class="side d-flex align-items-center px-0">
                     {%- if logo -%}
@@ -196,8 +196,8 @@
                     {%- endif -%}
                     <div id="main-navigation-nav" class="collapse navbar-collapse {% if notExpanded %}submenu main-submenu not-expanded position-fixed bg-primary{% else %}position-relative{% endif %}">
                         <nav class="inner d-{{ expand }}-flex{% if notExpanded %} w-100 pt-5{% endif %}" role="navigation" aria-label="{{"Navigation principale"|trans|striptags }}">
-                            {%- set class = 'mx-auto' == alignment ? 'px-3' : (not notExpanded ? 'ps-4 pe-5 ps-lg-0 pe-xl-0 ps-xxxl-5' : 'ps-4 pe-5') -%}
-                            <ul class="navbar-nav {% if haveLogin %}w-100{% else %}{{ alignment }}{% endif %} pt-3 pb-5{% if not notExpanded %} pt-{{ expand }}-0 pb-{{ expand }}-0{% endif %} {{ class }}">
+                            {%- set class = 'mx-auto' == alignment ? 'px-3' : (not notExpanded ? 'ps-4 pe-4 ps-lg-0 pe-xl-0 ps-xxxl-5' : 'ps-4 pe-5') -%}
+                            <ul class="navbar-nav {% if haveLogin %}w-100{% else %}{{ alignment }}{% endif %} pt-3{% if not notExpanded %} pt-{{ expand }}-0 pb-{{ expand }}-0{% endif %} {{ class }}">
                                 {%- if displayHomePage -%}
                                     <li class="nav-item d-flex align-items-center justify-content-center level-1 text-center d-{{ expand }}-none{% if indexActive %} active{% endif %}"
                                         {% if microDataActive %} itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" {% endif %}>

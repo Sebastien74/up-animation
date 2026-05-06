@@ -160,8 +160,9 @@ class CatalogController extends ActionController
         PaginatorInterface $paginator,
         Catalog\Listing $listing,
         ?Url $url = null,
-        mixed $filter = null): JsonResponse|Response
-    {
+        mixed $filter = null
+    ): JsonResponse|Response {
+
         $website = $this->coreLocator->website();
         $data = $this->getData();
         $websiteTemplate = $website->configuration->template;

@@ -32,7 +32,7 @@ $enable-youtube: true;
 @import "../components/contact-us";
 
 .product-view-container {
-    
+
     @include mediaQuery(min-md) {
         .layout-zone .wave-divider-bottom svg {
             width: calc(235% + 1.3px);
@@ -77,12 +77,6 @@ $enable-youtube: true;
 
         .card-body * {
             font-size: 1rem !important;
-        }
-    }
-
-    .layout-zone:not(:first-child) {
-        .body *, .introduction, .introduction * {
-            font-size: 19px;
         }
     }
 }

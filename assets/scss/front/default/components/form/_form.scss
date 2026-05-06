@@ -594,7 +594,7 @@
             }
         }
 
-        ul:not(.no-dots):not(.nav):not(.dropdown-menu):not(.reset):not(.splide__list):not(.splide__pagination):not(.pagination):not(.carousel-indicators) li::before {
+        ul:not(.no-dots):not(.nav):not(.dropdown-menu):not(.reset):not(.splide__list):not(.splide__pagination):not(.pagination):not(.carousel-indicators):not(.custom) li::before {
             top: 7px;
         }
     }

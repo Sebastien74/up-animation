@@ -50,6 +50,12 @@ body {
         outline: none !important;
     }
 
+    .text-block {
+        .body:not([class^="lh-"]):not([class*=" lh-"]) * {
+            line-height: 1.5
+        }
+    }
+
     .fixed-news {
 
         border-radius: 25px;

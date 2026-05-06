@@ -20,7 +20,8 @@
     {%- set people = people is defined ? people : false -%}
     {%- set duration = duration is defined ? duration : false -%}
     {%- set age = age is defined ? age : false -%}
-    {%- set haveFetaures = people or duration or age -%}
+    {%- set environment = environment is defined ? environment : false -%}
+    {%- set haveFetaures = people or duration or age or environment -%}
     {%- set isIndexPage = page and currentEntity.asIndex is not defined or page and currentEntity.asIndex is defined and not currentEntity.asIndex -%}
     {%- set currentEntity = seo.entity is defined ? (seo.entity is defined ? seo.entity : null) -%}
     {%- set contactUrl = contactUrl is defined ? contactUrl : null -%}
@@ -74,52 +75,32 @@
                             </div>
                         {%- endif -%}
                         {%- if haveFetaures -%}
-                            <div class="features row mt-5">
-                                {%- if people is not empty -%}
-                                    <div class="col-lg-4">
-                                        <div class="feature d-flex flex-column shadow p-3 bg-light h-100">
-                                            <span class="feature-icon d-inline-flex align-items-center gap-2 mb-2">
-                                                <i class="icon-user text-white bg-secondary d-flex justify-content-center align-items-center"></i>
-                                                <strong class="feature-title d-inline-flex">{{ "Nombre de personnes"|trans|raw }}</strong>
-                                            </span>
-                                            <ul class="feature-items d-flex flex-column ms-0 mb-0">
-                                                {%- for item in people -%}
-                                                    <li class="feature-item">{{ item.valueTitle|raw }}</li>
-                                                {%- endfor -%}
-                                            </ul>
+                            {%- set featureList = [
+                                { 'data': people, 'class': 'people', 'icon': 'people-group', 'label': "Nombre de personnes"|trans|raw },
+                                { 'data': duration, 'class': 'duration', 'icon': 'clock', 'label': "Durée"|trans|raw },
+                                { 'data': age, 'class': 'age', 'icon': 'face-grin', 'label': "Âge"|trans|raw },
+                                { 'data': environment, 'class': 'environment', 'icon': 'map-marker-alt-solid', 'label': "Environnement"|trans|raw },
+                            ] -%}
+                            <div class="features row g-3 g-lg-4 mt-4">
+                                {%- for feature in featureList -%}
+                                    {%- if feature.data is not empty -%}
+                                        <div class="col-6 col-lg-3">
+                                            <div class="feature feature--{{ feature.class }}">
+                                                <div class="feature-head">
+                                                    <span class="feature-icon d-inline-flex align-items-center justify-content-center">
+                                                        <i class="icon-{{ feature.icon }}" aria-hidden="true"></i>
+                                                    </span>
+                                                    <strong class="feature-label text-uppercase d-block">{{ feature.label }}</strong>
+                                                </div>
+                                                <ul class="feature-values list-unstyled mb-0">
+                                                    {%- for item in feature.data -%}
+                                                        <li class="feature-value">{{ item.valueTitle|raw }}</li>
+                                                    {%- endfor -%}
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-                                {%- endif -%}
-                                {%- if duration is not empty -%}
-                                    <div class="col-lg-4">
-                                        <div class="feature d-flex flex-column shadow p-3 bg-light h-100">
-                                            <span class="feature-icon d-inline-flex align-items-center gap-2 mb-2">
-                                                <i class="icon-user text-white bg-secondary d-flex justify-content-center align-items-center"></i>
-                                                <strong class="feature-title d-inline-flex">{{ "Durée"|trans|raw }}</strong>
-                                            </span>
-                                            <ul class="feature-items d-flex flex-column ms-0 mb-0">
-                                                {%- for item in duration -%}
-                                                    <li class="feature-item">{{ item.valueTitle|raw }}</li>
-                                                {%- endfor -%}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                {%- endif -%}
-                                {%- if age is not empty -%}
-                                    <div class="col-lg-4">
-                                        <div class="feature d-flex flex-column shadow p-3 bg-light h-100">
-                                            <span class="feature-icon d-inline-flex align-items-center gap-2 mb-2">
-                                                <i class="icon-user text-white bg-secondary d-flex justify-content-center align-items-center"></i>
-                                                <strong class="feature-title d-inline-flex">{{ "Âge"|trans|raw }}</strong>
-                                            </span>
-                                            <ul class="feature-items d-flex flex-column ms-0 mb-0">
-                                                {%- for item in age -%}
-                                                    <li class="feature-item">{{ item.valueTitle|raw }}</li>
-                                                {%- endfor -%}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                {%- endif -%}
+                                    {%- endif -%}
+                                {%- endfor -%}
                             </div>
                         {%- endif -%}
                         {%- if contactUrl -%}

@@ -145,7 +145,7 @@ final class ProductModel extends BaseModel
                 'agencies' => [],
                 'events' => [],
                 'services' => [],
-                'rentals' => ['mode', 'people', 'duration', 'age'],
+                'rentals' => ['people', 'duration', 'age', 'environment'],
                 default => [],
             },
             'defaultUniqFeatures' => match ($catalogSlug) {
