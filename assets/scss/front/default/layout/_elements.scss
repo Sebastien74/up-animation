@@ -141,7 +141,11 @@ sup {
     @each $name, $color in $theme-colors {
         .text-hover-#{$name} {
             transition: color .4s ease-in-out;
+            * {
+                transition: color .4s ease-in-out;
+            }
             &:hover, &:hover *, :focus, :focus * {
+                transition: color .4s ease-in-out;
                 color: $color !important;
             }
         }

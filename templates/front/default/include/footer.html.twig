@@ -29,9 +29,9 @@
                             {{ phone|phone(website, {icon: false, only_href: true, entitled: false, class: 'link fw-600 d-inline-block'}) }}
                         {%- endfor -%}
                     {%- elseif 'link' == type -%}
-                        <div class="fw-600"><a href="{{ data|raw }}">{{ label|raw }}</a></div>
+                        <div class="fw-600 contact-label"><a href="{{ data|raw }}">{{ label|raw }}</a></div>
                     {%- elseif 'text' == type -%}
-                        <div class="fw-600">{{ data|raw }}</div>
+                        <div class="fw-600 contact-label">{{ data|raw }}</div>
                     {%- endif -%}
                 </div>
             </div>
@@ -153,7 +153,7 @@
                                 <nav class="socials-list d-inline-flex justify-content-center justify-content-sm-start gap-3"
                                      aria-label="{{"Navigation des liens sociaux"|trans|striptags }}">
                                     {%- for name, infos in website.networks -%}
-                                        {%- if infos.link and infos.dirname -%}
+                                        {%- if infos.link and infos.dirname and 'google' not in name -%}
                                             {%- set label = name|striptags|capitalize~' - '~'nouvelle fenêtre'|trans|striptags -%}
                                             <a href="{{ infos.link }}" class="{{ name }} p-0 d-inline-flex"
                                                 rel="noopener noreferrer" target="_blank"

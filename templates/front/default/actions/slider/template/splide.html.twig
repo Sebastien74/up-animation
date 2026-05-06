@@ -59,7 +59,7 @@
 {%- endmacro -%}
 
 <div class="splide-container">
-    <div class="splide {% if not arrows %} no-arrows{% endif %}{% if slider.thumbnails %} with-thumbnails{% endif %}{% if 'center' == focus %} focus-center{% endif %}"
+    <div class="splide {% if not arrows %} no-arrows{% endif %}{% if slider.thumbnails %} shadow-sm with-thumbnails{% endif %}{% if 'center' == focus %} focus-center{% endif %}"
          data-lenght="{{ medias|length }}"
          data-items="{{ slider.itemsPerSlide }}"
          data-items-medium-pc="{{ slider.itemsPerSlideMiniPC ? slider.itemsPerSlideMiniPC : 3 }}"

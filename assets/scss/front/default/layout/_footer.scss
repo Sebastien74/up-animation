@@ -29,6 +29,15 @@
     color: var(--footer-color, #{$footer-color});
     padding-top: 80px;
 
+    p, .menus-left, .menus-right, .contact-label, .email-link, .phone-link {
+
+        font-size: 16px;
+
+        li, a {
+            font-size: 16px;
+        }
+    }
+
     .link-block {
         .btn, .btn:hover {
             span, i:not(.initial) {

@@ -52,7 +52,7 @@
                             breadcrumbs: breadcrumbs
                         } only -%}
                     {%- endif -%}
-                    <div class="title-wrap mb-5">
+                    <div class="title-wrap mb-4 mb-lg-5">
                         <h{{ titleForce }} class="title text-uppercase fw-900 mb-0{% if style is defined and style %} {{ style }}{% endif %}{% if anim.title.class %} {{ anim.title.class|raw }}{% endif %}"
                             {% if anim.title.attr %} {{ anim.title.attr|raw }}{% endif %}>
                             {{ title|unescape|raw }}
@@ -66,10 +66,10 @@
                         {%- if bodyTitle or body -%}
                             <div class="body mt-4 row">
                                 <div class="col-xxl-10">
-                                    {%- if bodyTitle or body -%}
+                                    {%- if bodyTitle -%}
                                         <strong class="d-inline-block w-100 mb-2">{{ bodyTitle|raw }}</strong>
                                     {%- endif -%}
-                                    {%- if body or body -%}
+                                    {%- if body -%}
                                         {{ body|raw }}
                                     {%- endif -%}
                                 </div>
@@ -120,7 +120,7 @@
                 <div class="features d-flex flex-wrap gap-3">
                     {%- for feature in featureList -%}
                         {%- if feature.data is not empty -%}
-                            <div class="feature feature-{{ feature.class }} h-100 bg-white py-3 ps-3 pe-4">
+                            <div class="feature shadow-sm feature-{{ feature.class }} h-100 bg-white py-3 ps-3 pe-4">
                                 <div class="feature-head d-flex gap-3">
                                     <span class="feature-icon d-inline-flex align-items-center justify-content-center">
                                         <i class="icon-{{ feature.icon }} flex-shrink-0 lh-1" aria-hidden="true"></i>

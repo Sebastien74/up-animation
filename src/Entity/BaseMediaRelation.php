@@ -39,6 +39,9 @@ class BaseMediaRelation extends BaseInterface
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $categorySlug = null;
 
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $shape = null;
+
     #[ORM\Column(type: Types::BOOLEAN)]
     protected bool $popup = false;
 
@@ -147,6 +150,18 @@ class BaseMediaRelation extends BaseInterface
     public function setCategorySlug(?string $categorySlug): static
     {
         $this->categorySlug = $categorySlug;
+
+        return $this;
+    }
+
+    public function getShape(): ?string
+    {
+        return $this->shape;
+    }
+
+    public function setShape(?string $shape): static
+    {
+        $this->shape = $shape;
 
         return $this;
     }

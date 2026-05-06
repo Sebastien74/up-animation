@@ -206,6 +206,19 @@ class MediaRelationType extends AbstractType
             ]);
         }
 
+        $builder->add('shape', Type\ChoiceType::class, [
+            'required' => false,
+            'display' => 'search',
+            'choices' => [
+                $this->translator->trans('Forme 1', [], 'admin') => 'masked-wrap-primary',
+                $this->translator->trans('Forme 2', [], 'admin') => 'masked-wrap-secondary',
+            ],
+            'label' => $this->translator->trans('Forme', [], 'admin'),
+            'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+
+            'row_attr' => ['class' => 'col-12'],
+        ]);
+
         if ($options['pictogram']) {
             $builder->add('pictogram', PictogramType::class, [
                 'attr' => ['class' => 'col-12 select-icons img-pictograms'],

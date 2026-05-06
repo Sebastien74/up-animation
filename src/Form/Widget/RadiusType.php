@@ -37,6 +37,7 @@ class RadiusType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->translator->trans('Arrondir les angles', [], 'admin'),
+            'attr' => ['class' => ' w-100'],
             'row_attr' => ['class' => 'col-12 ' . (!empty($options['row_attr']['class']) ? $options['row_attr']['class'] : 'col-md-3') . ' w-100'],
         ]);
     }

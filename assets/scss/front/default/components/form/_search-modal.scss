@@ -13,7 +13,12 @@
         .modal {
 
             .modal-body {
+
                 z-index: 10;
+
+                img {
+                    width: auto !important;
+                }
             }
 
             .baseline {
@@ -31,7 +36,7 @@
 
             label {
                 border-radius: 16px;
-                box-shadow: inset 5px 5px 17px 5px rgba(0,0,0,0.13);
+                box-shadow: inset 5px 5px 40px 5px rgba(0, 0, 0, 0.13);
                 background-color: $white;
             }
 
@@ -72,6 +77,11 @@
                 line-height: 1.5;
                 text-align: center;
                 white-space: nowrap;
+            }
+
+            form [type="submit"] {
+                min-height: 45px !important;
+                padding: .9rem 1.5rem 1rem 1.5rem !important;
             }
 
             .wave-divider-top {
