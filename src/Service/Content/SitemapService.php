@@ -6,9 +6,12 @@ namespace App\Service\Content;
 
 use App\Entity\Core\Website;
 use App\Entity\Layout\Page;
+use App\Entity\Module\Catalog\Catalog;
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Seo\Url;
 use App\Model\Core\ConfigurationModel;
 use App\Model\Core\WebsiteModel;
+use App\Model\Module\CatalogModel;
 use App\Model\ViewModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
@@ -289,6 +292,30 @@ class SitemapService
                     'urlEntity' => $urlEntity,
                     'isInfill' => false,
                 ];
+                $entityDb = $entity->entity;
+                if ($entityDb instanceof Product) {
+                    $catalog = $entityDb->getCatalog();
+                    $catalogSlug = $catalog?->getSlug();
+                    if ($catalogSlug && $catalogSlug !== 'agencies') {
+                        $catalog = $this->coreLocator->em()->getRepository(Catalog::class)->findOneBy(['website' => $this->website->entity, 'slug' => 'agencies']);
+                        $catalogModel = $catalog ? CatalogModel::fromEntity($catalog, $this->coreLocator, ['onlyForUrl' => true]) : null;
+                        $xml = $this->xml[$interface['name']][$entity->id][$urlEntity->getLocale()];
+                        foreach ($catalogModel->products as $agency) {
+                            $this->xml[$interface['name']][$entity->id.'-agency-'.$agency->id][$urlEntity->getLocale()] = [
+                                'update' => $xml['update'],
+                                'uri' => $xml['uri'].'/'.$agency->slug,
+                                'url' => $xml['url'].'/'.$agency->slug,
+                                'active' => $xml['active'],
+                                'interface' => $xml['interface'],
+                                'entity' => $xml['entity'],
+                                'urlEntity' => $xml['urlEntity'],
+                                'isInfill' => $xml['isInfill'],
+                                'agency' => 'agency-'.$agency->id,
+                                'agencyEntity' => $agency,
+                            ];
+                        }
+                    }
+                }
                 return $this->xml[$interface['name']][$entity->id][$urlEntity->getLocale()];
             }
         }
@@ -420,7 +447,8 @@ class SitemapService
             foreach ($this->xml[$this->locale] as $urls) {
                 foreach ($urls as $locale => $url) {
                     if ($locale === $this->locale) {
-                        $groups[$url['interface']['name']][$url['entity']->id] = $url;
+                        $key = !empty($url['agency']) ? $url['entity']->id.'-'.$url['agency'] : $url['entity']->id;
+                        $groups[$url['interface']['name']][$key] = $url;
                     }
                 }
             }

@@ -45,6 +45,7 @@ final class ProductModel extends BaseModel
             : self::$coreLocator->em()->getRepository(Catalog\FeatureValueProduct::class)->findByProductIds(self::$cache['allProducts']);
 
         $disabledLayout = isset($options['disabledLayout']) && $options['disabledLayout'];
+        $disabledAgency = isset($options['disabledAgency']) && $options['disabledAgency'];
         $model = ViewModel::fromEntity($product, $coreLocator, array_merge($options, []));
         $catalog = ViewModel::fromEntity($catalogDb, $coreLocator, array_merge($options, []));
         $catalogSlug = self::getContent('slug', $catalog);
@@ -79,12 +80,12 @@ final class ProductModel extends BaseModel
         $mainPages = $website->configuration->pages;
         $contactPageUrl = !empty($mainPages['contact']) && $mainPages['contact']->code ? $mainPages['contact']->code : false;
         $contactPageParams = $contactPageUrl ? ['url' => $contactPageUrl, 'agence' => $model->slug] : [];
-        $displayCity = array_key_exists('displayCity', $options) && $options['displayCity'];
-        $agencyDb = $displayCity && self::$coreLocator->request()->attributes->get('url')
-            ? self::$coreLocator->em()->getRepository(Catalog\Product::class)->findByUrlAndLocale(self::$coreLocator->request()->attributes->get('url'), $website->entity, self::$coreLocator->locale())
+        $displayCity = (array_key_exists('displayCity', $options) && $options['displayCity']) || self::$coreLocator->request()->attributes->get('agency');
+        $agencyQuery = self::$coreLocator->request()->attributes->get('agency') ? self::$coreLocator->request()->attributes->get('agency') : self::$coreLocator->request()->attributes->get('url');
+        $agencyDb = $displayCity && $agencyQuery ? self::$coreLocator->em()->getRepository(Catalog\Product::class)->findByUrlAndLocale($agencyQuery, $website->entity, self::$coreLocator->locale())
             : false;
-        self::$cache['agency'] = $agencyDb && self::$cache['agency'] ? self::$cache['agency']
-            : ($agencyDb ? ProductModel::fromEntity($agencyDb, self::$coreLocator) : false);
+        self::$cache['agency'] = $agencyDb && array_key_exists('agency', self::$cache) ? self::$cache['agency']
+            : ($agencyDb && !$disabledAgency ? ProductModel::fromEntity($agencyDb, self::$coreLocator, ['disabledAgency' => true]) : false);
 
         $color = self::getConfig($catalogSlug, 'color');
         $icon = self::getConfig($catalogSlug, 'icon');

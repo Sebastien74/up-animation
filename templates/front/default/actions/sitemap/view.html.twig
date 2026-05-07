@@ -35,6 +35,9 @@
         {%- set children = trees[interfaceName][url.entityId] is defined and trees[interfaceName][url.entityId] is not empty ? trees[interfaceName][url.entityId]
             : (url.children is defined and url.children is not empty ? url.children : []) -%}
         {%- set display = not url.isInfill or (url.isInfill and children is not empty) -%}
+        {%- if url.agencyEntity is defined and url.agencyEntity -%}
+            {%- set title = title~' à '|trans~url.agencyEntity.city -%}
+        {%- endif -%}
         {%- if display -%}
             <li class="d-inline-block align-items-start">
                 {%- if url.url and not url.isInfill -%}

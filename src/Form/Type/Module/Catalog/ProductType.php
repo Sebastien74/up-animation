@@ -314,6 +314,8 @@ class ProductType extends AbstractType
                             'row_attr' => ['class' => 'col-12 editor'],
                         ],
                     ];
+                } elseif ('agencies' === $catalogSlug) {
+                    $fields = ['title' => 'col-12'];
                 }
 
                 $intls = new WidgetType\IntlsCollectionType($this->coreLocator);

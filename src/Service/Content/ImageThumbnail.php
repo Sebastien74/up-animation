@@ -851,26 +851,18 @@ class ImageThumbnail implements ImageThumbnailInterface
                     try {
                         $img = 'png' === $extension ? @imagecreatefrompng($copyDirname) : @imagecreatefromjpeg($copyDirname);
                         $function = $imagineWebp ? 'imagewebp' : ('png' === $extension ? 'imagepng' : 'imagejpeg');
-                        // Définir des qualités adaptées par format/fonction
+                        $mediaQuality = $media ? (int) $media->getQuality() : 0;
+                        $mediaQuality = $mediaQuality > 0 ? max(1, min(100, $mediaQuality)) : 0;
                         if ($imagineWebp) {
-                            // Pour WebP, une qualité de 75-80 suffit largement
-                            $originalQuality = $media ? (int) $media->getQuality() : 75;
-                            $quality = min(75, max(0, $originalQuality));
-                            // Réduire encore la qualité pour les grandes tailles (> 1000px) pour compenser le Retina
-                            if ($size && $size > 1000) {
-                                $quality = min(70, $quality);
-                            }
+                            $quality = $mediaQuality > 0 ? $mediaQuality : 85;
                         } elseif ('png' === $extension) {
-                            // imagepng: niveau de compression 0-9 (6 = équilibre)
-                            $quality = 6;
+                            $quality = 9;
                         } else {
-                            // JPEG: 0-100
-                            $quality = min(85, (int) ($media ? $media->getQuality() : 85));
+                            $quality = $mediaQuality > 0 ? $mediaQuality : 90;
                         }
                         if ($this->avifSupport) {
                             $function = 'imageavif';
-                            // Valeur recommandée pour AVIF (0-100), rester modéré
-                            $quality = 60;
+                            $quality = $mediaQuality > 0 ? (int) round($mediaQuality * 0.85) : 70;
                         }
                         if ($img instanceof \GdImage) {
                             $imgWidth = imagesx($img);

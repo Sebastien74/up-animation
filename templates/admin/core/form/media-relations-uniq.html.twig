@@ -110,6 +110,9 @@
                     <div id="collapseSubNavigation-{{ mediaRelationId }}" class="collapse">
                         <div class="card-body pb-2 border mb-4 radius">
                 {%- endif -%}
+                {%- if onlyMedia and mediaRelation.shape is defined -%}
+                    {{ form_row(mediaRelation.shape) }}
+                {%- endif -%}
                 {%- if onlyMedia and mediaRelation.intl.title is defined -%}
                     {{ form_row(mediaRelation.intl.title) }}
                 {%- endif -%}

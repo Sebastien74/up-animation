@@ -194,6 +194,9 @@
                                 {%- endif -%}
 
                                 <div class="row">
+                                    {%- if mediaRelation.shape is defined -%}
+                                        <div class="col-12">{{ form_row(mediaRelation.shape) }}</div>
+                                    {%- endif -%}
                                     {%- if mediaRelation.downloadable is defined -%}
                                         <div class="col-md-6">{{ form_row(mediaRelation.downloadable) }}</div>
                                     {%- endif -%}

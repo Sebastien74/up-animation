@@ -81,15 +81,15 @@ class CatalogController extends ActionController
      * @throws ReflectionException|ContainerExceptionInterface|InvalidArgumentException|NonUniqueResultException|NotFoundExceptionInterface|MappingException|QueryException
      */
     #[Route([
-        'fr' => '/{pageUrl}/fiche-produit/{url}',
-        'fr_ch' => '/{pageUrl}/fiche-produit/{url}',
-        'en' => '/{pageUrl}/product-card/{url}',
-    ], name: 'front_catalogproduct_view', methods: ['GET', 'POST'], schemes: '%protocol%', priority: 300)]
+        'fr' => '/{pageUrl}/fiche-produit/{url}/{agency}',
+        'fr_ch' => '/{pageUrl}/fiche-produit/{url}/{agency}',
+        'en' => '/{pageUrl}/product-card/{url}/{agency}',
+    ], name: 'front_catalogproduct_view', defaults: ['agency' => null], methods: ['GET', 'POST'], schemes: '%protocol%', priority: 300)]
     #[Route([
-        'fr' => '/fiche-produit/{url}',
-        'fr_ch' => '/fiche-produit/{url}',
-        'en' => '/product-card/{url}',
-    ], name: 'front_catalogproduct_view_only', methods: 'GET', schemes: '%protocol%', priority: 300)]
+        'fr' => '/fiche-produit/{url}/{agency}',
+        'fr_ch' => '/fiche-produit/{url}/{agency}',
+        'en' => '/product-card/{url}/{agency}',
+    ], name: 'front_catalogproduct_view_only', defaults: ['agency' => null], methods: 'GET', schemes: '%protocol%', priority: 300)]
     #[Cache(expires: 'tomorrow', public: true)]
     public function view(Request $request, string $url, ?string $pageUrl = null, bool $preview = false): Response
     {
