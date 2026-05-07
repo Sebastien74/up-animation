@@ -37,6 +37,12 @@ readonly class MenuService implements MenuServiceInterface
      */
     public function all(WebsiteModel $website, ?Url $url = null): array
     {
+        static $cache = [];
+        $cacheKey = $website->id.'_'.$this->coreLocator->request()->getLocale().'_'.($url?->getId() ?? 0);
+        if (isset($cache[$cacheKey])) {
+            return $cache[$cacheKey];
+        }
+
         $response = [];
 
         $menus = $this->coreLocator->emQuery()->findBy(Menu\Menu::class, 'website_id', $website->id);
@@ -49,7 +55,7 @@ readonly class MenuService implements MenuServiceInterface
             $response[$code] = MenuModel::fromEntity($menu, $website, $this->coreLocator, $menuLinks, $url);
         }
 
-        return $response;
+        return $cache[$cacheKey] = $response;
     }
 
     /**
@@ -57,6 +63,7 @@ readonly class MenuService implements MenuServiceInterface
      */
     private function links(Website $website): array
     {
+        $locale = $this->coreLocator->request()->getLocale();
         $links = $this->coreLocator->em()->getRepository(Link::class)
             ->createQueryBuilder('l')
             ->innerJoin('l.menu', 'm')
@@ -70,7 +77,7 @@ readonly class MenuService implements MenuServiceInterface
             ->andWhere('m.website =  :website')
             ->andWhere('i.locale =  :locale')
             ->setParameter('website', $website)
-            ->setParameter('locale', $this->coreLocator->request()->getLocale())
+            ->setParameter('locale', $locale)
             ->orderBy('m.position', 'ASC')
             ->addOrderBy('l.position', 'ASC')
             ->addOrderBy('l.level', 'ASC')
@@ -83,6 +90,7 @@ readonly class MenuService implements MenuServiceInterface
             ->addSelect('me')
             ->addSelect('p')
             ->getQuery()
+            ->enableResultCache(3600, 'menu_links_'.$website->getId().'_'.$locale)
             ->getResult();
 
         $result = [];

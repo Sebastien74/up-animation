@@ -171,6 +171,7 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('archived', false)
             ->orderBy('p.position', 'ASC')
             ->getQuery()
+            ->enableResultCache(3600, 'products_in_menus_'.$website->getId().'_'.$locale)
             ->getResult();
 
         $menus = [];

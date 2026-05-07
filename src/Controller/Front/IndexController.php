@@ -69,22 +69,24 @@ class IndexController extends FrontController
             throw $this->createNotFoundException($this->coreLocator->translator()->trans("Site non configuré !!", [], 'front'));
         }
 
-        $page = $this->getPage($website, $request, $preview, $url);
-
-        /* Optimization: HTTP Cache (ETag & Last-Modified) */
         $response = new Response();
-        if (!$preview && $page instanceof Page && (!$page->isSecure() && !$this->coreLocator->isDebug()) || self::FORCE_CACHE) {
-            $urlEntity = $page->getUrls()->first();
-            if ($urlEntity instanceof Url) {
-                $lastUpdate = $this->getLastUpdateDate($website, $page, $urlEntity);
+
+        /* Optimization: HTTP Cache validation before full page hydration */
+        if ((!$preview && !$this->coreLocator->isDebug()) || self::FORCE_CACHE) {
+            $stamp = $this->coreLocator->em()->getRepository(Page::class)
+                ->findCacheStampByUrlAndLocale($website, $url, $request->getLocale(), $preview);
+            if (is_array($stamp) && empty($stamp['pageSecure'])) {
+                $lastUpdate = $this->resolveStampLastUpdate($website, $stamp);
                 $response->setLastModified($lastUpdate);
-                $response->setEtag(md5($urlEntity->getId() . $lastUpdate->getTimestamp() . $request->getLocale()));
+                $response->setEtag(md5($stamp['urlId'].$lastUpdate->getTimestamp().$request->getLocale()));
                 $response->setPublic();
                 if ($response->isNotModified($request)) {
                     return $response;
                 }
             }
         }
+
+        $page = $this->getPage($website, $request, $preview, $url);
 
         $requestUri = $request->getRequestUri();
         $pageSlug = $page instanceof Page ? $page->getSlug() : null;
@@ -147,19 +149,13 @@ class IndexController extends FrontController
     }
 
     /**
-     * Get the last update date for caching.
+     * Resolve last-update date from a scalar stamp projection.
      */
-    private function getLastUpdateDate(WebsiteModel $website, Page $page, Url $url): DateTimeInterface
+    private function resolveStampLastUpdate(WebsiteModel $website, array $stamp): DateTimeInterface
     {
-        $dates = [
-            $page->getUpdatedAt(),
-            $url->getUpdatedAt(),
-            $website->entity->getCacheClearDate()
-        ];
+        $lastUpdate = $stamp['pageCreatedAt'] instanceof DateTimeInterface ? $stamp['pageCreatedAt'] : new \DateTimeImmutable();
 
-        /** @var DateTimeInterface $lastUpdate */
-        $lastUpdate = $page->getCreatedAt() ?: new \DateTimeImmutable();
-        foreach ($dates as $date) {
+        foreach ([$stamp['pageUpdatedAt'] ?? null, $stamp['urlUpdatedAt'] ?? null, $website->entity->getCacheClearDate()] as $date) {
             if ($date instanceof DateTimeInterface && $date > $lastUpdate) {
                 $lastUpdate = $date;
             }

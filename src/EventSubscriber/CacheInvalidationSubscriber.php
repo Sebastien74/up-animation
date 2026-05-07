@@ -23,17 +23,21 @@ use App\Entity\Module\Table\Cell;
 use App\Entity\Module\Table\CellIntl;
 use App\Entity\Media\MediaRelationIntl;
 use App\Entity\Seo\Url;
+use App\Message\InvalidateCacheItems;
 use App\Service\Interface\CoreLocatorInterface;
 use DateMalformedStringException;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Mapping\MappingException;
 use Psr\Cache\InvalidArgumentException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 #[AsDoctrineListener(event: Events::onFlush)]
+#[AsDoctrineListener(event: Events::postFlush)]
 class CacheInvalidationSubscriber
 {
     private \Symfony\Component\PropertyAccess\PropertyAccessor $propertyAccessor;
@@ -41,8 +45,10 @@ class CacheInvalidationSubscriber
     private array $websites = [];
     private array $itemsToDelete = [];
 
-    public function __construct(private readonly CoreLocatorInterface $coreLocator)
-    {
+    public function __construct(
+        private readonly CoreLocatorInterface $coreLocator,
+        private readonly MessageBusInterface $messageBus,
+    ) {
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
@@ -69,12 +75,13 @@ class CacheInvalidationSubscriber
             $namespace = $this->coreLocator->request()->query->get('entityNamespace');
             $entityId = $this->coreLocator->request()->query->get('referEntityId');
             if ($namespace && $entityId) {
-                $inPage = [];
                 $namespace = urldecode($namespace);
-                foreach ($website->configuration->allLocales as $locale) {
-                    $pages = $this->coreLocator->em()->getRepository(Page::class)->findAllByAction($website->entity, $locale, $namespace, [$entityId]);
+                $locales = $website->configuration->allLocales ?? [];
+                if ($locales) {
+                    $pages = $this->coreLocator->em()->getRepository(Page::class)
+                        ->findAllByActionForLocales($website->entity, $locales, $namespace, [$entityId]);
                     foreach ($pages as $page) {
-                        if ($page && !array_key_exists($page->getId(), $inPage)) $entities[] = $inPage[$page->getId()] = $page;
+                        $entities[] = $page;
                     }
                 }
                 $this->invalidateActionResultCache($namespace, $entityId, $website, $em);
@@ -123,8 +130,38 @@ class CacheInvalidationSubscriber
                 }
             }
 
-            if ($this->itemsToDelete) {
-                $cache->deleteItems(array_unique($this->itemsToDelete));
+            if (($pagesToInvalidate || $websitesToInvalidate) && !empty($website->configuration->allLocales)) {
+                foreach ($website->configuration->allLocales as $locale) {
+                    $this->itemsToDelete[] = 'menu_links_'.$website->id.'_'.$locale;
+                    $this->itemsToDelete[] = 'products_in_menus_'.$website->id.'_'.$locale;
+                }
+            }
+        }
+    }
+
+    /**
+     * postFlush — dispatch cache invalidation outside the flush transaction.
+     */
+    public function postFlush(PostFlushEventArgs $args): void
+    {
+        if (!$this->itemsToDelete) {
+            return;
+        }
+
+        $items = array_values(array_unique($this->itemsToDelete));
+        $this->itemsToDelete = [];
+
+        try {
+            $this->messageBus->dispatch(new InvalidateCacheItems($items));
+            return;
+        } catch (\Throwable) {
+        }
+
+        $cache = $args->getObjectManager()->getConfiguration()->getResultCache();
+        if ($cache) {
+            try {
+                $cache->deleteItems($items);
+            } catch (\Throwable) {
             }
         }
     }
@@ -138,14 +175,22 @@ class CacheInvalidationSubscriber
     {
         if (!$em->getConfiguration()->getResultCache()) return;
 
-        foreach ($website->configuration->allLocales as $locale) {
-            $idsStr = is_array($entityId) ? implode('_', $entityId) : (string) $entityId;
-            $wId = $website->id;
+        $idsStr = is_array($entityId) ? implode('_', $entityId) : (string) $entityId;
+        $wId = $website->id;
+        $locales = $website->configuration->allLocales ?? [];
+
+        foreach ($locales as $locale) {
             $this->itemsToDelete[] = 'pages_action_'.md5($namespace.'_'.$idsStr.'_'.$locale.'_'.$wId);
             $this->itemsToDelete[] = 'page_action_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId);
             $this->itemsToDelete[] = 'pages_action_ids_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$idsStr);
             $this->itemsToDelete[] = 'page_action_slug_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId);
             $this->itemsToDelete[] = 'pages_action_slug_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId);
+        }
+
+        if ($locales) {
+            $sortedLocales = $locales;
+            sort($sortedLocales);
+            $this->itemsToDelete[] = 'pages_action_locales_'.md5($namespace.'_'.$idsStr.'_'.implode(',', $sortedLocales).'_'.$wId);
         }
     }
 
@@ -169,6 +214,14 @@ class CacheInvalidationSubscriber
             $this->itemsToDelete[] = 'page-url-'.md5($page->getId().'_'.$locale);
             $this->itemsToDelete[] = 'page_url_id_'.$url->getId().'_'.$locale;
             $this->itemsToDelete[] = 'pages_index_url_'.md5($page->getId().'_'.$locale);
+            foreach ([0, 1] as $previewFlag) {
+                if ($page->isAsIndex()) {
+                    $this->itemsToDelete[] = 'page-stamp-'.$website->id.'-index-'.$locale.'-'.$previewFlag;
+                }
+                if ($urlCode) {
+                    $this->itemsToDelete[] = 'page-stamp-'.$website->id.'-'.$urlCode.'-'.$locale.'-'.$previewFlag;
+                }
+            }
         }
         if ($page->getLayout()) $this->itemsToDelete[] = 'layout_'.$page->getLayout()->getId();
     }

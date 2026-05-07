@@ -35,6 +35,45 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
+     * Light projection used for HTTP cache validation (ETag/Last-Modified) before full hydration.
+     *
+     * @throws NonUniqueResultException
+     */
+    public function findCacheStampByUrlAndLocale(WebsiteModel $website, ?string $urlCode, string $locale, bool $preview = false): ?array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p.id AS pageId', 'p.updatedAt AS pageUpdatedAt', 'p.createdAt AS pageCreatedAt', 'p.secure AS pageSecure')
+            ->addSelect('u.id AS urlId', 'u.updatedAt AS urlUpdatedAt')
+            ->innerJoin('p.urls', 'u')
+            ->andWhere('u.website = :website')
+            ->andWhere('u.locale = :locale')
+            ->andWhere('u.archived = :archived')
+            ->setParameter('website', $website->id)
+            ->setParameter('locale', $locale)
+            ->setParameter('archived', false);
+
+        if (!$preview) {
+            $qb->andWhere('p.publicationStart IS NULL OR p.publicationStart < CURRENT_TIMESTAMP()')
+                ->andWhere('p.publicationEnd IS NULL OR p.publicationEnd > CURRENT_TIMESTAMP()')
+                ->andWhere('u.online = :online')
+                ->setParameter('online', true);
+        }
+
+        if (null === $urlCode || '' === $urlCode) {
+            $qb->andWhere('p.asIndex = :asIndex')->setParameter('asIndex', true);
+            $cacheKey = 'page-stamp-'.$website->id.'-index-'.$locale.'-'.(int) $preview;
+        } else {
+            $qb->andWhere('u.code = :code')->setParameter('code', $urlCode);
+            $cacheKey = 'page-stamp-'.$website->id.'-'.$urlCode.'-'.$locale.'-'.(int) $preview;
+        }
+
+        return $qb->setMaxResults(1)
+            ->getQuery()
+            ->enableResultCache(3600, $cacheKey)
+            ->getOneOrNullResult();
+    }
+
+    /**
      * Find Index.
      *
      * @throws NonUniqueResultException
@@ -222,6 +261,60 @@ class PageRepository extends ServiceEntityRepository
         $this->cache['findAllByAction'][$classname] = $result;
 
         return $result;
+    }
+
+    /**
+     * Find all pages by action across multiple locales (single query, deduplicated).
+     *
+     * @param array<string> $locales
+     *
+     * @return array<Page>
+     */
+    public function findAllByActionForLocales(
+        mixed $website,
+        array $locales,
+        string $classname,
+        array $filterIds
+    ): array {
+        if (!$locales || !$filterIds) {
+            return [];
+        }
+
+        $websiteId = $website instanceof Website ? $website->getId() : $website['id'];
+        $sortedLocales = $locales;
+        sort($sortedLocales);
+        $cacheKey = 'pages_action_locales_'.md5($classname.'_'.implode('_', $filterIds).'_'.implode(',', $sortedLocales).'_'.$websiteId);
+
+        $rows = $this->createQueryBuilder('p')
+            ->leftJoin('p.urls', 'u')
+            ->leftJoin('p.layout', 'l')
+            ->leftJoin('l.zones', 'z')
+            ->leftJoin('z.cols', 'c')
+            ->leftJoin('c.blocks', 'b')
+            ->leftJoin('b.action', 'a')
+            ->leftJoin('b.actionIntls', 'ai')
+            ->andWhere('p.website = :website')
+            ->andWhere('u.locale IN (:locales)')
+            ->andWhere('a.entity = :entity')
+            ->andWhere('ai.actionFilter IN (:actionFilters)')
+            ->andWhere('ai.locale IN (:locales)')
+            ->setParameter('locales', $sortedLocales)
+            ->setParameter('website', $websiteId)
+            ->setParameter('entity', $classname)
+            ->setParameter('actionFilters', $filterIds)
+            ->addSelect('u', 'l', 'z', 'c', 'b', 'a', 'ai')
+            ->getQuery()
+            ->enableResultCache(3600, $cacheKey)
+            ->getResult();
+
+        $result = [];
+        foreach ($rows as $page) {
+            if ($page instanceof Page) {
+                $result[$page->getId()] = $page;
+            }
+        }
+
+        return array_values($result);
     }
 
     /**
