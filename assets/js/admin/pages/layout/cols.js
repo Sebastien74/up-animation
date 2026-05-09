@@ -11,14 +11,20 @@ export default function (Routing) {
         import('sortablejs').then(({default: Sortable}) => {
             cols.forEach(el => {
                 Sortable.create(el, {
-                    animation: 150,
+                    animation: 200,
+                    easing: "cubic-bezier(0.22, 1, 0.36, 1)",
                     handle: ".handle-col",
                     draggable: ".col-sortable",
                     ghostClass: "ui-state-highlight",
                     dragClass: "sortable-drag",
+                    chosenClass: "sortable-chosen",
                     forceFallback: true,
+                    fallbackTolerance: 5,
+                    swapThreshold: 0.65,
                     scroll: true,
                     bubbleScroll: true,
+                    scrollSensitivity: 80,
+                    scrollSpeed: 12,
                     onStart: function() {
                         document.body.classList.add('sorting-active');
                     },

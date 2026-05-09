@@ -29,40 +29,57 @@
 
 #page-selector-menu {
 
+    $page-selector-height: 45px;
+
+    .input-group {
+        flex-wrap: nowrap;
+        height: $page-selector-height;
+    }
+
     .select2-container {
-        width: calc(100% - 45px) !important;
+        flex: 1 1 auto;
+        min-width: 0;
+        width: auto !important; // neutralise la largeur inline injectée par Select2
     }
 
     .select2-selection--single:not([class*="bg-"]):not([class*="border-"]) {
+        height: $page-selector-height;
+        border: 0 !important;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
-        border: 0 !important;
-        height: 45px;
     }
 
     .select2-selection__rendered {
-        height: 45px;
+        line-height: $page-selector-height;
     }
 
     .select2-selection__arrow {
-        top: 10px !important;
+        height: $page-selector-height !important;
+        top: 0 !important;
     }
 
     .select2-results {
-        border-radius: 0 0 16px 16px !important;
+        border-radius: 0 0 $radius-lg $radius-lg;
     }
 
-    .input-group-append,
     .input-group-text {
-
-        border: 0;
-        color: $white;
-        height: 45px;
-        width: 45px;
-        padding: 0 !important;
+        flex: 0 0 $page-selector-height;
+        width: $page-selector-height;
+        height: $page-selector-height;
+        background: $btn-surface;
+        color: $btn-text;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        transition: background $transition-fast, color $transition-fast;
 
         i {
             font-size: 13px;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background: $btn-surface-hover;
+            color: $white;
         }
     }
 }

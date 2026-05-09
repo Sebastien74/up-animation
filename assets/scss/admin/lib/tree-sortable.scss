@@ -182,7 +182,6 @@ $nestable-drop-border: transparentize($primary, .55);
     border-radius: $nestable-radius;
     box-shadow: $nestable-shadow-rest;
     box-sizing: border-box;
-    transition: border-color $transition-fast, box-shadow $transition-fast, background-color $transition-fast;
 
     &:hover {
         color: $nestable-text;
@@ -343,5 +342,85 @@ $nestable-drop-border: transparentize($primary, .55);
 
     .ajax-get-refresh i.eye {
         margin-top: 3px;
+    }
+}
+
+/*-----------------------------------
+   9 ) Action buttons
+-----------------------------------*/
+
+/* Le btn-icon dans la poignée n'est pas cliquable : on neutralise son look "bouton actif"
+   pour qu'il se lise comme une icône passive — l'interaction porte sur tout le handle. */
+.dd3-handle > .btn-icon {
+
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    pointer-events: none;
+    color: inherit;
+
+    i {
+        transition: transform $transition-fast;
+    }
+}
+
+.dd-item:hover > .dd3-handle > .btn-icon i {
+    transform: scale(1.1);
+}
+
+/* Boutons collapse/expand : ce sont des <span> bruts dans le markup,
+   on leur donne une apparence cohérente avec les autres btn-icon admin (sans réutiliser la classe). */
+.btn-collapsed-group {
+
+    gap: $space-1;
+
+    .collapse-btn,
+    .expand-btn {
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: $radius-sm;
+        cursor: pointer;
+        color: transparentize($white, .4);
+        background: transparent;
+        border: 1px solid transparent;
+        transition: background-color $transition-fast, border-color $transition-fast, color $transition-fast;
+
+        &:hover {
+            background: $btn-surface-hover;
+            border-color: $btn-border;
+            color: $white;
+        }
+
+        i {
+            font-size: 14px;
+            line-height: 1;
+            top: 0 !important; /* override de la règle inline déjà définie pour .dd3-content i */
+            transition: transform $transition-fast;
+        }
+
+        &:active i {
+            transform: scale(.9);
+        }
+    }
+
+    .expand-btn.active {
+        color: $white;
+    }
+}
+
+/* Resserre le rythme des boutons d'action de droite et améliore la séparation visuelle
+   d'avec la checkbox de delete-pack. */
+.dd3-content-right {
+
+    gap: $space-2;
+
+    > .delete-pack-control {
+        margin-left: $space-2;
+        padding-left: $space-2;
+        border-left: 1px solid $btn-border;
     }
 }

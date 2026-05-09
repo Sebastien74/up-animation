@@ -34,23 +34,37 @@ export default function (Routing) {
             }
 
             let startX, startWidth, parent, blockClass, blockId;
+            let lastClientX = 0;
+            let rafPending = false;
 
-            const onMouseMove = (e) => {
-                let deltaX = e.clientX - startX;
+            const applyMove = () => {
+                rafPending = false;
+                let deltaX = lastClientX - startX;
                 let newWidth = startWidth + deltaX;
                 let blockSize = Math.round(newWidth / gridWidth);
                 let size = Math.min(12, Math.max(1, blockSize));
+                let nextClass = 'col-md-' + size;
 
-                parent.classList.remove(blockClass);
-                parent.classList.add('col-md-' + size);
-                parent.setAttribute('data-size-class', 'col-md-' + size);
-                blockClass = 'col-md-' + size;
-                resizable.style.height = blockHeight + "px";
+                if (nextClass !== blockClass) {
+                    parent.classList.remove(blockClass);
+                    parent.classList.add(nextClass);
+                    parent.setAttribute('data-size-class', nextClass);
+                    blockClass = nextClass;
+                }
+            };
+
+            const onMouseMove = (e) => {
+                lastClientX = e.clientX;
+                if (!rafPending) {
+                    rafPending = true;
+                    requestAnimationFrame(applyMove);
+                }
             };
 
             const onMouseUp = (e) => {
                 document.removeEventListener('mousemove', onMouseMove);
                 document.removeEventListener('mouseup', onMouseUp);
+                document.body.classList.remove('resizing-active');
 
                 if (loader) loader.classList.remove('d-none');
 
@@ -81,6 +95,7 @@ export default function (Routing) {
                 parent = resizable.parentElement;
                 blockClass = parent.getAttribute('data-size-class');
                 blockId = parent.getAttribute('data-id');
+                document.body.classList.add('resizing-active');
 
                 document.addEventListener('mousemove', onMouseMove);
                 document.addEventListener('mouseup', onMouseUp);

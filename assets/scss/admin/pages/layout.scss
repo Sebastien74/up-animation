@@ -42,11 +42,26 @@
 
 .sortable-drag {
     cursor: grabbing !important;
+    opacity: 0.95;
+}
+
+.sortable-chosen {
+    opacity: 0.85;
 }
 
 body.sorting-active,
 body.sorting-active * {
     cursor: grabbing !important;
+}
+
+body.resizing-active {
+    cursor: ew-resize !important;
+    user-select: none;
+
+    .col-sortable,
+    .block {
+        transition: flex-basis 80ms linear, max-width 80ms linear, width 80ms linear;
+    }
 }
 
 #zones-sortable {
