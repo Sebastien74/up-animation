@@ -75,42 +75,6 @@ form {
             font-size: 13px;
         }
     }
-
-    //.prototype,
-    //.prototype-block {
-    //
-    //    position: relative;
-    //
-    //    .handle-item-prototype,
-    //    .delete-disabled,
-    //    .swal-delete-link {
-    //
-    //        position: absolute;
-    //        z-index: 500;
-    //        top: 5px;
-    //        right: 5px;
-    //        opacity: 1;
-    //        transition: opacity .2s linear;
-    //
-    //        &.btn-white:hover {
-    //            background-color: $white;
-    //            border-color: $white;
-    //        }
-    //    }
-    //
-    //    &:hover {
-    //
-    //        .handle-item-prototype,
-    //        .delete-disabled,
-    //        .swal-delete-link {
-    //            opacity: 1;
-    //        }
-    //
-    //        .delete-disabled {
-    //            opacity: 0;
-    //        }
-    //    }
-    //}
 }
 
 .input-group {

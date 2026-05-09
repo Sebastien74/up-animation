@@ -11,11 +11,6 @@ $fonts-weights: (100, 200, 300, 400, 500, 600, 700, 800, 900);
 @import "../vendor/mixin/font-weight";
 @include fontsWeights($fonts-weights);
 
-//@import 'themes/custom';
-@import 'themes/custom-forms';
-
-//@import "../vendor/vendor";
-
 @import '../vendor/mixin/media-queries';
 @import '../security/switcher';
 
@@ -23,8 +18,5 @@ $fonts-weights: (100, 200, 300, 400, 500, 600, 700, 800, 900);
 @import 'layout/layout';
 @import 'core/core';
 
-//@import "widgets/widgets";
-
 @import 'pages/index';
 @import 'pages/layout';
-//@import 'lib/nestable';

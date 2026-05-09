@@ -25,24 +25,6 @@
 
 .nestable-list-container {
 
-    //& > .dd-list > .dd-item {
-    //    background-color: rgba(0, 0, 0, .1);
-    //}
-
-    //.btn-transparent i,
-    //.btn-transparent svg {
-    //
-    //    font-size: 17px !important;
-    //    margin-top: -2px;
-    //    opacity: .8;
-    //    transition: all .3s;
-    //
-    //    &:hover {
-    //        opacity: 1;
-    //        transition: all .3s;
-    //    }
-    //}
-
     .delete-pack-control {
         margin-left: .5rem;
     }
@@ -104,7 +86,6 @@
 .dd-dragel {
     li {
         .dd3-content {
-            //padding-top: 5px !important;
             padding-left: 60px !important;
         }
     }
@@ -124,11 +105,6 @@
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
-
-//.dd-handle:hover {
-//    color: $gray-900;
-//    background: $white;
-//}
 
 .dd-item > button {
     display: block;
@@ -180,14 +156,6 @@
     height: 50px;
 }
 
-//.dd-empty {
-//    border: 1px solid $white;
-//    min-height: 100px;
-//    background-color: $bg-gradient-primary;
-//    background-size: 60px 60px;
-//    background-position: 0 0, 30px 30px;
-//}
-
 .dd3-content {
 
     .title {
@@ -222,16 +190,6 @@
         background-color: $darken;
         padding: 0 0 0 70px !important;
     }
-
-    //&:after {
-    //    content: '';
-    //    position: absolute;
-    //    top: 0;
-    //    left: 0;
-    //    right: 0;
-    //    height: 100%;
-    //    background-color: $bg-gradient-primary;
-    //}
 }
 
 .dd-dragel .dd3-content, .dd-dragel .dd3-handle {
@@ -327,40 +285,6 @@ body .dd3-content {
         }
     }
 }
-
-//.dd3-handle:hover {
-//    background: $white;
-//    border: 1px solid $white;
-//}
-
-//.myadmin-dd .dd-list .dd-item .dd-handle {
-//    background: $white;
-//    border: 1px solid $white;
-//    padding: 8px 16px;
-//    height: auto;
-//    font-family: "Montserrat", sans-serif;
-//    font-weight: 400;
-//    border-radius: 0;
-//}
-//
-//.myadmin-dd-empty .dd-list .dd3-content {
-//    height: auto;
-//    padding: 0 0 0 70px;
-//    background: $white;
-//    font-weight: 400;
-//    border-radius: var(--bs-border-radius);
-//    border: 0 !important;
-//}
-//
-//.myadmin-dd-empty .dd-list .dd3-handle {
-//    background: $white;
-//    height: 50px !important;
-//    width: 50px !important;
-//    cursor: move;
-//    border-top-left-radius: var(--bs-border-radius);
-//    border-bottom-left-radius: var(--bs-border-radius);
-//    border: 0 !important;
-//}
 
 #nestable-list .ajax-get-refresh i.eye {
     margin-top: 3px !important;

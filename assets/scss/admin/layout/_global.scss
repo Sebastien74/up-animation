@@ -25,6 +25,7 @@ html body {
 }
 
 #main-wrapper {
+    min-height: 100dvh;
     width: 100%;
     overflow: hidden;
     background: radial-gradient(
@@ -255,42 +256,7 @@ tr.bg-info-darken > th {
 }
 
 /*-----------------------------------
-   1 ) Background
------------------------------------*/
-
-//.bg-info-light {
-//    background-color: $info-light;
-//    color: $info-darken;
-//}
-//
-//.bg-info-darken {
-//    background-color: $info-darken;
-//}
-//
-//.bg-gray-600 {
-//    background-color: $gray-600 !important;
-//}
-//
-//.bg-body {
-//    background-color: $body-bg;
-//}
-//
-//.bg-hover-info-darken:hover,
-//.bg-active-info-darken.active,
-//.bg-hover-active-info-darken:hover,
-//.bg-hover-active-info-darken.active {
-//
-//    background-color: $info-darken !important;
-//    border: 1px solid $info-darken !important;
-//    color: $white;
-//
-//    svg {
-//        fill: $white;
-//    }
-//}
-
-/*-----------------------------------
-   3 ) Popup
+   1 ) Popup
 -----------------------------------*/
 
 img.mfp-img {
@@ -298,7 +264,7 @@ img.mfp-img {
 }
 
 /*-----------------------------------
-   4 ) Border
+   2 ) Border
 -----------------------------------*/
 
 mark {

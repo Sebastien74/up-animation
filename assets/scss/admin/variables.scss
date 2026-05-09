@@ -106,7 +106,6 @@ $dash-surface-4: #2e1e51 !default;
 $dash-dark: $black !default;
 $darken: $dash-bg-1 !default;
 $dash-text: rgba(255, 255, 255, 0.92) !default;
-//$dash-border: rgba(255, 255, 255, 0.05) !default;
 $dash-accent: $primary !default;
 $dash-lighten: lighten($dash-accent, 20%) !default;
 
@@ -150,10 +149,6 @@ $bg-gradient-primary: radial-gradient(520px 160px at 12% 0%, rgba($dash-accent, 
 linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 45%),
 $crumb-surface;
 $bg-preloader: repeating-linear-gradient(-55deg, transparentize($dark, .5) 1px, transparentize($dash-bg-2, .5) 2px, transparentize($dash-bg-2, .5) 11px, transparentize($dark, .5) 12px, transparentize($dark, .5) 20px);
-
-
-//$link-hover-color: $primary !default;
-//$link-hover-color-dark: $primary !default;
 
 $colors: (
     blue: $blue,
@@ -345,7 +340,6 @@ $form-switch-padding-start: 1.5rem;
 /*-- l - Borders --*/
 
 $border-width: 1px !default;
-//$border-color: $gray-200 !default;
 
 $border-radius: 16px !default;
 $border-radius-lg: .3rem !default;

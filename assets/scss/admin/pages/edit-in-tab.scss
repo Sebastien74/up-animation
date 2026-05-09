@@ -340,17 +340,16 @@
                     width: 30px;
                     height: 30px;
                     border-radius: $border-radius;
-                    background-color: $info;
                     margin: 0 1.25rem 0 1rem;
                     align-items: center;
                     justify-content: center;
 
                     &.as-default {
-                        border: 1px solid $info-light !important;
+                        border: 1px solid transparentize($white, .5) !important;
                     }
 
                     svg {
-                        fill: $white !important;
+                        fill: transparentize($white, .5) !important;
                     }
                 }
             }
