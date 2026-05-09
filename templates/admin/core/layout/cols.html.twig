@@ -104,19 +104,20 @@
 
                                 </div>
                             </div>
-                            <div class="portlet-content portlet-block pe-3 ps-3 w-100">
+                            <div class="portlet-content portlet-block px-3 w-100">
                                 {%- include 'admin/core/layout/blocks.html.twig' -%}
                             </div>
                             {%- if 'edit'|moduleActive(configuration) and layoutConfiguration is defined and layoutConfiguration -%}
-                                <div class="add-block-wrap w-100 pe-3 ps-3 pt-2">
-                                    <span class="edit-layout-element-btn btn-app cursor add-block-btn cursor"
+                                <div class="add-block-wrap w-100 px-3 pt-2">
+                                    <span class="edit-layout-element-btn btn-app add-block-btn cursor d-inline-flex align-items-center gap-2"
                                           data-path="{{ path('admin_block_modal', {
                                               website: websiteId(),
                                               col: col.id,
                                               configuration: layoutConfiguration.id,
                                               entityId: entity.id,
                                           }) }}">
-                                        <i class="icm-plus"></i>{{ 'Ajouter un bloc'|trans|striptags }}
+                                        <i class="icm-plus"></i>
+                                        <span>{{ 'Ajouter un bloc'|trans|striptags }}</span>
                                     </span>
                                     <span class="btn-resize btn-resize-col"><i class="icm-arrow-from-right"></i></span>
                                 </div>
@@ -131,8 +132,10 @@
     {%- if 'edit'|moduleActive(configuration) -%}
         <div class="col-12 d-inline-flex align-items-end">
             <button data-path="{{ path('admin_col_new', {website: websiteId(), zone: zone.id}) }}"
-                    class="btn-app new-col-btn edit-layout-element-btn mb-3">
-                <i class="icm-plus"></i>{{ 'Ajouter une colonne'|trans|raw }}
+                    type="button"
+                    class="btn-app new-col-btn edit-layout-element-btn d-inline-flex align-items-center gap-2 mb-3">
+                <i class="icm-plus"></i>
+                <span>{{ 'Ajouter une colonne'|trans|raw }}</span>
             </button>
         </div>
     {%- endif -%}

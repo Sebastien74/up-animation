@@ -70,57 +70,46 @@
 
     <div id="entities-index-page" class="index-container position-relative">
         <div id="index-header">
-            <div class="inner d-flex align-items-center flex-wrap">
-                <div class="left-side d-flex align-items-center flex-wrap w-100-max-lg">
-                    <div class="item-header">
-                        {%- if searchFiltersForm is defined and searchFiltersForm -%}
-                            {%- include 'admin/core/form/filters.html.twig' with {form: searchFiltersForm} -%}
-                        {%- endif -%}
-                        {%- if searchForm -%}
-                            {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm, searchText: searchText, searchClearPath: searchClearPath} only -%}
-                        {%- endif -%}
-                    </div>
+            <div class="inner d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-3">
+                <div class="left-side d-flex align-items-center flex-wrap gap-2 flex-grow-1">
+                    {%- if searchFiltersForm is defined and searchFiltersForm -%}
+                        {%- include 'admin/core/form/filters.html.twig' with {form: searchFiltersForm} -%}
+                    {%- endif -%}
+                    {%- if searchForm -%}
+                        {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm, searchText: searchText, searchClearPath: searchClearPath} only -%}
+                    {%- endif -%}
                 </div>
-                <div class="right-side d-flex align-items-center gap-2 flex-wrap ms-md-auto w-100-max-lg">
-                    <div class="item-header my-1 pe-lg-0">
-                        <a href="{{ lastRoute() }}" class="btn-icon"
-                           data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}"
-                           aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
-                            <i class="icm-reply"></i>
-                        </a>
-                    </div>
+                <div class="right-side d-flex align-items-center flex-wrap gap-2 ms-lg-auto">
+                    <a href="{{ lastRoute() }}" class="btn-icon"
+                       data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
+                       aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                        <i class="icm-reply"></i>
+                    </a>
                     {%- if deleteActive and routeExist('admin_'~interface['name']~'_delete') -%}
-                        <div class="item-header my-1 pe-lg-0">
-                            <button class="index-delete-show btn-icon danger" data-bs-toggle="tooltip"
-                                    title="{{"Afficher les cases à cocher de suppression"|trans|striptags }}"
-                                    data-display="{{"Afficher les cases à cocher de suppression"|trans|striptags }}"
-                                    data-hide="{{"Masquer"|trans|striptags }}">
-                                <i class="icm-trash"></i>
-                            </button>
-                            <button class="index-delete-submit btn-icon danger-darken d-none" data-bs-toggle="tooltip" title="{{"Supprimer la sélection"|trans|raw }}">
-                                <i class="icm-trash"></i>
-                            </button>
-                        </div>
+                        <button type="button" class="index-delete-show btn-icon danger"
+                                data-bs-toggle="tooltip"
+                                title="{{ "Afficher les cases à cocher de suppression"|trans|striptags }}"
+                                aria-label="{{ "Afficher les cases à cocher de suppression"|trans|striptags }}"
+                                data-display="{{ "Afficher les cases à cocher de suppression"|trans|striptags }}"
+                                data-hide="{{ "Masquer"|trans|striptags }}">
+                            <i class="icm-trash"></i>
+                        </button>
+                        <button type="button" class="index-delete-submit btn-icon danger-darken d-none"
+                                data-bs-toggle="tooltip"
+                                title="{{ "Supprimer la sélection"|trans|striptags }}"
+                                aria-label="{{ "Supprimer la sélection"|trans|striptags }}">
+                            <i class="icm-trash"></i>
+                        </button>
                     {%- endif -%}
                     {%- if granted('ROLE_INTERNAL') and routeExist('admin_'~interface['name']~'_import') and not disabledImport -%}
-                        <div class="item-header my-1">
-{#                            <a href="{{ path('admin_'~interface['name']~'_import', args) }}" class="btn-app">#}
-{#                                <i class="icm-download"></i>{{ "Importer"|trans|raw }}#}
-{#                            </a>#}
-                            {{ render_esi(path('admin_'~interface['name']~'_import', args)) }}
-                        </div>
+                        {{ render_esi(path('admin_'~interface['name']~'_import', args)) }}
                     {%- endif -%}
                     {%- if haveExport in interface.configuration.exports and routeExist('admin_'~interface['name']~'_export') and granted('ROLE_EXPORT') and not disabledExport -%}
-                        <div class="item-header my-1 pe-lg-0">
-                            {{ render_esi(path('admin_'~interface['name']~'_export', args)) }}
-                        </div>
+                        {{ render_esi(path('admin_'~interface['name']~'_export', args)) }}
                     {%- endif -%}
                     {%- if routeExist('admin_'~interface['name']~'_new') and not disableFormNew and granted('ROLE_ADD') -%}
-                        <div class="item-header my-1 pe-lg-0">
-                            {%- set newArgs = ('admin_'~interface['name']~'_new')|routeArgs(interface.entity, args) -%}
-{#                            <a href="{{ path('admin_'~interface['name']~'_new', newArgs) }}" class="btn-icon me-3">Go</a>#}
-                            {{ render_esi(path('admin_'~interface['name']~'_new', newArgs)) }}
-                        </div>
+                        {%- set newArgs = ('admin_'~interface['name']~'_new')|routeArgs(interface.entity, args) -%}
+                        {{ render_esi(path('admin_'~interface['name']~'_new', newArgs)) }}
                     {%- endif -%}
                 </div>
             </div>
@@ -325,8 +314,9 @@
 
                                                 {%- if routeExist('admin_'~interface['name']~'_tree') and editActive -%}
                                                     {%- set treeArgs = ('admin_'~interface['name']~'_tree')|routeArgs(interface.entity, args) -%}
-                                                    <a href="{{ path('admin_'~interface['name']~'_tree', args) }}"
-                                                       data-bs-toggle="tooltip" title="{{"Éditer"|trans|striptags }}" class="btn-icon small">
+                                                    <a href="{{ path('admin_'~interface['name']~'_tree', treeArgs) }}"
+                                                       data-bs-toggle="tooltip" title="{{ "Éditer"|trans|striptags }}"
+                                                       aria-label="{{ "Éditer"|trans|striptags }}" class="btn-icon small">
                                                         <i class="icm-pencil-alt"></i>
                                                     </a>
                                                 {%- endif -%}
@@ -360,15 +350,17 @@
 
                                                 {%- if routeExist('admin_'~interface['name']~'_delete') and deleteActive -%}
                                                     {%- set deleteArgs = ('admin_'~interface['name']~'_delete')|routeArgs(interface.entity, args) -%}
-                                                        <a href="{{ path('admin_'~interface['name']~'_delete', args) }}"
-                                                           data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}" data-tooltip-variant="danger"
-                                                           data-target="#entity-row-{{ entity.id }}"
-                                                           class="btn-icon small danger swal-delete-link">
-                                                            <i class="icm-trash"></i>
-                                                        </a>
+                                                    <a href="{{ path('admin_'~interface['name']~'_delete', deleteArgs) }}"
+                                                       data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
+                                                       aria-label="{{ "Supprimer"|trans|striptags }}"
+                                                       data-tooltip-variant="danger"
+                                                       data-target="#entity-row-{{ entity.id }}"
+                                                       class="btn-icon small danger swal-delete-link">
+                                                        <i class="icm-trash"></i>
+                                                    </a>
                                                     <div class="custom-control custom-checkbox delete-input-index-wrap d-none">
                                                         <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ entity.id }}"
-                                                               data-path="{{ path('admin_'~interface['name']~'_delete', args) }}">
+                                                               data-path="{{ path('admin_'~interface['name']~'_delete', deleteArgs) }}">
                                                         <label class="custom-control-label" for="delete-input-{{ entity.id }}"></label>
                                                     </div>
                                                 {%- endif -%}

@@ -11,9 +11,16 @@
         }}) }}
             <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                 <div class="modal-content border">
-                    <div class="modal-header">
-                        <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-palette"></i></span></span>
-                        <button class="btn-close btn-icon" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
+                    <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
+                        <span class="modal-icon w-100">
+                            <span class="icon-wrap">
+                                <i class="icm-palette"></i>
+                            </span>
+                        </span>
+                        <h5 class="modal-title mt-3 mb-0" id="modal-background-{{ interface['name']~'-'~entity.id }}-label">
+                            {{ "Couleur de fond"|trans|raw }}
+                        </h5>
+                        <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}">
                             <i class="icm-times"></i>
                         </button>
                     </div>
@@ -29,7 +36,7 @@
                             {{ form_row(form.backgroundFullHeight) }}
                         {%- endif -%}
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer border-0 justify-content-center">
                         {{ form_widget(form.save) }}
                     </div>
                 </div>

@@ -356,6 +356,35 @@ $nav-tabs-link-active-bg: $white !default;
 $nav-tabs-link-active-border-color: $info !default;
 
 /*-----------------------------------
+   3 bis ) Design tokens — échelles
+-----------------------------------*/
+
+// Échelle d'espacements (base 4) — usage typographique, padding, margin, gap
+$space-1: 4px !default;
+$space-2: 8px !default;
+$space-3: 12px !default;
+$space-4: 16px !default;
+$space-5: 20px !default;
+$space-6: 24px !default;
+$space-7: 32px !default;
+$space-8: 40px !default;
+$space-9: 48px !default;
+$space-10: 64px !default;
+
+// Échelle de rayons — composants UI
+$radius-xs: 4px !default;
+$radius-sm: 8px !default;
+$radius-md: 12px !default;
+$radius-lg: $border-radius !default; // 16px, valeur historique conservée
+$radius-xl: 24px !default;
+$radius-pill: 999px !default;
+
+// Hauteurs unifiées composants interactifs
+$control-height-sm: 32px !default;
+$control-height-md: 40px !default;
+$control-height-lg: $input-height !default; // 52px, aligné inputs
+
+/*-----------------------------------
    4 ) Bootstrap import
 -----------------------------------*/
 

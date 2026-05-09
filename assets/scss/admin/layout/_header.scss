@@ -25,6 +25,7 @@ header.navbar {
     linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 48%),
     $dash-dark;
     border-bottom: 1px solid $border-color-transparent;
+    box-shadow: $theme-shadow-md;
 
     .navbar-brand {
 

@@ -5,8 +5,8 @@
     {%- if inLibrary -%}
         <div class="collapse mt-4" id="collapseFormMedias">
     {%- endif -%}
-        <div class="row position-relative {% if not inLibrary %} mb-4{% endif %}">
-            <div class="{% if inLibrary %}col-12{% else %}col-md-10{% endif %}">
+        <div class="row g-3 position-relative {% if not inLibrary %} mb-4{% endif %}">
+            <div class="{% if inLibrary %}col-12{% else %}col-12 col-md-10{% endif %}">
                 {{ form_start(form, {attr: {
                     novalidate: "novalidate",
                     action: path('admin_medias_uploader', {website: websiteId(), entityNamespace: entityNamespace, entityId: entityId}),
@@ -16,7 +16,7 @@
             </div>
             {%- if not inLibrary -%}
                 {%- set haveAddVideo = ('admin_'~interfaceName~'_video')|routeExist -%}
-                <div id="add-medias-col" class="col-md-2 {% if haveAddVideo %} have-video-btn{% endif %}">
+                <div id="add-medias-col" class="col-12 col-md-2 {% if haveAddVideo %} have-video-btn{% endif %}">
                     {%- include 'admin/page/media/modal-btn.html.twig' with {uploadType: 'multiple', entityId: entityId, classname: entityNamespace|url_decode, haveAddVideo: haveAddVideo} -%}
                     {%- if haveAddVideo -%}
                         {%- include 'admin/core/include/add-video-btn.html.twig' -%}

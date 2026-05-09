@@ -26,21 +26,21 @@
     {%- set stats = domains|transStats -%}
 
     {%- if granted('ROLE_INTERNAL') -%}
-        <div class="d-flex align-items-center gap-2 mb-4">
-            <span class="translation-extract-btn cursor btn-app" data-domain="only_front">
+        <div class="d-flex align-items-center flex-wrap gap-2 mb-4">
+            <button type="button" class="translation-extract-btn cursor btn-app d-inline-flex align-items-center gap-2" data-domain="only_front">
                 <i class="icm-sync-alt"></i><span>{{ "Extraire le front"|trans|raw }}</span>
-            </span>
-            <span class="translation-extract-btn cursor btn-app" data-domain="all">
+            </button>
+            <button type="button" class="translation-extract-btn cursor btn-app d-inline-flex align-items-center gap-2" data-domain="all">
                 <i class="icm-sync-alt"></i><span>{{ "Extraire tout"|trans|raw }}</span>
-            </span>
+            </button>
             {%- if not toExtract -%}
-                <a href="{{ path('admin_intls_export', { website: websiteId }) }}" class="btn-app">
+                <a href="{{ path('admin_intls_export', { website: websiteId }) }}" class="btn-app d-inline-flex align-items-center gap-2">
                     <i class="icm-upload"></i><span>{{ "Exporter les traductions"|trans|raw }}</span>
                 </a>
-                <a href="#" class="btn-app" data-bs-toggle="modal" data-bs-target="#import-modal">
+                <button type="button" class="btn-app d-inline-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#import-modal">
                     <i class="icm-download"></i><span>{{ "Importer les traductions"|trans|raw }}</span>
-                </a>
-                <a class="btn-app" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}">
+                </button>
+                <a class="btn-app d-inline-flex align-items-center gap-2" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}">
                     <i class="icm-broom"></i><span>{{ "Vider le cache"|trans|raw }}</span>
                 </a>
                 {%- set newTranslationForm = render_esi(path("admin_translation_new", {website: websiteId()})) -%}
@@ -132,12 +132,13 @@
                                                                class="btn-icon small">
                                                                 <i class="icm-pencil-alt"></i>
                                                             </a>
-                                                            <a class="translation-extract-btn btn-icon small cursor"
-                                                               data-bs-toggle="tooltip" title="{{"Extraire"|trans|striptags }}"
-                                                               data-larges="1"
-                                                               data-domain="{{ entity.name }}">
+                                                            <button type="button" class="translation-extract-btn btn-icon small cursor"
+                                                                    data-bs-toggle="tooltip" title="{{ "Extraire"|trans|striptags }}"
+                                                                    aria-label="{{ "Extraire"|trans|striptags }}"
+                                                                    data-larges="1"
+                                                                    data-domain="{{ entity.name }}">
                                                                 <i class="icm-retweet-alt"></i>
-                                                            </a>
+                                                            </button>
                                                         {%- endif -%}
                                                         <a href="{{ path('admin_translationsdomain_edit', {website: websiteId(), translationdomain: entity.id}) }}"
                                                            data-bs-toggle="tooltip" title="{{"Éditer les contenus"|trans|striptags }}"

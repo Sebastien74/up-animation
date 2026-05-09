@@ -4,8 +4,8 @@
 
 {%- set pageIcon = 'books' -%}
 
-{%- block title -%}{{ "Blibliothèque d'icônes"|trans|htmlEntities }}{%- endblock -%}
-{%- block pageTitle -%}{{ "Blibliothèque d'icônes"|trans|raw }}{%- endblock -%}
+{%- block title -%}{{ "Bibliothèque d'icônes"|trans|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Bibliothèque d'icônes"|trans|raw }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ parent() }}
@@ -25,14 +25,14 @@
             <i class="icm-{{ pageIcon }}"></i>{{ block('pageTitle') }}
         </h4>
 
-        <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" role="tablist">
+        <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4 flex-wrap" role="tablist">
             {%- for libraryName, icons in libraries -%}
                 {%- if libraryName != 'website' -%}
-                    <li>
+                    <li class="nav-item">
                         {%- set active = libraryName == library -%}
                         <a href="{{ path("admin_icons", {website: websiteId, library: libraryName}) }}"
-                           class="btn-app {% if active %} active{% endif %}">
-                            <i class="icm-fire"></i>{{ libraryName|capitalize|raw }}
+                           class="btn-app{% if active %} active{% endif %} d-inline-flex align-items-center gap-2">
+                            <i class="icm-fire"></i><span>{{ libraryName|capitalize|raw }}</span>
                         </a>
                     </li>
                 {%- endif -%}
@@ -40,45 +40,46 @@
             <li class="nav-item">
                 {%- set active = library == 'website' -%}
                 <a href="{{ path("admin_icons", {website: websiteId, library: 'website'}) }}"
-                   class="btn-app  {% if active %} active{% endif %}">
-                    <i class="icm-fire"></i>{{ "Icônes du site"|trans|raw }}
+                   class="btn-app{% if active %} active{% endif %} d-inline-flex align-items-center gap-2">
+                    <i class="icm-fire"></i><span>{{ "Icônes du site"|trans|raw }}</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="https://www.toptal.com/designers/htmlarrows"
-                   class="btn-app " target="_blank">
-                    <i class="icm-fire"></i>Symbols
+                   class="btn-app d-inline-flex align-items-center gap-2"
+                   target="_blank" rel="noopener noreferrer">
+                    <i class="icm-fire"></i><span>Symbols</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="https://thenounproject.com"
-                   class="btn-app " target="_blank">
-                    <i class="icm-fire"></i>Noun Project
+                   class="btn-app d-inline-flex align-items-center gap-2"
+                   target="_blank" rel="noopener noreferrer">
+                    <i class="icm-fire"></i><span>Noun Project</span>
                 </a>
             </li>
         </ul>
 
-        <div class="row mb-4">
-            <div class="col-md-9 my-auto">
-                <form role="search" class="icons-search">
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-9 my-auto">
+                <form role="search" class="icons-search mb-0">
                     <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text h-100"><i class="icm-search"></i></span>
-                        </div>
-                        <label>
-                            <input placeholder="{{"Rechercher"|trans|raw }}" class="form-control" type="text">
-                        </label>
+                        <span class="input-group-text h-100" aria-hidden="true">
+                            <i class="icm-search"></i>
+                        </span>
+                        <input placeholder="{{ "Rechercher"|trans|striptags }}"
+                               aria-label="{{ "Rechercher une icône"|trans|striptags }}"
+                               class="form-control" type="search">
                     </div>
                 </form>
             </div>
-            <div id="add-icon-btn" class="col-md-3 d-flex justify-content-end">
-                <button class="btn-app justify-content-center w-100"
+            <div id="add-icon-btn" class="col-12 col-md-3 d-flex justify-content-md-end">
+                <button type="button" class="btn-app justify-content-center w-100 d-inline-flex align-items-center gap-2"
                         data-bs-toggle="collapse"
-                        href="#collapse-add-icons"
-                        role="button"
+                        data-bs-target="#collapse-add-icons"
                         aria-expanded="false"
                         aria-controls="collapse-add-icons">
-                    <i class="icm-plus"></i>{{ "Ajouter des icônes"|trans|raw }}
+                    <i class="icm-plus"></i><span>{{ "Ajouter des icônes"|trans|raw }}</span>
                 </button>
             </div>
         </div>

@@ -7,17 +7,22 @@
         class: "d-inline-block",
         action: path('admin_folder_select', {website: websiteId()}),
         novalidate: "novalidate"}}) }}
-        <div id="select-folder" class="modal fade text-start" tabindex="-1" role="dialog" aria-labelledby="select-folder">
+        <div id="select-folder" class="modal fade" tabindex="-1" role="dialog"
+             aria-labelledby="select-folder-label" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border pb-4">
-                    <div class="modal-header border-0">
-                        <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-share-square"></i></span></span>
-                        <button class="btn-icon small position-absolute end-0 me-3" data-bs-dismiss="modal" aria-hidden="true">
+                    <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
+                        <span class="modal-icon w-100">
+                            <span class="icon-wrap">
+                                <i class="icm-share-square"></i>
+                            </span>
+                        </span>
+                        <h2 id="select-folder-label" class="modal-title fw-bold mt-3 mb-0">{{ "Sélectionnez un dossier de destination"|trans|raw }}</h2>
+                        <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}">
                             <i class="icm-times"></i>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <h5 class="main-title text-center fw-bold mb-4">{{ "Sélectionnez un dossier de destination"|trans|raw }}</h5>
+                    <div class="modal-body px-3 px-md-5">
                         {%- for field in form.children -%}
                             {%- if field.vars.name != 'save' and field.vars.name != 'saveEdit' -%}
                                 {{ form_row(form[field.vars.name]) }}

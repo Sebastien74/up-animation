@@ -1,7 +1,8 @@
 {%- trans_default_domain 'admin' -%}
 
 <div class="modal fade modal-event-agenda"
-     id="modal-event-agenda" tabindex="-1" role="dialog">
+     id="modal-event-agenda" tabindex="-1" role="dialog"
+     aria-labelledby="modal-event-agenda-label" aria-hidden="true">
     <div class="ajax-content">
         {{ form_start(form, {attr: {
             novalidate: "novalidate",
@@ -9,23 +10,29 @@
             id: 'modal-event-agenda-form'
         }}) }}
             <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-                <div class="modal-content border">
-                    <div class="modal-header">
+                <div class="modal-content border pb-3">
+                    <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
+                        <span class="modal-icon w-100">
+                            <span class="icon-wrap">
+                                <i class="icm-calendar-alt"></i>
+                            </span>
+                        </span>
+                        <h2 id="modal-event-agenda-label" class="modal-title fw-bold mt-3 mb-0">{{ "Période"|trans|raw }}</h2>
                         {%- if entity.id -%}
-                            <a class="btn-transparent sa-warning swal-delete-link"
+                            <a class="btn-icon danger swal-delete-link sa-warning position-absolute top-0 start-0 m-3"
                                href="{{ path('admin_agendaperiod_delete', {website: websiteId(), agendaperiod: entity.id}) }}"
                                data-bs-toggle="tooltip"
-                               title="{{"Supprimer"|trans|striptags }}"
+                               title="{{ "Supprimer"|trans|striptags }}"
+                               aria-label="{{ "Supprimer"|trans|striptags }}"
                                data-type="collection">
                                 <i class="icm-trash"></i>
                             </a>
                         {%- endif -%}
-                        <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-download"></i></span></span>
-                        <button class="btn-close btn-icon" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
+                        <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}">
                             <i class="icm-times"></i>
                         </button>
                     </div>
-                    <div class="modal-body pe-4 ps-4">
+                    <div class="modal-body px-3 px-md-5">
                         <div class="row">
                             {{ form_row(form) }}
                         </div>

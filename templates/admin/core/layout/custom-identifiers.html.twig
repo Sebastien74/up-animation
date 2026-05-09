@@ -1,19 +1,26 @@
+{%- trans_default_domain 'admin' -%}
+
 {%- set customClasses = website.entity.configuration.cssClasses is defined ? website.entity.configuration.cssClasses : [] -%}
 {%- if customClasses|length > 0 and form.customClass is defined -%}
-    <div class="text-start custom-css-alert ribbon-vwrapper alert alert-info">
-        <div class="ribbon ribbon-bookmark ribbon-vertical-l ribbon-info"><i class="icm-info"></i></div>
-        <h5 class="mb-3">{{ "Classes personnalisées"|trans|raw }}</h5>
-        <div class="row css-classes-list">
+    <div class="custom-css-alert alert alert-info text-start mb-4">
+        <div class="d-flex align-items-start gap-3 mb-3">
+            <span class="icon-wrap flex-shrink-0">
+                <i class="icm-info"></i>
+            </span>
+            <h5 class="mb-0">{{ "Classes personnalisées"|trans|raw }}</h5>
+        </div>
+        <div class="row css-classes-list g-2">
             {%- for customClass in customClasses -%}
                 {%- if customClass.name -%}
-                    <div class="css-class-item col-md-6">
-                        <span class="cursor mb-1 mt-1 me-2 class-copy cursor"
-                              data-bs-toggle="tooltip" title="{{"Ajouter"|trans|striptags }}">
+                    <div class="css-class-item col-12 col-md-6">
+                        <span class="class-copy cursor d-inline-flex align-items-center me-2"
+                              data-bs-toggle="tooltip"
+                              title="{{ "Ajouter"|trans|striptags }}">
                             <i class="icm-copy"></i>
                         </span>
                         <strong class="text-copy">{{ customClass.name }}</strong>
                         {%- if customClass.description -%}
-                            : <span class="italic">{{ customClass.description|trans}}</span>
+                            <span class="text-muted ms-1">: <span class="fst-italic">{{ customClass.description|trans }}</span></span>
                         {%- endif -%}
                     </div>
                 {%- endif -%}
@@ -21,7 +28,7 @@
         </div>
     </div>
 {%- endif -%}
-<div class="row">
+<div class="row g-3">
     {%- if form.customClass is defined -%}
         {{ form_row(form.customClass) }}
     {%- endif -%}

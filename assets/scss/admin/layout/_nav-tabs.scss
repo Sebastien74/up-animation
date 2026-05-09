@@ -11,25 +11,34 @@
 
 .nav-tabs {
 
+    .nav-link {
+        transition: color $transition-fast, background-color $transition-fast, border-color $transition-fast;
+
+        &:focus-visible {
+            outline: 0;
+            box-shadow: $theme-shadow-focus;
+        }
+    }
+
     .btn-app {
 
         &:not(.active):not(.save) {
             opacity: .5;
-            transition: opacity .3s linear;
+            transition: opacity $transition-base;
         }
 
         @include mediaQuery(min-lg) {
             &:hover {
                 opacity: 1;
-                transition: opacity .3s linear;
+                transition: opacity $transition-base;
             }
         }
 
         .ip-badge {
             width: 34px;
             height: 34px;
-            border-radius: 12px;
-            background: rgba($primary, 0.14);;
+            border-radius: $radius-md;
+            background: rgba($primary, 0.14);
         }
     }
 }

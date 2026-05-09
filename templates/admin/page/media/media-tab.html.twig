@@ -54,14 +54,15 @@
                                 <span class="to-copy">{{ app.request.getSchemeAndHttpHost()~info.path }}</span>
                                 <div class="row mt-2 gap-2 mx-0">
                                     <div class="col px-0">
-                                            <span class="btn-app small secondary copy-link cursor w-100 center"
-                                              data-bs-toggle="tooltip" title="{{"Copier l'URL"|trans|raw }}">
-                                                <i class="icm-copy"></i><span>{{ "Copier l'URL"|trans|raw }}</span>
-                                            </span>
+                                        <button type="button" class="btn-app small secondary copy-link cursor w-100 d-inline-flex align-items-center justify-content-center gap-2"
+                                                data-bs-toggle="tooltip" title="{{ "Copier l'URL"|trans|striptags }}">
+                                            <i class="icm-copy"></i><span>{{ "Copier l'URL"|trans|raw }}</span>
+                                        </button>
                                     </div>
                                     <div class="col px-0">
-                                        <a href="{{ app.request.getSchemeAndHttpHost()~info.path }}" download="{{ info.filename }}" class="btn-app small secondary w-100 center"
-                                           data-bs-toggle="tooltip" title="{{"Télécharger"|trans|raw }}">
+                                        <a href="{{ app.request.getSchemeAndHttpHost()~info.path }}" download="{{ info.filename }}"
+                                           class="btn-app small secondary w-100 d-inline-flex align-items-center justify-content-center gap-2"
+                                           data-bs-toggle="tooltip" title="{{ "Télécharger"|trans|striptags }}">
                                             <i class="icm-upload"></i><span>{{ "Télécharger"|trans|raw }}</span>
                                         </a>
                                     </div>

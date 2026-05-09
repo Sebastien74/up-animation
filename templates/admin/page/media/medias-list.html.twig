@@ -85,10 +85,10 @@
                                         {%- set info = website()|fileInfo(media.originalName) -%}
                                         <div class="refer-copy refer-copy-wrap w-100">
                                             <span class="to-copy d-none">{{ app.request.getSchemeAndHttpHost()~info.path }}</span>
-                                            <span class="copy-link btn-app small w-100 center cursor"
-                                                  data-bs-toggle="tooltip" title="{{"Copier l'URL"|trans|raw }}">
+                                            <button type="button" class="copy-link btn-app small w-100 cursor d-inline-flex align-items-center justify-content-center gap-2"
+                                                    data-bs-toggle="tooltip" title="{{ "Copier l'URL"|trans|striptags }}">
                                                 <i class="icm-copy"></i><span>{{ "Copier l'URL"|trans|raw }}</span>
-                                            </span>
+                                            </button>
                                         </div>
                                     {%- endif -%}
                                 </div>
@@ -118,9 +118,13 @@
         <div id="medias-pagination">
             {%- if medias.items|length < medias.getTotalItemCount -%}
                 <div class="d-flex flex-column text-center justify-content-center mb-3">
-                    <span class="show-more btn-app info cursor"><i class="icm-eye"></i>{{ "Voir plus"|trans|raw }}</span>
+                    <button type="button" class="show-more btn-app info cursor d-inline-flex align-items-center justify-content-center gap-2 mx-auto">
+                        <i class="icm-eye"></i><span>{{ "Voir plus"|trans|raw }}</span>
+                    </button>
                     <div class="spinner-wrap d-none">
-                        <div class="spinner-border" role="status"></div>
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">{{ "Chargement"|trans|striptags }}</span>
+                        </div>
                     </div>
                 </div>
             {%- endif -%}

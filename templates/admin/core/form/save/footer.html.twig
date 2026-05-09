@@ -8,18 +8,19 @@
         {%- if interface.configuration.saveArea == 'bottom' -%}
             {%- include 'admin/core/form/save/base.html.twig' -%}
         {%- elseif interface.configuration.saveArea == 'both' -%}
-            <span data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}">
-                <a href="{{ lastRoute() }}" class="btn-icon" aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
-                    <i class="icm-reply"></i>
-                </a>
-            </span>
+            <a href="{{ lastRoute() }}" class="btn-icon"
+               data-bs-toggle="tooltip"
+               title="{{ "Retourner à la page précédente"|trans|striptags }}"
+               aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                <i class="icm-reply"></i>
+            </a>
             {%- if form.save is defined or form.saveBack is defined or form.saveEdit is defined -%}
                 {%- for field in form.children -%}
                     {%- if field.vars.name in submitFields -%}
                         <button type="submit"
                                 name="{{ field.vars.full_name }}"
-                                class="btn-icon {% if field.vars.attr.class is defined and field.vars.attr.class%} {{ field.vars.attr.class }}{% endif %}">
-                            <i class="icm-save"></i>{{ field.vars.label }}
+                                class="btn-icon d-inline-flex align-items-center gap-2{% if field.vars.attr.class is defined and field.vars.attr.class %} {{ field.vars.attr.class }}{% endif %}">
+                            <i class="icm-save"></i><span>{{ field.vars.label }}</span>
                         </button>
                     {%- endif -%}
                 {%- endfor -%}

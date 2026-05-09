@@ -114,6 +114,14 @@ $theme-pagination-border: #545454 !global;
 $theme-pagination-active-bg: $info !global;
 $theme-pagination-active-text: $white !global;
 
+// Ombres théméables — dark : profondes, opacités élevées sur noir pur
+$theme-shadow-color: #000 !global;
+$theme-shadow-sm: 0 1px 2px rgba($theme-shadow-color, .4) !global;
+$theme-shadow-md: 0 4px 12px rgba($theme-shadow-color, .45), 0 1px 2px rgba($theme-shadow-color, .3) !global;
+$theme-shadow-lg: 0 12px 32px rgba($theme-shadow-color, .5), 0 2px 4px rgba($theme-shadow-color, .3) !global;
+$theme-shadow-xl: 0 24px 64px rgba($theme-shadow-color, .55), 0 4px 8px rgba($theme-shadow-color, .35) !global;
+$theme-shadow-focus: 0 0 0 3px rgba($primary, .25) !global;
+
 $btn-surface: radial-gradient(900px 600px at 20% 0%, rgba($primary, 0.08), transparent 55%),
 linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 42%),
 $dash-dark;

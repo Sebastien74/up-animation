@@ -45,7 +45,9 @@ class ZoneGridType extends AbstractType
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Ajouter', [], 'admin'),
             'attr' => [
-                'class' => 'col-12 btn-info d-none edit-element-submit-btn btn-lg disable-preloader',
+                'class' => 'col-12 d-none edit-element-submit-btn btn btn-app disable-preloader',
+                'data-icon' => 'plus',
+                'data-icon-side' => 'left',
             ],
         ]);
     }

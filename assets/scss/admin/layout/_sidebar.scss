@@ -9,9 +9,11 @@
     ===========================
 
     1 ) Core
-    2 ) Left sidebar
-    3 ) Right sidebar
-    4 ) Sidebar navigation
+    2 ) Niveau 1 — sections (bigger)
+    3 ) Niveau 2 — items principaux
+    4 ) Niveau 3 — sous-items
+    5 ) Left sidebar
+    6 ) Right sidebar
 
 ------------------------------------------------------------------ */
 
@@ -43,13 +45,13 @@
     }
 
     a {
-
         color: $white-lighten;
         display: inline-flex;
         align-items: center;
         position: relative;
-        transition: color $transition-base;
+        transition: color $transition-base, background-color $transition-base, padding $transition-base, opacity $transition-base;
         width: 100%;
+        text-decoration: none;
     }
 
     .as-arrow {
@@ -67,12 +69,16 @@
             border-color: $white-lighten;
             transform: rotate(135deg) translate(0, -50%);
             transform-origin: top;
-            transition: transform $transition-base;
+            transition: transform $transition-base, border-color $transition-base;
         }
 
         &.active::after {
             transform: rotate(225deg) translate(0, -50%);
-            transition: transform $transition-base;
+            border-color: $white;
+        }
+
+        &:hover::after {
+            border-color: $white;
         }
 
         &:not(.bigger) {
@@ -103,57 +109,131 @@
     }
 }
 
+/*-----------------------------------
+   2 ) Niveau 1 — sections (bigger)
+-----------------------------------*/
+
+.left-sidebar .scroll-sidebar > nav > ul > li > a.as-arrow.bigger {
+
+    padding: $space-3 0;
+    border-radius: $radius-md;
+    color: rgba(255, 255, 255, 0.95);
+    transition: color $transition-base;
+
+    &:hover, &.active {
+        color: $white;
+    }
+}
+
+/*-----------------------------------
+   3 ) Niveau 2 — items principaux
+        (Gestion du site → Pages, Modules → Catalogues, etc.)
+        + Right sidebar items
+-----------------------------------*/
+
 .left-sidebar .scroll-sidebar > nav > ul > li > ul > li,
 .right-sidebar .scroll-sidebar > nav > ul > li {
 
     padding: 0;
-    margin-bottom: .25rem;
+    margin-bottom: $space-1;
 
-    a {
+    > a {
 
-        padding: .4rem 0;
+        padding: $space-2 $space-3;
         font-size: 14px;
-        transition: background-color $transition-base, border-color $transition-base, padding $transition-base;
-        border-radius: 12px;
+        border-radius: $radius-md;
+        position: relative;
+        overflow: hidden;
+        transition: background-color $transition-base, color $transition-base, padding $transition-base, transform $transition-fast;
 
-        &:hover, &:active, &:focus, &.active {
+        // Barre d'accent latérale gauche pour l'actif
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) scaleY(0);
+            transform-origin: center;
+            width: 3px;
+            height: 65%;
+            background: linear-gradient(180deg, $primary, mix(#ffffff, $primary, 25%));
+            border-radius: $radius-pill;
+            transition: transform .25s $transition-base-timing, opacity .2s;
+            opacity: 0;
+        }
+
+        &:hover, &:focus {
+            background: rgba(255, 255, 255, 0.04);
+            color: $white;
+            padding-left: $space-4;
+        }
+
+        &.active {
             background: $bg-gradient-primary;
-            border: $border-color;
-            padding-right: .25rem;
-            padding-left: .75rem;
+            color: $white;
+            padding-left: $space-4;
+
+            &::before {
+                transform: translateY(-50%) scaleY(1);
+                opacity: 1;
+            }
         }
-    }
 
-    ul > li a {
-        &:hover, &:active, &:focus, &.active {
-            padding-left: 1.25rem;
+        // Icônes / btn-icon dans les items
+        .btn-icon {
+            transition: transform $transition-base;
         }
-    }
-}
 
-.left-sidebar .collapse .collapse,
-.right-sidebar .collapse {
-
-    list-style-type: none;
-    padding-left: 1rem;
-    padding-top: .75rem;
-    padding-bottom: .3rem;
-
-    > li {
-
-        padding: 0 !important;
-
-        > a {
-            padding: .3rem 0;
-            border-radius: 9px;
-            margin-bottom: 0.3rem;
-            font-size: 13px;
+        &:hover .btn-icon,
+        &.active .btn-icon {
+            transform: translateX(2px);
         }
     }
 }
 
 /*-----------------------------------
-   2 ) Left sidebar
+   4 ) Niveau 3 — sous-items
+        (Liste des catalogues, Configuration des teasers, etc.)
+-----------------------------------*/
+
+.left-sidebar .collapse .collapse,
+.right-sidebar .collapse {
+
+    list-style-type: none;
+    padding: $space-3 0 $space-2 $space-2;
+
+    > li {
+
+        padding: 0 !important;
+        margin-bottom: $space-1;
+
+        > a {
+
+            padding: $space-2 $space-3;
+            font-size: 13px;
+            border-radius: $radius-sm;
+            color: rgba(255, 255, 255, 0.7);
+            position: relative;
+            transition: background-color $transition-base, color $transition-base, padding $transition-base, opacity $transition-base;
+
+            &:hover, &:focus {
+                background: rgba(255, 255, 255, 0.06);
+                color: $white;
+                padding-left: $space-4;
+            }
+
+            &.active {
+                background: rgba($primary, 0.18);
+                color: $white;
+                font-weight: 500;
+                padding-left: $space-4;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   5 ) Left sidebar
 -----------------------------------*/
 
 .left-sidebar {
@@ -179,7 +259,7 @@
 }
 
 /*-----------------------------------
-   3 ) Right sidebar
+   6 ) Right sidebar
 -----------------------------------*/
 
 .right-sidebar {

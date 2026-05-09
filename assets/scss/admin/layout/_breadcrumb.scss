@@ -10,19 +10,21 @@
 ----------------------------------------------------------------------------------------- */
 
 .breadcrumb-container {
-    padding: 10px 14px;
-    border-radius: $border-radius;
-    background: $bg-gradient-primary;
+    padding: $space-3 $space-4;
+    border-radius: $radius-lg;
+    background-color: $theme-breadcrumb-bg;
+    background-image: $bg-gradient-primary;
     border: 1px solid $crumb-border;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    box-shadow: $theme-shadow-sm;
     transition: border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
 }
 
 @include mediaQuery(min-lg) {
     .breadcrumb-container:hover {
         border-color: $crumb-border-hover;
-        box-shadow: $crumb-shadow;
+        box-shadow: $theme-shadow-md;
         transform: translateY(-1px);
     }
 }
@@ -43,6 +45,7 @@
         font-weight: 400;
         font-size: 13px;
         letter-spacing: -0.01em;
+        transition: color .35s $transition-base-timing;
     }
 
     /* Replace Bootstrap "/" with a subtle dot */
@@ -50,17 +53,53 @@
         content: "•";
         color: rgba(255, 255, 255, 0.30);
         padding: 0 10px;
+        transition: color .35s $transition-base-timing;
     }
 
     /* Links inside breadcrumb */
     .breadcrumb-item a {
         color: $crumb-muted !important;
         text-decoration: none;
-        transition: color $transition-fast;
+        position: relative;
+        display: inline-block;
+        padding: 2px 6px;
+        margin: -2px -6px;
+        border-radius: $radius-sm;
+        transition: color .35s $transition-base-timing,
+                    background-color .35s $transition-base-timing,
+                    transform .25s $transition-base-timing;
+        will-change: color, background-color, transform;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            right: 6px;
+            bottom: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, $crumb-text, transparent);
+            transform: scaleX(0);
+            transform-origin: center;
+            opacity: 0;
+            transition: transform .4s $transition-base-timing, opacity .3s $transition-base-timing;
+        }
 
         @include mediaQuery(min-lg) {
             &:hover {
                 color: $crumb-text !important;
+                background-color: rgba(255, 255, 255, 0.05);
+                transform: translateY(-1px);
+
+                &::after {
+                    transform: scaleX(1);
+                    opacity: .65;
+                }
+            }
+
+            &:focus-visible {
+                outline: none;
+                color: $crumb-text !important;
+                box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
             }
         }
     }
@@ -68,6 +107,5 @@
     /* Active item (usually last) */
     .breadcrumb-item.active {
         color: $crumb-text;
-        font-weight: 650;
     }
 }

@@ -206,6 +206,7 @@ class ZoneConfigurationType extends AbstractType
         $radiusType->add($builder);
 
         if ($this->isInternalUser) {
+
             $builder->add('backgroundFixed', Type\CheckboxType::class, [
                 'required' => false,
                 'display' => 'button',
@@ -240,7 +241,9 @@ class ZoneConfigurationType extends AbstractType
             //				'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4']
             //			]);
 
-            $builder->add('zIndex', WidgetType\ZIndexType::class);
+            $builder->add('zIndex', WidgetType\ZIndexType::class, [
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+            ]);
 
             $intls = new WidgetType\IntlsCollectionType($this->coreLocator);
             $intls->add($builder, [
@@ -252,14 +255,17 @@ class ZoneConfigurationType extends AbstractType
             ]);
         }
 
-        $builder->add('shadow', WidgetType\ShadowType::class);
+        $builder->add('shadow', WidgetType\ShadowType::class, [
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
+        ]);
+
         $builder->add('shadowMobile', WidgetType\ShadowType::class, [
             'label' => $this->translator->trans('Ombre mobile', [], 'admin'),
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
         ]);
 
         if ($multiLocales) {
             $builder->add('hideLocales', WebsiteLocalesType::class, [
-
                 'row_attr' => ['class' => $this->isInternalUser ? 'col-md-6' : 'col-12'],
             ]);
         }

@@ -11,7 +11,9 @@
             {{ form_row(form.save) }}
         {%- else -%}
             <div class="form-group">
-                <button id="link_save" type="submit" class="btn-app"><i class="icm-plus"></i>{{ "Ajouter au menu"|trans|raw }}</button>
+                <button id="link_save" type="submit" class="btn-app d-inline-flex align-items-center gap-2">
+                    <i class="icm-plus"></i><span>{{ "Ajouter au menu"|trans|raw }}</span>
+                </button>
             </div>
         {%- endif -%}
     </div>

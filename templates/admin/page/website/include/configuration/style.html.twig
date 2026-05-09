@@ -32,16 +32,16 @@
             {%- for cssClass in form.cssClasses -%}
                 {{ macro.cssclasses_prototype(cssClass) }}
             {%- else -%}
-                {%- include 'admin/include/alert.html.twig' with {alert: "info", message: "Auncune classe personnalisée enregistrée."|trans} only -%}
+                {%- include 'admin/include/alert.html.twig' with {alert: "info", message: "Aucune classe personnalisée enregistrée."|trans} only -%}
             {%- endfor -%}
         </div>
 
         <div class="w-100 text-end mt-4 mb-4">
-            <button role="button" class="add-collection btn-app success"
+            <button type="button" class="add-collection btn-app success d-inline-flex align-items-center gap-2"
                     data-type="table"
                     data-collection-target="append"
                     data-target="#cssclasses-collection">
-                <i class="icm-plus"></i>{{ "Ajouter une classe"|trans|raw }}
+                <i class="icm-plus"></i><span>{{ "Ajouter une classe"|trans|raw }}</span>
             </button>
         </div>
 

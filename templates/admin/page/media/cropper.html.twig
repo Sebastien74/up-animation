@@ -27,17 +27,20 @@
         </ul>
         <div class="row gap-2 px-3 pb-3">
             <div class="col my-auto">
-                <button class="btn-app info center w-100" data-bs-toggle="modal" data-bs-target="#crop-modal-{{ configuration.id }}">
-                    <i class="icm-crop-alt"></i>{{ "Redimensionner"|trans|raw }}
+                <button type="button" class="btn-app info w-100 d-inline-flex align-items-center justify-content-center gap-2"
+                        data-bs-toggle="modal" data-bs-target="#crop-modal-{{ configuration.id }}">
+                    <i class="icm-crop-alt"></i><span>{{ "Redimensionner"|trans|raw }}</span>
                 </button>
             </div>
             {%- if thumb.id -%}
                 <div class="col-auto my-auto">
-                    <span class="d-inline-block" data-bs-toggle="tooltip" title="{{"Réinitialiser"|trans|raw }}">
-                        <a href="{{ path('admin_thumb_delete', {website: websiteId(), thumb: thumb.id}) }}" class="btn-icon info swal-delete-link">
-                            <i class="icm-retweet"></i>
-                        </a>
-                    </span>
+                    <a href="{{ path('admin_thumb_delete', {website: websiteId(), thumb: thumb.id}) }}"
+                       class="btn-icon info swal-delete-link"
+                       data-bs-toggle="tooltip"
+                       title="{{ "Réinitialiser"|trans|striptags }}"
+                       aria-label="{{ "Réinitialiser"|trans|striptags }}">
+                        <i class="icm-retweet"></i>
+                    </a>
                 </div>
             {%- endif -%}
         </div>
@@ -46,19 +49,24 @@
 
 <div id="crop-modal-{{ configuration.id }}"
      class="modal fade crop-modal"
-     tabindex="-1" role="dialog" aria-hidden="true">
+     tabindex="-1" role="dialog"
+     aria-labelledby="crop-modal-{{ configuration.id }}-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-        <div class="modal-content border refer-preloader text-start pb-5 pt-3">
+        <div class="modal-content border refer-preloader pb-3">
             {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
-            <div class="modal-header border-0">
-                <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-crop-alt"></i></span></span>
-                <button class="btn-icon small position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
+            <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
+                <span class="modal-icon w-100">
+                    <span class="icon-wrap">
+                        <i class="icm-crop-alt"></i>
+                    </span>
+                </span>
+                <h2 id="crop-modal-{{ configuration.id }}-label" class="modal-title fw-bold mt-3 mb-0">{{ "Redimensionner"|trans|raw }}</h2>
+                <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}">
                     <i class="icm-times"></i>
                 </button>
             </div>
-            <div class="modal-body d-flex">
-                <div class="container my-auto ajax-content">
-                    <h2 class="main-title text-center fw-bold mb-4">{{ "Redimensionner"|trans|raw }}</h2>
+            <div class="modal-body px-3 px-md-5">
+                <div class="ajax-content">
                     {{ form_start(form, {attr: {
                         id: "cropForm"~media.id,
                         novalidate: "novalidate",

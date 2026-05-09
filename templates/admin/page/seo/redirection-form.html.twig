@@ -20,23 +20,21 @@
             {{ form_row(form.new, {id: 'redirection_locale_'~entity.id}) }}
         </td>
         <td class="align-middle text-end actions">
-            <button class="btn-app ajax-save-row"
-                    data-form-id="redirection-form-{{ entity.id }}">
+            <button type="submit" class="btn-app ajax-save-row"
+                    data-form-id="redirection-form-{{ entity.id }}"
+                    aria-label="{{ "Enregistrer"|trans|striptags }}">
                 <i class="icm-save"></i>
                 <i class="icm-spinner-third"></i>
             </button>
             {%- if 'delete'|moduleActive(configuration) -%}
                 <a href="{{ path('admin_redirection_delete', {website: websiteId(), redirection: entity.id}) }}"
-                   data-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
+                   data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
+                   aria-label="{{ "Supprimer"|trans|striptags }}"
                    data-target="#entity-row-{{ entity.id }}"
                    class="swal-delete-link">
                     <i class="icm-trash ms-3"></i>
                 </a>
             {%- endif -%}
-{#            <div class="custom-control custom-checkbox delete-input-index-wrap d-none">#}
-{#                <input type="checkbox" class="custom-control-input delete-input-index" id="input-9717" data-path="/admin-495lkm2yp5pt/1/seo/redirections/delete/website_redirection_redirections_0">#}
-{#                <label class="custom-control-label" for="input-9717"></label>#}
-{#            </div>#}
             <div class="d-none">{{ form_rest(form) }}</div>
         </td>
     {{ form_end(form) }}

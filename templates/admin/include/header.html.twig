@@ -74,15 +74,17 @@
                 <i class="icm-power-off"></i>
             </a>
             {%- if granted('ROLE_INTERNAL') -%}
-                <span class="open-sidebar btn-icon cursor" data-target=".right-sidebar">
+                <button type="button" class="open-sidebar btn-icon cursor" data-target=".right-sidebar"
+                        aria-label="{{ "Ouvrir le panneau de configuration"|trans|striptags }}">
                     <i class="icm-cog"></i>
                     <i class="icm-times d-none"></i>
-                </span>
+                </button>
             {%- endif -%}
-            <span class="open-sidebar btn-icon cursor d-xl-none" data-target=".left-sidebar">
+            <button type="button" class="open-sidebar btn-icon cursor d-xl-none" data-target=".left-sidebar"
+                    aria-label="{{ "Ouvrir le menu"|trans|striptags }}">
                 <i class="icm-bars"></i>
                 <i class="icm-times d-none"></i>
-            </span>
+            </button>
         </div>
     </div>
 </header>

@@ -3,59 +3,70 @@
 {%- set displayNav = true -%}
 {%- set groups = configuration|blockTypesActionsGroups(entity) -%}
 
+{%- set modalTitle = 'Ajouter un bloc'|trans -%}
+{%- if groups|length == 1 and groups['block'] is defined and groups['block']|length == 1 and groups['block']['form'] is defined -%}
+    {%- set displayNav = false -%}
+    {%- set modalTitle = 'Ajouter un champs'|trans -%}
+{%- elseif groups|length == 1 and groups['block'] is defined and groups['block']|length == 1 and groups['block']['layout'] is defined -%}
+    {%- set displayNav = false -%}
+{%- endif -%}
+
+{%- set titles = {
+    "block-layout": "Blocs de fiche"|trans,
+    "block-form": "Champs de formulaire"|trans,
+    "block-main": "Blocs les plus utilisés"|trans,
+    "block-secondary": "Autres blocs"|trans,
+    "module-main": "Modules les plus utilisés"|trans,
+    "module-secondary": "Autres modules"|trans
+} -%}
+
+{%- set tabIcons = {
+    "block-layout": "icm-address-card",
+    "block-form": "icm-list-ul",
+    "block-main": "icm-star",
+    "block-secondary": "icm-album-collection",
+    "module-main": "icm-magic",
+    "module-secondary": "icm-cube"
+} -%}
+
 <div class="modal-wrapper">
-    <div id="block-modal-{{ col.id }}" class="modal fade add-block-modal edit-element-form layout-modal" tabindex="-1" role="dialog" aria-labelledby="block-modal-{{ col.id }}">
+    <div id="block-modal-{{ col.id }}" class="modal fade add-block-modal edit-element-form layout-modal" tabindex="-1" role="dialog" aria-labelledby="block-modal-{{ col.id }}-label">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content border refer-preloader">
                 {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'add-block-preloader', preloaderClass: 'radius-preloader', full: true} only -%}
-                <div class="modal-header">
-                    <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-th-large"></i></span></span>
-                    <button class="btn-close btn-icon" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
+                <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
+                    <span class="modal-icon w-100">
+                        <span class="icon-wrap">
+                            <i class="icm-th-large"></i>
+                        </span>
+                    </span>
+                    <h2 id="block-modal-{{ col.id }}-label" class="modal-title fw-bold mt-3 mb-0">{{ modalTitle }}</h2>
+                    <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}">
                         <i class="icm-times"></i>
                     </button>
                 </div>
-                <div class="modal-body pe-5 ps-5">
+                <div class="modal-body px-3 px-md-5">
                     <div class="mx-auto">
-
-                        {%- set modalTitle = 'Ajouter un bloc'|trans -%}
-                        {%- if groups|length == 1 and groups['block'] is defined and groups['block']|length == 1 and groups['block']['form'] is defined -%}
-                            {%- set displayNav = false -%}
-                            {%- set modalTitle = 'Ajouter un champs'|trans -%}
-                        {%- elseif groups|length == 1 and groups['block'] is defined and groups['block']|length == 1 and groups['block']['layout'] is defined -%}
-                            {%- set displayNav = false -%}
-                        {%- endif -%}
-
-                        <h2 class="main-subtitle small text-center{% if displayNav %} mb-5{% endif %}">{{ modalTitle }}</h2>
-
-                        {%- set titles = {
-                            "block-layout": "Blocs de fiche"|trans,
-                            "block-form": "Champs de formulaire"|trans,
-                            "block-main": "Blocs les plus utilisés"|trans,
-                            "block-secondary": "Autres blocs"|trans,
-                            "module-main": "Modules les plus utilisés"|trans,
-                            "module-secondary": "Autres modules"|trans
-                        } -%}
-
                         {%- if displayNav -%}
-                            <ul class="nav nav-tabs" id="block-types-actions-tab" role="tablist">
+                            <ul class="nav nav-tabs gap-2 border-0 mb-4 flex-wrap" id="block-types-actions-tab" role="tablist">
                                 {%- for type, group in groups -%}
                                     {%- set isActive = loop.first -%}
                                     {%- for category, blocksActions in group -%}
                                         {%- set isActive = isActive and loop.first -%}
-                                        <li class="nav-item col text-center">
-                                            <a class="nav-link d-flex align-items-center{% if isActive %} active{% endif %}"
-                                               id="{{ type~'-'~category~'-'~col.id }}-tab"
+                                        {%- set tabKey = type~'-'~category -%}
+                                        {%- set tabIcon = tabIcons[tabKey] is defined ? tabIcons[tabKey] : 'icm-question' -%}
+                                        {%- set tabLabel = titles[tabKey] is defined ? titles[tabKey] : null -%}
+                                        <li class="nav-item flex-fill text-center">
+                                            <a class="btn btn-app d-flex align-items-center justify-content-center gap-2 w-100{% if isActive %} active{% endif %}"
+                                               id="{{ tabKey~'-'~col.id }}-tab"
                                                data-bs-toggle="tab"
-                                               href="#{{ type~'-'~category~'-'~col.id }}"
-                                               role="tab" aria-controls="{{ type~'-'~category~'-'~col.id }}"
+                                               href="#{{ tabKey~'-'~col.id }}"
+                                               role="tab" aria-controls="{{ tabKey~'-'~col.id }}"
                                                aria-selected="{% if isActive %}true{% else %}false{% endif %}">
-                                                <span class="mx-auto">
-                                                    {%- if titles[type~'-'~category] is defined -%}
-                                                        {{ titles[type~'-'~category] }}
-                                                    {%- else -%}
-                                                        <i class="icm-question"></i>
-                                                    {%- endif -%}
-                                                </span>
+                                                <i class="{{ tabIcon }}" aria-hidden="true"></i>
+                                                {%- if tabLabel -%}
+                                                    <span>{{ tabLabel }}</span>
+                                                {%- endif -%}
                                             </a>
                                         </li>
                                     {%- endfor -%}
@@ -69,7 +80,7 @@
                                 {%- for category, blocksActions in group -%}
                                     {%- set isActive = isActive and loop.first -%}
                                     <div class="tab-pane fade{% if isActive %} show active{% endif %}" id="{{ type~'-'~category~'-'~col.id }}" role="tabpanel" aria-labelledby="{{ type~'-'~category~'-'~col.id }}-tab">
-                                        <div class="row justify-content-center">
+                                        <div class="row justify-content-center g-3">
                                             {%- for blockAction in blocksActions -%}
                                                 {%- set path = "#" -%}
                                                 {%- set title = "?" -%}
@@ -84,7 +95,7 @@
                                                     {%- set path = path('admin_block_add', {website: websiteId(), interfaceName: interface.name, interfaceEntity: entity.id, col: col.id, blockType: blockTypeAction.id, action: blockAction.id}) -%}
                                                 {%- endif -%}
                                                 {%- if display -%}
-                                                    <div class="col-md-3 mb-3">
+                                                    <div class="col-6 col-sm-4 col-md-3">
                                                         <a href="{{ path }}"
                                                            class="d-inline-flex align-items-center justify-content-center btn btn-app text-center w-100 h-100 p-3 btn-add-block">
                                                             <span class="inner d-inline-block">

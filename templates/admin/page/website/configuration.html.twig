@@ -19,40 +19,40 @@
 
     {{ form_start(form, {attr: {id: "website-elements-form", novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
 
-        <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4" role="tablist">
+        <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4 flex-wrap" role="tablist">
             <li class="nav-item">
-                 <a class="btn-app active" id="media-tab" data-bs-toggle="tab" href="#media" role="tab" aria-controls="media" aria-selected="true">
-                    <i class="icm-photo-video"></i><span>{{ "Médias"|trans|raw }}</span>
+                <a class="btn-app active d-inline-flex align-items-center gap-2" id="media-tab" data-bs-toggle="tab" href="#media" role="tab" aria-controls="media" aria-selected="true">
+                    <i class="icm-photo-video" aria-hidden="true"></i><span>{{ "Médias"|trans|raw }}</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="btn-app" id="social-tab" data-bs-toggle="tab" href="#social" role="tab" aria-controls="social" aria-selected="false">
-                    <i class="icm-share-alt"></i><span>{{ "Réseaux sociaux"|trans|raw }}</span>
+                <a class="btn-app d-inline-flex align-items-center gap-2" id="social-tab" data-bs-toggle="tab" href="#social" role="tab" aria-controls="social" aria-selected="false">
+                    <i class="icm-share-alt" aria-hidden="true"></i><span>{{ "Réseaux sociaux"|trans|raw }}</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="btn-app" id="color-tab" data-bs-toggle="tab" href="#color" role="tab" aria-controls="color" aria-selected="false">
-                    <i class="icm-palette"></i><span>{{ "Couleurs"|trans|raw }}</span>
+                <a class="btn-app d-inline-flex align-items-center gap-2" id="color-tab" data-bs-toggle="tab" href="#color" role="tab" aria-controls="color" aria-selected="false">
+                    <i class="icm-palette" aria-hidden="true"></i><span>{{ "Couleurs"|trans|raw }}</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="btn-app" id="icon-css-classes" data-bs-toggle="tab" href="#css-classes" role="tab" aria-controls="css-classes" aria-selected="false">
-                    <i class="icm-paint-brush"></i><span>{{ "Classes personnalisées / Style"|trans|raw }}</span>
+                <a class="btn-app d-inline-flex align-items-center gap-2" id="css-classes-tab" data-bs-toggle="tab" href="#css-classes" role="tab" aria-controls="css-classes" aria-selected="false">
+                    <i class="icm-paint-brush" aria-hidden="true"></i><span>{{ "Classes personnalisées / Style"|trans|raw }}</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="btn-app" id="icon-tab" data-bs-toggle="tab" href="#icon" role="tab" aria-controls="icon" aria-selected="false">
-                    <i class="icm-books"></i><span>{{ "Librairies"|trans|raw }}</span>
+                <a class="btn-app d-inline-flex align-items-center gap-2" id="libraries-tab" data-bs-toggle="tab" href="#libraries" role="tab" aria-controls="libraries" aria-selected="false">
+                    <i class="icm-books" aria-hidden="true"></i><span>{{ "Librairies"|trans|raw }}</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="btn-app" id="icon-tab" data-bs-toggle="tab" href="#others" role="tab" aria-controls="icon" aria-selected="false">
-                    <i class="icm-cog"></i><span>{{ "Autres"|trans|raw }}</span>
+                <a class="btn-app d-inline-flex align-items-center gap-2" id="others-tab" data-bs-toggle="tab" href="#others" role="tab" aria-controls="others" aria-selected="false">
+                    <i class="icm-cog" aria-hidden="true"></i><span>{{ "Autres"|trans|raw }}</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="btn-app" href="https://realfavicongenerator.net/" target="_blank" role="tab" aria-selected="false">
-                    <i class="icm-atom-alt"></i><span class="d-none d-sm-inline-block">{{ "Générateur de favicons"|trans|raw }}</span>
+                <a class="btn-app d-inline-flex align-items-center gap-2" href="https://realfavicongenerator.net/" target="_blank" rel="noopener noreferrer">
+                    <i class="icm-atom-alt" aria-hidden="true"></i><span class="d-none d-sm-inline-block">{{ "Générateur de favicons"|trans|raw }}</span>
                 </a>
             </li>
         </ul>
@@ -70,10 +70,10 @@
             <div class="tab-pane fade" id="css-classes" role="tabpanel" aria-labelledby="css-classes-tab">
                 {%- include 'admin/page/website/include/configuration/style.html.twig' -%}
             </div>
-            <div class="tab-pane fade" id="icon" role="tabpanel" aria-labelledby="icon-tab">
+            <div class="tab-pane fade" id="libraries" role="tabpanel" aria-labelledby="libraries-tab">
                 {%- include 'admin/page/website/include/configuration/libraries.html.twig' -%}
             </div>
-            <div class="tab-pane fade" id="others" role="tabpanel" aria-labelledby="icon-tab">
+            <div class="tab-pane fade" id="others" role="tabpanel" aria-labelledby="others-tab">
                 {%- include 'admin/page/website/include/configuration/others.html.twig' -%}
             </div>
         </div>

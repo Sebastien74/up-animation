@@ -1,12 +1,12 @@
 {%- trans_default_domain 'admin' -%}
 
-<section id="errorStatus" class="mt-4">
-    <div id="row">
-        <div class="col-lg-4">
+<section id="error-status" class="mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
             {%- include 'bundles/TwigBundle/Exception/messages.html.twig' -%}
-            <a href="{{ path('admin_dashboard', {website: websiteId}) }}" class="btn-app mt-4">
+            <a href="{{ path('admin_dashboard', {website: websiteId}) }}" class="btn-app d-inline-flex align-items-center gap-2 mt-4">
                 <i class="icm-reply"></i>
-                {{ "Retourner au tableau de bord"|trans|raw }}
+                <span>{{ "Retourner au tableau de bord"|trans|raw }}</span>
             </a>
         </div>
     </div>

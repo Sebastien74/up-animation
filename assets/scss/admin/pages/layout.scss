@@ -17,6 +17,7 @@
     7 ) BlockTypes & Actions Modal
     8 ) CSS Modal
     9 ) keyframes
+    10 ) Screens entity (configuration responsive)
 
 ------------------------------------------------------------------ */
 
@@ -25,10 +26,10 @@
 -----------------------------------*/
 
 .ui-state-highlight {
-    border-radius: var(--bs-border-radius);
+    border-radius: $radius-lg;
     background-color: rgba(0, 0, 0, 0.05) !important;
     border-color: transparent !important;
-    margin-bottom: 15px;
+    margin-bottom: $space-4;
 }
 
 .grabbable {
@@ -166,6 +167,7 @@ body.sorting-active * {
         background-color: transparent !important;
 
         .tab-pane {
+
             .p-20 {
                 padding-left: 0;
                 padding-right: 0;
@@ -246,7 +248,7 @@ body.sorting-active * {
         }
 
         .select2-results {
-            border-radius: var(--bs-border-radius);
+            border-radius: $radius-lg;
             padding: 1rem 0 !important;
         }
 
@@ -353,17 +355,14 @@ body.sorting-active * {
             }
 
             .config-tabs-content .tab-pane-config {
-                border-radius: var(--bs-border-radius);
+                border-radius: $radius-lg;
                 border: 1px solid rgba(0, 0, 0, 0.05);
             }
 
             .locales-tab-container {
                 .tab-content > .tab-pane {
-                    background: $gray-200;
-                    padding-left: 15px;
-                    padding-right: 15px;
-                    border-bottom-left-radius: var(--bs-border-radius);
-                    border-bottom-right-radius: var(--bs-border-radius);
+                    border-bottom-left-radius: $radius-lg;
+                    border-bottom-right-radius: $radius-lg;
                 }
             }
 
@@ -374,9 +373,8 @@ body.sorting-active * {
 
             #columns-headers {
                 font-size: 11px;
-                background: $gray-200;
                 padding: 10px 0;
-                border-radius: var(--bs-border-radius);
+                border-radius: $radius-lg;
             }
 
             .margins-infos {
@@ -419,12 +417,19 @@ body.sorting-active * {
     position: relative;
     background: $input-bg;
     margin-bottom: 1.25rem;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .1);
-    border-radius: $border-radius;
+    box-shadow: $theme-shadow-md;
+    border-radius: $radius-lg;
     border: 1px solid $border-color;
+    transition: box-shadow $transition-base, border-color $transition-base;
 
     &.hide-zone {
         min-height: 340px !important;
+    }
+
+    @include mediaQuery(min-lg) {
+        &:hover {
+            box-shadow: $theme-shadow-lg;
+        }
     }
 }
 
@@ -442,7 +447,7 @@ body.sorting-active * {
         width: 35px;
         height: 35px;
         flex: 0 0 35px;
-        border-radius: 11px;
+        border-radius: $radius-md;
 
         i {
             font-size: 15px !important;
@@ -460,13 +465,13 @@ body.sorting-active * {
         .item, .swal-delete-link {
 
             i {
-                transition: color .3s linear;
+                transition: color $transition-base;
             }
 
             &:hover {
                 i {
                     color: transparentize($white, .7);
-                    transition: color .3s linear;
+                    transition: color $transition-base;
                 }
             }
         }
@@ -508,18 +513,18 @@ body.sorting-active * {
 
         .header .col-actions {
             background-color: $dash-bg-1;
-            border-top-right-radius: 16px;
-            border-top-left-radius: 16px;
+            border-top-right-radius: $radius-lg;
+            border-top-left-radius: $radius-lg;
             border: 0;
             display: inline-block;
-            padding: 10px 18px 1px 20px;
+            padding: $space-3 $space-5 1px $space-5;
         }
 
         .portlet-content {
-            padding-top: 1rem;
+            padding-top: $space-4;
             display: inline-block;
             background-color: $dash-bg-1;
-            border-top-left-radius: 16px;
+            border-top-left-radius: $radius-lg;
             border: 0;
         }
 
@@ -592,12 +597,12 @@ body.sorting-active * {
         }
 
         .add-block-wrap {
-            padding-bottom: 1rem;
+            padding-bottom: $space-4;
             background-color: $dash-bg-1;
-            border-bottom-right-radius: 16px;
-            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: $radius-lg;
+            border-bottom-left-radius: $radius-lg;
             border: 0;
-            padding-top: 10px !important;
+            padding-top: $space-3 !important;
             position: relative;
         }
 
@@ -608,8 +613,8 @@ body.sorting-active * {
             right: -5px;
             width: 15px;
             height: 15px;
-            border-radius: 5px;
-            box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+            border-radius: $radius-xs;
+            box-shadow: $theme-shadow-sm;
             background-color: transparentize($white, .5);
             border: 1px solid $border-color;
             padding: 0 !important;
@@ -619,10 +624,10 @@ body.sorting-active * {
 
             @include mediaQuery(min-lg) {
 
-                transition: background-color .3s linear;
+                transition: background-color $transition-base;
 
                 &:hover {
-                    transition: background-color .3s linear;
+                    transition: background-color $transition-base;
                     background-color: transparentize($white, .7);
                 }
             }
@@ -928,10 +933,18 @@ body.sorting-active * {
             margin-right: 0;
             padding-left: 5px;
             padding-right: 1rem;
-            box-shadow: 0 1px 4px 0 $dash-bg-0;
+            box-shadow: $theme-shadow-sm;
             background: $dash-bg-0;
-            border-radius: 10px;
+            border-radius: $radius-sm;
             border: 1px solid transparentize($dash-bg-0, .8);
+            transition: box-shadow $transition-fast, border-color $transition-fast;
+        }
+
+        @include mediaQuery(min-lg) {
+            &:hover .block-row {
+                box-shadow: $theme-shadow-md;
+                border-color: transparentize($dash-bg-0, .5);
+            }
         }
 
         &.use-for-thumb .block-row {
@@ -1125,6 +1138,7 @@ body.sorting-active * {
     .btn {
 
         font-size: 14px;
+        padding: 1rem !important;
 
         svg {
             max-height: 30px !important;
@@ -1146,11 +1160,27 @@ body.sorting-active * {
 
 .custom-css-alert {
 
-    padding: 15px 15px 15px 60px;
+    padding: $space-4;
+    border-radius: $radius-lg;
 
     h5 {
         font-size: 14px;
         font-weight: 500;
+    }
+
+    .icon-wrap {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: $radius-md;
+        background: rgba($primary, 0.14);
+        border: 1px solid rgba($primary, 0.28);
+
+        i {
+            font-size: 14px;
+        }
     }
 
     .css-classes-list {
@@ -1171,6 +1201,7 @@ body.sorting-active * {
             text-align: center;
             font-size: 11px;
             padding: 0;
+            transition: color $transition-fast;
 
             svg {
                 fill: $info !important;
@@ -1211,5 +1242,126 @@ body.sorting-active * {
     }
     to {
         background-position: 60px 30px;
+    }
+}
+
+/*-----------------------------------
+   10 ) Screens entity (configuration responsive)
+-----------------------------------*/
+
+.screens-entity-block {
+
+    #columns-headers {
+
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: $crumb-muted;
+        font-weight: 500;
+        padding-bottom: $space-2;
+        border-bottom: 1px solid $crumb-border;
+        margin-bottom: $space-3;
+    }
+
+    .screens-entity-row {
+
+        padding: $space-3 $space-2;
+        border-radius: $radius-md;
+        transition: background-color $transition-base;
+
+        @include mediaQuery(min-lg) {
+
+            padding: $space-2 $space-2;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.025);
+            }
+        }
+
+        > .col,
+        > [class*="col-"] {
+
+            > small.text-muted {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: .03em;
+                font-weight: 500;
+                color: $crumb-muted !important;
+            }
+        }
+
+        // Cellule "Position" (texte simple)
+        .text-center.text-lg-start {
+            font-size: 14px;
+            font-weight: 600;
+            color: $crumb-text;
+            padding: $space-2 0;
+        }
+
+        // Select2 nus dans cette section : on aligne sur la charte sombre
+        .select2-container--default {
+
+            width: 100% !important;
+
+            .select2-selection--single {
+                background: $input-bg !important;
+                background-color: transparent;
+                border: 1px solid $input-border-color !important;
+                border-radius: $radius-md !important;
+                height: $control-height-md !important;
+                display: flex;
+                align-items: center;
+                transition: border-color $transition-base, box-shadow $transition-base;
+
+                .select2-selection__rendered {
+                    color: $input-color !important;
+                    line-height: $control-height-md !important;
+                    padding-left: $space-3 !important;
+                    padding-right: $space-7 !important;
+                    font-size: $input-font-size !important;
+                    background: transparent !important;
+                }
+
+                .select2-selection__arrow {
+
+                    height: 100%;
+                    width: $space-7;
+                    top: 0;
+                    right: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    b {
+                        position: static;
+                        margin: 0;
+                        border-color: $crumb-muted transparent transparent transparent;
+                        transition: border-color $transition-base, transform $transition-base;
+                    }
+                }
+            }
+
+            &.select2-container--open .select2-selection--single {
+
+                border-color: transparentize($primary, .5) !important;
+                box-shadow: 0 0 0 3px rgba($primary, 0.12);
+
+                .select2-selection__arrow b {
+                    transform: rotate(180deg);
+                    border-color: $crumb-text transparent transparent transparent;
+                }
+            }
+
+            @include mediaQuery(min-lg) {
+
+                .select2-selection--single:hover {
+                    border-color: rgba(255, 255, 255, 0.18) !important;
+
+                    .select2-selection__arrow b {
+                        border-color: $crumb-text transparent transparent transparent;
+                    }
+                }
+            }
+        }
     }
 }

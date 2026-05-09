@@ -19,21 +19,30 @@
 {%- block body -%}
 
     <div id="menu-edit-page" class="position-relative">
-        <div class="row">
-            <div class="col-md-4">
+        <div class="row g-3">
+            <div class="col-12 col-md-4">
                 <div class="card mb-3">
                     <div class="card-body pb-2">
-                        <div class="main-subtitle">
-                            <i class="icm-copy"></i>{{ "Pages du site"|trans|raw }}
-                            <div class="d-flex d-flex align-items-center gap-1 ms-auto">
-                                <i class="icm-arrow-alt-to-bottom info cursor expand-all-pages" data-bs-toggle="tooltip" title="{{"Tout afficher"|trans|raw }}"></i>
-                                <i class="icm-arrow-alt-to-top info cursor collapse-all-pages d-none" data-bs-toggle="tooltip" title="{{"Tout cacher"|trans|raw }}"></i>
+                        <div class="main-subtitle d-flex align-items-center gap-2">
+                            <i class="icm-copy" aria-hidden="true"></i>{{ "Pages du site"|trans|raw }}
+                            <div class="d-flex align-items-center gap-1 ms-auto">
+                                <button type="button" class="btn-icon info cursor expand-all-pages"
+                                        data-bs-toggle="tooltip" title="{{ "Tout afficher"|trans|striptags }}"
+                                        aria-label="{{ "Tout afficher"|trans|striptags }}">
+                                    <i class="icm-arrow-alt-to-bottom"></i>
+                                </button>
+                                <button type="button" class="btn-icon info cursor collapse-all-pages d-none"
+                                        data-bs-toggle="tooltip" title="{{ "Tout cacher"|trans|striptags }}"
+                                        aria-label="{{ "Tout cacher"|trans|striptags }}">
+                                    <i class="icm-arrow-alt-to-top"></i>
+                                </button>
                             </div>
                         </div>
                         <form method="post" id="page-selector-menu"
                               action="{{ path('admin_link_add', {website: websiteId(), menu: entity.id, locale: entitylocale, multiple: 0}) }}" class="mb-4">
-                            <div class="input-group select2-group d-flex mb-3">
-                                <select name="page" class="custom-select select-2">
+                            <div class="input-group select2-group mb-3">
+                                <select name="page" class="custom-select select-2"
+                                        aria-label="{{ "Sélectionnez une page"|trans|striptags }}">
                                     <option value="">{{ "Sélectionnez une page"|trans|raw }}</option>
                                     {%- for page in pages -%}
                                         {%- if page.template != "components.html.twig" -%}
@@ -41,9 +50,10 @@
                                         {%- endif -%}
                                     {%- endfor -%}
                                 </select>
-                                <div class="input-group-append">
-                                    <button type="submit" class="input-group-text cursor"><i class="icm-chevron-right"></i></button>
-                                </div>
+                                <button type="submit" class="input-group-text cursor"
+                                        aria-label="{{ "Ajouter au menu"|trans|striptags }}">
+                                    <i class="icm-chevron-right"></i>
+                                </button>
                             </div>
                         </form>
                         <form id="pages-to-menu-form" action="{{ path('admin_link_add', {website: websiteId(), menu: entity.id, locale: entitylocale, multiple: 1}) }}" method="POST" >
@@ -55,7 +65,9 @@
                                     {%- endif -%}
                                 {%- endfor -%}
                             </ul>
-                            <button type="submit" class="btn-app"><i class="icm-plus"></i>{{ "Ajouter au menu"|trans|raw }}</button>
+                            <button type="submit" class="btn-app d-inline-flex align-items-center gap-2">
+                                <i class="icm-plus"></i><span>{{ "Ajouter au menu"|trans|raw }}</span>
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -74,13 +86,12 @@
                                     form: form,
                                     excludes: ['expand', 'size', 'alignment', 'maxLevel', 'main', 'footer', 'alwaysFixed', 'fixedOnScroll', 'dropdownHover', 'vertical', 'save']} only -%}
                                 <div class="d-flex justify-content-end">
-                                    <button class="btn-app mb-3"
-                                            type="button"
+                                    <button type="button" class="btn-app mb-3 d-inline-flex align-items-center gap-2"
                                             data-bs-toggle="collapse"
-                                            href="#collapseConfigForm"
+                                            data-bs-target="#collapseConfigForm"
                                             aria-expanded="false"
-                                            aria-controls="collapseForm">
-                                        <i class="icm-cog"></i>{{ "Options avancées"|trans|raw }}
+                                            aria-controls="collapseConfigForm">
+                                        <i class="icm-cog"></i><span>{{ "Options avancées"|trans|raw }}</span>
                                     </button>
                                 </div>
                                 <div id="collapseConfigForm" class="collapse">
@@ -93,26 +104,37 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-12 col-md-8">
                 <div class="card">
                     <div class="card-body pb-2">
-                        <div class="main-subtitle">
-                            <i class="icm-bars"></i> {{ "Menu"|trans|striptags }}
+                        <div class="main-subtitle d-flex align-items-center flex-wrap gap-2">
+                            <i class="icm-bars" aria-hidden="true"></i><span>{{ "Menu"|trans|striptags }}</span>
                             <div class="ms-auto d-flex align-items-center gap-2">
                                 {%- if 'delete'|moduleActive(configuration) -%}
-                                    <i id="delete-pack-btn" class="icm-trash btn-icon danger small initial cursor d-none" data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"></i>
+                                    <button type="button" id="delete-pack-btn" class="btn-icon danger small cursor d-none"
+                                            data-bs-toggle="tooltip" title="{{ "Supprimer"|trans|striptags }}"
+                                            aria-label="{{ "Supprimer"|trans|striptags }}">
+                                        <i class="icm-trash"></i>
+                                    </button>
                                 {%- endif -%}
                                 {%- set collapsedAdminTrees = configuration.entity.collapsedAdminTrees is defined ? configuration.entity.collapsedAdminTrees : website().entity.configuration.collapsedAdminTrees -%}
-                                <i id="nestable-expand-all" class="icm-arrow-alt-to-bottom initial small cursor{% if not collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{"Dépiler"|trans|raw }}"></i>
-                                <i id="nestable-collapse-all" class="icm-arrow-alt-to-top initial small cursor{% if collapsedAdminTrees %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{"Empiler"|trans|raw }}"></i>
-                                <a href="{{ lastRoute() }}"
-                                   data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|striptags }}"
-                                   aria-label="{{"Retourner à la page précédente"|trans|striptags }}">
-                                    <i class="icm-reply initial small"></i>
+                                <button type="button" id="nestable-expand-all" class="btn-icon small cursor{% if not collapsedAdminTrees %} d-none{% endif %}"
+                                        data-bs-toggle="tooltip" title="{{ "Dépiler"|trans|striptags }}"
+                                        aria-label="{{ "Dépiler"|trans|striptags }}">
+                                    <i class="icm-arrow-alt-to-bottom"></i>
+                                </button>
+                                <button type="button" id="nestable-collapse-all" class="btn-icon small cursor{% if collapsedAdminTrees %} d-none{% endif %}"
+                                        data-bs-toggle="tooltip" title="{{ "Empiler"|trans|striptags }}"
+                                        aria-label="{{ "Empiler"|trans|striptags }}">
+                                    <i class="icm-arrow-alt-to-top"></i>
+                                </button>
+                                <a href="{{ lastRoute() }}" class="btn-icon small"
+                                   data-bs-toggle="tooltip" title="{{ "Retourner à la page précédente"|trans|striptags }}"
+                                   aria-label="{{ "Retourner à la page précédente"|trans|striptags }}">
+                                    <i class="icm-reply"></i>
                                 </a>
                                 {%- include 'admin/include/intl-selector.html.twig' with {route: 'admin_menu_edit', args: { menu: entity.id, selectorClass: 'ms-2' }} -%}
                             </div>
-                            {#                        </div>#}
                         </div>
                         {%- set limit = entity.maxLevel > 0 ? entity.maxLevel : 1000 -%}
                         {%- include 'admin/core/include/nestable.html.twig' with {routenameInterface: "link", forceLimit: limit, infoUrl: true} -%}

@@ -1,18 +1,22 @@
 {%- trans_default_domain 'admin' -%}
 
 <div class="modal-wrapper">
-    <div id="col-modal-add" class="modal fade add-zone-modal layout-modal" tabindex="-1" role="dialog" aria-labelledby="col-modal-{{ zone.id }}">
+    <div id="col-modal-add" class="modal fade add-zone-modal layout-modal" tabindex="-1" role="dialog" aria-labelledby="col-modal-{{ zone.id }}-label">
         <div class="modal-dialog modal-dialog-centered text-center modal-lg" role="document">
             <div class="modal-content border">
-                <div class="modal-header">
-                    <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-columns"></i></span></span>
-                    <button class="btn-close btn-icon" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
+                <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
+                    <span class="modal-icon w-100">
+                        <span class="icon-wrap">
+                            <i class="icm-columns"></i>
+                        </span>
+                    </span>
+                    <h2 id="col-modal-{{ zone.id }}-label" class="modal-title fw-bold mt-3 mb-0">{{ 'Ajouter une colonne'|trans|raw }}</h2>
+                    <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}">
                         <i class="icm-times"></i>
                     </button>
                 </div>
-                <div class="modal-body px-5">
+                <div class="modal-body px-3 px-md-5">
                     <div class="mx-auto">
-                        <h2 class="w-100 text-center fw-bold mb-3">{{ 'Ajouter une colonne'|trans|raw }}</h2>
                         {{ form_start(form, {attr: {
                             novalidate: "novalidate",
                             action: path('admin_col_new', {website: websiteId(), zone: zone.id}),
@@ -21,7 +25,7 @@
                             'data-scroll-to': '#add-col-btn-'~zone.id,
                         }}) }}
                             {{ form_row(form.size) }}
-                            <div class="w-100 text-center modal-buttons">
+                            <div class="w-100 text-center modal-buttons mt-4">
                                 {{ form_row(form.save) }}
                             </div>
                         {{ form_end(form) }}

@@ -1,17 +1,20 @@
 {%- block instagram_api_widget -%}
-    <div class="row">
+    <div class="row g-3">
         {{ form_row(form.appId) }}
         {{ form_row(form.appSecret) }}
         <div class="col-12 mb-3">
-            {% if auth_url is defined %}
-                <a href="{{ auth_url }}" class="btn btn-primary">
-                    <i class="fab fa-instagram me-2"></i>{{ 'Connecter mon compte Instagram'|trans }}
+            {%- if auth_url is defined -%}
+                <a href="{{ auth_url }}" class="btn-app d-inline-flex align-items-center gap-2">
+                    <i class="fab fa-instagram"></i><span>{{ 'Connecter mon compte Instagram'|trans }}</span>
                 </a>
-            {% else %}
-                <div class="alert alert-info small">
-                    {{ 'Veuillez saisir votre App ID et enregistrer pour activer le bouton de connexion.'|trans }}
-                </div>
-            {% endif %}
+            {%- else -%}
+                {%- include 'admin/include/alert.html.twig' with {
+                    alert: 'info',
+                    display: 'alert',
+                    size: 'small',
+                    message: 'Veuillez saisir votre App ID et enregistrer pour activer le bouton de connexion.'|trans
+                } only -%}
+            {%- endif -%}
         </div>
         {{ form_row(form.accessToken) }}
         {{ form_row(form.nbrItems) }}
@@ -19,20 +22,23 @@
 {%- endblock -%}
 
 {%- block facebook_api_widget -%}
-    <div class="row">
+    <div class="row g-3">
         {{ form_row(form.appId) }}
         {{ form_row(form.apiSecretKey) }}
         {{ form_row(form.pageId) }}
         <div class="col-12 mb-3">
-            {% if auth_url is defined %}
-                <a href="{{ auth_url }}" class="btn btn-primary">
-                    <i class="fab fa-facebook me-2"></i>{{ 'Connecter ma Page Facebook'|trans }}
+            {%- if auth_url is defined -%}
+                <a href="{{ auth_url }}" class="btn-app d-inline-flex align-items-center gap-2">
+                    <i class="fab fa-facebook"></i><span>{{ 'Connecter ma Page Facebook'|trans }}</span>
                 </a>
-            {% else %}
-                <div class="alert alert-info small">
-                    {{ 'Veuillez saisir votre App ID et enregistrer pour activer le bouton de connexion.'|trans }}
-                </div>
-            {% endif %}
+            {%- else -%}
+                {%- include 'admin/include/alert.html.twig' with {
+                    alert: 'info',
+                    display: 'alert',
+                    size: 'small',
+                    message: 'Veuillez saisir votre App ID et enregistrer pour activer le bouton de connexion.'|trans
+                } only -%}
+            {%- endif -%}
         </div>
         {{ form_row(form.accessToken) }}
         {{ form_row(form.nbrItems) }}
@@ -40,19 +46,22 @@
 {%- endblock -%}
 
 {%- block tiktok_api_widget -%}
-    <div class="row">
+    <div class="row g-3">
         {{ form_row(form.appId) }}
         {{ form_row(form.appSecret) }}
         <div class="col-12 mb-3">
-            {% if auth_url is defined %}
-                <a href="{{ auth_url }}" class="btn btn-dark">
-                    <i class="fab fa-tiktok me-2"></i>{{ 'Connecter mon compte TikTok'|trans }}
+            {%- if auth_url is defined -%}
+                <a href="{{ auth_url }}" class="btn-app dark d-inline-flex align-items-center gap-2">
+                    <i class="fab fa-tiktok"></i><span>{{ 'Connecter mon compte TikTok'|trans }}</span>
                 </a>
-            {% else %}
-                <div class="alert alert-info small">
-                    {{ 'Veuillez saisir votre Client Key et enregistrer pour activer le bouton de connexion.'|trans }}
-                </div>
-            {% endif %}
+            {%- else -%}
+                {%- include 'admin/include/alert.html.twig' with {
+                    alert: 'info',
+                    display: 'alert',
+                    size: 'small',
+                    message: 'Veuillez saisir votre Client Key et enregistrer pour activer le bouton de connexion.'|trans
+                } only -%}
+            {%- endif -%}
         </div>
         {{ form_row(form.accessToken) }}
         {{ form_row(form.nbrItems) }}
@@ -60,31 +69,31 @@
 {%- endblock -%}
 
 {%- block _col_size_size_widget -%}
-    <div id="{{ id }}" class="w-100 text-center d-flex justify-content-center flex-wrap gap-2">
+    <div id="{{ id }}" class="col-size-selector w-100 text-center d-flex justify-content-center flex-wrap gap-2">
         {%- for choice in choices -%}
-            {%- set filedId = id ~ '_' ~ choice.value -%}
-            <label for="{{ filedId }}" class="btn-icon cursor">
-                {{ choice.value }}
-                <input type="radio" id="{{ filedId }}" name="{{ full_name }}" required="required" class="d-none input-btn" value="{{ choice.value }}">
+            {%- set fieldId = id ~ '_' ~ choice.value -%}
+            <label for="{{ fieldId }}" class="btn-icon cursor mb-0">
+                <span>{{ choice.value }}</span>
+                <input type="radio" id="{{ fieldId }}" name="{{ full_name }}" required="required" class="d-none input-btn" value="{{ choice.value }}">
             </label>
         {%- endfor -%}
     </div>
 {%- endblock -%}
 
 {%- block _zone_grid_grid_widget -%}
-    <div id="grid-cols-group" class="row justify-content-center">
+    <div id="grid-cols-group" class="row g-3 justify-content-center">
         {%- for key, choice in choices -%}
             {%- if choice.data.cols|length > 0 -%}
-                {%- set filedId = id ~ "_" ~ key -%}
-                <label for="{{ filedId }}" class="col-md-6 col-lg-4">
+                {%- set fieldId = id ~ "_" ~ key -%}
+                <label for="{{ fieldId }}" class="col-12 col-sm-6 col-md-4 col-lg-4 cursor mb-0">
                     <span class="inner-grid d-inline-block w-100">
-                        <span class="row ms-0 me-0">
+                        <span class="row mx-0">
                             {%- for col in choice.data.cols -%}
                                 <div class="item-col col-{{ col.size }}"><div class="inner">{{ col.size }}</div></div>
                             {%- endfor -%}
                         </span>
                     </span>
-                    <input type="radio" id="{{ filedId }}" name="{{ full_name }}" required="required" class="d-none input-grid input-btn" value="{{ choice.value }}">
+                    <input type="radio" id="{{ fieldId }}" name="{{ full_name }}" required="required" class="d-none input-grid input-btn" value="{{ choice.value }}">
                 </label>
             {%- endif -%}
         {%- endfor -%}
@@ -211,7 +220,7 @@
     <div id="{{ id }}" class="row {% if attr.class is defined %} {{ attr.class }}{% endif %}">
         {%- for choiceId, choice in choices -%}
             {%- if choice.data.slug not in disabled -%}
-                <div class="col-md-6">
+                <div class="col-12 col-sm-6">
                     <div class="form-check form-check-inline form-switch mb-1 me-0">
                         <input type="checkbox"
                                id="block-type-{{ choice.value }}"
@@ -231,7 +240,7 @@
     <div id="{{ id }}" class="row {% if attr.class is defined %} {{ attr.class }}{% endif %}">
         {%- for choiceId, choice in choices -%}
             {%- if choice.data.slug not in disabled -%}
-                <div class="col-md-6">
+                <div class="col-12 col-sm-6">
                     <div class="form-check form-check-inline form-switch mb-1 me-0">
                         <input type="checkbox"
                                id="modules-input-{{ choice.value }}"
@@ -263,48 +272,51 @@
 
         <div class="prototype-block {% if prototypeGroup %}h-100{% else %}prototype mb-4{% endif %}">
 
-            {%- set slug = entity.slug is defined and entity.slug -%}
-            {%- set haveTitle = slug == ('support' or 'no-reply') -%}
+            {%- set slug = entity.slug is defined and entity.slug ? entity.slug : null -%}
+            {%- set haveTitle = slug in ['support', 'no-reply'] -%}
 
             {%- if haveTitle -%}
-                {%- set title = entity.slug == 'support' ? 'Expéditeur par défaut'|trans : 'Répondre à par défaut'|trans -%}
+                {%- set title = slug == 'support' ? 'Expéditeur par défaut'|trans : 'Répondre à par défaut'|trans -%}
                 <div class="prototype-block-title p-3">
                     <h6 class="mb-0">{{ title }}</h6>
                 </div>
             {%- endif -%}
 
-                <div class="row pt-3 pe-3 ps-3 pb-0">
+            <div class="row g-3 pt-3 pe-3 ps-3 pb-0">
 
-                    {{ form_row(property.email) }}
-                    {{ form_row(property.entitled) }}
-                    {{ form_row(property.locale) }}
+                {{ form_row(property.email) }}
+                {{ form_row(property.entitled) }}
+                {{ form_row(property.locale) }}
 
-                    {%- if haveTitle -%}
-                        <div class="d-none">
-                    {%- endif -%}
-                        {{ form_row(property.zones) }}
-                    {%- if haveTitle -%}
-                        </div>
-                    {%- endif -%}
+                {%- if haveTitle -%}
+                    <div class="d-none">
+                {%- endif -%}
+                    {{ form_row(property.zones) }}
+                {%- if haveTitle -%}
+                    </div>
+                {%- endif -%}
 
-                    {%- if prototypePosition -%}
-                        {%- include 'admin/include/handle-item-collection.html.twig' with {isNew: isNew} -%}
-                    {%- endif -%}
-                    {%- if entity.deletable is not defined or entity.deletable is defined and entity.deletable -%}
-                        {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
-                            isNew: property.vars.data.id is defined and property.vars.data.id ? false : true,
-                            entityId: isNew ? uniqId() : property.vars.data.id,
-                            interfaceName: interfaceName
-                        } -%}
-                    {%- else -%}
-                        <span class="btn btn-transparent delete-disabled" data-toggle="tooltip" title="{{"Donnée requise"|trans|raw }}">
-                            {{ 'fas trash'|icon(null, 14, 'dark') }}
-                        </span>
-                    {%- endif -%}
-
-                </div>
+                {%- if prototypePosition -%}
+                    {%- include 'admin/include/handle-item-collection.html.twig' with {isNew: isNew} -%}
+                {%- endif -%}
+                {%- if entity.deletable is not defined or entity.deletable is defined and entity.deletable -%}
+                    {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
+                        isNew: property.vars.data.id is defined and property.vars.data.id ? false : true,
+                        entityId: isNew ? uniqId() : property.vars.data.id,
+                        interfaceName: interfaceName
+                    } -%}
+                {%- else -%}
+                    <span class="btn-icon muted small delete-disabled cursor-not-allowed ms-auto"
+                          data-bs-toggle="tooltip"
+                          title="{{ "Donnée requise"|trans|striptags }}"
+                          aria-label="{{ "Donnée requise"|trans|striptags }}">
+                        <i class="icm-trash"></i>
+                    </span>
+                {%- endif -%}
 
             </div>
+
+        </div>
 
         {%- if prototypeGroup -%}
             </div>
@@ -318,7 +330,7 @@
 
     <div id="{{ id }}_collection"
          data-index="{{ form.children|length }}"
-         class="collection {% if prototypePosition %} prototype-sortable{% endif %} {% if prototypeGroup %}row{% else %}col-12{% endif %}"
+         class="collection{% if prototypePosition %} prototype-sortable{% endif %} {% if prototypeGroup %}row{% else %}col-12{% endif %}"
          data-prototype="{{ macro.field_prototype(form.vars.prototype, prototypeGroup)|e('html_attr') }}">
         {%- include 'admin/include/stripe-preloader.html.twig' -%}
         {%- for property in form.children -%}
@@ -327,11 +339,11 @@
     </div>
 
     <div class="col-12 text-end mb-4">
-        <button role="button" class="add-collection btn-app success"
+        <button type="button" class="add-collection btn-app success d-inline-flex align-items-center gap-2"
                 data-collection-target="append"
                 data-target="#{{ id }}_collection">
-                <i class="icm-plus"></i>
-            <span class="d-inline-block">
+            <i class="icm-plus"></i>
+            <span>
                 {%- if prototypeOptions['attr']['button'] is defined and prototypeOptions['attr']['button'] -%}
                     {{ prototypeOptions['attr']['button'] }}
                 {%- else -%}

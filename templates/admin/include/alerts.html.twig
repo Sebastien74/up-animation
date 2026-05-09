@@ -8,14 +8,19 @@
 {%- if haveTooHeavyFiles or haveSeoAlert -%}
     <div id="accordion-alerts" class="accordion my-4">
         <div class="accordion-item border-0 bg-transparent">
-            <div class="alert alert-warning position-relative d-flex p-3 my-3 mb-0 cursor" data-bs-toggle="collapse" data-bs-target="#collapse-alerts" aria-expanded="false" aria-controls="collapseTwo">
-                <div class="btn-icon warning d-flex align-items-center justify-content-center position-relative me-3">
+            <button type="button"
+                    class="alert alert-warning position-relative d-flex p-3 my-3 mb-0 cursor w-100 text-start border-0"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-alerts"
+                    aria-expanded="false"
+                    aria-controls="collapse-alerts">
+                <span class="btn-icon warning d-flex align-items-center justify-content-center position-relative me-3" aria-hidden="true">
                     <i class="icm-exclamation-triangle"></i>
-                </div>
-                <div class="message w-100 d-flex align-items-center">
+                </span>
+                <span class="message w-100 d-flex align-items-center">
                     <small class="d-inline-block">{{ "Vous avez des alertes !! Cliquez pour les afficher."|trans|raw }}</small>
-                </div>
-            </div>
+                </span>
+            </button>
             <div id="collapse-alerts" class="accordion-collapse collapse bg-transparent" data-bs-parent="#accordion-alerts">
                 <div class="pt-4 alerts-wrap">
                     {%- include 'admin/core/include/too-heavy-files.html.twig' -%}

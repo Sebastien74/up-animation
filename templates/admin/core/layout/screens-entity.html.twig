@@ -1,28 +1,46 @@
 {%- trans_default_domain 'admin' -%}
 
-<div class="mb-4 pe-2 ps-2">
-    <div id="columns-headers" class="row text-center mb-3">
-        <div class="col my-auto text-normal">{{ "Position"|trans|raw }}</div>
-        <div class="col my-auto text-normal">{{ "Ordre sur mobile"|trans|raw }}</div>
-        <div class="col my-auto text-normal">{{ "Ordre sur tablette"|trans|raw }}</div>
-        <div class="col my-auto text-normal">{{ "Ordre sur mini PC"|trans|raw }}</div>
-        <div class="col my-auto text-normal">{{ "Taille sur mobile"|trans|raw }}</div>
-        <div class="col my-auto text-normal">{{ "Taille sur tablette"|trans|raw }}</div>
-        <div class="col my-auto text-normal">{{ "Taille sur mini PC"|trans|raw }}</div>
-        <div class="col my-auto text-normal">{{ "Alignement des contenus"|trans|raw }}</div>
+{%- set headers = [
+    "Position"|trans,
+    "Ordre sur mobile"|trans,
+    "Ordre sur tablette"|trans,
+    "Ordre sur mini PC"|trans,
+    "Taille sur mobile"|trans,
+    "Taille sur tablette"|trans,
+    "Taille sur mini PC"|trans,
+    "Alignement des contenus"|trans
+] -%}
+
+<div class="screens-entity-block mb-4 px-2 px-md-3">
+    <div id="columns-headers" class="row text-center mb-3 d-none d-lg-flex">
+        {%- for label in headers -%}
+            <div class="col my-auto text-normal">{{ label|raw }}</div>
+        {%- endfor -%}
     </div>
     {%- if cols is defined -%}
         {%- for col in cols -%}
             {%- set colPosition = col.vars.data.position is defined ? col.vars.data.position : (col.vars.value.position ? col.vars.value.position : null) -%}
-            <div class="row {% if not loop.last %} mb-2{% endif %}">
-                <div class="col text-center my-auto">{{ colPosition }}</div>
-                <div class="col my-auto">{{ form_widget(col.mobilePosition) }}</div>
-                <div class="col my-auto">{{ form_widget(col.tabletPosition) }}</div>
-                <div class="col my-auto">{{ form_widget(col.miniPcPosition) }}</div>
-                <div class="col my-auto">{{ form_widget(col.mobileSize) }}</div>
-                <div class="col my-auto">{{ form_widget(col.tabletSize) }}</div>
-                <div class="col my-auto">{{ form_widget(col.miniPCSize) }}</div>
-                <div class="col my-auto">{{ form_widget(col.alignment) }}</div>
+            {%- set fields = [
+                {label: headers[0], widget: colPosition, type: 'text'},
+                {label: headers[1], widget: col.mobilePosition},
+                {label: headers[2], widget: col.tabletPosition},
+                {label: headers[3], widget: col.miniPcPosition},
+                {label: headers[4], widget: col.mobileSize},
+                {label: headers[5], widget: col.tabletSize},
+                {label: headers[6], widget: col.miniPCSize},
+                {label: headers[7], widget: col.alignment}
+            ] -%}
+            <div class="row screens-entity-row{% if not loop.last %} mb-3 mb-lg-2{% endif %}">
+                {%- for field in fields -%}
+                    <div class="col-12 col-sm-6 col-lg my-auto mb-2 mb-lg-0">
+                        <small class="text-muted d-lg-none d-block mb-1">{{ field.label|raw }}</small>
+                        {%- if field.type is defined and field.type == 'text' -%}
+                            <div class="text-center text-lg-start">{{ field.widget }}</div>
+                        {%- else -%}
+                            {{ form_widget(field.widget) }}
+                        {%- endif -%}
+                    </div>
+                {%- endfor -%}
             </div>
         {%- endfor -%}
     {%- endif -%}

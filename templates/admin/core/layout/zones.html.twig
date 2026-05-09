@@ -138,9 +138,11 @@
 
     {%- if 'edit'|moduleActive(configuration) and layout.id is defined and layout.id -%}
         <button id="add-zone-btn"
-                class="btn-app edit-layout-element-btn"
+                type="button"
+                class="btn-app edit-layout-element-btn d-inline-flex align-items-center gap-2 mt-3"
                 data-path="{{ path('admin_zone_new', {website: websiteId(), layout: layout.id}) }}">
-            <i class="icm-plus"></i>{{ 'Ajouter une ligne'|trans|raw }}
+            <i class="icm-plus"></i>
+            <span>{{ 'Ajouter une ligne'|trans|raw }}</span>
         </button>
     {%- endif -%}
 

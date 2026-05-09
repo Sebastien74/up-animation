@@ -43,17 +43,22 @@
 
     <div class="modal fade" id="new-modal-{{ modalId }}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content border refer-preloader text-start pb-3">
+            <div class="modal-content border refer-preloader pb-3">
                 {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', preloaderClass: 'radius-preloader', full: true} only -%}
-                <div class="modal-header px-4 pt-4 pb-3">
-                    <h2 class="main-title text-start h4 fw-bold ps-2"><i class="icm-plus btn-icon large me-3"></i>{{ addLabel }}</h2>
-                    <button class="btn-close btn-icon btn ms-auto me-2" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
-                        <i class="icm-times btn-icon"></i>
+                <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
+                    <span class="modal-icon w-100">
+                        <span class="icon-wrap">
+                            <i class="icm-plus"></i>
+                        </span>
+                    </span>
+                    <h2 class="modal-title fw-bold mt-3 mb-0">{{ addLabel }}</h2>
+                    <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
+                        <i class="icm-times"></i>
                     </button>
                 </div>
-                <div class="modal-body px-4">
+                <div class="modal-body px-3 px-md-5">
                     {%- set asAjax = form.save.vars.attr.class is defined and 'ajax-post' in form.save.vars.attr.class -%}
-                    <div class="container my-auto{% if asAjax %} ajax-content{% endif %}">
+                    <div class="mx-auto{% if asAjax %} ajax-content{% endif %}">
                         {{ form_start(form, {attr: {novalidate: "novalidate", action: formAction, id: "new-form-"~modalId, class: "mb-0"}}) }}
                             <div class="row justify-content-center">
                                 {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: form, asNews: true, disableTitle: true} only -%}
@@ -67,24 +72,18 @@
                             {%- if alertError is defined and alertError -%}
                                 {%- include 'admin/include/alert.html.twig' with {alert: 'error', message: alertError } only -%}
                             {%- endif -%}
-                            <div class="w-100 text-center modal-buttons mt-4 d-flex justify-content-center">
-                                <div class="mx-1">
-                                    {%- if form.save is defined -%}
-                                        {{ form_row(form.save) }}
-                                    {%- else -%}
-                                        <button type="submit" class="btn-app"><i class="icm-save"></i>{{ "Enregistrer"|trans|raw }}</button>
-                                    {%- endif -%}
-                                </div>
-                                <div class="mx-1">
-                                    {%- if form.saveEdit is defined -%}
-                                        {{ form_row(form.saveEdit) }}
-                                    {%- endif -%}
-                                </div>
-                                <div class="mx-1">
-                                    {%- if form.saveAdd is defined -%}
-                                        {{ form_row(form.saveAdd) }}
-                                    {%- endif -%}
-                                </div>
+                            <div class="w-100 text-center modal-buttons mt-4 d-flex flex-wrap justify-content-center gap-2">
+                                {%- if form.save is defined -%}
+                                    {{ form_row(form.save) }}
+                                {%- else -%}
+                                    <button type="submit" class="btn-app d-inline-flex align-items-center gap-2"><i class="icm-save"></i><span>{{ "Enregistrer"|trans|raw }}</span></button>
+                                {%- endif -%}
+                                {%- if form.saveEdit is defined -%}
+                                    {{ form_row(form.saveEdit) }}
+                                {%- endif -%}
+                                {%- if form.saveAdd is defined -%}
+                                    {{ form_row(form.saveAdd) }}
+                                {%- endif -%}
                             </div>
                         {{ form_end(form) }}
                     </div>

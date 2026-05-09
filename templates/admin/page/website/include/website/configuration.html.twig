@@ -20,7 +20,7 @@
             <div class="card-body pb-3">
                 <h4 class="main-subtitle small"><i class="icm-copy"></i>{{ "Pages"|trans|raw }}</h4>
                 <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
-                    <li><a href="{{ schemeAndHost~"/check.php" }}" target="_blank" class="d-flex align-items-center gap-2" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-shield-check"></i></span>{{ 'Recommandations'|trans|raw }}</a></li>
+                    <li><a href="{{ schemeAndHost~"/check.php" }}" target="_blank" rel="noopener noreferrer" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-shield-check"></i></span>{{ 'Recommandations'|trans|raw }}</a></li>
                     <li><a href="https://validator.schema.org/" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-shield-check"></i></span>{{ 'validator.schema.org'|trans|raw }}</a></li>
                     <li><a href="https://www.serpworx.com/check-security-headers?url= {{ app.request.schemeAndHttpHost }}" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-shield-check"></i></span>{{ 'Check security headers'|trans|raw }}</a></li>
                     <li><a href="{{ schemeAndHost~"/phpinfo.php" }}" target="_blank" class="d-flex align-items-center gap-2"><span class="btn-icon small"><i class="icm-php"></i></span>{{ 'phpinfo.php'|trans|raw }}</a></li>

@@ -2,8 +2,9 @@
 
 .footer {
 
-    height: 60px;
-    color: transparentize($white, .5);
+    height: 56px;
+    color: $theme-text-muted;
+    border-top: 1px solid transparentize($theme-border, .95);
 
     .btn-icon {
         i {

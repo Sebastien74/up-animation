@@ -12,7 +12,7 @@
             width: 55px;
             height: 55px;
             flex: 0 0 55px;
-            border-radius: 14px;
+            border-radius: $radius-md;
             margin: 1rem auto 0 auto;
             background: rgba($primary, 0.14);
             border: 1px solid rgba($primary, 0.28);
@@ -37,7 +37,8 @@
 
         background-color: transparentize($black, 0);
         border: 1px solid $border-color !important;
-        border-radius: $border-radius !important;
+        border-radius: $radius-lg !important;
+        box-shadow: $theme-shadow-xl;
 
         &:before {
             content: '';
@@ -47,8 +48,17 @@
             width: 100%;
             height: 100%;
             background: $bg-gradient-primary;
-            border-radius: $border-radius !important;
+            border-radius: $radius-lg !important;
         }
+    }
+
+    &.fade .modal-dialog {
+        transform: scale(.96) translateY(-12px);
+        transition: transform $transition-base, opacity $transition-base;
+    }
+
+    &.show .modal-dialog {
+        transform: scale(1) translateY(0);
     }
 }
 

@@ -8,7 +8,7 @@
     {%- set entityId = isNew ? uniqId() : color.vars.data.id -%}
     {%- set deletable = isNew ? true : color.vars.data.deletable -%}
 
-    <div class="prototype col-md-6 col-lg-3 mb-3">
+    <div class="prototype col-12 col-sm-6 col-lg-3 mb-3">
         <div class="card">
             <div class="card-body pb-2">
                 <div class="d-flex align-items-center gap-2 mb-3">
@@ -71,7 +71,7 @@
                     <i class="icm-chevron-down ms-auto"></i>
                 </h4>
             </div>
-            <div id="collapse-{{ key }}" class="collapse row" aria-labelledby="heading {{ key }}" data-parent="#colors-collection">
+            <div id="collapse-{{ key }}" class="collapse row" aria-labelledby="heading {{ key }}" data-bs-parent="#colors-collection">
                 {%- for color in items -%}
                     {{ macro.color_prototype(color) }}
                 {%- endfor -%}
@@ -85,7 +85,7 @@
             <i class="icm-folder"></i>{{ 'Autres'|trans|raw }}
             <i class="icm-chevron-down ms-auto"></i>
         </h4>
-        <div id="collapse-others" class="collapse" aria-labelledby="headingOthers" data-parent="#colors-collection">
+        <div id="collapse-others" class="collapse" aria-labelledby="headingOthers" data-bs-parent="#colors-collection">
             <div class="row">
                 {%- for color in others -%}
                     {{ macro.color_prototype(color) }}
@@ -97,11 +97,11 @@
 </div>
 
 <div class="w-100 text-end mt-4 mb-4">
-    <button role="button" class="add-collection btn-app success"
+    <button type="button" class="add-collection btn-app success d-inline-flex align-items-center gap-2"
             data-type="table"
             data-collection-target="append"
             data-target="#colors-collection">
-        <i class="icm-plus"></i>{{ "Ajouter une couleur"|trans|raw }}
+        <i class="icm-plus"></i><span>{{ "Ajouter une couleur"|trans|raw }}</span>
     </button>
 </div>
 

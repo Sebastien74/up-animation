@@ -1,28 +1,37 @@
 {%- trans_default_domain 'admin' -%}
 
-<div class="modal fade" id="import-modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="import-modal" tabindex="-1" role="dialog"
+     aria-labelledby="import-modal-redirection-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content border refer-preloader text-start pb-5 pt-3">
+        <div class="modal-content border refer-preloader pb-3">
             {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
-            <div class="modal-header">
-                <span class="modal-icon text-center w-100"><span class="icon-wrap"><i class="icm-download"></i></span></span>
-                <button class="btn-close btn-icon position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}">
+            <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
+                <span class="modal-icon w-100">
+                    <span class="icon-wrap">
+                        <i class="icm-download"></i>
+                    </span>
+                </span>
+                <h2 id="import-modal-redirection-label" class="modal-title fw-bold mt-3 mb-0">{{ "Importer vos redirections"|trans|raw }}</h2>
+                <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}">
                     <i class="icm-times"></i>
                 </button>
             </div>
-            <div class="modal-body d-flex">
-                <div class="container my-auto ajax-content">
-                    <h2 class="main-title text-center fw-bold mb-5">{{ "Importer vos redirections"|trans|raw }}</h2>
+            <div class="modal-body px-3 px-md-5">
+                <div class="ajax-content">
                     {{ form_start(form, {attr: {
                         id: 'import-redirection-form',
                         action: path('admin_redirection_import', {website: websiteId()}),
                         novalidate: "novalidate"
                     }}) }}
-                    {{ form_row(form.xls_file) }}
-                    <div class="w-100 text-center modal-buttons mt-4">
-                        <button class="btn-app" data-bs-dismiss="modal">{{ "Annuler"|trans|raw }}</button>
-                        <button type="submit" class="btn-app ajax-post refresh">{{ "Importer"|trans|raw }}</button>
-                    </div>
+                        {{ form_row(form.xls_file) }}
+                        <div class="w-100 text-center modal-buttons mt-4 d-flex flex-wrap justify-content-center gap-2">
+                            <button type="button" class="btn-app muted d-inline-flex align-items-center gap-2" data-bs-dismiss="modal">
+                                <i class="icm-ban"></i><span>{{ "Annuler"|trans|raw }}</span>
+                            </button>
+                            <button type="submit" class="btn-app ajax-post refresh d-inline-flex align-items-center gap-2">
+                                <i class="icm-download"></i><span>{{ "Importer"|trans|raw }}</span>
+                            </button>
+                        </div>
                     {{ form_end(form) }}
                 </div>
             </div>

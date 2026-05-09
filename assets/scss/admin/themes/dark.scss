@@ -59,8 +59,8 @@ $theme-bg-alt: $white !global;
 $theme-surface: $white !global;
 $theme-surface-alt: $gray-100 !global;
 
-$theme-text: #1a1a1a !global; // Darker text for better contrast
-$theme-text-muted: #4a4a4a !global;
+$theme-text: rgba(255, 255, 255, 0.5) !global; // Darker text for better contrast
+$theme-text-muted: rgba(255, 255, 255, 0.3) !global;
 $theme-text-light: #6c757d !global;
 
 $theme-border: #d1d1d1 !global;
@@ -92,6 +92,14 @@ $theme-pagination-text: $theme-text !global;
 $theme-pagination-border: $gray-300 !global;
 $theme-pagination-active-bg: $primary !global;
 $theme-pagination-active-text: $white !global;
+
+// Ombres théméables — light : subtiles, teintes neutres pour profondeur sans noirceur
+$theme-shadow-color: #0f172a !global;
+$theme-shadow-sm: 0 1px 2px rgba($theme-shadow-color, .06) !global;
+$theme-shadow-md: 0 4px 12px rgba($theme-shadow-color, .08), 0 2px 4px rgba($theme-shadow-color, .04) !global;
+$theme-shadow-lg: 0 12px 32px rgba($theme-shadow-color, .10), 0 4px 8px rgba($theme-shadow-color, .06) !global;
+$theme-shadow-xl: 0 24px 64px rgba($theme-shadow-color, .12), 0 8px 16px rgba($theme-shadow-color, .08) !global;
+$theme-shadow-focus: 0 0 0 3px rgba($primary, .18) !global;
 
 $theme-colors: (
     primary: $primary,
@@ -127,10 +135,10 @@ $headings-font-family: $font-family !global;
 
 /*-- c - Card --*/
 
-$card-cap-bg: $theme-card-cap-bg !global;
+$card-cap-bg: transparent !global;
 $card-cap-color: $theme-text !global;
 $card-cap-btn-outline: $primary !global;
-$card-cap-bg-subtitle: $theme-card-cap-bg !global;
+$card-cap-bg-subtitle: transparent !global;
 $card-cap-color-subtitle: $theme-text-muted !global;
 
 /*-- d - Modal --*/
