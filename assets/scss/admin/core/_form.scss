@@ -499,10 +499,131 @@ form {
     overflow: hidden;
 }
 
+/*-----------------------------------
+   Custom checkbox (Bootstrap 4 legacy markup)
+-----------------------------------*/
+
 .custom-control-label {
     font-weight: 300;
     font-size: 13px;
     line-height: 22px;
+}
+
+$cb-size: 18px;
+$cb-radius: $radius-xs;
+$cb-icon-check: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' d='M3.5 8.5l3 3 6-7'/></svg>";
+$cb-icon-cross: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' d='M4 4l8 8M12 4l-8 8'/></svg>";
+
+.custom-checkbox {
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: $cb-size;
+
+    .custom-control-input {
+        position: absolute;
+        width: $cb-size;
+        height: $cb-size;
+        margin: 0;
+        opacity: 0;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .custom-control-label {
+
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        min-height: $cb-size;
+        padding-left: $cb-size + $space-2;
+        cursor: pointer;
+        user-select: none;
+        margin-bottom: 0;
+
+        // case
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: $cb-size;
+            height: $cb-size;
+            transform: translateY(-50%);
+            background: transparentize($black, .85);
+            border: 1px solid $btn-border;
+            border-radius: $cb-radius;
+            transition: border-color $transition-fast, background-color $transition-fast, box-shadow $transition-fast;
+        }
+
+        // coche / croix
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: $cb-size;
+            height: $cb-size;
+            transform: translateY(-50%) scale(.6);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 70% 70%;
+            opacity: 0;
+            transition: opacity $transition-fast, transform $transition-fast;
+        }
+
+        // label vide → on resserre l'empreinte (cas .delete-pack-control, delete-index-all, etc.)
+        &:empty {
+            padding-left: $cb-size;
+            width: $cb-size;
+            height: $cb-size;
+        }
+    }
+
+    &:hover .custom-control-input:not(:disabled) ~ .custom-control-label::before {
+        border-color: $btn-border-hover;
+        background: transparentize($black, .75);
+    }
+
+    .custom-control-input:focus-visible ~ .custom-control-label::before {
+        border-color: $primary;
+        box-shadow: 0 0 0 3px transparentize($primary, .75);
+    }
+
+    // état coché par défaut → accent primaire + coche blanche
+    .custom-control-input:checked ~ .custom-control-label {
+
+        &::before {
+            background: $primary;
+            border-color: $primary;
+        }
+
+        &::after {
+            background-image: url($cb-icon-check);
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
+        }
+    }
+
+    // variante danger (action de suppression) → rouge + croix blanche
+    .custom-control-input:checked ~ .custom-control-label.danger {
+
+        &::before {
+            background: $danger;
+            border-color: $danger;
+            box-shadow: 0 0 0 3px transparentize($danger, .8);
+        }
+
+        &::after {
+            background-image: url($cb-icon-cross);
+        }
+    }
+
+    .custom-control-input:disabled ~ .custom-control-label {
+        cursor: not-allowed;
+        opacity: .5;
+    }
 }
 
 .form-control-line .form-control {
