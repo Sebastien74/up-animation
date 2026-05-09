@@ -314,6 +314,21 @@ body {
 
     /*--- Tables ---*/
 
+    // Wrapper .app-table : les tokens hardcodés en blanc rgba dans _table.scss
+    // (cf. $tbl-border, $tbl-border-soft) sont invisibles sur fond crème.
+    // On force ici la bordure périphérique et les séparateurs head/foot.
+    .app-table {
+        border: 1px solid $theme-border;
+
+        .app-table__head {
+            border-bottom: 1px solid $theme-border;
+        }
+
+        .app-table__foot {
+            border-top: 1px solid $theme-border;
+        }
+    }
+
     table {
 
         tbody > tr > td,
@@ -363,6 +378,10 @@ body {
                     color: $theme-text !important;
                 }
             }
+        }
+
+        tr:last-child td {
+            border-bottom: none !important;
         }
     }
 
@@ -789,11 +808,15 @@ body {
 
     /*--- Tree / sortables ---*/
 
+    // tree-sortable.scss est chargé en chunk dynamique (cf. open-modal.js, vendor.js),
+    // donc compilé hors pipeline light/dark : ses tokens restent ceux du dark par défaut
+    // ($nestable-surface = $bg-gradient-primary sombre, $nestable-border blanc rgba…).
+    // On neutralise ici le gradient hérité (background-image) en repassant via le shorthand.
     #medias-sortable-container .sortable-item,
     .dd3-handle,
     .dd3-content {
 
-        background-color: $theme-surface !important;
+        background: $theme-surface !important;
         border: 1px solid $theme-border !important;
         color: $theme-text;
 
@@ -817,6 +840,15 @@ body {
         .handle-item::after {
             background-color: $theme-text-muted;
         }
+    }
+
+    // Clone flottant pendant le drag (Nestable3 l'injecte dans <body>) :
+    // tree-sortable.scss force background: $darken (sombre) et une ombre noire dense.
+    // On réaligne sur la palette crème.
+    .dd-dragel .dd3-content {
+        background: $theme-surface !important;
+        border-color: $theme-border-alt !important;
+        box-shadow: $theme-shadow-xl !important;
     }
 
     /*--- Medias / index ---*/
