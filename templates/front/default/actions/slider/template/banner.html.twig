@@ -15,11 +15,14 @@
                 {% set display = mediaType != 'video' and media.media.originalName is defined and media.media.originalName %}
                 {%- if display -%}
                     <div class="marquee-item d-flex align-items-center justify-content-center px-2 h-100">
+                        {%- set mediaInfo = fileInfo(website, media.media.originalName) -%}
+                        {%- set mediaHeight = 50 -%}
+                        {%- set mediaWidth = mediaInfo and mediaInfo.width and mediaInfo.height ? (mediaInfo.width * mediaHeight / mediaInfo.height)|round(0, 'ceil') : null -%}
                         {%- if withThumbs -%}
                             {{ media|file(thumbConfiguration, {
                                 notInBox: true,
-                                maxWidth: fileSizes.width is defined ? fileSizes.width : null,
-                                maxHeight: fileSizes.height is defined ? fileSizes.height : 50,
+                                maxWidth: fileSizes.width is defined ? fileSizes.width : (mediaWidth ? mediaWidth : null),
+                                maxHeight: fileSizes.height is defined ? fileSizes.height : mediaHeight,
                                 popupGallery: slider.popup,
                                 fullPopup: slider.popup,
                                 colSize: colSize
@@ -29,7 +32,7 @@
                                 path: true,
                             }) -%}
                             {%- set title = media.intl.title ? media.intl.title : media.entity.name -%}
-                            <img src="{{ path }}" alt="{{ title }}" class="img-fluid img-{{ media.extension }}" height="50" {% if 'svg' == media.extension %} style="height: 50px;" {% endif %}>
+                            <img src="{{ path }}" alt="{{ title }}" class="img-fluid img-{{ media.extension }}" height="{{ mediaHeight }}"{% if mediaWidth %} width="{{ mediaWidth }}"{% endif %}{% if 'svg' == media.extension %} style="height: 50px;"{% endif %}>
                         {%- endif -%}
                     </div>
                 {%- endif -%}

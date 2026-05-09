@@ -128,12 +128,19 @@ final class ProductModel extends BaseModel
     private static function getConfig(string $catalogSlug, string $type): array|string
     {
         return match ($type) {
-            'color', 'icon' => match ($catalogSlug) {
+            'color' => match ($catalogSlug) {
                 'agencies' => 'primary',
                 'events' => 'info-light',
                 'services' => 'info',
                 'rentals' => 'warning',
                 default => 'white',
+            },
+            'icon' => match ($catalogSlug) {
+                'agencies' => 'headset',
+                'events' => 'award',
+                'services' => 'podium-star',
+                'rentals' => 'boxes',
+                default => '',
             },
             'defaultUniqSubCategories' => match ($catalogSlug) {
                 'agencies' => [],

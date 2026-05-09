@@ -118,10 +118,21 @@
     padding: $space-3 0;
     border-radius: $radius-md;
     color: rgba(255, 255, 255, 0.95);
-    transition: color $transition-base;
+    transition: color $transition-base, font-weight $transition-base;
 
     &:hover, &.active {
         color: $white;
+    }
+
+    // État active (section ouverte) : poids accentué + chevron en accent
+    // pour distinguer clairement du hover sur un fond sombre uniforme
+    &.active {
+        font-weight: 600;
+
+        &::after,
+        &:hover::after {
+            border-color: $primary;
+        }
     }
 }
 

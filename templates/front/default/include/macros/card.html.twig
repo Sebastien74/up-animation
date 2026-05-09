@@ -245,7 +245,7 @@
             {%- set linkLabel = catalog.intl.placeholder ? catalog.intl.placeholder : 'Tout voir'|trans -%}
             <{{ element }}{% if asLink %} href="{{ entity.indexUrl }}"{% endif %} class="circle-wrap-icon shadow bg-{{ entity.color }} d-flex align-items-center justify-content-center"
                 {% if asLink %}data-bs-toggle="tooltip" data-bs-title="{{ linkLabel|striptags }}" aria-label="{{ linkLabel|striptags }}"{% endif %}>
-                <i class="icon-headset text-white"></i>
+                <i class="icon-{{ entity.icon }} text-white"></i>
             </{{ element }}>
         </div>
         <div class="card-body bg-transparent border-0 px-3 pb-2 d-flex flex-column {% if catalog.intl.label %}pt-3{% else %}pt-4{% endif %}">
