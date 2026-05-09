@@ -1093,13 +1093,13 @@
     schema-utils "^3.0.0 || ^4.0.0"
 
 "@symfony/ux-autocomplete@file:vendor/symfony/ux-autocomplete/assets":
-  version "2.31.0"
+  version "2.34.0"
 
 "@symfony/ux-live-component@file:vendor/symfony/ux-live-component/assets":
-  version "2.31.0"
+  version "2.34.0"
 
 "@symfony/ux-turbo@file:vendor/symfony/ux-turbo/assets":
-  version "2.31.0"
+  version "2.34.0"
 
 "@symfony/webpack-encore@^5.1.0":
   version "5.2.0"
@@ -3905,10 +3905,10 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-nestable2@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/nestable2/-/nestable2-1.6.0.tgz#83ffe2483cca1c63771ec0012693b5155bfdd115"
-  integrity sha512-/jBy2FhAqik/yV1fYDqbP3OvGLb/wpjweg91UTzIREI+69hbqkKjJ9L+/FSBejYM0WMhvd2Q2p0+8XXetv0egA==
+nestable3@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/nestable3/-/nestable3-1.0.0.tgz#a7c1184cfd5ccd1df332c7f37bf3d55a2871edf9"
+  integrity sha512-2+yRQPn++3CzwFXHyeyjIGBvoWoZ2BR/VSO61Rwkn9qO0Hu20F64CgaVELUE73P528l3Snxz6eiCp3IdNsv+Cg==
   dependencies:
     jquery ">=1.7.2"
 

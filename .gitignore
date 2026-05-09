@@ -1,4 +1,6 @@
 .ai/
+.claude/
+
 .idea/
 .idea/workspace.xml
 /nbproject/

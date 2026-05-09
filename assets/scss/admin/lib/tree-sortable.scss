@@ -2,14 +2,20 @@
 
 /* -----------------------------------------------------------------
 
-    Created on : 2019-08-27, 07:14:30 AM
+    Created on : 2019-08-27
     Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
-    TREE SORTABLE :
-    ===============
+    NESTABLE :
+    ==========
 
     1 ) Variables
-    2 ) Custom
+    2 ) Container & list
+    3 ) Item card
+    4 ) Handle
+    5 ) Content & actions
+    6 ) Drop zones (placeholder / empty)
+    7 ) Drag clone
+    8 ) States (collapsed / disabled / inert)
 
 ------------------------------------------------------------------ */
 
@@ -19,14 +25,35 @@
 
 @import '../variables';
 
+$nestable-item-height: 50px;
+$nestable-handle-width: 60px;
+$nestable-indent: 30px;
+$nestable-gap: 7px;
+$nestable-radius: $radius-md;
+
+$nestable-surface: $bg-gradient-primary;
+$nestable-border: $btn-border;
+$nestable-border-hover: $btn-border-hover;
+$nestable-text: $btn-text;
+
+$nestable-shadow-rest: 0 1px 2px rgba(0, 0, 0, .25);
+$nestable-shadow-hover: 0 6px 18px rgba(0, 0, 0, .35);
+$nestable-shadow-drag: 0 22px 55px rgba(0, 0, 0, .55);
+
+$nestable-drop-bg: transparentize($primary, .88);
+$nestable-drop-border: transparentize($primary, .55);
+
 /*-----------------------------------
-   2 ) Custom
+   2 ) Container & list
 -----------------------------------*/
 
 .nestable-list-container {
 
+    position: relative;
+    font-size: $font-size-base;
+
     .delete-pack-control {
-        margin-left: .5rem;
+        margin-left: $space-2;
     }
 }
 
@@ -37,8 +64,6 @@
     padding: 0;
     max-width: 100%;
     list-style: none;
-    font-size: 13px;
-    line-height: 50px;
 }
 
 .dd-list {
@@ -47,116 +72,133 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    min-height: 28px;
+    min-height: $space-7;
 }
 
-#nestable-menus,
-#nestable-pages {
-    & > .dd-list {
-        & > li {
-            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
-        }
+/* Indentation enfant + ligne verticale subtile pour matérialiser le niveau */
+.dd-list .dd-list {
+
+    padding-left: $nestable-indent;
+    min-height: $space-9;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: $space-2;
+        bottom: $space-2;
+        left: $space-3;
+        width: 1px;
+        background: $nestable-border;
+        pointer-events: none;
     }
 }
 
-.dd-list .dd-list {
-    padding-left: 30px;
-    min-height: 42px;
-}
+/*-----------------------------------
+   3 ) Item card
+-----------------------------------*/
 
-.dd-collapse,
-.dd-collapsed .dd-list {
-    display: none !important;
-}
-
-.dd-dragel,
 .dd-item,
 .dd-empty,
 .dd-placeholder {
     display: block;
     position: relative;
-    margin: 0;
+    margin: $nestable-gap 0;
     padding: 0;
-    min-height: 50px;
-    font-size: 13px;
-    line-height: 50px !important;
-    border-radius: 12px;
+    min-height: $nestable-item-height;
+    border-radius: $nestable-radius;
 }
 
-.dd-dragel {
-    li {
-        .dd3-content {
-            padding-left: 60px !important;
-        }
+.dd-item {
+
+    transition: transform $transition-fast, box-shadow $transition-fast;
+
+    &:hover > .dd3-content {
+        border-color: $nestable-border-hover;
+        box-shadow: $nestable-shadow-hover;
     }
 }
 
+/*-----------------------------------
+   4 ) Handle
+-----------------------------------*/
+
 .dd-handle {
-    display: block;
-    height: 50px !important;
-    width: 50px !important;
-    margin: 5px 0;
-    padding: 5px 10px;
-    cursor: grabbing;
-    color: $gray-900;
-    text-decoration: none;
-    border: 1px solid $white;
-    background: $white;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
 }
 
-.dd-item > button {
-    display: block;
-    position: relative;
-    cursor: grabbing;
-    float: left;
-    width: 25px;
-    height: 35px;
-    margin: 5px 0;
-    padding: 0;
-    text-indent: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    border: 0;
-    background: transparent;
-    font-size: 12px;
-    line-height: 1;
-    text-align: center;
-    font-weight: bold;
-    margin-left: 40px !important;
-}
+.dd3-handle {
 
-.dd-item > button:before {
-    content: '+';
-    display: block;
     position: absolute;
-    width: 100%;
-    text-align: center;
-    text-indent: 0;
+    top: 0;
+    left: 0;
+    width: $nestable-handle-width;
+    height: $nestable-item-height;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    border-top-left-radius: $nestable-radius;
+    border-bottom-left-radius: $nestable-radius;
+    color: $nestable-text;
+    cursor: grab;
+    transition: color $transition-fast, background-color $transition-fast;
+
+    &:hover {
+        color: $white;
+        background: rgba(255, 255, 255, .03);
+    }
+
+    &:active {
+        cursor: grabbing;
+    }
+
+    .btn-icon {
+        flex: 0 0 34px;
+    }
+
+    /* Affordance discrète : 3 points / icône drag plus visible au survol de la carte */
+    .dd-item:hover > & {
+        color: $white;
+    }
 }
 
-.dd-item > button[data-action="collapse"]:before {
-    content: ' ';
-}
-
-.dd-placeholder,
-.dd-empty {
-    margin: 5px 0;
-    padding: 0;
-    min-height: 50px;
-    border: 1px solid transparent;
-    -moz-box-sizing: border-box;
-    border-radius: 12px;
-}
-
-.dd-placeholder {
-    background-color: $dash-dark;
-    border-radius: 12px;
-    height: 50px;
-}
+/*-----------------------------------
+   5 ) Content & actions
+-----------------------------------*/
 
 .dd3-content {
+
+    height: $nestable-item-height;
+    margin: 0;
+    padding: $space-2 $space-4 $space-2 $nestable-handle-width;
+    color: $nestable-text;
+    text-decoration: none;
+    border: 1px solid $nestable-border;
+    background: $nestable-surface;
+    border-radius: $nestable-radius;
+    box-shadow: $nestable-shadow-rest;
+    box-sizing: border-box;
+    transition: border-color $transition-fast, box-shadow $transition-fast, background-color $transition-fast;
+
+    &:hover {
+        color: $nestable-text;
+    }
+
+    .select2-container {
+        width: initial !important;
+    }
+
+    .badges .icon-info {
+        font-size: 11px;
+    }
+
+    span.title {
+        font-weight: 400;
+    }
 
     .title {
 
@@ -171,133 +213,91 @@
     }
 
     .btn-collapsed-group {
+
         i {
             font-size: 15px;
             position: relative;
             top: 1px;
+            transition: transform $transition-fast;
+        }
+
+        .expand-btn:hover i,
+        .collapse-btn:hover i {
+            transform: translateY(-1px);
         }
     }
 }
 
+/*-----------------------------------
+   6 ) Drop zones (placeholder / empty)
+-----------------------------------*/
+
+/* Slot de réception pendant le drag : bordure dashed + accent discret */
+.dd-placeholder {
+    margin: $nestable-gap 0;
+    min-height: $nestable-item-height;
+    background: $nestable-drop-bg;
+    border: 1px dashed $nestable-drop-border;
+    border-radius: $nestable-radius;
+    box-shadow: inset 0 0 0 1px transparent;
+    animation: nestable-pulse 1.6s ease-in-out infinite;
+}
+
+/* Sublist vide pendant le drag : zone détectable mais discrète */
+.dd-empty {
+    min-height: $space-7;
+    margin: $nestable-gap 0;
+    border: 1px dashed transparentize($white, .92);
+    border-radius: $nestable-radius;
+    background: transparentize($black, .85);
+}
+
+@keyframes nestable-pulse {
+    0%, 100% {
+        border-color: $nestable-drop-border;
+        background: $nestable-drop-bg;
+    }
+    50% {
+        border-color: transparentize($primary, .35);
+        background: transparentize($primary, .82);
+    }
+}
+
+/*-----------------------------------
+   7 ) Drag clone
+-----------------------------------*/
+
+/* Item flottant suivant le curseur — Nestable3 le crée à la volée pendant le drag */
 .dd-dragel {
 
     position: absolute;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 1080; // au-dessus du contenu admin, sous les modales Bootstrap
+    height: $nestable-item-height;
+    transform: rotate(.4deg);
 
     .dd3-content {
-
-        background-color: $darken;
-        padding: 0 0 0 70px !important;
-    }
-}
-
-.dd-dragel .dd3-content, .dd-dragel .dd3-handle {
-    border-radius: 12px !important;
-}
-
-.dd-dragel > .dd-item .dd-handle {
-    margin-top: 0;
-}
-
-body .dd3-content {
-
-    height: 50px !important;
-    margin: 7px 0;
-    padding: 5px 15px 5px 60px;
-    color: $btn-text;
-    text-decoration: none;
-    border: 1px solid $btn-border;
-    background: $bg-gradient-primary;
-    box-sizing: border-box;
-    border-radius: 12px;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
-
-    &:hover {
-        color: $btn-text;
-        background: $bg-gradient-primary;
-    }
-
-    .select2-container {
-        width: initial !important;
-    }
-}
-
-.dd-expand {
-    display: none !important;
-}
-
-.dd3-content {
-
-    .badges .icon-info {
-        font-size: 11px;
-    }
-
-    span.title {
-        font-weight: 400;
-    }
-}
-
-.dd-dragel > .dd3-item > .dd3-content {
-    margin: 0;
-}
-
-.dd3-item > button {
-    margin-left: 30px;
-}
-
-.dd3-item.parent-row.disabled {
-
-    > button {
-        display: none;
+        background: $darken;
+        border-color: $nestable-border-hover;
+        box-shadow: $nestable-shadow-drag;
+        padding-left: $nestable-handle-width;
+        margin: 0;
     }
 
     .dd3-handle {
+        cursor: grabbing;
+        color: $white;
+    }
+
+    /* le clone n'a pas de sublist visible ni de contenu d'arbre imbriqué */
+    .dd-list {
         display: none;
     }
-
-    .dd3-content {
-        padding-left: 15px;
-    }
-}
-
-.dd3-handle {
-
-    position: absolute;
-    margin: 0;
-    left: 0;
-    top: 0;
-    cursor: grabbing;
-    width: 60px !important;
-    text-indent: initial !important;
-    white-space: nowrap;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none !important;
-    background: transparent !important;
-    border-radius: 12px;
-
-    .dd3-handle {
-        .btn-icon {
-            flex: 0 0 34px;
-        }
-    }
-}
-
-#nestable-list .ajax-get-refresh i.eye {
-    margin-top: 3px !important;
-}
-
-.dd-dragel {
-
-    height: 50px !important;
 
     .dd3-content-right {
         display: flex;
         justify-content: flex-end;
-        padding-right: 15px;
+        padding-right: $space-4;
     }
 
     .delete-pack-control {
@@ -309,10 +309,56 @@ body .dd3-content {
             height: 1rem;
             margin-left: 1.25rem;
 
-            &:before, &:after {
-                top: 0 !important;
-                border-radius: 0.25rem !important;
+            &::before,
+            &::after {
+                top: 0;
+                border-radius: $radius-xs;
             }
         }
+    }
+}
+
+/*-----------------------------------
+   8 ) States
+-----------------------------------*/
+
+/* Item replié : on cache uniquement le sublist enfant */
+.dd-collapsed > .dd-list {
+    display: none;
+}
+
+/* Boutons natifs Nestable3 neutralisés via options JS — fallback CSS de sécurité */
+.dd-expand,
+.dd-collapse,
+.dd-expand-content,
+.dd-collapse-content {
+    display: none;
+}
+
+/* Item non déplaçable (entité protégée) */
+.dd3-item.parent-row.disabled {
+
+    .dd3-handle {
+        display: none;
+    }
+
+    .dd3-content {
+        padding-left: $space-4;
+    }
+}
+
+/* Pendant qu'on coche une checkbox de delete, on neutralise l'amorce de drag */
+.disabled-nestable {
+
+    .dd3-handle {
+        pointer-events: none;
+        opacity: .5;
+    }
+}
+
+#nestable-list {
+
+    .ajax-get-refresh i.eye {
+        margin-top: 3px;
     }
 }

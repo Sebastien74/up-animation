@@ -58,6 +58,7 @@
 
     /* Links inside breadcrumb */
     .breadcrumb-item a {
+
         color: $crumb-muted !important;
         text-decoration: none;
         position: relative;
@@ -65,35 +66,13 @@
         padding: 2px 6px;
         margin: -2px -6px;
         border-radius: $radius-sm;
-        transition: color .35s $transition-base-timing,
-                    background-color .35s $transition-base-timing,
-                    transform .25s $transition-base-timing;
+        transition: color .35s $transition-base-timing;
         will-change: color, background-color, transform;
 
-        &::after {
-            content: '';
-            position: absolute;
-            left: 6px;
-            right: 6px;
-            bottom: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, $crumb-text, transparent);
-            transform: scaleX(0);
-            transform-origin: center;
-            opacity: 0;
-            transition: transform .4s $transition-base-timing, opacity .3s $transition-base-timing;
-        }
-
         @include mediaQuery(min-lg) {
-            &:hover {
-                color: $crumb-text !important;
-                background-color: rgba(255, 255, 255, 0.05);
-                transform: translateY(-1px);
 
-                &::after {
-                    transform: scaleX(1);
-                    opacity: .65;
-                }
+            &:hover {
+                transition: color .35s $transition-base-timing;
             }
 
             &:focus-visible {
