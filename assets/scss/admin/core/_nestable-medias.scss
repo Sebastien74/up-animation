@@ -104,14 +104,31 @@
             padding: 5px 0 0 0;
         }
 
-        .delete-pack-control {
+        /* Aligne la zone d'actions de droite sur la nestable (.dd3-content-right) :
+           flex + gap entre boutons, séparateur visuel avant la checkbox de delete-pack. */
+        .col-4.text-end {
 
-            margin-left: 25px;
-            margin-right: 5px;
+            display: flex !important;
+            align-items: center;
+            justify-content: flex-end;
+            gap: $space-2;
 
-            .custom-control-label::before,
-            .custom-control-label::after {
-                top: 5px;
+            > span:last-child {
+
+                margin-right: .75rem !important;
+
+                @media (min-width: 576px) {
+                    margin-left: $space-2;
+                    padding-left: $space-2;
+                    border-left: 1px solid $btn-border;
+                }
+            }
+
+            > span:last-child,
+            .delete-pack-control {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
             }
         }
     }

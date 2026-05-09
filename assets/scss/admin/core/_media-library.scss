@@ -1,3 +1,13 @@
+.tab-pane#medias {
+
+    .dropzone {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
 #medias-library-modal {
 
     .edit-medias-btns {

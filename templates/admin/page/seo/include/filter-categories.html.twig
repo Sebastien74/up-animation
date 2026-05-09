@@ -6,7 +6,7 @@
     {%- for category, item in entities -%}
         {%- set label = item['main'][1].classname is defined ? item['main'][1].classname : (item[0].classname is defined ? item[0].classname : null) -%}
         <a id="v-pills-{{ category }}-tab"
-           class="nav-link {% if currentCategory == category %} active{% endif %}"
+           class="btn-app small {% if currentCategory == category %} active{% endif %}"
            data-bs-toggle="pill"
            href="#v-pills-{{ category }}"
            role="tab"
@@ -20,7 +20,7 @@
     {%- endfor -%}
     {%- if models is defined -%}
         <a id="v-pills-models-tab"
-           class="nav-link {% if currentCategory == 'models' %} active{% endif %}"
+           class="btn-app small {% if currentCategory == 'models' %} active{% endif %}"
            data-bs-toggle="pill"
            href="#v-pills-models"
            role="tab"

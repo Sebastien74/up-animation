@@ -110,7 +110,7 @@
 {%- block form_widget_compound -%}
     {%- set inAdmin = inAdmin() -%}
     {%- set compound_attributes = block('widget_container_attributes') -%}
-    {%- if inAdmin and 'intl' == name -%}
+    {%- if inAdmin -%}
         {%- set compound_attributes = 'class=' not in compound_attributes ? compound_attributes~' class="row compound-group"' -%}
     {%- else -%}
         {%- set compound_attributes = 'class=' not in compound_attributes ? compound_attributes~' class="row m-0 compound-group"' -%}

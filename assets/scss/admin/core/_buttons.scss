@@ -48,6 +48,11 @@
     }
 }
 
+.main-subtitle .btn-icon i {
+    border: none !important;
+    background: transparent !important;
+}
+
 .btn-app {
 
     border-radius: $border-radius;
@@ -174,6 +179,50 @@
     }
 }
 
+#locales-dropdown-select.dropdown-menu {
+
+    background: $dash-dark;
+    border: 1px solid $input-border-color;
+    border-radius: $radius-lg;
+    box-shadow: $btn-shadow;
+    padding: $space-2;
+    color: $white-lighten;
+    min-width: 180px;
+    overflow: hidden;
+
+    .dropdown-item {
+
+        display: flex;
+        align-items: center;
+        gap: $space-2;
+        color: $white-lighten;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: $radius-sm;
+        padding: $space-2 $space-3;
+        font-size: 13px;
+        line-height: 1.3;
+        transition: background $transition-fast, border-color $transition-fast, color $transition-fast;
+
+        img {
+            width: 19px;
+            height: 14px;
+            object-fit: cover;
+            border-radius: 3px;
+            flex: 0 0 auto;
+        }
+
+        &:hover,
+        &:focus,
+        &:active,
+        &.active {
+            background: $btn-surface-hover;
+            border-color: $btn-border-hover;
+            color: $white;
+        }
+    }
+}
+
 .btn-icon, .btn-app, .main-subtitle i {
 
     &.danger {
@@ -273,9 +322,38 @@
 }
 
 .open-modal-medias-btn {
+
     i {
         font-size: 14px;
         border-radius: 12px;
+    }
+
+    &.multiple {
+
+        position: relative;
+
+        .icm-photo-video {
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
+        }
+
+        .open-modal-medias {
+            flex-direction: column;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center;
+            padding: 1.5rem !important;
+        }
+
+        .optimize-media-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            margin: 0 !important;
+            transform: initial !important;
+            padding: 0 !important;
+        }
     }
 }
 

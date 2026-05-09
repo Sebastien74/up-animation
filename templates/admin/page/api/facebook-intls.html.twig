@@ -8,7 +8,7 @@
             {%- for intl in facebookIntls -%}
                 {%- set locale = intl.vars.value.locale -%}
                 <li class="nav-item">
-                    <a class="nav-link {% if locale == defaultLocale %} active{% endif %}"
+                    <a class="btn-app small {% if locale == defaultLocale %} active{% endif %}"
                        id="social-{{ locale }}-tab"
                        data-bs-toggle="tab"
                        href="#facebook-tab-{{ locale }}"

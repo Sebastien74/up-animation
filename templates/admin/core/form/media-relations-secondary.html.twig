@@ -18,7 +18,7 @@
         <ul id="media-relations-tabs" class="nav nav-tabs w-100" role="tablist">
             {%- for localeName, mediaRelationsTab in mediaRelationsTabs -%}
                 <li class="nav-item {% if localeName not in allLocales %} d-none{% endif %}" data-bs-toggle="tooltip" title="{{ languageName(localeName, app.user.locale) }}">
-                    <a class="nav-link {% if localeName == defaultLocale %} active{% endif %}" data-bs-toggle="tab"
+                    <a class="btn-app small {% if localeName == defaultLocale %} active{% endif %}" data-bs-toggle="tab"
                        id="media-relation-{{ localeName }}-tab"
                        aria-selected="{% if localeName == defaultLocale %}true{% else %}false{% endif %}"
                        href="#media-relations-tab-{{ localeName }}" role="tab">

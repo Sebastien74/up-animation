@@ -219,19 +219,47 @@ form {
     }
 }
 
-.img-icons-group {
+.img-icons-group,
+.icons-group {
 
-    .select2-selection {
-        height: 66px !important;
+    .select2-container {
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+    .select2-selection,
+    .select2-selection--single:not([class*="bg-"]):not([class*="border-"]) {
+        height: $input-height !important;
+        background: $input-bg !important;
+        border: 1px solid $input-border-color !important;
+        border-radius: $input-border-radius;
     }
 
     .select2-selection__rendered {
-        margin-top: 34px !important
+        display: flex !important;
+        align-items: center;
+        height: $input-height !important;
+        margin: 0 !important;
+        padding: $space-7 $space-4 0;
+        line-height: 1 !important;
     }
 
-    img {
-        max-height: 20px;
+    img,
+    .img-icon {
+        max-height: 22px;
+        max-width: 22px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
         filter: brightness(0) invert(1);
+        position: relative;
+        top: -4px;
+    }
+
+    .select2-selection__arrow {
+        height: $input-height !important;
+        top: 0 !important;
+        right: $space-3;
     }
 }
 
