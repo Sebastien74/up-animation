@@ -14,8 +14,8 @@
             flex: 0 0 55px;
             border-radius: $radius-md;
             margin: 1rem auto 0 auto;
-            background: rgba($primary, 0.14);
-            border: 1px solid rgba($primary, 0.28);
+            background: $theme-accent-bg;
+            border: 1px solid $theme-accent-border;
             color: $btn-text;
 
             i {

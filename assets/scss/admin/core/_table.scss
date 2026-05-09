@@ -16,10 +16,10 @@ $tbl-border: rgba(255, 255, 255, .07) !default;
 $tbl-border-soft: rgba(255, 255, 255, .05) !default;
 $tbl-hover: rgba(255, 255, 255, .03) !default;
 
-$tbl-text: rgba(255, 255, 255, .92) !default;
-$tbl-muted: rgba(255, 255, 255, .70) !default;
+$tbl-text: $theme-text !default;
+$tbl-muted: $theme-text-muted !default;
 
-$tbl-shadow: 0 18px 45px rgba(0, 0, 0, .55) !default;
+$tbl-shadow: $theme-shadow-lg !default;
 
 .app-table {
 
@@ -39,7 +39,7 @@ $tbl-shadow: 0 18px 45px rgba(0, 0, 0, .55) !default;
     content: "";
     position: absolute;
     inset: -2px;
-    background: radial-gradient(520px 220px at 18% 0%, rgba($dash-accent, .12), transparent 62%);
+    background: radial-gradient(520px 220px at 18% 0%, $theme-accent-bg, transparent 62%);
     opacity: 0.75;
     pointer-events: none;
     filter: blur(0.6px);
@@ -48,7 +48,7 @@ $tbl-shadow: 0 18px 45px rgba(0, 0, 0, .55) !default;
 .app-table__head,
 .app-table__foot {
     padding: 12px 14px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, .02), transparent 70%);
+    background: linear-gradient(180deg, $theme-overlay-faint, transparent 70%);
     border-bottom: 1px solid $tbl-border-soft;
 }
 
@@ -60,8 +60,8 @@ $tbl-shadow: 0 18px 45px rgba(0, 0, 0, .55) !default;
 /* Override Bootstrap dark table to match your surface */
 .app-table .table {
     --bs-table-bg: transparent;
-    --bs-table-color: #fff;
-    --bs-table-border-color: rgba(255, 255, 255, .06);
+    --bs-table-color: #{$theme-text};
+    --bs-table-border-color: #{$theme-overlay-medium};
     margin-bottom: 0;
 }
 
@@ -69,20 +69,20 @@ $tbl-shadow: 0 18px 45px rgba(0, 0, 0, .55) !default;
     color: $tbl-text;
     font-weight: 650;
     letter-spacing: -0.01em;
-    border-bottom-color: rgba(255, 255, 255, .07) !important;
+    border-bottom-color: $theme-overlay-medium !important;
     padding-top: 14px;
     padding-bottom: 14px;
 }
 
 .app-table tbody td {
     color: $tbl-text;
-    border-top-color: rgba(255, 255, 255, .06) !important;
+    border-top-color: $theme-overlay-medium !important;
     padding-top: .5rem !important;
     padding-bottom: .5rem !important;
 }
 
 .app-table tbody tr:not(:last-child) {
-    border-bottom: rgba(255, 255, 255, .06) !important;
+    border-bottom: $theme-overlay-medium !important;
 }
 
 /* Hover row (subtle) */
@@ -131,7 +131,7 @@ $tbl-shadow: 0 18px 45px rgba(0, 0, 0, .55) !default;
         tr {
             // Card container
             margin-bottom: 1rem;
-            border: 1px solid rgba(255, 255, 255, .15);
+            border: 1px solid $theme-overlay-prom;
             border-radius: .5rem;
             overflow: hidden;
         }
@@ -151,7 +151,7 @@ $tbl-shadow: 0 18px 45px rgba(0, 0, 0, .55) !default;
 
             // Row line inside the card
             border: 0;
-            border-bottom: 1px solid rgba(255, 255, 255, .10);
+            border-bottom: 1px solid $theme-overlay-strong;
 
             &:last-child {
                 border-bottom: 0; // Remove last divider

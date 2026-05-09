@@ -6,8 +6,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba($primary, 0.14);
-    border: 1px solid rgba($primary, 0.28);
+    background: $theme-accent-bg;
+    border: 1px solid $theme-accent-border;
     color: $btn-text;
 
     @include mediaQuery(min-lg) {
@@ -79,7 +79,7 @@
 
     &:focus-visible {
         outline: 0;
-        box-shadow: 0 0 0 4px rgba($primary, 0.18);
+        box-shadow: 0 0 0 4px $theme-accent-focus-ring;
     }
 
     &.center {
@@ -121,8 +121,8 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: rgba($primary, 0.14);
-        border: 1px solid rgba($primary, 0.28);
+        background: $theme-accent-bg;
+        border: 1px solid $theme-accent-border;
         color: $btn-text;
     }
 
@@ -150,8 +150,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba($primary, 0.14);
-    border: 1px solid rgba($primary, 0.28);
+    background: $theme-accent-bg;
+    border: 1px solid $theme-accent-border;
     width: 22px;
     height: 22px;
     flex: 0 0 22px;
@@ -301,8 +301,8 @@
     }
 
     &.muted {
-        background: rgba(255, 255, 255, .05);
-        border-color: rgba(255, 255, 255, .10);
+        background: $theme-overlay-medium;
+        border-color: $theme-overlay-strong;
         color: rgba(255, 255, 255, .35);
     }
 
@@ -369,8 +369,8 @@
     button.btn-icon:hover,
     a.btn-icon:hover {
 
-        background: rgba($primary, .22);
-        border-color: rgba($primary, .55);
+        background: $theme-accent-bg-strong;
+        border-color: $theme-accent-border-strong;
         opacity: 1 !important;
 
         i {
@@ -436,7 +436,7 @@
         }
 
         &.muted {
-            background: rgba(255, 255, 255, .18);
+            background: $theme-overlay-prom;
             border-color: rgba(255, 255, 255, .55);
             color: rgba(255, 255, 255, .65);
         }

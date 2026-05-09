@@ -27,7 +27,7 @@
 
 .ui-state-highlight {
     border-radius: $radius-lg;
-    background-color: rgba(0, 0, 0, 0.05) !important;
+    background-color: $theme-overlay-medium !important;
     border-color: transparent !important;
     margin-bottom: $space-4;
 }
@@ -76,7 +76,7 @@ body.resizing-active {
 
     .btn-action, .edit-layout-element-btn {
         border: none !important;
-        color: transparentize($white, .5);
+        color: $theme-text-light;
     }
 
     .col-actions {
@@ -203,36 +203,36 @@ body.resizing-active {
             left: 11px;
             font-size: 9px;
             font-style: italic;
-            color: rgba(255, 255, 255, 0.5);
+            color: $theme-text-light;
         }
 
         .margin-dashed {
-            background: repeating-linear-gradient(-55deg, rgba(255, 255, 255, 0.05) 1px, rgba(255, 255, 255, 0.02) 2px, rgba(255, 255, 255, 0.02) 11px, rgba(255, 255, 255, 0.05) 12px, rgba(255, 255, 255, 0.05) 20px) !important;
+            background: repeating-linear-gradient(-55deg, $theme-overlay-medium 1px, $theme-overlay-faint 2px, $theme-overlay-faint 11px, $theme-overlay-medium 12px, $theme-overlay-medium 20px) !important;
             width: 100%;
         }
 
         .margin-dashed,
         .padding-dashed {
-            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border: 1px dashed $theme-overlay-prom;
             border-radius: 5px;
         }
 
         .padding-dashed {
 
-            background-color: rgba(255, 255, 255, 0.03);
+            background-color: $theme-overlay-soft;
             display: flex;
             align-items: center;
             justify-content: center;
 
             i {
-                color: rgba(255, 255, 255, 0.5);
+                color: $theme-text-light;
                 font-size: 20px;
             }
         }
 
         .element-margin {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid $theme-overlay-strong;
+            background-color: $theme-overlay-medium;
             border-radius: 5px;
         }
 
@@ -303,7 +303,7 @@ body.resizing-active {
             &:not(.active) {
                 .background-input-label-border {
                     opacity: .75;
-                    border-color: transparentize($white, .9);
+                    border-color: $theme-overlay-strong;
                     box-shadow: 0 0 11px 0 $dash-surface-3;
                 }
             }
@@ -371,7 +371,7 @@ body.resizing-active {
 
             .config-tabs-content .tab-pane-config {
                 border-radius: $radius-lg;
-                border: 1px solid rgba(0, 0, 0, 0.05);
+                border: 1px solid $theme-overlay-medium;
             }
 
             .locales-tab-container {
@@ -454,7 +454,7 @@ body.resizing-active {
 
     i {
         font-size: 17px;
-        color: transparentize($white, .5);
+        color: $theme-text-light;
     }
 
     .btn-icon {
@@ -485,7 +485,7 @@ body.resizing-active {
 
             &:hover {
                 i {
-                    color: transparentize($white, .7);
+                    color: $theme-text-subtle;
                     transition: color $transition-base;
                 }
             }
@@ -565,7 +565,7 @@ body.resizing-active {
                 border-radius: 9px;
 
                 svg {
-                    fill: transparentize($white, .5);
+                    fill: $theme-text-light;
                     height: 12px !important;
                     width: initial !important;
                 }
@@ -630,7 +630,7 @@ body.resizing-active {
             height: 15px;
             border-radius: $radius-xs;
             box-shadow: $theme-shadow-sm;
-            background-color: transparentize($white, .5);
+            background-color: $theme-text-light;
             border: 1px solid $border-color;
             padding: 0 !important;
             display: flex;
@@ -643,7 +643,7 @@ body.resizing-active {
 
                 &:hover {
                     transition: background-color $transition-base;
-                    background-color: transparentize($white, .7);
+                    background-color: $theme-text-subtle;
                 }
             }
 
@@ -907,8 +907,8 @@ body.resizing-active {
             color: $btn-text !important;
 
             &.active {
-                background: rgba($primary, 0.14);
-                border: 1px solid rgba($primary, 0.28);
+                background: $theme-accent-bg;
+                border: 1px solid $theme-accent-border;
                 color: $btn-text;
             }
         }
@@ -1190,8 +1190,8 @@ body.resizing-active {
         align-items: center;
         justify-content: center;
         border-radius: $radius-md;
-        background: rgba($primary, 0.14);
-        border: 1px solid rgba($primary, 0.28);
+        background: $theme-accent-bg;
+        border: 1px solid $theme-accent-border;
 
         i {
             font-size: 14px;
@@ -1370,7 +1370,7 @@ body.resizing-active {
             @include mediaQuery(min-lg) {
 
                 .select2-selection--single:hover {
-                    border-color: rgba(255, 255, 255, 0.18) !important;
+                    border-color: $theme-overlay-prom !important;
 
                     .select2-selection__arrow b {
                         border-color: $crumb-text transparent transparent transparent;

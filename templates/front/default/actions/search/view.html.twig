@@ -12,7 +12,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content bg-white overflow-hidden">
                         <div class="modal-body pt-4 pb-4 px-5">
-                            <div role="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|striptags }}">
+                            <div role="button" tabindex="0" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|striptags }}">
                                 <i class="icon-times"></i>
                             </div>
                             {%- set logo = logos.logo is defined and logos.logo ? logos.logo : null -%}
@@ -72,15 +72,17 @@
     {%- elseif not resultsPage -%}
         {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Aucune page de résultats configurée pour ce moteur de recherche !!"|trans} only -%}
     {%- elseif form or btn -%}
-        <span aria-label="{{ 'Rechercher'|trans|striptags }}"
-              title="{{ 'Rechercher'|trans|striptags }}"
-              class="d-inline-block"
+        <span class="d-inline-block"
               data-bs-toggle="tooltip"
-              data-bs-placement="bottom">
+              data-bs-placement="bottom"
+              title="{{ 'Rechercher'|trans|striptags }}">
             <span id="btn-search-{{ search.slug }}"
+                 role="button"
+                 tabindex="0"
                  class="btn btn-circle btn-secondary"
                  data-bs-toggle="modal"
-                 data-bs-target="#search-modal-{{ search.slug }}"><i class="icon-search"></i></span>
+                 data-bs-target="#search-modal-{{ search.slug }}"
+                 aria-label="{{ 'Rechercher'|trans|striptags }}"><i class="icon-search"></i></span>
         </span>
     {%- endif -%}
 </div>

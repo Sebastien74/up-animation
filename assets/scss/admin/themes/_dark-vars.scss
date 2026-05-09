@@ -1,0 +1,128 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    DARK THEME VARIABLES
+
+    Tokens sémantiques mappés vers les variables existantes de
+    variables.scss qui pilotent le rendu visuel du thème dark.
+
+    Aucune modification visuelle attendue : ce fichier expose des
+    tokens stables pour permettre le refactor des fichiers
+    layout/, core/ et pages/ qui utilisaient jusqu'ici des couleurs
+    en dur.
+
+------------------------------------------------------------------ */
+
+/*-- Palette grise (héritée de variables.scss, valeurs neutres Bootstrap) --*/
+$gray-50  : #f9fafa !global;
+$gray-100 : #f4f6f7 !global;
+$gray-600 : #6c757d !global;
+$gray-700 : #4F5467 !global;
+$gray-800 : #343a40 !global;
+$gray-900 : #212529 !global;
+
+/*-- Sémantiques (theme tokens — mappés vers $dash-* de variables.scss) --*/
+$theme-bg          : $dash-bg-1 !global;        // fond app principal
+$theme-bg-alt      : $dash-bg-2 !global;        // fond secondaire
+$theme-bg-deep     : $dash-bg-0 !global;        // fond le plus profond
+$theme-surface     : $dash-surface !global;     // surface cards
+$theme-surface-alt : $dash-surface-2 !global;   // alternance / hover
+
+/*-- Texte --*/
+$theme-text        : $dash-text !global;                          // rgba(255,255,255,.92)
+$theme-text-muted  : transparentize($white, .3) !global;          // 0.7
+$theme-text-light  : transparentize($white, .5) !global;          // 0.5
+$theme-text-subtle : transparentize($white, .7) !global;          // 0.3
+$theme-text-faint  : transparentize($white, .9) !global;          // 0.1
+
+/*-- Bordures --*/
+$theme-border        : $dash-border !global;                      // rgba(255,255,255,.1)
+$theme-border-subtle : transparentize($white, .92) !global;
+$theme-border-alt    : $btn-border !global;                       // rgba(255,255,255,.07)
+$theme-border-strong : $btn-border-hover !global;                 // rgba(255,255,255,.12)
+
+/*-- Sidebar --*/
+$theme-sidebar-bg    : $dash-dark !global;
+$theme-sidebar-text  : transparentize($white, .15) !global;
+$theme-sidebar-icons : transparentize($white, .3) !global;
+
+/*-- Cards / Modal --*/
+$theme-card-bg      : $dash-surface !global;
+$theme-card-cap-bg  : transparent !global;
+$theme-modal-bg     : $dash-bg-1 !global;
+$theme-modal-border : $dash-border !global;
+
+/*-- Tables --*/
+$theme-table-striped-bg : $table-striped-bg !global;              // #151a28
+$theme-table-hover-bg   : transparentize($white, .94) !global;
+
+/*-- Inputs --*/
+$theme-input-bg          : $input-bg !global;                     // gradient existant
+$theme-input-border      : $border-color !global;                 // rgba(255,255,255,.08)
+$theme-input-text        : $input-color !global;
+$theme-input-placeholder : $input-placeholder-color !global;
+
+/*-- Breadcrumb --*/
+$theme-breadcrumb-bg   : $crumb-surface !global;
+$theme-breadcrumb-text : $crumb-text !global;
+
+/*-- Pagination --*/
+$theme-pagination-bg          : $pg-surface !global;
+$theme-pagination-text        : $pg-text !global;
+$theme-pagination-border      : $pg-border !global;
+$theme-pagination-active-bg   : transparentize($primary, .78) !global;  // rgba($primary, .22)
+$theme-pagination-active-text : $white !global;
+
+/*-- Ombres (dark : profondes, opacités élevées sur noir pur) --*/
+$theme-shadow-color : #000 !global;
+$theme-shadow-sm    : 0 1px 2px rgba($theme-shadow-color, .35) !global;
+$theme-shadow-md    : 0 4px 12px rgba($theme-shadow-color, .45), 0 1px 2px rgba($theme-shadow-color, .3) !global;
+$theme-shadow-lg    : $btn-shadow !global;
+$theme-shadow-xl    : 0 24px 64px rgba($theme-shadow-color, .55), 0 4px 8px rgba($theme-shadow-color, .35) !global;
+$theme-shadow-focus : 0 0 0 3px rgba($primary, .25) !global;
+
+/*-- Accent (dérivés de $primary purple en dark) --*/
+$theme-accent              : $primary !global;
+$theme-accent-glow-soft    : rgba($primary, 0.045) !global;
+$theme-accent-glow         : rgba($primary, 0.10) !global;
+$theme-accent-bg-soft      : rgba($primary, 0.06) !global;
+$theme-accent-bg           : rgba($primary, 0.14) !global;
+$theme-accent-bg-strong    : rgba($primary, 0.22) !global;
+$theme-accent-border       : rgba($primary, 0.28) !global;
+$theme-accent-border-mid   : rgba($primary, 0.45) !global;
+$theme-accent-border-strong: rgba($primary, 0.55) !global;
+$theme-accent-focus-ring   : rgba($primary, 0.18) !global;
+
+/*-- Overlays neutres (sur fond sombre) --*/
+$theme-overlay-faint  : rgba(255, 255, 255, 0.012) !global;
+$theme-overlay-soft   : rgba(255, 255, 255, 0.04)  !global;
+$theme-overlay-medium : rgba(255, 255, 255, 0.06)  !global;
+$theme-overlay-strong : rgba(255, 255, 255, 0.10)  !global;
+$theme-overlay-prom   : rgba(255, 255, 255, 0.18)  !global;
+
+/*-- Bootstrap theme-colors (dark) --*/
+$theme-colors: (
+    primary  : $primary,
+    secondary: $gray-100,
+    success  : #01796f,
+    info     : $info,
+    warning  : $yellow,
+    danger   : $danger,
+    light    : $gray-100,
+    dark     : $gray-800,
+    purple   : $primary,
+    white    : $white
+);
+
+$alert-colors: () !global;
+$alert-colors: map-merge((
+    "primary"  : ('bg': $theme-surface, 'color': $theme-text, 'border': $theme-border, 'icon-color': $white, 'icon-bg': $primary, 'font-size': $font-size-base),
+    "secondary": ('bg': $theme-surface, 'color': $theme-text, 'border': $theme-border, 'icon-color': $white, 'icon-bg': $gray-600, 'font-size': $font-size-base),
+    "success"  : ('bg': $white,         'color': $success,    'border': $success,      'icon-color': $white, 'icon-bg': $success, 'font-size': $font-size-base),
+    "info"     : ('bg': $theme-surface, 'color': $theme-text, 'border': $theme-border, 'icon-color': $white, 'icon-bg': $info,    'font-size': $font-size-base),
+    "warning"  : ('bg': $white,         'color': $warning,    'border': $warning,      'icon-color': $white, 'icon-bg': $warning, 'font-size': $font-size-base),
+    "danger"   : ('bg': $white,         'color': $danger,     'border': $danger,       'icon-color': $white, 'icon-bg': $danger,  'font-size': $font-size-base),
+    "light"    : ('bg': $theme-surface, 'color': $theme-text, 'border': $theme-border, 'icon-color': $theme-text, 'icon-bg': $theme-bg-alt, 'font-size': $font-size-base),
+    "dark"     : ('bg': $theme-bg-deep, 'color': $white,      'border': $theme-bg-deep,'icon-color': $white, 'icon-bg': $theme-bg-deep, 'font-size': $font-size-base),
+), $alert-colors);

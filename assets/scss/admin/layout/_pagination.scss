@@ -40,12 +40,12 @@
         }
 
         &.active .page-link {
-            background: rgba($primary, 0.22);
-            border-color: rgba($primary, 0.55);
-            color: #fff;
+            background: $theme-accent-bg-strong;
+            border-color: $theme-accent-border-strong;
+            color: $white;
             font-weight: 650;
 
-            box-shadow: 0 0 0 4px rgba($primary, 0.14);
+            box-shadow: 0 0 0 4px $theme-accent-bg;
         }
     }
 
@@ -61,7 +61,7 @@
         padding: 0 $space-3;
         border-radius: $radius-md;
         border: 1px solid $pg-border;
-        background: rgba(255, 255, 255, 0.015);
+        background: $theme-overlay-faint;
         color: $pg-text;
         font-weight: 600;
         line-height: 1;
@@ -77,7 +77,7 @@
         box-shadow $transition-fast;
 
         &:hover {
-            background: rgba(255, 255, 255, 0.04);
+            background: $theme-overlay-soft;
             border-color: $pg-border-hover;
             transform: translateY(-1px);
             box-shadow: $theme-shadow-md;
@@ -111,13 +111,13 @@
     /* Optional: slightly emphasize "Suivant »" as a CTA without changing HTML */
     .page-link[rel="next"] {
 
-        background: rgba($primary, 0.10);
-        border-color: rgba($primary, 0.28);
+        background: $theme-accent-glow;
+        border-color: $theme-accent-border;
 
         &:hover {
-            background: rgba($primary, 0.16);
-            border-color: rgba($primary, 0.45);
-            box-shadow: $theme-shadow-lg, 0 0 0 4px rgba($primary, 0.12);
+            background: $theme-accent-bg-strong;
+            border-color: $theme-accent-border-mid;
+            box-shadow: $theme-shadow-lg, 0 0 0 4px $theme-accent-bg;
         }
     }
 }

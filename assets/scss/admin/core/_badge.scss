@@ -5,8 +5,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba($primary, 0.14);
-    border: 1px solid rgba($primary, 0.28);
+    background: $theme-accent-bg;
+    border: 1px solid $theme-accent-border;
     width: 20px;
     height: 20px;
     flex: 0 0 20px;

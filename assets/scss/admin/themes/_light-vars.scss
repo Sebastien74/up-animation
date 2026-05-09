@@ -1,0 +1,202 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    LIGHT THEME VARIABLES — palette "papier crème"
+
+    Parti pris design :
+      - off-white papier chaud comme fond app
+      - sidebar sombre conservée (ancrage fort de la nav)
+      - accent orange désaturé pour calmer le contraste sur fond clair
+      - ombres physiques douces, teinte chaude (pas noir pur)
+      - statuts sémantiques contrastés pour rester lisibles sur crème
+
+------------------------------------------------------------------ */
+
+/*-- Palette grise chaude (axe crème) --*/
+$gray-50  : #faf6ec !global;
+$gray-100 : #f3eee4 !global;
+$gray-600 : #6b6353 !global;
+$gray-700 : #4a4338 !global;
+$gray-800 : #2a241a !global;
+$gray-900 : #1a1610 !global;
+
+/*-- Accent --*/
+$primary : #d65a00 !global;
+
+/*-- Statuts sémantiques (light : contrastés sur fond crème) --*/
+$success : #0f7a5e !global;
+$info    : #0369a1 !global;
+$warning : #d97706 !global;
+$danger  : #b91c1c !global;
+
+/*-- Theme color legacy --*/
+$theme-color       : $primary !global;
+$theme-color-alt   : $theme-color !global;
+$info-darken       : $theme-color !global;
+$info-darken-dark  : $gray-900 !global;
+$info-darken-light : $gray-800 !global;
+$info-light        : $gray-200 !global;
+$info-lighten      : $info-light !global;
+$body-bg           : #f3eee4 !global;
+$body-shadow       : transparentize($theme-color, .8) !global;
+
+/*-- Sémantiques (theme tokens) --*/
+$theme-bg          : #f3eee4 !global;
+$theme-bg-alt      : #ede8db !global;
+$theme-surface     : #fbf8f1 !global;
+$theme-surface-alt : #ede8db !global;
+
+$theme-text        : #2a241a !global;
+$theme-text-muted  : #6b6353 !global;
+$theme-text-light  : #807762 !global;                  // ajusté pour atteindre AA (4.6:1 sur $theme-bg)
+$theme-text-subtle : rgba(26, 22, 16, 0.55) !global;   // ajusté AA (~5:1)
+$theme-text-faint  : rgba(26, 22, 16, 0.40) !global;   // décoratif (usage non-text uniquement)
+
+$theme-border        : #dcd4c4 !global;
+$theme-border-subtle : rgba(26, 22, 16, 0.06) !global;
+$theme-border-alt    : #c4baa4 !global;
+$theme-border-strong : rgba(26, 22, 16, 0.18) !global;
+
+$theme-sidebar-bg    : #1a1610 !global;
+$theme-sidebar-text  : #e8e3d6 !global;
+$theme-sidebar-icons : #a89e87 !global;
+
+$theme-card-bg     : #fbf8f1 !global;
+$theme-card-cap-bg : #ede8db !global;
+
+$theme-modal-bg     : #fff !global;
+$theme-modal-border : #dcd4c4 !global;
+
+$theme-table-striped-bg : rgba(26, 22, 16, 0.025) !global;
+$theme-table-hover-bg   : rgba(26, 22, 16, 0.04) !global;
+
+$theme-input-bg          : #fff !global;
+$theme-input-border      : #c4baa4 !global;
+$theme-input-text        : #2a241a !global;
+$theme-input-placeholder : #9b937f !global;
+
+$theme-breadcrumb-bg   : transparent !global;
+$theme-breadcrumb-text : $theme-text-muted !global;
+
+$theme-pagination-bg          : #fbf8f1 !global;
+$theme-pagination-text        : #2a241a !global;
+$theme-pagination-border      : #dcd4c4 !global;
+$theme-pagination-active-bg   : $primary !global;
+$theme-pagination-active-text : $white !global;
+
+/*-- Ombres (light : physiques douces, teinte chaude) --*/
+$theme-shadow-color : #1a1610 !global;
+$theme-shadow-sm    : 0 1px 2px rgba($theme-shadow-color, .04) !global;
+$theme-shadow-md    : 0 4px 12px rgba($theme-shadow-color, .06), 0 2px 4px rgba($theme-shadow-color, .03) !global;
+$theme-shadow-lg    : 0 12px 32px rgba($theme-shadow-color, .08), 0 4px 8px rgba($theme-shadow-color, .04) !global;
+$theme-shadow-xl    : 0 24px 64px rgba($theme-shadow-color, .10), 0 8px 16px rgba($theme-shadow-color, .05) !global;
+$theme-shadow-focus : 0 0 0 3px rgba($primary, .18) !global;
+
+/*-- Accent (dérivés de $primary orange brûlé en light) --*/
+$theme-accent              : $primary !global;
+$theme-accent-glow-soft    : rgba($primary, 0.04) !global;
+$theme-accent-glow         : rgba($primary, 0.08) !global;
+$theme-accent-bg-soft      : rgba($primary, 0.06) !global;
+$theme-accent-bg           : rgba($primary, 0.10) !global;
+$theme-accent-bg-strong    : rgba($primary, 0.16) !global;
+$theme-accent-border       : rgba($primary, 0.24) !global;
+$theme-accent-border-mid   : rgba($primary, 0.40) !global;
+$theme-accent-border-strong: rgba($primary, 0.55) !global;
+$theme-accent-focus-ring   : rgba($primary, 0.18) !global;
+
+/*-- Overlays neutres (sur fond clair, à base du noir chaud) --*/
+$theme-overlay-faint  : rgba(26, 22, 16, 0.012) !global;
+$theme-overlay-soft   : rgba(26, 22, 16, 0.03)  !global;
+$theme-overlay-medium : rgba(26, 22, 16, 0.05)  !global;
+$theme-overlay-strong : rgba(26, 22, 16, 0.08)  !global;
+$theme-overlay-prom   : rgba(26, 22, 16, 0.14)  !global;
+
+/*-----------------------------------
+   Surcharges des variables globales
+   (variables.scss) — alignement light
+-----------------------------------*/
+
+// Body
+$body-color : $theme-text !global;
+
+// Inputs (Bootstrap forms)
+$input-bg                : $theme-input-bg !global;
+$input-invalid-bg        : $theme-input-bg !global;
+$input-color             : $theme-input-text !global;
+$input-border-color      : $theme-input-border !global;
+$input-placeholder-color : $theme-input-placeholder !global;
+$form-text-color         : $theme-text-muted !global;
+$form-label-color        : $theme-text !global;
+
+// Border defaults
+$border-color             : $theme-border !global;
+$border-color-transparent : $theme-overlay-faint !global;
+
+// Breadcrumb (texte + bordures, surface laissée car $bg-gradient-primary multi-usage)
+$crumb-text         : $theme-text !global;
+$crumb-muted        : $theme-text-muted !global;
+$crumb-border       : $theme-border !global;
+$crumb-border-hover : $theme-border-alt !global;
+
+// Form switches
+$form-switch-color   : $theme-text-muted !global;
+$form-switch-bg-color: $theme-bg-alt !global;
+
+// Buttons globals (utilisés par .btn-app, .btn-group-toggle label, etc.)
+// Le dropdown locales reste sombre via override sélecteur dans themes/light.scss.
+$btn-text          : $theme-text !global;
+$btn-surface       : $theme-surface !global;
+$btn-border        : $theme-border !global;
+$btn-surface-hover : $theme-bg-alt !global;
+$btn-border-hover  : $theme-border-alt !global;
+$btn-shadow        : $theme-shadow-md !global;
+
+// Pagination globals (utilisés dans _pagination.scss)
+$pg-surface      : $theme-overlay-faint !global;
+$pg-border       : $theme-border !global;
+$pg-border-hover : $theme-border-alt !global;
+$pg-text         : $theme-text !global;
+$pg-muted        : $theme-text-muted !global;
+$pg-shadow       : $theme-shadow-md !global;
+
+// Backdrop
+$backdrop-bg : rgba(26, 22, 16, .5) !global;
+
+// $bg-gradient-primary : clair en light pour cards/forms/breadcrumb body
+// (la sidebar active item override en local pour rester visible sur fond sombre)
+$bg-gradient-primary : radial-gradient(520px 160px at 12% 0%, $theme-accent-glow-soft, transparent 60%),
+                       linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 45%),
+                       $theme-surface !global;
+
+/*-- Surfaces accent (gradients) --*/
+$btn-surface: radial-gradient(900px 600px at 20% 0%, rgba($primary, 0.06), transparent 55%),
+              linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 42%),
+              $theme-surface;
+$bg-gradient-primary: $btn-surface;
+
+/*-- Bootstrap theme-colors --*/
+$theme-colors: (
+    primary  : $primary,
+    secondary: $gray-600,
+    success  : $success,
+    info     : $info,
+    warning  : $warning,
+    danger   : $danger,
+    light    : $gray-100,
+    dark     : $gray-900,
+    purple   : #6f42c1,
+    white    : $white
+);
+
+$alert-colors: () !global;
+$alert-colors: map-merge((
+    "primary"  : ('bg': $white,    'color': $primary,  'border': $primary,  'icon-color': $white, 'icon-bg': $primary,  'font-size': $font-size-base),
+    "secondary": ('bg': $white,    'color': $gray-600, 'border': $gray-600, 'icon-color': $white, 'icon-bg': $gray-600, 'font-size': $font-size-base),
+    "success"  : ('bg': $white,    'color': $success,  'border': $success,  'icon-color': $white, 'icon-bg': $success,  'font-size': $font-size-base),
+    "info"     : ('bg': $white,    'color': $info,     'border': $info,     'icon-color': $white, 'icon-bg': $info,     'font-size': $font-size-base),
+    "warning"  : ('bg': $white,    'color': $warning,  'border': $warning,  'icon-color': $white, 'icon-bg': $warning,  'font-size': $font-size-base),
+    "danger"   : ('bg': $white,    'color': $danger,   'border': $danger,   'icon-color': $white, 'icon-bg': $danger,   'font-size': $font-size-base),
+    "light"    : ('bg': $theme-surface, 'color': $theme-text-muted, 'border': $theme-border, 'icon-color': $theme-text, 'icon-bg': $theme-surface-alt, 'font-size': $font-size-base),
+    "dark"     : ('bg': $gray-900, 'color': $white,    'border': $gray-900, 'icon-color': $gray-900, 'icon-bg': $white,  'font-size': $font-size-base),
+), $alert-colors);

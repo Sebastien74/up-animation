@@ -21,7 +21,7 @@
 
 html body {
     font-family: $font-family;
-    color: transparentize($white, .3);
+    color: $theme-text-muted;
 }
 
 #main-wrapper {
@@ -98,7 +98,7 @@ a {
     background: $bg-gradient-primary;
     border-radius: $border-radius;
     border: 1px solid $crumb-border;
-    color: transparentize($white, .5);
+    color: $theme-text-light;
     font-size: 14px !important;
 
     &.small {
@@ -274,5 +274,5 @@ mark {
 }
 
 .mark-muted {
-    color: transparentize($white, .9) !important;
+    color: $theme-text-faint !important;
 }

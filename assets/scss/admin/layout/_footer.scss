@@ -4,7 +4,7 @@
 
     height: 56px;
     color: $theme-text-muted;
-    border-top: 1px solid transparentize($theme-border, .95);
+    border-top: 1px solid $theme-border-subtle;
 
     .btn-icon {
         i {

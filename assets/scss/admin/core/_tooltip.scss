@@ -46,7 +46,7 @@ $tooltip-surface-bottom: mix(#000000, $tooltip-surface, 6%) !default;
 
     /* Tooltip body */
     .tooltip-inner {
-        border: 1px solid rgba(124, 108, 255, 0.35);
+        border: 1px solid rgba($primary, 0.35);
 
         /* FULL OPAQUE background (no rgba alpha, no transparent) */
         background: radial-gradient(

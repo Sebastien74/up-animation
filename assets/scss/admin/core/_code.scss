@@ -2,12 +2,12 @@
 pre[class*=language-] {
     background: radial-gradient(
                     900px 520px at 18% 0%,
-                    rgba($primary, 0.045),
+                    $theme-accent-glow-soft,
                     transparent 62%
     ),
     radial-gradient(
                     1100px 780px at 70% 35%,
-                    rgba(255, 255, 255, 0.012),
+                    $theme-overlay-faint,
                     transparent 68%
     ),
     linear-gradient(

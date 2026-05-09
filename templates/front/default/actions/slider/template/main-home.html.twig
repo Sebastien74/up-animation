@@ -111,8 +111,7 @@
                                         intlMedia: media
                                     } only -%}
                                 {%- else -%}
-                                    {#                        thumbConfiguration#}
-                                    {{ media|file({}, {
+                                    {{ media|file(thumbConfiguration, {
                                         btnLink: true,
                                         isInBox: false,
                                         lazyLoad: false,

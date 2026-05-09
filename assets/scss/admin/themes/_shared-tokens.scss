@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    SHARED TOKENS — invariants entre thème dark et thème light.
+
+    Tokens dont la valeur est strictement identique dans les deux
+    thèmes (typographie, palette grise neutre Bootstrap commune,
+    bases). Les couleurs de teinte (gris contextuels, accent,
+    sémantiques, surfaces) sont définies par thème dans
+    _dark-vars.scss / _light-vars.scss.
+
+------------------------------------------------------------------ */
+
+/*-- Bases --*/
+$white: #fff !global;
+$black: #000 !global;
+
+/*-- Palette grise neutre Bootstrap (valeurs partagées) --*/
+$gray-200: #e9ecef !global;
+$gray-300: #dee2e6 !global;
+$gray-400: #ced4da !global;
+$gray-500: #adb5bd !global;
+
+/*-- Typographie --*/
+$font-family            : 'Poppins', sans-serif !default;
+$font-family-sans-serif : $font-family !global;
+$headings-font-family   : $font-family !global;

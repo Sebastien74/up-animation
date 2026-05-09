@@ -5,7 +5,9 @@
       "Bash(findstr *)",
       "Bash(dir C:\\\\wamp64\\\\www\\\\up-animation\\\\templates\\\\admin\\\\core\\\\layout *)",
       "Bash(grep *)",
-      "Bash(yarn add *)"
+      "Bash(yarn add *)",
+      "Bash(yarn dev *)",
+      "Bash(yarn watch *)"
     ]
   }
 }
