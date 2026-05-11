@@ -1,29 +1,12 @@
 /**
- * Vendor
+ * Vendor (admin entry)
  *
  * @copyright 2026
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
- * @version 1.0
  * @licence under the MIT License (LICENSE.txt)
  *
- *  1 - jQuery UI
- *  2 - Routing
- *  3 - Preloader
- *  4 - Layout management
- *  6 - Core
- *  6 - Active URL
- *  7 - Code generator
- *  8 - Bytes generator
- *  9 - Password generator
- *  10 - Tree search
- *  11 - Index search
- *  12 - Medias modal library
- *  13 - Map
- *  14 - Delete pack
- *  15 - Delete index
- *  16 - Media Tab
- *  17 - Websites selector
- *  18 - Tab item click
+ * Principe : tout est lazy-loadé conditionnellement (présence DOM)
+ * pour ne charger que le strict nécessaire sur chaque page.
  */
 
 import './bootstrap';
@@ -73,113 +56,73 @@ if (!Cookies.get('SECURITY_IS_ADMIN')) {
     setCookie('SECURITY_IS_ADMIN', true);
 }
 
-/** 1 - jQuery UI */
-import 'jquery-ui/dist/jquery-ui.min';
-
 /** 2 - Routing */
 import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
-
-/** 4 - Layout management */
-if (document.getElementById('zones-sortable')) {
-    import('./pages/layout/vendor').then(({default: LayoutManagement}) => {
-        LayoutManagement(Routing);
-    }).catch(error => console.error(error.message));
-}
 
 /** 5 - Core */
 import "../vendor/first-paint";
 import "../vendor/vendor";
 import "./core/core";
-import './form/vendor';
-// import './media/cache-resolve';
 
-import pluginsVendor from './plugins/vendor';
+/** 1 - jQuery UI (lazy, seulement si un plugin qui en dépend est présent) */
+const jqueryUiSelectors = '#zones-sortable, .nestable-list-container, #medias-sortable-container, .prototype-sortable, .ui-sortable, .datepicker, .colorpicker, .data-table, .tree-select';
+const needsJqueryUi = document.querySelector(jqueryUiSelectors);
+const jqueryUiReady = needsJqueryUi
+    ? import('jquery-ui/dist/jquery-ui.min')
+    : Promise.resolve();
 
-pluginsVendor();
+/** 4 - Layout management */
+if (document.getElementById('zones-sortable')) {
+    jqueryUiReady.then(() => import('./pages/layout/vendor'))
+        .then(({default: LayoutManagement}) => LayoutManagement(Routing))
+        .catch(error => console.error(error.message));
+}
 
-/** 6 - Active URL */
-document.body.addEventListener('click', function (e) {
-    const link = e.target.closest('.active-urls a');
-    if (link) {
-        e.preventDefault();
-        import('./core/urls').then(({default: ActiveUrls}) => {
-            new ActiveUrls(e, link);
-        }).catch(error => console.error(error.message));
-    }
-});
+jqueryUiReady
+    .then(() => Promise.all([
+        import('./form/vendor'),
+        import('./plugins/vendor').then(({default: pluginsVendor}) => pluginsVendor()),
+    ]))
+    .catch(error => console.error(error.message));
 
-/** 7 - Code generator */
-document.body.addEventListener('click', function (e) {
-    const link = e.target.closest('.generate-code');
-    if (link) {
-        e.preventDefault();
-        import('./core/code-generator').then(({default: CodeGenerator}) => {
-            CodeGenerator();
-        }).catch(error => console.error(error.message));
-    }
-});
+/** 6-9, 12, 16, 18 - Délégation click unique */
+const clickHandlers = [
+    {selector: '.active-urls a', preventDefault: true, load: () => import('./core/urls'), call: (e, el, mod) => new mod.default(e, el)},
+    {selector: '.generate-code', preventDefault: true, load: () => import('./core/code-generator'), call: (e, el, mod) => mod.default()},
+    {selector: '.generate-bytes', preventDefault: true, load: () => import('./core/bytes-generator'), call: (e, el, mod) => new mod.default(e, el)},
+    {selector: '.generator-password', preventDefault: true, load: () => import('./core/password-generator'), call: (e, el, mod) => new mod.default(e, el)},
+    {selector: '.open-modal-medias', preventDefault: true, load: () => import('./media/open-modal'), call: (e, el, mod) => new mod.default(Routing, e, el)},
+    {selector: '.media-tab-content-loader', preventDefault: false, load: () => import('./core/medias-tab'), call: (e, el, mod) => new mod.default(Routing, el)},
+    {selector: '.nav-link', preventDefault: false, load: () => import('./core/tab'), call: (e, el, mod) => new mod.default.call(el)},
+];
 
-/** 8 - Bytes generator */
-document.body.addEventListener('click', function (e) {
-    const link = e.target.closest('.generate-bytes');
-    if (link) {
-        e.preventDefault();
-        import('./core/bytes-generator').then(({default: BytesGenerator}) => {
-            new BytesGenerator(e, link);
-        }).catch(error => console.error(error.message));
-    }
-});
-
-/** 9 - Password generator */
-document.body.addEventListener('click', function (e) {
-    const link = e.target.closest('.generator-password');
-    if (link) {
-        e.preventDefault();
-        import('./core/password-generator').then(({default: PasswordGenerator}) => {
-            new PasswordGenerator(e, link);
-        }).catch(error => console.error(error.message));
+body.addEventListener('click', function (e) {
+    for (const handler of clickHandlers) {
+        const el = e.target.closest(handler.selector);
+        if (el) {
+            if (handler.preventDefault) e.preventDefault();
+            handler.load().then(mod => handler.call(e, el, mod)).catch(error => console.error(error.message));
+            break;
+        }
     }
 });
 
 /** 10 - Tree search */
-const treeSearchInput = document.querySelector('.pages-search input');
-if (treeSearchInput) {
-    import('./core/tree-search').then(({default: TreeSearch}) => {
-        TreeSearch();
-    }).catch(error => console.error(error.message));
+if (document.querySelector('.pages-search input')) {
+    import('./core/tree-search').then(({default: TreeSearch}) => TreeSearch())
+        .catch(error => console.error(error.message));
 }
 
 /** 11 - Index search */
-const indexSearchInput = document.querySelector('.search-in-list input');
-if (indexSearchInput) {
-    import('./core/search').then(({default: Search}) => {
-        Search();
-    }).catch(error => console.error(error.message));
+if (document.querySelector('.search-in-list input')) {
+    import('./core/search').then(({default: Search}) => Search())
+        .catch(error => console.error(error.message));
 }
-
-/** 12 - Medias modal library */
-document.body.addEventListener('click', function (e) {
-    const modalEl = e.target.closest('.open-modal-medias');
-    if (modalEl) {
-        e.preventDefault();
-        import('./media/open-modal').then(({default: OpenModal}) => {
-            new OpenModal(Routing, e, modalEl);
-        }).catch(error => console.error(error.message));
-    }
-});
-
-/** 13 - Map */
-// if (document.querySelectorAll('.input-places').length > 0) {
-//     import('./lib/map').then(({default: mapLibrary}) => {
-//         new mapLibrary()
-//     }).catch(error => console.error(error.message));
-// }
 
 /** 14 - Delete pack */
 if (body.querySelector('.delete-pack') || document.getElementById('delete-pack-btn')) {
-    import('./delete/delete-pack').then(({default: DeletePack}) => {
-        DeletePack();
-    }).catch(error => console.error(error.message));
+    import('./delete/delete-pack').then(({default: DeletePack}) => DeletePack())
+        .catch(error => console.error(error.message));
 }
 
 /** 15 - Delete index */
@@ -188,70 +131,55 @@ if (document.getElementById('delete-index-all')
     || body.querySelector('.delete-input-index')
     || document.querySelector('.index-delete-submit')
 ) {
-    import('./delete/delete-index').then(({default: DeleteIndex}) => {
-        DeleteIndex();
-    }).catch(error => console.error(error.message));
+    import('./delete/delete-index').then(({default: DeleteIndex}) => DeleteIndex())
+        .catch(error => console.error(error.message));
 }
 
-/** 16 - Media Tab */
-document.body.addEventListener('click', function (e) {
-    const mediasTabEl = e.target.closest('.media-tab-content-loader');
-    if (mediasTabEl) {
-        import('./core/medias-tab').then(({default: MediasTab}) => {
-            new MediasTab(Routing, mediasTabEl);
-        }).catch(error => console.error(error.message));
-    }
-});
-
-import websitesSelector from './core/websites-selector'
-
-const toastElList = document.querySelectorAll('.toast')
-toastElList.forEach(function (el) {
-    let close = el.querySelector('.btn-close');
-    close.onclick = function () {
-        el.classList.remove('show');
-    };
+/** Toasts auto-hide */
+body.querySelectorAll('.toast').forEach(function (el) {
+    const close = el.querySelector('.btn-close');
+    if (close) close.onclick = () => el.classList.remove('show');
     if (!el.classList.contains('bg-danger') && !el.classList.contains('bg-warning') && !el.classList.contains('always-show')) {
-        setTimeout(function () {
-            el.classList.remove('show');
-        }, 7500);
+        setTimeout(() => el.classList.remove('show'), 7500);
     }
 });
 
-window.addEventListener("load", function () {
-
-    /** 17 - Websites selector */
+/** 17 - Websites selector (différé après load) */
+window.addEventListener('load', function () {
     if (document.getElementById('websites-selector-form')) {
-        import('./core/websites-selector').then(({default: WebsitesSelector}) => {
-            WebsitesSelector();
-        }).catch(error => console.error(error.message));
+        import('./core/websites-selector').then(({default: WebsitesSelector}) => WebsitesSelector())
+            .catch(error => console.error(error.message));
     }
-
-    /** 18 - Tab item click */
-    document.body.addEventListener('click', function (e) {
-        const navLinkEl = e.target.closest('.nav-link');
-        if (navLinkEl) {
-            import('./core/tab').then(({default: TabPlugin}) => {
-                new TabPlugin.call(navLinkEl);
-            }).catch(error => console.error(error.message));
-        }
-    });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    Tooltip();
-    Popover();
-    Collapse();
-    Tab();
-    Modal();
-    document.querySelectorAll('[data-scroll-to]').forEach(function (el) {
+/** Scroll-to (léger, immédiat sans listener global) */
+function bindScrollTo() {
+    body.querySelectorAll('[data-scroll-to]').forEach(function (el) {
         el.onclick = function (e) {
             const targetId = el.getAttribute('data-scroll-to');
-            const target = targetId ? document.querySelector(targetId) : false;
+            const target = targetId ? document.querySelector(targetId) : null;
             if (target) {
                 e.preventDefault();
                 scrollToEL(target, false);
             }
         };
     });
-});
+}
+
+/** Init Bootstrap modules en idle (non bloquant pour le first paint) */
+function initBootstrapModules() {
+    Tooltip();
+    Popover();
+    Collapse();
+    Tab();
+    Modal();
+    bindScrollTo();
+}
+
+const scheduleIdle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 1); };
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => scheduleIdle(initBootstrapModules));
+} else {
+    scheduleIdle(initBootstrapModules);
+}

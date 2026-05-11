@@ -35,6 +35,7 @@ $nestable-surface: $bg-gradient-primary;
 $nestable-border: $btn-border;
 $nestable-border-hover: $btn-border-hover;
 $nestable-text: $btn-text;
+$nestable-handle-icon: transparentize($white, .3);
 
 $nestable-shadow-rest: 0 1px 2px rgba(0, 0, 0, .25);
 $nestable-shadow-hover: 0 6px 18px rgba(0, 0, 0, .35);
@@ -157,7 +158,12 @@ $nestable-drop-border: transparentize($primary, .55);
     }
 
     .btn-icon {
+
         flex: 0 0 34px;
+
+        i {
+            color: $nestable-handle-icon;
+        }
     }
 
     /* Affordance discrète : 3 points / icône drag plus visible au survol de la carte */
@@ -362,10 +368,6 @@ $nestable-drop-border: transparentize($primary, .55);
     i {
         transition: transform $transition-fast;
     }
-}
-
-.dd-item:hover > .dd3-handle > .btn-icon i {
-    transform: scale(1.1);
 }
 
 /* Boutons collapse/expand : ce sont des <span> bruts dans le markup,

@@ -266,6 +266,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         $this->arguments['block'] = !empty($options['block']) ? $options['block'] : $this->arguments['parentEntity'];
         $this->arguments['priority'] = $options['priority'] ?? null;
         $this->arguments['lazyLoad'] = $this->arguments['priority'] === 'high' ? false : ($options['lazyLoad'] ?? true);
+        $this->arguments['colSize'] = !empty($options['colSize']) ? (int) $options['colSize'] : 12;
         $this->arguments['targetLink'] = array_key_exists('targetLink', $options) ? $options['targetLink'] : null;
         $this->arguments['onlyLink'] = array_key_exists('onlyLink', $options) ? $options['onlyLink'] : false;
         $this->arguments['targetLabel'] = array_key_exists('targetLabel', $options) ? $options['targetLabel'] : false;
@@ -506,8 +507,8 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         if (!empty($thumbnails['files'])) {
             $retinaSize = $this->imageThumbnail->getRetinaSizes();
             $mediaQueries = [
-                1236 => 'mobile',
-                1982 => 'tablet',
+                960 => 'mobile',
+                1536 => 'tablet',
                 2400 => 'desktop',
                 3840 => 'desktop',
             ];

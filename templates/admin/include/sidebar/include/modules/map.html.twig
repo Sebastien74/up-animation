@@ -8,12 +8,12 @@
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['map']['entity'].adminName is defined ? intlsModules['map']['entity'].adminName : 'Cartes'|trans) -%}
     {%- set icon = intlsModules['map']['entity'].iconClass is defined and intlsModules['map']['entity'].iconClass ? intlsModules['map']['entity'].iconClass : '/medias/icons/light/newspaper.svg' -%}
     <li {% if active %} class="active" {% endif -%}>
-        <a class="as-arrow {% if pageTag == 'maps' %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
+        <a class="as-arrow {% if active %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
             <span class="btn-icon small me-3">{{ icon|icon(17, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
-        <ul aria-expanded="false" class="collapse {% if pageTag == 'maps' %} in{% endif %}">
+        <ul aria-expanded="false" class="collapse {% if active %} in{% endif %}">
             <li>
-                <a href="{{ path('admin_map_index', {website: websiteId}) }}">{{ "Liste des cartes"|trans|raw }}</a>
+                <a href="{{ path('admin_map_index', {website: websiteId}) }}" {% if '/maps/maps/' in uri %} class="active" {% endif %}>{{ "Liste des cartes"|trans|raw }}</a>
             </li>
             <li>
                 <a href="{{ path('admin_mapcategory_index', {website: websiteId}) }}" {% if '/maps/categories/' in uri %} class="active" {% endif %}>{{ "Liste des catégories de points"|trans|raw }}</a>

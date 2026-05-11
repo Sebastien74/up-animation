@@ -161,7 +161,7 @@
     .btn-blur {
 
         backdrop-filter: blur(35px);
-        background: rgba(0,0,0,.05);
+        background: rgba(0, 0, 0, .05);
         font-weight: 700 !important;
         transition: all $transition-base;
         box-shadow: none !important;
@@ -199,9 +199,9 @@
         &:not(.btn-glass-white) {
             border: 1px solid rgba(255, 255, 255, 0.18) !important;
             background: linear-gradient(
-                    135deg,
-                    rgba(255, 255, 255, 0.40) 0%,
-                    rgba(255, 255, 255, 0.20) 100%
+                135deg,
+                rgba(255, 255, 255, 0.40) 0%,
+                rgba(255, 255, 255, 0.20) 100%
             );
         }
     }

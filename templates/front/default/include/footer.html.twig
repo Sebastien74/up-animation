@@ -171,9 +171,9 @@
                 </div>
                 <div class="col-12 col-lg-8 ps-lg-5">
                     <div class="row g-4">
-                        {%- if catalogMenus.services is not empty or catalogMenus.performances is not empty -%}
+                        {%- if catalogMenus.events is not empty or catalogMenus.performances is not empty -%}
                             <div class="menus-left col-12 col-md-6">
-                                {{ macro.menu(catalogMenus, 'services', 'Nos prestations'|trans) }}
+                                {{ macro.menu(catalogMenus, 'events', 'Nos événements'|trans) }}
                                 {{ macro.menu(catalogMenus, 'performances', 'Spectacles'|trans) }}
                             </div>
                         {%- endif -%}

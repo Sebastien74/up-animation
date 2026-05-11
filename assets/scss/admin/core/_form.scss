@@ -452,7 +452,7 @@ form {
 
         .select2-container--default .select2-selection--multiple .select2-selection__choice {
             background: $bg-gradient-primary !important;
-            color: $white-lighten !important;
+            color: $theme-text-muted !important;
             border-color: $input-border-color !important;
             border-radius: 6px;
             font-size: 13px;

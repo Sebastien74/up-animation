@@ -41,20 +41,21 @@ class ImageThumbnail implements ImageThumbnailInterface
     private const int MAX_FILE_HEIGHT = 6000; // pixels 6000
     private const array ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
     private const array EXCEPTIONS_EXTENSIONS = ['svg', 'gif', 'tiff', 'raw', 'heic'];
+    private const string SVG_RESIZED_DIR = 'thumbnails/svg-resized';
     private const array CONTAINER_SIZE = [
         1200 => 869,
         1920 => 1391,
     ];
-    private const array SIZES = [320, 480, 618, 768, 991, 1200, 1920];
-    private const array RETINA_SIZES = [640, 960, 1236, 1536, 1982, 2400, 3840];
+    private const array SIZES = [480, 768, 1200, 1920];
+    private const array RETINA_SIZES = [960, 1536, 2400, 3840];
     private const array SCREENS_SIZES = [
-        'mobile' => [320, 640, 480, 960, 618, 1236, 768, 1536],
-        'tablet' => [991, 1982],
+        'mobile' => [480, 960],
+        'tablet' => [768, 1536],
         'desktop' => [1200, 2400, 1920, 3840],
     ];
     private const array SCREENS_SIZES_ATTR = [
-        'mobile' => 618,
-        'tablet' => 991,
+        'mobile' => 480,
+        'tablet' => 768,
         'desktop' => 1920,
     ];
 
@@ -234,6 +235,10 @@ class ImageThumbnail implements ImageThumbnailInterface
                     $execute = $execute && $sizeAllowed;
                     if ($loaderFilename && isset($this->cache['json_data'][$loaderFilename])) {
                         $execute = false;
+                    }
+                    if ('svg' === $extension) {
+                        $thumbnails = $this->buildSvgThumbnail($thumbnails, $screen, $size, $options, $screenMedia, $dirname);
+                        continue;
                     }
                     try {
                         $thumb = $this->getScreenThumb($screenMedia, $mediaRelation, $thumbs, $screen, $dirname, $size, $options);
@@ -854,11 +859,11 @@ class ImageThumbnail implements ImageThumbnailInterface
                         $mediaQuality = $media ? (int) $media->getQuality() : 0;
                         $mediaQuality = $mediaQuality > 0 ? max(1, min(100, $mediaQuality)) : 0;
                         if ($imagineWebp) {
-                            $quality = $mediaQuality > 0 ? $mediaQuality : 85;
+                            $quality = $mediaQuality > 0 ? $mediaQuality : 80;
                         } elseif ('png' === $extension) {
                             $quality = 9;
                         } else {
-                            $quality = $mediaQuality > 0 ? $mediaQuality : 90;
+                            $quality = $mediaQuality > 0 ? $mediaQuality : 85;
                         }
                         if ($this->avifSupport) {
                             $function = 'imageavif';
@@ -880,7 +885,14 @@ class ImageThumbnail implements ImageThumbnailInterface
                                 }
                                 $function($image, $newDirname, 'png' === $extension ? 2 : 50);
                             } else {
-                                $function($image, $newDirname, $quality);
+                                if ('imagejpeg' === $function) {
+                                    imageinterlace($image, true);
+                                    $function($image, $newDirname, $quality);
+                                } elseif ('imagewebp' === $function && 'png' === $extension && $this->pngHasAlpha($copyDirname)) {
+                                    $function($image, $newDirname, IMG_WEBP_LOSSLESS);
+                                } else {
+                                    $function($image, $newDirname, $quality);
+                                }
                             }
                             // Si la version générée est plus lourde que la source, préférer la source
                             if ($this->filesystem->exists($copyDirname) && $this->filesystem->exists($newDirname)
@@ -1006,8 +1018,9 @@ class ImageThumbnail implements ImageThumbnailInterface
             $class .= ' radius';
         }
 
-        $attributes = in_array($infos['extension'], self::ALLOWED_EXTENSIONS) || 'webp' === $infos['extension'] ? '' : ($thumb->getWidth() ? 'width="'.$thumb->getWidth().'"' : '');
-        $attributes .= in_array($infos['extension'], self::ALLOWED_EXTENSIONS) || 'webp' === $infos['extension'] ? '' : ($thumb->getHeight() ? ' height="'.$thumb->getHeight().'"' : '');
+        $isAllowedExt = in_array($infos['extension'], self::ALLOWED_EXTENSIONS) || 'webp' === $infos['extension'];
+        $attributes = $isAllowedExt ? '' : (($thumb instanceof Media\Thumb && $thumb->getWidth()) ? 'width="'.$thumb->getWidth().'"' : '');
+        $attributes .= $isAllowedExt ? '' : (($thumb instanceof Media\Thumb && $thumb->getHeight()) ? ' height="'.$thumb->getHeight().'"' : '');
         $attributes .= $class ? ' class="'.ltrim($class).'"' : '';
         $attributes .= $asDecor ? ' alt=""' : ($infos['alt'] ? ' alt="'.trim(strip_tags($infos['alt'])).'"' : ' alt="'.$infos['filename'].'"');
         $attributes .= $asDecor ? ' role="presentation"' : '';
@@ -1022,6 +1035,219 @@ class ImageThumbnail implements ImageThumbnailInterface
         $thumbnails['infos']['attr'] = $attributes;
 
         return $thumbnails;
+    }
+
+    /**
+     * Generate a resized + minified SVG copy in /public/thumbnails/svg-resized.
+     * Returns the public path of the generated file or null on failure.
+     */
+    private function resizeAndMinifySvg(string $svgPath, int $width, int $height): ?string
+    {
+        if (!$this->filesystem->exists($svgPath) || is_dir($svgPath)) {
+            return null;
+        }
+
+        $publicDir = str_replace('\\', '/', $this->projectDirname) . '/public';
+        $svgPathNorm = str_replace('\\', '/', $svgPath);
+        if (!str_starts_with($svgPathNorm, $publicDir . '/')) {
+            return null;
+        }
+        $relative = substr($svgPathNorm, strlen($publicDir) + 1);
+        $pathInfo = pathinfo($relative);
+        $outputRelative = self::SVG_RESIZED_DIR . '/' . trim($pathInfo['dirname'] ?? '', '/.') . '/' . $pathInfo['filename'] . '-' . $width . 'x' . $height . '.svg';
+        $outputRelative = ltrim(preg_replace('#/+#', '/', $outputRelative), '/');
+        $outputPath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $publicDir . '/' . $outputRelative);
+
+        if ($this->filesystem->exists($outputPath)) {
+            return '/' . $outputRelative;
+        }
+
+        $content = @file_get_contents($svgPath);
+        if (!$content) {
+            return null;
+        }
+
+        $previous = libxml_use_internal_errors(true);
+        $dom = new \DOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = false;
+        if (!$dom->loadXML($content)) {
+            libxml_clear_errors();
+            libxml_use_internal_errors($previous);
+            return null;
+        }
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+
+        $svg = $dom->documentElement;
+        if (!$svg instanceof \DOMElement || 'svg' !== strtolower($svg->localName)) {
+            return null;
+        }
+
+        if (!$svg->hasAttribute('viewBox')) {
+            $originalWidth = (float) $svg->getAttribute('width');
+            $originalHeight = (float) $svg->getAttribute('height');
+            if ($originalWidth > 0 && $originalHeight > 0) {
+                $svg->setAttribute('viewBox', '0 0 ' . $originalWidth . ' ' . $originalHeight);
+            }
+        }
+        $svg->setAttribute('width', (string) $width);
+        $svg->setAttribute('height', (string) $height);
+
+        $this->stripSvgEditorMetadata($dom);
+
+        $output = $dom->saveXML($svg);
+        if (!is_string($output) || '' === $output) {
+            return null;
+        }
+        $output = preg_replace('/>\s+</', '><', $output);
+        $output = preg_replace('/\s{2,}/', ' ', $output);
+
+        $outputDir = dirname($outputPath);
+        if (!$this->filesystem->exists($outputDir)) {
+            try {
+                $this->filesystem->mkdir($outputDir);
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
+
+        if (false === @file_put_contents($outputPath, $output)) {
+            return null;
+        }
+
+        return '/' . $outputRelative;
+    }
+
+    /**
+     * Strip Inkscape/Sodipodi metadata, comments and editor-only attributes.
+     */
+    private function stripSvgEditorMetadata(\DOMDocument $dom): void
+    {
+        $xpath = new \DOMXPath($dom);
+        $xpath->registerNamespace('svg', 'http://www.w3.org/2000/svg');
+        $xpath->registerNamespace('inkscape', 'http://www.inkscape.org/namespaces/inkscape');
+        $xpath->registerNamespace('sodipodi', 'http://sodipodi.sourceforge.net/DTD/sodipodi-0.0.dtd');
+
+        $nodesToRemove = [];
+        foreach ($xpath->query('//comment()') as $node) {
+            $nodesToRemove[] = $node;
+        }
+        foreach ($xpath->query('//*[local-name()="metadata"]') as $node) {
+            $nodesToRemove[] = $node;
+        }
+        foreach ($xpath->query('//inkscape:*') as $node) {
+            $nodesToRemove[] = $node;
+        }
+        foreach ($xpath->query('//sodipodi:*') as $node) {
+            $nodesToRemove[] = $node;
+        }
+        foreach ($nodesToRemove as $node) {
+            if ($node->parentNode) {
+                $node->parentNode->removeChild($node);
+            }
+        }
+
+        foreach ($xpath->query('//*') as $element) {
+            if (!$element instanceof \DOMElement) {
+                continue;
+            }
+            $attrsToDrop = [];
+            foreach ($element->attributes as $attr) {
+                if (in_array($attr->prefix, ['inkscape', 'sodipodi'], true)) {
+                    $attrsToDrop[] = $attr->nodeName;
+                }
+            }
+            foreach ($attrsToDrop as $name) {
+                $element->removeAttribute($name);
+            }
+        }
+    }
+
+    /**
+     * Build the thumbnail entries (files, thumbs, runtimeConfig) for an SVG media.
+     */
+    private function buildSvgThumbnail(array $thumbnails, string $screen, int $size, array $options, Media\Media $screenMedia, string $dirname): array
+    {
+        try {
+            $svgDims = $this->getSvgDimensionsForScreen($screen, $size, $options, $screenMedia, $dirname);
+            $svgWidth = !empty($svgDims['width']) ? (int) $svgDims['width'] : null;
+            $svgHeight = !empty($svgDims['height']) ? (int) $svgDims['height'] : null;
+            if (in_array($size, self::RETINA_SIZES)) {
+                $thumbnails['files'][$size] = $this->publicPath($dirname);
+            } else {
+                $resizedSvg = ($svgWidth && $svgHeight) ? $this->resizeAndMinifySvg($dirname, $svgWidth, $svgHeight) : null;
+                $thumbnails['files'][$size] = $resizedSvg ?: $this->publicPath($dirname);
+            }
+            $svgThumbConfig = new Media\ThumbConfiguration();
+            $svgThumbConfig->setWidth($svgWidth);
+            $svgThumbConfig->setHeight($svgHeight);
+            $svgThumbConfig->setScreen($screen);
+            $svgThumb = new Media\Thumb();
+            $svgThumb->setWidth($svgWidth);
+            $svgThumb->setHeight($svgHeight);
+            $svgThumb->setConfiguration($svgThumbConfig);
+            $svgThumb->setMedia($screenMedia);
+            $thumbnails['thumbs'][$size] = (object) [
+                'thumb' => $svgThumb,
+                'media' => $screenMedia,
+                'cropInfos' => (object) [
+                    'width' => $svgWidth,
+                    'height' => $svgHeight,
+                    'dirname' => $dirname,
+                    'extension' => 'svg',
+                ],
+            ];
+            $thumbnails['runtimeConfig'][$size] = [];
+        } catch (\Exception $e) {
+            $thumbnails['files'][$size] = $this->publicPath($dirname);
+        }
+
+        return $thumbnails;
+    }
+
+    /**
+     * Resolve the SVG dimensions to use for a given screen, based on options.
+     */
+    private function getSvgDimensionsForScreen(string $screen, int $size, array $options, ?Media\Media $media = null, ?string $dirname = null): array
+    {
+        $width = null;
+        $height = null;
+
+        if (!empty($options['screensSizes'][$screen])) {
+            $screenOpts = $options['screensSizes'][$screen];
+            $width = !empty($screenOpts['width']) ? (int) $screenOpts['width'] : null;
+            $height = !empty($screenOpts['height']) ? (int) $screenOpts['height'] : null;
+        }
+
+        if (!$width && !$height) {
+            $width = !empty($options['maxWidth']) ? (int) $options['maxWidth']
+                : (!empty($options['width']) ? (int) $options['width'] : null);
+            $height = !empty($options['maxHeight']) ? (int) $options['maxHeight']
+                : (!empty($options['height']) ? (int) $options['height'] : null);
+        }
+
+        if ($media instanceof Media\Media && $dirname) {
+            $svgInfo = $this->svgSizes($media, $dirname, null, null);
+            $svgWidth = !empty($svgInfo['width']) ? (float) $svgInfo['width'] : null;
+            $svgHeight = !empty($svgInfo['height']) ? (float) $svgInfo['height'] : null;
+            if ($svgWidth && $svgHeight) {
+                if ($width && !$height) {
+                    $height = (int) ceil(($svgHeight * $width) / $svgWidth);
+                } elseif ($height && !$width) {
+                    $width = (int) ceil(($svgWidth * $height) / $svgHeight);
+                } elseif (!$width && !$height) {
+                    $width = (int) round($svgWidth);
+                    $height = (int) round($svgHeight);
+                }
+            }
+        }
+
+        if (!$width && !$height) {
+            $width = self::SCREENS_SIZES_ATTR[$screen] ?? 1920;
+        }
+
+        return ['width' => $width, 'height' => $height];
     }
 
     /**
@@ -1114,6 +1340,29 @@ class ImageThumbnail implements ImageThumbnailInterface
     /**
      * To check png signature.
      */
+    /**
+     * Detect alpha channel presence in a PNG (color types 4 and 6).
+     * Reads only the IHDR chunk (29 first bytes) — no GD load required.
+     */
+    private function pngHasAlpha(string $filePath): bool
+    {
+        if (!$this->filesystem->exists($filePath) || is_dir($filePath)) {
+            return false;
+        }
+        $handle = @fopen($filePath, 'rb');
+        if (!$handle) {
+            return false;
+        }
+        $header = fread($handle, 29);
+        fclose($handle);
+        if (!is_string($header) || strlen($header) < 26) {
+            return false;
+        }
+        $colorType = ord($header[25]);
+
+        return 4 === $colorType || 6 === $colorType;
+    }
+
     private function verifyPNGSignature(string $filePath): bool
     {
         $pngSignature = "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A";
@@ -1218,13 +1467,9 @@ class ImageThumbnail implements ImageThumbnailInterface
             ];
 
             $mediaQueries = [
-                320  => '(max-width: 319px)',
-                480  => '(min-width: 320px) and (max-width: 479px)',
-                618  => '(min-width: 480px) and (max-width: 575px)',
-                768  => '(min-width: 576px) and (max-width: 767px)',
-                991  => '(min-width: 768px) and (max-width: 991px)',
-                992  => '(min-width: 992px) and (max-width: 1199px)',
-                1200 => '(min-width: 1200px) and (max-width: 1399px)',
+                480  => '(max-width: 767px)',
+                768  => '(min-width: 768px) and (max-width: 991px)',
+                1200 => '(min-width: 992px) and (max-width: 1399px)',
                 1920 => '(min-width: 1400px)',
             ];
 

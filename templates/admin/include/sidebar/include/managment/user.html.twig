@@ -9,7 +9,7 @@
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['user']['entity'].adminName is defined ? intlsModules['user']['entity'].adminName : 'Utilisateurs'|trans) -%}
     {%- set icon = intlsModules['user']['entity'].iconClass is defined and intlsModules['user']['entity'].iconClass ? intlsModules['user']['entity'].iconClass : '/medias/icons/light/users.svg' -%}
     <li {% if active %} class="active" {% endif -%}>
-        <a href="{{ path('admin_user_index', {website: websiteId}) }}">
+        <a {% if active %} class="active" {% endif %} href="{{ path('admin_user_index', {website: websiteId}) }}">
             <span class="btn-icon small me-3">{{ icon|icon(19, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>

@@ -19,7 +19,7 @@
                 <a href="{{ path('admin_seo_edit', {website: websiteId, entitylocale: website().configuration.locale}) }}" {% if '/seo/edit/' in uri %} class="active" {% endif %} >{{ "Édition"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_redirection_edit', {website: websiteId}) }}">{{ "Redirections"|trans|raw }}</a>
+                <a href="{{ path('admin_redirection_edit', {website: websiteId}) }}" {% if '/seo/redirection/' in uri %} class="active" {% endif %}>{{ "Redirections"|trans|raw }}</a>
             </li>
             <li>
                 <a href="{{ path('admin_archive_index', {website: websiteId}) }}" {% if '/seo/archive/' in uri %} class="active" {% endif %}>{{ "URLS archivées"|trans|raw }}</a>
@@ -29,10 +29,10 @@
                     <a href="{{ path('admin_notfoundurl_index', {website: websiteId, type: 'front', category: 'url'}) }}" {% if '/seo/not-found-urls/' in uri %} class="active" {% endif %}>{{ "Erreurs 404"|trans|raw }}</a>
                 </li>
                 <li>
-                    <a href="{{ path('admin_seo_sitemap', {website: websiteId}) }}">{{ "Sitemap"|trans|raw }}</a>
+                    <a href="{{ path('admin_seo_sitemap', {website: websiteId}) }}" {% if '/seo/sitemap/' in uri %} class="active" {% endif %}>{{ "Sitemap"|trans|raw }}</a>
                 </li>
                 <li>
-                    <a href="{{ path('admin_seoconfiguration_edit', {website: websiteId}) }}">{{ "Configuration"|trans|raw }}</a>
+                    <a href="{{ path('admin_seoconfiguration_edit', {website: websiteId}) }}" {% if '/seo/configuration/' in uri %} class="active" {% endif %}>{{ "Configuration"|trans|raw }}</a>
                 </li>
                 {%- if 'gdpr'|moduleActive(configuration) -%}
                     <li>

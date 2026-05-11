@@ -16,8 +16,8 @@
             <span class="btn-icon small me-3">{{ icon|icon(19, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
         <ul aria-expanded="false" class="collapse {% if active %} in{% endif %}">
-            <li><a href="{{ path('admin_medias_library', {website: websiteId}) }}">{{ "Bibliothèque"|trans|raw }}</a></li>
-            <li><a href="{{ path('admin_mediacategory_index', {website: websiteId}) }}">{{ "Catégories de médias"|trans|raw }}</a></li>
+            <li><a {% if '/medias/library' in uri %} class="active" {% endif %} href="{{ path('admin_medias_library', {website: websiteId}) }}">{{ "Bibliothèque"|trans|raw }}</a></li>
+            <li><a {% if '/medias/categories' in uri %} class="active" {% endif %} href="{{ path('admin_mediacategory_index', {website: websiteId}) }}">{{ "Catégories de médias"|trans|raw }}</a></li>
         </ul>
     </li>
 {%- elseif moduleActive -%}
@@ -26,7 +26,7 @@
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['medias']['entity'].adminName is defined ? intlsModules['medias']['entity'].adminName : 'Médias'|trans) -%}
     {%- set icon = intlsModules['medias']['entity'].iconClass is defined and intlsModules['medias']['entity'].iconClass ? intlsModules['medias']['entity'].iconClass : '/medias/icons/light/photo-video.svg' -%}
     <li {% if active %} class="active" {% endif -%}>
-        <a href="{{ path('admin_medias_library', {website: websiteId}) }}">
+        <a {% if active %} class="active" {% endif %} href="{{ path('admin_medias_library', {website: websiteId}) }}">
             <span class="btn-icon small me-3">{{ icon|icon(19, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>

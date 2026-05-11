@@ -1,6 +1,5 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- set withThumbs = false -%}
 {%- set side = 'left' -%}
 {%- set speed = 50 -%}
 
@@ -16,24 +15,24 @@
                 {%- if display -%}
                     <div class="marquee-item d-flex align-items-center justify-content-center px-2 h-100">
                         {%- set mediaInfo = fileInfo(website, media.media.originalName) -%}
-                        {%- set mediaHeight = 50 -%}
-                        {%- set mediaWidth = mediaInfo and mediaInfo.width and mediaInfo.height ? (mediaInfo.width * mediaHeight / mediaInfo.height)|round(0, 'ceil') : null -%}
-                        {%- if withThumbs -%}
-                            {{ media|file(thumbConfiguration, {
-                                notInBox: true,
-                                maxWidth: fileSizes.width is defined ? fileSizes.width : (mediaWidth ? mediaWidth : null),
-                                maxHeight: fileSizes.height is defined ? fileSizes.height : mediaHeight,
-                                popupGallery: slider.popup,
-                                fullPopup: slider.popup,
-                                colSize: colSize
-                            }) }}
-                        {%- else -%}
-                            {%- set path = media|file(thumbConfiguration, {
-                                path: true,
-                            }) -%}
-                            {%- set title = media.intl.title ? media.intl.title : media.entity.name -%}
-                            <img src="{{ path }}" alt="{{ title }}" class="img-fluid img-{{ media.extension }}" height="{{ mediaHeight }}"{% if mediaWidth %} width="{{ mediaWidth }}"{% endif %}{% if 'svg' == media.extension %} style="height: 50px;"{% endif %}>
-                        {%- endif -%}
+                        {%- set ratio = mediaInfo and mediaInfo.width and mediaInfo.height ? (mediaInfo.width / mediaInfo.height) : null -%}
+                        {%- set mobileHeight = 35 -%}
+                        {%- set tabletHeight = 45 -%}
+                        {%- set desktopHeight = fileSizes.height is defined ? fileSizes.height : 50 -%}
+                        {%- set mobileWidth = ratio ? (ratio * mobileHeight)|round(0, 'ceil') : null -%}
+                        {%- set tabletWidth = ratio ? (ratio * tabletHeight)|round(0, 'ceil') : null -%}
+                        {%- set desktopWidth = fileSizes.width is defined ? fileSizes.width : (ratio ? (ratio * desktopHeight)|round(0, 'ceil') : null) -%}
+                        {{ media|file(thumbConfiguration, {
+                            notInBox: true,
+                            screensSizes: {
+                                mobile: {width: mobileWidth, height: mobileHeight},
+                                tablet: {width: tabletWidth, height: tabletHeight},
+                                desktop: {width: desktopWidth, height: desktopHeight}
+                            },
+                            popupGallery: slider.popup,
+                            fullPopup: slider.popup,
+                            colSize: colSize
+                        }) }}
                     </div>
                 {%- endif -%}
             {%- endfor -%}

@@ -13,7 +13,7 @@
         </a>
         <ul aria-expanded="false" class="collapse {% if pageTag == 'recruitment' %} in{% endif %}">
             <li>
-                <a href="{{ path('admin_recruitmentjob_index', {"website": websiteId}) }}">{{ "Liste des offres"|trans|raw }}</a>
+                <a href="{{ path('admin_recruitmentjob_index', {"website": websiteId}) }}" {% if '/recruitment/jobs/' in uri %} class="active" {% endif %}>{{ "Liste des offres"|trans|raw }}</a>
             </li>
             <li>
                 <a href="{{ path('admin_recruitmentcontract_index', {"website": websiteId}) }}"{% if '/recruitment/contracts/' in uri %} class="active" {% endif %}>{{ "Liste des types de contrat"|trans|raw }}</a>

@@ -6,9 +6,14 @@ import '../../../scss/vendor/components/_prism.scss';
 document.addEventListener('DOMContentLoaded', function () {
     search();
 
-    document.addEventListener('keyup', function () {
-        preview();
-    });
+    const seoForm = document.querySelector('body form[name="seo"]');
+    if (seoForm) {
+        let previewTimer;
+        seoForm.addEventListener('input', function () {
+            clearTimeout(previewTimer);
+            previewTimer = setTimeout(preview, 200);
+        });
+    }
 
     const activeLink = document.querySelector('#v-pills-tab-tree .entities-list .link-item.active');
     if (activeLink) {

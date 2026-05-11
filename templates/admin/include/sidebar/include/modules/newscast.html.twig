@@ -13,7 +13,7 @@
         </a>
         <ul aria-expanded="false" class="collapse {% if pageTag == 'newscasts' %} in{% endif %}">
             <li>
-                <a href="{{ path('admin_newscast_index', {website: websiteId}) }}">{{ "Liste des actualités"|trans|raw }}</a>
+                <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" {% if '/newscasts/newscasts/' in uri %} class="active" {% endif %}>{{ "Liste des actualités"|trans|raw }}</a>
             </li>
             <li>
                 <a href="{{ path('admin_newscastcategory_index', {website: websiteId}) }}" {% if '/newscasts/categories/' in uri %} class="active" {% endif %}>{{ "Liste des catégories"|trans|raw }}</a>

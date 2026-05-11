@@ -34,7 +34,7 @@
             <div class="card-body pb-2">
                 <h4 class="card-title float-start">
                     {{ label }}
-                    <button class="index-delete-show btn-app-lighten btn-md ms-3" data-bs-toggle="tooltip"
+                    <button class="index-delete-show btn-icon ms-3" data-bs-toggle="tooltip"
                             title="{{"Afficher les cases à cocher de suppression"|trans|striptags }}"
                             data-display="{{"Afficher les cases à cocher de suppression"|trans|striptags }}"
                             data-hide="{{"Masquer"|trans|striptags }}"><i class="icm-trash"></i></button>
@@ -68,7 +68,7 @@
                                 {%- endif -%}
                             </td>
                             <td class="align-middle">
-                                <ul class="reset">
+                                <ul class="reset mb-0 ps-3">
                                     {%- for entityUrl in url.entity.urls -%}
                                         <li class="italic">
                                             <small>

@@ -1,62 +1,63 @@
 {%- trans_default_domain 'admin' -%}
+{%- set uri = app.request.uri -%}
 
-<li>
-    <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
+<li {% if '/configuration/' in uri or '/entities/' in uri or '/sites/' in uri or '/modules/' in uri or '/actions/' in uri or '/blocks/types/' in uri or '/grids/' in uri or '/layout/configurations/' in uri %} class="active" {% endif %}>
+    <a class="as-arrow {% if '/configuration/' in uri or '/entities/' in uri or '/sites/' in uri or '/modules/' in uri or '/actions/' in uri or '/blocks/types/' in uri or '/grids/' in uri or '/layout/configurations/' in uri %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
         <span class="btn-icon small me-3"><i class="icm-cog"></i></span>{{ "Configuration"|trans|raw }}
     </a>
-    <ul aria-expanded="false" class="collapse">
+    <ul aria-expanded="false" class="collapse {% if '/configuration/' in uri or '/entities/' in uri or '/sites/' in uri or '/modules/' in uri or '/actions/' in uri or '/blocks/types/' in uri or '/grids/' in uri or '/layout/configurations/' in uri %} in{% endif %}">
         <li>
-            <a href="{{ path('admin_site_edit', {website: websiteId, site: websiteId}) }}">
+            <a href="{{ path('admin_site_edit', {website: websiteId, site: websiteId}) }}" {% if '/sites/edit/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Site courant"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_website_style', {website: websiteId}) }}">
+            <a href="{{ path('admin_website_style', {website: websiteId}) }}" {% if '/sites/style/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Élements de site"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_site_index', {website: websiteId}) }}">
+            <a href="{{ path('admin_site_index', {website: websiteId}) }}" {% if '/sites/sites/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Liste des sites"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_thumbconfiguration_index', {website: websiteId}) }}">
+            <a href="{{ path('admin_thumbconfiguration_index', {website: websiteId}) }}" {% if '/configuration/thumbnails/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Thumbnails"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_grid_index', {website: websiteId}) }}">
+            <a href="{{ path('admin_grid_index', {website: websiteId}) }}" {% if '/grids/grids/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Grilles"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_entity_index', {website: websiteId}) }}">
+            <a href="{{ path('admin_entity_index', {website: websiteId}) }}" {% if '/entities/entities/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Entités"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_blocktype_index', {website: websiteId}) }}">
+            <a href="{{ path('admin_blocktype_index', {website: websiteId}) }}" {% if '/blocks/types/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Types de blocs"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_module_index', {website: websiteId}) }}">
+            <a href="{{ path('admin_module_index', {website: websiteId}) }}" {% if '/modules/modules/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Modules"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_action_index', {website: websiteId}) }}">
+            <a href="{{ path('admin_action_index', {website: websiteId}) }}" {% if '/actions/actions/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Actions de modules"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_layoutconfiguration_index', {website: websiteId}) }}">
+            <a href="{{ path('admin_layoutconfiguration_index', {website: websiteId}) }}" {% if '/layout/configurations/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Mises en page"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_icons', {website: websiteId, library: 'app'}) }}">
+            <a href="{{ path('admin_icons', {website: websiteId, library: 'app'}) }}" {% if '/configuration/icons/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Blibliothèque d'icônes"|trans|raw }}</span>
             </a>
         </li>

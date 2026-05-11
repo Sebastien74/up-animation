@@ -1,53 +1,54 @@
 {%- trans_default_domain 'admin' -%}
+{%- set uri = app.request.uri -%}
 
-<li>
-    <a class="as-arrow" href="javascript:void(0)" aria-expanded="false">
+<li {% if '/tools' in uri or '/phpinfo' in uri or '/entities/generator' in uri or '/commands/' in uri or '/cron/scheluder' in uri or '/import/' in uri or '/fixtures-parser/' in uri or '/test/' in uri or '/project-info/' in uri %} class="active" {% endif %}>
+    <a class="as-arrow {% if '/tools' in uri or '/phpinfo' in uri or '/entities/generator' in uri or '/commands/' in uri or '/cron/scheluder' in uri or '/import/' in uri or '/fixtures-parser/' in uri or '/test/' in uri or '/project-info/' in uri %} active{% endif %}" href="javascript:void(0)" aria-expanded="false">
         <span class="btn-icon small me-3"><i class="icm-code"></i></span>{{ "Développement"|trans|raw }}
     </a>
-    <ul aria-expanded="false" class="collapse">
+    <ul aria-expanded="false" class="collapse {% if '/tools' in uri or '/phpinfo' in uri or '/entities/generator' in uri or '/commands/' in uri or '/cron/scheluder' in uri or '/import/' in uri or '/fixtures-parser/' in uri or '/test/' in uri or '/project-info/' in uri %} in{% endif %}">
         <li>
-            <a href="{{ path('admin_tools') }}">
+            <a href="{{ path('admin_tools') }}" {% if '/tools' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Boite à outils"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_phpinfo') }}">
+            <a href="{{ path('admin_phpinfo') }}" {% if '/phpinfo' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "PHP info"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_entities_generator', {website: websiteId}) }}">
+            <a href="{{ path('admin_entities_generator', {website: websiteId}) }}" {% if '/entities/generator' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Générer la configuration des entités"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_command_index', {website: websiteId}) }}">
+            <a href="{{ path('admin_command_index', {website: websiteId}) }}" {% if '/commands/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Tâches planifiées"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a class="swal-link-confirm" href="{{ path('admin_cron_scheluder') }}">
+            <a class="swal-link-confirm" href="{{ path('admin_cron_scheluder') }}" {% if '/cron/scheluder' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Exécuter les tâches planifiées"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_dev_import', {website: websiteId}) }}">
+            <a href="{{ path('admin_dev_import', {website: websiteId}) }}" {% if '/import/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Importation de données"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_translation_data_fixtures_parser', {website: websiteId}) }}">
+            <a href="{{ path('admin_translation_data_fixtures_parser', {website: websiteId}) }}" {% if '/fixtures-parser/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Yaml translations fixtures parser"|trans|raw }}</span>
             </a>
         </li>
         <li>
-            <a href="{{ path('admin_dev_test', {website: websiteId}) }}">
+            <a href="{{ path('admin_dev_test', {website: websiteId}) }}" {% if '/test/' in uri %} class="active" {% endif %}>
                 <span class="hide-menu">{{ "Controller de développement"|trans|raw }}</span>
             </a>
         </li>
         {%- if 'local' == app.environment -%}
             <li>
-                <a href="{{ path('admin_project_info', {website: websiteId}) }}">
+                <a href="{{ path('admin_project_info', {website: websiteId}) }}" {% if '/project-info/' in uri %} class="active" {% endif %}>
                     <span class="hide-menu">{{ "Infos projet"|trans|raw }}</span>
                 </a>
             </li>

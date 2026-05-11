@@ -66,7 +66,8 @@
             infos: infos,
             attributes: attributes,
             priority: priority,
-            inAdmin: inAdmin
+            inAdmin: inAdmin,
+            colSize: colSize is defined ? colSize : 12
         } only -%}
     {%- if not inAdmin and not isInBox and imageLinkUrl and not btnLink and not disableLink -%}
         </a>

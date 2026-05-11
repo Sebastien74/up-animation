@@ -211,9 +211,9 @@ class ProductType extends AbstractType
                     'label' => $this->translator->trans('Afficher dans le menu', [], 'admin'),
                     'placeholder' => $this->translator->trans('Séléctionnez', [], 'admin'),
                     'choices' => [
-                        $this->translator->trans('Nos Prestations', [], 'admin') => 'services',
-                        $this->translator->trans('Animations Création', [], 'admin') => 'animations',
-                        $this->translator->trans('Spectacles', [], 'admin') => 'performances',
+                        $this->translator->trans('Nos événements', [], 'admin') => 'events',
+                        $this->translator->trans('Nos animations', [], 'admin') => 'animations',
+                        $this->translator->trans('Nos spectacles', [], 'admin') => 'performances',
                         $this->translator->trans('Nos Locations', [], 'admin') => 'rentals',
                     ],
                     'required' => false,

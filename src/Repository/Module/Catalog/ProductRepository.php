@@ -187,7 +187,7 @@ class ProductRepository extends ServiceEntityRepository
             ]);
         }
 
-        foreach (['services', 'animations', 'performances', 'rentals'] as $slug) {
+        foreach (['events', 'performances', 'animations', 'rentals'] as $slug) {
             if (empty($menus[$slug])) {
                 $menus[$slug] = [];
             }

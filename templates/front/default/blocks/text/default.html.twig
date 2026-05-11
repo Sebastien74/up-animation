@@ -1,6 +1,8 @@
 {%- trans_default_domain 'front_default' -%}
 
 {%- if haveContent -%}
+    {%- set templateName = templateName is defined ? templateName : null -%}
+    {%- set haveTable = (templateName == 'legacy') or (intl.body and '<table' in intl.body) -%}
     {%- set animActive = false -%}
     {%- set fontWeight = fontWeight is defined ? fontWeight : false -%}
     {%- set lineHeight = lineHeight is defined ? lineHeight : false -%}
@@ -23,7 +25,11 @@
         {%- if intl.body -%}
             <div class="body {% if anim.text.class is defined and anim.text.class %} {{ anim.text.class|raw }}{% endif %}{% if lineHeight %} {{ lineHeight }}{% endif %}{% if fontWeight %} {{ fontWeight }}{% endif %}"
                     {% if anim.text.attr is defined and anim.text.attr %} {{ anim.text.attr|raw }}{% endif %}>
-                {{ intl.body|raw }}
+                {% if haveTable %}
+                    {{ intl.body|tableClasses|raw }}
+                {% else %}
+                    {{ intl.body|raw }}
+                {% endif %}
             </div>
         {%- endif -%}
     </div>

@@ -8,7 +8,7 @@
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['table']['entity'].adminName is defined ? intlsModules['table']['entity'].adminName : "Tableaux"|trans) -%}
     {%- set icon = intlsModules['table']['entity'].iconClass is defined and intlsModules['table']['entity'].iconClass ? intlsModules['table']['entity'].iconClass : '/medias/icons/light/table.svg' -%}
     <li {% if active %} class="active" {% endif -%}>
-        <a href="{{ path('admin_table_index', {website: websiteId}) }}">
+        <a {% if active %} class="active" {% endif %} href="{{ path('admin_table_index', {website: websiteId}) }}">
             <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>

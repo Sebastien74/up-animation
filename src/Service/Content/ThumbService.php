@@ -59,9 +59,8 @@ readonly class ThumbService
             $thumbs = !empty($files['files']) ? array_replace($thumbs, $files['files']) : $thumbs;
             $sizesDisplay = !empty($files['sizesDisplay']) ? $files['sizesDisplay'] : $this->thumbnail->getSizes();
             $mediaQueries = [
-                618 => '(max-width: 575px)',
-                991 => '(min-width: 576px) and (max-width: 991px)',
-                992 => '(min-width: 992px) and (max-width: 1199px)',
+                480 => '(max-width: 767px)',
+                768 => '(min-width: 768px) and (max-width: 1199px)',
                 1200 => '(min-width: 1200px) and (max-width: 1399px)',
                 1920 => '(min-width: 1400px)',
             ];
@@ -73,15 +72,8 @@ readonly class ThumbService
                     $link = (new Link('preload', $linkPath))
                         ->withAttribute('as', 'image')
                         ->withAttribute('fetchpriority', 'high');
-                    $mqKey = $key;
-                    if ($key == 991 && !isset($mediaQueries_991_done)) {
-                        $link = $link->withAttribute('media', $mediaQueries[991]);
-                        $mediaQueries_991_done = true;
-                    } elseif ($key == 991) {
-                        $mqKey = 992;
-                    }
-                    if (isset($mediaQueries[$mqKey])) {
-                        $link = $link->withAttribute('media', $mediaQueries[$mqKey]);
+                    if (isset($mediaQueries[$key])) {
+                        $link = $link->withAttribute('media', $mediaQueries[$key]);
                     }
                     $extension = pathinfo($thumb, PATHINFO_EXTENSION);
                     if ($extension) {

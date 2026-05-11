@@ -13,19 +13,9 @@
 /** 1 - Core */
 
 import '../bootstrap/dist/dropdown';
-import '../bootstrap/dist/tab';
-import '../bootstrap/dist/popover';
-import '../bootstrap/dist/collapse';
-import '../bootstrap/dist/modal';
-import '../bootstrap/dist/button';
 
-// import './perfect-scrollbar.jquery.min';
-// import './sticky-kit';
-// import './jquery.sparkline.min';
-// import './custom';
 import './sidebar';
 import './tree-list';
-// import 'simplebar';
 import route from "../../vendor/components/routing";
 
 /** 2 - Scroll to errors */

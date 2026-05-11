@@ -30,17 +30,13 @@ if (showPasswordButtons && showPasswordButtons.length > 0) {
     }).catch(error => console.error(error.message));
 }
 
-/** 1 - Add ID to forms */
-const forms = document.querySelectorAll('form');
-if (forms.length > 0) {
-    forms.forEach(function (form) {
-        const id = form.getAttribute('id');
-        if (!id) {
-            const uniqId = 'form-' + Math.floor(Math.random() * 10000);
-            form.setAttribute('id', uniqId);
-        }
+/** 1 - Add ID to forms (différé en idle, non bloquant) */
+const scheduleIdle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 1); };
+scheduleIdle(function () {
+    document.querySelectorAll('form:not([id])').forEach(function (form) {
+        form.setAttribute('id', 'form-' + Math.floor(Math.random() * 10000));
     });
-}
+});
 
 /** 2 - Ajax Post */
 if (document.querySelector('.ajax-post')) {

@@ -363,6 +363,23 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
     }
 
     /**
+     * Adds table HTML classes and wraps tables in a responsive div.
+     */
+    public function tableClasses(?string $html = null): ?string
+    {
+        if ($html) {
+            $tableClasses = 'table table-striped table-bordered align-middle w-100';
+            // Add classes if the <table> tag does not already have a class attribute
+            $html = preg_replace('/<table(?![^>]*\bclass=)/i', '<table class="' . $tableClasses . '"', $html);
+            // Append classes to existing <table> elements that already have a class attribute
+            $html = preg_replace('/<table\b([^>]*)\bclass="([^"]*)"/i', '<table\1 class="\2 ' . $tableClasses . '"', $html);
+            // Wrap each <table> in a <div class="table-responsive">
+            $html = preg_replace('/(<table\b[^>]*>.*?<\/table>)/is', '<div class="table-responsive">$1</div>', $html);
+        }
+        return $html;
+    }
+
+    /**
      * To convert string to int.
      */
     public function intVal(mixed $string = null): ?int
@@ -371,7 +388,7 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * To shuffle array.
+     * To shuffle an array.
      */
     public function shuffle(array $array = []): array
     {

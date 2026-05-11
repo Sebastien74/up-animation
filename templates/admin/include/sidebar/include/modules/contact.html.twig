@@ -8,7 +8,7 @@
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['contact-information']['entity'].adminName is defined ? intlsModules['contact-information']['entity'].adminName : 'Informations de contact'|trans) -%}
     {%- set icon = intlsModules['contact-information']['entity'].iconClass is defined and intlsModules['contact-information']['entity'].iconClass ? intlsModules['contact-information']['entity'].iconClass : '/medias/icons/light/info.svg' -%}
     <li {% if active %} class="active" {% endif -%}>
-        <a href="{{ path('admin_contact_index', {website: websiteId}) }}">
+        <a {% if active %} class="active" {% endif %} href="{{ path('admin_contact_index', {website: websiteId}) }}">
             <span class="btn-icon small me-3">{{ icon|icon(17, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>

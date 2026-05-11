@@ -7,7 +7,8 @@
       "Bash(grep *)",
       "Bash(yarn add *)",
       "Bash(yarn dev *)",
-      "Bash(yarn watch *)"
+      "Bash(yarn watch *)",
+      "Bash(php *)"
     ]
   }
 }

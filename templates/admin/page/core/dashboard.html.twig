@@ -20,162 +20,161 @@
 
 {%- block body -%}
 
-    <div id="dashboard" class="pt-4 pb-5 position-relative">
+    {%- set isInternal = granted('ROLE_INTERNAL') -%}
+    {%- set hasSeo = isInternal and noSeoCounts is defined and noSeoCounts['total'] is defined -%}
+    {%- set userLocale = app.request.locale -%}
+    {%- set today = 'now'|date('Y-m-d H:i:s') -%}
+    {%- set hourNow = 'now'|date('H')|number_format(0) -%}
+    {%- set greetingKey = (hourNow >= 5 and hourNow < 18) ? "Bonjour" : "Bonsoir" -%}
+    {%- set userFirstName = app.user.firstName is defined and app.user.firstName ? app.user.firstName : null -%}
 
-        <div class="header mb-1 d-inline-block px-4 py-4 shadow-item">
-            <h1 class="w-100 d-flex align-items-center">{{ seasonIcon()|icon(25, 25, 'me-2 info-darken') }}{{ "Ravi de vous revoir !"|trans|raw }}</h1>
-            {%- if app.user.lastLogin is defined and app.user.lastLogin -%}
-                <p>{{ "Dernière connexion"|trans|raw }} {{ app.user.lastLogin|ago }}</p>
-            {%- endif -%}
-            <div id="saying" class="mt-4">
-                <script language="javascript" charset="utf-8" src="https://dicocitations.lemonde.fr/dictonblog.js" defer></script>
-            </div>
-        </div>
+    <div id="dashboard" class="pt-2 pb-5">
 
-        <div class="row body mt-3">
-
-{#            https://www.svgrepo.com/collection/responsive-flat-icons #}
-
-            <div class="{% if granted('ROLE_INTERNAL') %}col-lg-8 internal{% else %}col-12{% endif %} left d-flex flex-column my-auto">
-                <div class="row d-flex w-100">
-                    {%- if 'pages'|moduleActive(configuration) -%}
-                        <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_page_tree', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
-                                <span class="d-inline-block w-100 mb-2">{{ 'admin pages-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled d-inline-block mt-auto">{{ "Gérez vos pages"|trans|raw }}</span>
-                            </a>
-                        </div>
-                    {%- endif -%}
-                    {%- if 'medias'|moduleActive(configuration) -%}
-                        <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_medias_library', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
-                                <span class="d-inline-block w-100 mb-2">{{ 'admin images-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled d-inline-block mt-auto">{{ "Gérez vos médias"|trans|raw }}</span>
-                            </a>
-                        </div>
-                    {%- endif -%}
-                    {%- if 'newscast'|moduleActive(configuration) -%}
-                        <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
-                                <span class="d-inline-block w-100 mb-2">{{ 'admin news-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled d-inline-block mt-auto">{{ "Publiez une actu"|trans|raw }}</span>
-                            </a>
-                        </div>
-                    {%- endif -%}
+        {#-- Hero --#}
+        <section class="dashboard-hero reveal">
+            <div class="hero-inner">
+                <div class="hero-meta-top">
+                    {{ seasonIcon()|icon(15, 15, 'hero-season') }}
+                    <span class="hero-date">{{ today|format_datetime(pattern='cccc d MMMM yyyy', locale=userLocale)|capitalize }}</span>
                 </div>
-                <div class="row d-flex w-100">
-                    {%- if 'form'|moduleActive(configuration) -%}
-                        <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_form_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
-                                <span class="d-inline-block w-100 mb-2">{{ 'admin form-color'|icon(70, 70, 'info') }}</span>
-                                <span class="entitled d-inline-block mt-auto">{{ "Gérez vos formulaires"|trans|raw }}</span>
-                            </a>
-                        </div>
-                    {%- endif -%}
-                    {%- if 'slider'|moduleActive(configuration) -%}
-                        <div class="col-6 col-md-4 text-center py-2">
-                            <a href="{{ path('admin_slider_index', {website: websiteId}) }}" class="shadow-item d-flex flex-column h-100 p-4">
-                                <span class="d-inline-block w-100 mb-2">{{ 'admin sliders-color'|icon(65, 65, 'info') }}</span>
-                                <span class="entitled d-inline-block mt-auto">{{ "Vos sliders"|trans|raw }}</span>
-                            </a>
-                        </div>
-                    {%- endif -%}
-                </div>
+                <h1 class="hero-title mb-0">
+                    <span class="hero-greeting">
+                        {{ greetingKey|trans }}{% if userFirstName %}, <span class="hero-name">{{ userFirstName }}</span>{% endif %}.
+                    </span>
+                    <span class="hero-welcome">{{ "Ravi de vous retrouver"|trans|raw }}<span class="hero-mark">.</span></span>
+                </h1>
+                {%- if app.user.lastLogin is defined and app.user.lastLogin -%}
+                    <div class="hero-bottom mt-3">
+                        <span class="hero-last-login">
+                            <i class="icm-clock"></i>{{ "Dernière connexion"|trans|raw }} {{ app.user.lastLogin|ago }}
+                        </span>
+                    </div>
+                {%- endif -%}
             </div>
+            <span class="hero-grid-deco" aria-hidden="true"></span>
+        </section>
 
-            {%- if granted('ROLE_INTERNAL') -%}
-                <div class="col-lg-4 right d-flex flex-column my-auto ps-lg-3">
-                    <div class="row ps-lg-3">
-                        <div class="col-12 my-auto">
-                            <a href="{{ path('admin_notfoundurl_index', {website: websiteId(), type: 'front', category: 'url'}) }}" data-bs-toggle="preloader"
-                               class="w-100 shadow-item text-center d-inline-flex align-items-center justify-content-center py-3 px-4 my-2">
-                                <div class="inner">
-                                    <span class="count w-100 d-inline-block">
-                                        {%- if notFoundUrls|length > notFoundsLimit -%}
-                                            <i class="icm-chevron-right"></i>
-                                            {{ notFoundsLimit }}
-                                        {%- else -%}
-                                            {{ notFoundUrls|length }}
-                                        {%- endif -%}
-                                    </span>
-                                    <span class="entitled d-inline-flex align-items-center justify-content-center"><i class="icm-unlink"></i>{{ "Erreurs 404"|trans|raw }}</span>
-                                </div>
-                            </a>
-                            <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: defaultLocale}) }}"
-                               class="w-100 shadow-item text-center d-inline-flex align-items-center justify-content-center py-3 px-4 my-2">
-                                <div class="inner">
-                                    <span class="count w-100 d-inline-block">{{ noSeoCounts['total'] }}</span>
-                                    {%- if allLocales|length > 1 -%}
-                                        <div class="w-100 mx-auto">
-                                            <ul class="reset">
-                                                {%- for locale, count in noSeoCounts|unset('total') -%}
-                                                    <li class="small-count d-inline-block">
-                                                        <span class="flag d-inline-block" data-bs-toggle="tooltip" title="{{ languageName(locale, app.user.locale) }}">
-                                                            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                                                 data-src=" {{ asset('/medias/icons/flags/'~locale~'.svg') }}"
-                                                                 width="15" height="15"
-                                                                 class="img-fluid fit-cover lazy-load">
-                                                        </span>
-                                                        <span class="seo-count">{{ noSeoCounts[locale] }}</span>
-                                                    </li>
-                                                {%- endfor -%}
-                                            </ul>
-                                        </div>
+        {#-- SEO (feature panel) --#}
+        {%- if hasSeo -%}
+            {%- set seoCount = noSeoCounts['total'] -%}
+            <section class="dashboard-seo mt-5 reveal">
+                <div class="seo-panel {{ seoCount > 0 ? 'is-warning' : 'is-clean' }}">
+
+                    <div class="seo-left">
+                        <span class="seo-tag">{{ "SEO"|trans|raw }}</span>
+                        <span class="seo-number">{{ seoCount }}</span>
+                        <span class="seo-unit">{{ seoCount > 1 ? "balises"|trans|raw : "balise"|trans|raw }}</span>
+                    </div>
+
+                    <div class="seo-body">
+                        <h2 class="seo-headline">
+                            {%- if seoCount > 0 -%}
+                                {{ "SEO manquant à compléter."|trans|raw }}
+                            {%- else -%}
+                                {{ "Référencement à jour."|trans|raw }}
+                            {%- endif -%}
+                        </h2>
+                        <p class="seo-desc">
+                            {%- if seoCount > 0 -%}
+                                {{ "Renseignez les balises manquantes pour améliorer la visibilité de votre site sur les moteurs de recherche."|trans|raw }}
+                            {%- else -%}
+                                {{ "Toutes les balises SEO sont renseignées. Continuez ainsi."|trans|raw }}
+                            {%- endif -%}
+                        </p>
+
+                        {%- if allLocales|length > 1 and seoCount > 0 -%}
+                            <ul class="seo-locales reset">
+                                {%- for locale, count in noSeoCounts|unset('total') -%}
+                                    {%- if count >= 0 -%}
+                                        <li class="locale-row">
+                                            <span class="locale-flag">
+                                                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                                     data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}"
+                                                     width="16" height="16"
+                                                     alt="{{ languageName(locale, userLocale)|striptags }}"
+                                                     class="img-fluid fit-cover lazy-load">
+                                            </span>
+                                            <span class="locale-name">{{ languageName(locale, userLocale) }}</span>
+                                            <span class="locale-bar" aria-hidden="true">
+                                                <span class="locale-bar-fill" style="width: {{ seoCount > 0 ? (count / seoCount * 100)|round : 0 }}%"></span>
+                                            </span>
+                                            <span class="locale-count">{{ count }}</span>
+                                        </li>
                                     {%- endif -%}
-                                    <span class="entitled w-100 d-inline-block"><i class="icm-search"></i>{{ "SEO manquant"|trans|raw }}</span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            {%- endif -%}
+                                {%- endfor -%}
+                            </ul>
+                        {%- endif -%}
 
-            {%- if 'search'|moduleActive(configuration) and searchValues.count > 0 and granted('ROLE_SEARCH_ENGINE') -%}
-                <div id="stats-search" class="col-12 mt-4 pt-4">
-                    <div class="table-card card">
-                        <div class="card-header-darken-dark">
-                            <h3 class="title w-100 fw-400 mb-0">{{ "Recherches effectuées"|trans|raw }}</h3>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-start" scope="col">{{ "Texte saisi"|trans|raw }}</th>
-                                        <th class="text-start" scope="col">{{ "Infos"|trans|raw }}</th>
-                                        <th class="text-end" scope="col">{{ "Action"|trans|raw }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {%- for value in searchValues -%}
-                                        <tr id="value-row-{{ value.id }}">
-                                            <td class="align-middle text-start">{{ value.text }}</td>
-                                            <td class="align-middle text-start">
-                                                <ul class="reset">
-                                                    <li>{{ "Recherché <b>%count%</b> fois"|trans({'%count%': value.counter})|raw }}</li>
-                                                    <li>{{ "<b>%count%</b> résultat(s) trouvé(s)"|trans({'%count%': value.resultCount})|raw }}</li>
-                                                </ul>
-                                            </td>
-                                            <td class="align-middle text-end">
-                                                <span class="text-center">
-                                                    <a href="{{ path('admin_searchvalue_delete', {website: website.id, searchvalue: value.id}) }}"
-                                                       data-bs-toggle="tooltip" title="{{"Supprimer"|trans|striptags }}"
-                                                       data-target="#entity-row-{{ value.id }}"
-                                                       class="swal-delete-link cursor">
-                                                        <i class="icm-trash"></i>
-                                                    </a>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    {%- endfor -%}
-                                </tbody>
-                            </table>
-                        </div>
-                        {%- include 'admin/core/include/pagination.html.twig' with {pagination: searchValues} -%}
+                        <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: defaultLocale}) }}" class="seo-cta">
+                            <span>{{ seoCount > 0 ? "Compléter le SEO"|trans|raw : "Vérifier le SEO"|trans|raw }}</span>
+                            <i class="icm-arrow-right"></i>
+                        </a>
                     </div>
-                </div>
-            {%- endif -%}
 
-        </div>
+                </div>
+            </section>
+        {%- endif -%}
+
+        {#-- Accès rapides --#}
+        <section class="dashboard-shortcuts mt-5">
+            <div class="section-label mb-3">
+                <span class="label-line" aria-hidden="true"></span>
+                <span class="label-text">{{ "Accès rapides"|trans|raw }}</span>
+                <span class="label-aside">{{ "Vos modules"|trans|raw }}</span>
+            </div>
+            <div class="shortcuts-grid">
+                {%- if 'pages'|moduleActive(configuration) -%}
+                    <a href="{{ path('admin_page_tree', {website: websiteId}) }}" class="shortcut-tile reveal">
+                        <span class="shortcut-icon"><i class="icm-file-alt"></i></span>
+                        <span class="shortcut-body">
+                            <span class="shortcut-title">{{ "Pages"|trans|raw }}</span>
+                            <span class="shortcut-desc">{{ "Arborescence éditoriale"|trans|raw }}</span>
+                        </span>
+                        <span class="shortcut-arrow" aria-hidden="true"><i class="icm-arrow-right"></i></span>
+                    </a>
+                {%- endif -%}
+                {%- if 'medias'|moduleActive(configuration) -%}
+                    <a href="{{ path('admin_medias_library', {website: websiteId}) }}" class="shortcut-tile reveal">
+                        <span class="shortcut-icon"><i class="icm-images"></i></span>
+                        <span class="shortcut-body">
+                            <span class="shortcut-title">{{ "Médias"|trans|raw }}</span>
+                            <span class="shortcut-desc">{{ "Bibliothèque"|trans|raw }}</span>
+                        </span>
+                        <span class="shortcut-arrow" aria-hidden="true"><i class="icm-arrow-right"></i></span>
+                    </a>
+                {%- endif -%}
+                {%- if 'newscast'|moduleActive(configuration) -%}
+                    <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" class="shortcut-tile reveal">
+                        <span class="shortcut-icon"><i class="icm-newspaper"></i></span>
+                        <span class="shortcut-body">
+                            <span class="shortcut-title">{{ "Actualités"|trans|raw }}</span>
+                            <span class="shortcut-desc">{{ "Publications"|trans|raw }}</span>
+                        </span>
+                        <span class="shortcut-arrow" aria-hidden="true"><i class="icm-arrow-right"></i></span>
+                    </a>
+                {%- endif -%}
+                {%- if 'form'|moduleActive(configuration) -%}
+                    <a href="{{ path('admin_form_index', {website: websiteId}) }}" class="shortcut-tile reveal">
+                        <span class="shortcut-icon"><i class="icm-paper-plane"></i></span>
+                        <span class="shortcut-body">
+                            <span class="shortcut-title">{{ "Formulaires"|trans|raw }}</span>
+                            <span class="shortcut-desc">{{ "Soumissions reçues"|trans|raw }}</span>
+                        </span>
+                        <span class="shortcut-arrow" aria-hidden="true"><i class="icm-arrow-right"></i></span>
+                    </a>
+                {%- endif -%}
+                {%- if 'slider'|moduleActive(configuration) -%}
+                    <a href="{{ path('admin_slider_index', {website: websiteId}) }}" class="shortcut-tile reveal">
+                        <span class="shortcut-icon"><i class="icm-sliders-h"></i></span>
+                        <span class="shortcut-body">
+                            <span class="shortcut-title">{{ "Sliders"|trans|raw }}</span>
+                            <span class="shortcut-desc">{{ "Carrousels"|trans|raw }}</span>
+                        </span>
+                        <span class="shortcut-arrow" aria-hidden="true"><i class="icm-arrow-right"></i></span>
+                    </a>
+                {%- endif -%}
+            </div>
+        </section>
 
     </div>
 {%- endblock -%}

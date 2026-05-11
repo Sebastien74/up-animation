@@ -30,7 +30,7 @@
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['form']['entity'].adminName is defined ? intlsModules['form']['entity'].adminName : 'Formulaires'|trans) -%}
     {%- set icon = intlsModules['form']['entity'].iconClass is defined and intlsModules['form']['entity'].iconClass ? intlsModules['form']['entity'].iconClass : '/medias/icons/brand/wpforms.svg' -%}
     <li {% if active %} class="active" {% endif -%}>
-        <a href="{{ path('admin_form_index', {website: websiteId}) }}">
+        <a {% if active %} class="active" {% endif %} href="{{ path('admin_form_index', {website: websiteId}) }}">
             <span class="btn-icon small me-3">{{ icon|icon(13, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
     </li>

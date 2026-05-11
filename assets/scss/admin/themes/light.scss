@@ -399,9 +399,12 @@ body {
 
     /*--- Cards ---*/
 
+    .card-header {
+        color: $theme-text-muted;
+    }
+
     .card-body {
 
-        background-color: $theme-card-bg;
         color: $theme-text;
 
         .icon-wrap svg {
@@ -429,6 +432,7 @@ body {
         .card-body {
             background-color: $theme-bg-alt !important;
             border-color: $theme-border !important;
+            border-radius: $border-radius !important;
         }
     }
 
@@ -536,11 +540,43 @@ body {
         background-color: $danger !important;
     }
 
-    .tooltip-inner {
-        color: $theme-text !important;
-        background-color: $theme-surface !important;
-        border: 1px solid $theme-border;
-        box-shadow: $theme-shadow-md;
+    /*--- Tooltips ---*/
+
+    // core/_tooltip.scss applique background: gradient (shorthand) sur fond $tooltip-surface
+    // très sombre (#14161e) avec texte blanc. Un simple background-color: ne suffit pas
+    // (le shorthand pose background-image), et le tintage variant à 18% sur fond noir
+    // est invisible sur light. On repasse en surface crème + teinte variant nette
+    // (gradient repris en shorthand pour neutraliser le background-image hérité)
+    // + texte sombre. La sémantique reste portée par la couleur de bordure et le wash.
+
+    .tooltip {
+
+        --bs-tooltip-color: #{$theme-text};
+        --bs-tooltip-bg: #{$theme-surface};
+
+        .tooltip-inner {
+            color: $theme-text;
+            border: 1px solid $theme-accent-border;
+            background:
+                radial-gradient(520px 160px at 12% 0%, $theme-accent-bg, transparent 60%),
+                linear-gradient(180deg, $white, $theme-surface 45%, $theme-bg-alt);
+            box-shadow: $theme-shadow-lg;
+        }
+
+        @each $name, $color in (
+            danger: $danger,
+            info: $info,
+            warning: $warning,
+            success: $success,
+            teal: $success
+        ) {
+            &[data-variant="#{$name}"] .tooltip-inner {
+                border-color: rgba($color, 0.45);
+                background:
+                    radial-gradient(520px 160px at 12% 0%, rgba($color, 0.16), transparent 60%),
+                    linear-gradient(180deg, $white, $theme-surface 45%, $theme-bg-alt);
+            }
+        }
     }
 
     /*--- Alerts (override gradient sombre dur du _alert.scss) ---*/
@@ -813,7 +849,6 @@ body {
     // ($nestable-surface = $bg-gradient-primary sombre, $nestable-border blanc rgba…).
     // On neutralise ici le gradient hérité (background-image) en repassant via le shorthand.
     #medias-sortable-container .sortable-item,
-    .dd3-handle,
     .dd3-content {
 
         background: $theme-surface !important;
@@ -840,6 +875,33 @@ body {
         .handle-item::after {
             background-color: $theme-text-muted;
         }
+    }
+
+    // Hover .dd3-content : la shadow dark ($nestable-shadow-hover = rgba(0,0,0,.35)
+    // sur 18px de blur) écrase le fond crème. On réaligne sur la shadow physique douce
+    // du parti pris papier crème.
+    .dd-item:hover > .dd3-content {
+        border-color: $theme-border-alt !important;
+        box-shadow: $theme-shadow-md !important;
+    }
+
+    .dd3-handle .btn-icon i {
+        color: $theme-text-muted;
+    }
+
+    // Drop zones pendant le drag : tree-sortable.scss applique un background sombre
+    // (transparentize $black .85) et un accent violet ($primary dark). On réaligne
+    // sur l'accent orange désaturé et un overlay neutre chaud. L'animation pulse est
+    // neutralisée (effet superflu sur fond crème avec border accent visible).
+    .dd-placeholder {
+        background: $theme-accent-bg-soft !important;
+        border: 1px dashed $theme-accent-border-mid !important;
+        animation: none !important;
+    }
+
+    .dd-empty {
+        background: $theme-overlay-soft !important;
+        border: 1px dashed $theme-border-alt !important;
     }
 
     // Clone flottant pendant le drag (Nestable3 l'injecte dans <body>) :
@@ -1143,6 +1205,225 @@ body {
 
 #download-notice {
     background-image: linear-gradient(-45deg, $theme-bg-alt 25%, $theme-surface 25%, $theme-surface 50%, $theme-bg-alt 50%, $theme-bg-alt 75%, $theme-surface 75%, $theme-surface) !important;
+}
+
+/*--- Dashboard (compilé en entrypoint séparé : tokens dark par défaut, on
+     repasse ici en palette papier crème ; accent orange désaturé hérité de
+     $primary override + ombres physiques douces.
+
+     Note ordre de chargement : admin-light.css est chargé AVANT
+     admin-dashboard.css via parent() block, donc à spécificité égale
+     les règles de dashboard.css l'emportent. D'où le !important systématique
+     sur les color/background/border ci-dessous. ---*/
+
+#dashboard {
+
+    /*--- Hero ---*/
+
+    .dashboard-hero {
+        border-bottom-color: $theme-border !important;
+
+        .hero-meta-top {
+            color: $theme-text-muted !important;
+
+            .hero-season {
+                color: $theme-accent !important;
+            }
+
+            .hero-date {
+                color: $theme-text-muted !important;
+            }
+        }
+
+        .hero-title {
+            color: $theme-text !important;
+
+            .hero-greeting {
+                color: $theme-text-muted !important;
+
+                .hero-name {
+                    color: $theme-text !important;
+                }
+            }
+
+            .hero-welcome {
+                color: $theme-text !important;
+
+                .hero-mark {
+                    color: $theme-accent !important;
+                }
+            }
+        }
+
+        .hero-subtitle {
+            color: $theme-text-muted !important;
+        }
+
+        .hero-last-login,
+        .hero-pulse {
+            color: $theme-text-muted !important;
+            background: $theme-surface !important;
+            border-color: $theme-border-subtle !important;
+
+            i {
+                color: $theme-text-light !important;
+            }
+        }
+
+        .hero-grid-deco {
+            background-image:
+                linear-gradient(transparent calc(100% - 1px), $theme-border-subtle calc(100% - 1px)),
+                linear-gradient(90deg, transparent calc(100% - 1px), $theme-border-subtle calc(100% - 1px)) !important;
+            opacity: .7 !important;
+        }
+    }
+
+    /*--- Section label ---*/
+
+    .section-label {
+        color: $theme-text-muted !important;
+
+        .label-line {
+            background: $theme-border-alt !important;
+        }
+
+        .label-text {
+            color: $theme-text !important;
+        }
+
+        .label-aside {
+            color: $theme-text-muted !important;
+        }
+    }
+
+    /*--- SEO feature panel ---*/
+
+    .dashboard-seo {
+
+        .seo-panel {
+            background: $theme-card-bg !important;
+            border-color: $theme-border-subtle !important;
+            box-shadow: $theme-shadow-md !important;
+
+            &::before {
+                background: $theme-accent !important;
+            }
+
+            &.is-clean::before {
+                background: $success !important;
+            }
+
+            &.is-warning::before {
+                background: $warning !important;
+            }
+        }
+
+        .seo-left {
+            border-right-color: $theme-border-subtle !important;
+        }
+
+        .seo-tag {
+            color: $theme-text-muted !important;
+            border-color: $theme-border !important;
+        }
+
+        .seo-number {
+            color: $theme-text !important;
+        }
+
+        .seo-unit {
+            color: $theme-text-muted !important;
+        }
+
+        .seo-headline {
+            color: $theme-text !important;
+        }
+
+        .seo-desc {
+            color: $theme-text-muted !important;
+        }
+
+        .seo-locales .locale-row {
+
+            .locale-name {
+                color: $theme-text-muted !important;
+            }
+
+            .locale-bar {
+                background: $theme-border-subtle !important;
+
+                .locale-bar-fill {
+                    background: $theme-accent !important;
+                }
+            }
+
+            .locale-count {
+                color: $theme-text !important;
+            }
+        }
+
+        .seo-cta {
+            background: $theme-accent !important;
+            color: $white !important;
+
+            &:hover,
+            &:focus-visible {
+                background: darken($primary, 6%) !important;
+                color: $white !important;
+            }
+        }
+    }
+
+    /*--- Shortcuts ---*/
+
+    .shortcut-tile {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+        color: $theme-text !important;
+        box-shadow: $theme-shadow-sm !important;
+
+        &::after {
+            background: $theme-accent !important;
+        }
+
+        &:hover,
+        &:focus-visible {
+            border-color: $theme-accent-border !important;
+            background: $theme-surface !important;
+            color: $theme-text !important;
+            box-shadow: $theme-shadow-md !important;
+
+            .shortcut-icon {
+                background: $theme-accent-bg !important;
+                color: $theme-accent !important;
+            }
+
+            .shortcut-title {
+                color: $theme-accent !important;
+            }
+        }
+
+        &:focus-visible {
+            box-shadow: $theme-shadow-focus !important;
+        }
+
+        .shortcut-icon {
+            background: $theme-accent-bg-soft !important;
+            color: $theme-accent !important;
+        }
+
+        .shortcut-title {
+            color: $theme-text !important;
+        }
+
+        .shortcut-desc {
+            color: $theme-text-muted !important;
+        }
+
+        .shortcut-arrow {
+            color: $theme-text-light !important;
+        }
+    }
 }
 
 /*-----------------------------------

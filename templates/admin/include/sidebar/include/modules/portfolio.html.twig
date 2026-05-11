@@ -16,7 +16,7 @@
                 <a href="{{ path('admin_portfoliocard_index', {website: websiteId}) }}" {% if '/portfolios/cards/' in uri %} class="active" {% endif %}>{{ "Liste des fiches"|trans|raw }}</a>
             </li>
             <li>
-                <a href="{{ path('admin_portfoliolisting_index', {website: websiteId}) }}">{{ "Liste des portfolios"|trans|raw }}</a>
+                <a href="{{ path('admin_portfoliolisting_index', {website: websiteId}) }}" {% if '/portfolios/listings/' in uri %} class="active" {% endif %}>{{ "Liste des portfolios"|trans|raw }}</a>
             </li>
             <li>
                 <a href="{{ path('admin_portfoliocategory_index', {website: websiteId}) }}" {% if '/portfolios/categories/' in uri %} class="active" {% endif %}>{{ "Liste des catégories"|trans|raw }}</a>
