@@ -2,79 +2,55 @@
 
 /* -----------------------------------------------------------------
 
-    Created on : 2019-09-02, 3:40 PM
-    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Module : SEO
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
-    SEO :
-    ====
+    Refonte aesthetic — alignement vocabulaire dashboard.
+    Les patterns transverses (.reveal, .section-label, .feature-panel,
+    .shortcut-tile, .page-hero) sont fournis globalement par
+    assets/scss/admin/_admin-ui.scss (chargé via les thèmes).
 
-    1 ) Variables
-    2 ) Preview
-    3 ) Edition
-    4 ) Archived URLS
+    Sommaire :
+      1 ) Imports
+      2 ) Filter sidebar (tree)
+      3 ) Google preview
+      4 ) Metas preview
+      5 ) Edition form
+      6 ) Misc (copy-link, archived URLs)
 
 ------------------------------------------------------------------ */
 
 /*-----------------------------------
-   1 ) Variables
+   1 ) Imports
 -----------------------------------*/
 
+@import "../../vendor/mixin/media-queries";
 @import '../variables';
 
 /*-----------------------------------
-   2 ) Preview
------------------------------------*/
-
-#google-preview {
-
-    .seo-title {
-        color: #1a0dab;
-        font-size: 18px;
-        font-weight: 400;
-        font-family: Arial, sans-serif;
-    }
-
-    .canonical {
-        font-size: 14px;
-        color: #006621;
-        font-style: normal;
-        line-height: 17px;
-        margin-bottom: 5px;
-    }
-
-    .description {
-        color: #545454;
-        font-size: small;
-        line-height: 1.4;
-        font-family: arial,sans-serif;
-    }
-}
-
-#highlight-preview {
-
-    #highlight-metas {
-
-        .language-markup {
-            margin: 0;
-            border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius);
-        }
-    }
-}
-
-/*-----------------------------------
-   3 ) Edition
+   2 ) Filter sidebar (tree)
 -----------------------------------*/
 
 #seo-filter-categories {
+
     #v-pills-tab-tree {
-        a.active, a:hover {
-            font-weight: bold;
-            transition: all .3s;
+
+        a {
+
+            &.active,
+            &:hover {
+                font-weight: 600;
+                transition: color $transition-fast, font-weight $transition-fast;
+            }
         }
 
-        .entities-list, .models-list {
+        .entities-list,
+        .models-list {
+
             .collapse-icon {
                 display: inline-block;
+                transition: transform $transition-fast;
+
                 &[aria-expanded="true"] {
                     transform: rotate(90deg);
                 }
@@ -82,13 +58,81 @@
 
             .inner {
                 padding: 2px 0;
+                border-radius: $radius-xs;
+                transition: background $transition-fast;
+
                 &:hover {
-                    background: rgba($info, 0.05);
+                    background: rgba($primary, .06);
                 }
             }
         }
     }
 }
+
+/*-----------------------------------
+   3 ) Google preview
+-----------------------------------*/
+
+#google-preview {
+
+    position: relative;
+    overflow: hidden;
+
+    /* Bandeau d'accent discret rappel feature-panel */
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 3px;
+        background: $primary;
+        opacity: .75;
+    }
+
+    .seo-title {
+        color: #1a0dab;
+        font-size: 18px;
+        font-weight: 400;
+        font-family: Arial, sans-serif;
+        line-height: 1.3;
+    }
+
+    .canonical {
+        font-size: 13px;
+        color: #006621;
+        font-style: normal;
+        line-height: 1.4;
+        margin-bottom: $space-1;
+    }
+
+    .seo-description,
+    .description {
+        color: #545454;
+        font-size: 13px;
+        line-height: 1.5;
+        font-family: Arial, sans-serif;
+    }
+}
+
+/*-----------------------------------
+   4 ) Metas preview
+-----------------------------------*/
+
+#highlight-preview {
+
+    #highlight-metas {
+
+        .language-markup {
+            margin: 0;
+            border-radius: 0 0 $radius-lg $radius-lg;
+        }
+    }
+}
+
+/*-----------------------------------
+   5 ) Edition form
+-----------------------------------*/
 
 #edition-container {
 
@@ -96,36 +140,39 @@
     .meta-description {
         min-height: 150px;
     }
-
-    .ribbon-wrapper .ribbon {
-        min-width: 250px;
-        left: -30px;
-        margin-bottom: 0;
-    }
-}
-
-.copy-link {
-    font-size: 11px !important;
-    width: 23px;
-    height: 20px;
-    line-height: 15px;
-    padding: 0;
-    background: #fff;
-    border: 1px solid $white;
-    border-radius: .25rem;
-}
-
-#seo-form-container {
-    .ribbon-wrapper {
-        padding: 30px 15px 15px 15px;
-    }
 }
 
 /*-----------------------------------
-   4 ) Archived URLS
+   6 ) Misc
 -----------------------------------*/
 
+.copy-link {
+    width: 23px;
+    height: 20px;
+    padding: 0;
+    line-height: 15px;
+    font-size: 11px;
+    background: $crumb-surface;
+    border: 1px solid $crumb-border;
+    border-radius: $radius-xs;
+    color: $crumb-muted;
+    transition: background $transition-fast, color $transition-fast, border-color $transition-fast;
+
+    &:hover,
+    &:focus-visible {
+        background: rgba($primary, .12);
+        border-color: $primary;
+        color: $primary;
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($primary, .18);
+    }
+}
+
 .urls-archived-card {
+
     .delete-input-index-wrap {
         top: -1px;
     }

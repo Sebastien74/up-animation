@@ -2,58 +2,48 @@
 
 /* -----------------------------------------------------------------
 
-    Created on : 2019-12-11, 12:13 PM
-    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Module : User profile
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
-    USER PROFILE :
-    ==============
-
-    1 ) Imports
-    2 ) Main
+    Refonte aesthetic — alignement vocabulaire dashboard.
+    Les overrides light vivent dans themes/light.scss.
 
 ------------------------------------------------------------------ */
 
-/*-----------------------------------
-   1 ) Imports
------------------------------------*/
-
 @import '../variables';
 
-/*-----------------------------------
-   2 ) Main
------------------------------------*/
-
 #user-profile-card {
-    
+
     .img-user-container {
-        
-        border: 1px solid $gray-300;
-        border-radius: 0.25rem;
-        
+
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+        overflow: hidden;
+
         #user-avatar {
-            border-top-left-radius: 0.25rem;
+            border-top-left-radius: $radius-md;
         }
-        
+
         #user-picture {
             height: 200px;
         }
     }
-    
+
     h1 {
-        
+
         small {
             font-size: 14px;
         }
-        
+
         #edit-user-btn {
             font-size: 18px;
         }
     }
-    
+
     h2 {
-        
+
         font-size: 18px;
-        
+
         svg {
             float: left;
             margin-top: 3px;

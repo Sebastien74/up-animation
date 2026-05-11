@@ -2,14 +2,15 @@
 
 /* -----------------------------------------------------------------
 
-    Created on : 2019-12-11, 12:13 PM
-    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Module : Website
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
-    WEBSITE :
-    ========
+    Refonte aesthetic — alignement vocabulaire dashboard.
+    Les overrides light vivent dans themes/light.scss (bloc Website).
 
-    1 ) Imports
-    2 ) Main
+    Sommaire :
+      1 ) Imports
+      2 ) Themes group (sélecteur de thème — markup généré par form widget)
 
 ------------------------------------------------------------------ */
 
@@ -20,36 +21,37 @@
 @import '../variables';
 
 /*-----------------------------------
-   2 ) Main
+   2 ) Themes group
 -----------------------------------*/
 
 .themes-group {
 
     .card {
 
-        border-radius: var(--bs-border-radius);
+        border-radius: $radius-lg;
+        transition: transform $transition-fast, box-shadow $transition-fast;
 
         img {
-            border-radius: var(--bs-border-radius);
+            border-radius: $radius-lg;
             width: auto !important;
             height: auto !important;
         }
 
         .content {
-            background-color: transparentize($white, .1);
-            border-radius: var(--bs-border-radius);
+            background-color: rgba($white, .9);
+            border-radius: $radius-lg;
         }
 
-        &.active:before {
-            border-radius: var(--bs-border-radius);
-            position: absolute;
-            content: '';
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: transparentize($black, .3);
-            z-index: 1;
+        &.active {
+
+            &::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-color: rgba($black, .3);
+                border-radius: $radius-lg;
+                z-index: 1;
+            }
         }
 
         h5 {

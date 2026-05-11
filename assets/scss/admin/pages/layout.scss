@@ -297,14 +297,14 @@ body.resizing-active {
                 border: 2px solid transparent;
                 border-radius: 50%;
                 transition: border-color .3s linear, opacity .3s linear;
-                background-color: $dash-surface-3;
+                background-color: $theme-surface-alt;
             }
 
             &:not(.active) {
                 .background-input-label-border {
                     opacity: .75;
                     border-color: $theme-overlay-strong;
-                    box-shadow: 0 0 11px 0 $dash-surface-3;
+                    box-shadow: 0 0 11px 0 $theme-surface-alt;
                 }
             }
 
@@ -527,7 +527,7 @@ body.resizing-active {
         }
 
         .header .col-actions {
-            background-color: $dash-bg-1;
+            background-color: $theme-bg;
             border-top-right-radius: $radius-lg;
             border-top-left-radius: $radius-lg;
             border: 0;
@@ -538,7 +538,7 @@ body.resizing-active {
         .portlet-content {
             padding-top: $space-4;
             display: inline-block;
-            background-color: $dash-bg-1;
+            background-color: $theme-bg;
             border-top-left-radius: $radius-lg;
             border: 0;
         }
@@ -613,7 +613,7 @@ body.resizing-active {
 
         .add-block-wrap {
             padding-bottom: $space-4;
-            background-color: $dash-bg-1;
+            background-color: $theme-bg;
             border-bottom-right-radius: $radius-lg;
             border-bottom-left-radius: $radius-lg;
             border: 0;
@@ -648,7 +648,7 @@ body.resizing-active {
             }
 
             i {
-                color: $dash-bg-1;
+                color: $theme-bg;
                 font-size: 10px;
                 margin-left: -1px;
                 margin-top: 1px;
@@ -664,8 +664,8 @@ body.resizing-active {
 
             .header {
 
-                border-top-left-radius: $card-border-radius;
-                border-top-right-radius: $card-border-radius;
+                border-top-left-radius: $radius-lg;
+                border-top-right-radius: $radius-lg;
                 background-color: transparent;
 
                 .col-actions {
@@ -674,7 +674,7 @@ body.resizing-active {
             }
 
             .column {
-                border-radius: $card-border-radius;
+                border-radius: $radius-lg;
             }
 
             .block-resizable {
@@ -949,16 +949,16 @@ body.resizing-active {
             padding-left: 5px;
             padding-right: 1rem;
             box-shadow: $theme-shadow-sm;
-            background: $dash-bg-0;
+            background: $theme-bg-deep;
             border-radius: $radius-sm;
-            border: 1px solid transparentize($dash-bg-0, .8);
+            border: 1px solid transparentize($theme-bg-deep, .8);
             transition: box-shadow $transition-fast, border-color $transition-fast;
         }
 
         @include mediaQuery(min-lg) {
             &:hover .block-row {
                 box-shadow: $theme-shadow-md;
-                border-color: transparentize($dash-bg-0, .5);
+                border-color: transparentize($theme-bg-deep, .5);
             }
         }
 

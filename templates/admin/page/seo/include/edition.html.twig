@@ -2,7 +2,7 @@
 
 <div id="edition-container" class="card">
 
-    <div class="card-body pb-2">
+    <div class="card-body">
 
         <h5 class="main-subtitle"><i class="icm-code"></i>{{ "Balises métas"|trans|raw }}</h5>
 
@@ -19,12 +19,10 @@
                 {{ form_row(form.url.hideInSitemap) }}
             </div>
 
-            <div class="form-group col-12 ribbon-wrapper m-0">
-                <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
-                     href="#collapse-open-graph" role="button" aria-expanded="false">
-                    <i class="icm-share-alt me-3"></i>{{ "Open graph tags"|trans|raw }}
-                </div>
-            </div>
+            <h4 class="main-subtitle cursor w-100 collapsed" data-bs-toggle="collapse" href="#collapse-open-graph" role="button" aria-expanded="false" aria-controls="collapse-open-graph">
+                <i class="icm-share-alt"></i>{{ "Open graph tags"|trans|raw }}
+                <i class="icm-chevron-down ms-auto"></i>
+            </h4>
 
             <div class="collapse col-12 collapseOG" id="collapse-open-graph">
                 <div class="row pt-3">
@@ -42,17 +40,18 @@
                         <div class="col-12">
                             {%- include 'admin/page/media/modal-btn.html.twig' with {classname: class} -%}
                             {{ form_row(form.mediaRelation.media.uploadedFile) }}
+                            <div class="d-none">
+                                {{ form_row(form.mediaRelation.shape) }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group col-12 ribbon-wrapper m-0">
-                <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
-                     href="#collapse-url" role="button" aria-expanded="false">
-                    <i class="icm-link me-3"></i>{{ "URL"|trans|raw }}
-                </div>
-            </div>
+            <h4 class="main-subtitle cursor w-100 collapsed" data-bs-toggle="collapse" href="#collapse-url" role="button" aria-expanded="false" aria-controls="collapse-url">
+                <i class="icm-link"></i>{{ "URL"|trans|raw }}
+                <i class="icm-chevron-down ms-auto"></i>
+            </h4>
 
             <div class="collapse" id="collapse-url">
                 <div class="row pt-3">
@@ -64,12 +63,10 @@
                 </div>
             </div>
 
-            <div class="form-group col-12 ribbon-wrapper m-0">
-                <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
-                     href="#collapse-options" role="button" aria-expanded="false">
-                    <i class="icm-plus-circle me-3"></i>{{ "Options"|trans|raw }}
-                </div>
-            </div>
+            <h4 class="main-subtitle cursor w-100 collapsed" data-bs-toggle="collapse" href="#collapse-options" role="button" aria-expanded="false" aria-controls="collapse-options">
+                <i class="icm-plus-circle"></i>{{ "Options"|trans|raw }}
+                <i class="icm-chevron-down ms-auto"></i>
+            </h4>
 
             <div class="collapse col-12" id="collapse-options">
                 <div class="row pt-3">
@@ -83,12 +80,10 @@
 
             {%- if website.seoConfiguration.microData -%}
 
-                <div class="form-group col-12 ribbon-wrapper m-0">
-                    <div class="ribbon ribbon-bookmark ribbon-default cursor collapsed" data-bs-toggle="collapse"
-                         href="#collapse-microdata" role="button" aria-expanded="false">
-                        <i class="icm-server me-3"></i>{{ "Microdata"|trans|raw }}
-                    </div>
-                </div>
+                <h4 class="main-subtitle cursor w-100 collapsed" data-bs-toggle="collapse" href="#collapse-microdata" role="button" aria-expanded="false" aria-controls="collapse-microdata">
+                    <i class="icm-server"></i>{{ "Microdata"|trans|raw }}
+                    <i class="icm-chevron-down ms-auto"></i>
+                </h4>
 
                 <div class="collapse col-12" id="collapse-microdata">
                     <div class="row pt-3">

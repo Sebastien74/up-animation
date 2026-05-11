@@ -18,13 +18,13 @@
         <span id="main-counter" data-count="0" data-total="{{ total }}">0</span>/{{ total }} {{ "clés de traductions"|trans|replace({'__': ''}) }}
     </b>
 
-    <div class="row m-0">
+    <div class="row m-0 reveal-stagger">
         {%- for domain, locales in translations -%}
             {%- if domain != '_undefined' -%}
                 {%- set isFirst = true -%}
                 {%- for locale, localeTranslations in locales -%}
                     {%- if locale in allLocales -%}
-                        <div class="{% if not multiCols %}col-12{% else %}col-md-6 col-lg-4 col-xl-3{% endif %}">
+                        <div class="reveal {% if not multiCols %}col-12{% else %}col-md-6 col-lg-4 col-xl-3{% endif %}">
                             <div class="progress-block card p-3 mb-3" data-progress-href="#progress-{{ loop.index~"-"~locale }}">
                                 <strong class="w-100 d-inline-flex align-items-center gap-2 mb-2">
                                     {%- if allLocales|length > 1 -%}

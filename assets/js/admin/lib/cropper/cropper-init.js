@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let dataWidth = wrap.dataset.width;
         let dataHeight = wrap.dataset.height;
         let preview = wrap.querySelector('.img-preview');
+        let previewSelector = preview ? preview.getAttribute('class') : null;
 
         if (refresh && typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
             jQuery(imageEl).cropper('destroy');
@@ -67,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let options = {
             viewMode: 1,
             responsive: true,
-            preview: preview.getAttribute('class'),
             zoomOnWheel: true,
             crop: function (e) {
                 let modalINJS = document.getElementById(idModal);
@@ -135,6 +135,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         };
+
+        if (previewSelector) {
+            options.preview = previewSelector;
+        }
 
         if (dataWidth !== "" && dataHeight !== "") {
             let ratio = dataWidth / dataHeight;

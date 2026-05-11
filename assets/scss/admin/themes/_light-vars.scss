@@ -44,6 +44,7 @@ $body-shadow       : transparentize($theme-color, .8) !global;
 /*-- Sémantiques (theme tokens) --*/
 $theme-bg          : #f3eee4 !global;
 $theme-bg-alt      : #ede8db !global;
+$theme-bg-deep     : #e7e0d0 !global;  // crème plus sombre (équivalent du $dash-bg-0 dark)
 $theme-surface     : #fbf8f1 !global;
 $theme-surface-alt : #ede8db !global;
 

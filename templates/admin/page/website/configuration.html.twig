@@ -17,7 +17,7 @@
 
 {%- block body -%}
 
-    {{ form_start(form, {attr: {id: "website-elements-form", novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
+    {{ form_start(form, {attr: {id: "website-elements-form", class: "reveal", novalidate: "novalidate", action: app.request.uri, id: 'form-'~entity.id}}) }}
 
         <ul class="nav nav-tabs gap-2 w-100 border-0 mb-4 flex-wrap" role="tablist">
             <li class="nav-item">

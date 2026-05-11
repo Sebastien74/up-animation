@@ -1,0 +1,531 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    ADMIN UI — patterns transverses (chargé par les deux thèmes)
+    =============================================================
+
+    Vocabulaire visuel partagé extrait du dashboard. Toutes les classes
+    sont disponibles globalement sur l'admin (le partial est importé
+    par themes/light.scss et themes/dark.scss après les vars du thème
+    actif, ce qui pilote automatiquement le rendu light/dark).
+
+    Conventions :
+      - aucune classe ne contient `--` ni `__`
+      - aucun `var(--xxx)` : variables SCSS uniquement
+      - rayons et espacements via tokens ($space-*, $radius-*)
+      - media queries via mixin mediaQuery() — sauf
+        prefers-reduced-motion (exception technique a11y)
+
+    Sommaire :
+      1 ) Reveal animation
+      2 ) Section label
+      3 ) Page hero
+      4 ) Feature panel
+      5 ) Shortcut tile + grid
+      6 ) Keyframes
+      7 ) Responsive
+
+------------------------------------------------------------------ */
+
+@import "../vendor/mixin/media-queries";
+
+/*-----------------------------------
+   1 ) Reveal animation
+-----------------------------------*/
+
+.reveal {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: adminReveal .55s $transition-base-timing forwards;
+}
+
+.reveal-stagger > .reveal {
+
+    @for $i from 1 through 12 {
+
+        &:nth-child(#{$i}) {
+            animation-delay: #{($i - 1) * 60 + 120}ms;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .reveal {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/*-----------------------------------
+   2 ) Section label
+-----------------------------------*/
+
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: $crumb-muted;
+
+    .label-line {
+        flex: 0 0 24px;
+        height: 1px;
+        background: $crumb-border-hover;
+    }
+
+    .label-text {
+        color: $crumb-text;
+
+        &::first-letter {
+            text-transform: uppercase;
+        }
+    }
+
+    .label-aside {
+        margin-left: auto;
+        color: $crumb-muted;
+        font-weight: 500;
+    }
+}
+
+/*-----------------------------------
+   3 ) Page hero
+-----------------------------------*/
+
+.page-hero {
+    position: relative;
+    padding: $space-7 0 $space-8;
+    border-bottom: 1px solid $crumb-border;
+    overflow: hidden;
+
+    .hero-inner {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+    }
+
+    .hero-meta-top {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        font-size: 13px;
+        font-weight: 500;
+        color: $crumb-muted;
+        margin-bottom: $space-5;
+    }
+
+    .hero-eyebrow {
+        color: $primary;
+    }
+
+    .hero-title {
+        font-size: 28px;
+        font-weight: 400;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        color: $crumb-text;
+        margin: 0 0 $space-5;
+
+        .hero-mark {
+            color: $primary;
+        }
+    }
+
+    .hero-subtitle {
+        font-size: 15px;
+        color: $crumb-muted;
+        margin: 0;
+        line-height: 1.55;
+        max-width: 520px;
+    }
+
+    .hero-bottom {
+        display: flex;
+        align-items: center;
+        gap: $space-4;
+        flex-wrap: wrap;
+    }
+
+    .hero-grid-deco {
+        position: absolute;
+        top: 0;
+        right: -10%;
+        width: 60%;
+        height: 100%;
+        pointer-events: none;
+        opacity: .5;
+        background-image:
+            linear-gradient(transparent calc(100% - 1px), $crumb-border calc(100% - 1px)),
+            linear-gradient(90deg, transparent calc(100% - 1px), $crumb-border calc(100% - 1px));
+        background-size: 48px 48px;
+        mask-image: radial-gradient(60% 60% at 70% 50%, #000, transparent 75%);
+        z-index: 1;
+    }
+}
+
+/*-----------------------------------
+   4 ) Feature panel
+-----------------------------------*/
+
+.feature-panel {
+    position: relative;
+    padding: $space-7;
+    background: $crumb-surface;
+    border: 1px solid $crumb-border;
+    border-radius: $radius-xl;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 3px;
+        background: $primary;
+    }
+
+    &.is-clean::before {
+        background: $success;
+    }
+
+    &.is-warning::before {
+        background: $warning;
+    }
+
+    /* Layout 2-colonnes (opt-in via .panel-split) — chiffre à gauche, contenu à droite */
+    &.panel-split {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: $space-7;
+        align-items: stretch;
+    }
+
+    .panel-left {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: $space-3;
+        padding-right: $space-6;
+        border-right: 1px solid $crumb-border;
+    }
+
+    .panel-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: $space-4;
+        min-width: 0;
+    }
+
+    .panel-tag {
+        display: inline-flex;
+        align-items: center;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .18em;
+        color: $crumb-muted;
+        padding: 5px 12px;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-pill;
+    }
+
+    .panel-number {
+        font-size: 120px;
+        font-weight: 200;
+        line-height: .9;
+        letter-spacing: -0.05em;
+        color: $crumb-text;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .panel-unit {
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        color: $crumb-muted;
+    }
+
+    .panel-headline {
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        color: $crumb-text;
+        margin: 0;
+        max-width: 520px;
+    }
+
+    .panel-desc {
+        font-size: 14px;
+        color: $crumb-muted;
+        margin: 0;
+        line-height: 1.6;
+        max-width: 540px;
+    }
+
+    .panel-cta {
+        display: inline-flex;
+        align-self: flex-start;
+        align-items: center;
+        gap: $space-2;
+        margin-top: $space-3;
+        padding: 10px 18px;
+        background: $primary;
+        color: $white;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        border-radius: $radius-pill;
+        text-decoration: none;
+        transition: background $transition-fast, transform $transition-fast;
+
+        i {
+            font-size: 10px;
+            transition: transform $transition-fast;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background: darken($primary, 8%);
+            color: $white;
+            transform: translateY(-1px);
+
+            i {
+                transform: translateX(3px);
+            }
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba($primary, .25);
+        }
+    }
+}
+
+/*-----------------------------------
+   5 ) Shortcut tile + grid
+-----------------------------------*/
+
+.shortcuts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-3;
+}
+
+.shortcut-tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+    padding: $space-5;
+    background: $crumb-surface;
+    border: 1px solid $crumb-border;
+    border-radius: $radius-lg;
+    color: $crumb-text;
+    text-decoration: none;
+    overflow: hidden;
+    transition: border-color $transition-fast, background $transition-fast;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: $primary;
+        opacity: 0;
+        transition: opacity $transition-fast;
+    }
+
+    &:hover,
+    &:focus-visible {
+        border-color: $crumb-border-hover;
+        background: $btn-surface-hover;
+        color: $crumb-text;
+
+        &::after {
+            opacity: 1;
+        }
+
+        .shortcut-icon {
+            background: rgba($primary, .18);
+            color: $primary;
+            transform: scale(1.04);
+        }
+
+        .shortcut-title {
+            color: $primary;
+        }
+
+        .shortcut-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($primary, .18);
+    }
+
+    .shortcut-icon {
+        flex: 0 0 auto;
+        width: 44px;
+        height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba($primary, .10);
+        color: $primary;
+        border-radius: $radius-md;
+        font-size: 18px;
+        transition: background $transition-fast, transform $transition-fast, color $transition-fast;
+    }
+
+    .shortcut-body {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .shortcut-title {
+        font-size: 16px;
+        font-weight: 500;
+        color: $crumb-text;
+        letter-spacing: -0.01em;
+        transition: color $transition-fast;
+    }
+
+    .shortcut-desc {
+        font-size: 12px;
+        color: $crumb-muted;
+        line-height: 1.4;
+    }
+
+    .shortcut-arrow {
+        flex: 0 0 auto;
+        color: $crumb-muted;
+        font-size: 11px;
+        opacity: 0;
+        transform: translateX(-6px);
+        transition: opacity $transition-fast, transform $transition-fast;
+    }
+}
+
+/*-----------------------------------
+   6 ) Keyframes
+-----------------------------------*/
+
+@keyframes adminReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*-----------------------------------
+   7 ) Responsive
+-----------------------------------*/
+
+@include mediaQuery(max-lg) {
+
+    .page-hero {
+
+        .hero-title {
+            font-size: 24px;
+        }
+
+        .hero-grid-deco {
+            right: -30%;
+            width: 80%;
+            opacity: .3;
+        }
+    }
+
+    .feature-panel {
+        padding: $space-6;
+
+        &.panel-split {
+            grid-template-columns: 220px 1fr;
+            gap: $space-5;
+        }
+
+        .panel-number {
+            font-size: 96px;
+        }
+
+        .panel-headline {
+            font-size: 24px;
+        }
+    }
+}
+
+@include mediaQuery(max-md) {
+
+    .page-hero {
+        padding: $space-6 0 $space-7;
+
+        .hero-title {
+            font-size: 22px;
+        }
+
+        .hero-meta-top {
+            flex-wrap: wrap;
+            gap: $space-2;
+        }
+
+        .hero-bottom {
+            gap: $space-3;
+        }
+
+        .hero-grid-deco {
+            display: none;
+        }
+    }
+
+    .feature-panel {
+        padding: $space-5;
+
+        &.panel-split {
+            grid-template-columns: 1fr;
+            gap: $space-5;
+        }
+
+        .panel-left {
+            flex-direction: row;
+            align-items: center;
+            padding-right: 0;
+            padding-bottom: $space-4;
+            border-right: none;
+            border-bottom: 1px solid $crumb-border;
+            gap: $space-4;
+            flex-wrap: wrap;
+        }
+
+        .panel-number {
+            font-size: 80px;
+        }
+
+        .panel-headline {
+            font-size: 22px;
+        }
+    }
+
+    .shortcuts-grid {
+        grid-template-columns: 1fr;
+    }
+}

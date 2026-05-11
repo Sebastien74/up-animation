@@ -2,29 +2,29 @@
 
 /* -----------------------------------------------------------------
 
-    Created on : 2019-09-02, 1:10 PM
-    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Module : Menu (page-selector, pages-list, nestable tree)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
-    MENU :
-    =====
-
-    1 ) Variables
-    2 ) List of Pages
-    3 ) Add link card
-    4 ) ConfigurationModel
-    5 ) Tree
+    Sommaire :
+      1 ) Imports
+      2 ) Page selector (Select2 + input-group)
+      3 ) Pages list (tree with collapse)
+      4 ) Tree toggle actions
+      5 ) Add link card
+      6 ) Menu edit page
+      7 ) Nestable list
 
 ------------------------------------------------------------------ */
 
 /*-----------------------------------
-   1 ) Variables
+   1 ) Imports
 -----------------------------------*/
 
 @import '../variables';
 @import '../../vendor/mixin/media-queries';
 
 /*-----------------------------------
-   2 ) List of Pages
+   2 ) Page selector (Select2 + input-group)
 -----------------------------------*/
 
 #page-selector-menu {
@@ -84,16 +84,22 @@
     }
 }
 
+/*-----------------------------------
+   3 ) Pages list (tree with collapse)
+-----------------------------------*/
+
 #pages-list {
 
     .collapse-icon {
 
         display: inline-block;
         font-size: 10px;
+        transition: transform $transition-fast, color $transition-fast;
 
         @include mediaQuery(min-lg) {
+
             &:hover {
-                color: $dash-lighten;
+                color: $primary;
             }
         }
 
@@ -105,16 +111,24 @@
     .inner {
 
         padding: 2px 0;
+        border-radius: $radius-xs;
+        transition: background $transition-fast;
 
         @include mediaQuery(min-lg) {
+
             &:hover {
-                background: rgba($info, 0.05);
+                background: rgba($primary, .06);
             }
         }
     }
 }
 
+/*-----------------------------------
+   4 ) Tree toggle actions
+-----------------------------------*/
+
 .tree-toggle-actions {
+
     .btn {
         padding: 0.1rem 0.4rem;
         font-size: 0.75rem;
@@ -122,27 +136,29 @@
 }
 
 /*-----------------------------------
-   3 ) Add link card
+   5 ) Add link card
 -----------------------------------*/
 
 #add-link-card {
+
     .form-group {
         width: 100%;
     }
 }
 
 /*-----------------------------------
-   4 ) ConfigurationModel
+   6 ) Menu edit page
 -----------------------------------*/
 
 #menu-edit-page {
+
     #nestable-list {
         margin-bottom: 0 !important;
     }
 }
 
 /*-----------------------------------
-   5 ) Tree
+   7 ) Nestable list
 -----------------------------------*/
 
 #nestable-list {

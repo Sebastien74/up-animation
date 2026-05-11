@@ -2,22 +2,23 @@
 
 /* -----------------------------------------------------------------
 
-    Created on : 2019-09-30, 10:47 AM
-    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Module : Development
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
-    DEVELOPMENT :
-    ============
+    Refonte aesthetic — alignement vocabulaire dashboard.
+    Les overrides light vivent dans themes/light.scss (bloc Development).
 
-    1 ) Variables
-    2 ) Logs
-    3 ) Commands
-    4 ) Project info
-    5 ) Phpinfo
+    Sommaire :
+      1 ) Imports
+      2 ) Logs
+      3 ) Commands (console)
+      4 ) Project info (folder tree)
+      5 ) Phpinfo
 
 ------------------------------------------------------------------ */
 
 /*-----------------------------------
-   1 ) Variables
+   1 ) Imports
 -----------------------------------*/
 
 @import '../variables';
@@ -27,27 +28,69 @@
 -----------------------------------*/
 
 #log-page {
-    .log-card {
-        .card-body {
-            font-size: 12px;
-        }
+
+    .log-card .card-body {
+        font-size: 12px;
     }
 }
 
 /*-----------------------------------
-   3 ) Commands
+   3 ) Commands (console)
 -----------------------------------*/
 
-#command-page .console_log_container {
-    height: 75vh;
+#command-page {
+
+    .console_log_container {
+        height: 75vh;
+        border-radius: $radius-lg;
+        border: 1px solid $crumb-border;
+        overflow: hidden;
+    }
 }
 
 /*-----------------------------------
-   4 ) Project info
+   4 ) Project info (folder tree)
 -----------------------------------*/
 
-#files-sizes-ifo-list, #files-sizes-ifo-list ul {
+#files-sizes-ifo-list {
+
     list-style-type: none;
+    padding-left: 0;
+
+    ul {
+        list-style-type: none;
+        padding-left: $space-6;
+        margin-top: $space-2;
+        border-left: 1px dashed $crumb-border;
+    }
+
+    > li {
+        padding: $space-3 $space-4;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+        transition: border-color $transition-fast, background $transition-fast;
+
+        &:hover {
+            border-color: $crumb-border-hover;
+        }
+
+        > i {
+            margin-right: $space-2;
+            color: $primary;
+        }
+
+        ul li {
+            font-size: 12px;
+            padding: 4px 0;
+            color: $crumb-muted;
+
+            i {
+                margin-right: $space-2;
+                opacity: .7;
+            }
+        }
+    }
 }
 
 /*-----------------------------------
@@ -56,4 +99,21 @@
 
 #phpinfo-container {
 
+    .phpinfo-section {
+
+        .table {
+            font-size: 12px;
+
+            td, th {
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
+#phpinfo-search-wrapper {
+
+    .input-group-text.left {
+        border-right: none;
+    }
 }

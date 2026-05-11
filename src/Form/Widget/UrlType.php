@@ -80,8 +80,8 @@ class UrlType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->getAttribute($field, 'label'),
-            
-            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass) . ' w-100'],
+            'attr' => ['class' => 'w-100'],
+            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass)],
             'help' => $this->getAttribute($field, 'help'),
         ]);
     }
@@ -96,8 +96,8 @@ class UrlType extends AbstractType
             'display' => 'button',
             'color' => 'app',
             'label' => $this->getAttribute($field, 'label'),
-
-            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass) . ' w-100'],
+            'attr' => ['class' => 'w-100'],
+            'row_attr' => ['class' => 'col-12 ' . (!empty($this->options['fields'][$field]) ? $this->options['fields'][$field] : $groupClass)],
             'help' => $this->getAttribute($field, 'help'),
         ]);
     }

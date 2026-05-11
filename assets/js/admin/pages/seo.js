@@ -1,5 +1,6 @@
 import preview from './seo/preview';
 import search from './seo/search';
+import '../../vendor/plugins/prism';
 import '../../../scss/admin/pages/seo.scss';
 import '../../../scss/vendor/components/_prism.scss';
 

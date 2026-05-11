@@ -75,7 +75,11 @@ class SelectFolderType extends AbstractType
 
         $builder->add('save', Type\SubmitType::class, [
             'label' => $this->translator->trans('Déplacer', [], 'admin'),
-            'attr' => ['class' => 'col-12 btn-info disable-preloader'],
+            'attr' => [
+                'class' => 'btn-app disable-preloader',
+                'data-icon' => 'save',
+                'data-icon-side' => 'left',
+            ],
         ]);
     }
 

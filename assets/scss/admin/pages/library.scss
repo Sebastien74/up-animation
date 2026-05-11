@@ -2,33 +2,33 @@
 
 /* -----------------------------------------------------------------
 
-    Created on : 2019-09-13, 10:14 AM
-    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Module : Media library
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
-    LIBRARY :
-    ========
-
-    1 ) Variables
-    2 ) Core
-    3 ) Remove cache
+    Sommaire :
+      1 ) Imports
+      2 ) Media library page (cards, results grid)
+      3 ) Media edition modal
+      4 ) End process (cache flush loader)
+      5 ) Loader keyframes / stripe bg
 
 ------------------------------------------------------------------ */
 
 /*-----------------------------------
-   1 ) Variables
+   1 ) Imports
 -----------------------------------*/
 
 @import '../variables';
 
 /*-----------------------------------
-   2 ) Core
+   2 ) Media library page
 -----------------------------------*/
 
 #media-library-page {
 
     #medias-preloader {
         z-index: 5000 !important;
-        border-radius: var(--bs-border-radius);
+        border-radius: $radius-lg;
     }
 
     .dd3-content {
@@ -39,10 +39,10 @@
 
             background-color: transparent;
             border-color: transparent;
-            color: $dark;
+            color: $crumb-text;
 
             i {
-                color: $dark;
+                color: $crumb-text;
             }
         }
 
@@ -59,6 +59,7 @@
             }
 
             &.no-deletable {
+
                 .btn:last-child {
                     margin-right: 0 !important;
                 }
@@ -71,6 +72,7 @@
     }
 
     #medias-card {
+
         .card-header {
             border-top-right-radius: $card-border-radius;
             border-top-left-radius: $card-border-radius;
@@ -84,7 +86,7 @@
 
             &.active .check-pack-media-label {
                 box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5) !important;
-                border-radius: var(--bs-border-radius);
+                border-radius: $radius-lg;
             }
 
             .img-loader {
@@ -135,7 +137,9 @@
 
             &:hover {
 
-                .btn.open-media-crop, .btn.open-media-edit, .btn.media-compress-restore {
+                .btn.open-media-crop,
+                .btn.open-media-edit,
+                .btn.media-compress-restore {
                     display: inline-block !important;
                     transition: all .2s;
                 }
@@ -155,7 +159,7 @@
                     left: 3px;
                     width: calc(100% - 6px);
                     height: calc(100% - 6px);
-                    border-radius: var(--bs-border-radius);
+                    border-radius: $radius-lg;
                     cursor: pointer;
                     z-index: 2;
                 }
@@ -174,7 +178,7 @@
 }
 
 /*-----------------------------------
-   2 ) Modal edition
+   3 ) Media edition modal
 -----------------------------------*/
 
 #media-edition-modal {
@@ -190,6 +194,7 @@
         }
 
         #desktop {
+
             .dropify-clear {
                 display: none !important;
             }
@@ -198,18 +203,18 @@
 }
 
 /*-----------------------------------
-   3 ) Remove cache
+   4 ) End process (cache flush loader)
 -----------------------------------*/
 
 #end-process-wrap {
 
     position: relative;
     min-height: 150px;
-    border: 1px solid $gray-300;
-    background-color: $white;
+    border: 1px solid $crumb-border;
+    background-color: $crumb-surface;
     overflow: hidden;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
-    border-radius: var(--bs-border-radius);
+    border-radius: $radius-lg;
 
     .refresh-container {
 
@@ -225,30 +230,25 @@
             background-color: rgba(255, 255, 255, 0);
 
             .inner {
-
                 position: absolute;
-                left: 0;
-                right: 0;
-                top: 50%;
+                inset: 50% 0 auto 0;
                 transform: translateY(-50%);
             }
         }
     }
 }
 
-@-webkit-keyframes MOVE-BG {
-    from {
-        -webkit-transform: translateX(0);
-    }
-    to {
-        -webkit-transform: translateX(46px);
-    }
-}
+/*-----------------------------------
+   5 ) Loader keyframes / stripe bg
+   Bandes diagonales orangées (couleurs spécifiques d'animation)
+-----------------------------------*/
 
 @keyframes MOVE-BG {
+
     from {
         transform: translateX(0);
     }
+
     to {
         transform: translateX(46px);
     }
@@ -262,14 +262,6 @@
     bottom: 0;
     width: 150%;
 
-    background: -webkit-repeating-linear-gradient(
-            145deg,
-            #f8e9db 1px,
-            #fff5ed 2px,
-            #fff5ed 11px,
-            #f8e9db 12px,
-            #f8e9db 20px
-    ) !important;
     background: repeating-linear-gradient(
             -55deg,
             #f8e9db 1px,
@@ -278,11 +270,6 @@
             #f8e9db 12px,
             #f8e9db 20px
     ) !important;
-
-    -webkit-animation-name: MOVE-BG !important;
-    -webkit-animation-duration: .6s !important;
-    -webkit-animation-timing-function: linear !important;
-    -webkit-animation-iteration-count: infinite !important;
 
     animation-name: MOVE-BG !important;
     animation-duration: .6s !important;

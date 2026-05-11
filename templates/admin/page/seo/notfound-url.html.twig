@@ -22,7 +22,33 @@
         { title: 'Admin ressources'|trans, type: 'admin', category: 'resource', count: all['admin']['resource']|length }
     ] -%}
 
+    {%- set currentCount = all[type][category] is defined ? all[type][category]|length : 0 -%}
+
     <div id="notfound-urls-index">
+
+        <section class="feature-panel panel-split mb-4 reveal {{ currentCount > 0 ? 'is-warning' : 'is-clean' }}">
+            <div class="panel-left">
+                <span class="panel-tag">{{ "404"|trans|raw }}</span>
+                <span class="panel-number">{{ currentCount }}</span>
+                <span class="panel-unit">{{ currentCount > 1 ? "erreurs"|trans|raw : "erreur"|trans|raw }}</span>
+            </div>
+            <div class="panel-body">
+                <h2 class="panel-headline">
+                    {%- if currentCount > 0 -%}
+                        {{ "Erreurs 404 à traiter."|trans|raw }}
+                    {%- else -%}
+                        {{ "Aucune erreur détectée."|trans|raw }}
+                    {%- endif -%}
+                </h2>
+                <p class="panel-desc">
+                    {%- if currentCount > 0 -%}
+                        {{ "Identifiez les URLs introuvables pour mettre en place les redirections nécessaires et préserver le SEO."|trans|raw }}
+                    {%- else -%}
+                        {{ "Aucune URL introuvable sur cette catégorie. Le suivi reste actif."|trans|raw }}
+                    {%- endif -%}
+                </p>
+            </div>
+        </section>
 
         <div class="d-flex gap-2 flex-wrap mb-4">
             <div class="nav nav-tabs gap-2 border-0 me-auto" role="tablist">

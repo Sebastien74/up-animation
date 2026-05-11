@@ -1,67 +1,95 @@
 @charset "UTF-8";
 
 /* -----------------------------------------------------------------
+
     Module : Translations
-    Copyright : 2026
     Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    Refonte aesthetic — alignement vocabulaire dashboard.
+    Les patterns transverses (.reveal, .section-label, .feature-panel,
+    etc.) sont fournis globalement par assets/scss/admin/_admin-ui.scss
+    (chargé via les thèmes). Les overrides light vivent dans
+    themes/light.scss, bloc Translation.
+
+    Sommaire :
+      1 ) Imports
+      2 ) Table commune (lignes traductions)
+      3 ) Domaine — édition
+      4 ) Generator (overlay extraction)
+      5 ) Progress block (cards par locale)
+
 ------------------------------------------------------------------ */
 
 /*-----------------------------------
-   1 ) Core
+   1 ) Imports
 -----------------------------------*/
 
 @import "../../vendor/mixin/media-queries";
 @import '../variables';
 
-table {
+/*-----------------------------------
+   2 ) Table commune
+-----------------------------------*/
 
-    .domain-label {
-        font-size: 12px;
-    }
+#translations-domains,
+#entities-index.translations-domain {
 
-    .text-warning {
-        font-size: 11px;
-    }
+    table {
 
-    .progress {
-        border: 1px solid $crumb-border;
-        background-color: $dash-surface-3;
-        height: 6px;
-    }
-
-    .translation-input.form-control {
-        padding-left: 1rem !important;
-        height: 45px !important;
-        font-size: 12px !important;
-    }
-
-    tr > td {
-        padding-top: 1rem !important;
-        padding-bottom: 1rem !important;
-    }
-}
-
-.translations-domain {
-
-    tbody tr > td:nth-of-type(1) {
-        font-size: 12px !important;
-    }
-
-    .form-group.has-success {
-        .input-group {
-            border: 1px solid $success !important;
+        .domain-label {
+            font-size: 12px;
         }
-    }
 
-    .form-group.empty {
-        .input-group {
-            border: 1px solid $warning !important;
+        .text-warning {
+            font-size: 11px;
+        }
+
+        .progress {
+            height: 6px;
+            border: 1px solid $crumb-border;
+            background-color: $crumb-surface;
+            border-radius: $radius-pill;
+        }
+
+        .translation-input.form-control {
+            height: 45px;
+            padding-left: $space-4;
+            font-size: 12px;
+        }
+
+        tr > td {
+            padding-top: $space-4;
+            padding-bottom: $space-4;
         }
     }
 }
 
 /*-----------------------------------
-   2 ) Generator
+   3 ) Domaine — édition
+-----------------------------------*/
+
+.translations-domain {
+
+    tbody tr > td:nth-of-type(1) {
+        font-size: 12px;
+    }
+
+    .form-group {
+
+        &.has-success .input-group {
+            border: 1px solid $success;
+            border-radius: $radius-md;
+        }
+
+        &.empty .input-group {
+            border: 1px solid $warning;
+            border-radius: $radius-md;
+        }
+    }
+}
+
+/*-----------------------------------
+   4 ) Generator (overlay extraction)
 -----------------------------------*/
 
 #translation-generator {
@@ -69,8 +97,8 @@ table {
     position: relative;
     min-height: 250px;
     border: 1px solid $crumb-border;
-    border-radius: $card-border-radius;
-    background-color: $dash-surface-3;
+    border-radius: $radius-lg;
+    background-color: $crumb-surface;
     overflow: hidden;
 
     h4 {
@@ -88,37 +116,41 @@ table {
             }
 
             .inner {
-
                 position: absolute;
-                left: 0;
-                right: 0;
-                top: 50%;
+                inset: 50% 0 auto 0;
                 transform: translateY(-50%);
 
                 i {
                     font-size: 20px;
-                    color: rgba(0, 0, 0, 0.7);
+                    color: $crumb-muted;
                 }
             }
         }
     }
 }
 
+/*-----------------------------------
+   5 ) Progress block
+-----------------------------------*/
+
 .progress-block {
+
+    transition: border-color $transition-fast, transform $transition-fast;
 
     strong {
         font-size: 11px;
+        letter-spacing: -0.005em;
     }
 
     .locale-badge {
         width: 17px;
         height: 17px;
         flex: 0 0 17px;
-        border-radius: 6px;
+        border-radius: $radius-sm;
     }
 
     .progress {
         height: 6px;
-        border-radius: 3px;
+        border-radius: $radius-pill;
     }
 }

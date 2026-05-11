@@ -530,7 +530,7 @@
             {%- endif -%}
             {%- if counterExist -%}
                 {%- set counter_class = data|length > counter ? 'bg-danger' : (data|length > 0 ? 'alert-success' : 'alert-warning') -%}
-                <small class="char-counter d-inline-flex align-items-center mt-1 text-white-50 w-100 alert {{ counter_class }}" data-limit="{{ counter }}">
+                <small class="char-counter d-inline-flex align-items-center mt-1 w-100 alert {{ counter_class }}" data-limit="{{ counter }}">
                     <span class="count">{{ value|striptags|length }}</span>/{{ counter }} {{ "caractères recommandés"|trans([], 'admin')|raw }}
                 </small>
             {%- endif -%}

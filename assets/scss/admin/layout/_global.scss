@@ -215,7 +215,7 @@ tr.bg-info-darken > th {
 #users-switcher-box {
     .card-body {
         background-color: $info-darken !important;
-        border-radius: var(--bs-border-radius);
+        border-radius: $radius-lg;
     }
 }
 

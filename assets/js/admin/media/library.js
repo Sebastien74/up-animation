@@ -7,7 +7,8 @@ import '../../../scss/admin/pages/library.scss';
 import '../../../scss/admin/lib/sweetalert.scss';
 
 import '../lib/sweetalert/sweetalert.min';
-import '../bootstrap/dist/modal';
+import Modal from '../bootstrap/dist/modal';
+import Tooltip from '../bootstrap/dist/tooltip';
 import '../media/cache-resolve';
 import '../media/cache-clear';
 
@@ -64,12 +65,12 @@ document.body.addEventListener('click', function (e) {
                 if (response.html) {
                     document.body.insertAdjacentHTML('beforeend', response.html);
                     let modalEl = document.getElementById('media-edition-modal');
-                    let modal = new bootstrap.Modal(modalEl);
+                    let modal = new Modal(modalEl);
                     modal.show();
 
                     dropifyJS();
 
-                    modalEl.querySelectorAll('[data-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+                    modalEl.querySelectorAll('[data-toggle="tooltip"]').forEach(el => new Tooltip(el));
                     modalEl.addEventListener('hidden.bs.modal', function () {
                         modalEl.remove();
                     });
@@ -138,7 +139,7 @@ document.body.addEventListener('click', function (e) {
                     modalEl = document.body.lastElementChild;
                 }
                 if (modalEl) {
-                    let modal = new bootstrap.Modal(modalEl);
+                    let modal = new Modal(modalEl);
                     modal.show();
                     select2();
                     modalEl.addEventListener("hidden.bs.modal", function () {

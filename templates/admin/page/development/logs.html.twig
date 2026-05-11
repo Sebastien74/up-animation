@@ -18,9 +18,16 @@
 {%- endblock -%}
 
 {%- block body -%}
-    <div class="row">
+
+    <div class="section-label mb-3 reveal">
+        <span class="label-line" aria-hidden="true"></span>
+        <span class="label-text">{{ "Fichiers de logs"|trans|raw }}</span>
+        <span class="label-aside">{{ dailyLogs|length }}&nbsp;{{ dailyLogs|length > 1 ? "jours"|trans|raw : "jour"|trans|raw }}</span>
+    </div>
+
+    <div class="row reveal-stagger">
         {%- if logFiles -%}
-            <div class="col-md-4 mb-3">
+            <div class="col-md-4 mb-3 reveal">
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="main-subtitle"><i class="icm-copy"></i>{{ "Files"|trans|raw }}</div>
@@ -44,7 +51,7 @@
         {%- set day = null -%}
         {%- for key, logDay in dailyLogs -%}
             {%- for logDay, logFiles in logDay -%}
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3 reveal">
                     <div class="card h-100">
                         <div class="card-body">
                             <div class="main-subtitle"><i class="icm-calendar"></i>{{ logDay|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</div>

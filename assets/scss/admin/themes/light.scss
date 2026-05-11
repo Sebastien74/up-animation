@@ -29,6 +29,7 @@
 @import "../variables";
 @import "_shared-tokens";
 @import "_light-vars";
+@import "../admin-ui";
 
 /*-----------------------------------
    2 ) Globals
@@ -160,14 +161,31 @@ body {
 
     .right-sidebar {
 
-        background: $theme-surface !important;
+        // Parti pris design : sidebars conservées sombres en light theme
+        // (ancrage fort de la navigation, cf. project_admin_light_theme)
+        background: $theme-sidebar-bg !important;
+        color: $theme-sidebar-text !important;
+
+        .btn-icon i {
+            color: $theme-sidebar-icons !important;
+        }
+
+        // Active item — override $bg-gradient-primary (crème en light) qui
+        // appliquerait un fond crème sur sidebar sombre. Aligner sur le pattern
+        // .left-sidebar a.active.
+        a.active {
+            background: rgba($primary, 0.30) !important;
+            color: $white !important;
+        }
 
         ul.collapse {
 
-            background-color: $theme-bg-alt;
-
             a {
-                color: $theme-text-muted !important;
+                color: $theme-sidebar-icons !important;
+
+                &:hover, &.active {
+                    color: $white !important;
+                }
             }
         }
     }
@@ -1423,6 +1441,287 @@ body {
         .shortcut-arrow {
             color: $theme-text-light !important;
         }
+    }
+}
+
+/*--- SEO (admin-seo.css compilé en bundle séparé : $primary et $crumb-*
+     restent aux valeurs dark par défaut, on repasse ici en palette light.
+     Même mécanique que le bloc #dashboard : overrides en !important car
+     admin-light.css est chargé avant admin-seo.css. ---*/
+
+#google-preview {
+
+    color: $theme-text-light !important;
+
+    &::before {
+        background: $theme-accent !important;
+        opacity: .85 !important;
+    }
+}
+
+#seo-filter-categories {
+
+    .entities-list,
+    .models-list {
+
+        .inner {
+            transition: background $transition-fast;
+
+            &:hover {
+                background: $theme-accent-bg-soft !important;
+            }
+        }
+    }
+}
+
+.copy-link {
+    background: $theme-card-bg !important;
+    border-color: $theme-border !important;
+    color: $theme-text-muted !important;
+
+    &:hover,
+    &:focus-visible {
+        background: $theme-accent-bg !important;
+        border-color: $theme-accent !important;
+        color: $theme-accent !important;
+    }
+
+    &:focus-visible {
+        box-shadow: $theme-shadow-focus !important;
+    }
+}
+
+/*--- Translation (admin-translation.css en bundle séparé : mêmes overrides
+     que le bloc SEO ci-dessus — $crumb-* et statuts sémantiques restent
+     aux valeurs dark dans le bundle page, on repasse ici en palette light. ---*/
+
+#translations-domains,
+.translations-domain {
+
+    table {
+
+        .progress {
+            border-color: $theme-border !important;
+            background-color: $theme-overlay-soft !important;
+
+            .progress-bar {
+                background-color: $theme-accent !important;
+            }
+        }
+    }
+
+    .form-group {
+
+        &.has-success .input-group {
+            border-color: $success !important;
+        }
+
+        &.empty .input-group {
+            border-color: $warning !important;
+        }
+    }
+}
+
+#translation-generator {
+    border-color: $theme-border !important;
+    background-color: $theme-surface !important;
+
+    .refresh-block .inner i {
+        color: $theme-text-muted !important;
+    }
+}
+
+.progress-block {
+
+    .progress {
+        background-color: $theme-overlay-soft !important;
+        border: 1px solid $theme-border !important;
+
+        .progress-bar {
+            background-color: $theme-accent !important;
+        }
+    }
+}
+
+/*--- Development (admin-development.css en bundle séparé : mêmes overrides
+     que les blocs SEO / Translation ci-dessus — variables thémées
+     repassées en palette light. ---*/
+
+#command-page {
+
+    .console_log_container {
+        border-color: $theme-border !important;
+    }
+}
+
+#files-sizes-ifo-list {
+
+    > li {
+        background: $theme-card-bg !important;
+        border-color: $theme-border !important;
+
+        &:hover {
+            border-color: $theme-border-alt !important;
+        }
+
+        > i {
+            color: $theme-accent !important;
+        }
+
+        ul {
+            border-left-color: $theme-border !important;
+
+            li {
+                color: $theme-text-muted !important;
+            }
+        }
+    }
+}
+
+/*--- User profile (admin-user-profile.css en bundle séparé) ---*/
+
+#user-profile-card {
+
+    .img-user-container {
+        border-color: $theme-border !important;
+    }
+}
+
+/*--- Agenda / FullCalendar (admin-agenda.css en bundle séparé) ---*/
+
+.fc {
+
+    .fc-toolbar.fc-header-toolbar {
+
+        color: $theme-text !important;
+
+        button {
+            border-color: $theme-border !important;
+        }
+    }
+}
+
+th.fc-col-header-cell {
+    color: $theme-text !important;
+    background: $theme-bg-alt !important;
+}
+
+.fc-day-today {
+    background: $theme-accent-bg !important;
+}
+
+.fc-day-past {
+    background-color: $theme-overlay-soft !important;
+
+    &:hover {
+        background-color: $theme-overlay-medium !important;
+    }
+}
+
+/*--- Media library (admin-medias-library.css en bundle séparé) ---*/
+
+#media-library-page {
+
+    .dd3-content {
+
+        .btn-edit {
+            color: $theme-text !important;
+
+            i {
+                color: $theme-text !important;
+            }
+        }
+    }
+}
+
+#end-process-wrap {
+    border-color: $theme-border !important;
+    background-color: $theme-surface !important;
+}
+
+/*--- Medias cropper (admin-medias-cropper.css en bundle séparé) ---*/
+
+.crop-card {
+    background-color: $theme-bg-alt !important;
+
+    .info-body {
+        background-color: $white !important;
+    }
+}
+
+/*--- Layout editor (pages/layout.scss est chargé via vendor.scss avec les
+     tokens du thème actif, donc majoritairement auto-thémé. Quelques
+     ajustements ciblés : hover state .block-row dont la couleur calculée
+     transparentize($theme-bg-deep, .5) reste peu lisible sur crème. ---*/
+
+.block-sortable {
+
+    li {
+
+        @media (min-width: 992px) {
+
+            &:hover .block-row {
+                border-color: $theme-border-alt !important;
+            }
+        }
+    }
+}
+
+/*--- Strength wrap (password strength meter) — core/_form.scss utilise
+     $dash-surface-2 sombre. Repassage en surface light. ---*/
+
+#strength-wrap {
+
+    .progress {
+        background-color: $theme-overlay-soft !important;
+    }
+}
+
+/*--- Menu (admin-menu.css en bundle séparé) ---*/
+
+#page-selector-menu {
+
+    .input-group-text {
+        background: $theme-surface !important;
+        color: $theme-text !important;
+
+        &:hover,
+        &:focus-visible {
+            background: $theme-bg-alt !important;
+            color: $theme-text !important;
+        }
+    }
+}
+
+#pages-list {
+
+    .collapse-icon {
+
+        @media (min-width: 992px) {
+
+            &:hover {
+                color: $theme-accent !important;
+            }
+        }
+    }
+
+    .inner {
+
+        @media (min-width: 992px) {
+
+            &:hover {
+                background: $theme-accent-bg-soft !important;
+            }
+        }
+    }
+}
+
+/*--- Edit in tab (admin-edit-in-tab.css en bundle séparé) ---*/
+
+#features-sortable {
+
+    .ui-value {
+        border-color: $theme-border !important;
     }
 }
 

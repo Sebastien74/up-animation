@@ -19,6 +19,11 @@
 {%- endblock -%}
 
 {%- block body -%}
+
+    {%- set domainsCount = domains|length -%}
+    {%- set totalUnits = domains|reduce((carry, d) => carry + d.units|length, 0) -%}
+    {%- set localesCount = allLocales|length -%}
+
     <span>
         <a href="{{ lastRoute() }}" class="btn-back mb-3"
            data-bs-toggle="tooltip" title="{{"Retourner à la page précédente"|trans|raw }}"
@@ -26,25 +31,54 @@
             <i class="icm-reply"></i>
         </a>
     </span>
-    <div id="translations-domains">
-        <div class="table-responsive app-table">
-            <table class="table table-striped responsive-cards">
-                <thead>
-                <tr>
-                    <th class="align-middle keys-td">{{ "Domaine"|trans|raw }}</th>
-                    <th class="align-middle keys-td">{{ "Clé du contenu"|trans|raw }}</th>
-                    <th class="align-middle forms-td">{%- if allLocales|length > 1 -%}{{ "Langues"|trans|raw }}{%- else -%}{{ "Texte"|trans|raw }}{%- endif -%}</th>
-                    <th class="align-middle actions-td text-center">{{ "Actions"|trans|raw }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {%- for domain in domains -%}
-                        {%- for unit in domain.units -%}
-                            {{ render_esi(path('admin_translationunit_edit', {website: websiteId(), translationunit: unit.id, displayDomain: true} )) }}
-                        {%- endfor -%}
-                    {%- endfor -%}
-                </tbody>
-            </table>
+
+    <div class="reveal-stagger">
+
+        <section class="feature-panel panel-split mb-4 reveal">
+            <div class="panel-left">
+                <span class="panel-tag">{{ "i18n"|trans|raw }}</span>
+                <span class="panel-number">{{ totalUnits }}</span>
+                <span class="panel-unit">{{ totalUnits > 1 ? "clés"|trans|raw : "clé"|trans|raw }}</span>
+            </div>
+            <div class="panel-body">
+                <h2 class="panel-headline">{{ "Traductions du site."|trans|raw }}</h2>
+                <p class="panel-desc">
+                    {{ "Réparties sur"|trans|raw }} <strong>{{ domainsCount }}</strong>&nbsp;{{ domainsCount > 1 ? "domaines"|trans|raw : "domaine"|trans|raw }}
+                    {%- if localesCount > 1 -%}
+                        {{ ", traduites en"|trans|raw }} <strong>{{ localesCount }}</strong>&nbsp;{{ "langues"|trans|raw }}.
+                    {%- else -%}.
+                    {%- endif -%}
+                </p>
+            </div>
+        </section>
+
+        <div class="section-label mb-3 reveal">
+            <span class="label-line" aria-hidden="true"></span>
+            <span class="label-text">{{ "Toutes les clés"|trans|raw }}</span>
+            <span class="label-aside">{{ totalUnits }}&nbsp;{{ totalUnits > 1 ? "résultats"|trans|raw : "résultat"|trans|raw }}</span>
         </div>
+
+        <div id="translations-domains" class="reveal">
+            <div class="table-responsive app-table">
+                <table class="table table-striped responsive-cards">
+                    <thead>
+                    <tr>
+                        <th class="align-middle keys-td">{{ "Domaine"|trans|raw }}</th>
+                        <th class="align-middle keys-td">{{ "Clé du contenu"|trans|raw }}</th>
+                        <th class="align-middle forms-td">{%- if allLocales|length > 1 -%}{{ "Langues"|trans|raw }}{%- else -%}{{ "Texte"|trans|raw }}{%- endif -%}</th>
+                        <th class="align-middle actions-td text-center">{{ "Actions"|trans|raw }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {%- for domain in domains -%}
+                            {%- for unit in domain.units -%}
+                                {{ render_esi(path('admin_translationunit_edit', {website: websiteId(), translationunit: unit.id, displayDomain: true} )) }}
+                            {%- endfor -%}
+                        {%- endfor -%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 {%- endblock -%}

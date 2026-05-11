@@ -1,6 +1,13 @@
 {%- trans_default_domain 'admin' -%}
 
 {%- set currentCategory = currentCategory is not defined or not currentCategory ? 'page' : currentCategory -%}
+{%- set categoriesCount = entities|length + (models is defined ? 1 : 0) -%}
+
+<div class="section-label mb-3">
+    <span class="label-line" aria-hidden="true"></span>
+    <span class="label-text">{{ "Catégories"|trans|raw }}</span>
+    <span class="label-aside">{{ categoriesCount }}&nbsp;{{ categoriesCount > 1 ? "types"|trans|raw : "type"|trans|raw }}</span>
+</div>
 
 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
     {%- for category, item in entities -%}

@@ -16,35 +16,46 @@
 
 {%- block body -%}
 
-    <div class="card mb-3">
-        <h4 class="main-subtitle"><i class="icm-exclamation-circle"></i>{{ "Infos"|trans|raw }}</h4>
-        <table class="table table-striped mb-0">
-            <tr>
-                <td>{{ 'Poids total'|trans|raw }}</td>
-                <td>{{ totalSize|formatBytes() }}</td>
-            </tr>
-            <tr>
-                <td>{{ 'Nombre de fichiers'|trans|raw }}</td>
-                <td>{{ filesCount|number_format(0, ',', ' ') }}</td>
-            </tr>
-        </table>
-    </div>
+    <div class="reveal-stagger">
 
-    <ul id="files-sizes-ifo-list">
-        {%- for directory, size in directoriesSizes -%}
-            <li class="mt-3">
-                <i class="icm-folder-open"></i>{{ directory }} : {{ size|formatBytes() }}
-                {%- if subDirectoriesSizes[directory] is defined -%}
-                    <ul>
-                        {%- for subDirectory, subSize in subDirectoriesSizes[directory] -%}
-                            <li>
-                                <i class="icm-folder"></i>{{ directory~'/'~subDirectory }} : {{ subSize|formatBytes() }}
-                            </li>
-                        {%- endfor -%}
-                    </ul>
-                {%- endif -%}
-            </li>
-        {%- endfor -%}
-    </ul>
+        <section class="feature-panel panel-split mb-4 reveal">
+            <div class="panel-left">
+                <span class="panel-tag">{{ "Projet"|trans|raw }}</span>
+                <span class="panel-number">{{ filesCount|number_format(0, ',', ' ') }}</span>
+                <span class="panel-unit">{{ filesCount > 1 ? "fichiers"|trans|raw : "fichier"|trans|raw }}</span>
+            </div>
+            <div class="panel-body">
+                <h2 class="panel-headline">{{ "Poids du projet."|trans|raw }}</h2>
+                <p class="panel-desc">
+                    {{ "Total occupé sur le disque :"|trans|raw }} <strong>{{ totalSize|formatBytes() }}</strong>.
+                    {{ "Détail par dossier ci-dessous."|trans|raw }}
+                </p>
+            </div>
+        </section>
+
+        <div class="section-label mb-3 reveal">
+            <span class="label-line" aria-hidden="true"></span>
+            <span class="label-text">{{ "Répartition"|trans|raw }}</span>
+            <span class="label-aside">{{ directoriesSizes|length }}&nbsp;{{ directoriesSizes|length > 1 ? "dossiers"|trans|raw : "dossier"|trans|raw }}</span>
+        </div>
+
+        <ul id="files-sizes-ifo-list" class="reveal">
+            {%- for directory, size in directoriesSizes -%}
+                <li class="mt-3">
+                    <i class="icm-folder-open"></i>{{ directory }} : {{ size|formatBytes() }}
+                    {%- if subDirectoriesSizes[directory] is defined -%}
+                        <ul>
+                            {%- for subDirectory, subSize in subDirectoriesSizes[directory] -%}
+                                <li>
+                                    <i class="icm-folder"></i>{{ directory~'/'~subDirectory }} : {{ subSize|formatBytes() }}
+                                </li>
+                            {%- endfor -%}
+                        </ul>
+                    {%- endif -%}
+                </li>
+            {%- endfor -%}
+        </ul>
+
+    </div>
 
 {%- endblock -%}

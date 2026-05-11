@@ -31,7 +31,7 @@
             <span class="btn-icon me-3">
                 <i class="icm-{{ pageIcon }}"></i>
             </span>
-            <h2 class="title fw-400 mb-0">{{ pageTitle|raw }}</h2>
+            <h2 class="title fw-400 mb-0">{{ pageTitle|htmlEntities|raw }}</h2>
         </div>
         <div class="actions ms-auto d-flex align-items-center gap-2">
             {%- set cssTheme = adminTheme() -%}

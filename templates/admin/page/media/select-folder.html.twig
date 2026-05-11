@@ -28,11 +28,11 @@
                                 {{ form_row(form[field.vars.name]) }}
                             {%- endif -%}
                         {%- endfor -%}
-                    </div>
-                    <div class="w-100 text-center modal-buttons mt-4">
-                        {%- if form.save is defined -%}
-                            {{ form_widget(form.save) }}
-                        {%- endif -%}
+                        <div class="w-100 text-center">
+                            {%- if form.save is defined -%}
+                                {{ form_row(form.save) }}
+                            {%- endif -%}
+                        </div>
                     </div>
                 </div>
             </div>

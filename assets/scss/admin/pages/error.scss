@@ -2,11 +2,8 @@
 
 /* -----------------------------------------------------------------
 
-    Created on : 2019-10-09, 8:55 PM
-    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
-
-    ERROR :
-    ======
+    Module : Error pages
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
 ------------------------------------------------------------------ */
 
@@ -17,7 +14,7 @@
     .h1 {
         @include rfs(70px);
         font-weight: 900;
-        color: $info-darken !important;
+        color: $primary !important;
         line-height: 1;
     }
 

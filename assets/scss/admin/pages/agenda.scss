@@ -2,27 +2,49 @@
 
 /* -----------------------------------------------------------------
 
-    Created on : 2019-09-30, 10:47 AM
-    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Module : Agenda (FullCalendar)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
-    AGENDA :
-    ===========
+    Refonte aesthetic — alignement vocabulaire dashboard.
+    Les overrides light pour FullCalendar vivent dans
+    themes/light.scss (bloc Agenda).
+
+    Sommaire :
+      1 ) Imports
+      2 ) Card edition
+      3 ) Modal event
+      4 ) FullCalendar toolbar / events
+      5 ) FullCalendar daygrid
+      6 ) Period form
 
 ------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Imports
+-----------------------------------*/
+
+@import '../variables';
+
+/*-----------------------------------
+   2 ) Card edition
+-----------------------------------*/
 
 #agenda-calendar-edition {
 
     .card-header {
-
-        border-top-right-radius: var(--bs-border-radius);
-        border-top-left-radius: var(--bs-border-radius);
-        padding: 20px;
+        border-top-right-radius: $radius-lg;
+        border-top-left-radius: $radius-lg;
+        padding: $space-5;
 
         h4 {
             font-size: 24px;
         }
     }
 }
+
+/*-----------------------------------
+   3 ) Modal event
+-----------------------------------*/
 
 #modal-event-agenda {
 
@@ -38,11 +60,15 @@
     }
 }
 
+/*-----------------------------------
+   4 ) FullCalendar toolbar / events
+-----------------------------------*/
+
 .fc .fc-toolbar.fc-header-toolbar {
 
     margin-bottom: 0 !important;
-    padding: 15px !important;
-    color: #fff;
+    padding: $space-4 !important;
+    color: $crumb-text;
 
     .fc-toolbar-title {
         font-weight: 300;
@@ -50,33 +76,12 @@
 
     button {
         background-color: var(--fc-button-bg-color);
-        border-color: transparentize(white, .2);
+        border-color: $crumb-border;
     }
 }
 
-.fc-daygrid-day {
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-#period_publicationStart_time_hour,
-#period_publicationStart_time_minute,
-#period_publicationStart .sr-only,
-#period_publicationEnd_time_hour,
-#period_publicationEnd_time_minute,
-#period_publicationEnd .sr-only {
-    display: none;
-}
-
-#period_publicationStart,
-#period_publicationEnd {
-    select {
-        width: 33%;
-    }
-}
-
-.fc-h-event, .fc-event {
+.fc-h-event,
+.fc-event {
     cursor: pointer !important;
     padding: 5px 5px !important;
 }
@@ -89,35 +94,67 @@
     font-weight: 700;
 }
 
+/*-----------------------------------
+   5 ) FullCalendar daygrid
+-----------------------------------*/
+
+.fc-daygrid-day {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
 th.fc-col-header-cell {
-    color: #212529;
+    color: $crumb-text;
     font-size: 13px;
     font-weight: 300;
     line-height: 20px;
     padding: 7px 0 !important;
     text-transform: uppercase;
-    background: #e9ecef;
+    background: $crumb-surface;
 }
 
 .fc-day-today {
-    background: #d4e7f5 !important;
+    background: rgba($primary, .08) !important;
 }
 
 .fc-day-past {
 
-    opacity: .3;
-    background-color: #ececec;
+    opacity: .5;
+    background-color: $crumb-surface;
 
     &:hover {
-        background-color: #c8cfd7 !important
+        background-color: $btn-surface-hover !important;
     }
 }
 
-.fc-liquid-hack td, .fc-liquid-hack th {
+.fc-liquid-hack td,
+.fc-liquid-hack th {
     position: initial !important;
 }
 
 .fc .fc-daygrid-day-number {
     padding: 10px 15px !important;
     display: inline-block !important;
+}
+
+/*-----------------------------------
+   6 ) Period form
+-----------------------------------*/
+
+#period_publicationStart_time_hour,
+#period_publicationStart_time_minute,
+#period_publicationStart .sr-only,
+#period_publicationEnd_time_hour,
+#period_publicationEnd_time_minute,
+#period_publicationEnd .sr-only {
+    display: none;
+}
+
+#period_publicationStart,
+#period_publicationEnd {
+
+    select {
+        width: 33%;
+    }
 }
