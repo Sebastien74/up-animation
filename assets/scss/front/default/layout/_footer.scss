@@ -157,7 +157,13 @@
     }
 
     .contact {
+
         @media (min-width: 992px) {
+
+            a:hover {
+                color: $white !important;
+            }
+
             > div:not(:last-child) .contact-item {
                 border-right: 1px solid transparentize($white, .92);
             }

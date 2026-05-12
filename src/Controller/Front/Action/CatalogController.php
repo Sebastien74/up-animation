@@ -15,6 +15,7 @@ use App\Model\Core\WebsiteModel;
 use App\Model\EntityModel;
 use App\Model\Module\ProductModel;
 use App\Repository\Module\Catalog\CategoryRepository;
+use App\Service\Pdf\ProductPdfRenderer;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
@@ -29,6 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
@@ -103,6 +105,53 @@ class CatalogController extends ActionController
         $this->setAssociatedEntitiesLimit(10);
 
         return $this->getView($request, $url, $pageUrl, $preview);
+    }
+
+    /**
+     * Print.
+     *
+     * Render product as downloadable PDF.
+     *
+     * @throws ContainerExceptionInterface|InvalidArgumentException|MappingException|NonUniqueResultException|NotFoundExceptionInterface|ReflectionException|QueryException
+     */
+    #[Route([
+        'fr' => '/fiche-produit/{url}/print',
+        'fr_ch' => '/fiche-produit/{url}/print',
+        'en' => '/product-card/{url}/print',
+    ], name: 'front_catalogproduct_print', methods: 'GET', schemes: '%protocol%', priority: 310)]
+    #[Cache(expires: 'tomorrow', public: true)]
+    public function print(Request $request, string $url, ProductPdfRenderer $renderer): Response
+    {
+        $this->setClassname(Catalog\Product::class);
+        $this->setModel(ProductModel::class);
+        $this->setModelOptions([]);
+        $this->setListingClassname(Catalog\Listing::class);
+        $this->setCore($request);
+
+        $service = $this->actionLocator->get('action_service');
+        $service->setWebsite($this->getWebsite());
+        $service->setClassname(Catalog\Product::class);
+        $entity = $service->findEntityByUrlAndLocale($url);
+
+        if (!$entity) {
+            throw $this->createNotFoundException();
+        }
+
+        $product = ProductModel::fromEntity($entity, $this->coreLocator, []);
+        $productUrl = $this->generateUrl('front_catalogproduct_view_only', ['url' => $url], UrlGeneratorInterface::ABSOLUTE_URL);
+        $pdf = $renderer->render($product, [
+            'website' => $this->getWebsite(),
+            'productUrl' => $productUrl,
+        ]);
+
+        $slug = property_exists($product, 'slug') && $product->slug ? $product->slug : 'fiche-produit';
+        $filename = sprintf('fiche-%s.pdf', $slug);
+        $disposition = $request->query->getBoolean('download') ? 'attachment' : 'inline';
+
+        return new Response($pdf, Response::HTTP_OK, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => sprintf('%s; filename="%s"', $disposition, $filename),
+        ]);
     }
 
     /**

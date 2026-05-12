@@ -9,6 +9,7 @@ use App\Model\Core\WebsiteModel;
 use App\Service\Core\InterfaceHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\InvalidArgumentException;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * RobotsServices.
@@ -28,6 +29,7 @@ class RobotsService
         private readonly EntityManagerInterface $entityManager,
         private readonly InterfaceHelper $interfaceHelper,
         private readonly SitemapService $sitemapService,
+        private readonly RouterInterface $router,
     ) {
     }
 
@@ -57,8 +59,9 @@ class RobotsService
     {
         $urls = $defaultUris = [];
         $urls[] = ['uri' => '/*axeptio'];
+        $urls[] = ['uri' => '/*axeptio'];
         $urls[] = ['uri' => '/denied.php'];
-        $urls[] = ['uri' => '/*?text='];
+        $urls[] = ['uri' => $this->router->generate('front_favorites_index', [], RouterInterface::ABSOLUTE_URL)];
         foreach ($urls as $url) {
             $defaultUris[] = $url['uri'];
         }

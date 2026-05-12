@@ -1,16 +1,18 @@
 {% if feed is not empty %}
     <div class="instagram-feed">
         <div class="row g-3">
-            {% for item in feed %}
+            {% for post in feed %}
                 <div class="col-6 col-md-4 col-lg-3">
-                    <a href="{{ item.permalink }}" target="_blank" rel="noopener" class="instagram-item d-block position-relative overflow-hidden shadow-sm rounded">
-                        {% if item.media_type == 'VIDEO' %}
-                            <img src="{{ item.thumbnail_url }}" alt="{{ item.caption|default('Instagram Video') }}" class="img-fluid w-100">
+                    <a href="{{ post.permalink }}" target="_blank" rel="noopener" class="instagram-item d-block position-relative overflow-hidden shadow-sm rounded">
+                        {% if post.mediaType == 'VIDEO' and post.thumbnailLocalPath %}
+                            <img src="{{ asset(post.thumbnailLocalPath) }}" alt="{{ post.caption|default('Instagram Video')|u.truncate(120, '…') }}" class="img-fluid w-100">
                             <div class="video-icon position-absolute top-0 end-0 m-2">
                                 <i class="fas fa-play-circle text-white fa-lg"></i>
                             </div>
-                        {% else %}
-                            <img src="{{ item.media_url }}" alt="{{ item.caption|default('Instagram Image') }}" class="img-fluid w-100">
+                        {% elseif post.mediaLocalPath %}
+                            <img src="{{ asset(post.mediaLocalPath) }}" alt="{{ post.caption|default('Instagram Image')|u.truncate(120, '…') }}" class="img-fluid w-100">
+                        {% elseif post.thumbnailLocalPath %}
+                            <img src="{{ asset(post.thumbnailLocalPath) }}" alt="{{ post.caption|default('Instagram Image')|u.truncate(120, '…') }}" class="img-fluid w-100">
                         {% endif %}
                         <div class="instagram-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center opacity-0 bg-dark bg-opacity-50 transition-all">
                             <i class="fab fa-instagram text-white fa-2x"></i>

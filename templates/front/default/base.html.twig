@@ -88,6 +88,7 @@
                 configuration: configuration,
                 seo: seo,
                 seoTitle: seoTitle is defined ? seoTitle : null,
+                seoRobots: seoRobots is defined ? seoRobots : null,
                 logos: website.logos,
                 companyName: companyName
             } only -%}
@@ -96,7 +97,7 @@
             {%- set metaTitle = block('metaTitle') is defined ? block('metaTitle') : (seoTitle is defined ? seoTitle : null) -%}
             {%- set metaTitle = metaTitle and haveAfterDash ? metaTitle~' - '~companyName : (not metaTitle and haveAfterDash ? companyName : metaTitle) -%}
             {%- set metaDescription = block('metaDescription') is defined ? block('metaDescription') : '' -%}
-            {%- set metaRobots = block('metaRobots') is defined ? block('metaRobots') : 'index' -%}
+            {%- set metaRobots = block('metaRobots') is defined ? block('metaRobots') : (seoRobots is defined ? seoRobots : 'index') -%}
             {%- set metaCanonical = block('metaCanonical') is defined ? block('metaCanonical') : app.request.uri -%}
             {%- set ogImage = block('ogImage') is defined ? block('ogImage') : null -%}
             <title>{{ metaTitle|htmlEntities }}</title>
@@ -306,6 +307,10 @@
 
         {%- if configuration.scrollTopBtn and not onlyBody -%}
             {%- include 'front/'~websiteTemplate~'/include/scroll-top-btn.html.twig' with {website: website, websiteTemplate: websiteTemplate} only -%}
+        {%- endif -%}
+
+        {%- if not onlyBody -%}
+            {%- include 'front/'~websiteTemplate~'/include/favorites-btn.html.twig' -%}
         {%- endif -%}
 
         {{ component('WebmasterBox', {

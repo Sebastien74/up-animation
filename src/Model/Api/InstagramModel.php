@@ -51,13 +51,13 @@ final class InstagramModel extends BaseModel
         $instagram = self::cache($api, 'instagram', self::$cache);
 
         self::$cache['instagram'][$api->getId()][$locale] = new self(
-            id: $instagram->getId(),
+            id: $instagram?->getId(),
             entity: $instagram,
-            accessToken: self::getContent('accessToken', $api),
-            appId: self::getContent('appId', $api),
-            appSecret: self::getContent('appSecret', $api),
-            nbrItems: self::getContent('nbrItems', $api),
-            widget: self::getContent('widget', $api),
+            accessToken: self::getContent('accessToken', $instagram),
+            appId: self::getContent('appId', $instagram),
+            appSecret: self::getContent('appSecret', $instagram),
+            nbrItems: self::getContent('nbrItems', $instagram),
+            widget: self::getContent('widget', $instagram),
         );
 
         return self::$cache['instagram'][$api->getId()][$locale];
@@ -69,17 +69,11 @@ final class InstagramModel extends BaseModel
     public static function modelCache(object $data): InstagramModel
     {
         return new self(
-//            id: $data->id,
-//            accessToken: $data->accessToken,
-//            appId: $data->appId ?? null,
-//            appSecret: $data->appSecret ?? null,
-//            nbrItems: $data->nbrItems,
-//            widget: $data->widget,
             id: $data->id,
             accessToken: $data->accessToken,
-            appId: '1227922292865765',
-            appSecret: '7e4fd55b09b2b2bb623b3ee1c96a7c77',
-            nbrItems: 7,
+            appId: $data->appId ?? null,
+            appSecret: $data->appSecret ?? null,
+            nbrItems: $data->nbrItems,
             widget: $data->widget,
         );
     }

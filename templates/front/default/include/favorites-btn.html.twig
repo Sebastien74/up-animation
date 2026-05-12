@@ -1,0 +1,13 @@
+{%- trans_default_domain 'front_default' -%}
+
+{%- set favCount = favorites_count() -%}
+
+<a id="favorites-fixed-btn"
+   href="{{ path('front_favorites_index') }}"
+   class="favorites-fixed-btn d-inline-flex align-items-center justify-content-center{% if favCount == 0 %} d-none{% endif %}"
+   aria-label="{{ 'Voir mes favoris'|trans|striptags }}">
+    <i class="icon-heart text-white" aria-hidden="true"></i>
+    <span class="favorites-count badge bg-primary text-white"
+          data-favorites-count
+          {% if favCount == 0 %}hidden{% endif %}>{{ favCount }}</span>
+</a>

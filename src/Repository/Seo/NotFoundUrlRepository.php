@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository\Seo;
 
+use App\Entity\Core\Domain;
 use App\Entity\Core\Website;
 use App\Entity\Seo\NotFoundUrl;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -61,6 +62,37 @@ class NotFoundUrlRepository extends ServiceEntityRepository
         }
 
         return $result;
+    }
+
+    /**
+     * Count front NotFoundUrl without redirections, filtered by configured domains.
+     *
+     * @param Domain[] $domains
+     */
+    public function countFrontWithoutRedirections(Website $website, array $domains): int
+    {
+        $queryBuilder = $this->createQueryBuilder('n')
+            ->select('COUNT(n.id)')
+            ->andWhere('n.website = :website')
+            ->andWhere('n.category = :category')
+            ->andWhere('n.type = :type')
+            ->andWhere('n.haveRedirection = :haveRedirection')
+            ->setParameter('website', $website)
+            ->setParameter('category', 'url')
+            ->setParameter('type', 'front')
+            ->setParameter('haveRedirection', false);
+
+        $orExpressions = [];
+        foreach ($domains as $key => $domain) {
+            $parameter = 'domain_'.$key;
+            $orExpressions[] = 'n.url LIKE :'.$parameter;
+            $queryBuilder->setParameter($parameter, '%'.$domain->getName().'%');
+        }
+        if ($orExpressions) {
+            $queryBuilder->andWhere(implode(' OR ', $orExpressions));
+        }
+
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
     /**

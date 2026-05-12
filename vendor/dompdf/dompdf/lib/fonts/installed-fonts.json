@@ -1,0 +1,8 @@
+{
+    "poppins": {
+        "normal": "C:\\wamp64\\www\\up-animation\\vendor\\dompdf\\dompdf\/lib\/fonts\/poppins_normal_fe792c738d5b7001d44c3f568ef05251",
+        "500": "C:\\wamp64\\www\\up-animation\\vendor\\dompdf\\dompdf\/lib\/fonts\/poppins_500_075741767820d8c0570314c32654541f",
+        "600": "C:\\wamp64\\www\\up-animation\\vendor\\dompdf\\dompdf\/lib\/fonts\/poppins_600_fdc2fe4b697799ff49bfd78fd60456dc",
+        "bold": "poppins_bold_1a9665d1c217e262634508f66f04d5ce"
+    }
+}

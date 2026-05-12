@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Content;
 
 use App\Model\Api\InstagramModel;
-use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
@@ -21,22 +18,22 @@ class InstagramService
 {
     private const string API_URL = 'https://graph.instagram.com/me/media';
     private const string REFRESH_TOKEN_URL = 'https://graph.instagram.com/refresh_access_token';
-    private const string AUTH_URL = 'https://api.instagram.com/oauth/authorize';
+    private const string AUTH_URL = 'https://www.instagram.com/oauth/authorize';
     private const string TOKEN_URL = 'https://api.instagram.com/oauth/access_token';
     private const string LONG_LIVED_TOKEN_URL = 'https://graph.instagram.com/access_token';
-    private const int CACHE_EXPIRE = 3600; // 1 hour
+    private const string SCOPE = 'instagram_business_basic';
 
     public function __construct(
         private readonly HttpClientInterface $httpClient,
-        private readonly CacheInterface $cache,
         private readonly UrlGeneratorInterface $urlGenerator
     ) {
     }
 
     /**
-     * Get Instagram feed.
+     * Get Instagram feed (raw API response).
      *
-     * @throws InvalidArgumentException
+     * No caching here: callers (FeedSyncService via InstagramFeedFetcher)
+     * already throttle invocations via FeedAutoSyncService's 12 h lock.
      */
     public function getFeed(InstagramModel $instagramModel): array
     {
@@ -45,29 +42,22 @@ class InstagramService
             return [];
         }
 
-        $cacheKey = 'instagram_feed_' . md5($accessToken);
-
-        return $this->cache->get($cacheKey, function (ItemInterface $item) use ($accessToken, $instagramModel) {
-            $item->expiresAfter(self::CACHE_EXPIRE);
-
-            try {
-                $response = $this->httpClient->request('GET', self::API_URL, [
-                    'query' => [
-                        'fields' => 'id,caption,media_type,media_url,permalink,thumbnail_url,timestamp',
-                        'access_token' => $accessToken,
-                        'limit' => $instagramModel->nbrItems ?: 10,
-                    ],
-                ]);
-                if ($response->getStatusCode() !== 200) {
-                    return [];
-                }
-                $data = $response->toArray();
-                return $data['data'] ?? [];
-            } catch (Throwable $e) {
-                // Log error if needed
+        try {
+            $response = $this->httpClient->request('GET', self::API_URL, [
+                'query' => [
+                    'fields' => 'id,caption,media_type,media_url,permalink,thumbnail_url,timestamp',
+                    'access_token' => $accessToken,
+                    'limit' => $instagramModel->nbrItems ?: 10,
+                ],
+            ]);
+            if ($response->getStatusCode() !== 200) {
                 return [];
             }
-        });
+            $data = $response->toArray();
+            return $data['data'] ?? [];
+        } catch (Throwable) {
+            return [];
+        }
     }
 
     /**
@@ -102,10 +92,12 @@ class InstagramService
         $redirectUri = $this->urlGenerator->generate('instagram_auth_callback', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return self::AUTH_URL . '?' . http_build_query([
+            'enable_fb_login' => '0',
+            'force_authentication' => '1',
             'client_id' => $appId,
             'redirect_uri' => $redirectUri,
-            'scope' => 'user_profile,user_media',
             'response_type' => 'code',
+            'scope' => self::SCOPE,
         ]);
     }
 

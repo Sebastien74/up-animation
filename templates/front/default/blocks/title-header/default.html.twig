@@ -27,6 +27,7 @@
     {%- set currentEntity = seo.entity is defined ? (seo.entity is defined ? seo.entity : null) -%}
     {%- set contactUrl = contactUrl is defined ? contactUrl : null -%}
     {%- set thumbConfiguration = thumbConfiguration is defined and thumbConfiguration and thumbConfiguration|isArray ? thumbConfiguration : {} -%}
+    {%- set printUrl = printUrl is defined ? printUrl : null -%}
     {%- set defaultMedia = true -%}
     {%- set defaultMedia = defaultMedia and logos['title-header'] is defined and logos['title-header'] ? logos['title-header'] : null -%}
     {%- set displayMedia = customMedia is defined and customMedia ? customMedia : (media.media.originalName is defined and media.media.originalName ? media : defaultMedia) -%}
@@ -83,14 +84,24 @@
                                 </div>
                             </div>
                         {%- endif -%}
-                        {%- if contactUrl -%}
-                            {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
-                                intl: {
-                                    link: contactUrl,
-                                    linkStyle: 'btn btn-blur btn-blur-primary mt-5',
-                                    linkLabel: "Nous contacter"|trans,
-                                }
-                            } only -%}
+                        {%- if contactUrl or printUrl -%}
+                            <div class="title-header-actions d-flex flex-wrap align-items-center gap-3 mt-5">
+                                {%- if contactUrl -%}
+                                    {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
+                                        intl: {
+                                            link: contactUrl,
+                                            linkStyle: 'btn btn-blur btn-blur-primary',
+                                            linkLabel: "Nous contacter"|trans,
+                                        }
+                                    } only -%}
+                                {%- endif -%}
+                                {%- if printUrl -%}
+                                    <a href="{{ printUrl }}" class="btn-print d-inline-flex align-items-center gap-2" target="_blank" rel="noopener" aria-label="{{ "Télécharger la fiche au format PDF"|trans }}">
+                                        <i class="icon-file-pdf" aria-hidden="true"></i>
+                                        <span>{{ "Fiche PDF"|trans|raw }}</span>
+                                    </a>
+                                {%- endif -%}
+                            </div>
                         {%- endif -%}
                     </div>
                 </div>

@@ -537,10 +537,7 @@
 
 .splide.thumbnails-slider {
 
-    .splide__track {
-        position: relative; /* anchor for pseudo-elements */
-        overflow: hidden; /* normalement déjà le cas avec Splide, mais safe */
-    }
+
 
     .splide__track::before,
     .splide__track::after {

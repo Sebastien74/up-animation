@@ -1,0 +1,36 @@
+{%- trans_default_domain 'front_default' -%}
+
+{%- set logoPath = logoPath is defined and logoPath ? logoPath : null -%}
+{%- set brand = brand is defined and brand ? brand : {} -%}
+{%- set brandName = brand.name|default('Up Animation') -%}
+{%- set brandPhone = brand.phone|default(null) -%}
+{%- set brandPhoneHref = brand.phoneHref|default(null) -%}
+{%- set brandEmail = brand.email|default(null) -%}
+{%- set brandAddress = brand.address|default(null) -%}
+{%- set brandCity = brand.city|default(null) -%}
+{%- set brandZip = brand.zipCode|default(null) -%}
+{%- set brandCountry = brand.country|default(null) -%}
+
+<div class="footer">
+    <table class="footer-table">
+        <tr>
+            <td class="footer-logo" style="width: 28%;">
+                {% if logoPath %}
+                    <img src="{{ logoPath }}" alt="{{ brandName }}">
+                {% else %}
+                    <span class="brand-fallback">{{ brandName }}</span>
+                {% endif %}
+            </td>
+            <td class="footer-address" style="width: 44%;">
+                {% if brandAddress %}{{ brandAddress }}{% endif %}
+                {% if brandZip or brandCity %}{% if brandAddress %}<br>{% endif %}{{ brandZip }} {{ brandCity }}{% if brandCountry and brandCountry != 'FR' %}, {{ brandCountry }}{% endif %}{% endif %}
+                {% if brandEmail %}{% if brandAddress or brandZip or brandCity %}<br>{% endif %}<span class="mail">{{ brandEmail }}</span>{% endif %}
+            </td>
+            <td class="footer-phone" style="width: 28%;">
+                {% if brandPhone %}
+                    <a href="{{ brandPhoneHref }}">{{ brandPhone }}</a>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</div>

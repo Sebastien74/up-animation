@@ -125,11 +125,11 @@ body.menu-open {
             }
 
             @include mediaQuery(min-lg) {
-                max-height: 60px !important;
+                max-height: 50px !important;
                 max-width: 115px !important;
             }
 
-            @include mediaQuery(min-lg) {
+            @include mediaQuery(min-xl) {
                 max-height: 80px !important;
                 max-width: 105px !important;
             }
@@ -242,6 +242,59 @@ body.menu-open {
 
             &:hover {
                 color: $primary !important;
+            }
+        }
+    }
+
+    @include mediaQuery(between-lg-xl) {
+
+        .nav-item.level-1 {
+            margin-right: .5rem !important;
+
+            &:last-child {
+                margin-right: 0 !important;
+            }
+        }
+
+        .nav-link.link-level-1 {
+
+            &.btn-blur:not(.btn-circle) {
+                padding: 6px 10px !important;
+                min-height: 36px;
+                font-size: 14px;
+                line-height: 1;
+            }
+
+            .link-label {
+                font-size: 14px;
+                line-height: 1.1;
+            }
+        }
+
+        .side.ms-auto {
+            padding-left: .25rem !important;
+            gap: .25rem !important;
+        }
+
+        .socials-list {
+
+            gap: .25rem !important;
+            margin-right: .25rem !important;
+
+            i {
+                font-size: 20px;
+            }
+        }
+
+        .btn.btn-circle {
+
+            width: 36px !important;
+            height: 36px !important;
+            min-height: 36px !important;
+            flex: 0 0 36px !important;
+
+            i {
+                font-size: .8125rem !important;
             }
         }
     }

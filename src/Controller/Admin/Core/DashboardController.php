@@ -6,7 +6,6 @@ namespace App\Controller\Admin\Core;
 
 use App\Controller\Admin\AdminController;
 use App\Entity\Core\Domain;
-use App\Entity\Core\Website;
 use App\Entity\Module\Search\SearchValue;
 use App\Entity\Seo\NotFoundUrl;
 use App\Entity\Seo\Url;
@@ -35,6 +34,8 @@ class DashboardController extends AdminController
     {
         $website = $this->getWebsite();
         $notFoundsLimit = 50;
+        $domains = $this->coreLocator->em()->getRepository(Domain::class)->findByConfiguration($website->entity->getConfiguration());
+        $notFoundRepository = $this->coreLocator->em()->getRepository(NotFoundUrl::class);
         $noSeoCounts = $this->coreLocator->em()->getRepository(Url::class)->countEmptyLocalesSEO($website->entity);
         $searchValues = $this->coreLocator->em()->getRepository(SearchValue::class)->findByWebsite($website->entity);
         $searchValues = $paginator->paginate(
@@ -46,20 +47,13 @@ class DashboardController extends AdminController
         $searchValues->setParam('_fragment', 'stats-search');
 
         return $this->adminRender('admin/page/core/dashboard.html.twig', [
-            'notFoundUrls' => $this->getNotFoundUrls($website->entity, $notFoundsLimit),
+            'notFoundUrls' => $notFoundRepository->findFrontWithoutRedirections($website->entity, $domains, $notFoundsLimit),
+            'notFoundCount' => $notFoundRepository->countFrontWithoutRedirections($website->entity, $domains),
             'notFoundsLimit' => $notFoundsLimit,
             'noSeoCounts' => $noSeoCounts,
             'searchValues' => $searchValues,
+            'hasInstagramFeed' => (bool) $website->api?->instagram?->accessToken,
+            'hasTikTokFeed' => (bool) $website->api?->tiktok?->accessToken,
         ]);
-    }
-
-    /**
-     * Get NotFoundUrl[].
-     */
-    private function getNotFoundUrls(Website $website, int $limit): array
-    {
-        $domains = $this->coreLocator->em()->getRepository(Domain::class)->findByConfiguration($website->getConfiguration());
-
-        return $this->coreLocator->em()->getRepository(NotFoundUrl::class)->findFrontWithoutRedirections($website, $domains, $limit);
     }
 }

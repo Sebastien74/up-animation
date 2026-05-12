@@ -19,20 +19,17 @@ final class TikTokModel extends BaseModel
 {
     private static array $cache = [];
 
-    /**
-     * TikTokModel constructor.
-     */
     public function __construct(
         public readonly ?int $id = null,
         public readonly ?TikTok $entity = null,
         public readonly ?string $accessToken = null,
+        public readonly ?string $appId = null,
+        public readonly ?string $appSecret = null,
         public readonly ?int $nbrItems = null,
     ) {
     }
 
     /**
-     * Get model.
-     *
      * @throws MappingException
      */
     public static function fromEntity(Api $api, CoreLocatorInterface $coreLocator, ?string $locale = null): self
@@ -48,12 +45,25 @@ final class TikTokModel extends BaseModel
         $tiktok = self::cache($api, 'tiktok', self::$cache);
 
         self::$cache['tiktok'][$api->getId()][$locale] = new self(
-            id: $tiktok->getId(),
+            id: $tiktok?->getId(),
             entity: $tiktok,
-            accessToken: self::getContent('accessToken', $api),
-            nbrItems: self::getContent('nbrItems', $api),
+            accessToken: self::getContent('accessToken', $tiktok),
+            appId: self::getContent('appId', $tiktok),
+            appSecret: self::getContent('appSecret', $tiktok),
+            nbrItems: self::getContent('nbrItems', $tiktok),
         );
 
         return self::$cache['tiktok'][$api->getId()][$locale];
+    }
+
+    public static function modelCache(object $data): TikTokModel
+    {
+        return new self(
+            id: $data->id ?? null,
+            accessToken: $data->accessToken ?? null,
+            appId: $data->appId ?? null,
+            appSecret: $data->appSecret ?? null,
+            nbrItems: $data->nbrItems ?? null,
+        );
     }
 }

@@ -151,8 +151,8 @@ final class ProductModel extends BaseModel
             },
             'multiFeaturesValues' => match ($catalogSlug) {
                 'agencies' => [],
-                'events' => [],
-                'services' => [],
+                'events' => ['people', 'duration', 'age', 'environment'],
+                'services' => ['people', 'duration', 'age', 'environment'],
                 'rentals' => ['people', 'duration', 'age', 'environment'],
                 default => [],
             },

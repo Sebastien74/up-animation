@@ -215,9 +215,24 @@
     {%- set titleForce = vars.titleForce is defined ? vars.titleForce : 3 -%}
     {%- set thumbConfiguration = vars.thumbConfiguration is defined ? vars.thumbConfiguration : [] -%}
     {%- set screensSizes = vars.screensSizes is defined ? vars.screensSizes : false -%}
+    {%- set favorited = is_favorite(entity.id) -%}
     <div class="card product-card bg-light shadow border-0 h-100 position-relative">
         <div class="card-header d-flex position-relative p-0 border-0">
             <a href="{{ entity.url }}" class="img-container d-inline-block overflow-hidden position-relative">
+                {%- set labelAdd = 'Ajouter aux favoris'|trans|striptags -%}
+                {%- set labelRemove = 'Retirer des favoris'|trans|striptags -%}
+                <button type="button"
+                        class="favorite-toggle position-absolute d-inline-flex align-items-center justify-content-center{% if favorited %} is-favorite{% endif %}"
+                        data-bs-toggle="tooltip"
+                        data-bs-title="{{ favorited ? labelRemove : labelAdd }}"
+                        data-product-id="{{ entity.id }}"
+                        data-product-label="{{ entity.intl.title|striptags }}"
+                        aria-pressed="{{ favorited ? 'true' : 'false' }}"
+                        aria-label="{{ favorited ? labelRemove : labelAdd }}"
+                        data-label-add="{{ labelAdd }}"
+                        data-label-remove="{{ labelRemove }}">
+                    <i class="icon-heart-plain" aria-hidden="true"></i>
+                </button>
                 {%- if entity.promote -%}
                     <i class="icon-star position-absolute text-warning bg-white d-flex justify-content-center align-items-center"
                        data-bs-toggle="tooltip"

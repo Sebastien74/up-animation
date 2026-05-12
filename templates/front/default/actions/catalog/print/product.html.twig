@@ -1,0 +1,19 @@
+{%- trans_default_domain 'front_default' -%}
+
+{%- set title = entity.intl.title is defined and entity.intl.title ? entity.intl.title : '' -%}
+
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|default('fr') }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title|striptags ?: 'Fiche produit'|trans }}</title>
+    {% include 'front/default/actions/catalog/print/_styles.html.twig' %}
+</head>
+<body>
+
+    {% include 'front/default/actions/catalog/print/_page.html.twig' %}
+
+    {% include 'front/default/actions/catalog/print/_footer.html.twig' %}
+
+</body>
+</html>

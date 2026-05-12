@@ -1,0 +1,66 @@
+{%- extends 'front/'~websiteTemplate~'/base.html.twig' -%}
+
+{%- trans_default_domain 'front_default' -%}
+
+{%- import 'front/'~websiteTemplate~'/include/macros/card.html.twig' as macroCard -%}
+
+{%- set seoTitle = 'Mes favoris'|trans -%}
+{%- set seoRobots = 'noindex, nofollow' -%}
+
+{%- block stylesheets -%}
+    {{ parent() }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-catalog-'~frontTheme, null, webpack) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-catalog.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
+{%- endblock -%}
+
+{%- block javascripts -%}
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-catalog', null, webpack, {defer: true, nonce: csp_nonce()}) }}
+{%- endblock -%}
+
+{%- block body -%}
+    <div id="favorites-container" class="favorites-container pb-5">
+        <div class="container">
+            <header class="favorites-header text-center mb-5">
+                <h1 class="title text-uppercase text-secondary fw-800 mb-3">{{ "Mes favoris"|trans|raw }}</h1>
+                {%- if count > 0 -%}
+                    <p class="mb-0">{{ "Retrouvez ici les prestations ajoutées à votre sélection."|trans|raw }}</p>
+                {%- endif -%}
+            </header>
+            {%- if products is empty -%}
+                <div class="favorites-empty text-center py-5">
+                    <i class="icon-heart text-primary size-xl-icon mb-4 d-inline-block"></i>
+                    <p class="mb-4">{{ "Vous n'avez pas encore de favoris."|trans|raw }}</p>
+                    <a href="{{ path('front_index') }}" class="btn btn-primary d-inline-flex">
+                        {{ "Retourner à l'accueil"|trans|raw }}
+                    </a>
+                </div>
+            {%- else -%}
+                {%- set printUrl = path('front_favorites_print') -%}
+                {%- set printLabel = "Imprimer mes favoris"|trans -%}
+                <div class="favorites-actions d-flex justify-content-center mb-4" data-favorites-actions>
+                    <a href="{{ printUrl }}" target="_blank" rel="noopener" class="btn btn-primary d-inline-flex align-items-center">
+                        <i class="icon-download me-2" aria-hidden="true"></i>
+                        <span>{{ printLabel }}</span>
+                    </a>
+                </div>
+                <div class="row justify-content-center favorites-list">
+                    {%- for product in products -%}
+                        <div class="col-md-6 col-lg-4 mb-5 position-relative" data-favorite-card="{{ product.id }}">
+                            {{ macroCard.product({
+                                entity: product,
+                                titleForce: 2,
+                            }) }}
+                        </div>
+                    {%- endfor -%}
+                </div>
+                <div class="favorites-actions d-flex justify-content-center mt-2" data-favorites-actions>
+                    <a href="{{ printUrl }}" target="_blank" rel="noopener" class="btn btn-primary d-inline-flex align-items-center">
+                        <i class="icon-download me-2" aria-hidden="true"></i>
+                        <span>{{ printLabel }}</span>
+                    </a>
+                </div>
+            {%- endif -%}
+        </div>
+    </div>
+{%- endblock -%}

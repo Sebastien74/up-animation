@@ -97,6 +97,7 @@ lazyLoadComponent('.newsletter-form-container', () => import(/* webpackPreload: 
 lazyLoadComponent('.step-form-ajax', () => import(/* webpackPreload: true */'./components/form/steps-form'), (StepForm) => new StepForm(), true);
 lazyLoadComponent('[data-scroll-bar="1"]', () => import('./components/scrollbar'), (ScrollSpy, els) => new ScrollSpy(els));
 lazyLoadComponent('.fixed-element', () => import('./components/fixed-element'), (FixedNews, el) => new FixedNews(el));
+lazyLoadComponent('.favorite-toggle', () => import('./components/favorites'), (Favorites) => new Favorites());
 lazyLoadComponent('.dropdown-toggle', () => import('../bootstrap/modules/dropdown'), (Dropdown) => new Dropdown());
 lazyLoadComponent('.block-scroll-video', () => import('./components/video-scroll'), (Videos) => new Videos());
 

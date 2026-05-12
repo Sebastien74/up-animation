@@ -1392,6 +1392,105 @@ body {
         }
     }
 
+    /*--- 404 feature panel ---*/
+
+    .dashboard-notfound {
+
+        .notfound-panel {
+            background: $theme-card-bg !important;
+            border-color: $theme-border-subtle !important;
+            box-shadow: $theme-shadow-md !important;
+
+            &::before {
+                background: $danger !important;
+            }
+
+            &.is-clean::before {
+                background: $success !important;
+            }
+        }
+
+        .notfound-left {
+            border-right-color: $theme-border-subtle !important;
+        }
+
+        .notfound-tag {
+            color: $theme-text-muted !important;
+            border-color: $theme-border !important;
+        }
+
+        .notfound-number {
+            color: $theme-text !important;
+        }
+
+        .notfound-unit {
+            color: $theme-text-muted !important;
+        }
+
+        .notfound-headline {
+            color: $theme-text !important;
+        }
+
+        .notfound-desc {
+            color: $theme-text-muted !important;
+        }
+
+        .notfound-feed {
+            background: $theme-border-subtle !important;
+            border-color: $theme-border-subtle !important;
+        }
+
+        .notfound-row {
+            background: $theme-surface !important;
+
+            &:hover {
+                background: $theme-bg-alt !important;
+            }
+
+            .notfound-row-marker {
+                background: $theme-border-alt !important;
+            }
+
+            .notfound-row-uri {
+                color: $theme-text !important;
+            }
+
+            .notfound-row-date {
+                color: $theme-text-muted !important;
+            }
+
+            .notfound-row-action {
+                color: $theme-text-muted !important;
+            }
+        }
+
+        .notfound-cta {
+            background: transparent !important;
+            border-color: $theme-border-alt !important;
+            color: $theme-text !important;
+
+            &:hover,
+            &:focus-visible {
+                background: $danger !important;
+                border-color: $danger !important;
+                color: $white !important;
+            }
+        }
+
+        .notfound-panel.is-clean {
+
+            .notfound-cta {
+
+                &:hover,
+                &:focus-visible {
+                    background: $success !important;
+                    border-color: $success !important;
+                    color: $white !important;
+                }
+            }
+        }
+    }
+
     /*--- Shortcuts ---*/
 
     .shortcut-tile {

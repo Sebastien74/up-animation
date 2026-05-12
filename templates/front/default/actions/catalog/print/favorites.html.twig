@@ -1,0 +1,30 @@
+{%- trans_default_domain 'front_default' -%}
+
+{%- set pages = pages is defined and pages is iterable ? pages : [] -%}
+
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|default('fr') }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ "Mes favoris"|trans }}</title>
+    {% include 'front/default/actions/catalog/print/_styles.html.twig' %}
+</head>
+<body>
+
+    {% for page in pages %}
+        <div{% if not loop.first %} class="page-break"{% endif %}>
+            {% include 'front/default/actions/catalog/print/_page.html.twig' with {
+                entity: page.entity,
+                mainImage: page.mainImage,
+                gallery: page.gallery,
+                logoPath: logoPath,
+                brand: brand,
+                productUrl: page.productUrl,
+            } only %}
+        </div>
+    {% endfor %}
+
+    {% include 'front/default/actions/catalog/print/_footer.html.twig' %}
+
+</body>
+</html>

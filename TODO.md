@@ -4,6 +4,8 @@ utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 
+Dans les fiche pdf, prévoir de les faire uqqi par ville, checker l'URL. Et mettre l'url avec l'index, pas celle only. Récupérer aussi l'adresse
+
 Sur les best-sellers mettre une étoile
 
 Dropify bloc media page Qui sommes nous ne fonctinne pas
@@ -707,3 +709,12 @@ Faire le tour des radius au loader images
 <script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://up-animations.fr/","url":"https://up-animations.fr/","name":"Up Animations! Les meilleurs Activités et Animations pour vos évènements","isPartOf":{"@id":"https://up-animations.fr/#website"},"primaryImageOfPage":{"@id":"https://up-animations.fr/#primaryimage"},"image":{"@id":"https://up-animations.fr/#primaryimage"},"thumbnailUrl":"http://up-animations.fr/wp-content/uploads/2017/06/separateur-up-animation-1.png","datePublished":"2017-06-13T06:12:45+00:00","dateModified":"2023-02-17T14:26:35+00:00","description":"Animation & activité originale ? Teambuilding, séminaire, soirée d'entreprise, magie & spéctacles à Annecy, Grenoble, Chambéry, Gap, Bourg-en-Bresse, Paris, Bordeaux, Montpellier, Lyon & Genève.","breadcrumb":{"@id":"https://up-animations.fr/#breadcrumb"},"inLanguage":"fr-FR","potentialAction":[{"@type":"ReadAction","target":["https://up-animations.fr/"]}]},{"@type":"ImageObject","inLanguage":"fr-FR","@id":"https://up-animations.fr/#primaryimage","url":"http://up-animations.fr/wp-content/uploads/2017/06/separateur-up-animation-1.png","contentUrl":"http://up-animations.fr/wp-content/uploads/2017/06/separateur-up-animation-1.png"},{"@type":"BreadcrumbList","@id":"https://up-animations.fr/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil"}]},{"@type":"WebSite","@id":"https://up-animations.fr/#website","url":"https://up-animations.fr/","name":"Up-Animations","description":"Animations évènementielles | Event l Team Building","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://up-animations.fr/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"fr-FR"}]}</script>
 
 GENERER LES TRADS
+
+--- SECURITE / Credentials Instagram sortis de src/Model/Api/InstagramModel.php ---
+App ID    : 1227922292865765
+App Secret: 7e4fd55b09b2b2bb623b3ee1c96a7c77
+Action :
+ - REVOQUER cet App Secret dans la console Meta (developers.facebook.com), il a été versionné en clair → considérer comme compromis.
+ - Régénérer un nouveau couple App ID / App Secret.
+ - Saisir les nouvelles valeurs UNIQUEMENT via l'admin (Configuration du site > onglet Instagram) → persisté en base table api_instagram, lu via $data->appId / $data->appSecret dans InstagramModel::modelCache().
+ - Vérifier aucun autre fichier ne contient ces valeurs (grep "1227922292865765" + "7e4fd55b09b2b2bb623b3ee1c96a7c77" repo + historique git).

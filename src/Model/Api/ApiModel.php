@@ -28,6 +28,7 @@ final class ApiModel extends BaseModel
         public readonly ?FacebookModel $facebook = null,
         public readonly ?GoogleModel $google = null,
         public readonly ?InstagramModel $instagram = null,
+        public readonly ?TikTokModel $tiktok = null,
         public readonly ?CustomModel $custom = null,
         public readonly ?string $addThis = null,
         public readonly ?string $tawkToId = null,
@@ -59,6 +60,7 @@ final class ApiModel extends BaseModel
             facebook: $api ? FacebookModel::fromEntity($api, $coreLocator, $locale) : null,
             google: $api ? GoogleModel::fromEntity($api, $coreLocator, $locale) : null,
             instagram: $api ? InstagramModel::fromEntity($api, $coreLocator, $locale) : null,
+            tiktok: $api ? TikTokModel::fromEntity($api, $coreLocator, $locale) : null,
             custom: $api ? CustomModel::fromEntity($api, $coreLocator, $locale) : null,
             addThis: self::getContent('addThis', $api),
             tawkToId: self::getContent('tawkToId', $api),
@@ -74,16 +76,23 @@ final class ApiModel extends BaseModel
      */
     protected static function modelCache(mixed $data): ApiModel
     {
+        $facebook = $data->facebook ?? null;
+        $google = $data->google ?? null;
+        $instagram = $data->instagram ?? null;
+        $tiktok = $data->tiktok ?? null;
+        $custom = $data->custom ?? null;
+
         return new self(
-            id: $data ? $data->id : null,
-            facebook: $data && $data->facebook ? FacebookModel::modelCache($data->facebook) : null,
-            google: $data && $data->google ? GoogleModel::modelCache($data->google) : null,
-            instagram: $data && $data->instagram ? InstagramModel::modelCache($data->instagram) : null,
-            custom: $data && $data->custom ? CustomModel::modelCache($data->custom) : null,
-            addThis: $data ? $data->addThis : null,
-            tawkToId: $data ? $data->tawkToId : null,
-            securitySecretKey: $data ? $data->securitySecretKey : null,
-            securitySecretIv: $data ? $data->securitySecretIv : null,
+            id: $data?->id,
+            facebook: $facebook ? FacebookModel::modelCache($facebook) : null,
+            google: $google ? GoogleModel::modelCache($google) : null,
+            instagram: $instagram ? InstagramModel::modelCache($instagram) : null,
+            tiktok: $tiktok ? TikTokModel::modelCache($tiktok) : null,
+            custom: $custom ? CustomModel::modelCache($custom) : null,
+            addThis: $data->addThis ?? null,
+            tawkToId: $data->tawkToId ?? null,
+            securitySecretKey: $data->securitySecretKey ?? null,
+            securitySecretIv: $data->securitySecretIv ?? null,
         );
     }
 }

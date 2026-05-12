@@ -1,103 +1,256 @@
-# Guide de Connexion Instagram Feed
+# Guide d'intégration du feed Instagram
 
-Ce document détaille la procédure pour connecter un compte Instagram au site et afficher le flux (feed) d'images et de vidéos.
+Procédure pour brancher un compte Instagram sur le site et afficher son flux d'images et de vidéos.
 
-## 1. Création de l'application Facebook pour Développeurs
+---
 
-Pour utiliser l'API Instagram Basic Display, vous devez posséder un compte Facebook pour développeurs.
+> **API utilisée : Instagram API with Instagram Login** (scope `instagram_business_basic`).
+> L'ancienne *Instagram Basic Display* a été coupée par Meta le 04/12/2024 ; le service Symfony a été migré vers la nouvelle API.
 
-1. Allez sur [Meta for Developers](https://developers.facebook.com/) et connectez-vous.
-2. Cliquez sur **Mes applications** puis sur **Créer une application**.
-3. Choisissez le type d'application **Autre** ou **Consommateur**.
-4. Donnez un nom à votre application et validez.
+---
 
-## 2. Configuration de l'API Instagram Basic Display
+## 1. Prérequis
 
-1. Dans le tableau de bord de votre application, cherchez le produit **Instagram Basic Display** et cliquez sur **Configurer**.
-2. Cliquez sur le bouton **Create New App** en bas de la page.
-3. Remplissez les paramètres de l'application :
-    - **Valid OAuth Redirect URIs** : `https://[votre-domaine.com]/`
-    - **Deauthorize Callback URL** : `https://[votre-domaine.com]/`
-    - **Data Deletion Request URL** : `https://[votre-domaine.com]/`
-4. Enregistrez les modifications.
+| Élément | Détail |
+|---|---|
+| Compte Instagram | Type **Professionnel** (Creator ou Business). Les comptes personnels ne sont pas éligibles. |
+| Compte Meta Developer | https://developers.facebook.com/ |
+| URL du site | Hébergé en **HTTPS** valide (obligatoire pour la redirection OAuth). |
+| Accès admin Symfony | Rôle permettant d'éditer la configuration du site. |
 
-## 3. Ajout d'un compte Instagram de Test
+---
 
-Pendant que l'application est en mode "Développement", vous devez ajouter manuellement les comptes Instagram autorisés.
+## 2. Création de l'application Meta
 
-1. Allez dans **App Roles** > **Roles** (ou **Rôles** dans le menu de gauche).
-2. Faites défiler jusqu'à **Instagram Testers**.
-3. Cliquez sur **Add Instagram Testers** et saisissez le nom d'utilisateur du compte Instagram à connecter.
-4. Sur le compte Instagram (sur mobile ou web) :
-    - Allez dans **Paramètres** > **Sécurité et confidentialité** (ou **Espace Comptes**).
-    - Cherchez **Applications et sites web**.
-    - Allez dans l'onglet **Invitations de testeurs** et acceptez l'invitation de votre application.
+1. Aller sur [Meta for Developers](https://developers.facebook.com/) → **Mes applications** → **Créer une application**.
+2. **Détails de l'application** : nom de l'app + email de contact.
+3. **Cas d'utilisation** : sélectionner **« Gérer les messages et les contenus sur Instagram »** (icône Instagram, filtre *Tout* ou *Gestion du contenu*).
 
-## 4. Génération du Token d'accès (Access Token)
+   > ⚠️ Le libellé est trompeur — il évoque la publication et les DM. C'est pourtant **ce cas exact** qui débloque l'**Instagram API with Instagram Login** et le scope `instagram_business_basic` utilisé par `InstagramService`. Meta a regroupé "lire ses propres posts" sous "gérer le contenu" car c'est le même flux OAuth (avec moins de scopes activés).
+   >
+   > À **ne pas** prendre par erreur :
+   > - *Intégrer du contenu Facebook, Instagram et Threads sur d'autres sites Web* → oEmbed (flux différent, intégration par URL publique, incompatible avec le code).
+   > - *Accéder à l'API Threads* → autre produit Meta.
+   > - *Authentifier et demander les données des utilisateur(ice)s avec Facebook Login* → flux FB, pas Instagram.
 
-Vous avez deux options pour générer le token :
+4. **Entreprise** : associer un *Business Portfolio* Meta si demandé (créer un Business Portfolio si nécessaire — gratuit, ~2 min).
+5. **Conditions requises** + **Vue d'ensemble** : valider.
+6. Dans le tableau de bord de l'app créée, ouvrir **Instagram → API setup with Instagram login** et lier le compte Instagram **professionnel** (Creator ou Business) à tester.
 
-### Option A : Connexion automatique (Recommandée)
+   > Le produit *Instagram Basic Display* n'existe plus dans la console — coupé par Meta le 04/12/2024. Si tu le cherches, c'est normal de ne pas le trouver.
 
-1. Dans l'administration du site, allez dans **Configuration du site** > onglet **Instagram**.
-2. Saisissez votre **App ID** et votre **App Secret** récupérés sur Meta for Developers.
-3. Enregistrez la configuration.
-4. Un bouton **Connecter mon compte Instagram** apparaît. Cliquez dessus.
-5. Autorisez l'accès sur la page Instagram qui s'ouvre.
-6. Le token sera automatiquement récupéré et enregistré.
+---
 
-### Option B : Génération manuelle
+## 3. Paramétrage OAuth
 
-1. Retournez dans le tableau de bord Meta for Developers.
-2. Allez dans **Instagram Basic Display** > **Basic Display**.
-3. Faites défiler jusqu'à **User Token Generator**.
-4. Cliquez sur le bouton **Generate Token** en face du compte Instagram de test.
-5. Connectez-vous si nécessaire et autorisez l'accès.
-6. Copiez le token généré et collez-le dans le champ **API token (Manuel)** de l'administration.
+Dans le panneau **Instagram → API setup with Instagram login** :
 
-## 5. Configuration de l'URL de retour (Callback)
+| Champ                      | Valeur                                                              |
+|----------------------------|---------------------------------------------------------------------|
+| OAuth Redirect URIs        | `https://[votre-domaine.com]/instagram/callback`                    |
+| Deauthorize Callback URL   | `https://[votre-domaine.com]/instagram/callback` (ou URL dédiée)    |
+| Data Deletion Request URL  | URL d'une page expliquant la suppression des données                |
 
-Pour l'Option A, vous devez configurer l'URL de redirection dans Meta for Developers :
-1. Dans **Instagram Basic Display** > **Basic Display**.
-2. Dans le champ **Valid OAuth Redirect URIs**, ajoutez : `https://[votre-domaine.com]/instagram/callback`
-3. Faites de même pour **Deauthorize Callback URL** et **Data Deletion Request URL** (vous pouvez utiliser la même URL ou l'URL de base du site).
+> La route `/instagram/callback` est définie dans `App\Controller\Front\Action\Feed\InstagramAuthController` (route nommée `instagram_auth_callback`).
 
-## 6. Configuration dans le CMS
+Récupérer ensuite :
 
-1. Connectez-vous à l'administration du site.
-2. Allez dans la section **Configuration du site** (via l'icône roue dentée).
-3. Trouvez l'onglet **Instagram** (ou l'entrée API correspondante).
-4. Configurez les champs suivants :
-    - **App ID** : L'ID de votre application Instagram.
-    - **App Secret** : Le secret de votre application Instagram.
-    - **Nombre d'items** : Nombre de médias à afficher.
-5. Enregistrez.
+- **Instagram App ID**
+- **Instagram App Secret**
 
-## 7. Utilisation technique
+---
 
-Le système utilise le contrôleur suivant pour le rendu :
-- **Controller** : `App\Controller\Front\Action\Feed\InstagramController::index`
-- **Template** : `templates/front/[template]/actions/feed/instagram/html.twig`
+## 4. Ajout d'un compte testeur (mode développement)
 
-Pour appeler le feed dans un autre template Twig ou via une action :
+Tant que l'app est en mode *Développement*, seuls les comptes ajoutés comme testeurs peuvent s'authentifier.
+
+1. Dans la console Meta : **App roles** → **Roles** → **Instagram Testers** → *Add people*.
+2. Saisir le **nom d'utilisateur Instagram** (sans `@`).
+3. Sur Instagram (app mobile ou web), sur le compte concerné :
+   - **Paramètres** → **Espace Comptes** → **Applications et sites web** → onglet **Invitations de testeurs**.
+   - Accepter l'invitation.
+
+---
+
+## 5. Configuration côté admin Symfony
+
+1. Se connecter à l'administration.
+2. **Configuration du site** → onglet **Instagram**.
+3. Renseigner :
+   - **App ID** : Instagram App ID copié à l'étape 3.
+   - **App Secret** : Instagram App Secret.
+   - **Nombre de posts** : 7 par défaut (`InstagramType` form, champ `nbrItems`).
+4. **Enregistrer** la configuration. Le bouton de connexion n'apparaît qu'après cet enregistrement (il est généré côté `InstagramType::buildView` à partir de l'App ID persisté).
+
+---
+
+## 6. Récupération du token — deux options
+
+### Option A — Flux OAuth depuis l'admin (recommandé)
+
+1. Sur l'onglet Instagram en admin, cliquer sur **Connecter mon compte Instagram**.
+2. Le site redirige vers `https://www.instagram.com/oauth/authorize` avec les paramètres :
+   - `client_id` = App ID
+   - `redirect_uri` = `https://[domaine]/instagram/callback`
+   - `scope` = `instagram_business_basic`
+   - `response_type` = `code`
+   - `enable_fb_login=0` et `force_authentication=1` (recommandés Meta)
+3. Après autorisation, Meta renvoie sur `/instagram/callback` avec un `code`.
+4. `InstagramAuthController::callback()` :
+   - échange le `code` contre un **short-lived token** (`POST https://api.instagram.com/oauth/access_token`),
+   - échange ce token contre un **long-lived token** valable **60 jours** (`GET https://graph.instagram.com/access_token?grant_type=ig_exchange_token`),
+   - persiste le token sur `Instagram::accessToken` via `EntityManager::flush()`,
+   - redirige vers `admin_website_edit` avec un flash message.
+
+### Option B — Saisie manuelle d'un token existant
+
+Si un token longue-durée est déjà disponible : le coller directement dans le champ **API token (Manuel)** du formulaire, puis enregistrer.
+
+---
+
+## 7. Architecture — persistance locale du feed
+
+> **Le rendu front ne fait plus aucun appel à l'API Instagram.**
+> Les posts et leurs médias sont persistés en base (`api_feed_post`) + sur disque (`/public/feed/medias/instagram/{externalId}/`) par la commande `app:feed:sync`. Si le token expire ou si l'API tombe, le feed reste **inchangé** côté visiteur.
+
+### 7.1 Flux
+
+```
+[cron] → app:feed:sync --provider=instagram
+            │
+            ├── InstagramFeedFetcher → InstagramService::getFeed() → API Meta
+            ├── FeedSyncService :
+            │     ├── upsert FeedPost (provider=instagram, externalId=…)
+            │     ├── FeedMediaDownloader → /public/feed/medias/instagram/{externalId}/{media|thumbnail}.{ext}
+            │     └── posts en DB absents de la réponse API → removed_at = NOW()
+            └── flush
+
+[visiteur] → render(controller('…InstagramController::index'))
+              └── FeedPostRepository::findActiveByProvider('instagram', nbrItems) → DB
+                    └── rendu Twig avec asset(post.mediaLocalPath)
+```
+
+### 7.2 Intégration dans un template Twig
+
 ```twig
 {{ render(controller('App\\Controller\\Front\\Action\\Feed\\InstagramController::index')) }}
 ```
 
-## 8. Maintenance des Tokens
+Template rendu : `templates/front/[template]/actions/feed/instagram/html.twig` (par défaut `templates/front/default/actions/feed/instagram/html.twig`).
 
-Les tokens générés sont des tokens de "longue durée" (60 jours). Le service PHP inclus (`InstagramService`) possède une méthode `refreshToken` qui permet de renouveler automatiquement le token avant son expiration.
+Variables exposées :
+- `instagram` : `InstagramModel` (config admin — App ID, nbrItems…).
+- `feed` : `FeedPost[]` (entités, triées par `publishedAt DESC`, limitées à `nbrItems`).
 
-## 9. Dépannage (Troubleshooting)
+Propriétés FeedPost utiles côté Twig :
+- `post.permalink` → URL Instagram du post (lien sortant).
+- `post.mediaType` → `IMAGE`, `VIDEO`, `CAROUSEL_ALBUM`.
+- `post.mediaLocalPath` → chemin relatif depuis `/public`, à passer à `asset()`.
+- `post.thumbnailLocalPath` → idem pour la miniature (VIDEO).
+- `post.caption` → texte du post.
+- `post.publishedAt` → `DateTimeImmutable`.
 
-### Erreur "Logged-in use not supported"
-Si vous voyez ce message en cliquant sur le bouton **Connecter mon compte Instagram** :
-1. Déconnectez-vous de votre compte Facebook et Instagram personnel sur votre navigateur.
-2. Utilisez une fenêtre de **navigation privée**.
-3. Assurez-vous d'avoir bien ajouté le compte Instagram souhaité dans la section **Instagram Testers** de votre application Meta for Developers et d'avoir accepté l'invitation sur le compte concerné.
+### 7.3 Synchronisation — déclencheurs
 
-### Erreur "400 Bad Request"
-Cela arrive souvent si :
-1. L'**App Secret** est incorrect.
-2. Le code d'autorisation a expiré (vous avez attendu trop longtemps sur la page d'autorisation). Réessayez la procédure.
-3. L'**URL de redirection** configurée dans Meta for Developers ne correspond pas exactement à celle générée par le site (incluant le `https://` et le `/instagram/callback`).
+Trois manières de déclencher un sync :
+
+1. **Auto-sync au chargement d'une page** (par défaut). Quand `InstagramController::index` est rendu, `FeedAutoSyncService::scheduleIfStale('instagram')` est appelé :
+   - si le verrou cache `feed_sync_lock_instagram` est encore actif (TTL 12 h), rien ne se passe ;
+   - sinon le provider est mis en file et `FeedSyncService::sync('instagram')` s'exécute dans `kernel.terminate` (après envoi de la réponse au navigateur, **zéro impact sur le TTFB**).
+   - Résultat : **2 syncs/jour max par provider**, automatiques, sans cron à configurer.
+2. **Bouton "Synchroniser maintenant"** sur le dashboard admin. Force un sync immédiat synchrone via `FeedSyncController::sync()` (route `admin_feed_sync`, méthode POST, CSRF protégé). Vide le verrou cache avant d'appeler `FeedSyncService::sync()`.
+3. **Commande CLI** pour les ops manuelles, debug, ou tâches planifiées éventuelles :
+   ```bash
+   php bin/console app:feed:sync --provider=instagram
+   php bin/console app:feed:sync                     # tous les providers
+   php bin/console app:feed:sync --force             # re-télécharger les médias déjà présents
+   ```
+
+> Le verrou cache 12 h vit dans le cache applicatif standard. Pour le purger sans passer par le bouton admin : `bin/console cache:clear` (le verrou est perdu, prochain page-load déclenche un sync).
+
+---
+
+## 8. Maintenance du token
+
+| Élément | Comportement |
+|---------|--------------|
+| Token longue durée | Validité **60 jours** à compter de l'émission. |
+| Refresh | `InstagramService::refreshToken()` appelle `GET /refresh_access_token?grant_type=ig_refresh_token`. Possible après **24 h** de vie du token. |
+| Si le token expire | Le feed continue de s'afficher côté visiteur (DB inchangée), mais `app:feed:sync` cessera de récupérer de nouveaux posts → relancer le flux OAuth dans l'admin. |
+
+> Aucun cron de refresh automatique n'est branché à ce jour. Prévoir une commande planifiée qui appelle `InstagramService::refreshToken()` toutes les ~50 jours, sinon le feed s'éteint côté synchro (l'affichage continue mais ne se met plus à jour).
+
+---
+
+## 9. Référence API
+
+Documentation Meta : https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login
+
+Scopes supplémentaires si besoins étendus (à ajouter dans `InstagramService::SCOPE`) :
+- `instagram_business_content_publish` — publication de posts
+- `instagram_business_manage_comments` — gestion des commentaires
+- `instagram_business_manage_messages` — DM
+
+---
+
+## 10. Sécurité — point d'attention
+
+`src/Model/Api/InstagramModel.php::modelCache()` contient des valeurs `appId` et `appSecret` **codées en dur**. Ce sont des identifiants applicatifs Meta qui ne doivent **jamais** vivre dans le code versionné :
+
+- Si ce sont les vraies clés de production : **les révoquer immédiatement** dans la console Meta puis régénérer.
+- Réinjecter via la configuration en base (table `api_instagram`) ou via `.env.local` + paramètre Symfony.
+
+---
+
+## 11. Dépannage
+
+### "Invalid OAuth access token" / `code` invalide
+- Le `code` n'est valide qu'une fois et expire en ~10 min. Recommencer le flux.
+- Vérifier que l'URL de redirection enregistrée dans Meta est **strictement identique** à celle générée par Symfony (schéma HTTPS, casse, slash final).
+
+### "Logged-in user not supported" en cliquant sur Connecter
+- App en mode développement + compte non ajouté en **Instagram Testers**. Vérifier l'invitation et son acceptation.
+- Se déconnecter de tous les comptes Instagram/Facebook puis réessayer en **navigation privée**.
+
+### `400 Bad Request` côté `InstagramService::getLongLivedToken`
+- App Secret incorrect.
+- `redirect_uri` divergeant entre la demande d'autorisation et l'échange du code.
+- Compte Instagram personnel (non-pro) sur l'API actuelle.
+
+### Le feed reste vide en production
+- Vérifier qu'il existe des `FeedPost` actifs : `SELECT count(*) FROM api_feed_post WHERE provider='instagram' AND removed_at IS NULL;`. Si 0, lancer `php bin/console app:feed:sync --provider=instagram` et regarder la sortie.
+- Vérifier `accessToken` non nul en base (table `api_instagram`).
+- Tester l'endpoint manuellement : `curl "https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=<TOKEN>"`.
+- Token expiré (> 60 j sans refresh) → recommencer le flux OAuth.
+
+### Médias 404 sur le front
+- Vérifier la présence des fichiers sous `/public/feed/medias/instagram/{externalId}/`.
+- Si absents : relancer `app:feed:sync --force` pour forcer le re-téléchargement.
+- Vérifier les permissions du dossier `/public/feed/medias` (write côté process Symfony).
+
+---
+
+## 12. Récapitulatif des points techniques
+
+| Élément                   | Emplacement                                                  |
+|---------------------------|--------------------------------------------------------------|
+| Entité config             | `src/Entity/Api/Instagram.php` (table `api_instagram`)       |
+| Entité posts persistés    | `src/Entity/Api/FeedPost.php` (table `api_feed_post`)        |
+| Repo posts persistés      | `src/Repository/Api/FeedPostRepository.php`                  |
+| Model config              | `src/Model/Api/InstagramModel.php`                           |
+| Service API live          | `src/Service/Content/InstagramService.php`                   |
+| Fetcher (sync only)       | `src/Service/Content/Feed/InstagramFeedFetcher.php`          |
+| Orchestrateur sync        | `src/Service/Content/Feed/FeedSyncService.php`               |
+| Auto-sync paresseuse      | `src/Service/Content/Feed/FeedAutoSyncService.php`           |
+| Listener kernel.terminate | `src/EventSubscriber/FeedAutoSyncTerminateSubscriber.php`    |
+| Téléchargement médias     | `src/Service/Content/Feed/FeedMediaDownloader.php`           |
+| Commande de sync          | `src/Command/FeedSyncCommand.php` (`app:feed:sync`)          |
+| Sync admin (bouton)       | `src/Controller/Admin/Core/FeedSyncController.php`           |
+| Controller rendu          | `src/Controller/Front/Action/Feed/InstagramController.php`   |
+| Controller OAuth callback | `src/Controller/Front/Action/Feed/InstagramAuthController.php` |
+| Form admin                | `src/Form/Type/Core/Website/InstagramType.php`               |
+| Form manager              | `src/Form/Manager/Api/InstagramManager.php`                  |
+| Template feed             | `templates/front/default/actions/feed/instagram/html.twig`   |
+| Stockage médias           | `/public/feed/medias/instagram/{externalId}/` (gitignored)   |
+| Route callback            | `instagram_auth_callback` → `/instagram/callback`            |
+| Route rendu               | `front_instagram_index` → `/instagram/index` (sous-requête)  |

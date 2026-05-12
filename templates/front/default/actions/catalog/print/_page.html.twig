@@ -1,0 +1,166 @@
+{%- trans_default_domain 'front_default' -%}
+
+{%- set title = entity.intl.title is defined and entity.intl.title ? entity.intl.title : '' -%}
+{%- set subTitle = entity.intl.subTitle is defined and entity.intl.subTitle ? entity.intl.subTitle : '' -%}
+{%- set introduction = entity.intl.introduction is defined and entity.intl.introduction ? entity.intl.introduction : '' -%}
+{%- set body = entity.intl.body is defined and entity.intl.body ? entity.intl.body : '' -%}
+{%- set reference = entity.reference is defined and entity.reference ? entity.reference : '' -%}
+{%- set catalogTitle = entity.catalog.intl.title is defined and entity.catalog.intl.title ? entity.catalog.intl.title : '' -%}
+
+{%- set mainImage = mainImage is defined and mainImage ? mainImage : null -%}
+{%- set gallery = gallery is defined and gallery is iterable ? gallery : [] -%}
+{%- set logoPath = logoPath is defined and logoPath ? logoPath : null -%}
+{%- set brand = brand is defined and brand ? brand : {} -%}
+{%- set brandName = brand.name|default('Up Animation') -%}
+
+{%- set features = [] -%}
+{%- if entity.people is defined and entity.people is not empty -%}
+    {%- set features = features|merge([{ 'label': "Nombre de personnes"|trans, 'data': entity.people }]) -%}
+{%- endif -%}
+{%- if entity.duration is defined and entity.duration is not empty -%}
+    {%- set features = features|merge([{ 'label': "Durée"|trans, 'data': entity.duration }]) -%}
+{%- endif -%}
+{%- if entity.age is defined and entity.age is not empty -%}
+    {%- set features = features|merge([{ 'label': "Âge"|trans, 'data': entity.age }]) -%}
+{%- endif -%}
+{%- if entity.environment is defined and entity.environment is not empty -%}
+    {%- set features = features|merge([{ 'label': "Environnement"|trans, 'data': entity.environment }]) -%}
+{%- endif -%}
+
+<div class="header">
+    <table class="header-table">
+        <tr>
+            <td class="header-logo">
+                {% if logoPath %}
+                    <img src="{{ logoPath }}" alt="{{ brandName }}">
+                {% else %}
+                    <span class="brand-fallback">{{ brandName }}</span>
+                {% endif %}
+            </td>
+            <td class="header-link">
+                {% if productUrl is defined and productUrl %}
+                    <span class="label">{{ "Voir la fiche en ligne"|trans }}</span>
+                    <a href="{{ productUrl }}">{{ productUrl }}</a>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="container">
+
+    <div class="left-col">
+        {% if mainImage %}
+            <img class="main-image" src="{{ mainImage }}" alt="{{ title|striptags }}">
+        {% endif %}
+        {% if gallery|length > 0 %}
+            <div class="gallery">
+                <table style="width: 100%; border-collapse: collapse;">
+                    {% for image in gallery %}
+                        {% set i = loop.index0 %}
+                        {% if i % 2 == 0 %}
+                            <tr>
+                        {% endif %}
+                        <td style="width: 50%; padding: 0 {{ i % 2 == 0 ? '2.5px' : '0' }} 5px {{ i % 2 == 0 ? '0' : '2.5px' }};">
+                            <img src="{{ image }}" style="width: 100%; height: 110px; object-fit: cover; border-radius: 10px; display: block;">
+                        </td>
+                        {% if i % 2 == 1 or loop.last %}
+                            {% if loop.last and i % 2 == 0 %}
+                                <td style="width: 50%; padding: 0 0 5px 2.5px;"></td>
+                            {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+        {% if reference %}
+            <div class="reference-line">{{ "Réf."|trans }} {{ reference }}</div>
+        {% endif %}
+    </div>
+
+    <div class="right-col">
+
+        <div class="main-title-wrap">
+            {% if catalogTitle %}
+                <div class="feature-badge" style="margin-bottom: 10px;">{{ catalogTitle|striptags }}</div>
+            {% endif %}
+            {% if title %}
+                <h1 class="title">{{ title|striptags|raw }}</h1>
+            {% endif %}
+            {% if subTitle %}
+                <span class="sub-title">{{ subTitle|striptags|raw }}</span>
+            {% endif %}
+        </div>
+
+        {% if features|length > 0 %}
+            <div class="section-title">{{ "Caractéristiques"|trans }}</div>
+            <table class="features-grid">
+                {% for row in features|batch(2) %}
+                    <tr>
+                        {% for item in row %}
+                            <td class="feature-card">
+                                <span class="feature-label">{{ item.label|raw }}</span>
+                                <span class="feature-value">
+                                    {%- if item.data is iterable -%}
+                                        {%- for value in item.data -%}
+                                            {{ value.valueTitle is defined ? value.valueTitle|striptags : '' }}{% if not loop.last %}, {% endif %}
+                                        {%- endfor -%}
+                                    {%- else -%}
+                                        {{ item.data|striptags }}
+                                    {%- endif -%}
+                                </span>
+                            </td>
+                        {% endfor %}
+                        {% if row|length == 1 %}
+                            <td class="feature-card" style="background-color: transparent;"></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        {% if introduction or body %}
+            <div class="section-title">{{ "Présentation"|trans }}</div>
+            <div class="description">
+                {% if introduction %}
+                    <p><strong>{{ introduction|striptags|raw }}</strong></p>
+                {% endif %}
+                {% if body %}
+                    {{ body|striptags('<p><br><strong><em>')|raw }}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if entity.intl.equipment is defined and entity.intl.equipment %}
+            <div class="section-title">{{ "Équipements"|trans }}</div>
+            <div class="equipment-list">
+                {%- set items = entity.intl.equipment|striptags('<li>')|replace({'<ul>': '', '</ul>': '', '<li>': '', '</li>': '|'})|split('|') -%}
+                {% for item in items %}
+                    {% if item|trim %}
+                        <div class="list-item">{{ item|trim|raw }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if entity.intl.strengths is defined and entity.intl.strengths %}
+            <div class="section-title">{{ "Points forts"|trans }}</div>
+            <div class="strengths-list">
+                {%- set items = entity.intl.strengths|striptags('<li>')|replace({'<ul>': '', '</ul>': '', '<li>': '', '</li>': '|'})|split('|') -%}
+                {% for item in items %}
+                    {% if item|trim %}
+                        <div class="list-item">{{ item|trim|raw }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="cta-box">
+            <span class="cta-small">{{ "Tarif sur demande"|trans }}</span>
+            <span class="cta-main">{{ "Demander un devis"|trans }}</span>
+        </div>
+
+    </div>
+    <div class="clear"></div>
+</div>

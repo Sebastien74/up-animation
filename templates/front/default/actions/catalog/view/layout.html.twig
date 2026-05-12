@@ -46,6 +46,7 @@
         } -%}
     {%- endif -%}
     {%- set content = 'agencies' != catalogSlug ? entity.intl.introduction : null -%}
+    {%- set printUrl = not asAgency and entity.urlCode is defined and entity.urlCode ? path('front_catalogproduct_print', {url: entity.urlCode}) : null -%}
 
     {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
         block: entity,
@@ -60,6 +61,7 @@
         body: content,
         city: entity.agency.city is defined ? entity.agency.city : false,
         contactUrl: entity.contactUrl,
+        printUrl: printUrl,
         pageTitle: pageTitle,
         subTitle: entity.intl.subTitle,
         bodyTitle: entity.intl.introductionTitle,

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Front\Action\Feed;
 
 use App\Controller\Front\ActionController;
+use App\Entity\Api\FeedPost;
+use App\Repository\Api\FeedPostRepository;
 use App\Service\Content\ActionService;
-use App\Service\Content\InstagramService;
+use App\Service\Content\Feed\FeedAutoSyncService;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Service\Interface\FrontLocatorInterface;
-use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,13 +19,14 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * InstagramController.
  *
- * Front Instagram feed renders.
+ * Renders the Instagram feed from the locally-persisted FeedPost entries.
+ * The live Instagram API is only hit by the app:feed:sync command.
  */
 class InstagramController extends ActionController
 {
-
     public function __construct(
-        private readonly InstagramService $instagramService,
+        private readonly FeedPostRepository $feedPostRepository,
+        private readonly FeedAutoSyncService $feedAutoSyncService,
         #[AutowireLocator(ActionService::class, indexAttribute: 'key')] ServiceLocator $actionLocator,
         FrontLocatorInterface $frontLocator,
         CoreLocatorInterface $coreLocator
@@ -32,29 +34,27 @@ class InstagramController extends ActionController
         parent::__construct($actionLocator, $frontLocator, $coreLocator);
     }
 
-    /**
-     * Render Instagram feed.
-     *
-     * @throws InvalidArgumentException
-     */
     #[Route('/instagram/index', name: 'front_instagram_index', options: ['isMainRequest' => false], methods: 'GET', schemes: '%protocol%')]
     public function index(): Response
     {
         $website = $this->getWebsite();
         $instagramModel = $website->api?->instagram;
+        $limit = $instagramModel?->nbrItems ?: 10;
 
-        dd($instagramModel->accessToken);
+        if ($instagramModel?->accessToken) {
+            $this->feedAutoSyncService->scheduleIfStale(FeedPost::PROVIDER_INSTAGRAM);
+        }
 
-
-        if (!$instagramModel || !$instagramModel->accessToken) {
+        $posts = $this->feedPostRepository->findActiveByProvider(FeedPost::PROVIDER_INSTAGRAM, $limit);
+        if ($posts === []) {
             return new Response();
         }
-        $feed = $this->instagramService->getFeed($instagramModel);
+
         $template = $website->configuration->template;
 
         return $this->render('front/' . $template . '/actions/feed/instagram/html.twig', [
             'instagram' => $instagramModel,
-            'feed' => $feed,
+            'feed' => $posts,
         ]);
     }
 }

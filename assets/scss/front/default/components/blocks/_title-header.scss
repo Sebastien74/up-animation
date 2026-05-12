@@ -53,6 +53,47 @@
         }
     }
 
+    .title-header-actions {
+
+        .btn-print {
+
+            position: relative;
+            color: $secondary;
+            font-weight: 600;
+            font-size: .9rem;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            padding: .5rem .25rem;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition:
+                color $transition-base,
+                border-color $transition-base,
+                transform $transition-base;
+
+            i {
+                color: $primary;
+                font-size: 1.1rem;
+                transition: transform $transition-base;
+            }
+
+            &:hover,
+            &:focus-visible {
+                color: $primary;
+                border-bottom-color: $primary;
+
+                i {
+                    transform: translateY(-1px);
+                }
+            }
+
+            &:focus-visible {
+                outline: 2px solid transparentize($primary, .6);
+                outline-offset: 3px;
+            }
+        }
+    }
+
     .title-header-features {
 
         .features {

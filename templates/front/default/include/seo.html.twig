@@ -17,8 +17,9 @@
         <meta name="author" content="{{ seo.author|striptags }}">
     {%- endif -%}
 
-    {%- if seo.index is defined -%}
-        <meta name="robots" content="{{ seo.index }}">
+    {%- set seoRobots = seoRobots is defined ? seoRobots : (seo.index is defined ? seo.index : null) -%}
+    {%- if seoRobots -%}
+        <meta name="robots" content="{{ seoRobots }}">
     {%- endif -%}
 
     {%- if seo.canonical is defined -%}

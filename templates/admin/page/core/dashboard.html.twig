@@ -22,6 +22,9 @@
 
     {%- set isInternal = granted('ROLE_INTERNAL') -%}
     {%- set hasSeo = isInternal and noSeoCounts is defined and noSeoCounts['total'] is defined -%}
+    {%- set notFoundCount = notFoundCount is defined ? notFoundCount : 0 -%}
+    {%- set hasNotFound = isInternal and notFoundUrls is defined -%}
+    {%- set notFoundFeedLimit = 6 -%}
     {%- set userLocale = app.request.locale -%}
     {%- set today = 'now'|date('Y-m-d H:i:s') -%}
     {%- set hourNow = 'now'|date('H')|number_format(0) -%}
@@ -111,6 +114,85 @@
                         </a>
                     </div>
 
+                </div>
+            </section>
+        {%- endif -%}
+
+        {#-- 404 (feature panel) --#}
+        {%- if hasNotFound -%}
+            <section class="dashboard-notfound mt-5 reveal">
+                <div class="notfound-panel {{ notFoundCount > 0 ? 'is-alert' : 'is-clean' }}">
+
+                    <div class="notfound-left">
+                        <span class="notfound-tag">{{ "404"|trans|raw }}</span>
+                        <span class="notfound-number">{{ notFoundCount }}</span>
+                        <span class="notfound-unit">{{ notFoundCount > 1 ? "erreurs"|trans|raw : "erreur"|trans|raw }}</span>
+                    </div>
+
+                    <div class="notfound-body">
+                        <h2 class="notfound-headline">
+                            {%- if notFoundCount > 0 -%}
+                                {{ "URLs introuvables à rediriger."|trans|raw }}
+                            {%- else -%}
+                                {{ "Aucune URL introuvable."|trans|raw }}
+                            {%- endif -%}
+                        </h2>
+                        <p class="notfound-desc">
+                            {%- if notFoundCount > 0 -%}
+                                {{ "Mettez en place les redirections nécessaires pour préserver le référencement et l'expérience utilisateur."|trans|raw }}
+                            {%- else -%}
+                                {{ "Le suivi des erreurs reste actif. Vous serez alerté dès qu'une URL devient inaccessible."|trans|raw }}
+                            {%- endif -%}
+                        </p>
+
+                        {%- if notFoundCount > 0 -%}
+                            <ul class="notfound-feed reset">
+                                {%- for entity in notFoundUrls|slice(0, notFoundFeedLimit) -%}
+                                    {%- set displayUri = entity.uri ?: entity.url -%}
+                                    <li class="notfound-row">
+                                        <span class="notfound-row-marker" aria-hidden="true"></span>
+                                        <span class="notfound-row-uri" title="{{ entity.url }}">{{ displayUri|truncate(64) }}</span>
+                                        <span class="notfound-row-date">{{ entity.createdAt|ago }}</span>
+                                        {%- if routeExist('admin_notfoundurl_redirection') -%}
+                                            <a href="{{ path('admin_notfoundurl_redirection', {website: websiteId(), notfoundUrl: entity.id}) }}"
+                                               class="notfound-row-action"
+                                               aria-label="{{ "Créer une redirection"|trans|striptags }}">
+                                                <i class="icm-arrow-right"></i>
+                                            </a>
+                                        {%- endif -%}
+                                    </li>
+                                {%- endfor -%}
+                            </ul>
+                        {%- endif -%}
+
+                        <a href="{{ path('admin_notfoundurl_index', {website: websiteId(), type: 'front', category: 'url'}) }}" class="notfound-cta">
+                            <span>{{ notFoundCount > 0 ? "Traiter les 404"|trans|raw : "Consulter le suivi"|trans|raw }}</span>
+                            <i class="icm-arrow-right"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+        {%- endif -%}
+
+        {#-- Feeds sociaux --#}
+        {%- if (hasInstagramFeed is defined and hasInstagramFeed) or (hasTikTokFeed is defined and hasTikTokFeed) -%}
+            <section class="dashboard-feeds mt-5 reveal">
+                <div class="feeds-panel card border-0 shadow-sm">
+                    <div class="card-body d-flex flex-column flex-md-row align-items-md-center gap-3 p-4">
+                        <div class="flex-grow-1">
+                            <h2 class="h5 mb-1">{{ "Feeds sociaux"|trans|raw }}</h2>
+                            <p class="mb-0 small text-muted">
+                                {{ "Synchronisation automatique au chargement d'une page, 2 fois par jour maximum. Utilisez le bouton pour forcer une mise à jour immédiate."|trans|raw }}
+                            </p>
+                        </div>
+                        <form method="post" action="{{ path('admin_feed_sync', {website: websiteId()}) }}" class="ms-md-auto">
+                            <input type="hidden" name="_token" value="{{ csrf_token('admin_feed_sync') }}">
+                            <button type="submit" class="btn btn-primary">
+                                {{ "Synchroniser maintenant"|trans|raw }}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </section>
         {%- endif -%}

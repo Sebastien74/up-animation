@@ -1,0 +1,182 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2026
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    FRONT FAVORITES :
+    =================
+
+    1 ) Card toggle
+    2 ) Fixed button
+    3 ) Index page
+
+------------------------------------------------------------------ */
+
+/*----------------------------------------------
+   1 ) Card toggle
+----------------------------------------------*/
+
+.favorite-toggle {
+
+    position: absolute;
+    padding: 0;
+    border: 0;
+    top: 1rem;
+    left: 1rem;
+    z-index: 500;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    background-color: $white;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.18);
+    color: $secondary;
+    transition: $transition-base;
+    cursor: pointer;
+
+    i {
+        font-size: 14px;
+        line-height: 1;
+        transition: $transition-base;
+        pointer-events: none;
+    }
+
+    &:hover,
+    &:focus-visible {
+        background-color: $primary;
+        color: $white;
+        outline: 0;
+        transform: scale(1.05);
+    }
+
+    &:focus-visible {
+        box-shadow: 0 0 0 3px rgba($primary, 0.35);
+    }
+
+    &.is-favorite {
+
+        background-color: $primary;
+        color: $white;
+
+        i {
+            color: $white !important;
+        }
+    }
+}
+
+/*----------------------------------------------
+   2 ) Fixed button
+----------------------------------------------*/
+
+.favorites-fixed-btn {
+
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 998;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background-color: $secondary;
+    color: $white;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.22);
+    text-decoration: none;
+    transition: $transition-base;
+
+    @include mediaQuery(max-sm) {
+        bottom: 20px;
+        right: 20px;
+        width: 48px;
+        height: 48px;
+    }
+
+    i {
+        font-size: 1.25rem;
+        line-height: 1;
+        transition: $transition-base;
+    }
+
+    .favorites-count {
+
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        min-width: 22px;
+        height: 22px;
+        padding: 0 6px;
+        border-radius: 11px;
+        font-size: .75rem;
+        line-height: 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: $transition-base;
+    }
+
+    &:hover,
+    &:focus-visible {
+
+        background-color: $primary;
+        color: $white;
+        outline: 0;
+        transform: scale(1.05);
+
+        .favorites-count {
+            background-color: $secondary !important;
+        }
+    }
+
+    &:focus-visible {
+        box-shadow: 0 0 0 3px rgba($primary, 0.35), 0 4px 12px 0 rgba(0, 0, 0, 0.22);
+    }
+}
+
+@include mediaQuery(min-lg) {
+
+    #scroll-top-btn.show ~ #favorites-fixed-btn {
+        bottom: 86px;
+    }
+}
+
+/*----------------------------------------------
+   3 ) Index page
+----------------------------------------------*/
+
+.favorites-container {
+
+    @include mediaQuery(max-lg) {
+        padding-top: 6rem;
+    }
+
+    @include mediaQuery(between-lg-xl) {
+        padding-top: 8rem;
+    }
+
+    @include mediaQuery(min-xl) {
+        padding-top: 10rem;
+    }
+
+    .favorites-header {
+
+        .title {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+        }
+    }
+
+    .favorites-empty {
+
+        i {
+            font-size: 3rem;
+            line-height: 1;
+        }
+    }
+
+    .favorites-actions {
+
+        .btn {
+            letter-spacing: .05rem;
+        }
+    }
+}
