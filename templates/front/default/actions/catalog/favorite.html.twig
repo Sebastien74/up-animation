@@ -39,8 +39,8 @@
                 {%- set printUrl = path('front_favorites_print') -%}
                 {%- set printLabel = "Imprimer mes favoris"|trans -%}
                 <div class="favorites-actions d-flex justify-content-center mb-4" data-favorites-actions>
-                    <a href="{{ printUrl }}" target="_blank" rel="noopener" class="btn btn-primary d-inline-flex align-items-center">
-                        <i class="icon-download me-2" aria-hidden="true"></i>
+                    <a href="{{ printUrl }}" target="_blank" rel="noopener" class="btn btn-secondary d-inline-flex align-items-center">
+                        <i class="icon-print me-2" aria-hidden="true"></i>
                         <span>{{ printLabel }}</span>
                     </a>
                 </div>
@@ -55,10 +55,29 @@
                     {%- endfor -%}
                 </div>
                 <div class="favorites-actions d-flex justify-content-center mt-2" data-favorites-actions>
-                    <a href="{{ printUrl }}" target="_blank" rel="noopener" class="btn btn-primary d-inline-flex align-items-center">
-                        <i class="icon-download me-2" aria-hidden="true"></i>
+                    <a href="{{ printUrl }}" target="_blank" rel="noopener" class="btn btn-secondary d-inline-flex align-items-center">
+                        <i class="icon-print me-2" aria-hidden="true"></i>
                         <span>{{ printLabel }}</span>
                     </a>
+                </div>
+
+                <div id="favorite-remove-modal" class="modal fade favorite-remove-modal" tabindex="-1" aria-labelledby="favorite-remove-modal-title" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content text-center">
+                            <div class="modal-body p-4 p-md-5">
+                                <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}">
+                                    <i class="icon-times"></i>
+                                </button>
+                                <i class="icon-heart-plain text-primary fz-lg d-inline-block mt-2 mb-3" aria-hidden="true"></i>
+                                <h2 class="modal-title h5 text-secondary fw-700 mb-2" id="favorite-remove-modal-title">{{ "Retirer ce favori ?"|trans }}</h2>
+                                <p class="text-muted mb-4">{{ "Cette prestation sera retirée de votre sélection. Vous pourrez la rajouter à tout moment."|trans }}</p>
+                                <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+                                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">{{ "Annuler"|trans }}</button>
+                                    <button type="button" class="btn btn-secondary px-4" data-favorite-confirm>{{ "Retirer"|trans }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             {%- endif -%}
         </div>

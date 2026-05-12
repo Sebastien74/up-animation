@@ -21,8 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Table(name: 'api_feed_post')]
 #[ORM\Entity(repositoryClass: FeedPostRepository::class)]
-#[ORM\UniqueConstraint(name: 'uniq_feed_post_provider_external', columns: ['provider', 'external_id'])]
-#[ORM\Index(name: 'idx_feed_post_provider_removed_published', columns: ['provider', 'removed_at', 'published_at'])]
+#[ORM\UniqueConstraint(name: 'uniq_feed_post_provider_external', columns: ['provider', 'externalId'])]
+#[ORM\Index(name: 'idx_feed_post_provider_removed_published', columns: ['provider', 'removedAt', 'publishedAt'])]
 class FeedPost
 {
     public const string PROVIDER_INSTAGRAM = 'instagram';

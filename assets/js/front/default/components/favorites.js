@@ -41,6 +41,7 @@ export default class Favorites {
     constructor() {
         this.fixedBtn = document.getElementById('favorites-fixed-btn');
         this.countEl = this.fixedBtn ? this.fixedBtn.querySelector('[data-favorites-count]') : null;
+        this.removeModalEl = document.getElementById('favorite-remove-modal');
         this.bind();
         this.sync(readIds());
     }
@@ -57,9 +58,15 @@ export default class Favorites {
         document.addEventListener('favorites:change', (event) => this.sync(event.detail.ids));
     }
 
-    handleToggle(toggle) {
+    async handleToggle(toggle) {
         const id = parseInt(toggle.dataset.productId, 10);
         if (!id) return;
+
+        const willRemove = toggle.classList.contains('is-favorite');
+        if (willRemove && this.removeModalEl) {
+            const confirmed = await this.confirmRemoval();
+            if (!confirmed) return;
+        }
 
         const ids = readIds();
         const index = ids.indexOf(id);
@@ -74,6 +81,33 @@ export default class Favorites {
         document.dispatchEvent(new CustomEvent('favorites:change', {
             detail: { ids, changedId: id }
         }));
+    }
+
+    confirmRemoval() {
+        return new Promise((resolve) => {
+            const modal = this.removeModalEl;
+            if (!modal) { resolve(true); return; }
+
+            import('../../bootstrap/dist/modal').then(({ default: Modal }) => {
+                const instance = Modal.getOrCreateInstance(modal);
+                const confirmBtn = modal.querySelector('[data-favorite-confirm]');
+                let confirmed = false;
+
+                const onConfirm = () => {
+                    confirmed = true;
+                    instance.hide();
+                };
+                const onHidden = () => {
+                    confirmBtn.removeEventListener('click', onConfirm);
+                    modal.removeEventListener('hidden.bs.modal', onHidden);
+                    resolve(confirmed);
+                };
+
+                confirmBtn.addEventListener('click', onConfirm);
+                modal.addEventListener('hidden.bs.modal', onHidden);
+                instance.show();
+            }).catch(() => resolve(true));
+        });
     }
 
     sync(ids) {

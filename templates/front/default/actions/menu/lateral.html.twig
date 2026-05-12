@@ -38,7 +38,7 @@
         {%- set liClass = link.children and (not isHeader or link.level == 2) ? liClass~' dropdown' : liClass -%}
         {%- set liClass = link.children and link.level >= 2 and (not isHeader or link.level == 2) ? liClass~' dropdown-submenu' : liClass -%}
         {%- set liClass = link.media ? liClass~' item-logo' : liClass -%}
-        {%- set liClass = link.level == 1 and not isLast and not notExpanded ? liClass~' me-'~expand~'-4' : liClass -%}
+        {%- set liClass = link.level == 1 and not isLast and not notExpanded ? liClass~' me-lg-2 me-xl-3 me-xxl-4' : liClass -%}
         {%- set liClass = link.level == 1 ? liClass~' justify-content-end text-end text-'~expand~'-start' : liClass~' justify-content-start text-start' -%}
         {%- set liClass = isHeader ? liClass~' is-header mb-3' : liClass -%}
         <li class="nav-item d-flex level-{{ link.level }} {{ liClass }}"

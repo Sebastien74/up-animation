@@ -72,7 +72,7 @@
     {%- elseif not resultsPage -%}
         {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Aucune page de résultats configurée pour ce moteur de recherche !!"|trans} only -%}
     {%- elseif form or btn -%}
-        <span class="d-inline-block"
+        <span class="d-inline-flex"
               data-bs-toggle="tooltip"
               data-bs-placement="bottom"
               title="{{ 'Rechercher'|trans|striptags }}">

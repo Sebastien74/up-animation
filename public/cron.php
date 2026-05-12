@@ -13,7 +13,7 @@ $asynchronous = true;
  * CronScheduler
  *
  * To run Cron Scheduler
- * Recommended run method execute(). If not working run executeProcedural()
+ * Recommended run method, execute(). If not working, run executeProcedural()
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
@@ -119,7 +119,7 @@ class CronScheduler
 }
 
 $logger = new Logger('CRON');
-$logger->pushHandler(new RotatingFileHandler(dirname(__DIR__) . '/var/log/cron-scheduler.log', 20, Logger::INFO));
+$logger->pushHandler(new RotatingFileHandler(dirname(__DIR__) . '/var/log/cron-scheduler.log', 20, \Monolog\Level::Info));
 
 $scheduler = new CronScheduler($logger, $asynchronous);
 

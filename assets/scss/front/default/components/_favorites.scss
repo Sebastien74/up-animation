@@ -85,8 +85,8 @@
     text-decoration: none;
     transition: $transition-base;
 
-    @include mediaQuery(max-sm) {
-        bottom: 20px;
+    @include mediaQuery(max-lg) {
+        bottom: 70px;
         right: 20px;
         width: 48px;
         height: 48px;
