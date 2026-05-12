@@ -264,12 +264,12 @@ body.menu-open {
             &.btn-blur:not(.btn-circle) {
                 padding: 6px 10px !important;
                 min-height: 36px;
-                font-size: 14px;
+                font-size: clamp(14px, calc(0.9615vw + 4.46px), 16px);
                 line-height: 1;
             }
 
             .link-label {
-                font-size: 12px;
+                font-size: clamp(12px, calc(0.9615vw + 2.46px), 14px);
                 line-height: 1.1;
             }
         }
@@ -285,7 +285,7 @@ body.menu-open {
             margin-right: .25rem !important;
 
             i {
-                font-size: 20px;
+                font-size: clamp(20px, calc(0.961vw + 10.46px), 22px);
             }
         }
 
@@ -305,8 +305,13 @@ body.menu-open {
     @include mediaQuery(between-xl-xxl) {
 
         .nav-link.link-level-1 {
+
+            &.btn-blur:not(.btn-circle) {
+                font-size: clamp(16px, calc(0.5vw + 10px), 17px);
+            }
+
             .link-label {
-                font-size: 15px;
+                font-size: clamp(14px, calc(0.5vw + 8px), 15px);
                 line-height: 1.1;
             }
         }
@@ -317,7 +322,7 @@ body.menu-open {
             margin-right: .25rem !important;
 
             i {
-                font-size: 24px;
+                font-size: clamp(22px, calc(2vw - 2px), 26px);
             }
         }
 
@@ -330,6 +335,28 @@ body.menu-open {
 
             i {
                 font-size: .9rem !important;
+            }
+        }
+    }
+
+    @include mediaQuery(min-xxl) {
+
+        .nav-link.link-level-1 {
+
+            &.btn-blur:not(.btn-circle) {
+                font-size: clamp(17px, calc(1vw + 3px), 19px);
+            }
+
+            .link-label {
+                font-size: clamp(15px, calc(1vw + 1px), 17px);
+                line-height: 1.1;
+            }
+        }
+
+        .socials-list {
+
+            i {
+                font-size: clamp(26px, calc(2vw - 2px), 30px);
             }
         }
     }
