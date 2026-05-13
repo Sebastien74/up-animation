@@ -5,7 +5,15 @@
                 <div class="tiktok-item card h-100 border-0 shadow-sm overflow-hidden">
                     <a href="{{ post.permalink }}" target="_blank" rel="noopener" class="d-block position-relative">
                         {% if post.thumbnailLocalPath %}
-                            <img src="{{ asset(post.thumbnailLocalPath) }}" alt="{{ post.caption|default('TikTok video')|u.truncate(120, '…') }}" class="card-img-top object-fit-cover" style="height: 400px;">
+                            <img src="{{ asset(post.thumbnailLocalPath) | imagine_filter('feed_thumb_480') }}"
+                                 srcset="{{ asset(post.thumbnailLocalPath) | imagine_filter('feed_thumb_320') }} 320w,
+                                         {{ asset(post.thumbnailLocalPath) | imagine_filter('feed_thumb_480') }} 480w,
+                                         {{ asset(post.thumbnailLocalPath) | imagine_filter('feed_thumb_640') }} 640w"
+                                 sizes="(min-width: 992px) 280px, (min-width: 768px) 33vw, 100vw"
+                                 width="280" height="400"
+                                 alt="{{ post.caption|default('TikTok video')|u.truncate(120, '…') }}"
+                                 class="card-img-top object-fit-cover w-100" style="height: 400px;"
+                                 loading="lazy" decoding="async">
                         {% endif %}
                         <div class="position-absolute top-50 start-50 translate-middle">
                             <i class="bi bi-play-circle-fill text-white fs-1 opacity-75"></i>

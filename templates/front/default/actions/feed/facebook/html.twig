@@ -6,7 +6,11 @@
                     <div class="facebook-item card h-100 shadow-sm border-0">
                         {% if item.full_picture %}
                             <a href="{{ item.permalink_url }}" target="_blank" rel="noopener" class="d-block overflow-hidden rounded-top">
-                                <img src="{{ item.full_picture }}" alt="{{ item.message|default('Facebook Post')|slice(0, 50) }}..." class="card-img-top img-fluid">
+                                <img src="{{ item.full_picture }}"
+                                     alt="{{ item.message|default('Facebook Post')|slice(0, 50) }}..."
+                                     class="card-img-top img-fluid"
+                                     width="380" height="214"
+                                     loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
                             </a>
                         {% endif %}
                         <div class="card-body">

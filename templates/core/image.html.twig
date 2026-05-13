@@ -63,9 +63,15 @@
             {%- set pictureClass = thumbnails['pictureClass'] is defined and thumbnails['pictureClass'] ? thumbnails['pictureClass'] : null -%}
 
             {%- set srcset = '' -%}
+            {%- set seenFiles = [] -%}
+            {%- set smallestFile = null -%}
             {%- set extension = null -%}
             {%- for size, file in thumbs -%}
-                {%- if file -%}
+                {%- if file and file not in seenFiles -%}
+                    {%- set seenFiles = seenFiles|merge([file]) -%}
+                    {%- if smallestFile is null -%}
+                        {%- set smallestFile = file -%}
+                    {%- endif -%}
                     {%- set srcset = srcset ~ asset(file) ~ ' ' ~ size ~ 'w, ' -%}
                     {%- set fileExt = file|split('.')|last -%}
                     {%- set fileExt = 'filter' not in fileExt ? fileExt : null -%}
@@ -78,7 +84,7 @@
             {%- endfor -%}
             {%- set srcset = srcset|trim|trim(',', 'right') -%}
 
-            <picture class="img-fluid {% if not inAdmin %}d-block{% endif %}{% if not inAdmin and lazyLoad %} loader-image-wrapper lazy-picture loading{% endif %}{% if pictureClass %} {{ pictureClass }}{% endif %}">
+            <picture class="img-fluid {% if not inAdmin %}d-block{% endif %}{% if not inAdmin and lazyLoad %} loader-image-wrapper lazy-picture loading{% endif %}{% if pictureClass %} {{ pictureClass }}{% endif %}"{% if infos.width and infos.height %} style="aspect-ratio: {{ infos.width }} / {{ infos.height }};"{% endif %}>
                 {%- if srcset -%}
                     {%- for screen, config in mediaQueries -%}
                         <source {% if lazyLoad %}data-{% endif -%}srcset="{{ srcset }}"
@@ -87,7 +93,10 @@
                                 {% if extension %}type="image/{{ extension }}"{% endif %}>
                     {%- endfor -%}
                 {%- endif -%}
-                {%- set src = lazyLoad ? lazyFileSvg : dataSource -%}
+                {# src= sert de fallback préchargé par le navigateur (notamment pour LCP eager).
+                   On pointe sur la plus petite variante du srcset pour éviter de précharger
+                   la plus grande avant que la résolution srcset/sizes ait lieu. #}
+                {%- set src = lazyLoad ? lazyFileSvg : (smallestFile ?: dataSource) -%}
                 <img src="{{ asset(src) }}"{% if lazyLoad %} data-sizes="auto" data-src="{{ dataSource }}"{% endif %}
                     {% if 'width' not in attributes and infos.width %} width="{{ infos.width }}" {% endif %}
                     {% if 'height' not in attributes and infos.height %} height="{{ infos.height }}" {% endif %}

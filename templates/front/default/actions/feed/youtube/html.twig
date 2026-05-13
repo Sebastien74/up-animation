@@ -4,11 +4,21 @@
             {% for item in videos %}
                 {% set videoId = item.id.videoId %}
                 {% set snippet = item.snippet %}
+                {% set ytBase = 'https://i.ytimg.com/vi/' ~ videoId %}
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="youtube-item card h-100 shadow-sm border-0 bg-transparent">
                         <div class="position-relative overflow-hidden rounded shadow-sm mb-3">
                             <a href="https://www.youtube.com/watch?v={{ videoId }}" target="_blank" rel="noopener" class="d-block">
-                                <img src="{{ snippet.thumbnails.high.url|default(snippet.thumbnails.medium.url) }}" alt="{{ snippet.title }}" class="img-fluid w-100">
+                                <img src="{{ ytBase }}/hqdefault.jpg"
+                                     srcset="{{ ytBase }}/mqdefault.jpg 320w,
+                                             {{ ytBase }}/hqdefault.jpg 480w,
+                                             {{ ytBase }}/sddefault.jpg 640w,
+                                             {{ ytBase }}/maxresdefault.jpg 1280w"
+                                     sizes="(min-width: 992px) 380px, (min-width: 768px) 50vw, 100vw"
+                                     width="380" height="214"
+                                     alt="{{ snippet.title }}"
+                                     class="img-fluid w-100"
+                                     loading="lazy" decoding="async" referrerpolicy="no-referrer">
                                 <div class="play-button position-absolute top-50 start-50 translate-middle">
                                     <i class="fab fa-youtube text-danger fa-4x opacity-75"></i>
                                 </div>

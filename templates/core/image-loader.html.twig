@@ -50,14 +50,14 @@
             {%- set spinnerColor = spinnerColor is defined ? spinnerColor : 'primary' -%}
             {%- set class = class is defined ? class : '' -%}
             {%- if generateThumbs -%}
-                <div class="img-loader overflow-hidden d-flex align-items-center justify-content-center position-relative{% if not display %} d-none{% endif %}{% if radiusClass %} {{ radiusClass }}{% endif %}" style="max-width: {{ width }}px; max-height: {{ height }}px;">
+                <div class="img-loader overflow-hidden d-flex align-items-center justify-content-center position-relative{% if not display %} d-none{% endif %}{% if radiusClass %} {{ radiusClass }}{% endif %}" style="max-width: {{ width }}px; max-height: {{ height }}px;{% if width and height %} aspect-ratio: {{ width }} / {{ height }};{% endif %}">
                     {%- if inAdmin and 'preview' not in app.request.uri -%}
                         <div class="spinner-wrap position-absolute">
                             <div class="spinner-border text-{{ spinnerColor }}" role="status"></div>
                         </div>
                     {%- endif -%}
                     <div class="inner position-relative overflow-hidden{% if radius %} {{ radiusClass }}{% endif %}" style="background-image: url({{ absolute_url(asset(loaderSrc)) }});">
-                        <img src="{{ loaderSvgSrc }}" alt="SVG Loader" class="img-fluid force-size{% if class %} {{ class }}{% endif %}" width="{{ width }}">
+                        <img src="{{ loaderSvgSrc }}" alt="SVG Loader" class="img-fluid force-size{% if class %} {{ class }}{% endif %}" width="{{ width }}"{% if height %} height="{{ height }}"{% endif %}>
                     </div>
                 </div>
             {%- endif -%}

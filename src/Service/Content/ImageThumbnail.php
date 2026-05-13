@@ -44,21 +44,23 @@ class ImageThumbnail implements ImageThumbnailInterface
     private const string SVG_RESIZED_DIR = 'thumbnails/svg-resized';
     private const array CONTAINER_SIZE = [
         1200 => 869,
-        1366 => 990,
+        1400 => 1013,
         1920 => 1391,
     ];
-    private const array SIZES = [480, 768, 1200, 1366, 1920];
-    private const array RETINA_SIZES = [960, 1536, 2400, 2732, 3840];
+    // Bootstrap 5 breakpoints: xs/sm/md < 992 → mobile, lg → tablet, xl → laptop,
+    // xxl + 4K → desktop. 768 stays in mobile because PageSpeed audits it as mobile.
+    private const array SIZES = [480, 768, 992, 1200, 1400, 1920];
+    private const array RETINA_SIZES = [960, 1536, 1984, 2400, 2800, 3840];
     private const array SCREENS_SIZES = [
-        'mobile' => [480, 960],
-        'tablet' => [768, 1536],
-        'laptop' => [1200, 2400, 1366, 2732],
-        'desktop' => [1920, 3840],
+        'mobile' => [480, 960, 768, 1536],
+        'tablet' => [992, 1984],
+        'laptop' => [1200, 2400],
+        'desktop' => [1400, 2800, 1920, 3840],
     ];
     private const array SCREENS_SIZES_ATTR = [
         'mobile' => 480,
-        'tablet' => 768,
-        'laptop' => 1366,
+        'tablet' => 992,
+        'laptop' => 1200,
         'desktop' => 1920,
     ];
 
@@ -344,7 +346,7 @@ class ImageThumbnail implements ImageThumbnailInterface
 
         $thumbConfiguration = !empty($thumbs[$screen]) ? $thumbs[$screen] : null;
         if (!$thumbConfiguration && !empty($thumbs)) {
-            foreach (['desktop', 'tablet', 'mobile'] as $screenKey) {
+            foreach (['desktop', 'laptop', 'tablet', 'mobile'] as $screenKey) {
                 if (!empty($thumbs[$screenKey])) {
                     $thumbConfiguration = $thumbs[$screenKey];
                     break;
@@ -362,13 +364,58 @@ class ImageThumbnail implements ImageThumbnailInterface
         $width = null;
         $height = null;
 
+        // 0. ABSOLUTE PRIORITY: back-office MediaThumb overrides all other sources
+        // (MediaRelation, screensSizes options, width/height).
+        $mediaThumbForScreen = null;
+
+        // 0a. Strict match by ThumbConfiguration ID — guards against picking the wrong
+        // MediaThumb when several mobile entries coexist (residual configs).
+        if ($thumbConfiguration instanceof Media\ThumbConfiguration && $thumbConfiguration->getId()) {
+            foreach ($media->getThumbs() as $mediaThumb) {
+                $mediaThumbConfig = $mediaThumb->getConfiguration();
+                if ($mediaThumbConfig
+                    && $mediaThumbConfig->getId() === $thumbConfiguration->getId()
+                    && ($mediaThumb->getWidth() > 0 || $mediaThumb->getHeight() > 0)) {
+                    $mediaThumbForScreen = $mediaThumb;
+                    $width = $mediaThumb->getWidth();
+                    $height = $mediaThumb->getHeight();
+                    break;
+                }
+            }
+        }
+
+        // 0b. Screen fallback chain — a single "mobile" MediaThumb applies to all larger
+        // screens; mandatory when only one screen size is defined in DB.
+        if (!$mediaThumbForScreen) {
+            $fallbackScreens = match ($screen) {
+                'desktop' => ['desktop', 'laptop', 'tablet', 'mobile'],
+                'laptop' => ['laptop', 'tablet', 'mobile'],
+                'tablet' => ['tablet', 'mobile'],
+                'mobile' => ['mobile'],
+                default => [$screen],
+            };
+            foreach ($fallbackScreens as $tryScreen) {
+                foreach ($media->getThumbs() as $mediaThumb) {
+                    $mediaThumbConfig = $mediaThumb->getConfiguration();
+                    if ($mediaThumbConfig
+                        && $mediaThumbConfig->getScreen() === $tryScreen
+                        && ($mediaThumb->getWidth() > 0 || $mediaThumb->getHeight() > 0)) {
+                        $mediaThumbForScreen = $mediaThumb;
+                        $thumbConfiguration = $mediaThumbConfig;
+                        $width = $mediaThumb->getWidth();
+                        $height = $mediaThumb->getHeight();
+                        break 2;
+                    }
+                }
+            }
+        }
+
         // 1. Priority: MediaRelation
-        if ($mediaRelation) {
+        if (!$mediaThumbForScreen && $mediaRelation) {
             $methodWidth = 'desktop' === $screen ? 'getMaxWidth' : 'get'.ucfirst($screen).'MaxWidth';
             $methodHeight = 'desktop' === $screen ? 'getMaxHeight' : 'get'.ucfirst($screen).'MaxHeight';
             $width = method_exists($mediaRelation, $methodWidth) ? $mediaRelation->$methodWidth() : null;
             $height = method_exists($mediaRelation, $methodHeight) ? $mediaRelation->$methodHeight() : null;
-
             if (!$width && !$height) {
                 $width = method_exists($mediaRelation, 'getMaxWidth') ? $mediaRelation->getMaxWidth() : null;
                 $height = method_exists($mediaRelation, 'getMaxHeight') ? $mediaRelation->getMaxHeight() : null;
@@ -701,11 +748,20 @@ class ImageThumbnail implements ImageThumbnailInterface
      */
     private function getRuntimeConfig(Media\Thumb $thumb, $size, $options): array
     {
+        $runtimeConfig = [];
         $isRetinaSize = in_array($size, self::RETINA_SIZES);
         if (is_int($thumb->getDataX()) && $thumb->getDataX() > 0 && is_int($thumb->getDataY()) && $thumb->getDataY() > 0) {
+            $scaleFactor = is_numeric($thumb->getScale()) ? (float) $thumb->getScale() : 1.0;
             $runtimeConfig['scale']['to'] = $thumb->getScale();
             $runtimeConfig['crop']['size'] = [$thumb->getWidth(), $thumb->getHeight()];
             $runtimeConfig['crop']['start'] = [$thumb->getDataX(), $thumb->getDataY()];
+            // Force final output to Thumb DB size (× scale for retina). Without this,
+            // crop+scale alone can yield different dimensions depending on Liip mode.
+            $runtimeConfig['thumbnail']['size'] = [
+                (int) ceil($thumb->getWidth() * $scaleFactor),
+                (int) ceil($thumb->getHeight() * $scaleFactor),
+            ];
+            $runtimeConfig['thumbnail']['mode'] = 'outbound';
         } elseif (!$thumb->getWidth() && $thumb->getHeight() > 0) {
             $originalHeight = $options['sizeInfo']->getHeight();
             $retinaSize = $thumb->getHeight() * 2;
@@ -770,32 +826,10 @@ class ImageThumbnail implements ImageThumbnailInterface
             $imagineWebp = (self::ACTIVE_WEBP && $this->isWebpSupported() && 'webp' !== $extension) || self::ALWAYS_WEBP;
             $filter = 1 === $quality ? 'media1' : ($filter ?: (self::FORCE_QUALITY ? 'media100' : 'media'.$quality));
 
-            if ($imagineWebp && 'media1' !== $filter) {
-                // Essayer de deviner le chemin webp/avif final AVANT de faire appel à Imagine
-                $filename = $media ? $media->getOriginalName() : basename($dirname);
-                $uploadDir = $media && $media->getWebsite() ? $media->getWebsite()->getUploadDirname() : $this->uploadDirname;
-                $finalThumbDir = $this->projectDirname . '/public/media/cache/' . $filter . '/uploads/' . $uploadDir . '/' . $filename;
-                $finalThumbDir = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $finalThumbDir);
-
-                // Si c'est une image hors uploads (ex: build ou medias)
-                if ($media && !str_contains($media->getOriginalName(), 'uploads/')) {
-                    $finalThumbDir = $this->projectDirname . '/public/media/cache/' . $filter . '/' . ltrim($media->getOriginalName(), '/');
-                    $finalThumbDir = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $finalThumbDir);
-                }
-
-                $avifFile = $finalThumbDir . '.avif';
-                $webpFile = $finalThumbDir . '.webp';
-
-                if (self::ACTIVE_AVIF && $this->isAvifSupported() && $this->filesystem->exists($avifFile)) {
-                    $path = $this->schemeAndHttpHost . str_replace([$this->projectDirname . '/public', '\\'], ['', '/'], $avifFile);
-                    return str_replace(['//thumbnails', '/public'], ['/thumbnails', ''], $path);
-                }
-
-                if ($this->filesystem->exists($webpFile)) {
-                    $path = $this->schemeAndHttpHost . str_replace([$this->projectDirname . '/public', '\\'], ['', '/'], $webpFile);
-                    return str_replace(['//thumbnails', '/public'], ['/thumbnails', ''], $path);
-                }
-            }
+            // Native webp shortcut disabled: it returned the cached file at the Liip
+            // path without runtime hash, shared across all srcset variants. We now always
+            // route through getUrlOfFilteredImageWithRuntimeFilters which segregates the
+            // cache per runtimeConfig hash (rc/{hash}/).
 
             $cacheDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $this->coreLocator->projectDir().'/public'.$dirname);
             $dimensions = $this->getImageDimensions($this->coreLocator->projectDir().'/public'.$dirname);
@@ -875,12 +909,23 @@ class ImageThumbnail implements ImageThumbnailInterface
                         if ($img instanceof \GdImage) {
                             $imgWidth = imagesx($img);
                             $imgHeight = imagesy($img);
-                            $image = imagecreatetruecolor($imgWidth, $imgHeight);
+                            // Target output size: when runtimeConfig.thumbnail.size is set
+                            // (Thumb DB case), GD resizes to enforce strict dimensions.
+                            // The 'media1' filter (lazy blur) keeps the source size.
+                            $expectedWidth = ('media1' !== $filter && isset($runtimeConfig['thumbnail']['size'][0]))
+                                ? (int) $runtimeConfig['thumbnail']['size'][0] : $imgWidth;
+                            $expectedHeight = ('media1' !== $filter && isset($runtimeConfig['thumbnail']['size'][1]))
+                                ? (int) $runtimeConfig['thumbnail']['size'][1] : $imgHeight;
+                            $image = imagecreatetruecolor($expectedWidth, $expectedHeight);
                             imagealphablending($image, false);
                             imagesavealpha($image, true);
                             $trans = imagecolorallocatealpha($image, 0, 0, 0, 127);
-                            imagefilledrectangle($image, 0, 0, $imgWidth - 1, $imgHeight - 1, $trans);
-                            imagecopy($image, $img, 0, 0, 0, 0, $imgWidth, $imgHeight);
+                            imagefilledrectangle($image, 0, 0, $expectedWidth - 1, $expectedHeight - 1, $trans);
+                            if ($expectedWidth === $imgWidth && $expectedHeight === $imgHeight) {
+                                imagecopy($image, $img, 0, 0, 0, 0, $imgWidth, $imgHeight);
+                            } else {
+                                imagecopyresampled($image, $img, 0, 0, 0, 0, $expectedWidth, $expectedHeight, $imgWidth, $imgHeight);
+                            }
                             if ('media1' === $filter) {
                                 for ($i = 0; $i < 12; ++$i) {
                                     imagefilter($image, IMG_FILTER_GAUSSIAN_BLUR);
@@ -892,7 +937,8 @@ class ImageThumbnail implements ImageThumbnailInterface
                                     imageinterlace($image, true);
                                     $function($image, $newDirname, $quality);
                                 } elseif ('imagewebp' === $function && 'png' === $extension && $this->pngHasAlpha($copyDirname)) {
-                                    $function($image, $newDirname, IMG_WEBP_LOSSLESS);
+                                    // WebP lossy with alpha preserved. Lossless inflated transparent PNG output ~5x.
+                                    $function($image, $newDirname, $mediaQuality > 0 ? $mediaQuality : 78);
                                 } else {
                                     $function($image, $newDirname, $quality);
                                 }

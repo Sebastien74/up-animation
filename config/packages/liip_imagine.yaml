@@ -61,6 +61,30 @@ liip_imagine:
                 thumbnail: { size: [ 640, 480 ], mode: outbound }
 
         #####################################
+        #         Feed thumbnails           #
+        #####################################
+        # Resize en largeur, ratio source conservé.
+        # Le crop final (aspect 1/1, 16/9, etc.) est géré côté CSS
+        # via aspect-ratio + object-fit: cover.
+
+        feed_thumb_320:
+            quality: 78
+            filters:
+                thumbnail: { size: [320, 0], mode: inset, allow_upscale: false }
+        feed_thumb_480:
+            quality: 78
+            filters:
+                thumbnail: { size: [480, 0], mode: inset, allow_upscale: false }
+        feed_thumb_640:
+            quality: 76
+            filters:
+                thumbnail: { size: [640, 0], mode: inset, allow_upscale: false }
+        feed_thumb_960:
+            quality: 74
+            filters:
+                thumbnail: { size: [960, 0], mode: inset, allow_upscale: false }
+
+        #####################################
         #        Microdata filters          #
         #####################################
 

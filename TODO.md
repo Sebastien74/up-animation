@@ -4,6 +4,16 @@ utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 
+Pour le tiret sur des mots coupés
+exemple h3.second {
+font-size: 22px;
+-webkit-hyphens: auto;
+-ms-hyphens: auto;
+hyphens: auto;
+overflow-wrap: break-word;
+word-wrap: break-word;
+}
+
 Dans les fiche pdf, prévoir de les faire uqqi par ville, checker l'URL. Et mettre l'url avec l'index, pas celle only. Récupérer aussi l'adresse
 
 Sur les best-sellers mettre une étoile
