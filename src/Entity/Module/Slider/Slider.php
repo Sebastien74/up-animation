@@ -45,7 +45,7 @@ class Slider extends BaseEntity
     private int $itemsPerSlide = 1;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private ?int $itemsPerSlideMiniPC = 1;
+    private ?int $itemsPerSlideLaptop = 1;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $itemsPerSlideTablet = 1;
@@ -57,7 +57,7 @@ class Slider extends BaseEntity
     private ?int $offsetDesktop = 150;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private ?int $offsetMiniPC = 50;
+    private ?int $offsetLaptop = 50;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $offsetTablet = 50;
@@ -69,7 +69,7 @@ class Slider extends BaseEntity
     private ?string $focus = 'left';
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
-    private ?string $focusMiniPC = 'left';
+    private ?string $focusLaptop = 'left';
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $focusTablet = 'left';
@@ -138,7 +138,7 @@ class Slider extends BaseEntity
             $this->progress = true;
             $this->control = true;
             $this->itemsPerSlide = 4;
-            $this->itemsPerSlideMiniPC = 3;
+            $this->itemsPerSlideLaptop = 3;
             $this->itemsPerSlideTablet = 2;
             $this->itemsPerSlideMobile = 1;
         }
@@ -190,14 +190,14 @@ class Slider extends BaseEntity
         return $this;
     }
 
-    public function getItemsPerSlideMiniPC(): ?int
+    public function getItemsPerSlideLaptop(): ?int
     {
-        return $this->itemsPerSlideMiniPC;
+        return $this->itemsPerSlideLaptop;
     }
 
-    public function setItemsPerSlideMiniPC(?int $itemsPerSlideMiniPC): static
+    public function setItemsPerSlideLaptop(?int $itemsPerSlideLaptop): static
     {
-        $this->itemsPerSlideMiniPC = $itemsPerSlideMiniPC;
+        $this->itemsPerSlideLaptop = $itemsPerSlideLaptop;
 
         return $this;
     }
@@ -238,14 +238,14 @@ class Slider extends BaseEntity
         return $this;
     }
 
-    public function getOffsetMiniPC(): ?int
+    public function getOffsetLaptop(): ?int
     {
-        return $this->offsetMiniPC;
+        return $this->offsetLaptop;
     }
 
-    public function setOffsetMiniPC(?int $offsetMiniPC): static
+    public function setOffsetLaptop(?int $offsetLaptop): static
     {
-        $this->offsetMiniPC = $offsetMiniPC;
+        $this->offsetLaptop = $offsetLaptop;
 
         return $this;
     }
@@ -286,14 +286,14 @@ class Slider extends BaseEntity
         return $this;
     }
 
-    public function getFocusMiniPC(): ?string
+    public function getFocusLaptop(): ?string
     {
-        return $this->focusMiniPC;
+        return $this->focusLaptop;
     }
 
-    public function setFocusMiniPC(?string $focusMiniPC): static
+    public function setFocusLaptop(?string $focusLaptop): static
     {
-        $this->focusMiniPC = $focusMiniPC;
+        $this->focusLaptop = $focusLaptop;
 
         return $this;
     }

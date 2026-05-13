@@ -60,6 +60,7 @@ class ThumbConfigurationType extends AbstractType
             'label' => $this->translator->trans('Écrans', [], 'admin'),
             'choices' => [
                 $this->translator->trans('Ordinateur', [], 'admin') => 'desktop',
+                $this->translator->trans('Ordinateur portable', [], 'admin') => 'laptop',
                 $this->translator->trans('Tablette', [], 'admin') => 'tablet',
                 $this->translator->trans('Mobile', [], 'admin') => 'mobile',
             ],

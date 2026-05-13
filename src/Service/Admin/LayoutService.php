@@ -23,7 +23,7 @@ class LayoutService implements LayoutServiceInterface
     {
     }
 
-    private const array SCREENS = ['', 'mobile', 'tablet', 'miniPc'];
+    private const array SCREENS = ['', 'mobile', 'tablet', 'laptop'];
     private const array SIDES = ['top', 'right', 'bottom', 'left'];
 
     public function resetMargins(Zone $zone): JsonResponse

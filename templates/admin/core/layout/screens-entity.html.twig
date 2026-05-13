@@ -4,10 +4,10 @@
     "Position"|trans,
     "Ordre sur mobile"|trans,
     "Ordre sur tablette"|trans,
-    "Ordre sur mini PC"|trans,
+    "Ordre sur ordinateur portable"|trans,
     "Taille sur mobile"|trans,
     "Taille sur tablette"|trans,
-    "Taille sur mini PC"|trans,
+    "Taille sur ordinateur portable"|trans,
     "Alignement des contenus"|trans
 ] -%}
 
@@ -24,10 +24,10 @@
                 {label: headers[0], widget: colPosition, type: 'text'},
                 {label: headers[1], widget: col.mobilePosition},
                 {label: headers[2], widget: col.tabletPosition},
-                {label: headers[3], widget: col.miniPcPosition},
+                {label: headers[3], widget: col.laptopPosition},
                 {label: headers[4], widget: col.mobileSize},
                 {label: headers[5], widget: col.tabletSize},
-                {label: headers[6], widget: col.miniPCSize},
+                {label: headers[6], widget: col.laptopSize},
                 {label: headers[7], widget: col.alignment}
             ] -%}
             <div class="row screens-entity-row{% if not loop.last %} mb-3 mb-lg-2{% endif %}">

@@ -312,7 +312,7 @@ class PageFixtures
 
         if ($maxTablet) {
             $block->setTabletSize($size);
-            $block->setMiniPcSize($size);
+            $block->setLaptopSize($size);
         }
 
         $col->addBlock($block);

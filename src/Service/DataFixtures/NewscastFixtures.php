@@ -161,8 +161,8 @@ class NewscastFixtures
         $zoneContent = $this->layoutGenerator->addZone($layout, ['fullSize' => false, 'paddingTop' => null, 'paddingBottom' => null]);
         /** Content column one */
         $col = $this->layoutGenerator->addCol($zoneContent, ['position' => 2, 'size' => 7, 'paddingRight' => 'pe-md']);
-        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-published-date', 'size' => 6, 'miniPcSize' => 6, 'tabletSize' => 6, 'mobileSize' => 6, 'marginBottom' => 'mb-sm']);
-        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-share', 'size' => 6, 'miniPcSize' => 6, 'tabletSize' => 6, 'mobileSize' => 6, 'alignment' => 'end', 'marginBottom' => 'mb-sm']);
+        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-published-date', 'size' => 6, 'laptopSize' => 6, 'tabletSize' => 6, 'mobileSize' => 6, 'marginBottom' => 'mb-sm']);
+        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-share', 'size' => 6, 'laptopSize' => 6, 'tabletSize' => 6, 'mobileSize' => 6, 'alignment' => 'end', 'marginBottom' => 'mb-sm']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-intro']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-body']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-link']);
@@ -171,7 +171,7 @@ class NewscastFixtures
         $col = $this->layoutGenerator->addCol($zoneContent, ['position' => 3, 'size' => 5]);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-video']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-slider']);
-        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-back-button', 'marginTop' => 'mt-md', 'hideMiniPc' => true, 'hideDesktop' => true]);
+        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-back-button', 'marginTop' => 'mt-md', 'hideLaptop' => true, 'hideDesktop' => true]);
         /** Associated entities */
         $zoneAssociated = $this->layoutGenerator->addZone($layout, ['position' => 4, 'fullSize' => false, 'paddingTop' => null, 'paddingBottom' => null, 'backgroundColor' => 'bg-light', 'colToRight' => true]);
         $col = $this->layoutGenerator->addCol($zoneAssociated, ['size' => 12]);

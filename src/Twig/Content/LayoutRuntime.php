@@ -381,17 +381,17 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $desktopOrder = 'order-xl-'.$desktopPosition;
         $class = $desktopOrder;
 
-        /** Mini PC */
-        $miniPcPosition = $this->getValue($element, 'miniPcPosition');
-        $miniPcPosition = $miniPcPosition ?: $desktopPosition;
-        $miniPcOrder = 'order-lg-'.$miniPcPosition;
-        if (!str_contains($class, $miniPcOrder) && 'order-lg-' != $miniPcOrder) {
-            $class .= ' '.$miniPcOrder;
+        /** Laptop */
+        $laptopPosition = $this->getValue($element, 'laptopPosition');
+        $laptopPosition = $laptopPosition ?: $desktopPosition;
+        $laptopOrder = 'order-lg-'.$laptopPosition;
+        if (!str_contains($class, $laptopOrder) && 'order-lg-' != $laptopOrder) {
+            $class .= ' '.$laptopOrder;
         }
 
         /** Tablet */
         $tabletPosition = $this->getValue($element, 'tabletPosition');
-        $tabletPosition = $tabletPosition ?: $miniPcPosition;
+        $tabletPosition = $tabletPosition ?: $laptopPosition;
         $tabletOrder = 'order-md-'.$tabletPosition;
         if (!str_contains($class, $tabletOrder) && 'order-md-' != $tabletOrder) {
             $class .= ' '.$tabletOrder;
@@ -441,14 +441,14 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $tabletSizeClass = $tabletSize ? 'col-md-'.$tabletSize : 'col-md-'.$mobileSize;
 
         /** Tablet */
-        $miniPcSize = $this->getValue($element, 'miniPcSize');
-        $miniPcSizeClass = $miniPcSize ? 'col-lg-'.$miniPcSize : 'col-lg-'.$size;
+        $laptopSize = $this->getValue($element, 'laptopSize');
+        $laptopSizeClass = $laptopSize ? 'col-lg-'.$laptopSize : 'col-lg-'.$size;
 
         /** Desktop */
-        $desktopSizeClass = $miniPcSize ? 'col-xl-'.$size : ($miniPcSizeClass !== 'col-lg-'.$size ? 'col-lg-'.$size : '');
+        $desktopSizeClass = $laptopSize ? 'col-xl-'.$size : ($laptopSizeClass !== 'col-lg-'.$size ? 'col-lg-'.$size : '');
 
-        return $grid && !empty($grids[$size][$grid]) && !$mobileSizeClass && !$tabletSizeClass && !$miniPcSizeClass
-            ? $grids[$size][$grid] : trim($mobileSizeClass.' '.$tabletSizeClass.' '.$miniPcSizeClass.' '.$desktopSizeClass);
+        return $grid && !empty($grids[$size][$grid]) && !$mobileSizeClass && !$tabletSizeClass && !$laptopSizeClass
+            ? $grids[$size][$grid] : trim($mobileSizeClass.' '.$tabletSizeClass.' '.$laptopSizeClass.' '.$desktopSizeClass);
     }
 
     /**
@@ -615,7 +615,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $elementName = $isZone ? 'zone' : ($isCol ? 'col' : 'block');
         $fullSize = ($isZone || $isCol) && $this->getValue($entity, 'fullSize');
         $sides = ['top', 'right', 'bottom', 'left'];
-        $screens = ['' => '', 'miniPc' => 'mini-pc', 'tablet' => 'tablet', 'mobile' => 'mobile'];
+        $screens = ['' => '', 'laptop' => 'laptop', 'tablet' => 'tablet', 'mobile' => 'mobile'];
 
         foreach ($sides as $side) {
             $getter = 'margin'.ucfirst($side);
@@ -670,7 +670,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $asZone = $entity instanceof Layout\Zone || !$asObject && isset($entity['cols']);
         $asBlock = $asObject && $entity instanceof Layout\Block || !$asObject && !isset($entity['blockType']);
         $position = $asObject ? $entity->getPosition() : $entity['position'];
-        $screens = ['' => '', 'miniPc' => 'mini-pc', 'tablet' => 'tablet', 'mobile' => 'mobile'];
+        $screens = ['' => '', 'laptop' => 'laptop', 'tablet' => 'tablet', 'mobile' => 'mobile'];
         $sizes = ['0', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'];
 
         if (!$orientation || 'horizontal' === $orientation) {
@@ -771,35 +771,35 @@ class LayoutRuntime implements RuntimeExtensionInterface
     private function getAlignments(mixed $entity): string
     {
         $alignment = $this->getValue($entity, 'alignment');
-        $alignmentMiniPc = $this->getValue($entity, 'alignmentMiniPc');
+        $alignmentLaptop = $this->getValue($entity, 'alignmentLaptop');
         $alignmentTablet = $this->getValue($entity, 'alignmentTablet');
         $alignmentMobile = $this->getValue($entity, 'alignmentMobile');
 
         $alignmentClasses = '';
-        if ($alignment && !$alignmentMiniPc && !$alignmentTablet && !$alignmentMobile) {
+        if ($alignment && !$alignmentLaptop && !$alignmentTablet && !$alignmentMobile) {
             $alignmentClasses = 'text-'.$alignment.' ';
-        } elseif ($alignment && $alignmentMiniPc && !$alignmentTablet && !$alignmentMobile) {
-            $alignmentClasses = 'text-'.$alignment.' text-lg-'.$alignmentMiniPc.' text-xl-'.$alignment;
-        } elseif ($alignment && $alignmentMiniPc && $alignmentTablet && !$alignmentMobile) {
-            $alignmentClasses = 'text-'.$alignment.' text-md-'.$alignmentTablet.' text-lg-'.$alignmentMiniPc.' text-xl-'.$alignment;
-        } elseif (!$alignment && $alignmentMiniPc && !$alignmentTablet && !$alignmentMobile) {
-            $alignmentClasses = 'text-lg-'.$alignmentMiniPc.' text-xl-start';
-        } elseif (!$alignment && !$alignmentMiniPc && $alignmentTablet && !$alignmentMobile) {
+        } elseif ($alignment && $alignmentLaptop && !$alignmentTablet && !$alignmentMobile) {
+            $alignmentClasses = 'text-'.$alignment.' text-lg-'.$alignmentLaptop.' text-xl-'.$alignment;
+        } elseif ($alignment && $alignmentLaptop && $alignmentTablet && !$alignmentMobile) {
+            $alignmentClasses = 'text-'.$alignment.' text-md-'.$alignmentTablet.' text-lg-'.$alignmentLaptop.' text-xl-'.$alignment;
+        } elseif (!$alignment && $alignmentLaptop && !$alignmentTablet && !$alignmentMobile) {
+            $alignmentClasses = 'text-lg-'.$alignmentLaptop.' text-xl-start';
+        } elseif (!$alignment && !$alignmentLaptop && $alignmentTablet && !$alignmentMobile) {
             $alignmentClasses = 'text-md-'.$alignmentTablet.' text-lg-start';
-        } elseif (!$alignment && !$alignmentMiniPc && !$alignmentTablet && $alignmentMobile) {
+        } elseif (!$alignment && !$alignmentLaptop && !$alignmentTablet && $alignmentMobile) {
             $alignmentClasses = 'text-'.$alignmentMobile.' text-md-start';
-        } elseif (!$alignment && $alignmentMiniPc && !$alignmentTablet && $alignmentMobile) {
-            $alignmentClasses = 'text-'.$alignmentMobile.' text-md-start text-lg-'.$alignmentMiniPc.' text-xl-start';
-        } elseif ($alignment && !$alignmentMiniPc && $alignmentTablet && !$alignmentMobile) {
+        } elseif (!$alignment && $alignmentLaptop && !$alignmentTablet && $alignmentMobile) {
+            $alignmentClasses = 'text-'.$alignmentMobile.' text-md-start text-lg-'.$alignmentLaptop.' text-xl-start';
+        } elseif ($alignment && !$alignmentLaptop && $alignmentTablet && !$alignmentMobile) {
             $alignmentClasses = 'text-'.$alignment.' text-md-'.$alignmentTablet.' text-lg-'.$alignment;
-        } elseif ($alignment && !$alignmentMiniPc && !$alignmentTablet && $alignmentMobile) {
+        } elseif ($alignment && !$alignmentLaptop && !$alignmentTablet && $alignmentMobile) {
             $alignmentClasses = 'text-'.$alignmentMobile.' text-md-'.$alignment;
-        } elseif (!$alignment && !$alignmentMiniPc && $alignmentTablet && $alignmentMobile) {
+        } elseif (!$alignment && !$alignmentLaptop && $alignmentTablet && $alignmentMobile) {
             $alignmentClasses = 'text-'.$alignmentMobile.' text-md-'.$alignmentTablet.' text-lg-start';
-        } elseif (!$alignment && !$alignmentMiniPc && !$alignmentTablet && $alignmentMobile) {
+        } elseif (!$alignment && !$alignmentLaptop && !$alignmentTablet && $alignmentMobile) {
             $alignmentClasses = 'text-'.$alignmentMobile.' text-md-start';
-        } elseif ($alignment && $alignmentMiniPc && $alignmentTablet && $alignmentMobile) {
-            $alignmentClasses = 'text-'.$alignmentMobile.' text-md-'.$alignmentTablet.' text-lg-'.$alignmentMiniPc.' text-xl-'.$alignment;
+        } elseif ($alignment && $alignmentLaptop && $alignmentTablet && $alignmentMobile) {
+            $alignmentClasses = 'text-'.$alignmentMobile.' text-md-'.$alignmentTablet.' text-lg-'.$alignmentLaptop.' text-xl-'.$alignment;
         }
 
         return ' '.$alignmentClasses.' ';
@@ -818,66 +818,66 @@ class LayoutRuntime implements RuntimeExtensionInterface
 
         $hideMobile = $this->getValue($entity, 'hideMobile');
         $hideTablet = $this->getValue($entity, 'hideTablet');
-        $hideMiniPc = $this->getValue($entity, 'hideMiniPc');
+        $hideLaptop = $this->getValue($entity, 'hideLaptop');
         $hideDesktop = $this->getValue($entity, 'hideDesktop');
 
-        if (!$hideMobile && !$hideTablet && !$hideMiniPc && !$hideDesktop) {
+        if (!$hideMobile && !$hideTablet && !$hideLaptop && !$hideDesktop) {
             return '';
         }
 
-        if ($hideMobile && $hideTablet && $hideMiniPc && $hideDesktop) {
+        if ($hideMobile && $hideTablet && $hideLaptop && $hideDesktop) {
             return 'd-none ';
         }
 
-        if ($hideMobile && !$hideTablet && !$hideMiniPc && !$hideDesktop) {
+        if ($hideMobile && !$hideTablet && !$hideLaptop && !$hideDesktop) {
             return ' d-none d-md-inline-flex ';
         }
 
-        if (!$hideMobile && $hideTablet && !$hideMiniPc && !$hideDesktop) {
+        if (!$hideMobile && $hideTablet && !$hideLaptop && !$hideDesktop) {
             return ' d-md-none d-lg-inline-flex ';
         }
 
-        if (!$hideMobile && !$hideTablet && $hideMiniPc && !$hideDesktop) {
+        if (!$hideMobile && !$hideTablet && $hideLaptop && !$hideDesktop) {
             return ' d-lg-none d-xl-inline-flex ';
         }
 
-        if (!$hideMobile && !$hideTablet && !$hideMiniPc && $hideDesktop) {
+        if (!$hideMobile && !$hideTablet && !$hideLaptop && $hideDesktop) {
             return ' d-xl-none ';
         }
 
-        if ($hideMobile && $hideTablet && !$hideMiniPc && !$hideDesktop) {
+        if ($hideMobile && $hideTablet && !$hideLaptop && !$hideDesktop) {
             return ' d-none d-lg-inline-flex ';
         }
 
-        if ($hideMobile && $hideTablet && $hideMiniPc && !$hideDesktop) {
+        if ($hideMobile && $hideTablet && $hideLaptop && !$hideDesktop) {
             return ' d-none d-xl-inline-flex ';
         }
 
-        if (!$hideMobile && $hideTablet && $hideMiniPc && !$hideDesktop) {
+        if (!$hideMobile && $hideTablet && $hideLaptop && !$hideDesktop) {
             return ' d-md-none d-xl-inline-flex ';
         }
 
-        if (!$hideMobile && $hideTablet && $hideMiniPc && $hideDesktop) {
+        if (!$hideMobile && $hideTablet && $hideLaptop && $hideDesktop) {
             return ' d-md-none ';
         }
 
-        if (!$hideMobile && !$hideTablet && $hideMiniPc && $hideDesktop) {
+        if (!$hideMobile && !$hideTablet && $hideLaptop && $hideDesktop) {
             return ' d-lg-none ';
         }
 
-        if ($hideMobile && !$hideTablet && $hideMiniPc && !$hideDesktop) {
+        if ($hideMobile && !$hideTablet && $hideLaptop && !$hideDesktop) {
             return ' d-none d-md-inline-flex d-lg-flex d-xl-inline-flex ';
         }
 
-        if ($hideMobile && !$hideTablet && $hideMiniPc && $hideDesktop) {
+        if ($hideMobile && !$hideTablet && $hideLaptop && $hideDesktop) {
             return ' d-none d-md-inline-flex d-lg-flex ';
         }
 
-        if ($hideMobile && !$hideTablet && !$hideMiniPc && $hideDesktop) {
+        if ($hideMobile && !$hideTablet && !$hideLaptop && $hideDesktop) {
             return ' d-none d-md-inline-flex d-xl-flex ';
         }
 
-        if ($hideMobile && $hideTablet && $hideMiniPc && !$hideDesktop) {
+        if ($hideMobile && $hideTablet && $hideLaptop && !$hideDesktop) {
             return ' d-none d-xl-inline-flex ';
         }
 

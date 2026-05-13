@@ -86,8 +86,8 @@ readonly class CatalogFixtures
         $zoneContent = $this->layoutGenerator->addZone($layout, ['position' => 2, 'fullSize' => false, 'paddingTop' => null, 'paddingBottom' => null]);
         /** Content column one */
         $col = $this->layoutGenerator->addCol($zoneContent, ['size' => 6, 'paddingRight' => 'pe-md']);
-        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-published-date', 'size' => 6, 'miniPcSize' => 6, 'tabletSize' => 6, 'mobileSize' => 6, 'marginBottom' => 'mb-sm']);
-        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-share', 'size' => 6, 'miniPcSize' => 6, 'tabletSize' => 6, 'mobileSize' => 6, 'alignment' => 'end', 'marginBottom' => 'mb-sm']);
+        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-published-date', 'size' => 6, 'laptopSize' => 6, 'tabletSize' => 6, 'mobileSize' => 6, 'marginBottom' => 'mb-sm']);
+        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-share', 'size' => 6, 'laptopSize' => 6, 'tabletSize' => 6, 'mobileSize' => 6, 'alignment' => 'end', 'marginBottom' => 'mb-sm']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-intro']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-body']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-link']);
@@ -96,7 +96,7 @@ readonly class CatalogFixtures
         $col = $this->layoutGenerator->addCol($zoneContent, ['size' => 6]);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-video']);
         $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-slider']);
-        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-back-button', 'marginTop' => 'mt-md', 'hideMiniPc' => true, 'hideDesktop' => true]);
+        $this->layoutGenerator->addBlock($col, ['blockType' => 'layout-back-button', 'marginTop' => 'mt-md', 'hideLaptop' => true, 'hideDesktop' => true]);
         /** Associated entities */
         $zoneAssociated = $this->layoutGenerator->addZone($layout, ['position' => 3, 'fullSize' => false, 'paddingTop' => null, 'paddingBottom' => null, 'backgroundColor' => 'bg-light']);
         $zoneAssociated->setEndAlign(true);

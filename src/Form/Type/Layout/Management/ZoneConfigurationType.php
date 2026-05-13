@@ -125,8 +125,8 @@ class ZoneConfigurationType extends AbstractType
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
-        $builder->add('hideMiniPc', HideType::class, [
-            'label' => $this->translator->trans('Cacher la zone sur mini PC', [], 'admin'),
+        $builder->add('hideLaptop', HideType::class, [
+            'label' => $this->translator->trans('Cacher la zone sur ordinateur portable', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);

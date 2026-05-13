@@ -20,7 +20,7 @@
             $breakpoint: 'max-md';
             @if ($screen == 'tablet') {
                 $breakpoint: 'between-md-lg';
-            } @else if ($screen == 'mini-pc') {
+            } @else if ($screen == 'laptop') {
                 $breakpoint: 'between-lg-xxl';
             }
 

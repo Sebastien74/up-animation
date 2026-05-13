@@ -64,7 +64,7 @@ class BaseConfiguration extends BaseEntity
     protected bool $hideTablet = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    protected bool $hideMiniPc = false;
+    protected bool $hideLaptop = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     protected bool $hideDesktop = false;
@@ -79,7 +79,7 @@ class BaseConfiguration extends BaseEntity
     protected ?string $alignmentTablet = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    protected ?string $alignmentMiniPc = null;
+    protected ?string $alignmentLaptop = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $alignment = null;
@@ -94,7 +94,7 @@ class BaseConfiguration extends BaseEntity
     protected ?int $tabletPosition = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    protected ?int $miniPcPosition = null;
+    protected ?int $laptopPosition = null;
 
     #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
     protected ?string $marginTop = null;
@@ -169,28 +169,28 @@ class BaseConfiguration extends BaseEntity
     protected ?string $paddingLeftTablet = null;
 
     #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
-    protected ?string $marginTopMiniPc = null;
+    protected ?string $marginTopLaptop = null;
 
     #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
-    protected ?string $marginRightMiniPc = null;
+    protected ?string $marginRightLaptop = null;
 
     #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
-    protected ?string $marginBottomMiniPc = null;
+    protected ?string $marginBottomLaptop = null;
 
     #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
-    protected ?string $marginLeftMiniPc = null;
+    protected ?string $marginLeftLaptop = null;
 
     #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
-    protected ?string $paddingTopMiniPc = null;
+    protected ?string $paddingTopLaptop = null;
 
     #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
-    protected ?string $paddingRightMiniPc = null;
+    protected ?string $paddingRightLaptop = null;
 
     #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
-    protected ?string $paddingBottomMiniPc = null;
+    protected ?string $paddingBottomLaptop = null;
 
     #[ORM\Column(type: Types::STRING, length: 20, nullable: true)]
-    protected ?string $paddingLeftMiniPc = null;
+    protected ?string $paddingLeftLaptop = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     protected ?string $duration = null;
@@ -388,14 +388,14 @@ class BaseConfiguration extends BaseEntity
         return $this;
     }
 
-    public function isHideMiniPc(): ?bool
+    public function isHideLaptop(): ?bool
     {
-        return $this->hideMiniPc;
+        return $this->hideLaptop;
     }
 
-    public function setHideMiniPc(bool $hideMiniPc): static
+    public function setHideLaptop(bool $hideLaptop): static
     {
-        $this->hideMiniPc = $hideMiniPc;
+        $this->hideLaptop = $hideLaptop;
 
         return $this;
     }
@@ -448,14 +448,14 @@ class BaseConfiguration extends BaseEntity
         return $this;
     }
 
-    public function getAlignmentMiniPc(): ?string
+    public function getAlignmentLaptop(): ?string
     {
-        return $this->alignmentMiniPc;
+        return $this->alignmentLaptop;
     }
 
-    public function setAlignmentMiniPc(?string $alignmentMiniPc): static
+    public function setAlignmentLaptop(?string $alignmentLaptop): static
     {
-        $this->alignmentMiniPc = $alignmentMiniPc;
+        $this->alignmentLaptop = $alignmentLaptop;
 
         return $this;
     }
@@ -508,14 +508,14 @@ class BaseConfiguration extends BaseEntity
         return $this;
     }
 
-    public function getMiniPcPosition(): ?int
+    public function getLaptopPosition(): ?int
     {
-        return $this->miniPcPosition;
+        return $this->laptopPosition;
     }
 
-    public function setMiniPcPosition(?int $miniPcPosition): static
+    public function setLaptopPosition(?int $laptopPosition): static
     {
-        $this->miniPcPosition = $miniPcPosition;
+        $this->laptopPosition = $laptopPosition;
 
         return $this;
     }
@@ -808,98 +808,98 @@ class BaseConfiguration extends BaseEntity
         return $this;
     }
 
-    public function getMarginTopMiniPc(): ?string
+    public function getMarginTopLaptop(): ?string
     {
-        return $this->marginTopMiniPc;
+        return $this->marginTopLaptop;
     }
 
-    public function setMarginTopMiniPc(?string $marginTopMiniPc): static
+    public function setMarginTopLaptop(?string $marginTopLaptop): static
     {
-        $this->marginTopMiniPc = $marginTopMiniPc;
+        $this->marginTopLaptop = $marginTopLaptop;
 
         return $this;
     }
 
-    public function getMarginRightMiniPc(): ?string
+    public function getMarginRightLaptop(): ?string
     {
-        return $this->marginRightMiniPc;
+        return $this->marginRightLaptop;
     }
 
-    public function setMarginRightMiniPc(?string $marginRightMiniPc): static
+    public function setMarginRightLaptop(?string $marginRightLaptop): static
     {
-        $this->marginRightMiniPc = $marginRightMiniPc;
+        $this->marginRightLaptop = $marginRightLaptop;
 
         return $this;
     }
 
-    public function getMarginBottomMiniPc(): ?string
+    public function getMarginBottomLaptop(): ?string
     {
-        return $this->marginBottomMiniPc;
+        return $this->marginBottomLaptop;
     }
 
-    public function setMarginBottomMiniPc(?string $marginBottomMiniPc): static
+    public function setMarginBottomLaptop(?string $marginBottomLaptop): static
     {
-        $this->marginBottomMiniPc = $marginBottomMiniPc;
+        $this->marginBottomLaptop = $marginBottomLaptop;
 
         return $this;
     }
 
-    public function getMarginLeftMiniPc(): ?string
+    public function getMarginLeftLaptop(): ?string
     {
-        return $this->marginLeftMiniPc;
+        return $this->marginLeftLaptop;
     }
 
-    public function setMarginLeftMiniPc(?string $marginLeftMiniPc): static
+    public function setMarginLeftLaptop(?string $marginLeftLaptop): static
     {
-        $this->marginLeftMiniPc = $marginLeftMiniPc;
+        $this->marginLeftLaptop = $marginLeftLaptop;
 
         return $this;
     }
 
-    public function getPaddingTopMiniPc(): ?string
+    public function getPaddingTopLaptop(): ?string
     {
-        return $this->paddingTopMiniPc;
+        return $this->paddingTopLaptop;
     }
 
-    public function setPaddingTopMiniPc(?string $paddingTopMiniPc): static
+    public function setPaddingTopLaptop(?string $paddingTopLaptop): static
     {
-        $this->paddingTopMiniPc = $paddingTopMiniPc;
+        $this->paddingTopLaptop = $paddingTopLaptop;
 
         return $this;
     }
 
-    public function getPaddingRightMiniPc(): ?string
+    public function getPaddingRightLaptop(): ?string
     {
-        return $this->paddingRightMiniPc;
+        return $this->paddingRightLaptop;
     }
 
-    public function setPaddingRightMiniPc(?string $paddingRightMiniPc): static
+    public function setPaddingRightLaptop(?string $paddingRightLaptop): static
     {
-        $this->paddingRightMiniPc = $paddingRightMiniPc;
+        $this->paddingRightLaptop = $paddingRightLaptop;
 
         return $this;
     }
 
-    public function getPaddingBottomMiniPc(): ?string
+    public function getPaddingBottomLaptop(): ?string
     {
-        return $this->paddingBottomMiniPc;
+        return $this->paddingBottomLaptop;
     }
 
-    public function setPaddingBottomMiniPc(?string $paddingBottomMiniPc): static
+    public function setPaddingBottomLaptop(?string $paddingBottomLaptop): static
     {
-        $this->paddingBottomMiniPc = $paddingBottomMiniPc;
+        $this->paddingBottomLaptop = $paddingBottomLaptop;
 
         return $this;
     }
 
-    public function getPaddingLeftMiniPc(): ?string
+    public function getPaddingLeftLaptop(): ?string
     {
-        return $this->paddingLeftMiniPc;
+        return $this->paddingLeftLaptop;
     }
 
-    public function setPaddingLeftMiniPc(?string $paddingLeftMiniPc): static
+    public function setPaddingLeftLaptop(?string $paddingLeftLaptop): static
     {
-        $this->paddingLeftMiniPc = $paddingLeftMiniPc;
+        $this->paddingLeftLaptop = $paddingLeftLaptop;
 
         return $this;
     }

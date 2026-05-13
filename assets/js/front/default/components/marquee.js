@@ -10,35 +10,46 @@ export default function (els) {
         if (!content || !inner) return;
 
         let animationName = null;
+        let resizeTimer = null;
+        let pendingRaf = null;
+        let retryTimer = null;
 
-        let isInitialized = false;
+        const cleanup = () => {
+            inner.querySelectorAll('[aria-hidden="true"]').forEach(clone => clone.remove());
+            inner.style.animation = 'none';
+            inner.style.width = '';
+            if (animationName) {
+                const oldStyle = document.getElementById(animationName);
+                if (oldStyle) oldStyle.remove();
+                animationName = null;
+            }
+        };
 
         const initMarquee = () => {
-            if (isInitialized) return;
-            isInitialized = true;
+            if (pendingRaf !== null) {
+                cancelAnimationFrame(pendingRaf);
+                pendingRaf = null;
+            }
+            if (retryTimer !== null) {
+                clearTimeout(retryTimer);
+                retryTimer = null;
+            }
 
-            const contentWidth = content.offsetWidth;
-            const containerWidth = marquee.offsetWidth;
+            cleanup();
+
+            const contentWidth = content.getBoundingClientRect().width;
+            const containerWidth = marquee.getBoundingClientRect().width;
 
             if (contentWidth <= 0 || containerWidth <= 0) {
-                isInitialized = false;
-                // On réessaie un peu plus tard si les dimensions ne sont pas encore disponibles
-                setTimeout(initMarquee, 100);
+                retryTimer = setTimeout(initMarquee, 100);
                 return;
             }
 
-            requestAnimationFrame(() => {
-                // Nettoyage des clones précédents et de l'animation
-                inner.querySelectorAll('[aria-hidden="true"]').forEach(clone => clone.remove());
-                inner.style.animation = '';
-                inner.style.width = '';
-                if (animationName) {
-                    const oldStyle = document.getElementById(animationName);
-                    if (oldStyle) oldStyle.remove();
-                }
+            pendingRaf = requestAnimationFrame(() => {
+                pendingRaf = null;
 
-                // Nombre de clones nécessaires pour couvrir au moins 2x la largeur du conteneur
-                // pour assurer une transition fluide
+                // Nombre de clones nécessaires pour couvrir au moins 2× la largeur du conteneur
+                // afin d'assurer une boucle visuelle continue.
                 const repeatCount = Math.max(1, Math.ceil((containerWidth * 2) / contentWidth));
 
                 for (let i = 0; i < repeatCount; i++) {
@@ -69,22 +80,34 @@ export default function (els) {
                 `;
                 document.head.appendChild(style);
                 inner.style.animation = `${animationName} ${speed}s linear infinite`;
-
-                isInitialized = false;
             });
         };
 
+        const scheduleInit = () => {
+            if (resizeTimer !== null) clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                resizeTimer = null;
+                initMarquee();
+            }, 150);
+        };
+
         lazyLoadImages(content).then(() => {
-            initMarquee(); // Initialisation immédiate après le chargement des images
-            
-            // Utiliser ResizeObserver pour recalculer si les dimensions changent (responsive)
+            // Retire les items dont l'image n'a pas pu être affichée (404, srcset invalide, format KO…)
+            // pour éviter les « trous » de 120 px dans le défilement.
+            content.querySelectorAll('.marquee-item').forEach(item => {
+                const img = item.querySelector('img');
+                if (!img || !img.complete || img.naturalWidth === 0) {
+                    item.remove();
+                }
+            });
+
+            initMarquee();
+
             if (window.ResizeObserver) {
-                const resizeObserver = new ResizeObserver(() => {
-                    initMarquee();
-                });
+                const resizeObserver = new ResizeObserver(scheduleInit);
                 resizeObserver.observe(marquee);
             } else {
-                window.addEventListener('resize', initMarquee);
+                window.addEventListener('resize', scheduleInit);
             }
         });
     });
@@ -100,6 +123,10 @@ function lazyLoadImages(container) {
         const totalImages = lazyImages.length;
         let loadedCount = 0;
 
+        const checkDone = () => {
+            if (loadedCount >= totalImages) resolve();
+        };
+
         lazySources.forEach(source => {
             const srcset = source.getAttribute('data-srcset');
             if (srcset) source.setAttribute('srcset', srcset);
@@ -112,20 +139,21 @@ function lazyLoadImages(container) {
             if (src) img.setAttribute('src', src);
             if (srcset) img.setAttribute('srcset', srcset);
             if (sizes) img.setAttribute('sizes', sizes);
+
             if (img.complete && img.naturalWidth !== 0) {
                 loadedCount++;
             } else {
-                img.addEventListener('load', () => {
+                const onSettle = () => {
+                    img.removeEventListener('load', onSettle);
+                    img.removeEventListener('error', onSettle);
                     loadedCount++;
-                    if (loadedCount === totalImages) {
-                        resolve();
-                    }
-                });
+                    checkDone();
+                };
+                img.addEventListener('load', onSettle);
+                img.addEventListener('error', onSettle);
             }
         });
 
-        if (totalImages === 0 || loadedCount === totalImages) {
-            resolve();
-        }
+        checkDone();
     });
 }

@@ -54,7 +54,7 @@ class BlockConfigurationType extends AbstractType
 
         $screens = [
             '' => $this->translator->trans('Ordinateur', [], 'admin'),
-            'MiniPc' => $this->translator->trans('Mini PC', [], 'admin'),
+            'Laptop' => $this->translator->trans('Ordinateur portable', [], 'admin'),
             'Tablet' => $this->translator->trans('Tablette', [], 'admin'),
             'Mobile' => $this->translator->trans('Mobile', [], 'admin'),
         ];
@@ -133,8 +133,8 @@ class BlockConfigurationType extends AbstractType
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
-        $builder->add('hideMiniPc', HideType::class, [
-            'label' => $this->translator->trans('Cacher le bloc sur mini PC', [], 'admin'),
+        $builder->add('hideLaptop', HideType::class, [
+            'label' => $this->translator->trans('Cacher le bloc sur ordinateur portable', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
@@ -170,14 +170,14 @@ class BlockConfigurationType extends AbstractType
             'mobilePositionGroup' => 'col-md-4',
             'tabletPositionLabel' => true,
             'tabletPositionGroup' => 'col-md-4',
-            'miniPcPositionLabel' => true,
-            'miniPcPositionGroup' => 'col-md-4',
+            'laptopPositionLabel' => true,
+            'laptopPositionGroup' => 'col-md-4',
             'mobileSizeLabel' => true,
             'mobileSizeGroup' => 'col-md-4',
             'tabletSizeLabel' => true,
             'tabletSizeGroup' => 'col-md-4',
-            'miniPCSizeLabel' => true,
-            'miniPCSizeGroup' => 'col-md-4',
+            'laptopSizeLabel' => true,
+            'laptopSizeGroup' => 'col-md-4',
         ]);
 
         if ($multiLocales) {

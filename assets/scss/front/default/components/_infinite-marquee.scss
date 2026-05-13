@@ -52,24 +52,75 @@
             pointer-events: auto; // Réactive les événements sur le contenu si besoin
             display: inline-flex;
             align-items: center;
-            gap: 0 16px;
+            flex-shrink: 0; // Empêche toute compression au sein de .marquee-inner
 
             .marquee-item {
 
-                width: 120px;
-                flex: 0 0 120px;
+                // Base mobile (< sm). Espace inter-item porté par l'item lui-même
+                // (et non par un `gap` interne), afin que le rythme reste uniforme
+                // à la jonction entre le content original et son clone.
+                width: 80px;
+                flex: 0 0 80px;
+                margin-right: 10px;
 
                 .img-loader-wrap {
                     display: flex !important;
                     align-items: center;
+                    justify-content: center;
+                    width: 100%;
                 }
 
                 img {
-                    max-width: 100%;
-                    max-height: 50px;
-                    height: auto;
-                    width: auto;
                     display: block;
+                    width: 100%;
+                    height: 35px;
+                    min-height: 35px;
+                    max-height: 35px;
+                    object-fit: contain;
+                }
+
+                @include mediaQuery(min-sm) {
+                    width: 90px;
+                    flex: 0 0 90px;
+                    margin-right: 12px;
+                    img {
+                        height: 32px;
+                        min-height: 32px;
+                        max-height: 32px;
+                    }
+                }
+
+                @include mediaQuery(min-md) {
+                    width: 100px;
+                    flex: 0 0 100px;
+                    margin-right: 14px;
+                    img {
+                        height: 38px;
+                        min-height: 38px;
+                        max-height: 38px;
+                    }
+                }
+
+                @include mediaQuery(min-lg) {
+                    width: 110px;
+                    flex: 0 0 110px;
+                    margin-right: 14px;
+                    img {
+                        height: 44px;
+                        min-height: 44px;
+                        max-height: 44px;
+                    }
+                }
+
+                @include mediaQuery(min-xl) {
+                    width: 120px;
+                    flex: 0 0 120px;
+                    margin-right: 16px;
+                    img {
+                        height: 50px;
+                        min-height: 50px;
+                        max-height: 50px;
+                    }
                 }
             }
         }

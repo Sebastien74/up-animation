@@ -108,8 +108,8 @@ class SliderType extends AbstractType
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
-            $builder->add('itemsPerSlideMiniPC', Type\IntegerType::class, [
-                'label' => $this->translator->trans("Nombre d'images par slide (Mini PC)", [], 'admin'),
+            $builder->add('itemsPerSlideLaptop', Type\IntegerType::class, [
+                'label' => $this->translator->trans("Nombre d'images par slide (Ordinateur portable)", [], 'admin'),
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
@@ -147,8 +147,8 @@ class SliderType extends AbstractType
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
-            $builder->add('offsetMiniPC', Type\IntegerType::class, [
-                'label' => $this->translator->trans('Décalage en pixel (Mini PC)', [], 'admin'),
+            $builder->add('offsetLaptop', Type\IntegerType::class, [
+                'label' => $this->translator->trans('Décalage en pixel (Ordinateur portable)', [], 'admin'),
                 'required' => false,
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
@@ -189,8 +189,8 @@ class SliderType extends AbstractType
                 ],
             ]);
 
-            $builder->add('focusMiniPC', Type\ChoiceType::class, [
-                'label' => $this->translator->trans('Focus (Mini PC)', [], 'admin'),
+            $builder->add('focusLaptop', Type\ChoiceType::class, [
+                'label' => $this->translator->trans('Focus (Ordinateur portable)', [], 'admin'),
                 'display' => 'search',
                 'attr' => ['data-config' => true],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],

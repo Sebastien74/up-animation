@@ -61,7 +61,7 @@
         max-width: 100%;
     }
 
-    $allBPs: ('mobile', 'tablet', 'mini-pc', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxxl');
+    $allBPs: ('mobile', 'tablet', 'laptop', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxxl');
 
     @include mediaQuery(max-sm) {
         @include generateGutterManagement('ps', 'padding-left', ('mobile', 'xs'), $allBPs, 'p');
@@ -79,8 +79,8 @@
     }
 
     @include mediaQuery(min-lg) {
-        @include generateGutterManagement('ps', 'padding-left', ('mini-pc', 'lg'), $allBPs, 'p');
-        @include generateGutterManagement('pe', 'padding-right', ('mini-pc', 'lg'), $allBPs, 'p');
+        @include generateGutterManagement('ps', 'padding-left', ('laptop', 'lg'), $allBPs, 'p');
+        @include generateGutterManagement('pe', 'padding-right', ('laptop', 'lg'), $allBPs, 'p');
     }
 
     @include mediaQuery(min-xl) {

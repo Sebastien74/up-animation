@@ -19,14 +19,17 @@
                         {%- set mobileHeight = 35 -%}
                         {%- set tabletHeight = 45 -%}
                         {%- set desktopHeight = fileSizes.height is defined ? fileSizes.height : 50 -%}
-                        {%- set mobileWidth = ratio ? (ratio * mobileHeight)|round(0, 'ceil') : null -%}
-                        {%- set tabletWidth = ratio ? (ratio * tabletHeight)|round(0, 'ceil') : null -%}
-                        {%- set desktopWidth = fileSizes.width is defined ? fileSizes.width : (ratio ? (ratio * desktopHeight)|round(0, 'ceil') : null) -%}
+                        {# Fallback largeur quand le ratio est inconnu (fileInfo indisponible, SVG, etc.) #}
+                        {%- set fallbackWidth = fileSizes.width is defined ? fileSizes.width : 120 -%}
+                        {%- set mobileWidth = ratio ? (ratio * mobileHeight)|round(0, 'ceil') : fallbackWidth -%}
+                        {%- set tabletWidth = ratio ? (ratio * tabletHeight)|round(0, 'ceil') : fallbackWidth -%}
+                        {%- set desktopWidth = fileSizes.width is defined ? fileSizes.width : (ratio ? (ratio * desktopHeight)|round(0, 'ceil') : fallbackWidth) -%}
                         {{ media|file(thumbConfiguration, {
                             notInBox: true,
                             screensSizes: {
                                 mobile: {width: mobileWidth, height: mobileHeight},
                                 tablet: {width: tabletWidth, height: tabletHeight},
+                                laptop: {width: desktopWidth, height: desktopHeight},
                                 desktop: {width: desktopWidth, height: desktopHeight}
                             },
                             popupGallery: slider.popup,

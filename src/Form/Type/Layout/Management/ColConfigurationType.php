@@ -134,8 +134,8 @@ class ColConfigurationType extends AbstractType
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
-        $builder->add('hideMiniPc', HideType::class, [
-            'label' => $this->translator->trans('Cacher la colonne sur mini PC', [], 'admin'),
+        $builder->add('hideLaptop', HideType::class, [
+            'label' => $this->translator->trans('Cacher la colonne sur ordinateur portable', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
@@ -163,14 +163,14 @@ class ColConfigurationType extends AbstractType
             'mobilePositionGroup' => 'col-md-4',
             'tabletPositionLabel' => true,
             'tabletPositionGroup' => 'col-md-4',
-            'miniPcPositionLabel' => true,
-            'miniPcPositionGroup' => 'col-md-4',
+            'laptopPositionLabel' => true,
+            'laptopPositionGroup' => 'col-md-4',
             'mobileSizeLabel' => true,
             'mobileSizeGroup' => 'col-md-4',
             'tabletSizeLabel' => true,
             'tabletSizeGroup' => 'col-md-4',
-            'miniPCSizeLabel' => true,
-            'miniPCSizeGroup' => 'col-md-4',
+            'laptopSizeLabel' => true,
+            'laptopSizeGroup' => 'col-md-4',
         ]);
 
         $builder->add('alignment', AlignmentType::class, [

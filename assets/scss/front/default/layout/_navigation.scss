@@ -575,14 +575,18 @@ body.menu-open {
         width: 50px;
         border-radius: 50%;
         aspect-ratio: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
     }
 
     .nav-toggler-icon {
 
-        top: 4px;
+        top: 1px;
         width: 20px;
-        height: 23px;
-        display: inline-block;
+        height: 15px;
+        display: block;
         position: relative;
         transform: rotate(0deg);
         transition: .5s ease-in-out;
@@ -599,21 +603,21 @@ body.menu-open {
             transition: .25s ease-in-out;
 
             &:nth-child(1) {
-                top: 4px;
+                top: 0;
             }
 
             &:nth-child(2) {
-                top: 10px;
+                top: 6px;
             }
 
             &:nth-child(3) {
-                top: 16px;
+                top: 12px;
             }
         }
 
         &.open span {
             &:nth-child(1) {
-                top: 10px;
+                top: 6px;
                 transform: rotate(135deg);
             }
 
@@ -623,7 +627,7 @@ body.menu-open {
             }
 
             &:nth-child(3) {
-                top: 10px;
+                top: 6px;
                 transform: rotate(-135deg);
             }
         }

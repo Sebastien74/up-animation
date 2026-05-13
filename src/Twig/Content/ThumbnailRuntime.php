@@ -509,7 +509,8 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             $mediaQueries = [
                 960 => 'mobile',
                 1536 => 'tablet',
-                2400 => 'desktop',
+                2400 => 'laptop',
+                2732 => 'laptop',
                 3840 => 'desktop',
             ];
             foreach ($thumbnails['files'] as $size => $path) {

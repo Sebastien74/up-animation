@@ -41,7 +41,7 @@ class MarginType
         $fields['paddingBottom'] = ['sizes' => ['type' => 'p', 'position' => 'b'], 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 disable-asterisk']];
         $fields['paddingLeft'] = ['sizes' => ['type' => 'p', 'position' => 's'], 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 disable-asterisk']];
 
-        foreach (['', 'MiniPc', 'Tablet', 'Mobile'] as $screen) {
+        foreach (['', 'Laptop', 'Tablet', 'Mobile'] as $screen) {
             foreach ($fields as $name => $config) {
                 $builder->add($name.$screen, Type\ChoiceType::class, [
                     'required' => false,

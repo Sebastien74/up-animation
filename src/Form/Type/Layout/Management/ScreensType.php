@@ -67,13 +67,13 @@ class ScreensType
                 'row_attr' => ['class' => $options['tabletPositionGroup'] ?? 'col-md-6'],
             ]);
 
-            $builder->add('miniPcPosition', ChoiceType::class, [
+            $builder->add('laptopPosition', ChoiceType::class, [
                 'required' => false,
-                'label' => isset($options['miniPcPositionLabel']) ? $this->translator->trans('Ordre sur mini PC', [], 'admin') : false,
+                'label' => isset($options['laptopPositionLabel']) ? $this->translator->trans('Ordre sur ordinateur portable', [], 'admin') : false,
                 'display' => 'search',
                 'choices' => $choices,
 
-                'row_attr' => ['class' => $options['miniPcPositionGroup'] ?? 'col-md-6'],
+                'row_attr' => ['class' => $options['laptopPositionGroup'] ?? 'col-md-6'],
             ]);
         }
 
@@ -101,13 +101,13 @@ class ScreensType
             'row_attr' => ['class' => $options['tabletSizeGroup'] ?? 'col-md-6'],
         ]);
 
-        $builder->add('miniPCSize', ChoiceType::class, [
-            'label' => isset($options['miniPCSizeLabel']) ? $this->translator->trans('Taille sur mini PC', [], 'admin') : false,
+        $builder->add('laptopSize', ChoiceType::class, [
+            'label' => isset($options['laptopSizeLabel']) ? $this->translator->trans('Taille sur ordinateur portable', [], 'admin') : false,
             'required' => false,
             'choices' => $sizeChoices,
             'display' => 'search',
 
-            'row_attr' => ['class' => $options['miniPCSizeGroup'] ?? 'col-md-6'],
+            'row_attr' => ['class' => $options['laptopSizeGroup'] ?? 'col-md-6'],
         ]);
     }
 }

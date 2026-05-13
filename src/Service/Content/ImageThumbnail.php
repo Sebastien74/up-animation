@@ -37,25 +37,28 @@ class ImageThumbnail implements ImageThumbnailInterface
     private const bool FORCE_QUALITY = false;
     private const int MAX_FILE_SIZE_OPTIMIZATION = 500 * 1024; // octets 500k
     private const int MAX_FILE_SIZE = 3145728; // octets 3145728 = 3M : https://www.convertworld.com/fr/mesures-informatiques/megaoctet-megabyte.html
-    private const int MAX_FILE_WIDTH = 3840; // pixels 3840
+    private const int MAX_FILE_WIDTH = 3840; // pixels 3840screensSizes
     private const int MAX_FILE_HEIGHT = 6000; // pixels 6000
     private const array ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
     private const array EXCEPTIONS_EXTENSIONS = ['svg', 'gif', 'tiff', 'raw', 'heic'];
     private const string SVG_RESIZED_DIR = 'thumbnails/svg-resized';
     private const array CONTAINER_SIZE = [
         1200 => 869,
+        1366 => 990,
         1920 => 1391,
     ];
-    private const array SIZES = [480, 768, 1200, 1920];
-    private const array RETINA_SIZES = [960, 1536, 2400, 3840];
+    private const array SIZES = [480, 768, 1200, 1366, 1920];
+    private const array RETINA_SIZES = [960, 1536, 2400, 2732, 3840];
     private const array SCREENS_SIZES = [
         'mobile' => [480, 960],
         'tablet' => [768, 1536],
-        'desktop' => [1200, 2400, 1920, 3840],
+        'laptop' => [1200, 2400, 1366, 2732],
+        'desktop' => [1920, 3840],
     ];
     private const array SCREENS_SIZES_ATTR = [
         'mobile' => 480,
         'tablet' => 768,
+        'laptop' => 1366,
         'desktop' => 1920,
     ];
 
@@ -605,7 +608,7 @@ class ImageThumbnail implements ImageThumbnailInterface
 
         $colSize = !empty($options['colSize']) ? intval($options['colSize']) : 12;
         $asCrop = is_numeric($thumb->getDataX()) || is_numeric($thumb->getDataY()) || is_numeric($mediaRelation->getMaxWidth()) || is_numeric($mediaRelation->getMaxHeight());
-        if ($width && $height && !$asCrop && $initCropWidth && $colSize && $colSize < 12 && in_array($size, self::SCREENS_SIZES['desktop'])) {
+        if ($width && $height && !$asCrop && $initCropWidth && $colSize && $colSize < 12 && (in_array($size, self::SCREENS_SIZES['desktop']) || in_array($size, self::SCREENS_SIZES['laptop']))) {
             $isRetinaSize = in_array($size, self::RETINA_SIZES);
             $containerSize = $isRetinaSize ? self::CONTAINER_SIZE[$size / 2] : self::CONTAINER_SIZE[$size];
             $colRatio = 12 / $colSize;
@@ -1469,8 +1472,9 @@ class ImageThumbnail implements ImageThumbnailInterface
             $mediaQueries = [
                 480  => '(max-width: 767px)',
                 768  => '(min-width: 768px) and (max-width: 991px)',
-                1200 => '(min-width: 992px) and (max-width: 1399px)',
-                1920 => '(min-width: 1400px)',
+                1200 => '(min-width: 992px) and (max-width: 1279px)',
+                1366 => '(min-width: 1280px) and (max-width: 1599px)',
+                1920 => '(min-width: 1600px)',
             ];
 
             $linkProvider = $this->coreLocator->request()->attributes->get('_links', new GenericLinkProvider());

@@ -34,7 +34,7 @@ export default function (sliders) {
 
                 let isMobile = screenWidth <= 767;
                 let isTablet = screenWidth > 767 && screenWidth <= 991;
-                let isMiniPc = screenWidth > 991 && screenWidth <= 1199;
+                let isLaptop = screenWidth > 991 && screenWidth <= 1199;
                 let isMediumPc = screenWidth > 1199 && screenWidth <= 1399;
 
                 let activeSlider = (!slider.classList.contains('not-mobile') && !slider.classList.contains('not-desktop') && !slider.classList.contains('max-tablet'))
@@ -48,7 +48,7 @@ export default function (sliders) {
                     let itemsCount = items.length;
                     let promoteFirst = slider.dataset.promoteFirst ? parseInt(slider.dataset.promoteFirst) === 1 : false;
                     let perPage = slider.dataset.items ? parseInt(slider.dataset.items) : 1;
-                    let perPageMiniPc = slider.dataset.itemsMiniPc ? parseInt(slider.dataset.itemsMiniPc) : 2;
+                    let perPageLaptop = slider.dataset.itemsLaptop ? parseInt(slider.dataset.itemsLaptop) : 2;
                     let perPageMediumPc = slider.dataset.itemsMediumPc ? parseInt(slider.dataset.itemsMediumPc) : 2;
                     let perPageTablet = slider.dataset.itemsTablet ? parseInt(slider.dataset.itemsTablet) : 2;
                     let perPageMobile = slider.dataset.itemsMobile ? parseInt(slider.dataset.itemsMobile) : 1;
@@ -64,18 +64,18 @@ export default function (sliders) {
                     let focusMobile = slider.dataset.focusMobile ? slider.dataset.focusMobile : focus;
                     let focusTablet = slider.dataset.focusTablet ? slider.dataset.focusTablet : focusMobile;
                     let focusMediumPc = slider.dataset.focusMediumPc ? slider.dataset.focusMediumPc : focusTablet;
-                    let focusMiniPc = slider.dataset.focusMiniPc ? slider.dataset.focusMiniPc : focusMediumPc;
+                    let focusLaptop = slider.dataset.focusLaptop ? slider.dataset.focusLaptop : focusMediumPc;
                     let gap = slider.dataset.gap ? slider.dataset.gap : '0rem';
                     let gapMobile = slider.dataset.gapMobile ? slider.dataset.gapMobile : gap;
                     let gapTablet = slider.dataset.gapTablet ? slider.dataset.gapTablet : gapMobile;
                     let gapMediumPc = slider.dataset.gapMediumPc ? slider.dataset.gapMediumPc : gapTablet;
-                    let gapMiniPc = slider.dataset.gapMiniPc ? slider.dataset.gapMiniPc : gapMediumPc;
+                    let gapLaptop = slider.dataset.gapLaptop ? slider.dataset.gapLaptop : gapMediumPc;
                     let initWidth = slider.dataset.width ? parseInt(slider.dataset.offsetMobile) : 1;
                     let offset = slider.dataset.offset ? parseInt(slider.dataset.offset) : 0;
                     let offsetMobile = slider.dataset.offsetMobile ? parseInt(slider.dataset.offsetMobile) : 0;
                     let offsetTablet = slider.dataset.offsetTablet ? parseInt(slider.dataset.offsetTablet) : offsetMobile;
                     let offsetMediumPc = slider.dataset.offsetMediumPc ? parseInt(slider.dataset.offsetMediumPc) : offsetTablet;
-                    let offsetMiniPc = slider.dataset.offsetMiniPc ? parseInt(slider.dataset.offsetMiniPc) : offsetMediumPc;
+                    let offsetLaptop = slider.dataset.offsetLaptop ? parseInt(slider.dataset.offsetLaptop) : offsetMediumPc;
                     let counter = slider.dataset.counter ? parseInt(slider.dataset.counter) === 1 : false;
                     let btnPrevIdentifier = slider.dataset.btnPrev ? slider.dataset.btnPrev : '.btn-prev';
                     let btnNextIdentifier = slider.dataset.btnNext ? slider.dataset.btnNext : '.btn-next';
@@ -99,11 +99,11 @@ export default function (sliders) {
                         offset = offsetMediumPc;
                         focus = focusMediumPc;
                         gap = gapMediumPc;
-                    } else if (isMiniPc) {
-                        itemsLength = perPageMiniPc;
-                        offset = offsetMiniPc;
-                        focus = focusMiniPc;
-                        gap = gapMiniPc;
+                    } else if (isLaptop) {
+                        itemsLength = perPageLaptop;
+                        offset = offsetLaptop;
+                        focus = focusLaptop;
+                        gap = gapLaptop;
                     }
 
                     if (itemsCount <= itemsLength) {
@@ -162,7 +162,7 @@ export default function (sliders) {
                         } else if (window.innerWidth >= 1200 && window.innerWidth < 1300) {
                             perPageScreen = perPageMediumPc;
                         } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
-                            perPageScreen = perPageMiniPc;
+                            perPageScreen = perPageLaptop;
                         } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
                             perPageScreen = perPageTablet;
                         } else {

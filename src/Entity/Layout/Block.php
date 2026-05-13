@@ -41,7 +41,7 @@ class Block extends BaseConfiguration
     protected ?int $tabletSize = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    protected ?int $miniPcSize = null;
+    protected ?int $laptopSize = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $width = null;
@@ -233,14 +233,14 @@ class Block extends BaseConfiguration
         return $this;
     }
 
-    public function getMiniPcSize(): ?int
+    public function getLaptopSize(): ?int
     {
-        return $this->miniPcSize;
+        return $this->laptopSize;
     }
 
-    public function setMiniPcSize(?int $miniPcSize): static
+    public function setLaptopSize(?int $laptopSize): static
     {
-        $this->miniPcSize = $miniPcSize;
+        $this->laptopSize = $laptopSize;
 
         return $this;
     }
