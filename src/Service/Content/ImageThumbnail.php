@@ -949,7 +949,11 @@ class ImageThumbnail implements ImageThumbnailInterface
                                 && filesize($newDirname) > filesize($copyDirname)) {
                                 $this->filesystem->copy($copyDirname, $newDirname, true);
                             }
-                            $path = $newPath;
+                            // Only switch $path to the webp/avif variant if it was actually written.
+                            // Prevents returning URLs pointing to non-existent files (404 in <picture>).
+                            if ($this->filesystem->exists($newDirname)) {
+                                $path = $newPath;
+                            }
                         }
                     } catch (\Exception $e) {
                     }
@@ -961,7 +965,103 @@ class ImageThumbnail implements ImageThumbnailInterface
             $path = $this->schemeAndHttpHost.str_replace('\\', '/', $dirname);
         }
 
-        return str_replace(['//thumbnails', '/public'], ['/thumbnails', ''], $path);
+        // Final guard: if the resolved URL points to a missing file, regenerate it via
+        // GD from the original uploaded source rather than returning a broken URL.
+        $resolvedPath = str_replace(['//thumbnails', '/public'], ['/thumbnails', ''], $path);
+        $localFile = $this->projectDirname.'/public'.str_replace($this->schemeAndHttpHost, '', $resolvedPath);
+        $localFile = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $localFile);
+        if (!$this->filesystem->exists($localFile)) {
+            $uploadDir = ($media && $media->getWebsite()) ? $media->getWebsite()->getUploadDirname() : $this->uploadDirname;
+            $originalName = $media ? $media->getOriginalName() : null;
+            $sourceFile = $originalName && !str_contains($originalName, '/medias/') && !str_contains($originalName, '/build/')
+                ? $this->projectDirname.'/public/uploads/'.$uploadDir.'/'.$originalName
+                : $this->projectDirname.'/public'.($originalName ?: $dirname);
+            $sourceFile = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $sourceFile);
+
+            if ($this->filesystem->exists($sourceFile)
+                && $this->generateFallbackImage($sourceFile, $localFile, $runtimeConfig, (string) $filter)) {
+                return $resolvedPath;
+            }
+
+            if ($this->filesystem->exists($sourceFile)) {
+                $sourceUrl = $this->schemeAndHttpHost.str_replace([$this->projectDirname.'/public', '\\'], ['', '/'], $sourceFile);
+                return str_replace(['//', '/public'], ['/', ''], $sourceUrl);
+            }
+        }
+
+        return $resolvedPath;
+    }
+
+    /**
+     * Fallback generator: encode a WebP at $targetFile from $sourceFile, applying
+     * the resize implied by $runtimeConfig['thumbnail']['size'] and the lazy-blur
+     * when the filter is 'media1'. Used when Liip / the primary pipeline did not
+     * produce the expected file (avoids 404s on srcset variants).
+     */
+    private function generateFallbackImage(string $sourceFile, string $targetFile, array $runtimeConfig, string $filter): bool
+    {
+        if (!$this->filesystem->exists($sourceFile)) {
+            return false;
+        }
+
+        $targetDir = dirname($targetFile);
+        if (!$this->filesystem->exists($targetDir)) {
+            try {
+                $this->filesystem->mkdir($targetDir);
+            } catch (\Throwable $e) {
+                return false;
+            }
+        }
+
+        $sourceExtension = strtolower(pathinfo($sourceFile, PATHINFO_EXTENSION));
+        try {
+            $img = match ($sourceExtension) {
+                'png' => @imagecreatefrompng($sourceFile),
+                'jpg', 'jpeg' => @imagecreatefromjpeg($sourceFile),
+                'webp' => @imagecreatefromwebp($sourceFile),
+                default => false,
+            };
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+        if (!$img instanceof \GdImage) {
+            return false;
+        }
+
+        $imgWidth = imagesx($img);
+        $imgHeight = imagesy($img);
+        $expectedWidth = ('media1' !== $filter && isset($runtimeConfig['thumbnail']['size'][0]))
+            ? (int) $runtimeConfig['thumbnail']['size'][0] : $imgWidth;
+        $expectedHeight = ('media1' !== $filter && isset($runtimeConfig['thumbnail']['size'][1]))
+            ? (int) $runtimeConfig['thumbnail']['size'][1] : $imgHeight;
+
+        $image = imagecreatetruecolor($expectedWidth, $expectedHeight);
+        imagealphablending($image, false);
+        imagesavealpha($image, true);
+        $trans = imagecolorallocatealpha($image, 0, 0, 0, 127);
+        imagefilledrectangle($image, 0, 0, $expectedWidth - 1, $expectedHeight - 1, $trans);
+
+        if ($expectedWidth === $imgWidth && $expectedHeight === $imgHeight) {
+            imagecopy($image, $img, 0, 0, 0, 0, $imgWidth, $imgHeight);
+        } else {
+            imagecopyresampled($image, $img, 0, 0, 0, 0, $expectedWidth, $expectedHeight, $imgWidth, $imgHeight);
+        }
+
+        if ('media1' === $filter) {
+            for ($i = 0; $i < 12; ++$i) {
+                imagefilter($image, IMG_FILTER_GAUSSIAN_BLUR);
+                imagefilter($image, IMG_FILTER_SMOOTH, 6);
+            }
+            $written = @imagewebp($image, $targetFile, 'png' === $sourceExtension ? 2 : 50);
+        } else {
+            $written = @imagewebp($image, $targetFile, 78);
+        }
+
+        imagedestroy($img);
+        imagedestroy($image);
+
+        return $written && $this->filesystem->exists($targetFile);
     }
 
     /**

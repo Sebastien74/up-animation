@@ -472,7 +472,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
 
         return
 //            "require-trusted-types-for 'script'; ".
-            "trusted-types default dompurify webpack-policy 'allow-duplicates'; ".
+            "trusted-types default dompurify webpack-policy goog#html 'allow-duplicates'; ".
             "default-src 'self'; ".
             "frame-src ".implode(' ', $allowedFrame)."; ".
             "script-src ".implode(' ', $allowedScriptDomains)."; ".
