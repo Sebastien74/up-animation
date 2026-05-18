@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/medias/images/default/logo.svg" alt="Up Animation logo" width="320">
+</p>
+
 # Up Animation
 
 [![Generic badge](https://img.shields.io/badge/Version-7-purple.svg?style=flat-square&color=rgba(120,5,120))](https://github.com/Sebastien74/SFCMS-7)
