@@ -7,6 +7,7 @@
 ------------------------------------------------------------------ */
 
 @import "../../../front/default/variables";
+@import "../../../front/default/themes/maps-light"; /** Dynamic JS-loaded entry: ship the light-theme maps as baseline */
 @import "../../../vendor/mixin/media-queries";
 
 .marquee {

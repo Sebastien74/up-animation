@@ -1,0 +1,465 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Module : Front - Dark theme maps
+    Copyright : 2026
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    Tokenized maps built from the current colors in scope.
+    Must be imported AFTER variables.scss and the dark color overrides.
+
+    Note: $buttons is intentionally NOT defined here — vendor-desktop/vendor-mobile
+    consume the canonical light $buttons structure (re-evaluated against the
+    current dark color globals) so that glass/blur button variants stay supported.
+
+    1 ) $theme-colors
+    2 ) $alert-colors
+    3 ) $elements
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Theme colors
+-----------------------------------*/
+
+$theme-colors: (
+    'primary': $primary,
+    'primary-darken': $primary-darken,
+    'success': $success,
+    'danger': $danger,
+    'light': $light,
+    'lighten': $lighten,
+    'dark': $dark,
+    'dark-lighten': $dark-lighten,
+    'black': $black,
+    'white': $white,
+    'muted': $gray-500,
+) !default;
+
+/*-----------------------------------
+   2 ) Alerts
+-----------------------------------*/
+
+$alert-colors: () !default;
+$alert-colors: map-merge((
+    'primary': ('bg': $body-bg, 'color': $primary, 'border': $primary, 'color-icon': $white, 'bg-icon': $primary, 'font-size': $font-size-base),
+    'secondary': ('bg': $body-bg, 'color': $secondary, 'border': $secondary, 'color-icon': $white, 'bg-icon': $secondary, 'font-size': $font-size-base),
+    'success': ('bg': $body-bg, 'color': $success, 'border': $success, 'color-icon': $white, 'bg-icon': $success, 'font-size': $font-size-base),
+    'info': ('bg': $body-bg, 'color': $info, 'border': $info, 'color-icon': $white, 'bg-icon': $info, 'font-size': $font-size-base),
+    'warning': ('bg': $body-bg, 'color': $warning, 'border': $warning, 'color-icon': $white, 'bg-icon': $warning, 'font-size': $font-size-base),
+    'danger': ('bg': $body-bg, 'color': $danger, 'border': $danger, 'color-icon': $white, 'bg-icon': $danger, 'font-size': $font-size-base),
+    'danger-light': ('bg': $body-bg, 'color': $danger-light, 'border': $danger-light, 'color-icon': $white, 'bg-icon': $danger-light, 'font-size': $font-size-base),
+    'light': ('bg': $body-bg, 'color': $gray-900, 'border': $light, 'color-icon': $gray-900, 'bg-icon': $light, 'font-size': $font-size-base),
+    'dark': ('bg': $body-bg, 'color': $dark, 'border': $dark, 'color-icon': $white, 'bg-icon': $dark, 'font-size': $font-size-base),
+    'black': ('bg': $black, 'color': $white, 'border': $black, 'color-icon': $white, 'bg-icon': $black, 'font-size': $font-size-base),
+    'white': ('bg': $white, 'color': $dark, 'border': $dark, 'color-icon': $white, 'bg-icon': $dark, 'font-size': $font-size-base),
+), $alert-colors);
+
+/*-----------------------------------
+   3 ) Elements
+-----------------------------------*/
+
+$elements: () !default;
+$elements: map-merge((
+    'h1, h1 a, .h1, .h1 a': (
+        'properties': (
+            'color': $white,
+            'font-weight': 600,
+            'font-family': $font-title,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $white,
+            'info': $white,
+            'warning': $black,
+            'danger': $white,
+            'danger-light': $black,
+            'light': $black,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $black,
+        )
+    ),
+    'h2, h2 a, .h2, .h2 a': (
+        'properties': (
+            'color': $body-color,
+            'font-weight': 700,
+            'font-family': $font-title,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $white,
+            'info': $white,
+            'warning': $black,
+            'danger': $white,
+            'danger-light': $black,
+            'light': $black,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $black,
+        )
+    ),
+    'h2 span, .h2 span': (
+        'properties': (
+            'color': $primary,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $primary,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $primary,
+            'dark-lighten': $primary,
+            'white': $primary,
+        )
+    ),
+    'h3, h3 a, .h3, .h3 a': (
+        'properties': (
+            'color': $body-color,
+            'text-transform': initial,
+            'font-weight': 300,
+            'font-family': $font-title
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $white,
+            'info': $white,
+            'warning': $black,
+            'danger': $white,
+            'danger-light': $black,
+            'light': $black,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $black,
+        )
+    ),
+    'h4, h4 a, .h4, .h4 a': (
+        'properties': (
+            'color': $body-color,
+            'font-weight': 300,
+            'font-family': $font-title,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $white,
+            'info': $white,
+            'warning': $black,
+            'danger': $white,
+            'danger-light': $black,
+            'light': $black,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $black,
+        )
+    ),
+    'h5, h5 a, .h5, .h5 a': (
+        'properties': (
+            'color': $body-color,
+            'font-weight': 300,
+            'font-family': $font-title,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $white,
+            'info': $white,
+            'warning': $black,
+            'danger': $white,
+            'danger-light': $black,
+            'light': $black,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $black,
+        )
+    ),
+    'h6, h6 a, .h6, .h6 a': (
+        'properties': (
+            'color': $body-color,
+            'font-weight': 300,
+            'font-family': $font-title,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $white,
+            'info': $white,
+            'warning': $black,
+            'danger': $white,
+            'danger-light': $black,
+            'light': $black,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $black,
+        )
+    ),
+    '.sub-title': (
+        'properties': (
+            'color': $body-color,
+            'font-weight': 500,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $white,
+            'info': $white,
+            'warning': $black,
+            'danger': $white,
+            'danger-light': $black,
+            'light': $black,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $black,
+        )
+    ),
+    'p': (
+        'properties': (
+            'color': $body-color,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $white,
+            'info': $white,
+            'warning': $black,
+            'danger': $white,
+            'danger-light': $black,
+            'light': $black,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $black,
+        )
+    ),
+    '.body, p': (
+        'properties': (
+            'color': $body-color,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $white,
+            'info': $white,
+            'warning': $black,
+            'danger': $white,
+            'danger-light': $black,
+            'light': $black,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $black,
+        )
+    ),
+    'a.link, a.link span, a.link svg, .open-gdpr-modal.link, .body a, .introduction a, a.phone-link, a.email-link': (
+        'properties': (
+            'color': $primary,
+            'transition': all .3s linear,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $primary,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $white,
+            'dark-lighten': $white,
+            'black': $white,
+            'white': $primary,
+        )
+    ),
+    'a:hover, a:hover .title, a:hover span, a.link:hover, a.link:hover span': (
+        'properties': (
+            'color': $primary,
+            'transition': all .3s linear,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $primary,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $white,
+            'dark-lighten': $white,
+            'black': $white,
+            'white': $primary,
+        )
+    ),
+    '.news-category-title': (
+        'properties': (
+            'color': $secondary,
+        ),
+    ),
+    'small': (
+        'properties': (
+            'font-size': ('xs': $font-size-small, 'sm': $font-size-small, 'md': $font-size-small, 'lg': $font-size-small, 'xl': $font-size-small),
+        ),
+    ),
+    'span, small, time, figcaption, strong, i, .caption-title': (
+        'properties': (
+            'color': $body-color,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $white,
+            'info': $white,
+            'warning': $black,
+            'danger': $white,
+            'danger-light': $black,
+            'light': $black,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $black,
+        )
+    ),
+    'form .form-text': (
+        'properties': (
+            'color': $info,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $info !important,
+            'primary-darken': $info !important,
+            'secondary': $info !important,
+            'success': $info !important,
+            'info': $white !important,
+            'warning': $info !important,
+            'danger': $info !important,
+            'danger-light': $info !important,
+            'light': $info !important,
+            'dark': $info !important,
+            'dark-lighten': $info !important,
+            'white': $info !important,
+        )
+    ),
+    'svg-not-initial': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $body-color,
+        )
+    ),
+    'img-copyright-svg': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $white,
+            'dark-lighten': $white,
+            'black': $white,
+            'white': $primary,
+        )
+    ),
+    'link-block': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $white,
+            'dark-lighten': $white,
+            'black': $white,
+            'white': $primary,
+        )
+    ),
+    'link-block-hover': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $warning,
+            'secondary': $warning,
+            'success': $warning,
+            'info': $white,
+            'warning': $warning,
+            'danger': $warning,
+            'danger-light': $warning,
+            'light': $warning,
+            'dark': $warning,
+            'dark-lighten': $warning,
+            'white': $warning,
+        )
+    ),
+    'form:not(.floating-form) .form-label, form .file-group .form-label, form .form-check-label': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $white,
+            'success': $body-color,
+            'info': $white,
+            'warning': $body-color,
+            'danger': $white,
+            'danger-light': $body-color,
+            'light': $body-color,
+            'dark': $white,
+            'dark-lighten': $white,
+            'white': $body-color,
+        )
+    ),
+    '.asterisk, .invalid-feedback, sup.asterisk': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $danger !important,
+            'secondary': $danger !important,
+            'success': $danger !important,
+            'info': $danger !important,
+            'warning': $danger !important,
+            'danger': $white !important,
+            'danger-light': $danger !important,
+            'light': $danger !important,
+            'dark': $danger !important,
+            'dark-lighten': $danger !important,
+            'white': $danger !important,
+        )
+    ),
+    '.asterisk-group': (
+        'excluded': true,
+        'colors-in-backgrounds': (
+            'primary': $danger,
+            'secondary': $danger,
+            'success': $danger,
+            'info': $danger,
+            'warning': $danger,
+            'danger': $white,
+            'danger-light': $danger,
+            'light': $danger,
+            'dark': $danger,
+            'dark-lighten': $danger,
+            'white': $danger,
+        )
+    )
+), $elements);
+
+/* Layer the light-theme structure on top so that any selector/key dark doesn't
+   redefine (e.g. 'bullet', 'wrap-icon', glass/blur button variants) is filled in
+   with the light-theme keys, evaluated against the current dark color globals.
+   !default + shallow map-merge guarantees dark redefinitions win on collision. */
+@import 'maps-light';
+

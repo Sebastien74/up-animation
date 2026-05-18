@@ -114,6 +114,7 @@
         line-height: 1.2;
 
         // Texte lisible : minimum AA en contraste
+        // Exception @media brut : feature query d'accessibilité, pas un breakpoint.
         @media (prefers-contrast: more) {
             //background-color: #fff;
             //color: #000;

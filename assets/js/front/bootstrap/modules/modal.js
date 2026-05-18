@@ -3,6 +3,9 @@
  *
  * @author Sébastien FOURNIER <contact@sebastien-fournier.com>
  */
+
+import('../../../../scss/front/default/components/blocks/_modal.scss');
+
 export default function () {
 
     import('../dist/modal').then(({default: Modal}) => {

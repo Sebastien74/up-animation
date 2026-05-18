@@ -56,6 +56,11 @@ $grid-end-lines: (
     min-width: 0;
 
     > .layout-block {
+        /* Exception au CLAUDE.md sur var(--xxx) : --item-span est une variable
+           CSS de cascade runtime. Le span est défini sur la colonne parente
+           (.col-N, ci-dessous) et hérité par .layout-block. Le remplacer par
+           une variable SCSS forcerait à dupliquer la règle grid-column par
+           breakpoint × par taille de colonne, sans gain de maintenabilité. */
         --item-span: 12;
         grid-column: span var(--item-span);
         width: 100%;
@@ -93,7 +98,7 @@ $grid-end-lines: (
 
 @each $bp, $min in $grid-breakpoints {
     @if $bp != xs {
-        @media (min-width: $min) {
+        @include mediaQuery(min-#{$bp}) {
             @for $i from 1 through $grid-columns {
                 .cards-grid > .col-#{$bp}-#{$i} {
                     --item-span: #{$i};
@@ -191,7 +196,7 @@ $grid-end-lines: (
 
 @each $bp, $min in $grid-breakpoints {
     @if $bp != xs {
-        @media (min-width: $min) {
+        @include mediaQuery(min-#{$bp}) {
             .layout-col.justify-content-#{$bp}-start {
                 @include single-row-align-breakpoint($bp, start);
             }
@@ -219,7 +224,7 @@ $grid-end-lines: (
 
 @each $bp, $min in $grid-breakpoints {
     @if $bp != xs {
-        @media (min-width: $min) {
+        @include mediaQuery(min-#{$bp}) {
             .cards-grid > .col-#{$bp}-1 { grid-column: span 1 !important; }
             .cards-grid > .col-#{$bp}-2 { grid-column: span 2 !important; }
             .cards-grid > .col-#{$bp}-3 { grid-column: span 3 !important; }

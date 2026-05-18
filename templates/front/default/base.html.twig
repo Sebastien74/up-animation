@@ -136,8 +136,8 @@
         {%- endif -%}
         {%- block microData -%}{%- endblock -%}
 
-        <!-- Main Stylesheets -->
-        {%- block stylesheets -%}{%- endblock -%}
+        {# bloc stylesheets déplacé après le framework CSS (cf. ligne 158)
+           pour que les overrides page-spécifiques aient la priorité de cascade #}
 
 {#REGARDER ISACAR POR LES PRELOAD FONT ETC#}
 {#REGARDER ISACAR POR LES PRELOAD FONT ETC#}
@@ -153,9 +153,12 @@
         <link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" rel="preload" as="style" class="preload-css" nonce="{{ csp_nonce() }}" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" nonce="{{ csp_nonce() }}"></noscript>
 
-        <!-- Stylesheets -->
-        {{ encore_entry_link_tags('front-'~websiteTemplate~'-vendor-mobile', null, webpack, {media: 'screen and (max-width: 575px)', nonce: csp_nonce()}) }}
-        {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~frontTheme, null, webpack, {media: 'screen and (min-width: 576px)', nonce: csp_nonce()}) }}
+        <!-- Framework stylesheets (loaded once, cached, applied for all viewports) -->
+        {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~frontTheme, null, webpack, {nonce: csp_nonce()}) }}
+
+        <!-- Page-specific stylesheets (after framework so page rules win the cascade) -->
+        {%- block stylesheets -%}{%- endblock -%}
+
         {%- if axeptioExternal or axeptioId -%}
             <link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-gdpr.css', webpack) }}" rel="preload" as="style" nonce="{{ csp_nonce() }}" onload="this.onload=null;this.rel='stylesheet'">
             <noscript><link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-gdpr.css', webpack) }}" rel="stylesheet" nonce="{{ csp_nonce() }}"></noscript>

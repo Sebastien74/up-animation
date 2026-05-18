@@ -71,6 +71,7 @@ $font-light: 'Opendyslexicalta';
 $font-secondary: 'Opendyslexicalta';
 
 @import "../variables";
+@import "../themes/maps-light"; /** Dynamic JS-loaded entry: ship the light-theme maps as baseline */
 @import "../variables-bootstrap";
 
 /*-----------------------------------

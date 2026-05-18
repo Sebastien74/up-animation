@@ -13,8 +13,8 @@
     /*! purgecss start ignore */
 
     #contact-tab-wrap {
-        padding-right: calc(var(--bs-gutter-x) * .5);
-        padding-left: calc(var(--bs-gutter-x) * .5);
+        padding-right: $gutter-x * .5;
+        padding-left: $gutter-x * .5;
     }
 
     form.search-engine-form {

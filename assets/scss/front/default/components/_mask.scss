@@ -1,13 +1,18 @@
 .masked-wrap-primary, .masked-wrap-secondary {
     img {
         width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
     }
 }
 
 .masked-wrap-primary {
+    aspect-ratio: 1380.2 / 1089.58;
     mask: url(../../../../medias/images/front/default/blob.svg) no-repeat center / 100% 100%;
 }
 
 .masked-wrap-secondary {
+    aspect-ratio: 5788.02 / 5361.34;
     mask: url(../../../../medias/images/front/default/blob-secondary.svg) no-repeat center / 100% 100%;
 }

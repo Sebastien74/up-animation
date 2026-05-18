@@ -6,6 +6,13 @@ import {isInViewport} from "../functions"
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  * @doc https://masonry.desandro.com
  */
+
+if (document.documentElement.dataset.theme === 'dark') {
+    import('../../../../scss/front/default/components/blocks/_media-dark.scss');
+} else {
+    import('../../../../scss/front/default/components/blocks/_media-light.scss');
+}
+
 export default function (blocksMedias) {
     // Prefer IntersectionObserver to avoid per-element scroll listeners
     const canObserve = 'IntersectionObserver' in window;

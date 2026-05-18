@@ -770,6 +770,9 @@ body #content-page #user-switcher-modal-alert {
    2 ) Responsive / Prefers
 -----------------------------------*/
 
+/* Exception au CLAUDE.md sur @media brut : `prefers-reduced-motion` est
+   une media feature query (accessibilité), pas un breakpoint largeur.
+   La mixin mediaQuery() du projet ne couvre que les breakpoints, par design. */
 @media (prefers-reduced-motion: reduce) {
     * {
         animation: none !important;

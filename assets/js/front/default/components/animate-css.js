@@ -2,6 +2,14 @@
  * ANIMATE CSS
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
+ *
+ * Note: this module assigns the `animate__animated` and `animate__<effect>` classes
+ * but does NOT load the animate.css stylesheet by default. Animations stay silent
+ * unless the CSS is imported. To activate site-wide animations, uncomment the
+ * dynamic import below — webpack will produce an async chunk loaded only when this
+ * module itself is loaded (i.e. when at least one [data-animation] element exists).
+ *
+ *   import('animate.css/animate.min.css');
  */
 
 import {isInViewport} from "../functions"

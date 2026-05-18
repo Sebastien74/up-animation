@@ -4,6 +4,14 @@
     Module : Marquee
     Copyright : 2026
     Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    Exception au CLAUDE.md sur var(--xxx) : les `--_xxx` (--_gap, --_speed,
+    --_containerWidth, etc.) sont l'API privée runtime de la lib JS
+    vanilla-marquee (préfixe `--_` = convention "private CSS variable"
+    documentée). Elles sont écrites dynamiquement par le JS sur chaque
+    instance .horizontal-marquee / .vertical-marquee. Les remplacer par
+    des variables SCSS casserait le pilotage JS et imposerait des inline
+    styles à chaque marquee.
 ------------------------------------------------------------------ */
 
 .marquee-container.paused {

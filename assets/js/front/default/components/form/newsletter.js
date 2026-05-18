@@ -7,6 +7,8 @@
 import Modal from '../../../bootstrap/dist/modal';
 import {onSubmit} from "../../../../vendor/components/recaptcha";
 
+import('../../../../../scss/front/default/components/form/_newsletter.scss');
+
 export default function () {
 
     /** To display Modal */

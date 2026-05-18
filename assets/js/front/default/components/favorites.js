@@ -9,6 +9,8 @@
  * @licence under the MIT License (LICENSE.txt)
  */
 
+import('../../../../scss/front/default/components/_favorites.scss');
+
 const COOKIE_NAME = 'up_favorites';
 const MAX_FAVORITES = 80;
 const COOKIE_DAYS = 365;

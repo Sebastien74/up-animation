@@ -3,6 +3,9 @@
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
+
+import('../../../../scss/front/default/components/blocks/_counter.scss');
+
 export default function (counters) {
 
     const observer = new IntersectionObserver((entries) => {

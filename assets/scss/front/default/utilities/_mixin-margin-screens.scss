@@ -31,7 +31,7 @@
                     $ratio: false;
                     @if type-of($size) == 'map' {
                         $ratio: map-get($size, 'ratio');
-                        $size: calc(var(--bs-gutter-y-margin) * #{$ratio});
+                        $size: $gutter-y-margin * $ratio;
                     }
 
                     .mt-#{$axisSize}-#{$screen} {
@@ -59,7 +59,7 @@
                     $ratio: false;
                     @if type-of($size) == 'map' {
                         $ratio: map-get($size, 'ratio');
-                        $size: calc(var(--bs-gutter-x-margin) * #{$ratio});
+                        $size: $gutter-x-margin * $ratio;
                     }
 
                     .ms-#{$axisSize}-#{$screen} {

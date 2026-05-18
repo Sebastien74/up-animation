@@ -19,19 +19,21 @@
         c - Fonts
         d - Fonts sizes
         e - Transitions
-        f - Elements
-        g - Main
-        h - Border radius
-        i - Title header
-        j - Breadcrumb
-        k - Margins
-        l - Icon sizes
-        m - App
-        n - Pagination
-    5 ) Buttons
+        f - Main
+        g - Border radius
+        h - Title header
+        i - Breadcrumb
+        j - Margins
+        k - Icon sizes
+        l - App
+        m - Pagination
+    5 ) Buttons (config only — $buttons map in themes/_maps-*.scss)
     6 ) Cards
     7 ) Forms
-    8 ) Alerts
+    8 ) Alerts (config only — $alert-colors map in themes/_maps-*.scss)
+
+    $theme-colors, $elements, $buttons, $alert-colors are theme-scoped
+    and defined in themes/_maps-light.scss and themes/_maps-dark.scss.
 
 ------------------------------------------------------------------------------------------ */
 
@@ -61,9 +63,6 @@ $enable-media-secondary: false !default;
 $enable-browser-ie-alert: false !default;
 $enable-icon: false !default;
 $enable-youtube: false !default;
-$enable-animate-css: false !default;
-$enable-animate-css-animations: (
-) !default;
 
 /*-- c - Modules --*/
 
@@ -136,28 +135,10 @@ $bullet-list-color: $primary !default;
 $default-bootstrap-colors: 'primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark', 'white';
 $btn-colors: 'primary', 'secondary';
 $hover-colors: 'primary', 'secondary';
-$theme-colors: (
-    'primary': $primary,
-    'primary-darken': $primary-darken,
-    'secondary': $secondary,
-    'secondary-light': $secondary-light,
-    'secondary-lighten': $secondary-lighten,
-    'beige': $beige,
-    'success': $success,
-    'info': $info,
-    'info-light': $info-light,
-    'info-lighten': $info-lighten,
-    'info-dark': $info-dark,
-    'warning': $warning,
-    'danger': $danger,
-    'light': $light,
-    'lighten': $lighten,
-    'dark': $dark,
-    'dark-lighten': $dark-lighten,
-    'black': $black,
-    'white': $white,
-    'muted': $gray-500,
-) !default;
+
+/* $theme-colors, $elements, $buttons, $alert-colors are theme-specific maps,
+   defined in themes/_maps-light.scss and themes/_maps-dark.scss and imported
+   AFTER the theme color overrides. */
 
 /*-----------------------------------
    4 ) Core
@@ -287,577 +268,15 @@ $transition-slow: .6s $transition-base-timing !default;
 
 $btn-transition: $transition-base !default;
 
-/*-- f - Elements --*/
 
-$elements: () !default;
-$elements: map-merge((
-    'h1, h1 a, .h1, .h1 a': (
-        'properties': (
-            'color': $body-color,
-            'font-family': $font-title,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
-    'h2, h2 a, .h2, .h2 a': (
-        'properties': (
-            'color': $secondary,
-            'font-weight': 900,
-            'font-family': $font-title,
-            'text-transform': uppercase,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $primary,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $secondary,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $secondary,
-            'danger': $white,
-            'danger-light': $primary,
-            'light': $secondary,
-            'dark': $primary,
-            'dark-lighten': $primary,
-            'white': $secondary,
-        )
-    ),
-    'h2 span, .h2 span': (
-        'properties': (
-            'color': $primary,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $primary,
-            'secondary-light': $primary,
-            'secondary-lighten': $body-color,
-            'success': $primary,
-            'info': $primary,
-            'info-dark': $white,
-            'warning': $primary,
-            'danger': $primary,
-            'danger-light': $primary,
-            'light': $primary,
-            'dark': $primary,
-            'dark-lighten': $primary,
-            'white': $primary,
-        )
-    ),
-    'h3, h3 a, .h3, .h3 a': (
-        'properties': (
-            'color': $body-color,
-            'text-transform': initial,
-            'font-weight': 700,
-            'font-family': $font-title
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $primary,
-        )
-    ),
-    'h4, h4 a, .h4, .h4 a': (
-        'properties': (
-            'color': $body-color,
-            'font-weight': 300,
-            'font-family': $font-title,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
-    'h5, h5 a, .h5, .h5 a': (
-        'properties': (
-            'color': $body-color,
-            'font-weight': 300,
-            'font-family': $font-title,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
-    'h6, h6 a, .h6, .h6 a': (
-        'properties': (
-            'color': $body-color,
-            'font-weight': 300,
-            'font-family': $font-title,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $body-color,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
-    '.sub-title': (
-        'properties': (
-            'color': $body-color,
-            'font-weight': 400,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
-    'p': (
-        'properties': (
-            'color': $body-color,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
-    '.body, .body *': (
-        'properties': (
-            'color': $body-color,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
-    'a, a.link, a.link span, a.link svg, .open-gdpr-modal.link, .body a, .introduction a, a.phone-link, a.email-link': (
-        'properties': (
-            'color': $primary,
-            'transition': all $transition-base,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $primary,
-            'secondary-light': $primary,
-            'secondary-lighten': $primary,
-            'success': $primary,
-            'info': $primary,
-            'info-dark': $primary,
-            'warning': $primary,
-            'danger': $primary,
-            'danger-light': $primary,
-            'light': $primary,
-            'dark': $white,
-            'dark-lighten': $white,
-            'black': $white,
-            'white': $primary,
-        )
-    ),
-    'a:hover, a:hover .title, a:hover span, a.link:hover, a.link:hover span': (
-        'properties': (
-            'color': $primary,
-            'transition': all $transition-base,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $primary,
-            'secondary-light': $primary,
-            'secondary-lighten': $primary,
-            'success': $primary,
-            'info': $primary,
-            'info-dark': $primary,
-            'warning': $primary,
-            'danger': $primary,
-            'danger-light': $primary,
-            'light': $primary,
-            'dark': $white,
-            'dark-lighten': $white,
-            'black': $white,
-            'white': $primary,
-        )
-    ),
-    '.news-category-title': (
-        'properties': (
-            'color': $secondary,
-        ),
-    ),
-    'small': (
-        'properties': (
-            'font-size': ('xs': $font-size-small, 'sm': $font-size-small, 'md': $font-size-small, 'lg': $font-size-small, 'xl': $font-size-small),
-        ),
-    ),
-    'span, small, time, figcaption, strong, i:not(.initial), .caption-title, address, address *': (
-        'properties': (
-            'color': $body-color,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
-    'form .form-text': (
-        'properties': (
-            'color': $info,
-        ),
-        'colors-in-backgrounds': (
-            'primary': $info !important,
-            'primary-darken': $info !important,
-            'secondary': $info !important,
-            'secondary-light': $info !important,
-            'secondary-lighten': $info !important,
-            'success': $info !important,
-            'info': $white !important,
-            'info-dark': $white,
-            'warning': $info !important,
-            'danger': $info !important,
-            'danger-light': $info !important,
-            'light': $info !important,
-            'dark': $info !important,
-            'dark-lighten': $info !important,
-            'white': $info !important,
-        )
-    ),
-    'svg-not-initial': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
-    'img-copyright-svg': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $primary,
-            'info': $primary,
-            'info-dark': $white,
-            'warning': $primary,
-            'danger': $primary,
-            'danger-light': $primary,
-            'light': $primary,
-            'dark': $white,
-            'dark-lighten': $white,
-            'black': $white,
-            'white': $primary,
-        )
-    ),
-    'link-block': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $primary,
-            'success': $primary,
-            'info': $primary,
-            'info-dark': $white,
-            'warning': $primary,
-            'danger': $primary,
-            'danger-light': $primary,
-            'light': $primary,
-            'dark': $white,
-            'dark-lighten': $white,
-            'black': $white,
-            'white': $primary,
-        )
-    ),
-    'link-block-hover': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $warning,
-            'secondary': $warning,
-            'secondary-light': $warning,
-            'secondary-lighten': $warning,
-            'success': $warning,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $warning,
-            'danger': $warning,
-            'danger-light': $warning,
-            'light': $warning,
-            'dark': $warning,
-            'dark-lighten': $warning,
-            'white': $warning,
-        )
-    ),
-    'carousel-indicator': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $white,
-            'success': $primary,
-            'info': $primary,
-            'info-dark': $primary,
-            'warning': $primary,
-            'danger': $primary,
-            'danger-light': $primary,
-            'light': $primary,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $primary,
-        )
-    ),
-    'bullet': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $primary,
-            'success': $primary,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $primary,
-            'danger': $white,
-            'danger-light': $primary,
-            'light': $primary,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $primary,
-        )
-    ),
-    'wrap-icon': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $success,
-            'secondary-lighten': $success,
-            'success': $primary,
-            'beige': $info-light,
-            'info': $white,
-            'info-light': $beige,
-            'info-dark': $white,
-            'warning': $primary,
-            'danger': $white,
-            'danger-light': $primary,
-            'light': $primary,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $primary,
-        )
-    ),
-    'wrap-icon-svg': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $body-color,
-            'secondary-lighten': $body-color,
-            'success': $primary,
-            'beige': $body-color,
-            'info': $white,
-            'info-light': $body-color,
-            'info-dark': $white,
-            'warning': $primary,
-            'danger': $white,
-            'danger-light': $primary,
-            'light': $primary,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $white,
-        )
-    ),
-    'form :not(.form-floating) .form-label span.label-wrap': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
-    'form:not(.floating-form) .form-label, form .file-group .form-label, form .form-check-label': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $white,
-            'secondary': $white,
-            'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
-            'info': $white,
-            'info-dark': $white,
-            'warning': $body-color,
-            'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
-            'dark': $white,
-            'dark-lighten': $white,
-            'white': $body-color,
-        )
-    ),
-    '.asterisk, .invalid-feedback, sup.asterisk': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $danger !important,
-            'secondary': $danger !important,
-            'secondary-light': $danger !important,
-            'secondary-lighten': $danger !important,
-            'success': $danger !important,
-            'info': $danger !important,
-            'info-dark': $danger !important,
-            'warning': $danger !important,
-            'danger': $white !important,
-            'danger-light': $danger !important,
-            'light': $danger !important,
-            'dark': $danger !important,
-            'dark-lighten': $danger !important,
-            'white': $danger !important,
-        )
-    ),
-    '.asterisk-group': (
-        'excluded': true,
-        'colors-in-backgrounds': (
-            'primary': $danger,
-            'secondary': $danger,
-            'secondary-light': $danger,
-            'secondary-lighten': $danger,
-            'success': $danger,
-            'info': $danger,
-            'info-dark': $danger,
-            'warning': $danger,
-            'danger': $white,
-            'danger-light': $danger,
-            'light': $danger,
-            'dark': $danger,
-            'dark-lighten': $danger,
-            'white': $danger,
-        )
-    )
-), $elements);
-
-/*-- g - Main --*/
+/*-- f - Main --*/
 
 $content-page-full-width: 2000px;
 $content-page-box-width: 1600px;
 $content-box: $content-page-full-width;
 $enable-caret: false;
 
-/*-- h - Border radius --*/
+/*-- g - Border radius --*/
 
 $border-radius: 28px !default;
 $border-radius-small: .25rem;
@@ -866,7 +285,7 @@ $border-radius-large: 80px;
 $border-radius-lg: $border-radius;
 $border-radius-sm: $border-radius;
 
-/*-- i - Title header --*/
+/*-- h - Title header --*/
 
 $title-header-padding: 6rem;
 $title-header-color: $white;
@@ -874,7 +293,7 @@ $title-header-font-size: rem(90px);
 $title-header-sub-font-size: rem(31px);
 $title-header-sub-color: $dark;
 
-/*-- j - Breadcrumb --*/
+/*-- i - Breadcrumb --*/
 
 $breadcrumb-padding-x: 0;
 $breadcrumb-padding-y: 1rem;
@@ -888,7 +307,7 @@ $breadcrumb-divider-color: $white;
 $breadcrumb-font-size: rem(15px);
 $breadcrumb-divider-font-size: rem(7px);
 
-/*-- k - Margins ( first key is mediaQuery breakpoint) --*/
+/*-- j - Margins ( first key is mediaQuery breakpoint) --*/
 
 @function strip-unit($value) {
     @return $value / ($value * 0 + 1);
@@ -982,7 +401,7 @@ $marginsScreens: (
 $margins: convert-margins-to-ratio($margins, $gutter-x-margin, $gutter-y-margin);
 $marginsScreens: convert-margins-to-ratio($marginsScreens, $gutter-x-margin, $gutter-y-margin);
 
-/*-- l - Icon sizes --*/
+/*-- k - Icon sizes --*/
 
 $icon-sizes: (
     'xs': #{$browser-context}px,
@@ -993,11 +412,11 @@ $icon-sizes: (
     'xxl': #{$browser-context * 6}px,
 );
 
-/*-- m - App --*/
+/*-- l - App --*/
 
 $orders-limit: 30;
 
-/*-- n - Pagination --*/
+/*-- m - Pagination --*/
 
 $pagination-padding-y: .375rem !default;
 $pagination-padding-x: .75rem !default;
@@ -1041,250 +460,6 @@ $btn-padding: $btn-padding-top $btn-padding-right $btn-padding-bottom $btn-paddi
 $btn-padding-md: $btn-padding-top-md $btn-padding-right-md $btn-padding-bottom-md $btn-padding-left-md;
 $btn-padding-xs: $btn-padding-top-xs $btn-padding-right-xs $btn-padding-bottom-xs $btn-padding-left-xs;
 
-$buttons: (
-    'primary': (
-        'bg': $primary,
-        'border': $primary,
-        'color': $body-color,
-        'bg-hover': darken($primary, 5%),
-        'border-hover': darken($primary, 5%),
-        'color-hover': darken($body-color, 5%),
-        'bg-outline': transparent,
-        'bg-outline-hover': $primary,
-        'color-outline': $primary,
-        'color-outline-hover': $white,
-        'bg-glass': $primary,
-        'bg-glass-hover': darken($primary, 15%),
-        'color-glass': $white,
-        'color-glass-hover': $white,
-        'bg-blur': $primary,
-        'bg-blur-hover': darken($primary, 15%),
-        'color-blur': $primary,
-        'color-blur-hover': $primary,
-    ),
-    'primary-darken': (
-        'bg': $primary-darken,
-        'border': $primary-darken,
-        'color': $white,
-        'bg-hover': darken($primary-darken, 5%),
-        'border-hover': darken($primary-darken, 5%),
-        'color-hover': darken($white, 5%),
-        'bg-outline': transparent,
-        'bg-outline-hover': $primary-darken,
-        'color-outline': $primary-darken,
-        'color-outline-hover': $white,
-        'bg-glass': $primary-darken,
-        'bg-glass-hover': darken($primary-darken, 5%),
-        'color-glass': $white,
-        'color-glass-hover': $white,
-        'bg-blur': $primary-darken,
-        'bg-blur-hover': darken($primary-darken, 15%),
-        'color-blur': $primary-darken,
-        'color-blur-hover': $primary-darken,
-    ),
-    'secondary': (
-        'bg': $secondary,
-        'color': $white,
-        'bg-hover': $white,
-        'color-hover': $secondary,
-        'bg-outline': transparent,
-        'bg-outline-hover': $secondary,
-        'color-outline': $secondary,
-        'color-outline-hover': $white,
-        'bg-glass': $secondary,
-        'bg-glass-hover': lighten($secondary, 5%),
-        'color-glass': $white,
-        'color-glass-hover': $white,
-        'bg-blur': $secondary,
-        'bg-blur-hover': darken($secondary, 15%),
-        'color-blur': $secondary,
-        'color-blur-hover': $secondary,
-    ),
-    'success': (
-        'bg': $success,
-        'color': $white,
-        'bg-hover': $white,
-        'color-hover': $success,
-        'bg-outline': transparent,
-        'bg-outline-hover': $success,
-        'color-outline': $success,
-        'color-outline-hover': $white,
-        'bg-glass': $success,
-        'bg-glass-hover': darken($success, 5%),
-        'color-glass': $white,
-        'color-glass-hover': $white,
-        'bg-blur': $primary,
-        'bg-blur-hover': darken($primary, 15%),
-        'color-blur': $white,
-        'color-blur-hover': $white,
-    ),
-    'info': (
-        'bg': $info,
-        'color': $white,
-        'bg-hover': $white,
-        'color-hover': $info,
-        'bg-outline': transparent,
-        'bg-outline-hover': $info,
-        'color-outline': $info,
-        'color-outline-hover': $white,
-        'bg-glass': $info,
-        'bg-glass-hover': darken($info, 5%),
-        'color-glass': $white,
-        'color-glass-hover': $white,
-        'bg-blur': $info,
-        'bg-blur-hover': darken($info, 15%),
-        'color-blur': $info,
-        'color-blur-hover': $info,
-    ),
-    'warning': (
-        'bg': $warning,
-        'color': $white,
-        'bg-hover': $white,
-        'color-hover': $warning,
-        'bg-outline': transparent,
-        'bg-outline-hover': $warning,
-        'color-outline': $warning,
-        'color-outline-hover': $white,
-        'bg-glass': $warning,
-        'bg-glass-hover': darken($warning, 5%),
-        'color-glass': $gray-900,
-        'color-glass-hover': $gray-900,
-        'bg-blur': $warning,
-        'bg-blur-hover': darken($warning, 15%),
-        'color-blur': $warning,
-        'color-blur-hover': $warning,
-    ),
-    'danger': (
-        'bg': $danger,
-        'color': $white,
-        'bg-hover': $white,
-        'color-hover': $danger,
-        'bg-outline': transparent,
-        'bg-outline-hover': $danger,
-        'color-outline': $danger,
-        'color-outline-hover': $black,
-        'bg-glass': $danger,
-        'bg-glass-hover': darken($danger, 5%),
-        'color-glass': $white,
-        'color-glass-hover': $white,
-        'bg-blur': $danger,
-        'bg-blur-hover': darken($danger, 15%),
-        'color-blur': $danger,
-        'color-blur-hover': $danger,
-    ),
-    'danger-light': (
-        'bg': $danger-light,
-        'color': $white,
-        'bg-hover': $white,
-        'color-hover': $danger-light,
-        'bg-outline': transparent,
-        'bg-outline-hover': $danger-light,
-        'color-outline': $danger-light,
-        'color-outline-hover': $black,
-        'bg-glass': $danger-light,
-        'bg-glass-hover': darken($danger-light, 5%),
-        'color-glass': $gray-900,
-        'color-glass-hover': $gray-900,
-        'bg-blur': $danger-light,
-        'bg-blur-hover': darken($danger-light, 15%),
-        'color-blur': $danger-light,
-        'color-blur-hover': $danger-light,
-    ),
-    'light': (
-        'bg': $light,
-        'color': $black,
-        'bg-hover': $black,
-        'border-hover': $black,
-        'color-hover': $light,
-        'bg-outline': transparent,
-        'bg-outline-hover': $light,
-        'color-outline': $black,
-        'color-outline-hover': $black,
-        'bg-glass': $light,
-        'bg-glass-hover': darken($light, 5%),
-        'color-glass': $gray-900,
-        'color-glass-hover': $gray-900,
-        'bg-blur': $light,
-        'bg-blur-hover': darken($light, 15%),
-        'color-blur': $light,
-        'color-blur-hover': $light,
-    ),
-    'dark': (
-        'bg': $dark,
-        'color': $white,
-        'bg-hover': $white,
-        'color-hover': $dark,
-        'bg-outline': transparent,
-        'bg-outline-hover': $dark,
-        'color-outline': $dark,
-        'color-outline-hover': $white,
-        'bg-glass': $dark,
-        'bg-glass-hover': lighten($dark, 5%),
-        'color-glass': $white,
-        'color-glass-hover': $white,
-        'bg-blur': $dark,
-        'bg-blur-hover': darken($dark, 15%),
-        'color-blur': $dark,
-        'color-blur-hover': $dark,
-    ),
-    'dark-lighten': (
-        'bg': $dark-lighten,
-        'color': $white,
-        'bg-hover': $white,
-        'color-hover': $dark-lighten,
-        'bg-outline': transparent,
-        'bg-outline-hover': $dark-lighten,
-        'color-outline': $dark-lighten,
-        'color-outline-hover': $white,
-        'bg-glass': $dark-lighten,
-        'bg-glass-hover': lighten($dark-lighten, 5%),
-        'color-glass': $white,
-        'color-glass-hover': $white,
-        'bg-blur': $dark-lighten,
-        'bg-blur-hover': darken($dark-lighten, 15%),
-        'color-blur': $dark-lighten,
-        'color-blur-hover': $dark-lighten,
-    ),
-    'black': (
-        'bg': $black,
-        'color': $white,
-        'bg-hover': $white,
-        'color-hover': $black,
-        'bg-outline': transparent,
-        'bg-outline-hover': $black,
-        'color-outline': $black,
-        'color-outline-hover': $white,
-        'bg-glass': $black,
-        'bg-glass-hover': lighten($black, 8%),
-        'color-glass': $white,
-        'color-glass-hover': $white,
-        'bg-blur': $black,
-        'bg-blur-hover': darken($black, 15%),
-        'color-blur': $black,
-        'color-blur-hover': $black,
-    ),
-    'white': (
-        'bg': $white,
-        'border': $white,
-        'color': $primary,
-        'bg-hover': darken($white, 5%),
-        'border-hover': darken($white, 5%),
-        'color-hover': darken($primary, 5%),
-        'bg-outline': transparent,
-        'bg-outline-hover': $white,
-        'color-outline': $white,
-        'color-outline-hover': $primary,
-        'border-outline-hover': $primary,
-        'bg-glass': $white,
-        'bg-glass-hover': darken($white, 4%),
-        'color-glass': $white,
-        'color-glass-hover': $primary,
-        'bg-blur': $white,
-        'bg-blur-hover': darken($white, 15%),
-        'color-blur': $white,
-        'color-blur-hover': $white,
-    ),
-);
 
 /*-----------------------------------
    6 ) Cards
@@ -1340,17 +515,3 @@ $form-file-button-hover-color: $secondary;
 $alert-font-size: 14px;
 $alert-border-radius: .75rem;
 $alert-border-width: 1px;
-$alert-colors: () !default;
-$alert-colors: map-merge((
-    'primary': ('bg': $white, 'color': $primary, 'border': $primary, 'color-icon': $white, 'bg-icon': $primary, 'font-size': $font-size-base),
-    'secondary': ('bg': $white, 'color': $secondary, 'border': $secondary, 'color-icon': $white, 'bg-icon': $secondary, 'font-size': $font-size-base),
-    'success': ('bg': $white, 'color': $success, 'border': $success, 'color-icon': $white, 'bg-icon': $success, 'font-size': $font-size-base),
-    'info': ('bg': $white, 'color': $info, 'border': $info, 'color-icon': $white, 'bg-icon': $info, 'font-size': $font-size-base),
-    'warning': ('bg': $white, 'color': $warning, 'border': $warning, 'color-icon': $white, 'bg-icon': $warning, 'font-size': $font-size-base),
-    'danger': ('bg': $white, 'color': $danger, 'border': $danger, 'color-icon': $white, 'bg-icon': $danger, 'font-size': $font-size-base),
-    'danger-light': ('bg': $white, 'color': $danger-light, 'border': $danger-light, 'color-icon': $white, 'bg-icon': $danger-light, 'font-size': $font-size-base),
-    'light': ('bg': $white, 'color': $black, 'border': $light, 'color-icon': $black, 'bg-icon': $light, 'font-size': $font-size-base),
-    'dark': ('bg': $white, 'color': $dark, 'border': $dark, 'color-icon': $white, 'bg-icon': $dark, 'font-size': $font-size-base),
-    'black': ('bg': $black, 'color': $white, 'border': $black, 'color-icon': $white, 'bg-icon': $black, 'font-size': $font-size-base),
-    'white': ('bg': $white, 'color': $dark, 'border': $dark, 'color-icon': $white, 'bg-icon': $dark, 'font-size': $font-size-base),
-), $alert-colors);

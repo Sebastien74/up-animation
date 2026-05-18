@@ -40,7 +40,11 @@ $focus-color: #ff9800 !global;
 $body-bg: $white !global;
 $body-color: $dark !global;
 
-/*-- b - Variables --*/
+/*-- b - Maps ($theme-colors, $buttons, $elements, $alert-colors) --*/
+
+@import 'maps-light';
+
+/*-- c - CSS custom properties (exposed to JS / runtime overrides) --*/
 
 :root {
     --body-bg: #{$white};

@@ -9,6 +9,11 @@
     MIXIN BUTTON :
     =============
 
+    Note : ce fichier contient plusieurs `@media (prefers-reduced-motion: reduce)`
+    bruts. Exception légitime au CLAUDE.md : il s'agit d'une media feature query
+    (accessibilité), pas d'un breakpoint largeur — la mixin mediaQuery() du
+    projet ne couvre que les breakpoints, par design.
+
 ------------------------------------------------------------------ */
 
 @mixin button($suffix, $config, $screens) {

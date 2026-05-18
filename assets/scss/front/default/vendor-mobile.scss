@@ -23,6 +23,7 @@
 -----------------------------------*/
 
 @import 'variables';
+@import 'themes/maps-light'; /** Standalone entry: ship the light-theme maps as baseline */
 @import 'variables-bootstrap';
 @import '../bootstrap/variables';
 

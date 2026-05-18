@@ -3,6 +3,22 @@
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
+
+const isHome = document.body.id === 'home-body';
+const isDark = document.documentElement.dataset.theme === 'dark';
+
+if (isHome) {
+    if (isDark) {
+        import(/* webpackPreload: true */ '../../../../scss/front/default/components/_carousel-dark.scss');
+    } else {
+        import(/* webpackPreload: true */ '../../../../scss/front/default/components/_carousel-light.scss');
+    }
+} else if (isDark) {
+    import('../../../../scss/front/default/components/_carousel-dark.scss');
+} else {
+    import('../../../../scss/front/default/components/_carousel-light.scss');
+}
+
 export default function () {
 
     const screenWidth = window.screen.width;

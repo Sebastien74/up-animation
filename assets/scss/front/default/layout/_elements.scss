@@ -171,8 +171,8 @@ sup {
 @include mediaQuery(max-md) {
     .first-news-block > .container > .row,
     #results.row {
-        padding-right: calc(var(--bs-gutter-x) * .25);
-        padding-left: calc(var(--bs-gutter-x) * .25);
+        padding-right: $gutter-x * .25;
+        padding-left: $gutter-x * .25;
     }
 }
 

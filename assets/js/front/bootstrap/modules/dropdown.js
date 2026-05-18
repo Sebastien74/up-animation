@@ -3,6 +3,9 @@
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
+
+import('../../../../scss/front/default/components/_dropdown.scss');
+
 export default function () {
 
     import('../dist/dropdown').then(({default: Dropdown}) => {

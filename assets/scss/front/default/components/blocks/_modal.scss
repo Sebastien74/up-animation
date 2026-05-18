@@ -1,60 +1,60 @@
 @charset "UTF-8";
 
-@if $enable-modal {
+@import "../../variables";
+@import "../../utilities/mixins";
 
-    /* -----------------------------------------------------------------
+/* -----------------------------------------------------------------
 
-        Copyright  : 2026
-        Created on : 2021-01-07, 5:15 PM
-        Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Copyright  : 2026
+    Created on : 2021-01-07, 5:15 PM
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
-        FRONT VENDOR MODAL :
-        ====================
+    FRONT VENDOR MODAL :
+    ====================
 
-    ------------------------------------------------------------------ */
+------------------------------------------------------------------ */
+
+.modal {
+
+    z-index: 99999;
+
+    .btn-close {
+
+        box-shadow: none;
+        top: 20px;
+        right: 15px;
+        opacity: 1;
+        background-image: none !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: $primary;
+        cursor: pointer;
+
+        i {
+            color: $white !important;
+        }
+    }
+}
+
+/* purgecss start ignore */
+
+.basicLightbox {
 
     .modal {
+        background-color: transparentize($black, .1);
+    }
 
-        z-index: 99999;
-
-        .btn-close {
-
-            box-shadow: none;
-            top: 20px;
-            right: 15px;
-            opacity: 1;
-            background-image: none !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background-color: $primary;
-            cursor: pointer;
-
-            i {
-                color: $white !important;
-            }
+    .modal-dialog {
+        img {
+            max-height: 85vh;
         }
     }
 
-    /* purgecss start ignore */
-
-    .basicLightbox {
-
-        .modal {
-            background-color: transparentize($black, .1);
-        }
-
-        .modal-dialog {
-            img {
-                max-height: 85vh;
-            }
-        }
-
-        small {
-            color: $gray-600;
-        }
+    small {
+        color: $gray-600;
     }
-
-    /*! purgecss end ignore */
 }
+
+/*! purgecss end ignore */

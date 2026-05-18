@@ -21,14 +21,11 @@
    1 ) Modules
 --------------------------------------*/
 
-$enable-breadcrumb: true;
-$enable-youtube: true;
 
 /*-----------------------------------
    2 ) Core import
 -----------------------------------*/
 
-@import "../vendor";
 @import "../components/contact-us";
 
 .product-view-container {

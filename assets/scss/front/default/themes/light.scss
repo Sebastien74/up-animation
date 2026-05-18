@@ -1,13 +1,70 @@
 @charset "UTF-8";
 
 /* -----------------------------------------------------------------
-    Front - Light Theme
+    Front - Light Theme entry
+
+    Architecture (axe 5) : ce fichier produit le framework CSS complet
+    chargé une fois, mis en cache et partagé par toutes les pages.
+    Les pages/_*.scss ne réimportent plus vendor.scss : elles n'émettent
+    plus que leurs deltas thématiques.
 ------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Theme tokens + maps
+-----------------------------------*/
 
 @import '_light';
 
 /*-----------------------------------
-   3 ) Vendor
+   2 ) Component opt-ins
+   (anciennement pilotés page par page, désormais activés au framework)
 -----------------------------------*/
 
-@import '../vendor-desktop';
+$enable-card: true;
+$enable-form: true;
+$enable-modal: true;
+$enable-button-close: true;
+$enable-thanks-modal: true;
+$enable-form-preloader: true;
+$enable-breadcrumb: true;
+$enable-title-header: true;
+$enable-pagination: true;
+$enable-faq: true;
+$enable-table: true;
+$enable-youtube: true;
+$enable-icon: true;
+$enable-tooltip: true;
+$enable-spinner: true;
+$enable-toast: true;
+$enable-progress: true;
+$enable-badge: true;
+$enable-alert: true;
+$enable-nav: true;
+$enable-code: true;
+$enable-gdpr-page: true;
+
+/*-----------------------------------
+   3 ) Full framework
+-----------------------------------*/
+
+@import '../vendor';
+
+/*-----------------------------------
+   4 ) Screen-scoped extras
+   (ex-vendor-desktop.scss : iteration buttons + scroll-top + appMargins
+   restent ici car ils dépendent de $screens / $breakpoint qui ne sont
+   pas définis dans vendor.scss)
+-----------------------------------*/
+
+$screens: 'all';
+$breakpoint: 'all';
+
+@import '../layout/scroll-top-btn';
+
+@import '../utilities/mixin-margin';
+@include appMargins($margins, (sm: 'max-sm', md: 'between-sm-md', lg: 'between-md-lg', xl: 'between-lg-xl', xxl: 'min-xl'));
+
+@import '../utilities/mixin-button';
+@each $suffix, $config in $buttons {
+    @include button($suffix, $config, $screens);
+}

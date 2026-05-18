@@ -14,7 +14,10 @@
 
 /*! purgecss start ignore */
 
-@import '../components/_animate.scss';
+/* animate.css is not parsed by Sass anymore. It is shipped via npm
+   (`animate.css` package) and loaded on-demand from animate-css.js when
+   elements carry a [data-animation] attribute. See assets/js/front/default/
+   components/animate-css.js for the activation contract. */
 
 .animation {
 

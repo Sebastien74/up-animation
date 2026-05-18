@@ -38,7 +38,7 @@
 
                 .grid-item {
                     @if $min != null and $max != null {
-                        @media (min-width: $min) and (max-width: $max) {
+                        @include mediaQuerySizes($min, $max) {
                             width: $width;
                         }
                     } @else if $max == null {
