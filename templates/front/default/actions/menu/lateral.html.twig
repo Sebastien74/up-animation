@@ -20,7 +20,7 @@
 {%- set contactPageUrl = mainPages.contact.code is defined ? mainPages.contact.code : null -%}
 {%- set newsPageUrl = mainPages.newscasts.code is defined ? mainPages.newscasts.code : null -%}
 {%- set aboutPageUrl = mainPages.about.code is defined ? mainPages.about.code : null -%}
-{%- set notExpanded = 'xxxl' == expand -%}
+{%- set notExpanded = false -%}
 
 {%- macro element(link, tree, companyName, logo, microDataActive, expand, dropdownHover, dropdownItem, isLast, websiteTemplate, notExpanded, haveIcons = false, isHeader = false) -%}
     {%- set dropdownBack = false -%}

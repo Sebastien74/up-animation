@@ -49,24 +49,45 @@ $elements: () !default;
 $elements: map-merge((
     'h1, h1 a, .h1, .h1 a': (
         'properties': (
-            'color': $body-color,
+            'color': $secondary,
             'font-family': $font-title,
         ),
         'colors-in-backgrounds': (
             'primary': $white,
             'secondary': $white,
             'secondary-light': $white,
-            'secondary-lighten': $body-color,
-            'success': $body-color,
+            'secondary-lighten': $secondary,
+            'success': $secondary,
             'info': $white,
             'info-dark': $white,
-            'warning': $body-color,
+            'warning': $secondary,
             'danger': $white,
-            'danger-light': $body-color,
-            'light': $body-color,
+            'danger-light': $secondary,
+            'light': $secondary,
             'dark': $white,
             'dark-lighten': $white,
-            'white': $body-color,
+            'white': $secondary,
+        )
+    ),
+    'h1 span, .h1 span': (
+        'properties': (
+            'color': $primary,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $primary,
+            'secondary-light': $primary,
+            'secondary-lighten': $body-color,
+            'success': $primary,
+            'info': $primary,
+            'info-dark': $white,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $primary,
+            'dark-lighten': $primary,
+            'white': $primary,
         )
     ),
     'h2, h2 a, .h2, .h2 a': (

@@ -43,7 +43,7 @@
         {%- set autoplay = 1 -%}
         <div id="catalog-teaser-{{ teaser.slug }}" class="catalog-teaser splide length-{{ entities|length }}"
              data-items="{{ teaser.itemsPerSlide }}"
-             data-lenght="{{ entities|length }}"
+             data-length="{{ entities|length }}"
              data-items-medium-pc="3"
              data-items-laptop="3"
              data-items-tablet="2"
@@ -59,7 +59,7 @@
             <div class="splide__track ps-lg-3">
                 {%- set arrowsClass = entities|length <= teaser.itemsPerSlide ? ' d-lg-none' : '' -%}
                 {{ macro.arrows(website, autoplay, 'end', 'secondary'~arrowsClass, true, 'top') }}
-                <ul class="splide__list {%- if entities|length < teaser.itemsPerSlide -%} d-lg-flex justify-content-lg-center{% endif %}">
+                <ul class="splide__list{% if entities|length < teaser.itemsPerSlide %} d-lg-flex justify-content-lg-start{% endif %}">
                     {%- for post in entities -%}
                         <li class="splide__slide ps-0 py-4">
                             {%- if 'agencies' == post.catalogSlug -%}

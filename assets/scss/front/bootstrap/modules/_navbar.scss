@@ -210,6 +210,58 @@
         }
     }
 
+    @each $bp-name, $bp-min in (sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400px, xxxl: 1600px) {
+        @media (min-width: #{$bp-min}) {
+            .navbar-expand-#{$bp-name} {
+                flex-wrap: nowrap;
+                justify-content: flex-start
+            }
+            .navbar-expand-#{$bp-name} .navbar-nav {
+                flex-direction: row
+            }
+            .navbar-expand-#{$bp-name} .navbar-nav .dropdown-menu {
+                position: absolute
+            }
+            .navbar-expand-#{$bp-name} .navbar-nav .nav-link {
+                padding-right: var(--bs-navbar-nav-link-padding-x);
+                padding-left: var(--bs-navbar-nav-link-padding-x)
+            }
+            .navbar-expand-#{$bp-name} .navbar-nav-scroll {
+                overflow: visible
+            }
+            .navbar-expand-#{$bp-name} .navbar-collapse {
+                display: flex !important;
+                flex-basis: auto
+            }
+            .navbar-expand-#{$bp-name} .navbar-toggler {
+                display: none
+            }
+            @if $enable-off-canvas {
+                .navbar-expand-#{$bp-name} .offcanvas {
+                    position: static;
+                    z-index: auto;
+                    flex-grow: 1;
+                    width: auto !important;
+                    height: auto !important;
+                    visibility: visible !important;
+                    background-color: transparent !important;
+                    border: 0 !important;
+                    transform: none !important;
+                    transition: none
+                }
+                .navbar-expand-#{$bp-name} .offcanvas .offcanvas-header {
+                    display: none
+                }
+                .navbar-expand-#{$bp-name} .offcanvas .offcanvas-body {
+                    display: flex;
+                    flex-grow: 0;
+                    padding: 0;
+                    overflow-y: visible
+                }
+            }
+        }
+    }
+
 } @else if $enable-navbar and $enable-medias-queries and 'lg' == $breakpoint {
 
     @media (min-width: 576px) {
@@ -465,6 +517,59 @@
                 display: none
             }
             .navbar-expand-xxl .offcanvas .offcanvas-body {
+                display: flex;
+                flex-grow: 0;
+                padding: 0;
+                overflow-y: visible
+            }
+        }
+    }
+
+    @media (min-width: 1600px) {
+
+        .navbar-expand-xxxl {
+            flex-wrap: nowrap;
+            justify-content: flex-start
+        }
+        .navbar-expand-xxxl .navbar-nav {
+            flex-direction: row
+        }
+        .navbar-expand-xxxl .navbar-nav .dropdown-menu {
+            position: absolute
+        }
+        .navbar-expand-xxxl .navbar-nav .nav-link {
+            padding-right: var(--bs-navbar-nav-link-padding-x);
+            padding-left: var(--bs-navbar-nav-link-padding-x)
+        }
+        .navbar-expand-xxxl .navbar-nav-scroll {
+            overflow: visible
+        }
+        .navbar-expand-xxxl .navbar-collapse {
+            display: flex !important;
+            flex-basis: auto
+        }
+        .navbar-expand-xxxl .navbar-toggler {
+            display: none
+        }
+
+        @if $enable-off-canvas {
+
+            .navbar-expand-xxxl .offcanvas {
+                position: static;
+                z-index: auto;
+                flex-grow: 1;
+                width: auto !important;
+                height: auto !important;
+                visibility: visible !important;
+                background-color: transparent !important;
+                border: 0 !important;
+                transform: none !important;
+                transition: none
+            }
+            .navbar-expand-xxxl .offcanvas .offcanvas-header {
+                display: none
+            }
+            .navbar-expand-xxxl .offcanvas .offcanvas-body {
                 display: flex;
                 flex-grow: 0;
                 padding: 0;

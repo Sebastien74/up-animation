@@ -256,6 +256,26 @@ export default function (sliders) {
                         });
                     });
 
+                    let forceSlideWidth = function () {
+                        if (itemsCount < config.perPage) {
+                            const computedSlideWidth = Math.round((slider.clientWidth - offset) / config.perPage);
+                            slider.querySelectorAll('.splide__slide').forEach((slide) => {
+                                slide.style.setProperty('width', computedSlideWidth + 'px', 'important');
+                                slide.style.setProperty('max-width', computedSlideWidth + 'px', 'important');
+                                slide.style.setProperty('min-width', computedSlideWidth + 'px', 'important');
+                                slide.style.setProperty('flex', '0 0 ' + computedSlideWidth + 'px', 'important');
+                            });
+                            const list = slider.querySelector('.splide__list, .splide__track > ul');
+                            if (list) {
+                                list.style.setProperty('display', 'flex', 'important');
+                                list.style.setProperty('width', '100%', 'important');
+                                list.style.setProperty('list-style', 'none', 'important');
+                            }
+                        }
+                    };
+
+                    splide.on('mounted ready resize', forceSlideWidth);
+
                     splide.on('ready', function () {
                         const activeSlide = slider.querySelector('.splide__slide.is-active.is-visible');
                         if (activeSlide) {

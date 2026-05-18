@@ -38,7 +38,7 @@ $dark-lighten: $gray-800 !global;
 $focus-color: #ff9800 !global;
 
 $body-bg: $white !global;
-$body-color: $dark !global;
+$body-color: $secondary !global;
 
 /*-- b - Maps ($theme-colors, $buttons, $elements, $alert-colors) --*/
 
@@ -48,7 +48,7 @@ $body-color: $dark !global;
 
 :root {
     --body-bg: #{$white};
-    --body-color: #{$dark};
+    --body-color: #{$secondary};
     --main-navigation-bg: #{$white};
     --footer-bg: #{$gray-900};
     --footer-color: #{$white};

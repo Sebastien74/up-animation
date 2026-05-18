@@ -80,6 +80,24 @@ $elements: map-merge((
             'white': $black,
         )
     ),
+    'h1 span, .h1 span': (
+        'properties': (
+            'color': $primary,
+        ),
+        'colors-in-backgrounds': (
+            'primary': $white,
+            'secondary': $primary,
+            'success': $primary,
+            'info': $primary,
+            'warning': $primary,
+            'danger': $primary,
+            'danger-light': $primary,
+            'light': $primary,
+            'dark': $primary,
+            'dark-lighten': $primary,
+            'white': $primary,
+        )
+    ),
     'h2, h2 a, .h2, .h2 a': (
         'properties': (
             'color': $body-color,
