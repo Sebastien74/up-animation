@@ -1,40 +1,55 @@
-@charset "UTF-8";
+@import "mixins/banner";
+@include bsBanner("");
 
-@import 'root';
-@import 'reboot';
-@import 'functions';
 
-@import 'modules/accordion';
-@import 'modules/alert';
-@import 'modules/badge';
-@import 'layout/border';
-@import 'modules/breadcrumb';
-@import 'layout/button';
-@import 'modules/card';
-@import 'modules/carousel';
-@import 'layout/color';
-@import 'layout/display';
-@import 'modules/dropdown';
-@import 'modules/form';
-@import 'layout/layout';
-@import 'modules/list';
-@import 'layout/margin';
-@import 'layout/media';
-@import 'modules/modal';
-@import 'modules/nav';
-@import 'modules/navbar';
-@import 'modules/offcanvas';
-@import 'layout/order';
-@import 'modules/pagination';
-@import 'modules/placeholder';
-@import 'modules/popover';
-@import 'modules/progress';
-@import 'modules/ratio';
-@import 'modules/rounded';
-@import 'modules/spinner';
-@import 'modules/table';
-@import 'modules/toast';
-@import 'modules/tooltip';
-@import 'modules/user';
-@import 'layout/elements';
-@import 'layout/blockquote';
+// scss-docs-start import-stack
+// Configuration (always required)
+@import "functions";
+@import "variables";
+@import "variables-dark";
+@import "maps";
+@import "mixins";
+@import "utilities";
+
+// Layout & components
+// NOTE : node-sass interdit @import à l'intérieur d'un @if. Le gating est donc
+// effectué dans chaque partial via "@if $enable-X { ... }" autour du contenu,
+// piloté par les flags définis dans default/variables-bootstrap.scss.
+@import "root";
+@import "reboot";
+@import "type";
+@import "images";
+@import "containers";
+@import "grid";
+@import "tables";
+@import "forms";
+@import "buttons";
+@import "transitions";
+@import "dropdown";
+@import "button-group";
+@import "nav";
+@import "navbar";
+@import "card";
+@import "accordion";
+@import "breadcrumb";
+@import "pagination";
+@import "badge";
+@import "alert";
+@import "progress";
+@import "list-group";
+@import "close";
+@import "toasts";
+@import "modal";
+@import "tooltip";
+@import "popover";
+@import "carousel";
+@import "spinners";
+@import "offcanvas";
+@import "placeholders";
+
+// Helpers
+@import "helpers";
+
+// Utilities
+@import "utilities/api";
+// scss-docs-end import-stack

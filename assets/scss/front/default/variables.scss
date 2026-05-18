@@ -177,7 +177,7 @@ $container-max-widths: (
     xxl: 1320px,
     xxxl: 1440px,
 ) !default;
-$container-fluid-side-limit: 'xl';
+$container-fluid-side-limit: 'md';
 
 /*-- c - Fonts --*/
 
@@ -190,9 +190,9 @@ $container-fluid-side-limit: 'xl';
     @font-face {
         font-family: font-fallback;
         src: url("../../../lib/fonts/Arial/Arial.ttf") format("truetype");
-        size-adjust: 101.88323917%;
-        ascent-override: 92.7734375%;
-        descent-override: 24.4140625%;
+        size-adjust: 95.07193974%;
+        ascent-override: 100%;
+        descent-override: 30.3%;
         line-gap-override: 0%;
         font-display: swap;
     }

@@ -1,0 +1,9 @@
+// scss-enable-gate-applied
+@if $enable-clearfix {
+
+.clearfix {
+  @include clearfix();
+}
+
+
+}

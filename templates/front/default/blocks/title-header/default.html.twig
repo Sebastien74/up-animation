@@ -40,7 +40,7 @@
     {%- set styleClass = haveFetaures ? styleClass~' have-features' : styleClass -%}
     <div class="title-header-block container position-relative{% if large %} as-large{% endif %}{% if backgroundColor %} {{ backgroundColor }}{% endif %}{% if styleClass %} {{ styleClass }}{% endif %}">
         <div class="row m-0">
-            <div class="col-xl-7 pe-xl-5 d-flex title-content position-relative">
+            <div class="col-lg-6 col-xl-7 pe-xl-5 d-flex title-content position-relative">
                 <div class="inner">
                     {%- if displayBreadcrumb -%}
                         {%- set pageTitle = pageTitle is defined ? pageTitle : title -%}
@@ -107,7 +107,7 @@
                 </div>
             </div>
             {%- if mediaPath or displayMedia -%}
-                <div class="col-xl-5 media-content d-flex align-items-end">
+                <div class="col-lg-6 col-xl-5 media-content d-flex align-items-end">
                     <div class="masked-wrap masked-wrap-primary w-100">
                         {%- set screensSizes = screensSizes is defined ? screensSizes : {} -%}
                         {%- set thumbSizes = screensSizes is empty ? thumbConfiguration : {} -%}
@@ -129,7 +129,7 @@
 {%- if haveFetaures -%}
     <div class="title-header-features container">
         <div class="row mx-0">
-            <div class="col-xl-7 pe-xl-5">
+            <div class="col-lg-6 col-xl-7 pe-xl-5">
                 {%- set featureList = [
                     { 'data': people, 'class': 'people', 'icon': 'people-group', 'label': "Nombre de personnes"|trans|raw },
                     { 'data': duration, 'class': 'duration', 'icon': 'clock', 'label': "Durée"|trans|raw },

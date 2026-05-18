@@ -40,8 +40,13 @@
         }
         @if ($limit) {
             @include media-breakpoint-up($breakpoint, $breakpoints) {
+                max-width: none;
                 margin-right: calc((100% - #{$container-max-width}) / 2);
                 width: calc(100% - ((100% - #{$container-max-width}) / 2));
+            }
+        } @else {
+            @include media-breakpoint-up($breakpoint, $breakpoints) {
+                max-width: $container-max-width;
             }
         }
     }
@@ -55,14 +60,22 @@
         }
         @if ($limit) {
             @include media-breakpoint-up($breakpoint, $breakpoints) {
+                max-width: none;
                 margin-left: calc((100% - #{$container-max-width}) / 2);
                 width: calc(100% - ((100% - #{$container-max-width}) / 2));
+            }
+        } @else {
+            @include media-breakpoint-up($breakpoint, $breakpoints) {
+                max-width: $container-max-width;
             }
         }
     }
 }
 
 .container-fluid-left {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
     @include make-container-fluid-left-right();
     @include make-container-fluid-left();
 }
@@ -73,6 +86,10 @@
 //}
 
 .container-fluid-right {
+
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
 
     @include make-container-fluid-left-right();
     @include make-container-fluid-right();

@@ -1,0 +1,973 @@
+// Utilities
+//
+// Construction des listes/maps de valeurs filtrées par les flags $enable-X
+// (déclarés dans assets/scss/front/default/variables-bootstrap.scss).
+// Une utility avec values vide est court-circuitée par generate-utility :
+// aucune classe CSS générée -> bundle plus léger.
+
+// scss-docs-start utils-filtered-values
+// -- Vertical-align
+$_align-values: ();
+@if $enable-align-baseline    { $_align-values: append($_align-values, baseline); }
+@if $enable-align-top         { $_align-values: append($_align-values, top); }
+@if $enable-align-middle      { $_align-values: append($_align-values, middle); }
+@if $enable-align-bottom      { $_align-values: append($_align-values, bottom); }
+@if $enable-align-text-bottom { $_align-values: append($_align-values, text-bottom); }
+@if $enable-align-text-top    { $_align-values: append($_align-values, text-top); }
+
+// -- Float
+$_float-values: ();
+@if $enable-float-start { $_float-values: map-merge($_float-values, (start: left)); }
+@if $enable-float-end   { $_float-values: map-merge($_float-values, (end: right)); }
+@if $enable-float-none  { $_float-values: map-merge($_float-values, (none: none)); }
+
+// -- Object-fit
+$_object-fit-values: ();
+@if $enable-object-fit-contain { $_object-fit-values: map-merge($_object-fit-values, (contain: contain)); }
+@if $enable-object-fit-cover   { $_object-fit-values: map-merge($_object-fit-values, (cover: cover)); }
+@if $enable-object-fit-fill    { $_object-fit-values: map-merge($_object-fit-values, (fill: fill)); }
+@if $enable-object-fit-scale   { $_object-fit-values: map-merge($_object-fit-values, (scale: scale-down)); }
+@if $enable-object-fit-none    { $_object-fit-values: map-merge($_object-fit-values, (none: none)); }
+
+// -- Opacity (utility .opacity-X : on/off global via $enable-opacity)
+$_opacity-values: ();
+@if $enable-opacity {
+  $_opacity-values: (0: 0, 25: .25, 50: .5, 75: .75, 100: 1);
+}
+
+// -- Overflow / overflow-x / overflow-y
+$_overflow-values: ();
+@if $enable-overflow-auto    { $_overflow-values: append($_overflow-values, auto); }
+@if $enable-overflow-hidden  { $_overflow-values: append($_overflow-values, hidden); }
+@if $enable-overflow-visible { $_overflow-values: append($_overflow-values, visible); }
+@if $enable-overflow-scroll  { $_overflow-values: append($_overflow-values, scroll); }
+
+$_overflow-x-values: ();
+@if $enable-overflow-x-auto    { $_overflow-x-values: append($_overflow-x-values, auto); }
+@if $enable-overflow-x-hidden  { $_overflow-x-values: append($_overflow-x-values, hidden); }
+@if $enable-overflow-x-visible { $_overflow-x-values: append($_overflow-x-values, visible); }
+@if $enable-overflow-x-scroll  { $_overflow-x-values: append($_overflow-x-values, scroll); }
+
+$_overflow-y-values: ();
+@if $enable-overflow-y-auto    { $_overflow-y-values: append($_overflow-y-values, auto); }
+@if $enable-overflow-y-hidden  { $_overflow-y-values: append($_overflow-y-values, hidden); }
+@if $enable-overflow-y-visible { $_overflow-y-values: append($_overflow-y-values, visible); }
+@if $enable-overflow-y-scroll  { $_overflow-y-values: append($_overflow-y-values, scroll); }
+
+// -- Display
+$_display-values: ();
+@if $enable-d-inline        { $_display-values: append($_display-values, inline); }
+@if $enable-d-inline-block  { $_display-values: append($_display-values, inline-block); }
+@if $enable-d-block         { $_display-values: append($_display-values, block); }
+@if $enable-d-grid          { $_display-values: append($_display-values, grid); }
+@if $enable-d-inline-grid   { $_display-values: append($_display-values, inline-grid); }
+@if $enable-d-table         { $_display-values: append($_display-values, table); }
+@if $enable-d-table-row     { $_display-values: append($_display-values, table-row); }
+@if $enable-d-table-cell    { $_display-values: append($_display-values, table-cell); }
+@if $enable-d-flex          { $_display-values: append($_display-values, flex); }
+@if $enable-d-inline-flex   { $_display-values: append($_display-values, inline-flex); }
+@if $enable-d-none          { $_display-values: append($_display-values, none); }
+
+// -- Shadow (on/off global)
+$_shadow-values: ();
+@if $enable-shadow {
+  $_shadow-values: (
+    null: var(--#{$prefix}box-shadow),
+    sm: var(--#{$prefix}box-shadow-sm),
+    lg: var(--#{$prefix}box-shadow-lg),
+    none: none,
+  );
+}
+
+// -- Position
+$_position-list: ();
+@if $enable-position-static   { $_position-list: append($_position-list, static); }
+@if $enable-position-relative { $_position-list: append($_position-list, relative); }
+@if $enable-position-absolute { $_position-list: append($_position-list, absolute); }
+@if $enable-position-fixed    { $_position-list: append($_position-list, fixed); }
+@if $enable-position-sticky   { $_position-list: append($_position-list, sticky); }
+
+// -- Top / Bottom / Start / End offsets
+$_top-values: ();
+@if $enable-top-0   { $_top-values: map-merge($_top-values, (0: 0)); }
+@if $enable-top-50  { $_top-values: map-merge($_top-values, (50: 50%)); }
+@if $enable-top-100 { $_top-values: map-merge($_top-values, (100: 100%)); }
+
+$_bottom-values: ();
+@if $enable-bottom-0   { $_bottom-values: map-merge($_bottom-values, (0: 0)); }
+@if $enable-bottom-50  { $_bottom-values: map-merge($_bottom-values, (50: 50%)); }
+@if $enable-bottom-100 { $_bottom-values: map-merge($_bottom-values, (100: 100%)); }
+
+$_start-values: ();
+@if $enable-start-0   { $_start-values: map-merge($_start-values, (0: 0)); }
+@if $enable-start-50  { $_start-values: map-merge($_start-values, (50: 50%)); }
+@if $enable-start-100 { $_start-values: map-merge($_start-values, (100: 100%)); }
+
+$_end-values: ();
+@if $enable-end-0   { $_end-values: map-merge($_end-values, (0: 0)); }
+@if $enable-end-50  { $_end-values: map-merge($_end-values, (50: 50%)); }
+@if $enable-end-100 { $_end-values: map-merge($_end-values, (100: 100%)); }
+
+// -- Translate-middle
+$_translate-middle-values: ();
+@if $enable-translate-middle   { $_translate-middle-values: map-merge($_translate-middle-values, (null: translate(-50%, -50%))); }
+@if $enable-translate-middle-x { $_translate-middle-values: map-merge($_translate-middle-values, (x: translateX(-50%))); }
+@if $enable-translate-middle-y { $_translate-middle-values: map-merge($_translate-middle-values, (y: translateY(-50%))); }
+
+// -- Width / Height
+$_width-values: ();
+@if $enable-w-25       { $_width-values: map-merge($_width-values, (25: 25%)); }
+@if $enable-w-50       { $_width-values: map-merge($_width-values, (50: 50%)); }
+@if $enable-w-75       { $_width-values: map-merge($_width-values, (75: 75%)); }
+@if $enable-w-100      { $_width-values: map-merge($_width-values, (100: 100%)); }
+@if $enable-text-w-auto { $_width-values: map-merge($_width-values, (auto: auto)); }
+
+$_max-width-values: ();
+@if $enable-mw-100 { $_max-width-values: (100: 100%); }
+
+$_vw-values: ();
+@if $enable-vw-100 { $_vw-values: (100: 100vw); }
+
+$_min-vw-values: ();
+@if $enable-min-vw-100 { $_min-vw-values: (100: 100vw); }
+
+$_height-values: ();
+@if $enable-h-25   { $_height-values: map-merge($_height-values, (25: 25%)); }
+@if $enable-h-50   { $_height-values: map-merge($_height-values, (50: 50%)); }
+@if $enable-h-75   { $_height-values: map-merge($_height-values, (75: 75%)); }
+@if $enable-h-100  { $_height-values: map-merge($_height-values, (100: 100%)); }
+@if $enable-h-auto { $_height-values: map-merge($_height-values, (auto: auto)); }
+
+$_max-height-values: ();
+@if $enable-mh-100 { $_max-height-values: (100: 100%); }
+
+$_vh-values: ();
+@if $enable-vh-100 { $_vh-values: (100: 100vh); }
+
+$_min-vh-values: ();
+@if $enable-min-vh-100 { $_min-vh-values: (100: 100vh); }
+
+// -- Flex
+$_flex-fill-values: ();
+@if $enable-flex-fill { $_flex-fill-values: (fill: 1 1 auto); }
+
+$_flex-direction-values: ();
+@if $enable-flex-row            { $_flex-direction-values: append($_flex-direction-values, row); }
+@if $enable-flex-column         { $_flex-direction-values: append($_flex-direction-values, column); }
+@if $enable-flex-row-reverse    { $_flex-direction-values: append($_flex-direction-values, row-reverse); }
+@if $enable-flex-column-reverse { $_flex-direction-values: append($_flex-direction-values, column-reverse); }
+
+$_flex-grow-values: ();
+@if $enable-flex-grow-0 { $_flex-grow-values: map-merge($_flex-grow-values, (grow-0: 0)); }
+@if $enable-flex-grow-1 { $_flex-grow-values: map-merge($_flex-grow-values, (grow-1: 1)); }
+
+$_flex-shrink-values: ();
+@if $enable-flex-shrink-0 { $_flex-shrink-values: map-merge($_flex-shrink-values, (shrink-0: 0)); }
+@if $enable-flex-shrink-1 { $_flex-shrink-values: map-merge($_flex-shrink-values, (shrink-1: 1)); }
+
+$_flex-wrap-values: ();
+@if $enable-flex-wrap         { $_flex-wrap-values: append($_flex-wrap-values, wrap); }
+@if $enable-flex-nowrap       { $_flex-wrap-values: append($_flex-wrap-values, nowrap); }
+@if $enable-flex-wrap-reverse { $_flex-wrap-values: append($_flex-wrap-values, wrap-reverse); }
+
+$_justify-content-values: ();
+@if $enable-justify-content-start   { $_justify-content-values: map-merge($_justify-content-values, (start: flex-start)); }
+@if $enable-justify-content-end     { $_justify-content-values: map-merge($_justify-content-values, (end: flex-end)); }
+@if $enable-justify-content-center  { $_justify-content-values: map-merge($_justify-content-values, (center: center)); }
+@if $enable-justify-content-between { $_justify-content-values: map-merge($_justify-content-values, (between: space-between)); }
+@if $enable-justify-content-around  { $_justify-content-values: map-merge($_justify-content-values, (around: space-around)); }
+@if $enable-justify-content-evenly  { $_justify-content-values: map-merge($_justify-content-values, (evenly: space-evenly)); }
+
+$_align-items-values: ();
+@if $enable-align-items-start    { $_align-items-values: map-merge($_align-items-values, (start: flex-start)); }
+@if $enable-align-items-end      { $_align-items-values: map-merge($_align-items-values, (end: flex-end)); }
+@if $enable-align-items-center   { $_align-items-values: map-merge($_align-items-values, (center: center)); }
+@if $enable-align-items-baseline { $_align-items-values: map-merge($_align-items-values, (baseline: baseline)); }
+@if $enable-align-items-stretch  { $_align-items-values: map-merge($_align-items-values, (stretch: stretch)); }
+
+$_align-content-values: ();
+@if $enable-align-content-start   { $_align-content-values: map-merge($_align-content-values, (start: flex-start)); }
+@if $enable-align-content-end     { $_align-content-values: map-merge($_align-content-values, (end: flex-end)); }
+@if $enable-align-content-center  { $_align-content-values: map-merge($_align-content-values, (center: center)); }
+@if $enable-align-content-between { $_align-content-values: map-merge($_align-content-values, (between: space-between)); }
+@if $enable-align-content-around  { $_align-content-values: map-merge($_align-content-values, (around: space-around)); }
+@if $enable-align-content-stretch { $_align-content-values: map-merge($_align-content-values, (stretch: stretch)); }
+
+$_align-self-values: ();
+@if $enable-align-self-auto     { $_align-self-values: map-merge($_align-self-values, (auto: auto)); }
+@if $enable-align-self-start    { $_align-self-values: map-merge($_align-self-values, (start: flex-start)); }
+@if $enable-align-self-end      { $_align-self-values: map-merge($_align-self-values, (end: flex-end)); }
+@if $enable-align-self-center   { $_align-self-values: map-merge($_align-self-values, (center: center)); }
+@if $enable-align-self-baseline { $_align-self-values: map-merge($_align-self-values, (baseline: baseline)); }
+@if $enable-align-self-stretch  { $_align-self-values: map-merge($_align-self-values, (stretch: stretch)); }
+
+// -- Gap / row-gap / column-gap (on/off global)
+$_gap-values: ();
+$_row-gap-values: ();
+$_column-gap-values: ();
+@if $enable-gap        { $_gap-values: $spacers; }
+@if $enable-row-gap    { $_row-gap-values: $spacers; }
+@if $enable-column-gap { $_column-gap-values: $spacers; }
+
+// -- Font family / size / weight / style
+$_font-family-values: ();
+@if $enable-font-family { $_font-family-values: (monospace: var(--#{$prefix}font-monospace)); }
+
+$_font-size-values: ();
+@if $enable-font-size {
+  @if $enable-fs-1 { $_font-size-values: map-merge($_font-size-values, (1: $h1-font-size)); }
+  @if $enable-fs-2 { $_font-size-values: map-merge($_font-size-values, (2: $h2-font-size)); }
+  @if $enable-fs-3 { $_font-size-values: map-merge($_font-size-values, (3: $h3-font-size)); }
+  @if $enable-fs-4 { $_font-size-values: map-merge($_font-size-values, (4: $h4-font-size)); }
+  @if $enable-fs-5 { $_font-size-values: map-merge($_font-size-values, (5: $h5-font-size)); }
+  @if $enable-fs-6 { $_font-size-values: map-merge($_font-size-values, (6: $h6-font-size)); }
+}
+
+// -- Border-widths (.border-1 à .border-5)
+$_border-width-values: ();
+@if $enable-border-width-1 { $_border-width-values: map-merge($_border-width-values, (1: 1px)); }
+@if $enable-border-width-2 { $_border-width-values: map-merge($_border-width-values, (2: 2px)); }
+@if $enable-border-width-3 { $_border-width-values: map-merge($_border-width-values, (3: 3px)); }
+@if $enable-border-width-4 { $_border-width-values: map-merge($_border-width-values, (4: 4px)); }
+@if $enable-border-width-5 { $_border-width-values: map-merge($_border-width-values, (5: 5px)); }
+
+// -- Aspect-ratios : filtrage déplacé dans variables-bootstrap.scss
+//    (doit être en amont de bootstrap/_variables.scss à cause du !default).
+
+$_font-style-values: ();
+@if $enable-font-styles { $_font-style-values: italic normal; }
+
+$_font-weight-values: ();
+@if $enable-font-weight {
+  $_font-weight-values: (
+    lighter: $font-weight-lighter,
+    light: $font-weight-light,
+    normal: $font-weight-normal,
+    medium: $font-weight-medium,
+    semibold: $font-weight-semibold,
+    bold: $font-weight-bold,
+    bolder: $font-weight-bolder
+  );
+}
+
+// -- Line-height
+$_line-height-values: ();
+@if $enable-lh-1    { $_line-height-values: map-merge($_line-height-values, (1: 1)); }
+@if $enable-lh-sm   { $_line-height-values: map-merge($_line-height-values, (sm: $line-height-sm)); }
+@if $enable-lh-base { $_line-height-values: map-merge($_line-height-values, (base: $line-height-base)); }
+@if $enable-lh-lg   { $_line-height-values: map-merge($_line-height-values, (lg: $line-height-lg)); }
+
+// -- Text-align
+$_text-align-values: ();
+@if $enable-text-start  { $_text-align-values: map-merge($_text-align-values, (start: left)); }
+@if $enable-text-end    { $_text-align-values: map-merge($_text-align-values, (end: right)); }
+@if $enable-text-center { $_text-align-values: map-merge($_text-align-values, (center: center)); }
+
+// -- Text-decoration
+$_text-decoration-values: ();
+@if $enable-text-decoration-none         { $_text-decoration-values: append($_text-decoration-values, none); }
+@if $enable-text-decoration-underline    { $_text-decoration-values: append($_text-decoration-values, underline); }
+@if $enable-text-decoration-line-through { $_text-decoration-values: append($_text-decoration-values, line-through); }
+
+// -- Text-transform
+$_text-transform-values: ();
+@if $enable-text-lowercase  { $_text-transform-values: append($_text-transform-values, lowercase); }
+@if $enable-text-uppercase  { $_text-transform-values: append($_text-transform-values, uppercase); }
+@if $enable-text-capitalize { $_text-transform-values: append($_text-transform-values, capitalize); }
+
+// -- White-space (text-wrap / text-nowrap)
+$_white-space-values: ();
+@if $enable-text-wrap   { $_white-space-values: map-merge($_white-space-values, (wrap: normal)); }
+@if $enable-text-nowrap { $_white-space-values: map-merge($_white-space-values, (nowrap: nowrap)); }
+
+// -- Word-wrap (text-break)
+$_word-wrap-values: ();
+@if $enable-text-break { $_word-wrap-values: (break: break-word); }
+
+// -- Background gradient
+$_gradient-values: ();
+@if $enable-gradient-bg { $_gradient-values: (gradient: var(--#{$prefix}gradient)); }
+
+// -- Bg-opacity
+$_bg-opacity-values: ();
+@if $enable-opacity-bg {
+  $_bg-opacity-values: (10: .1, 25: .25, 50: .5, 75: .75, 100: 1);
+}
+
+// -- Rounded (on/off global + granularité par niveau)
+$_rounded-values: ();
+@if $enable-rounded {
+  @if $enable-rounded-base   { $_rounded-values: map-merge($_rounded-values, (null:   var(--#{$prefix}border-radius))); }
+  @if $enable-rounded-0      { $_rounded-values: map-merge($_rounded-values, (0:      0)); }
+  @if $enable-rounded-1      { $_rounded-values: map-merge($_rounded-values, (1:      var(--#{$prefix}border-radius-sm))); }
+  @if $enable-rounded-2      { $_rounded-values: map-merge($_rounded-values, (2:      var(--#{$prefix}border-radius))); }
+  @if $enable-rounded-3      { $_rounded-values: map-merge($_rounded-values, (3:      var(--#{$prefix}border-radius-lg))); }
+  @if $enable-rounded-4      { $_rounded-values: map-merge($_rounded-values, (4:      var(--#{$prefix}border-radius-xl))); }
+  @if $enable-rounded-5      { $_rounded-values: map-merge($_rounded-values, (5:      var(--#{$prefix}border-radius-xxl))); }
+  @if $enable-rounded-circle { $_rounded-values: map-merge($_rounded-values, (circle: 50%)); }
+  @if $enable-rounded-pill   { $_rounded-values: map-merge($_rounded-values, (pill:   var(--#{$prefix}border-radius-pill))); }
+}
+
+// -- Visibility (visible / invisible)
+$_visibility-values: ();
+@if $enable-visible   { $_visibility-values: map-merge($_visibility-values, (visible: visible)); }
+@if $enable-invisible { $_visibility-values: map-merge($_visibility-values, (invisible: hidden)); }
+
+// -- Z-index
+$_zindex-values: ();
+@if $enable-z-n1   { $_zindex-values: map-merge($_zindex-values, (n1: -1)); }
+@if $enable-z-0    { $_zindex-values: map-merge($_zindex-values, (0: 0)); }
+@if $enable-z-1    { $_zindex-values: map-merge($_zindex-values, (1: 1)); }
+@if $enable-z-2    { $_zindex-values: map-merge($_zindex-values, (2: 2)); }
+@if $enable-z-3    { $_zindex-values: map-merge($_zindex-values, (3: 3)); }
+
+// -- Border (on/off global pour border / border-top / border-end / border-bottom / border-start)
+$_border-values: ();
+@if $enable-border {
+  $_border-values: (
+    null: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color),
+    0: 0,
+  );
+}
+// scss-docs-end utils-filtered-values
+
+$utilities: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$utilities: map-merge(
+  (
+    // scss-docs-start utils-vertical-align
+    "align": (
+      property: vertical-align,
+      class: align,
+      values: $_align-values
+    ),
+    // scss-docs-end utils-vertical-align
+    // scss-docs-start utils-float
+    "float": (
+      responsive: true,
+      property: float,
+      values: $_float-values
+    ),
+    // scss-docs-end utils-float
+    // Object Fit utilities
+    // scss-docs-start utils-object-fit
+    "object-fit": (
+      responsive: true,
+      property: object-fit,
+      values: $_object-fit-values
+    ),
+    // scss-docs-end utils-object-fit
+    // Opacity utilities
+    // scss-docs-start utils-opacity
+    "opacity": (
+      property: opacity,
+      values: $_opacity-values
+    ),
+    // scss-docs-end utils-opacity
+    // scss-docs-start utils-overflow
+    "overflow": (
+      property: overflow,
+      values: $_overflow-values,
+    ),
+    "overflow-x": (
+      property: overflow-x,
+      values: $_overflow-x-values,
+    ),
+    "overflow-y": (
+      property: overflow-y,
+      values: $_overflow-y-values,
+    ),
+    // scss-docs-end utils-overflow
+    // scss-docs-start utils-display
+    "display": (
+      responsive: true,
+      print: true,
+      property: display,
+      class: d,
+      values: $_display-values
+    ),
+    // scss-docs-end utils-display
+    // scss-docs-start utils-shadow
+    "shadow": (
+      property: box-shadow,
+      class: shadow,
+      values: $_shadow-values
+    ),
+    // scss-docs-end utils-shadow
+    // scss-docs-start utils-focus-ring
+    "focus-ring": (
+      css-var: true,
+      css-variable-name: focus-ring-color,
+      class: focus-ring,
+      values: map-loop($theme-colors-rgb, rgba-css-var, "$key", "focus-ring")
+    ),
+    // scss-docs-end utils-focus-ring
+    // scss-docs-start utils-position
+    "position": (
+      property: position,
+      values: $_position-list
+    ),
+    "top": (
+      property: top,
+      values: $_top-values
+    ),
+    "bottom": (
+      property: bottom,
+      values: $_bottom-values
+    ),
+    "start": (
+      property: left,
+      class: start,
+      values: $_start-values
+    ),
+    "end": (
+      property: right,
+      class: end,
+      values: $_end-values
+    ),
+    "translate-middle": (
+      property: transform,
+      class: translate-middle,
+      values: $_translate-middle-values
+    ),
+    // scss-docs-end utils-position
+    // scss-docs-start utils-borders
+    "border": (
+      property: border,
+      values: $_border-values
+    ),
+    "border-top": (
+      property: border-top,
+      values: $_border-values
+    ),
+    "border-end": (
+      property: border-right,
+      class: border-end,
+      values: $_border-values
+    ),
+    "border-bottom": (
+      property: border-bottom,
+      values: $_border-values
+    ),
+    "border-start": (
+      property: border-left,
+      class: border-start,
+      values: $_border-values
+    ),
+    "border-color": (
+      property: border-color,
+      class: border,
+      local-vars: (
+        "border-opacity": 1
+      ),
+      values: $utilities-border-colors
+    ),
+    "subtle-border-color": (
+      property: border-color,
+      class: border,
+      values: $utilities-border-subtle
+    ),
+    "border-width": (
+      property: border-width,
+      class: border,
+      values: $_border-width-values
+    ),
+    "border-opacity": (
+      css-var: true,
+      class: border-opacity,
+      values: (
+        10: .1,
+        25: .25,
+        50: .5,
+        75: .75,
+        100: 1
+      )
+    ),
+    // scss-docs-end utils-borders
+    // Sizing utilities
+    // scss-docs-start utils-sizing
+    "width": (
+      property: width,
+      class: w,
+      values: $_width-values
+    ),
+    "max-width": (
+      property: max-width,
+      class: mw,
+      values: $_max-width-values
+    ),
+    "viewport-width": (
+      property: width,
+      class: vw,
+      values: $_vw-values
+    ),
+    "min-viewport-width": (
+      property: min-width,
+      class: min-vw,
+      values: $_min-vw-values
+    ),
+    "height": (
+      property: height,
+      class: h,
+      values: $_height-values
+    ),
+    "max-height": (
+      property: max-height,
+      class: mh,
+      values: $_max-height-values
+    ),
+    "viewport-height": (
+      property: height,
+      class: vh,
+      values: $_vh-values
+    ),
+    "min-viewport-height": (
+      property: min-height,
+      class: min-vh,
+      values: $_min-vh-values
+    ),
+    // scss-docs-end utils-sizing
+    // Flex utilities
+    // scss-docs-start utils-flex
+    "flex": (
+      responsive: true,
+      property: flex,
+      values: $_flex-fill-values
+    ),
+    "flex-direction": (
+      responsive: true,
+      property: flex-direction,
+      class: flex,
+      values: $_flex-direction-values
+    ),
+    "flex-grow": (
+      responsive: true,
+      property: flex-grow,
+      class: flex,
+      values: $_flex-grow-values
+    ),
+    "flex-shrink": (
+      responsive: true,
+      property: flex-shrink,
+      class: flex,
+      values: $_flex-shrink-values
+    ),
+    "flex-wrap": (
+      responsive: true,
+      property: flex-wrap,
+      class: flex,
+      values: $_flex-wrap-values
+    ),
+    "justify-content": (
+      responsive: true,
+      property: justify-content,
+      values: $_justify-content-values
+    ),
+    "align-items": (
+      responsive: true,
+      property: align-items,
+      values: $_align-items-values
+    ),
+    "align-content": (
+      responsive: true,
+      property: align-content,
+      values: $_align-content-values
+    ),
+    "align-self": (
+      responsive: true,
+      property: align-self,
+      values: $_align-self-values
+    ),
+    "order": (
+      responsive: true,
+      property: order,
+      values: (
+        first: -1,
+        0: 0,
+        1: 1,
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+        last: 6,
+      ),
+    ),
+    // scss-docs-end utils-flex
+    // Margin utilities
+    // scss-docs-start utils-spacing
+    "margin": (
+      responsive: true,
+      property: margin,
+      class: m,
+      values: map-merge($spacers, (auto: auto))
+    ),
+    "margin-x": (
+      responsive: true,
+      property: margin-right margin-left,
+      class: mx,
+      values: map-merge($spacers, (auto: auto))
+    ),
+    "margin-y": (
+      responsive: true,
+      property: margin-top margin-bottom,
+      class: my,
+      values: map-merge($spacers, (auto: auto))
+    ),
+    "margin-top": (
+      responsive: true,
+      property: margin-top,
+      class: mt,
+      values: map-merge($spacers, (auto: auto))
+    ),
+    "margin-end": (
+      responsive: true,
+      property: margin-right,
+      class: me,
+      values: map-merge($spacers, (auto: auto))
+    ),
+    "margin-bottom": (
+      responsive: true,
+      property: margin-bottom,
+      class: mb,
+      values: map-merge($spacers, (auto: auto))
+    ),
+    "margin-start": (
+      responsive: true,
+      property: margin-left,
+      class: ms,
+      values: map-merge($spacers, (auto: auto))
+    ),
+    // Negative margin utilities
+    "negative-margin": (
+      responsive: true,
+      property: margin,
+      class: m,
+      values: $negative-spacers
+    ),
+    "negative-margin-x": (
+      responsive: true,
+      property: margin-right margin-left,
+      class: mx,
+      values: $negative-spacers
+    ),
+    "negative-margin-y": (
+      responsive: true,
+      property: margin-top margin-bottom,
+      class: my,
+      values: $negative-spacers
+    ),
+    "negative-margin-top": (
+      responsive: true,
+      property: margin-top,
+      class: mt,
+      values: $negative-spacers
+    ),
+    "negative-margin-end": (
+      responsive: true,
+      property: margin-right,
+      class: me,
+      values: $negative-spacers
+    ),
+    "negative-margin-bottom": (
+      responsive: true,
+      property: margin-bottom,
+      class: mb,
+      values: $negative-spacers
+    ),
+    "negative-margin-start": (
+      responsive: true,
+      property: margin-left,
+      class: ms,
+      values: $negative-spacers
+    ),
+    // Padding utilities
+    "padding": (
+      responsive: true,
+      property: padding,
+      class: p,
+      values: $spacers
+    ),
+    "padding-x": (
+      responsive: true,
+      property: padding-right padding-left,
+      class: px,
+      values: $spacers
+    ),
+    "padding-y": (
+      responsive: true,
+      property: padding-top padding-bottom,
+      class: py,
+      values: $spacers
+    ),
+    "padding-top": (
+      responsive: true,
+      property: padding-top,
+      class: pt,
+      values: $spacers
+    ),
+    "padding-end": (
+      responsive: true,
+      property: padding-right,
+      class: pe,
+      values: $spacers
+    ),
+    "padding-bottom": (
+      responsive: true,
+      property: padding-bottom,
+      class: pb,
+      values: $spacers
+    ),
+    "padding-start": (
+      responsive: true,
+      property: padding-left,
+      class: ps,
+      values: $spacers
+    ),
+    // Gap utility
+    "gap": (
+      responsive: true,
+      property: gap,
+      class: gap,
+      values: $_gap-values
+    ),
+    "row-gap": (
+      responsive: true,
+      property: row-gap,
+      class: row-gap,
+      values: $_row-gap-values
+    ),
+    "column-gap": (
+      responsive: true,
+      property: column-gap,
+      class: column-gap,
+      values: $_column-gap-values
+    ),
+    // scss-docs-end utils-spacing
+    // Text
+    // scss-docs-start utils-text
+    "font-family": (
+      property: font-family,
+      class: font,
+      values: $_font-family-values
+    ),
+    "font-size": (
+      rfs: true,
+      property: font-size,
+      class: fs,
+      values: $_font-size-values
+    ),
+    "font-style": (
+      property: font-style,
+      class: fst,
+      values: $_font-style-values
+    ),
+    "font-weight": (
+      property: font-weight,
+      class: fw,
+      values: $_font-weight-values
+    ),
+    "line-height": (
+      property: line-height,
+      class: lh,
+      values: $_line-height-values
+    ),
+    "text-align": (
+      responsive: true,
+      property: text-align,
+      class: text,
+      values: $_text-align-values
+    ),
+    "text-decoration": (
+      property: text-decoration,
+      values: $_text-decoration-values
+    ),
+    "text-transform": (
+      property: text-transform,
+      class: text,
+      values: $_text-transform-values
+    ),
+    "white-space": (
+      property: white-space,
+      class: text,
+      values: $_white-space-values
+    ),
+    "word-wrap": (
+      property: word-wrap word-break,
+      class: text,
+      values: $_word-wrap-values,
+      rtl: false
+    ),
+    // scss-docs-end utils-text
+    // scss-docs-start utils-color
+    "color": (
+      property: color,
+      class: text,
+      local-vars: (
+        "text-opacity": 1
+      ),
+      values: map-merge(
+        $utilities-text-colors,
+        (
+          "muted": var(--#{$prefix}secondary-color), // deprecated
+          "black-50": rgba($black, .5), // deprecated
+          "white-50": rgba($white, .5), // deprecated
+          "body-secondary": var(--#{$prefix}secondary-color),
+          "body-tertiary": var(--#{$prefix}tertiary-color),
+          "body-emphasis": var(--#{$prefix}emphasis-color),
+          "reset": inherit,
+        )
+      )
+    ),
+    "text-opacity": (
+      css-var: true,
+      class: text-opacity,
+      values: (
+        25: .25,
+        50: .5,
+        75: .75,
+        100: 1
+      )
+    ),
+    "text-color": (
+      property: color,
+      class: text,
+      values: $utilities-text-emphasis-colors
+    ),
+    // scss-docs-end utils-color
+    // scss-docs-start utils-links
+    "link-opacity": (
+      css-var: true,
+      class: link-opacity,
+      state: hover,
+      values: (
+        10: .1,
+        25: .25,
+        50: .5,
+        75: .75,
+        100: 1
+      )
+    ),
+    "link-offset": (
+      property: text-underline-offset,
+      class: link-offset,
+      state: hover,
+      values: (
+        1: .125em,
+        2: .25em,
+        3: .375em,
+      )
+    ),
+    "link-underline": (
+      property: text-decoration-color,
+      class: link-underline,
+      local-vars: (
+        "link-underline-opacity": 1
+      ),
+      values: map-merge(
+        $utilities-links-underline,
+        (
+          null: rgba(var(--#{$prefix}link-color-rgb), var(--#{$prefix}link-underline-opacity, 1)),
+        )
+      )
+    ),
+    "link-underline-opacity": (
+      css-var: true,
+      class: link-underline-opacity,
+      state: hover,
+      values: (
+        0: 0,
+        10: .1,
+        25: .25,
+        50: .5,
+        75: .75,
+        100: 1
+      ),
+    ),
+    // scss-docs-end utils-links
+    // scss-docs-start utils-bg-color
+    "background-color": (
+      property: background-color,
+      class: bg,
+      local-vars: (
+        "bg-opacity": 1
+      ),
+      values: map-merge(
+        $utilities-bg-colors,
+        (
+          "transparent": transparent,
+          "body-secondary": rgba(var(--#{$prefix}secondary-bg-rgb), var(--#{$prefix}bg-opacity)),
+          "body-tertiary": rgba(var(--#{$prefix}tertiary-bg-rgb), var(--#{$prefix}bg-opacity)),
+        )
+      )
+    ),
+    "bg-opacity": (
+      css-var: true,
+      class: bg-opacity,
+      values: $_bg-opacity-values
+    ),
+    "subtle-background-color": (
+      property: background-color,
+      class: bg,
+      values: $utilities-bg-subtle
+    ),
+    // scss-docs-end utils-bg-color
+    "gradient": (
+      property: background-image,
+      class: bg,
+      values: $_gradient-values
+    ),
+    // scss-docs-start utils-interaction
+    "user-select": (
+      property: user-select,
+      values: all auto none
+    ),
+    "pointer-events": (
+      property: pointer-events,
+      class: pe,
+      values: none auto,
+    ),
+    // scss-docs-end utils-interaction
+    // scss-docs-start utils-border-radius
+    "rounded": (
+      property: border-radius,
+      class: rounded,
+      values: $_rounded-values
+    ),
+    "rounded-top": (
+      property: border-top-left-radius border-top-right-radius,
+      class: rounded-top,
+      values: $_rounded-values
+    ),
+    "rounded-end": (
+      property: border-top-right-radius border-bottom-right-radius,
+      class: rounded-end,
+      values: $_rounded-values
+    ),
+    "rounded-bottom": (
+      property: border-bottom-right-radius border-bottom-left-radius,
+      class: rounded-bottom,
+      values: $_rounded-values
+    ),
+    "rounded-start": (
+      property: border-bottom-left-radius border-top-left-radius,
+      class: rounded-start,
+      values: $_rounded-values
+    ),
+    // scss-docs-end utils-border-radius
+    // scss-docs-start utils-visibility
+    "visibility": (
+      property: visibility,
+      class: null,
+      values: $_visibility-values
+    ),
+    // scss-docs-end utils-visibility
+    // scss-docs-start utils-zindex
+    "z-index": (
+      property: z-index,
+      class: z,
+      values: $_zindex-values,
+    )
+    // scss-docs-end utils-zindex
+  ),
+  $utilities
+);

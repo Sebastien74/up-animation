@@ -62,16 +62,177 @@ $danger: $red !default;
 $light: $gray-100 !default;
 $dark: $gray-900 !default;
 
-$theme-colors: (
-    "primary": $primary,
-    "secondary": $secondary,
-    "success": $success,
-    "info": $info,
-    "warning": $warning,
-    "danger": $danger,
-    "light": $light,
-    "dark": $dark
-) !default;
+// Activation par couleur theme. Chaque flag à false retire la couleur du map
+// $theme-colors -> Bootstrap ne génère plus .btn-X, .text-X, .bg-X, .border-X,
+// .text-bg-X, .link-X, .alert-X, .list-group-item-X correspondants.
+$enable-theme-primary:   true !default;
+$enable-theme-secondary: true !default;
+$enable-theme-success:   true !default;
+$enable-theme-info:      true !default;
+$enable-theme-warning:   true !default;
+$enable-theme-danger:    true !default;
+$enable-theme-light:     true !default;
+$enable-theme-dark:      true !default;
+
+$_theme-colors: ();
+@if $enable-theme-primary   { $_theme-colors: map-merge($_theme-colors, ("primary":   $primary)); }
+@if $enable-theme-secondary { $_theme-colors: map-merge($_theme-colors, ("secondary": $secondary)); }
+@if $enable-theme-success   { $_theme-colors: map-merge($_theme-colors, ("success":   $success)); }
+@if $enable-theme-info      { $_theme-colors: map-merge($_theme-colors, ("info":      $info)); }
+@if $enable-theme-warning   { $_theme-colors: map-merge($_theme-colors, ("warning":   $warning)); }
+@if $enable-theme-danger    { $_theme-colors: map-merge($_theme-colors, ("danger":    $danger)); }
+@if $enable-theme-light     { $_theme-colors: map-merge($_theme-colors, ("light":     $light)); }
+@if $enable-theme-dark      { $_theme-colors: map-merge($_theme-colors, ("dark":      $dark)); }
+
+$theme-colors: $_theme-colors !default;
+
+// Spacers : chaque niveau (0..5) est activable individuellement. Filtrer ici
+// court-circuite la génération des classes .m-X, .p-X, .gap-X, .mt-X, .px-X,
+// etc. (+ leurs négatives via $negative-spacers calculé par Bootstrap depuis
+// ce map filtré) ET pour chaque breakpoint responsive.
+$spacer: 1rem !default;
+$enable-spacer-0: true !default;
+$enable-spacer-1: true !default;
+$enable-spacer-2: true !default;
+$enable-spacer-3: true !default;
+$enable-spacer-4: true !default;
+$enable-spacer-5: true !default;
+
+$_spacers: ();
+@if $enable-spacer-0 { $_spacers: map-merge($_spacers, (0: 0)); }
+@if $enable-spacer-1 { $_spacers: map-merge($_spacers, (1: $spacer * .25)); }
+@if $enable-spacer-2 { $_spacers: map-merge($_spacers, (2: $spacer * .5)); }
+@if $enable-spacer-3 { $_spacers: map-merge($_spacers, (3: $spacer)); }
+@if $enable-spacer-4 { $_spacers: map-merge($_spacers, (4: $spacer * 1.5)); }
+@if $enable-spacer-5 { $_spacers: map-merge($_spacers, (5: $spacer * 3)); }
+
+$spacers: $_spacers !default;
+
+// Grid breakpoints : xs (0) toujours requis (base case). Les autres sont
+// activables individuellement. Désactiver xxl coupe toutes les classes
+// responsive `xxl-*` ET la media query associée -> très gros gain.
+$enable-bp-sm:  true !default;
+$enable-bp-md:  true !default;
+$enable-bp-lg:  true !default;
+$enable-bp-xl:  true !default;
+$enable-bp-xxl: true !default;
+
+$_grid-breakpoints: (xs: 0);
+@if $enable-bp-sm  { $_grid-breakpoints: map-merge($_grid-breakpoints, (sm:  576px)); }
+@if $enable-bp-md  { $_grid-breakpoints: map-merge($_grid-breakpoints, (md:  768px)); }
+@if $enable-bp-lg  { $_grid-breakpoints: map-merge($_grid-breakpoints, (lg:  992px)); }
+@if $enable-bp-xl  { $_grid-breakpoints: map-merge($_grid-breakpoints, (xl:  1200px)); }
+@if $enable-bp-xxl { $_grid-breakpoints: map-merge($_grid-breakpoints, (xxl: 1400px)); }
+
+$grid-breakpoints: $_grid-breakpoints !default;
+
+// Container max-widths : aligné sur les breakpoints actifs (sinon Bootstrap
+// génère des .container-X pour des breakpoints absents).
+$_container-max-widths: ();
+@if $enable-bp-sm  { $_container-max-widths: map-merge($_container-max-widths, (sm:  540px)); }
+@if $enable-bp-md  { $_container-max-widths: map-merge($_container-max-widths, (md:  720px)); }
+@if $enable-bp-lg  { $_container-max-widths: map-merge($_container-max-widths, (lg:  960px)); }
+@if $enable-bp-xl  { $_container-max-widths: map-merge($_container-max-widths, (xl:  1140px)); }
+@if $enable-bp-xxl { $_container-max-widths: map-merge($_container-max-widths, (xxl: 1320px)); }
+
+$container-max-widths: $_container-max-widths !default;
+
+// Grid columns : nombre total de colonnes de base (12 par défaut). À réduire
+// uniquement si tu maîtrises l'impact (col-6 = 100% au lieu de col-12).
+$grid-columns: 12 !default;
+
+// Liste des tailles de colonnes effectivement générées (.col-1 .. .col-N).
+// Pour conserver tout le potentiel de la grille on garde 1..12, mais si tu
+// n'utilises jamais certaines tailles (ex: 7, 10, 11), tu peux les retirer
+// ici. Affecte aussi .offset-X. Doit rester un sous-ensemble de 1..$grid-columns.
+$enabled-grid-col-sizes: 1 2 3 4 5 6 7 8 9 10 11 12 !default;
+
+// Gutters : filtrage indépendant des spacers (par défaut Bootstrap met
+// $gutters: $spacers, donc hérite des flags $enable-spacer-X. Override
+// possible ici si tu veux un set de gutters plus restreint que les spacers).
+$enable-gutter-0: true !default;
+$enable-gutter-1: true !default;
+$enable-gutter-2: true !default;
+$enable-gutter-3: true !default;
+$enable-gutter-4: true !default;
+$enable-gutter-5: true !default;
+
+$_gutters: ();
+@if $enable-gutter-0 { $_gutters: map-merge($_gutters, (0: 0)); }
+@if $enable-gutter-1 { $_gutters: map-merge($_gutters, (1: $spacer * .25)); }
+@if $enable-gutter-2 { $_gutters: map-merge($_gutters, (2: $spacer * .5)); }
+@if $enable-gutter-3 { $_gutters: map-merge($_gutters, (3: $spacer)); }
+@if $enable-gutter-4 { $_gutters: map-merge($_gutters, (4: $spacer * 1.5)); }
+@if $enable-gutter-5 { $_gutters: map-merge($_gutters, (5: $spacer * 3)); }
+
+$gutters: $_gutters !default;
+
+// Reboot — flags ciblés pour des éléments HTML rarement utilisés.
+// Désactiver coupe le reset Bootstrap correspondant (et son CSS associé).
+$enable-reboot-hr:          true !default;
+$enable-reboot-abbr:        true !default;
+$enable-reboot-address:     true !default;
+$enable-reboot-lists:       true !default;
+$enable-reboot-mark:        true !default;
+$enable-reboot-sub-sup:     true !default;
+$enable-reboot-code:        true !default; // pre, code, kbd, samp
+$enable-reboot-figure:      true !default;
+$enable-reboot-table:       true !default;
+$enable-reboot-output:      true !default;
+$enable-reboot-iframe:      true !default;
+$enable-reboot-summary:     true !default;
+$enable-reboot-progress:    true !default;
+
+// Font-sizes utility (.fs-1 à .fs-6) — désactiver tout ou par niveau
+$enable-fs-1: true !default;
+$enable-fs-2: true !default;
+$enable-fs-3: true !default;
+$enable-fs-4: true !default;
+$enable-fs-5: true !default;
+$enable-fs-6: true !default;
+
+// Border-widths utility (.border-1 à .border-5)
+$enable-border-width-1: true !default;
+$enable-border-width-2: true !default;
+$enable-border-width-3: true !default;
+$enable-border-width-4: true !default;
+$enable-border-width-5: true !default;
+
+// Aspect-ratios utility (.ratio-1x1, .ratio-4x3, .ratio-16x9, .ratio-21x9)
+$enable-ratio-1x1:  true !default;
+$enable-ratio-4x3:  true !default;
+$enable-ratio-16x9: true !default;
+$enable-ratio-21x9: true !default;
+
+$_aspect-ratios: ();
+@if $enable-ratio-1x1  { $_aspect-ratios: map-merge($_aspect-ratios, ("1x1":  100%)); }
+@if $enable-ratio-4x3  { $_aspect-ratios: map-merge($_aspect-ratios, ("4x3":  calc(3 / 4 * 100%))); }
+@if $enable-ratio-16x9 { $_aspect-ratios: map-merge($_aspect-ratios, ("16x9": calc(9 / 16 * 100%))); }
+@if $enable-ratio-21x9 { $_aspect-ratios: map-merge($_aspect-ratios, ("21x9": calc(9 / 21 * 100%))); }
+$aspect-ratios: $_aspect-ratios !default;
+
+// Rounded utility — granularité par niveau (en plus du flag global $enable-rounded).
+// Chaque niveau correspond à un palier de border-radius Bootstrap.
+$enable-rounded-base:   true !default; // .rounded (sans suffixe)
+$enable-rounded-0:      true !default; // .rounded-0
+$enable-rounded-1:      true !default; // .rounded-1 (sm)
+$enable-rounded-2:      true !default; // .rounded-2 (base)
+$enable-rounded-3:      true !default; // .rounded-3 (lg)
+$enable-rounded-4:      true !default; // .rounded-4 (xl)
+$enable-rounded-5:      true !default; // .rounded-5 (xxl)
+$enable-rounded-circle: true !default; // .rounded-circle
+$enable-rounded-pill:   true !default; // .rounded-pill
+
+// Root — bloque l'émission de certaines familles de CSS vars dans :root
+// (si ton CSS custom n'utilise jamais var(--bs-blue) ou var(--bs-gray-300),
+// inutile de les générer).
+$enable-root-colors:        true !default; // --bs-blue, --bs-red, --bs-orange, etc.
+$enable-root-grays:         true !default; // --bs-gray-100 à --bs-gray-900
+$enable-root-text-emphasis: true !default; // --bs-X-text-emphasis
+$enable-root-bg-subtle:     true !default; // --bs-X-bg-subtle
+$enable-root-border-subtle: true !default; // --bs-X-border-subtle
+$enable-root-shadow-vars:   true !default; // --bs-box-shadow{,-sm,-lg,-inset}
+$enable-root-radius-vars:   true !default; // --bs-border-radius{,-sm,-lg,-xl,-xxl,-pill}
 
 $min-contrast-ratio: 4.5 !default;
 $color-contrast-dark: $black !default;
@@ -98,6 +259,13 @@ $title-font-weight: 700 !default;
 $title-line-height: 1.2 !default;
 $title-margin-bottom: 1.5rem !default;
 $enable-titles-font-size: false !default;
+
+// Bootstrap typography overrides — câble les fonts projet sur Bootstrap
+// (sinon body hérite de system-ui par défaut).
+// $font-primary est défini dans default/variables.scss, chargé en amont via vendor.scss.
+$font-family-sans-serif: $font-primary !default;
+$btn-font-family: $font-primary !default;
+$headings-font-family: $font-title !default;
 
 $border-width: 1px !default;
 $border-translucent: rgba(255, 255, 255, 0.15) !default;
@@ -357,6 +525,18 @@ $enable-dropdown-end: false !default;
 $enable-dropdown-toggle-split: false !default;
 $enable-collapse: true !default;
 $enable-form: false !default;
+
+// Sub-flags forms : à false individuellement pour couper un sous-composant.
+// Par défaut alignés sur $enable-form pour garder le comportement global.
+$enable-form-labels:     $enable-form !default;
+$enable-form-text:       $enable-form !default;
+$enable-form-control:    $enable-form !default;
+$enable-form-select:     $enable-form !default;
+$enable-form-check:      $enable-form !default;
+$enable-form-range:      $enable-form !default;
+$enable-form-floating:   $enable-form !default;
+$enable-input-group:     $enable-form !default;
+$enable-form-validation: $enable-form !default;
 $enable-img-drop: false !default;
 $enable-list: false !default;
 $enable-modal: true !default;

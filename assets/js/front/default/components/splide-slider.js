@@ -30,7 +30,7 @@ export default function (sliders) {
 
             if (!slider.classList.contains('thumbnails-slider')) {
 
-                let screenWidth = window.screen.width;
+                let screenWidth = window.innerWidth;
 
                 let isMobile = screenWidth <= 767;
                 let isTablet = screenWidth > 767 && screenWidth <= 991;
@@ -194,6 +194,7 @@ export default function (sliders) {
                     slider.classList.add('is-initialized');
                     const config = getConfig();
                     let splide = new Splide(slider, config);
+                    slider._splide = splide;
 
                     if (config.type === 'loop') {
                         imgSizes(slider);
@@ -204,12 +205,6 @@ export default function (sliders) {
                             wrap.classList.add('disabled');
                         });
                     }
-
-                    // window.addEventListener('resize', () => {
-                    //     splide.destroy();
-                    //     splide = new Splide(slider, getConfig());
-                    //     splide.mount();
-                    // });
 
                     splide.on('mounted', function () {
 
@@ -474,6 +469,34 @@ export default function (sliders) {
             }
         }
 
+        let rebuildOnResize = function (slider) {
+            if (slider._resizeBound) {
+                return;
+            }
+            slider._resizeBound = true;
+            let resizeTimer;
+            let lastWidth = window.innerWidth;
+            window.addEventListener('resize', function () {
+                if (window.innerWidth === lastWidth) {
+                    return;
+                }
+                lastWidth = window.innerWidth;
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () {
+                    if (slider._splide && typeof slider._splide.destroy === 'function') {
+                        slider._splide.destroy(true);
+                    }
+                    slider._splide = null;
+                    slider.classList.remove('is-initialized');
+                    slider.classList.remove('clones-loaded');
+                    slider.querySelectorAll('picture').forEach(function (picture) {
+                        picture.style.width = '';
+                    });
+                    init(slider);
+                }, 200);
+            });
+        };
+
         sliders.forEach(function (slider) {
             if (!slider.classList.contains('is-initialized') && isInViewport(slider, 300)) {
                 slider.classList.add('is-initialized');
@@ -482,6 +505,7 @@ export default function (sliders) {
                 slider.classList.add('is-initialized');
                 init(slider);
             }
+            rebuildOnResize(slider);
             window.addEventListener('scroll', function () {
                 if (!slider.classList.contains('is-initialized') && isInViewport(slider, 300)) {
                     slider.classList.add('is-initialized');

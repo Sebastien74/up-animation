@@ -1,0 +1,13 @@
+// scss-enable-gate-applied
+@if $enable-text-truncate {
+
+//
+// Text truncation
+//
+
+.text-truncate {
+  @include text-truncate();
+}
+
+
+}

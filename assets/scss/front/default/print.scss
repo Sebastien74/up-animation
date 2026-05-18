@@ -30,4 +30,6 @@ table, figure {
     page-break-inside: avoid;
 }
 
-@import '../bootstrap/layout/print';
+// NOTE : ../bootstrap/layout/print n'existe plus dans Bootstrap 5.3+
+// (les styles print de Bootstrap sont intégrés à _reboot.scss).
+// Import retiré pour ne pas casser le build — réintroduire si besoin via un partial dédié.

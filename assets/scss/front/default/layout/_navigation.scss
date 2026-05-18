@@ -238,15 +238,39 @@ body.menu-open {
 
     @include mediaQuery(min-lg) {
 
-        .link-level-1.active {
-            color: $primary !important;
+        .link-level-1, #locales-switcher {
+            transition: color $transition-base, background-color $transition-base, box-shadow $transition-base;
+
+            &:hover,
+            &:hover span,
+            &:hover .link-label,
+            &.active,
+            &.active span,
+            &.active .link-label {
+                color: $secondary !important;
+            }
+
+            &:hover,
+            &.active {
+                background-color: transparentize($primary, .9) !important;
+                box-shadow: inset 0 0 0 1px transparentize($primary, .78) !important;
+            }
         }
 
-        .link-level-1, #locales-switcher {
-            transition: color $transition-base;
+        .link-level-1.btn-blur.btn-blur-primary,
+        .nav-link.btn-blur.btn-blur-primary {
 
-            &:hover {
-                color: $primary !important;
+            &:hover,
+            &:focus,
+            &:active,
+            &.active {
+                background-color: $primary !important;
+                color: $white !important;
+                box-shadow: 0 6px 18px transparentize($primary, .65) !important;
+
+                .link-label, i, span {
+                    color: $white !important;
+                }
             }
         }
     }

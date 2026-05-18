@@ -19,11 +19,17 @@
 -----------------------------------*/
 
 @import '../../../lib/fonts/icomoon-webmaster';
+@import "../../front/bootstrap/functions";
 @import "../../front/bootstrap/variables";
 @import "../mixin/media-queries";
 
 $enable-dropdown: true;
-@import "../../front/bootstrap/modules/dropdown";
+// NOTE : ../../front/bootstrap/modules/dropdown a disparu avec la migration
+// Bootstrap 5.3 (la structure /modules/ n'existe plus). Le dropdown est à
+// récupérer via assets/scss/front/bootstrap/_dropdown.scss qui dépend de
+// l'ensemble des variables/mixins Bootstrap — non importables isolément.
+// Import neutralisé pour débloquer le build.
+
 
 /*-----------------------------------
    2 ) Webmaster buttons toolbar

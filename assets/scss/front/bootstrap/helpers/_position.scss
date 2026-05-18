@@ -1,0 +1,47 @@
+// scss-enable-gate-applied
+// Shorthand
+
+@if $enable-fixed-top {
+  .fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: $zindex-fixed;
+  }
+}
+
+@if $enable-fixed-bottom {
+  .fixed-bottom {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $zindex-fixed;
+  }
+}
+
+// Responsive sticky top and bottom
+@if $enable-sticky-top or $enable-sticky-bottom {
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+      $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+      @if $enable-sticky-top {
+        .sticky#{$infix}-top {
+          position: sticky;
+          top: 0;
+          z-index: $zindex-sticky;
+        }
+      }
+
+      @if $enable-sticky-bottom {
+        .sticky#{$infix}-bottom {
+          position: sticky;
+          bottom: 0;
+          z-index: $zindex-sticky;
+        }
+      }
+    }
+  }
+}
