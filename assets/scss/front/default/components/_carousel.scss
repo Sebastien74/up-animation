@@ -302,27 +302,6 @@
         padding-left: 0 !important;
         padding-right: 0 !important;
     }
-
-    .splide.not-mobile {
-
-        visibility: visible !important;
-
-        .splide__list {
-            display: initial !important;
-        }
-    }
-}
-
-@include mediaQuery(min-md) {
-
-    .splide.not-desktop {
-
-        visibility: visible !important;
-
-        .splide__list {
-            display: initial !important;
-        }
-    }
 }
 
 @include mediaQuery(min-lg) {
@@ -437,31 +416,6 @@
 }
 
 .splide {
-
-    visibility: hidden;
-
-    &:not(.is-initialized) {
-
-        .splide__list {
-            display: flex !important;
-            flex-wrap: nowrap !important;
-            overflow: hidden !important;
-        }
-
-        .splide__slide {
-
-            flex: 0 0 auto !important;
-            width: 33.33% !important; // Fallback par défaut (3 items)
-
-            @include mediaQuery(max-md) {
-                width: 100% !important;
-            }
-
-            @include mediaQuery(max-lg) {
-                width: 50% !important;
-            }
-        }
-    }
 
     .pictogram-wrap {
 

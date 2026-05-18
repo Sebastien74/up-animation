@@ -1,0 +1,133 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    Copyright  : 2026
+    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    SPLIDE PRE-INIT LAYOUT :
+    ========================
+
+    Reserves horizontal space for slides before splide-slider.js runs
+    and before the lazy-loaded vendor _splide.scss arrives. Slide widths
+    are derived from the data-items* attributes on the .splide container,
+    so templates stay declarative (no inline width, no per-template SCSS).
+
+    Rules are scoped to .splide:not(.is-initialized) and stop applying
+    as soon as JS mounts Splide.
+
+    1 ) Visibility (matches vendor splide.scss for the post-init state)
+    2 ) Layout reservation per breakpoint
+    3 ) .not-mobile / .not-desktop overrides
+
+------------------------------------------------------------------ */
+
+/*! purgecss start ignore */
+
+/*-----------------------------------
+   1 ) Visibility
+-----------------------------------*/
+
+.splide {
+
+    visibility: hidden;
+
+    &.is-initialized,
+    &.is-rendered {
+        visibility: visible;
+    }
+
+    /*-----------------------------------
+       2 ) Layout reservation per breakpoint
+    -----------------------------------*/
+
+    &:not(.is-initialized) {
+
+        .splide__track {
+            overflow: hidden;
+        }
+
+        .splide__list {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            list-style: none !important;
+        }
+
+        .splide__slide {
+            flex: 0 0 100%;
+            max-width: 100%;
+            list-style: none !important;
+        }
+
+        @include mediaQuery(min-xxl) {
+            @for $i from 1 through 8 {
+                &[data-items="#{$i}"] .splide__slide {
+                    flex: 0 0 calc(100% / #{$i});
+                    max-width: calc(100% / #{$i});
+                }
+            }
+        }
+
+        @include mediaQuery(between-xl-xxl) {
+            @for $i from 1 through 8 {
+                &[data-items-medium-pc="#{$i}"] .splide__slide {
+                    flex: 0 0 calc(100% / #{$i});
+                    max-width: calc(100% / #{$i});
+                }
+            }
+        }
+
+        @include mediaQuery(between-lg-xl) {
+            @for $i from 1 through 8 {
+                &[data-items-laptop="#{$i}"] .splide__slide {
+                    flex: 0 0 calc(100% / #{$i});
+                    max-width: calc(100% / #{$i});
+                }
+            }
+        }
+
+        @include mediaQuery(between-md-lg) {
+            @for $i from 1 through 8 {
+                &[data-items-tablet="#{$i}"] .splide__slide {
+                    flex: 0 0 calc(100% / #{$i});
+                    max-width: calc(100% / #{$i});
+                }
+            }
+        }
+
+        @include mediaQuery(max-md) {
+            @for $i from 1 through 4 {
+                &[data-items-mobile="#{$i}"] .splide__slide {
+                    flex: 0 0 calc(100% / #{$i});
+                    max-width: calc(100% / #{$i});
+                }
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) .not-mobile / .not-desktop overrides
+-----------------------------------*/
+
+@include mediaQuery(max-md) {
+    .splide.not-mobile {
+        visibility: visible !important;
+        .splide__list {
+            display: initial !important;
+        }
+    }
+}
+
+@include mediaQuery(min-md) {
+    .splide.not-desktop {
+        visibility: visible !important;
+        .splide__list {
+            display: initial !important;
+        }
+    }
+}
+
+/*! purgecss end ignore */

@@ -56,7 +56,7 @@
              data-dots="0"
              data-gap="2rem"
              data-interval="2500">
-            <div class="splide__track ps-lg-3">
+            <div class="splide__track ps-md-3">
                 {%- set arrowsClass = entities|length <= teaser.itemsPerSlide ? ' d-lg-none' : '' -%}
                 {{ macro.arrows(website, autoplay, 'end', 'secondary'~arrowsClass, true, 'top') }}
                 <ul class="splide__list{% if entities|length < teaser.itemsPerSlide %} d-lg-flex justify-content-lg-start{% endif %}">
