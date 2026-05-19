@@ -3,6 +3,60 @@
 {%- set currentCategory = currentCategory is not defined or not currentCategory ? 'page' : currentCategory -%}
 {%- set categoriesCount = entities|length + (models is defined ? 1 : 0) -%}
 
+{# Maps each interface name to an Icomoon glyph; defaults to a neutral tag for unknown categories. #}
+{%- set categoryIcons = {
+    'page': 'file-alt',
+    'agenda': 'calendar-alt',
+    'agendainformation': 'calendar-alt',
+    'agendaperiod': 'calendar-alt',
+    'catalog': 'shopping-cart',
+    'catalogcategory': 'folder',
+    'catalogsubcategory': 'folder',
+    'catalogproduct': 'tag',
+    'cataloglisting': 'list-ul',
+    'productteaser': 'tag',
+    'newscast': 'newspaper',
+    'newscastcategory': 'folder',
+    'newscastlisting': 'list-ul',
+    'newscasttag': 'tag',
+    'newscastteaser': 'newspaper',
+    'gallery': 'images',
+    'gallerycategory': 'folder',
+    'gallerylisting': 'list-ul',
+    'galleryteaser': 'images',
+    'portfolio': 'briefcase',
+    'portfoliocard': 'briefcase',
+    'portfoliocategory': 'folder',
+    'portfoliolisting': 'list-ul',
+    'portfolioteaser': 'briefcase',
+    'recruitmentjob': 'user-tie',
+    'recruitmentcategory': 'folder',
+    'recruitmentcontract': 'file-alt',
+    'recruitmentlisting': 'list-ul',
+    'contact': 'envelope',
+    'faq': 'question-circle',
+    'faqquestion': 'question-circle',
+    'map': 'map-marked-alt',
+    'mapcategory': 'folder',
+    'mappoint': 'map-marked-alt',
+    'form': 'clipboard-list',
+    'formcontact': 'envelope',
+    'formcalendar': 'calendar-alt',
+    'stepform': 'clipboard-list',
+    'contactstepform': 'clipboard-list',
+    'timelinestep': 'history',
+    'slider': 'images',
+    'search': 'search',
+    'securitymessage': 'bullhorn',
+    'securitygroup': 'users',
+    'securitycompany': 'briefcase',
+    'gdprcookie': 'shield-alt',
+    'gdprcategory': 'shield-alt',
+    'gdprgroup': 'shield-alt',
+    'campaign': 'bullhorn',
+    'newsletteremail': 'envelope',
+} -%}
+
 <div class="section-label mb-3">
     <span class="label-line" aria-hidden="true"></span>
     <span class="label-text">{{ "Catégories"|trans|raw }}</span>
@@ -12,6 +66,7 @@
 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
     {%- for category, item in entities -%}
         {%- set label = item['main'][1].classname is defined ? item['main'][1].classname : (item[0].classname is defined ? item[0].classname : null) -%}
+        {%- set categoryIcon = categoryIcons[category]|default('tag') -%}
         <a id="v-pills-{{ category }}-tab"
            class="btn-app small {% if currentCategory == category %} active{% endif %}"
            data-bs-toggle="pill"
@@ -22,7 +77,7 @@
             {%- set entityDomain = 'entity_'~category -%}
             {%- set label = 'plural'|trans([], entityDomain) and 'plural'|trans([], entityDomain) != 'plural'
                 ? 'plural'|trans([], entityDomain) : label -%}
-            {{ label }}
+            <i class="icm-{{ categoryIcon }}"></i><span>{{ label }}</span>
         </a>
     {%- endfor -%}
     {%- if models is defined -%}
@@ -32,7 +87,9 @@
            href="#v-pills-models"
            role="tab"
            aria-controls="v-pills-models"
-           aria-selected="false">{{ "Modèles"|trans|raw }}</a>
+           aria-selected="false">
+            <i class="icm-layer-group"></i><span>{{ "Modèles"|trans|raw }}</span>
+        </a>
     {%- endif -%}
 </div>
 
@@ -50,10 +107,10 @@
                     </div>
                 </form>
                 <div class="tree-toggle-actions d-flex align-items-center">
-                    <span class="expand-all-entities me-1" data-bs-toggle="tooltip" title="{{"Tout afficher"|trans|raw }}">
+                    <span class="expand-all-entities" data-bs-toggle="tooltip" title="{{"Tout afficher"|trans|raw }}">
                         <i class="icm-arrow-alt-to-bottom"></i>
                     </span>
-                    <span class="collapse-all-entities" data-bs-toggle="tooltip" title="{{"Tout cacher"|trans|raw }}">
+                    <span class="collapse-all-entities d-none" data-bs-toggle="tooltip" title="{{"Tout cacher"|trans|raw }}">
                         <i class="icm-arrow-alt-to-top"></i>
                     </span>
                 </div>
@@ -77,7 +134,7 @@
                     <input placeholder="{{"Rechercher"|trans|raw }}" class="form-control" type="text" data-target=".models-list">
                 </div>
             </form>
-            <ul class="models-list tree-list mb-0">
+            <ul class="models-list tree-list">
                 {%- for model in models -%}
                     <li class="item">
                         <span class="item-link">

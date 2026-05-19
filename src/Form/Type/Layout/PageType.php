@@ -108,7 +108,7 @@ class PageType extends AbstractType
                 'display' => 'search',
                 'choices' => $this->getTemplates($page),
                 'attr' => ['data-config' => true],
-                'row_attr' => ['class' => 'col-12'],
+                'row_attr' => ['class' => $templateClass],
             ]);
 
             if (!$isNew) {

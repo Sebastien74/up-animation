@@ -49,18 +49,17 @@
 <code class="highlight highlight-index">&lt;meta name="robots" content="{{ seo.index }}" /></code>
 {%- if website.api.google.searchConsoleKey is defined and website.api.google.searchConsoleKey -%}
 <meta name="google-site-verification" content="{{ website.api.google.searchConsoleKey }}" />
-{%- endif -%}
-
+{%- endif -%}<br>
 &lt;!-- Canonical --/>
 <code class="highlight highlight-canonical">&lt;link rel="canonical" href="{{ seo.canonical|striptags }}" /></code>
 {%- if seo.localesAlternate|length > 1 -%}
-
+<br>
 &lt;!--  Alternates links --/>
 {%- for localeAlternate, alternate in seo.localesAlternate -%}
 <code class="highlight highlight-alternate">&lt;link rel="alternate" hreflang="{{ localeAlternate }}" href="{{ alternate }}" /></code>
 {%- endfor -%}
 {%- endif -%}
-
+<br>
 &lt;!-- Open Graph --/>
 <code class="highlight">&lt;meta property="og:locale" content="{{ seo.locale }}" /></code>
 <code class="highlight highlight-og-title">&lt;meta property="og:title" content="{{ seo.ogFullTitle|striptags }}" /></code>

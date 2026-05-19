@@ -4,32 +4,28 @@
 {%- set defaultLocale = configuration.locale -%}
 {%- set allLocales = configuration.allLocales -%}
 
-<div id="entities-index" class="card d-inline-block w-100">
+<div id="entities-index">
 
-    <div class="card-header">
-        <div class="row">
-            <div class="col-md-8 my-auto">
-                {%- if searchFiltersForm is defined and searchFiltersForm -%}
-                    {%- include 'admin/core/form/filters.html.twig' with {form: searchFiltersForm} -%}
-                {%- endif -%}
-                {%- if searchForm -%}
-                    {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} -%}
-                {%- endif -%}
-            </div>
+    <div class="row">
+        <div class="col-md-8 mb-3">
+            {%- if searchFiltersForm is defined and searchFiltersForm -%}
+                {%- include 'admin/core/form/filters.html.twig' with {form: searchFiltersForm} -%}
+            {%- endif -%}
+            {%- if searchForm -%}
+                {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} -%}
+            {%- endif -%}
         </div>
     </div>
 
-    <div id="result" class="position-relative">
-
+    <div id="result" class="position-relative table-responsive app-table">
         {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'index-preloader', full: true} only -%}
-
         <table class="table editable-table table-striped mb-0">
             <thead>
                 <tr>
-                    <th class="col-locale {%- if allLocales|length <= 1 -%} d-none{% endif %}">{{ "Langue"|trans|raw }}</th>
-                    <th>{{ "URL"|trans|raw }} <small class="ms-1">({{ "Ancienne URI / URL"|trans|raw }})</small></th>
-                    <th class="text-start">{{ "Nouvelle URL"|trans|raw }} <small class="ms-1">({{ "Avec protocol"|trans|raw }})</small></th>
-                    <th class="text-end">
+                    <th class="col-locale px-4 {%- if allLocales|length <= 1 -%} d-none{% endif %}">{{ "Langue"|trans|raw }}</th>
+                    <th class="px-4">{{ "URL"|trans|raw }} <small class="ms-1">({{ "Ancienne URI / URL"|trans|raw }})</small></th>
+                    <th class="text-start px-4">{{ "Nouvelle URL"|trans|raw }} <small class="ms-1">({{ "Avec protocol"|trans|raw }})</small></th>
+                    <th class="text-end px-4">
                         <div class="delete-index-all-wrap custom-control custom-checkbox float-end ms-3 d-none" data-bs-toggle="tooltip"
                              title="{{ "Tout cocher"|trans|striptags }}"
                              data-checked="{{ "Tout cocher"|trans|striptags }}"
@@ -47,9 +43,7 @@
                 {%- endfor -%}
             </tbody>
         </table>
-
         {%- include 'admin/core/include/pagination.html.twig' -%}
-
     </div>
 
 </div>

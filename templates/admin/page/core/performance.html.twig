@@ -60,66 +60,88 @@
             </div>
         {%- endif -%}
 
-        <div class="perf-inspector-table-wrap">
-            {%- if entries is empty -%}
-                <div class="perf-empty-state">
-                    <p class="mb-2">{{ "Aucune requête lente détectée pour cet espace."|trans|raw }}</p>
-                    <p class="text-muted small mb-0">
-                        {{ "Le seuil actuel filtre les requêtes plus lentes que la valeur configurée. Naviguez sur le site ou abaissez le seuil pour collecter davantage d'entrées."|trans|raw }}
-                    </p>
-                </div>
-            {%- else -%}
-                <table class="perf-inspector-table">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="col-when">{{ "Horodatage"|trans|raw }}</th>
-                            <th scope="col" class="col-duration">{{ "Durée"|trans|raw }}</th>
-                            <th scope="col" class="col-memory">{{ "Mémoire"|trans|raw }}</th>
-                            <th scope="col" class="col-status">{{ "HTTP"|trans|raw }}</th>
-                            <th scope="col" class="col-route">{{ "Route"|trans|raw }}</th>
-                            <th scope="col" class="col-uri">{{ "Chemin"|trans|raw }}</th>
-                            <th scope="col" class="col-actions">{{ "Actions"|trans|raw }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {%- for entry in entries -%}
+        <div class="table-responsive app-table">
+            <table class="table table-striped responsive-cards mb-0">
+                <thead>
+                    <tr>
+                        <th class="align-middle px-4">{{ "Horodatage"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Durée"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Mémoire"|trans|raw }}</th>
+                        <th class="align-middle text-center px-4">{{ "HTTP"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Route"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Chemin"|trans|raw }}</th>
+                        <th class="align-middle text-end px-4">{{ "Actions"|trans|raw }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%- for entry in pagination -%}
                         {%- set severity = entry.duration_ms >= 5000 ? 'critical'
                             : (entry.duration_ms >= 2000 ? 'high'
                             : (entry.duration_ms >= 1000 ? 'medium' : 'low')) -%}
                         {%- set hasProfile = entry.profiler_token is defined and entry.profiler_token and app.debug -%}
-                        <tr class="severity-{{ severity }}">
-                            <td class="col-when">{{ entry.formatted_at }}</td>
-                            <td class="col-duration"><span class="duration-pill duration-{{ severity }}">{{ entry.duration_ms }} ms</span></td>
-                            <td class="col-memory">{{ entry.peak_memory_mb }} Mo</td>
-                            <td class="col-status"><span class="status-pill status-{{ (entry.status // 100) }}">{{ entry.status }}</span></td>
-                            <td class="col-route"><code>{{ entry.route }}</code></td>
-                            <td class="col-uri"><code title="{{ entry.uri }}">{{ entry.uri }}</code></td>
-                            <td class="col-actions">
-                                {%- if hasProfile -%}
-                                    <a href="{{ path('_profiler', {token: entry.profiler_token, panel: 'db'}) }}"
-                                       class="row-action row-action-profile"
+                        <tr>
+                            <td class="align-middle px-4" data-label="{{ "Horodatage"|trans|raw }}">
+                                <span class="text-nowrap">{{ entry.formatted_at }}</span>
+                            </td>
+                            <td class="align-middle px-4" data-label="{{ "Durée"|trans|raw }}">
+                                <span class="duration-pill duration-{{ severity }}">{{ entry.duration_ms }}&nbsp;ms</span>
+                            </td>
+                            <td class="align-middle px-4" data-label="{{ "Mémoire"|trans|raw }}">
+                                {{ entry.peak_memory_mb }} Mo
+                            </td>
+                            <td class="align-middle text-center px-4" data-label="{{ "HTTP"|trans|raw }}">
+                                <span class="status-pill status-{{ (entry.status // 100) }}">{{ entry.status }}</span>
+                            </td>
+                            <td class="align-middle px-4" data-label="{{ "Route"|trans|raw }}">
+                                <code>{{ entry.route }}</code>
+                            </td>
+                            <td class="align-middle px-4" data-label="{{ "Chemin"|trans|raw }}">
+                                <code title="{{ entry.uri }}">{{ entry.uri }}</code>
+                            </td>
+                            <td class="align-middle text-end px-4" data-label="{{ "Actions"|trans|raw }}">
+                                <div class="d-flex justify-content-end align-items-center gap-2">
+                                    {%- if hasProfile -%}
+                                        <a href="{{ path('_profiler', {token: entry.profiler_token, panel: 'db'}) }}"
+                                           target="_blank"
+                                           rel="noopener"
+                                           data-bs-toggle="tooltip"
+                                           title="{{ "Voir les requêtes SQL exécutées"|trans|striptags }}"
+                                           data-tooltip-variant="info"
+                                           class="btn-icon small info">
+                                            <i class="icm-database"></i>
+                                        </a>
+                                    {%- endif -%}
+                                    <a href="{{ entry.uri }}"
                                        target="_blank"
                                        rel="noopener"
-                                       title="{{ "Voir les requêtes SQL exécutées"|trans|striptags }}">
-                                        <i class="icm-database"></i>
-                                        <span>{{ "SQL"|trans|raw }}</span>
+                                       data-bs-toggle="tooltip"
+                                       title="{{ "Rejouer cette requête dans un nouvel onglet"|trans|striptags }}"
+                                       data-tooltip-variant="info"
+                                       class="btn-icon small info">
+                                        <i class="icm-external-link-alt"></i>
                                     </a>
-                                {%- endif -%}
-                                <a href="{{ entry.uri }}"
-                                   class="row-action row-action-replay"
-                                   target="_blank"
-                                   rel="noopener"
-                                   title="{{ "Rejouer cette requête dans un nouvel onglet"|trans|striptags }}">
-                                    <i class="icm-external-link-alt"></i>
-                                    <span>{{ "Ouvrir"|trans|raw }}</span>
-                                </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {%- else -%}
+                        <tr>
+                            <td colspan="7" class="px-4">
+                                <div class="py-2 d-flex flex-column align-items-center justify-content-center gap-2 text-center">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="btn-icon info icm-info"></i>{{ "Aucune requête lente détectée pour cet espace."|trans|raw }}
+                                    </div>
+                                    <p class="text-muted small mb-0">
+                                        {{ "Le seuil actuel filtre les requêtes plus lentes que la valeur configurée. Naviguez sur le site ou abaissez le seuil pour collecter davantage d'entrées."|trans|raw }}
+                                    </p>
+                                </div>
                             </td>
                         </tr>
                     {%- endfor -%}
-                    </tbody>
-                </table>
-            {%- endif -%}
+                </tbody>
+            </table>
         </div>
+
+        {%- include 'admin/core/include/pagination.html.twig' -%}
 
     </div>
 

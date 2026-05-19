@@ -30,6 +30,30 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Show expand-all when everything is collapsed, collapse-all otherwise.
+    // Called after init (where active-link ancestors are auto-expanded), after
+    // bulk clicks, and on every individual Bootstrap collapse toggle.
+    function refreshTreeToggle(pane) {
+        if (!pane) {
+            return;
+        }
+        const hasOpen = pane.querySelector('.collapse.show') !== null;
+        const expandBtn = pane.querySelector('.expand-all-entities');
+        const collapseBtn = pane.querySelector('.collapse-all-entities');
+        if (expandBtn) {
+            expandBtn.classList.toggle('d-none', hasOpen);
+        }
+        if (collapseBtn) {
+            collapseBtn.classList.toggle('d-none', !hasOpen);
+        }
+    }
+
+    document.querySelectorAll('#v-pills-tab-tree .tab-pane').forEach(pane => {
+        refreshTreeToggle(pane);
+        pane.addEventListener('shown.bs.collapse', () => refreshTreeToggle(pane));
+        pane.addEventListener('hidden.bs.collapse', () => refreshTreeToggle(pane));
+    });
+
     document.addEventListener('change', function (e) {
         const indexCheckbox = e.target.closest('.is-index');
         if (indexCheckbox) {
@@ -57,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     el.setAttribute('aria-expanded', 'true');
                     el.classList.remove('collapsed');
                 });
+                refreshTreeToggle(pane);
             }
         }
 
@@ -69,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     el.setAttribute('aria-expanded', 'false');
                     el.classList.add('collapsed');
                 });
+                refreshTreeToggle(pane);
             }
         }
     });

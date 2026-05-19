@@ -23,6 +23,7 @@
    1 ) Variables
 -----------------------------------*/
 
+@import "../../vendor/mixin/media-queries";
 @import '../variables';
 
 $nestable-item-height: 50px;
@@ -37,9 +38,9 @@ $nestable-border-hover: $btn-border-hover;
 $nestable-text: $btn-text;
 $nestable-handle-icon: transparentize($white, .3);
 
-$nestable-shadow-rest: 0 1px 2px rgba(0, 0, 0, .25);
-$nestable-shadow-hover: 0 6px 18px rgba(0, 0, 0, .35);
-$nestable-shadow-drag: 0 22px 55px rgba(0, 0, 0, .55);
+$nestable-shadow-rest: 0 1px 1px rgba(0, 0, 0, .10);
+$nestable-shadow-hover: 0 2px 6px rgba(0, 0, 0, .14);
+$nestable-shadow-drag: 0 12px 32px rgba(0, 0, 0, .40);
 
 $nestable-drop-bg: transparentize($primary, .88);
 $nestable-drop-border: transparentize($primary, .55);
@@ -111,11 +112,16 @@ $nestable-drop-border: transparentize($primary, .55);
 
 .dd-item {
 
-    transition: transform $transition-fast, box-shadow $transition-fast;
+    > .dd3-content {
+        transition: border-color $transition-fast, box-shadow $transition-fast;
+    }
 
-    &:hover > .dd3-content {
-        border-color: $nestable-border-hover;
-        box-shadow: $nestable-shadow-hover;
+    @include mediaQuery(min-lg) {
+
+        &:hover > .dd3-content {
+            border-color: $nestable-border-hover;
+            box-shadow: $nestable-shadow-hover;
+        }
     }
 }
 
@@ -163,12 +169,18 @@ $nestable-drop-border: transparentize($primary, .55);
 
         i {
             color: $nestable-handle-icon;
+            transition: color $transition-fast;
         }
     }
 
     /* Affordance discrète : 3 points / icône drag plus visible au survol de la carte */
     .dd-item:hover > & {
+
         color: $white;
+
+        .btn-icon i {
+            color: $white;
+        }
     }
 }
 
@@ -206,6 +218,8 @@ $nestable-drop-border: transparentize($primary, .55);
     }
 
     .title {
+
+        font-size: 13px;
 
         .icm-circle {
 

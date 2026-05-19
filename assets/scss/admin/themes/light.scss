@@ -910,6 +910,27 @@ body {
             }
         }
 
+        // .collapse-btn / .expand-btn sont des <span> sans .btn : l'override ci-dessus
+        // ne les touche pas. En dark, la couleur de base est transparentize($white, .4),
+        // illisible sur le fond crème du light.
+        .btn-collapsed-group {
+
+            .collapse-btn,
+            .expand-btn {
+                color: $theme-text-muted !important;
+
+                &:hover {
+                    background: $theme-bg-alt !important;
+                    border-color: $theme-border !important;
+                    color: $theme-text !important;
+                }
+            }
+
+            .expand-btn.active {
+                color: $theme-text !important;
+            }
+        }
+
         span.title, small {
             color: $theme-text;
         }
@@ -929,6 +950,12 @@ body {
 
     .dd3-handle .btn-icon i {
         color: $theme-text-muted;
+    }
+
+    // Hover handle : tree-sortable force $white sur le i, illisible sur fond crème.
+    // On réaligne sur la couleur de texte sombre du body.
+    .dd-item:hover > .dd3-handle .btn-icon i {
+        color: $theme-text !important;
     }
 
     // Drop zones pendant le drag : tree-sortable.scss applique un background sombre
@@ -1924,7 +1951,10 @@ body {
     .perf-summary-tile {
         background: $theme-card-bg !important;
         border-color: $theme-border-subtle !important;
-        box-shadow: $theme-shadow-md !important;
+
+        &:hover {
+            border-color: $theme-border !important;
+        }
 
         .tile-label {
             color: $theme-text-muted !important;
@@ -1939,66 +1969,8 @@ body {
         }
     }
 
-    .perf-inspector-table-wrap {
-        background: $theme-card-bg !important;
-        border-color: $theme-border-subtle !important;
-        box-shadow: $theme-shadow-md !important;
-    }
-
-    .perf-empty-state {
-        color: $theme-text !important;
-    }
-
-    .perf-inspector-table {
-        color: $theme-text !important;
-
-        thead th {
-            background: $theme-surface !important;
-            color: $theme-text-muted !important;
-            border-bottom-color: $theme-border-subtle !important;
-        }
-
-        tbody td {
-            border-bottom-color: $theme-border-subtle !important;
-
-            code {
-                color: $theme-text !important;
-            }
-        }
-
-        tbody tr:hover {
-            background: $theme-accent-bg-soft !important;
-        }
-    }
-
     .legend-swatch.is-front {
         background: $theme-accent !important;
-    }
-
-    .row-action {
-        background: $theme-surface !important;
-        border-color: $theme-border-subtle !important;
-        color: $theme-text-muted !important;
-
-        &:hover,
-        &:focus-visible {
-            background: $theme-card-bg !important;
-            border-color: $theme-border !important;
-            color: $theme-text !important;
-        }
-
-        &.row-action-profile {
-            color: $info !important;
-            border-color: rgba($info, .35) !important;
-            background: rgba($info, .08) !important;
-
-            &:hover,
-            &:focus-visible {
-                color: $white !important;
-                background: $info !important;
-                border-color: $info !important;
-            }
-        }
     }
 }
 

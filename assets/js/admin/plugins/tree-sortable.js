@@ -151,13 +151,15 @@ export default function () {
 
     /** Expand all */
     body.addEventListener('click', function (e) {
-        if (e.target && e.target.id === 'nestable-expand-all') {
+        // closest() — robust to clicks on the inner <i> icon (target would otherwise be the icon, not the button)
+        const trigger = e.target.closest && e.target.closest('#nestable-expand-all');
+        if (trigger) {
             const expandBtns = body.querySelectorAll('.expand-btn');
             expandBtns.forEach(btn => {
                 btn.click();
                 btn.classList.add('active');
             });
-            e.target.classList.add('d-none');
+            trigger.classList.add('d-none');
             const collapseAll = document.getElementById('nestable-collapse-all');
             if (collapseAll) {
                 collapseAll.classList.remove('d-none');
@@ -167,12 +169,13 @@ export default function () {
 
     /** Collapse all */
     body.addEventListener('click', function (e) {
-        if (e.target && e.target.id === 'nestable-collapse-all') {
+        const trigger = e.target.closest && e.target.closest('#nestable-collapse-all');
+        if (trigger) {
             const collapseBtns = body.querySelectorAll('.collapse-btn');
             const expandBtns = body.querySelectorAll('.expand-btn');
             collapseBtns.forEach(btn => btn.click());
             expandBtns.forEach(btn => btn.classList.remove('active'));
-            e.target.classList.add('d-none');
+            trigger.classList.add('d-none');
             const expandAll = document.getElementById('nestable-expand-all');
             if (expandAll) {
                 expandAll.classList.remove('d-none');

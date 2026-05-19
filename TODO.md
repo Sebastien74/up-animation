@@ -4,6 +4,11 @@ utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 utf8mb4_unicode_ci
 
+https://up-animation.local/admin-b2cba79269c9e51dfb69f1eedf4732f6d47e7ec5/1/websites/edit/1 onglet dev theme light
+https://up-animation.local/admin-b2cba79269c9e51dfb69f1eedf4732f6d47e7ec5/1/seo/configuration/edit ls tab langues Axeptio ne fontionnet pas
+
+Le ajouter redirection SEO ne fonctionne pas.
+
 Tester pour voir si le multi vidéo Youtube fonctionne
 
 Pour le tiret sur des mots coupés

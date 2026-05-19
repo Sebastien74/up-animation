@@ -19,80 +19,73 @@
 
     {{ form_start(form, {attr: {novalidate: "novalidate", id: 'seo-form-redirection'}}) }}
 
-        <div class="card mb-3 border-0">
-
-            <div class="card-header border-0 p-0 mb-4">
-                <div class="row align-items-center">
-                    <div class="col-12 col-md-6 d-flex flex-wrap gap-2">
-                        <a href="{{ asset('build/admin/docs/redirections.xlsx') }}" class="btn-app secondary d-inline-flex align-items-center gap-2" download="redirection.xlsx">
-                            <i class="icm-upload"></i><span>{{ "Télécharger le modèle XLS"|trans|raw }}</span>
-                        </a>
-                        <button type="button" class="btn-app info-lighten cursor d-inline-flex align-items-center gap-2"
-                                data-bs-toggle="modal" data-bs-target="#import-modal">
-                            <i class="icm-download"></i><span>{{ "Importer"|trans|raw }}</span>
-                        </button>
-                        {{ render_esi(path('admin_redirection_export', {website: website.id} )) }}
-                    </div>
-                    <div class="col-12 col-md-6 d-flex flex-wrap justify-content-md-end gap-2">
-                        <button type="submit" class="btn-app info d-inline-flex align-items-center gap-2">
-                            <i class="icm-save"></i><span>{{ "Enregistrer"|trans|raw }}</span>
-                        </button>
-                        <button type="button" class="add-collection btn-app success d-inline-flex align-items-center gap-2"
-                                data-type="table"
-                                data-collection-target="prepend"
-                                data-target="#redirections-collection">
-                            <i class="icm-plus"></i><span>{{ "Ajouter une redirection"|trans|raw }}</span>
-                        </button>
-                    </div>
-                </div>
+        <div class="row align-items-center mb-3">
+            <div class="col-12 col-md-6 d-flex flex-wrap gap-2">
+                <a href="{{ asset('build/admin/docs/redirections.xlsx') }}" class="btn-app secondary d-inline-flex align-items-center gap-2" download="redirection.xlsx">
+                    <i class="icm-upload"></i><span>{{ "Télécharger le modèle XLS"|trans|raw }}</span>
+                </a>
+                <button type="button" class="btn-app info-lighten cursor d-inline-flex align-items-center gap-2"
+                        data-bs-toggle="modal" data-bs-target="#import-modal">
+                    <i class="icm-download"></i><span>{{ "Importer"|trans|raw }}</span>
+                </button>
+                {{ render_esi(path('admin_redirection_export', {website: website.id} )) }}
             </div>
+            <div class="col-12 col-md-6 d-flex flex-wrap justify-content-md-end gap-2">
+                <button type="submit" class="btn-app info d-inline-flex align-items-center gap-2">
+                    <i class="icm-save"></i><span>{{ "Enregistrer"|trans|raw }}</span>
+                </button>
+                <button type="button" class="add-collection btn-app success d-inline-flex align-items-center gap-2"
+                        data-type="table"
+                        data-collection-target="prepend"
+                        data-target="#redirections-collection">
+                    <i class="icm-plus"></i><span>{{ "Ajouter une redirection"|trans|raw }}</span>
+                </button>
+            </div>
+        </div>
 
-            {%- import _self as macro -%}
+        {%- import _self as macro -%}
 
-            {%- set configuration = website().configuration -%}
-            {%- set defaultLocale = configuration.locale -%}
-            {%- set allLocales = configuration.allLocales -%}
+        {%- set configuration = website().configuration -%}
+        {%- set defaultLocale = configuration.locale -%}
+        {%- set allLocales = configuration.allLocales -%}
 
-            {%- macro redirection_prototype(redirection) -%}
-
-                {%- set allLocales = website().configuration.allLocales -%}
-                {%- set isNew = redirection.vars.data.id is defined and redirection.vars.data.id ? false : true -%}
-                {%- set entityId = redirection.vars.data.id is defined and redirection.vars.data.id ? redirection.vars.data.id : redirection.vars.id -%}
-                {%- set locale = redirection.vars.data.locale is defined and redirection.vars.data.locale ? redirection.vars.data.locale : null -%}
-
-                <tr id="refer-col-domain-{{ entityId }}" class="prototype">
-                    <td class="col-locale align-middle px-4{%- if allLocales|length <= 1 -%} d-none{% endif %}" data-label="{{"Langue"|trans|raw }}">
-                        <span class="d-none">{{ locale }}</span>
-                        {{ form_widget(redirection.locale) }}
-                    </td>
-                    <td class="align-middle px-4" data-label="{{"URL"|trans|raw }}">
-                        {{ form_widget(redirection.old) }}
-                        {{ form_errors(redirection.old) }}
-                    </td>
-                    <td class="align-middle px-4" data-label="{{"Nouvelle URL"|trans|raw }}">
-                        {{ form_widget(redirection.new) }}
-                        {{ form_errors(redirection.new) }}
-                    </td>
-                    <td class="align-middle text-end actions px-4" data-label="{{"Actions"|trans|raw }}">
-                        <div class="d-flex justify-content-end align-items-center gap-2">
-                            {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
-                                isNew: redirection.vars.data.id is defined and redirection.vars.data.id ? false : true,
-                                entityId: isNew ? uniqId() : redirection.vars.data.id,
-                                interfaceName: 'redirection'
-                            } -%}
-                            <div class="custom-control custom-checkbox delete-input-index-wrap d-none">
-                                <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ entityId }}"
-                                       data-path="{{ path('admin_redirection_delete', {website: websiteId(), redirection: entityId}) }}">
-                                <label class="custom-control-label" for="delete-input-{{ entityId }}"></label>
-                            </div>
+        {%- macro redirection_prototype(redirection) -%}
+            {%- set allLocales = website().configuration.allLocales -%}
+            {%- set isNew = redirection.vars.data.id is defined and redirection.vars.data.id ? false : true -%}
+            {%- set entityId = redirection.vars.data.id is defined and redirection.vars.data.id ? redirection.vars.data.id : redirection.vars.id -%}
+            {%- set locale = redirection.vars.data.locale is defined and redirection.vars.data.locale ? redirection.vars.data.locale : null -%}
+            <tr id="refer-col-domain-{{ entityId }}" class="prototype">
+                <td class="col-locale align-middle px-4{%- if allLocales|length <= 1 -%} d-none{% endif %}" data-label="{{"Langue"|trans|raw }}">
+                    <span class="d-none">{{ locale }}</span>
+                    {{ form_widget(redirection.locale) }}
+                </td>
+                <td class="align-middle px-4" data-label="{{"URL"|trans|raw }}">
+                    {{ form_widget(redirection.old) }}
+                    {{ form_errors(redirection.old) }}
+                </td>
+                <td class="align-middle px-4" data-label="{{"Nouvelle URL"|trans|raw }}">
+                    {{ form_widget(redirection.new) }}
+                    {{ form_errors(redirection.new) }}
+                </td>
+                <td class="align-middle text-end actions px-4" data-label="{{"Actions"|trans|raw }}">
+                    <div class="d-flex justify-content-end align-items-center gap-2">
+                        {%- include 'admin/core/form/modal-delete-collection.html.twig' with {
+                            isNew: redirection.vars.data.id is defined and redirection.vars.data.id ? false : true,
+                            entityId: isNew ? uniqId() : redirection.vars.data.id,
+                            interfaceName: 'redirection'
+                        } -%}
+                        <div class="custom-control custom-checkbox delete-input-index-wrap d-none">
+                            <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ entityId }}"
+                                   data-path="{{ path('admin_redirection_delete', {website: websiteId(), redirection: entityId}) }}">
+                            <label class="custom-control-label" for="delete-input-{{ entityId }}"></label>
                         </div>
-                    </td>
-                </tr>
+                    </div>
+                </td>
+            </tr>
+        {%- endmacro -%}
 
-            {%- endmacro -%}
-
-            <div class="table-responsive app-table">
-                <table class="table table-striped responsive-cards mb-0 editable-table collection" data-index="{{ form.redirections|length }}" data-prototype="{{ macro.redirection_prototype(form.redirections.vars.prototype)|e('html_attr') }}">
+        <div class="table-responsive app-table">
+            <table class="table table-striped responsive-cards mb-0 editable-table collection" data-index="{{ form.redirections|length }}" data-prototype="{{ macro.redirection_prototype(form.redirections.vars.prototype)|e('html_attr') }}">
                 <thead>
                     <tr>
                         <th class="col-locale px-4{%- if allLocales|length <= 1 -%} d-none{% endif %}">{{ "Langue"|trans|raw }}</th>
@@ -116,9 +109,6 @@
                     {%- endfor -%}
                 </tbody>
             </table>
-        </div>
-    </div>
-
         </div>
 
     {{ form_end(form) }}

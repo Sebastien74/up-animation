@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Core;
 
 use App\Controller\Admin\AdminController;
 use App\Service\Core\SlowRequestStatsService;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,6 +26,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class PerformanceController extends AdminController
 {
     private const int ENTRIES_LIMIT = 200;
+    private const int PAGE_SIZE = 20;
 
     #[Route(
         '/performance/{area}/{website}',
@@ -33,10 +35,20 @@ final class PerformanceController extends AdminController
         defaults: ['website' => null],
         methods: 'GET'
     )]
-    public function inspector(Request $request, string $area, SlowRequestStatsService $stats): Response
-    {
+    public function inspector(
+        Request $request,
+        string $area,
+        SlowRequestStatsService $stats,
+        PaginatorInterface $paginator,
+    ): Response {
         $entries = $stats->getEntries($area, self::ENTRIES_LIMIT);
         $aggregate = $this->aggregate($entries);
+
+        $pagination = $paginator->paginate(
+            $entries,
+            $request->query->getInt('page', 1),
+            self::PAGE_SIZE
+        );
 
         $label = 'front' === $area
             ? $this->coreLocator->translator()->trans('Requêtes lentes - Front', [], 'admin')
@@ -51,7 +63,7 @@ final class PerformanceController extends AdminController
 
         return $this->adminRender('admin/page/core/performance.html.twig', array_merge($this->arguments, [
             'area' => $area,
-            'entries' => $entries,
+            'pagination' => $pagination,
             'entriesLimit' => self::ENTRIES_LIMIT,
             'aggregate' => $aggregate,
         ]));
