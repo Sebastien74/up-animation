@@ -91,7 +91,7 @@ html body #webmaster-box {
 
         .dropdown-toggle {
 
-            margin: 0 !important;
+            margin: 1rem 0 !important;
 
             i {
                 transition: transform 1s $transition-base-timing !important;
@@ -112,9 +112,25 @@ html body #webmaster-box {
     }
 
     .dropdown-menu {
+        position: absolute !important;
+        inset: auto !important;
+        transform: none !important;
         border: 0 !important;
         min-width: initial !important;
+        padding: 0 !important;
         background-color: transparent !important;
+    }
+
+    &.bottom .dropdown-menu {
+        top: auto !important;
+        bottom: 100% !important;
+        margin: 0 0 12px 0 !important;
+    }
+
+    &:not(.bottom) .dropdown-menu {
+        top: 100% !important;
+        bottom: auto !important;
+        margin: 12px 0 0 0 !important;
     }
 
     .btn {
@@ -125,7 +141,9 @@ html body #webmaster-box {
         min-height: initial !important;
         padding: 0 !important;
         border-radius: 50% !important;
-        display: flex !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         margin-bottom: 12px !important;
         background-color: $primary !important;
         border-color: $primary !important;
@@ -150,6 +168,7 @@ html body #webmaster-box {
 
         i {
             font-size: 24px !important;
+            line-height: 1 !important;
             color: $icon-color !important;
             transition: color .3s $transition-base-timing !important;
         }

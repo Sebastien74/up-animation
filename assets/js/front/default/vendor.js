@@ -77,7 +77,7 @@ window.addEventListener("load", adjustColumnsByMargin);
 window.addEventListener("resize", handleResize);
 
 lazyLoadComponent('#main-preloader', () => import(/* webpackPreload: true */'./components/preloader'), (Preloader) => new Preloader());
-lazyLoadComponent('.media-block', () => import(/* webpackPreload: true */'./components/medias'), (Medias, els) => new Medias(els), true);
+lazyLoadComponent('.media-block, .img-hover-buttons-wrap', () => import(/* webpackPreload: true */'./components/medias'), (Medias, els) => new Medias(els), true);
 lazyLoadComponent('.splide:not(.thumbnails-slider)', () => import('./components/splide-slider'), (Sliders, els) => new Sliders(els), true);
 lazyLoadComponent('.marquee', () => import(/* webpackPreload: true */'./components/marquee'), (Marquees, els) => new Marquees(els), true);
 lazyLoadComponent('.entities-filters-form', () => import(/* webpackPreload: true */'./components/entities-filters'), (Filters, els) => new Filters(els));

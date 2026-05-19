@@ -57,71 +57,64 @@
 
             .marquee-item {
 
-                // Base mobile (< sm). Espace inter-item porté par l'item lui-même
-                // (et non par un `gap` interne), afin que le rythme reste uniforme
-                // à la jonction entre le content original et son clone.
-                width: 80px;
-                flex: 0 0 80px;
+                // Fixed height per breakpoint drives the optical baseline; a
+                // soft `min-width` guarantees breathing room for very narrow
+                // logos without locking wider ones into a rigid box. Inter-item
+                // spacing stays on the item itself (not a parent `gap`) so the
+                // rhythm remains seamless at the content/clone junction.
+                flex: 0 0 auto;
+                height: 35px;
+                min-width: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 margin-right: 10px;
 
                 .img-loader-wrap {
                     display: flex !important;
                     align-items: center;
                     justify-content: center;
-                    width: 100%;
+                    height: 100%;
                 }
 
                 img {
                     display: block;
-                    width: 100%;
-                    height: 35px;
-                    min-height: 35px;
-                    max-height: 35px;
+                    height: 100%;
+                    width: auto;
+                    max-width: 130px;
                     object-fit: contain;
                 }
 
                 @include mediaQuery(min-sm) {
-                    width: 90px;
-                    flex: 0 0 90px;
+                    height: 40px;
+                    min-width: 90px;
                     margin-right: 12px;
-                    img {
-                        height: 32px;
-                        min-height: 32px;
-                        max-height: 32px;
-                    }
+
+                    img { max-width: 140px; }
                 }
 
                 @include mediaQuery(min-md) {
-                    width: 100px;
-                    flex: 0 0 100px;
+                    height: 44px;
+                    min-width: 100px;
                     margin-right: 14px;
-                    img {
-                        height: 38px;
-                        min-height: 38px;
-                        max-height: 38px;
-                    }
+
+                    img { max-width: 150px; }
                 }
 
                 @include mediaQuery(min-lg) {
-                    width: 110px;
-                    flex: 0 0 110px;
+                    height: 50px;
+                    min-width: 110px;
                     margin-right: 14px;
-                    img {
-                        height: 44px;
-                        min-height: 44px;
-                        max-height: 44px;
-                    }
+
+                    img { max-width: 160px; }
                 }
 
                 @include mediaQuery(min-xl) {
-                    width: 120px;
-                    flex: 0 0 120px;
+                    height: 56px;
+                    min-width: 120px;
                     margin-right: 16px;
-                    img {
-                        height: 50px;
-                        min-height: 50px;
-                        max-height: 50px;
-                    }
+
+                    img { max-width: 180px; }
                 }
             }
         }
