@@ -92,7 +92,15 @@ class LogController extends AdminController
             : null;
         $fileSystem = new Filesystem();
 
-        $items[$this->coreLocator->translator()->trans('Logs', [], 'back')] = $this->coreLocator->router()->generate('admin_logs', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $logsUrl = $this->coreLocator->router()->generate('admin_logs', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $fileUrl = $this->coreLocator->router()->generate('admin_log', [
+            'website' => $request->attributes->get('website'),
+            'file' => $requestedFile,
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        $items = [
+            $this->coreLocator->translator()->trans('Logs', [], 'back') => $logsUrl,
+            $requestedFile => $fileUrl,
+        ];
         $this->breadcrumb($request, $items);
 
         if ($fileDir && $fileSystem->exists($fileDir)) {

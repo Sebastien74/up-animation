@@ -1,5 +1,5 @@
 {
-    "2026-02-20 18:10:47": {
+    "2026-05-19 15:54:31": {
         "type": "email",
         "message": "Connection could not be established with host \"localhost:1025\": stream_socket_client(): Unable to connect to localhost:1025 (Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée) in App\\Service\\Core\\MailerService at line 154"
     }

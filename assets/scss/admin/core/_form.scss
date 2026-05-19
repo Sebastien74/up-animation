@@ -216,8 +216,11 @@ form {
 
     .select2-container {
         .selection {
-            background: $input-bg !important;
+            background: transparent !important;
             border-radius: $input-border-radius;
+            .select2-selection {
+                background: $input-bg !important;
+            }
         }
     }
 

@@ -115,6 +115,13 @@ body {
             i {
                 color: $theme-sidebar-icons;
             }
+
+            // Sidebar conservée sombre : restaure le hover blanc neutralisé par
+            // l'override global de la section Buttons.
+            &.cursor:hover i,
+            &:hover i {
+                color: $white !important;
+            }
         }
     }
 
@@ -168,6 +175,13 @@ body {
 
         .btn-icon i {
             color: $theme-sidebar-icons !important;
+        }
+
+        // Sidebar conservée sombre : restaure le hover blanc neutralisé par
+        // l'override global de la section Buttons.
+        .btn-icon.cursor:hover i,
+        .btn-icon:hover i {
+            color: $white !important;
         }
 
         // Active item — override $bg-gradient-primary (crème en light) qui
@@ -683,6 +697,16 @@ body {
         svg {
             fill: $theme-text !important;
         }
+    }
+
+    // Hover .btn-icon i — _buttons.scss force $white au hover, illisible sur le
+    // fond accent désaturé clair (rgba($primary, 0.16)) du light theme. On
+    // réaligne sur la couleur du body. La sidebar (conservée sombre) restaure
+    // son hover blanc plus haut via re-override.
+    .btn-icon.cursor:hover i,
+    button.btn-icon:hover i,
+    a.btn-icon:hover i {
+        color: $theme-text !important;
     }
 
     /*--- Forms ---*/
@@ -1207,8 +1231,176 @@ body {
     }
 }
 
-#log-page .log-card .card-body {
-    color: $theme-text !important;
+#log-page,
+#logs-page {
+
+    .section-label {
+        color: $theme-text-muted !important;
+
+        .label-line {
+            background: $theme-border-alt !important;
+        }
+
+        .label-text {
+            color: $theme-text !important;
+        }
+
+        .label-aside {
+            color: $theme-text-muted !important;
+        }
+    }
+
+    .log-empty {
+        color: $theme-text-muted !important;
+        background: $theme-card-bg !important;
+        border-color: $theme-border !important;
+    }
+}
+
+#log-page {
+
+    .log-title {
+        color: $theme-text !important;
+    }
+
+    .log-meta-chip {
+        color: $theme-text-muted !important;
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+    }
+
+    .log-row {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+        box-shadow: $theme-shadow-sm !important;
+
+        &::before {
+            background: $theme-border-alt !important;
+        }
+
+        &.is-critical::before {
+            background: $danger !important;
+        }
+
+        &.is-warning::before {
+            background: $warning !important;
+        }
+
+        &.is-success::before {
+            background: $success !important;
+        }
+
+        &.is-info::before {
+            background: $info !important;
+        }
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                border-color: $theme-border !important;
+                box-shadow: $theme-shadow-md !important;
+            }
+        }
+    }
+
+    .log-row-head {
+        background: $theme-surface !important;
+        border-bottom-color: $theme-border-subtle !important;
+    }
+
+    .log-row-channel {
+        color: $theme-text !important;
+
+        i {
+            color: $theme-text-muted !important;
+        }
+    }
+
+    .log-row.is-critical .log-row-channel i {
+        color: $danger !important;
+    }
+
+    .log-row.is-warning .log-row-channel i {
+        color: darken($warning, 6%) !important;
+    }
+
+    .log-row.is-success .log-row-channel i {
+        color: darken($success, 6%) !important;
+    }
+
+    .log-row.is-info .log-row-channel i {
+        color: $info !important;
+    }
+
+    .log-row-time {
+        color: $theme-text-muted !important;
+    }
+
+    .log-row-body {
+        color: $theme-text !important;
+    }
+}
+
+#logs-page {
+
+    .logs-panel {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+        box-shadow: $theme-shadow-sm !important;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                border-color: $theme-border !important;
+                box-shadow: $theme-shadow-md !important;
+            }
+        }
+    }
+
+    .logs-panel-head {
+        background: $theme-surface !important;
+        border-bottom-color: $theme-border-subtle !important;
+        color: $theme-text-muted !important;
+
+        i {
+            color: $theme-text-muted !important;
+        }
+
+        .logs-panel-count {
+            color: $theme-text !important;
+            background: $theme-bg-alt !important;
+            border-color: $theme-border-subtle !important;
+        }
+    }
+
+    .log-file-link {
+        color: $theme-text !important;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover,
+            &:focus-visible {
+                background: $theme-accent-bg-soft !important;
+                color: $theme-accent !important;
+            }
+        }
+    }
+
+    .log-file-dot {
+        background: $theme-border-alt !important;
+    }
+
+    .log-file-link.is-critical .log-file-dot {
+        background: $danger !important;
+    }
+
+    .log-file-link.is-warning .log-file-dot {
+        background: darken($warning, 6%) !important;
+    }
+
+    .log-file-link.is-info .log-file-dot {
+        background: $info !important;
+    }
 }
 
 .themes-group .card img {
@@ -1491,6 +1683,60 @@ body {
         }
     }
 
+    /*--- Search stats (module search) ---*/
+
+    .dashboard-search {
+
+        .search-panel {
+            background: $theme-card-bg !important;
+            border-color: $theme-border-subtle !important;
+            box-shadow: $theme-shadow-md !important;
+        }
+
+        .search-feed {
+            background: $theme-border-subtle !important;
+            border-color: $theme-border-subtle !important;
+        }
+
+        .search-row {
+            background: $theme-surface !important;
+
+            &:hover {
+                background: $theme-bg-alt !important;
+
+                .search-row-marker {
+                    background: $theme-accent !important;
+                }
+            }
+        }
+
+        .search-row-marker {
+            background: $theme-border-alt !important;
+        }
+
+        .search-row-text {
+            color: $theme-text !important;
+        }
+
+        .search-metric .search-metric-value {
+            color: $theme-text !important;
+        }
+
+        .search-metric .search-metric-label {
+            color: $theme-text-muted !important;
+        }
+
+        .search-row-action {
+            color: $theme-text-muted !important;
+
+            &:hover,
+            &:focus-visible {
+                background: rgba($danger, .12) !important;
+                color: $danger !important;
+            }
+        }
+    }
+
     /*--- Shortcuts ---*/
 
     .shortcut-tile {
@@ -1539,6 +1785,219 @@ body {
 
         .shortcut-arrow {
             color: $theme-text-light !important;
+        }
+    }
+
+    /*--- Performance probe (internal) + mail stats (shared layout) ---*/
+
+    .dashboard-perf,
+    .dashboard-mail {
+
+        .perf-panel {
+            background: $theme-card-bg !important;
+            border-color: $theme-border-subtle !important;
+            box-shadow: $theme-shadow-md !important;
+        }
+
+        .perf-card {
+            background: $theme-surface !important;
+            border-color: $theme-border-subtle !important;
+
+            &::before {
+                background: $theme-accent !important;
+            }
+
+            &.perf-card-admin::before {
+                background: $info !important;
+            }
+        }
+
+        .perf-card-label,
+        .perf-card-number,
+        .perf-chart-title,
+        .bucket-count,
+        .routes-name {
+            color: $theme-text !important;
+        }
+
+        .perf-card-tag,
+        .perf-card-unit,
+        .perf-last-seen,
+        .perf-legend,
+        .perf-metrics .metric-label,
+        .bucket-label,
+        .perf-routes-head,
+        .perf-empty,
+        .routes-count {
+            color: $theme-text-muted !important;
+        }
+
+        .perf-metrics .metric-value {
+            color: $theme-text !important;
+        }
+
+        .perf-metrics,
+        .perf-bars {
+            border-top-color: $theme-border-subtle !important;
+        }
+
+        .perf-card-tag,
+        .perf-routes-col {
+            border-color: $theme-border-subtle !important;
+        }
+
+        .perf-routes-col {
+            background: $theme-surface !important;
+        }
+
+        .perf-bar-stack,
+        .bucket-bar {
+            background: $theme-border-subtle !important;
+        }
+
+        .perf-bar.is-front,
+        .bucket-fill.is-front,
+        .legend-swatch.is-front {
+            background: $theme-accent !important;
+        }
+
+        .routes-row {
+            border-bottom-color: $theme-border-subtle !important;
+        }
+
+        .perf-bar-label {
+            color: $theme-text-light !important;
+        }
+
+        .perf-bucket-col {
+            background: $theme-surface !important;
+            border-color: $theme-border-subtle !important;
+        }
+
+        .perf-bucket-col-head {
+            color: $theme-text-muted !important;
+        }
+
+        .perf-action-btn {
+            background: $theme-surface !important;
+            border-color: $theme-border !important;
+            color: $theme-text !important;
+
+            &:hover,
+            &:focus-visible {
+                background: $theme-accent !important;
+                border-color: $theme-accent !important;
+                color: $white !important;
+            }
+        }
+    }
+}
+
+/*--- Performance inspector page + mail-log pages (shared layout) ---*/
+
+#performance-inspector,
+#mail-log-show {
+
+    .perf-back-link {
+        color: $theme-text-muted !important;
+
+        &:hover,
+        &:focus-visible {
+            color: $theme-accent !important;
+        }
+    }
+
+    .perf-area-pill {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+        color: $theme-text !important;
+    }
+
+    .perf-inspector-title {
+        color: $theme-text !important;
+    }
+
+    .perf-inspector-desc {
+        color: $theme-text-muted !important;
+    }
+
+    .perf-summary-tile {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+        box-shadow: $theme-shadow-md !important;
+
+        .tile-label {
+            color: $theme-text-muted !important;
+        }
+
+        .tile-value {
+            color: $theme-text !important;
+        }
+
+        .tile-sub {
+            color: $theme-text-muted !important;
+        }
+    }
+
+    .perf-inspector-table-wrap {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+        box-shadow: $theme-shadow-md !important;
+    }
+
+    .perf-empty-state {
+        color: $theme-text !important;
+    }
+
+    .perf-inspector-table {
+        color: $theme-text !important;
+
+        thead th {
+            background: $theme-surface !important;
+            color: $theme-text-muted !important;
+            border-bottom-color: $theme-border-subtle !important;
+        }
+
+        tbody td {
+            border-bottom-color: $theme-border-subtle !important;
+
+            code {
+                color: $theme-text !important;
+            }
+        }
+
+        tbody tr:hover {
+            background: $theme-accent-bg-soft !important;
+        }
+    }
+
+    .legend-swatch.is-front {
+        background: $theme-accent !important;
+    }
+
+    .row-action {
+        background: $theme-surface !important;
+        border-color: $theme-border-subtle !important;
+        color: $theme-text-muted !important;
+
+        &:hover,
+        &:focus-visible {
+            background: $theme-card-bg !important;
+            border-color: $theme-border !important;
+            color: $theme-text !important;
+        }
+
+        &.row-action-profile {
+            color: $info !important;
+            border-color: rgba($info, .35) !important;
+            background: rgba($info, .08) !important;
+
+            &:hover,
+            &:focus-visible {
+                color: $white !important;
+                background: $info !important;
+                border-color: $info !important;
+            }
         }
     }
 }
@@ -1821,6 +2280,208 @@ th.fc-col-header-cell {
 
     .ui-value {
         border-color: $theme-border !important;
+    }
+}
+
+/*--- Mail log index page ---*/
+
+#mail-log-index {
+
+    .panel-stat {
+        color: $theme-text-muted !important;
+
+        .stat-value {
+            color: $theme-text !important;
+        }
+
+        .stat-dot-success {
+            background: $success !important;
+        }
+
+        .stat-dot-failed {
+            background: $danger !important;
+        }
+    }
+
+    .mail-status-pill {
+
+        &.is-success {
+            color: darken($success, 6%) !important;
+            background: rgba($success, .12) !important;
+            border-color: rgba($success, .45) !important;
+        }
+
+        &.is-failed {
+            color: darken($danger, 6%) !important;
+            background: rgba($danger, .12) !important;
+            border-color: rgba($danger, .45) !important;
+        }
+    }
+
+    .mail-subject {
+        color: $theme-text !important;
+    }
+}
+
+/*--- Mail log show page ---*/
+
+#mail-log-show {
+
+    .mail-log-status {
+
+        &.is-success {
+            color: darken($success, 6%) !important;
+            background: rgba($success, .12) !important;
+            border-color: rgba($success, .45) !important;
+        }
+
+        &.is-failed {
+            color: darken($danger, 6%) !important;
+            background: rgba($danger, .12) !important;
+            border-color: rgba($danger, .45) !important;
+        }
+    }
+
+    .mail-log-meta-chip {
+        color: $theme-text-muted !important;
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+    }
+
+    .mail-log-panel,
+    .mail-log-section {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+        box-shadow: $theme-shadow-md !important;
+    }
+
+    .mail-log-panel::before {
+        background: $theme-accent !important;
+    }
+
+    .mail-log-section-head {
+        background: $theme-surface !important;
+        border-bottom-color: $theme-border-subtle !important;
+    }
+
+    .mail-log-section-title {
+        color: $theme-text-muted !important;
+    }
+
+    .mail-log-meta-cell {
+
+        .cell-label {
+            color: $theme-text-muted !important;
+        }
+
+        .cell-value {
+            color: $theme-text !important;
+        }
+
+        .cell-muted {
+            color: $theme-text-muted !important;
+        }
+    }
+
+    .mail-log-attachments li {
+        color: $theme-text !important;
+
+        i {
+            color: $theme-text-muted !important;
+        }
+
+        code {
+            color: $theme-text !important;
+        }
+    }
+
+    .mail-log-error {
+        background: rgba($danger, .05) !important;
+        border-color: rgba($danger, .35) !important;
+    }
+
+    .mail-log-error-head {
+        background: rgba($danger, .12) !important;
+        color: darken($danger, 6%) !important;
+    }
+
+    .mail-log-error-body {
+        color: $theme-text !important;
+    }
+
+    .mail-log-text {
+        color: $theme-text !important;
+    }
+}
+
+/*--- SweetAlert (overlay body-level — porté hors scope page pour
+     s'appliquer à toutes les confirmations en light theme) ---*/
+
+.sweet-overlay {
+    background-color: rgba($theme-shadow-color, .35) !important;
+}
+
+.sweet-alert {
+    background-color: $theme-card-bg !important;
+    border-color: $theme-border !important;
+    box-shadow: $theme-shadow-lg !important;
+    color: $theme-text !important;
+
+    &::before {
+        background: $theme-card-bg !important;
+    }
+
+    h2 {
+        color: $theme-text !important;
+    }
+
+    p {
+        color: $theme-text-muted !important;
+    }
+
+    button {
+        color: $theme-text !important;
+    }
+
+    button.cancel {
+        background: $theme-bg-alt !important;
+        border: 1px solid $theme-border !important;
+        color: $theme-text !important;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                background: $theme-surface-alt !important;
+                border: 1px solid $theme-border-alt !important;
+            }
+        }
+    }
+
+    button.confirm {
+        background: rgba($danger, .12) !important;
+        border: 1px solid rgba($danger, .35) !important;
+        color: darken($danger, 6%) !important;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                background: rgba($danger, .18) !important;
+                border: 1px solid rgba($danger, .45) !important;
+            }
+        }
+    }
+
+    // Success icon masks rely on opaque "white" wedges over the cream paper
+    .sa-icon.sa-success {
+
+        &::before,
+        &::after {
+            background: $theme-card-bg !important;
+        }
+
+        .sa-fix {
+            background-color: $theme-card-bg !important;
+        }
     }
 }
 

@@ -71,6 +71,21 @@ services:
         tags:
             - { name: kernel.event_subscriber, priority: 20 }
 
+    App\EventSubscriber\SlowRequestSubscriber:
+        arguments:
+            $slowRequestLogger: '@monolog.logger.slow_request'
+            $statsService: '@App\Service\Core\SlowRequestStatsService'
+            $thresholdMs: '%env(int:SLOW_REQUEST_THRESHOLD_MS)%'
+            $enabled: '%env(bool:SLOW_REQUEST_ENABLED)%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    App\Service\Core\SlowRequestStatsService:
+        arguments:
+            $logDir: '%kernel.logs_dir%'
+            $cache: '@cache.app'
+        lazy: true
+
     #####################################
     #         Translation               #
     #####################################

@@ -140,7 +140,7 @@ class CacheInvalidationSubscriber
     }
 
     /**
-     * postFlush — dispatch cache invalidation outside the flush transaction.
+     * postFlush - dispatch cache invalidation outside the flush transaction.
      */
     public function postFlush(PostFlushEventArgs $args): void
     {

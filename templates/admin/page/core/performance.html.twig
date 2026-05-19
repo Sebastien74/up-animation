@@ -1,0 +1,126 @@
+{%- extends "admin/base.html.twig" -%}
+
+{%- trans_default_domain 'admin' -%}
+
+{%- set isFront = area == 'front' -%}
+{%- set pageIcon = isFront ? 'globe' : 'shield-alt' -%}
+{%- set pageTitle = (isFront ? "Requêtes lentes - Front"|trans : "Requêtes lentes - Back-office"|trans) -%}
+
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
+
+{%- block stylesheets -%}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-dashboard', null, 'admin') }}
+{%- endblock -%}
+
+{%- block body -%}
+
+    <div id="performance-inspector" class="pt-2 pb-5">
+
+        <div class="perf-inspector-head mb-4">
+            <h1 class="perf-inspector-title mt-3">
+                {{ isFront ? "Requêtes front les plus lentes"|trans|raw : "Requêtes back-office les plus lentes"|trans|raw }}
+            </h1>
+            <p class="perf-inspector-desc">
+                {{ "Affichage des"|trans|raw }} {{ aggregate.count }} {{ "dernières requêtes capturées (max."|trans|raw }} {{ entriesLimit }}).
+                {{ "Seules les requêtes au-dessus du seuil configuré sont enregistrées."|trans|raw }}
+            </p>
+        </div>
+
+        {%- if aggregate.count > 0 -%}
+            <div class="perf-inspector-summary mb-4">
+                <div class="perf-summary-tile">
+                    <span class="tile-label">{{ "Total"|trans|raw }}</span>
+                    <span class="tile-value">{{ aggregate.count }}</span>
+                </div>
+                <div class="perf-summary-tile">
+                    <span class="tile-label">{{ "Durée moyenne"|trans|raw }}</span>
+                    <span class="tile-value">{{ aggregate.avg_duration_ms }} ms</span>
+                </div>
+                <div class="perf-summary-tile">
+                    <span class="tile-label">{{ "Durée max"|trans|raw }}</span>
+                    <span class="tile-value">{{ aggregate.max_duration_ms }} ms</span>
+                </div>
+                <div class="perf-summary-tile">
+                    <span class="tile-label">{{ "Mémoire moy."|trans|raw }}</span>
+                    <span class="tile-value">{{ aggregate.avg_memory_mb }} Mo</span>
+                </div>
+                <div class="perf-summary-tile">
+                    <span class="tile-label">{{ "Mémoire max"|trans|raw }}</span>
+                    <span class="tile-value">{{ aggregate.max_memory_mb }} Mo</span>
+                </div>
+                {%- if aggregate.top_route -%}
+                    <div class="perf-summary-tile is-route">
+                        <span class="tile-label">{{ "Route la plus fréquente"|trans|raw }}</span>
+                        <span class="tile-value tile-route">{{ aggregate.top_route }}</span>
+                        <span class="tile-sub">{{ aggregate.top_route_count }} {{ aggregate.top_route_count > 1 ? "occurrences"|trans|raw : "occurrence"|trans|raw }}</span>
+                    </div>
+                {%- endif -%}
+            </div>
+        {%- endif -%}
+
+        <div class="perf-inspector-table-wrap">
+            {%- if entries is empty -%}
+                <div class="perf-empty-state">
+                    <p class="mb-2">{{ "Aucune requête lente détectée pour cet espace."|trans|raw }}</p>
+                    <p class="text-muted small mb-0">
+                        {{ "Le seuil actuel filtre les requêtes plus lentes que la valeur configurée. Naviguez sur le site ou abaissez le seuil pour collecter davantage d'entrées."|trans|raw }}
+                    </p>
+                </div>
+            {%- else -%}
+                <table class="perf-inspector-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-when">{{ "Horodatage"|trans|raw }}</th>
+                            <th scope="col" class="col-duration">{{ "Durée"|trans|raw }}</th>
+                            <th scope="col" class="col-memory">{{ "Mémoire"|trans|raw }}</th>
+                            <th scope="col" class="col-status">{{ "HTTP"|trans|raw }}</th>
+                            <th scope="col" class="col-route">{{ "Route"|trans|raw }}</th>
+                            <th scope="col" class="col-uri">{{ "Chemin"|trans|raw }}</th>
+                            <th scope="col" class="col-actions">{{ "Actions"|trans|raw }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {%- for entry in entries -%}
+                        {%- set severity = entry.duration_ms >= 5000 ? 'critical'
+                            : (entry.duration_ms >= 2000 ? 'high'
+                            : (entry.duration_ms >= 1000 ? 'medium' : 'low')) -%}
+                        {%- set hasProfile = entry.profiler_token is defined and entry.profiler_token and app.debug -%}
+                        <tr class="severity-{{ severity }}">
+                            <td class="col-when">{{ entry.formatted_at }}</td>
+                            <td class="col-duration"><span class="duration-pill duration-{{ severity }}">{{ entry.duration_ms }} ms</span></td>
+                            <td class="col-memory">{{ entry.peak_memory_mb }} Mo</td>
+                            <td class="col-status"><span class="status-pill status-{{ (entry.status // 100) }}">{{ entry.status }}</span></td>
+                            <td class="col-route"><code>{{ entry.route }}</code></td>
+                            <td class="col-uri"><code title="{{ entry.uri }}">{{ entry.uri }}</code></td>
+                            <td class="col-actions">
+                                {%- if hasProfile -%}
+                                    <a href="{{ path('_profiler', {token: entry.profiler_token, panel: 'db'}) }}"
+                                       class="row-action row-action-profile"
+                                       target="_blank"
+                                       rel="noopener"
+                                       title="{{ "Voir les requêtes SQL exécutées"|trans|striptags }}">
+                                        <i class="icm-database"></i>
+                                        <span>{{ "SQL"|trans|raw }}</span>
+                                    </a>
+                                {%- endif -%}
+                                <a href="{{ entry.uri }}"
+                                   class="row-action row-action-replay"
+                                   target="_blank"
+                                   rel="noopener"
+                                   title="{{ "Rejouer cette requête dans un nouvel onglet"|trans|striptags }}">
+                                    <i class="icm-external-link-alt"></i>
+                                    <span>{{ "Ouvrir"|trans|raw }}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    {%- endfor -%}
+                    </tbody>
+                </table>
+            {%- endif -%}
+        </div>
+
+    </div>
+
+{%- endblock -%}

@@ -1,0 +1,152 @@
+{%- extends "admin/base.html.twig" -%}
+
+{%- trans_default_domain 'admin' -%}
+
+{%- set pageIcon = 'envelope-open-text' -%}
+{%- set pageTitle = entity.subject ?: ("Mail"|trans ~ " #" ~ entity.id) -%}
+
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
+
+{%- block stylesheets -%}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-dashboard', null, 'admin') }}
+{%- endblock -%}
+
+{%- block body -%}
+
+    <div id="mail-log-show" class="pt-2 pb-5">
+
+        <div class="mail-log-head mb-4">
+            <div class="mail-log-status-line mb-3">
+                {%- if entity.success -%}
+                    <span class="mail-log-status is-success">
+                        <i class="icm-check"></i>
+                        <span>{{ "Mail envoyé"|trans|raw }}</span>
+                    </span>
+                {%- else -%}
+                    <span class="mail-log-status is-failed">
+                        <i class="icm-times"></i>
+                        <span>{{ "Échec de l'envoi"|trans|raw }}</span>
+                    </span>
+                {%- endif -%}
+                <span class="mail-log-meta-chip">
+                    <i class="icm-clock"></i>
+                    <span>{{ entity.createdAt|date('d/m/Y - H:i:s') }}</span>
+                </span>
+                {%- if entity.locale -%}
+                    <span class="mail-log-meta-chip">
+                        <i class="icm-globe"></i>
+                        <span>{{ entity.locale|upper }}</span>
+                    </span>
+                {%- endif -%}
+            </div>
+            <h1 class="perf-inspector-title">{{ entity.subject ?: ("Mail"|trans ~ " #" ~ entity.id) }}</h1>
+        </div>
+
+        <section class="mb-4">
+            <div class="section-label mb-3">
+                <span class="label-line" aria-hidden="true"></span>
+                <span class="label-text">{{ "Détails"|trans|raw }}</span>
+            </div>
+            <div class="mail-log-panel">
+                <div class="mail-log-meta-grid">
+                    <div class="mail-log-meta-cell">
+                        <span class="cell-label">{{ "Expéditeur"|trans|raw }}</span>
+                        <span class="cell-value">
+                            {%- if entity.fromName -%}
+                                <span class="cell-strong">{{ entity.fromName }}</span>
+                                <span class="cell-muted">&lt;{{ entity.fromEmail }}&gt;</span>
+                            {%- else -%}
+                                {{ entity.fromEmail|default('—') }}
+                            {%- endif -%}
+                        </span>
+                    </div>
+
+                    <div class="mail-log-meta-cell">
+                        <span class="cell-label">{{ "Destinataires"|trans|raw }}</span>
+                        <span class="cell-value">{{ entity.toEmails|join(', ') }}</span>
+                    </div>
+
+                    {%- if entity.ccEmails -%}
+                        <div class="mail-log-meta-cell">
+                            <span class="cell-label">{{ "Copie (CC)"|trans|raw }}</span>
+                            <span class="cell-value">{{ entity.ccEmails|join(', ') }}</span>
+                        </div>
+                    {%- endif -%}
+
+                    {%- if entity.replyTo -%}
+                        <div class="mail-log-meta-cell">
+                            <span class="cell-label">{{ "Reply-To"|trans|raw }}</span>
+                            <span class="cell-value">{{ entity.replyTo }}</span>
+                        </div>
+                    {%- endif -%}
+
+                    {%- if entity.template -%}
+                        <div class="mail-log-meta-cell">
+                            <span class="cell-label">{{ "Template"|trans|raw }}</span>
+                            <span class="cell-value cell-mono">{{ entity.template }}</span>
+                        </div>
+                    {%- endif -%}
+
+                    {%- if entity.messageId -%}
+                        <div class="mail-log-meta-cell mail-log-meta-cell-wide">
+                            <span class="cell-label">{{ "Message-ID"|trans|raw }}</span>
+                            <span class="cell-value cell-mono cell-break">{{ entity.messageId }}</span>
+                        </div>
+                    {%- endif -%}
+
+                    {%- if entity.attachments -%}
+                        <div class="mail-log-meta-cell mail-log-meta-cell-wide">
+                            <span class="cell-label">{{ "Pièces jointes"|trans|raw }}</span>
+                            <span class="cell-value">
+                                <ul class="mail-log-attachments reset">
+                                    {%- for attachment in entity.attachments -%}
+                                        <li><i class="icm-paperclip"></i><code>{{ attachment }}</code></li>
+                                    {%- endfor -%}
+                                </ul>
+                            </span>
+                        </div>
+                    {%- endif -%}
+                </div>
+            </div>
+        </section>
+
+        {%- if not entity.success and entity.errorMessage -%}
+            <div class="mail-log-error mb-4">
+                <div class="mail-log-error-head">
+                    <i class="icm-exclamation-triangle"></i>
+                    <span>{{ "Erreur d'envoi"|trans|raw }}</span>
+                </div>
+                <div class="mail-log-error-body">{{ entity.errorMessage }}</div>
+            </div>
+        {%- endif -%}
+
+        {%- if entity.htmlBody -%}
+            <div class="mail-log-section mb-4">
+                <div class="mail-log-section-head">
+                    <span class="mail-log-section-title">{{ "Aperçu HTML"|trans|raw }}</span>
+                </div>
+                <div class="mail-log-section-body mail-log-section-body-flush">
+                    <iframe class="mail-log-frame"
+                            srcdoc="{{ entity.htmlBody|e('html_attr') }}"
+                            sandbox=""
+                            title="{{ "Aperçu du mail"|trans|striptags }}"></iframe>
+                </div>
+            </div>
+        {%- endif -%}
+
+        {%- if entity.textBody -%}
+            <section class="mb-4">
+                <div class="section-label mb-3">
+                    <span class="label-line" aria-hidden="true"></span>
+                    <span class="label-text">{{ "Contenu texte"|trans|raw }}</span>
+                </div>
+                <div class="mail-log-panel">
+                    <div class="mail-log-text">{{ entity.textBody }}</div>
+                </div>
+            </section>
+        {%- endif -%}
+
+    </div>
+{%- endblock -%}

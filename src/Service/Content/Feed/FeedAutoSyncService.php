@@ -104,7 +104,7 @@ final class FeedAutoSyncService
     }
 
     /**
-     * Manually mark a provider as just synced — sets the 12 h lock without
+     * Manually mark a provider as just synced - sets the 12 h lock without
      * scheduling anything. Called after a manual sync (dashboard button)
      * to prevent the next page load from re-triggering an auto-sync.
      */

@@ -102,7 +102,7 @@ class UploadController extends AdminController
     }
 
     /**
-     * File downloader. Serves files strictly under public/ — the requested
+     * File downloader. Serves files strictly under public/ - the requested
      * path is resolved with realpath() and rejected if it escapes that root.
      */
     #[Route('/download', name: 'admin_medias_downloader', methods: 'GET')]

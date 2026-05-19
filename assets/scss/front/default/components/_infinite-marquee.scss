@@ -57,64 +57,81 @@
 
             .marquee-item {
 
-                // Fixed height per breakpoint drives the optical baseline; a
-                // soft `min-width` guarantees breathing room for very narrow
-                // logos without locking wider ones into a rigid box. Inter-item
-                // spacing stays on the item itself (not a parent `gap`) so the
-                // rhythm remains seamless at the content/clone junction.
+                // Uniform height per breakpoint; width follows the image
+                // natural width (height × ratio) capped by `img max-width`.
+                // The image-loader template emits a chain of wrappers
+                // (`.img-loader-wrap > .img-loader > .inner` plus sometimes
+                // `<picture>`) with inline `max-width`, `max-height`,
+                // `aspect-ratio` and `flex-column` styles tied to each
+                // logo's own thumb dimensions — those wrappers were the root
+                // cause of items collapsing, overlapping or leaving gaps.
+                // `display: contents` dissolves every wrapper from the
+                // layout tree entirely, so the final <img> is laid out as a
+                // direct flex child of `.marquee-item`. The item then
+                // adopts the image's natural width and the row chains
+                // together with no spill and no gap.
                 flex: 0 0 auto;
-                height: 35px;
-                min-width: 80px;
+                height: 30px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                margin-right: 10px;
+                padding: 0;
+                margin-right: 24px;
 
-                .img-loader-wrap {
-                    display: flex !important;
-                    align-items: center;
-                    justify-content: center;
-                    height: 100%;
+                .img-loader-wrap,
+                .img-loader,
+                .inner,
+                picture {
+                    display: contents !important;
                 }
 
                 img {
                     display: block;
                     height: 100%;
                     width: auto;
-                    max-width: 130px;
+                    max-width: 160px;
+                    max-height: 30px;
                     object-fit: contain;
                 }
 
                 @include mediaQuery(min-sm) {
-                    height: 40px;
-                    min-width: 90px;
-                    margin-right: 12px;
+                    height: 35px;
+                    margin-right: 28px;
 
-                    img { max-width: 140px; }
+                    img {
+                        max-width: 170px;
+                        max-height: 35px;
+                    }
                 }
 
                 @include mediaQuery(min-md) {
-                    height: 44px;
-                    min-width: 100px;
-                    margin-right: 14px;
+                    height: 40px;
+                    margin-right: 32px;
 
-                    img { max-width: 150px; }
+                    img {
+                        max-width: 180px;
+                        max-height: 40px;
+                    }
                 }
 
                 @include mediaQuery(min-lg) {
-                    height: 50px;
-                    min-width: 110px;
-                    margin-right: 14px;
+                    height: 45px;
+                    margin-right: 36px;
 
-                    img { max-width: 160px; }
+                    img {
+                        max-width: 200px;
+                        max-height: 45px;
+                    }
                 }
 
                 @include mediaQuery(min-xl) {
-                    height: 56px;
-                    min-width: 120px;
-                    margin-right: 16px;
+                    height: 50px;
+                    margin-right: 40px;
 
-                    img { max-width: 180px; }
+                    img {
+                        max-width: 220px;
+                        max-height: 50px;
+                    }
                 }
             }
         }

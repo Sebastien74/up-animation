@@ -52,7 +52,7 @@ class CryptController extends AbstractController
     }
 
     /**
-     * Legacy decrypt route — intentionally disabled.
+     * Legacy decrypt route - intentionally disabled.
      *
      * Kept to preserve `path('front_decrypt')` calls in templates, but always
      * answers 404 so it cannot be used as a decryption oracle.

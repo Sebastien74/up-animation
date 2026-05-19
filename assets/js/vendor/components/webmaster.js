@@ -30,13 +30,29 @@ export default function (webmasterBox) {
                 new Tooltip(tooltip);
                 tooltip.classList.add('tooltip-loaded');
             });
-            let alreadyHaveDropdown = document.querySelectorAll('.dropdown-toggle:not(#webmaster-box-dropdown)').length > 0;
             let dropdownEl = document.getElementById("webmaster-box-dropdown");
-            if (!alreadyHaveDropdown && dropdownEl && !dropdownEl.classList.contains('loaded')) {
+            if (dropdownEl && !dropdownEl.classList.contains('loaded')) {
                 dropdownEl.classList.add('loaded');
                 import('../../../js/front/bootstrap/dist/dropdown').then(({default: Dropdown}) => {
+                    // Dispose any auto-initialised instance so our popperConfig is the one used.
+                    const existing = Dropdown.getInstance(dropdownEl);
+                    if (existing) {
+                        existing.dispose();
+                    }
+                    // Force the menu above the toggle (#webmaster-box sits at viewport bottom)
+                    // and disable both flip and preventOverflow so Popper never moves the menu.
                     const dropdown = new Dropdown(dropdownEl, {
                         popperConfig(defaultBsPopperConfig) {
+                            return {
+                                ...defaultBsPopperConfig,
+                                placement: 'top-start',
+                                strategy: 'fixed',
+                                modifiers: [
+                                    {name: 'flip', enabled: false},
+                                    {name: 'preventOverflow', enabled: false},
+                                    {name: 'offset', options: {offset: [0, 12]}}
+                                ]
+                            };
                         }
                     });
                     dropdownEl.addEventListener("mouseenter", function () {
@@ -46,13 +62,6 @@ export default function (webmasterBox) {
                         }
                     });
                 }).catch(error => console.error(error.message));
-            } else {
-                dropdownEl.addEventListener("mouseenter", function () {
-                    if (!dropdownEl.classList.contains('show')) {
-                        dropdownEl.click();
-                        hideTooltip();
-                    }
-                });
             }
         }
     }

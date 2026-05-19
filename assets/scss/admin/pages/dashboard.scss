@@ -40,9 +40,7 @@
     }
 
     .shortcuts-grid .reveal {
-
         @for $i from 1 through 8 {
-
             &:nth-child(#{$i}) {
                 animation-delay: #{($i - 1) * 60 + 120}ms;
             }
@@ -668,7 +666,7 @@
 
     .shortcuts-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: $space-3;
     }
 
@@ -774,6 +772,917 @@
             transition: opacity $transition-fast, transform $transition-fast;
         }
     }
+
+    /*-----------------------------------
+       8 ) Performance probe (internal)
+       Shared layout used by mail stats too.
+    -----------------------------------*/
+
+    .dashboard-perf,
+    .dashboard-mail {
+
+        .perf-last-seen {
+            margin-left: $space-2;
+            opacity: .7;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .perf-panel {
+            background: $crumb-surface;
+            border: 1px solid $crumb-border;
+            border-radius: $radius-xl;
+            padding: $space-6;
+            display: flex;
+            flex-direction: column;
+            gap: $space-6;
+        }
+
+        .perf-actions {
+            display: flex;
+            gap: $space-3;
+            flex-wrap: wrap;
+        }
+
+        .perf-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: $space-2;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: $crumb-text;
+            background: $body-bg;
+            border: 1px solid $crumb-border-hover;
+            border-radius: $radius-pill;
+            text-decoration: none;
+            transition: background $transition-fast, color $transition-fast, border-color $transition-fast, transform $transition-fast;
+
+            .legend-swatch {
+                margin: 0;
+            }
+
+            i {
+                font-size: 10px;
+                opacity: .7;
+                transition: transform $transition-fast;
+            }
+
+            &:hover,
+            &:focus-visible {
+                background: $primary;
+                border-color: $primary;
+                color: $white;
+                transform: translateY(-1px);
+
+                i {
+                    opacity: 1;
+                    transform: translateX(2px);
+                }
+            }
+
+            &:focus-visible {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba($primary, .25);
+            }
+        }
+
+        .perf-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: $space-4;
+        }
+
+        .perf-card {
+            position: relative;
+            padding: $space-5;
+            background: $body-bg;
+            border: 1px solid $crumb-border;
+            border-radius: $radius-lg;
+            overflow: hidden;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 3px;
+                background: $primary;
+            }
+        }
+
+        .perf-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: $space-3;
+        }
+
+        .perf-card-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: $crumb-text;
+        }
+
+        .perf-card-tag {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .14em;
+            color: $crumb-muted;
+            padding: 4px 8px;
+            border: 1px solid $crumb-border;
+            border-radius: $radius-pill;
+        }
+
+        .perf-card-number {
+            font-size: 56px;
+            font-weight: 300;
+            line-height: 1;
+            color: $crumb-text;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.03em;
+        }
+
+        .perf-card-unit {
+            font-size: 12px;
+            color: $crumb-muted;
+            margin-bottom: $space-4;
+        }
+
+        .perf-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: $space-2 $space-4;
+            margin: 0;
+            padding: $space-3 0 0;
+            border-top: 1px solid $crumb-border;
+
+            li {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                font-size: 12px;
+            }
+
+            .metric-label {
+                color: $crumb-muted;
+                text-transform: uppercase;
+                font-size: 10px;
+                font-weight: 600;
+                letter-spacing: .08em;
+            }
+
+            .metric-value {
+                color: $crumb-text;
+                font-weight: 500;
+                font-variant-numeric: tabular-nums;
+            }
+        }
+
+        .perf-chart-block {
+            display: flex;
+            flex-direction: column;
+            gap: $space-3;
+        }
+
+        .perf-chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: $space-3;
+            flex-wrap: wrap;
+        }
+
+        .perf-chart-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: $crumb-text;
+            margin: 0;
+        }
+
+        .perf-legend {
+            display: inline-flex;
+            align-items: center;
+            gap: $space-4;
+            font-size: 11px;
+            color: $crumb-muted;
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-swatch {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            background: $primary;
+        }
+
+        .perf-bars {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            gap: 4px;
+            align-items: end;
+            height: 140px;
+            padding: $space-3 0 0;
+            border-top: 1px solid $crumb-border;
+        }
+
+        .perf-bar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            height: 100%;
+        }
+
+        .perf-bar-stack {
+            position: relative;
+            flex: 1 1 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: flex-start;
+            background: $crumb-border;
+            border-radius: 2px;
+            overflow: hidden;
+            min-height: 4px;
+        }
+
+        .perf-bar {
+            display: block;
+            width: 100%;
+            min-height: 0;
+            background: $primary;
+
+            &.mail-bar-success {
+                background: $success;
+            }
+
+            &.mail-bar-failed {
+                background: $danger;
+            }
+        }
+
+        .perf-bar-label {
+            font-size: 9px;
+            font-weight: 500;
+            color: $crumb-muted;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .perf-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: $space-6;
+        }
+
+        .perf-buckets {
+            display: flex;
+            flex-direction: column;
+            gap: $space-3;
+        }
+
+        .perf-buckets-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: $space-4;
+        }
+
+        .perf-bucket-col {
+            background: $body-bg;
+            border: 1px solid $crumb-border;
+            border-radius: $radius-md;
+            padding: $space-3 $space-4;
+        }
+
+        .perf-bucket-col-head {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: $space-3;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: $crumb-muted;
+        }
+
+        .bucket-list {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: $space-3;
+        }
+
+        .bucket-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 32px;
+            align-items: center;
+            gap: $space-3;
+        }
+
+        .bucket-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: $crumb-muted;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .bucket-bar {
+            position: relative;
+            display: flex;
+            height: 10px;
+            background: $crumb-border;
+            border-radius: $radius-pill;
+            overflow: hidden;
+        }
+
+        .bucket-fill {
+            display: block;
+            height: 100%;
+            transition: width $transition-fast;
+
+            // Severity scale (fastest = green, slowest = dark red)
+            &.severity-low {
+                background: $success;
+            }
+
+            &.severity-medium {
+                background: $warning;
+            }
+
+            &.severity-high {
+                background: lighten($danger, 8%);
+            }
+
+            &.severity-critical {
+                background: $danger;
+            }
+
+            &.severity-extreme {
+                background: darken($danger, 12%);
+            }
+        }
+
+        .bucket-count {
+            font-size: 12px;
+            font-weight: 600;
+            color: $crumb-text;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .perf-routes {
+            display: flex;
+            flex-direction: column;
+            gap: $space-3;
+        }
+
+        .perf-routes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: $space-4;
+        }
+
+        .perf-routes-col {
+            background: $body-bg;
+            border: 1px solid $crumb-border;
+            border-radius: $radius-md;
+            padding: $space-3 $space-4;
+        }
+
+        .perf-routes-head {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: $space-2;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: $crumb-muted;
+        }
+
+        .perf-empty {
+            font-size: 12px;
+            color: $crumb-muted;
+            margin: 0;
+            opacity: .8;
+        }
+
+        .routes-list {
+            margin: 0;
+            padding: 0;
+            counter-reset: route;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .routes-row {
+            counter-increment: route;
+            display: grid;
+            grid-template-columns: 18px 1fr auto;
+            align-items: center;
+            gap: $space-2;
+            padding: 6px 0;
+            border-bottom: 1px solid $crumb-border;
+            font-size: 12px;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &::before {
+                content: counter(route);
+                color: $crumb-muted;
+                font-size: 10px;
+                font-weight: 600;
+                font-variant-numeric: tabular-nums;
+            }
+        }
+
+        .routes-name {
+            color: $crumb-text;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-family: $font-family-monospace;
+            font-size: 11px;
+        }
+
+        .routes-count {
+            color: $crumb-muted;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+    }
+
+    /*-----------------------------------
+       8 ter ) Search stats (module search)
+    -----------------------------------*/
+
+    .dashboard-search {
+
+        .search-panel {
+            background: $crumb-surface;
+            border: 1px solid $crumb-border;
+            border-radius: $radius-xl;
+            padding: $space-5;
+            display: flex;
+            flex-direction: column;
+            gap: $space-4;
+        }
+
+        .search-feed {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: $crumb-border;
+            border: 1px solid $crumb-border;
+            border-radius: $radius-md;
+            overflow: hidden;
+        }
+
+        .search-row {
+            display: grid;
+            grid-template-columns: 8px minmax(0, 1fr) auto 28px;
+            gap: $space-4;
+            align-items: center;
+            padding: 12px $space-4;
+            background: $crumb-surface;
+            transition: background $transition-fast;
+
+            &:hover {
+                background: $btn-surface-hover;
+
+                .search-row-marker {
+                    background: $primary;
+                }
+
+                .search-row-action {
+                    opacity: 1;
+                    transform: translateX(0);
+                    color: $danger;
+                }
+            }
+        }
+
+        .search-row-marker {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: $crumb-border-hover;
+            transition: background $transition-fast;
+        }
+
+        .search-row-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: $crumb-text;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
+
+        .search-row-metrics {
+            display: inline-flex;
+            align-items: center;
+            gap: $space-4;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .search-metric {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 6px;
+            font-variant-numeric: tabular-nums;
+
+            .search-metric-value {
+                font-size: 14px;
+                font-weight: 600;
+                color: $crumb-text;
+                line-height: 1;
+            }
+
+            .search-metric-label {
+                font-size: 10px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: .08em;
+                color: $crumb-muted;
+            }
+        }
+
+        .search-row-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: $radius-pill;
+            color: $crumb-muted;
+            font-size: 10px;
+            text-decoration: none;
+            opacity: 0;
+            transform: translateX(-4px);
+            transition: opacity $transition-fast, transform $transition-fast, color $transition-fast, background $transition-fast;
+
+            &:hover,
+            &:focus-visible {
+                background: rgba($danger, .12);
+                color: $danger;
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            &:focus-visible {
+                outline: none;
+                box-shadow: 0 0 0 2px rgba($danger, .25);
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   8 bis ) Performance inspector page
+   Shared layout reused by mail-log pages.
+-----------------------------------*/
+
+#performance-inspector,
+#mail-log-show {
+
+    .perf-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        font-size: 12px;
+        font-weight: 500;
+        color: $crumb-muted;
+        text-decoration: none;
+        transition: color $transition-fast;
+
+        i {
+            font-size: 10px;
+        }
+
+        &:hover,
+        &:focus-visible {
+            color: $primary;
+        }
+    }
+
+    .perf-area-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        padding: 5px 14px;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-pill;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        color: $crumb-text;
+    }
+
+    .legend-swatch {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+
+        &.is-front {
+            background: $primary;
+        }
+
+        &.is-admin {
+            background: $info;
+        }
+    }
+
+    .perf-inspector-title {
+        font-size: 24px;
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        color: $crumb-text;
+        margin: 0;
+    }
+
+    .perf-inspector-desc {
+        font-size: 13px;
+        color: $crumb-muted;
+        margin: $space-2 0 0;
+    }
+
+    .perf-inspector-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: $space-3;
+    }
+
+    .perf-summary-tile {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: $space-4;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-lg;
+
+        &.is-route {
+            grid-column: span 2;
+        }
+
+        .tile-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: $crumb-muted;
+        }
+
+        .tile-value {
+            font-size: 22px;
+            font-weight: 500;
+            color: $crumb-text;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .tile-route {
+            font-family: $font-family-monospace;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .tile-sub {
+            font-size: 11px;
+            color: $crumb-muted;
+            margin-top: 2px;
+        }
+    }
+
+    .perf-inspector-table-wrap {
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-lg;
+        overflow: hidden;
+    }
+
+    .perf-empty-state {
+        padding: $space-6;
+        text-align: center;
+        color: $crumb-text;
+    }
+
+    .perf-inspector-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        color: $crumb-text;
+
+        thead th {
+            background: $body-bg;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: $crumb-muted;
+            padding: $space-3 $space-4;
+            text-align: left;
+            white-space: nowrap;
+            border-bottom: 1px solid $crumb-border;
+        }
+
+        tbody td {
+            padding: 10px $space-4;
+            border-bottom: 1px solid $crumb-border;
+            font-variant-numeric: tabular-nums;
+            vertical-align: middle;
+
+            code {
+                font-family: $font-family-monospace;
+                font-size: 11px;
+                color: $crumb-text;
+                background: transparent;
+                padding: 0;
+            }
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: rgba($primary, .04);
+        }
+
+        .col-when {
+            width: 160px;
+            white-space: nowrap;
+        }
+
+        .col-duration {
+            width: 100px;
+            white-space: nowrap;
+        }
+
+        .col-memory {
+            width: 80px;
+            white-space: nowrap;
+        }
+
+        .col-status {
+            width: 60px;
+            white-space: nowrap;
+        }
+
+        .col-route {
+            width: 220px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .col-uri {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 0;
+        }
+    }
+
+    .duration-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 8px;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: $radius-pill;
+        font-variant-numeric: tabular-nums;
+
+        &.duration-low {
+            color: $success;
+            background: rgba($success, .12);
+        }
+
+        &.duration-medium {
+            color: $warning;
+            background: rgba($warning, .12);
+        }
+
+        &.duration-high {
+            color: $danger;
+            background: rgba($danger, .12);
+        }
+
+        &.duration-critical {
+            color: $white;
+            background: $danger;
+        }
+    }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 8px;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: $radius-pill;
+        color: $crumb-muted;
+        background: $body-bg;
+
+        &.status-2 {
+            color: $success;
+            background: rgba($success, .12);
+        }
+
+        &.status-3 {
+            color: $info;
+            background: rgba($info, .12);
+        }
+
+        &.status-4 {
+            color: $warning;
+            background: rgba($warning, .12);
+        }
+
+        &.status-5 {
+            color: $danger;
+            background: rgba($danger, .12);
+        }
+    }
+
+    .col-actions {
+        white-space: nowrap;
+        width: 1%;
+    }
+
+    .row-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        color: $crumb-muted;
+        background: $body-bg;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-pill;
+        text-decoration: none;
+        transition: background $transition-fast, color $transition-fast, border-color $transition-fast;
+
+        & + .row-action {
+            margin-left: 6px;
+        }
+
+        i {
+            font-size: 10px;
+        }
+
+        &:hover,
+        &:focus-visible {
+            color: $crumb-text;
+            border-color: $crumb-border-hover;
+            background: $crumb-surface;
+        }
+
+        &.row-action-profile {
+            color: $info;
+            border-color: rgba($info, .35);
+            background: rgba($info, .08);
+
+            &:hover,
+            &:focus-visible {
+                color: $white;
+                background: $info;
+                border-color: $info;
+            }
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba($primary, .2);
+        }
+    }
 }
 
 /*-----------------------------------
@@ -784,6 +1693,341 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/*-----------------------------------
+   8 bis-2 ) Mail log index page
+-----------------------------------*/
+
+#mail-log-index {
+
+    .panel-stats {
+        list-style: none;
+        padding: 0;
+        margin: $space-2 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: $space-4;
+    }
+
+    .panel-stat {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        font-size: 12px;
+        color: $crumb-muted;
+
+        .stat-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .stat-dot-success {
+            background: $success;
+        }
+
+        .stat-dot-failed {
+            background: $danger;
+        }
+
+        .stat-label {
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: $crumb-text;
+            font-variant-numeric: tabular-nums;
+        }
+    }
+
+    .mail-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        border-radius: $radius-pill;
+        line-height: 1;
+
+        i {
+            font-size: 10px;
+        }
+
+        &.is-success {
+            color: $success;
+            background: rgba($success, .12);
+            border: 1px solid rgba($success, .35);
+        }
+
+        &.is-failed {
+            color: $danger;
+            background: rgba($danger, .12);
+            border: 1px solid rgba($danger, .35);
+        }
+    }
+
+    .mail-subject {
+        display: inline-block;
+        max-width: 360px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle;
+    }
+}
+
+/*-----------------------------------
+   8 ter ) Mail log show page
+-----------------------------------*/
+
+#mail-log-show {
+
+    .mail-log-head {
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
+    }
+
+    .mail-log-status-line {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: $space-2;
+    }
+
+    .mail-log-status {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        padding: 8px 16px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        border-radius: $radius-pill;
+        line-height: 1;
+
+        i {
+            font-size: 11px;
+        }
+
+        &.is-success {
+            color: $success;
+            background: rgba($success, .14);
+            border: 1px solid rgba($success, .35);
+        }
+
+        &.is-failed {
+            color: $danger;
+            background: rgba($danger, .14);
+            border: 1px solid rgba($danger, .35);
+        }
+    }
+
+    .mail-log-meta-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        font-size: 11px;
+        font-weight: 500;
+        color: $crumb-muted;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-pill;
+        font-variant-numeric: tabular-nums;
+
+        i {
+            font-size: 10px;
+            opacity: .75;
+        }
+    }
+
+    .mail-log-panel {
+        position: relative;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-xl;
+        padding: $space-6;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 3px;
+            background: $primary;
+        }
+    }
+
+    .mail-log-section {
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-xl;
+        overflow: hidden;
+    }
+
+    .mail-log-section-head {
+        padding: $space-4 $space-5;
+        border-bottom: 1px solid $crumb-border;
+        background: $body-bg;
+    }
+
+    .mail-log-section-title {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .14em;
+        color: $crumb-muted;
+    }
+
+    .mail-log-section-body {
+        padding: $space-5;
+
+        &.mail-log-section-body-flush {
+            padding: 0;
+        }
+    }
+
+    .mail-log-meta-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: $space-4 $space-6;
+    }
+
+    .mail-log-meta-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+
+        &.mail-log-meta-cell-wide {
+            grid-column: 1 / -1;
+        }
+
+        .cell-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .14em;
+            color: $crumb-muted;
+        }
+
+        .cell-value {
+            font-size: 14px;
+            color: $crumb-text;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        .cell-strong {
+            font-weight: 500;
+        }
+
+        .cell-muted {
+            color: $crumb-muted;
+            margin-left: 4px;
+        }
+
+        .cell-mono {
+            font-family: $font-family-monospace;
+            font-size: 12px;
+        }
+
+        .cell-break {
+            word-break: break-all;
+        }
+    }
+
+    .mail-log-attachments {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: $space-2;
+            font-size: 12px;
+            color: $crumb-text;
+
+            i {
+                color: $crumb-muted;
+                font-size: 11px;
+            }
+
+            code {
+                font-family: $font-family-monospace;
+                background: transparent;
+                padding: 0;
+                color: $crumb-text;
+            }
+        }
+    }
+
+    .mail-log-error {
+        background: rgba($danger, .06);
+        border: 1px solid rgba($danger, .35);
+        border-radius: $radius-xl;
+        overflow: hidden;
+    }
+
+    .mail-log-error-head {
+        display: flex;
+        align-items: center;
+        gap: $space-2;
+        padding: $space-3 $space-5;
+        background: rgba($danger, .14);
+        color: $danger;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .14em;
+
+        i {
+            font-size: 12px;
+        }
+    }
+
+    .mail-log-error-body {
+        padding: $space-4 $space-5;
+        font-family: $font-family-monospace;
+        font-size: 12px;
+        line-height: 1.55;
+        color: $crumb-text;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    .mail-log-frame {
+        width: 100%;
+        min-height: 560px;
+        border: 0;
+        display: block;
+        background: $white;
+    }
+
+    .mail-log-text {
+        font-family: $font-family-monospace;
+        font-size: 12px;
+        line-height: 1.6;
+        color: $crumb-text;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: anywhere;
     }
 }
 
@@ -897,12 +2141,80 @@
             }
         }
 
+        .dashboard-search {
+
+            .search-panel {
+                padding: $space-4;
+            }
+
+            .search-row {
+                grid-template-columns: 6px minmax(0, 1fr) auto;
+                gap: $space-3;
+                padding: 10px $space-3;
+
+                .search-row-action {
+                    display: none;
+                }
+            }
+
+            .search-row-metrics {
+                gap: $space-3;
+            }
+
+            .search-metric .search-metric-value {
+                font-size: 13px;
+            }
+        }
+
         .dashboard-seo .locale-row {
             grid-template-columns: 20px 1fr 60px 28px;
         }
 
         .shortcuts-grid {
             grid-template-columns: 1fr;
+        }
+
+        .dashboard-perf,
+        .dashboard-mail {
+
+            .perf-summary,
+            .perf-split,
+            .perf-routes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .perf-card-number {
+                font-size: 44px;
+            }
+
+            .perf-bars {
+                grid-template-columns: repeat(12, 1fr);
+                height: 110px;
+            }
+
+            .perf-bar-col:nth-child(odd) .perf-bar-label {
+                visibility: hidden;
+            }
+        }
+    }
+
+    #mail-log-show {
+
+        .mail-log-meta-grid {
+            grid-template-columns: 1fr;
+            gap: $space-3;
+        }
+
+        .mail-log-panel {
+            padding: $space-4;
+        }
+
+        .mail-log-section-head,
+        .mail-log-section-body,
+        .mail-log-error-head,
+        .mail-log-error-body {
+            padding-left: $space-4;
+            padding-right: $space-4;
         }
     }
 }

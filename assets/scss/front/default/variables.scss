@@ -266,7 +266,13 @@ $transition-base: .4s $transition-base-timing !default;
 $transition-fast: .2s $transition-base-timing !default;
 $transition-slow: .6s $transition-base-timing !default;
 
-$btn-transition: $transition-base !default;
+// Explicit property list (avoids `all`) + shorter duration for smoother hover.
+// `all .4s` was repainting box-shadow / backgrounds / descendants every frame.
+$btn-transition: background-color .2s $transition-base-timing,
+                 border-color     .2s $transition-base-timing,
+                 color            .2s $transition-base-timing,
+                 box-shadow       .2s $transition-base-timing,
+                 transform        .2s $transition-base-timing !default;
 
 
 /*-- f - Main --*/

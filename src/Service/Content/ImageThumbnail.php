@@ -368,7 +368,7 @@ class ImageThumbnail implements ImageThumbnailInterface
         // (MediaRelation, screensSizes options, width/height).
         $mediaThumbForScreen = null;
 
-        // 0a. Strict match by ThumbConfiguration ID — guards against picking the wrong
+        // 0a. Strict match by ThumbConfiguration ID - guards against picking the wrong
         // MediaThumb when several mobile entries coexist (residual configs).
         if ($thumbConfiguration instanceof Media\ThumbConfiguration && $thumbConfiguration->getId()) {
             foreach ($media->getThumbs() as $mediaThumb) {
@@ -384,7 +384,7 @@ class ImageThumbnail implements ImageThumbnailInterface
             }
         }
 
-        // 0b. Screen fallback chain — a single "mobile" MediaThumb applies to all larger
+        // 0b. Screen fallback chain - a single "mobile" MediaThumb applies to all larger
         // screens; mandatory when only one screen size is defined in DB.
         if (!$mediaThumbForScreen) {
             $fallbackScreens = match ($screen) {
@@ -1491,7 +1491,7 @@ class ImageThumbnail implements ImageThumbnailInterface
      */
     /**
      * Detect alpha channel presence in a PNG (color types 4 and 6).
-     * Reads only the IHDR chunk (29 first bytes) — no GD load required.
+     * Reads only the IHDR chunk (29 first bytes) - no GD load required.
      */
     private function pngHasAlpha(string $filePath): bool
     {

@@ -21,6 +21,7 @@
    1 ) Imports
 -----------------------------------*/
 
+@import "../../vendor/mixin/media-queries";
 @import '../variables';
 
 /*-----------------------------------
@@ -29,8 +30,363 @@
 
 #log-page {
 
-    .log-card .card-body {
+    .log-head {
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
+    }
+
+    .log-head-line {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: $space-2;
+    }
+
+    .log-meta-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        font-size: 11px;
+        font-weight: 500;
+        color: $crumb-muted;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-pill;
+        font-variant-numeric: tabular-nums;
+        max-width: 100%;
+
+        i {
+            font-size: 10px;
+            opacity: .75;
+            flex-shrink: 0;
+        }
+
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .log-title {
+        font-family: $font-family-monospace;
+        font-size: 20px;
+        font-weight: 500;
+        margin: 0;
+        color: $crumb-text;
+        word-break: break-all;
+        line-height: 1.35;
+    }
+
+    .log-feed {
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
+    }
+
+    .log-row {
+        position: relative;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-lg;
+        overflow: hidden;
+        transition: border-color $transition-fast, box-shadow $transition-fast;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 3px;
+            background: $crumb-border-hover;
+        }
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                border-color: $crumb-border-hover;
+            }
+        }
+
+        &.is-critical::before {
+            background: $danger;
+        }
+
+        &.is-warning::before {
+            background: $warning;
+        }
+
+        &.is-success::before {
+            background: $success;
+        }
+
+        &.is-info::before {
+            background: $info;
+        }
+    }
+
+    .log-row-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: $space-3;
+        padding: $space-3 $space-5;
+        background: $dash-surface-3;
+        border-bottom: 1px solid $crumb-border;
+    }
+
+    .log-row-channel {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        color: $crumb-text;
+        font-family: $font-family-monospace;
+
+        i {
+            font-size: 11px;
+            color: $crumb-muted;
+        }
+    }
+
+    .log-row.is-critical .log-row-channel i {
+        color: $danger;
+    }
+
+    .log-row.is-warning .log-row-channel i {
+        color: $warning;
+    }
+
+    .log-row.is-success .log-row-channel i {
+        color: $success;
+    }
+
+    .log-row.is-info .log-row-channel i {
+        color: $info;
+    }
+
+    .log-row-time {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 500;
+        color: $crumb-muted;
+        font-variant-numeric: tabular-nums;
+
+        i {
+            font-size: 10px;
+            opacity: .75;
+        }
+    }
+
+    .log-row-body {
+        margin: 0;
+        padding: $space-4 $space-5;
+        font-family: $font-family-monospace;
         font-size: 12px;
+        line-height: 1.6;
+        color: $crumb-text;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        background: transparent;
+        border: 0;
+    }
+
+}
+
+/*-----------------------------------
+   2.1 ) Logs — shared (#log-page + #logs-page)
+-----------------------------------*/
+
+#log-page,
+#logs-page {
+
+    .section-label {
+        display: flex;
+        align-items: center;
+        gap: $space-3;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .14em;
+        color: $crumb-muted;
+
+        .label-line {
+            flex: 0 0 24px;
+            height: 1px;
+            background: $crumb-border-hover;
+        }
+
+        .label-text {
+            color: $crumb-text;
+
+            &::first-letter {
+                text-transform: uppercase;
+            }
+        }
+
+        .label-aside {
+            margin-left: auto;
+            color: $crumb-muted;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+        }
+    }
+
+    .log-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: $space-2;
+        padding: $space-7 $space-5;
+        font-size: 13px;
+        color: $crumb-muted;
+        background: $crumb-surface;
+        border: 1px dashed $crumb-border;
+        border-radius: $radius-lg;
+
+        i {
+            font-size: 14px;
+            opacity: .8;
+        }
+    }
+}
+
+/*-----------------------------------
+   2.2 ) Logs index (#logs-page)
+-----------------------------------*/
+
+#logs-page {
+
+    .logs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: $space-4;
+    }
+
+    .logs-panel {
+        position: relative;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-lg;
+        overflow: hidden;
+        transition: border-color $transition-fast, box-shadow $transition-fast;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                border-color: $crumb-border-hover;
+            }
+        }
+    }
+
+    .logs-panel-head {
+        display: flex;
+        align-items: center;
+        gap: $space-2;
+        padding: $space-3 $space-5;
+        background: $dash-surface-3;
+        border-bottom: 1px solid $crumb-border;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .14em;
+        color: $crumb-muted;
+
+        i {
+            font-size: 11px;
+            opacity: .85;
+        }
+
+        span:first-of-type {
+            flex: 1 1 auto;
+        }
+
+        .logs-panel-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            color: $crumb-text;
+            background: $crumb-surface;
+            border: 1px solid $crumb-border;
+            border-radius: $radius-pill;
+            letter-spacing: 0;
+        }
+    }
+
+    .logs-feed {
+        list-style: none;
+        margin: 0;
+        padding: $space-3 0;
+
+        li + li {
+            margin-top: 2px;
+        }
+    }
+
+    .log-file-link {
+        display: flex;
+        align-items: center;
+        gap: $space-3;
+        padding: $space-2 $space-5;
+        font-size: 12px;
+        font-family: $font-family-monospace;
+        color: $crumb-text;
+        text-decoration: none;
+        transition: background $transition-fast, color $transition-fast;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover,
+            &:focus-visible {
+                background: rgba($primary, .06);
+                color: $primary;
+
+                .log-file-dot {
+                    transform: scale(1.4);
+                }
+            }
+        }
+    }
+
+    .log-file-dot {
+        flex: 0 0 8px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: $crumb-border-hover;
+        transition: transform $transition-fast;
+    }
+
+    .log-file-link.is-critical .log-file-dot {
+        background: $danger;
+    }
+
+    .log-file-link.is-warning .log-file-dot {
+        background: $warning;
+    }
+
+    .log-file-link.is-info .log-file-dot {
+        background: $info;
+    }
+
+    .log-file-name {
+        flex: 1 1 auto;
+        word-break: break-all;
     }
 }
 

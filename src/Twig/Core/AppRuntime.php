@@ -400,7 +400,7 @@ readonly class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Unserialize array. Restricted to scalar/array payloads — passing
+     * Unserialize array. Restricted to scalar/array payloads - passing
      * `allowed_classes => false` blocks PHP object instantiation and the
      * deserialization gadget chains that follow.
      */
@@ -632,7 +632,7 @@ readonly class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * File get content in the project dir. Confined to templates/ — the
+     * File get content in the project dir. Confined to templates/ - the
      * resolved path must stay inside that directory or we return null.
      */
     public function fileGetContent(?string $dirname = null): ?string

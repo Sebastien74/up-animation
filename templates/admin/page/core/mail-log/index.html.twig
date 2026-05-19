@@ -1,0 +1,141 @@
+{%- extends "admin/base.html.twig" -%}
+
+{%- trans_default_domain 'admin' -%}
+
+{%- set pageIcon = 'paper-plane' -%}
+{%- set pageTitle = "Mails envoyés"|trans -%}
+
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
+
+{%- block stylesheets -%}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-dashboard', null, 'admin') }}
+{%- endblock -%}
+
+{%- block body -%}
+
+    {%- set total = counts.success + counts.failed -%}
+    {%- set hasFailed = counts.failed > 0 -%}
+
+    <div id="mail-log-index">
+
+        <section class="feature-panel panel-split mb-4 reveal {{ hasFailed ? 'is-warning' : 'is-clean' }}">
+            <div class="panel-left">
+                <span class="panel-tag">{{ "Mails"|trans|raw }}</span>
+                <span class="panel-number">{{ total }}</span>
+                <span class="panel-unit">{{ total > 1 ? "envois enregistrés"|trans|raw : "envoi enregistré"|trans|raw }}</span>
+            </div>
+            <div class="panel-body">
+                <h2 class="panel-headline">
+                    {%- if total == 0 -%}
+                        {{ "Aucun mail envoyé pour le moment."|trans|raw }}
+                    {%- elseif hasFailed -%}
+                        {{ "Des envois ont échoué."|trans|raw }}
+                    {%- else -%}
+                        {{ "Tous les envois sont passés."|trans|raw }}
+                    {%- endif -%}
+                </h2>
+                <p class="panel-desc">
+                    {{ "Historique complet des emails traités par le service d'envoi. Chaque ligne représente un destinataire."|trans|raw }}
+                </p>
+                <ul class="panel-stats reset">
+                    <li class="panel-stat">
+                        <span class="stat-dot stat-dot-success" aria-hidden="true"></span>
+                        <span class="stat-label">{{ "Réussis"|trans|raw }}</span>
+                        <span class="stat-value">{{ counts.success }}</span>
+                    </li>
+                    <li class="panel-stat">
+                        <span class="stat-dot stat-dot-failed" aria-hidden="true"></span>
+                        <span class="stat-label">{{ "En échec"|trans|raw }}</span>
+                        <span class="stat-value">{{ counts.failed }}</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="d-flex gap-2 flex-wrap mb-4">
+            <div class="nav nav-tabs gap-2 border-0 me-auto" role="tablist">
+                <a href="{{ path('admin_maillog_index', {website: websiteId()}) }}"
+                   class="btn-app{{ currentStatus is null ? ' active' : '' }}">
+                    <i class="icm-list"></i><span>{{ "Tous"|trans|raw }}</span>
+                </a>
+                <a href="{{ path('admin_maillog_index', {website: websiteId(), status: 'success'}) }}"
+                   class="btn-app{{ currentStatus == 'success' ? ' active' : '' }}">
+                    <i class="icm-check"></i><span>{{ "Réussis"|trans|raw }}</span>
+                </a>
+                <a href="{{ path('admin_maillog_index', {website: websiteId(), status: 'failed'}) }}"
+                   class="btn-app{{ currentStatus == 'failed' ? ' active' : '' }}">
+                    <i class="icm-times"></i><span>{{ "En échec"|trans|raw }}</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="table-responsive app-table">
+            <table class="table table-striped responsive-cards mb-0">
+                <thead>
+                    <tr>
+                        <th class="align-middle text-center px-4">{{ "Statut"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Date"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Expéditeur"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Destinataire"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Sujet"|trans|raw }}</th>
+                        <th class="align-middle text-end px-4">{{ "Actions"|trans|raw }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%- for entity in pagination -%}
+                        <tr id="entity-row-{{ entity.id }}">
+                            <td class="align-middle text-center px-4" data-label="{{"Statut"|trans|raw }}">
+                                {%- if entity.success -%}
+                                    <span class="mail-status-pill is-success">
+                                        <i class="icm-check"></i>
+                                        <span>{{ "Réussi"|trans|raw }}</span>
+                                    </span>
+                                {%- else -%}
+                                    <span class="mail-status-pill is-failed">
+                                        <i class="icm-times"></i>
+                                        <span>{{ "Échec"|trans|raw }}</span>
+                                    </span>
+                                {%- endif -%}
+                            </td>
+                            <td class="align-middle px-4" data-label="{{"Date"|trans|raw }}">
+                                <span class="text-nowrap">{{ entity.createdAt|date('d/m/Y - H:i') }}</span>
+                            </td>
+                            <td class="align-middle px-4" data-label="{{"Expéditeur"|trans|raw }}">
+                                {{ entity.fromEmail }}
+                            </td>
+                            <td class="align-middle px-4" data-label="{{"Destinataire"|trans|raw }}">
+                                {{ entity.toEmails|join(', ') }}
+                            </td>
+                            <td class="align-middle px-4" data-label="{{"Sujet"|trans|raw }}">
+                                <span class="mail-subject" title="{{ entity.subject }}">{{ entity.subject ?: '—' }}</span>
+                            </td>
+                            <td class="align-middle text-end px-4" data-label="{{"Actions"|trans|raw }}">
+                                <div class="d-flex justify-content-end align-items-center gap-2">
+                                    <a href="{{ path('admin_maillog_show', {mailLog: entity.id, website: websiteId()}) }}"
+                                       data-bs-toggle="tooltip" title="{{"Afficher les informations"|trans|striptags }}"
+                                       data-tooltip-variant="info"
+                                       class="btn-icon small info">
+                                        <i class="icm-info"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {%- else -%}
+                        <tr>
+                            <td colspan="6" class="px-4">
+                                <div class="py-2 d-flex align-items-center justify-content-center gap-2">
+                                    <i class="btn-icon info icm-info"></i>{{ "Aucun résultat"|trans|raw }}
+                                </div>
+                            </td>
+                        </tr>
+                    {%- endfor -%}
+                </tbody>
+            </table>
+        </div>
+
+        {%- include 'admin/core/include/pagination.html.twig' -%}
+
+    </div>
+{%- endblock -%}

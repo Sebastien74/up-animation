@@ -34,7 +34,7 @@ class CryptService
         $secretKey = $api instanceof Api ? $api->getSecuritySecretKey() : null;
         $secretIv = $api instanceof Api ? $api->getSecuritySecretIv() : null;
 
-        // Refuse to operate with empty secrets — callers (BaseAuthenticator,
+        // Refuse to operate with empty secrets - callers (BaseAuthenticator,
         // RecaptchaService) generate them on demand, so this should never happen
         // in normal operation. Failing closed is much safer than silently using
         // a hardcoded fallback that would be the same for every install.

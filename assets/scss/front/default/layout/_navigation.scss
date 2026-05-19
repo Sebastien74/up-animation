@@ -58,9 +58,14 @@
             top: 0;
             width: 100%;
             height: 100dvh;
-            display: none;
+            visibility: hidden;
+            pointer-events: none;
             opacity: 0;
-            transition: opacity $transition-base;
+            // Synced with .submenu slide ($transition-slow). visibility is
+            // delayed so the element stays in the DOM during the fade-out,
+            // then gets hidden once opacity reaches 0 (no display:none toggle
+            // that would skip the transition).
+            transition: opacity $transition-slow, visibility 0s linear .6s;
             will-change: opacity;
         }
     }
@@ -79,8 +84,12 @@ body.menu-open {
             }
 
             .overlay {
-                display: block;
+                visibility: visible;
+                pointer-events: auto;
                 opacity: 1;
+                // No delay on visibility when opening — appears immediately,
+                // opacity transitions from 0 to 1 in front of the user.
+                transition: opacity $transition-slow, visibility 0s linear 0s;
             }
         }
     }
@@ -390,10 +399,15 @@ body.menu-open {
         position: fixed;
         z-index: 3000;
         top: 0;
+        left: 0;
         height: 100dvh;
         background-color: $white;
-        transform: translateZ(0); // Force a new stacking context for children if needed, but not on parent
-        
+        // GPU-accelerated slide: animate transform instead of `left`.
+        // Animating `left` forced layout reflow every frame and made
+        // .btn-blur descendants repaint their backdrop-filter, causing jank.
+        transform: translateX(-100%) translateZ(0);
+        will-change: transform;
+
         &[data-level="1"] {
             z-index: 3000;
         }
@@ -423,43 +437,17 @@ body.menu-open {
 
         @include mediaQuery(max-lg) {
             width: 100%;
-            left: -100%;
         }
 
         @include mediaQuery(min-lg) {
 
             width: 50%;
-            left: -50%;
-            transition: left $transition-slow;
+            transition: transform $transition-slow;
 
             &.is-header-submenu {
 
                 z-index: 3200; // Above regular submenu (3000)
                 box-shadow: 10px 0 15px rgba(0,0,0,0.1);
-                left: -50%; // Match level 1 initial position
-                transition: left $transition-slow;
-
-                @include mediaQuery(between-xl-xxl) {
-
-                    &[data-level="1"] {
-                        left: -40%;
-                    }
-
-                    &[data-level="2"] {
-                        left: -100%;
-                    }
-                }
-
-                @include mediaQuery(min-xxl) {
-
-                    &[data-level="1"] {
-                        left: -30%;
-                    }
-
-                    &[data-level="2"] {
-                        left: -100%;
-                    }
-                }
 
                 .submenu-columns {
 
@@ -474,31 +462,27 @@ body.menu-open {
 
         @include mediaQuery(between-xl-xxl) {
 
-            transition: left $transition-slow;
+            transition: transform $transition-slow;
 
             &[data-level="1"] {
                 width: 40%;
-                left: -40%;
             }
 
             &[data-level="2"] {
                 width: 100%;
-                left: -100%;
             }
         }
 
         @include mediaQuery(min-xxl) {
 
-            transition: left $transition-slow;
+            transition: transform $transition-slow;
 
             &[data-level="1"] {
                 width: 30%;
-                left: -30%;
             }
 
             &[data-level="2"] {
                 width: 100%;
-                left: -100%;
             }
         }
 
@@ -548,14 +532,10 @@ body.menu-open {
 
         &.show {
 
-            left: 0 !important;
-            
-            &.is-header-submenu {
-                left: 0 !important;
-            }
+            transform: translateX(0) translateZ(0) !important;
 
             @include mediaQuery(min-lg) {
-                transition: left $transition-slow;
+                transition: transform $transition-slow;
             }
         }
 

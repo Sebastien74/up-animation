@@ -9,6 +9,8 @@ use App\Entity\Core\Domain;
 use App\Entity\Module\Search\SearchValue;
 use App\Entity\Seo\NotFoundUrl;
 use App\Entity\Seo\Url;
+use App\Repository\Core\MailLogRepository;
+use App\Service\Core\SlowRequestStatsService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,8 +32,12 @@ class DashboardController extends AdminController
      * Dashboard view.
      */
     #[Route('/dashboard/{website}', name: 'admin_dashboard', defaults: ['website' => null], methods: 'GET')]
-    public function view(Request $request, PaginatorInterface $paginator): Response
-    {
+    public function view(
+        Request $request,
+        PaginatorInterface $paginator,
+        SlowRequestStatsService $slowRequestStats,
+        MailLogRepository $mailLogRepository,
+    ): Response {
         $website = $this->getWebsite();
         $notFoundsLimit = 50;
         $domains = $this->coreLocator->em()->getRepository(Domain::class)->findByConfiguration($website->entity->getConfiguration());
@@ -46,6 +52,15 @@ class DashboardController extends AdminController
         );
         $searchValues->setParam('_fragment', 'stats-search');
 
+        // Performance stats are restricted to internal staff and parsed from cache.
+        $performanceStats = $this->isGranted('ROLE_INTERNAL') ? $slowRequestStats->getStats() : null;
+
+        $mailStats = [
+            'counts' => $mailLogRepository->countByStatus(),
+            'last24h' => $mailLogRepository->countLast24h(),
+            'daily' => $mailLogRepository->countDaily(30),
+        ];
+
         return $this->adminRender('admin/page/core/dashboard.html.twig', [
             'notFoundUrls' => $notFoundRepository->findFrontWithoutRedirections($website->entity, $domains, $notFoundsLimit),
             'notFoundCount' => $notFoundRepository->countFrontWithoutRedirections($website->entity, $domains),
@@ -54,6 +69,8 @@ class DashboardController extends AdminController
             'searchValues' => $searchValues,
             'hasInstagramFeed' => (bool) $website->api?->instagram?->accessToken,
             'hasTikTokFeed' => (bool) $website->api?->tiktok?->accessToken,
+            'performanceStats' => $performanceStats,
+            'mailStats' => $mailStats,
         ]);
     }
 }

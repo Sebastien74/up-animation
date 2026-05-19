@@ -163,7 +163,15 @@
         backdrop-filter: blur(35px);
         background: rgba(0, 0, 0, .05);
         font-weight: 700 !important;
-        transition: all $transition-base;
+        // Explicit property list + GPU isolation: `all` was repainting the
+        // backdrop-filter every frame; translateZ(0) promotes the button to
+        // its own compositor layer so the blur is cached, not recomputed.
+        transition: background-color .2s $transition-base-timing,
+                    color            .2s $transition-base-timing,
+                    box-shadow       .2s $transition-base-timing,
+                    transform        .2s $transition-base-timing;
+        transform: translateZ(0);
+        backface-visibility: hidden;
         box-shadow: none !important;
 
         &:not(.btn-circle) {
@@ -174,6 +182,15 @@
             font-size: 16px;
             min-height: 52px;
             border-radius: $btn-blur-border-radius;
+        }
+
+        // Compose the parent .btn hover transform with translateZ(0)
+        // so the GPU layer is preserved during hover (otherwise the lift
+        // overrides the compositor promotion and the blur repaints).
+        @include mediaQuery(min-lg) {
+            &:hover {
+                transform: translateY(-1px) translateZ(0);
+            }
         }
     }
 }

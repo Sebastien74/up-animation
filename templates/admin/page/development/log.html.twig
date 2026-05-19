@@ -2,8 +2,14 @@
 
 {%- trans_default_domain 'admin' -%}
 
+{%- set pageTitle = file ?: "Logs"|trans -%}
+
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Logs"|trans }}{%- endblock -%}
+
 {%- block stylesheets -%}
     {{ parent() }}
+    {{ encore_entry_link_tags('admin-development', null, 'admin') }}
 {%- endblock -%}
 
 {%- block javascripts -%}
@@ -12,52 +18,69 @@
 
 {%- block body -%}
 
-    {%- set categories = {
-        success: {bg: 'success', color: 'white', icon: 'check-circle'},
-        critical: {bg: 'danger', color: 'white', icon: 'exclamation-triangle'},
-        warning: {bg: 'warning', color: 'dark', icon: 'whistle'},
-        error: {bg: 'warning', color: 'dark', icon: 'whistle'},
-        alert: {bg: 'warning', color: 'dark', icon: 'whistle'}
+    {%- set severities = {
+        critical:  {label: "Critique"|trans,  icon: 'exclamation-triangle', modifier: 'is-critical'},
+        warning:   {label: "Avertissement"|trans, icon: 'whistle',           modifier: 'is-warning'},
+        error:     {label: "Erreur"|trans,    icon: 'exclamation-triangle', modifier: 'is-warning'},
+        alert:     {label: "Alerte"|trans,    icon: 'whistle',              modifier: 'is-warning'},
+        success:   {label: "Succès"|trans,    icon: 'check-circle',         modifier: 'is-success'},
+        undefined: {label: "Info"|trans,      icon: 'info-circle',          modifier: 'is-info'}
     } -%}
 
-    <div id="log-page" class="position-relative">
-        {%- for log in logs|reverse -%}
-            {%- if log -%}
-                {%- set category = categories[log.status] is defined ? categories[log.status] : null -%}
-                {%- set bg = category and category['bg'] is defined ? category['bg'] : 'info' -%}
-                {%- set color = category and category['color'] is defined ? category['color'] : 'white' -%}
-                {%- set icon = category and category['icon'] is defined ? category['icon'] : 'info-circle' -%}
-                <div class="card-shadow card-{{ bg }} no-hover card bg-transparent h-100 text-decoration-none shadow-sm{% if not loop.last %} mb-3{% endif %}">
-                    <div class="card-header py-3">
-                        <div class="row">
-                            <div class="col-sm-4 d-flex align-items-center my-2 my-sm-0">
-                                <small class="d-flex align-items-center text-white fz-sm"><span class="btn-icon me-3"><i class="icm-{{ icon }}"></i></span><span class="lh-1">{{ log.code }}</span></small>
-                            </div>
-                            <div class="col-sm-8 text-sm-end justify-content-sm-end d-flex align-items-center mb-2 mb-sm-0">
-                                {%- if log.date|isDateTime -%}
-                                    <small class="d-flex align-items-end fz-sm text-white">
-                                        <i class="icon-calendar-alt fz-sm me-2"></i>
-                                        <span class="lh-1">{{ log.date|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</span>
-                                    </small>
-                                    <small class="d-flex align-items-end fz-sm text-white">
-                                        <i class="icon-clock fz-sm mx-2"></i>
-                                        <span class="lh-1">{{ log.date|format_datetime(pattern='HH:mm', locale=app.request.locale)|capitalize }}</span>
-                                    </small>
-                                {%- endif -%}
-                                <span data-bs-toggle="tooltip" title="{{ 'Back to logs list'|trans|striptags }}">
-                                    <a href="{{ path('admin_logs') }}" class="ms-3 text-{{ color }}">
-                                        <span class="btn-icon"><i class="icm-reply fz-sm"></i></span>
-                                    </a>
+    <div id="log-page" class="pt-2 pb-5">
+
+        <div class="log-head mb-4">
+            <div class="log-head-line mb-3">
+                <span class="log-meta-chip">
+                    <i class="icm-file"></i>
+                    <span>{{ file }}</span>
+                </span>
+                <span class="log-meta-chip">
+                    <i class="icm-stack"></i>
+                    <span>{{ logs|length }}&nbsp;{{ logs|length > 1 ? "entrées"|trans : "entrée"|trans }}</span>
+                </span>
+            </div>
+            <h1 class="log-title">{{ file }}</h1>
+        </div>
+
+        <section>
+            <div class="section-label mb-3">
+                <span class="label-line" aria-hidden="true"></span>
+                <span class="label-text">{{ "Dernières entrées"|trans }}</span>
+                <span class="label-aside">{{ "Top"|trans }}&nbsp;50</span>
+            </div>
+
+            <div class="log-feed">
+                {%- for log in logs|reverse -%}
+                    {%- if log -%}
+                        {%- set severity = severities[log.status] is defined ? severities[log.status] : severities.undefined -%}
+                        <article class="log-row {{ severity.modifier }}">
+                            <header class="log-row-head">
+                                <span class="log-row-channel">
+                                    <i class="icm-{{ severity.icon }}"></i>
+                                    <span>{{ log.code }}</span>
                                 </span>
-                            </div>
-                        </div>
+                                {%- if log.date|isDateTime -%}
+                                    <span class="log-row-time">
+                                        <i class="icm-clock"></i>
+                                        <span>{{ log.date|date('d/m/Y H:i:s') }}</span>
+                                    </span>
+                                {%- endif -%}
+                            </header>
+                            <pre class="log-row-body">{{ log.message }}</pre>
+                        </article>
+                    {%- endif -%}
+                {%- endfor -%}
+
+                {%- if logs|length == 0 -%}
+                    <div class="log-empty">
+                        <i class="icm-info-circle"></i>
+                        <span>{{ "Aucune entrée dans ce fichier."|trans }}</span>
                     </div>
-                    <div class="card-body no-card-footer text-white pt-0 pb-3 px-3">
-                        <small class="fz-xs d-inline-block mw-100">{{ log.message }}</small>
-                    </div>
-                </div>
-            {%- endif -%}
-        {%- endfor -%}
+                {%- endif -%}
+            </div>
+        </section>
+
     </div>
 
 {%- endblock -%}

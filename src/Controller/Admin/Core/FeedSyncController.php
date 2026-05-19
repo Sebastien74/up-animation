@@ -76,7 +76,7 @@ class FeedSyncController extends AdminController
         $lines = [$translator->trans('Synchronisation terminée :', [], 'admin')];
         foreach ($results as $provider => $stats) {
             $lines[] = sprintf(
-                '%s — +%d, ~%d, -%d, %d médias',
+                '%s - +%d, ~%d, -%d, %d médias',
                 ucfirst($provider),
                 $stats['added'],
                 $stats['updated'],

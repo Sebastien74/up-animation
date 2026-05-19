@@ -13,7 +13,7 @@
                     or (media.intl.video is defined and media.intl.video) ? 'video' : 'image' %}
                 {% set display = mediaType != 'video' and media.media.originalName is defined and media.media.originalName %}
                 {%- if display -%}
-                    <div class="marquee-item d-flex align-items-center justify-content-center px-2 h-100">
+                    <div class="marquee-item">
                         {%- set mediaInfo = fileInfo(website, media.media.originalName) -%}
                         {%- set ratio = mediaInfo and mediaInfo.width and mediaInfo.height ? (mediaInfo.width / mediaInfo.height) : null -%}
                         {%- set mobileHeight = 35 -%}

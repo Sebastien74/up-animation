@@ -19,59 +19,79 @@
 
 {%- block body -%}
 
-    <div class="section-label mb-3 reveal">
-        <span class="label-line" aria-hidden="true"></span>
-        <span class="label-text">{{ "Fichiers de logs"|trans|raw }}</span>
-        <span class="label-aside">{{ dailyLogs|length }}&nbsp;{{ dailyLogs|length > 1 ? "jours"|trans|raw : "jour"|trans|raw }}</span>
-    </div>
+    <div id="logs-page" class="pt-2 pb-5">
 
-    <div class="row reveal-stagger">
         {%- if logFiles -%}
-            <div class="col-md-4 mb-3 reveal">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="main-subtitle"><i class="icm-copy"></i>{{ "Files"|trans|raw }}</div>
-                        <ul class="m-0 list-unstyled">
-                            {%- for logFile in logFiles -%}
-                                {%- set color = 'info' -%}
-                                {%- if 'critical' in logFile or 'error' in logFile -%}
-                                    {%- set color = 'danger' -%}
-                                {%- elseif 'deprecations' in logFile -%}
-                                    {%- set color = 'warning' -%}
-                                {%- endif -%}
-                                <li class="lh-1{% if not loop.last %} mb-1{% endif %}">
-                                    <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}" class="text-{{ color }} lh-1 fz-sm">{{ logFile }}</a>
-                                </li>
-                            {%- endfor -%}
-                        </ul>
-                    </div>
+            <section class="mb-5">
+                <div class="section-label mb-3">
+                    <span class="label-line" aria-hidden="true"></span>
+                    <span class="label-text">{{ "Fichiers permanents"|trans|raw }}</span>
+                    <span class="label-aside">{{ logFiles|length }}</span>
                 </div>
+                <div class="logs-panel">
+                    <ul class="logs-feed">
+                        {%- for logFile in logFiles -%}
+                            {%- set modifier = 'is-info' -%}
+                            {%- if 'critical' in logFile or 'error' in logFile -%}{% set modifier = 'is-critical' %}{% endif -%}
+                            {%- if 'deprecations' in logFile -%}{% set modifier = 'is-warning' %}{% endif -%}
+                            <li>
+                                <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}"
+                                   class="log-file-link {{ modifier }}">
+                                    <span class="log-file-dot" aria-hidden="true"></span>
+                                    <span class="log-file-name">{{ logFile }}</span>
+                                </a>
+                            </li>
+                        {%- endfor -%}
+                    </ul>
+                </div>
+            </section>
+        {%- endif -%}
+
+        {%- if dailyLogs -%}
+            <section>
+                <div class="section-label mb-3">
+                    <span class="label-line" aria-hidden="true"></span>
+                    <span class="label-text">{{ "Logs quotidiens"|trans|raw }}</span>
+                    <span class="label-aside">{{ dailyLogs|length }}&nbsp;{{ dailyLogs|length > 1 ? "jours"|trans|raw : "jour"|trans|raw }}</span>
+                </div>
+
+                <div class="logs-grid">
+                    {%- for key, logDay in dailyLogs -%}
+                        {%- for logDay, logFiles in logDay -%}
+                            <article class="logs-panel">
+                                <header class="logs-panel-head">
+                                    <i class="icm-calendar"></i>
+                                    <span>{{ logDay|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</span>
+                                    <span class="logs-panel-count">{{ logFiles|length }}</span>
+                                </header>
+                                <ul class="logs-feed">
+                                    {%- for logFile in logFiles -%}
+                                        {%- set modifier = 'is-info' -%}
+                                        {%- if 'critical' in logFile or 'error' in logFile -%}{% set modifier = 'is-critical' %}{% endif -%}
+                                        {%- if 'deprecations' in logFile -%}{% set modifier = 'is-warning' %}{% endif -%}
+                                        <li>
+                                            <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}"
+                                               class="log-file-link {{ modifier }}">
+                                                <span class="log-file-dot" aria-hidden="true"></span>
+                                                <span class="log-file-name">{{ logFile }}</span>
+                                            </a>
+                                        </li>
+                                    {%- endfor -%}
+                                </ul>
+                            </article>
+                        {%- endfor -%}
+                    {%- endfor -%}
+                </div>
+            </section>
+        {%- endif -%}
+
+        {%- if not logFiles and not dailyLogs -%}
+            <div class="log-empty">
+                <i class="icm-info-circle"></i>
+                <span>{{ "Aucun fichier de log."|trans }}</span>
             </div>
         {%- endif -%}
-        {%- set day = null -%}
-        {%- for key, logDay in dailyLogs -%}
-            {%- for logDay, logFiles in logDay -%}
-                <div class="col-md-4 mb-3 reveal">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="main-subtitle"><i class="icm-calendar"></i>{{ logDay|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</div>
-                            <ul class="m-0 list-unstyled">
-                                {%- for logFile in logFiles -%}
-                                    {%- set color = 'info' -%}
-                                    {%- if 'critical' in logFile or 'error' in logFile -%}
-                                        {%- set color = 'danger' -%}
-                                    {%- elseif 'deprecations' in logFile -%}
-                                        {%- set color = 'warning' -%}
-                                    {%- endif -%}
-                                    <li class="lh-1{% if not loop.last %} mb-1{% endif %}">
-                                        <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}" class="text-{{ color }} lh-1 fz-sm">{{ logFile }}</a>
-                                    </li>
-                                {%- endfor -%}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            {%- endfor -%}
-        {%- endfor -%}
+
     </div>
+
 {%- endblock -%}
