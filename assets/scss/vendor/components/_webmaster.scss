@@ -71,18 +71,25 @@ html body {
 html body #webmaster-box {
 
     position: fixed !important;
-    left: 20px !important;
     z-index: 9999 !important;
     text-align: center !important;
     transition: transform .3s $transition-base-timing !important;
 
+    #webmaster-box-dropdown {
+        position: fixed !important;
+        left: 20px !important;
+        z-index: 9999 !important;
+    }
+
     @media only screen and (min-width: 768px) {
 
         &.bottom {
-            bottom: 10% !important;
+            #webmaster-box-dropdown {
+                bottom: 10% !important;
+            }
         }
 
-        &:not(.bottom) {
+        &:not(.bottom) #webmaster-box-dropdown  {
             top: 75px !important;
         }
     }

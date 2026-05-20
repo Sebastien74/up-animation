@@ -2162,11 +2162,18 @@ th.fc-col-header-cell {
             }
         }
     }
+
+    // Active media tile shadow — _library.scss applique rgba(0,0,0,.5) dense,
+    // trop sombre/dur sur fond papier crème. On réaligne sur l'ombre lg du parti pris.
+    #medias-results .file.active .check-pack-media-label {
+        box-shadow: $theme-shadow-lg !important;
+    }
 }
 
 #end-process-wrap {
     border-color: $theme-border !important;
     background-color: $theme-surface !important;
+    box-shadow: $theme-shadow-sm !important;
 }
 
 /*--- Medias cropper (admin-medias-cropper.css en bundle séparé) ---*/
@@ -2246,12 +2253,69 @@ th.fc-col-header-cell {
     }
 }
 
-/*--- Edit in tab (admin-edit-in-tab.css en bundle séparé) ---*/
+/*--- Edit in tab (admin-edit-in-tab.css en bundle séparé : tokens dark
+     gelés au build. Les cards "papier" blanches sont conservées (cohérent
+     avec le parti pris papier crème), mais les ombres noires denses, le
+     fond ui-state-highlight rgba(0,0,0,.05) invisible et les éléments
+     rgba($white,.5) sur fond blanc doivent être réalignés sur la palette
+     light. ---*/
+
+#entity-edition {
+
+    // Cards papier (.ui-feature, .ui-video, .ui-link) : shadow dense en dark,
+    // remplacée par l'ombre physique douce du parti pris papier crème.
+    .ui-feature,
+    .ui-video,
+    .ui-link {
+        box-shadow: $theme-shadow-sm !important;
+    }
+
+    // Drop highlight : rgba(0,0,0,.05) invisible sur fond crème — wash accent doux.
+    .ui-state-highlight {
+        background-color: $theme-accent-bg-soft !important;
+    }
+}
 
 #features-sortable {
 
     .ui-value {
+
         border-color: $theme-border !important;
+        background:
+            radial-gradient(520px 160px at 12% 0%, $theme-accent-glow-soft, transparent 60%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 45%),
+            $theme-surface !important;
+        box-shadow: $theme-shadow-sm !important;
+
+        // Séparateur vertical du handle (color: $gray-800 = trop dur sur fond papier)
+        .handle-value:not(.handle-circle)::after {
+            background-color: $theme-border !important;
+        }
+
+        // Handle circle "as-default" : border + svg fill = rgba($white,.5),
+        // invisibles sur fond crème — réalignés sur la palette light.
+        .handle-value.handle-circle {
+
+            &.as-default {
+                border-color: $theme-border-alt !important;
+            }
+
+            svg {
+                fill: $theme-text-muted !important;
+            }
+        }
+    }
+
+    // Inputs internes (.form-control, .form-select) forcés en $white + $gray-900
+    // dans edit-in-tab.scss — déjà cohérent avec le papier blanc des cards, on
+    // s'assure simplement de l'alignement palette (texte sombre + placeholder).
+    .ui-value .form-control,
+    .ui-value .form-select {
+        color: $theme-input-text !important;
+
+        &::placeholder {
+            color: $theme-input-placeholder !important;
+        }
     }
 }
 
