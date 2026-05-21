@@ -255,16 +255,16 @@ $font-weight-light: 300 !default;
 $font-weight-normal: 400 !default;
 $font-weight-bold: 700 !default;
 
-$h1-font-size: 36px !default;
-$h2-font-size: 30px !default;
-$h3-font-size: 24px !default;
-$h4-font-size: 18px !default;
-$h5-font-size: 16px !default;
-$h6-font-size: 14px !default;
+$h1-font-size: 28px !default;
+$h2-font-size: 22px !default;
+$h3-font-size: 18px !default;
+$h4-font-size: 16px !default;
+$h5-font-size: 14px !default;
+$h6-font-size: 12px !default;
 
 $headings-margin-bottom: (1rem / 2) !default;
 $headings-font-family: $font-family !default;
-$headings-font-weight: 300 !default;
+$headings-font-weight: 500 !default;
 $headings-color: inherit !default;
 
 /*-- d - Breadcrumbs --*/
@@ -276,7 +276,7 @@ $breadcrumb-margin-bottom: 1.5rem;
 
 $card-border-width: 0 !default;
 $card-border-color: transparent !default;
-$card-border-radius: 16px !default;
+$card-border-radius: 10px !default;
 $card-spacer-y: 1.25rem !default;
 $card-spacer-x: 1.25rem !default;
 
@@ -318,7 +318,7 @@ $input-bg: radial-gradient(520px 160px at 12% 0%, mix($primary, $dash-surface, 1
 $input-invalid-bg: radial-gradient(520px 160px at 12% 0%, mix($red, $dash-surface, 10%), $dash-surface 62%), linear-gradient(180deg, $dash-surface-2, $dash-surface 45%, $dash-surface-3) !default;
 $input-height: 66px !default;
 $input-border-color-invalid: $dash-invalid !default;
-$input-border-radius: 12px !default;
+$input-border-radius: 8px !default;
 $input-font-size: 12px !default;
 $input-color: $gray-300 !default;
 $input-border-width: 1px !default;
@@ -341,7 +341,7 @@ $form-switch-padding-start: 1.5rem;
 
 $border-width: 1px !default;
 
-$border-radius: 16px !default;
+$border-radius: 10px !default;
 $border-radius-lg: .3rem !default;
 $border-radius-sm: .2rem !default;
 
@@ -367,16 +367,48 @@ $space-10: 64px !default;
 
 // Échelle de rayons — composants UI
 $radius-xs: 4px !default;
-$radius-sm: 8px !default;
-$radius-md: 12px !default;
-$radius-lg: $border-radius !default; // 16px, valeur historique conservée
-$radius-xl: 24px !default;
+$radius-sm: 6px !default;
+$radius-md: 8px !default;
+$radius-lg: $border-radius !default; // 10px, refonte Linear-like (16px historique)
+$radius-xl: 14px !default;
 $radius-pill: 999px !default;
 
 // Hauteurs unifiées composants interactifs
 $control-height-sm: 32px !default;
 $control-height-md: 40px !default;
 $control-height-lg: $input-height !default; // 52px, aligné inputs
+
+/*-----------------------------------
+   3 ter ) Bootstrap component overrides
+   (déclarés avant @import bootstrap/variables
+   pour court-circuiter les !default vendor)
+-----------------------------------*/
+
+// Buttons — Linear-like sober, sharper radius, medium weight, no shadow
+$btn-font-weight       : 500 !default;
+$btn-padding-y         : .5rem !default;
+$btn-padding-x         : .875rem !default;
+$btn-padding-y-sm      : .375rem !default;
+$btn-padding-x-sm      : .625rem !default;
+$btn-padding-y-lg      : .625rem !default;
+$btn-padding-x-lg      : 1.125rem !default;
+$btn-border-radius     : $radius-sm !default;
+$btn-border-radius-sm  : 4px !default;
+$btn-border-radius-lg  : $radius-md !default;
+$btn-box-shadow        : none !default;
+$btn-active-box-shadow : none !default;
+$btn-focus-box-shadow  : 0 0 0 3px rgba($primary, .18) !default;
+$btn-hover-bg-shade-amount   : 12% !default;
+$btn-hover-bg-tint-amount    : 12% !default;
+$btn-active-bg-shade-amount  : 18% !default;
+$btn-active-bg-tint-amount   : 18% !default;
+
+// Badges — compact, tabular feel
+$badge-font-size      : .72em !default;
+$badge-font-weight    : 600 !default;
+$badge-padding-y      : .35em !default;
+$badge-padding-x      : .6em !default;
+$badge-border-radius  : 4px !default;
 
 /*-----------------------------------
    4 ) Bootstrap import

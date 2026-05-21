@@ -1266,7 +1266,7 @@ body {
 
         background: $theme-card-bg !important;
         border-color: $theme-border-subtle !important;
-        box-shadow: $theme-shadow-md !important;
+        box-shadow: none !important;
 
         &:not(:has(form))::before,
         &.is-active::before {
@@ -1683,7 +1683,7 @@ body {
         .seo-panel {
             background: $theme-card-bg !important;
             border-color: $theme-border-subtle !important;
-            box-shadow: $theme-shadow-md !important;
+            box-shadow: none !important;
 
             &::before {
                 background: $theme-accent !important;
@@ -1761,7 +1761,7 @@ body {
         .notfound-panel {
             background: $theme-card-bg !important;
             border-color: $theme-border-subtle !important;
-            box-shadow: $theme-shadow-md !important;
+            box-shadow: none !important;
 
             &::before {
                 background: $danger !important;
@@ -1860,7 +1860,7 @@ body {
         .search-panel {
             background: $theme-card-bg !important;
             border-color: $theme-border-subtle !important;
-            box-shadow: $theme-shadow-md !important;
+            box-shadow: none !important;
         }
 
         .search-feed {
@@ -1913,7 +1913,7 @@ body {
         background: $theme-card-bg !important;
         border-color: $theme-border-subtle !important;
         color: $theme-text !important;
-        box-shadow: $theme-shadow-sm !important;
+        box-shadow: none !important;
 
         &::after {
             background: $theme-accent !important;
@@ -1924,7 +1924,7 @@ body {
             border-color: $theme-accent-border !important;
             background: $theme-surface !important;
             color: $theme-text !important;
-            box-shadow: $theme-shadow-md !important;
+            box-shadow: none !important;
 
             .shortcut-icon {
                 background: $theme-accent-bg !important;
@@ -1966,7 +1966,7 @@ body {
         .perf-panel {
             background: $theme-card-bg !important;
             border-color: $theme-border-subtle !important;
-            box-shadow: $theme-shadow-md !important;
+            box-shadow: none !important;
         }
 
         .perf-card {
