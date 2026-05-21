@@ -30,35 +30,36 @@
     display: flex;
     flex-direction: column;
     padding: $space-6;
-    background: $crumb-surface !important;
-    border: 1px solid $crumb-border !important;
-    border-radius: $radius-lg !important;
-    box-shadow: $crumb-shadow !important;
+    background: $dash-surface;
+    border: 1px solid $crumb-border;
+    border-radius: $radius-lg;
+    box-shadow: none;
     overflow: hidden;
+    transition: border-color $transition-base;
 
-    &:not(:has(form)) {
+    // 3 px stripe — present on form-free cards, and always when .is-active
+    &:not(:has(form))::before,
+    &.is-active::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 3px;
+        background: $crumb-border;
+        transition: background $transition-base;
+    }
 
-        transition: border-color $transition-base, box-shadow $transition-base;
+    &.is-active {
+
+        border-color: rgba($primary, 0.28) !important;
 
         &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 3px;
-            background: $crumb-border;
-            transition: background $transition-base;
+            background: $primary;
         }
+    }
 
-        &.is-active {
-
-            border-color: rgba($primary, 0.28) !important;
-
-            &::before {
-                background: $primary;
-            }
-        }
+    &:not(:has(form)) {
 
         @include mediaQuery(min-lg) {
 

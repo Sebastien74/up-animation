@@ -1259,6 +1259,105 @@ body {
             color: $theme-text;
         }
     }
+
+    /*--- Card global (admin core/_card.scss = vars dark) ---*/
+
+    .card {
+
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+        box-shadow: $theme-shadow-md !important;
+
+        &:not(:has(form))::before,
+        &.is-active::before {
+            background: $theme-border !important;
+        }
+
+        &.is-active {
+
+            border-color: $theme-accent-border !important;
+
+            &::before {
+                background: $theme-accent !important;
+            }
+        }
+
+        &:not(:has(form)) {
+
+            @include mediaQuery(min-lg) {
+
+                &:hover {
+                    border-color: $theme-accent-border !important;
+                }
+            }
+        }
+    }
+
+    .card-title {
+        color: $theme-text !important;
+    }
+
+    .card-subtitle,
+    .card-text {
+        color: $theme-text-muted !important;
+    }
+
+    .card-icon {
+        background: $theme-accent-bg-soft !important;
+        color: $theme-accent !important;
+
+        i {
+            color: $theme-accent !important;
+        }
+    }
+
+    .card-hint {
+        background: $theme-bg-alt !important;
+        border-color: $theme-border-subtle !important;
+        color: $theme-text-muted !important;
+
+        i {
+            color: $theme-accent !important;
+        }
+    }
+
+    .card-section {
+        border-top-color: $theme-border !important;
+
+        .card-section-icon {
+            background: $theme-accent-bg-soft !important;
+            color: $theme-accent !important;
+
+            i {
+                color: $theme-accent !important;
+            }
+        }
+
+        .card-section-title,
+        .card-section-text {
+            color: $theme-text-muted !important;
+        }
+    }
+
+    /*--- Main subtitle (section heading inside cards) ---*/
+
+    .main-subtitle {
+
+        color: $theme-text !important;
+
+        &::after {
+            background: $theme-border !important;
+        }
+
+        i:not(.initial):not(.icm-chevron-down) {
+            border-color: $theme-accent-border-mid !important;
+            color: $theme-accent !important;
+        }
+
+        i.icm-chevron-down {
+            color: $theme-text-muted !important;
+        }
+    }
 }
 
 /*-----------------------------------
@@ -2651,7 +2750,6 @@ th.fc-col-header-cell {
 #security-2fa-page {
 
     .security-page-head,
-    .method-card,
     .codes-emphasis {
         background: $theme-card-bg !important;
         border-color: $theme-border-subtle !important;
@@ -2673,69 +2771,12 @@ th.fc-col-header-cell {
     }
 
     .security-page-title,
-    .method-card-title,
     .codes-emphasis-title {
         color: $theme-text !important;
     }
 
     .security-page-desc,
-    .method-card-desc,
-    .method-card-protocol,
     .codes-emphasis-desc {
-        color: $theme-text-muted !important;
-    }
-
-    .method-card {
-
-        &::before {
-            background: $theme-border !important;
-        }
-
-        &.is-active {
-            border-color: $theme-accent-border !important;
-
-            &::before {
-                background: $theme-accent !important;
-            }
-        }
-
-        @include mediaQuery(min-lg) {
-
-            &:hover {
-                border-color: $theme-accent-border !important;
-            }
-        }
-    }
-
-    .method-card-icon,
-    .method-card-sub-icon {
-        background: $theme-accent-bg-soft !important;
-        color: $theme-accent !important;
-
-        i {
-            color: $theme-accent !important;
-        }
-    }
-
-    .method-card-hint {
-        background: $theme-bg-alt !important;
-        border-color: $theme-border-subtle !important;
-        color: $theme-text-muted !important;
-
-        i {
-            color: $theme-accent !important;
-        }
-    }
-
-    .method-card-sub {
-        border-top-color: $theme-border !important;
-    }
-
-    .method-card-sub-title {
-        color: $theme-text-muted !important;
-    }
-
-    .method-card-sub-desc {
         color: $theme-text-muted !important;
     }
 

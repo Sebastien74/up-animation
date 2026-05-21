@@ -226,6 +226,10 @@ form {
     .select2-selection, .select2-selection__rendered {
         background: transparent !important;
     }
+
+    .select2-selection__choice__display {
+        min-width: 95px;
+    }
 }
 
 .img-icons-group,
@@ -260,9 +264,7 @@ form {
         width: auto;
         height: auto;
         object-fit: contain;
-        filter: brightness(0) invert(1);
         position: relative;
-        top: -4px;
     }
 
     .select2-selection__arrow {
@@ -404,10 +406,13 @@ form {
             padding-top: 27px !important;
             padding-bottom: 6px !important;
             display: inline-flex !important;
+            height: initial !important;
 
             > ul {
                 margin-bottom: 0 !important;
                 margin-left: .5rem !important;
+                flex-wrap: wrap !important;
+                height: initial !important;
             }
         }
 

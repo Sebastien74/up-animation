@@ -121,7 +121,7 @@
                                inputmode="numeric"
                                pattern="[0-9]*"
                                maxlength="6"
-                               placeholder="123 456"
+                               placeholder="XXXXXX"
                                autofocus required>
                     </div>
                     <button type="submit" class="text-uppercase btn-app center w-100">
@@ -148,11 +148,10 @@
                     <p class="text-white-50 fz-small mb-3">
                         {{ "Un code unique à 6 chiffres vous sera envoyé par e-mail à chaque connexion."|trans|raw }}
                     </p>
-
                     <form method="post" action="{{ path('admin_2fa_email_enable', {website: website}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('2fa_email_enable') }}">
                         <button type="submit" class="text-uppercase btn-app center w-100">
-                            <i class="icon-envelope me-2"></i>{{ "Activer la double authentification par e-mail"|trans|raw }}
+                            <i class="icon-check me-2"></i>{{ "Activer la double authentification par e-mail"|trans|raw }}
                         </button>
                     </form>
                 </div>

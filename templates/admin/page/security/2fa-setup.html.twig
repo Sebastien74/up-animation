@@ -57,13 +57,13 @@
             <div class="method-grid">
 
                 {#- TOTP method -#}
-                <article class="method-card {{ user.googleAuthenticatorEnabled ? 'is-active' }}">
+                <article class="card {{ user.googleAuthenticatorEnabled ? 'is-active' }}">
 
-                    <header class="method-card-head">
-                        <span class="method-card-icon"><i class="icm-fingerprint"></i></span>
-                        <div class="method-card-heading">
-                            <h2 class="method-card-title">{{ "Application d'authentification"|trans|raw }}</h2>
-                            <p class="method-card-protocol">{{ "TOTP - code à 6 chiffres"|trans|raw }}</p>
+                    <header class="card-header">
+                        <span class="card-icon"><i class="icm-fingerprint"></i></span>
+                        <div class="card-heading">
+                            <h2 class="card-title">{{ "Application d'authentification"|trans|raw }}</h2>
+                            <p class="card-subtitle">{{ "TOTP - code à 6 chiffres"|trans|raw }}</p>
                         </div>
                         {%- if user.googleAuthenticatorEnabled -%}
                             <span class="badge-2fa is-active"><i class="icm-circle"></i>{{ "Active"|trans|raw }}</span>
@@ -72,12 +72,12 @@
                         {%- endif -%}
                     </header>
 
-                    <p class="method-card-desc">
+                    <p class="card-text">
                         {{ "Code généré par Google Authenticator, Authy, 1Password, Bitwarden ou tout autre client TOTP."|trans|raw }}
                     </p>
 
                     {%- if user.googleAuthenticatorEnabled -%}
-                        <div class="method-card-actions">
+                        <div class="card-footer">
                             <form method="post" action="{{ path('admin_2fa_disable', {website: websiteAttr}) }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token('2fa_disable') }}">
                                 <button type="submit" class="btn-app danger small">
@@ -86,12 +86,12 @@
                             </form>
                         </div>
 
-                        <div class="method-card-sub">
-                            <header class="method-card-sub-head">
-                                <span class="method-card-sub-icon"><i class="icm-key2"></i></span>
-                                <h3 class="method-card-sub-title">{{ "Codes de secours"|trans|raw }}</h3>
+                        <div class="card-section">
+                            <header class="card-section-head">
+                                <span class="card-section-icon"><i class="icm-key2"></i></span>
+                                <h3 class="card-section-title">{{ "Codes de secours"|trans|raw }}</h3>
                             </header>
-                            <p class="method-card-sub-desc">
+                            <p class="card-section-text">
                                 {{ "Régénérez vos codes si vous les avez perdus. Les anciens seront immédiatement invalidés."|trans|raw }}
                             </p>
                             <form method="post" action="{{ path('admin_2fa_regenerate_backup_codes', {website: websiteAttr}) }}">
@@ -102,11 +102,11 @@
                             </form>
                         </div>
                     {%- else -%}
-                        <p class="method-card-hint">
+                        <p class="card-hint">
                             <i class="icm-info" aria-hidden="true"></i>
                             {{ "Active actuellement : code par e-mail. L'e-mail sera désactivé après validation du nouveau code."|trans|raw }}
                         </p>
-                        <div class="method-card-actions">
+                        <div class="card-footer">
                             <a href="{{ path('admin_2fa_switch_to_totp', {website: websiteAttr}) }}" class="btn-app small">
                                 <i class="icm-fingerprint"></i><span>{{ "Passer à l'application"|trans|raw }}</span>
                             </a>
@@ -115,13 +115,13 @@
                 </article>
 
                 {#- Email method -#}
-                <article class="method-card {{ user.emailAuthEnabled ? 'is-active' }}">
+                <article class="card {{ user.emailAuthEnabled ? 'is-active' }}">
 
-                    <header class="method-card-head">
-                        <span class="method-card-icon"><i class="icm-envelope"></i></span>
-                        <div class="method-card-heading">
-                            <h2 class="method-card-title">{{ "Code par e-mail"|trans|raw }}</h2>
-                            <p class="method-card-protocol">{{ "Envoi à chaque connexion"|trans|raw }}</p>
+                    <header class="card-header">
+                        <span class="card-icon"><i class="icm-envelope"></i></span>
+                        <div class="card-heading">
+                            <h2 class="card-title">{{ "Code par e-mail"|trans|raw }}</h2>
+                            <p class="card-subtitle">{{ "Envoi à chaque connexion"|trans|raw }}</p>
                         </div>
                         {%- if user.emailAuthEnabled -%}
                             <span class="badge-2fa is-active"><i class="icm-circle"></i>{{ "Active"|trans|raw }}</span>
@@ -130,12 +130,12 @@
                         {%- endif -%}
                     </header>
 
-                    <p class="method-card-desc">
+                    <p class="card-text">
                         {{ "Un code unique est envoyé à %email% à chaque connexion."|trans({'%email%': user.email})|raw }}
                     </p>
 
                     {%- if user.emailAuthEnabled -%}
-                        <div class="method-card-actions">
+                        <div class="card-footer">
                             <form method="post" action="{{ path('admin_2fa_email_disable', {website: websiteAttr}) }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token('2fa_email_disable') }}">
                                 <button type="submit" class="btn-app danger small">
@@ -144,11 +144,11 @@
                             </form>
                         </div>
                     {%- else -%}
-                        <p class="method-card-hint">
+                        <p class="card-hint">
                             <i class="icm-info" aria-hidden="true"></i>
                             {{ "Active actuellement : application d'authentification. L'application sera désactivée et vous serez déconnecté."|trans|raw }}
                         </p>
-                        <div class="method-card-actions">
+                        <div class="card-footer">
                             <form method="post" action="{{ path('admin_2fa_switch_to_email', {website: websiteAttr}) }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token('2fa_switch_to_email') }}">
                                 <button type="submit" class="btn-app small">

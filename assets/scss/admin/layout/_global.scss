@@ -88,46 +88,57 @@ a {
 
 .main-subtitle {
 
-    display: inline-flex;
+    display: flex;
     width: 100%;
     align-items: center;
-    gap: .75rem;
-    padding: .5rem 1rem;
-    margin-bottom: 1rem;
-    font-weight: 400;
-    background: $bg-gradient-primary;
-    border-radius: $border-radius;
-    border: 1px solid $crumb-border;
-    color: $theme-text-light;
-    font-size: 14px !important;
+    gap: $space-3;
+    margin: 0 0 $space-5;
+    padding: 0;
 
-    &.small {
+    font-size: 12px !important;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $crumb-text;
+    line-height: 1;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
 
-        font-size: .75rem;
-
-        i:not(.initial) {
-            width: 30px !important;
-            height: 30px !important;
-            flex: 0 0 30px !important;
-            border-radius: 10px !important;
-            font-size: .85rem !important;
-        }
+    // Rule that extends after the label — editorial section divider
+    &::after {
+        content: '';
+        flex: 1 1 auto;
+        height: 1px;
+        background: $crumb-border;
+        margin-left: $space-2;
     }
 
-    &:not(.small) {
-
-        font-size: 1rem;
-
-        i:not(.initial) {
-            width: 34px !important;
-            height: 34px !important;
-            flex: 0 0 34px !important;
-            border-radius: 10px !important;
-            font-size: 1rem !important;
-        }
+    // Editorial chapter bullet — thin rounded square around the icon
+    i:not(.initial):not(.icm-chevron-down) {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px !important;
+        height: 30px !important;
+        border-radius: $radius-sm !important;
+        border: 1px solid rgba($primary, 0.4);
+        background: transparent !important;
+        color: $primary !important;
+        font-size: 13px !important;
+        line-height: 1;
     }
 
+    // Collapsible chevron sits after the rule
     i.icm-chevron-down {
+
+        order: 99;
+        flex: 0 0 auto;
+        margin-left: $space-2;
+        font-size: 10px;
+        color: $crumb-muted;
+
         &:before {
             top: 1px;
             position: relative;
@@ -136,12 +147,20 @@ a {
         }
     }
 
-    &:not(.collapsed) {
-        i.icm-chevron-down:before {
-            top: 0;
-            transform-origin: center;
-            transform: rotate(180deg);
-            transition: transform .3s $transition-base-timing;
+    &:not(.collapsed) i.icm-chevron-down:before {
+        top: 0;
+        transform: rotate(180deg);
+    }
+
+    &.small {
+
+        font-size: 11px !important;
+        letter-spacing: 0.08em;
+
+        i:not(.initial):not(.icm-chevron-down) {
+            width: 24px !important;
+            height: 24px !important;
+            font-size: 11px !important;
         }
     }
 }
