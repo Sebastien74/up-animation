@@ -2,26 +2,32 @@
 
 /* -----------------------------------------------------------------
 
-    DASHBOARD :
-    ===========
+    DASHBOARD — composition Linear-like sobre
 
     Base neutre (rendu dark par défaut). Le rendu papier crème vit
     dans themes/light.scss.
 
-    1 ) Import
-    2 ) Reveal animation
-    3 ) Hero
-    4 ) Section label
-    5 ) SEO feature panel
-    6 ) 404 feature panel
-    7 ) Shortcuts
-    8 ) Keyframes
-    9 ) Responsive
+    Sommaire :
+      1 ) Imports
+      2 ) Reveal animation
+      3 ) Zone head (shared section header)
+      4 ) Hero
+      5 ) KPI strip
+      6 ) Quick links
+      7 ) Activity (mail + perf charts)
+      8 ) Performance details (buckets + top URLs)
+      9 ) Attention (SEO + 404 alerts)
+     10 ) Search stats
+     11 ) Tools (feeds sync)
+     12 ) Keyframes
+     13 ) Performance inspector + mail-log pages (shared layout)
+     14 ) Mail-log index / show
+     15 ) Responsive
 
 ------------------------------------------------------------------ */
 
 /*-----------------------------------
-   1 ) Import
+   1 ) Imports
 -----------------------------------*/
 
 @import "../../vendor/mixin/media-queries";
@@ -29,26 +35,25 @@
 
 #dashboard {
 
+    padding-top: $space-2;
+
     /*-----------------------------------
        2 ) Reveal animation
     -----------------------------------*/
 
     .reveal {
         opacity: 0;
-        transform: translateY(10px);
-        animation: dashboardReveal .55s $transition-base-timing forwards;
-    }
+        transform: translateY(8px);
+        animation: dashboardReveal .5s $transition-base-timing forwards;
 
-    .shortcuts-grid .reveal {
-        @for $i from 1 through 8 {
-            &:nth-child(#{$i}) {
-                animation-delay: #{($i - 1) * 60 + 120}ms;
+        @for $i from 1 through 10 {
+            &:nth-of-type(#{$i}) {
+                animation-delay: #{($i - 1) * 60}ms;
             }
         }
     }
 
     @media (prefers-reduced-motion: reduce) {
-
         .reveal {
             animation: none;
             opacity: 1;
@@ -57,663 +62,242 @@
     }
 
     /*-----------------------------------
-       3 ) Hero
+       3 ) Zone head (shared)
+    -----------------------------------*/
+
+    .zone-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: $space-3;
+        margin-bottom: $space-3;
+    }
+
+    .zone-title {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: $crumb-text;
+    }
+
+    .zone-aside {
+        font-size: 11px;
+        font-weight: 500;
+        color: $crumb-muted;
+    }
+
+    /*-----------------------------------
+       4 ) Hero — single line, no decoration
     -----------------------------------*/
 
     .dashboard-hero {
-        position: relative;
-        padding: $space-6 0 $space-7;
+        padding: $space-5 0 $space-4;
         border-bottom: 1px solid $crumb-border;
-        overflow: hidden;
+        margin-bottom: $space-5;
 
-        .hero-inner {
-            position: relative;
-            z-index: 2;
-            max-width: 900px;
-        }
-
-        .hero-meta-top {
-            display: inline-flex;
-            align-items: center;
-            gap: $space-2;
-            font-size: 12px;
-            font-weight: 500;
-            color: $crumb-muted;
-            margin-bottom: $space-4;
-
-            .hero-season {
-                color: $primary;
-            }
-
-            .hero-date {
-                color: $crumb-muted;
-            }
-        }
-
-        .hero-title {
-            font-size: 26px;
-            font-weight: 500;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-            color: $crumb-text;
-            margin: 0 0 $space-4;
-
-            .hero-greeting {
-                font-weight: 400;
-                color: $crumb-muted;
-                margin-right: 6px;
-
-                .hero-name {
-                    color: $crumb-text;
-                    font-weight: 500;
-                }
-            }
-
-            .hero-welcome {
-                font-weight: 500;
-                color: $crumb-text;
-
-                .hero-mark {
-                    color: $primary;
-                }
-            }
-        }
-
-        .hero-bottom {
+        .hero-line {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: $space-4;
             flex-wrap: wrap;
         }
 
-        .hero-subtitle {
-            font-size: 15px;
-            color: $crumb-muted;
+        .hero-greeting-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: $space-2;
+            min-width: 0;
+        }
+
+        .hero-season {
+            color: $primary;
+            flex: 0 0 auto;
+            opacity: .85;
+        }
+
+        .hero-title {
+            font-size: 22px;
+            font-weight: 500;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            color: $crumb-text;
             margin: 0;
-            line-height: 1.55;
-            max-width: 520px;
-            flex: 1 1 320px;
+
+            .hero-name {
+                font-weight: 600;
+            }
+
+            .hero-mark {
+                color: $primary;
+                margin-left: 1px;
+            }
+        }
+
+        .hero-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: $space-2;
+            font-size: 12px;
+            color: $crumb-muted;
+            flex-wrap: wrap;
+        }
+
+        .hero-sep {
+            opacity: .5;
         }
 
         .hero-last-login {
             display: inline-flex;
             align-items: center;
-            gap: $space-2;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .1em;
-            color: $crumb-muted;
-            padding: 8px 14px;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-pill;
-            background: $crumb-surface;
+            gap: 6px;
 
             i {
                 font-size: 10px;
                 opacity: .7;
             }
         }
-
-        .hero-grid-deco {
-            position: absolute;
-            top: 0;
-            right: -10%;
-            width: 60%;
-            height: 100%;
-            pointer-events: none;
-            opacity: .28;
-            background-image:
-                linear-gradient(transparent calc(100% - 1px), $crumb-border calc(100% - 1px)),
-                linear-gradient(90deg, transparent calc(100% - 1px), $crumb-border calc(100% - 1px));
-            background-size: 56px 56px;
-            mask-image: radial-gradient(60% 60% at 70% 50%, #000, transparent 75%);
-            z-index: 1;
-        }
     }
 
     /*-----------------------------------
-       4 ) Section label
+       5 ) KPI strip
     -----------------------------------*/
 
-    .section-label {
-        display: flex;
-        align-items: center;
-        gap: $space-3;
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: .14em;
-        color: $crumb-muted;
-
-        .label-line {
-            flex: 0 0 24px;
-            height: 1px;
-            background: $crumb-border-hover;
-        }
-
-        .label-text {
-            color: $crumb-text;
-
-            &::first-letter {
-                text-transform: uppercase;
-            }
-        }
-
-        .label-aside {
-            margin-left: auto;
-            color: $crumb-muted;
-            font-weight: 500;
-        }
+    .dashboard-strip {
+        margin-bottom: $space-6;
     }
 
-    /*-----------------------------------
-       5 ) SEO feature panel
-    -----------------------------------*/
-
-    .dashboard-seo {
-
-        .seo-panel {
-            display: grid;
-            grid-template-columns: 220px 1fr;
-            gap: $space-6;
-            align-items: stretch;
-            padding: $space-6;
-            background: $crumb-surface;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-lg;
-            position: relative;
-            overflow: hidden;
-
-            &::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                width: 2px;
-                background: $primary;
-            }
-
-            &.is-clean::before {
-                background: $success;
-            }
-
-            &.is-warning::before {
-                background: $warning;
-            }
-        }
-
-        .seo-left {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            gap: $space-3;
-            padding-right: $space-5;
-            border-right: 1px solid $crumb-border;
-            position: relative;
-        }
-
-        .seo-tag {
-            display: inline-flex;
-            align-items: center;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .14em;
-            color: $crumb-muted;
-            padding: 4px 10px;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-pill;
-        }
-
-        .seo-number {
-            font-size: 68px;
-            font-weight: 300;
-            line-height: .95;
-            letter-spacing: -0.03em;
-            color: $crumb-text;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .seo-unit {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .12em;
-            color: $crumb-muted;
-        }
-
-        .seo-body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: $space-3;
-            min-width: 0;
-        }
-
-        .seo-headline {
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 1.3;
-            letter-spacing: -0.01em;
-            color: $crumb-text;
-            margin: 0;
-            max-width: 520px;
-        }
-
-        .seo-desc {
-            font-size: 14px;
-            color: $crumb-muted;
-            margin: 0;
-            line-height: 1.6;
-            max-width: 540px;
-        }
-
-        .seo-locales {
-            list-style: none;
-            padding: 0;
-            margin: $space-2 0 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-width: 540px;
-        }
-
-        .locale-row {
-            display: grid;
-            grid-template-columns: 20px 80px 1fr 32px;
-            gap: $space-3;
-            align-items: center;
-
-            .locale-flag {
-                width: 20px;
-                height: 20px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-
-                img {
-                    border-radius: 50%;
-                    width: 18px;
-                    height: 18px;
-                    object-fit: cover;
-                }
-            }
-
-            .locale-name {
-                font-size: 12px;
-                font-weight: 500;
-                color: $crumb-muted;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .locale-bar {
-                position: relative;
-                display: block;
-                height: 4px;
-                background: $crumb-border;
-                border-radius: $radius-pill;
-                overflow: hidden;
-
-                .locale-bar-fill {
-                    display: block;
-                    height: 100%;
-                    background: $primary;
-                    border-radius: $radius-pill;
-                }
-            }
-
-            .locale-count {
-                font-size: 13px;
-                font-weight: 600;
-                color: $crumb-text;
-                text-align: right;
-                font-variant-numeric: tabular-nums;
-            }
-        }
-
-        .seo-cta {
-            display: inline-flex;
-            align-self: flex-start;
-            align-items: center;
-            gap: $space-2;
-            margin-top: $space-2;
-            padding: 8px 14px;
-            background: $primary;
-            color: $white;
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0;
-            border-radius: $radius-sm;
-            text-decoration: none;
-            transition: background $transition-fast;
-
-            i {
-                font-size: 10px;
-                transition: transform $transition-fast;
-            }
-
-            &:hover,
-            &:focus-visible {
-                background: darken($primary, 8%);
-                color: $white;
-
-                i {
-                    transform: translateX(2px);
-                }
-            }
-
-            &:focus-visible {
-                outline: none;
-                box-shadow: 0 0 0 3px rgba($primary, .22);
-            }
-        }
-    }
-
-    /*-----------------------------------
-       6 ) 404 feature panel
-    -----------------------------------*/
-
-    .dashboard-notfound {
-
-        .notfound-panel {
-            display: grid;
-            grid-template-columns: 220px 1fr;
-            gap: $space-6;
-            align-items: stretch;
-            padding: $space-6;
-            background: $crumb-surface;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-lg;
-            position: relative;
-            overflow: hidden;
-
-            &::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                width: 2px;
-                background: $danger;
-            }
-
-            &.is-clean::before {
-                background: $success;
-            }
-        }
-
-        .notfound-left {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            gap: $space-3;
-            padding-right: $space-5;
-            border-right: 1px solid $crumb-border;
-        }
-
-        .notfound-tag {
-            display: inline-flex;
-            align-items: center;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .14em;
-            color: $crumb-muted;
-            padding: 4px 10px;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-pill;
-        }
-
-        .notfound-number {
-            font-size: 68px;
-            font-weight: 300;
-            line-height: .95;
-            letter-spacing: -0.03em;
-            color: $crumb-text;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .notfound-unit {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .12em;
-            color: $crumb-muted;
-        }
-
-        .notfound-body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: $space-3;
-            min-width: 0;
-        }
-
-        .notfound-headline {
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 1.3;
-            letter-spacing: -0.01em;
-            color: $crumb-text;
-            margin: 0;
-            max-width: 520px;
-        }
-
-        .notfound-desc {
-            font-size: 14px;
-            color: $crumb-muted;
-            margin: 0;
-            line-height: 1.6;
-            max-width: 540px;
-        }
-
-        .notfound-feed {
-            list-style: none;
-            padding: 0;
-            margin: $space-2 0 0;
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-            background: $crumb-border;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-md;
-            overflow: hidden;
-        }
-
-        .notfound-row {
-            display: grid;
-            grid-template-columns: 8px 1fr auto 28px;
-            gap: $space-3;
-            align-items: center;
-            padding: 10px $space-4;
-            background: $crumb-surface;
-            transition: background $transition-fast;
-
-            &:hover {
-                background: $btn-surface-hover;
-
-                .notfound-row-marker {
-                    background: $danger;
-                }
-
-                .notfound-row-action {
-                    opacity: 1;
-                    transform: translateX(0);
-                    color: $danger;
-                }
-            }
-
-            .notfound-row-marker {
-                width: 6px;
-                height: 6px;
-                border-radius: 50%;
-                background: $crumb-border-hover;
-                transition: background $transition-fast;
-            }
-
-            .notfound-row-uri {
-                font-family: $font-family-monospace;
-                font-size: 12px;
-                font-weight: 500;
-                color: $crumb-text;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                min-width: 0;
-            }
-
-            .notfound-row-date {
-                font-size: 11px;
-                color: $crumb-muted;
-                white-space: nowrap;
-                font-variant-numeric: tabular-nums;
-            }
-
-            .notfound-row-action {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 24px;
-                height: 24px;
-                border-radius: $radius-pill;
-                color: $crumb-muted;
-                font-size: 10px;
-                opacity: 0;
-                transform: translateX(-4px);
-                transition: opacity $transition-fast, transform $transition-fast, color $transition-fast, background $transition-fast;
-
-                &:hover,
-                &:focus-visible {
-                    background: rgba($danger, .12);
-                    color: $danger;
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-
-                &:focus-visible {
-                    outline: none;
-                    box-shadow: 0 0 0 2px rgba($danger, .25);
-                }
-            }
-        }
-
-        .notfound-cta {
-            display: inline-flex;
-            align-self: flex-start;
-            align-items: center;
-            gap: $space-2;
-            margin-top: $space-2;
-            padding: 8px 14px;
-            background: transparent;
-            color: $crumb-text;
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0;
-            border: 1px solid $crumb-border-hover;
-            border-radius: $radius-sm;
-            text-decoration: none;
-            transition: background $transition-fast, border-color $transition-fast, color $transition-fast;
-
-            i {
-                font-size: 10px;
-                transition: transform $transition-fast;
-            }
-
-            &:hover,
-            &:focus-visible {
-                background: $danger;
-                border-color: $danger;
-                color: $white;
-
-                i {
-                    transform: translateX(2px);
-                }
-            }
-
-            &:focus-visible {
-                outline: none;
-                box-shadow: 0 0 0 3px rgba($danger, .22);
-            }
-        }
-
-        .notfound-panel.is-clean {
-
-            .notfound-cta {
-
-                &:hover,
-                &:focus-visible {
-                    background: $success;
-                    border-color: $success;
-                    box-shadow: 0 0 0 3px rgba($success, .25);
-                }
-            }
-        }
-    }
-
-    /*-----------------------------------
-       7 ) Shortcuts
-    -----------------------------------*/
-
-    .shortcuts-grid {
+    .kpi-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
         gap: $space-3;
     }
 
-    .shortcut-tile {
+    .kpi-tile {
         position: relative;
-        display: flex;
-        align-items: center;
-        gap: $space-4;
-        padding: $space-4;
         background: $crumb-surface;
         border: 1px solid $crumb-border;
-        border-radius: $radius-lg;
-        color: $crumb-text;
-        text-decoration: none;
+        border-radius: $radius-md;
         overflow: hidden;
         transition: border-color $transition-fast, background $transition-fast;
 
-        &::after {
+        &::before {
             content: '';
             position: absolute;
-            left: 0;
             top: 0;
+            left: 0;
             bottom: 0;
-            width: 1px;
-            background: $primary;
-            opacity: 0;
-            transition: opacity $transition-fast;
+            width: 2px;
+            background: $crumb-border-hover;
+            transition: background $transition-fast;
         }
 
-        &:hover,
+        &.is-warning::before {
+            background: $primary;
+        }
+
+        &.is-alert::before {
+            background: $danger;
+        }
+
+        &.is-clean::before {
+            background: $success;
+        }
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                border-color: $crumb-border-hover;
+                background: $btn-surface-hover;
+            }
+        }
+    }
+
+    .kpi-link {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: $space-3 $space-4;
+        color: $crumb-text;
+        text-decoration: none;
+
         &:focus-visible {
-            border-color: $crumb-border-hover;
-            background: $btn-surface-hover;
-            color: $crumb-text;
+            outline: none;
+            box-shadow: inset 0 0 0 2px rgba($primary, .25);
+        }
+    }
 
-            &::after {
-                opacity: 1;
-            }
+    .kpi-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: $crumb-muted;
+    }
 
-            .shortcut-icon {
-                background: rgba($primary, .14);
-                color: $primary;
-            }
+    .kpi-value {
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: $crumb-text;
+        font-variant-numeric: tabular-nums;
+    }
 
-            .shortcut-title {
-                color: $primary;
-            }
+    .kpi-unit {
+        font-size: 11px;
+        font-weight: 500;
+        color: $crumb-muted;
+    }
 
-            .shortcut-arrow {
-                opacity: 1;
-                transform: translateX(0);
+    /*-----------------------------------
+       6 ) Quick links
+    -----------------------------------*/
+
+    .dashboard-quick {
+        margin-bottom: $space-6;
+    }
+
+    .quick-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: $space-2;
+    }
+
+    .quick-tile {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: $space-3 $space-4;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+        color: $crumb-text;
+        text-decoration: none;
+        transition: border-color $transition-fast, background $transition-fast;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover,
+            &:focus-visible {
+                border-color: $crumb-border-hover;
+                background: $btn-surface-hover;
+
+                .quick-icon {
+                    color: $primary;
+                }
+
+                .quick-title {
+                    color: $primary;
+                }
             }
         }
 
@@ -721,543 +305,719 @@
             outline: none;
             box-shadow: 0 0 0 3px rgba($primary, .18);
         }
+    }
 
-        .shortcut-icon {
-            flex: 0 0 auto;
-            width: 36px;
-            height: 36px;
+    .quick-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        flex: 0 0 28px;
+        background: rgba($primary, .08);
+        color: $primary;
+        border-radius: $radius-sm;
+        font-size: 13px;
+        margin-bottom: $space-2;
+        transition: background $transition-fast, color $transition-fast;
+    }
+
+    .quick-title {
+        font-size: 13px;
+        font-weight: 500;
+        color: $crumb-text;
+        transition: color $transition-fast;
+    }
+
+    .quick-desc {
+        font-size: 11px;
+        color: $crumb-muted;
+        line-height: 1.3;
+    }
+
+    /*-----------------------------------
+       7 ) Activity (charts side by side)
+    -----------------------------------*/
+
+    .dashboard-activity {
+        margin-bottom: $space-6;
+    }
+
+    .activity-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $space-3;
+    }
+
+    .activity-card {
+        display: flex;
+        flex-direction: column;
+        gap: $space-4;
+        padding: $space-4 $space-5;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+        min-width: 0;
+    }
+
+    .activity-card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: $space-3;
+        flex-wrap: wrap;
+    }
+
+    .activity-card-title {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+        color: $crumb-text;
+    }
+
+    .activity-meta {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: inline-flex;
+        gap: $space-3;
+        flex-wrap: wrap;
+
+        li {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .meta-value {
+            color: $crumb-text;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .meta-label {
+            color: $crumb-muted;
+        }
+
+        .meta-swatch {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            background: $primary;
+
+            &.is-success {
+                background: $success;
+            }
+
+            &.is-failed {
+                background: $danger;
+            }
+
+            &.is-front {
+                background: $primary;
+            }
+
+            &.is-admin {
+                background: $info;
+            }
+        }
+    }
+
+    .chart-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 3px;
+        height: 96px;
+        padding-top: $space-2;
+        border-top: 1px solid $crumb-border;
+    }
+
+    .chart-bar-col {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        min-width: 0;
+        height: 100%;
+    }
+
+    .chart-bar-stack {
+        position: relative;
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column-reverse;
+        background: $crumb-border;
+        border-radius: 2px;
+        overflow: hidden;
+        min-height: 3px;
+    }
+
+    .chart-bar {
+        display: block;
+        width: 100%;
+        background: $primary;
+
+        &.is-success {
+            background: $success;
+        }
+
+        &.is-failed {
+            background: $danger;
+        }
+
+        &.is-front {
+            background: $primary;
+        }
+
+        &.is-admin {
+            background: $info;
+        }
+    }
+
+    .chart-bar-label {
+        text-align: center;
+        font-size: 9px;
+        font-weight: 500;
+        color: $crumb-muted;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .activity-card-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: $space-3;
+        font-size: 12px;
+        flex-wrap: wrap;
+    }
+
+    .activity-card-summary {
+        color: $crumb-muted;
+    }
+
+    .activity-card-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: $crumb-text;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color $transition-fast;
+
+        i {
+            font-size: 9px;
+            transition: transform $transition-fast;
+        }
+
+        &:hover,
+        &:focus-visible {
+            color: $primary;
+
+            i {
+                transform: translateX(2px);
+            }
+        }
+
+        &:focus-visible {
+            outline: none;
+        }
+    }
+
+    /*-----------------------------------
+       8 ) Performance details
+    -----------------------------------*/
+
+    .dashboard-details {
+        margin-bottom: $space-6;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $space-3;
+    }
+
+    .details-card {
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
+        padding: $space-4 $space-5;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+    }
+
+    .details-card-title {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: $crumb-muted;
+    }
+
+    .details-empty {
+        margin: 0;
+        font-size: 12px;
+        color: $crumb-muted;
+        opacity: .8;
+    }
+
+    .bucket-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .bucket-row {
+        display: grid;
+        grid-template-columns: 78px 1fr 32px;
+        align-items: center;
+        gap: $space-3;
+    }
+
+    .bucket-label {
+        font-size: 11px;
+        font-weight: 500;
+        color: $crumb-muted;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .bucket-bar {
+        position: relative;
+        display: block;
+        height: 8px;
+        background: $crumb-border;
+        border-radius: $radius-pill;
+        overflow: hidden;
+    }
+
+    .bucket-fill {
+        display: block;
+        height: 100%;
+        transition: width $transition-fast;
+
+        &.severity-low {
+            background: $success;
+        }
+
+        &.severity-medium {
+            background: $warning;
+        }
+
+        &.severity-high {
+            background: lighten($danger, 8%);
+        }
+
+        &.severity-critical {
+            background: $danger;
+        }
+
+        &.severity-extreme {
+            background: darken($danger, 12%);
+        }
+    }
+
+    .bucket-count {
+        text-align: right;
+        font-size: 12px;
+        font-weight: 600;
+        color: $crumb-text;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .routes-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        counter-reset: route;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .routes-row {
+        counter-increment: route;
+        display: grid;
+        grid-template-columns: 18px 1fr auto;
+        gap: $space-2;
+        align-items: center;
+        padding: 5px 0;
+        font-size: 12px;
+        border-bottom: 1px solid $crumb-border;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &::before {
+            content: counter(route);
+            color: $crumb-muted;
+            font-size: 10px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+    }
+
+    .routes-name {
+        color: $crumb-text;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: $font-family-monospace;
+        font-size: 11px;
+    }
+
+    .routes-count {
+        color: $crumb-muted;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+    /*-----------------------------------
+       9 ) Attention (SEO + 404 alerts)
+    -----------------------------------*/
+
+    .dashboard-attention {
+        margin-bottom: $space-6;
+    }
+
+    .attention-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $space-3;
+    }
+
+    .attention-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
+        padding: $space-4 $space-5;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 2px;
+            background: $crumb-border-hover;
+        }
+
+        &.is-warning::before {
+            background: $primary;
+        }
+
+        &.is-alert::before {
+            background: $danger;
+        }
+
+        &.is-clean::before {
+            background: $success;
+        }
+    }
+
+    .attention-head {
+        display: flex;
+        align-items: baseline;
+        gap: $space-3;
+        flex-wrap: wrap;
+    }
+
+    .attention-tag {
+        display: inline-flex;
+        align-items: center;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        color: $crumb-muted;
+        padding: 3px 8px;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-pill;
+    }
+
+    .attention-count {
+        font-size: 26px;
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: $crumb-text;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .attention-unit {
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        color: $crumb-muted;
+    }
+
+    .attention-desc {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.55;
+        color: $crumb-muted;
+    }
+
+    .locales-bars {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .locales-bars .locale-row {
+        display: grid;
+        grid-template-columns: 18px 72px 1fr 28px;
+        gap: $space-2;
+        align-items: center;
+
+        .locale-flag {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: rgba($primary, .08);
-            color: $primary;
-            border-radius: $radius-sm;
-            font-size: 15px;
-            transition: background $transition-fast, color $transition-fast;
-        }
 
-        .shortcut-body {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            min-width: 0;
-            flex: 1 1 auto;
-        }
-
-        .shortcut-title {
-            font-size: 14px;
-            font-weight: 500;
-            color: $crumb-text;
-            letter-spacing: -0.005em;
-            transition: color $transition-fast;
-        }
-
-        .shortcut-desc {
-            font-size: 12px;
-            color: $crumb-muted;
-            line-height: 1.4;
-        }
-
-        .shortcut-arrow {
-            flex: 0 0 auto;
-            color: $crumb-muted;
-            font-size: 11px;
-            opacity: 0;
-            transform: translateX(-4px);
-            transition: opacity $transition-fast, transform $transition-fast;
-        }
-    }
-
-    /*-----------------------------------
-       8 ) Performance probe (internal)
-       Shared layout used by mail stats too.
-    -----------------------------------*/
-
-    .dashboard-perf,
-    .dashboard-mail {
-
-        .perf-last-seen {
-            margin-left: $space-2;
-            opacity: .7;
-            font-weight: 400;
-            text-transform: none;
-            letter-spacing: 0;
-        }
-
-        .perf-panel {
-            background: $crumb-surface;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-lg;
-            padding: $space-5;
-            display: flex;
-            flex-direction: column;
-            gap: $space-5;
-        }
-
-        .perf-actions {
-            display: flex;
-            gap: $space-3;
-            flex-wrap: wrap;
-        }
-
-        .perf-action-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: $space-2;
-            padding: 7px 14px;
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0;
-            color: $crumb-text;
-            background: $body-bg;
-            border: 1px solid $crumb-border-hover;
-            border-radius: $radius-sm;
-            text-decoration: none;
-            transition: background $transition-fast, color $transition-fast, border-color $transition-fast;
-
-            .legend-swatch {
-                margin: 0;
-            }
-
-            i {
-                font-size: 10px;
-                opacity: .7;
-                transition: transform $transition-fast;
-            }
-
-            &:hover,
-            &:focus-visible {
-                background: $primary;
-                border-color: $primary;
-                color: $white;
-
-                i {
-                    opacity: 1;
-                    transform: translateX(2px);
-                }
-            }
-
-            &:focus-visible {
-                outline: none;
-                box-shadow: 0 0 0 3px rgba($primary, .22);
+            img {
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                object-fit: cover;
             }
         }
 
-        .perf-summary {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: $space-4;
-        }
-
-        .perf-card {
-            position: relative;
-            padding: $space-4;
-            background: $body-bg;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-md;
-            overflow: hidden;
-
-            &::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                width: 2px;
-                background: $primary;
-            }
-        }
-
-        .perf-card-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: $space-3;
-        }
-
-        .perf-card-label {
-            font-size: 13px;
-            font-weight: 500;
-            color: $crumb-text;
-        }
-
-        .perf-card-tag {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: .12em;
-            color: $crumb-muted;
-            padding: 3px 8px;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-pill;
-        }
-
-        .perf-card-number {
-            font-size: 36px;
-            font-weight: 400;
-            line-height: 1;
-            color: $crumb-text;
-            font-variant-numeric: tabular-nums;
-            letter-spacing: -0.02em;
-        }
-
-        .perf-card-unit {
-            font-size: 11px;
-            color: $crumb-muted;
-            margin-bottom: $space-3;
-        }
-
-        .perf-metrics {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: $space-2 $space-4;
-            margin: 0;
-            padding: $space-3 0 0;
-            border-top: 1px solid $crumb-border;
-
-            li {
-                display: flex;
-                flex-direction: column;
-                gap: 2px;
-                font-size: 12px;
-            }
-
-            .metric-label {
-                color: $crumb-muted;
-                text-transform: uppercase;
-                font-size: 10px;
-                font-weight: 600;
-                letter-spacing: .08em;
-            }
-
-            .metric-value {
-                color: $crumb-text;
-                font-weight: 500;
-                font-variant-numeric: tabular-nums;
-            }
-        }
-
-        .perf-chart-block {
-            display: flex;
-            flex-direction: column;
-            gap: $space-3;
-        }
-
-        .perf-chart-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: $space-3;
-            flex-wrap: wrap;
-        }
-
-        .perf-chart-title {
-            font-size: 14px;
-            font-weight: 500;
-            color: $crumb-text;
-            margin: 0;
-        }
-
-        .perf-legend {
-            display: inline-flex;
-            align-items: center;
-            gap: $space-4;
-            font-size: 11px;
-            color: $crumb-muted;
-        }
-
-        .legend-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .legend-swatch {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 2px;
-            background: $primary;
-        }
-
-        .perf-bars {
-            display: grid;
-            grid-template-columns: repeat(24, 1fr);
-            gap: 4px;
-            align-items: end;
-            height: 116px;
-            padding: $space-3 0 0;
-            border-top: 1px solid $crumb-border;
-        }
-
-        .perf-bar-col {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            height: 100%;
-        }
-
-        .perf-bar-stack {
-            position: relative;
-            flex: 1 1 auto;
-            width: 100%;
-            display: flex;
-            flex-direction: column-reverse;
-            justify-content: flex-start;
-            background: $crumb-border;
-            border-radius: 2px;
-            overflow: hidden;
-            min-height: 4px;
-        }
-
-        .perf-bar {
-            display: block;
-            width: 100%;
-            min-height: 0;
-            background: $primary;
-
-            &.mail-bar-success {
-                background: $success;
-            }
-
-            &.mail-bar-failed {
-                background: $danger;
-            }
-        }
-
-        .perf-bar-label {
-            font-size: 9px;
-            font-weight: 500;
-            color: $crumb-muted;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .perf-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: $space-6;
-        }
-
-        .perf-buckets {
-            display: flex;
-            flex-direction: column;
-            gap: $space-3;
-        }
-
-        .perf-buckets-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: $space-4;
-        }
-
-        .perf-bucket-col {
-            background: $body-bg;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-md;
-            padding: $space-3 $space-4;
-        }
-
-        .perf-bucket-col-head {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: $space-3;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .12em;
-            color: $crumb-muted;
-        }
-
-        .bucket-list {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: $space-3;
-        }
-
-        .bucket-row {
-            display: grid;
-            grid-template-columns: 80px 1fr 32px;
-            align-items: center;
-            gap: $space-3;
-        }
-
-        .bucket-label {
+        .locale-name {
             font-size: 11px;
             font-weight: 500;
             color: $crumb-muted;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .bucket-bar {
-            position: relative;
-            display: flex;
-            height: 10px;
-            background: $crumb-border;
-            border-radius: $radius-pill;
-            overflow: hidden;
-        }
-
-        .bucket-fill {
-            display: block;
-            height: 100%;
-            transition: width $transition-fast;
-
-            // Severity scale (fastest = green, slowest = dark red)
-            &.severity-low {
-                background: $success;
-            }
-
-            &.severity-medium {
-                background: $warning;
-            }
-
-            &.severity-high {
-                background: lighten($danger, 8%);
-            }
-
-            &.severity-critical {
-                background: $danger;
-            }
-
-            &.severity-extreme {
-                background: darken($danger, 12%);
-            }
-        }
-
-        .bucket-count {
-            font-size: 12px;
-            font-weight: 600;
-            color: $crumb-text;
-            text-align: right;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .perf-routes {
-            display: flex;
-            flex-direction: column;
-            gap: $space-3;
-        }
-
-        .perf-routes-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: $space-4;
-        }
-
-        .perf-routes-col {
-            background: $body-bg;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-md;
-            padding: $space-3 $space-4;
-        }
-
-        .perf-routes-head {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: $space-2;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .12em;
-            color: $crumb-muted;
-        }
-
-        .perf-empty {
-            font-size: 12px;
-            color: $crumb-muted;
-            margin: 0;
-            opacity: .8;
-        }
-
-        .routes-list {
-            margin: 0;
-            padding: 0;
-            counter-reset: route;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .routes-row {
-            counter-increment: route;
-            display: grid;
-            grid-template-columns: 18px 1fr auto;
-            align-items: center;
-            gap: $space-2;
-            padding: 6px 0;
-            border-bottom: 1px solid $crumb-border;
-            font-size: 12px;
-
-            &:last-child {
-                border-bottom: none;
-            }
-
-            &::before {
-                content: counter(route);
-                color: $crumb-muted;
-                font-size: 10px;
-                font-weight: 600;
-                font-variant-numeric: tabular-nums;
-            }
-        }
-
-        .routes-name {
-            color: $crumb-text;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            font-family: $font-family-monospace;
-            font-size: 11px;
         }
 
-        .routes-count {
-            color: $crumb-muted;
+        .locale-bar {
+            position: relative;
+            display: block;
+            height: 3px;
+            background: $crumb-border;
+            border-radius: $radius-pill;
+            overflow: hidden;
+
+            .locale-bar-fill {
+                display: block;
+                height: 100%;
+                background: $primary;
+                border-radius: $radius-pill;
+            }
+        }
+
+        .locale-count {
+            text-align: right;
+            font-size: 11px;
             font-weight: 600;
+            color: $crumb-text;
             font-variant-numeric: tabular-nums;
         }
     }
 
+    .notfound-feed {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        background: $crumb-border;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-sm;
+        overflow: hidden;
+    }
+
+    .notfound-row {
+        display: grid;
+        grid-template-columns: 1fr auto 22px;
+        gap: $space-2;
+        align-items: center;
+        padding: 6px $space-3;
+        background: $crumb-surface;
+        font-size: 12px;
+        transition: background $transition-fast;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                background: $btn-surface-hover;
+
+                .notfound-action {
+                    opacity: 1;
+                    color: $danger;
+                }
+            }
+        }
+    }
+
+    .notfound-uri {
+        font-family: $font-family-monospace;
+        font-size: 11px;
+        font-weight: 500;
+        color: $crumb-text;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+    }
+
+    .notfound-date {
+        font-size: 10px;
+        color: $crumb-muted;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .notfound-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: $radius-xs;
+        color: $crumb-muted;
+        font-size: 9px;
+        opacity: 0;
+        transition: opacity $transition-fast, color $transition-fast, background $transition-fast;
+
+        &:hover,
+        &:focus-visible {
+            background: rgba($danger, .12);
+            color: $danger;
+            opacity: 1;
+        }
+
+        &:focus-visible {
+            outline: none;
+        }
+    }
+
+    .attention-cta {
+        display: inline-flex;
+        align-self: flex-start;
+        align-items: center;
+        gap: 6px;
+        margin-top: $space-1;
+        padding: 7px 14px;
+        font-size: 12px;
+        font-weight: 500;
+        color: $crumb-text;
+        background: transparent;
+        border: 1px solid $crumb-border-hover;
+        border-radius: $radius-sm;
+        text-decoration: none;
+        transition: background $transition-fast, border-color $transition-fast, color $transition-fast;
+
+        i {
+            font-size: 9px;
+            transition: transform $transition-fast;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background: $primary;
+            border-color: $primary;
+            color: $white;
+
+            i {
+                transform: translateX(2px);
+            }
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba($primary, .22);
+        }
+    }
+
+    .attention-card.is-alert .attention-cta {
+
+        &:hover,
+        &:focus-visible {
+            background: $danger;
+            border-color: $danger;
+            color: $white;
+        }
+
+        &:focus-visible {
+            box-shadow: 0 0 0 3px rgba($danger, .22);
+        }
+    }
+
+    .attention-card.is-clean .attention-cta {
+
+        &:hover,
+        &:focus-visible {
+            background: $success;
+            border-color: $success;
+            color: $white;
+        }
+
+        &:focus-visible {
+            box-shadow: 0 0 0 3px rgba($success, .22);
+        }
+    }
+
     /*-----------------------------------
-       8 ter ) Search stats (module search)
+       10 ) Search stats
     -----------------------------------*/
 
     .dashboard-search {
+        margin-bottom: $space-6;
+    }
 
-        .search-panel {
-            background: $crumb-surface;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-lg;
-            padding: $space-4;
-            display: flex;
-            flex-direction: column;
-            gap: $space-4;
-        }
+    .dashboard-search .search-panel {
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+        padding: $space-4 $space-5;
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
+    }
 
-        .search-feed {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-            background: $crumb-border;
-            border: 1px solid $crumb-border;
-            border-radius: $radius-md;
-            overflow: hidden;
-        }
+    .dashboard-search .search-feed {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        background: $crumb-border;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-sm;
+        overflow: hidden;
+    }
 
-        .search-row {
-            display: grid;
-            grid-template-columns: 8px minmax(0, 1fr) auto 28px;
-            gap: $space-4;
-            align-items: center;
-            padding: 12px $space-4;
-            background: $crumb-surface;
-            transition: background $transition-fast;
+    .dashboard-search .search-row {
+        display: grid;
+        grid-template-columns: 8px minmax(0, 1fr) auto 28px;
+        gap: $space-3;
+        align-items: center;
+        padding: 8px $space-3;
+        background: $crumb-surface;
+        transition: background $transition-fast;
+
+        @include mediaQuery(min-lg) {
 
             &:hover {
                 background: $btn-surface-hover;
@@ -1268,93 +1028,141 @@
 
                 .search-row-action {
                     opacity: 1;
-                    transform: translateX(0);
                     color: $danger;
                 }
             }
         }
+    }
 
-        .search-row-marker {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: $crumb-border-hover;
-            transition: background $transition-fast;
-        }
+    .dashboard-search .search-row-marker {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: $crumb-border-hover;
+        transition: background $transition-fast;
+    }
 
-        .search-row-text {
+    .dashboard-search .search-row-text {
+        font-size: 12px;
+        font-weight: 500;
+        color: $crumb-text;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+    }
+
+    .dashboard-search .search-row-metrics {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-3;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .dashboard-search .search-metric {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 4px;
+        font-variant-numeric: tabular-nums;
+
+        .search-metric-value {
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             color: $crumb-text;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            min-width: 0;
+            line-height: 1;
         }
 
-        .search-row-metrics {
-            display: inline-flex;
-            align-items: center;
-            gap: $space-4;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-
-        .search-metric {
-            display: inline-flex;
-            align-items: baseline;
-            gap: 6px;
-            font-variant-numeric: tabular-nums;
-
-            .search-metric-value {
-                font-size: 14px;
-                font-weight: 600;
-                color: $crumb-text;
-                line-height: 1;
-            }
-
-            .search-metric-label {
-                font-size: 10px;
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: .08em;
-                color: $crumb-muted;
-            }
-        }
-
-        .search-row-action {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-            height: 24px;
-            border-radius: $radius-pill;
-            color: $crumb-muted;
+        .search-metric-label {
             font-size: 10px;
-            text-decoration: none;
-            opacity: 0;
-            transform: translateX(-4px);
-            transition: opacity $transition-fast, transform $transition-fast, color $transition-fast, background $transition-fast;
-
-            &:hover,
-            &:focus-visible {
-                background: rgba($danger, .12);
-                color: $danger;
-                opacity: 1;
-                transform: translateX(0);
-            }
-
-            &:focus-visible {
-                outline: none;
-                box-shadow: 0 0 0 2px rgba($danger, .25);
-            }
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: $crumb-muted;
         }
+    }
+
+    .dashboard-search .search-row-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: $radius-xs;
+        color: $crumb-muted;
+        font-size: 10px;
+        text-decoration: none;
+        opacity: 0;
+        transition: opacity $transition-fast, color $transition-fast, background $transition-fast;
+
+        &:hover,
+        &:focus-visible {
+            background: rgba($danger, .12);
+            color: $danger;
+            opacity: 1;
+        }
+
+        &:focus-visible {
+            outline: none;
+        }
+    }
+
+    /*-----------------------------------
+       11 ) Tools (feeds sync)
+    -----------------------------------*/
+
+    .dashboard-tools {
+        margin-top: $space-6;
+        padding-top: $space-5;
+        border-top: 1px solid $crumb-border;
+    }
+
+    .tools-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: $space-4;
+        flex-wrap: wrap;
+    }
+
+    .tools-info {
+        min-width: 0;
+        flex: 1 1 320px;
+    }
+
+    .tools-title {
+        margin: 0 0 2px;
+        font-size: 13px;
+        font-weight: 600;
+        color: $crumb-text;
+    }
+
+    .tools-desc {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.5;
+        color: $crumb-muted;
+        max-width: 580px;
+    }
+
+    .tools-form {
+        flex: 0 0 auto;
     }
 }
 
 /*-----------------------------------
-   8 bis ) Performance inspector page
-   Shared layout reused by mail-log pages.
+   12 ) Keyframes
+-----------------------------------*/
+
+@keyframes dashboardReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*-----------------------------------
+   13 ) Performance inspector + mail-log show (shared layout)
 -----------------------------------*/
 
 #performance-inspector,
@@ -1384,21 +1192,21 @@
         display: inline-flex;
         align-items: center;
         gap: $space-2;
-        padding: 5px 14px;
+        padding: 4px 12px;
         background: $crumb-surface;
         border: 1px solid $crumb-border;
         border-radius: $radius-pill;
         font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: .12em;
+        letter-spacing: .1em;
         color: $crumb-text;
     }
 
     .legend-swatch {
         display: inline-block;
-        width: 10px;
-        height: 10px;
+        width: 8px;
+        height: 8px;
         border-radius: 2px;
 
         &.is-front {
@@ -1426,7 +1234,7 @@
 
     .perf-inspector-summary {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
         gap: $space-3;
     }
 
@@ -1434,7 +1242,7 @@
         display: flex;
         flex-direction: column;
         gap: $space-1;
-        padding: $space-4;
+        padding: $space-3 $space-4;
         background: $body-bg;
         border: 1px solid $crumb-border;
         border-radius: $radius-md;
@@ -1539,22 +1347,10 @@
             background: rgba($danger, .12);
         }
     }
-
 }
 
 /*-----------------------------------
-   8 ) Keyframes
------------------------------------*/
-
-@keyframes dashboardReveal {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/*-----------------------------------
-   8 bis-2 ) Mail log index page
+   14 ) Mail-log index / show
 -----------------------------------*/
 
 #mail-log-index {
@@ -1605,7 +1401,7 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 4px 10px;
+        padding: 3px 9px;
         font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
@@ -1640,10 +1436,6 @@
     }
 }
 
-/*-----------------------------------
-   8 ter ) Mail log show page
------------------------------------*/
-
 #mail-log-show {
 
     .mail-log-head {
@@ -1663,11 +1455,11 @@
         display: inline-flex;
         align-items: center;
         gap: $space-2;
-        padding: 8px 16px;
+        padding: 6px 14px;
         font-size: 12px;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: .12em;
+        letter-spacing: .1em;
         border-radius: $radius-pill;
         line-height: 1;
 
@@ -1692,7 +1484,7 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 6px 12px;
+        padding: 5px 10px;
         font-size: 11px;
         font-weight: 500;
         color: $crumb-muted;
@@ -1711,7 +1503,7 @@
         position: relative;
         background: $crumb-surface;
         border: 1px solid $crumb-border;
-        border-radius: $radius-lg;
+        border-radius: $radius-md;
         padding: $space-5;
         overflow: hidden;
 
@@ -1729,12 +1521,12 @@
     .mail-log-section {
         background: $crumb-surface;
         border: 1px solid $crumb-border;
-        border-radius: $radius-lg;
+        border-radius: $radius-md;
         overflow: hidden;
     }
 
     .mail-log-section-head {
-        padding: $space-4 $space-5;
+        padding: $space-3 $space-4;
         border-bottom: 1px solid $crumb-border;
         background: $body-bg;
     }
@@ -1743,12 +1535,12 @@
         font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: .14em;
+        letter-spacing: .12em;
         color: $crumb-muted;
     }
 
     .mail-log-section-body {
-        padding: $space-5;
+        padding: $space-4;
 
         &.mail-log-section-body-flush {
             padding: 0;
@@ -1758,7 +1550,7 @@
     .mail-log-meta-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: $space-4 $space-6;
+        gap: $space-3 $space-5;
     }
 
     .mail-log-meta-cell {
@@ -1775,12 +1567,12 @@
             font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: .14em;
+            letter-spacing: .12em;
             color: $crumb-muted;
         }
 
         .cell-value {
-            font-size: 14px;
+            font-size: 13px;
             color: $crumb-text;
             word-break: break-word;
             overflow-wrap: anywhere;
@@ -1837,7 +1629,7 @@
     .mail-log-error {
         background: rgba($danger, .06);
         border: 1px solid rgba($danger, .35);
-        border-radius: $radius-lg;
+        border-radius: $radius-md;
         overflow: hidden;
     }
 
@@ -1845,13 +1637,13 @@
         display: flex;
         align-items: center;
         gap: $space-2;
-        padding: $space-3 $space-5;
+        padding: $space-3 $space-4;
         background: rgba($danger, .14);
         color: $danger;
         font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: .14em;
+        letter-spacing: .12em;
 
         i {
             font-size: 12px;
@@ -1859,7 +1651,7 @@
     }
 
     .mail-log-error-body {
-        padding: $space-4 $space-5;
+        padding: $space-3 $space-4;
         font-family: $font-family-monospace;
         font-size: 12px;
         line-height: 1.55;
@@ -1889,8 +1681,18 @@
 }
 
 /*-----------------------------------
-   9 ) Responsive
+   15 ) Responsive
 -----------------------------------*/
+
+@include mediaQuery(max-xl) {
+
+    #dashboard {
+
+        .quick-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+}
 
 @include mediaQuery(max-lg) {
 
@@ -1899,31 +1701,26 @@
         .dashboard-hero {
 
             .hero-title {
-                font-size: 22px;
+                font-size: 20px;
             }
 
-            .hero-grid-deco {
-                right: -30%;
-                width: 80%;
-                opacity: .18;
+            .hero-line {
+                gap: $space-3;
             }
         }
 
-        .dashboard-seo .seo-panel,
-        .dashboard-notfound .notfound-panel {
-            grid-template-columns: 180px 1fr;
-            gap: $space-5;
-            padding: $space-5;
+        .quick-grid {
+            grid-template-columns: repeat(3, 1fr);
         }
 
-        .dashboard-seo .seo-number,
-        .dashboard-notfound .notfound-number {
-            font-size: 56px;
+        .activity-grid,
+        .details-grid,
+        .attention-grid {
+            grid-template-columns: 1fr;
         }
 
-        .dashboard-seo .seo-headline,
-        .dashboard-notfound .notfound-headline {
-            font-size: 18px;
+        .chart-bars {
+            height: 84px;
         }
     }
 }
@@ -1933,125 +1730,55 @@
     #dashboard {
 
         .dashboard-hero {
-            padding: $space-5 0 $space-6;
+            padding: $space-4 0;
 
             .hero-title {
-                font-size: 20px;
+                font-size: 18px;
             }
 
-            .hero-meta-top {
-                flex-wrap: wrap;
-                gap: $space-2;
-
-                .hero-divider {
-                    display: none;
-                }
-            }
-
-            .hero-bottom {
-                gap: $space-3;
-            }
-
-            .hero-subtitle {
-                flex-basis: 100%;
-            }
-
-            .hero-grid-deco {
-                display: none;
+            .hero-line {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
 
-        .dashboard-seo .seo-panel,
-        .dashboard-notfound .notfound-panel {
-            grid-template-columns: 1fr;
-            gap: $space-4;
+        .kpi-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .kpi-value {
+            font-size: 24px;
+        }
+
+        .quick-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .activity-card,
+        .details-card,
+        .attention-card {
             padding: $space-4;
         }
 
-        .dashboard-seo .seo-left,
-        .dashboard-notfound .notfound-left {
-            flex-direction: row;
-            align-items: center;
-            padding-right: 0;
-            padding-bottom: $space-4;
-            border-right: none;
-            border-bottom: 1px solid $crumb-border;
-            gap: $space-4;
-            flex-wrap: wrap;
+        .chart-bars {
+            height: 72px;
+            gap: 2px;
         }
 
-        .dashboard-seo .seo-number,
-        .dashboard-notfound .notfound-number {
-            font-size: 44px;
+        .chart-bar-col:nth-child(odd) .chart-bar-label {
+            visibility: hidden;
         }
 
-        .dashboard-seo .seo-headline,
-        .dashboard-notfound .notfound-headline {
-            font-size: 18px;
+        .bucket-row {
+            grid-template-columns: 64px 1fr 28px;
         }
 
-        .dashboard-notfound .notfound-row {
-            grid-template-columns: 6px 1fr auto;
-
-            .notfound-row-action {
-                display: none;
-            }
+        .attention-count {
+            font-size: 22px;
         }
 
-        .dashboard-search {
-
-            .search-panel {
-                padding: $space-4;
-            }
-
-            .search-row {
-                grid-template-columns: 6px minmax(0, 1fr) auto;
-                gap: $space-3;
-                padding: 10px $space-3;
-
-                .search-row-action {
-                    display: none;
-                }
-            }
-
-            .search-row-metrics {
-                gap: $space-3;
-            }
-
-            .search-metric .search-metric-value {
-                font-size: 13px;
-            }
-        }
-
-        .dashboard-seo .locale-row {
-            grid-template-columns: 20px 1fr 60px 28px;
-        }
-
-        .shortcuts-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .dashboard-perf,
-        .dashboard-mail {
-
-            .perf-summary,
-            .perf-split,
-            .perf-routes-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .perf-card-number {
-                font-size: 28px;
-            }
-
-            .perf-bars {
-                grid-template-columns: repeat(12, 1fr);
-                height: 96px;
-            }
-
-            .perf-bar-col:nth-child(odd) .perf-bar-label {
-                visibility: hidden;
-            }
+        .tools-row {
+            align-items: flex-start;
         }
     }
 
@@ -2070,8 +1797,8 @@
         .mail-log-section-body,
         .mail-log-error-head,
         .mail-log-error-body {
-            padding-left: $space-4;
-            padding-right: $space-4;
+            padding-left: $space-3;
+            padding-right: $space-3;
         }
     }
 }

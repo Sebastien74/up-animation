@@ -22,446 +22,456 @@
 
     {%- set isInternal = granted('ROLE_INTERNAL') -%}
     {%- set hasSeo = isInternal and noSeoCounts is defined and noSeoCounts['total'] is defined -%}
-    {%- set notFoundCount = notFoundCount is defined ? notFoundCount : 0 -%}
+    {%- set seoCount = hasSeo ? noSeoCounts['total'] : 0 -%}
     {%- set hasNotFound = isInternal and notFoundUrls is defined -%}
-    {%- set notFoundFeedLimit = 6 -%}
+    {%- set notFoundCount = notFoundCount is defined ? notFoundCount : 0 -%}
+    {%- set hasMailStats = mailStats is defined and mailStats -%}
+    {%- set hasPerf = isInternal and performanceStats is defined and performanceStats -%}
+    {%- set hasFeeds = (hasInstagramFeed is defined and hasInstagramFeed) or (hasTikTokFeed is defined and hasTikTokFeed) -%}
+    {%- set hasSearchValues = 'search'|moduleActive(configuration) and searchValues.count > 0 and granted('ROLE_SEARCH_ENGINE') -%}
+    {%- set hasStrip = hasSeo or hasNotFound or hasMailStats or hasPerf or hasSearchValues -%}
     {%- set userLocale = app.request.locale -%}
     {%- set today = 'now'|date('Y-m-d H:i:s') -%}
     {%- set hourNow = 'now'|date('H')|number_format(0) -%}
     {%- set greetingKey = (hourNow >= 5 and hourNow < 18) ? "Bonjour" : "Bonsoir" -%}
     {%- set userFirstName = app.user.firstName is defined and app.user.firstName ? app.user.firstName : null -%}
 
-    <div id="dashboard" class="pt-2 pb-5">
+    <div id="dashboard" class="pb-5">
 
-        {#-- Hero --#}
+        {#-- 1 — Hero (greeting + meta inline) --#}
         <section class="dashboard-hero reveal">
-            <div class="hero-inner">
-                <div class="hero-meta-top">
-                    {{ seasonIcon()|icon(15, 15, 'hero-season') }}
-                    <span class="hero-date">{{ today|format_datetime(pattern='cccc d MMMM yyyy', locale=userLocale)|capitalize }}</span>
+            <div class="hero-line">
+                <div class="hero-greeting-wrap">
+                    <h1 class="hero-title mb-0">
+                        {{ greetingKey|trans }}{% if userFirstName %}, <span class="hero-name">{{ userFirstName }}</span>{% endif %}<span class="hero-mark">.</span>
+                    </h1>
                 </div>
-                <h1 class="hero-title mb-0">
-                    <span class="hero-greeting">
-                        {{ greetingKey|trans }}{% if userFirstName %}, <span class="hero-name">{{ userFirstName }}</span>{% endif %}.
-                    </span>
-                    <span class="hero-welcome">{{ "Ravi de vous retrouver"|trans|raw }}<span class="hero-mark">.</span></span>
-                </h1>
-                {%- if app.user.lastLogin is defined and app.user.lastLogin -%}
-                    <div class="hero-bottom mt-3">
+                <div class="hero-meta">
+                    <span class="hero-date">{{ today|format_datetime(pattern='cccc d MMMM yyyy', locale=userLocale)|capitalize }}</span>
+                    {%- if app.user.lastLogin is defined and app.user.lastLogin -%}
+                        <span class="hero-sep" aria-hidden="true">·</span>
                         <span class="hero-last-login">
-                            <i class="icm-clock"></i>{{ "Dernière connexion"|trans|raw }} {{ app.user.lastLogin|ago }}
+                            <i class="icm-clock"></i>
+                            <span>{{ "Dernière connexion"|trans|raw }} {{ app.user.lastLogin|ago }}</span>
                         </span>
-                    </div>
-                {%- endif -%}
+                    {%- endif -%}
+                </div>
             </div>
-            <span class="hero-grid-deco" aria-hidden="true"></span>
         </section>
 
-        {#-- Accès rapides --#}
-        <section class="dashboard-shortcuts mt-5">
-            <div class="section-label mb-3">
-                <span class="label-line" aria-hidden="true"></span>
-                <span class="label-text">{{ "Accès rapides"|trans|raw }}</span>
-                <span class="label-aside">{{ "Vos modules"|trans|raw }}</span>
-            </div>
-            <div class="shortcuts-grid">
+        {#-- 2 — KPI strip (horizontal, compact) --#}
+        {%- if hasStrip -%}
+            <section class="dashboard-strip reveal">
+                <ul class="kpi-grid reset">
+                    {%- if hasSeo -%}
+                        <li class="kpi-tile {{ seoCount > 0 ? 'is-warning' : 'is-clean' }}">
+                            <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: defaultLocale}) }}" class="kpi-link">
+                                <span class="kpi-label">{{ "SEO manquant"|trans|raw }}</span>
+                                <span class="kpi-value">{{ seoCount }}</span>
+                                <span class="kpi-unit">{{ seoCount > 1 ? "balises"|trans|raw : "balise"|trans|raw }}</span>
+                            </a>
+                        </li>
+                    {%- endif -%}
+
+                    {%- if hasNotFound -%}
+                        <li class="kpi-tile {{ notFoundCount > 0 ? 'is-alert' : 'is-clean' }}">
+                            <a href="{{ path('admin_notfoundurl_index', {website: websiteId(), type: 'front', category: 'url'}) }}" class="kpi-link">
+                                <span class="kpi-label">{{ "Erreurs 404"|trans|raw }}</span>
+                                <span class="kpi-value">{{ notFoundCount }}</span>
+                                <span class="kpi-unit">{{ notFoundCount > 1 ? "URLs"|trans|raw : "URL"|trans|raw }}</span>
+                            </a>
+                        </li>
+                    {%- endif -%}
+
+                    {%- if hasMailStats -%}
+                        <li class="kpi-tile">
+                            <a href="{{ path('admin_maillog_index', {website: websiteId()}) }}" class="kpi-link">
+                                <span class="kpi-label">{{ "Mails 24 h"|trans|raw }}</span>
+                                <span class="kpi-value">{{ mailStats.last24h }}</span>
+                                <span class="kpi-unit">{{ mailStats.last24h > 1 ? "envois"|trans|raw : "envoi"|trans|raw }}</span>
+                            </a>
+                        </li>
+                    {%- endif -%}
+
+                    {%- if hasPerf -%}
+                        {%- set slowTotal = performanceStats.recent.front.count + performanceStats.recent.admin.count -%}
+                        <li class="kpi-tile {{ slowTotal > 0 ? 'is-warning' : 'is-clean' }}">
+                            <a href="{{ path('admin_performance_inspector', {area: 'front', website: websiteId()}) }}" class="kpi-link">
+                                <span class="kpi-label">{{ "Requêtes lentes"|trans|raw }}</span>
+                                <span class="kpi-value">{{ slowTotal }}</span>
+                                <span class="kpi-unit">sur {{ performanceStats.window_hours }} h</span>
+                            </a>
+                        </li>
+                    {%- endif -%}
+
+                    {%- if hasSearchValues -%}
+                        <li class="kpi-tile">
+                            <a href="#stats-search" class="kpi-link">
+                                <span class="kpi-label">{{ "Recherches"|trans|raw }}</span>
+                                <span class="kpi-value">{{ searchValues.count }}</span>
+                                <span class="kpi-unit">{{ searchValues.count > 1 ? "termes"|trans|raw : "terme"|trans|raw }}</span>
+                            </a>
+                        </li>
+                    {%- endif -%}
+                </ul>
+            </section>
+        {%- endif -%}
+
+        {#-- 3 — Quick links (modules) --#}
+        <section class="dashboard-quick reveal">
+            <header class="zone-head">
+                <h2 class="zone-title">{{ "Accès rapides"|trans|raw }}</h2>
+                <span class="zone-aside">{{ "Vos modules"|trans|raw }}</span>
+            </header>
+
+            <ul class="quick-grid reset">
                 {%- if 'pages'|moduleActive(configuration) -%}
-                    <a href="{{ path('admin_page_tree', {website: websiteId}) }}" class="shortcut-tile reveal">
-                        <span class="shortcut-icon"><i class="icm-file-alt"></i></span>
-                        <span class="shortcut-body">
-                            <span class="shortcut-title">{{ "Pages"|trans|raw }}</span>
-                            <span class="shortcut-desc">{{ "Arborescence éditoriale"|trans|raw }}</span>
-                        </span>
-                        <span class="shortcut-arrow" aria-hidden="true"><i class="icm-arrow-right"></i></span>
-                    </a>
+                    <li>
+                        <a href="{{ path('admin_page_tree', {website: websiteId}) }}" class="quick-tile">
+                            <span class="quick-icon"><i class="icm-file-alt"></i></span>
+                            <span class="quick-title">{{ "Pages"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Arborescence"|trans|raw }}</span>
+                        </a>
+                    </li>
                 {%- endif -%}
                 {%- if 'medias'|moduleActive(configuration) -%}
-                    <a href="{{ path('admin_medias_library', {website: websiteId}) }}" class="shortcut-tile reveal">
-                        <span class="shortcut-icon"><i class="icm-images"></i></span>
-                        <span class="shortcut-body">
-                            <span class="shortcut-title">{{ "Médias"|trans|raw }}</span>
-                            <span class="shortcut-desc">{{ "Bibliothèque"|trans|raw }}</span>
-                        </span>
-                        <span class="shortcut-arrow" aria-hidden="true"><i class="icm-arrow-right"></i></span>
-                    </a>
+                    <li>
+                        <a href="{{ path('admin_medias_library', {website: websiteId}) }}" class="quick-tile">
+                            <span class="quick-icon"><i class="icm-images"></i></span>
+                            <span class="quick-title">{{ "Médias"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Bibliothèque"|trans|raw }}</span>
+                        </a>
+                    </li>
                 {%- endif -%}
                 {%- if 'newscast'|moduleActive(configuration) -%}
-                    <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" class="shortcut-tile reveal">
-                        <span class="shortcut-icon"><i class="icm-newspaper"></i></span>
-                        <span class="shortcut-body">
-                            <span class="shortcut-title">{{ "Actualités"|trans|raw }}</span>
-                            <span class="shortcut-desc">{{ "Publications"|trans|raw }}</span>
-                        </span>
-                        <span class="shortcut-arrow" aria-hidden="true"><i class="icm-arrow-right"></i></span>
-                    </a>
+                    <li>
+                        <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" class="quick-tile">
+                            <span class="quick-icon"><i class="icm-newspaper"></i></span>
+                            <span class="quick-title">{{ "Actualités"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Publications"|trans|raw }}</span>
+                        </a>
+                    </li>
                 {%- endif -%}
                 {%- if 'form'|moduleActive(configuration) -%}
-                    <a href="{{ path('admin_form_index', {website: websiteId}) }}" class="shortcut-tile reveal">
-                        <span class="shortcut-icon"><i class="icm-paper-plane"></i></span>
-                        <span class="shortcut-body">
-                            <span class="shortcut-title">{{ "Formulaires"|trans|raw }}</span>
-                            <span class="shortcut-desc">{{ "Soumissions reçues"|trans|raw }}</span>
-                        </span>
-                        <span class="shortcut-arrow" aria-hidden="true"><i class="icm-arrow-right"></i></span>
-                    </a>
+                    <li>
+                        <a href="{{ path('admin_form_index', {website: websiteId}) }}" class="quick-tile">
+                            <span class="quick-icon"><i class="icm-paper-plane"></i></span>
+                            <span class="quick-title">{{ "Formulaires"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Soumissions"|trans|raw }}</span>
+                        </a>
+                    </li>
                 {%- endif -%}
                 {%- if 'slider'|moduleActive(configuration) -%}
-                    <a href="{{ path('admin_slider_index', {website: websiteId}) }}" class="shortcut-tile reveal">
-                        <span class="shortcut-icon"><i class="icm-sliders-h"></i></span>
-                        <span class="shortcut-body">
-                            <span class="shortcut-title">{{ "Sliders"|trans|raw }}</span>
-                            <span class="shortcut-desc">{{ "Carrousels"|trans|raw }}</span>
-                        </span>
-                        <span class="shortcut-arrow" aria-hidden="true"><i class="icm-arrow-right"></i></span>
-                    </a>
+                    <li>
+                        <a href="{{ path('admin_slider_index', {website: websiteId}) }}" class="quick-tile">
+                            <span class="quick-icon"><i class="icm-sliders-h"></i></span>
+                            <span class="quick-title">{{ "Sliders"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Carrousels"|trans|raw }}</span>
+                        </a>
+                    </li>
                 {%- endif -%}
-            </div>
+            </ul>
         </section>
 
-        {#-- SEO (feature panel) --#}
-        {%- if hasSeo -%}
-            {%- set seoCount = noSeoCounts['total'] -%}
-            <section class="dashboard-seo mt-5 reveal">
-                <div class="section-label mb-3">
-                    <span class="label-line" aria-hidden="true"></span>
-                    <span class="label-text">{{ "SEO"|trans|raw }}</span>
-                    <span class="label-aside">{{ "Référencement"|trans|raw }}</span>
-                </div>
-                <div class="seo-panel {{ seoCount > 0 ? 'is-warning' : 'is-clean' }}">
-
-                    <div class="seo-left">
-                        <span class="seo-tag">{{ "SEO"|trans|raw }}</span>
-                        <span class="seo-number">{{ seoCount }}</span>
-                        <span class="seo-unit">{{ seoCount > 1 ? "balises"|trans|raw : "balise"|trans|raw }}</span>
-                    </div>
-
-                    <div class="seo-body">
-                        <h2 class="seo-headline">
-                            {%- if seoCount > 0 -%}
-                                {{ "SEO manquant à compléter."|trans|raw }}
-                            {%- else -%}
-                                {{ "Référencement à jour."|trans|raw }}
-                            {%- endif -%}
-                        </h2>
-                        <p class="seo-desc">
-                            {%- if seoCount > 0 -%}
-                                {{ "Renseignez les balises manquantes pour améliorer la visibilité de votre site sur les moteurs de recherche."|trans|raw }}
-                            {%- else -%}
-                                {{ "Toutes les balises SEO sont renseignées. Continuez ainsi."|trans|raw }}
-                            {%- endif -%}
-                        </p>
-
-                        {%- if allLocales|length > 1 and seoCount > 0 -%}
-                            <ul class="seo-locales reset">
-                                {%- for locale, count in noSeoCounts|unset('total') -%}
-                                    {%- if count >= 0 -%}
-                                        <li class="locale-row">
-                                            <span class="locale-flag">
-                                                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                                     data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}"
-                                                     width="16" height="16"
-                                                     alt="{{ languageName(locale, userLocale)|striptags }}"
-                                                     class="img-fluid fit-cover lazy-load">
-                                            </span>
-                                            <span class="locale-name">{{ languageName(locale, userLocale) }}</span>
-                                            <span class="locale-bar" aria-hidden="true">
-                                                <span class="locale-bar-fill" style="width: {{ seoCount > 0 ? (count / seoCount * 100)|round : 0 }}%"></span>
-                                            </span>
-                                            <span class="locale-count">{{ count }}</span>
-                                        </li>
-                                    {%- endif -%}
-                                {%- endfor -%}
-                            </ul>
+        {#-- 4 — Activity (mail + perf charts side by side) --#}
+        {%- if hasMailStats or hasPerf -%}
+            <section class="dashboard-activity reveal">
+                <header class="zone-head">
+                    <h2 class="zone-title">{{ "Activité récente"|trans|raw }}</h2>
+                    <span class="zone-aside">
+                        {%- if hasPerf -%}
+                            {{ "Mails 30 j · perf"|trans|raw }} {{ performanceStats.window_hours }} h
+                        {%- else -%}
+                            {{ "30 derniers jours"|trans|raw }}
                         {%- endif -%}
+                    </span>
+                </header>
 
-                        <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: defaultLocale}) }}" class="seo-cta">
-                            <span>{{ seoCount > 0 ? "Compléter le SEO"|trans|raw : "Vérifier le SEO"|trans|raw }}</span>
-                            <i class="icm-arrow-right"></i>
-                        </a>
-                    </div>
+                <div class="activity-grid">
 
-                </div>
-            </section>
-        {%- endif -%}
+                    {%- if hasMailStats -%}
+                        {%- set mailCounts = mailStats.counts -%}
+                        {%- set mailDaily = mailStats.daily -%}
+                        {%- set mailTotal = mailCounts.success + mailCounts.failed -%}
+                        {%- set mailDailyMax = 0 -%}
+                        {%- for day, row in mailDaily -%}
+                            {%- if row.total > mailDailyMax -%}{%- set mailDailyMax = row.total -%}{%- endif -%}
+                        {%- endfor -%}
 
-        {#-- 404 (feature panel) --#}
-        {%- if hasNotFound -%}
-            <section class="dashboard-notfound mt-5 reveal">
-                <div class="section-label mb-3">
-                    <span class="label-line" aria-hidden="true"></span>
-                    <span class="label-text">{{ "Erreurs 404"|trans|raw }}</span>
-                    <span class="label-aside">{{ "URLs introuvables"|trans|raw }}</span>
-                </div>
-                <div class="notfound-panel {{ notFoundCount > 0 ? 'is-alert' : 'is-clean' }}">
-
-                    <div class="notfound-left">
-                        <span class="notfound-tag">{{ "404"|trans|raw }}</span>
-                        <span class="notfound-number">{{ notFoundCount }}</span>
-                        <span class="notfound-unit">{{ notFoundCount > 1 ? "erreurs"|trans|raw : "erreur"|trans|raw }}</span>
-                    </div>
-
-                    <div class="notfound-body">
-                        <h2 class="notfound-headline">
-                            {%- if notFoundCount > 0 -%}
-                                {{ "URLs introuvables à rediriger."|trans|raw }}
-                            {%- else -%}
-                                {{ "Aucune URL introuvable."|trans|raw }}
-                            {%- endif -%}
-                        </h2>
-                        <p class="notfound-desc">
-                            {%- if notFoundCount > 0 -%}
-                                {{ "Mettez en place les redirections nécessaires pour préserver le référencement et l'expérience utilisateur."|trans|raw }}
-                            {%- else -%}
-                                {{ "Le suivi des erreurs reste actif. Vous serez alerté dès qu'une URL devient inaccessible."|trans|raw }}
-                            {%- endif -%}
-                        </p>
-
-                        {%- if notFoundCount > 0 -%}
-                            <ul class="notfound-feed reset">
-                                {%- for entity in notFoundUrls|slice(0, notFoundFeedLimit) -%}
-                                    {%- set displayUri = entity.uri ?: entity.url -%}
-                                    <li class="notfound-row">
-                                        <span class="notfound-row-marker" aria-hidden="true"></span>
-                                        <span class="notfound-row-uri" title="{{ entity.url }}">{{ displayUri|truncate(64) }}</span>
-                                        <span class="notfound-row-date">{{ entity.createdAt|ago }}</span>
-                                        {%- if routeExist('admin_notfoundurl_redirection') -%}
-                                            <a href="{{ path('admin_notfoundurl_redirection', {website: websiteId(), notfoundUrl: entity.id}) }}"
-                                               class="notfound-row-action"
-                                               aria-label="{{ "Créer une redirection"|trans|striptags }}">
-                                                <i class="icm-arrow-right"></i>
-                                            </a>
-                                        {%- endif -%}
+                        <article class="activity-card">
+                            <header class="activity-card-head">
+                                <h3 class="activity-card-title">{{ "Mails envoyés"|trans|raw }}</h3>
+                                <ul class="activity-meta reset">
+                                    <li>
+                                        <span class="meta-swatch is-success" aria-hidden="true"></span>
+                                        <span class="meta-value">{{ mailCounts.success }}</span>
+                                        <span class="meta-label">{{ "réussis"|trans|raw }}</span>
                                     </li>
-                                {%- endfor -%}
-                            </ul>
-                        {%- endif -%}
+                                    <li>
+                                        <span class="meta-swatch is-failed" aria-hidden="true"></span>
+                                        <span class="meta-value">{{ mailCounts.failed }}</span>
+                                        <span class="meta-label">{{ "échecs"|trans|raw }}</span>
+                                    </li>
+                                </ul>
+                            </header>
 
-                        <a href="{{ path('admin_notfoundurl_index', {website: websiteId(), type: 'front', category: 'url'}) }}" class="notfound-cta">
-                            <span>{{ notFoundCount > 0 ? "Traiter les 404"|trans|raw : "Consulter le suivi"|trans|raw }}</span>
-                            <i class="icm-arrow-right"></i>
-                        </a>
-                    </div>
-
-                </div>
-            </section>
-        {%- endif -%}
-
-        {#-- Mail statistics (visible to all admins) --#}
-        {%- if mailStats is defined and mailStats -%}
-            {%- set mailCounts = mailStats.counts -%}
-            {%- set mailDaily = mailStats.daily -%}
-            {%- set mailTotal = mailCounts.success + mailCounts.failed -%}
-            {%- set mailDailyMax = 0 -%}
-            {%- for day, row in mailDaily -%}
-                {%- if row.total > mailDailyMax -%}{%- set mailDailyMax = row.total -%}{%- endif -%}
-            {%- endfor -%}
-
-            <section class="dashboard-mail mt-5 reveal">
-                <div class="section-label mb-3">
-                    <span class="label-line" aria-hidden="true"></span>
-                    <span class="label-text">{{ "Mails envoyés"|trans|raw }}</span>
-                    <span class="label-aside">{{ "30 derniers jours"|trans|raw }}</span>
-                </div>
-
-                <div class="perf-panel">
-                    <div class="perf-card">
-                        <div class="perf-card-head">
-                            <span class="perf-card-label">{{ "Historique"|trans|raw }}</span>
-                            <span class="perf-card-tag">MAIL</span>
-                        </div>
-                        <div class="perf-card-number">{{ mailTotal }}</div>
-                        <div class="perf-card-unit">{{ mailTotal > 1 ? "mails enregistrés"|trans|raw : "mail enregistré"|trans|raw }}</div>
-                        <ul class="perf-metrics reset">
-                            <li><span class="metric-label">{{ "Réussis"|trans|raw }}</span><span class="metric-value">{{ mailCounts.success }}</span></li>
-                            <li><span class="metric-label">{{ "En échec"|trans|raw }}</span><span class="metric-value">{{ mailCounts.failed }}</span></li>
-                            <li><span class="metric-label">{{ "Sur 24 h"|trans|raw }}</span><span class="metric-value">{{ mailStats.last24h }}</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="perf-chart-block">
-                        <h3 class="perf-chart-title">{{ "Volume quotidien"|trans|raw }}</h3>
-                        <div class="perf-bars" role="img" aria-label="{{ "Histogramme des envois par jour"|trans|striptags }}">
-                            {%- for day, row in mailDaily -%}
-                                {%- set successHeight = mailDailyMax > 0 ? (row.success / mailDailyMax * 100)|round : 0 -%}
-                                {%- set failedHeight = mailDailyMax > 0 ? (row.failed / mailDailyMax * 100)|round : 0 -%}
-                                {%- set dayLabel = day|slice(8, 2) -%}
-                                <div class="perf-bar-col" title="{{ day }} - {{ row.total }} ({{ row.success }} {{ "ok"|trans|raw }}, {{ row.failed }} {{ "ko"|trans|raw }})">
-                                    <div class="perf-bar-stack">
-                                        <span class="perf-bar mail-bar-success" style="height: {{ successHeight }}%"></span>
-                                        {%- if row.failed > 0 -%}
-                                            <span class="perf-bar mail-bar-failed" style="height: {{ failedHeight }}%"></span>
-                                        {%- endif -%}
+                            <div class="chart-bars" role="img" aria-label="{{ "Histogramme des envois par jour"|trans|striptags }}">
+                                {%- for day, row in mailDaily -%}
+                                    {%- set successHeight = mailDailyMax > 0 ? (row.success / mailDailyMax * 100)|round : 0 -%}
+                                    {%- set failedHeight = mailDailyMax > 0 ? (row.failed / mailDailyMax * 100)|round : 0 -%}
+                                    {%- set dayLabel = day|slice(8, 2) -%}
+                                    <div class="chart-bar-col" title="{{ day }} - {{ row.total }}">
+                                        <div class="chart-bar-stack">
+                                            <span class="chart-bar is-success" style="height: {{ successHeight }}%"></span>
+                                            {%- if row.failed > 0 -%}
+                                                <span class="chart-bar is-failed" style="height: {{ failedHeight }}%"></span>
+                                            {%- endif -%}
+                                        </div>
+                                        <span class="chart-bar-label">{{ dayLabel }}</span>
                                     </div>
-                                    <span class="perf-bar-label">{{ dayLabel }}</span>
-                                </div>
-                            {%- endfor -%}
-                        </div>
-                    </div>
-
-                    <div class="perf-actions">
-                        <a href="{{ path('admin_maillog_index', {website: websiteId()}) }}" class="perf-action-btn">
-                            <span>{{ "Consulter les mails envoyés"|trans|raw }}</span>
-                            <i class="icm-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </section>
-        {%- endif -%}
-
-        {#-- Performance probe (internal only) - split per area: Front / Back-office --#}
-        {%- if isInternal and performanceStats is defined and performanceStats -%}
-            {%- set perf = performanceStats -%}
-            {%- set windowHours = perf.window_hours -%}
-
-            {%- for area in ['front', 'admin'] -%}
-                {%- set areaData = area == 'front' ? perf.recent.front : perf.recent.admin -%}
-                {%- set areaRoutes = area == 'front' ? perf.top_routes.front : perf.top_routes.admin -%}
-                {%- set areaLabel = area == 'front' ? "Front (visiteurs)"|trans : "Back-office"|trans -%}
-                {%- set hourlyMax = 0 -%}
-                {%- for slot, counts in perf.hourly -%}
-                    {%- if counts[area] > hourlyMax -%}{%- set hourlyMax = counts[area] -%}{%- endif -%}
-                {%- endfor -%}
-                {%- set bucketMax = 0 -%}
-                {%- for label, counts in perf.buckets -%}
-                    {%- if counts[area] > bucketMax -%}{%- set bucketMax = counts[area] -%}{%- endif -%}
-                {%- endfor -%}
-
-                <section class="dashboard-perf dashboard-perf-{{ area }} mt-5 reveal">
-                    <div class="section-label mb-3">
-                        <span class="label-line" aria-hidden="true"></span>
-                        <span class="label-text">{{ "Performance"|trans|raw }} - {{ areaLabel }}</span>
-                        <span class="label-aside">
-                            {{ "Sur"|trans|raw }} {{ windowHours }} h
-                            {%- if perf.last_seen_at -%}
-                                <span class="perf-last-seen">· {{ "dernière"|trans|raw }} {{ perf.last_seen_at }}</span>
-                            {%- endif -%}
-                        </span>
-                    </div>
-
-                    <div class="perf-panel">
-
-                        {#-- Single summary card for this area --#}
-                        <div class="perf-card perf-card-{{ area }}">
-                            <div class="perf-card-head">
-                                <span class="perf-card-label">{{ areaLabel }}</span>
-                                <span class="perf-card-tag">{{ area|upper }}</span>
+                                {%- endfor -%}
                             </div>
-                            <div class="perf-card-number">{{ areaData.count }}</div>
-                            <div class="perf-card-unit">{{ areaData.count > 1 ? "requêtes lentes"|trans|raw : "requête lente"|trans|raw }}</div>
-                            <ul class="perf-metrics reset">
-                                <li><span class="metric-label">{{ "Durée moyenne"|trans|raw }}</span><span class="metric-value">{{ areaData.avg_duration_ms }} ms</span></li>
-                                <li><span class="metric-label">{{ "Durée max"|trans|raw }}</span><span class="metric-value">{{ areaData.max_duration_ms }} ms</span></li>
-                                <li><span class="metric-label">{{ "Mémoire moy."|trans|raw }}</span><span class="metric-value">{{ areaData.avg_memory_mb }} Mo</span></li>
-                                <li><span class="metric-label">{{ "Mémoire max"|trans|raw }}</span><span class="metric-value">{{ areaData.max_memory_mb }} Mo</span></li>
-                            </ul>
-                        </div>
 
-                        {#-- Hourly chart: single colour, single series --#}
-                        <div class="perf-chart-block">
-                            <h3 class="perf-chart-title">{{ "Répartition horaire"|trans|raw }}</h3>
-                            <div class="perf-bars" role="img" aria-label="{{ "Histogramme des requêtes lentes par heure"|trans|striptags }}">
+                            <footer class="activity-card-foot">
+                                <span class="activity-card-summary">
+                                    {{ mailTotal }} {{ mailTotal > 1 ? "envois enregistrés"|trans|raw : "envoi enregistré"|trans|raw }}
+                                </span>
+                                <a href="{{ path('admin_maillog_index', {website: websiteId()}) }}" class="activity-card-link">
+                                    {{ "Journal"|trans|raw }} <i class="icm-arrow-right"></i>
+                                </a>
+                            </footer>
+                        </article>
+                    {%- endif -%}
+
+                    {%- if hasPerf -%}
+                        {%- set perf = performanceStats -%}
+                        {%- set perfHourlyMax = 0 -%}
+                        {%- for slot, counts in perf.hourly -%}
+                            {%- set hSum = counts.front + counts.admin -%}
+                            {%- if hSum > perfHourlyMax -%}{%- set perfHourlyMax = hSum -%}{%- endif -%}
+                        {%- endfor -%}
+                        {%- set frontTotal = perf.recent.front.count -%}
+                        {%- set adminTotal = perf.recent.admin.count -%}
+                        {%- set perfTotal = frontTotal + adminTotal -%}
+
+                        <article class="activity-card">
+                            <header class="activity-card-head">
+                                <h3 class="activity-card-title">{{ "Requêtes lentes"|trans|raw }}</h3>
+                                <ul class="activity-meta reset">
+                                    <li>
+                                        <span class="meta-swatch is-front" aria-hidden="true"></span>
+                                        <span class="meta-value">{{ frontTotal }}</span>
+                                        <span class="meta-label">{{ "front"|trans|raw }}</span>
+                                    </li>
+                                    <li>
+                                        <span class="meta-swatch is-admin" aria-hidden="true"></span>
+                                        <span class="meta-value">{{ adminTotal }}</span>
+                                        <span class="meta-label">{{ "back"|trans|raw }}</span>
+                                    </li>
+                                </ul>
+                            </header>
+
+                            <div class="chart-bars" role="img" aria-label="{{ "Histogramme des requêtes lentes par heure"|trans|striptags }}">
                                 {%- for slot, counts in perf.hourly -%}
                                     {%- set hour = slot|split(' ')[1]|slice(0, 2) -%}
-                                    {%- set height = hourlyMax > 0 ? (counts[area] / hourlyMax * 100)|round : 0 -%}
-                                    <div class="perf-bar-col" title="{{ slot }} - {{ counts[area] }}">
-                                        <div class="perf-bar-stack">
-                                            <span class="perf-bar is-{{ area }}" style="height: {{ height }}%"></span>
+                                    {%- set frontH = perfHourlyMax > 0 ? (counts.front / perfHourlyMax * 100)|round : 0 -%}
+                                    {%- set adminH = perfHourlyMax > 0 ? (counts.admin / perfHourlyMax * 100)|round : 0 -%}
+                                    <div class="chart-bar-col" title="{{ slot }} - front {{ counts.front }} / back {{ counts.admin }}">
+                                        <div class="chart-bar-stack">
+                                            <span class="chart-bar is-front" style="height: {{ frontH }}%"></span>
+                                            {%- if counts.admin > 0 -%}
+                                                <span class="chart-bar is-admin" style="height: {{ adminH }}%"></span>
+                                            {%- endif -%}
                                         </div>
-                                        <span class="perf-bar-label">{{ hour }}</span>
+                                        <span class="chart-bar-label">{{ hour }}</span>
                                     </div>
                                 {%- endfor -%}
                             </div>
-                        </div>
 
-                        {#-- Duration distribution + top URLs --#}
-                        <div class="perf-split">
+                            <footer class="activity-card-foot">
+                                <span class="activity-card-summary">
+                                    {{ "Avg"|trans|raw }} {{ perf.recent.front.avg_duration_ms }} ms · {{ "max"|trans|raw }} {{ perf.recent.front.max_duration_ms }} ms
+                                </span>
+                                <a href="{{ path('admin_performance_inspector', {area: 'front', website: websiteId()}) }}" class="activity-card-link">
+                                    {{ "Inspecter"|trans|raw }} <i class="icm-arrow-right"></i>
+                                </a>
+                            </footer>
+                        </article>
+                    {%- endif -%}
 
-                            <div class="perf-buckets">
-                                <h3 class="perf-chart-title">{{ "Distribution des durées"|trans|raw }}</h3>
-                                <ul class="bucket-list reset">
-                                    {%- for label, counts in perf.buckets -%}
-                                        {%- set value = counts[area] -%}
-                                        {%- set width = bucketMax > 0 ? (value / bucketMax * 100)|round : 0 -%}
-                                        {%- set severity = loop.index == 1 ? 'low'
-                                            : (loop.index == 2 ? 'medium'
-                                            : (loop.index == 3 ? 'high'
-                                            : (loop.index == 4 ? 'critical' : 'extreme'))) -%}
-                                        <li class="bucket-row">
-                                            <span class="bucket-label">{{ label }}</span>
-                                            <span class="bucket-bar" aria-hidden="true">
-                                                <span class="bucket-fill severity-{{ severity }}" style="width: {{ width }}%"></span>
-                                            </span>
-                                            <span class="bucket-count">{{ value }}</span>
+                </div>
+            </section>
+        {%- endif -%}
+
+        {#-- 5 — Performance details (buckets + top URLs) --#}
+        {%- if hasPerf -%}
+            {%- set perfBucketMax = 0 -%}
+            {%- for label, counts in performanceStats.buckets -%}
+                {%- set bSum = counts.front + counts.admin -%}
+                {%- if bSum > perfBucketMax -%}{%- set perfBucketMax = bSum -%}{%- endif -%}
+            {%- endfor -%}
+            {%- set frontRoutes = performanceStats.top_routes.front -%}
+            {%- set adminRoutes = performanceStats.top_routes.admin -%}
+            {%- set mergedRoutes = frontRoutes|merge(adminRoutes) -%}
+
+            <section class="dashboard-details reveal">
+                <header class="zone-head">
+                    <h2 class="zone-title">{{ "Performance détaillée"|trans|raw }}</h2>
+                    {%- if performanceStats.last_seen_at -%}
+                        <span class="zone-aside">{{ "dernière mesure"|trans|raw }} {{ performanceStats.last_seen_at }}</span>
+                    {%- endif -%}
+                </header>
+
+                <div class="details-grid">
+
+                    <article class="details-card">
+                        <h3 class="details-card-title">{{ "Distribution des durées"|trans|raw }}</h3>
+                        <ul class="bucket-list reset">
+                            {%- for label, counts in performanceStats.buckets -%}
+                                {%- set value = counts.front + counts.admin -%}
+                                {%- set width = perfBucketMax > 0 ? (value / perfBucketMax * 100)|round : 0 -%}
+                                {%- set severity = loop.index == 1 ? 'low'
+                                    : (loop.index == 2 ? 'medium'
+                                    : (loop.index == 3 ? 'high'
+                                    : (loop.index == 4 ? 'critical' : 'extreme'))) -%}
+                                <li class="bucket-row">
+                                    <span class="bucket-label">{{ label }}</span>
+                                    <span class="bucket-bar" aria-hidden="true">
+                                        <span class="bucket-fill severity-{{ severity }}" style="width: {{ width }}%"></span>
+                                    </span>
+                                    <span class="bucket-count">{{ value }}</span>
+                                </li>
+                            {%- endfor -%}
+                        </ul>
+                    </article>
+
+                    <article class="details-card">
+                        <h3 class="details-card-title">{{ "Top URLs lentes"|trans|raw }}</h3>
+                        {%- if mergedRoutes is empty -%}
+                            <p class="details-empty">{{ "Aucune requête lente"|trans|raw }}</p>
+                        {%- else -%}
+                            <ol class="routes-list reset">
+                                {%- for uri, count in mergedRoutes|slice(0, 8) -%}
+                                    <li class="routes-row">
+                                        <span class="routes-name" title="{{ uri }}">{{ uri }}</span>
+                                        <span class="routes-count">{{ count }}</span>
+                                    </li>
+                                {%- endfor -%}
+                            </ol>
+                        {%- endif -%}
+                    </article>
+
+                </div>
+            </section>
+        {%- endif -%}
+
+        {#-- 6 — Attention (SEO + 404 alerts, side by side) --#}
+        {%- if hasSeo or hasNotFound -%}
+            <section class="dashboard-attention reveal">
+                <header class="zone-head">
+                    <h2 class="zone-title">{{ "À traiter"|trans|raw }}</h2>
+                </header>
+
+                <div class="attention-grid">
+
+                    {%- if hasSeo -%}
+                        <article class="attention-card {{ seoCount > 0 ? 'is-warning' : 'is-clean' }}">
+                            <header class="attention-head">
+                                <span class="attention-tag">{{ "SEO"|trans|raw }}</span>
+                                <span class="attention-count">{{ seoCount }}</span>
+                                <span class="attention-unit">{{ seoCount > 1 ? "balises"|trans|raw : "balise"|trans|raw }}</span>
+                            </header>
+                            <p class="attention-desc">
+                                {%- if seoCount > 0 -%}
+                                    {{ "Renseignez les balises manquantes pour améliorer la visibilité sur les moteurs de recherche."|trans|raw }}
+                                {%- else -%}
+                                    {{ "Toutes les balises SEO sont renseignées."|trans|raw }}
+                                {%- endif -%}
+                            </p>
+
+                            {%- if allLocales|length > 1 and seoCount > 0 -%}
+                                <ul class="locales-bars reset">
+                                    {%- for locale, count in noSeoCounts|unset('total') -%}
+                                        {%- if count >= 0 -%}
+                                            <li class="locale-row">
+                                                <span class="locale-flag">
+                                                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                                         data-src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}"
+                                                         width="14" height="14"
+                                                         alt="{{ languageName(locale, userLocale)|striptags }}"
+                                                         class="img-fluid fit-cover lazy-load">
+                                                </span>
+                                                <span class="locale-name">{{ languageName(locale, userLocale) }}</span>
+                                                <span class="locale-bar" aria-hidden="true">
+                                                    <span class="locale-bar-fill" style="width: {{ seoCount > 0 ? (count / seoCount * 100)|round : 0 }}%"></span>
+                                                </span>
+                                                <span class="locale-count">{{ count }}</span>
+                                            </li>
+                                        {%- endif -%}
+                                    {%- endfor -%}
+                                </ul>
+                            {%- endif -%}
+
+                            <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: defaultLocale}) }}" class="attention-cta">
+                                <span>{{ seoCount > 0 ? "Compléter le SEO"|trans|raw : "Vérifier le SEO"|trans|raw }}</span>
+                                <i class="icm-arrow-right"></i>
+                            </a>
+                        </article>
+                    {%- endif -%}
+
+                    {%- if hasNotFound -%}
+                        {%- set notFoundFeedLimit = 5 -%}
+                        <article class="attention-card {{ notFoundCount > 0 ? 'is-alert' : 'is-clean' }}">
+                            <header class="attention-head">
+                                <span class="attention-tag">{{ "404"|trans|raw }}</span>
+                                <span class="attention-count">{{ notFoundCount }}</span>
+                                <span class="attention-unit">{{ notFoundCount > 1 ? "erreurs"|trans|raw : "erreur"|trans|raw }}</span>
+                            </header>
+                            <p class="attention-desc">
+                                {%- if notFoundCount > 0 -%}
+                                    {{ "URLs introuvables à rediriger pour préserver le référencement et l'expérience utilisateur."|trans|raw }}
+                                {%- else -%}
+                                    {{ "Aucune URL introuvable détectée."|trans|raw }}
+                                {%- endif -%}
+                            </p>
+
+                            {%- if notFoundCount > 0 -%}
+                                <ul class="notfound-feed reset">
+                                    {%- for entity in notFoundUrls|slice(0, notFoundFeedLimit) -%}
+                                        {%- set displayUri = entity.uri ?: entity.url -%}
+                                        <li class="notfound-row">
+                                            <span class="notfound-uri" title="{{ entity.url }}">{{ displayUri|truncate(54) }}</span>
+                                            <span class="notfound-date">{{ entity.createdAt|ago }}</span>
+                                            {%- if routeExist('admin_notfoundurl_redirection') -%}
+                                                <a href="{{ path('admin_notfoundurl_redirection', {website: websiteId(), notfoundUrl: entity.id}) }}"
+                                                   class="notfound-action"
+                                                   aria-label="{{ "Créer une redirection"|trans|striptags }}">
+                                                    <i class="icm-arrow-right"></i>
+                                                </a>
+                                            {%- endif -%}
                                         </li>
                                     {%- endfor -%}
                                 </ul>
-                            </div>
+                            {%- endif -%}
 
-                            <div class="perf-routes">
-                                <h3 class="perf-chart-title">{{ "Top URLs lentes"|trans|raw }}</h3>
-                                {%- if areaRoutes is empty -%}
-                                    <p class="perf-empty">{{ "Aucune requête lente"|trans|raw }}</p>
-                                {%- else -%}
-                                    <ol class="routes-list reset">
-                                        {%- for uri, count in areaRoutes -%}
-                                            <li class="routes-row">
-                                                <span class="routes-name" title="{{ uri }}">{{ uri }}</span>
-                                                <span class="routes-count">{{ count }}</span>
-                                            </li>
-                                        {%- endfor -%}
-                                    </ol>
-                                {%- endif -%}
-                            </div>
-
-                        </div>
-
-                        {#-- CTA to the dedicated inspector page for this area --#}
-                        <div class="perf-actions">
-                            <a href="{{ path('admin_performance_inspector', {area: area, website: websiteId()}) }}" class="perf-action-btn">
-                                <span>{{ "Inspecter les requêtes lentes"|trans|raw }}</span>
+                            <a href="{{ path('admin_notfoundurl_index', {website: websiteId(), type: 'front', category: 'url'}) }}" class="attention-cta">
+                                <span>{{ notFoundCount > 0 ? "Traiter les 404"|trans|raw : "Consulter le suivi"|trans|raw }}</span>
                                 <i class="icm-arrow-right"></i>
                             </a>
-                        </div>
+                        </article>
+                    {%- endif -%}
 
-                    </div>
-                </section>
-            {%- endfor -%}
-        {%- endif -%}
-
-        {#-- Feeds sociaux --#}
-        {%- if (hasInstagramFeed is defined and hasInstagramFeed) or (hasTikTokFeed is defined and hasTikTokFeed) -%}
-            <section class="dashboard-feeds mt-5 reveal">
-                <div class="section-label mb-3">
-                    <span class="label-line" aria-hidden="true"></span>
-                    <span class="label-text">{{ "Feeds sociaux"|trans|raw }}</span>
-                    <span class="label-aside">{{ "Synchronisation"|trans|raw }}</span>
-                </div>
-                <div class="feeds-panel card border-0 shadow-sm">
-                    <div class="card-body d-flex flex-column flex-md-row align-items-md-center gap-3 p-4">
-                        <div class="flex-grow-1">
-                            <h2 class="h5 mb-1">{{ "Feeds sociaux"|trans|raw }}</h2>
-                            <p class="mb-0 small text-muted">
-                                {{ "Synchronisation automatique au chargement d'une page, 2 fois par jour maximum. Utilisez le bouton pour forcer une mise à jour immédiate."|trans|raw }}
-                            </p>
-                        </div>
-                        <form method="post" action="{{ path('admin_feed_sync', {website: websiteId()}) }}" class="ms-md-auto">
-                            <input type="hidden" name="_token" value="{{ csrf_token('admin_feed_sync') }}">
-                            <button type="submit" class="btn btn-primary">
-                                {{ "Synchroniser maintenant"|trans|raw }}
-                            </button>
-                        </form>
-                    </div>
                 </div>
             </section>
         {%- endif -%}
 
-        {%- if 'search'|moduleActive(configuration) and searchValues.count > 0 and granted('ROLE_SEARCH_ENGINE') -%}
-            <section id="stats-search" class="dashboard-search mt-5 reveal">
-                <div class="section-label mb-3">
-                    <span class="label-line" aria-hidden="true"></span>
-                    <span class="label-text">{{ "Recherches effectuées"|trans|raw }}</span>
-                    <span class="label-aside">{{ "Module recherche"|trans|raw }}</span>
-                </div>
+        {#-- 7 — Search stats (module search) --#}
+        {%- if hasSearchValues -%}
+            <section id="stats-search" class="dashboard-search reveal">
+                <header class="zone-head">
+                    <h2 class="zone-title">{{ "Recherches effectuées"|trans|raw }}</h2>
+                    <span class="zone-aside">{{ "Module recherche"|trans|raw }}</span>
+                </header>
 
                 <div class="search-panel">
                     <ul class="search-feed reset">
@@ -491,6 +501,26 @@
                     </ul>
 
                     {% include 'admin/core/include/pagination.html.twig' with {pagination: searchValues} %}
+                </div>
+            </section>
+        {%- endif -%}
+
+        {#-- 8 — Tools (feeds sync, discreet bottom row) --#}
+        {%- if hasFeeds -%}
+            <section class="dashboard-tools reveal">
+                <div class="tools-row">
+                    <div class="tools-info">
+                        <h3 class="tools-title">{{ "Feeds sociaux"|trans|raw }}</h3>
+                        <p class="tools-desc">
+                            {{ "Synchronisation automatique au chargement d'une page, 2 fois par jour maximum. Utilisez le bouton pour forcer une mise à jour."|trans|raw }}
+                        </p>
+                    </div>
+                    <form method="post" action="{{ path('admin_feed_sync', {website: websiteId()}) }}" class="tools-form">
+                        <input type="hidden" name="_token" value="{{ csrf_token('admin_feed_sync') }}">
+                        <button type="submit" class="btn btn-primary">
+                            {{ "Synchroniser maintenant"|trans|raw }}
+                        </button>
+                    </form>
                 </div>
             </section>
         {%- endif -%}
