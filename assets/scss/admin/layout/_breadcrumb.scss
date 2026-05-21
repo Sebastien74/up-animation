@@ -1,90 +1,78 @@
 @charset "UTF-8";
 
-/* --------------------------------------------------------------------------------------
+/* -----------------------------------------------------------------
 
-    Module : Back breadcrumb
-    Copyright : 2026
-    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
-    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    BREADCRUMB — minimal inline. No surface, no marker, just
+    items + chevron separator + hover underline.
 
------------------------------------------------------------------------------------------ */
+------------------------------------------------------------------ */
 
 .breadcrumb-container {
-    padding: $space-3 $space-4;
-    border-radius: $radius-lg;
-    background-color: $theme-breadcrumb-bg;
-    background-image: $bg-gradient-primary;
-    border: 1px solid $crumb-border;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: $theme-shadow-sm;
-    transition: border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
-}
-
-@include mediaQuery(min-lg) {
-    .breadcrumb-container:hover {
-        border-color: $crumb-border-hover;
-        box-shadow: $theme-shadow-md;
-        transform: translateY(-1px);
-    }
-}
-
-/* Ensure container doesn't add unwanted padding in the breadcrumb row */
-.breadcrumb-container .container-fluid {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0 0 $space-3 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid $crumb-border;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
 }
 
 .page-breadcrumb {
 
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    gap: 0;
     margin: 0;
+    padding: 0;
+    list-style: none;
 
     .breadcrumb-item {
         color: $crumb-muted;
-        font-weight: 400;
-        font-size: 13px;
-        letter-spacing: -0.01em;
-        transition: color .35s $transition-base-timing;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 1.4;
+        letter-spacing: 0;
+        transition: color $transition-fast;
     }
 
-    /* Replace Bootstrap "/" with a subtle dot */
+    /* Chevron separator */
     .breadcrumb-item + .breadcrumb-item::before {
-        content: "•";
-        color: $theme-text-subtle;
-        padding: 0 10px;
-        transition: color .35s $transition-base-timing;
+        content: "›";
+        color: $crumb-border-hover;
+        padding: 0 $space-2;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 1;
     }
 
-    /* Links inside breadcrumb */
+    /* Links — underline glides in on hover */
     .breadcrumb-item a {
 
         color: $crumb-muted !important;
-        text-decoration: none;
-        position: relative;
-        display: inline-block;
-        padding: 2px 6px;
-        margin: -2px -6px;
-        border-radius: $radius-sm;
-        transition: color .35s $transition-base-timing;
-        will-change: color, background-color, transform;
+        text-decoration: underline transparent;
+        text-underline-offset: 4px;
+        text-decoration-thickness: 1px;
+        transition: color $transition-fast, text-decoration-color $transition-fast;
 
         @include mediaQuery(min-lg) {
 
             &:hover {
-                transition: color .35s $transition-base-timing;
+                color: $crumb-text !important;
+                text-decoration-color: $crumb-border-hover;
             }
 
             &:focus-visible {
                 outline: none;
                 color: $crumb-text !important;
-                box-shadow: 0 0 0 2px $theme-overlay-strong;
+                text-decoration-color: $primary;
             }
         }
     }
 
-    /* Active item (usually last) */
+    /* Active item (last) */
     .breadcrumb-item.active {
         color: $crumb-text;
+        font-weight: 600;
     }
 }

@@ -1,22 +1,25 @@
 @charset "UTF-8";
 
-/* --------------------------------------------------------------------------------------
+/* -----------------------------------------------------------------
 
-    Module : Back card
-    Copyright : 2026
-    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
-    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    ALERT — Linear-sober, flat surface variant tint.
 
------------------------------------------------------------------------------------------ */
+    Drop-in styling for Bootstrap .alert + project markup
+    (cf. templates/admin/include/alert.html.twig) which renders :
+
+        <div class="alert alert-{variant} d-flex p-3">
+            <div class="btn-icon {variant} me-3"><i class="icm-..."></i></div>
+            <div class="message"> ... </div>
+        </div>
+
+------------------------------------------------------------------ */
 
 .help-text {
-
-    $states: info;
 
     color: $body-color;
     font-size: 11px;
 
-    @each $s in $states {
+    @each $s in (info) {
         $c: theme-color($s);
         color: $c;
     }
@@ -24,63 +27,111 @@
 
 .alert {
 
-    border-radius: $border-radius;
+    position: relative;
+    padding: $space-3 $space-4;
+    border-radius: $radius-md;
+    font-size: 13px;
+    line-height: 1.5;
     text-align: left !important;
+    transition: none;
 
     .btn-close {
         background: none;
         position: absolute;
-        right: 12px;
-        top: 7px;
+        right: 10px;
+        top: 8px;
+        padding: 0 !important;
     }
 
     &.small {
-        font-size: .8em;
+        font-size: 12px;
+        padding: $space-2 $space-3;
+
+        .btn-icon {
+            width: 22px !important;
+            height: 22px !important;
+            flex: 0 0 22px !important;
+
+            i {
+                font-size: 11px !important;
+            }
+        }
     }
 
     small {
-        font-size: .8em;
-    }
-
-    .icon {
-
-        flex: 0 0 38px;
-        height: 38px;
-        margin: auto auto auto 1rem;
-        border-radius: 14px;
-
-        i {
-            font-size: 1rem;
-        }
+        font-size: 12px;
+        line-height: 1.5;
     }
 
     .message {
-
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+        flex: 1 1 auto;
+        min-width: 0;
         font-size: 13px;
+        line-height: 1.5;
 
         *:not(a) {
-            color: $theme-text-muted !important;
+            color: $crumb-text !important;
+        }
+
+        .content {
+            min-width: 0;
         }
     }
 
-    $states: success, primary, info, warning, danger, secondary;
+    // Compact icon badge — overrides the generic admin .btn-icon sizing
+    // inside alerts so it does not eat half the alert height.
+    .btn-icon {
+        flex: 0 0 28px !important;
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: $radius-sm !important;
 
-    @function theme-color($name) {
-        @return map-get($theme-colors, $name);
+        i {
+            font-size: 13px !important;
+        }
     }
 
-    @each $s in $states {
+    /* ---------- Variants (border + subtle tinted surface) ---------- */
 
-        $c: theme-color($s);
+    @each $name, $color in (
+        primary  : $primary,
+        info     : $info,
+        success  : $success,
+        warning  : $warning,
+        danger   : $danger,
+        secondary: $gray-600
+    ) {
 
-        &.alert-#{$s} {
-            border: 1px solid transparentize($c, .7);
-            background: radial-gradient(900px 520px at 82% 100%, rgba($c, 0.18), transparent 62%),
-            radial-gradient(900px 520px at 82% 100%, rgba(111, 66, 193, 0.10), transparent 62%),
-            radial-gradient(1100px 780px at 30% 65%, rgba(255, 255, 255, 0.04), transparent 68%),
-            linear-gradient(180deg, rgba(16, 18, 28, 0.72), rgba(10, 11, 18, 0.62));
+        &.alert-#{$name} {
+
+            border: 1px solid rgba($color, .22);
+            background: rgba($color, .06);
+            color: $crumb-text;
+            box-shadow: none;
+
+            .btn-icon {
+                background: rgba($color, .14) !important;
+                border: 1px solid rgba($color, .28) !important;
+                color: $color !important;
+
+                i {
+                    color: $color !important;
+                }
+
+                svg {
+                    fill: $color !important;
+                }
+            }
+
+            a {
+                color: $color;
+                text-decoration: underline;
+                text-underline-offset: 2px;
+
+                &:hover {
+                    color: darken($color, 8%);
+                }
+            }
         }
     }
 }

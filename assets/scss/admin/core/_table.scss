@@ -1,31 +1,25 @@
 @charset "UTF-8";
 
-/* --------------------------------------------------------------------------------------
+/* -----------------------------------------------------------------
 
-    Module : Back table
-    Copyright : 2026
-    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
-    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    TABLE — Linear-sober. Flat surface, small uppercase header,
+    breathing rows, subtle hover, sober mobile cards.
 
------------------------------------------------------------------------------------------ */
+------------------------------------------------------------------ */
 
-$dash-accent: #7c6cff !default;
+$tbl-surface     : $crumb-surface !default;
+$tbl-border      : $crumb-border !default;
+$tbl-border-soft : $theme-border-subtle !default;
+$tbl-hover       : rgba(255, 255, 255, .04) !default;
 
-$tbl-surface: rgba(255, 255, 255, .02) !default;
-$tbl-border: rgba(255, 255, 255, .07) !default;
-$tbl-border-soft: rgba(255, 255, 255, .05) !default;
-$tbl-hover: rgba(255, 255, 255, .03) !default;
-
-$tbl-text: $theme-text !default;
-$tbl-muted: $theme-text-muted !default;
-
-$tbl-shadow: $theme-shadow-lg !default;
+$tbl-text  : $theme-text !default;
+$tbl-muted : $theme-text-muted !default;
 
 .app-table {
 
     position: relative;
     overflow: hidden;
-    border-radius: $border-radius;
+    border-radius: $radius-md;
     background: $tbl-surface;
     border: 1px solid $tbl-border;
 
@@ -34,60 +28,78 @@ $tbl-shadow: $theme-shadow-lg !default;
     }
 }
 
-/* Subtle corner glow like your cards */
-.app-table::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    background: radial-gradient(520px 220px at 18% 0%, $theme-accent-bg, transparent 62%);
-    opacity: 0.75;
-    pointer-events: none;
-    filter: blur(0.6px);
-}
-
 .app-table__head,
 .app-table__foot {
-    padding: 12px 14px;
-    background: linear-gradient(180deg, $theme-overlay-faint, transparent 70%);
+    padding: $space-3 $space-4;
+    background: transparent;
     border-bottom: 1px solid $tbl-border-soft;
+
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: $tbl-muted;
 }
 
 .app-table__foot {
     border-top: 1px solid $tbl-border-soft;
     border-bottom: 0;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12px;
+    font-weight: 500;
 }
 
-/* Override Bootstrap dark table to match your surface */
+/* Bootstrap table → align to the sober surface */
 .app-table .table {
     --bs-table-bg: transparent;
     --bs-table-color: #{$theme-text};
-    --bs-table-border-color: #{$theme-overlay-medium};
+    --bs-table-border-color: #{$tbl-border-soft};
     margin-bottom: 0;
 }
 
 .app-table thead th {
-    color: $tbl-text;
-    font-weight: 650;
-    letter-spacing: -0.01em;
-    border-bottom-color: $theme-overlay-medium !important;
-    padding-top: 14px;
-    padding-bottom: 14px;
+    color: $tbl-muted;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    background: transparent;
+    border-bottom: 1px solid $tbl-border !important;
+    padding: 10px 14px;
+    white-space: nowrap;
 }
 
 .app-table tbody td {
     color: $tbl-text;
-    border-top-color: $theme-overlay-medium !important;
-    padding-top: .5rem !important;
-    padding-bottom: .5rem !important;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+    border-top: 1px solid $tbl-border-soft !important;
+    padding: 10px 14px !important;
+    vertical-align: middle;
 }
 
-.app-table tbody tr:not(:last-child) {
-    border-bottom: $theme-overlay-medium !important;
+.app-table tbody tr:first-child td {
+    border-top: 0 !important;
 }
 
 /* Hover row (subtle) */
-.app-table tbody tr:hover > * {
-    background: $tbl-hover !important;
+@include mediaQuery(min-lg) {
+
+    .app-table tbody tr {
+        transition: background-color $transition-fast;
+
+        &:hover > * {
+            background: $tbl-hover !important;
+        }
+    }
+}
+
+/* Action cell links/buttons — keep them on one line */
+.app-table tbody td .d-flex,
+.app-table tbody td .btn-icon {
+    flex-shrink: 0;
 }
 
 @include mediaQuery(between-lg-xl) {
@@ -113,7 +125,7 @@ $tbl-shadow: $theme-shadow-lg !default;
     table.responsive-cards {
 
         thead {
-            display: none; // Hide table header on mobile
+            display: none;
         }
 
         .infos-badge {
@@ -122,53 +134,56 @@ $tbl-shadow: $theme-shadow-lg !default;
             }
         }
 
-        // Turn table into block layout
+        // Block layout
         &, tbody, tr, td {
             display: block;
             width: 100%;
         }
 
         tr {
-            // Card container
-            margin-bottom: 1rem;
-            border: 1px solid $theme-overlay-prom;
-            border-radius: .5rem;
+            margin-bottom: $space-3;
+            border: 1px solid $tbl-border;
+            border-radius: $radius-md;
             overflow: hidden;
+            background: $tbl-surface;
         }
 
         &:not(.show-view) td {
             display: flex;
             justify-content: space-between;
-            gap: .75rem;
-            padding: .75rem 1rem;
+            gap: $space-3;
+            padding: 10px $space-4;
         }
 
         &.show-view td a {
-            font-size: 14px;
+            font-size: 13px;
         }
 
         td {
 
-            // Row line inside the card
             border: 0;
-            border-bottom: 1px solid $theme-overlay-strong;
+            border-bottom: 1px solid $tbl-border-soft;
 
             &:last-child {
-                border-bottom: 0; // Remove last divider
+                border-bottom: 0;
             }
 
             &::before {
-                // Label on the left
+                // Label on the left — Linear sober uppercase eyebrow
                 content: attr(data-label);
+                font-size: 11px;
                 font-weight: 600;
-                opacity: .85;
+                letter-spacing: .06em;
+                text-transform: uppercase;
+                color: $tbl-muted;
+                opacity: 1;
                 white-space: nowrap;
                 display: flex;
                 align-items: center;
             }
 
             &.text-end {
-                text-align: left !important; // Avoid weird alignment with flex
+                text-align: left !important;
             }
         }
     }

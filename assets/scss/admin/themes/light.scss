@@ -208,40 +208,35 @@ body {
         }
     }
 
-    /*--- Breadcrumb ---*/
+    /*--- Breadcrumb — minimal inline, no surface ---*/
 
     .breadcrumb-container {
-        background: $theme-surface !important;
-        background-image: none !important;
-        border: 1px solid $theme-border !important;
-        box-shadow: $theme-shadow-sm;
-
-        &:hover {
-            border-color: $theme-border-alt !important;
-        }
+        background: transparent !important;
+        border: 0 !important;
+        border-bottom: 1px solid $theme-border !important;
+        box-shadow: none !important;
     }
 
     .page-breadcrumb {
 
-        li {
-
-            color: $theme-text-muted;
+        .breadcrumb-item {
+            color: $theme-text-muted !important;
 
             a {
-                color: $theme-text-muted;
+                color: $theme-text-muted !important;
 
                 &:hover {
-                    color: $theme-text;
+                    color: $theme-text !important;
                 }
             }
 
             &.active {
-                color: $theme-text;
+                color: $theme-text !important;
             }
         }
 
         .breadcrumb-item + .breadcrumb-item::before {
-            color: $theme-text-light;
+            color: $theme-border-alt !important;
         }
     }
 
@@ -615,7 +610,7 @@ body {
         }
     }
 
-    /*--- Alerts (override gradient sombre dur du _alert.scss) ---*/
+    /*--- Alerts — reapply Linear-sober variants with light tokens ---*/
 
     .alert {
 
@@ -624,9 +619,34 @@ body {
             $c: map-get($theme-colors, $s);
 
             &.alert-#{$s} {
-                background: $theme-surface !important;
-                border: 1px solid transparentize($c, .7);
-                box-shadow: $theme-shadow-sm;
+                background: rgba($c, .06) !important;
+                border: 1px solid rgba($c, .22) !important;
+                box-shadow: none !important;
+                color: $theme-text !important;
+
+                .btn-icon {
+                    background: rgba($c, .14) !important;
+                    border-color: rgba($c, .28) !important;
+                    color: $c !important;
+
+                    i {
+                        color: $c !important;
+                    }
+
+                    svg {
+                        fill: $c !important;
+                    }
+                }
+
+                a {
+                    color: $c !important;
+                    text-decoration-color: rgba($c, .4) !important;
+
+                    &:hover {
+                        color: darken($c, 8%) !important;
+                        text-decoration-color: $c !important;
+                    }
+                }
             }
         }
 
