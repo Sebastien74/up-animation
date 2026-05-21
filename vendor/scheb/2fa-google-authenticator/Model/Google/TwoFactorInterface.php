@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Scheb\TwoFactorBundle\Model\Google;
+
+interface TwoFactorInterface
+{
+    /**
+     * Return true if the user should do two-factor authentication.
+     */
+    public function isGoogleAuthenticatorEnabled(): bool;
+
+    /**
+     * Return the user name. This is used in QR code generation to display the username in the TOTP app.
+     */
+    public function getGoogleAuthenticatorUsername(): string|null;
+
+    /**
+     * Return the Google Authenticator secret
+     * When an empty string is returned, the Google authentication is disabled.
+     */
+    public function getGoogleAuthenticatorSecret(): string|null;
+}

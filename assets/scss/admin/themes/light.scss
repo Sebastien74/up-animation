@@ -871,6 +871,61 @@ body {
         color: $theme-text !important;
     }
 
+    .bootstrap-tagsinput {
+        background: $theme-input-bg !important;
+        border: 1px solid $theme-input-border !important;
+        color: $theme-input-text !important;
+
+        input {
+            color: $theme-input-text !important;
+
+            &::placeholder,
+            &::-moz-placeholder,
+            &:-ms-input-placeholder,
+            &::-webkit-input-placeholder {
+                color: $theme-input-placeholder !important;
+            }
+        }
+
+        .tag {
+            background: $theme-accent-bg !important;
+            border: 1px solid $theme-accent-border !important;
+            color: $theme-text !important;
+            padding: 2px 4px 2px 10px !important;
+            font-size: 12px !important;
+            line-height: 1.4 !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            [data-role="remove"] {
+                width: 20px !important;
+                height: 20px !important;
+                border-radius: 7px !important;
+                font-size: 12px !important;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                background: $btn-surface;
+                border: 1px solid $btn-border;
+                color: $btn-text;
+                margin-left: 0;
+                transition: all .3s linear;
+
+                &:after {
+                    padding: 0 !important;
+                    box-shadow: none !important;
+                }
+
+                &:hover {
+                    background: $btn-surface-hover;
+                    color: $btn-text;
+                    box-shadow: none;
+                }
+            }
+        }
+    }
+
     .optimize-media-btn {
 
         border-color: $theme-border !important;
@@ -1218,17 +1273,6 @@ body {
 
 #menu-edit-page {
     label, li {
-        color: $theme-text !important;
-    }
-}
-
-#user-profile-card {
-
-    .img-user-container {
-        border: 1px solid $theme-border !important;
-    }
-
-    * {
         color: $theme-text !important;
     }
 }
@@ -2110,10 +2154,162 @@ body {
 
 /*--- User profile (admin-user-profile.css en bundle séparé) ---*/
 
-#user-profile-card {
+#user-profile-page {
 
-    .img-user-container {
+    #user-profile-card.profile-panel {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+        box-shadow: $theme-shadow-md !important;
+
+        &::before {
+            background: $theme-accent !important;
+        }
+    }
+
+    .profile-head {
+
+        border-bottom-color: $theme-border-subtle !important;
+
+        .profile-head-bg {
+            background:
+                radial-gradient(680px 240px at 18% 0%, $theme-accent-bg, transparent 60%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 45%) !important;
+        }
+    }
+
+    .profile-avatar {
+        background: $theme-surface !important;
         border-color: $theme-border !important;
+        box-shadow: $theme-shadow-sm !important;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                border-color: $theme-accent-border !important;
+            }
+        }
+    }
+
+    .profile-identity {
+
+        .profile-name,
+        .name-text {
+            color: $theme-text !important;
+        }
+
+        .profile-login {
+            color: $theme-text-muted !important;
+        }
+
+        .profile-tag {
+            color: $theme-text-muted !important;
+            background: $theme-surface !important;
+            border-color: $theme-border-subtle !important;
+
+            .profile-tag-dot {
+                background: $theme-accent !important;
+            }
+        }
+    }
+
+    .profile-actions .profile-action-btn {
+
+        background: $theme-surface !important;
+        border-color: $theme-border !important;
+        color: $theme-text !important;
+
+        i {
+            color: $theme-text-muted !important;
+        }
+
+        @include mediaQuery(min-lg) {
+
+            &:hover,
+            &:focus-visible {
+                background: $theme-accent-bg-soft !important;
+                border-color: $theme-accent-border !important;
+                color: $theme-text !important;
+                box-shadow: $theme-shadow-sm !important;
+
+                i {
+                    color: $theme-accent !important;
+                }
+            }
+        }
+    }
+
+    .profile-section {
+
+        background: $theme-surface !important;
+        border-color: $theme-border-subtle !important;
+
+        .profile-section-icon {
+            background: $theme-accent-bg-soft !important;
+            color: $theme-accent !important;
+
+            i {
+                color: $theme-accent !important;
+            }
+        }
+
+        .profile-section-title {
+            color: $theme-text-muted !important;
+        }
+
+        .profile-section-count {
+            background: $theme-bg-alt !important;
+            border-color: $theme-border-subtle !important;
+            color: $theme-text !important;
+        }
+    }
+
+    .profile-meta-list {
+
+        .profile-meta-row {
+            border-bottom-color: $theme-border-subtle !important;
+        }
+
+        .profile-meta-label {
+            color: $theme-text-muted !important;
+        }
+
+        .profile-meta-value {
+            color: $theme-text !important;
+        }
+
+        .profile-meta-link {
+            color: $theme-text !important;
+            text-decoration-color: $theme-accent-border !important;
+
+            @include mediaQuery(min-lg) {
+
+                &:hover,
+                &:focus-visible {
+                    color: $theme-accent !important;
+                    text-decoration-color: $theme-accent !important;
+                }
+            }
+        }
+    }
+
+    .profile-roles-grid .profile-role-item {
+
+        background: $theme-bg-alt !important;
+        border-color: $theme-border-subtle !important;
+        color: $theme-text !important;
+
+        i {
+            background: $theme-accent-bg-soft !important;
+            color: $theme-accent !important;
+        }
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                background: $theme-accent-bg-soft !important;
+                border-color: $theme-accent-border !important;
+            }
+        }
     }
 }
 
@@ -2447,6 +2643,190 @@ th.fc-col-header-cell {
 
     .mail-log-text {
         color: $theme-text !important;
+    }
+}
+
+/*--- Security 2FA setup page (admin pages/security-2fa.scss = vars dark) ---*/
+
+#security-2fa-page {
+
+    .security-page-head,
+    .method-card,
+    .codes-emphasis {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+        box-shadow: $theme-shadow-md !important;
+    }
+
+    .security-page-head::before {
+        background: radial-gradient(520px 160px at 12% 0%, $theme-accent-bg, transparent 60%) !important;
+    }
+
+    .security-page-icon,
+    .codes-emphasis-icon {
+        background: $theme-accent-bg !important;
+        color: $theme-accent !important;
+
+        i {
+            color: $theme-accent !important;
+        }
+    }
+
+    .security-page-title,
+    .method-card-title,
+    .codes-emphasis-title {
+        color: $theme-text !important;
+    }
+
+    .security-page-desc,
+    .method-card-desc,
+    .method-card-protocol,
+    .codes-emphasis-desc {
+        color: $theme-text-muted !important;
+    }
+
+    .method-card {
+
+        &::before {
+            background: $theme-border !important;
+        }
+
+        &.is-active {
+            border-color: $theme-accent-border !important;
+
+            &::before {
+                background: $theme-accent !important;
+            }
+        }
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                border-color: $theme-accent-border !important;
+            }
+        }
+    }
+
+    .method-card-icon,
+    .method-card-sub-icon {
+        background: $theme-accent-bg-soft !important;
+        color: $theme-accent !important;
+
+        i {
+            color: $theme-accent !important;
+        }
+    }
+
+    .method-card-hint {
+        background: $theme-bg-alt !important;
+        border-color: $theme-border-subtle !important;
+        color: $theme-text-muted !important;
+
+        i {
+            color: $theme-accent !important;
+        }
+    }
+
+    .method-card-sub {
+        border-top-color: $theme-border !important;
+    }
+
+    .method-card-sub-title {
+        color: $theme-text-muted !important;
+    }
+
+    .method-card-sub-desc {
+        color: $theme-text-muted !important;
+    }
+
+    /*--- Codes emphasis ---*/
+
+    .codes-emphasis::before {
+        background: linear-gradient(90deg, $theme-accent, transparentize($theme-accent, .6)) !important;
+    }
+
+    .codes-emphasis-foot {
+        border-top-color: $theme-border-subtle !important;
+    }
+
+    .code-chip {
+
+        background: $theme-surface !important;
+        border-color: $theme-border-subtle !important;
+        color: $theme-text !important;
+
+        .code-chip-index {
+            color: $theme-text-muted !important;
+        }
+
+        .code-chip-action {
+            color: $theme-text-muted !important;
+        }
+
+        @include mediaQuery(min-lg) {
+
+            &:hover,
+            &:focus-visible {
+                border-color: $theme-accent-border !important;
+                background: $theme-accent-bg-soft !important;
+                color: $theme-text !important;
+
+                .code-chip-action {
+                    color: $theme-accent !important;
+                }
+            }
+        }
+
+        &.is-copied {
+            color: darken($success, 8%) !important;
+            background: rgba($success, .12) !important;
+            border-color: rgba($success, .35) !important;
+
+            .code-chip-action {
+                color: darken($success, 8%) !important;
+            }
+        }
+    }
+
+    /*--- Badges 2FA (scoped to page; also used in admin/2fa-users-index) ---*/
+
+    .badge-2fa {
+
+        &.is-active {
+            color: darken($success, 8%) !important;
+            background-color: rgba($success, .12) !important;
+            border-color: rgba($success, .28) !important;
+        }
+
+        &.is-inactive {
+            color: $theme-text-muted !important;
+            background-color: $theme-bg-alt !important;
+            border-color: $theme-border !important;
+        }
+
+        &.is-off {
+            color: darken($danger, 8%) !important;
+            background-color: rgba($danger, .10) !important;
+            border-color: rgba($danger, .28) !important;
+        }
+    }
+
+}
+
+/*--- 2FA badges hors page setup (table d'admin users) ---*/
+
+.badge-2fa {
+
+    &.is-active {
+        color: darken($success, 8%) !important;
+        background-color: rgba($success, .12) !important;
+        border-color: rgba($success, .28) !important;
+    }
+
+    &.is-inactive {
+        color: $theme-text-muted !important;
+        background-color: $theme-bg-alt !important;
+        border-color: $theme-border !important;
     }
 }
 

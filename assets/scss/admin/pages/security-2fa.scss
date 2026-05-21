@@ -1,0 +1,414 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    SECURITY 2FA :
+    ==============
+
+    Base neutre (rendu dark par défaut). Le rendu papier crème vit
+    dans themes/light.scss avec overrides !important.
+
+    1 ) Imports
+    2 ) Wrapper + reveal
+    3 ) Page head
+    4 ) Method grid
+    5 ) Badges 2FA
+    6 ) Codes emphasis panel
+    7 ) Code chips grid
+    8 ) Responsive
+
+------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Imports
+-----------------------------------*/
+
+@import "../../vendor/mixin/media-queries";
+@import '../variables';
+
+/*-----------------------------------
+   2 ) Wrapper + reveal
+-----------------------------------*/
+
+#security-2fa-page {
+
+    .security-page-head,
+    .method-grid > .card,
+    .codes-emphasis {
+        opacity: 0;
+        transform: translateY(8px);
+        animation: security2faReveal .5s $transition-base-timing forwards;
+    }
+
+    .security-page-head {
+        animation-delay: 80ms;
+    }
+
+    .method-grid > .card {
+
+        animation-delay: 180ms;
+
+        &:nth-child(2) {
+            animation-delay: 260ms;
+        }
+    }
+
+    .codes-emphasis {
+        animation-delay: 100ms;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .security-page-head,
+        .method-grid > .card,
+        .codes-emphasis {
+            animation: none;
+            opacity: 1;
+            transform: none;
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Page head
+-----------------------------------*/
+
+.security-page-head {
+
+    display: flex;
+    align-items: center;
+    gap: $space-5;
+    padding: $space-6;
+    margin-bottom: $space-6;
+    background: $crumb-surface;
+    border: 1px solid $crumb-border;
+    border-radius: $radius-lg;
+    box-shadow: $crumb-shadow;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(520px 160px at 12% 0%, rgba($primary, 0.08), transparent 60%);
+        pointer-events: none;
+    }
+
+    > * {
+        position: relative;
+    }
+
+    .security-page-icon {
+
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: $radius-md;
+        background: rgba($primary, 0.14);
+        color: $primary;
+
+        i {
+            font-size: 22px;
+            color: $primary;
+        }
+    }
+
+    .security-page-title {
+        margin: 0 0 $space-1;
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        color: $crumb-text;
+        line-height: 1.2;
+    }
+
+    .security-page-desc {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 400;
+        color: $crumb-muted;
+        line-height: 1.5;
+    }
+}
+
+/*-----------------------------------
+   4 ) Method grid
+-----------------------------------*/
+
+.method-grid {
+
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-5;
+
+    @include mediaQuery(min-lg) {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/*-----------------------------------
+   5 ) Badges 2FA
+-----------------------------------*/
+
+.badge-2fa {
+
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    border: 1px solid transparent;
+    border-radius: $radius-pill;
+    flex: 0 0 auto;
+
+    i {
+        font-size: 8px;
+        line-height: 1;
+    }
+
+    &.is-active {
+        color: $success;
+        background-color: rgba($success, .15);
+        border-color: rgba($success, .35);
+    }
+
+    &.is-inactive {
+        color: $crumb-muted;
+        background-color: rgba(255, 255, 255, 0.012);
+        border-color: $crumb-border;
+    }
+
+    &.is-off {
+        color: $danger;
+        background-color: rgba($danger, .12);
+        border-color: rgba($danger, .32);
+    }
+}
+
+/*-----------------------------------
+   6 ) Codes emphasis panel
+-----------------------------------*/
+
+.codes-emphasis {
+
+    position: relative;
+    padding: $space-7;
+    background: $crumb-surface;
+    border: 1px solid $crumb-border;
+    border-radius: $radius-lg;
+    box-shadow: $crumb-shadow;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, $primary, transparentize($primary, .6));
+    }
+
+    .codes-emphasis-head {
+
+        display: flex;
+        align-items: flex-start;
+        gap: $space-4;
+        margin-bottom: $space-6;
+
+        .codes-emphasis-icon {
+
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: $radius-md;
+            background: rgba($primary, 0.14);
+            color: $primary;
+
+            i {
+                font-size: 20px;
+                color: $primary;
+            }
+        }
+    }
+
+    .codes-emphasis-title {
+        margin: 0 0 $space-2;
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        color: $crumb-text;
+        line-height: 1.2;
+    }
+
+    .codes-emphasis-desc {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 400;
+        color: $crumb-muted;
+        line-height: 1.55;
+        max-width: 640px;
+    }
+
+    .codes-emphasis-foot {
+
+        margin-top: $space-6;
+        padding-top: $space-5;
+        border-top: 1px solid $crumb-border;
+        display: flex;
+        flex-wrap: wrap;
+        gap: $space-3;
+        align-items: center;
+    }
+}
+
+/*-----------------------------------
+   7 ) Code chips grid
+-----------------------------------*/
+
+.codes-grid {
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-2;
+
+    @include mediaQuery(min-sm) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include mediaQuery(min-md) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    @include mediaQuery(min-xl) {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+.code-chip {
+
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-3 $space-4;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid $crumb-border;
+    border-radius: $radius-sm;
+    font-size: 13px;
+    font-weight: 500;
+    color: $crumb-text;
+    cursor: pointer;
+    user-select: all;
+    transition: $transition-base;
+    line-height: 1.4;
+
+    .code-chip-index {
+        flex: 0 0 auto;
+        font-size: 10px;
+        font-weight: 600;
+        color: $crumb-muted;
+        font-family: $font-family;
+        font-variant-numeric: tabular-nums;
+        min-width: 14px;
+    }
+
+    .code-chip-value {
+        flex: 1 1 auto;
+        letter-spacing: 0.02em;
+    }
+
+    .code-chip-action {
+
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        opacity: 0;
+        color: $crumb-muted;
+        transition: opacity $transition-base, color $transition-base;
+
+        i {
+            font-size: 11px;
+        }
+    }
+
+    @include mediaQuery(min-lg) {
+
+        &:hover,
+        &:focus-visible {
+
+            border-color: rgba($primary, 0.28);
+            background: rgba($primary, 0.06);
+            color: $crumb-text;
+
+            .code-chip-action {
+                opacity: 1;
+                color: $primary;
+            }
+        }
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($primary, 0.18);
+    }
+
+    &.is-copied {
+
+        border-color: rgba($success, .45);
+        background: rgba($success, .12);
+        color: $success;
+
+        .code-chip-action {
+            opacity: 1;
+            color: $success;
+        }
+    }
+}
+
+/*-----------------------------------
+   8 ) Responsive
+-----------------------------------*/
+
+@include mediaQuery(max-md) {
+
+    .security-page-head {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: $space-5;
+    }
+
+    .codes-emphasis {
+
+        padding: $space-5;
+
+        .codes-emphasis-head {
+            flex-direction: column;
+            gap: $space-3;
+        }
+    }
+}
+
+@keyframes security2faReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

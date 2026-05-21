@@ -2,7 +2,7 @@
 import {isInViewport} from "../functions";
 import "../components/remove-empty-blocks";
 
-/** To add h-100 class if only card block in zone */
+/** To add h-100 class if only card block in the zone */
 document.querySelectorAll('.layout-zone').forEach(function (zone) {
     const blocksLength = zone.querySelectorAll('.layout-block').length;
     const cards = zone.querySelectorAll('.card-block');

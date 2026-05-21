@@ -2,55 +2,524 @@
 
 /* -----------------------------------------------------------------
 
-    Module : User profile
-    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    USER PROFILE :
+    ==============
 
-    Refonte aesthetic — alignement vocabulaire dashboard.
-    Les overrides light vivent dans themes/light.scss.
+    Base neutre (rendu dark par défaut). Le rendu papier crème vit
+    dans themes/light.scss avec overrides !important.
+
+    1 ) Imports
+    2 ) Wrapper + reveal
+    3 ) Panel + head (hero compact)
+    4 ) Avatar
+    5 ) Identity + tag
+    6 ) Actions chip-buttons
+    7 ) Body sections (Information + Rôles)
+    8 ) Meta list (key/value rows)
+    9 ) Roles grid
+    10) Responsive
 
 ------------------------------------------------------------------ */
 
+/*-----------------------------------
+   1 ) Imports
+-----------------------------------*/
+
+@import "../../vendor/mixin/media-queries";
 @import '../variables';
 
-#user-profile-card {
+/*-----------------------------------
+   2 ) Wrapper + reveal
+-----------------------------------*/
 
-    .img-user-container {
+#user-profile-page {
 
+    .reveal,
+    .profile-panel,
+    .profile-section {
+        opacity: 0;
+        transform: translateY(8px);
+        animation: profileReveal .5s $transition-base-timing forwards;
+    }
+
+    .profile-panel {
+        animation-delay: 80ms;
+    }
+
+    .profile-section {
+        animation-delay: 180ms;
+
+        &:nth-of-type(2) {
+            animation-delay: 260ms;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .profile-panel,
+        .profile-section {
+            animation: none;
+            opacity: 1;
+            transform: none;
+        }
+    }
+}
+
+/*-----------------------------------
+   3 ) Panel + head (hero compact)
+-----------------------------------*/
+
+#user-profile-card.profile-panel {
+
+    position: relative;
+    background: $crumb-surface;
+    border: 1px solid $crumb-border;
+    border-radius: $radius-lg;
+    box-shadow: $crumb-shadow;
+    overflow: hidden;
+
+    // Accent stripe (left edge)
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 3px;
+        background: $primary;
+        opacity: .9;
+    }
+}
+
+.profile-head {
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $space-5;
+    padding: $space-7;
+    border-bottom: 1px solid $crumb-border;
+    overflow: hidden;
+
+    .profile-head-bg {
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(680px 240px at 18% 0%, rgba($primary, 0.10), transparent 60%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 45%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    > *:not(.profile-head-bg) {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+/*-----------------------------------
+   4 ) Avatar
+-----------------------------------*/
+
+.profile-avatar {
+
+    flex: 0 0 auto;
+    width: 112px;
+    height: 112px;
+    border-radius: $radius-lg;
+    border: 1px solid $crumb-border;
+    overflow: hidden;
+    box-shadow: $crumb-shadow;
+    background: $crumb-surface;
+    position: relative;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    // Subtle accent ring on hover (no-op on touch)
+    @include mediaQuery(min-lg) {
+        transition: border-color $transition-base, box-shadow $transition-base, transform $transition-base;
+
+        &:hover {
+            border-color: rgba($primary, 0.28);
+            transform: translateY(-1px);
+        }
+    }
+}
+
+/*-----------------------------------
+   5 ) Identity + tag
+-----------------------------------*/
+
+.profile-identity {
+
+    flex: 1 1 240px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+
+    .profile-name {
+
+        margin: 0;
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        color: $crumb-text;
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: $space-3;
+
+        .name-text {
+            color: $crumb-text;
+        }
+    }
+
+    .profile-login {
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 400;
+        color: $crumb-muted;
+        letter-spacing: 0;
+    }
+
+    .profile-tag {
+
+        margin: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        padding: $space-1 $space-3;
+        font-size: 12px;
+        font-weight: 500;
+        color: $crumb-muted;
+        background: $crumb-surface;
         border: 1px solid $crumb-border;
+        border-radius: $radius-pill;
+        width: max-content;
+        max-width: 100%;
+        line-height: 1.5;
+
+        .profile-tag-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: $primary;
+            flex: 0 0 auto;
+        }
+    }
+}
+
+/*-----------------------------------
+   6 ) Actions chip-buttons
+-----------------------------------*/
+
+.profile-actions {
+
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    flex-wrap: wrap;
+
+    .profile-action-btn {
+
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        padding: $space-2 $space-4;
         border-radius: $radius-md;
-        overflow: hidden;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        color: $crumb-text;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        line-height: 1.4;
+        transition: $transition-base;
 
-        #user-avatar {
-            border-top-left-radius: $radius-md;
+        i {
+            font-size: 16px;
+            color: $crumb-muted;
+            transition: color $transition-base;
         }
 
-        #user-picture {
-            height: 200px;
+        @include mediaQuery(min-lg) {
+
+            &:hover,
+            &:focus-visible {
+                border-color: rgba($primary, 0.28);
+                color: $crumb-text;
+                background: rgba($primary, 0.06);
+                box-shadow: $crumb-shadow;
+
+                i {
+                    color: $primary;
+                }
+            }
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba($primary, 0.18);
+        }
+
+        @include mediaQuery(max-sm) {
+            .profile-action-label {
+                display: none;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   7 ) Body sections
+-----------------------------------*/
+
+.profile-body {
+    padding: $space-7;
+}
+
+.profile-section {
+
+    position: relative;
+    padding: $space-5 $space-6;
+    border: 1px solid $crumb-border;
+    border-radius: $radius-md;
+    background: rgba(255, 255, 255, 0.015);
+    height: 100%;
+
+    .profile-section-head {
+        display: flex;
+        align-items: center;
+        gap: $space-3;
+        margin-bottom: $space-5;
+
+        .profile-section-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: $radius-sm;
+            background: rgba($primary, 0.06);
+            color: $primary;
+
+            i {
+                font-size: 14px;
+                color: $primary;
+            }
+        }
+
+        .profile-section-title {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: $crumb-muted;
+        }
+
+        .profile-section-count {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 26px;
+            height: 22px;
+            padding: 0 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: $crumb-text;
+            background: $crumb-surface;
+            border: 1px solid $crumb-border;
+            border-radius: $radius-pill;
+        }
+    }
+}
+
+/*-----------------------------------
+   8 ) Meta list
+-----------------------------------*/
+
+.profile-meta-list {
+
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+
+    .profile-meta-row {
+
+        display: flex;
+        align-items: flex-start;
+        gap: $space-4;
+        padding: $space-3 0;
+        border-bottom: 1px solid $crumb-border;
+
+        &:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        &:first-child {
+            padding-top: 0;
         }
     }
 
-    h1 {
+    .profile-meta-label {
 
-        small {
-            font-size: 14px;
+        flex: 0 0 38%;
+        margin: 0;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        color: $crumb-muted;
+        line-height: 1.5;
+    }
+
+    .profile-meta-value {
+
+        flex: 1 1 auto;
+        margin: 0;
+        font-size: 13px;
+        font-weight: 400;
+        color: $crumb-text;
+        line-height: 1.5;
+        display: flex;
+        align-items: center;
+        gap: $space-2;
+        word-break: break-word;
+    }
+
+    .profile-meta-flag {
+        width: 19px;
+        height: 14px;
+        border-radius: 2px;
+        flex: 0 0 auto;
+    }
+
+    .profile-meta-link {
+
+        color: $crumb-text;
+        text-decoration: underline;
+        text-decoration-color: rgba($primary, 0.28);
+        text-underline-offset: 2px;
+        transition: color $transition-base, text-decoration-color $transition-base;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover,
+            &:focus-visible {
+                color: $primary;
+                text-decoration-color: $primary;
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   9 ) Roles grid
+-----------------------------------*/
+
+.profile-roles-grid {
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-2;
+
+    @include mediaQuery(min-md) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .profile-role-item {
+
+        display: flex;
+        align-items: center;
+        gap: $space-3;
+        padding: $space-3 $space-4;
+        border-radius: $radius-sm;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid $crumb-border;
+        font-size: 13px;
+        font-weight: 400;
+        color: $crumb-text;
+        line-height: 1.4;
+        transition: background $transition-base, border-color $transition-base;
+
+        i {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            color: $primary;
+            background: rgba($primary, 0.06);
+            border-radius: 50%;
         }
 
-        #edit-user-btn {
-            font-size: 18px;
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                border-color: rgba($primary, 0.28);
+                background: rgba($primary, 0.06);
+            }
+        }
+    }
+}
+
+/*-----------------------------------
+   10) Responsive
+-----------------------------------*/
+
+@include mediaQuery(max-md) {
+
+    .profile-head {
+        padding: $space-5;
+        gap: $space-4;
+
+        .profile-actions {
+            width: 100%;
+            justify-content: flex-start;
         }
     }
 
-    h2 {
-
-        font-size: 18px;
-
-        svg {
-            float: left;
-            margin-top: 3px;
-        }
+    .profile-body {
+        padding: $space-5;
     }
 
-    .img-locale {
-        margin-top: -3px;
+    .profile-section {
+        padding: $space-4 $space-5;
+    }
+
+    .profile-meta-list {
+
+        .profile-meta-row {
+            flex-direction: column;
+            gap: $space-1;
+        }
+
+        .profile-meta-label {
+            flex-basis: auto;
+        }
+    }
+}
+
+@keyframes profileReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

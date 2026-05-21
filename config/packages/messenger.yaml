@@ -26,4 +26,4 @@ framework:
         failure_transport: failed
         routing:
             App\Message\SendEmail: async
-            App\Message\InvalidateCacheItems: async
+            App\Message\InvalidateCacheItems: sync

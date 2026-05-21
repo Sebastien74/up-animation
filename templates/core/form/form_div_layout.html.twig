@@ -60,8 +60,9 @@
         <input type="{{ type }}" {{ block('widget_attributes') }}{% if value is not empty %} value="{{ value }}" {% endif %}>
     {%- if type is defined and type == 'password' -%}
             <span class="input-group-text show-password">
-                <span class="show-icon"><i class="icon-eye"></i></span>
-                <span class="hide-icon d-none"><i class="icon-eye-slash"></i></span>
+                {%- set iconPrefix = inAdmin() ? 'icm' : 'icon' -%}
+                <span class="show-icon"><i class="{{ iconPrefix }}-eye"></i></span>
+                <span class="hide-icon d-none"><i class="{{ iconPrefix }}-eye-slash"></i></span>
             </span>
         </div>
     {%- endif -%}

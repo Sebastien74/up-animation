@@ -1,0 +1,22 @@
+{%- extends 'core/email/base.html.twig' -%}
+
+{%- trans_default_domain 'front_default' -%}
+
+{%- block metaTitle -%}{{ "Votre code de vérification"|trans|htmlEntities }}{%- endblock -%}
+
+{%- block preheader -%}{%- endblock -%}
+
+{%- block info -%}
+    {{ "Cet e-mail vous a été envoyé suite à une tentative de connexion à votre espace personnel."|trans|raw }}
+{%- endblock -%}
+
+{%- block body -%}
+    <tr>
+        <td id="content-fixtures" align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+            <p>{{ "Bonjour,"|trans|raw }}</p>
+            <p>{{ "Voici votre code de vérification pour finaliser la connexion :"|trans|raw }}</p>
+            <p style="font-size: 28px; letter-spacing: 6px; font-weight: bold; margin: 24px 0;">{{ code }}</p>
+            <p>{{ "Ce code expire après un court délai. Si vous n'êtes pas à l'origine de cette connexion, ignorez simplement cet e-mail et envisagez de changer votre mot de passe."|trans|raw }}</p>
+        </td>
+    </tr>
+{%- endblock -%}

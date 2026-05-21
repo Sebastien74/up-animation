@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}" data-nonce="{{ csp_nonce() }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noindex, nofollow">
+        <title>{{ "Vérification en deux étapes"|trans({}, 'security')|htmlEntities }}</title>
+        {%- block stylesheets -%}
+            {{ encore_entry_link_tags('security', null, 'security', {nonce: csp_nonce()}) }}
+        {%- endblock -%}
+    </head>
+    <body class="bg-light">
+        <main class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-4 p-md-5">
+                            <h1 class="h4 mb-3">{{ "Vérification en deux étapes"|trans({}, 'security')|raw }}</h1>
+                            <p class="text-muted mb-4">
+                                {{ "Un code de vérification vient d'être envoyé à votre adresse email."|trans({}, 'security')|raw }}
+                            </p>
+
+                            {%- if authenticationError -%}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ authenticationError|trans(authenticationErrorData, 'security')|raw }}
+                                </div>
+                            {%- endif -%}
+
+                            <form method="post" action="{{ path('2fa_front_login_check') }}" novalidate>
+                                <div class="mb-3">
+                                    <label for="_auth_code" class="form-label">{{ "Code reçu par email"|trans({}, 'security') }}</label>
+                                    <input type="text" id="_auth_code" name="_auth_code"
+                                           class="form-control form-control-lg text-center"
+                                           autocomplete="one-time-code"
+                                           inputmode="numeric"
+                                           pattern="[0-9]*"
+                                           maxlength="6"
+                                           autofocus required>
+                                </div>
+
+                                {%- if isCsrfProtectionEnabled -%}
+                                    <input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}">
+                                {%- endif -%}
+
+                                <button type="submit" class="btn btn-primary w-100">
+                                    {{ "Valider"|trans({}, 'security')|raw }}
+                                </button>
+
+                                <a href="{{ path('app_logout') }}" class="d-block text-center text-muted mt-3 fz-small">
+                                    {{ "Annuler et se déconnecter"|trans({}, 'security')|raw }}
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

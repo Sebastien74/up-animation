@@ -43,6 +43,19 @@ class UserFrontRepository extends ServiceEntityRepository
     }
 
     /**
+     * Find UserFront ordered by email alphabetically.
+     *
+     * @return array<UserFront>
+     */
+    public function findAllEmailAlphabetical(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.email', 'ASC')
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
      * Find users with token not NULL.
      */
     public function findHaveToken()

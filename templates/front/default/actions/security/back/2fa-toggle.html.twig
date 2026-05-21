@@ -1,0 +1,23 @@
+{%- trans_default_domain 'front_default' -%}
+
+<section id="user-2fa-toggle" class="mt-4 mb-4">
+    <h3>{{ "Sécurité du compte"|trans|raw }}</h3>
+    <p class="text-muted mb-3">
+        {{ "Activez la vérification en deux étapes pour recevoir un code par e-mail à chaque connexion."|trans|raw }}
+    </p>
+
+    <form method="post" action="{{ path('security_front_2fa_toggle') }}" class="d-flex align-items-center">
+        <input type="hidden" name="_token" value="{{ csrf_token('front_2fa_toggle') }}">
+        {%- if user.emailAuthEnabled -%}
+            <span class="badge bg-success me-3">{{ "Activée"|trans|raw }}</span>
+            <button type="submit" class="btn btn-outline-secondary btn-sm">
+                {{ "Désactiver la double authentification"|trans|raw }}
+            </button>
+        {%- else -%}
+            <span class="badge bg-secondary me-3">{{ "Désactivée"|trans|raw }}</span>
+            <button type="submit" class="btn btn-primary btn-sm">
+                {{ "Activer la double authentification"|trans|raw }}
+            </button>
+        {%- endif -%}
+    </form>
+</section>

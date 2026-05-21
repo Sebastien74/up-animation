@@ -1,0 +1,43 @@
+/* -----------------------------------------------------------------
+
+    Module : Two-factor authentication (security entry)
+    Copyright : 2026
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    Styles for the admin 2FA onboarding / challenge templates rendered
+    inside the security login layout (security/base.html.twig).
+
+------------------------------------------------------------------ */
+
+/*! purgecss start ignore */
+
+.qr-wrap {
+    max-width: 220px;
+
+    svg {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+}
+
+.two-factor-tabs {
+
+    .nav-link {
+        color: transparentize($white, .35);
+    }
+
+    .nav-link.active {
+        color: $white;
+    }
+}
+
+.backup-codes-list {
+    font-size: 1.05rem;
+}
+
+details > summary {
+    cursor: pointer;
+}
+
+/*! purgecss end ignore */

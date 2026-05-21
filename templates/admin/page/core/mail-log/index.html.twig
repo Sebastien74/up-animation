@@ -109,7 +109,7 @@
                                 {{ entity.toEmails|join(', ') }}
                             </td>
                             <td class="align-middle px-4" data-label="{{"Sujet"|trans|raw }}">
-                                <span class="mail-subject" title="{{ entity.subject }}">{{ entity.subject ?: '—' }}</span>
+                                <span class="mail-subject" title="{{ entity.subject }}">{{ entity.subject ?: '-' }}</span>
                             </td>
                             <td class="align-middle text-end px-4" data-label="{{"Actions"|trans|raw }}">
                                 <div class="d-flex justify-content-end align-items-center gap-2">

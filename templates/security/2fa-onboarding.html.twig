@@ -1,0 +1,164 @@
+{%- extends 'security/base.html.twig' -%}
+
+{%- trans_default_domain 'security_cms' -%}
+
+{%- block title -%}{{ "Activation de la double authentification"|trans|htmlEntities }}{%- endblock -%}
+
+{%- set isSwitchMode = (switchMode|default(null)) == 'from_email' -%}
+
+{%- block body -%}
+    {%- if state == 'just_enabled' -%}
+
+        <div class="info-request mb-4 text-center">
+            <h5 class="text-white mb-2">
+                {%- if isSwitchMode -%}
+                    {{ "Mode d'authentification modifié"|trans|raw }}
+                {%- else -%}
+                    {{ "Double authentification activée"|trans|raw }}
+                {%- endif -%}
+            </h5>
+            <p class="text-white-50 mb-0">
+                {%- if isSwitchMode -%}
+                    {{ "L'authentification par e-mail a été désactivée. Conservez ces codes de secours en lieu sûr - ils ne seront plus affichés et chacun ne sert qu'une fois."|trans|raw }}
+                {%- else -%}
+                    {{ "Conservez ces codes de secours en lieu sûr - ils ne seront plus affichés et chacun ne sert qu'une fois."|trans|raw }}
+                {%- endif -%}
+            </p>
+        </div>
+
+        <ul class="list-unstyled bg-white rounded p-3 mb-4 text-center font-monospace backup-codes-list">
+            {%- for code in backupCodes -%}
+                <li class="py-1">{{ code }}</li>
+            {%- endfor -%}
+        </ul>
+
+        <a href="{{ path('admin_dashboard', {website: website}) }}" class="text-uppercase btn-app center w-100">
+            {{ "J'ai noté mes codes - accéder au back-office"|trans|raw }}
+        </a>
+
+    {%- else -%}
+
+        <div class="info-request mb-4 text-center">
+            <h5 class="text-white mb-2">
+                {%- if isSwitchMode -%}
+                    {{ "Passer à l'application d'authentification"|trans|raw }}
+                {%- else -%}
+                    {{ "Activer la double authentification"|trans|raw }}
+                {%- endif -%}
+            </h5>
+            <p class="text-white-50 mb-0">
+                {%- if isSwitchMode -%}
+                    {{ "Scannez le QR code puis validez le premier code pour basculer. Votre authentification par e-mail sera automatiquement désactivée."|trans|raw }}
+                {%- else -%}
+                    {{ "Choisissez votre méthode de vérification."|trans|raw }}
+                {%- endif -%}
+            </p>
+        </div>
+
+        {%- if not isSwitchMode -%}
+            <ul class="nav nav-pills nav-fill mb-4 two-factor-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tab-totp-btn" data-bs-toggle="tab" data-bs-target="#tab-totp"
+                            type="button" role="tab" aria-controls="tab-totp" aria-selected="true">
+                        <i class="icon-mobile me-1"></i>{{ "Application"|trans|raw }}
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-email-btn" data-bs-toggle="tab" data-bs-target="#tab-email"
+                            type="button" role="tab" aria-controls="tab-email" aria-selected="false">
+                        <i class="icon-envelope me-1"></i>{{ "E-mail"|trans|raw }}
+                    </button>
+                </li>
+            </ul>
+        {%- endif -%}
+
+        <div class="tab-content">
+
+            <div class="tab-pane fade show active" id="tab-totp" role="tabpanel" aria-labelledby="tab-totp-btn">
+                <p class="text-white-50 fz-small mb-3">
+                    {{ "Scannez le QR code avec Google Authenticator, Authy, 1Password… puis saisissez le code à 6 chiffres généré."|trans|raw }}
+                </p>
+
+                <div class="qr-wrap mb-3 mx-auto text-center">
+                    {{ qrSvg|raw }}
+                </div>
+
+                <details class="text-white-50 mb-4">
+                    <summary class="fz-small">
+                        {{ "Impossible de scanner ? Saisir manuellement la clé"|trans|raw }}
+                    </summary>
+                    <div class="mt-2">
+                        <div class="input-group input-group-sm">
+                            <input type="text" id="totp-secret" readonly class="form-control" value="{{ secret }}" onclick="this.select()">
+                            <button type="button" class="btn btn-outline-light"
+                                    data-copy-target="#totp-secret"
+                                    data-copy-label="{{ 'Copier la clé'|trans|striptags }}"
+                                    data-copy-label-done="{{ 'Copiée'|trans|striptags }}">
+                                <i class="icon-copy"></i>
+                                <span class="ms-1">{{ "Copier"|trans|raw }}</span>
+                            </button>
+                        </div>
+                        <small class="d-block mt-1 d-md-none">
+                            {{ "Sur mobile, ce lien ouvre directement l'application :"|trans|raw }}
+                            <a href="{{ qrContent }}" class="text-white">{{ "ouvrir"|trans|raw }}</a>
+                        </small>
+                    </div>
+                </details>
+
+                {%- if error == 'invalid_code' -%}
+                    {%- include 'security/includes/alert.html.twig' with {
+                        alert: 'danger',
+                        message: "Code invalide, vérifiez l'heure de votre appareil et réessayez."|trans,
+                    } only -%}
+                {%- endif -%}
+
+                <form method="post" class="security">
+                    <div class="mb-3">
+                        <label for="_auth_code" class="form-label text-white">{{ "Code à 6 chiffres"|trans }}</label>
+                        <input type="text" id="_auth_code" name="_auth_code"
+                               class="form-control form-control-lg text-center"
+                               autocomplete="one-time-code"
+                               inputmode="numeric"
+                               pattern="[0-9]*"
+                               maxlength="6"
+                               placeholder="123 456"
+                               autofocus required>
+                    </div>
+                    <button type="submit" class="text-uppercase btn-app center w-100">
+                        <i class="icon-check me-2"></i>
+                        {%- if isSwitchMode -%}
+                            {{ "Valider le nouveau code"|trans|raw }}
+                        {%- else -%}
+                            {{ "Valider et activer"|trans|raw }}
+                        {%- endif -%}
+                    </button>
+                </form>
+
+                {%- if isSwitchMode -%}
+                    <p class="text-center mt-3 mb-0">
+                        <a href="{{ path('admin_2fa_setup', {website: website}) }}" class="text-white-50 fz-small">
+                            {{ "Annuler et revenir à la gestion"|trans|raw }}
+                        </a>
+                    </p>
+                {%- endif -%}
+            </div>
+
+            {%- if not isSwitchMode -%}
+                <div class="tab-pane fade" id="tab-email" role="tabpanel" aria-labelledby="tab-email-btn">
+                    <p class="text-white-50 fz-small mb-3">
+                        {{ "Un code unique à 6 chiffres vous sera envoyé par e-mail à chaque connexion."|trans|raw }}
+                    </p>
+
+                    <form method="post" action="{{ path('admin_2fa_email_enable', {website: website}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('2fa_email_enable') }}">
+                        <button type="submit" class="text-uppercase btn-app center w-100">
+                            <i class="icon-envelope me-2"></i>{{ "Activer la double authentification par e-mail"|trans|raw }}
+                        </button>
+                    </form>
+                </div>
+            {%- endif -%}
+
+        </div>
+
+    {%- endif -%}
+{%- endblock -%}

@@ -1,0 +1,28 @@
+# See the configuration reference at https://symfony.com/bundles/SchebTwoFactorBundle/6.x/configuration.html
+scheb_two_factor:
+    security_tokens:
+        - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+        - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken
+
+    # TOTP via Google Authenticator / Authy / 1Password / Bitwarden (admin firewall only)
+    google:
+        enabled: true
+        server_name: 'Admin'
+        issuer: 'Admin'
+        digits: 6
+        leeway: 1
+        template: 'security/2fa-form.html.twig'
+
+    # Email code (admin firewall + user_front firewall) — dispatcher chooses
+    # the right layout (security base for admin, standalone Bootstrap for front)
+    # based on the current request path.
+    email:
+        enabled: true
+        digits: 6
+        template: 'security/2fa-email-dispatcher.html.twig'
+        mailer: App\Security\TwoFactor\AuthCodeMailer
+
+    # Recovery backup codes (admin only)
+    backup_codes:
+        enabled: true
+        manager: App\Security\TwoFactor\BackupCodeManager

@@ -58,7 +58,7 @@
                                 <span class="cell-strong">{{ entity.fromName }}</span>
                                 <span class="cell-muted">&lt;{{ entity.fromEmail }}&gt;</span>
                             {%- else -%}
-                                {{ entity.fromEmail|default('—') }}
+                                {{ entity.fromEmail|default('-') }}
                             {%- endif -%}
                         </span>
                     </div>

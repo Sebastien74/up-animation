@@ -37,6 +37,17 @@
 
 /*! purgecss start ignore */
 
+#security-body {
+
+    @include mediaQuery(max-lg) {
+        padding-top: 5rem;
+    }
+
+    @include mediaQuery(min-lg) {
+        padding-top: 7rem;
+    }
+}
+
 #form-login {
 
     .checkbox-group {

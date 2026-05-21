@@ -56,6 +56,14 @@ security:
             login_throttling:
                 max_attempts: 3
                 interval: '15 minutes'
+            two_factor:
+                auth_form_path: 2fa_admin_login
+                check_path: 2fa_admin_login_check
+                enable_csrf: true
+            logout:
+                path: /secure/user/logout
+                target: front_index
+                invalidate_session: true
 
         #        auth_api:
         #            pattern: ^/security/connect/(facebook|google)/check
@@ -98,6 +106,14 @@ security:
             login_throttling:
                 max_attempts: 3
                 interval: '15 minutes'
+            two_factor:
+                auth_form_path: 2fa_front_login
+                check_path: 2fa_front_login_check
+                enable_csrf: true
+            logout:
+                path: /espace-personnel/logout
+                target: front_index
+                invalidate_session: true
 
         main:
             pattern: ^/
@@ -118,6 +134,9 @@ security:
 
     # Note: Only the *first* access control that matches will be used
     access_control:
+        # 2FA gate — partial authentication while user is on the 2FA form
+        - { path: '^/secure/user/2fa', roles: IS_AUTHENTICATED_2FA_IN_PROGRESS, requires_channel: '%env(SECURE_SCHEME)%' }
+        - { path: '^/espace-personnel/2fa', roles: IS_AUTHENTICATED_2FA_IN_PROGRESS, requires_channel: '%env(SECURE_SCHEME)%' }
         - { path: '^/secure/user', roles: PUBLIC_ACCESS, requires_channel: '%env(SECURE_SCHEME)%' }
         - { path: '^/(espace-personnel|personal-space|espacio-personal|spazio-personale)/', role: PUBLIC_ACCESS, requires_channel: '%env(SECURE_SCHEME)%' }
         - { path: '^/admin', roles: [ IS_AUTHENTICATED_FULLY, ROLE_ADMIN ], requires_channel: '%env(SECURE_SCHEME)%' }

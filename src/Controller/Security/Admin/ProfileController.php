@@ -36,8 +36,17 @@ class ProfileController extends AdminController
             throw $this->createAccessDeniedException($this->coreLocator->translator()->trans('Accès refusé.', [], 'security_cms'));
         }
 
-        return $this->adminRender('admin/page/security/profile.html.twig', [
+        $this->breadcrumb($request);
+
+        return $this->adminRender('admin/page/security/profile.html.twig', array_merge($this->arguments, [
             'user' => $user,
-        ]);
+        ]));
+    }
+
+    protected function breadcrumb(Request $request, array $items = []): void
+    {
+        $items[$this->coreLocator->translator()->trans('Profil', [], 'admin_breadcrumb')] = $request->getPathInfo();
+
+        parent::breadcrumb($request, $items);
     }
 }

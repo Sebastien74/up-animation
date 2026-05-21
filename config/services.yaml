@@ -71,6 +71,11 @@ services:
         tags:
             - { name: kernel.event_subscriber, priority: 20 }
 
+    App\EventSubscriber\AdminTwoFactorRequiredSubscriber:
+        lazy: true
+        tags:
+            - { name: kernel.event_subscriber }
+
     App\EventSubscriber\SlowRequestSubscriber:
         arguments:
             $slowRequestLogger: '@monolog.logger.slow_request'
@@ -145,6 +150,15 @@ services:
 
     mmi.dbal.mysql_platform:
         class: App\Service\Doctrine\MySqlPlatform
+
+    #####################################
+    #         Two-factor auth           #
+    #####################################
+
+    App\Security\TwoFactor\AuthCodeMailer:
+        arguments:
+            $senderEmail: 'noreply@agence-felix.fr'
+            $senderName: 'No-reply'
 
 when@dev:
     services:

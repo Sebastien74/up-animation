@@ -27,10 +27,20 @@
                 {%- set title = 'secure-page'|moduleActive(configuration) ? 'Liste des administrateurs'|trans : 'Liste des utilisateurs'|trans -%}
                 <a href="{{ path('admin_user_index', {website: websiteId}) }}" {% if 'security/users/' in requestUri and 'security/users/categories' not in requestUri %} class="active" {% endif %}>{{ title }}</a>
             </li>
+            {%- if website.security and website.security.adminTwoFactorAuth -%}
+                <li>
+                    <a href="{{ path('admin_2fa_users_index', {website: websiteId}) }}" {% if 'security/2fa/users' in requestUri and 'security/2fa/users-front' not in requestUri %} class="active" {% endif %}>{{ "Double authentification admin"|trans|raw }}</a>
+                </li>
+            {%- endif -%}
             {%- if 'secure-page'|moduleActive(configuration) -%}
                 <li>
                     <a href="{{ path('admin_userfront_index', {website: websiteId}) }}" {% if 'security/users-front' in requestUri %} class="active" {% endif %}>{{ "Liste des utilisateurs front"|trans|raw }}</a>
                 </li>
+                {%- if website.security and website.security.frontTwoFactorAuth -%}
+                    <li>
+                        <a href="{{ path('admin_2fa_users_front_index', {website: websiteId}) }}" {% if 'security/2fa/users-front' in requestUri %} class="active" {% endif %}>{{ "Double authentification front"|trans|raw }}</a>
+                    </li>
+                {%- endif -%}
             {%- endif -%}
             {%- if 'secure-page'|moduleActive(configuration) and granted('ROLE_INTERNAL') -%}
                 <li>

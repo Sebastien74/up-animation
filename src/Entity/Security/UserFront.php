@@ -9,6 +9,7 @@ use App\Entity\Core\Website;
 use App\Repository\Security\UserFrontRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface as EmailTwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     message: '',
     errorPath: 'login'
 )]
-class UserFront extends BaseSecurity
+class UserFront extends BaseSecurity implements EmailTwoFactorInterface
 {
     /**
      * Configurations.
@@ -74,6 +75,12 @@ class UserFront extends BaseSecurity
     #[ORM\ManyToOne(targetEntity: Website::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Website $website = null;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $emailAuthEnabled = false;
+
+    #[ORM\Column(type: Types::STRING, length: 10, nullable: true)]
+    private ?string $emailAuthCode = null;
 
     public function getId(): ?int
     {
@@ -162,5 +169,33 @@ class UserFront extends BaseSecurity
         $this->website = $website;
 
         return $this;
+    }
+
+    public function isEmailAuthEnabled(): bool
+    {
+        return $this->emailAuthEnabled
+            && ($this->website?->getSecurity()?->isFrontTwoFactorAuth() ?? false);
+    }
+
+    public function setEmailAuthEnabled(bool $emailAuthEnabled): static
+    {
+        $this->emailAuthEnabled = $emailAuthEnabled;
+
+        return $this;
+    }
+
+    public function getEmailAuthRecipient(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getEmailAuthCode(): ?string
+    {
+        return $this->emailAuthCode;
+    }
+
+    public function setEmailAuthCode(string $authCode): void
+    {
+        $this->emailAuthCode = $authCode;
     }
 }

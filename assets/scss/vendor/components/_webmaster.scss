@@ -42,6 +42,7 @@ $danger: #a82835;
 $white: #fff;
 $black: #000;
 $icon-color: transparentize($white, .2);
+$md: 768px !default;
 $lg: 992px !default;
 $transition-base-timing: cubic-bezier(0.65, 0, 0.35, 1) !default;
 
@@ -49,7 +50,7 @@ html body {
 
     &.axeptio-active {
         #webmaster-box {
-            @media only screen and (max-width: 767px) {
+            @include mediaQuery(max-md) {
                 bottom: 70px !important;
             }
         }
@@ -57,7 +58,7 @@ html body {
 
     &:not(.axeptio-active) {
         #webmaster-box {
-            @media only screen and (max-width: 767px) {
+            @include mediaQuery(max-md) {
                 bottom: 20px !important;
             }
         }
@@ -75,21 +76,35 @@ html body #webmaster-box {
     text-align: center !important;
     transition: transform .3s $transition-base-timing !important;
 
+    .webmaster-btn.btn-login,
     #webmaster-box-dropdown {
         position: fixed !important;
         left: 20px !important;
         z-index: 9999 !important;
     }
 
-    @media only screen and (min-width: 768px) {
+    @media only screen and (min-width: 767px) {
 
-        &.bottom {
-            #webmaster-box-dropdown {
-                bottom: 10% !important;
-            }
+        &.bottom .webmaster-btn.btn-login,
+        &.bottom #webmaster-box-dropdown {
+            bottom: 10% !important;
         }
 
-        &:not(.bottom) #webmaster-box-dropdown  {
+        &:not(.bottom) .webmaster-btn.btn-login,
+        &:not(.bottom) #webmaster-box-dropdown {
+            top: 75px !important;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+
+        &.bottom .webmaster-btn.btn-login,
+        &.bottom #webmaster-box-dropdown {
+            bottom: 10% !important;
+        }
+
+        &:not(.bottom) .webmaster-btn.btn-login,
+        &:not(.bottom) #webmaster-box-dropdown {
             top: 75px !important;
         }
     }

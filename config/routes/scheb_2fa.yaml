@@ -1,0 +1,15 @@
+2fa_admin_login:
+    path: /secure/user/2fa
+    defaults:
+        _controller: 'scheb_two_factor.form_controller::form'
+
+2fa_admin_login_check:
+    path: /secure/user/2fa-check
+
+2fa_front_login:
+    path: /espace-personnel/2fa
+    defaults:
+        _controller: 'scheb_two_factor.form_controller::form'
+
+2fa_front_login_check:
+    path: /espace-personnel/2fa-check

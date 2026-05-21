@@ -108,6 +108,15 @@ class SecurityType extends AbstractType
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
         ]);
 
+        $builder->add('adminTwoFactorAuth', Type\CheckboxType::class, [
+            'required' => false,
+            'display' => 'button',
+            'color' => 'app',
+            'label' => $this->translator->trans('Activer la double authentification', [], 'admin'),
+            'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
+        ]);
+
         $builder->add('adminPasswordDelay', Type\IntegerType::class, [
             'label' => $this->translator->trans('Validité des mots de passe (nbr jours)', [], 'admin'),
             'attr' => [
@@ -173,6 +182,15 @@ class SecurityType extends AbstractType
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
 
+            $builder->add('frontTwoFactorAuth', Type\CheckboxType::class, [
+                'required' => false,
+                'display' => 'button',
+                'color' => 'app',
+                'label' => $this->translator->trans('Activer la double authentification', [], 'admin'),
+                'attr' => ['class' => 'col-12 w-100'],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
+            ]);
+
             $builder->add('frontPageRedirection', EntityType::class, [
                 'required' => false,
                 'display' => 'search',
@@ -219,8 +237,6 @@ class SecurityType extends AbstractType
                     $this->translator->trans('Adresse', [], 'admin') => 'addresses',
                     $this->translator->trans('Mot de passe', [], 'admin') => 'plainPassword',
                     $this->translator->trans('Conditions générales', [], 'admin') => 'agreeTerms',
-                    $this->translator->trans('Facebook Connect', [], 'admin') => 'facebookConnect',
-                    $this->translator->trans('Google Connect', [], 'admin') => 'googleConnect',
                 ],
                 'multiple' => true,
                 'display' => 'search',

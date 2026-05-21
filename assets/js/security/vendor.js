@@ -58,6 +58,35 @@ if (inputPwd) {
     }).catch(error => console.error(error.message));
 }
 
+/** Bootstrap Tab — loaded only when a tab trigger exists on the page */
+const tabTriggers = document.querySelectorAll('[data-bs-toggle="tab"]');
+if (tabTriggers.length > 0) {
+    import('bootstrap/js/dist/tab').then(({default: Tab}) => {
+        tabTriggers.forEach(el => new Tab(el));
+    }).catch(error => console.error(error.message));
+}
+
+/** Generic copy-to-clipboard for [data-copy-target] buttons */
+document.querySelectorAll('[data-copy-target]').forEach(btn => {
+    const label = btn.querySelector('span');
+    const original = label ? label.textContent : null;
+    const done = btn.dataset.copyLabelDone || 'Copied';
+
+    btn.addEventListener('click', () => {
+        const target = document.querySelector(btn.dataset.copyTarget);
+        if (!target) return;
+        const value = ('value' in target) ? target.value : target.textContent;
+        navigator.clipboard.writeText(value).then(() => {
+            if (label) label.textContent = done;
+            btn.classList.add('copied');
+            setTimeout(() => {
+                if (label && original !== null) label.textContent = original;
+                btn.classList.remove('copied');
+            }, 1500);
+        }).catch(error => console.error(error.message));
+    });
+});
+
 /** 4 - Recaptcha */
 let formSecurity = document.querySelectorAll('form.security')
 if (formSecurity.length > 0) {

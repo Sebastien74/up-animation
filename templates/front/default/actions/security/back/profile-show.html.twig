@@ -74,6 +74,7 @@
                             {{ addresses.billing|address(website) }}
                         </section>
                     {%- endif -%}
+                    {%- include 'front/default/actions/security/back/2fa-toggle.html.twig' with {user: user} only -%}
                 </div>
                 <div class="col-md-4 d-flex justify-content-center justify-content-lg-end">
                     {{ asset(user|profile_img)|file({}, {maxHeight: 100}) }}

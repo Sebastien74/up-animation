@@ -144,7 +144,7 @@ class UserController extends AdminController
     }
 
     /**
-     * Check if current User is allowed to edit internal entities.
+     * Check if the current User is allowed to edit internal entities.
      *
      * @throws InvalidArgumentException
      */

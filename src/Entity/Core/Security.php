@@ -61,6 +61,9 @@ class Security extends BaseInterface
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $adminPasswordSecurity = false;
 
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $adminTwoFactorAuth = false;
+
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Assert\NotBlank]
     private int $adminPasswordDelay = 365;
@@ -82,6 +85,9 @@ class Security extends BaseInterface
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $frontPasswordSecurity = false;
+
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $frontTwoFactorAuth = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $frontCustomTemplate = false;
@@ -196,6 +202,18 @@ class Security extends BaseInterface
         return $this;
     }
 
+    public function isAdminTwoFactorAuth(): bool
+    {
+        return $this->adminTwoFactorAuth;
+    }
+
+    public function setAdminTwoFactorAuth(bool $adminTwoFactorAuth): static
+    {
+        $this->adminTwoFactorAuth = $adminTwoFactorAuth;
+
+        return $this;
+    }
+
     public function getAdminPasswordDelay(): ?int
     {
         return $this->adminPasswordDelay;
@@ -276,6 +294,18 @@ class Security extends BaseInterface
     public function setFrontPasswordSecurity(bool $frontPasswordSecurity): static
     {
         $this->frontPasswordSecurity = $frontPasswordSecurity;
+
+        return $this;
+    }
+
+    public function isFrontTwoFactorAuth(): bool
+    {
+        return $this->frontTwoFactorAuth;
+    }
+
+    public function setFrontTwoFactorAuth(bool $frontTwoFactorAuth): static
+    {
+        $this->frontTwoFactorAuth = $frontTwoFactorAuth;
 
         return $this;
     }

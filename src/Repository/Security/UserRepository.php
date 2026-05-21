@@ -45,12 +45,28 @@ class UserRepository extends ServiceEntityRepository
     /**
      * Find User Email order alphabetical.
      *
+     * When $excludeInternal is true, users whose group carries the ROLE_INTERNAL
+     * role are filtered out at the SQL level (NOT IN sub-query).
+     *
      * @return array<User>
      */
-    public function findAllEmailAlphabetical(): array
+    public function findAllEmailAlphabetical(bool $excludeInternal = false): array
     {
-        return $this->createQueryBuilder('u')
-            ->orderBy('u.email', 'ASC')
+        $qb = $this->createQueryBuilder('u');
+
+        if ($excludeInternal) {
+            $sub = $this->getEntityManager()->createQueryBuilder()
+                ->select('u2.id')
+                ->from(User::class, 'u2')
+                ->join('u2.group', 'g2')
+                ->join('g2.roles', 'r2')
+                ->where('r2.name = :internalRole');
+
+            $qb->andWhere($qb->expr()->notIn('u.id', $sub->getDQL()))
+                ->setParameter('internalRole', 'ROLE_INTERNAL');
+        }
+
+        return $qb->orderBy('u.email', 'ASC')
             ->getQuery()
             ->execute();
     }

@@ -47,6 +47,14 @@
                class="btn-icon">
                 <i class="icm-{{ themeIcon }}"></i>
             </a>
+            <a href="{{ path('admin_user_profile', {website: website.id, user: app.user.id}) }}"
+               aria-label="{{ "Mon profil"|trans|striptags }}"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title="{{ "Mon profil"|trans|striptags }}"
+               class="btn-icon">
+                <i class="icm-user"></i>
+            </a>
             {%- if isAllowedToSwitch and not is_granted('IS_IMPERSONATOR') -%}
                 <a id="users-switcher-btn" data-path="{{ path('admin_user_switcher', {website: website.id, type: 'admin'}) }}"
                    class="btn-icon cursor"

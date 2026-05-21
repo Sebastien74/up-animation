@@ -12,6 +12,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
+use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface as EmailTwoFactorInterface;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface as GoogleTwoFactorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -35,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         joinTable: new ORM\JoinTable(name: 'security_users_websites')
     ),
 ])]
-class User extends BaseSecurity
+class User extends BaseSecurity implements GoogleTwoFactorInterface, EmailTwoFactorInterface, BackupCodeInterface
 {
     /**
      * Configurations.
@@ -70,6 +73,24 @@ class User extends BaseSecurity
     #[ORM\ManyToMany(targetEntity: Website::class)]
     #[ORM\OrderBy(['adminName' => 'ASC'])]
     private ArrayCollection|PersistentCollection $websites;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $googleAuthenticatorSecret = null;
+
+    /**
+     * @var list<string>
+     */
+    #[ORM\Column(type: Types::JSON)]
+    private array $backupCodes = [];
+
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
+    private bool $emailAuthEnabled = false;
+
+    #[ORM\Column(type: Types::STRING, length: 10, nullable: true)]
+    private ?string $emailAuthCode = null;
+
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
+    private bool $disabledAuth = false;
 
     /**
      * User constructor.
@@ -165,6 +186,111 @@ class User extends BaseSecurity
     public function removeWebsite(Website $website): static
     {
         $this->websites->removeElement($website);
+
+        return $this;
+    }
+
+    public function isGoogleAuthenticatorEnabled(): bool
+    {
+        return null !== $this->googleAuthenticatorSecret && $this->isAdminTwoFactorAllowedByWebsite();
+    }
+
+    public function getGoogleAuthenticatorUsername(): string
+    {
+        return $this->getUserIdentifier();
+    }
+
+    public function getGoogleAuthenticatorSecret(): ?string
+    {
+        return $this->googleAuthenticatorSecret;
+    }
+
+    public function setGoogleAuthenticatorSecret(?string $googleAuthenticatorSecret): static
+    {
+        $this->googleAuthenticatorSecret = $googleAuthenticatorSecret;
+
+        return $this;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getBackupCodes(): array
+    {
+        return $this->backupCodes;
+    }
+
+    /**
+     * @param list<string> $backupCodes
+     */
+    public function setBackupCodes(array $backupCodes): static
+    {
+        $this->backupCodes = array_values($backupCodes);
+
+        return $this;
+    }
+
+    public function isBackupCode(string $code): bool
+    {
+        return in_array($code, $this->backupCodes, true);
+    }
+
+    public function invalidateBackupCode(string $code): void
+    {
+        $key = array_search($code, $this->backupCodes, true);
+        if (false !== $key) {
+            unset($this->backupCodes[$key]);
+            $this->backupCodes = array_values($this->backupCodes);
+        }
+    }
+
+    public function isEmailAuthEnabled(): bool
+    {
+        return $this->emailAuthEnabled && $this->isAdminTwoFactorAllowedByWebsite();
+    }
+
+    /**
+     * Looks at the first linked Website's Security to determine if admin 2FA is
+     * globally enabled. Admin users are linked to multiple websites; the first
+     * is used as the canonical reference for this check.
+     */
+    private function isAdminTwoFactorAllowedByWebsite(): bool
+    {
+        $website = $this->websites->first() ?: null;
+
+        return $website?->getSecurity()?->isAdminTwoFactorAuth() ?? false;
+    }
+
+    public function setEmailAuthEnabled(bool $emailAuthEnabled): static
+    {
+        $this->emailAuthEnabled = $emailAuthEnabled;
+
+        return $this;
+    }
+
+    public function getEmailAuthRecipient(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getEmailAuthCode(): ?string
+    {
+        return $this->emailAuthCode;
+    }
+
+    public function setEmailAuthCode(string $authCode): void
+    {
+        $this->emailAuthCode = $authCode;
+    }
+
+    public function isDisabledAuth(): bool
+    {
+        return $this->disabledAuth;
+    }
+
+    public function setDisabledAuth(bool $disabledAuth): static
+    {
+        $this->disabledAuth = $disabledAuth;
 
         return $this;
     }

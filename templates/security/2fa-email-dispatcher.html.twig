@@ -1,0 +1,9 @@
+{#-
+    Dispatcher : Scheb 2FA email config is global per-provider, but admin and front
+    firewalls need different layouts. We pick the right template from the request path.
+-#}
+{%- if app.request.pathInfo starts with '/secure/user' -%}
+    {%- include 'security/2fa-email-form.html.twig' with _context only -%}
+{%- else -%}
+    {%- include 'front/default/actions/security/front/2fa-form.html.twig' with _context only -%}
+{%- endif -%}

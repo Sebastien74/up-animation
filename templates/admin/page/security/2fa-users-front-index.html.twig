@@ -1,0 +1,93 @@
+{%- extends "admin/base.html.twig" -%}
+
+{%- trans_default_domain 'security_cms' -%}
+
+{%- block title -%}{{ "Double authentification - utilisateurs front"|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Double authentification - utilisateurs front"|raw }}{%- endblock -%}
+
+{%- block body -%}
+    <div id="entities-index-page" class="index-container position-relative">
+
+        {%- include 'admin/include/alert.html.twig' with {
+            alert: 'info',
+            display: 'alert',
+            message: "Gérez l'authentification par e-mail des utilisateurs du front. Seule la méthode par e-mail est disponible pour cette catégorie : un code unique leur sera envoyé à chaque connexion lorsque la double authentification est active."|trans,
+        } only -%}
+
+        <div id="result" class="mt-4">
+            <div id="entities-index">
+                <div class="table-responsive app-table">
+                    <table class="table table-striped responsive-cards">
+                        <thead>
+                            <tr>
+                                <th class="px-4">{{ "Utilisateur"|trans|raw }}</th>
+                                <th class="px-4 text-center">{{ "E-mail"|trans|raw }}</th>
+                                <th class="text-end px-4">{{ "Actions"|trans|raw }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%- for u in users -%}
+                                <tr id="entity-row-{{ u.id }}" data-id="{{ u.id }}">
+                                    <td class="align-middle px-4">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span>{{ u.email }}</span>
+                                            {%- if u.login -%}
+                                                <span>({{ u.login }})</span>
+                                            {%- endif -%}
+                                        </div>
+                                    </td>
+                                    <td class="text-center align-middle px-4">
+                                        {%- if u.emailAuthEnabled -%}
+                                            <span class="badge badge-2fa is-active rounded-pill">
+                                                <i class="icm-check me-1"></i>{{ "Active"|trans|raw }}
+                                            </span>
+                                        {%- else -%}
+                                            <span class="badge badge-2fa is-inactive rounded-pill">{{ "Inactive"|trans|raw }}</span>
+                                        {%- endif -%}
+                                    </td>
+                                    <td class="text-end align-middle px-4">
+                                        <div class="d-flex justify-content-end align-items-center gap-2">
+                                            {%- if u.emailAuthEnabled -%}
+                                                <form method="post"
+                                                      action="{{ path('admin_2fa_users_front_toggle_email', {website: websiteId, user: u.id}) }}"
+                                                      onsubmit="return confirm('{{ "Désactiver l'authentification par e-mail pour cet utilisateur ?"|trans|striptags|e('js') }}');"
+                                                      class="d-inline">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('2fa_users_front_toggle_email_' ~ u.id) }}">
+                                                    <button type="submit" class="btn-icon small danger"
+                                                            data-bs-toggle="tooltip" title="{{ "Désactiver l'authentification par e-mail"|trans|striptags }}"
+                                                            aria-label="{{ "Désactiver l'authentification par e-mail"|trans|striptags }}">
+                                                        <i class="icm-power-off"></i>
+                                                    </button>
+                                                </form>
+                                            {%- else -%}
+                                                <form method="post"
+                                                      action="{{ path('admin_2fa_users_front_toggle_email', {website: websiteId, user: u.id}) }}"
+                                                      onsubmit="return confirm('{{ "Activer l'authentification par e-mail pour cet utilisateur ? Le challenge se déclenchera à sa prochaine connexion."|trans|striptags|e('js') }}');"
+                                                      class="d-inline">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('2fa_users_front_toggle_email_' ~ u.id) }}">
+                                                    <button type="submit" class="btn-icon small success"
+                                                            data-bs-toggle="tooltip" title="{{ "Activer l'authentification par e-mail"|trans|striptags }}"
+                                                            aria-label="{{ "Activer l'authentification par e-mail"|trans|striptags }}">
+                                                        <i class="icm-envelope"></i>
+                                                    </button>
+                                                </form>
+                                            {%- endif -%}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {%- else -%}
+                                <tr>
+                                    <td colspan="3" class="px-4">
+                                        <div class="py-2 d-flex align-items-center justify-content-center gap-2">
+                                            <i class="btn-icon info icm-info"></i>{{ "Aucun utilisateur."|trans|raw }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {%- endfor -%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endblock -%}

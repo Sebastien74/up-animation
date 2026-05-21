@@ -46,13 +46,19 @@ function safeList() {
 function safeListSecurity() {
     let patterns = [
         'html', 'body', 'img', 'svg', 'picture', 'sup', 'a', 'button', 'badge',
-        'is-invalid', 'invalid-feedback', 'form-floating', 'form-control',
-        'form-check', 'form-check-input', 'form-check-label', 'input-group', 'input-group-text',
+        'is-invalid', 'invalid-feedback', 'form-floating', 'form-control', 'form-label',
+        'form-check', 'form-check-input', 'form-check-label', 'input-group', 'input-group-sm', 'input-group-text',
         'preloader', 'login-register', 'login-sidebar', 'login-box', 'inner', 'fountainG', 'fountainG_1', 'fountainG_2', 'fountainG_3', 'fountainG_4', 'fountainG_5', 'fountainG_6', 'fountainG_7', 'fountainG_8',
         'row', 'header', 'message', 'progress', 'icon', 'strength-', '-icon', 'show-password',
+        'fade', 'show',
+        'nav', 'nav-pills', 'nav-tabs', 'nav-fill', 'nav-item', 'nav-link',
+        'tab-content', 'tab-pane',
+        'two-factor-tabs', 'qr-wrap', 'font-monospace', 'backup-codes-list',
+        'w-100', 'h-100', 'center',
         /active$/, /show$/,
         /m-/, /mx-/, /my-/, /mb-/, /mt-/, /ms-/, /me-/, /p-/, /px-/, /py-/, /pb-/, /pt-/, /ps-/, /pe-/, /fw-/, /fz-/, /h-0/,
         /h-100/, /d-/, /align-/, /flex-/, /justify-/, /alert-/, /badge-/, /text-/, /col-/, /btn-/, /bg-/, /icon-/,
+        /^nav-/, /^tab-/,
     ];
     return {
         standard: patterns,
@@ -439,6 +445,7 @@ Encore.setOutputPath('public/build/admin')
     .addEntry('admin-edit-in-tab', './assets/js/admin/form/edit-in-tab.js')
     .addEntry('admin-agenda', './assets/js/admin/pages/agenda.js')
     .addEntry('admin-user-profile', './assets/js/admin/pages/user-profile.js')
+    .addEntry('admin-security-2fa', './assets/js/admin/pages/security-2fa.js')
     .addEntry('admin-development', './assets/js/admin/pages/development.js')
     .addEntry('admin-website', './assets/js/admin/pages/website.js')
     .addEntry('admin-dashboard', './assets/js/admin/pages/dashboard.js')

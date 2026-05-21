@@ -1,0 +1,49 @@
+{%- extends 'security/base.html.twig' -%}
+
+{%- trans_default_domain 'security_cms' -%}
+
+{%- block title -%}{{ "Vérification en deux étapes"|trans|htmlEntities }}{%- endblock -%}
+
+{%- block body -%}
+    <div class="info-request mb-4 text-center">
+        <h5 class="text-white mb-2">{{ "Vérification en deux étapes"|trans|raw }}</h5>
+        <p class="text-white-50 fz-small mb-0">
+            {{ "Saisissez le code à 6 chiffres généré par votre application d'authentification."|trans|raw }}
+        </p>
+    </div>
+
+    {%- if authenticationError -%}
+        {%- include 'security/includes/alert.html.twig' with {
+            alert: 'danger',
+            message: authenticationError|trans(authenticationErrorData, 'security')|raw,
+        } only -%}
+    {%- endif -%}
+
+    <form class="security" method="post" action="{{ path('2fa_admin_login_check') }}" novalidate>
+        <div class="mb-3">
+            <label for="_auth_code" class="form-label text-white">{{ "Code de vérification"|trans }}</label>
+            <input type="text" id="_auth_code" name="_auth_code"
+                   class="form-control form-control-lg text-center"
+                   autocomplete="one-time-code"
+                   inputmode="numeric"
+                   pattern="[0-9A-Z\-]*"
+                   placeholder="123 456"
+                   autofocus required>
+            <small class="text-white-50 d-block mt-2">
+                {{ "Vous pouvez également utiliser un code de secours."|trans|raw }}
+            </small>
+        </div>
+
+        {%- if isCsrfProtectionEnabled -%}
+            <input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}">
+        {%- endif -%}
+
+        <button type="submit" class="text-uppercase btn-app center w-100 mt-3">
+            <i class="icon-check me-2"></i>{{ "Valider"|trans|raw }}
+        </button>
+
+        <a href="{{ path('app_logout') }}" class="d-block text-center text-white-50 fz-small mt-3">
+            {{ "Annuler et se déconnecter"|trans|raw }}
+        </a>
+    </form>
+{%- endblock -%}

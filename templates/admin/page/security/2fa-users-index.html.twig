@@ -1,0 +1,162 @@
+{%- extends "admin/base.html.twig" -%}
+
+{%- trans_default_domain 'security_cms' -%}
+
+{%- block title -%}{{ "Gestion de la double authentification"|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ "Gestion de la double authentification"|raw }}{%- endblock -%}
+
+{%- block body -%}
+    <div id="entities-index-page" class="index-container position-relative">
+
+        {%- include 'admin/include/alert.html.twig' with {
+            alert: 'info',
+            display: 'alert',
+            message: "Gérez le mode d'authentification à deux facteurs de chaque administrateur. Une seule méthode peut être active à la fois - activer l'une désactive automatiquement l'autre. L'activation prend effet à la prochaine connexion de l'utilisateur (challenge e-mail ou enrôlement TOTP via QR code selon la méthode)."|trans,
+        } only -%}
+
+        <div id="result" class="mt-4">
+            <div id="entities-index">
+                <div class="table-responsive app-table">
+                    <table class="table table-striped responsive-cards">
+                        <thead>
+                            <tr>
+                                <th class="px-4">{{ "Utilisateur"|trans|raw }}</th>
+                                <th class="px-4 text-center">{{ "Application (TOTP)"|trans|raw }}</th>
+                                <th class="px-4 text-center">{{ "E-mail"|trans|raw }}</th>
+                                <th class="text-end px-4">{{ "Actions"|trans|raw }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%- for u in users -%}
+                                <tr id="entity-row-{{ u.id }}" data-id="{{ u.id }}">
+                                    <td class="align-middle px-4">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span>{{ u.email }}</span>
+                                            {%- if u.login -%}
+                                                <span>({{ u.login }})</span>
+                                            {%- endif -%}
+                                            {%- if u.id == currentUserId -%}
+                                                <span class="btn-icon info small" data-bs-toggle="tooltip" title="{{ "Votre compte"|trans|striptags }}">
+                                                    <i class="icm-user"></i>
+                                                </span>
+                                            {%- endif -%}
+                                        </div>
+                                    </td>
+                                    <td class="text-center align-middle px-4">
+                                        {%- if u.disabledAuth -%}
+                                            <span class="badge badge-2fa is-off rounded-pill">{{ "Désactivée"|trans|raw }}</span>
+                                        {%- elseif u.googleAuthenticatorEnabled -%}
+                                            <span class="badge badge-2fa is-active rounded-pill">
+                                                <i class="icm-check me-1"></i>{{ "Active"|trans|raw }}
+                                            </span>
+                                        {%- else -%}
+                                            <span class="badge badge-2fa is-inactive rounded-pill">{{ "Inactive"|trans|raw }}</span>
+                                        {%- endif -%}
+                                    </td>
+                                    <td class="text-center align-middle px-4">
+                                        {%- if u.disabledAuth -%}
+                                            <span class="badge badge-2fa is-off rounded-pill">{{ "Désactivée"|trans|raw }}</span>
+                                        {%- elseif u.emailAuthEnabled -%}
+                                            <span class="badge badge-2fa is-active rounded-pill">
+                                                <i class="icm-check me-1"></i>{{ "Active"|trans|raw }}
+                                            </span>
+                                        {%- else -%}
+                                            <span class="badge badge-2fa is-inactive rounded-pill">{{ "Inactive"|trans|raw }}</span>
+                                        {%- endif -%}
+                                    </td>
+                                    <td class="text-end align-middle px-4">
+                                        <div class="d-flex flex-lg-column flex-xl-row justify-content-end align-items-center gap-2">
+                                            {%- if u.disabledAuth -%}
+                                                <form method="post"
+                                                      action="{{ path('admin_2fa_users_restore_auth', {website: websiteId, user: u.id}) }}"
+                                                      onsubmit="return confirm('{{ "Réactiver la double authentification pour cet utilisateur ? Il devra enrôler une méthode à sa prochaine connexion."|trans|striptags|e('js') }}');"
+                                                      class="d-inline">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('2fa_users_restore_auth_' ~ u.id) }}">
+                                                    <button type="submit" class="btn-icon small success"
+                                                            data-bs-toggle="tooltip" title="{{ "Réactiver la double authentification"|trans|striptags }}"
+                                                            aria-label="{{ "Réactiver la double authentification"|trans|striptags }}">
+                                                        <i class="icm-lock"></i>
+                                                    </button>
+                                                </form>
+                                            {%- else -%}
+                                                {%- if u.googleAuthenticatorEnabled -%}
+                                                    <form method="post"
+                                                          action="{{ path('admin_2fa_users_disable_totp', {website: websiteId, user: u.id}) }}"
+                                                          onsubmit="return confirm('{{ "Désactiver l'application d'authentification pour cet utilisateur ?"|trans|striptags|e('js') }}');"
+                                                          class="d-inline">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('2fa_users_disable_totp_' ~ u.id) }}">
+                                                        <button type="submit" class="btn-icon small danger"
+                                                                data-bs-toggle="tooltip" title="{{ "Réinitialiser l'application d'authentification"|trans|striptags }}"
+                                                                aria-label="{{ "Réinitialiser l'application d'authentification"|trans|striptags }}">
+                                                            <i class="icm-sync"></i>
+                                                        </button>
+                                                    </form>
+                                                {%- else -%}
+                                                    <form method="post"
+                                                          action="{{ path('admin_2fa_users_enable_totp', {website: websiteId, user: u.id}) }}"
+                                                          onsubmit="return confirm('{{ "Activer l'application d'authentification pour cet utilisateur ? L'e-mail sera désactivé et l'utilisateur scannera un QR code à sa prochaine connexion."|trans|striptags|e('js') }}');"
+                                                          class="d-inline">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('2fa_users_enable_totp_' ~ u.id) }}">
+                                                        <button type="submit" class="btn-icon small success"
+                                                                data-bs-toggle="tooltip" title="{{ "Activer l'application d'authentification"|trans|striptags }}"
+                                                                aria-label="{{ "Activer l'application d'authentification"|trans|striptags }}">
+                                                            <i class="icm-fingerprint"></i>
+                                                        </button>
+                                                    </form>
+                                                {%- endif -%}
+                                                {%- if u.emailAuthEnabled -%}
+                                                    <form method="post"
+                                                          action="{{ path('admin_2fa_users_disable_email', {website: websiteId, user: u.id}) }}"
+                                                          onsubmit="return confirm('{{ "Désactiver l'authentification par e-mail pour cet utilisateur ?"|trans|striptags|e('js') }}');"
+                                                          class="d-inline">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('2fa_users_disable_email_' ~ u.id) }}">
+                                                        <button type="submit" class="btn-icon small danger"
+                                                                data-bs-toggle="tooltip" title="{{ "Désactiver l'authentification par e-mail"|trans|striptags }}"
+                                                                aria-label="{{ "Désactiver l'authentification par e-mail"|trans|striptags }}">
+                                                            <i class="icm-envelope"></i>
+                                                        </button>
+                                                    </form>
+                                                {%- else -%}
+                                                    <form method="post"
+                                                          action="{{ path('admin_2fa_users_enable_email', {website: websiteId, user: u.id}) }}"
+                                                          onsubmit="return confirm('{{ "Activer l'authentification par e-mail pour cet utilisateur ? Le challenge se déclenchera à sa prochaine connexion."|trans|striptags|e('js') }}');"
+                                                          class="d-inline">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('2fa_users_enable_email_' ~ u.id) }}">
+                                                        <button type="submit" class="btn-icon small success"
+                                                                data-bs-toggle="tooltip" title="{{ "Activer l'authentification par e-mail"|trans|striptags }}"
+                                                                aria-label="{{ "Activer l'authentification par e-mail"|trans|striptags }}">
+                                                            <i class="icm-envelope"></i>
+                                                        </button>
+                                                    </form>
+                                                {%- endif -%}
+                                                <form method="post"
+                                                      action="{{ path('admin_2fa_users_disable_auth', {website: websiteId, user: u.id}) }}"
+                                                      onsubmit="return confirm('{{ "Désactiver entièrement la double authentification pour cet utilisateur ? La connexion se fera sans vérification de code (mode dégradé)."|trans|striptags|e('js') }}');"
+                                                      class="d-inline">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('2fa_users_disable_auth_' ~ u.id) }}">
+                                                    <button type="submit" class="btn-icon small danger"
+                                                            data-bs-toggle="tooltip" title="{{ "Désactiver entièrement la double authentification"|trans|striptags }}"
+                                                            aria-label="{{ "Désactiver entièrement la double authentification"|trans|striptags }}">
+                                                        <i class="icm-unlock"></i>
+                                                    </button>
+                                                </form>
+                                            {%- endif -%}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {%- else -%}
+                                <tr>
+                                    <td colspan="4" class="px-4">
+                                        <div class="py-2 d-flex align-items-center justify-content-center gap-2">
+                                            <i class="btn-icon info icm-info"></i>{{ "Aucun utilisateur."|trans|raw }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {%- endfor -%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endblock -%}

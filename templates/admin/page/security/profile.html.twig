@@ -2,6 +2,10 @@
 
 {%- trans_default_domain 'security_cms' -%}
 
+{%- set pageTitle = "Profil :"|trans~" "~user.username -%}
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
+
 {%- block stylesheets -%}
     {{ parent() }}
     {{ encore_entry_link_tags('admin-user-profile', null, 'admin') }}
@@ -13,58 +17,114 @@
 {%- endblock -%}
 
 {%- block body -%}
-    <div id="user-profile-card" class="card">
-        <div class="card-body pb-2">
-            <div class="row">
-                <div class="col-md-2 text-center text-md-start mb-4 mb-md-0">
-                    <div class="img-user-container d-inline-block border rounded-4 overflow-hidden shadow-sm">
-                        {%- set src = user.picture.path is defined and user.picture.path ? user.picture.path : '/medias/placeholder.jpg' -%}
-                        <img src="{{ asset(src) }}" id="user-picture" class="img-fluid" height="200" width="auto" style="object-fit: cover; aspect-ratio: 1/1;" />
-                    </div>
-                </div>
-                <div class="col-md-10">
-                    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
-                        <h1 class="mb-0 h3">
-                            {{ user.username }} <small class="text-italic opacity-50">{{ user.login }}</small>
-                        </h1>
-                        <a href="{{ path('admin_user_edit', {website: websiteId(), user: user.id}) }}"
-                           data-bs-toggle="tooltip" title="{{"Éditer"|trans|striptags }}"
-                           id="edit-user-btn" class="btn-icon small"><i class="icm-pencil-alt"></i>
-                        </a>
-                    </div>
+    <div id="user-profile-page">
+        <article id="user-profile-card" class="profile-panel">
 
-                    <div class="row">
-                        <div class="{% if granted('ROLE_INTERNAL') %}col-md-5{% else %}col-12{% endif %}">
-                            <h2 class="main-subtitle small mb-3"><i class="icm-info"></i>{{ "Information"|trans|raw }}</h2>
-                            <div class="ps-1">
-                                <p class="mb-2"><strong class="me-2 text-dark">{{ "Dernière connexion :"|trans|raw }}</strong> <span class="text-muted">{{ user.lastLogin|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</span></p>
-                                <p class="mb-2 d-flex align-items-center">
-                                    <strong class="me-2 text-dark">{{ "Langue :"|trans|raw }}</strong>
-                                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                         data-src=" {{ asset('/medias/icons/flags/'~user.locale~'.svg') }}" class="img-fluid img-locale lazy-load me-2 rounded-1" height="14" width="19">
-                                    <span class="text-muted">{{ user.locale|languageName }}</span>
-                                </p>
-                                <p class="mb-2"><strong class="me-2 text-dark">{{ "Email :"|trans|raw }}</strong> <a href="mailto: {{ user.email }}" class="text-underline">{{ user.email }}</a></p>
+            <header class="profile-head">
+                <div class="profile-head-bg" aria-hidden="true"></div>
+
+                <div class="profile-avatar">
+                    {%- set src = user.picture.path is defined and user.picture.path ? user.picture.path : '/medias/placeholder.jpg' -%}
+                    <img src="{{ asset(src) }}" id="user-picture" alt="" />
+                </div>
+
+                <div class="profile-identity">
+                    <h1 class="profile-name">
+                        <span class="name-text">{{ user.username }}</span>
+                        <span class="profile-login">{{ user.login }}</span>
+                    </h1>
+                    <p class="profile-tag">
+                        <span class="profile-tag-dot" aria-hidden="true"></span>
+                        {%- if granted('ROLE_INTERNAL') -%}
+                            {{ user.group.adminName }}
+                        {%- else -%}
+                            {{ "Compte utilisateur"|trans|raw }}
+                        {%- endif -%}
+                    </p>
+                </div>
+
+                <div class="profile-actions">
+                    {%- if user.id == app.user.id and website.security and website.security.adminTwoFactorAuth -%}
+                        <a href="{{ path('admin_2fa_setup', {website: websiteId()}) }}"
+                           data-bs-toggle="tooltip" title="{{"Ma double authentification"|trans|striptags }}"
+                           id="user-2fa-btn" class="profile-action-btn">
+                            <i class="icm-fingerprint"></i>
+                            <span class="profile-action-label">{{ "2FA"|trans|raw }}</span>
+                        </a>
+                    {%- endif -%}
+                    <a href="{{ path('admin_user_edit', {website: websiteId(), user: user.id}) }}"
+                       data-bs-toggle="tooltip" title="{{"Éditer"|trans|striptags }}"
+                       id="edit-user-btn" class="profile-action-btn">
+                        <i class="icm-pencil-alt"></i>
+                        <span class="profile-action-label">{{ "Éditer"|trans|raw }}</span>
+                    </a>
+                </div>
+            </header>
+
+            <div class="profile-body">
+                <div class="row g-4">
+                    <div class="{% if granted('ROLE_INTERNAL') %}col-lg-5{% else %}col-12{% endif %}">
+                        <section class="profile-section">
+                            <header class="profile-section-head">
+                                <span class="profile-section-icon"><i class="icm-info"></i></span>
+                                <h2 class="profile-section-title">{{ "Information"|trans|raw }}</h2>
+                            </header>
+
+                            <dl class="profile-meta-list">
+                                <div class="profile-meta-row">
+                                    <dt class="profile-meta-label">{{ "Dernière connexion"|trans|raw }}</dt>
+                                    <dd class="profile-meta-value">{{ user.lastLogin|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</dd>
+                                </div>
+
+                                <div class="profile-meta-row">
+                                    <dt class="profile-meta-label">{{ "Langue"|trans|raw }}</dt>
+                                    <dd class="profile-meta-value">
+                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                             data-src="{{ asset('/medias/icons/flags/'~user.locale~'.svg') }}"
+                                             class="profile-meta-flag lazy-load" height="14" width="19" alt="">
+                                        <span>{{ user.locale|languageName }}</span>
+                                    </dd>
+                                </div>
+
+                                <div class="profile-meta-row">
+                                    <dt class="profile-meta-label">{{ "Email"|trans|raw }}</dt>
+                                    <dd class="profile-meta-value">
+                                        <a href="mailto:{{ user.email }}" class="profile-meta-link">{{ user.email }}</a>
+                                    </dd>
+                                </div>
 
                                 {%- if granted('ROLE_INTERNAL') -%}
-                                    <p class="mb-2"><strong class="me-2 text-dark">{{ "Groupe :"|trans|raw }}</strong> <span class="text-muted">{{ user.group.adminName }}</span></p>
+                                    <div class="profile-meta-row">
+                                        <dt class="profile-meta-label">{{ "Groupe"|trans|raw }}</dt>
+                                        <dd class="profile-meta-value">{{ user.group.adminName }}</dd>
+                                    </div>
                                 {%- endif -%}
-                            </div>
-                        </div>
-                        {%- if granted('ROLE_INTERNAL') -%}
-                            <div class="col-md-7 mt-4 mt-md-0">
-                                <h2 class="main-subtitle small mb-3"><i class="icm-user-tag"></i>{{ "Rôles"|trans|raw }}</h2>
-                                <div class="row ps-1">
-                                    {%- for role in user.group.roles -%}
-                                        <div class="col-md-6 mb-1 text-muted"><i class="icm-check small text-success me-2"></i>{{ role.adminName }}</div>
-                                    {%- endfor -%}
-                                </div>
-                            </div>
-                        {%- endif -%}
+                            </dl>
+                        </section>
                     </div>
+
+                    {%- if granted('ROLE_INTERNAL') -%}
+                        <div class="col-lg-7">
+                            <section class="profile-section">
+                                <header class="profile-section-head">
+                                    <span class="profile-section-icon"><i class="icm-user-tag"></i></span>
+                                    <h2 class="profile-section-title">{{ "Rôles"|trans|raw }}</h2>
+                                    <span class="profile-section-count">{{ user.group.roles|length }}</span>
+                                </header>
+
+                                <ul class="profile-roles-grid">
+                                    {%- for role in user.group.roles -%}
+                                        <li class="profile-role-item">
+                                            <i class="icm-check" aria-hidden="true"></i>
+                                            <span>{{ role.adminName }}</span>
+                                        </li>
+                                    {%- endfor -%}
+                                </ul>
+                            </section>
+                        </div>
+                    {%- endif -%}
                 </div>
             </div>
-        </div>
+        </article>
     </div>
 {%- endblock -%}
-

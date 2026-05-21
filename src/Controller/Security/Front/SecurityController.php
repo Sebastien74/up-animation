@@ -17,6 +17,7 @@ use App\Model\Core\WebsiteModel;
 use App\Repository\Core\WebsiteRepository;
 use App\Repository\Security\UserFrontRepository;
 use App\Security\BaseAuthenticator;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Psr\Cache\InvalidArgumentException;
@@ -41,7 +42,7 @@ class SecurityController extends FrontController
     /**
      * Login page.
      *
-     * @throws Exception
+     * @throws Exception|InvalidArgumentException
      */
     #[Route([
         'fr' => '/espace-personnel/identification/{view}',
@@ -75,7 +76,7 @@ class SecurityController extends FrontController
     /**
      * Login page.
      *
-     * @throws Exception
+     * @throws Exception|InvalidArgumentException
      */
     #[Route([
         'fr' => '/espace-personnel/connexion/{view}',
@@ -124,7 +125,7 @@ class SecurityController extends FrontController
     /**
      * Register.
      *
-     * @throws NonUniqueResultException|Exception|InvalidArgumentException
+     * @throws NonUniqueResultException|Exception|InvalidArgumentException|ORMException
      */
     #[Route([
         'fr' => '/espace-personnel/inscription/{view}',

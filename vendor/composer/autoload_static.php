@@ -20,9 +20,9 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'f844ccf1d25df8663951193c3fc307c8' => __DIR__ . '/..' . '/twig/twig/src/Resources/string_loader.php',
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '9d2b9fc6db0f153a0a149fefb182415e' => __DIR__ . '/..' . '/symfony/polyfill-php84/bootstrap.php',
+        '2203a247e6fda86070a5e4e07aed533a' => __DIR__ . '/..' . '/symfony/clock/Resources/now.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        '2203a247e6fda86070a5e4e07aed533a' => __DIR__ . '/..' . '/symfony/clock/Resources/now.php',
         '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
         '72243e5536b63e298acb6476f01f1aff' => __DIR__ . '/..' . '/thecodingmachine/safe/lib/special_cases.php',
         '3f648889e687f31c52f949ba8a9d0873' => __DIR__ . '/..' . '/thecodingmachine/safe/generated/apache.php',
@@ -209,6 +209,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
             'Svg\\' => 4,
             'Spiriit\\Bundle\\FormFilterBundle\\' => 32,
             'SlevomatCodingStandard\\' => 23,
+            'Scheb\\TwoFactorBundle\\' => 22,
             'Sabberworm\\CSS\\' => 15,
         ),
         'R' =>
@@ -235,6 +236,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
             'PhpParser\\' => 10,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
             'PhpCsFixer\\' => 11,
+            'ParagonIE\\ConstantTime\\' => 23,
             'PHPStan\\PhpDocParser\\' => 21,
             'PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => 57,
         ),
@@ -242,6 +244,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             'Oro\\ORM\\' => 8,
             'Oro\\DBAL\\' => 9,
+            'OTPHP\\' => 6,
         ),
         'N' =>
         array (
@@ -292,6 +295,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             'Evenement\\' => 10,
             'Ergebnis\\AgentDetector\\' => 23,
+            'Endroid\\QrCode\\' => 15,
             'Egulias\\EmailValidator\\' => 23,
             'Eckinox\\TinymceBundle\\' => 22,
         ),
@@ -314,6 +318,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
             'Doctrine\\Bundle\\FixturesBundle\\' => 31,
             'Doctrine\\Bundle\\DoctrineBundle\\' => 31,
             'Dflydev\\DotAccessData\\' => 22,
+            'DASPRiD\\Enum\\' => 13,
         ),
         'C' =>
         array (
@@ -327,6 +332,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'B' =>
         array (
             'Brevo\\Client\\' => 13,
+            'BaconQrCode\\' => 12,
         ),
         'A' =>
         array (
@@ -676,6 +682,13 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             0 => __DIR__ . '/..' . '/slevomat/coding-standard/SlevomatCodingStandard',
         ),
+        'Scheb\\TwoFactorBundle\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/scheb/2fa-google-authenticator',
+            1 => __DIR__ . '/..' . '/scheb/2fa-email',
+            2 => __DIR__ . '/..' . '/scheb/2fa-backup-code',
+            3 => __DIR__ . '/..' . '/scheb/2fa-bundle',
+        ),
         'Sabberworm\\CSS\\' =>
         array (
             0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
@@ -757,6 +770,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             0 => __DIR__ . '/..' . '/friendsofphp/php-cs-fixer/src',
         ),
+        'ParagonIE\\ConstantTime\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
+        ),
         'PHPStan\\PhpDocParser\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpstan/phpdoc-parser/src',
@@ -772,6 +789,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'Oro\\DBAL\\' =>
         array (
             0 => __DIR__ . '/..' . '/oro/doctrine-extensions/src/Oro/DBAL',
+        ),
+        'OTPHP\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/spomky-labs/otphp/src',
         ),
         'NunoMaduro\\PhpInsights\\' =>
         array (
@@ -878,6 +899,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             0 => __DIR__ . '/..' . '/ergebnis/agent-detector/src',
         ),
+        'Endroid\\QrCode\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/endroid/qr-code/src',
+        ),
         'Egulias\\EmailValidator\\' =>
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/src',
@@ -954,6 +979,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             0 => __DIR__ . '/..' . '/dflydev/dot-access-data/src',
         ),
+        'DASPRiD\\Enum\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/dasprid/enum/src',
+        ),
         'Cron\\' =>
         array (
             0 => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron',
@@ -981,6 +1010,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'Brevo\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/getbrevo/brevo-php/lib',
+        ),
+        'BaconQrCode\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
         ),
         'App\\Tests\\' =>
         array (

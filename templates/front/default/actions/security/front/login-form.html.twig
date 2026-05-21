@@ -30,22 +30,6 @@
                                     alertClass: 'w-100'
                                 } only-%}
                             </div>
-                            {%- if 'facebookConnect' in security.frontRegistrationFields -%}
-                                <div class="col-lg-6">
-                                    <a href="{{ path('security_front_connect_facebook_start') }}" class="btn btn-facebook w-100">
-                                        <i class="icon-facebook-f"></i>
-                                        {{ "Facebook"|trans|raw }}
-                                    </a>
-                                </div>
-                            {%- endif -%}
-                            {%- if 'googleConnect' in security.frontRegistrationFields -%}
-                                <div class="col-lg-6">
-                                    <a href="{{ path('security_front_connect_google_start') }}" class="btn btn-google w-100">
-                                        <i class="icon-google"></i>
-                                        {{ "Google"|trans|raw }}
-                                    </a>
-                                </div>
-                            {%- endif -%}
                         {%- endif -%}
                             {{ form_row(form[field.vars.name]) }}
                         {%- if field.vars.name == '_remember_me' -%}
