@@ -65,7 +65,7 @@
                 <ul class="kpi-grid reset">
                     {%- if hasSeo -%}
                         <li class="kpi-tile {{ seoCount > 0 ? 'is-warning' : 'is-clean' }}">
-                            <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: defaultLocale}) }}" class="kpi-link">
+                            <a href="#kpi-target-seo" class="kpi-link">
                                 <span class="kpi-label">{{ "SEO manquant"|trans|raw }}</span>
                                 <span class="kpi-value">{{ seoCount }}</span>
                                 <span class="kpi-unit">{{ seoCount > 1 ? "balises"|trans|raw : "balise"|trans|raw }}</span>
@@ -75,7 +75,7 @@
 
                     {%- if hasNotFound -%}
                         <li class="kpi-tile {{ notFoundCount > 0 ? 'is-alert' : 'is-clean' }}">
-                            <a href="{{ path('admin_notfoundurl_index', {website: websiteId(), type: 'front', category: 'url'}) }}" class="kpi-link">
+                            <a href="#kpi-target-notfound" class="kpi-link">
                                 <span class="kpi-label">{{ "Erreurs 404"|trans|raw }}</span>
                                 <span class="kpi-value">{{ notFoundCount }}</span>
                                 <span class="kpi-unit">{{ notFoundCount > 1 ? "URLs"|trans|raw : "URL"|trans|raw }}</span>
@@ -85,7 +85,7 @@
 
                     {%- if hasMailStats -%}
                         <li class="kpi-tile">
-                            <a href="{{ path('admin_maillog_index', {website: websiteId()}) }}" class="kpi-link">
+                            <a href="#kpi-target-mail" class="kpi-link">
                                 <span class="kpi-label">{{ "Mails 24 h"|trans|raw }}</span>
                                 <span class="kpi-value">{{ mailStats.last24h }}</span>
                                 <span class="kpi-unit">{{ mailStats.last24h > 1 ? "envois"|trans|raw : "envoi"|trans|raw }}</span>
@@ -96,7 +96,7 @@
                     {%- if hasPerf -%}
                         {%- set slowTotal = performanceStats.recent.front.count + performanceStats.recent.admin.count -%}
                         <li class="kpi-tile {{ slowTotal > 0 ? 'is-warning' : 'is-clean' }}">
-                            <a href="{{ path('admin_performance_inspector', {area: 'front', website: websiteId()}) }}" class="kpi-link">
+                            <a href="#kpi-target-perf" class="kpi-link">
                                 <span class="kpi-label">{{ "Requêtes lentes"|trans|raw }}</span>
                                 <span class="kpi-value">{{ slowTotal }}</span>
                                 <span class="kpi-unit">sur {{ performanceStats.window_hours }} h</span>
@@ -198,7 +198,7 @@
                             {%- if row.total > mailDailyMax -%}{%- set mailDailyMax = row.total -%}{%- endif -%}
                         {%- endfor -%}
 
-                        <article class="activity-card">
+                        <article id="kpi-target-mail" class="activity-card">
                             <header class="activity-card-head">
                                 <h3 class="activity-card-title">{{ "Mails envoyés"|trans|raw }}</h3>
                                 <ul class="activity-meta reset">
@@ -254,7 +254,7 @@
                         {%- set adminTotal = perf.recent.admin.count -%}
                         {%- set perfTotal = frontTotal + adminTotal -%}
 
-                        <article class="activity-card">
+                        <article id="kpi-target-perf" class="activity-card">
                             <header class="activity-card-head">
                                 <h3 class="activity-card-title">{{ "Requêtes lentes"|trans|raw }}</h3>
                                 <ul class="activity-meta reset">
@@ -375,7 +375,7 @@
                 <div class="attention-grid">
 
                     {%- if hasSeo -%}
-                        <article class="attention-card {{ seoCount > 0 ? 'is-warning' : 'is-clean' }}">
+                        <article id="kpi-target-seo" class="attention-card {{ seoCount > 0 ? 'is-warning' : 'is-clean' }}">
                             <header class="attention-head">
                                 <span class="attention-tag">{{ "SEO"|trans|raw }}</span>
                                 <span class="attention-count">{{ seoCount }}</span>
@@ -421,7 +421,7 @@
 
                     {%- if hasNotFound -%}
                         {%- set notFoundFeedLimit = 5 -%}
-                        <article class="attention-card {{ notFoundCount > 0 ? 'is-alert' : 'is-clean' }}">
+                        <article id="kpi-target-notfound" class="attention-card {{ notFoundCount > 0 ? 'is-alert' : 'is-clean' }}">
                             <header class="attention-head">
                                 <span class="attention-tag">{{ "404"|trans|raw }}</span>
                                 <span class="attention-count">{{ notFoundCount }}</span>

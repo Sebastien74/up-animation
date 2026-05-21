@@ -21,53 +21,57 @@ header.navbar {
     height: 70px;
     position: fixed;
     z-index: 5000;
-    background: radial-gradient(900px 220px at 15% 0%, $theme-accent-glow, transparent 55%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 48%),
-    $dash-dark;
-    border-bottom: 1px solid $border-color-transparent;
-    box-shadow: $theme-shadow-md;
+    background: $dash-dark;
+    border-bottom: 1px solid $crumb-border;
+    box-shadow: none;
 
     .navbar-brand {
 
-        font-size: 14px !important;
+        font-size: 13px !important;
+        font-weight: 500;
         color: $body-color !important;
+        letter-spacing: -0.005em;
 
         @include mediaQuery(max-lg) {
             width: auto;
         }
 
         @include mediaQuery(min-lg) {
-            width: 300px;
+            width: 280px;
         }
 
         .btn-icon {
-            opacity: .85 !important;
-            background-color: #ff7100 !important;
-            border: 0 !important;
+            opacity: 1 !important;
+            background: rgba($primary, .14) !important;
+            border: 1px solid rgba($primary, .28) !important;
         }
 
         img, picture {
-            max-width: 25px !important;
-            max-height: 20px !important;
+            max-width: 22px !important;
+            max-height: 18px !important;
             display: flex;
             filter: brightness(0) invert(1);
         }
 
         small {
             font-size: 10px;
-            opacity: .7;
+            font-weight: 400;
+            opacity: .5;
         }
     }
 
     .right {
 
         @include mediaQuery(min-lg) {
-            width: calc(100% - 300px);
+            width: calc(100% - 280px);
         }
 
         .title-wrap {
+
             .title {
-                font-size: 15px;
+                font-size: 14px;
+                font-weight: 500;
+                letter-spacing: -0.005em;
             }
         }
     }

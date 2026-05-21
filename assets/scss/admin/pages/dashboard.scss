@@ -37,6 +37,12 @@
 
     padding-top: $space-2;
 
+    // KPI strip jump targets — offset under the 70 px fixed topbar
+    [id^="kpi-target-"],
+    #stats-search {
+        scroll-margin-top: 90px;
+    }
+
     /*-----------------------------------
        2 ) Reveal animation
     -----------------------------------*/

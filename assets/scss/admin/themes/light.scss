@@ -89,11 +89,16 @@ body {
 
         background: $theme-surface !important;
         border-bottom: 1px solid $theme-border;
-        box-shadow: $theme-shadow-md;
+        box-shadow: none;
 
         .navbar-brand {
 
             color: $theme-text !important;
+
+            .btn-icon {
+                background: $theme-accent-bg !important;
+                border-color: $theme-accent-border !important;
+            }
 
             img, picture {
                 filter: none;
@@ -143,10 +148,11 @@ body {
         }
     }
 
-    // Sidebar active item — override $bg-gradient-primary (clair en light) qui rendrait
-    // l'active invisible sur sidebar sombre. On force un fond accent dense.
+    // Sidebar active item — light theme strips the SCSS background defined in
+    // _sidebar.scss when no !important is set elsewhere. Restore the sober overlay
+    // + accent bar pattern of the dark default.
     .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active {
-        background: rgba($primary, 0.30) !important;
+        background: rgba(255, 255, 255, 0.06) !important;
         color: $white !important;
     }
 
@@ -184,11 +190,9 @@ body {
             color: $white !important;
         }
 
-        // Active item — override $bg-gradient-primary (crème en light) qui
-        // appliquerait un fond crème sur sidebar sombre. Aligner sur le pattern
-        // .left-sidebar a.active.
+        // Active item — keep dark sidebar Linear-like overlay (sober).
         a.active {
-            background: rgba($primary, 0.30) !important;
+            background: rgba(255, 255, 255, 0.06) !important;
             color: $white !important;
         }
 
