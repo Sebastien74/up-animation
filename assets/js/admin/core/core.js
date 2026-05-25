@@ -1,5 +1,5 @@
 /**
- * Admin Core
+ * refonte-admin Core
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  *

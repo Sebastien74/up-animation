@@ -112,7 +112,7 @@
 .table-striped {
     > tbody > tr:nth-of-type(#{$table-striped-order}) > * {
         --#{$prefix}table-color-type: var(--#{$prefix}table-striped-color);
-        --#{$prefix}table-bg-type: $table-striped-bg;
+        --#{$prefix}table-bg-type: var(--#{$prefix}table-striped-bg);
     }
 }
 

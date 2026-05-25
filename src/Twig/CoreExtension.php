@@ -22,7 +22,7 @@ class CoreExtension extends AbstractExtension
 {
     public function getFilters(): array
     {
-        /** Admin */
+        /** refonte-admin */
         $adminFilters = [
             new TwigFilter('symfonyVersion', [AdminRuntime\CoreRuntime::class, 'symfonyVersion']),
             new TwigFilter('phpversion', [AdminRuntime\CoreRuntime::class, 'phpversion']),
@@ -255,7 +255,7 @@ class CoreExtension extends AbstractExtension
 
     public function getFunctions(): array
     {
-        /** Admin */
+        /** refonte-admin */
         $adminFunctions = [
             new TwigFunction('symfonyVersion', [AdminRuntime\CoreRuntime::class, 'symfonyVersion']),
             new TwigFunction('phpversion', [AdminRuntime\CoreRuntime::class, 'phpversion']),

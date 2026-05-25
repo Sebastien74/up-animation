@@ -41,7 +41,7 @@ liip_imagine:
         cache: ~
 
         #####################################
-        #           Admin filters           #
+        #           refonte-admin filters           #
         #####################################
 
         admin_theme:

@@ -51,7 +51,15 @@ body {
         background: $theme-bg !important;
     }
 
-    .page-titles, #admin-footer {
+    /* Footer reste en surface light, header bascule en sidebar dark
+       pour contraster avec le contenu papier crème. Donc séparation
+       des règles ci-dessous (anciennement groupées). */
+
+    #admin-footer {
+
+        background: $theme-surface !important;
+        border-top: 1px solid $theme-border;
+        color: $theme-text-muted;
 
         *:not(.dropdown-item):not(.icm-user):not(.icm-circle):not(.icm-power-off):not(.avatar):not(.avatar-label) {
 
@@ -71,42 +79,85 @@ body {
                 color: $theme-text;
             }
         }
-    }
-
-    #admin-footer {
-
-        border-top: 1px solid $theme-border;
-        color: $theme-text-muted;
 
         img {
             filter: none;
         }
     }
 
-    /*--- Header ---*/
+    /*--- Header — conservé sombre (contraste papier crème) ---*/
 
-    header.navbar {
+    header.navbar.page-titles {
 
-        background: $theme-surface !important;
-        border-bottom: 1px solid $theme-border;
-        box-shadow: none;
+        background: $theme-sidebar-bg !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02), 0 8px 24px rgba(0, 0, 0, 0.18);
+        color: $theme-sidebar-text !important;
 
-        .navbar-brand {
+        // Sidebar/header dark : restore light text via fully-qualified rule
+        // so it wins over the global `.page-titles *:not(...) { color: $theme-text }` override.
+        *:not(.dropdown-item):not(.icm-user):not(.icm-circle):not(.icm-power-off):not(.avatar):not(.avatar-label) {
 
-            color: $theme-text !important;
+            color: $theme-sidebar-text !important;
 
-            .btn-icon {
-                background: $theme-accent-bg !important;
-                border-color: $theme-accent-border !important;
-            }
-
-            img, picture {
-                filter: none;
+            svg:not(.initial) {
+                fill: $theme-sidebar-text !important;
             }
         }
 
-        .right .title-wrap .title {
-            color: $theme-text;
+        .navbar-brand {
+
+            color: $white !important;
+
+            .btn-icon {
+                background: rgba($theme-accent, .18) !important;
+                border-color: rgba($theme-accent, .35) !important;
+                color: $white !important;
+
+                i {
+                    color: $white !important;
+                }
+            }
+
+            &:hover .btn-icon {
+                background: rgba($theme-accent, .28) !important;
+                border-color: rgba($theme-accent, .5) !important;
+            }
+
+            img, picture {
+                filter: brightness(0) invert(1);
+            }
+
+            small {
+                color: rgba(255, 255, 255, 0.5) !important;
+            }
+        }
+
+        .actions .btn-icon {
+
+            color: $theme-sidebar-text !important;
+
+            i {
+                color: $theme-sidebar-text !important;
+            }
+
+            &:hover, &:focus {
+
+                i {
+                    color: $white !important;
+                }
+            }
+
+            &.danger {
+
+                i {
+                    color: $danger !important;
+                }
+
+                &:hover i {
+                    color: $white !important;
+                }
+            }
         }
     }
 
@@ -150,10 +201,41 @@ body {
 
     // Sidebar active item — light theme strips the SCSS background defined in
     // _sidebar.scss when no !important is set elsewhere. Restore the sober overlay
-    // + accent bar pattern of the dark default.
+    // + accent rail pattern of the dark default.
     .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active {
-        background: rgba(255, 255, 255, 0.06) !important;
+        background: rgba(255, 255, 255, 0.07) !important;
         color: $white !important;
+
+        &::before {
+            background: $theme-accent !important;
+        }
+    }
+
+    // L2 active icon badge — accent (theme-aware)
+    .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active .btn-icon.small,
+    .left-sidebar .sidebar-top-section a.active .btn-icon.small,
+    .right-sidebar .scroll-sidebar > nav > ul > li > a.active .btn-icon.small {
+        background: rgba($theme-accent, .16) !important;
+        border-color: rgba($theme-accent, .32) !important;
+        color: $theme-accent !important;
+
+        i {
+            color: $theme-accent !important;
+        }
+
+        svg {
+            fill: $theme-accent !important;
+        }
+    }
+
+    // L1 section header active marker
+    .left-sidebar .scroll-sidebar > nav > ul > li > a.as-arrow.bigger.active::before {
+        background: $theme-accent !important;
+    }
+
+    // Sidebar search — focus border on theme accent
+    .sidebar-search-field input:focus {
+        border-color: rgba($theme-accent, .5) !important;
     }
 
     .sidebar-nav ul li ul {
@@ -345,74 +427,40 @@ body {
 
     /*--- Tables ---*/
 
-    // Wrapper .app-table : les tokens hardcodés en blanc rgba dans _table.scss
-    // (cf. $tbl-border, $tbl-border-soft) sont invisibles sur fond crème.
-    // On force ici la bordure périphérique et les séparateurs head/foot.
-    .app-table {
-        border: 1px solid $theme-border;
-
-        .app-table__head {
-            border-bottom: 1px solid $theme-border;
-        }
-
-        .app-table__foot {
-            border-top: 1px solid $theme-border;
-        }
-    }
+    // _table.scss uses theme-aware tokens ($crumb-* mapped to $theme-* in
+    // _light-vars) so wrapper, borders, row hover and headers render natively
+    // on cream paper. No striping (charte Linear-sober : pas de bandes alternées).
+    // Only in-cell button variants need an explicit override since their
+    // default surface differs from the table surface in light theme.
 
     table {
 
-        tbody > tr > td,
-        tbody > tr > th {
+        tbody > tr > td .btn-info,
+        tbody > tr > th .btn-info {
 
-            background-color: $theme-surface !important;
+            background-color: $theme-bg-alt !important;
+            border-color: $theme-border !important;
             color: $theme-text !important;
-            border-bottom: 1px solid $theme-border !important;
 
-            .btn-info {
-
-                background-color: $theme-bg-alt !important;
-                border-color: $theme-border !important;
+            span.badge {
                 color: $theme-text !important;
+            }
 
-                span.badge {
-                    color: $theme-text !important;
-                }
-
-                svg, svg *, i {
-                    fill: $theme-text !important;
-                    color: $theme-text !important;
-                }
+            svg, svg *, i {
+                fill: $theme-text !important;
+                color: $theme-text !important;
             }
         }
 
-        tbody > tr:nth-of-type(2n+1) > td,
-        tbody > tr:nth-of-type(2n+1) > th {
-            background-color: $theme-table-striped-bg !important;
-        }
-
-        tbody > tr:hover > td,
-        tbody > tr:hover > th {
-            background-color: $theme-table-hover-bg !important;
-        }
-
-        td, th {
+        td .btn-outline-info,
+        th .btn-outline-info {
 
             color: $theme-text !important;
+            border-color: $theme-border !important;
 
-            .btn-outline-info {
-
+            a {
                 color: $theme-text !important;
-                border-color: $theme-border !important;
-
-                a {
-                    color: $theme-text !important;
-                }
             }
-        }
-
-        tr:last-child td {
-            border-bottom: none !important;
         }
     }
 
@@ -1284,83 +1332,21 @@ body {
         }
     }
 
-    /*--- Card global (admin core/_card.scss = vars dark) ---*/
+    /*--- Card global ---*/
+
+    // Base _card.scss is theme-aware via $crumb-* / $theme-bg-alt /
+    // $theme-accent-bg-soft. Only $crumb-surface isn't mapped to a light
+    // value (it stays at rgba(255,255,255,.015) — invisible on cream),
+    // so we force the surface here. The subtle border tone is also a
+    // light-specific design choice (softer than $theme-border).
 
     .card {
-
         background: $theme-card-bg !important;
         border-color: $theme-border-subtle !important;
-        box-shadow: none !important;
-
-        &:not(:has(form))::before,
-        &.is-active::before {
-            background: $theme-border !important;
-        }
-
-        &.is-active {
-
-            border-color: $theme-accent-border !important;
-
-            &::before {
-                background: $theme-accent !important;
-            }
-        }
-
-        &:not(:has(form)) {
-
-            @include mediaQuery(min-lg) {
-
-                &:hover {
-                    border-color: $theme-accent-border !important;
-                }
-            }
-        }
-    }
-
-    .card-title {
-        color: $theme-text !important;
-    }
-
-    .card-subtitle,
-    .card-text {
-        color: $theme-text-muted !important;
-    }
-
-    .card-icon {
-        background: $theme-accent-bg-soft !important;
-        color: $theme-accent !important;
-
-        i {
-            color: $theme-accent !important;
-        }
     }
 
     .card-hint {
-        background: $theme-bg-alt !important;
         border-color: $theme-border-subtle !important;
-        color: $theme-text-muted !important;
-
-        i {
-            color: $theme-accent !important;
-        }
-    }
-
-    .card-section {
-        border-top-color: $theme-border !important;
-
-        .card-section-icon {
-            background: $theme-accent-bg-soft !important;
-            color: $theme-accent !important;
-
-            i {
-                color: $theme-accent !important;
-            }
-        }
-
-        .card-section-title,
-        .card-section-text {
-            color: $theme-text-muted !important;
-        }
     }
 
     /*--- Main subtitle (section heading inside cards) ---*/
@@ -1648,7 +1634,6 @@ body {
         }
 
         .hero-date,
-        .hero-sep,
         .hero-last-login {
             color: $theme-text-muted !important;
         }
@@ -1662,10 +1647,18 @@ body {
 
     .zone-title {
         color: $theme-text !important;
+
+        &::before {
+            background: $theme-accent !important;
+        }
     }
 
     .zone-aside {
         color: $theme-text-muted !important;
+    }
+
+    .zone-head {
+        border-bottom-color: $theme-border !important;
     }
 
     /*--- KPI strip ---*/
@@ -1740,6 +1733,7 @@ body {
 
     .quick-icon {
         background: $theme-accent-bg-soft !important;
+        border-color: $theme-accent-border !important;
         color: $theme-accent !important;
     }
 
@@ -1786,7 +1780,7 @@ body {
         }
 
         &.is-admin {
-            background: $info !important;
+            background: $theme-text-muted !important;
         }
     }
 
@@ -1814,7 +1808,7 @@ body {
         }
 
         &.is-admin {
-            background: $info !important;
+            background: $theme-text-muted !important;
         }
     }
 

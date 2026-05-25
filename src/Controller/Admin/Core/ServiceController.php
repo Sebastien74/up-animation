@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 /**
  * ServiceController.
  *
- * Admin service management
+ * refonte-admin service management
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */

@@ -14,11 +14,12 @@
                 <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
             </a>
             <ul aria-expanded="false" class="collapse {% if active %} in{% endif %}">
-                <li class="mb-2 w-100">
+                <li class="translation-search-wrap">
                     {%- include 'admin/page/translation/translation-search.html.twig' -%}
                 </li>
+                <li class="translation-search-empty">{{ "Aucune traduction"|trans|raw }}</li>
                 {%- for transDomain in transDomains -%}
-                    <li><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}" {% if ('/translations/domain/edit/' ~ transDomain.id) in uri %} class="active" {% endif %}>{{ transDomain.adminName }}</a></li>
+                    <li class="translation-domain-item"><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}" {% if ('/translations/domain/edit/' ~ transDomain.id) in uri %} class="active" {% endif %}>{{ transDomain.adminName }}</a></li>
                 {%- endfor -%}
                 <li>
                     <a href="{{ path('admin_translationdomain_index', {website: websiteId}) }}" {% if 'translations/domains' in uri-%} class="active" {%- endif %}>{{ "Groupes de traductions"|trans|raw }}</a>
@@ -31,11 +32,12 @@
                 <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
             </a>
             <ul aria-expanded="false" class="collapse {% if active %} in{% endif %}{% if transDomains|length == 0 %} pb-3{% endif %}">
-                <li class="mb-2 w-100">
+                <li class="translation-search-wrap">
                     {%- include 'admin/page/translation/translation-search.html.twig' -%}
                 </li>
+                <li class="translation-search-empty">{{ "Aucune traduction"|trans|raw }}</li>
                 {%- for transDomain in transDomains -%}
-                    <li><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}" {% if ('/translations/domain/edit/' ~ transDomain.id) in uri %} class="active" {% endif %}>{{ transDomain.adminName }}</a></li>
+                    <li class="translation-domain-item"><a href="{{ path('admin_translationsdomain_edit', {website: websiteId, translationdomain: transDomain.id}) }}" {% if ('/translations/domain/edit/' ~ transDomain.id) in uri %} class="active" {% endif %}>{{ transDomain.adminName }}</a></li>
                 {%- endfor -%}
             </ul>
         </li>

@@ -122,7 +122,7 @@ class EntityType extends AbstractType
             ]);
 
             $builder->add('adminLimit', Type\IntegerType::class, [
-                'label' => $this->translator->trans('Admin limite', [], 'admin'),
+                'label' => $this->translator->trans('refonte-admin limite', [], 'admin'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez une limite', [], 'admin')
                 ],

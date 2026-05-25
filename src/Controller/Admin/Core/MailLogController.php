@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 /**
  * MailLogController.
  *
- * Admin views to browse sent emails (index + show).
+ * refonte-admin views to browse sent emails (index + show).
  * Read-only listing of the audit trail produced by MailerService.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>

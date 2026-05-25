@@ -55,6 +55,22 @@
         </div>
 
         <div class="scroll-sidebar">
+            <div class="sidebar-search">
+                <div class="sidebar-search-field">
+                    <i class="icm-search" aria-hidden="true"></i>
+                    <input type="search"
+                           id="sidebar-search-input"
+                           autocomplete="off"
+                           spellcheck="false"
+                           placeholder="{{ "Rechercher dans le menu"|trans|striptags }}"
+                           aria-label="{{ "Rechercher dans le menu"|trans|striptags }}">
+                    <button type="button"
+                            class="sidebar-search-clear"
+                            aria-label="{{ "Effacer la recherche"|trans|striptags }}">
+                        <i class="icm-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
             <nav class="sidebar-nav">
                 <ul id="sidebar-nav" class="list-unstyled">
                     {%- if not configuration.onlineStatus -%}
@@ -70,6 +86,7 @@
                     {%- include 'admin/include/sidebar/include/modules.html.twig' -%}
                 </ul>
             </nav>
+            <p class="sidebar-search-empty">{{ "Aucun résultat"|trans|raw }}</p>
         </div>
 
     </aside>

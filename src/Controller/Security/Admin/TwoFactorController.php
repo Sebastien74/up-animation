@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 /**
  * TwoFactorController.
  *
- * Admin TOTP enrolment & deactivation (Scheb 2FA bundle).
+ * refonte-admin TOTP enrolment & deactivation (Scheb 2FA bundle).
  *
  * Initial enrolment (pending / just_enabled) is rendered with the login layout
  * so the user goes through a clean onboarding step before reaching the back-office.

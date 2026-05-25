@@ -2,18 +2,22 @@
 
 /* -----------------------------------------------------------------
 
-    TABLE — Linear-sober. Flat surface, small uppercase header,
-    breathing rows, subtle hover, sober mobile cards.
+    TABLE — Linear-sober, mirrors dashboard tiles.
+
+    Flat surface on $crumb-surface, hairline row separators,
+    sober hover overlay, no Bootstrap striping. Tokens shared with
+    the dashboard (kpi-tile / activity-card) so the rendering follows
+    the active theme without per-cell overrides in themes/light.scss.
 
 ------------------------------------------------------------------ */
 
-$tbl-surface     : $crumb-surface !default;
-$tbl-border      : $crumb-border !default;
-$tbl-border-soft : $theme-border-subtle !default;
-$tbl-hover       : rgba(255, 255, 255, .04) !default;
+$tbl-surface : $crumb-surface !default;
+$tbl-border  : $crumb-border !default;
+$tbl-stripe  : $theme-table-striped-bg !default;
+$tbl-hover   : $btn-surface-hover !default;
 
-$tbl-text  : $theme-text !default;
-$tbl-muted : $theme-text-muted !default;
+$tbl-text  : $crumb-text !default;
+$tbl-muted : $crumb-muted !default;
 
 .app-table {
 
@@ -28,11 +32,14 @@ $tbl-muted : $theme-text-muted !default;
     }
 }
 
+/* Optional head/foot bands (used by a few legacy pages). Keep them
+   sober — eyebrow label, hairline separator. */
+
 .app-table__head,
 .app-table__foot {
     padding: $space-3 $space-4;
     background: transparent;
-    border-bottom: 1px solid $tbl-border-soft;
+    border-bottom: 1px solid $tbl-border;
 
     font-size: 11px;
     font-weight: 600;
@@ -42,19 +49,26 @@ $tbl-muted : $theme-text-muted !default;
 }
 
 .app-table__foot {
-    border-top: 1px solid $tbl-border-soft;
+    border-top: 1px solid $tbl-border;
     border-bottom: 0;
     text-transform: none;
     letter-spacing: 0;
     font-size: 12px;
     font-weight: 500;
+    color: $tbl-text;
 }
 
-/* Bootstrap table → align to the sober surface */
+/* Bootstrap table reset — sober surface, subtle striping
+   piped through theme tokens. */
+
 .app-table .table {
     --bs-table-bg: transparent;
-    --bs-table-color: #{$theme-text};
-    --bs-table-border-color: #{$tbl-border-soft};
+    --bs-table-color: #{$tbl-text};
+    --bs-table-border-color: #{$tbl-border};
+    --bs-table-striped-bg: #{$tbl-stripe};
+    --bs-table-striped-color: #{$tbl-text};
+    --bs-table-hover-bg: #{$tbl-hover};
+    --bs-table-hover-color: #{$tbl-text};
     margin-bottom: 0;
 }
 
@@ -66,7 +80,7 @@ $tbl-muted : $theme-text-muted !default;
     text-transform: uppercase;
     background: transparent;
     border-bottom: 1px solid $tbl-border !important;
-    padding: 10px 14px;
+    padding: 12px 14px;
     white-space: nowrap;
 }
 
@@ -75,8 +89,8 @@ $tbl-muted : $theme-text-muted !default;
     font-size: 13px;
     font-weight: 400;
     line-height: 1.5;
-    border-top: 1px solid $tbl-border-soft !important;
-    padding: 10px 14px !important;
+    border-top: 1px solid $tbl-border !important;
+    padding: 12px 14px !important;
     vertical-align: middle;
 }
 
@@ -84,22 +98,34 @@ $tbl-muted : $theme-text-muted !default;
     border-top: 0 !important;
 }
 
-/* Hover row (subtle) */
+/* Hover row — pipe through Bootstrap's --bs-table-bg-state so the inset
+   box-shadow that paints the cell respects the hover tone (otherwise
+   striped rows keep their stripe overlay on top of any background). */
+
 @include mediaQuery(min-lg) {
 
-    .app-table tbody tr {
-        transition: background-color $transition-fast;
-
-        &:hover > * {
-            background: $tbl-hover !important;
-        }
+    .app-table tbody tr:hover > * {
+        --bs-table-bg-state: #{$tbl-hover};
     }
 }
 
-/* Action cell links/buttons — keep them on one line */
+/* Action cell links/buttons — keep them on one line, slightly tighter
+   than the global .btn-icon.small (34 px) so rows stay compact. */
+
 .app-table tbody td .d-flex,
 .app-table tbody td .btn-icon {
     flex-shrink: 0;
+}
+
+.app-table tbody td .btn-icon.small {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    border-radius: 9px;
+
+    i {
+        font-size: .82rem !important;
+    }
 }
 
 @include mediaQuery(between-lg-xl) {
@@ -162,14 +188,14 @@ $tbl-muted : $theme-text-muted !default;
         td {
 
             border: 0;
-            border-bottom: 1px solid $tbl-border-soft;
+            border-bottom: 1px solid $tbl-border;
 
             &:last-child {
                 border-bottom: 0;
             }
 
             &::before {
-                // Label on the left — Linear sober uppercase eyebrow
+                // Eyebrow label on the left
                 content: attr(data-label);
                 font-size: 11px;
                 font-weight: 600;

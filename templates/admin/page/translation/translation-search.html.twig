@@ -1,26 +1,16 @@
 {%- trans_default_domain 'admin' -%}
 
-{#<form role="search"#}
-{#      action="{{ path('admin_translation_search_edit', {website: websiteId}) }}"#}
-{#      method="GET"#}
-{#      class="float-start w-100">#}
-{#    <div class="input-group">#}
-{#        <div class="input-group-prepend">#}
-{#            <button type="submit" class="input-group-text h-100"><i class="icm-search"></i></button>#}
-{#        </div>#}
-{#        <input placeholder="{{"Rechercher"|trans|raw }}" name="search" class="form-control" type="text">#}
-{#    </div>#}
-{#</form>#}
-
-<form role="search" class="form-search"
-      action="{{ path('admin_translation_search_edit', {website: websiteId}) }}"
-      method="GET">
-    <div class="input-group search-input-group">
-        <div class="input-group-text">
-            <button type="submit" class="search-btn btn-icon" data-bs-toggle="tooltip" title="{{"Rechercher"|trans|striptags }}">
-                <i class="icm-search"></i>
-            </button>
-        </div>
-        <input name="search" placeholder="{{"Rechercher"|trans|raw }}" class="form-control" type="text">
-    </div>
-</form>
+<div class="sidebar-search-field translation-search-field">
+    <i class="icm-search" aria-hidden="true"></i>
+    <input type="search"
+           class="translation-search-input"
+           autocomplete="off"
+           spellcheck="false"
+           placeholder="{{ "Rechercher une traduction"|trans|striptags }}"
+           aria-label="{{ "Rechercher une traduction"|trans|striptags }}">
+    <button type="button"
+            class="sidebar-search-clear translation-search-clear"
+            aria-label="{{ "Effacer la recherche"|trans|striptags }}">
+        <i class="icm-times" aria-hidden="true"></i>
+    </button>
+</div>

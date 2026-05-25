@@ -38,18 +38,15 @@
 
     <div id="dashboard" class="pb-5">
 
-        {#-- 1 — Hero (greeting + meta inline) --#}
+        {#-- 1 — Hero (editorial split: greeting block / meta column) --#}
         <section class="dashboard-hero reveal">
-            <div class="hero-line">
-                <div class="hero-greeting-wrap">
-                    <h1 class="hero-title mb-0">
-                        {{ greetingKey|trans }}{% if userFirstName %}, <span class="hero-name">{{ userFirstName }}</span>{% endif %}<span class="hero-mark">.</span>
-                    </h1>
-                </div>
+            <div class="hero-grid">
+                <h1 class="hero-title mb-0">
+                    {{ greetingKey|trans }}{% if userFirstName %}, <span class="hero-name">{{ userFirstName }}</span>{% endif %}<span class="hero-mark">.</span>
+                </h1>
                 <div class="hero-meta">
                     <span class="hero-date">{{ today|format_datetime(pattern='cccc d MMMM yyyy', locale=userLocale)|capitalize }}</span>
                     {%- if app.user.lastLogin is defined and app.user.lastLogin -%}
-                        <span class="hero-sep" aria-hidden="true">·</span>
                         <span class="hero-last-login">
                             <i class="icm-clock"></i>
                             <span>{{ "Dernière connexion"|trans|raw }} {{ app.user.lastLogin|ago }}</span>
@@ -149,6 +146,15 @@
                             <span class="quick-icon"><i class="icm-newspaper"></i></span>
                             <span class="quick-title">{{ "Actualités"|trans|raw }}</span>
                             <span class="quick-desc">{{ "Publications"|trans|raw }}</span>
+                        </a>
+                    </li>
+                {%- endif -%}
+                {%- if 'catalog'|moduleActive(configuration) -%}
+                    <li>
+                        <a href="{{ path('admin_catalog_index', {website: websiteId}) }}" class="quick-tile">
+                            <span class="quick-icon"><i class="icm-store"></i></span>
+                            <span class="quick-title">{{ "Catalogue"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Produits"|trans|raw }}</span>
                         </a>
                     </li>
                 {%- endif -%}

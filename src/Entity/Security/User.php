@@ -251,7 +251,7 @@ class User extends BaseSecurity implements GoogleTwoFactorInterface, EmailTwoFac
 
     /**
      * Looks at the first linked Website's Security to determine if admin 2FA is
-     * globally enabled. Admin users are linked to multiple websites; the first
+     * globally enabled. refonte-admin users are linked to multiple websites; the first
      * is used as the canonical reference for this check.
      */
     private function isAdminTwoFactorAllowedByWebsite(): bool

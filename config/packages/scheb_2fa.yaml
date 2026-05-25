@@ -7,8 +7,8 @@ scheb_two_factor:
     # TOTP via Google Authenticator / Authy / 1Password / Bitwarden (admin firewall only)
     google:
         enabled: true
-        server_name: 'Admin'
-        issuer: 'Admin'
+        server_name: 'refonte-admin'
+        issuer: 'refonte-admin'
         digits: 6
         leeway: 1
         template: 'security/2fa-form.html.twig'

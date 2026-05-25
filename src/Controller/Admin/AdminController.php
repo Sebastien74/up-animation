@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 /**
  * AdminController.
  *
- * Admin base controller
+ * refonte-admin base controller
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */

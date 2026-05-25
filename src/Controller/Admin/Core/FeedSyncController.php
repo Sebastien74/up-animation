@@ -18,7 +18,7 @@ use Throwable;
 /**
  * FeedSyncController.
  *
- * Admin endpoint to trigger an immediate sync of social feeds
+ * refonte-admin endpoint to trigger an immediate sync of social feeds
  * (Instagram, TikTok). Clears the 12 h auto-sync lock first.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>

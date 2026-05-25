@@ -18,8 +18,8 @@
     {%- set pages = [
         { title: 'Front'|trans, type: 'front', category: 'url', count: all['front']['url']|length },
         { title: 'Front ressources'|trans, type: 'front', category: 'resource', count: all['front']['resource']|length },
-        { title: 'Admin'|trans, type: 'admin', category: 'url', count: all['admin']['url']|length },
-        { title: 'Admin ressources'|trans, type: 'admin', category: 'resource', count: all['admin']['resource']|length }
+        { title: 'refonte-admin'|trans, type: 'admin', category: 'url', count: all['admin']['url']|length },
+        { title: 'refonte-admin ressources'|trans, type: 'admin', category: 'resource', count: all['admin']['resource']|length }
     ] -%}
 
     {%- set currentCount = all[type][category] is defined ? all[type][category]|length : 0 -%}

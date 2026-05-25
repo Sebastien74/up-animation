@@ -2,17 +2,18 @@
 
 /* -----------------------------------------------------------------
 
-    SIDEBAR — Linear-style dense. Dark surface kept across themes
+    SIDEBAR — editorial dense. Dark surface kept across themes
     (design ownership decision, cf. project_admin_light_theme).
 
     1 ) Core
-    2 ) Level 1 — section headers (.as-arrow.bigger)
-    3 ) Level 2 — main items (icon + label)
-    4 ) Level 3 — sub-items (rail indentation)
-    5 ) Sidebar top group
-    6 ) Left sidebar
-    7 ) Right sidebar
-    8 ) Icon stripping (.btn-icon.small inside nav)
+    2 ) Search bar
+    3 ) Level 1 — section headers (.as-arrow.bigger)
+    4 ) Level 2 — main items (icon + label)
+    5 ) Level 3 — sub-items (rail indentation)
+    6 ) Sidebar top group
+    7 ) Left sidebar
+    8 ) Right sidebar
+    9 ) Icon container (.btn-icon.small inside nav)
 
 ------------------------------------------------------------------ */
 
@@ -93,11 +94,11 @@
 
         &.active::after {
             transform: rotate(225deg) translate(0, -50%);
-            border-color: rgba(255, 255, 255, 0.65);
+            border-color: rgba(255, 255, 255, 0.75);
         }
 
         &:hover::after {
-            border-color: rgba(255, 255, 255, 0.85);
+            border-color: rgba(255, 255, 255, 0.9);
         }
 
         &:not(.bigger) {
@@ -128,32 +129,215 @@
 }
 
 /*-----------------------------------
-   2 ) Level 1 — section headers (.as-arrow.bigger)
-   Compact eyebrow.
+   2 ) Search bar — sticky at the top of scroll-sidebar
 -----------------------------------*/
 
-.left-sidebar .scroll-sidebar > nav > ul > li > a.as-arrow.bigger {
+.sidebar-search {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 0;
+    margin: 0 0 $space-2;
+    background: $dash-dark;
 
-    padding: $space-4 10px 4px 10px;
-    color: rgba(255, 255, 255, 0.38);
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    transition: color .12s ease;
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.06);
+    }
+}
 
-    &:hover {
-        color: rgba(255, 255, 255, 0.6);
+.sidebar-search-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    > i {
+        position: absolute;
+        left: 12px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.45);
+        pointer-events: none;
     }
 
-    &.active {
-        color: rgba(255, 255, 255, 0.72);
+    input {
+        width: 100%;
+        height: 38px;
+        padding: 0 32px 0 34px;
+        font-size: 12px;
+        font-weight: 500;
+        color: $white;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: $radius-sm;
+        transition: border-color .12s ease, background-color .12s ease;
+
+        &::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        &:focus {
+            outline: none;
+            border-color: rgba($primary, .45);
+            background: rgba(255, 255, 255, 0.06);
+        }
+    }
+
+    .sidebar-search-clear {
+        position: absolute;
+        right: 8px;
+        display: none;
+        width: 20px;
+        height: 20px;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.55);
+        background: transparent;
+        border: 0;
+        border-radius: $radius-xs;
+        cursor: pointer;
+        font-size: 10px;
+        transition: color .12s ease, background-color .12s ease;
+
+        &:hover {
+            color: $white;
+            background: rgba(255, 255, 255, 0.08);
+        }
+    }
+
+    &.is-filtering .sidebar-search-clear {
+        display: inline-flex;
+    }
+}
+
+/* Translation sub-menu search — same input style, indented in the
+   collapse panel, scoped JS filter (.translation-search). */
+
+.translation-search-wrap {
+    padding: 0 $space-2;
+    margin-bottom: $space-2;
+    list-style: none;
+
+    .sidebar-search-field input {
+        height: 34px;
+        background: rgba(255, 255, 255, 0.03);
+    }
+}
+
+.translation-domain-item.is-hidden {
+    display: none !important;
+}
+
+.translation-search-empty {
+    display: none;
+    padding: $space-2 $space-3;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}
+
+.translation-search-wrap.is-empty + .translation-search-empty {
+    display: block;
+}
+
+.sidebar-search-empty {
+    display: none;
+    padding: $space-3 $space-3 $space-2;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}
+
+.left-sidebar.is-filtering .sidebar-search-empty {
+    display: block;
+}
+
+// Items hidden by JS filter
+.left-sidebar li.is-hidden,
+.right-sidebar li.is-hidden {
+    display: none !important;
+}
+
+// Items kept visible inside a last-level .collapse but highlighted
+// because their label matches the current search query.
+.left-sidebar.is-filtering li.is-search-match > a,
+.right-sidebar.is-filtering li.is-search-match > a {
+    color: $white !important;
+
+    .btn-icon.small {
+        color: $primary !important;
+
+        i {
+            color: $primary !important;
+        }
+
+        svg {
+            fill: $primary !important;
+        }
     }
 }
 
 /*-----------------------------------
-   3 ) Level 2 — main items (icon + label)
-   Dense pill — Linear active state.
+   3 ) Level 1 — section headers (.as-arrow.bigger)
+   Editorial sentence-case + accent dot marker.
+-----------------------------------*/
+
+.left-sidebar .scroll-sidebar > nav > ul > li {
+    margin-top: $space-3;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+.left-sidebar .scroll-sidebar > nav > ul > li > a.as-arrow.bigger {
+
+    padding: $space-3 10px $space-2 22px;
+    position: relative;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    text-transform: none;
+    transition: color .12s ease;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 5px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.18);
+        border-radius: 1px;
+        transition: background .12s ease;
+    }
+
+    &:hover {
+        color: rgba(255, 255, 255, 0.85);
+
+        &::before {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    }
+
+    &.active {
+        color: $white;
+
+        &::before {
+            background: $primary;
+        }
+    }
+}
+
+/*-----------------------------------
+   4 ) Level 2 — main items (icon + label)
+   Dense pill — left accent rail on active.
 -----------------------------------*/
 
 .left-sidebar .scroll-sidebar > nav > ul > li > ul > li,
@@ -164,18 +348,33 @@
 
     > a {
 
-        padding: 6px 8px;
-        font-size: 14px;
+        position: relative;
+        padding: 6px 8px 6px 12px;
+        font-size: 13.5px;
         font-weight: 500;
         line-height: 1.25;
-        border-radius: $radius-xs;
-        color: rgba(255, 255, 255, 0.7);
+        border-radius: $radius-sm;
+        color: rgba(255, 255, 255, 0.72);
         gap: 9px;
-        min-height: 30px;
+        min-height: 32px;
         transition: background-color .12s ease, color .12s ease;
 
+        // Active left rail — visible only when active
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: $primary;
+            border-radius: 0 2px 2px 0;
+            transition: height .15s ease;
+        }
+
         &:hover, &:focus {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.05);
             color: $white;
 
             .btn-icon.small {
@@ -192,8 +391,13 @@
         }
 
         &.active {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.07);
             color: $white;
+            padding-left: 14px;
+
+            &::before {
+                height: 18px;
+            }
 
             .btn-icon.small {
                 color: $primary;
@@ -211,7 +415,7 @@
 }
 
 /*-----------------------------------
-   4 ) Level 3 — sub-items (rail indentation)
+   5 ) Level 3 — sub-items (rail indentation)
 -----------------------------------*/
 
 .left-sidebar .collapse .collapse,
@@ -222,8 +426,7 @@
     margin: $space-2 0 0 22px;
     position: relative;
 
-    // Vertical hierarchy rail — pulled left so active <a> background
-    // does not stick to it
+    // Vertical hierarchy rail
     &::before {
         content: '';
         position: absolute;
@@ -243,16 +446,16 @@
         > a {
 
             padding: 5px 8px 5px 12px;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 400;
             line-height: 1.3;
-            min-height: 26px;
+            min-height: 28px;
             border-radius: $radius-xs;
             color: rgba(255, 255, 255, 0.55);
             transition: background-color .12s ease, color .12s ease;
 
             &:hover, &:focus {
-                background: rgba(255, 255, 255, 0.05);
+                background: rgba(255, 255, 255, 0.04);
                 color: $white;
             }
 
@@ -266,9 +469,8 @@
 }
 
 /*-----------------------------------
-   5 ) Sidebar top section
+   6 ) Sidebar top section
    (Dashboard, Access front, Logout, multi-site selector)
-   Separate strip with deeper background.
 -----------------------------------*/
 
 .left-sidebar .sidebar-top-section {
@@ -277,10 +479,9 @@
     display: flex;
     flex-direction: column;
     gap: $space-3;
-    padding: $space-5 $space-2;
+    padding: $space-4 $space-2;
     background: rgba(0, 0, 0, 0.55);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
     > ul {
         padding: 0;
@@ -288,7 +489,7 @@
         list-style: none;
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 3px;
     }
 
     > ul > li {
@@ -299,11 +500,11 @@
             align-items: center;
             width: 100%;
             padding: 6px 8px;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 500;
             line-height: 1.25;
-            min-height: 30px;
-            border-radius: $radius-xs;
+            min-height: 32px;
+            border-radius: $radius-sm;
             color: rgba(255, 255, 255, 0.82);
             gap: 9px;
             text-decoration: none;
@@ -324,7 +525,7 @@
     .sidebar-website-info {
 
         color: rgba(255, 255, 255, 0.5);
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 500;
         padding: $space-2 10px;
 
@@ -338,26 +539,29 @@
 
 .left-sidebar .in-build-info > a {
 
-    padding: 5px 8px;
-    margin-top: $space-2;
-    font-size: 12px;
+    padding: 6px 10px;
+    margin: $space-2 0 $space-3;
+    font-size: 11.5px;
     font-weight: 500;
     color: $warning;
-    border-radius: $radius-xs;
+    background: rgba($warning, .08);
+    border: 1px solid rgba($warning, .18);
+    border-radius: $radius-sm;
     gap: 6px;
 
     &:hover, &:focus {
-        background: rgba($warning, .1);
+        background: rgba($warning, .14);
+        border-color: rgba($warning, .3);
         color: lighten($warning, 8%);
     }
 
     i {
-        font-size: 10px;
+        font-size: 11px;
     }
 }
 
 /*-----------------------------------
-   6 ) Left sidebar
+   7 ) Left sidebar
 -----------------------------------*/
 
 .left-sidebar {
@@ -383,7 +587,7 @@
 }
 
 /*-----------------------------------
-   7 ) Right sidebar
+   8 ) Right sidebar
 -----------------------------------*/
 
 .right-sidebar {
@@ -405,48 +609,47 @@
 }
 
 /*-----------------------------------
-   8 ) Icon container (.btn-icon.small inside nav)
-   Compact tile à la .quick-icon, darker than the sidebar surface
-   so the badge stands out subtly. Accent fill on active.
+   9 ) Icon container (.btn-icon.small inside nav)
+   Modernized — rounded square with subtle accent border.
 -----------------------------------*/
 
 .left-sidebar .sidebar-top-section a .btn-icon.small,
 .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a .btn-icon.small,
 .right-sidebar .scroll-sidebar > nav > ul > li > a .btn-icon.small {
 
-    width: 26px;
-    height: 26px;
-    flex: 0 0 26px;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
     margin: 0 !important;
     padding: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.35) !important;
-    border: 1px solid rgba(255, 255, 255, 0.04) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
     border-radius: $radius-sm !important;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(255, 255, 255, 0.6);
     transition: background-color .12s ease, border-color .12s ease, color .12s ease;
 
     i {
-        font-size: 14px !important;
+        font-size: 13px !important;
         line-height: 1;
         color: inherit;
         transition: color .12s ease;
     }
 
     svg, img {
-        width: 15px !important;
-        height: 15px !important;
-        max-width: 15px;
-        max-height: 15px;
-        fill: rgba(255, 255, 255, 0.55);
+        width: 14px !important;
+        height: 14px !important;
+        max-width: 14px;
+        max-height: 14px;
+        fill: rgba(255, 255, 255, 0.6);
         transition: fill .12s ease;
     }
 
     &.danger {
-        background: rgba($danger, .14) !important;
-        border-color: rgba($danger, .22) !important;
+        background: rgba($danger, .12) !important;
+        border-color: rgba($danger, .24) !important;
         color: $danger;
 
         i {
@@ -467,8 +670,8 @@
 .right-sidebar .scroll-sidebar > nav > ul > li > a:hover .btn-icon.small,
 .right-sidebar .scroll-sidebar > nav > ul > li > a:focus .btn-icon.small {
 
-    background: rgba(0, 0, 0, 0.5) !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.07) !important;
+    border-color: rgba(255, 255, 255, 0.14) !important;
     color: $white;
 
     i {
@@ -485,7 +688,7 @@
 .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active .btn-icon.small,
 .right-sidebar .scroll-sidebar > nav > ul > li > a.active .btn-icon.small {
 
-    background: rgba($primary, .18) !important;
+    background: rgba($primary, .16) !important;
     border-color: rgba($primary, .32) !important;
     color: $primary;
 

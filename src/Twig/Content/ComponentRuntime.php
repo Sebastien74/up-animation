@@ -39,7 +39,7 @@ class ComponentRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Check if is Admin User.
+     * Check if is refonte-admin User.
      */
     public function isComponentUser(): bool
     {

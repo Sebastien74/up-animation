@@ -34,7 +34,7 @@ export default function () {
                     }
                     let modal = document.getElementById(el.dataset.modal);
                     if (modal) {
-                        modal.querySelectorAll('.btn-dismiss').forEach(function (btn) {
+                        modal.querySelectorAll('[data-bs-dismiss="modal"]').forEach(function (btn) {
                             btn.onclick = function (ev) {
                                 ev.preventDefault();
                                 modal.remove();

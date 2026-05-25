@@ -600,7 +600,7 @@ readonly class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Check if in Admin.
+     * Check if in refonte-admin.
      */
     public function inAdmin(): bool
     {
@@ -608,7 +608,7 @@ readonly class AppRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Check if in Admin.
+     * Check if in refonte-admin.
      */
     public function inSecurity(): bool
     {

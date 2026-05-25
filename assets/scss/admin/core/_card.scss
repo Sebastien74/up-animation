@@ -2,11 +2,13 @@
 
 /* -----------------------------------------------------------------
 
-    CARD (admin) :
-    ==============
+    CARD (admin)
+    ============
 
-    Composant unifié. Surface papier crème, liseré 3 px à gauche
-    sur les cards sans formulaire, accent primaire en hover/active.
+    Surface unifiée, theme-aware via les tokens partagés ($crumb-*).
+    Liseré 3 px à gauche sur les cards sans formulaire, accent
+    primaire en hover / active, motion sobre (translateY 1 px)
+    aligné avec les tuiles du dashboard.
 
     1 ) Card
     2 ) Card header
@@ -16,7 +18,6 @@
     6 ) Card icon / heading
     7 ) Card hint
     8 ) Card section (sub-block)
-    9 ) Card shadow (variant dashboard, conservée)
 
 ------------------------------------------------------------------ */
 
@@ -29,17 +30,18 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: $space-6;
-    background: $dash-surface;
+    padding: $space-7;
+    background: $crumb-surface;
     border: 1px solid $crumb-border;
     border-radius: $radius-lg;
     box-shadow: none;
     overflow: hidden;
-    transition: border-color $transition-base;
+    transition: border-color $transition-fast, transform $transition-fast, box-shadow $transition-fast;
 
-    // 3 px stripe — present on form-free cards, and always when .is-active
-    &:not(:has(form))::before,
-    &.is-active::before {
+    // 3 px accent rail — always present, opacity-driven so the form
+    // and the data cards share the same scaffolding. Goes full $primary
+    // on .is-active or hover.
+    &::before {
         content: '';
         position: absolute;
         top: 0;
@@ -47,24 +49,30 @@
         bottom: 0;
         width: 3px;
         background: $crumb-border;
-        transition: background $transition-base;
+        opacity: .6;
+        transition: background $transition-fast, opacity $transition-fast;
     }
 
     &.is-active {
 
-        border-color: rgba($primary, 0.28) !important;
+        border-color: $theme-accent-border;
 
         &::before {
             background: $primary;
+            opacity: 1;
         }
     }
 
-    &:not(:has(form)) {
+    @include mediaQuery(min-lg) {
 
-        @include mediaQuery(min-lg) {
+        &:hover {
+            border-color: $theme-accent-border;
+            transform: translateY(-1px);
+            box-shadow: $theme-shadow-sm;
 
-            &:hover {
-                border-color: rgba($primary, 0.28) !important;
+            &::before {
+                background: $primary;
+                opacity: 1;
             }
         }
     }
@@ -78,6 +86,17 @@
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+
+    .card {
+        transition: border-color $transition-fast, box-shadow $transition-fast;
+
+        &:hover {
+            transform: none;
+        }
+    }
+}
+
 /*-----------------------------------
    2 ) Card header
 -----------------------------------*/
@@ -87,10 +106,10 @@
     display: flex;
     align-items: flex-start;
     gap: $space-3;
-    margin-bottom: $space-4 !important;
-    padding: 0 !important;
+    margin-bottom: $space-5 !important;
+    padding: 0 0 $space-4 !important;
     background: transparent !important;
-    border-bottom: 0 !important;
+    border-bottom: 1px solid $crumb-border !important;
     color: inherit !important;
 }
 
@@ -130,17 +149,18 @@
 
 .card-title {
     margin: 0 !important;
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     color: $crumb-text;
-    line-height: 1.3;
+    line-height: 1.25;
 }
 
 .card-subtitle {
-    margin: 2px 0 0 !important;
+    margin: 4px 0 0 !important;
     font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: $crumb-muted !important;
 }
@@ -170,7 +190,7 @@
     width: 40px;
     height: 40px;
     border-radius: $radius-md;
-    background: rgba($primary, 0.06);
+    background: $theme-accent-bg-soft;
     color: $primary;
 
     i {
@@ -198,7 +218,7 @@
     font-size: 12px;
     font-weight: 400;
     color: $crumb-muted;
-    background: rgba(255, 255, 255, 0.02);
+    background: $theme-bg-alt;
     border: 1px solid $crumb-border;
     border-radius: $radius-sm;
     line-height: 1.5;
@@ -237,7 +257,7 @@
         width: 24px;
         height: 24px;
         border-radius: $radius-xs;
-        background: rgba($primary, 0.06);
+        background: $theme-accent-bg-soft;
         color: $primary;
 
         i {
@@ -261,93 +281,5 @@
         font-weight: 400;
         color: $crumb-muted;
         line-height: 1.5;
-    }
-}
-
-/*-----------------------------------
-   9 ) Card shadow (dashboard variant)
------------------------------------*/
-
-.card-shadow {
-
-    position: relative;
-    overflow: hidden;
-    transition: transform $transition-fast, box-shadow $transition-fast, border-color $transition-fast;
-    border: 1px solid $theme-overlay-medium;
-    border-radius: 1rem;
-    background: radial-gradient(900px 520px at 82% 100%, $theme-accent-glow-soft, transparent 62%),
-    radial-gradient(1100px 780px at 30% 65%, $theme-overlay-faint, transparent 68%),
-    linear-gradient(0deg, $dash-bg-2, $dash-bg-1 48%, $dash-bg-0);
-
-    @include mediaQuery(min-lg) {
-        &:hover:not(.no-hover) {
-            transform: translateY(-1px);
-            box-shadow: $theme-shadow-lg !important;
-        }
-    }
-
-    &:before {
-        content: "";
-        position: absolute;
-        inset: -2px;
-        background: radial-gradient(
-                520px 220px at 18% 0%,
-                $theme-accent-bg-strong,
-                transparent 62%
-        );
-        opacity: 0.95;
-        pointer-events: none;
-    }
-
-    &:after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-                180deg,
-                $theme-overlay-soft,
-                rgba(255, 255, 255, 0.00) 40%,
-                rgba(0, 0, 0, 0.08)
-        );
-        mix-blend-mode: overlay;
-        opacity: 0.5;
-        pointer-events: none;
-    }
-
-    &.card-danger::before {
-        background: radial-gradient(
-                520px 220px at 18% 0%,
-                rgba(255, 92, 92, 0.18),
-                transparent 62%
-        );
-    }
-
-    &.card-warning::before {
-        background: radial-gradient(
-                520px 220px at 18% 0%,
-                rgba(241, 196, 15, 0.16),
-                transparent 62%
-        );
-    }
-
-    &.card-info::before {
-        background: radial-gradient(
-                520px 220px at 18% 0%,
-                rgba(56, 139, 253, 0.16),
-                transparent 62%
-        );
-    }
-
-    &.card-success::before {
-        background: radial-gradient(
-                520px 220px at 18% 0%,
-                rgba(46, 204, 113, 0.16),
-                transparent 62%
-        );
-    }
-
-    &:focus-visible {
-        outline: 2px solid $theme-accent-border-strong;
-        outline-offset: 3px;
     }
 }

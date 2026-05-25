@@ -33,7 +33,7 @@ class AdminThemeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'label' => $this->translator->trans('Admin thème', [], 'admin'),
+            'label' => $this->translator->trans('refonte-admin thème', [], 'admin'),
             'placeholder' => $this->translator->trans('Séléctionnez', [], 'admin'),
             'required' => false,
             'choices' => $this->getTemplates(),
