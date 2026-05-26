@@ -1,15 +1,29 @@
 {%- if form is defined -%}
+    {%- set searchField = form.searchMedia -%}
     {{ form_start(form, {attr: {
         id: "search-medias-form",
-        class: "d-inline-block",
+        class: "form-search",
         action: path('admin_folders_medias_search', {website: websiteId()}),
         role: "search",
         novalidate: "novalidate" }}) }}
-        <div class="input-group">
-            <span class="input-group-text"><i class="icm-search btn-icon"></i></span>
-            {{ form_widget(form.searchMedia) }}
+        <div class="input-group search-input-group">
+            <div class="input-group-text">
+                <button type="button" class="search-btn btn-icon" aria-label="{{ "Rechercher"|trans|striptags }}">
+                    <i class="icm-search"></i>
+                </button>
+            </div>
+            <input id="{{ searchField.vars.id }}"
+                   name="{{ searchField.vars.full_name }}"
+                   value="{{ searchField.vars.value }}"
+                   placeholder="{{ "Rechercher"|trans|raw }}"
+                   class="form-control"
+                   type="text"
+                   aria-label="{{ "Rechercher"|trans|striptags }}">
+            <button type="button" class="search-clear" aria-label="{{ "Effacer la recherche"|trans|striptags }}">
+                <i class="icm-times"></i>
+            </button>
         </div>
-    {{ form_end(form) }}
+    {{ form_end(form, {render_rest: false}) }}
 {%- endif -%}
 
 {%- if medias is defined -%}

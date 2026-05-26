@@ -2,15 +2,14 @@
 
 /* -----------------------------------------------------------------
 
-    Created on : 2019-08-07, 10:25:46 AM
-    Author     : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    PRELOADER (legacy stripe pattern — deprecated)
 
-    PRELOADER :
-    ===========
+    Le composant unifié vit dans `core/_loader.scss` (.app-loader).
+    Ce fichier ne conserve que :
+      - body.preloader-active (verrou scroll global)
+      - .parent-preloader marker
 
 ------------------------------------------------------------------ */
-
-@import '../../../lib/fonts/google-poppins';
 
 body.preloader-active {
     overflow: hidden;
@@ -18,111 +17,4 @@ body.preloader-active {
 
 .parent-preloader {
     position: relative;
-}
-
-#medias-sortable-container {
-    .admin-preloader {
-        border-bottom-right-radius: $radius-lg;
-        border-bottom-left-radius: $radius-lg;
-    }
-}
-
-#layout-preloader {
-    border-radius: $radius-lg;
-}
-
-.bg-stripe-loader {
-    position: absolute;
-    top: 0;
-    left: -150px;
-    bottom: 0;
-    width: 150%;
-    background: $bg-preloader !important;
-    animation: stripes-preloader .6s linear infinite !important;
-    will-change: transform;
-}
-
-.stripe-preloader {
-
-    background-color: transparent !important;
-    background-size: auto auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9999;
-    border-radius: 0 !important;
-
-    .bg-stripe-loader {
-        background: $bg-preloader !important;
-        opacity: .7;
-    }
-
-    h4 {
-        font-weight: 300 !important;
-    }
-
-    .progress-card {
-        width: 80%;
-        margin: 0 auto;
-    }
-
-    &.prototype-preloader {
-
-        left: 10px;
-        right: 10px;
-        bottom: 15px;
-        z-index: 9999;
-        height: calc(100% - 15px);
-
-        &.full {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: auto;
-        }
-    }
-
-    &.radius-preloader {
-        border-radius: $radius-lg !important;
-    }
-
-    &.progress-fixed {
-        position: fixed;
-    }
-}
-
-@-webkit-keyframes stripes-preloader {
-    from {
-        -webkit-transform: translateX(0);
-    }
-    to {
-        -webkit-transform: translateX(46px);
-    }
-}
-
-@keyframes stripes-preloader {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(46px);
-    }
-}
-
-#entities-index,
-.tab-content {
-    .stripe-preloader {
-        &.prototype-preloader {
-            border-radius: 0;
-        }
-    }
-}
-
-#main-preloader {
-    max-height: 100vh;
-    position: fixed;
-    border-radius: 0;
 }

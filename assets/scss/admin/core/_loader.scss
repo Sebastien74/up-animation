@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    APP LOADER (admin)
+    ==================
+
+    Unified loader — fixed bottom-right spinner toast with full
+    viewport backdrop that blocks pointer events while loading.
+
+    Activation : toggle `.d-none` on the wrapper (kept for JS compat
+    with `.stripe-preloader` consumers : .main-preloader, .modal-preloader,
+    .field-values-preloader, etc.).
+
+    Markup canon :
+      <div id="..." class="app-loader stripe-preloader d-none" role="status">
+          <div class="app-loader-backdrop"></div>
+          <div class="app-loader-toast">
+              <div class="spinner-border spinner-border-sm"></div>
+              <span class="app-loader-label">Chargement en cours...</span>
+          </div>
+      </div>
+
+------------------------------------------------------------------ */
+
+.app-loader {
+
+    position: fixed;
+    inset: 0;
+    z-index: 9050;
+    pointer-events: auto;
+
+    &[hidden],
+    &.d-none {
+        display: none !important;
+    }
+}
+
+.app-loader-backdrop {
+
+    position: absolute;
+    inset: 0;
+    background: rgba($black, .45);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    animation: appLoaderBackdropFade .2s $transition-base-timing forwards;
+}
+
+.app-loader-toast {
+
+    position: absolute;
+    right: $space-6;
+    bottom: $space-6;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-3 $space-5;
+    background: rgba($black, .92);
+    color: $white;
+    border: 0;
+    border-radius: $radius-pill;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba($black, .35);
+    animation: appLoaderToastSlide .2s $transition-base-timing forwards;
+    max-width: calc(100% - #{$space-6 * 2});
+
+    .spinner-border {
+        flex: 0 0 auto;
+        color: $primary;
+        border-width: 2px;
+    }
+
+    .app-loader-label {
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+@keyframes appLoaderBackdropFade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes appLoaderToastSlide {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .app-loader-backdrop,
+    .app-loader-toast {
+        animation: none;
+    }
+}
+
+/* Legacy progress cards (cache-clear, reorder, imports) — visually
+   removed in favor of the unified spinner toast. Markup kept for
+   JS-internal state tracking (data-count, .count, .filename, etc.)
+   but never rendered to the user. */
+#progress-card,
+.progress-card {
+    display: none !important;
+}

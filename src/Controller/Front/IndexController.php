@@ -34,7 +34,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class IndexController extends FrontController
 {
     /**
-     * To logout user.
+     * To log out user.
      *
      * @throws Exception
      */

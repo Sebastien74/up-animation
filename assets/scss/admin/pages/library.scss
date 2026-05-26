@@ -7,7 +7,7 @@
 
     Sommaire :
       1 ) Imports
-      2 ) Media library page (cards, results grid)
+      2 ) Media library page (cards, results grid, search)
       3 ) Media edition modal
       4 ) End process (cache flush loader)
       5 ) Loader keyframes / stripe bg
@@ -18,6 +18,7 @@
    1 ) Imports
 -----------------------------------*/
 
+@import '../../vendor/mixin/media-queries';
 @import '../variables';
 
 /*-----------------------------------
@@ -80,97 +81,200 @@
         }
     }
 
+    /* Search control style is shared with #tree-page-header — see
+       layout/_search.scss (.form-search .search-input-group). */
+    #search-medias-form {
+
+        .search-input-group {
+            width: 100%;
+            max-width: 320px;
+            margin-left: auto;
+        }
+    }
+
     #medias-results {
 
+        /* .file — standalone component, intentionally NOT extending .card so it
+           does not inherit the 32px padding, the ::before accent rail and the
+           hover transform of the global card module. */
         .file {
 
-            &.active .check-pack-media-label {
-                box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5) !important;
-                border-radius: $radius-lg;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: $space-2;
+            background: $crumb-surface;
+            border: 1px solid $btn-border;
+            border-radius: $radius-md;
+            overflow: hidden;
+            transition: border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
+
+            .file-inner {
+                width: 100%;
+            }
+
+            @include mediaQuery(min-lg) {
+                &:hover {
+                    border-color: $btn-border-hover;
+                    box-shadow: $btn-shadow;
+                    transform: translateY(-1px);
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                transition: none;
+
+                &:hover {
+                    transform: none;
+                }
+            }
+
+            .file-data-wrap {
+                width: 100%;
+                position: relative;
+            }
+
+            .file-data {
+
+                position: relative;
+                width: 100%;
+                aspect-ratio: 1 / 1;
+                overflow: hidden;
+                border-radius: $radius-md;
+                background: $crumb-surface;
+            }
+
+            .spinner-parent,
+            .spinner-parent .inner,
+            .spinner-parent .wrap {
+                width: 100%;
+                height: 100%;
+            }
+
+            .spinner-parent .wrap {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .media-thumb-img,
+            .file-data img {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 100% !important;
+                object-fit: cover;
+                border-radius: $radius-md;
+                display: block;
+            }
+
+            .file-data svg,
+            .file-data .icomoon {
+                max-width: 50%;
+                max-height: 50%;
+            }
+
+            /* Force placeholder to fill .file-data — image-loader.html.twig
+               injects inline max-width/max-height capped at the requested
+               thumb size (240px), which leaves a hollow rectangle inside
+               larger card columns (xxl). */
+            .img-loader-wrap,
+            .img-loader {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 100% !important;
+                max-height: 100% !important;
+                border-radius: $radius-md;
             }
 
             .img-loader {
-                border-radius: $border-radius;
+                aspect-ratio: 1 / 1 !important;
             }
 
-            .btn {
+            .edit-medias-btns {
 
-                width: 25px;
-                height: 25px;
-                transition: all .2s;
-                padding: 0;
-                line-height: 24px;
-                text-align: center;
+                margin-top: $space-2;
+                opacity: 1;
+
+                .btn-icon.small {
+                    width: 30px;
+                    height: 30px;
+                    flex: 0 0 30px;
+                    border-radius: $radius-sm;
+                }
+
+                .btn-icon.small i {
+                    font-size: .85rem !important;
+                }
+            }
+
+            /* Weight chip anchored top-right of .file-data — keeps grid rows
+               uniform when too-heavy files surface their size. */
+            .file-weight-chip {
+
                 position: absolute;
-                border-radius: 0;
-                bottom: 11px;
-                display: none;
+                top: $space-2;
+                right: $space-2;
+                z-index: 3;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 3px 8px;
+                font-size: 11px;
+                font-weight: 600;
+                line-height: 1;
+                color: $warning;
+                background: rgba($warning, .15);
+                border: 1px solid rgba($warning, .35);
+                border-radius: $radius-pill;
+                backdrop-filter: blur(4px);
+                pointer-events: none;
 
                 i {
                     font-size: 10px;
                 }
+            }
 
-                &.open-media-crop {
+            &.too-heavy-file {
+                border-color: rgba($warning, .45);
+            }
 
-                    left: 11px;
-                    border-bottom-left-radius: $card-border-radius;
-                    border-top-right-radius: $card-border-radius / 2;
+            /* Selected state — primary-tinted overlay + check pill on top-left
+               (thumbnail stays readable under the selection). */
+            &.active {
 
-                    i {
-                        font-size: 12px;
+                border-color: rgba($primary, .55);
+
+                .file-data {
+
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        inset: 0;
+                        background: rgba($primary, .28);
+                        border-radius: $radius-md;
+                        cursor: pointer;
+                        z-index: 2;
+                    }
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: $space-2;
+                        left: $space-2;
+                        width: 26px;
+                        height: 26px;
+                        border-radius: $radius-pill;
+                        background: $white url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%234f46e5"><path d="M13.485 4.43a.75.75 0 0 1 .085 1.057l-6 7a.75.75 0 0 1-1.106.043l-3-3a.75.75 0 1 1 1.06-1.06l2.432 2.432 5.472-6.387a.75.75 0 0 1 1.057-.085z"/></svg>') no-repeat center center;
+                        background-size: 16px 16px;
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+                        z-index: 3;
+                        cursor: pointer;
                     }
                 }
 
-                &.media-compress-restore {
-                    top: 11px;
-                    left: 11px;
-                    border-top-left-radius: $card-border-radius;
-                    border-bottom-right-radius: $card-border-radius / 2;
-                }
-
-                &.open-media-edit {
-                    right: 11px;
-                    border-bottom-right-radius: $card-border-radius;
-                    border-top-left-radius: $card-border-radius / 2;
-                }
-            }
-
-            &:hover {
-
-                .btn.open-media-crop,
-                .btn.open-media-edit,
-                .btn.media-compress-restore {
-                    display: inline-block !important;
-                    transition: all .2s;
-                }
-
-                .btn.media-compress-restore.d-none {
-                    display: none !important;
-                }
-            }
-
-            &.active {
-
-                .file-data:before,
-                .file-data:after {
-                    content: '';
-                    position: absolute;
-                    top: 3px;
-                    left: 3px;
-                    width: calc(100% - 6px);
-                    height: calc(100% - 6px);
+                .check-pack-media-label {
+                    box-shadow: $btn-shadow;
                     border-radius: $radius-lg;
-                    cursor: pointer;
-                    z-index: 2;
-                }
-
-                .file-data:before {
-                    background: rgba(0, 0, 0, 0.5);
-                }
-
-                .file-data:after {
-                    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 512 512"><!-- Font Awesome Pro 5.15.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><defs><style>.fa-secondary{opacity:.4}</style></defs><path d="M504.5 144.42L264.75 385.5 192 312.59l240.11-241a25.49 25.49 0 0 1 36.06-.14l.14.14L504.5 108a25.86 25.86 0 0 1 0 36.42z" class="fa-secondary"/><path d="M264.67 385.59l-54.57 54.87a25.5 25.5 0 0 1-36.06.14l-.14-.14L7.5 273.1a25.84 25.84 0 0 1 0-36.41l36.2-36.41a25.49 25.49 0 0 1 36-.17l.16.17z" class="fa-primary"/></svg>') no-repeat center center;
-                    background-size: 20px;
                 }
             }
         }
@@ -240,7 +344,6 @@
 
 /*-----------------------------------
    5 ) Loader keyframes / stripe bg
-   Bandes diagonales orangées (couleurs spécifiques d'animation)
 -----------------------------------*/
 
 @keyframes MOVE-BG {

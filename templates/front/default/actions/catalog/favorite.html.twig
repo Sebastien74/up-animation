@@ -37,11 +37,17 @@
                 </div>
             {%- else -%}
                 {%- set printUrl = path('front_favorites_print') -%}
+                {%- set downloadUrl = path('front_favorites_print', {download: 1}) -%}
                 {%- set printLabel = "Imprimer mes favoris"|trans -%}
-                <div class="favorites-actions d-flex justify-content-center mb-4" data-favorites-actions>
+                {%- set downloadLabel = "Télécharger mes favoris"|trans -%}
+                <div class="favorites-actions d-flex flex-wrap justify-content-center gap-2 mb-4" data-favorites-actions>
                     <a href="{{ printUrl }}" target="_blank" rel="noopener" class="btn btn-secondary d-inline-flex align-items-center">
                         <i class="icon-print me-2" aria-hidden="true"></i>
                         <span>{{ printLabel }}</span>
+                    </a>
+                    <a href="{{ downloadUrl }}" download rel="noopener" class="btn btn-primary d-inline-flex align-items-center">
+                        <i class="icon-download me-2" aria-hidden="true"></i>
+                        <span>{{ downloadLabel }}</span>
                     </a>
                 </div>
                 <div class="row justify-content-center favorites-list">
@@ -54,10 +60,14 @@
                         </div>
                     {%- endfor -%}
                 </div>
-                <div class="favorites-actions d-flex justify-content-center mt-2" data-favorites-actions>
+                <div class="favorites-actions d-flex flex-wrap justify-content-center gap-2 mt-2" data-favorites-actions>
                     <a href="{{ printUrl }}" target="_blank" rel="noopener" class="btn btn-secondary d-inline-flex align-items-center">
                         <i class="icon-print me-2" aria-hidden="true"></i>
                         <span>{{ printLabel }}</span>
+                    </a>
+                    <a href="{{ downloadUrl }}" download rel="noopener" class="btn btn-primary d-inline-flex align-items-center">
+                        <i class="icon-download me-2" aria-hidden="true"></i>
+                        <span>{{ downloadLabel }}</span>
                     </a>
                 </div>
 

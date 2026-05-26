@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
+use App\Doctrine\Middleware\QueryProfiler;
 use App\Service\Core\SlowRequestStatsService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -53,8 +54,10 @@ final class SlowRequestSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly LoggerInterface $slowRequestLogger,
         private readonly SlowRequestStatsService $statsService,
+        private readonly QueryProfiler $queryProfiler,
         private readonly int $thresholdMs,
         private readonly bool $enabled,
+        private readonly bool $serverTimingEnabled = false,
     ) {
     }
 
@@ -92,10 +95,24 @@ final class SlowRequestSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $request->attributes->set(
-            self::REQUEST_DURATION_ATTR,
-            (int) ((microtime(true) - $start) * 1000)
-        );
+        $durationMs = (microtime(true) - $start) * 1000;
+        $request->attributes->set(self::REQUEST_DURATION_ATTR, (int) $durationMs);
+
+        if ($this->serverTimingEnabled) {
+            $sqlMs = $this->queryProfiler->getTimeMs();
+            $sqlCount = $this->queryProfiler->getCount();
+            $appMs = max(0.0, $durationMs - $sqlMs);
+            $event->getResponse()->headers->set(
+                'Server-Timing',
+                sprintf(
+                    'app;dur=%.1f, db;dur=%.1f;desc="%d queries", total;dur=%.1f',
+                    $appMs,
+                    $sqlMs,
+                    $sqlCount,
+                    $durationMs
+                )
+            );
+        }
     }
 
     public function onTerminate(TerminateEvent $event): void
@@ -143,6 +160,8 @@ final class SlowRequestSubscriber implements EventSubscriberInterface
             'locale' => $request->getLocale(),
             'status' => $response->getStatusCode(),
             'peak_memory_mb' => (int) (memory_get_peak_usage(true) / 1048576),
+            'query_count' => $this->queryProfiler->getCount(),
+            'sql_ms' => (int) $this->queryProfiler->getTimeMs(),
             'host' => $request->getHost(),
             'profiler_token' => $profilerToken,
         ]);

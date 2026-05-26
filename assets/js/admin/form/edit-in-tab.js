@@ -4,9 +4,9 @@
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 
-import 'jquery-ui/dist/jquery-ui.min'
 import '../bootstrap/dist/tab';
 import setPositions from "./edit-in-tab-positions";
+import flatSortable from "../plugins/flat-sortable";
 import '../../../scss/admin/pages/edit-in-tab.scss';
 import '../../../scss/admin/lib/sweetalert.scss';
 import '../lib/sweetalert/sweetalert.min';
@@ -93,51 +93,32 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    let featuresSortableEl = document.getElementById('features-sortable');
-    if (featuresSortableEl && typeof jQuery !== 'undefined' && typeof jQuery.fn.sortable !== 'undefined') {
-        let featuresSortable = jQuery(featuresSortableEl).sortable({
-            placeholder: "ui-state-highlight",
-            items: '.ui-feature',
+    const featuresSortableEl = document.getElementById('features-sortable');
+    if (featuresSortableEl) {
+        flatSortable(featuresSortableEl, {
             handle: ".handle-feature",
-            start: function (e, ui) {
-                ui.placeholder.height(ui.item.height());
-            },
-            update: function (event) {
+            draggable: ".ui-feature",
+            onUpdate: function () {
 
                 const loader = document.querySelector('.main-preloader');
                 const loaderContent = document.querySelector('#entity-preloader');
                 const sortables = Array.from(featuresSortableEl.querySelectorAll('.ui-feature'));
                 const length = sortables.length;
-                const progressBarCard = loaderContent ? loaderContent.querySelector('.progress-card') : null;
-                const progressBar = progressBarCard ? progressBarCard.querySelector('.position-progress-bar') : null;
 
                 if (loader) loader.classList.remove('d-none');
                 if (loaderContent) loaderContent.classList.remove('d-none');
-                if (progressBarCard) progressBarCard.classList.remove('d-none');
 
                 sortables.forEach((el, i) => {
                     const newPosition = i + 1;
                     const path = el.getAttribute('data-pos-path');
                     const url = path + (path.indexOf('?') > -1 ? '&' : '?') + 'position=' + newPosition;
 
-                    fetch(url, { method: 'GET', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                    fetch(url, {method: 'GET', headers: {'X-Requested-With': 'XMLHttpRequest'}})
                         .then(r => r.ok ? r.json().catch(() => ({})) : Promise.reject(r))
                         .then(() => {
-                            if (progressBar) {
-                                const progress = Math.ceil((i * 100) / length);
-                                progressBar.style.width = progress + '%';
-                                progressBar.setAttribute('aria-valuenow', progress + '%');
-                                progressBar.innerHTML = progress + '%';
-                            }
                             if ((i + 1) === length) {
                                 if (loader) loader.classList.add('d-none');
                                 if (loaderContent) loaderContent.classList.add('d-none');
-                                if (progressBarCard) progressBarCard.classList.add('d-none');
-                                if (progressBar) {
-                                    progressBar.style.width = '0%';
-                                    progressBar.setAttribute('aria-valuenow', '0%');
-                                    progressBar.innerHTML = '0%';
-                                }
                             }
                         })
                         .catch(errors => {
@@ -146,49 +127,34 @@ document.addEventListener('DOMContentLoaded', function () {
                             }).catch(error => console.error(error.message));
                         });
                 });
-                event.stopImmediatePropagation();
             }
         });
-
-        featuresSortable.disableSelection();
     }
 
-    let featureValuesSortableEls = document.querySelectorAll('#features-sortable .feature-values-sortable');
-    if (featureValuesSortableEls.length > 0 && typeof jQuery !== 'undefined' && typeof jQuery.fn.sortable !== 'undefined') {
-        let featureValuesSortable = jQuery(featureValuesSortableEls).sortable({
-            placeholder: "ui-state-highlight",
-            items: '.ui-value',
-            handle: ".handle-value",
-            start: function (e, ui) {
-                ui.placeholder.height(ui.item.height());
-            },
-            update: function (event) {
-                const items = document.querySelectorAll('#features-sortable .ui-value');
-                setPositions(items);
-                event.stopImmediatePropagation();
-            }
+    const featureValuesSortableEls = document.querySelectorAll('#features-sortable .feature-values-sortable');
+    if (featureValuesSortableEls.length > 0) {
+        featureValuesSortableEls.forEach(el => {
+            flatSortable(el, {
+                handle: ".handle-value",
+                draggable: ".ui-value",
+                onUpdate: function () {
+                    const items = document.querySelectorAll('#features-sortable .ui-value');
+                    setPositions(items);
+                }
+            });
         });
-
-        featureValuesSortable.disableSelection();
     }
 
-    let videoValuesSortableEl = document.getElementById('videos-sortable');
-    if (videoValuesSortableEl && typeof jQuery !== 'undefined' && typeof jQuery.fn.sortable !== 'undefined') {
-        let videoValuesSortable = jQuery(videoValuesSortableEl).sortable({
-            placeholder: "ui-state-highlight",
-            items: '.ui-video',
+    const videoValuesSortableEl = document.getElementById('videos-sortable');
+    if (videoValuesSortableEl) {
+        flatSortable(videoValuesSortableEl, {
             handle: ".handle-video",
-            start: function (e, ui) {
-                ui.placeholder.height(ui.item.height());
-            },
-            update: function (event) {
+            draggable: ".ui-video",
+            onUpdate: function () {
                 const items = videoValuesSortableEl.querySelectorAll('.ui-video');
                 setPositions(items);
-                event.stopImmediatePropagation();
             }
         });
-
-        videoValuesSortable.disableSelection();
     }
 });
 

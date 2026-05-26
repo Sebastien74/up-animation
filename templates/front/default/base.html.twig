@@ -269,10 +269,6 @@
                 {%- endif -%}
             </main>
 
-            {%- if 'newsletter'|moduleActive(configuration) and not onlyBody -%}
-                {{ render_esi(path('front_newsletter_view', {filter: 'main', website: website.id} )) }}
-            {%- endif -%}
-
             {%- if not onlyBody -%}
                 {%- include 'front/'~websiteTemplate~'/include/footer.html.twig' with {
                     websiteTemplate: websiteTemplate,
@@ -333,6 +329,9 @@
             {%- endif -%}
             {%- if matomoId -%}
                 {{ encore_entry_script_tags('front-'~websiteTemplate~'-matomo', null, webpack, {async: true, nonce: csp_nonce(), defer: true}) }}
+            {%- endif -%}
+            {%- if not onlyBody and not granted('ROLE_ADMIN') and configuration.enableAnalytics is defined and configuration.enableAnalytics -%}
+                {{ encore_entry_script_tags('front-'~websiteTemplate~'-analytics', null, webpack, {defer: true, nonce: csp_nonce()}) }}
             {%- endif -%}
             {{ jsRouting() }}
         {%- endblock -%}

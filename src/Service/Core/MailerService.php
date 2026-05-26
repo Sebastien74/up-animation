@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service\Core;
 
-use App\Entity\Core\MailLog;
 use App\Model\Core\WebsiteModel;
 use App\Service\Interface\CoreLocatorInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use ForceUTF8\Encoding;
 use Monolog\Handler\RotatingFileHandler;
@@ -59,7 +57,6 @@ class MailerService
         private readonly MailerInterface $mailer,
         private readonly Environment $templating,
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly EntityManagerInterface $entityManager,
     ) {
         $this->envName = 'prod' !== $_ENV['APP_ENV'] ? strtoupper($_ENV['APP_ENV']) : null;
     }
@@ -95,14 +92,12 @@ class MailerService
                 $logger->pushHandler(new RotatingFileHandler($this->coreLocator->logDir().'/mailer.log', 10, Level::Info));
                 $logger->info('Send to '.$emailAddress.' from '.$this->from.' at '.(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')))->format('Y-m-d H:i:s'));
             }
-            $this->recordLog($email, MailLog::STATUS_SUCCESS);
         } catch (TransportExceptionInterface|Exception $exception) {
             $errorMessage = $exception->getMessage().' in '.get_class($this).' at line '.$exception->getLine();
             $logger->pushHandler(new RotatingFileHandler($this->coreLocator->logDir().'/mailer-critical.log', 10, Level::Critical));
             foreach ($this->to as $emailAddress) {
                 $logger->critical($errorMessage.' to '.$emailAddress);
             }
-            $this->recordLog($email, MailLog::STATUS_FAILED, $errorMessage);
             $message = $this->coreLocator->isDebug() || $this->coreLocator->checkIP()
                 ? Encoding::fixUTF8($errorMessage)
                 : $this->coreLocator->translator()->trans("Une erreur est survenue lors de l'envoie du mail. Veuillez réessayer ou contacter le webmaster.", [], 'validators');
@@ -118,58 +113,6 @@ class MailerService
         return (object) [
             'success' => true,
         ];
-    }
-
-    /**
-     * Persist a MailLog entry per recipient. Failures are swallowed so a
-     * persistence error never breaks the mail-sending flow.
-     */
-    private function recordLog(?TemplatedEmail $email, string $status, ?string $errorMessage = null): void
-    {
-        if (empty($this->to)) {
-            return;
-        }
-
-        try {
-            $htmlBody = null;
-            $textBody = null;
-            $messageId = null;
-
-            if ($email instanceof TemplatedEmail) {
-                $htmlBody = $this->templating->render($this->template, $this->arguments);
-                $textBody = is_string($email->getTextBody()) ? $email->getTextBody() : null;
-                $headers = $email->getHeaders();
-                if ($headers->has('Message-ID')) {
-                    $messageId = $headers->get('Message-ID')?->getBodyAsString();
-                }
-            }
-
-            foreach ($this->to as $recipient) {
-                $log = (new MailLog())
-                    ->setStatus($status)
-                    ->setFromEmail($this->from)
-                    ->setFromName($this->name)
-                    ->setToEmails([$recipient])
-                    ->setCcEmails($this->cc ?: null)
-                    ->setReplyTo($this->replyTo)
-                    ->setSubject($this->subject)
-                    ->setHtmlBody($htmlBody)
-                    ->setTextBody($textBody)
-                    ->setAttachments($this->attachments ?: null)
-                    ->setTemplate($this->template)
-                    ->setLocale($this->locale)
-                    ->setMessageId($messageId)
-                    ->setErrorMessage($errorMessage);
-                $this->entityManager->persist($log);
-            }
-            $this->entityManager->flush();
-        } catch (\Throwable $persistException) {
-            // Persistence must never break delivery; surface to critical log only.
-            $this->coreLocator->jsonLog(
-                'MailLog persistence failed: '.$persistException->getMessage(),
-                'email'
-            );
-        }
     }
 
     /**

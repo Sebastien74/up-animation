@@ -24,7 +24,7 @@
         margin-bottom: 0 !important;
     }
 
-    .sortable-item {
+    > .dd-item {
 
         margin-bottom: .5rem;
         border-radius: 12px;
@@ -71,13 +71,26 @@
             line-height: 30px;
         }
 
-        .handle-item {
+        > .row > .title-block > .dd-handle {
 
             position: relative;
             min-height: 50px;
             width: 50px;
             margin: 0 20px 0 0;
             padding: 0;
+            background: transparent;
+            border: 0;
+            cursor: grab;
+            color: $crumb-muted;
+            transition: color $transition-fast;
+
+            &:active {
+                cursor: grabbing;
+            }
+
+            &:hover {
+                color: $primary;
+            }
 
             &:after {
                 content: "";
@@ -86,7 +99,7 @@
                 top: 14px;
                 bottom: 11px;
                 width: 1px;
-                background-color: transparentize($body-color, .5);
+                background-color: $crumb-border;
             }
 
             i, svg {
@@ -94,7 +107,8 @@
                 margin-top: 19px;
                 float: left;
                 margin-left: 16px;
-                color: $body-color;
+                color: inherit;
+                fill: currentColor;
             }
         }
 
@@ -139,9 +153,11 @@
         }
     }
 
-    .ui-state-highlight {
-        background-color: $gray-400;
-        border: 1px solid $gray-400;
-        border-radius: $card-border-radius;
+    > .dd-placeholder {
+        min-height: 50px;
+        margin-bottom: .5rem;
+        background: rgba($primary, .12);
+        border: 2px dashed rgba($primary, .55);
+        border-radius: 12px;
     }
 }

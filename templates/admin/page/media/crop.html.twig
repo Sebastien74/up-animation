@@ -2,8 +2,11 @@
 
 {%- trans_default_domain 'admin' -%}
 
-{%- block title -%}{{ "Redimensionner"|trans|htmlEntities }}{%- endblock -%}
-{%- block pageTitle -%}{{ "Redimensionner"|trans|raw }}{%- endblock -%}
+{%- set pageIcon = 'crop-alt' -%}
+{%- set pageTitle = "Redimensionner"|trans -%}
+
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ parent() }}
@@ -18,34 +21,40 @@
 {%- endblock -%}
 
 {%- block body -%}
-    <div id="medias-croppers-index" class="card">
-        <h4 class="card-header mb-0">
-            <div class="row">
-                <div class="col-md-8 my-auto"><i class="icm-image"></i>{{ media.originalName }}</div>
-                <div class="col-md-4 text-end">
-                    <span>
-                        <a href="{{ path('admin_medias_library', {website: websiteId}) }}"
-                           class="btn-icon info-lighten me-2"
-                           data-bs-toggle="tooltip" title="{{"Retourner aux médias"|trans|striptags }}">
-                            <i class="icm-reply"></i>
-                        </a>
+    <section id="medias-croppers-index" class="cropper-page">
+        <header class="zone-head cropper-page-head">
+            <div class="cropper-page-heading">
+                <h1 class="zone-title">
+                    <span class="cropper-page-eyebrow">{{ "Redimensionner"|trans|raw }}</span>
+                    <span class="cropper-page-media">
+                        <i class="icm-image cropper-page-icon" aria-hidden="true"></i>
+                        <span class="cropper-page-name">{{ media.originalName }}</span>
                     </span>
-                </div>
+                </h1>
             </div>
-        </h4>
-        <div class="card-body pb-2">
-            <div class="row" data-masonry='{"percentPosition": true }'>
+            <div class="cropper-page-actions">
+                <a href="{{ path('admin_medias_library', {website: websiteId}) }}"
+                   class="btn-icon"
+                   data-bs-toggle="tooltip"
+                   title="{{ "Retourner aux médias"|trans|striptags }}"
+                   aria-label="{{ "Retourner aux médias"|trans|striptags }}">
+                    <i class="icm-reply"></i>
+                </a>
+            </div>
+        </header>
+
+        {%- if thumbs -%}
+            <div class="row cropper-grid" data-masonry='{"percentPosition": true }'>
                 {%- for thumb in thumbs -%}
-                    <div class="col-sm-6 col-lg-4 mb-3">
+                    <div class="col-sm-6 col-lg-4 mb-3 cropper-grid-item">
                         {{ render_esi(path('admin_media_cropper', {media: media.id, thumbConfiguration: thumb.id, website: website.id} )) }}
                     </div>
                 {%- endfor -%}
             </div>
-            {%- if not thumbs -%}
-                <div class="w-100 mb-4">
-                    {%- include 'admin/include/alert.html.twig' with {display: "alert", alert: "info", message: "Cette image n'est pas utilisée ou paramétrée pour le redimensionnement."|trans} only -%}
-                </div>
-            {%- endif -%}
-        </div>
-    </div>
+        {%- else -%}
+            <div class="cropper-empty">
+                {%- include 'admin/include/alert.html.twig' with {display: "alert", alert: "info", message: "Cette image n'est pas utilisée ou paramétrée pour le redimensionnement."|trans} only -%}
+            </div>
+        {%- endif -%}
+    </section>
 {%- endblock -%}

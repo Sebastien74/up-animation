@@ -1,7 +1,7 @@
 {%- macro encore_absolute_link_tags(entry_point, webpack, preload, onload = false) -%}
 
     {%- set params = 'admin-' in app.request.uri
-        ? '?isAdmin='~app.session.get('SECURITY_IS_ADMIN')~'&userSecret='~app.session.get('SECURITY_USER_SECRET')~'&token='~admin_app_secret : null -%}
+        ? '?isAdmin='~app.session.get('SECURITY_IS_ADMIN')~'&userSecret='~app.session.get('SECURITY_USER_SECRET') : null -%}
 
     {%- set asFont = webpack == 'fonts' -%}
     {%- set as = asFont ? 'font' : 'style' -%}
@@ -25,7 +25,7 @@
 {%- macro encore_absolute_responsive_link_tags(websiteTemplate, webpack, preload, onload) -%}
 
     {%- set params = 'admin-' in app.request.uri
-        ? '?isAdmin='~app.session.get('SECURITY_IS_ADMIN')~'&userSecret='~app.session.get('SECURITY_USER_SECRET')~'&token='~admin_app_secret : null -%}
+        ? '?isAdmin='~app.session.get('SECURITY_IS_ADMIN')~'&userSecret='~app.session.get('SECURITY_USER_SECRET') : null -%}
 
     {%- if isMobile() -%}
         {%- for file in encore_entry_css_files('front-'~websiteTemplate~'-mobile', webpack) -%}
@@ -59,7 +59,7 @@
 
     {%- set src = preload ? preload(absolute_url(asset(url)), { as: 'script', nopush: true, importance: 'high', strategy: 'preload' }) : absolute_url(asset(url)) -%}
     {%- set params = 'admin-' in app.request.uri
-        ? '?isAdmin='~app.session.get('SECURITY_IS_ADMIN')~'&userSecret='~app.session.get('SECURITY_USER_SECRET')~'&token='~admin_app_secret : null -%}
+        ? '?isAdmin='~app.session.get('SECURITY_IS_ADMIN')~'&userSecret='~app.session.get('SECURITY_USER_SECRET') : null -%}
     {#    {%- if preload -%}#}
     {#        <div data-href="{{ url~params }}"#}
     {#             data-nonce="{{ csp_nonce() }}"#}

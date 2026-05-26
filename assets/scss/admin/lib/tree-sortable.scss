@@ -439,4 +439,18 @@ $nestable-drop-border: transparentize($primary, .55);
         padding-left: $space-2;
         border-left: 1px solid $btn-border;
     }
+
+    /* Aligned with .app-table tbody td .btn-icon.small — 28 px so action
+       buttons in a nestable row stay compact and visually consistent
+       with table rows. */
+    .btn-icon.small {
+        width: 28px;
+        height: 28px;
+        flex: 0 0 28px;
+        border-radius: 9px;
+
+        i {
+            font-size: .82rem !important;
+        }
+    }
 }

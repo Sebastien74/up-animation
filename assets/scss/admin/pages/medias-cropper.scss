@@ -2,14 +2,16 @@
 
 /* -----------------------------------------------------------------
 
-    Module : Medias cropper
-    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+    Module : Medias cropper (refonte)
+
+    Standalone tiles — explicitly NOT extending .card so masonry does
+    not reflow on hover translate and modal backdrop stays anchored.
 
     Sommaire :
       1 ) Imports
-      2 ) Index
-      3 ) Crop card
-      4 ) Crop modal
+      2 ) Page chrome (header, grid, empty state)
+      3 ) Thumb tile (standalone)
+      4 ) Cropper modal (toolbar, fields, image)
 
 ------------------------------------------------------------------ */
 
@@ -17,50 +19,377 @@
    1 ) Imports
 -----------------------------------*/
 
+@import '../../vendor/mixin/media-queries';
 @import '../variables';
 @import "../lib/cropper";
 
 /*-----------------------------------
-   2 ) Index
+   2 ) Page chrome
 -----------------------------------*/
 
-#medias-croppers-index {
+.cropper-page {
 
-    .card-header {
-        border-top-right-radius: $radius-lg;
-        border-top-left-radius: $radius-lg;
+    padding-top: $space-2;
+
+    .cropper-page-head {
+
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: $space-4;
+        margin-bottom: $space-7;
+        padding-bottom: $space-4;
+        border-bottom: 1px solid $crumb-border;
+    }
+
+    .zone-title {
+
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: $space-1;
+        margin: 0;
+        padding-left: $space-3;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.3;
+        letter-spacing: -0.005em;
+        color: $crumb-text;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 3px;
+            height: 14px;
+            background: $primary;
+            border-radius: 2px;
+        }
+    }
+
+    .cropper-page-eyebrow {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: $crumb-muted;
+    }
+
+    .cropper-page-media {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        font-size: clamp(16px, 1.4vw, 20px);
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        color: $crumb-text;
+    }
+
+    .cropper-page-icon {
+        font-size: 14px;
+        color: $primary;
+    }
+
+    .cropper-page-name {
+        word-break: break-all;
+    }
+
+    .cropper-page-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+    }
+
+    .cropper-grid {
+        margin-left: -$space-2;
+        margin-right: -$space-2;
+    }
+
+    .cropper-grid-item {
+        padding-left: $space-2;
+        padding-right: $space-2;
+    }
+
+    .cropper-empty {
+        margin-top: $space-4;
     }
 }
 
 /*-----------------------------------
-   3 ) Crop card
+   3 ) Thumb tile (standalone)
 -----------------------------------*/
 
-.crop-card {
+.thumb-tile {
 
-    background-color: $crumb-surface;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: $crumb-surface;
+    border: 1px solid $crumb-border;
+    border-radius: $radius-md;
+    transition: border-color $transition-fast, background $transition-fast;
 
-    .info-body {
-        background-color: $white;
+    @include mediaQuery(min-lg) {
+
+        &:hover {
+            border-color: $crumb-border-hover;
+            background: $btn-surface-hover;
+        }
+    }
+
+    .thumb-tile-preview {
+
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: $space-4;
+        background:
+            repeating-conic-gradient(rgba(255, 255, 255, 0.02) 0% 25%, transparent 0% 50%) 50% / 16px 16px,
+            $crumb-surface;
+        border-bottom: 1px solid $crumb-border;
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: $radius-xs;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+        }
+
+        .img-loader-wrap,
+        .img-loader {
+            max-width: 100%;
+        }
+    }
+
+    .thumb-tile-body {
+
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
+        padding: $space-4;
+    }
+
+    .thumb-tile-head {
+
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding-bottom: $space-3;
+        border-bottom: 1px dashed $crumb-border;
+    }
+
+    .thumb-tile-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: $crumb-muted;
+    }
+
+    .thumb-tile-size {
+
+        display: inline-flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1.1;
+        letter-spacing: -0.015em;
+        color: $crumb-text;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .thumb-tile-dim {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 2px;
+
+        &.thumb-tile-dim-auto {
+            font-style: italic;
+            font-weight: 400;
+            color: $crumb-muted;
+        }
+    }
+
+    .thumb-tile-unit {
+        font-size: 11px;
+        font-weight: 500;
+        color: $crumb-muted;
+        text-transform: lowercase;
+    }
+
+    .thumb-tile-cross {
+        font-size: 14px;
+        color: $crumb-muted;
+        font-weight: 400;
+    }
+
+    .thumb-tile-usage {
+
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .thumb-tile-usage-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: $crumb-muted;
+    }
+
+    .thumb-tile-usage-list {
+
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        li {
+            position: relative;
+            padding-left: $space-3;
+            font-size: 12px;
+            line-height: 1.5;
+            color: $crumb-text;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 9px;
+                left: 0;
+                width: 4px;
+                height: 1px;
+                background: $crumb-muted;
+            }
+        }
+    }
+
+    .thumb-tile-foot {
+
+        display: flex;
+        align-items: stretch;
+        gap: $space-2;
+        margin-top: $space-2;
+        padding-top: $space-3;
+        border-top: 1px dashed $crumb-border;
+    }
+
+    .thumb-tile-action-primary {
+        flex: 1 1 auto;
+        justify-content: center;
+    }
+
+    .thumb-tile-action-reset {
+        flex: 0 0 auto;
     }
 }
 
 /*-----------------------------------
-   4 ) Crop modal
+   4 ) Cropper modal
 -----------------------------------*/
 
 .crop-modal {
 
+    .modal-title {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        color: $crumb-text;
+    }
+
+    .cropper-wrap {
+        position: relative;
+    }
+
     .img-container {
+
         position: relative;
         width: 100%;
         max-height: 500px;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+        overflow: hidden;
     }
 
-    .docs-buttons .btn,
-    .refresh-cropper-sizes {
-        min-height: 38px;
-        line-height: 24px;
-        min-width: 38px;
+    .cropper-toolbar {
+
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: $space-3;
+        padding: $space-3;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+
+        @include mediaQuery(min-md) {
+            grid-template-columns: auto 1fr;
+            align-items: center;
+        }
+    }
+
+    .cropper-toolbar-tools {
+
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: $space-2;
+
+        .btn-group {
+            display: inline-flex;
+            gap: 4px;
+            padding: 4px;
+            background: $btn-surface;
+            border: 1px solid $btn-border;
+            border-radius: $radius-sm;
+        }
+
+        .btn-icon.small {
+
+            min-width: 30px;
+            min-height: 30px;
+            border-radius: $radius-xs;
+
+            i {
+                font-size: 12px;
+            }
+        }
+    }
+
+    .cropper-toolbar-data {
+
+        display: flex;
+        align-items: center;
+        gap: $space-2;
+    }
+
+    .cropper-toolbar-fields {
+
+        flex: 1 1 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        gap: $space-2;
+
+        .form-group,
+        .form-control {
+            margin-bottom: 0;
+        }
+    }
+
+    .cropper-toolbar-refresh {
+        flex: 0 0 auto;
+    }
+
+    .modal-buttons {
+        padding-top: $space-3;
+        border-top: 1px solid $crumb-border;
     }
 }

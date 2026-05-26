@@ -9,18 +9,22 @@ export default function (Routing) {
 
     /** Blocks order */
 
-    let blocks = document.querySelectorAll(".block-sortable");
+    const blocks = document.querySelectorAll(".block-sortable");
 
     if (blocks.length > 0) {
         import('sortablejs').then(({default: Sortable}) => {
             blocks.forEach(el => {
+                const existing = Sortable.get(el);
+                if (existing) {
+                    existing.destroy();
+                }
                 Sortable.create(el, {
                     animation: 200,
                     easing: "cubic-bezier(0.22, 1, 0.36, 1)",
                     group: 'blocks',
                     handle: ".handle-block",
                     draggable: ".block",
-                    ghostClass: "highlight-block",
+                    ghostClass: "sortable-placeholder",
                     dragClass: "sortable-drag",
                     chosenClass: "sortable-chosen",
                     forceFallback: true,

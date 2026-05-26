@@ -40,8 +40,6 @@ class TestController extends AdminController
     {
         $fixtures->addMessages($website);
 
-        die;
-
         parent::breadcrumb($request, []);
 
         return $this->render('admin/page/development/test.html.twig', array_merge($this->arguments, [

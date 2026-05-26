@@ -19,6 +19,7 @@ class MessengerWorkerService
     private const string CONSUME_COMMAND = 'messenger:consume';
     private const string STOP_WORKER_COMMAND = 'messenger:stop-worker';
     private const bool ASYNCHRONOUS = false;
+    private const array ALLOWED_QUEUES = ['async', 'failed', 'sync'];
     private string $phpExecutable = 'php';
 
     public function __construct(
@@ -69,6 +70,10 @@ class MessengerWorkerService
      */
     public function workerInBackground(string $action = 'consume', string $queue = 'async', int $memoryLimit = 128): void
     {
+        if (!in_array($queue, self::ALLOWED_QUEUES, true)) {
+            throw new \InvalidArgumentException(sprintf('Unknown messenger queue "%s".', $queue));
+        }
+
         $this->setPHPExecutable();
         $this->executeShellCommand($action, $queue, $memoryLimit);
     }
@@ -116,11 +121,11 @@ class MessengerWorkerService
                 $strCommand = self::CONSUME_COMMAND;
                 $command = sprintf(
                     '%s %s %s %s --memory-limit=%dM --no-interaction',
-                    escapeshellcmd($this->phpExecutable), // Escaper le chemin de l'exécutable PHP
-                    escapeshellarg($binDirname), // Escaper le chemin vers bin/console
+                    escapeshellcmd($this->phpExecutable),
+                    escapeshellarg($binDirname),
                     $strCommand,
-                    $queue, // Escaper le nom de la queue
-                    $memoryLimit // Limite mémoire
+                    escapeshellarg($queue),
+                    $memoryLimit
                 );
                 break;
             case 'stop-worker':

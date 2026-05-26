@@ -96,6 +96,9 @@ class Configuration extends BaseEntity
     private bool $accessibilityStatus = true;
 
     #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $enableAnalytics = true;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $mediasCategoriesStatus = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
@@ -487,6 +490,18 @@ class Configuration extends BaseEntity
     public function setBreadcrumb(bool $breadcrumb): static
     {
         $this->breadcrumb = $breadcrumb;
+
+        return $this;
+    }
+
+    public function isEnableAnalytics(): bool
+    {
+        return $this->enableAnalytics;
+    }
+
+    public function setEnableAnalytics(bool $enableAnalytics): static
+    {
+        $this->enableAnalytics = $enableAnalytics;
 
         return $this;
     }

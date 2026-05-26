@@ -64,8 +64,10 @@ import "../vendor/first-paint";
 import "../vendor/vendor";
 import "./core/core";
 
-/** 1 - jQuery UI (lazy, seulement si un plugin qui en dépend est présent) */
-const jqueryUiSelectors = '#zones-sortable, .nestable-list-container, #medias-sortable-container, .prototype-sortable, .ui-sortable, .datepicker, .colorpicker, .data-table, .tree-select';
+/** 1 - jQuery UI (lazy, seulement si un plugin qui en dépend est présent).
+ *  Tous les sortables admin sont désormais sur SortableJS
+ *  (assets/js/admin/plugins/flat-sortable.js + pages/layout). */
+const jqueryUiSelectors = '.datepicker, .colorpicker, .data-table, .tree-select';
 const needsJqueryUi = document.querySelector(jqueryUiSelectors);
 const jqueryUiReady = needsJqueryUi
     ? import('jquery-ui/dist/jquery-ui.min')

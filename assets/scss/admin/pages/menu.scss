@@ -29,57 +29,85 @@
 
 #page-selector-menu {
 
-    $page-selector-height: 45px;
+    // Aligned with project $input-height = 66 px (admin standard).
+    $page-selector-height: $input-height;
 
     .input-group {
         flex-wrap: nowrap;
         height: $page-selector-height;
+        border: 1px solid $input-border-color;
+        border-radius: $input-border-radius;
+        background: $input-bg;
+        overflow: hidden;
+        transition: border-color $transition-fast, box-shadow $transition-fast;
+
+        &:focus-within {
+            border-color: rgba($primary, .45);
+            box-shadow: 0 0 0 3px rgba($primary, .18);
+        }
     }
 
     .select2-container {
         flex: 1 1 auto;
         min-width: 0;
-        width: auto !important; // neutralise la largeur inline injectée par Select2
+        width: auto !important;
     }
 
     .select2-selection--single:not([class*="bg-"]):not([class*="border-"]) {
         height: $page-selector-height;
+        background: transparent !important;
         border: 0 !important;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+        border-radius: 0;
+        padding: 0 $space-4;
     }
 
     .select2-selection__rendered {
         line-height: $page-selector-height;
+        color: $input-color;
+        font-size: $input-font-size;
     }
 
     .select2-selection__arrow {
         height: $page-selector-height !important;
         top: 0 !important;
+        right: $space-2 !important;
     }
 
     .select2-results {
-        border-radius: 0 0 $radius-lg $radius-lg;
+        border-radius: 0 0 $radius-md $radius-md;
     }
 
     .input-group-text {
         flex: 0 0 $page-selector-height;
         width: $page-selector-height;
         height: $page-selector-height;
-        background: $btn-surface;
-        color: $btn-text;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+        background: rgba($primary, .12);
+        color: $primary;
+        border: 0;
+        border-left: 1px solid $input-border-color;
+        border-radius: 0;
         transition: background $transition-fast, color $transition-fast;
 
         i {
-            font-size: 13px;
+            font-size: 14px;
+            transition: transform $transition-fast;
         }
 
-        &:hover,
+        @include mediaQuery(min-lg) {
+
+            &:hover,
+            &:focus-visible {
+                background: rgba($primary, .22);
+                color: $primary;
+
+                i {
+                    transform: translateX(2px);
+                }
+            }
+        }
+
         &:focus-visible {
-            background: $btn-surface-hover;
-            color: $white;
+            outline: 0;
         }
     }
 }

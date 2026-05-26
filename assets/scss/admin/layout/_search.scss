@@ -1,8 +1,45 @@
+@charset "UTF-8";
+
+/* Shared admin search input — markup mirrors #tree-page-header.
+   Hauteur, padding, alignement vertical : tout est porté par les styles
+   globaux .input-group / .input-group-text / .form-control / .btn-icon. */
+
 .form-search {
+
+    position: relative;
+
     .search-input-group {
         width: 300px;
         max-width: 100%;
         border-radius: 16px !important;
         overflow: hidden;
+    }
+
+    .search-clear {
+        position: absolute;
+        top: 50%;
+        right: $space-2;
+        transform: translateY(-50%);
+        display: none;
+        width: 22px;
+        height: 22px;
+        align-items: center;
+        justify-content: center;
+        color: $crumb-muted;
+        background: transparent;
+        border: 0;
+        border-radius: $radius-xs;
+        cursor: pointer;
+        font-size: 10px;
+        transition: color $transition-fast, background-color $transition-fast;
+
+        &:hover {
+            color: $crumb-text;
+            background: $btn-surface-hover;
+        }
+    }
+
+    &.is-filtering .search-clear {
+        display: inline-flex;
     }
 }

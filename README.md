@@ -1,7 +1,7 @@
 # Up Animation
 
 [![Generic badge](https://img.shields.io/badge/Version-7-purple.svg?style=flat-square&color=rgba(120,5,120))](https://github.com/Sebastien74/SFCMS-7)
-![Generic badge](https://img.shields.io/badge/PHP-8.3-red.svg?style=flat-square)
+![Generic badge](https://img.shields.io/badge/PHP-8.5-red.svg?style=flat-square)
 ![Generic badge](https://img.shields.io/badge/Node-v.20-green.svg?style=flat-square&color=rgba(29,153,91,.7))
 [![Generic badge](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
 [![Generic badge](https://img.shields.io/badge/Author-Sébastien%20FOURNIER-blue.svg?style=flat-square)](https://github.com/Sebastien74)

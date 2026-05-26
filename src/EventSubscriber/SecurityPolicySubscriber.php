@@ -252,8 +252,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
                 if (count($user->getWebsites()) > 0) {
                     $responseEvent->setResponse(new RedirectResponse($this->coreLocator->router()->generate('admin_dashboard', ['website' => $user->getWebsites()[0]->getId()])));
                 } else {
-                    header('Location: '.$this->schemeAndHttpHost.'/denied.php?site=true');
-                    exit;
+                    $responseEvent->setResponse(new RedirectResponse($this->schemeAndHttpHost.'/denied.php?site=true', Response::HTTP_SEE_OTHER));
                 }
             }
         }

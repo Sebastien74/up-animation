@@ -9,8 +9,10 @@ use App\Entity\Core\Domain;
 use App\Entity\Module\Search\SearchValue;
 use App\Entity\Seo\NotFoundUrl;
 use App\Entity\Seo\Url;
+use App\Repository\Analytics\AnalyticsDailyRepository;
 use App\Repository\Core\MailLogRepository;
 use App\Service\Core\SlowRequestStatsService;
+use Doctrine\DBAL\Exception as DBALException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +39,7 @@ class DashboardController extends AdminController
         PaginatorInterface $paginator,
         SlowRequestStatsService $slowRequestStats,
         MailLogRepository $mailLogRepository,
+        AnalyticsDailyRepository $analyticsDailyRepository,
     ): Response {
         $website = $this->getWebsite();
         $notFoundsLimit = 50;
@@ -61,6 +64,22 @@ class DashboardController extends AdminController
             'daily' => $mailLogRepository->countDaily(30),
         ];
 
+        $analyticsStats = null;
+        if ($website->configuration->enableAnalytics) {
+            try {
+                $tz = new \DateTimeZone('UTC');
+                $to = new \DateTimeImmutable('today', $tz);
+                $from = $to->modify('-6 days');
+                $analyticsStats = [
+                    'totals' => $analyticsDailyRepository->findTotals((int) $website->entity->getId(), $from, $to),
+                    'series' => $analyticsDailyRepository->findSeries((int) $website->entity->getId(), $from, $to),
+                    'rangeDays' => 7,
+                ];
+            } catch (DBALException) {
+                $analyticsStats = null;
+            }
+        }
+
         return $this->adminRender('admin/page/core/dashboard.html.twig', [
             'notFoundUrls' => $notFoundRepository->findFrontWithoutRedirections($website->entity, $domains, $notFoundsLimit),
             'notFoundCount' => $notFoundRepository->countFrontWithoutRedirections($website->entity, $domains),
@@ -71,6 +90,7 @@ class DashboardController extends AdminController
             'hasTikTokFeed' => (bool) $website->api?->tiktok?->accessToken,
             'performanceStats' => $performanceStats,
             'mailStats' => $mailStats,
+            'analyticsStats' => $analyticsStats,
         ]);
     }
 }

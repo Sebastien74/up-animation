@@ -12,7 +12,7 @@ use App\Model\Core\WebsiteModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\WebLink\GenericLinkProvider;
 use Symfony\Component\WebLink\Link;
 
@@ -26,14 +26,18 @@ use Symfony\Component\WebLink\Link;
 #[Autoconfigure(tags: [
     ['name' => ThumbService::class, 'key' => 'thumb_service'],
 ])]
-readonly class ThumbService
+class ThumbService
 {
+    private static array $preloadJsonRaw = [];
+    private array $thumbConfigurationCache = [];
+
     /**
      * ThumbService constructor.
      */
     public function __construct(
-        private ImageThumbnailInterface $thumbnail,
-        private CoreLocatorInterface $coreLocator,
+        private readonly ImageThumbnailInterface $thumbnail,
+        private readonly CoreLocatorInterface $coreLocator,
+        private readonly ?Stopwatch $stopwatch = null,
     ) {
     }
 
@@ -44,16 +48,30 @@ readonly class ThumbService
      */
     public function preload(mixed $mediaModel, array $thumbConfiguration = []): array
     {
+        $sw = $this->stopwatch?->start('ThumbService::preload', 'thumb');
+        try {
+            return $this->doPreload($mediaModel, $thumbConfiguration);
+        } finally {
+            $sw?->stop();
+        }
+    }
+
+    private function doPreload(mixed $mediaModel, array $thumbConfiguration = []): array
+    {
         $thumbsRender = [];
-        $filesystem = new Filesystem();
         $inAdmin = $this->coreLocator->inAdmin();
         $prefixCache = $inAdmin ? 'admin' : 'front';
         $dirnameGenerated = $this->coreLocator->projectDir().'/public/thumbnails/generated/';
         $dirnameGenerated = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirnameGenerated);
         $dirnameGenerated = $dirnameGenerated.$prefixCache.'-'.$mediaModel->media->getWebsite()->getUploadDirname().'.cache.json';
-        $jsonData = $filesystem->exists($dirnameGenerated) ? file_get_contents($dirnameGenerated) : null;
 
-        if ($jsonData && $mediaModel->media->getOriginalName() && preg_match('/'.$mediaModel->media->getOriginalName().'/', $jsonData)) {
+        if (!array_key_exists($dirnameGenerated, self::$preloadJsonRaw)) {
+            self::$preloadJsonRaw[$dirnameGenerated] = is_file($dirnameGenerated) ? file_get_contents($dirnameGenerated) : null;
+        }
+        $jsonData = self::$preloadJsonRaw[$dirnameGenerated];
+        $originalName = $mediaModel->media->getOriginalName();
+
+        if ($jsonData && $originalName && str_contains($jsonData, $originalName)) {
             $files = $this->thumbnail->execute($mediaModel, $thumbConfiguration);
             $thumbs = !empty($files['lazyFile']) ? [$files['lazyFile']] : [];
             $thumbs = !empty($files['files']) ? array_replace($thumbs, $files['files']) : $thumbs;
@@ -92,9 +110,16 @@ readonly class ThumbService
      */
     public function thumbConfiguration(WebsiteModel $website, string $classname, ?string $action = null, mixed $filter = null, ?string $type = null): array
     {
-        $session = $this->coreLocator->request()->getSession();
-        $sessionKey = 'thumbs_actions_' . $website->uploadDirname;
-        $thumbs = $session->get($sessionKey, []);
+        $sw = $this->stopwatch?->start('ThumbService::thumbConfiguration', 'thumb');
+        try {
+            return $this->doThumbConfiguration($website, $classname, $action, $filter, $type);
+        } finally {
+            $sw?->stop();
+        }
+    }
+
+    private function doThumbConfiguration(WebsiteModel $website, string $classname, ?string $action = null, mixed $filter = null, ?string $type = null): array
+    {
         $type = !$type && Block::class === $classname ? $filter : $type;
 
         if ($type && str_contains($type, '-large')) {
@@ -102,7 +127,22 @@ readonly class ThumbService
             $type = str_replace('-large', '', $type);
         }
 
-        if (!$thumbs || $this->coreLocator->request()->get('thumbs')) {
+        $bustCache = (bool) $this->coreLocator->request()->get('thumbs');
+        $cacheKey = null;
+        if (!$bustCache && ($filter === null || is_scalar($filter))) {
+            $cacheKey = $website->uploadDirname.'|'.$classname.'|'.($action ?? '')
+                .'|'.(is_bool($filter) ? (int) $filter : ($filter ?? ''))
+                .'|'.($type ?? '');
+            if (isset($this->thumbConfigurationCache[$cacheKey])) {
+                return $this->thumbConfigurationCache[$cacheKey];
+            }
+        }
+
+        $session = $this->coreLocator->request()->getSession();
+        $sessionKey = 'thumbs_actions_' . $website->uploadDirname;
+        $thumbs = $session->get($sessionKey, []);
+
+        if (!$thumbs || $bustCache) {
             $thumbs = [];
             $thumbsActions = $this->coreLocator->em()->getRepository(ThumbAction::class)->findByWebsite($website);
             foreach ($thumbsActions as $thumbAction) {
@@ -134,6 +174,10 @@ readonly class ThumbService
             if (!$configurations[$screen]) {
                 unset($configurations[$screen]);
             }
+        }
+
+        if ($cacheKey !== null) {
+            $this->thumbConfigurationCache[$cacheKey] = $configurations;
         }
 
         return $configurations;

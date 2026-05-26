@@ -9,6 +9,7 @@ use App\Repository\Security\UserFrontRepository;
 use App\Service\Interface\CoreLocatorInterface;
 use Exception;
 use Psr\Cache\InvalidArgumentException;
+use Scheb\TwoFactorBundle\Security\Authentication\Token\TwoFactorTokenInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,6 +80,10 @@ class LoginFrontFormAuthenticator extends AbstractAuthenticator implements Authe
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        if ($token instanceof TwoFactorTokenInterface) {
+            return new RedirectResponse($this->coreLocator->router()->generate('2fa_front_login'));
+        }
+
         return new RedirectResponse($this->getSuccessRedirectionUrl($request));
     }
 

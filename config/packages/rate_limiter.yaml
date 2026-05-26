@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=../../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+framework:
+    rate_limiter:
+        analytics_ingest:
+            policy: 'token_bucket'
+            limit: 120
+            rate: { interval: '1 minute', amount: 120 }

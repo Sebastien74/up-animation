@@ -113,9 +113,7 @@ class FormManager
                 $contact = $this->coreLocator->em()->getRepository(Form\ContactStepForm::class)->findOneBy(['token' => $token, 'tokenExpired' => false]);
             }
             if (!$contact) {
-                header('Status: 301 Moved Permanently', false, 301);
-                header('Location:'.$this->coreLocator->requestStack()->getCurrentRequest()->getSchemeAndHttpHost());
-                exit;
+                return null;
             }
         }
 

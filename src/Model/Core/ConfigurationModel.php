@@ -47,6 +47,7 @@ final class ConfigurationModel extends BaseModel
         public readonly ?string $template = null,
         public readonly ?bool $onlineStatus = null,
         public readonly ?bool $seoStatus = null,
+        public readonly ?bool $enableAnalytics = null,
         public readonly ?bool $accessibilityStatus = null,
         public readonly ?bool $darkTheme = null,
         public readonly ?bool $preloader = null,
@@ -100,6 +101,7 @@ final class ConfigurationModel extends BaseModel
             template: self::getContent('template', $configuration),
             onlineStatus: self::getContent('onlineStatus', $configuration, true),
             seoStatus: self::getContent('seoStatus', $configuration, true),
+            enableAnalytics: self::getContent('enableAnalytics', $configuration, true),
             accessibilityStatus: self::getContent('accessibilityStatus', $configuration, true),
             darkTheme: self::getContent('darkTheme', $configuration, true),
             preloader: self::getContent('preloader', $configuration, true),
@@ -215,7 +217,8 @@ final class ConfigurationModel extends BaseModel
 
         ksort(self::$cache['modules'][$configuration->getId()][$userId]);
 
-        if (!self::$coreLocator->request()->isMethod('POST')) {
+        $request = self::$coreLocator->request();
+        if (null === $request || !$request->isMethod('POST')) {
             $fp = fopen($dirname, 'w');
             fwrite($fp, json_encode(self::$cache['modules'][$configuration->getId()][$userId], JSON_PRETTY_PRINT));
             fclose($fp);

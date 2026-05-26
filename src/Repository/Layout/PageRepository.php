@@ -595,12 +595,15 @@ class PageRepository extends ServiceEntityRepository
             ->leftJoin('c.blocks', 'b')
             ->leftJoin('b.blockType', 'bt')
             ->leftJoin('b.action', 'ba')
+            ->leftJoin('b.intls', 'bi', 'WITH', 'bi.locale = :locale')
+            ->leftJoin('b.mediaRelations', 'bmr')
+            ->leftJoin('b.fieldConfiguration', 'bfc')
             ->leftJoin('p.intls', 'pi', 'WITH', 'pi.locale = :locale')
             ->andWhere('u.website = :website')
             ->andWhere('u.locale = :locale')
             ->setParameter('website', $website->id)
             ->setParameter('locale', $locale)
-            ->addSelect('u', 'w', 'l', 'z', 'c', 'b', 'bt', 'ba', 'pi');
+            ->addSelect('u', 'w', 'l', 'z', 'c', 'b', 'bt', 'ba', 'bi', 'bmr', 'bfc', 'pi');
 
         if (!$preview) {
             $qb->andWhere('p.publicationStart IS NULL OR p.publicationStart < CURRENT_TIMESTAMP()')

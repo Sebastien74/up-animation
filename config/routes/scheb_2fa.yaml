@@ -9,7 +9,7 @@
 2fa_front_login:
     path: /espace-personnel/2fa
     defaults:
-        _controller: 'scheb_two_factor.form_controller::form'
+        _controller: 'App\Controller\Security\Front\TwoFactorFormController::form'
 
 2fa_front_login_check:
     path: /espace-personnel/2fa-check

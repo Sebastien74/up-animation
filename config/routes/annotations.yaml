@@ -5,7 +5,3 @@ controllers:
 app_extra:
     resource: .
     type: extra
-
-admin_controller:
-    resource: ../../src/Controller/refonte-admin/AdminController.php
-    type: attribute

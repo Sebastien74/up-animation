@@ -1,59 +1,87 @@
-<!DOCTYPE html>
-<html lang="{{ app.request.locale }}" data-nonce="{{ csp_nonce() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="robots" content="noindex, nofollow">
-        <title>{{ "Vérification en deux étapes"|trans({}, 'security')|htmlEntities }}</title>
-        {%- block stylesheets -%}
-            {{ encore_entry_link_tags('security', null, 'security', {nonce: csp_nonce()}) }}
-        {%- endblock -%}
-    </head>
-    <body class="bg-light">
-        <main class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-5">
-                    <div class="card shadow-sm border-0">
-                        <div class="card-body p-4 p-md-5">
-                            <h1 class="h4 mb-3">{{ "Vérification en deux étapes"|trans({}, 'security')|raw }}</h1>
-                            <p class="text-muted mb-4">
-                                {{ "Un code de vérification vient d'être envoyé à votre adresse email."|trans({}, 'security')|raw }}
-                            </p>
+{%- extends 'front/'~website.configuration.template~'/base.html.twig' -%}
 
-                            {%- if authenticationError -%}
-                                <div class="alert alert-danger" role="alert">
-                                    {{ authenticationError|trans(authenticationErrorData, 'security')|raw }}
+{%- trans_default_domain 'front_default' -%}
+
+{%- block metaTitle -%}{{ "Vérification en deux étapes"|trans({}, 'security')|htmlEntities }}{%- endblock -%}
+{%- block metaRobots -%}noindex{%- endblock -%}
+
+{%- set displayHeader = false -%}
+
+{%- block stylesheets -%}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName~'-'~frontTheme, null, webpack, {nonce: csp_nonce()}) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
+    {{ parent() }}
+{%- endblock -%}
+
+{%- block javascripts -%}
+    {{ parent() }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {defer: true, nonce: csp_nonce()}) }}
+{%- endblock -%}
+
+{%- block body -%}
+    {%- if displayHeader -%}
+        {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+            pageTitle: "Vérification en deux étapes"|trans({}, 'security')|raw,
+            thumbConfiguration: thumbConfigurationHeader
+        } -%}
+    {%- endif -%}
+    <div class="container mt-5 mb-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-4">
+                <div class="card form-container login-card shadow-lg border-0">
+                    <div class="card-body form-ajax-container p-4 p-md-5">
+                        {%- include 'front/'~websiteTemplate~'/include/loader.html.twig' with {className: 'strict-size small-radius'} only -%}
+                        <div class="login-head mb-4 pb-2">
+                            <p class="login-eyebrow text-uppercase mb-2">{{ "Sécurité du compte"|trans({}, 'security')|raw }}</p>
+                            <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Vérification en deux étapes"|trans({}, 'security')|raw }}</h3>
+                        </div>
+                        <form id="form-2fa" method="post" action="{{ path('2fa_front_login_check') }}" class="security" novalidate>
+                            <div class="row">
+                                <div class="col-12 col-lg-12">
+                                    <p class="mb-4">
+                                        {{ "Un code de vérification vient d'être envoyé à votre adresse email."|trans({}, 'security')|raw }}
+                                    </p>
                                 </div>
-                            {%- endif -%}
-
-                            <form method="post" action="{{ path('2fa_front_login_check') }}" novalidate>
-                                <div class="mb-3">
-                                    <label for="_auth_code" class="form-label">{{ "Code reçu par email"|trans({}, 'security') }}</label>
-                                    <input type="text" id="_auth_code" name="_auth_code"
-                                           class="form-control form-control-lg text-center"
-                                           autocomplete="one-time-code"
-                                           inputmode="numeric"
-                                           pattern="[0-9]*"
-                                           maxlength="6"
-                                           autofocus required>
+                                <div class="col-12">
+                                    {%- if authenticationError -%}
+                                        {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {
+                                            alert: 'danger',
+                                            message: authenticationError|trans(authenticationErrorData, 'security'),
+                                            alertClass: 'w-100'
+                                        } only -%}
+                                    {%- endif -%}
                                 </div>
-
+                                <div class="col-12 col-lg-12 mb-3 form-group-text floating-form-text">
+                                    <div class="position-relative form-floating">
+                                        <input type="text" id="_auth_code" name="_auth_code"
+                                               class="form-control"
+                                               placeholder="000000"
+                                               autocomplete="one-time-code"
+                                               inputmode="numeric"
+                                               pattern="[0-9]*"
+                                               maxlength="6"
+                                               autofocus required>
+                                        <label for="_auth_code" class="form-label required">{{ "Code reçu par email"|trans({}, 'security') }}</label>
+                                    </div>
+                                </div>
                                 {%- if isCsrfProtectionEnabled -%}
                                     <input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}">
                                 {%- endif -%}
-
-                                <button type="submit" class="btn btn-primary w-100">
-                                    {{ "Valider"|trans({}, 'security')|raw }}
-                                </button>
-
-                                <a href="{{ path('app_logout') }}" class="d-block text-center text-muted mt-3 fz-small">
-                                    {{ "Annuler et se déconnecter"|trans({}, 'security')|raw }}
-                                </a>
-                            </form>
-                        </div>
+                                <div class="col-12 col-lg-12">
+                                    <button type="submit" class="col-12 btn btn-primary btn-block text-uppercase w-100 mt-3 d-flex justify-content-center">
+                                        {{ "Valider"|trans({}, 'security')|raw }}
+                                    </button>
+                                </div>
+                                <div class="col-12 text-center mt-3">
+                                    <a href="{{ path('app_logout') }}" class="text-dark">
+                                        <small class="text-italic">{{ "Annuler et se déconnecter"|trans({}, 'security')|raw }}</small>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-        </main>
-    </body>
-</html>
+        </div>
+    </div>
+{%- endblock -%}

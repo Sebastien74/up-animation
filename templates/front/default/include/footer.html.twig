@@ -77,6 +77,10 @@
         </div>
     </section>
 
+    {%- if 'newsletter'|moduleActive(configuration) -%}
+        {{ render_esi(path('front_newsletter_view', {filter: 'main', website: website.id} )) }}
+    {%- endif -%}
+
     <section class="footer-main pt-4 pt-md-5 pb-5">
         <div class="container">
             <div class="row m-0 g-4">

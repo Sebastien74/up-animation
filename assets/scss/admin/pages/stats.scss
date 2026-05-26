@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+@import "../../vendor/mixin/media-queries";
+@import "../variables";
+
+#dashboard.analytics-stats {
+
+    .stats-range {
+        .form-label {
+            color: $crumb-muted;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .form-control {
+            min-width: 160px;
+        }
+    }
+
+    .stats-locales-bar {
+        padding: $space-3 $space-4;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+    }
+
+    .stats-locales-label {
+        color: $crumb-muted;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .02em;
+        text-transform: uppercase;
+    }
+
+    .stats-locale-chip {
+        padding: 6px $space-3;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        color: $crumb-text;
+        border-radius: $radius-pill;
+        font-size: 13px;
+        font-weight: 500;
+        transition: background $transition-fast, border-color $transition-fast, color $transition-fast, transform $transition-fast;
+
+        img {
+            display: block;
+            border-radius: 2px;
+            object-fit: cover;
+        }
+
+        &:hover {
+            background: $btn-surface-hover;
+            border-color: $crumb-border-hover;
+            transform: translateY(-1px);
+        }
+
+        &.active {
+            background: rgba($primary, .16);
+            border-color: rgba($primary, .35);
+            color: $primary;
+        }
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba($primary, .25);
+        }
+    }
+
+    #table-clicks,
+    #table-countries {
+        thead th {
+            color: $crumb-muted;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            border-bottom: 1px solid $crumb-border;
+        }
+
+        tbody tr {
+            border-color: $crumb-border;
+        }
+
+        tbody td {
+            color: $crumb-text;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .badge {
+            font-weight: 500;
+            font-size: 11px;
+            letter-spacing: .03em;
+            text-transform: uppercase;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #dashboard.analytics-stats .stats-locale-chip:hover {
+        transform: none;
+    }
+}

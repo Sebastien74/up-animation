@@ -507,10 +507,24 @@
         {%- endif -%}
         <{{ element|default('div') }}{%- with {attr: row_attr|merge({class: row_class|replace({'form-floating': ''})|trim})} -%}{{ block('attributes') }}{%- endwith -%}>
             {%- if 'form-floating' in row_class -%}
+                {%- set isPasswordFloating = 'password' in form.vars.block_prefixes -%}
+                {%- if isPasswordFloating -%}<div class="input-group">{%- endif -%}
                 <div class="position-relative form-floating{% if 'select-icons' in class_attr %} icons-group{% endif %}{% if 'img-pictograms' in class_attr %} img-pictograms-group{% endif %}{% if isSelected %} selected{% endif %}{% if not valid %} is-invalid{% endif %}">
-                    {{- form_widget(form, widget_attr) -}}
+                    {{- form_widget(form, widget_attr|merge({'no_input_group': isPasswordFloating})) -}}
                     {{- form_label(form) -}}
                 </div>
+                {%- if isPasswordFloating -%}
+                    <span class="input-group-text show-password">
+                        {%- if inAdmin() -%}
+                            <span class="show-icon"><i class="icm-eye"></i></span>
+                            <span class="hide-icon d-none"><i class="icm-eye-slash"></i></span>
+                        {%- else -%}
+                            <span class="show-icon">{{ 'fal eye'|icon(16, 16) }}</span>
+                            <span class="hide-icon d-none">{{ 'fal eye-slash'|icon(16, 16) }}</span>
+                        {%- endif -%}
+                    </span>
+                </div>
+                {%- endif -%}
             {%- else -%}
                 {%- if modalMediaCopy -%}
                     <div class="d-flex align-items-end mb-2 modal-btn-wrap-label">

@@ -70,25 +70,29 @@ document.addEventListener('DOMContentLoaded', function () {
             responsive: true,
             zoomOnWheel: true,
             crop: function (e) {
+                // Cropper.js v3 fires a jQuery $.Event with detail merged as
+                // direct event properties (not under .detail like native CustomEvent).
+                let detail = (e && e.detail) || e || {};
                 let modalINJS = document.getElementById(idModal);
-                let canvasINJS = modalINJS.querySelector('.cropper-canvas');
-                tempContainerDataHeight = canvasINJS.offsetHeight;
-                tempContainerDataWidth = canvasINJS.offsetWidth;
-                if (fieldX) fieldX.value = Math.round(e.detail.x);
-                if (fieldY) fieldY.value = Math.round(e.detail.y);
-                if (fieldWidth) fieldWidth.value = Math.round(e.detail.width);
-                if (fieldHeight) fieldHeight.value = Math.round(e.detail.height);
-                if (fieldRotate) fieldRotate.value = e.detail.rotate;
-                if (fieldScaleX) fieldScaleX.value = e.detail.scaleX;
-                if (fieldScaleY) fieldScaleY.value = e.detail.scaleY;
-                if (txtWidth) txtWidth.textContent = Math.round(e.detail.width);
-                if (txtHeight) txtHeight.textContent = Math.round(e.detail.height);
+                let canvasINJS = modalINJS ? modalINJS.querySelector('.cropper-canvas') : null;
+                if (canvasINJS) {
+                    tempContainerDataHeight = canvasINJS.offsetHeight;
+                    tempContainerDataWidth = canvasINJS.offsetWidth;
+                }
+                if (fieldX && typeof detail.x === 'number') fieldX.value = Math.round(detail.x);
+                if (fieldY && typeof detail.y === 'number') fieldY.value = Math.round(detail.y);
+                if (fieldWidth && typeof detail.width === 'number') fieldWidth.value = Math.round(detail.width);
+                if (fieldHeight && typeof detail.height === 'number') fieldHeight.value = Math.round(detail.height);
+                if (fieldRotate && typeof detail.rotate !== 'undefined') fieldRotate.value = detail.rotate;
+                if (fieldScaleX && typeof detail.scaleX !== 'undefined') fieldScaleX.value = detail.scaleX;
+                if (fieldScaleY && typeof detail.scaleY !== 'undefined') fieldScaleY.value = detail.scaleY;
+                if (txtWidth && typeof detail.width === 'number') txtWidth.textContent = Math.round(detail.width);
+                if (txtHeight && typeof detail.height === 'number') txtHeight.textContent = Math.round(detail.height);
 
-                //TEMP FOR CORNER CALC
-                tempImageHeight = Math.round(e.detail.height);
-                tempImageWidth = Math.round(e.detail.width);
-                tempOffsetX = Math.round(e.detail.x);
-                tempOffsetY = Math.round(e.detail.y);
+                if (typeof detail.height === 'number') tempImageHeight = Math.round(detail.height);
+                if (typeof detail.width === 'number') tempImageWidth = Math.round(detail.width);
+                if (typeof detail.x === 'number') tempOffsetX = Math.round(detail.x);
+                if (typeof detail.y === 'number') tempOffsetY = Math.round(detail.y);
             },
             cropend: function (e) {
                 //CALC CORNER
@@ -177,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        wrap.querySelectorAll('.move-left').forEach(btn => {
+        wrap.querySelectorAll('.move-start, .move-left').forEach(btn => {
             btn.addEventListener('click', function () {
                 if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
                     jQuery(imageEl).cropper("move", -10, 0);
@@ -185,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        wrap.querySelectorAll('.move-right').forEach(btn => {
+        wrap.querySelectorAll('.move-end, .move-right').forEach(btn => {
             btn.addEventListener('click', function () {
                 if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
                     jQuery(imageEl).cropper("move", 10, 0);
@@ -209,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        wrap.querySelectorAll('.rotate-left').forEach(btn => {
+        wrap.querySelectorAll('.rotate-start, .rotate-left').forEach(btn => {
             btn.addEventListener('click', function () {
                 if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
                     jQuery(imageEl).cropper("rotate", -90);
@@ -217,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        wrap.querySelectorAll('.rotate-right').forEach(btn => {
+        wrap.querySelectorAll('.rotate-end, .rotate-right').forEach(btn => {
             btn.addEventListener('click', function () {
                 if (typeof jQuery !== 'undefined' && typeof jQuery.fn.cropper !== 'undefined') {
                     jQuery(imageEl).cropper("rotate", 90);

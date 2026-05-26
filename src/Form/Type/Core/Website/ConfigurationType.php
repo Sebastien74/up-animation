@@ -160,6 +160,14 @@ class ConfigurationType extends AbstractType
                 'display' => 'switch',
             ]);
 
+            $builder->add('enableAnalytics', Type\CheckboxType::class, [
+                'required' => false,
+                'label' => $this->translator->trans('Activer les statistiques', [], 'admin'),
+                'display' => 'switch',
+                'help' => $this->translator->trans("Enregistrement des visites et événements anonymes", [], 'admin'),
+                'row_attr' => ['class' => 'col-12 mb-1'],
+            ]);
+
             $builder->add('duplicateMediasStatus', Type\CheckboxType::class, [
                 'required' => false,
                 'label' => $this->translator->trans('Activer la duplication des médias', [], 'admin'),

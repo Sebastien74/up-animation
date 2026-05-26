@@ -4,7 +4,8 @@
 
     {%- set microDataActive = website.seoConfiguration.microData -%}
     {%- set uri = app.request.uri -%}
-    {%- set active = '/seo/' in uri or '/gdpr/' in uri -%}
+    {%- set analyticsEnabled = website.configuration.enableAnalytics is defined and website.configuration.enableAnalytics -%}
+    {%- set active = '/seo/' in uri or '/gdpr/' in uri or (analyticsEnabled and '/stats/' in uri) -%}
     {%- set module = 'seo'|moduleActive(configuration) -%}
     {%- set intl = intlsModules['seo'][app.user.locale] is defined ? intlsModules['seo'][app.user.locale] : intlsModules['seo']['fr'] -%}
     {%- set title = intl.placeholder is defined and intl.placeholder|striptags|length > 0 ? intl.placeholder : (intlsModules['seo']['entity'].adminName is defined ? intlsModules['seo']['entity'].adminName : 'Référencement'|trans) -%}
@@ -15,6 +16,11 @@
             <span class="btn-icon small me-3">{{ icon|icon(15, 15, '', {icon: true}) }}</span>{{ title|raw }}
         </a>
         <ul aria-expanded="false" class="collapse {% if active %} in{% endif %}">
+            {%- if analyticsEnabled -%}
+                <li>
+                    <a href="{{ path('admin_stats_view', {website: websiteId}) }}" {% if '/stats/' in uri %} class="active" {% endif %}>{{ "Statistiques"|trans|raw }}</a>
+                </li>
+            {%- endif -%}
             <li>
                 <a href="{{ path('admin_seo_edit', {website: websiteId, entitylocale: website().configuration.locale}) }}" {% if '/seo/edit/' in uri %} class="active" {% endif %} >{{ "Édition"|trans|raw }}</a>
             </li>

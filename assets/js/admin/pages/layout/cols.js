@@ -5,17 +5,21 @@ import setPositions from "./positions";
  */
 export default function (Routing) {
 
-    let cols = document.querySelectorAll(".cols-sortable");
+    const cols = document.querySelectorAll(".cols-sortable");
 
     if (cols.length > 0) {
         import('sortablejs').then(({default: Sortable}) => {
             cols.forEach(el => {
+                const existing = Sortable.get(el);
+                if (existing) {
+                    existing.destroy();
+                }
                 Sortable.create(el, {
                     animation: 200,
                     easing: "cubic-bezier(0.22, 1, 0.36, 1)",
                     handle: ".handle-col",
                     draggable: ".col-sortable",
-                    ghostClass: "ui-state-highlight",
+                    ghostClass: "sortable-placeholder",
                     dragClass: "sortable-drag",
                     chosenClass: "sortable-chosen",
                     forceFallback: true,

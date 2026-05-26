@@ -1017,7 +1017,7 @@ body {
     // donc compilé hors pipeline light/dark : ses tokens restent ceux du dark par défaut
     // ($nestable-surface = $bg-gradient-primary sombre, $nestable-border blanc rgba…).
     // On neutralise ici le gradient hérité (background-image) en repassant via le shorthand.
-    #medias-sortable-container .sortable-item,
+    #medias-sortable-container > .dd-item,
     .dd3-content {
 
         background: $theme-surface !important;
@@ -1062,8 +1062,18 @@ body {
             color: $theme-text;
         }
 
-        .handle-item::after {
-            background-color: $theme-text-muted;
+        .dd-handle {
+            color: $theme-text-muted !important;
+
+            @include mediaQuery(min-lg) {
+                &:hover {
+                    color: $primary !important;
+                }
+            }
+        }
+
+        .dd-handle::after {
+            background-color: $theme-border-alt !important;
         }
     }
 
@@ -2462,6 +2472,35 @@ th.fc-col-header-cell {
     #medias-results .file.active .check-pack-media-label {
         box-shadow: $theme-shadow-lg !important;
     }
+
+    // Vignettes : tokens dark gelés dans library.scss, on repasse en palette crème.
+    #medias-results .file {
+
+        background: $theme-card-bg !important;
+        border-color: $theme-border !important;
+
+        .file-data {
+            background: $theme-overlay-soft !important;
+        }
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                border-color: $theme-border-alt !important;
+                box-shadow: $theme-shadow-md !important;
+            }
+        }
+    }
+
+    // Search form light overrides are now in the shared .form-search bloc
+    // (layout/_search.scss is globalised — see #tree-page-header markup).
+
+    // Badges info dans le tree (.dd3-content .badges) : icônes héritent du
+    // color: $nestable-text (= rgba white .7) gelé dans tree-sortable.scss,
+    // illisibles sur fond crème. On repasse en muted thème.
+    .dd3-content .badges .icon-info {
+        color: $theme-text-muted !important;
+    }
 }
 
 #end-process-wrap {
@@ -2470,13 +2509,104 @@ th.fc-col-header-cell {
     box-shadow: $theme-shadow-sm !important;
 }
 
-/*--- Medias cropper (admin-medias-cropper.css en bundle séparé) ---*/
+/*--- Medias cropper (admin-medias-cropper.css en bundle séparé : tokens
+     dark gelés au build). On repasse les surfaces et borders sur la
+     palette light papier crème, ainsi que les listes et la toolbar. ---*/
 
-.crop-card {
-    background-color: $theme-bg-alt !important;
+.cropper-page {
 
-    .info-body {
-        background-color: $white !important;
+    .cropper-page-head {
+        border-bottom-color: $theme-border !important;
+    }
+
+    .cropper-page-eyebrow {
+        color: $theme-text-muted !important;
+    }
+
+    .cropper-page-media {
+        color: $theme-text !important;
+    }
+
+    .cropper-page-icon {
+        color: $primary !important;
+    }
+}
+
+.thumb-tile {
+
+    background: $theme-surface !important;
+    border-color: $theme-border !important;
+    box-shadow: $theme-shadow-sm;
+
+    @include mediaQuery(min-lg) {
+
+        &:hover {
+            background: $theme-bg-alt !important;
+            border-color: $theme-border-alt !important;
+        }
+    }
+
+    .thumb-tile-preview {
+
+        background:
+            repeating-conic-gradient($theme-overlay-soft 0% 25%, transparent 0% 50%) 50% / 16px 16px,
+            $theme-bg-alt !important;
+        border-bottom-color: $theme-border !important;
+
+        img {
+            box-shadow: 0 1px 2px rgba($theme-shadow-color, .08);
+        }
+    }
+
+    .thumb-tile-head,
+    .thumb-tile-foot {
+        border-color: $theme-border !important;
+    }
+
+    .thumb-tile-label,
+    .thumb-tile-usage-label,
+    .thumb-tile-unit,
+    .thumb-tile-cross {
+        color: $theme-text-muted !important;
+    }
+
+    .thumb-tile-size,
+    .thumb-tile-usage-list li {
+        color: $theme-text !important;
+    }
+
+    .thumb-tile-usage-list li::before {
+        background: $theme-text-muted !important;
+    }
+
+    .thumb-tile-dim.thumb-tile-dim-auto {
+        color: $theme-text-muted !important;
+    }
+}
+
+.crop-modal {
+
+    .modal-title {
+        color: $theme-text !important;
+    }
+
+    .img-container {
+        background: $theme-bg-alt !important;
+        border-color: $theme-border !important;
+    }
+
+    .cropper-toolbar {
+        background: $theme-surface !important;
+        border-color: $theme-border !important;
+    }
+
+    .cropper-toolbar-tools .btn-group {
+        background: $theme-bg-alt !important;
+        border-color: $theme-border !important;
+    }
+
+    .modal-buttons {
+        border-top-color: $theme-border !important;
     }
 }
 
@@ -2512,14 +2642,32 @@ th.fc-col-header-cell {
 
 #page-selector-menu {
 
-    .input-group-text {
-        background: $theme-surface !important;
-        color: $theme-text !important;
+    .input-group {
+        background: $theme-input-bg !important;
+        border-color: $theme-input-border !important;
 
-        &:hover,
-        &:focus-visible {
-            background: $theme-bg-alt !important;
-            color: $theme-text !important;
+        &:focus-within {
+            border-color: $theme-accent-border-mid !important;
+            box-shadow: $theme-shadow-focus !important;
+        }
+    }
+
+    .select2-selection__rendered {
+        color: $theme-input-text !important;
+    }
+
+    .input-group-text {
+        background: $theme-accent-bg !important;
+        color: $primary !important;
+        border-left-color: $theme-input-border !important;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover,
+            &:focus-visible {
+                background: $theme-accent-bg-strong !important;
+                color: $primary !important;
+            }
         }
     }
 }
@@ -2565,7 +2713,7 @@ th.fc-col-header-cell {
     }
 
     // Drop highlight : rgba(0,0,0,.05) invisible sur fond crème — wash accent doux.
-    .ui-state-highlight {
+    .sortable-placeholder {
         background-color: $theme-accent-bg-soft !important;
     }
 }
@@ -2937,6 +3085,64 @@ th.fc-col-header-cell {
 
         .sa-fix {
             background-color: $theme-card-bg !important;
+        }
+    }
+}
+
+/*--- STATS (admin-stats.css bundle séparé : $crumb-*, $primary et $btn-*
+     restent aux valeurs dark. Overrides palette papier crème en !important
+     car admin-light.css est chargé avant admin-stats.css. ---*/
+
+#dashboard.analytics-stats {
+
+    .stats-range .form-label {
+        color: $theme-text-muted !important;
+    }
+
+    .stats-locales-bar {
+        background: $theme-card-bg !important;
+        border-color: $theme-accent-border !important;
+    }
+
+    .stats-locales-label {
+        color: $theme-text-muted !important;
+    }
+
+    .stats-locale-chip {
+        background: $theme-card-bg !important;
+        border-color: $theme-accent-border !important;
+        color: $theme-text !important;
+
+        &:hover {
+            background: $theme-accent-bg-soft !important;
+            border-color: $theme-accent-border-mid !important;
+        }
+
+        &.active {
+            background: $theme-accent-bg-strong !important;
+            border-color: $theme-accent-border-strong !important;
+            color: $theme-accent !important;
+        }
+
+        &:focus-visible {
+            box-shadow: 0 0 0 2px $theme-accent-focus-ring !important;
+        }
+    }
+
+    #table-clicks,
+    #table-countries {
+
+        thead th {
+            color: $theme-text-light !important;
+            border-bottom-color: $theme-accent-border !important;
+        }
+
+        tbody tr {
+            border-color: $theme-accent-border !important;
+        }
+
+        tbody td {
+            color: $theme-text !important;
         }
     }
 }

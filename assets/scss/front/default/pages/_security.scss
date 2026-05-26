@@ -48,30 +48,204 @@
     }
 }
 
+.login-card {
+
+    background: $white;
+    border-radius: 22px;
+    overflow: hidden;
+
+    @include mediaQuery(min-lg) {
+        border-radius: 26px;
+    }
+}
+
+.login-head {
+
+    .login-eyebrow {
+        color: $secondary;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .06em;
+        line-height: 1.2;
+    }
+
+    .login-title {
+        color: $secondary;
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: .04em;
+        line-height: 1;
+
+        @include mediaQuery(min-lg) {
+            font-size: 34px;
+        }
+    }
+}
+
 #form-login {
 
-    .checkbox-group {
-        margin-bottom: 0 !important;
-        top: initial !important;
+    .group-form {
+        margin-bottom: 1.75rem !important;
+    }
+
+    > .row > .form-group-text > .input-group,
+    .form-group-text > .input-group {
+        align-items: flex-end;
+        background: transparent !important;
+        border: 0;
+        border-radius: 0;
+    }
+
+    .input-group-text.show-password {
+
+        background: transparent !important;
+        border: 0 !important;
+        min-width: 0 !important;
+        padding: 0 0 .35rem 0 !important;
+
+        .show-icon,
+        .hide-icon {
+            align-items: center;
+            background: rgba($secondary, .06);
+            border: 0;
+            border-radius: 50%;
+            color: $secondary;
+            cursor: pointer;
+            display: inline-flex;
+            height: 34px;
+            justify-content: center;
+            transition: background .2s ease, color .2s ease;
+            width: 34px;
+
+            i {
+                font-size: 14px;
+            }
+
+            &:hover {
+                background: rgba($primary, .12);
+                color: $primary;
+            }
+        }
+    }
+
+    .form-floating {
+
+        > .form-control,
+        > .input-group {
+            background: transparent !important;
+            border: 0;
+            border-radius: 0;
+        }
+
+        > .form-control,
+        > .input-group > .form-control {
+            background: transparent !important;
+            border: 0 !important;
+            border-bottom: 1px solid rgba($secondary, .12) !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            color: $secondary;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            padding-top: 1.85rem !important;
+            padding-bottom: .35rem !important;
+            transition: border-color .25s ease;
+
+            &::placeholder {
+                color: $gray-500;
+                opacity: 1;
+            }
+
+            &:focus {
+                border-bottom-color: $primary !important;
+                color: $secondary;
+            }
+        }
+
+        > .form-label,
+        > label {
+            color: $secondary !important;
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            padding-left: 0 !important;
+            transform: scale(.95) translateY(-.15rem) translateX(0) !important;
+        }
     }
 
     .form-check {
 
         align-items: center !important;
+        gap: .65rem;
         margin-bottom: 0 !important;
+        padding-left: 0;
 
-        input {
+        .form-check-input {
+            border: 1px solid rgba($secondary, .25) !important;
+            border-radius: 50% !important;
+            float: none;
+            height: 22px;
+            margin-left: 0;
             margin-top: 0 !important;
+            width: 22px;
+
+            &:checked {
+                background-color: $white !important;
+                background-image: radial-gradient(circle, $primary 0 5px, transparent 6px) !important;
+                border-color: $primary !important;
+                box-shadow: none !important;
+            }
+
+            &:focus {
+                box-shadow: 0 0 0 .2rem rgba($primary, .15) !important;
+            }
         }
 
         label {
-            font-size: 13px !important;
+            color: $secondary !important;
+            font-size: 14px !important;
+            font-weight: 500;
+            line-height: 1;
         }
     }
 
     #to-recover {
+        color: $secondary !important;
+        text-decoration: none;
+        transition: color .2s ease;
+
         small {
-            font-size: 13px !important;
+            font-size: 14px !important;
+            font-style: italic;
+        }
+
+        &:hover {
+            color: $primary !important;
+        }
+    }
+
+    button[type="submit"],
+    #submit {
+
+        background: $primary;
+        border: 0;
+        border-radius: 999px;
+        color: $white;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: .12em;
+        margin-top: 1.5rem !important;
+        padding: 1.1rem 2rem;
+        transition: background .25s ease, transform .2s ease, box-shadow .25s ease;
+
+        &:hover,
+        &:focus {
+            background: $primary-darken;
+            box-shadow: 0 18px 32px -14px rgba($primary, .55);
+            transform: translateY(-1px);
+        }
+
+        &:active {
+            transform: translateY(0);
         }
     }
 }

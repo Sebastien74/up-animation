@@ -52,7 +52,7 @@
 
         {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'medias-sortable-preloader', full: true, progress: true} only -%}
 
-        <ul id="medias-sortable-container" class="reset list-unstyled mb-4">
+        <ol id="medias-sortable-container" class="dd dd-list reset list-unstyled mb-4">
             {%- set medias = medias is defined and medias is not empty ? medias
                 : (entity.mediaRelations is defined ? entity.mediaRelations : []) -%}
             {%- set isFirst = true -%}
@@ -60,20 +60,20 @@
                 {%- set disabledFirstMedia = disabledFirstMedia is defined and disabledFirstMedia and loop.first -%}
                 {%- if mediaRelation.locale == website.configuration.locale and not disabledFirstMedia -%}
                     <li id="ui-media-relation-{{ mediaRelation.id }}"
-                        class="ui-state-default sortable-item parent-row"
+                        class="dd-item parent-row"
                         data-id="{{ mediaRelation.id }}"
                         data-entity-id="{{ entity.id }}"
                         data-classname="{{ entityNamespace|url_encode }}"
                         data-clear-cache="{% if loop.last %}1{% else %}0{% endif %}"
                         data-position="{{ mediaRelation.position }}">
                         <div class="row">
-                            <ul class="d-none data-locales">
+                            <div class="d-none data-locales">
                                 {%- for mediaID in mediasByPosition[mediaRelation.position] -%}
-                                    <li class="media-locale-data active" data-id="{{ mediaID }}"></li>
+                                    <span class="media-locale-data active" data-id="{{ mediaID }}"></span>
                                 {%- endfor -%}
-                            </ul>
+                            </div>
                             <div class="title-block col-8 my-auto">
-                                <div class="handle-item float-start text-center cursor" data-bs-toggle="tooltip" title="{{"Déplacer"|trans|striptags }}">
+                                <div class="dd-handle float-start text-center cursor" data-bs-toggle="tooltip" title="{{"Déplacer"|trans|striptags }}">
                                     <i class="icm-arrows-alt"></i>
                                 </div>
                                 {%- set media = mediaRelation.media -%}

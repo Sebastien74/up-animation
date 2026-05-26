@@ -5,7 +5,7 @@
 {%- set defaultLocale = website.configuration.locale -%}
 
 {%- if zone.cols|length > 0 -%}
-    <ul id="block-sortable-{{ col.id }}" class="block-sortable reset ui-sortable row">
+    <ul id="block-sortable-{{ col.id }}" class="block-sortable reset row">
         {%- for block in col.blocks -%}
             <li class="block col-md-{{ block.size }}{% if block.hide %} block-hidden{% endif %}{% if block.useForThumb %} use-for-thumb{% endif %}"
                 id="block-{{ block.id }}"

@@ -142,7 +142,7 @@
                     <i class="icw-repeat"></i>
                 </a>
             </div>
-        {%- elseif granted('ROLE_SECURE_PAGE') and isUserFront -%}
+        {%- elseif granted('ROLE_SECURE_PAGE') and isUserFront and is_granted('IS_AUTHENTICATED_FULLY') -%}
             <div id="webmaster-box" class="as-user-front d-none{% if bottom %} bottom{% endif %}">
                 <div class="btn-group">
                     <div id="webmaster-box-wrapper"

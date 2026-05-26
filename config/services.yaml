@@ -80,8 +80,10 @@ services:
         arguments:
             $slowRequestLogger: '@monolog.logger.slow_request'
             $statsService: '@App\Service\Core\SlowRequestStatsService'
+            $queryProfiler: '@App\Doctrine\Middleware\QueryProfiler'
             $thresholdMs: '%env(int:SLOW_REQUEST_THRESHOLD_MS)%'
             $enabled: '%env(bool:SLOW_REQUEST_ENABLED)%'
+            $serverTimingEnabled: '%kernel.debug%'
         tags:
             - { name: kernel.event_subscriber }
 

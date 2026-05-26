@@ -4,15 +4,19 @@ import setPositions from "./positions";
  * Sortable activation: Zones order
  */
 export default function (Routing) {
-    let el = document.getElementById('zones-sortable');
+    const el = document.getElementById('zones-sortable');
     if (el) {
         import('sortablejs').then(({default: Sortable}) => {
+            const existing = Sortable.get(el);
+            if (existing) {
+                existing.destroy();
+            }
             Sortable.create(el, {
                 animation: 200,
                 easing: "cubic-bezier(0.22, 1, 0.36, 1)",
                 handle: ".handle-zone",
                 draggable: ".zone",
-                ghostClass: "ui-state-highlight",
+                ghostClass: "sortable-placeholder",
                 dragClass: "sortable-drag",
                 chosenClass: "sortable-chosen",
                 forceFallback: true,

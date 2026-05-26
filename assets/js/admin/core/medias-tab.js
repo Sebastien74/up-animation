@@ -7,7 +7,7 @@ export default function (Routing, el) {
 
     document.querySelectorAll('.media-tab-content-loader.active').forEach(tab => {
         tab.classList.remove('active');
-        const item = tab.closest('.sortable-item');
+        const item = tab.closest('.dd-item');
         if (item) {
             item.querySelectorAll('.collapse').forEach(collapse => {
                 collapse.classList.remove('show');

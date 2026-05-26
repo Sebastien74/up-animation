@@ -50,7 +50,8 @@
                 </div>
             {%- endif -%}
     {%- endif -%}
-    {%- if type is defined and type == 'password' -%}
+    {%- set skipPasswordGroup = no_input_group is defined and no_input_group -%}
+    {%- if type is defined and type == 'password' and not skipPasswordGroup -%}
         <div class="input-group">
     {%- endif -%}
     {%- if value|isDateTime -%}
@@ -58,7 +59,7 @@
         {%- set value = value|date(formatDate.inputDate) -%}
     {%- endif -%}
         <input type="{{ type }}" {{ block('widget_attributes') }}{% if value is not empty %} value="{{ value }}" {% endif %}>
-    {%- if type is defined and type == 'password' -%}
+    {%- if type is defined and type == 'password' and not skipPasswordGroup -%}
             <span class="input-group-text show-password">
                 {%- set iconPrefix = inAdmin() ? 'icm' : 'icon' -%}
                 <span class="show-icon"><i class="{{ iconPrefix }}-eye"></i></span>

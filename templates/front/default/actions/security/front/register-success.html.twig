@@ -16,21 +16,20 @@
 {%- endblock -%}
 
 {%- block body -%}
-    <div class="pt-5 pb-5 text-center d-flex align-items-center">
-        <div class="row w-100">
-            <div class="col-md-6 col-xl-4 mx-auto mt-5 mb-5 d-flex align-items-center">
-                <div class="form-thanks-card card bg-white form-success-card w-100 small-radius shadow">
-                    <div class="card-body bg-transparent pt-4 pt-lg-5 pb-4 text-center px-4 px-md-5">
-                        <div class="body mb-3">
-                            <i class="icon-thumbs-up text-primary size-xl-icon mb-4 d-inline-block"></i>
-                            <p class="mb-2"><strong>{{ "Merci pour votre inscription !"|trans|raw }}</strong></p>
-                            <p class="mb-2">{{ "Un e-mail de confirmation vient de vous être envoyé."|trans|raw }}</p>
-                            <p class="mb-2">{{ "Merci de vérifier votre boîte de réception et de cliquer sur le lien pour finaliser votre inscription."|trans|raw }}</p>
-                            <p class="mb-0">{{ "Si vous ne recevez pas cet e-mail d’ici quelques minutes, pensez à vérifier votre dossier de courriers indésirables ou spams."|trans|raw }}</p>
+    <div class="container mt-5 mb-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-4">
+                <div class="card form-container login-card shadow-lg border-0">
+                    <div class="card-body form-ajax-container p-4 p-md-5 text-center">
+                        <div class="login-head mb-4 pb-2 text-start">
+                            <p class="login-eyebrow text-uppercase mb-2">{{ "Inscription"|trans|raw }}</p>
+                            <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Merci !"|trans|raw }}</h3>
                         </div>
-                    </div>
-                    <div class="card-footer bg-transparent text-center px-4 pt-0 pb-4 pb-lg-5 border-0">
-                        <a href="{{ path('front_index') }}" class="btn btn-primary d-inline-flex">
+                        <i class="icon-thumbs-up text-primary size-xl-icon mb-4 d-inline-block"></i>
+                        <p class="mb-2">{{ "Un e-mail de confirmation vient de vous être envoyé."|trans|raw }}</p>
+                        <p class="mb-2">{{ "Merci de vérifier votre boîte de réception et de cliquer sur le lien pour finaliser votre inscription."|trans|raw }}</p>
+                        <p class="mb-4">{{ "Si vous ne recevez pas cet e-mail d’ici quelques minutes, pensez à vérifier votre dossier de courriers indésirables ou spams."|trans|raw }}</p>
+                        <a href="{{ path('front_index') }}" class="btn btn-primary text-uppercase w-100">
                             {{ "Retourner à la page d'accueil"|trans|raw }}
                         </a>
                     </div>

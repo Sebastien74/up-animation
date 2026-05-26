@@ -20,8 +20,6 @@ twig:
         - 'core/form/videos_field.html.twig'
         - 'core/form/datalist_field.html.twig'
         - '@SpiriitFormFilter/Form/form_div_layout.html.twig'
-    globals:
-        admin_app_secret: '%env(APP_SECRET)%'
     paths:
         # point this wherever your images live
         '%kernel.project_dir%/public': images

@@ -107,13 +107,6 @@ export default function () {
         }).catch(error => console.error(error.message));
     }
 
-    /** 12 - Sortable */
-    if (document.querySelector('.ui-sortable')) {
-        import('./sortable').then(({default: sortable}) => {
-            sortable();
-        }).catch(error => console.error(error.message));
-    }
-
     /** 13 - Tag input */
     if (document.querySelector('.bootstrap-tagsinput input, [data-role="tagsinput"]')) {
         import('./bootstrap-tagsinput').then(({default: tagsInput}) => {

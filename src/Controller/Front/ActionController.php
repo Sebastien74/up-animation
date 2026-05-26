@@ -141,7 +141,6 @@ class ActionController extends FrontController
             'lastEntity' => $lastEntity ? ($this->model)::fromEntity($lastEntity, $this->coreLocator) : null,
             'allEntities' => $lastEntity ? array_merge([$lastEntity], $entities) : $entities,
             'count' => $count,
-            'withoutFiltersEntities' => $this->service->findByListing($listing, $lastEntity),
             'scrollInfinite' => method_exists($listing, 'isScrollInfinite') && $listing->isScrollInfinite(),
             'showMoreBtn' => method_exists($listing, 'isShowMoreBtn') && $listing->isShowMoreBtn(),
             'maxPage' => $count > 0 ? intval(ceil($count / $limit)) : $count,
@@ -177,8 +176,8 @@ class ActionController extends FrontController
         if ($this->coreLocator->request()->query->get('page') && empty($pagination->getItems())) {
             $pageId = $this->coreLocator->request()->query->get('page');
             $redirection = str_replace(['&page='.$pageId, '?page='.$pageId], '', $this->coreLocator->request()->getUri());
-            header('Location: ' . $redirection);
-            exit;
+
+            return new RedirectResponse($redirection, Response::HTTP_SEE_OTHER);
         }
 
         if (isset($arguments['forceEntities']) && $arguments['forceEntities'] && isset($arguments['allEntitiesForce'])) {

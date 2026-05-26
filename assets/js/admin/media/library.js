@@ -91,6 +91,12 @@ document.body.addEventListener('click', function (e) {
 
 activeSearch();
 
+if (document.querySelector('hx\\:include')) {
+    import('../../vendor/components/medias-loader').then(({default: mediaLoader}) => {
+        mediaLoader();
+    }).catch(error => console.error(error.message));
+}
+
 document.body.addEventListener('click', function (e) {
 
     let packLabel = e.target.closest('.check-pack-media-label');
@@ -410,6 +416,14 @@ export default function activeSearch() {
     let searchField = document.getElementById('searchMedia');
     if (searchField) {
 
+        const form = searchField.closest('form');
+        const clearBtn = form ? form.querySelector('.search-clear') : null;
+
+        const syncFilteringState = () => {
+            if (!form) return;
+            form.classList.toggle('is-filtering', searchField.value.trim().length > 0);
+        };
+
         function submitFilter() {
             let loader = null;
             let mediaCard = document.getElementById('medias-card');
@@ -449,11 +463,26 @@ export default function activeSearch() {
         let timer;
         const waitTime = 500;
         searchField.addEventListener('keyup', event => {
+            syncFilteringState();
             clearTimeout(timer);
             timer = setTimeout(() => {
                 doneTyping(event.target.value);
             }, waitTime);
         });
+
+        searchField.addEventListener('input', syncFilteringState);
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                searchField.value = '';
+                syncFilteringState();
+                clearTimeout(timer);
+                submitFilter();
+                searchField.focus();
+            });
+        }
+
+        syncFilteringState();
 
         function doneTyping() {
             submitFilter();

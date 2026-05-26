@@ -30,7 +30,6 @@ class MediaUploadType extends AbstractType
         $resolver->setDefaults([
             'data_class' => null,
             'website' => null,
-            'csrf_protection' => false,
             'translation_domain' => 'admin',
         ]);
     }

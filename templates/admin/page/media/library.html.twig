@@ -114,36 +114,34 @@
                     <div class="d-none">
                         {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'medias-preloader', full: true} only -%}
                     </div>
-                    <div class="card-header mb-0 pb-0">
-                        <div class="row align-items-center">
-                            <div class="col-md-7 my-auto d-flex align-items-center gap-2">
-                                <i class="icm-photo-video btn-icon"></i>{{ "Médias"|trans|raw }}
-                                <div id="media-management-buttons" class="d-none ms-3 d-flex gap-2">
-                                    {%- if 'edit'|moduleActive(configuration) -%}
-                                        <button id="select-folder-btn"
-                                                data-path="{{ path('admin_folder_select', {website: websiteId}) }}"
-                                                class="btn-icon warning"
-                                                data-bs-toggle="tooltip" title="{{"Déplacer"|trans|raw }}">
-                                            <i class="icm-share-square"></i>
-                                        </button>
-                                    {%- endif -%}
-                                    {%- if granted('ROLE_MEDIA_COMPRESS') -%}
-                                        <button id="media-compress-btn" class="btn-icon info"
-                                                data-bs-toggle="tooltip" title="{{"Compresser"|trans|raw }}">
-                                            <i class="icm-compress-alt"></i>
-                                        </button>
-                                    {%- endif -%}
-                                    {%- if 'delete'|moduleActive(configuration) -%}
-                                        <button class="btn-icon danger sa-warning sa-warning-delete-medias"
-                                                data-bs-toggle="tooltip" title="{{"Supprimer"|trans|raw }}">
-                                            <i class="icm-trash"></i>
-                                        </button>
-                                    {%- endif -%}
-                                </div>
+                    <div class="card-header mb-0 pb-0 d-flex flex-wrap align-items-center gap-3">
+                        <div class="d-flex align-items-center gap-2 flex-grow-1">
+                            <i class="icm-photo-video btn-icon"></i>{{ "Médias"|trans|raw }}
+                            <div id="media-management-buttons" class="d-none ms-3 d-flex gap-2">
+                                {%- if 'edit'|moduleActive(configuration) -%}
+                                    <button id="select-folder-btn"
+                                            data-path="{{ path('admin_folder_select', {website: websiteId}) }}"
+                                            class="btn-icon warning"
+                                            data-bs-toggle="tooltip" title="{{"Déplacer"|trans|raw }}">
+                                        <i class="icm-share-square"></i>
+                                    </button>
+                                {%- endif -%}
+                                {%- if granted('ROLE_MEDIA_COMPRESS') -%}
+                                    <button id="media-compress-btn" class="btn-icon info"
+                                            data-bs-toggle="tooltip" title="{{"Compresser"|trans|raw }}">
+                                        <i class="icm-compress-alt"></i>
+                                    </button>
+                                {%- endif -%}
+                                {%- if 'delete'|moduleActive(configuration) -%}
+                                    <button class="btn-icon danger sa-warning sa-warning-delete-medias"
+                                            data-bs-toggle="tooltip" title="{{"Supprimer"|trans|raw }}">
+                                        <i class="icm-trash"></i>
+                                    </button>
+                                {%- endif -%}
                             </div>
-                            <div class="col-md-5 text-end">
-                                {{ render_esi(path('admin_folders_medias_search', { website: websiteId })) }}
-                            </div>
+                        </div>
+                        <div class="ms-md-auto">
+                            {{ render_esi(path('admin_folders_medias_search', { website: websiteId })) }}
                         </div>
                     </div>
                     <div class="card-body pb-2">

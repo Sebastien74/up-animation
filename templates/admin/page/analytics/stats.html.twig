@@ -1,0 +1,188 @@
+{%- extends "admin/base.html.twig" -%}
+
+{%- trans_default_domain 'admin' -%}
+
+{%- set pageIcon = 'chart-line' -%}
+{%- set pageTitle = "Statistiques"|trans -%}
+
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
+
+{%- block stylesheets -%}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-dashboard', null, 'admin') }}
+    {{ encore_entry_link_tags('admin-stats', null, 'admin') }}
+{%- endblock -%}
+
+{%- block javascripts -%}
+    {{ encore_entry_script_tags('admin-stats', null, 'admin', {defer: true}) }}
+    {{ parent() }}
+{%- endblock -%}
+
+{%- block body -%}
+    {%- set dataUrl = path('admin_stats_data', {website: website.entity.id}) -%}
+    {%- set defaultTo = 'now'|date('Y-m-d') -%}
+    {%- set defaultFrom = ('-'~(rangeDefaultDays - 1)~' days')|date('Y-m-d') -%}
+
+    <div id="dashboard"
+         class="analytics-stats pb-5"
+         data-endpoint="{{ dataUrl }}"
+         data-default-from="{{ defaultFrom }}"
+         data-default-to="{{ defaultTo }}"
+         data-default-locale="{{ defaultLocale }}">
+
+        {%- include 'admin/include/stripe-preloader.html.twig' with {
+            preloaderId: 'stats-loader',
+            preloaderClass: 'stats-loader',
+            label: "Mise à jour des statistiques..."|trans,
+            visible: false
+        } only -%}
+
+        <section class="dashboard-hero reveal">
+            <div class="hero-grid">
+                <h1 class="hero-title mb-0">{{ "Audience"|trans|raw }}<span class="hero-mark">.</span></h1>
+                <div class="hero-meta">
+                    <form id="stats-range" class="stats-range d-flex flex-wrap align-items-center gap-3">
+                        <div class="stats-range-field d-flex align-items-center gap-2">
+                            <label for="stats-from" class="form-label mb-0">{{ "Du"|trans|raw }}</label>
+                            <input type="date" id="stats-from" name="from" class="form-control" value="{{ defaultFrom }}">
+                        </div>
+                        <div class="stats-range-field d-flex align-items-center gap-2">
+                            <label for="stats-to" class="form-label mb-0">{{ "Au"|trans|raw }}</label>
+                            <input type="date" id="stats-to" name="to" class="form-control" value="{{ defaultTo }}">
+                        </div>
+                        <button type="submit" class="btn-app d-inline-flex align-items-center gap-2">
+                            <i class="icm-filter"></i>{{ "Appliquer"|trans|raw }}
+                        </button>
+                        <a id="stats-export" href="#" class="btn-app d-inline-flex align-items-center gap-2" download>
+                            <i class="icm-download"></i>{{ "Export CSV"|trans|raw }}
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        {%- if allLocales|length > 1 -%}
+            <section class="stats-locales-bar reveal my-4">
+                <div class="stats-locales d-flex flex-wrap align-items-center gap-2">
+                    <span class="stats-locales-label me-2">{{ "Langue"|trans|raw }}</span>
+                    <button type="button" class="btn-app stats-locale-chip d-inline-flex align-items-center gap-2 active" data-locale="">
+                        {{ "Toutes"|trans|raw }}
+                    </button>
+                    {%- for locale in allLocales -%}
+                        <button type="button" class="btn-app stats-locale-chip d-inline-flex align-items-center gap-2" data-locale="{{ locale }}">
+                            <img src="{{ asset('/medias/icons/flags/'~locale~'.svg') }}" alt="{{ locale|languageName }}" width="19" height="14">
+                            <span>{{ locale|languageName }}</span>
+                        </button>
+                    {%- endfor -%}
+                </div>
+            </section>
+        {%- endif -%}
+
+        <section class="dashboard-strip reveal">
+            <ul class="kpi-grid reset">
+                <li class="kpi-tile is-clean">
+                    <div class="kpi-link">
+                        <span class="kpi-label">{{ "Visiteurs uniques"|trans|raw }}</span>
+                        <span class="kpi-value" data-kpi="visitors">0</span>
+                    </div>
+                </li>
+                <li class="kpi-tile is-clean">
+                    <div class="kpi-link">
+                        <span class="kpi-label">{{ "Sessions"|trans|raw }}</span>
+                        <span class="kpi-value" data-kpi="sessions">0</span>
+                    </div>
+                </li>
+                <li class="kpi-tile is-clean">
+                    <div class="kpi-link">
+                        <span class="kpi-label">{{ "Pages vues"|trans|raw }}</span>
+                        <span class="kpi-value" data-kpi="pageviews">0</span>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="dashboard-quick reveal">
+            <header class="zone-head">
+                <h2 class="zone-title">{{ "Évolution journalière"|trans|raw }}</h2>
+            </header>
+            <div class="ratio ratio-21x9">
+                <canvas id="chart-series"></canvas>
+            </div>
+        </section>
+
+        <div class="row g-3 mt-3">
+            <div class="col-lg-6">
+                <section class="dashboard-quick reveal h-100">
+                    <header class="zone-head">
+                        <h2 class="zone-title">{{ "Pages les plus vues"|trans|raw }}</h2>
+                    </header>
+                    <div class="ratio ratio-16x9">
+                        <canvas id="chart-top-pages"></canvas>
+                    </div>
+                </section>
+            </div>
+            <div class="col-lg-6">
+                <section class="dashboard-quick reveal h-100">
+                    <header class="zone-head">
+                        <h2 class="zone-title">{{ "Sources de trafic"|trans|raw }}</h2>
+                    </header>
+                    <div class="ratio ratio-16x9">
+                        <canvas id="chart-sources"></canvas>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="row g-3 mt-3">
+            <div class="col-lg-6">
+                <section class="dashboard-quick reveal h-100">
+                    <header class="zone-head">
+                        <h2 class="zone-title">{{ "Appareils"|trans|raw }}</h2>
+                    </header>
+                    <div class="ratio ratio-1x1 mx-auto" style="max-width: 360px;">
+                        <canvas id="chart-devices"></canvas>
+                    </div>
+                </section>
+            </div>
+            <div class="col-lg-6">
+                <section class="dashboard-quick reveal h-100">
+                    <header class="zone-head">
+                        <h2 class="zone-title">{{ "Pays"|trans|raw }}</h2>
+                    </header>
+                    <table class="table table-sm" id="table-countries">
+                        <thead><tr><th>{{ "Pays"|trans|raw }}</th><th class="text-end">{{ "Sessions"|trans|raw }}</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+
+        <section class="dashboard-quick reveal mt-3">
+            <header class="zone-head">
+                <h2 class="zone-title">{{ "Clics les plus fréquents"|trans|raw }}</h2>
+                <span class="zone-aside">{{ "Liens, boutons, modals"|trans|raw }}</span>
+            </header>
+            <table class="table table-sm" id="table-clicks">
+                <thead>
+                    <tr>
+                        <th>{{ "Libellé"|trans|raw }}</th>
+                        <th>{{ "Action"|trans|raw }}</th>
+                        <th class="text-end">{{ "Clics"|trans|raw }}</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <section class="dashboard-quick reveal mt-3">
+            <header class="zone-head">
+                <h2 class="zone-title">{{ "Activité par heure"|trans|raw }}</h2>
+            </header>
+            <div style="height: 280px;">
+                <canvas id="chart-heatmap"></canvas>
+            </div>
+        </section>
+
+    </div>
+{%- endblock -%}

@@ -15,16 +15,16 @@
 {%- endblock -%}
 
 {%- block body -%}
-    {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
-        pageTitle: "Connectez-vous"|trans,
-        thumbConfiguration: thumbConfigurationHeader
-    } -%}
     {%- if granted('ROLE_ALLOWED_TO_SWITCH') -%}
         <div class="container mt-5 mb-5">
-            <div class="row d-flex">
-                <div class="col-lg-6 mx-auto">
-                    <div class="card form-container small-radius shadow">
-                        <div class="card-body form-ajax-container p-4">
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-4">
+                    <div class="card form-container login-card shadow-lg border-0">
+                        <div class="card-body form-ajax-container p-4 p-md-5">
+                            <div class="login-head mb-4 pb-2">
+                                <p class="login-eyebrow text-uppercase mb-2">{{ "Commutation"|trans|raw }}</p>
+                                <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Administrateur connecté"|trans|raw }}</h3>
+                            </div>
                             {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Vous êtes déjà connecté en tant qu'administrateur. Veuillez utiliser le commutateur pour vous connecter en tant qu'un autre utilisateur."|trans} only -%}
                         </div>
                     </div>

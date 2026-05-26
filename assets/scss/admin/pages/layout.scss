@@ -25,11 +25,68 @@
    1 ) Core
 -----------------------------------*/
 
-.ui-state-highlight {
+.sortable-placeholder {
     border-radius: $radius-lg;
     background-color: $theme-overlay-medium !important;
     border-color: transparent !important;
     margin-bottom: $space-4;
+}
+
+/* Layout drop slots — accent-tinted surface, dashed accent border
+   and subtle pulse so the dropzone is unmistakable during drag.
+   Each axis (zone / col / block) gets its own min-height to match
+   the surrounding element it replaces. */
+#zones-sortable > .sortable-placeholder,
+.cols-sortable > .sortable-placeholder,
+.block-sortable > .sortable-placeholder {
+    background: rgba($primary, .12) !important;
+    border: 2px dashed rgba($primary, .55) !important;
+    border-radius: $radius-lg;
+    box-shadow: inset 0 0 0 1px rgba($primary, .18);
+    animation: layoutDropPulse 1.4s ease-in-out infinite;
+}
+
+#zones-sortable > .sortable-placeholder {
+    min-height: 305px !important;
+    margin-bottom: 1.25rem;
+
+    /* The ghost keeps the original zone DOM — wash all inner content
+       so the drop slot reads as a uniform tinted surface. */
+    *,
+    *::before,
+    *::after {
+        visibility: hidden !important;
+    }
+}
+
+.cols-sortable > .sortable-placeholder {
+    min-height: 240px !important;
+    margin: 0 .25rem;
+}
+
+.block-sortable > .sortable-placeholder {
+    min-height: 48px !important;
+    margin-bottom: .5rem;
+}
+
+@keyframes layoutDropPulse {
+    0%, 100% {
+        background-color: rgba($primary, .10);
+        border-color: rgba($primary, .45);
+    }
+    50% {
+        background-color: rgba($primary, .18);
+        border-color: rgba($primary, .70);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    #zones-sortable > .sortable-placeholder,
+    .cols-sortable > .sortable-placeholder,
+    .block-sortable > .sortable-placeholder {
+        animation: none;
+    }
 }
 
 .grabbable {
@@ -502,7 +559,7 @@ body.resizing-active {
     padding-top: 1rem !important;
     min-height: 305px !important;
 
-    .ui-widget-content {
+    .resizable {
         border: 0 !important;
         width: 100% !important;
         background: transparent;

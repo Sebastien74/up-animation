@@ -180,7 +180,6 @@ class RegistrationType extends AbstractType
         $resolver->setDefaults([
             'data_class' => UserFront::class,
             'disabled_account' => false,
-            'csrf_protection' => false,
             'website' => null,
         ]);
     }

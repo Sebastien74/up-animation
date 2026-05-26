@@ -215,15 +215,12 @@ class MediaRelationController extends AdminController
         if (!empty($data['items']) && !empty($data['entityNamespace'])) {
             $entityNamespace = urldecode($data['entityNamespace']);
             $repository = $this->coreLocator->em()->getRepository($entityNamespace);
-
             foreach ($data['items'] as $item) {
                 $entityId = (int) $item['entityId'];
                 $position = (int) $item['position'];
                 $mediaRelationIds = (array) $item['mediaRelationIds'];
-
                 $entity = $repository->find($entityId);
                 $metadata = $entity ? $this->coreLocator->metadata($entity, 'mediaRelations')->targetEntity : null;
-
                 if ($metadata) {
                     $mediaRelationRepo = $this->coreLocator->em()->getRepository($metadata);
                     foreach ($mediaRelationIds as $mediaRelationId) {

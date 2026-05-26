@@ -114,6 +114,45 @@
             </section>
         {%- endif -%}
 
+        {#-- 2 bis — Audience snapshot (7 days) --#}
+        {%- if analyticsStats is defined and analyticsStats -%}
+            <section class="dashboard-quick reveal">
+                <header class="zone-head">
+                    <h2 class="zone-title">{{ "Audience"|trans|raw }}</h2>
+                    <span class="zone-aside">
+                        {{ "Les 7 derniers jours"|trans|raw }}
+                        &middot;
+                        <a href="{{ path('admin_stats_view', {website: websiteId}) }}" class="d-inline-flex align-items-center gap-1">
+                            {{ "Voir toutes les statistiques"|trans|raw }}<i class="icm-arrow-right"></i>
+                        </a>
+                    </span>
+                </header>
+                <ul class="kpi-grid reset">
+                    <li class="kpi-tile is-clean">
+                        <a href="{{ path('admin_stats_view', {website: websiteId}) }}" class="kpi-link">
+                            <span class="kpi-label">{{ "Visiteurs uniques"|trans|raw }}</span>
+                            <span class="kpi-value">{{ analyticsStats.totals.visitors|number_format(0, ',', ' ') }}</span>
+                            <span class="kpi-unit">{{ "sur 7 jours"|trans|raw }}</span>
+                        </a>
+                    </li>
+                    <li class="kpi-tile is-clean">
+                        <a href="{{ path('admin_stats_view', {website: websiteId}) }}" class="kpi-link">
+                            <span class="kpi-label">{{ "Sessions"|trans|raw }}</span>
+                            <span class="kpi-value">{{ analyticsStats.totals.sessions|number_format(0, ',', ' ') }}</span>
+                            <span class="kpi-unit">{{ "sur 7 jours"|trans|raw }}</span>
+                        </a>
+                    </li>
+                    <li class="kpi-tile is-clean">
+                        <a href="{{ path('admin_stats_view', {website: websiteId}) }}" class="kpi-link">
+                            <span class="kpi-label">{{ "Pages vues"|trans|raw }}</span>
+                            <span class="kpi-value">{{ analyticsStats.totals.pageviews|number_format(0, ',', ' ') }}</span>
+                            <span class="kpi-unit">{{ "sur 7 jours"|trans|raw }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        {%- endif -%}
+
         {#-- 3 — Quick links (modules) --#}
         <section class="dashboard-quick reveal">
             <header class="zone-head">

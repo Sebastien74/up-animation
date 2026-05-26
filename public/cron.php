@@ -7,6 +7,21 @@ use Symfony\Component\Process\PhpExecutableFinder;
 
 require dirname(__DIR__) . '/config/bootstrap.php';
 
+$cronSecret = (string) ($_ENV['CRON_SECRET'] ?? '');
+$cronAllowedIps = array_filter(array_map('trim', explode(',', (string) ($_ENV['CRON_ALLOWED_IPS'] ?? '127.0.0.1,::1'))));
+$givenSecret = (string) ($_GET['secret'] ?? $_SERVER['HTTP_X_CRON_SECRET'] ?? '');
+$clientIp = (string) ($_SERVER['REMOTE_ADDR'] ?? '');
+
+$secretOk = '' !== $cronSecret && hash_equals($cronSecret, $givenSecret);
+$ipOk = '' !== $clientIp && in_array($clientIp, $cronAllowedIps, true);
+
+if (!$secretOk && !$ipOk) {
+    http_response_code(403);
+    header('Content-Type: application/json');
+    echo json_encode(['error' => 'Forbidden']);
+    exit;
+}
+
 $asynchronous = true;
 
 /**

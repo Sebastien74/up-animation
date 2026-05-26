@@ -29,19 +29,19 @@
                     {%- set extension = extension ? extension : media.originalName|split('.')|last -%}
                     {%- set icon = 'admin'|fileIcon(extension) -%}
                     {%- set icon = extension == 'svg' or extension == 'webp' ? null : icon -%}
-                    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
-                        <div class="card h-100 file {{ extension }}-extension{% if tooHeavyFile %} too-heavy-file{% endif %}" data-id="{{ media.id }}" data-original-src="{{ uploadDirname }}">
-                            <div class="card-body p-2 d-flex flex-column pb-2">
-                                <label for="check-pack-media-{{ media.id }}" class="mb-0 check-pack-media-label w-100 flex-grow-1 cursor-pointer">
-                                    <div class="file-data-wrap h-100" data-bs-toggle="tooltip" title="{{ media.originalName }}">
-                                        <div class="file-data media-selector cursor h-100 d-flex align-items-center justify-content-center border rounded p-2">
+                    <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xxl-2 mb-3">
+                        <div class="file h-100 {{ extension }}-extension{% if tooHeavyFile %} too-heavy-file{% endif %}" data-id="{{ media.id }}" data-original-src="{{ uploadDirname }}">
+                            <div class="file-inner d-flex flex-column">
+                                <label for="check-pack-media-{{ media.id }}" class="mb-0 check-pack-media-label w-100 cursor-pointer">
+                                    <div class="file-data-wrap" data-bs-toggle="tooltip" title="{{ media.originalName }}">
+                                        <div class="file-data media-selector cursor d-flex align-items-center justify-content-center">
                                             <div class="spinner-parent">
                                                 <div class="inner">
                                                     <div class="wrap text-center">
                                                         {%- if icon -%}
                                                             {{ icon|icon(null, 40, 'dark-50') }}
                                                         {%- else -%}
-                                                            {{ media|file({}, {width: 100, height: 100, class: 'img-fluid rounded'}) }}
+                                                            {{ media|file({}, {width: 240, height: 240, class: 'media-thumb-img'}) }}
                                                         {%- endif -%}
                                                     </div>
                                                     {%- if not asCopy -%}
@@ -50,11 +50,17 @@
                                                     {%- endif -%}
                                                 </div>
                                             </div>
+                                            {%- if tooHeavyFile -%}
+                                                <span class="file-weight-chip" aria-label="{{ "Fichier trop volumineux"|trans|striptags }}">
+                                                    <i class="icm-weight-hanging" aria-hidden="true"></i>
+                                                    {{ tooHeavyFilesSizes[media.originalName]|formatBytes }}
+                                                </span>
+                                            {%- endif -%}
                                         </div>
                                     </div>
                                 </label>
 
-                                <div class="edit-medias-btns mt-2 d-flex justify-content-center gap-1">
+                                <div class="edit-medias-btns d-flex justify-content-center gap-1">
                                     {%- if not asCopy -%}
                                         <div class="check-pack-media-btn cursor d-none p-0">
                                             <input id="check-pack-media-{{ media.id }}"
@@ -93,17 +99,6 @@
                                     {%- endif -%}
                                 </div>
 
-                                {%- if tooHeavyFile -%}
-                                    <div class="mt-2">
-                                        {%- include 'admin/include/alert.html.twig' with {
-                                            alert: "warning",
-                                            display: "alert",
-                                            size: "small",
-                                            class: "mb-0",
-                                            message: tooHeavyFilesSizes[media.originalName]|formatBytes
-                                        } only -%}
-                                    </div>
-                                {%- endif -%}
                             </div>
                         </div>
                     </div>
